@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousCredentialsHandler", "EliteDangerousCredentialsHandler\EliteDangerousCredentialsHandler.csproj", "{8983CD88-9A63-4115-AEED-EB7BE9B9DFCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousCompanionAppHandler", "EliteDangerousCompanionAppHandler\EliteDangerousCompanionAppHandler.csproj", "{462ED721-1C9C-43FA-8A3F-4C1644363A5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Login", "Login\Login.csproj", "{AF641415-F3E3-4A99-86BE-8574131937A0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8983CD88-9A63-4115-AEED-EB7BE9B9DFCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8983CD88-9A63-4115-AEED-EB7BE9B9DFCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8983CD88-9A63-4115-AEED-EB7BE9B9DFCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8983CD88-9A63-4115-AEED-EB7BE9B9DFCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{462ED721-1C9C-43FA-8A3F-4C1644363A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{462ED721-1C9C-43FA-8A3F-4C1644363A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{462ED721-1C9C-43FA-8A3F-4C1644363A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{462ED721-1C9C-43FA-8A3F-4C1644363A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF641415-F3E3-4A99-86BE-8574131937A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF641415-F3E3-4A99-86BE-8574131937A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF641415-F3E3-4A99-86BE-8574131937A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF641415-F3E3-4A99-86BE-8574131937A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
