@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EliteDangerousCompanionAppHandler
+namespace EliteDangerousDataProvider
 {
     public class CookieWebClient : WebClient
     {
@@ -14,6 +10,11 @@ namespace EliteDangerousCompanionAppHandler
         public CookieWebClient()
         {
             this.CookieContainer = new CookieContainer();
+        }
+
+        public CookieWebClient(CookieContainer cookieContainer)
+        {
+            this.CookieContainer = cookieContainer;
         }
 
         protected override WebRequest GetWebRequest(Uri address)

@@ -38,58 +38,64 @@
             // emailLabel
             // 
             this.emailLabel.AutoSize = true;
-            this.emailLabel.Location = new System.Drawing.Point(36, 63);
+            this.emailLabel.Location = new System.Drawing.Point(26, 176);
+            this.emailLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.emailLabel.Name = "emailLabel";
-            this.emailLabel.Size = new System.Drawing.Size(72, 13);
+            this.emailLabel.Size = new System.Drawing.Size(97, 17);
             this.emailLabel.TabIndex = 0;
             this.emailLabel.Text = "Email address";
             // 
             // passwordLabel
             // 
             this.passwordLabel.AutoSize = true;
-            this.passwordLabel.Location = new System.Drawing.Point(36, 123);
+            this.passwordLabel.Location = new System.Drawing.Point(54, 209);
+            this.passwordLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(53, 13);
+            this.passwordLabel.Size = new System.Drawing.Size(69, 17);
             this.passwordLabel.TabIndex = 1;
             this.passwordLabel.Text = "Password";
             // 
             // emailText
             // 
-            this.emailText.Location = new System.Drawing.Point(152, 63);
+            this.emailText.Location = new System.Drawing.Point(137, 173);
+            this.emailText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.emailText.Name = "emailText";
-            this.emailText.Size = new System.Drawing.Size(100, 20);
+            this.emailText.Size = new System.Drawing.Size(216, 22);
             this.emailText.TabIndex = 2;
             // 
             // passwordText
             // 
-            this.passwordText.Location = new System.Drawing.Point(152, 120);
+            this.passwordText.Location = new System.Drawing.Point(137, 206);
+            this.passwordText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.passwordText.Name = "passwordText";
             this.passwordText.PasswordChar = '*';
-            this.passwordText.Size = new System.Drawing.Size(100, 20);
+            this.passwordText.Size = new System.Drawing.Size(216, 22);
             this.passwordText.TabIndex = 3;
             // 
             // loginButton
             // 
-            this.loginButton.Location = new System.Drawing.Point(103, 205);
+            this.loginButton.Location = new System.Drawing.Point(137, 252);
+            this.loginButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(75, 23);
+            this.loginButton.Size = new System.Drawing.Size(100, 28);
             this.loginButton.TabIndex = 4;
             this.loginButton.Text = "Login";
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
-            // Form1
+            // Stage1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(379, 321);
             this.Controls.Add(this.loginButton);
             this.Controls.Add(this.passwordText);
             this.Controls.Add(this.emailText);
             this.Controls.Add(this.passwordLabel);
             this.Controls.Add(this.emailLabel);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Name = "Stage1";
+            this.Text = "Elite: Dangerous login";
             this.ResumeLayout(false);
             this.PerformLayout();
 

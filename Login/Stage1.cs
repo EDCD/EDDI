@@ -22,7 +22,12 @@ namespace EliteDangerousDataProvider
             string username = emailText.Text;
             string password = passwordText.Text;
             Credentials credentials = CompanionApp.Login(username, password);
-            System.Console.WriteLine("Credentials are " + credentials);
+            if (credentials != null && credentials.appId != null && credentials.machineId != null)
+            {
+                Stage2 stage2 = new Stage2(credentials);
+                stage2.Show();
+                this.Hide();
+            }
         }
     }
 }

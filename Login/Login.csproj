@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Stage2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Stage2.Designer.cs">
+      <DependentUpon>Stage2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Stage1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +60,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stage3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Stage3.Designer.cs">
+      <DependentUpon>Stage3.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Stage1.resx">
       <DependentUpon>Stage1.cs</DependentUpon>
     </EmbeddedResource>
@@ -66,6 +78,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Stage2.resx">
+      <DependentUpon>Stage2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Stage3.resx">
+      <DependentUpon>Stage3.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -16,7 +16,8 @@ namespace EliteDangerousDataProvider
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Stage1());
+            //Application.Run(new Stage1());
+            Application.Run(new Stage3());
         }
     }
 }

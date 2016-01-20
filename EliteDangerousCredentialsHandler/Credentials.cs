@@ -22,7 +22,7 @@ namespace EliteDangerousDataProvider
         /**
          * Obtain credentials from a file.  If the file name is not supplied then use the default path
          */
-        public static Credentials FromFile(string filename)
+        public static Credentials FromFile(string filename=null)
         {
             if (filename == null)
             {
@@ -48,8 +48,17 @@ namespace EliteDangerousDataProvider
         /**
          * Write credentials to the file
          */
-        public void ToFile()
+        public void ToFile(string filename=null)
         {
+            if (filename == null)
+            {
+                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EliteDataProvider";
+                System.IO.Directory.CreateDirectory(dataDir);
+                filename = dataDir + "\\credentials.json";
+            }
+
+            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            File.WriteAllText(filename, json);
         }
     }
 }
