@@ -16,7 +16,12 @@ namespace EliteDangerousDataProviderVAPlugin
             uri += ShipBulkheads(ship.bulkheads);
             uri += ship.powerPlant;
             uri += ship.thrusters;
-            uri += "5E4E7E6E5C---1717----04044j030t--002h.Iw18eQ==.Aw18eQ==";
+            uri += ship.frameShiftDrive;
+            uri += ship.lifeSupport;
+            uri += ship.powerDistributor;
+            uri += ship.sensors;
+            uri += ship.fuelTank;
+            uri += "---1717----04044j030t--002h.Iw18eQ==.Aw18eQ==";
             return uri;
         }
 
