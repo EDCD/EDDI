@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using EliteDangerousDataProvider;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,23 +8,24 @@ using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace EliteDangerousDataProvider
+namespace EliteDangerousCompanionAppService
 {
     public class CompanionApp
     {
         private static string serverRoot = "https://companion.orerve.net";
 
-        private CookieWebClient client;
+        private Credentials credentials;
 
         public CompanionApp(Credentials credentials)
         {
-            var cookieContainer = new CookieContainer();
-            AddCompanionAppCookie(cookieContainer, credentials);
-            AddMachineIdCookie(cookieContainer, credentials);
-            AddMachineTokenCookie(cookieContainer, credentials);
+            this.credentials = credentials;
+            //var cookieContainer = new CookieContainer();
+            //AddCompanionAppCookie(cookieContainer, credentials);
+            //AddMachineIdCookie(cookieContainer, credentials);
+            //AddMachineTokenCookie(cookieContainer, credentials);
 
-            client = new CookieWebClient(cookieContainer);
-            client.Headers.Add("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257");
+            //client = new CookieWebClient(cookieContainer);
+            //client.Headers.Add("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257");
         }
 
         //<summary>
@@ -176,8 +178,59 @@ namespace EliteDangerousDataProvider
 
         public dynamic Profile()
         {
+            var cookieContainer = new CookieContainer();
+            AddCompanionAppCookie(cookieContainer, credentials);
+            AddMachineIdCookie(cookieContainer, credentials);
+            AddMachineTokenCookie(cookieContainer, credentials);
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(serverRoot + "/profile");
+            request.AllowAutoRedirect = false;
+            request.CookieContainer = cookieContainer;
+            request.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257";
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            // A good response is a found
+            if ((int)response.StatusCode < 200 || (int)response.StatusCode > 299)
+            {
+                throw new Exception();
+            }
+
+            // Refresh the cookies from the raw information available to us
+            String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
+            if (cookieHeader != null)
+            {
+                Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
+                if (companionAppMatch.Success)
+                {
+                    if (credentials == null) { credentials = new Credentials(); }
+                    credentials.appId = companionAppMatch.Groups[1].Value;
+                }
+                Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
+                if (machineIdMatch.Success)
+                {
+                    if (credentials == null) { credentials = new Credentials(); }
+                    credentials.machineId = machineIdMatch.Groups[1].Value;
+                }
+                Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
+                if (machineTokenMatch.Success)
+                {
+                    if (credentials == null) { credentials = new Credentials(); }
+                    credentials.machineToken = machineTokenMatch.Groups[1].Value;
+                }
+            }
+
+            credentials.ToFile();
+
             // Obtain and parse our response
-            return JObject.Parse(client.DownloadString("https://companion.orerve.net/profile"));
+            var encoding = response.CharacterSet == ""
+                        ? Encoding.UTF8
+                        : Encoding.GetEncoding(response.CharacterSet);
+
+            using (var stream = response.GetResponseStream())
+            {
+                var reader = new StreamReader(stream, encoding);
+                return JObject.Parse(reader.ReadToEnd());
+            }
         }
 
         private static void AddCompanionAppCookie(CookieContainer cookies, Credentials credentials)

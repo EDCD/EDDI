@@ -98,9 +98,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EliteDangerousCompanionAppHandler\EliteDangerousCompanionAppHandler.csproj">
+    <ProjectReference Include="..\EliteDangerousCompanionAppHandler\EliteDangerousCompanionAppService.csproj">
       <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
-      <Name>EliteDangerousCompanionAppHandler</Name>
+      <Name>EliteDangerousCompanionAppService</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteDangerousCredentialsHandler\EliteDangerousCredentialsHandler.csproj">
       <Project>{8983cd88-9a63-4115-aeed-eb7be9b9dfcc}</Project>

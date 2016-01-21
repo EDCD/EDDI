@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E98B76A0-B7BC-4F59-8E4F-BD16B22A5AC6}</ProjectGuid>
+    <ProjectGuid>{C5F48807-921B-456D-A9E4-A0282E5E8CF1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EliteDangerousDataProviderVAPlugin</RootNamespace>
-    <AssemblyName>EliteDangerousDataProviderVAPlugin</AssemblyName>
+    <RootNamespace>EliteDangerousDataProviderAppHandler</RootNamespace>
+    <AssemblyName>EliteDangerousDataProviderAppHandler</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,22 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="VoiceAttackPlugin.cs" />
+    <Compile Include="DataProviderApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EliteDangerousCompanionAppHandler\EliteDangerousCompanionAppService.csproj">
-      <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
-      <Name>EliteDangerousCompanionAppService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousCredentialsHandler\EliteDangerousCredentialsHandler.csproj">
-      <Project>{8983cd88-9a63-4115-aeed-eb7be9b9dfcc}</Project>
-      <Name>EliteDangerousCredentialsHandler</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousDataProviderAppHandler\EliteDangerousDataProviderAppService.csproj">
-      <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
-      <Name>EliteDangerousDataProviderAppService</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

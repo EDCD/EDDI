@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace EliteDangerousDataProvider
+namespace EliteDangerousCompanionAppService
 {
     public class CookieWebClient : WebClient
     {
