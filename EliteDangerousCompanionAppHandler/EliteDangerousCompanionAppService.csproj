@@ -44,20 +44,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commander.cs" />
     <Compile Include="CompanionApp.cs" />
+    <Compile Include="Compartment.cs" />
     <Compile Include="CookieWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Hardpoint.cs" />
+    <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="Ship.cs" />
+    <Compile Include="System.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EliteDangerousCredentialsHandler\EliteDangerousCredentialsHandler.csproj">
       <Project>{8983cd88-9a63-4115-aeed-eb7be9b9dfcc}</Project>
       <Name>EliteDangerousCredentialsHandler</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,10 +1,8 @@
 ﻿using EliteDangerousDataProvider;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -176,7 +174,7 @@ namespace EliteDangerousCompanionAppService
             return credentials;
         }
 
-        public dynamic Profile()
+        public Commander Profile()
         {
             var cookieContainer = new CookieContainer();
             AddCompanionAppCookie(cookieContainer, credentials);
@@ -229,8 +227,13 @@ namespace EliteDangerousCompanionAppService
             using (var stream = response.GetResponseStream())
             {
                 var reader = new StreamReader(stream, encoding);
-                return JObject.Parse(reader.ReadToEnd());
+                return Commander.FromProfile(JObject.Parse(reader.ReadToEnd()));
             }
+        }
+
+        public Commander Profile(string data)
+        {
+            return Commander.FromProfile(JObject.Parse(data));
         }
 
         private static void AddCompanionAppCookie(CookieContainer cookies, Credentials credentials)

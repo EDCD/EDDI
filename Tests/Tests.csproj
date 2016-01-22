@@ -50,10 +50,23 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CommanderGeneratorTests.cs" />
     <Compile Include="VoiceAttackPluginTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EliteDangerousCompanionAppHandler\EliteDangerousCompanionAppService.csproj">
+      <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
+      <Name>EliteDangerousCompanionAppService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousCredentialsHandler\EliteDangerousCredentialsHandler.csproj">
+      <Project>{8983cd88-9a63-4115-aeed-eb7be9b9dfcc}</Project>
+      <Name>EliteDangerousCredentialsHandler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousDataProviderAppHandler\EliteDangerousDataProviderAppService.csproj">
+      <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
+      <Name>EliteDangerousDataProviderAppService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EliteDangerousDataProviderVAPlugin\EliteDangerousDataProviderVAPlugin.csproj">
       <Project>{e98b76a0-b7bc-4f59-8e4f-bd16b22a5ac6}</Project>
       <Name>EliteDangerousDataProviderVAPlugin</Name>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EliteDangerousCompanionAppService;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace EliteDangerousDataProviderVAPlugin
         public static string ShipUri(Ship ship)
         {
             string uri = "http://coriolis.io/outfit/";
-            uri += ShipModel(ship.model);
+            uri += ShipModel(ship.Model);
             uri += "/";
             uri += ShipBulkheads(ship.bulkheads);
             uri += ship.powerPlant;
