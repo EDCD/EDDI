@@ -79,6 +79,7 @@ namespace EliteDangerousDataProviderVAPlugin
             setPluginMessage(ref textValues, "Status", "Operational");
 
             InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
         }
 
         public static void VA_Exit1(ref Dictionary<string, object> state)
@@ -92,9 +93,15 @@ namespace EliteDangerousDataProviderVAPlugin
                 case "coriolis":
                     InvokeCoriolis(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
+                case "profile":
+                    InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    return;
+                case "system":
+                    InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    return;
                 default:
                     InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    InvokeNewSystem(ref Cmdr, ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
             }
         }
@@ -130,11 +137,7 @@ namespace EliteDangerousDataProviderVAPlugin
             try
             {
                 // Obtain the command profile
-                dynamic json = app.Profile();
-
                 Cmdr = app.Profile();
-
-                setPluginMessage(ref textValues, "ProfileJson", json);
 
                 //
                 // Commander data
@@ -218,7 +221,7 @@ namespace EliteDangerousDataProviderVAPlugin
             }
         }
 
-        public static void InvokeNewSystem(ref Commander Cmdr, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        public static void InvokeNewSystem(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
             try
             {
@@ -234,7 +237,7 @@ namespace EliteDangerousDataProviderVAPlugin
                 }
 
                 StarSystem ThisStarSystem = DataProviderApp.GetSystemData(Cmdr.StarSystem);
-                if (ThisStarSystem.Name != CurrentStarSystem.Name)
+                if (CurrentStarSystem == null || ThisStarSystem.Name != CurrentStarSystem.Name)
                 {
                     // The star system has changed; update the data
                     LastStarSystem = CurrentStarSystem;
