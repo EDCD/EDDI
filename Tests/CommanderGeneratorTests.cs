@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EliteDangerousCompanionAppService;
 using EliteDangerousDataProvider;
+using System;
 
 namespace Tests
 {
@@ -5481,8 +5482,18 @@ namespace Tests
 ";
             CompanionApp app = new CompanionApp(Credentials.FromFile());
             Commander cmdr = app.Profile(data);
-            Assert.AreEqual("Testy", cmdr.Name);
 
+            Assert.AreEqual("Testy", cmdr.Name);
+            Assert.AreEqual(7, cmdr.Ship.PowerPlant.Class);
+            Assert.AreEqual("C", cmdr.Ship.PowerPlant.Grade);
+            Assert.AreEqual(9, cmdr.Ship.Hardpoints.Count);
+
+            Hardpoint hardpoint1 = cmdr.Ship.Hardpoints[0];
+            Assert.AreEqual(3, hardpoint1.Size);
+
+            Assert.IsNotNull(hardpoint1.Module);
+            //Assert.AreEqual(0, hardpoint1.Module.Class);
+            //Assert.AreEqual(0, hardpoint1.Module.Grade);
         }
     }
 }

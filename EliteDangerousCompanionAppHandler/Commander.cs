@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace EliteDangerousCompanionAppService
 {
@@ -32,7 +33,7 @@ namespace EliteDangerousCompanionAppService
 
         public Ship Ship { get; set; }
 
-        public static Commander FromProfile(dynamic json)
+        public static Commander FromProfile(JObject json)
         {
             Commander Commander = new Commander();
 

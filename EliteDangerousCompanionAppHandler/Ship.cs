@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace EliteDangerousCompanionAppService
 {
@@ -43,8 +39,6 @@ namespace EliteDangerousCompanionAppService
             { "Vulture", "Vulture" }
         };
 
-        private static string[] shipBulkheadsNames = new string[5] { "Lightweight Alloy", "Reinforced Alloy", "Military Grade Composite", "Mirrored Surface Composite", "Reactive Surface Composite" };
-
         public string Model { get; set; }
         public long Value { get; set; }
         public int CargoCapacity { get; set; }
@@ -59,12 +53,12 @@ namespace EliteDangerousCompanionAppService
         public Module PowerDistributor { get; set; }
         public Module Sensors { get; set; }
         public Module FuelTank { get; set; }
-        public List<Hardpoint> HardPoints { get; set; }
+        public List<Hardpoint> Hardpoints { get; set; }
         public List<Compartment> Compartments { get; set; }
 
         public Ship()
         {
-            HardPoints = new List<Hardpoint>();
+            Hardpoints = new List<Hardpoint>();
             Compartments = new List<Compartment>();
         }
 
@@ -84,13 +78,21 @@ namespace EliteDangerousCompanionAppService
             // Obtain the internals
             Ship.Bulkheads = Module.FromProfile("Armour", json["ship"]["modules"]["Armour"]);
             Ship.PowerPlant = Module.FromProfile("PowerPlant", json["ship"]["modules"]["PowerPlant"]);
+            Ship.Thrusters = Module.FromProfile("MainEngines", json["ship"]["modules"]["MainEngines"]);
+            Ship.FrameShiftDrive = Module.FromProfile("FrameShiftDrive", json["ship"]["modules"]["FrameShiftDrive"]);
+            Ship.LifeSupport = Module.FromProfile("LifeSupport", json["ship"]["modules"]["LifeSupport"]);
+            Ship.PowerDistributor = Module.FromProfile("PowerDistributor", json["ship"]["modules"]["PowerDistributor"]);
+            Ship.Sensors = Module.FromProfile("Radar", json["ship"]["modules"]["Radar"]);
+            Ship.FuelTank = Module.FromProfile("FuelTank", json["ship"]["modules"]["FuelTank"]);
 
             // Obtain the hardpoints
-            //List<Module> Modules = new List<Module>();
-            //foreach (dynamic module in json["ship"]["modules"])
-            //{
-            //    Modules.Add(ParseModule(module));
-            //}
+            foreach (dynamic module in json["ship"]["modules"])
+            {
+                if (module.Name.Contains("Hardpoint"))
+                {
+                    Ship.Hardpoints.Add(Hardpoint.FromProfile(module));
+                }
+            }
 
             // Obtain the compartments
 
