@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 
 namespace EliteDangerousCompanionAppService
 {
@@ -31,6 +30,8 @@ namespace EliteDangerousCompanionAppService
         public long Credits { get; set; }
         public long Debt { get; set; }
 
+        public string StarSystem { get; set; }
+
         public Ship Ship { get; set; }
 
         public static Commander FromProfile(JObject json)
@@ -58,6 +59,8 @@ namespace EliteDangerousCompanionAppService
 
             Commander.Credits = (long)json["commander"]["credits"];
             Commander.Debt = (long)json["commander"]["debt"];
+
+            Commander.StarSystem = (string)json["lastSystem"]["name"];
 
             Commander.Ship = Ship.FromProfile(json);
 

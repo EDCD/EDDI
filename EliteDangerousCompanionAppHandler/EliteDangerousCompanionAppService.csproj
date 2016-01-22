@@ -7,8 +7,8 @@
     <ProjectGuid>{462ED721-1C9C-43FA-8A3F-4C1644363A5A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EliteDangerousCompanionAppHandler</RootNamespace>
-    <AssemblyName>EliteDangerousCompanionAppHandler</AssemblyName>
+    <RootNamespace>EliteDangerousCompanionAppService</RootNamespace>
+    <AssemblyName>EliteDangerousCompanionAppService</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -52,9 +52,9 @@
     </Compile>
     <Compile Include="Hardpoint.cs" />
     <Compile Include="Module.cs" />
+    <Compile Include="ModuleDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ship.cs" />
-    <Compile Include="System.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EliteDangerousCredentialsHandler\EliteDangerousCredentialsHandler.csproj">

@@ -33,11 +33,15 @@ namespace EliteDangerousCompanionAppService
                 Hardpoint.Size = 0;
             }
 
-            JToken value;
-            if (json.Value.TryGetValue("module", out value))
+            if (json.Value is JObject)
             {
-                Hardpoint.Module = Module.FromProfile(name, json.Value);
+                JToken value;
+                if (json.Value.TryGetValue("module", out value))
+                {
+                    Hardpoint.Module = Module.FromProfile(name, json.Value);
+                }
             }
+
             return Hardpoint;
         }
     }

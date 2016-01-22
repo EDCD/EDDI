@@ -17,6 +17,8 @@ namespace EliteDangerousDataProviderVAPlugin
         private static string dbPath;
 
         private static Commander Cmdr;
+        private static StarSystem CurrentStarSystem;
+        private static StarSystem LastStarSystem;
 
         public static string VA_DisplayName()
         {
@@ -161,110 +163,53 @@ namespace EliteDangerousDataProviderVAPlugin
                 setInt(ref intValues, "Ship value", (int)(Cmdr.Ship.Value / 1000));
                 setString(ref textValues, "Ship value", humanize(Cmdr.Ship.Value));
                 setInt(ref intValues, "Ship cargo capacity", Cmdr.Ship.CargoCapacity);
+                setInt(ref intValues, "Ship cargo carried", Cmdr.Ship.CargoCarried);
 
+                setString(ref textValues, "Ship bulkheads", Cmdr.Ship.Bulkheads.Name);
+                setDecimal(ref decimalValues, "Ship bulkheads health", Cmdr.Ship.Bulkheads.Health);
 
-                //dynamic shipBulkheadsJson = json["ship"]["modules"]["Armour"]["module"];
-                //ship.bulkheads = shipBulkheadsNames[Int32.Parse(((string)shipBulkheadsJson["name"]).Substring(((string)shipBulkheadsJson["name"]).Length - 1))];
-                //ship.bulkheadsIntegrity = ((decimal)shipBulkheadsJson["health"]) / 10000;
-                //setString(ref textValues, "Ship bulkheads", ship.bulkheads);
-                //setDecimal(ref decimalValues, "Ship bulkheads integrity", ship.bulkheadsIntegrity);
+                setString(ref textValues, "Ship power plant", Cmdr.Ship.PowerPlant.Class + Cmdr.Ship.PowerPlant.Grade);
+                setDecimal(ref decimalValues, "Ship power plant health", Cmdr.Ship.PowerPlant.Health);
 
-                //dynamic shipPowerPlantJson = json["ship"]["modules"]["PowerPlant"]["module"];
-                //ship.powerPlant = ModuleTypeFromName((string)shipPowerPlantJson["name"]);
-                //ship.powerPlantIntegrity = ((decimal)shipPowerPlantJson["health"]) / 10000;
-                //setString(ref textValues, "Ship power plant", ship.powerPlant);
-                //setDecimal(ref decimalValues, "Ship power plant integrity", ship.powerPlantIntegrity);
+                setString(ref textValues, "Ship thrusters", Cmdr.Ship.Thrusters.Class + Cmdr.Ship.Thrusters.Grade);
+                setDecimal(ref decimalValues, "Ship thrusters health", Cmdr.Ship.Thrusters.Health);
 
-                //dynamic shipThrustersJson = json["ship"]["modules"]["MainEngines"]["module"];
-                //ship.thrusters = ModuleTypeFromName((string)shipThrustersJson["name"]);
-                //ship.thrustersIntegrity = ((decimal)shipThrustersJson["health"]) / 10000;
-                //ship.thrustersEnabled = (bool)shipThrustersJson["on"];
-                //ship.thrustersPriority = (int)shipThrustersJson["priority"];
-                //setString(ref textValues, "Ship thrusters", ship.thrusters);
-                //setDecimal(ref decimalValues, "Ship thrusters integrity", ship.thrustersIntegrity);
-                //setBoolean(ref booleanValues, "Ship thrusters enabled", ship.thrustersEnabled);
-                //setInt(ref intValues, "Ship thrusters priority", ship.thrustersPriority);
+                setString(ref textValues, "Ship frame shift drive", Cmdr.Ship.FrameShiftDrive.Class + Cmdr.Ship.FrameShiftDrive.Grade);
+                setDecimal(ref decimalValues, "Ship frame shift drive health", Cmdr.Ship.Thrusters.Health);
 
-                //dynamic shipFrameShiftDriveJson = json["ship"]["modules"]["FrameShiftDrive"]["module"];
-                //ship.frameShiftDrive = ModuleTypeFromName((string)shipFrameShiftDriveJson["name"]);
-                //ship.frameShiftDriveIntegrity = ((decimal)shipFrameShiftDriveJson["health"]) / 10000;
-                //ship.frameShiftDriveEnabled = (bool)shipFrameShiftDriveJson["on"];
-                //ship.frameShiftDrivePriority = (int)shipFrameShiftDriveJson["priority"];
-                //setString(ref textValues, "Ship frame shift drive", ship.frameShiftDrive);
-                //setDecimal(ref decimalValues, "Ship frame shift drive integrity", ship.frameShiftDriveIntegrity);
-                //setBoolean(ref booleanValues, "Ship frame shift drive enabled", ship.frameShiftDriveEnabled);
-                //setInt(ref intValues, "Ship frame shift drive priority", ship.frameShiftDrivePriority);
+                setString(ref textValues, "Ship life support", Cmdr.Ship.LifeSupport.Class + Cmdr.Ship.LifeSupport.Grade);
+                setDecimal(ref decimalValues, "Ship life support health", Cmdr.Ship.LifeSupport.Health);
 
-                //dynamic shipLifeSupportJson = json["ship"]["modules"]["LifeSupport"]["module"];
-                //ship.lifeSupport = ModuleTypeFromName((string)shipLifeSupportJson["name"]);
-                //ship.lifeSupportIntegrity = ((decimal)shipLifeSupportJson["health"]) / 10000;
-                //ship.lifeSupportEnabled = (bool)shipLifeSupportJson["on"];
-                //ship.lifeSupportPriority = (int)shipLifeSupportJson["priority"];
-                //setString(ref textValues, "Ship life support", ship.lifeSupport);
-                //setDecimal(ref decimalValues, "Ship life support integrity", ship.lifeSupportIntegrity);
-                //setBoolean(ref booleanValues, "Ship life support enabled", ship.lifeSupportEnabled);
-                //setInt(ref intValues, "Ship life support priority", ship.lifeSupportPriority);
+                setString(ref textValues, "Ship power distributor", Cmdr.Ship.PowerDistributor.Class + Cmdr.Ship.PowerDistributor.Grade);
+                setDecimal(ref decimalValues, "Ship power distributor health", Cmdr.Ship.PowerDistributor.Health);
 
-                //dynamic shipPowerDistributorJson = json["ship"]["modules"]["PowerDistributor"]["module"];
-                //ship.powerDistributor = ModuleTypeFromName((string)shipPowerDistributorJson["name"]);
-                //ship.powerDistributorIntegrity = ((decimal)shipPowerDistributorJson["health"]) / 10000;
-                //ship.powerDistributorEnabled = (bool)shipPowerDistributorJson["on"];
-                //ship.powerDistributorPriority = (int)shipPowerDistributorJson["priority"];
-                //setString(ref textValues, "Ship power distributor", ship.powerDistributor);
-                //setDecimal(ref decimalValues, "Ship power distributor integrity", ship.powerDistributorIntegrity);
-                //setBoolean(ref booleanValues, "Ship power distributor enabled", ship.powerDistributorEnabled);
-                //setInt(ref intValues, "Ship power distributor priority", ship.powerDistributorPriority);
+                setString(ref textValues, "Ship sensors", Cmdr.Ship.Sensors.Class + Cmdr.Ship.Sensors.Grade);
+                setDecimal(ref decimalValues, "Ship sensors health", Cmdr.Ship.Sensors.Health);
 
-                //dynamic shipSensorsJson = json["ship"]["modules"]["Radar"]["module"];
-                //ship.sensors = ModuleTypeFromName((string)shipSensorsJson["name"]);
-                //ship.sensorsIntegrity = ((decimal)shipSensorsJson["health"]) / 10000;
-                //ship.sensorsEnabled = (bool)shipSensorsJson["on"];
-                //ship.sensorsPriority = (int)shipSensorsJson["priority"];
-                //setString(ref textValues, "Ship sensors", ship.sensors);
-                //setDecimal(ref decimalValues, "Ship sensors integrity", ship.sensorsIntegrity);
-                //setBoolean(ref booleanValues, "Ship sensors enabled", ship.sensorsEnabled);
-                //setInt(ref intValues, "Ship sensors priority", ship.sensorsPriority);
+                setString(ref textValues, "Ship fuel tank", Cmdr.Ship.FuelTank.Class + Cmdr.Ship.FuelTank.Grade);
+                //                setInt(ref intValues, "Ship fuel tank capacity", 0); // TODO
 
-                //dynamic shipFuelTankJson = json["ship"]["modules"]["FuelTank"]["module"];
-                //ship.fuelTank = ModuleTypeFromName((string)shipFuelTankJson["name"]);
-                //setString(ref textValues, "Ship fuel tank", ship.fuelTank);
+                // Hardpoints
+                int weaponHardpoints = 0;
+                foreach (Hardpoint Hardpoint in Cmdr.Ship.Hardpoints)
+                {
+                    if (Hardpoint.Size > 0)
+                    {
+                        weaponHardpoints++;
+                    }
+                }
+                setInt(ref intValues, "Ship hardpoints", weaponHardpoints);
+                setInt(ref intValues, "Ship utility slots", Cmdr.Ship.Hardpoints.Count - weaponHardpoints);
 
-                //// Work through hardpoints
-                //List<Module> Modules = new List<Module>();
-                //foreach (dynamic module in json["ship"]["modules"])
+                // Compartments
+                //foreach (Compartment Compartment in Cmdr.Ship.Hardpoints)
                 //{
-                //    Modules.Add(ParseModule(module));
+                //    if (Compartment.Size > 0)
+                //    {
+                //        weaponHardpoints++;
+                //    }
                 //}
-                //setPluginMessage(ref textValues, "Modules", Modules);
-                ////foreach (string hardpointSize in hardpointSizes)
-                ////{
-                ////    for (int i = 1; i < 10; i++)
-                ////    {
-                ////        string hardpointId = hardpointSize + "Hardpoint" + i;
-                ////        if (json["ship"]["modules"].ContainsKey(hardpointId))
-                ////        {
-                ////            dynamic hardpointJson = json["ship"]["modules"][hardpointId];
-                ////            Hardpoint hardpoint = new Hardpoint();
-                ////            hardpoint.size = hardpointSize;
-
-                ////            if (hardpointJson.ContainsKey("module"))
-                ////            {
-                ////                hardpointJson = hardpointJson["module"];
-                ////            }
-                ////            ship.hardpoints.Add(hardpoint);
-                ////        }
-                ////    }
-                ////}
-
-                //// Work through modules
-
-
-                ////
-                //// System data
-                ////
-                //string systemName = json["lastSystem"]["name"];
-                //setString(ref textValues, "System name", systemName);
-                //InvokeNewSystem(systemName, ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setInt(ref intValues, "Ship compartments", Cmdr.Ship.Compartments.Count);
             }
             catch (Exception e)
             {
@@ -277,44 +222,54 @@ namespace EliteDangerousDataProviderVAPlugin
         {
             try
             {
-                if (!textValues.ContainsKey("System name"))
+                if (Cmdr == null)
                 {
                     // Refetch the profile to set our system
                     InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    if (!textValues.ContainsKey("System name"))
+                    if (Cmdr == null)
                     {
                         // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
                         return;
                     }
                 }
 
-                string systemName = textValues["System name"];
-
-                // Fetch data on the current system given its name
-                SystemEntry systemEntry = fetchSystemData(systemName);
-                dynamic systemJson = systemEntry.data;
-
-                string systemPrimaryEconomy = systemJson["primary_economy"];
-                setString(ref textValues, "System primary economy", systemPrimaryEconomy);
-                string systemGovernment = systemJson["government"];
-                setString(ref textValues, "System government", systemGovernment);
-
-                setInt(ref intValues, "System population", (int?)(systemJson["population"] / 1000));
-                setString(ref textValues, "System population", humanize((long?)systemJson["population"]));
-
-                string systemAllegiance = systemJson["allegiance"];
-                setString(ref textValues, "System allegiance", systemAllegiance);
-                // Allegiance-specific rank
-                string systemRank = "Commander";
-                if (systemAllegiance == "Federation" && Cmdr.FederationRating  >= minFederationRatingForTitle)
+                StarSystem ThisStarSystem = DataProviderApp.GetSystemData(Cmdr.StarSystem);
+                if (ThisStarSystem.Name != CurrentStarSystem.Name)
                 {
-                    systemRank = Cmdr.FederationRank;
+                    // The star system has changed; update the data
+                    LastStarSystem = CurrentStarSystem;
+                    CurrentStarSystem = ThisStarSystem;
+
+                    setString(ref textValues, "System name", CurrentStarSystem.Name);
+                    setInt(ref intValues, "System population", (int)(CurrentStarSystem.Population / 1000));
+                    setString(ref textValues, "System population", humanize(CurrentStarSystem.Population));
+                    setString(ref textValues, "System allegiance", CurrentStarSystem.Allegiance);
+                    setString(ref textValues, "System government", CurrentStarSystem.Government);
+                    setString(ref textValues, "System faction", CurrentStarSystem.Faction);
+                    setString(ref textValues, "System primary economy", CurrentStarSystem.PrimaryEconomy);
+                    setString(ref textValues, "System state", CurrentStarSystem.State);
+                    setString(ref textValues, "System security", CurrentStarSystem.Security);
+                    setString(ref textValues, "System power", CurrentStarSystem.Power);
+                    setString(ref textValues, "System power state", CurrentStarSystem.PowerState);
+
+                    // Allegiance-specific rank
+                    string systemRank = "Commander";
+                    if (CurrentStarSystem.Allegiance == "Federation" && Cmdr.FederationRating >= minFederationRatingForTitle)
+                    {
+                        systemRank = Cmdr.FederationRank;
+                    }
+                    else if (CurrentStarSystem.Allegiance == "Empire" && Cmdr.EmpireRating >= minEmpireRatingForTitle)
+                    {
+                        systemRank = Cmdr.EmpireRank;
+                    }
+                    setString(ref textValues, "System rank", systemRank);
+
+                    if (LastStarSystem != null)
+                    {
+                        setString(ref textValues, "Last system allegiance", LastStarSystem.Allegiance);
+                    }
                 }
-                else if (systemAllegiance == "Empire" && Cmdr.EmpireRating >= minEmpireRatingForTitle)
-                {
-                    systemRank = Cmdr.EmpireRank;
-                }
-                setString(ref textValues, "System rank", systemRank);
+
 
                 // Stations
 
@@ -443,38 +398,27 @@ namespace EliteDangerousDataProviderVAPlugin
 
         }
 
-        private static String ModuleTypeFromName(string name)
-        {
-            // Name should contain SizeX and ClassY information
-            Match matches = Regex.Match(name, @"Size([0-9]+).*Class([0-9]+)");
-            if (matches.Success)
-            {
-                return matches.Groups[1].Value + ((char)(70 - Int32.Parse(matches.Groups[2].Value))).ToString();
-            }
-            return null;
-        }
+//        public class SystemEntry
+//        {
+//            public string name { get; set; }
+//            public int visits { get; set; }
+//            public long timestamp { get; set; }
+//            public long thisVisit { get; set; }
+//            public long lastVisit { get; set; }
+//            public dynamic data { get; set; }
+//        }
 
-        public class SystemEntry
-        {
-            public string name { get; set; }
-            public int visits { get; set; }
-            public long timestamp { get; set; }
-            public long thisVisit { get; set; }
-            public long lastVisit { get; set; }
-            public dynamic data { get; set; }
-        }
+//        private static SystemEntry fetchSystemData(string systemName)
+//        {
+//            SystemEntry entry = new SystemEntry();
+//            entry.name = systemName;
+//            entry.visits = 1;
+//            entry.timestamp = (long)(TimeZoneInfo.ConvertTimeToUtc(DateTime.Now) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalSeconds;
+//            entry.thisVisit = (long)(TimeZoneInfo.ConvertTimeToUtc(DateTime.Now) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalSeconds;
+//            entry.lastVisit = entry.thisVisit - 36000;
+////            entry.data = GetSystemData(systemName);
 
-        private static SystemEntry fetchSystemData(string systemName)
-        {
-            SystemEntry entry = new SystemEntry();
-            entry.name = systemName;
-            entry.visits = 1;
-            entry.timestamp = (long)(TimeZoneInfo.ConvertTimeToUtc(DateTime.Now) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalSeconds;
-            entry.thisVisit = (long)(TimeZoneInfo.ConvertTimeToUtc(DateTime.Now) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalSeconds;
-            entry.lastVisit = entry.thisVisit - 36000;
-            entry.data = DataProviderApp.GetSystemData(systemName);
-
-            return entry;
-        }
+//            return entry;
+//        }
     }
 }

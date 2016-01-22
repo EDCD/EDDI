@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="DataProviderApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StarSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

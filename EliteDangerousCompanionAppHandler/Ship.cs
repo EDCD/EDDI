@@ -4,6 +4,7 @@ namespace EliteDangerousCompanionAppService
 {
     public class Ship
     {
+        // Translations from the internal names used by Frontier to the official names
         private static Dictionary<string, string> shipTranslations = new Dictionary<string, string>()
         {
             { "Adder" , "Adder"},
@@ -42,6 +43,7 @@ namespace EliteDangerousCompanionAppService
         public string Model { get; set; }
         public long Value { get; set; }
         public int CargoCapacity { get; set; }
+        public int CargoCarried { get; set; }
 
         public string bulkheads { get; set;  }
         public decimal bulkheadsIntegrity { get; set; }
@@ -74,6 +76,7 @@ namespace EliteDangerousCompanionAppService
             Ship.Value = (long)json["ship"]["value"]["hull"] + (long)json["ship"]["value"]["modules"];
 
             Ship.CargoCapacity = (int)json["ship"]["cargo"]["capacity"];
+            Ship.CargoCarried = (int)json["ship"]["cargo"]["qty"];
 
             // Obtain the internals
             Ship.Bulkheads = Module.FromProfile("Armour", json["ship"]["modules"]["Armour"]);
@@ -95,6 +98,13 @@ namespace EliteDangerousCompanionAppService
             }
 
             // Obtain the compartments
+            foreach (dynamic module in json["ship"]["modules"])
+            {
+                if (module.Name.Contains("Slot"))
+                {
+                    Ship.Compartments.Add(Compartment.FromProfile(module));
+                }
+            }
 
             return Ship;
         }

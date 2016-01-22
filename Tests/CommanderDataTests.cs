@@ -6,7 +6,7 @@ using System;
 namespace Tests
 {
     [TestClass]
-    public class CommanderGeneratorTests
+    public class CommanderDataTests
     {
         [TestMethod]
         public void TestFromProfile()
@@ -5282,22 +5282,7 @@ namespace Tests
           }
         }
       },
-      ""Slot09_Size2"": {
-        ""module"": {
-          ""id"": 128668540,
-          ""name"": ""Int_HullReinforcement_Size2_Class2"",
-          ""value"": 36000,
-          ""unloaned"": 0,
-          ""free"": false,
-          ""health"": 1000000,
-          ""on"": true,
-          ""priority"": 1,
-          ""ammo"": {
-            ""clip"": 0,
-            ""hopper"": 0
-          }
-        }
-      },
+      ""Slot09_Size2"": [],
       ""PlanetaryApproachSuite"": {
         ""module"": {
           ""name"": ""Int_PlanetApproachSuite"",
@@ -5484,6 +5469,9 @@ namespace Tests
             Commander cmdr = app.Profile(data);
 
             Assert.AreEqual("Testy", cmdr.Name);
+
+            Assert.AreEqual("Python", cmdr.Ship.Model);
+
             Assert.AreEqual(7, cmdr.Ship.PowerPlant.Class);
             Assert.AreEqual("C", cmdr.Ship.PowerPlant.Grade);
             Assert.AreEqual(9, cmdr.Ship.Hardpoints.Count);
@@ -5492,8 +5480,16 @@ namespace Tests
             Assert.AreEqual(3, hardpoint1.Size);
 
             Assert.IsNotNull(hardpoint1.Module);
-            //Assert.AreEqual(0, hardpoint1.Module.Class);
-            //Assert.AreEqual(0, hardpoint1.Module.Grade);
+            Assert.AreEqual(3, hardpoint1.Size);
+            Assert.AreEqual(3, hardpoint1.Module.Class);
+            Assert.AreEqual("E", hardpoint1.Module.Grade);
+            Assert.AreEqual(140600, hardpoint1.Module.Cost);
+            Assert.AreEqual(140600, hardpoint1.Module.Value);
+
+            Assert.AreEqual("7C", cmdr.Ship.PowerPlant.Class + cmdr.Ship.PowerPlant.Grade);
+            Assert.AreEqual(9, cmdr.Ship.Compartments.Count);
+            Assert.AreEqual(2, cmdr.Ship.Compartments[8].Size);
+            Assert.AreEqual(null, cmdr.Ship.Compartments[8].Module);
         }
     }
 }
