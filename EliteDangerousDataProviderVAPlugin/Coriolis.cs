@@ -15,13 +15,13 @@ namespace EliteDangerousDataProviderVAPlugin
             uri += ShipModel(ship.Model);
             uri += "/";
             uri += ShipBulkheads(ship.bulkheads);
-            uri += ship.powerPlant;
-            uri += ship.thrusters;
-            uri += ship.frameShiftDrive;
-            uri += ship.lifeSupport;
-            uri += ship.powerDistributor;
-            uri += ship.sensors;
-            uri += ship.fuelTank;
+            uri += ship.PowerPlant;
+            uri += ship.Thrusters;
+            uri += ship.FrameShiftDrive;
+            uri += ship.LifeSupport;
+            uri += ship.PowerDistributor;
+            uri += ship.Sensors;
+            uri += ship.FuelTank;
             uri += "---1717----04044j030t--002h.Iw18eQ==.Aw18eQ==";
             return uri;
         }

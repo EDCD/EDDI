@@ -51,37 +51,21 @@ namespace EliteDangerousCompanionAppService
 
         public string bulkheads { get; set;  }
         public decimal bulkheadsIntegrity { get; set; }
+        public Module Bulkheads { get; set; }
         public Module PowerPlant { get; set; }
-        public string powerPlant { get; set; }
-        public decimal powerPlantIntegrity { get; set; }
-        public string thrusters { get; set; }
-        public int thrustersPriority { get; set; }
-        public bool thrustersEnabled { get; set; }
-        public decimal thrustersIntegrity { get; set; }
-        public string frameShiftDrive { get; set; }
-        public int frameShiftDrivePriority { get; set; }
-        public bool frameShiftDriveEnabled { get; set; }
-        public decimal frameShiftDriveIntegrity { get; set; }
-        public string lifeSupport { get; set; }
-        public int lifeSupportPriority { get; set; }
-        public bool lifeSupportEnabled { get; set; }
-        public decimal lifeSupportIntegrity { get; set; }
-        public string powerDistributor { get; set; }
-        public int powerDistributorPriority { get; set; }
-        public bool powerDistributorEnabled { get; set; }
-        public decimal powerDistributorIntegrity { get; set; }
-        public string sensors { get; set; }
-        public int sensorsPriority { get; set; }
-        public bool sensorsEnabled { get; set; }
-        public decimal sensorsIntegrity { get; set; }
-        public string fuelTank { get; set; }
-        public List<Hardpoint> hardpoints { get; set; }
-        public List<Compartment> compartments { get; set; }
+        public Module Thrusters { get; set; }
+        public Module FrameShiftDrive { get; set; }
+        public Module LifeSupport { get; set; }
+        public Module PowerDistributor { get; set; }
+        public Module Sensors { get; set; }
+        public Module FuelTank { get; set; }
+        public List<Hardpoint> HardPoints { get; set; }
+        public List<Compartment> Compartments { get; set; }
 
         public Ship()
         {
-            hardpoints = new List<Hardpoint>();
-            compartments = new List<Compartment>();
+            HardPoints = new List<Hardpoint>();
+            Compartments = new List<Compartment>();
         }
 
         public static Ship FromProfile(dynamic json)
@@ -96,6 +80,19 @@ namespace EliteDangerousCompanionAppService
             Ship.Value = (long)json["ship"]["value"]["hull"] + (long)json["ship"]["value"]["modules"];
 
             Ship.CargoCapacity = (int)json["ship"]["cargo"]["capacity"];
+
+            // Obtain the internals
+            Ship.Bulkheads = Module.FromProfile("Armour", json["ship"]["modules"]["Armour"]);
+            Ship.PowerPlant = Module.FromProfile("PowerPlant", json["ship"]["modules"]["PowerPlant"]);
+
+            // Obtain the hardpoints
+            //List<Module> Modules = new List<Module>();
+            //foreach (dynamic module in json["ship"]["modules"])
+            //{
+            //    Modules.Add(ParseModule(module));
+            //}
+
+            // Obtain the compartments
 
             return Ship;
         }
