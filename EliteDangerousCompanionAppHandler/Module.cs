@@ -17,15 +17,21 @@ namespace EliteDangerousCompanionAppService
         public int Priority { get; set; }
         public decimal Health { get; set; }
 
+        // Admin
+        public long EDDBID { get; set; }
+
         public Module(Module Module)
         {
             this.Name = Module.Name;
             this.Class = Module.Class;
             this.Grade = Module.Grade;
             this.Cost = Module.Cost;
+            this.EDDBID = Module.EDDBID;
         }
-        public Module(string Name, int Class, string Grade, long Cost)
+
+        public Module(long EDDBID, string Name, int Class, string Grade, long Cost)
         {
+            this.EDDBID = EDDBID;
             this.Name = Name;
             this.Class = Class;
             this.Grade = Grade;
@@ -41,7 +47,16 @@ namespace EliteDangerousCompanionAppService
             Module.Value= (long)json["module"]["value"];
             Module.Enabled = (bool)json["module"]["on"];
             Module.Priority = (int)json["module"]["priority"];
-            Module.Health = (decimal)json["module"]["health"] / 10000;
+            // Be sensible with health - round it unless it's very low
+            decimal Health = (decimal)json["module"]["health"] / 10000;
+            if (Health < 5)
+            {
+                Module.Health = Math.Round(Health, 1);
+            }
+            else
+            {
+                Module.Health = Math.Round(Health);
+            }
             return Module;
         }
 

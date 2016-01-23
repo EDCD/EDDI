@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Coriolis.cs" />
-    <Compile Include="EliteDangerousMappings.cs" />
+    <Compile Include="CoriolisIDDefinitions.cs" />
     <Compile Include="VoiceAttackPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EliteDangerousCompanionAppService
 {
@@ -45,8 +46,7 @@ namespace EliteDangerousCompanionAppService
         public int CargoCapacity { get; set; }
         public int CargoCarried { get; set; }
 
-        public string bulkheads { get; set;  }
-        public decimal bulkheadsIntegrity { get; set; }
+        public decimal Health { get; set; }
         public Module Bulkheads { get; set; }
         public Module PowerPlant { get; set; }
         public Module Thrusters { get; set; }
@@ -77,6 +77,17 @@ namespace EliteDangerousCompanionAppService
 
             Ship.CargoCapacity = (int)json["ship"]["cargo"]["capacity"];
             Ship.CargoCarried = (int)json["ship"]["cargo"]["qty"];
+
+            // Be sensible with health - round it unless it's very low
+            decimal Health = (decimal)json["ship"]["health"]["hull"] / 10000;
+            if (Health < 5)
+            {
+                Ship.Health = Math.Round(Health, 1);
+            }
+            else
+            {
+                Ship.Health = Math.Round(Health);
+            }
 
             // Obtain the internals
             Ship.Bulkheads = Module.FromProfile("Armour", json["ship"]["modules"]["Armour"]);

@@ -165,6 +165,7 @@ namespace EliteDangerousDataProviderVAPlugin
                 setString(ref textValues, "Ship model", Cmdr.Ship.Model);
                 setInt(ref intValues, "Ship value", (int)(Cmdr.Ship.Value / 1000));
                 setString(ref textValues, "Ship value", humanize(Cmdr.Ship.Value));
+                setDecimal(ref decimalValues, "Ship health", Cmdr.Ship.Health);
                 setInt(ref intValues, "Ship cargo capacity", Cmdr.Ship.CargoCapacity);
                 setInt(ref intValues, "Ship cargo carried", Cmdr.Ship.CargoCarried);
 
@@ -178,7 +179,7 @@ namespace EliteDangerousDataProviderVAPlugin
                 setDecimal(ref decimalValues, "Ship thrusters health", Cmdr.Ship.Thrusters.Health);
 
                 setString(ref textValues, "Ship frame shift drive", Cmdr.Ship.FrameShiftDrive.Class + Cmdr.Ship.FrameShiftDrive.Grade);
-                setDecimal(ref decimalValues, "Ship frame shift drive health", Cmdr.Ship.Thrusters.Health);
+                setDecimal(ref decimalValues, "Ship frame shift drive health", Cmdr.Ship.FrameShiftDrive.Health);
 
                 setString(ref textValues, "Ship life support", Cmdr.Ship.LifeSupport.Class + Cmdr.Ship.LifeSupport.Grade);
                 setDecimal(ref decimalValues, "Ship life support health", Cmdr.Ship.LifeSupport.Health);
@@ -267,16 +268,24 @@ namespace EliteDangerousDataProviderVAPlugin
                     }
                     setString(ref textValues, "System rank", systemRank);
 
+                    // Stations
+
+                    // Outposts
+
                     if (LastStarSystem != null)
                     {
+                        setString(ref textValues, "Last system name", LastStarSystem.Name);
+                        setInt(ref intValues, "Last system population", (int)(LastStarSystem.Population / 1000));
                         setString(ref textValues, "Last system allegiance", LastStarSystem.Allegiance);
+                        setString(ref textValues, "Last system government", LastStarSystem.Government);
+                        setString(ref textValues, "Last system faction", LastStarSystem.Faction);
+                        setString(ref textValues, "Last system primary economy", LastStarSystem.PrimaryEconomy);
+                        setString(ref textValues, "Last system state", LastStarSystem.State);
+                        setString(ref textValues, "Last system power", LastStarSystem.Power);
                     }
                 }
 
 
-                // Stations
-
-                // Outposts
             }
             catch (Exception e)
             {
