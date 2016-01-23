@@ -16,8 +16,17 @@ namespace EliteDangerousDataProvider
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Stage1());
-            Application.Run(new Stage1());
+
+            Credentials Credentials = Credentials.FromFile();
+            if (Credentials == null || Credentials.appId == null || Credentials.machineId == null || Credentials.machineToken == null)
+            {
+                Application.Run(new Stage1());
+            }
+            else
+            {
+                Application.Run(new Stage3());
+            }
+
         }
     }
 }

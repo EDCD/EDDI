@@ -20,9 +20,20 @@ namespace EliteDangerousDataProvider
 
         private void profileButton_Click(object sender, EventArgs e)
         {
-            CompanionApp app = new CompanionApp(Credentials.FromFile());
-            dynamic json = app.Profile();
-            MessageBox.Show(Convert.ToString(json), "Profile information", MessageBoxButtons.OKCancel, MessageBoxIcon.Asterisk);
+            Credentials Credentials = Credentials.FromFile();
+            CompanionApp app = new CompanionApp(Credentials);
+            Commander Cmdr = app.Profile();
+
+            if (Cmdr == null)
+            {
+                MessageBox.Show("There was a problem.  You will need to close and restart this app and attempt to log in again", "Problem detected", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Credentials.Clear();
+                Credentials.ToFile();
+            }
+            else
+            {
+                MessageBox.Show("You have successfully logged in Commander " + Cmdr.Name + ", you can now close this app and restart Voice Attack", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

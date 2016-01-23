@@ -29,6 +29,11 @@ namespace EliteDangerousDataProvider
                 stage2.Show();
                 this.Hide();
             }
+            else
+            {
+                MessageBox.Show("There was a problem.  Please check your email address and password and try again", "Problem detected", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
         }
     }
 }

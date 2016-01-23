@@ -4,9 +4,8 @@ using EliteDangerousDataProviderAppService;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
-using System.Text.RegularExpressions;
 
-namespace EliteDangerousDataProviderVAPlugin
+namespace EDDIVAPlugin
 {
     public class VoiceAttackPlugin
     {
@@ -22,12 +21,12 @@ namespace EliteDangerousDataProviderVAPlugin
 
         public static string VA_DisplayName()
         {
-            return "Elite: Dangerous Data Provider 1.0.0";
+            return "EDDI 0.5.0";
         }
 
         public static string VA_DisplayInfo()
         {
-            return "Elite Dangerous Data Provider\r\nVersion 1.0.0";
+            return "Elite Dangerous Data Interface\r\nVersion 0.5.0";
         }
 
         public static Guid VA_Id()
@@ -37,23 +36,20 @@ namespace EliteDangerousDataProviderVAPlugin
 
         public static void VA_Init1(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            setPluginMessage(ref textValues, "Status", "Initialising");
-
             // Set up and/or open our database
-            String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EliteDataProvider";
+            String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
             System.IO.Directory.CreateDirectory(dataDir);
-
 
             // Obtain our credentials
             Credentials credentials = Credentials.FromFile();
             if (credentials == null)
             {
-                setPluginMessage(ref textValues, "Error", "Failed to access credentials file");
+                setPluginStatus(ref textValues, "Failed", "Failed to access credentials file; please log in", null);
                 return;
             }
             if (String.IsNullOrEmpty(credentials.appId) || String.IsNullOrEmpty(credentials.machineId) || String.IsNullOrEmpty(credentials.machineToken))
             {
-                setPluginMessage(ref textValues, "Error", "Credentials file does not contain required information");
+                setPluginStatus(ref textValues, "Failed", "Credentials file does not contain required information; please log in", null);
                 return;
             }
 
@@ -76,7 +72,7 @@ namespace EliteDangerousDataProviderVAPlugin
 
             app = new CompanionApp(credentials);
 
-            setPluginMessage(ref textValues, "Status", "Operational");
+            setPluginStatus(ref textValues, "Operational", null, null);
 
             InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
             InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
@@ -124,11 +120,12 @@ namespace EliteDangerousDataProviderVAPlugin
                 string shipUri = Coriolis.ShipUri(Cmdr.Ship);
 
                 System.Diagnostics.Process.Start(shipUri);
+
+                setPluginStatus(ref textValues, "Operational", null, null);
             }
             catch (Exception e)
             {
-                setPluginMessage(ref textValues, "Status", "Failed to send ship data to coriolis");
-                setPluginMessage(ref textValues, "Debug", e);
+                setPluginStatus(ref textValues, "Failed", "Failed to send ship data to coriolis", e);
             }
         }
 
@@ -214,11 +211,12 @@ namespace EliteDangerousDataProviderVAPlugin
                 //    }
                 //}
                 setInt(ref intValues, "Ship compartments", Cmdr.Ship.Compartments.Count);
+
+                setPluginStatus(ref textValues, "Operational", null, null);
             }
             catch (Exception e)
             {
-                setPluginMessage(ref textValues, "Error", "Failed to access profile data");
-                setPluginMessage(ref textValues, "Debug", e);
+                setPluginStatus(ref textValues, "Failed", "Failed to access system data", e);
             }
         }
 
@@ -276,21 +274,23 @@ namespace EliteDangerousDataProviderVAPlugin
                     {
                         setString(ref textValues, "Last system name", LastStarSystem.Name);
                         setInt(ref intValues, "Last system population", (int)(LastStarSystem.Population / 1000));
+                        setString(ref textValues, "Last system population", humanize(LastStarSystem.Population));
                         setString(ref textValues, "Last system allegiance", LastStarSystem.Allegiance);
                         setString(ref textValues, "Last system government", LastStarSystem.Government);
                         setString(ref textValues, "Last system faction", LastStarSystem.Faction);
                         setString(ref textValues, "Last system primary economy", LastStarSystem.PrimaryEconomy);
                         setString(ref textValues, "Last system state", LastStarSystem.State);
+                        setString(ref textValues, "Last system security", LastStarSystem.Security);
                         setString(ref textValues, "Last system power", LastStarSystem.Power);
+                        setString(ref textValues, "Last system power state", LastStarSystem.PowerState);
                     }
                 }
 
-
+                setPluginStatus(ref textValues, "Operational", null, null);
             }
             catch (Exception e)
             {
-                setPluginMessage(ref textValues, "Status", "Failed to obtain system data");
-                setPluginMessage(ref textValues, "Debug", e);
+                setPluginStatus(ref textValues, "Failed", "Failed to obtain system data", e);
             }
         }
 
@@ -326,9 +326,19 @@ namespace EliteDangerousDataProviderVAPlugin
                 values.Add(key, value);
         }
 
-        private static void setPluginMessage(ref Dictionary<string, string> values, string key, dynamic value)
+        private static void setPluginStatus(ref Dictionary<string, string> values, string status, string error, Exception exception)
         {
-            setString(ref values, "EliteDangerousDataProvider_" + key, value.ToString());
+            setString(ref values, "EDDI status", status);
+            if (status == "Operational")
+            {
+                setString(ref values, "EDDI error", null);
+                setString(ref values, "EDDI exception", null);
+            }
+            else
+            {
+                setString(ref values, "EDDI error", error);
+                setString(ref values, "EDDI exception", exception.ToString());
+            }
         }
 
         public static string humanize(long? value)
@@ -379,7 +389,14 @@ namespace EliteDangerousDataProviderVAPlugin
             {
                 if (number > 60)
                 {
-                    return number + " " + order;
+                    if (nextDigit < 6)
+                    {
+                        return "Over " + number + " " + order;
+                    }
+                    else
+                    {
+                        return "Nearly " + (number + 1) + " " + order;
+                    }
                 }
                 switch (nextDigit)
                 {

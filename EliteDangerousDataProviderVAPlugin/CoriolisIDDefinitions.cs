@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EliteDangerousDataProviderVAPlugin
+namespace EDDIVAPlugin
 {
     public class CoriolisIDDefinitions
     {

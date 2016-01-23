@@ -7,8 +7,8 @@
     <ProjectGuid>{E98B76A0-B7BC-4F59-8E4F-BD16B22A5AC6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EliteDangerousDataProviderVAPlugin</RootNamespace>
-    <AssemblyName>EliteDangerousDataProviderVAPlugin</AssemblyName>
+    <RootNamespace>EDDIVAPlugin</RootNamespace>
+    <AssemblyName>EDDI</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\VoiceAttack\Apps\EliteDataProvider\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\VoiceAttack\Apps\EDDI\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Coriolis.cs" />
     <Compile Include="CoriolisIDDefinitions.cs" />
+    <Compile Include="LZString.cs" />
     <Compile Include="VoiceAttackPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

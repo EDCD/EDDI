@@ -5490,6 +5490,7 @@ namespace Tests
             Assert.AreEqual(9, cmdr.Ship.Compartments.Count);
             Assert.AreEqual(2, cmdr.Ship.Compartments[8].Size);
             Assert.AreEqual(null, cmdr.Ship.Compartments[8].Module);
+
         }
     }
 }

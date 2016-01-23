@@ -1,6 +1,5 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EliteDangerousDataProviderVAPlugin;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using EDDIVAPlugin;
 
 namespace Tests
 {

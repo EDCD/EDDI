@@ -26,7 +26,7 @@ namespace EliteDangerousDataProvider
         {
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EliteDataProvider";
+                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 System.IO.Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\credentials.json";
             }
@@ -45,6 +45,14 @@ namespace EliteDangerousDataProvider
             return credentials;
         }
 
+        // Clear credentials
+        public void Clear()
+        {
+            appId = null;
+            machineId = null;
+            machineToken = null;
+        }
+
         /**
          * Write credentials to the file
          */
@@ -52,7 +60,7 @@ namespace EliteDangerousDataProvider
         {
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EliteDataProvider";
+                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 System.IO.Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\credentials.json";
             }

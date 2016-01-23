@@ -33,67 +33,73 @@
             this.emailText = new System.Windows.Forms.TextBox();
             this.passwordText = new System.Windows.Forms.TextBox();
             this.loginButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // emailLabel
             // 
             this.emailLabel.AutoSize = true;
-            this.emailLabel.Location = new System.Drawing.Point(26, 176);
-            this.emailLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.emailLabel.Location = new System.Drawing.Point(20, 143);
             this.emailLabel.Name = "emailLabel";
-            this.emailLabel.Size = new System.Drawing.Size(97, 17);
+            this.emailLabel.Size = new System.Drawing.Size(72, 13);
             this.emailLabel.TabIndex = 0;
             this.emailLabel.Text = "Email address";
             // 
             // passwordLabel
             // 
             this.passwordLabel.AutoSize = true;
-            this.passwordLabel.Location = new System.Drawing.Point(54, 209);
-            this.passwordLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.passwordLabel.Location = new System.Drawing.Point(40, 170);
             this.passwordLabel.Name = "passwordLabel";
-            this.passwordLabel.Size = new System.Drawing.Size(69, 17);
+            this.passwordLabel.Size = new System.Drawing.Size(53, 13);
             this.passwordLabel.TabIndex = 1;
             this.passwordLabel.Text = "Password";
             // 
             // emailText
             // 
-            this.emailText.Location = new System.Drawing.Point(137, 173);
-            this.emailText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.emailText.Location = new System.Drawing.Point(103, 141);
             this.emailText.Name = "emailText";
-            this.emailText.Size = new System.Drawing.Size(216, 22);
+            this.emailText.Size = new System.Drawing.Size(163, 20);
             this.emailText.TabIndex = 2;
             // 
             // passwordText
             // 
-            this.passwordText.Location = new System.Drawing.Point(137, 206);
-            this.passwordText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.passwordText.Location = new System.Drawing.Point(103, 167);
             this.passwordText.Name = "passwordText";
             this.passwordText.PasswordChar = '*';
-            this.passwordText.Size = new System.Drawing.Size(216, 22);
+            this.passwordText.Size = new System.Drawing.Size(163, 20);
             this.passwordText.TabIndex = 3;
             // 
             // loginButton
             // 
-            this.loginButton.Location = new System.Drawing.Point(137, 252);
-            this.loginButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.loginButton.Location = new System.Drawing.Point(103, 205);
             this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(100, 28);
+            this.loginButton.Size = new System.Drawing.Size(75, 23);
             this.loginButton.TabIndex = 4;
             this.loginButton.Text = "Login";
             this.loginButton.UseVisualStyleBackColor = true;
             this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(20, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(246, 60);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "You need to log in to Elite before you can use this plugin.  Enter your Elite use" +
+    "rname and password below and hit \'Login\' to continue";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Stage1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(379, 321);
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.loginButton);
             this.Controls.Add(this.passwordText);
             this.Controls.Add(this.emailText);
             this.Controls.Add(this.passwordLabel);
             this.Controls.Add(this.emailLabel);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Stage1";
             this.Text = "Elite: Dangerous login";
             this.ResumeLayout(false);
@@ -108,6 +114,7 @@
         private System.Windows.Forms.TextBox emailText;
         private System.Windows.Forms.TextBox passwordText;
         private System.Windows.Forms.Button loginButton;
+        private System.Windows.Forms.Label label1;
     }
 }
 

@@ -1,11 +1,7 @@
 ﻿using EliteDangerousCompanionAppService;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EliteDangerousDataProviderVAPlugin
+namespace EDDIVAPlugin
 {
     public class Coriolis
     {
@@ -45,22 +41,42 @@ namespace EliteDangerousDataProviderVAPlugin
 
         public static string ShipUri(Ship ship)
         {
+            string enableds = "";
+            string priorities = "";
             string uri = "http://coriolis.io/outfit/";
             uri += shipModels[ship.Model];
             uri += "/";
             uri += ShipBulkheads(ship.Bulkheads.Name);
+            enableds += "1";
+            priorities += "4";
             uri += ship.PowerPlant.Class + ship.PowerPlant.Grade;
+            enableds += "1";
+            priorities += "0";
             uri += ship.Thrusters.Class + ship.Thrusters.Grade;
+            enableds += ship.Thrusters.Enabled ? "1" : "0";
+            priorities += ship.Thrusters.Priority;
             uri += ship.FrameShiftDrive.Class + ship.FrameShiftDrive.Grade;
+            enableds += ship.FrameShiftDrive.Enabled ? "1" : "0";
+            priorities += ship.FrameShiftDrive.Priority;
             uri += ship.LifeSupport.Class + ship.LifeSupport.Grade;
+            enableds += ship.LifeSupport.Enabled ? "1" : "0";
+            priorities += ship.LifeSupport.Priority;
             uri += ship.PowerDistributor.Class + ship.PowerDistributor.Grade;
+            enableds += ship.PowerDistributor.Enabled ? "1" : "0";
+            priorities += ship.PowerDistributor.Priority;
             uri += ship.Sensors.Class + ship.Sensors.Grade;
+            enableds += ship.Sensors.Enabled ? "1" : "0";
+            priorities += ship.Sensors.Priority;
             uri += ship.FuelTank.Class + ship.FuelTank.Grade;
+            enableds += "1";
+            priorities += "1";
             foreach (Hardpoint Hardpoint in ship.Hardpoints)
             {
                 if (Hardpoint.Module == null)
                 {
                     uri += "-";
+                    enableds += "1";
+                    priorities += "0";
                 }
                 else
                 {
@@ -68,10 +84,14 @@ namespace EliteDangerousDataProviderVAPlugin
                     if (id == null)
                     {
                         uri += "-";
+                        enableds += "1";
+                        priorities += "0";
                     }
                     else
                     {
                         uri += id;
+                        enableds += Hardpoint.Module.Enabled ? "1" : "0";
+                        priorities += Hardpoint.Module.Priority;
                     }
                 }
             }
@@ -80,6 +100,8 @@ namespace EliteDangerousDataProviderVAPlugin
                 if (Compartment.Module == null)
                 {
                     uri += "-";
+                    enableds += "1";
+                    priorities += "0";
                 }
                 else
                 {
@@ -87,15 +109,25 @@ namespace EliteDangerousDataProviderVAPlugin
                     if (id == null)
                     {
                         uri += "-";
+                        enableds += "1";
+                        priorities += "0";
                     }
                     else
                     {
                         uri += id;
+                        enableds += Compartment.Module.Enabled ? "1" : "0";
+                        priorities += Compartment.Module.Priority;
                     }
                 }
 
             }
-            uri += ".Iw18ZwAzkA==.CwBhrSunIZjtIA==";
+
+            uri += ".";
+            uri += LZString.compressToBase64(enableds).Replace('/', '-');
+            uri += ".";
+            uri += LZString.compressToBase64(priorities).Replace('/', '-');
+            uri += "?enableds=" + enableds + "&priorities=" + priorities;
+
             return uri;
         }
 

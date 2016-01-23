@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousCompanionAppS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Login", "Login\Login.csproj", "{AF641415-F3E3-4A99-86BE-8574131937A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousDataProviderVAPlugin", "EliteDangerousDataProviderVAPlugin\EliteDangerousDataProviderVAPlugin.csproj", "{E98B76A0-B7BC-4F59-8E4F-BD16B22A5AC6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDDIVAPlugin", "EliteDangerousDataProviderVAPlugin\EDDIVAPlugin.csproj", "{E98B76A0-B7BC-4F59-8E4F-BD16B22A5AC6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C5F48807-921B-456D-A9E4-A0282E5E8CF1} = {C5F48807-921B-456D-A9E4-A0282E5E8CF1}
 		{462ED721-1C9C-43FA-8A3F-4C1644363A5A} = {462ED721-1C9C-43FA-8A3F-4C1644363A5A}
