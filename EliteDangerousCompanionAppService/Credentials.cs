@@ -66,6 +66,12 @@ namespace EliteDangerousCompanionAppService
             {
                 filename = dataPath;
             }
+            if (filename == null)
+            {
+                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                Directory.CreateDirectory(dataDir);
+                filename = dataDir + "\\credentials.json";
+            }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
             File.WriteAllText(filename, json);
