@@ -70,7 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EliteDangerousCompanionAppHandler\EliteDangerousCompanionAppService.csproj">
+    <ProjectReference Include="..\EliteDangerousCompanionAppService\EliteDangerousCompanionAppService.csproj">
       <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
       <Name>EliteDangerousCompanionAppService</Name>
     </ProjectReference>

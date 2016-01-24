@@ -1,9 +1,9 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousCompanionAppService", "EliteDangerousCompanionAppHandler\EliteDangerousCompanionAppService.csproj", "{462ED721-1C9C-43FA-8A3F-4C1644363A5A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousCompanionAppService", "EliteDangerousCompanionAppService\EliteDangerousCompanionAppService.csproj", "{462ED721-1C9C-43FA-8A3F-4C1644363A5A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Login", "Login\Login.csproj", "{AF641415-F3E3-4A99-86BE-8574131937A0}"
 EndProject
