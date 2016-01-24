@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{28758371-6B62-47B6-B2CB-7103833BEECF}</ProjectGuid>
+    <ProjectGuid>{5D62D835-4628-4E85-B8C6-F50171449B54}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tests</RootNamespace>
-    <AssemblyName>Tests</AssemblyName>
+    <RootNamespace>EliteDangerousDataDefinitons</RootNamespace>
+    <AssemblyName>EliteDangerousDataDefinitons</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -50,29 +50,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="StarSystemDataTests.cs" />
-    <Compile Include="CommanderDataTests.cs" />
-    <Compile Include="CoriolisTests.cs" />
-    <Compile Include="VoiceAttackPluginTests.cs" />
+    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EliteDangerousCompanionAppHandler\EliteDangerousCompanionAppService.csproj">
-      <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
-      <Name>EliteDangerousCompanionAppService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousDataDefinitions\EliteDangerousDataDefinitions.csproj">
-      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
-      <Name>EliteDangerousDataDefinitions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousDataProviderAppHandler\EliteDangerousDataProviderService.csproj">
-      <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
-      <Name>EliteDangerousDataProviderService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousDataProviderVAPlugin\EDDIVAPlugin.csproj">
-      <Project>{e98b76a0-b7bc-4f59-8e4f-bd16b22a5ac6}</Project>
-      <Name>EDDIVAPlugin</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -1,6 +1,6 @@
 ﻿using EliteDangerousCompanionAppService;
-using EliteDangerousDataProvider;
-using EliteDangerousDataProviderAppService;
+using EliteDangerousDataProviderService;
+using EliteDangerousDataDefinitions;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -12,7 +12,7 @@ namespace EDDIVAPlugin
         private static int minEmpireRatingForTitle = 3;
         private static int minFederationRatingForTitle = 1;
 
-        private static CompanionApp app;
+        private static EliteDangerousCompanionAppService.CompanionAppService app;
         private static string dbPath;
 
         private static Commander Cmdr;
@@ -70,7 +70,7 @@ namespace EDDIVAPlugin
                 connection.Close();
             }
 
-            app = new CompanionApp(credentials);
+            app = new EliteDangerousCompanionAppService.CompanionAppService(credentials);
 
             setPluginStatus(ref textValues, "Operational", null, null);
 
@@ -235,7 +235,7 @@ namespace EDDIVAPlugin
                     }
                 }
 
-                StarSystem ThisStarSystem = DataProviderApp.GetSystemData(Cmdr.StarSystem);
+                StarSystem ThisStarSystem = DataProviderService.GetSystemData(Cmdr.StarSystem);
                 if (CurrentStarSystem == null || ThisStarSystem.Name != CurrentStarSystem.Name)
                 {
                     // The star system has changed; update the data

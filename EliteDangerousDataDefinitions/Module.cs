@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
-
-namespace EliteDangerousCompanionAppService
+﻿namespace EliteDangerousDataDefinitions
 {
     public class Module
     {
@@ -37,28 +34,5 @@ namespace EliteDangerousCompanionAppService
             this.Grade = Grade;
             this.Cost = Cost;
         }
-
-        public static Module FromProfile(string name, dynamic json)
-        {
-            long id = (long)json["module"]["id"];
-            Module ModuleTemplate = ModuleDefinitions.FromID(id);
-            Module Module = new Module(ModuleTemplate);
-
-            Module.Value= (long)json["module"]["value"];
-            Module.Enabled = (bool)json["module"]["on"];
-            Module.Priority = (int)json["module"]["priority"];
-            // Be sensible with health - round it unless it's very low
-            decimal Health = (decimal)json["module"]["health"] / 10000;
-            if (Health < 5)
-            {
-                Module.Health = Math.Round(Health, 1);
-            }
-            else
-            {
-                Module.Health = Math.Round(Health);
-            }
-            return Module;
-        }
-
     }
 }

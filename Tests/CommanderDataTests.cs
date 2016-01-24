@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EliteDangerousCompanionAppService;
-using EliteDangerousDataProvider;
-using System;
+using EliteDangerousDataDefinitions;
 
 namespace Tests
 {
@@ -5465,8 +5464,8 @@ namespace Tests
   }
 }
 ";
-            CompanionApp app = new CompanionApp(Credentials.FromFile());
-            Commander cmdr = app.Profile(data);
+            EliteDangerousCompanionAppService.CompanionAppService app = new EliteDangerousCompanionAppService.CompanionAppService(Credentials.FromFile());
+            Commander cmdr = EliteDangerousCompanionAppService.CompanionAppService.CommanderFromProfile(data);
 
             Assert.AreEqual("Testy", cmdr.Name);
 

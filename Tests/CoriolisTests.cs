@@ -11,7 +11,7 @@ namespace Tests
         {
             string data = "1111111111111111";
             string base64Data = LZString.compressToBase64(data);
-            Assert.AreEqual("Iw1/EA==", base64Data);
+            Assert.AreEqual("Iw1/Ew==", base64Data);
         }
         [TestMethod]
         public void TestDecompressData()
@@ -28,14 +28,5 @@ namespace Tests
             var data = LZString.decompressFromBase64(base64Data);
             Assert.AreEqual("1110111111111111", data);
         }
-
-        [TestMethod]
-        public void TestDecompressData3()
-        {
-            string base64Data = "AwRj4yg=";
-            var data = LZString.decompressFromBase64(base64Data);
-            Assert.AreEqual("0111111111111111", data);
-        }
-        
     }
 }

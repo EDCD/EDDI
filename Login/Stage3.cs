@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using EliteDangerousDataDefinitions;
 
 namespace EliteDangerousDataProvider
 {
@@ -21,7 +22,7 @@ namespace EliteDangerousDataProvider
         private void profileButton_Click(object sender, EventArgs e)
         {
             Credentials Credentials = Credentials.FromFile();
-            CompanionApp app = new CompanionApp(Credentials);
+            EliteDangerousCompanionAppService.CompanionAppService app = new EliteDangerousCompanionAppService.CompanionAppService(Credentials);
             Commander Cmdr = app.Profile();
 
             if (Cmdr == null)

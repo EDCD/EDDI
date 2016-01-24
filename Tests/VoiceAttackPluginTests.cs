@@ -9,7 +9,7 @@ namespace Tests
         [TestMethod]
         public void TestVAPluginHumanize1()
         {
-            Assert.AreEqual("On the way to twelve and a half thousand", VoiceAttackPlugin.humanize(12345));
+            Assert.AreEqual("on the way to 12 and a half thousand", VoiceAttackPlugin.humanize(12345));
         }
 
         [TestMethod]
@@ -21,7 +21,7 @@ namespace Tests
         [TestMethod]
         public void TestVAPluginHumanize3()
         {
-            Assert.AreEqual("Zero", VoiceAttackPlugin.humanize(0));
+            Assert.AreEqual("0", VoiceAttackPlugin.humanize(0));
         }
     }
 }

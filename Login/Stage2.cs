@@ -23,7 +23,7 @@ namespace EliteDangerousDataProvider
         private void confirmButton_Click(object sender, EventArgs e)
         {
             string code = codeText.Text;
-            credentials = CompanionApp.Confirm(credentials, code);
+            credentials = EliteDangerousCompanionAppService.CompanionAppService.Confirm(credentials, code);
             if (credentials != null && credentials.appId != null && credentials.machineId != null && credentials.machineToken != null)
             {
                 credentials.ToFile();

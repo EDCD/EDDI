@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace EliteDangerousDataProvider
+namespace EliteDangerousCompanionAppService
 {
     /// <summary>Storage of credentials for a single Elite: Dangerous user to access the Companion App</summary>
     public class Credentials
@@ -26,7 +26,7 @@ namespace EliteDangerousDataProvider
             if (filename == null)
             {
                 String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                System.IO.Directory.CreateDirectory(dataDir);
+                Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\credentials.json";
             }
 

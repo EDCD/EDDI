@@ -7,8 +7,8 @@
     <ProjectGuid>{C5F48807-921B-456D-A9E4-A0282E5E8CF1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EliteDangerousDataProviderAppHandler</RootNamespace>
-    <AssemblyName>EliteDangerousDataProviderAppHandler</AssemblyName>
+    <RootNamespace>EliteDangerousDataProviderService</RootNamespace>
+    <AssemblyName>EliteDangerousDataProviderService</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,12 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataProviderApp.cs" />
+    <Compile Include="DataProviderService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StarSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EliteDangerousDataDefinitions\EliteDangerousDataDefinitions.csproj">
+      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
+      <Name>EliteDangerousDataDefinitions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

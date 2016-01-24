@@ -1,25 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EliteDangerousDataDefinitions;
+using Newtonsoft.Json.Linq;
+using System.Net;
 
-namespace EliteDangerousDataProviderAppService
+namespace EliteDangerousDataProviderService
 {
-    public class StarSystem
+    /// <summary>Access to EDDP data<summary>
+    public class DataProviderService
     {
-        public string Name { get; set; }
-        public long Population { get; set; }
-        public string Allegiance { get; set;  }
-        public string Government { get; set; }
-        public string Faction { get; set; }
-        public string PrimaryEconomy { get; set; }
-        public string State { get; set; }
-        public string Security { get; set; }
-        public string Power { get; set; }
-        public string PowerState { get; set; }
+        public static StarSystem GetSystemData(string system)
+        {
+            var client = new WebClient();
+            var response = client.DownloadString("http://api.eddp.co:16161/systems/" + system);
+            return StarSystemFromEDDP(response);
+        }
 
-        public static StarSystem FromEDDP(dynamic json)
+        public static StarSystem StarSystemFromEDDP(string data)
+        {
+            return StarSystemFromEDDP(JObject.Parse(data));
+        }
+
+        public static StarSystem StarSystemFromEDDP(dynamic json)
         {
             StarSystem StarSystem = new StarSystem();
 

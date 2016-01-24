@@ -1,4 +1,5 @@
 ﻿using EliteDangerousCompanionAppService;
+using EliteDangerousDataDefinitions;
 using System.Collections.Generic;
 
 namespace EDDIVAPlugin

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace EliteDangerousCompanionAppService
+namespace EliteDangerousDataDefinitions
 {
     public class ModuleDefinitions
     {
@@ -790,6 +790,8 @@ namespace EliteDangerousCompanionAppService
                 {128671337, new Module(1536, "Bi-Weave Shield Generator", 7, "C", 8548200) },
                 {128671338, new Module(1537, "Bi-Weave Shield Generator", 8, "C", 27097750) },
         };
+
+        /// <summary>Obtain details of a module given its Elite ID</summary>
         public static Module FromID(long id)
         {
           return Modules[id];
