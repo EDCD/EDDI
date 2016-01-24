@@ -65,11 +65,11 @@
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EliteDangerousDataDefinitions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousDataProviderAppHandler\EliteDangerousDataProviderService.csproj">
+    <ProjectReference Include="..\EliteDangerousDataProviderService\EliteDangerousDataProviderService.csproj">
       <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
       <Name>EliteDangerousDataProviderService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousDataProviderVAPlugin\EDDIVAPlugin.csproj">
+    <ProjectReference Include="..\EDDIVAPlugin\EDDIVAPlugin.csproj">
       <Project>{e98b76a0-b7bc-4f59-8e4f-bd16b22a5ac6}</Project>
       <Name>EDDIVAPlugin</Name>
     </ProjectReference>
