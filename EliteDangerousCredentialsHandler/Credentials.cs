@@ -31,16 +31,17 @@ namespace EliteDangerousDataProvider
                 filename = dataDir + "\\credentials.json";
             }
 
-            String credentialsData = File.ReadAllText(filename);
             Credentials credentials;
             try
             {
+                String credentialsData = File.ReadAllText(filename);
                 credentials = JsonConvert.DeserializeObject<Credentials>(credentialsData);
             }
             catch
             {
                 credentials = new Credentials();
             }
+
             credentials.dataPath = filename;
             return credentials;
         }
