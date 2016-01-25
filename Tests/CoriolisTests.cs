@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EDDIVAPlugin;
+using EliteDangerousNetLogMonitor;
+using System.IO;
 
 namespace Tests
 {
@@ -27,6 +29,16 @@ namespace Tests
             string base64Data = "IwgMIyKA";
             var data = LZString.decompressFromBase64(base64Data);
             Assert.AreEqual("1110111111111111", data);
+        }
+
+        [TestMethod]
+        public void TestNetLog()
+        {
+            NetLogMonitor monitor = new NetLogMonitor("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", null);
+            monitor.start();
+            System.Threading.Thread.Sleep(180000);
+            monitor.stop();
+            //NetLogMonitor.Monitor("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", null);
         }
     }
 }

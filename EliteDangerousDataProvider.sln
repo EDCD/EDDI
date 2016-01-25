@@ -27,6 +27,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousNetLogMonitor", "EliteDangerousNetLogMonitor\EliteDangerousNetLogMonitor.csproj", "{0928ADE6-F260-4820-AFBC-1661130C3474}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{0C845B02-E283-43D8-91A7-205AD3397371}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C845B02-E283-43D8-91A7-205AD3397371}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C845B02-E283-43D8-91A7-205AD3397371}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0928ADE6-F260-4820-AFBC-1661130C3474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0928ADE6-F260-4820-AFBC-1661130C3474}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0928ADE6-F260-4820-AFBC-1661130C3474}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0928ADE6-F260-4820-AFBC-1661130C3474}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

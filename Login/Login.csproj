@@ -106,6 +106,10 @@
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EliteDangerousDataDefinitions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousNetLogMonitor\EliteDangerousNetLogMonitor.csproj">
+      <Project>{0928ade6-f260-4820-afbc-1661130c3474}</Project>
+      <Name>EliteDangerousNetLogMonitor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

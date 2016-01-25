@@ -73,6 +73,10 @@
       <Project>{e98b76a0-b7bc-4f59-8e4f-bd16b22a5ac6}</Project>
       <Name>EDDIVAPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousNetLogMonitor\EliteDangerousNetLogMonitor.csproj">
+      <Project>{0928ade6-f260-4820-afbc-1661130c3474}</Project>
+      <Name>EliteDangerousNetLogMonitor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
