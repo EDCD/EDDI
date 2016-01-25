@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EliteDangerousCompanionAppService;
 using EliteDangerousDataDefinitions;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -5490,6 +5491,14 @@ namespace Tests
             Assert.AreEqual(2, cmdr.Ship.Compartments[8].Size);
             Assert.AreEqual(null, cmdr.Ship.Compartments[8].Module);
 
+            /// 8 stored ships
+            Assert.AreEqual(8, cmdr.StoredShips.Count);
+
+            // First stored ship is a Vulture at Snyder Enterprise
+            Ship StoredShip1 = cmdr.StoredShips[0];
+            Assert.AreEqual("Vulture", StoredShip1.Model);
+            Assert.AreEqual("TZ Arietis", StoredShip1.StarSystem);
+            Assert.AreEqual("Snyder Enterprise", StoredShip1.Location);
         }
     }
 }

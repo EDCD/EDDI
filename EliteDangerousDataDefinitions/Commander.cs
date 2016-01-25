@@ -1,4 +1,6 @@
-﻿namespace EliteDangerousDataDefinitions
+﻿using System.Collections.Generic;
+
+namespace EliteDangerousDataDefinitions
 {
     /// <summary>
     /// Details about a commander
@@ -47,7 +49,15 @@
         /// <summary>The name of the current starsystem</summary>
         public string StarSystem { get; set; }
 
-        /// <summary>The commander's ship</summary>
+        /// <summary>The commander's current ship</summary>
         public Ship Ship { get; set; }
+
+        /// <summary>The commander's stored ships</summary>
+        public List<Ship> StoredShips { get; set; }
+
+        public Commander()
+        {
+            StoredShips = new List<Ship>();
+        }
     }
 }

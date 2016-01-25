@@ -12,7 +12,7 @@ namespace EDDIVAPlugin
         private static int minEmpireRatingForTitle = 3;
         private static int minFederationRatingForTitle = 1;
 
-        private static EliteDangerousCompanionAppService.CompanionAppService app;
+        private static CompanionAppService app;
         private static string dbPath;
 
         private static Commander Cmdr;
@@ -21,12 +21,12 @@ namespace EDDIVAPlugin
 
         public static string VA_DisplayName()
         {
-            return "EDDI 0.5.0";
+            return "EDDI 0.6.0";
         }
 
         public static string VA_DisplayInfo()
         {
-            return "Elite Dangerous Data Interface\r\nVersion 0.5.0";
+            return "Elite Dangerous Data Interface\r\nVersion 0.6.0";
         }
 
         public static Guid VA_Id()
@@ -70,7 +70,7 @@ namespace EDDIVAPlugin
                 connection.Close();
             }
 
-            app = new EliteDangerousCompanionAppService.CompanionAppService(credentials);
+            app = new CompanionAppService(credentials);
 
             setPluginStatus(ref textValues, "Operational", null, null);
 
@@ -212,6 +212,21 @@ namespace EDDIVAPlugin
                 //}
                 setInt(ref intValues, "Ship compartments", Cmdr.Ship.Compartments.Count);
 
+
+                //
+                // Stored ships data
+                //
+                int currentStoredShip = 1;
+                foreach (Ship StoredShip in Cmdr.StoredShips)
+                {
+                    string varBase = "Stored ship " + currentStoredShip;
+                    setString(ref textValues, varBase + " model", StoredShip.Model);
+                    setString(ref textValues, varBase + " system", StoredShip.StarSystem);
+                    setString(ref textValues, varBase + " location", StoredShip.Location);
+                    currentStoredShip++;
+                }
+                setInt(ref intValues, "Stored ships", Cmdr.StoredShips.Count);
+
                 setPluginStatus(ref textValues, "Operational", null, null);
             }
             catch (Exception e)
@@ -253,6 +268,10 @@ namespace EDDIVAPlugin
                     setString(ref textValues, "System security", CurrentStarSystem.Security);
                     setString(ref textValues, "System power", CurrentStarSystem.Power);
                     setString(ref textValues, "System power state", CurrentStarSystem.PowerState);
+
+                    setDecimal(ref decimalValues, "System X", CurrentStarSystem.X);
+                    setDecimal(ref decimalValues, "System Y", CurrentStarSystem.Y);
+                    setDecimal(ref decimalValues, "System Z", CurrentStarSystem.Z);
 
                     // Allegiance-specific rank
                     string systemRank = "Commander";

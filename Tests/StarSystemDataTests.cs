@@ -19,6 +19,10 @@ namespace Tests
             Assert.IsNull(starSystem.Government);
             Assert.IsNull(starSystem.PrimaryEconomy);
             Assert.AreEqual(0, starSystem.Population);
+
+            Assert.AreEqual(-78.59375, starSystem.X);
+            Assert.AreEqual(-149.625, starSystem.Y);
+            Assert.AreEqual(-340.53125, starSystem.Z);
         }
 
         [TestMethod]
@@ -33,6 +37,9 @@ namespace Tests
             Assert.AreEqual("Democracy", starSystem.Government);
             Assert.AreEqual("Service", starSystem.PrimaryEconomy);
             Assert.AreEqual(16999999880, starSystem.Population);
+            Assert.AreEqual(0, starSystem.X);
+            Assert.AreEqual(0, starSystem.Y);
+            Assert.AreEqual(0, starSystem.Z);
         }
     }
 }

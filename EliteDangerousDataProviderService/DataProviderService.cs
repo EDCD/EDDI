@@ -34,6 +34,10 @@ namespace EliteDangerousDataProviderService
             StarSystem.Power = (string)json["power"];
             StarSystem.PowerState = (string)json["power_state"];
 
+            StarSystem.X = (decimal?)json["x"];
+            StarSystem.Y = (decimal?)json["y"];
+            StarSystem.Z = (decimal?)json["z"];
+
             return StarSystem;
         }
     }

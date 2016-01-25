@@ -286,12 +286,16 @@ namespace EliteDangerousCompanionAppService
 
             Commander.Ship = ShipFromProfile(json);
 
+            Commander.StoredShips = StoredShipsFromProfile(json);
+
             return Commander;
         }
 
         public static Ship ShipFromProfile(dynamic json)
         {
             Ship Ship = new Ship();
+
+            Ship.LocalId = json["ship"]["id"];
             Ship.Model = json["ship"]["name"];
             if (shipTranslations.ContainsKey(Ship.Model))
             {
@@ -381,6 +385,36 @@ namespace EliteDangerousCompanionAppService
             }
 
             return Hardpoint;
+        }
+
+        public static List<Ship> StoredShipsFromProfile(dynamic json)
+        {
+            List<Ship> StoredShips = new List<Ship>();
+
+            foreach (dynamic shipJson in json["ships"])
+            {
+                dynamic ship = shipJson.Value;
+
+                Ship Ship = new Ship();
+
+                if (ship["starsystem"] != null)
+                {
+                    // If we have a starsystem it means that the ship is stored
+                    Ship.LocalId = ship["id"];
+                    Ship.Model = ship["name"];
+                    if (shipTranslations.ContainsKey(Ship.Model))
+                    {
+                        Ship.Model = shipTranslations[Ship.Model];
+                    }
+
+                    Ship.StarSystem = ship["starsystem"]["name"];
+                    Ship.Location = ship["station"]["name"];
+
+                    StoredShips.Add(Ship);
+                }
+            }
+
+            return StoredShips;
         }
 
         public static Compartment CompartmentFromProfile(dynamic json)

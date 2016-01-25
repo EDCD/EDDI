@@ -19,5 +19,12 @@ namespace EliteDangerousDataDefinitions
         public string Security { get; set; }
         public string Power { get; set; }
         public string PowerState { get; set; }
+
+        /// <summary>X co-ordinate for this system</summary>
+        public decimal? X { get; set; }
+        /// <summary>Y co-ordinate for this system</summary>
+        public decimal? Y { get; set; }
+        /// <summary>Z co-ordinate for this system</summary>
+        public decimal? Z { get; set; }
     }
 }
