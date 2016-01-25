@@ -17,7 +17,6 @@ namespace EliteDangerousNetLogMonitor
         private Action<string> callback;
 
         // Keep track of status
-        private int lastLine;
         private bool running;
 
         public LogMonitor(string directory, string filter, Action<string> callback)
