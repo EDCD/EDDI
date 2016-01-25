@@ -9,7 +9,7 @@ namespace Tests
     public class CommanderDataTests
     {
         [TestMethod]
-        public void TestFromProfile()
+        public void TestCommanderFromProfile()
         {
             string data =@"{
   ""commander"": {

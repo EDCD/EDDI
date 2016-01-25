@@ -302,6 +302,15 @@ namespace EDDIVAPlugin
                         setString(ref textValues, "Last system security", LastStarSystem.Security);
                         setString(ref textValues, "Last system power", LastStarSystem.Power);
                         setString(ref textValues, "Last system power state", LastStarSystem.PowerState);
+
+                        setDecimal(ref decimalValues, "Last system X", LastStarSystem.X);
+                        setDecimal(ref decimalValues, "Last system Y", LastStarSystem.Y);
+                        setDecimal(ref decimalValues, "Last system Z", LastStarSystem.Z);
+
+                        if (LastStarSystem.X != null && CurrentStarSystem.X != null)
+                        {
+                            setDecimal(ref decimalValues, "Last jump", (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(CurrentStarSystem.X - LastStarSystem.X), 2) + Math.Pow((double)(CurrentStarSystem.Y - LastStarSystem.Y), 2) + Math.Pow((double)(CurrentStarSystem.Z - LastStarSystem.Z), 2)), 2));
+                        }
                     }
                 }
 
