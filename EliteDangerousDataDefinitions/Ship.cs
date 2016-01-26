@@ -9,6 +9,8 @@ namespace EliteDangerousDataDefinitions
         public int LocalId { get; set; }
         /// <summary>the model of the ship (Python, Anaconda, etc.)</summary>
         public string Model { get; set; }
+        /// <summary>the size of this ship</summary>
+        public ShipSize Size { get; set; }
         /// <summary>the value of the ship without cargo, in credits</summary>
         public long Value { get; set; }
         /// <summary>the total tonnage cargo capacity</summary>
@@ -38,5 +40,22 @@ namespace EliteDangerousDataDefinitions
             Hardpoints = new List<Hardpoint>();
             Compartments = new List<Compartment>();
         }
+
+        public Ship(string model, ShipSize size)
+        {
+            Model = model;
+            Size = size;
+            Hardpoints = new List<Hardpoint>();
+            Compartments = new List<Compartment>();
+        }
+    }
+
+    /// <summary>The size of a ship</summary>
+    public enum ShipSize
+    {
+        Small,
+        Medium,
+        Large,
+        Huge
     }
 }

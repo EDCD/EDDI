@@ -21,12 +21,12 @@ namespace EDDIVAPlugin
 
         public static string VA_DisplayName()
         {
-            return "EDDI 0.6.0";
+            return "EDDI 0.6.1";
         }
 
         public static string VA_DisplayInfo()
         {
-            return "Elite Dangerous Data Interface\r\nVersion 0.6.0";
+            return "Elite Dangerous Data Interface\r\nVersion 0.6.1";
         }
 
         public static Guid VA_Id()
@@ -160,6 +160,7 @@ namespace EDDIVAPlugin
                 // Ship data
                 //
                 setString(ref textValues, "Ship model", Cmdr.Ship.Model);
+                setString(ref textValues, "Ship size", Cmdr.Ship.Size.ToString());
                 setInt(ref intValues, "Ship value", (int)(Cmdr.Ship.Value / 1000));
                 setString(ref textValues, "Ship value", humanize(Cmdr.Ship.Value));
                 setDecimal(ref decimalValues, "Ship health", Cmdr.Ship.Health);

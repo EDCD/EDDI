@@ -1,3 +1,7 @@
+#0.7.0
+
+  * Added string variable 'Ship size' containing the size of the ship (Small, Medium or Large)
+
 #0.6.0
 
   * Added decimal variables 'System X' 'System Y', 'System Z', 'Last system X', 'Last system Y', 'Last system Z' using EDDB co-ordinates

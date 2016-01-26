@@ -47,7 +47,9 @@
     <Compile Include="ModuleDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ship.cs" />
+    <Compile Include="ShipDefinitions.cs" />
     <Compile Include="StarSystem.cs" />
+    <Compile Include="Station.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

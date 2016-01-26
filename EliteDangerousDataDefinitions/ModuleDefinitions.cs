@@ -4,7 +4,7 @@ namespace EliteDangerousDataDefinitions
 {
     public class ModuleDefinitions
     {
-        private static Dictionary<long, Module> Modules = new Dictionary<long, Module>
+        private static Dictionary<long, Module> ModulesByEliteID = new Dictionary<long, Module>
         {
                 {128049250, new Module(738, "Lightweight Alloy", 1, "I", 0) },
                 {128049251, new Module(739, "Reinforced Alloy", 1, "I", 25600) },
@@ -792,9 +792,9 @@ namespace EliteDangerousDataDefinitions
         };
 
         /// <summary>Obtain details of a module given its Elite ID</summary>
-        public static Module FromID(long id)
+        public static Module FromEliteID(long id)
         {
-          return Modules[id];
+          return ModulesByEliteID[id];
         }
     }
 }

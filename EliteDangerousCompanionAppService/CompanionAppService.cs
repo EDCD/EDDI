@@ -293,14 +293,20 @@ namespace EliteDangerousCompanionAppService
 
         public static Ship ShipFromProfile(dynamic json)
         {
-            Ship Ship = new Ship();
+            String Model = json["ship"]["name"];
+            if (shipTranslations.ContainsKey(Model))
+            {
+                Model = shipTranslations[Model];
+            }
+
+            Ship Ship = ShipDefinitions.FromModel(Model);
+            if (Ship == null)
+            {
+                Ship = new Ship();
+                Ship.Model = Model;
+            }
 
             Ship.LocalId = json["ship"]["id"];
-            Ship.Model = json["ship"]["name"];
-            if (shipTranslations.ContainsKey(Ship.Model))
-            {
-                Ship.Model = shipTranslations[Ship.Model];
-            }
 
             Ship.Value = (long)json["ship"]["value"]["hull"] + (long)json["ship"]["value"]["modules"];
 
@@ -442,7 +448,7 @@ namespace EliteDangerousCompanionAppService
         public static Module ModuleFromProfile(string name, dynamic json)
         {
             long id = (long)json["module"]["id"];
-            Module ModuleTemplate = ModuleDefinitions.FromID(id);
+            Module ModuleTemplate = ModuleDefinitions.FromEliteID(id);
             Module Module = new Module(ModuleTemplate);
 
             Module.Value = (long)json["module"]["value"];
