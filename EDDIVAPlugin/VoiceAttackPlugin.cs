@@ -4,6 +4,7 @@ using EliteDangerousDataDefinitions;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
 
 namespace EDDIVAPlugin
 {
@@ -287,8 +288,16 @@ namespace EDDIVAPlugin
                     setString(ref textValues, "System rank", systemRank);
 
                     // Stations
-
-                    // Outposts
+                    foreach (Station Station in CurrentStarSystem.Stations)
+                    {
+                        setString(ref textValues, "System station name", Station.Name);
+                    }
+                    setInt(ref intValues, "System stations", CurrentStarSystem.Stations.Count);
+                    setInt(ref intValues, "System starports", CurrentStarSystem.Stations.Count(s => s.IsStarport()));
+                    setInt(ref intValues, "System outposts", CurrentStarSystem.Stations.Count(s => s.IsOutpost()));
+                    setInt(ref intValues, "System planetary stations", CurrentStarSystem.Stations.Count(s => s.IsPlanetary()));
+                    setInt(ref intValues, "System planetary outposts", CurrentStarSystem.Stations.Count(s => s.IsPlanetaryOutpost()));
+                    setInt(ref intValues, "System planetary ports", CurrentStarSystem.Stations.Count(s => s.IsPlanetaryPort()));
 
                     if (LastStarSystem != null)
                     {
@@ -312,6 +321,18 @@ namespace EDDIVAPlugin
                         {
                             setDecimal(ref decimalValues, "Last jump", (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(CurrentStarSystem.X - LastStarSystem.X), 2) + Math.Pow((double)(CurrentStarSystem.Y - LastStarSystem.Y), 2) + Math.Pow((double)(CurrentStarSystem.Z - LastStarSystem.Z), 2)), 2));
                         }
+
+                        // Stations
+                        foreach (Station Station in LastStarSystem.Stations)
+                        {
+                            setString(ref textValues, "Last system station name", Station.Name);
+                        }
+                        setInt(ref intValues, "Last system stations", LastStarSystem.Stations.Count);
+                        setInt(ref intValues, "Last system starports", LastStarSystem.Stations.Count(s => s.IsStarport()));
+                        setInt(ref intValues, "Last system outposts", LastStarSystem.Stations.Count(s => s.IsOutpost()));
+                        setInt(ref intValues, "Last system planetary stations", LastStarSystem.Stations.Count(s => s.IsPlanetary()));
+                        setInt(ref intValues, "Last system planetary outposts", LastStarSystem.Stations.Count(s => s.IsPlanetaryOutpost()));
+                        setInt(ref intValues, "Last system planetary ports", LastStarSystem.Stations.Count(s => s.IsPlanetaryPort()));
                     }
                 }
 

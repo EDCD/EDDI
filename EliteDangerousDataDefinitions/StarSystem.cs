@@ -27,7 +27,7 @@ namespace EliteDangerousDataDefinitions
         /// <summary>Z co-ordinate for this system</summary>
         public decimal? Z { get; set; }
 
-        /// <summary>Details of starports</summary>
-        public List<Station> stations { get; set; }
+        /// <summary>Details of stations</summary>
+        public List<Station> Stations { get; set; }
     }
 }
