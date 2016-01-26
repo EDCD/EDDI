@@ -9,7 +9,7 @@ namespace EliteDangerousDataDefinitions
     {
         public static string[] combatRanks = new string[9] { "Harmless", "Mostly Harmless", "Novice", "Competent", "Expert", "Master", "Dangerous", "Deadly", "Elite" };
         public static string[] tradeRanks = new string[9] { "Penniless", "Mostly Penniless", "Peddlar", "Dealer", "Merchant", "Broker", "Entrepreneur", "Tycoon", "Elite" };
-        public static string[] exploreRanks = new string[9] { "Aimless", "Mostly Aimless", "Scout", "Surveyor", "Trailblzer", "Pathfinder", "Ranger", "Tycoon", "Pioneer" };
+        public static string[] exploreRanks = new string[9] { "Aimless", "Mostly Aimless", "Scout", "Surveyor", "Trailblzer", "Pathfinder", "Ranger", "Pioneer", "Elite" };
         public static string[] empireRanks = new string[15] { "Unknown", "Outsider", "Serf", "Master", "Squire", "Knight", "Lord", "Baron", "Viscount", "Count", "Earl", "Marquis", "Duke", "Prince", "King" };
         public static string[] federationRanks = new string[15] { "Unknown", "Recruit", "Cadet", "Midshipman", "Petty Officer", "Chief Petty Officer", "Warrant Officer", "Ensign", "Lieutenant", "Lieutenant Commander", "Post Commander", "Post Captain", "Rear Admiral", "Vice Admiral", "Admiral" };
 
