@@ -299,7 +299,7 @@ namespace EliteDangerousCompanionAppService
                 Model = shipTranslations[Model];
             }
 
-            Ship Ship = ShipDefinitions.FromModel(Model);
+            Ship Ship = ShipDefinitions.ShipFromModel(Model);
             if (Ship == null)
             {
                 Ship = new Ship();
@@ -448,10 +448,9 @@ namespace EliteDangerousCompanionAppService
         public static Module ModuleFromProfile(string name, dynamic json)
         {
             long id = (long)json["module"]["id"];
-            Module ModuleTemplate = ModuleDefinitions.FromEliteID(id);
-            Module Module = new Module(ModuleTemplate);
+            Module Module = ModuleDefinitions.ModuleFromEliteID(id);
 
-            Module.Value = (long)json["module"]["value"];
+            Module.Cost = (long)json["module"]["value"];
             Module.Enabled = (bool)json["module"]["on"];
             Module.Priority = (int)json["module"]["priority"];
             // Be sensible with health - round it unless it's very low

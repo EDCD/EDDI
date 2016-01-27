@@ -792,9 +792,19 @@ namespace EliteDangerousDataDefinitions
         };
 
         /// <summary>Obtain details of a module given its Elite ID</summary>
-        public static Module FromEliteID(long id)
+        public static Module ModuleFromEliteID(long id)
         {
-          return ModulesByEliteID[id];
+            Module Module = new Module();
+            Module Template = ModulesByEliteID[id];
+            if (Template != null)
+            {
+                Module.EDDBID = Template.EDDBID;
+                Module.Name = Template.Name;
+                Module.Class = Template.Class;
+                Module.Grade = Template.Grade;
+                Module.Value = Template.Value;
+            }
+            return Module;
         }
     }
 }

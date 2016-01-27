@@ -21,12 +21,12 @@ namespace EDDIVAPlugin
 
         public static string VA_DisplayName()
         {
-            return "EDDI 0.6.1";
+            return "EDDI 0.7.0";
         }
 
         public static string VA_DisplayInfo()
         {
-            return "Elite Dangerous Data Interface\r\nVersion 0.6.1";
+            return "Elite Dangerous Data Interface\r\nVersion 0.7.0";
         }
 
         public static Guid VA_Id()
@@ -136,8 +136,10 @@ namespace EDDIVAPlugin
                 setInt(ref intValues, "Federation rating", Cmdr.FederationRating);
                 setString(ref textValues, "Federation rank", Cmdr.FederationRank);
                 setInt(ref intValues, "Credits", (int)(Cmdr.Credits / 1000));
+                setDecimal(ref decimalValues, "Credits", (decimal)Cmdr.Credits);
                 setString(ref textValues, "Credits", humanize(Cmdr.Credits));
                 setInt(ref intValues, "Debt", (int)(Cmdr.Debt / 1000));
+                setDecimal(ref decimalValues, "Debt", (decimal)Cmdr.Debt);
                 setString(ref textValues, "Debt", humanize(Cmdr.Debt));
 
 
@@ -147,6 +149,7 @@ namespace EDDIVAPlugin
                 setString(ref textValues, "Ship model", Cmdr.Ship.Model);
                 setString(ref textValues, "Ship size", Cmdr.Ship.Size.ToString());
                 setInt(ref intValues, "Ship value", (int)(Cmdr.Ship.Value / 1000));
+                setDecimal(ref decimalValues, "Ship value", (decimal)Cmdr.Ship.Value);
                 setString(ref textValues, "Ship value", humanize(Cmdr.Ship.Value));
                 setDecimal(ref decimalValues, "Ship health", Cmdr.Ship.Health);
                 setInt(ref intValues, "Ship cargo capacity", Cmdr.Ship.CargoCapacity);
@@ -154,26 +157,50 @@ namespace EDDIVAPlugin
 
                 setString(ref textValues, "Ship bulkheads", Cmdr.Ship.Bulkheads.Name);
                 setDecimal(ref decimalValues, "Ship bulkheads health", Cmdr.Ship.Bulkheads.Health);
+                setDecimal(ref decimalValues, "Ship bulkheads cost", (decimal)Cmdr.Ship.Bulkheads.Cost);
+                setDecimal(ref decimalValues, "Ship bulkheads value", (decimal)Cmdr.Ship.Bulkheads.Value);
+                setDecimal(ref decimalValues, "Ship bulkheads discount", Cmdr.Ship.Bulkheads.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.Bulkheads.Cost) / ((decimal)Cmdr.Ship.Bulkheads.Value))) * 100, 1));
 
                 setString(ref textValues, "Ship power plant", Cmdr.Ship.PowerPlant.Class + Cmdr.Ship.PowerPlant.Grade);
                 setDecimal(ref decimalValues, "Ship power plant health", Cmdr.Ship.PowerPlant.Health);
+                setDecimal(ref decimalValues, "Ship power plant cost", (decimal)Cmdr.Ship.PowerPlant.Cost);
+                setDecimal(ref decimalValues, "Ship power plant value", (decimal)Cmdr.Ship.PowerPlant.Value);
+                setDecimal(ref decimalValues, "Ship power plant discount", Cmdr.Ship.PowerPlant.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.PowerPlant.Cost) / ((decimal)Cmdr.Ship.PowerPlant.Value))) * 100, 1));
 
                 setString(ref textValues, "Ship thrusters", Cmdr.Ship.Thrusters.Class + Cmdr.Ship.Thrusters.Grade);
                 setDecimal(ref decimalValues, "Ship thrusters health", Cmdr.Ship.Thrusters.Health);
+                setDecimal(ref decimalValues, "Ship thrusters cost", (decimal)Cmdr.Ship.Thrusters.Cost);
+                setDecimal(ref decimalValues, "Ship thrusters value", (decimal)Cmdr.Ship.Thrusters.Value);
+                setDecimal(ref decimalValues, "Ship thrusters discount", Cmdr.Ship.Thrusters.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.Thrusters.Cost) / ((decimal)Cmdr.Ship.Thrusters.Value))) * 100, 1));
 
                 setString(ref textValues, "Ship frame shift drive", Cmdr.Ship.FrameShiftDrive.Class + Cmdr.Ship.FrameShiftDrive.Grade);
                 setDecimal(ref decimalValues, "Ship frame shift drive health", Cmdr.Ship.FrameShiftDrive.Health);
+                setDecimal(ref decimalValues, "Ship frame shift drive cost", (decimal)Cmdr.Ship.FrameShiftDrive.Cost);
+                setDecimal(ref decimalValues, "Ship frame shift drive value", (decimal)Cmdr.Ship.FrameShiftDrive.Value);
+                setDecimal(ref decimalValues, "Ship frame shift drive discount", Cmdr.Ship.FrameShiftDrive.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.FrameShiftDrive.Cost) / ((decimal)Cmdr.Ship.FrameShiftDrive.Value))) * 100, 1));
 
                 setString(ref textValues, "Ship life support", Cmdr.Ship.LifeSupport.Class + Cmdr.Ship.LifeSupport.Grade);
                 setDecimal(ref decimalValues, "Ship life support health", Cmdr.Ship.LifeSupport.Health);
+                setDecimal(ref decimalValues, "Ship life support cost", (decimal)Cmdr.Ship.LifeSupport.Cost);
+                setDecimal(ref decimalValues, "Ship life support value", (decimal)Cmdr.Ship.LifeSupport.Value);
+                setDecimal(ref decimalValues, "Ship life support discount", Cmdr.Ship.LifeSupport.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.LifeSupport.Cost) / ((decimal)Cmdr.Ship.LifeSupport.Value))) * 100, 1));
 
                 setString(ref textValues, "Ship power distributor", Cmdr.Ship.PowerDistributor.Class + Cmdr.Ship.PowerDistributor.Grade);
                 setDecimal(ref decimalValues, "Ship power distributor health", Cmdr.Ship.PowerDistributor.Health);
+                setDecimal(ref decimalValues, "Ship power distributor cost", (decimal)Cmdr.Ship.PowerDistributor.Cost);
+                setDecimal(ref decimalValues, "Ship power distributor value", (decimal)Cmdr.Ship.PowerDistributor.Value);
+                setDecimal(ref decimalValues, "Ship power distributor discount", Cmdr.Ship.PowerDistributor.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.PowerDistributor.Cost) / ((decimal)Cmdr.Ship.PowerDistributor.Value))) * 100, 1));
 
                 setString(ref textValues, "Ship sensors", Cmdr.Ship.Sensors.Class + Cmdr.Ship.Sensors.Grade);
                 setDecimal(ref decimalValues, "Ship sensors health", Cmdr.Ship.Sensors.Health);
+                setDecimal(ref decimalValues, "Ship sensors cost", (decimal)Cmdr.Ship.Sensors.Cost);
+                setDecimal(ref decimalValues, "Ship sensors value", (decimal)Cmdr.Ship.Sensors.Value);
+                setDecimal(ref decimalValues, "Ship sensors discount", Cmdr.Ship.Sensors.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.Sensors.Cost) / ((decimal)Cmdr.Ship.Sensors.Value))) * 100, 1));
 
                 setString(ref textValues, "Ship fuel tank", Cmdr.Ship.FuelTank.Class + Cmdr.Ship.FuelTank.Grade);
+                setDecimal(ref decimalValues, "Ship fuel tank cost", (decimal)Cmdr.Ship.FuelTank.Cost);
+                setDecimal(ref decimalValues, "Ship fuel tank value", (decimal)Cmdr.Ship.FuelTank.Value);
+                setDecimal(ref decimalValues, "Ship fuel tank discount", Cmdr.Ship.FuelTank.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.FuelTank.Cost) / ((decimal)Cmdr.Ship.FuelTank.Value))) * 100, 1));
                 //                setInt(ref intValues, "Ship fuel tank capacity", 0); // TODO
 
                 // Hardpoints
@@ -278,6 +305,7 @@ namespace EDDIVAPlugin
                     setInt(ref intValues, "System visits", CurrentStarSystemData.TotalVisits);
                     setDateTime(ref dateTimeValues, "System previous visit", CurrentStarSystemData.PreviousVisit);
                     setInt(ref intValues, "System population", (int)(CurrentStarSystem.Population / 1000));
+                    setDecimal(ref decimalValues, "System population", (decimal)CurrentStarSystem.Population);
                     setString(ref textValues, "System population", humanize(CurrentStarSystem.Population));
                     setString(ref textValues, "System allegiance", CurrentStarSystem.Allegiance);
                     setString(ref textValues, "System government", CurrentStarSystem.Government);
@@ -320,6 +348,7 @@ namespace EDDIVAPlugin
                     {
                         setString(ref textValues, "Last system name", LastStarSystem.Name);
                         setInt(ref intValues, "Last system population", (int)(LastStarSystem.Population / 1000));
+                        setDecimal(ref decimalValues, "Last system population", (decimal)LastStarSystem.Population);
                         setString(ref textValues, "Last system population", humanize(LastStarSystem.Population));
                         setString(ref textValues, "Last system allegiance", LastStarSystem.Allegiance);
                         setString(ref textValues, "Last system government", LastStarSystem.Government);

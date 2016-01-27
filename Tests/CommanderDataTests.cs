@@ -4846,7 +4846,7 @@ namespace Tests
         ""module"": {
           ""id"": 128049387,
           ""name"": ""Hpt_PulseLaser_Gimbal_Large"",
-          ""value"": 140600,
+          ""value"": 126540,
           ""unloaned"": 0,
           ""free"": false,
           ""health"": 1000000,
@@ -5483,7 +5483,7 @@ namespace Tests
             Assert.AreEqual(3, hardpoint1.Size);
             Assert.AreEqual(3, hardpoint1.Module.Class);
             Assert.AreEqual("E", hardpoint1.Module.Grade);
-            Assert.AreEqual(140600, hardpoint1.Module.Cost);
+            Assert.AreEqual(125430, hardpoint1.Module.Cost);
             Assert.AreEqual(140600, hardpoint1.Module.Value);
 
             Assert.AreEqual("7C", cmdr.Ship.PowerPlant.Class + cmdr.Ship.PowerPlant.Grade);

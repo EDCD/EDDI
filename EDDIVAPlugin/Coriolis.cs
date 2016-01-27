@@ -127,7 +127,6 @@ namespace EDDIVAPlugin
             uri += LZString.compressToBase64(enableds).Replace('/', '-');
             uri += ".";
             uri += LZString.compressToBase64(priorities).Replace('/', '-');
-            uri += "?enableds=" + enableds + "&priorities=" + priorities;
 
             return uri;
         }

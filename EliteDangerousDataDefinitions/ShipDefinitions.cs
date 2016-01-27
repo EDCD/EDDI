@@ -44,15 +44,34 @@ namespace EliteDangerousDataDefinitions
         private static Dictionary<string, Ship> ShipsByModel = ShipsByEliteID.ToDictionary(kp => kp.Value.Model, kp => kp.Value);
 
         /// <summary>Obtain details of a ship given its Elite ID</summary>
-        public static Ship FromEliteID(long id)
+        public static Ship ShipFromEliteID(long id)
         {
-            return ShipsByEliteID[id];
+            Ship Ship = new Ship();
+            Ship Template = ShipsByEliteID[id];
+            if (Template != null)
+            {
+                Ship.Model = Template.Model;
+                Ship.Size = Template.Size;
+            }
+            return Ship;
         }
 
         /// <summary>Obtain details of a ship given its model</summary>
-        public static Ship FromModel(string model)
+        public static Ship ShipFromModel(string model)
         {
-            return ShipsByModel[model];
+            Ship Ship = new Ship();
+            Ship Template = ShipsByModel[model];
+            if (Template != null)
+            {
+                Ship.Model = Template.Model;
+                Ship.Size = Template.Size;
+            }
+            else
+            {
+                Ship.Model = model;
+            }
+            return Ship;
         }
+
     }
 }
