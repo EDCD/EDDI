@@ -3,7 +3,6 @@ using EliteDangerousDataProviderService;
 using EliteDangerousDataDefinitions;
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Linq;
 
 namespace EDDIVAPlugin
@@ -14,7 +13,7 @@ namespace EDDIVAPlugin
         private static int minFederationRatingForTitle = 1;
 
         private static CompanionAppService app;
-        private static string dbPath;
+        private static IEDDIStarSystemRepository starSystemRepository;
 
         private static Commander Cmdr;
         private static StarSystem CurrentStarSystem;
@@ -54,24 +53,9 @@ namespace EDDIVAPlugin
                 return;
             }
 
-            // Set up our database if it isn't already
-            dbPath = dataDir + "\\data.sqlite";
-            using (var connection = new SQLiteConnection("Data Source=" + dbPath))
-            {
-                connection.Open();
-
-                string createSystemsTableSql = "CREATE TABLE IF NOT EXISTS systems(name TEXT NOT NULL, lastdata INT NOT NULL DEFAULT (CAST(strftime('%s','now') AS INT)), visits INT NOT NULL, thisvisit INT NOT NULL DEFAULT (CAST(strftime('%s', 'now') AS INT)), lastvisit INT NOT NULL DEFAULT (CAST(strftime('%s','now') AS INT)), data TEXT NOT NULL)";
-                SQLiteCommand createSystemsTableCmd = new SQLiteCommand(createSystemsTableSql, connection);
-                createSystemsTableCmd.ExecuteNonQuery();
-
-                string createProfileTableSql = "CREATE TABLE IF NOT EXISTS systems(name TEXT NOT NULL, lastdata INT NOT NULL DEFAULT (CAST(strftime('%s','now') AS INT)), visits INT NOT NULL, thisvisit INT NOT NULL DEFAULT (CAST(strftime('%s', 'now') AS INT)), lastvisit INT NOT NULL DEFAULT (CAST(strftime('%s','now') AS INT)), data TEXT NOT NULL)";
-                SQLiteCommand createProfileTableCmd = new SQLiteCommand(createProfileTableSql, connection);
-                createProfileTableCmd.ExecuteNonQuery();
-
-                connection.Close();
-            }
-
             app = new CompanionAppService(credentials);
+
+            starSystemRepository = new EDDIStarSystemSqLiteRepository();
 
             setPluginStatus(ref textValues, "Operational", null, null);
 
@@ -252,14 +236,47 @@ namespace EDDIVAPlugin
                     }
                 }
 
-                StarSystem ThisStarSystem = DataProviderService.GetSystemData(Cmdr.StarSystem);
-                if (CurrentStarSystem == null || ThisStarSystem.Name != CurrentStarSystem.Name)
+                if (CurrentStarSystem == null || Cmdr.StarSystem != CurrentStarSystem.Name)
                 {
                     // The star system has changed; update the data
+                    EDDIStarSystem CurrentStarSystemData = starSystemRepository.GetEDDIStarSystem(Cmdr.StarSystem);
+                    if (CurrentStarSystemData == null)
+                    {
+                        CurrentStarSystemData = new EDDIStarSystem();
+                        CurrentStarSystemData.Name = Cmdr.StarSystem;
+                        CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(Cmdr.StarSystem);
+                        CurrentStarSystemData.LastVisit = DateTime.Now;
+                        CurrentStarSystemData.StarSystemLastUpdated = CurrentStarSystemData.LastVisit;
+                        CurrentStarSystemData.TotalVisits = 1;
+                    }
+                    else
+                    {
+                        // Only update if we have moved (as opposed to restarted here)
+                        if (CurrentStarSystem != null)
+                        {
+                            CurrentStarSystemData.PreviousVisit = CurrentStarSystemData.LastVisit;
+                            CurrentStarSystemData.LastVisit = DateTime.Now;
+                            CurrentStarSystemData.TotalVisits++;
+                            if ((DateTime.Now - CurrentStarSystemData.StarSystemLastUpdated).TotalHours > 24)
+                            {
+                                // Data is stale, refetch it
+                                CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(CurrentStarSystemData.Name);
+                            }
+                        }
+                    }
+
+                    if (CurrentStarSystemData.StarSystem != null)
+                    {
+                        starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
+                    }
+    
+                    StarSystem ThisStarSystem = CurrentStarSystemData.StarSystem;
                     LastStarSystem = CurrentStarSystem;
                     CurrentStarSystem = ThisStarSystem;
 
                     setString(ref textValues, "System name", CurrentStarSystem.Name);
+                    setInt(ref intValues, "System visits", CurrentStarSystemData.TotalVisits);
+                    setDateTime(ref dateTimeValues, "System previous visit", CurrentStarSystemData.PreviousVisit);
                     setInt(ref intValues, "System population", (int)(CurrentStarSystem.Population / 1000));
                     setString(ref textValues, "System population", humanize(CurrentStarSystem.Population));
                     setString(ref textValues, "System allegiance", CurrentStarSystem.Allegiance);
@@ -376,6 +393,14 @@ namespace EDDIVAPlugin
                 values.Add(key, value);
         }
 
+        private static void setDateTime(ref Dictionary<string, DateTime?> values, string key, DateTime value)
+        {
+            if (values.ContainsKey(key))
+                values[key] = value;
+            else
+                values.Add(key, value);
+        }
+
         private static void setPluginStatus(ref Dictionary<string, string> values, string status, string error, Exception exception)
         {
             setString(ref values, "EDDI status", status);
@@ -476,28 +501,5 @@ namespace EDDIVAPlugin
             }
 
         }
-
-//        public class SystemEntry
-//        {
-//            public string name { get; set; }
-//            public int visits { get; set; }
-//            public long timestamp { get; set; }
-//            public long thisVisit { get; set; }
-//            public long lastVisit { get; set; }
-//            public dynamic data { get; set; }
-//        }
-
-//        private static SystemEntry fetchSystemData(string systemName)
-//        {
-//            SystemEntry entry = new SystemEntry();
-//            entry.name = systemName;
-//            entry.visits = 1;
-//            entry.timestamp = (long)(TimeZoneInfo.ConvertTimeToUtc(DateTime.Now) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalSeconds;
-//            entry.thisVisit = (long)(TimeZoneInfo.ConvertTimeToUtc(DateTime.Now) - new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalSeconds;
-//            entry.lastVisit = entry.thisVisit - 36000;
-////            entry.data = GetSystemData(systemName);
-
-//            return entry;
-//        }
     }
 }
