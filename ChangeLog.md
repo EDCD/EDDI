@@ -2,7 +2,9 @@
 
   * Deprecated int variables "Credits", "Debt", "Ship value", "System population", "Last system population" in favour of decimal values with the same name.  The int variables were in thousands due to int limits and the decimal values are in units.  The int variables will be removed in the next major release
   * Added event loop to monitor the netlog
-  * Added decimal variables "* cost" "* value" and "* discount" for each of the ship's standard modules (e.g. "Ship power plant cost", "Ship power plant value" and "Ship power plant discount").  Cost is the number of credits the commander spent purchasing the module, Value is the undiscounted cost of the module and discount is (1 - cost / value)
+  * Added decimal variables "Ship * cost" "Ship * value" and "Ship * discount" for each of the ship's standard modules (e.g. "Ship power plant cost", "Ship power plant value" and "Ship power plant discount").  Cost is the number of credits the commander spent purchasing the module, Value is the undiscounted cost of the module and discount is (1 - cost / value)
+  * Added decimal varaibles "Ship * station cost" for the cost of the ship's existing modules at the currently docked station.
+  * Added text varaibles "Ship * station discount" for the discount possible by purchasing the ship's existing modules at the currently docked station.
   * Added int variable "System visits" that contains the number of times that the commander has visited the current system since the plugin was initialised
   * Added datetime variable "Previous system visit" that contains the date and time of the the commander previously visited this system
   * Added text variable "Environment" that lists the current environment ("Normal space" or "Supercruise")

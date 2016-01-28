@@ -55,9 +55,14 @@ namespace EliteDangerousDataDefinitions
         /// <summary>The commander's stored ships</summary>
         public List<Ship> StoredShips { get; set; }
 
+        // The following shouldn't be in here but they come as part of the profile.  Move them somewhere a little more sane when we can access this data separately
+        /// <summary>The modules available at the station the commander last docked at</summary>
+        public List<Module> Outfitting;
+
         public Commander()
         {
             StoredShips = new List<Ship>();
+            Outfitting = new List<Module>();
         }
     }
 }

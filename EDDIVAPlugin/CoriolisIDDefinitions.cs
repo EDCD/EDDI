@@ -809,7 +809,12 @@ namespace EDDIVAPlugin
         };
         public static string FromEDDBID(long eddbid)
         {
-          return CoriolisIDs[eddbid];
+            string CoriolisID;
+            if (!CoriolisIDs.TryGetValue(eddbid, out CoriolisID))
+            {
+                CoriolisID = "-";
+            }
+            return CoriolisID;
         }
     }
 }

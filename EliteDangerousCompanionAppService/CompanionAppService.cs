@@ -288,6 +288,8 @@ namespace EliteDangerousCompanionAppService
 
             Commander.StoredShips = StoredShipsFromProfile(json);
 
+            Commander.Outfitting = OutfittingFromProfile(json);
+
             return Commander;
         }
 
@@ -443,6 +445,29 @@ namespace EliteDangerousCompanionAppService
                 }
             }
             return Compartment;
+        }
+
+        // Obtain the list of outfitting modules from the profile
+        public static List<Module> OutfittingFromProfile(dynamic json)
+        {
+            List<Module> Modules = new List<Module>();
+
+            if (json["lastStarport"] != null && json["lastStarport"]["modules"] != null)
+            {
+                foreach (dynamic moduleJson in json["lastStarport"]["modules"])
+                {
+                    dynamic module = moduleJson.Value;
+                    // Not interested in paintjobs, decals, ...
+                    if (module["category"] == "weapon" || module["category"] == "module")
+                    {
+                        Module Module = ModuleDefinitions.ModuleFromEliteID((long)module["id"]);
+                        Module.Cost = module["cost"];
+                        Modules.Add(Module);
+                    }
+                }
+            }
+
+            return Modules;
         }
 
         public static Module ModuleFromProfile(string name, dynamic json)

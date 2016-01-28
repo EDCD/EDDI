@@ -795,8 +795,9 @@ namespace EliteDangerousDataDefinitions
         public static Module ModuleFromEliteID(long id)
         {
             Module Module = new Module();
-            Module Template = ModulesByEliteID[id];
-            if (Template != null)
+
+            Module Template;
+            if (ModulesByEliteID.TryGetValue(id, out Template))
             {
                 Module.EDDBID = Template.EDDBID;
                 Module.Name = Template.Name;

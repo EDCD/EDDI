@@ -322,11 +322,44 @@ namespace EDDIVAPlugin
                 }
                 setInt(ref intValues, "Stored ships", Cmdr.StoredShips.Count);
 
+                //
+                // Outfitting data
+                //
+                SetOutfittingCost("bulkheads",  Cmdr.Ship.Bulkheads, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                SetOutfittingCost("power plant", Cmdr.Ship.PowerPlant, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                SetOutfittingCost("thrusters", Cmdr.Ship.Thrusters, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                SetOutfittingCost("frame shift drive", Cmdr.Ship.FrameShiftDrive, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                SetOutfittingCost("life support", Cmdr.Ship.LifeSupport, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                SetOutfittingCost("power distributor", Cmdr.Ship.PowerDistributor, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                SetOutfittingCost("sensors", Cmdr.Ship.Sensors, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+
                 setPluginStatus(ref textValues, "Operational", null, null);
             }
             catch (Exception e)
             {
                 setPluginStatus(ref textValues, "Failed", "Failed to access system data", e);
+            }
+        }
+
+        /// <summary>Find a module int outfitting that matches our existing module and provide its price</summary>
+        private static void SetOutfittingCost(string name, Module existing, ref List<Module> outfittingModules, ref Dictionary<string, string> textValues, ref Dictionary<string, decimal?> decimalValues)
+        {
+            foreach (Module Module in outfittingModules)
+            {
+                if (existing.EDDBID == Module.EDDBID)
+                {
+                    // Found it
+                    setDecimal(ref decimalValues, "Ship " + name + " station cost", (decimal?)Module.Cost);
+                    if (Module.Cost < existing.Cost)
+                    {
+                        // And it's cheaper
+                        setString(ref textValues, "Ship " + name + " station discount", humanize(existing.Cost - Module.Cost));
+                    }
+                    return;
+                }
+                // Not found so remove any existing
+                setDecimal(ref decimalValues, "Ship " + name + " station cost", (decimal?)null);
+                setString(ref textValues, "Ship " + name + " station discount", (string)null);
             }
         }
 

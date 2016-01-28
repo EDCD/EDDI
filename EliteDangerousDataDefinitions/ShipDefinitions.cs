@@ -47,8 +47,8 @@ namespace EliteDangerousDataDefinitions
         public static Ship ShipFromEliteID(long id)
         {
             Ship Ship = new Ship();
-            Ship Template = ShipsByEliteID[id];
-            if (Template != null)
+            Ship Template;
+            if (ShipsByEliteID.TryGetValue(id, out Template))
             {
                 Ship.Model = Template.Model;
                 Ship.Size = Template.Size;
@@ -60,8 +60,8 @@ namespace EliteDangerousDataDefinitions
         public static Ship ShipFromModel(string model)
         {
             Ship Ship = new Ship();
-            Ship Template = ShipsByModel[model];
-            if (Template != null)
+            Ship Template;
+            if (ShipsByModel.TryGetValue(model, out Template))
             {
                 Ship.Model = Template.Model;
                 Ship.Size = Template.Size;
