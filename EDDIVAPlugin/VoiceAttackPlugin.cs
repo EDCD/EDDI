@@ -4,6 +4,9 @@ using EliteDangerousDataDefinitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Concurrent;
+using EliteDangerousNetLogMonitor;
+using System.Threading;
 
 namespace EDDIVAPlugin
 {
@@ -18,6 +21,10 @@ namespace EDDIVAPlugin
         private static Commander Cmdr;
         private static StarSystem CurrentStarSystem;
         private static StarSystem LastStarSystem;
+        private static string CurrentEnvironment = "Normal space"; // We always start in normal space
+
+        private static Thread logWatcherThread;
+        static BlockingCollection<dynamic> LogQueue = new BlockingCollection<dynamic>();
 
         public static string VA_DisplayName()
         {
@@ -59,12 +66,29 @@ namespace EDDIVAPlugin
 
             setPluginStatus(ref textValues, "Operational", null, null);
 
+            // Set up log monitor
+            logWatcherThread = new Thread(new ThreadStart(StartLogMonitor));
+            logWatcherThread.Start();
+
+
+            // Carry out initial population of information
             InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
             InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
         }
 
+        public static void StartLogMonitor()
+        {
+            NetLogMonitor monitor = new NetLogMonitor("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", (result) => LogQueue.Add(result));
+            //NetLogMonitor monitor = new NetLogMonitor("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", (result) => Console.WriteLine(result));
+            monitor.start();
+        }
+
         public static void VA_Exit1(ref Dictionary<string, object> state)
         {
+            if (logWatcherThread != null)
+            {
+                logWatcherThread.Abort();
+            }
         }
 
         public static void VA_Invoke1(String context, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
@@ -80,10 +104,64 @@ namespace EDDIVAPlugin
                 case "system":
                     InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
-                default:
-                    InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                case "log watcher":
+                    InvokeLogWatcher(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
+                default:
+                    setPluginStatus(ref textValues, "Operational", "Unknown context " + context, null);
+                    return;
+            }
+        }
+
+        public static void InvokeLogWatcher(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            try
+            {
+                dynamic entry = LogQueue.Take();
+                switch((string)entry.type)
+                {
+                    case "Location": // Change of location
+                        if (Cmdr != null)
+                        {
+                            string newEnvironment;
+                            // Tidy up the environment string
+                            switch ((string)entry.environment)
+                            {
+                                case "Supercruise":
+                                    newEnvironment = "Supercruise";
+                                    break;
+                                case "NormalSpace":
+                                    newEnvironment = "Normal space";
+                                    break;
+                                default:
+                                    newEnvironment = (string)entry.environment;
+                                    break;
+                            }
+
+                            if ((string)entry.starsystem != Cmdr.StarSystem)
+                            {
+                                // Change of system
+                                setString(ref textValues, "EDDI event", "System change");
+                                Cmdr.StarSystem = (string)entry.starsystem;
+                                setString(ref textValues, "System name", (string)entry.starsystem);
+                            }
+                            else if (newEnvironment != CurrentEnvironment)
+                            {
+                                setString(ref textValues, "EDDI event", "Environment change");
+                                // Change of environment
+                                CurrentEnvironment = newEnvironment;
+                                setString(ref textValues, "Environment", newEnvironment);
+                            }
+                        }
+                        break;
+                    default:
+                        setPluginStatus(ref textValues, "Failed", "Unknown log entry " + entry.type, null);
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                setPluginStatus(ref textValues, "Failed", "Failed to obtain log entry", e);
             }
         }
 
@@ -441,7 +519,7 @@ namespace EDDIVAPlugin
             else
             {
                 setString(ref values, "EDDI error", error);
-                setString(ref values, "EDDI exception", exception.ToString());
+                setString(ref values, "EDDI exception", exception == null ? null : exception.ToString());
             }
         }
 

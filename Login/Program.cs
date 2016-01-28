@@ -16,9 +16,6 @@ namespace EliteDangerousDataProvider
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //NetLogMonitor monitor = new NetLogMonitor("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", (result) => Console.WriteLine(result));
-            //monitor.start();
-
             Credentials Credentials = Credentials.FromFile();
             if (Credentials == null || Credentials.appId == null || Credentials.machineId == null || Credentials.machineToken == null)
             {

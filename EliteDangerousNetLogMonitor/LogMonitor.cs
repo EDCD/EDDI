@@ -32,19 +32,25 @@ namespace EliteDangerousNetLogMonitor
             running = true;
 
             // Start off by moving to the end of the file
+            long lastSize = 0;
             FileInfo fileInfo = FindLatestFile(directory, filter);
-            long lastSize = fileInfo.Length;
+            if (fileInfo != null)
+            {
+                lastSize = fileInfo.Length;
+            }
 
+            // Main loop
             while (running)
             {
                 fileInfo = FindLatestFile(directory, filter);
-                fileInfo.Refresh();
+
                 if (fileInfo == null)
                 {
                     lastSize = 0;
                 }
                 else
                 {
+                    fileInfo.Refresh();
                     long thisSize = fileInfo.Length;
                     long seekPos = 0;
                     int readLen = 0;
