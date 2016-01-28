@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using EliteDangerousCompanionAppService;
 using EliteDangerousNetLogMonitor;
+using EliteDangerousDataDefinitions;
 
 namespace EliteDangerousDataProvider
 {
@@ -23,9 +24,22 @@ namespace EliteDangerousDataProvider
             }
             else
             {
-                Application.Run(new Stage3());
-            }
+                CompanionAppService app = new CompanionAppService(Credentials);
+                Commander Cmdr = app.Profile();
 
+                if (Cmdr == null)
+                {
+                    // Something wrong with the credentials
+                    Credentials.Clear();
+                    Credentials.ToFile();
+                    Application.Run(new Stage1());
+                }
+                else
+                {
+                    // Credentials are good.  Skip straight to stage 3
+                    Application.Run(new Stage3(Cmdr.Name));
+                }
+            }
         }
     }
 }

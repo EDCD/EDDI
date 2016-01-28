@@ -79,8 +79,12 @@ namespace EDDIVAPlugin
 
         public static void StartLogMonitor()
         {
-            NetLogMonitor monitor = new NetLogMonitor("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", (result) => LogQueue.Add(result));
-            monitor.start();
+            string productPath = NetLogMonitor.ObtainDefaultPath();
+            if (productPath != null)
+            {
+                NetLogMonitor monitor = new NetLogMonitor(productPath, (result) => LogQueue.Add(result));
+                monitor.start();
+            }
         }
 
         public static void VA_Exit1(ref Dictionary<string, object> state)
@@ -130,7 +134,7 @@ namespace EDDIVAPlugin
                                 case "Supercruise":
                                     newEnvironment = "Supercruise";
                                     break;
-                                case "NormalSpace":
+                                case "NormalFlight":
                                     newEnvironment = "Normal space";
                                     break;
                                 default:

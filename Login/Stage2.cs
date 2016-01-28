@@ -1,36 +1,42 @@
 ﻿using EliteDangerousCompanionAppService;
+using EliteDangerousDataDefinitions;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EliteDangerousDataProvider
 {
     public partial class Stage2 : Form
     {
-        Credentials credentials;
-        public Stage2(Credentials credentials)
+        Credentials Credentials;
+        public Stage2(Credentials Credentials)
         {
             InitializeComponent();
-            this.credentials = credentials;
+            this.Credentials = Credentials;
         }
 
         private void confirmButton_Click(object sender, EventArgs e)
         {
             string code = codeText.Text;
-            credentials = EliteDangerousCompanionAppService.CompanionAppService.Confirm(credentials, code);
-            if (credentials != null && credentials.appId != null && credentials.machineId != null && credentials.machineToken != null)
+            Credentials = CompanionAppService.Confirm(Credentials, code);
+            if (Credentials != null && Credentials.appId != null && Credentials.machineId != null && Credentials.machineToken != null)
             {
-                credentials.ToFile();
+                Credentials.ToFile();
 
-                Stage3 stage3 = new Stage3();
-                stage3.Show();
-                this.Hide();
+                CompanionAppService app = new CompanionAppService(Credentials);
+                Commander Cmdr = app.Profile();
+
+                if (Cmdr == null)
+                {
+                    MessageBox.Show("There was a problem.  You will need to close and restart this app and attempt to log in again", "Problem detected", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Credentials.Clear();
+                    Credentials.ToFile();
+                }
+                else
+                {
+                    Stage3 stage3 = new Stage3(Cmdr.Name);
+                    stage3.Show();
+                    this.Hide();
+                }
             }
         }
     }

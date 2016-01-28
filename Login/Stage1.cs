@@ -1,12 +1,5 @@
 ﻿using EliteDangerousCompanionAppService;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EliteDangerousDataProvider
@@ -22,7 +15,7 @@ namespace EliteDangerousDataProvider
         {
             string username = emailText.Text;
             string password = passwordText.Text;
-            Credentials credentials = EliteDangerousCompanionAppService.CompanionAppService.Login(username, password);
+            Credentials credentials = CompanionAppService.Login(username, password);
             if (credentials != null && credentials.appId != null && credentials.machineId != null)
             {
                 Stage2 stage2 = new Stage2(credentials);
@@ -32,7 +25,6 @@ namespace EliteDangerousDataProvider
             else
             {
                 MessageBox.Show("There was a problem.  Please check your email address and password and try again", "Problem detected", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
             }
         }
     }

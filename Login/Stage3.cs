@@ -9,31 +9,40 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using EliteDangerousDataDefinitions;
+using System.IO;
+using EliteDangerousNetLogMonitor;
 
 namespace EliteDangerousDataProvider
 {
     public partial class Stage3 : Form
     {
-        public Stage3()
+        string name;
+
+        public Stage3(string name)
         {
             InitializeComponent();
+            this.name = name;
+
+            setTexts();
         }
 
-        private void profileButton_Click(object sender, EventArgs e)
+        private void obtainButton_Click(object sender, EventArgs e)
         {
-            Credentials Credentials = Credentials.FromFile();
-            EliteDangerousCompanionAppService.CompanionAppService app = new EliteDangerousCompanionAppService.CompanionAppService(Credentials);
-            Commander Cmdr = app.Profile();
+            setTexts();
+        }
 
-            if (Cmdr == null)
+        private void setTexts()
+        {
+            List<string> paths = new Finder().GetPathFromProcess();
+            if (paths.Count == 0)
             {
-                MessageBox.Show("There was a problem.  You will need to close and restart this app and attempt to log in again", "Problem detected", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Credentials.Clear();
-                Credentials.ToFile();
+                label1.Text = "Thank you Commander " + name + ".  Please start the Elite: Dangerous game then come back to this screen and hit the \"Recheck\" button";
             }
             else
             {
-                MessageBox.Show("You have successfully logged in Commander " + Cmdr.Name + ", you can now close this app and restart Voice Attack", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                NetLogMonitor.WritePath(paths[0] + "\\Logs");
+                label1.Text = "Thank you Commander " + name + ".  The required details for your game have been stored.  This completes the setup; you can now close this window.";
+                obtainButton.Hide();
             }
         }
     }

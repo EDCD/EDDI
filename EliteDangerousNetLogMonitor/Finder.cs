@@ -23,25 +23,28 @@ namespace EliteDangerousNetLogMonitor
 
         private Timer timer;
 
-        public string[] FindInstallationPaths()
+        public List<string> FindInstallationPaths()
         {
+            List<string> paths = new List<string>();
+
             // if Elite is running, use the process to find the installation path
-            string[] installationPaths = GetPathFromProcess();
-            if (installationPaths != null)
-                return installationPaths;
+            paths = GetPathFromProcess();
+            if (paths.Count > 0)
+            {
+                return paths;
+            }
 
             // if not found in running process, try another way
             string productsPath = FindProductsPath();
-
             if (productsPath != null)
             {
-                return Directory.GetDirectories(productsPath).OrderByDescending(p => new DirectoryInfo(p).LastWriteTime).ToArray();
+                paths.AddRange(Directory.GetDirectories(productsPath).OrderByDescending(p => new DirectoryInfo(p).LastWriteTime).ToArray());
             }
 
-            return new string[0];
+            return paths;
         }
 
-        private string[] GetPathFromProcess()
+        public List<string> GetPathFromProcess()
         {
             var wmiQueryString = "SELECT ExecutablePath FROM Win32_Process WHERE Name LIKE 'elitedangerous%.exe'";
 
@@ -75,7 +78,7 @@ namespace EliteDangerousNetLogMonitor
                     handler(this, new EliteStartedEventArgs(paths[0]));
             }
 
-            return paths.Count == 0 ? null : paths.ToArray();
+            return paths;
         }
 
         private void WaitForProcessStart()
@@ -269,4 +272,13 @@ namespace EliteDangerousNetLogMonitor
         }
     }
 
+    public class EliteLauncherStartedEventArgs : EventArgs
+    {
+        public string Path { get; private set; }
+
+        public EliteLauncherStartedEventArgs(string path)
+        {
+            Path = path;
+        }
+    }
 }

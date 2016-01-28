@@ -2,6 +2,7 @@
 using EDDIVAPlugin;
 using EliteDangerousNetLogMonitor;
 using System;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -11,7 +12,7 @@ namespace Tests
         [TestMethod]
         public void TestFinder()
         {
-            string[] paths = new Finder().FindInstallationPaths();
+            List<string> paths = new Finder().FindInstallationPaths();
             foreach (string path in paths)
             {
                 Console.WriteLine(path);

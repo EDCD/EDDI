@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace EliteDangerousNetLogMonitor
@@ -23,6 +24,29 @@ namespace EliteDangerousNetLogMonitor
                 result.environment = match.Groups[3].Value;
                 callback(result);
             }
+        }
+
+        public static string ObtainDefaultPath()
+        {
+            String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+            Directory.CreateDirectory(dataDir);
+            string filename = dataDir + "\\productpath";
+            try
+            {
+                return File.ReadAllText(filename);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static void WritePath(string path)
+        {
+            String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+            Directory.CreateDirectory(dataDir);
+            string filename = dataDir + "\\productpath";
+            File.WriteAllText(filename, path);
         }
     }
 
