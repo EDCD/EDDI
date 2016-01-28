@@ -1,13 +1,7 @@
 ﻿using EliteDangerousDataDefinitions;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EDDIVAPlugin
 {
@@ -37,10 +31,10 @@ namespace EDDIVAPlugin
                     UPDATE starsystems
                     SET eliteid = @eliteid
                        ,eddbid = @eddbid
-                       ,totalvisits = totalvisits
+                       ,totalvisits = @totalvisits
                        ,lastvisit = @lastvisit
-                       ,previousvisit = previousvisit
-                       ,starsystem = starsystem
+                       ,previousvisit = @previousvisit
+                       ,starsystem = @starsystem
                        ,starsystemlastupdated = @starsystemlastupdated
                     WHERE name = @name";
         private static string SELECT_BY_NAME_SQL = @"
@@ -59,6 +53,7 @@ namespace EDDIVAPlugin
         {
             if (!File.Exists(DbFile)) return null;
 
+            EDDIStarSystem result = null;
             using (var con = SimpleDbConnection())
             {
                 con.Open();
@@ -71,7 +66,7 @@ namespace EDDIVAPlugin
                     {
                         if (rdr.Read())
                         {
-                            EDDIStarSystem result = new EDDIStarSystem();
+                            result = new EDDIStarSystem();
                             if (!rdr.IsDBNull(0)) result.EliteID = rdr.GetInt32(0);
                             if (!rdr.IsDBNull(1)) result.EDDBID = rdr.GetInt32(1);
                             result.Name = rdr.GetString(2);
@@ -80,16 +75,12 @@ namespace EDDIVAPlugin
                             if (!rdr.IsDBNull(5)) result.PreviousVisit = rdr.GetDateTime(5);
                             result.StarSystem = JsonConvert.DeserializeObject<StarSystem>(rdr.GetString(6));
                             result.StarSystemLastUpdated = rdr.GetDateTime(7);
-                            return result;
-                        }
-                        else
-                        {
-                            return null;
                         }
                     }
                 }
                 con.Close();
             }
+            return result;
         }
 
         public void SaveEDDIStarSystem(EDDIStarSystem eddiStarSystem)
@@ -123,12 +114,12 @@ namespace EDDIVAPlugin
                         cmd.Prepare();
                         cmd.Parameters.AddWithValue("@eliteid", eddiStarSystem.EliteID);
                         cmd.Parameters.AddWithValue("@eddbid", eddiStarSystem.EDDBID);
-                        cmd.Parameters.AddWithValue("@name", eddiStarSystem.Name);
                         cmd.Parameters.AddWithValue("@totalvisits", eddiStarSystem.TotalVisits);
                         cmd.Parameters.AddWithValue("@lastvisit", eddiStarSystem.LastVisit);
                         cmd.Parameters.AddWithValue("@previousvisit", eddiStarSystem.PreviousVisit);
-                        cmd.Parameters.AddWithValue("@starsystem", eddiStarSystem.StarSystem);
+                        cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(eddiStarSystem.StarSystem));
                         cmd.Parameters.AddWithValue("@starsystemlastupdated", eddiStarSystem.StarSystemLastUpdated);
+                        cmd.Parameters.AddWithValue("@name", eddiStarSystem.Name);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -149,5 +140,21 @@ namespace EDDIVAPlugin
                 con.Close();
             }
         }
+
+        // Used for debug
+        //private static void logSql(SQLiteCommand cmd)
+        //{
+        //    string query = cmd.CommandText;
+        //    foreach (SQLiteParameter p in cmd.Parameters)
+        //    {
+        //        query = query.Replace(p.ParameterName, p.Value == null ? "null" : p.Value.ToString());
+        //    }
+        //    query = query.Replace("\r\n", " ");
+        //    using (EventLog eventLog = new EventLog("Application"))
+        //    {
+        //        eventLog.Source = "EDDI";
+        //        eventLog.WriteEntry("SQL is " + query, EventLogEntryType.Information);
+        //    }
+        //}
     }
 }

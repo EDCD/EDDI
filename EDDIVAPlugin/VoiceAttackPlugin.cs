@@ -7,6 +7,7 @@ using System.Linq;
 using System.Collections.Concurrent;
 using EliteDangerousNetLogMonitor;
 using System.Threading;
+using System.Diagnostics;
 
 namespace EDDIVAPlugin
 {
@@ -79,7 +80,6 @@ namespace EDDIVAPlugin
         public static void StartLogMonitor()
         {
             NetLogMonitor monitor = new NetLogMonitor("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", (result) => LogQueue.Add(result));
-            //NetLogMonitor monitor = new NetLogMonitor("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", (result) => Console.WriteLine(result));
             monitor.start();
         }
 
@@ -343,22 +343,35 @@ namespace EDDIVAPlugin
 
                 if (CurrentStarSystem == null || Cmdr.StarSystem != CurrentStarSystem.Name)
                 {
-                    // The star system has changed; update the data
+                    // The star system has changed or we're in init; update the data
                     EDDIStarSystem CurrentStarSystemData = starSystemRepository.GetEDDIStarSystem(Cmdr.StarSystem);
                     if (CurrentStarSystemData == null)
                     {
+                        using (EventLog eventLog = new EventLog("Application"))
+                        {
+                            eventLog.Source = "EDDI";
+                            eventLog.WriteEntry("EDDI star system not found; creating", EventLogEntryType.Information);
+                        }
+
                         CurrentStarSystemData = new EDDIStarSystem();
                         CurrentStarSystemData.Name = Cmdr.StarSystem;
                         CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(Cmdr.StarSystem);
                         CurrentStarSystemData.LastVisit = DateTime.Now;
                         CurrentStarSystemData.StarSystemLastUpdated = CurrentStarSystemData.LastVisit;
                         CurrentStarSystemData.TotalVisits = 1;
+                        starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
                     }
                     else
                     {
                         // Only update if we have moved (as opposed to restarted here)
                         if (CurrentStarSystem != null)
                         {
+                            using (EventLog eventLog = new EventLog("Application"))
+                            {
+                                eventLog.Source = "EDDI";
+                                eventLog.WriteEntry("EDDI star system found; updating", EventLogEntryType.Information);
+                            }
+
                             CurrentStarSystemData.PreviousVisit = CurrentStarSystemData.LastVisit;
                             CurrentStarSystemData.LastVisit = DateTime.Now;
                             CurrentStarSystemData.TotalVisits++;
@@ -367,12 +380,8 @@ namespace EDDIVAPlugin
                                 // Data is stale, refetch it
                                 CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(CurrentStarSystemData.Name);
                             }
+                            starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
                         }
-                    }
-
-                    if (CurrentStarSystemData.StarSystem != null)
-                    {
-                        starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
                     }
     
                     StarSystem ThisStarSystem = CurrentStarSystemData.StarSystem;
@@ -500,7 +509,7 @@ namespace EDDIVAPlugin
                 values.Add(key, value);
         }
 
-        private static void setDateTime(ref Dictionary<string, DateTime?> values, string key, DateTime value)
+        private static void setDateTime(ref Dictionary<string, DateTime?> values, string key, DateTime? value)
         {
             if (values.ContainsKey(key))
                 values[key] = value;
@@ -607,6 +616,16 @@ namespace EDDIVAPlugin
                 }
             }
 
+        }
+
+
+        // Debug method to allow manual updating of the system
+        public static void updateSystem(string system)
+        {
+            if (Cmdr != null)
+            {
+                Cmdr.StarSystem = system;
+            }
         }
     }
 }

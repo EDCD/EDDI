@@ -1,9 +1,5 @@
 ﻿using EliteDangerousDataDefinitions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EDDIVAPlugin
 {
@@ -17,7 +13,7 @@ namespace EDDIVAPlugin
         public string Name { get; set; }
         public int TotalVisits { get; set; }
         public DateTime LastVisit { get; set; }
-        public DateTime PreviousVisit { get; set; }
+        public DateTime? PreviousVisit { get; set; }
         public StarSystem StarSystem { get; set; }
         public DateTime StarSystemLastUpdated { get; set; }
     }
