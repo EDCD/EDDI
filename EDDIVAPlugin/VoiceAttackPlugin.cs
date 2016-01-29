@@ -317,7 +317,7 @@ namespace EDDIVAPlugin
                     string varBase = "Stored ship " + currentStoredShip;
                     setString(ref textValues, varBase + " model", StoredShip.Model);
                     setString(ref textValues, varBase + " system", StoredShip.StarSystem);
-                    setString(ref textValues, varBase + " location", StoredShip.Location);
+                    setString(ref textValues, varBase + " station", StoredShip.Station);
                     currentStoredShip++;
                 }
                 setInt(ref intValues, "Stored ships", Cmdr.StoredShips.Count);

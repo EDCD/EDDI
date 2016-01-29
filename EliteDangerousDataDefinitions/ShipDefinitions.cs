@@ -12,10 +12,10 @@ namespace EliteDangerousDataDefinitions
         {
             { 128049267, new Ship("Adder", ShipSize.Small) },
             { 128049363, new Ship("Anaconda", ShipSize.Large) },
-            { 128049303, new Ship("Asp", ShipSize.Medium) },
+            { 128049303, new Ship("Asp Explorer", ShipSize.Medium) },
             { 128672276, new Ship("Asp Scout", ShipSize.Medium) },
-            { 128049279, new Ship("Cobra Mk III", ShipSize.Small) },
-            { 128672262, new Ship("Cobra MkIV", ShipSize.Small) },
+            { 128049279, new Ship("Cobra Mk. III", ShipSize.Small) },
+            { 128672262, new Ship("Cobra Mk. IV", ShipSize.Small) },
             { 128671831, new Ship("Diamondback Explorer", ShipSize.Small) },
             { 128671217, new Ship("Diamondback Scout", ShipSize.Small) },
             { 128049255, new Ship("Eagle", ShipSize.Small) },
@@ -36,8 +36,8 @@ namespace EliteDangerousDataDefinitions
             { 128049285, new Ship("Type-6 Transporter", ShipSize.Medium) },
             { 128049297, new Ship("Type-7 Transporter", ShipSize.Large) },
             { 128049333, new Ship("Type-9 Heavy", ShipSize.Large) },
-            { 128049273, new Ship("Viper", ShipSize.Small) },
-            { 128672255, new Ship("Viper MkIV", ShipSize.Small) },
+            { 128049273, new Ship("Viper Mk. III", ShipSize.Small) },
+            { 128672255, new Ship("Viper Mk. IV", ShipSize.Small) },
             { 128049309, new Ship("Vulture", ShipSize.Small) },
         };
 

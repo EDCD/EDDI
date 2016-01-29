@@ -13,8 +13,8 @@ namespace EDDIVAPlugin
             { "Anaconda", "anaconda" },
             { "Asp Explorer", "asp" },
             { "Asp Scout", "asp_scout" },
-            { "Cobra MkIII", "cobra_mk_iii" },
-            { "Cobra MkIV", "cobra_mk_iv" },
+            { "Cobra Mk. III", "cobra_mk_iii" },
+            { "Cobra Mk. IV", "cobra_mk_iv" },
             { "Imperial Cutter", "imperial_cutter" },
             { "Diamondback Explorer", "diamondback_explorer" },
             { "Diamondback Scout", "diamondback" },
@@ -35,8 +35,8 @@ namespace EDDIVAPlugin
             { "Type-6 Transporter", "type_6_transporter" },
             { "Type-7 Transporter", "type-7_transporter" },
             { "Type-9 Heavy", "type_9_heavy" },
-            { "Viper MkIII", "viper" },
-            { "Viper MkIV", "viper_mk_iv" },
+            { "Viper Mk. III", "viper" },
+            { "Viper Mk. IV", "viper_mk_iv" },
             { "Vulture", "vulture" }
         };
 

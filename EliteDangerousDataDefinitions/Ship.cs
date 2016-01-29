@@ -20,8 +20,8 @@ namespace EliteDangerousDataDefinitions
 
         /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
         public string StarSystem { get; set; }
-        /// <summary>the name of the location in which this ship is stored; null if the commander is in this ship</summary>
-        public string Location { get; set; }
+        /// <summary>the name of the station in which this ship is stored; null if the commander is in this ship</summary>
+        public string Station { get; set; }
 
         public decimal Health { get; set; }
         public Module Bulkheads { get; set; }

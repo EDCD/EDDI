@@ -18,11 +18,11 @@ namespace EliteDangerousCompanionAppService
             { "Anaconda", "Anaconda" },
             { "Asp", "Asp Explorer" },
             { "Asp_Scout", "Asp Scout" },
-            { "CobraMkIII", "Cobra MkIII" },
-            { "CobraMkIV", "Cobra MkIV" },
+            { "CobraMkIII", "Cobra Mk. III" },
+            { "CobraMkIV", "Cobra Mk. IV" },
             { "Cutter", "Imperial Cutter" },
-            { "Diamondback", "Diamondback Scout" },
-            { "DiamondbackXL", "Diamondback Explorer" },
+            { "DiamondBack", "Diamondback Scout" },
+            { "DiamondBackXL", "Diamondback Explorer" },
             { "Eagle", "Eagle" },
             { "Empire_Courier", "Imperial Courier" },
             { "Empire_Eagle", "Imperial Eagle" },
@@ -42,8 +42,8 @@ namespace EliteDangerousCompanionAppService
             { "Type6", "Type-6 Transporter" },
             { "Type7", "Type-7 Transporter" },
             { "Type9", "Type-9 Heavy" },
-            { "Viper", "Viper MkIII" },
-            { "Viper_MkIV", "Viper MkIV" },
+            { "Viper", "Viper Mk. III" },
+            { "Viper_MkIV", "Viper Mk. IV" },
             { "Vulture", "Vulture" }
         };
 
@@ -416,7 +416,7 @@ namespace EliteDangerousCompanionAppService
                     }
 
                     Ship.StarSystem = ship["starsystem"]["name"];
-                    Ship.Location = ship["station"]["name"];
+                    Ship.Station = ship["station"]["name"];
 
                     StoredShips.Add(Ship);
                 }
