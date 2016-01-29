@@ -1,3 +1,6 @@
+#0.7.1
+  * Catch errors when authenticating and obtaining the first profile and display a suitable error message
+
 #0.7.0
 
   * Deprecated int variables "Credits", "Debt", "Ship value", "System population", "Last system population" in favour of decimal values with the same name.  The int variables were in thousands due to int limits and the decimal values are in units.  The int variables will be removed in the next major release

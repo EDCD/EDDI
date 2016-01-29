@@ -401,24 +401,29 @@ namespace EliteDangerousCompanionAppService
 
             foreach (dynamic shipJson in json["ships"])
             {
-                dynamic ship = shipJson.Value;
-
-                Ship Ship = new Ship();
-
-                if (ship["starsystem"] != null)
+                if (shipJson != null)
                 {
-                    // If we have a starsystem it means that the ship is stored
-                    Ship.LocalId = ship["id"];
-                    Ship.Model = ship["name"];
-                    if (shipTranslations.ContainsKey(Ship.Model))
+                    dynamic ship = shipJson.Value;
+                    if (ship != null)
                     {
-                        Ship.Model = shipTranslations[Ship.Model];
+                        Ship Ship = new Ship();
+
+                        if (ship["starsystem"] != null)
+                        {
+                            // If we have a starsystem it means that the ship is stored
+                            Ship.LocalId = ship["id"];
+                            Ship.Model = ship["name"];
+                            if (shipTranslations.ContainsKey(Ship.Model))
+                            {
+                                Ship.Model = shipTranslations[Ship.Model];
+                            }
+
+                            Ship.StarSystem = ship["starsystem"]["name"];
+                            Ship.Station = ship["station"]["name"];
+
+                            StoredShips.Add(Ship);
+                        }
                     }
-
-                    Ship.StarSystem = ship["starsystem"]["name"];
-                    Ship.Station = ship["station"]["name"];
-
-                    StoredShips.Add(Ship);
                 }
             }
 
