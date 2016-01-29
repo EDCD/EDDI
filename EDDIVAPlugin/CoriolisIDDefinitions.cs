@@ -806,6 +806,14 @@ namespace EDDIVAPlugin
             { 955, "tp"},
             { 929, "t1"},
             { 926, "t4"},
+            { 1530, "B6"},
+            { 1531, "B5"},
+            { 1532, "B4"},
+            { 1533, "B3"},
+            { 1534, "B2"},
+            { 1535, "B1"},
+            { 1536, "B0"},
+            { 1537, "B7"},
         };
         public static string FromEDDBID(long eddbid)
         {
