@@ -43,6 +43,7 @@
     <Compile Include="Commander.cs" />
     <Compile Include="Compartment.cs" />
     <Compile Include="Hardpoint.cs" />
+    <Compile Include="Commodity.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="ModuleDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -34,7 +34,7 @@ namespace EDDIVAPlugin
 
         public static string VA_DisplayInfo()
         {
-            return "Elite Dangerous Data Interface\r\nVersion 0.7.0";
+            return "Elite: Dangerous Data Interface\r\nVersion 0.7.0";
         }
 
         public static Guid VA_Id()
