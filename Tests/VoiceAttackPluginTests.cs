@@ -63,5 +63,25 @@ namespace Tests
             Dictionary<string, object> extendedValues = new Dictionary<string, object>();
             VoiceAttackPlugin.VA_Init1(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
         }
+
+        [TestMethod]
+        public void TestTranslateStarSystems()
+        {
+            Assert.AreEqual("Hip 1 2 3 4 5", VATranslations.StarSystem("HIP 12345"));
+            Assert.AreEqual("LHS 1 2 3 4 5", VATranslations.StarSystem("LHS 12345"));
+            Assert.AreEqual("HR 1 2 3 4 5", VATranslations.StarSystem("HR 12345"));
+            Assert.AreEqual("V 1 3 9 7 Orionis", VATranslations.StarSystem("V1397 Orionis"));
+            Assert.AreEqual("2 mass J 2 1 5 4 1 8 7 7 plus 4 7 1 2 0 9 6", VATranslations.StarSystem("2MASS J21541877+4712096"));
+            Assert.AreEqual("CXOU J 0 6 1 7 0 5 point 3 plus 2 2 2 1 2 7", VATranslations.StarSystem("CXOU J061705.3+222127"));
+            Assert.AreEqual("SDSS J 1 4 1 6 plus 1 3 4 8", VATranslations.StarSystem("SDSS J1416+1348"));
+            Assert.AreEqual("CFBDSIR 1 4 5 8 plus 1 0 B", VATranslations.StarSystem("CFBDSIR 1458+10 B"));
+            Assert.AreEqual("BD plus 1 8 7 1 1", VATranslations.StarSystem("BD+18 711"));
+            Assert.AreEqual("UGCS J 1 2 2 0 3 1 point 5 6 plus 2 4 3 6 1 4 point 8", VATranslations.StarSystem("UGCS J122031.56+243614.8"));
+            Assert.AreEqual("XTE J 1 7 4 8 minus 2 8 8", VATranslations.StarSystem("XTE J1748-288"));
+            Assert.AreEqual("XTE PSR J 1 8 1 0 minus 1 9 7", VATranslations.StarSystem("XTE PSR J1810-197"));
+            Assert.AreEqual("Gliese 3 9 8 point 2", VATranslations.StarSystem("Gliese 398.2"));
+            Assert.AreEqual("", VATranslations.StarSystem(""));
+            Assert.AreEqual("", VATranslations.StarSystem(""));
+        }
     }
 }

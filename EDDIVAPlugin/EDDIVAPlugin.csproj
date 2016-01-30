@@ -73,6 +73,7 @@
     <Compile Include="EDDIStarSystemSqLiteRepository.cs" />
     <Compile Include="LZString.cs" />
     <Compile Include="SqlLiteBaseRepository.cs" />
+    <Compile Include="VATranslations.cs" />
     <Compile Include="VoiceAttackPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

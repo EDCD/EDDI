@@ -275,7 +275,7 @@ namespace EliteDangerousCompanionAppService
             Commander.ExploreRank = Commander.exploreRanks[Commander.ExploreRating];
 
             Commander.EmpireRating = (int)json["commander"]["rank"]["empire"];
-            Commander.EmpireRank = Commander.federationRanks[(int)Commander.EmpireRating];
+            Commander.EmpireRank = Commander.empireRanks[(int)Commander.EmpireRating];
             Commander.FederationRating = (int)json["commander"]["rank"]["federation"];
             Commander.FederationRank = Commander.federationRanks[(int)Commander.FederationRating];
 
