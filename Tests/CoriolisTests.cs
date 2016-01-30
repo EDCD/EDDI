@@ -2,6 +2,7 @@
 using EDDIVAPlugin;
 using EliteDangerousNetLogMonitor;
 using System.IO;
+using System;
 
 namespace Tests
 {
@@ -39,6 +40,14 @@ namespace Tests
             System.Threading.Thread.Sleep(180000);
             monitor.stop();
             //NetLogMonitor.Monitor("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", null);
+        }
+
+        [TestMethod]
+        public void TestUri()
+        {
+            string data = "BZ+24 123";
+            string uriData = Uri.EscapeDataString(data);
+            Assert.AreEqual("BZ%2B24%20123", uriData);
         }
     }
 }

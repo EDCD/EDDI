@@ -1,5 +1,6 @@
 ﻿using EliteDangerousDataDefinitions;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Net;
 
@@ -11,7 +12,7 @@ namespace EliteDangerousDataProviderService
         public static StarSystem GetSystemData(string system)
         {
             var client = new WebClient();
-            var response = client.DownloadString("http://api.eddp.co:16161/systems/" + system);
+            var response = client.DownloadString("http://api.eddp.co:16161/systems/" + Uri.EscapeDataString(system));
             return StarSystemFromEDDP(response);
         }
 

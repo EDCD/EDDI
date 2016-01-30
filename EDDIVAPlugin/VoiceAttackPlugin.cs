@@ -576,6 +576,11 @@ namespace EDDIVAPlugin
                 return null;
             }
 
+            if (value == 0)
+            {
+                return "zero";
+            }
+
             int number;
             int nextDigit;
             string order;
