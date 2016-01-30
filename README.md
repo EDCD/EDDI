@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface VoiceAttack plugin
 
-EDDI makes available a large number of values related to a commander's status, ship and system.  These give the basis for providing a rich VoiceAttack experience.  The available values are as follows:
+EDDI makes available a large number of values related to a commander's status, ship and system.  These give the basis for providing a rich VoiceAttack experience.  It is not in itself a complete VoiceAttack profile, similar to that provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.  The available values are as follows:
 
 ###Commander values
 
@@ -151,6 +151,8 @@ EDDI makes available a large number of values related to a commander's status, s
 
 Download the EDDI ZIP file from http://www.mcdee.net/elite/EDDI.zip or compile it from the sources at https://github.com/cmdrmcdonald/EliteDangerousDataProvider  The files need to be installed in the 'Apps' directory within the VoiceAttack program directory (usually installed at c:\program files (x86)\VoiceAttack).  The resultant directory structure, assuming the standard directories, should be c:\program files (x86)\VoiceAttack\Apps\EDDI.
 
+You must use the latest VoiceAttack beta for EDDI to operate.  At current this is version 1.5.8.14
+
 ##Upgrading
 
 If you are upgrading from an earlier version of EDDI it is recommended that you remove the existing installation before installing the new one.  This ensures that there is a clean isntallation and reduces the chances of problems occurring.
@@ -160,6 +162,15 @@ When upgrading EDDI you should overwrite all of the existing EDDI actions in Voi
 ##Configuring
 
 To configure EDDI run the 'login.exe' file in the plugin directory.  This will ask for your username and password, and after that the confirmation token sent to you from Frontier via email.  These are used to authenticate the user against the Frontier API servers from where the majority of the information is gathered.  It will also require details of the path to your Elite installation, which it will obtain from the running application.
+
+You will also need to configure verbose net logs for Elite: Dangerous to ensure that you receive system change messages.  To do so you need to find the AppConfig.xml file in your Elite product installation and ensure that the network section of it looks like this:
+
+    <Network
+     Port="0"
+     upnpenabled="1"
+     LogFile="netLog"
+     DatestampLog="1"
+     VerboseLogging="1">
 
 Once this is complete the final step is to configure VoiceAttack itself.  To do this you need to start VoiceAttack and ensure that 'Enable Plugins' is checked in the settings.  You also need to import the EDDI profile found in the plugin directory.  Finally, you need to edit the profile to set ((EDDI: event loop)) to execute when the profile is loaded.
 
