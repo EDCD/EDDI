@@ -148,6 +148,7 @@ namespace EDDIVAPlugin
                                 setString(ref textValues, "EDDI event", "System change");
                                 Cmdr.StarSystem = (string)entry.starsystem;
                                 setString(ref textValues, "System name", (string)entry.starsystem);
+                                setString(ref textValues, "System name (spoken)", VATranslations.StarSystem((string)entry.starsystem));
                             }
                             else if (newEnvironment != CurrentEnvironment)
                             {
@@ -217,22 +218,26 @@ namespace EDDIVAPlugin
                 setString(ref textValues, "Empire rank", Cmdr.EmpireRank);
                 setInt(ref intValues, "Federation rating", Cmdr.FederationRating);
                 setString(ref textValues, "Federation rank", Cmdr.FederationRank);
-                setInt(ref intValues, "Credits", (int)(Cmdr.Credits / 1000));
+                setInt(ref intValues, "Credits", (int)(Cmdr.Credits / 1000)); // TODO remove in next major release
                 setDecimal(ref decimalValues, "Credits", (decimal)Cmdr.Credits);
-                setString(ref textValues, "Credits", humanize(Cmdr.Credits));
-                setInt(ref intValues, "Debt", (int)(Cmdr.Debt / 1000));
+                setString(ref textValues, "Credits", humanize(Cmdr.Credits)); // TODO remove in next major release
+                setString(ref textValues, "Credits (spoken)", humanize(Cmdr.Credits));
+                setInt(ref intValues, "Debt", (int)(Cmdr.Debt / 1000)); // TODO remove in next major release
                 setDecimal(ref decimalValues, "Debt", (decimal)Cmdr.Debt);
-                setString(ref textValues, "Debt", humanize(Cmdr.Debt));
+                setString(ref textValues, "Debt", humanize(Cmdr.Debt)); // TODO remove in next major release
+                setString(ref textValues, "Debt (spoken)", humanize(Cmdr.Debt));
 
 
                 //
                 // Ship data
                 //
                 setString(ref textValues, "Ship model", Cmdr.Ship.Model);
+                setString(ref textValues, "Ship model (spoken)", VATranslations.ShipModel(Cmdr.Ship.Model));
                 setString(ref textValues, "Ship size", Cmdr.Ship.Size.ToString());
-                setInt(ref intValues, "Ship value", (int)(Cmdr.Ship.Value / 1000));
+                setInt(ref intValues, "Ship value", (int)(Cmdr.Ship.Value / 1000)); // TODO remove in next major release
                 setDecimal(ref decimalValues, "Ship value", (decimal)Cmdr.Ship.Value);
-                setString(ref textValues, "Ship value", humanize(Cmdr.Ship.Value));
+                setString(ref textValues, "Ship value", humanize(Cmdr.Ship.Value)); // TODO remove in next major release
+                setString(ref textValues, "Ship value (spoken)", humanize(Cmdr.Ship.Value));
                 setDecimal(ref decimalValues, "Ship health", Cmdr.Ship.Health);
                 setInt(ref intValues, "Ship cargo capacity", Cmdr.Ship.CargoCapacity);
                 setInt(ref intValues, "Ship cargo carried", Cmdr.Ship.CargoCarried);
@@ -353,7 +358,8 @@ namespace EDDIVAPlugin
                     if (Module.Cost < existing.Cost)
                     {
                         // And it's cheaper
-                        setString(ref textValues, "Ship " + name + " station discount", humanize(existing.Cost - Module.Cost));
+                        setString(ref textValues, "Ship " + name + " station discount", humanize(existing.Cost - Module.Cost)); // TODO remove in next major release
+                        setString(ref textValues, "Ship " + name + " station discount (spoken)", humanize(existing.Cost - Module.Cost));
                     }
                     return;
                 }
@@ -384,12 +390,6 @@ namespace EDDIVAPlugin
                     EDDIStarSystem CurrentStarSystemData = starSystemRepository.GetEDDIStarSystem(Cmdr.StarSystem);
                     if (CurrentStarSystemData == null)
                     {
-                        using (EventLog eventLog = new EventLog("Application"))
-                        {
-                            eventLog.Source = "EDDI";
-                            eventLog.WriteEntry("EDDI star system not found; creating", EventLogEntryType.Information);
-                        }
-
                         CurrentStarSystemData = new EDDIStarSystem();
                         CurrentStarSystemData.Name = Cmdr.StarSystem;
                         CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(Cmdr.StarSystem);
@@ -403,12 +403,6 @@ namespace EDDIVAPlugin
                         // Only update if we have moved (as opposed to restarted here)
                         if (CurrentStarSystem != null)
                         {
-                            using (EventLog eventLog = new EventLog("Application"))
-                            {
-                                eventLog.Source = "EDDI";
-                                eventLog.WriteEntry("EDDI star system found; updating", EventLogEntryType.Information);
-                            }
-
                             CurrentStarSystemData.PreviousVisit = CurrentStarSystemData.LastVisit;
                             CurrentStarSystemData.LastVisit = DateTime.Now;
                             CurrentStarSystemData.TotalVisits++;
@@ -426,11 +420,13 @@ namespace EDDIVAPlugin
                     CurrentStarSystem = ThisStarSystem;
 
                     setString(ref textValues, "System name", CurrentStarSystem.Name);
+                    setString(ref textValues, "System name (spoken)", VATranslations.StarSystem(CurrentStarSystem.Name));
                     setInt(ref intValues, "System visits", CurrentStarSystemData.TotalVisits);
                     setDateTime(ref dateTimeValues, "System previous visit", CurrentStarSystemData.PreviousVisit);
-                    setInt(ref intValues, "System population", (int)(CurrentStarSystem.Population / 1000));
+                    setInt(ref intValues, "System population", (int)(CurrentStarSystem.Population / 1000));  // TODO remove in next major release
                     setDecimal(ref decimalValues, "System population", (decimal)CurrentStarSystem.Population);
-                    setString(ref textValues, "System population", humanize(CurrentStarSystem.Population));
+                    setString(ref textValues, "System population", humanize(CurrentStarSystem.Population)); // TODO remove in next major release
+                    setString(ref textValues, "System population (spoken)", humanize(CurrentStarSystem.Population));
                     setString(ref textValues, "System allegiance", CurrentStarSystem.Allegiance);
                     setString(ref textValues, "System government", CurrentStarSystem.Government);
                     setString(ref textValues, "System faction", CurrentStarSystem.Faction);
@@ -438,6 +434,7 @@ namespace EDDIVAPlugin
                     setString(ref textValues, "System state", CurrentStarSystem.State);
                     setString(ref textValues, "System security", CurrentStarSystem.Security);
                     setString(ref textValues, "System power", CurrentStarSystem.Power);
+                    setString(ref textValues, "System power (spoken)", VATranslations.Power(CurrentStarSystem.Power));
                     setString(ref textValues, "System power state", CurrentStarSystem.PowerState);
 
                     setDecimal(ref decimalValues, "System X", CurrentStarSystem.X);
@@ -471,9 +468,11 @@ namespace EDDIVAPlugin
                     if (LastStarSystem != null)
                     {
                         setString(ref textValues, "Last system name", LastStarSystem.Name);
-                        setInt(ref intValues, "Last system population", (int)(LastStarSystem.Population / 1000));
+                        setString(ref textValues, "Last system name (spoken)", VATranslations.StarSystem(LastStarSystem.Name));
+                        setInt(ref intValues, "Last system population", (int)(LastStarSystem.Population / 1000));  // TODO remove in next major release
                         setDecimal(ref decimalValues, "Last system population", (decimal)LastStarSystem.Population);
-                        setString(ref textValues, "Last system population", humanize(LastStarSystem.Population));
+                        setString(ref textValues, "Last system population", humanize(LastStarSystem.Population)); // TODO remove in next major release
+                        setString(ref textValues, "Last system population (spoken)", humanize(LastStarSystem.Population));
                         setString(ref textValues, "Last system allegiance", LastStarSystem.Allegiance);
                         setString(ref textValues, "Last system government", LastStarSystem.Government);
                         setString(ref textValues, "Last system faction", LastStarSystem.Faction);
@@ -481,6 +480,7 @@ namespace EDDIVAPlugin
                         setString(ref textValues, "Last system state", LastStarSystem.State);
                         setString(ref textValues, "Last system security", LastStarSystem.Security);
                         setString(ref textValues, "Last system power", LastStarSystem.Power);
+                        setString(ref textValues, "Last system power (spoken)", VATranslations.Power(LastStarSystem.Power));
                         setString(ref textValues, "Last system power state", LastStarSystem.PowerState);
 
                         setDecimal(ref decimalValues, "Last system X", LastStarSystem.X);

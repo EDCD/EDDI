@@ -17,33 +17,34 @@ namespace EliteDangerousDataProvider
         private void confirmButton_Click(object sender, EventArgs e)
         {
             string code = codeText.Text;
-            Credentials = CompanionAppService.Confirm(Credentials, code);
-            if (Credentials != null && Credentials.appId != null && Credentials.machineId != null && Credentials.machineToken != null)
+            try
             {
+                Credentials = CompanionAppService.Confirm(Credentials, code);
                 Credentials.ToFile();
-
                 CompanionAppService app = new CompanionAppService(Credentials);
-                try
-                {
-                    Commander Cmdr = app.Profile();
-                    if (Cmdr == null)
-                    {
-                        MessageBox.Show("There was a problem.  You will need to close and restart this app and attempt to log in again", "Problem detected", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        Credentials.Clear();
-                        Credentials.ToFile();
-                    }
-                    else
-                    {
-                        Stage3 stage3 = new Stage3(Cmdr.Name);
-                        stage3.Show();
-                        this.Hide();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("There was a problem with your profile.  Please report the below error to github.com/cmdrmcdonald/EliteDangerousDataProvider/issues\r\n" + ex.StackTrace);
-                }
+                Commander Cmdr = app.Profile();
+                Stage3 stage3 = new Stage3(Cmdr.Name);
+                stage3.Show();
+                this.Hide();
 
+                }
+                catch (EliteDangerousCompanionAppAuthenticationException ex)
+            {
+                Credentials.Clear();
+                Credentials.ToFile();
+                errorLabel.Text = ex.Message + "\r\nPlease restart this application to re-authenticate";
+            }
+            catch (EliteDangerousCompanionAppErrorException ex)
+            {
+                Credentials.Clear();
+                Credentials.ToFile();
+                errorLabel.Text = ex.Message + "\r\nPlease restart this application to re-authenticate";
+            }
+            catch (Exception ex)
+            {
+                Credentials.Clear();
+                Credentials.ToFile();
+                errorLabel.Text = "Unexpected problem\r\nPlease report this at http://github.com/CmdrMcDonald/EliteDangerousDataProvider/issues\r\n" + ex.Message + "\r\nPlease restart this application to re-authenticate";
             }
         }
     }

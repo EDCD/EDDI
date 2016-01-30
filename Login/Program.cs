@@ -25,7 +25,15 @@ namespace EliteDangerousDataProvider
             else
             {
                 CompanionAppService app = new CompanionAppService(Credentials);
-                Commander Cmdr = app.Profile();
+                Commander Cmdr;
+                try
+                {
+                    Cmdr = app.Profile();
+                }
+                catch (Exception e)
+                {
+                    Cmdr = null;
+                }
 
                 if (Cmdr == null)
                 {

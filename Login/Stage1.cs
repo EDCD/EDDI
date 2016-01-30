@@ -15,16 +15,24 @@ namespace EliteDangerousDataProvider
         {
             string username = emailText.Text;
             string password = passwordText.Text;
-            Credentials credentials = CompanionAppService.Login(username, password);
-            if (credentials != null && credentials.appId != null && credentials.machineId != null)
+            try
             {
+                Credentials credentials = CompanionAppService.Login(username, password);
                 Stage2 stage2 = new Stage2(credentials);
                 stage2.Show();
                 this.Hide();
             }
-            else
+            catch (EliteDangerousCompanionAppAuthenticationException ex)
             {
-                MessageBox.Show("There was a problem.  Please check your email address and password and try again", "Problem detected", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                errorLabel.Text = ex.Message;
+            }
+            catch (EliteDangerousCompanionAppErrorException ex)
+            {
+                errorLabel.Text = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                errorLabel.Text = "Unexpected problem\r\nPlease report this at http://github.com/CmdrMcDonald/EliteDangerousDataProvider/issues\r\n" + ex;
             }
         }
     }

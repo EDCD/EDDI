@@ -46,6 +46,9 @@
   <ItemGroup>
     <Compile Include="CompanionAppService.cs" />
     <Compile Include="Credentials.cs" />
+    <Compile Include="EliteDangerousCompanionAppErrorException.cs" />
+    <Compile Include="EliteDangerousCompanionAppAuthenticationException.cs" />
+    <Compile Include="EliteDangerousCompanionAppException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

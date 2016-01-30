@@ -76,10 +76,20 @@ namespace EliteDangerousCompanionAppService
             dataStream.Close();
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            // A good response is a redirect status code
-            if ((int)response.StatusCode < 300 || (int)response.StatusCode > 399)
+            if ((int)response.StatusCode == 200)
             {
-                throw new Exception();
+                // This means that the username or password was incorrect (yes, really)
+                throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
+            }
+            else if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
+            {
+                // Problem with the service
+                throw new EliteDangerousCompanionAppAuthenticationException("There is a problem with the Elite: Dangerous servers; please try again later");
+            }
+            else if ((int)response.StatusCode < 300 || (int)response.StatusCode > 399)
+            {
+                // We were expecting a redirect to the confirmation page and didn't get it; complain
+                throw new EliteDangerousCompanionAppErrorException("Error code " + response.StatusCode);
             }
 
             // Obtain the cookies from the raw information available to us
@@ -105,6 +115,17 @@ namespace EliteDangerousCompanionAppService
                     credentials.machineToken = machineTokenMatch.Groups[1].Value;
                 }
             }
+
+            // At this stage we should have the CompanionApp and mid values
+            if (credentials.appId == null)
+            {
+                throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing companion app ID");
+            }
+            if (credentials.machineId == null)
+            {
+                throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing machine ID");
+            }
+
             return credentials;
         }
 
@@ -130,10 +151,20 @@ namespace EliteDangerousCompanionAppService
             dataStream.Close();
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            // A good response is a found or a redirect
-            if ((int)response.StatusCode < 200 || (int)response.StatusCode > 399)
+            if ((int)response.StatusCode == 200)
             {
-                throw new Exception();
+                // This means that the username or password was incorrect (yes, really)
+                throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect");
+            }
+            else if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
+            {
+                // Problem with the service
+                throw new EliteDangerousCompanionAppAuthenticationException("There is a problem with the Elite: Dangerous servers; please try again later");
+            }
+            else if ((int)response.StatusCode < 300 || (int)response.StatusCode > 399)
+            {
+                // We were expecting a redirect to the confirmation page and didn't get it; complain
+                throw new EliteDangerousCompanionAppErrorException("Error code " + response.StatusCode);
             }
 
             // Refresh the cookies from the raw information available to us
@@ -160,6 +191,20 @@ namespace EliteDangerousCompanionAppService
                 }
             }
 
+            // At this stage we should have the CompanionApp, mid and mtk values
+            if (credentials.appId == null)
+            {
+                throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing companion app ID");
+            }
+            if (credentials.machineId == null)
+            {
+                throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing machine ID");
+            }
+            if (credentials.machineToken == null)
+            {
+                throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing machine token");
+            }
+
             return credentials;
         }
 
@@ -176,10 +221,20 @@ namespace EliteDangerousCompanionAppService
             request.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257";
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            // A good response is a found
+            if ((int)response.StatusCode >= 300 && (int)response.StatusCode < 400)
+            {
+                // Redirect means the user needs to log in again
+                throw new EliteDangerousCompanionAppAuthenticationException("You need to re-run the configuration application");
+            }
+            if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
+            {
+                // Error probably means that the service is down
+                throw new EliteDangerousCompanionAppErrorException("Elite: Dangerous service is down; please try later");
+            }
             if ((int)response.StatusCode < 200 || (int)response.StatusCode > 299)
             {
-                throw new Exception();
+                // Some other generic problem
+                throw new EliteDangerousCompanionAppException("Error code " + response.StatusCode);
             }
 
             // Refresh the cookies from the raw information available to us

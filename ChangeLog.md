@@ -1,5 +1,8 @@
 #0.7.1
+  * Fix issue where Empire rating was showing incorrectly with Federation names
   * Catch errors when authenticating and obtaining the first profile and display a suitable error message
+  * Added text variables "Ship model (spoken)", "System name (spoken)", "System power (spoken)", "Last system name (spoken)" and "Last system power (spoken)" to provide values that fit the text-to-speech engine
+  * Renamed string variables "Credits", "Debt", "Ship value", "System population", "Last system population", "Ship <module> station discount" to have the " (spoken)" suffix.  The old names of the variables will be removed in the next major release.
 
 #0.7.0
 

@@ -10,6 +10,24 @@ namespace EDDIVAPlugin
     /// <summary>Translations for VoiceAttack</summary>
     public class VATranslations
     {
+        /// <summary>Fix up ship models</summary>
+        public static String ShipModel(string model)
+        {
+            switch(model)
+            {
+                case "Cobra Mk. III":
+                    return "Cobra Mark 3";
+                case "Cobra Mk. IV":
+                    return "Cobra Mark 4";
+                case "Viper Mk. III":
+                    return "Viper Mark 3";
+                case "Viper Mk. IV":
+                    return "Viper Mark 4";
+                default:
+                    return model;
+            }
+        }
+
         /// <summary>Fix up power names</summary>
         public static string Power(string power)
         {
@@ -32,83 +50,88 @@ namespace EDDIVAPlugin
             }
         }
 
-        // DIGIT matches a digit with a following digit, plus or minus sign, or period
-        private static Regex DIGIT = new Regex("([0-9])(?=[0-9+-\\.])");
-        /// <summary>Fix up stars ystem names</summary>
+        private static Regex DIGITS = new Regex(@"\d{3,}");
+        private static Regex DECIMAL_DIGITS = new Regex(@"( point )(\d{2,})");
+        // Regular expression to locate generated star systems
+        private static Regex SECTOR = new Regex("(.*) ([A-Za-z][A-Za-z]-[A-Za-z] .*)");
+        /// <summary>Fix up star system names</summary>
         public static string StarSystem(string starSystem)
         {
+            // Common star catalogues
             if (starSystem.StartsWith("HIP "))
             {
-                return DIGIT.Replace(starSystem.Replace("HIP ", "Hip "), "$1 ");
+                starSystem = starSystem.Replace("HIP ", "Hip ");
             }
-            if (starSystem.StartsWith("L ") ||
-                starSystem.StartsWith("LFT ") ||
-                starSystem.StartsWith("LHS ") ||
-                starSystem.StartsWith("LTT ") ||
-                starSystem.StartsWith("NLTT ") ||
-                starSystem.StartsWith("LPM ") ||
-                starSystem.StartsWith("PPM ") ||
-                starSystem.StartsWith("ADS ")                 )
+            if (starSystem.StartsWith("L ")
+                || starSystem.StartsWith("LFT ")
+                || starSystem.StartsWith("LHS ")
+                || starSystem.StartsWith("LTT ")
+                || starSystem.StartsWith("NLTT ")
+                || starSystem.StartsWith("LPM ")
+                || starSystem.StartsWith("PPM ")
+                || starSystem.StartsWith("ADS ")
+                || starSystem.StartsWith("HR ")
+                || starSystem.StartsWith("HD ")
+                )
             {
-                return DIGIT.Replace(starSystem, "$1 ").Replace("-", "dash ");
+                starSystem = starSystem.Replace("-", "dash ");
             }
             if (starSystem.StartsWith("Gliese "))
             {
-                return DIGIT.Replace(starSystem, "$1 ").Replace(".", "point ");
+                starSystem = starSystem.Replace(".", " point ");
             }
-            if (starSystem.StartsWith("WISE "))
+
+            // Generated star systems
+            if (SECTOR.IsMatch(starSystem))
             {
-                return DIGIT.Replace(starSystem.Replace("WISE ", "Wise "), "$1 ");
+                // Need to handle the pieces before and after the sector marker separately
+                Match Match = SECTOR.Match(starSystem);
+
+                // Fix common names
+                string firstPiece = Match.Groups[1].Value
+                    .Replace("Col ", "Coll ")
+                    .Replace("R CrA ", "R CRA ")
+                    .Replace("Tr ", "TR ")
+                    .Replace("Skull and Crossbones Neb. ", "Skull and Crossbones ")
+                    .Replace("(", "").Replace(")", "");
+
+                string secondPiece = Match.Groups[2].Value.Replace("-", " dash ");
+
+                starSystem = firstPiece + " " + secondPiece;
             }
-            if (starSystem.StartsWith("2MASS J"))
+
+            // Star systems with +/- (and sometimes .)
+            if (starSystem.StartsWith("2MASS ")
+                || starSystem.StartsWith("AC ")
+                || starSystem.StartsWith("AG") // Note no space
+                || starSystem.StartsWith("BD")
+                || starSystem.StartsWith("CFBDSIR ")
+                || starSystem.StartsWith("CXOONC ")
+                || starSystem.StartsWith("CXOU ")
+                || starSystem.StartsWith("CSI") // Note no space
+                || starSystem.StartsWith("Csi") // Note no space
+                || starSystem.StartsWith("IDS ")
+                || starSystem.StartsWith("LF ")
+                || starSystem.StartsWith("MJD95 ")
+                || starSystem.StartsWith("SDSS ")
+                || starSystem.StartsWith("UGCS ")
+                || starSystem.StartsWith("WISE ")
+                || starSystem.StartsWith("XTE ")
+                )
             {
-                return DIGIT.Replace(starSystem.Replace("2MASS J", "2 mass J "), "$1 ").Replace("+", "plus ").Replace("-", "minus ");
+                starSystem = starSystem.Replace("Csi ", "CSI ")
+                                       .Replace("WISE ", "Wise ")
+                                       .Replace("2MASS ", "2 mass ")
+                                       .Replace("+", " plus ")
+                                       .Replace("-", " minus ")
+                                       .Replace(".", " point ");
             }
-            if (starSystem.StartsWith("2MASS"))
-            {
-                return DIGIT.Replace(starSystem.Replace("2MASS", "2 mass"), "$1 ").Replace("+", "plus ").Replace("-", "minus ");
-            }
-            if (starSystem.StartsWith("CXOU J"))
-            {
-                return DIGIT.Replace(starSystem.Replace("CXOU J", "CXOU J "), "$1 ").Replace("+", "plus ").Replace("-", "minus ").Replace(".", "point ");
-            }
-            if (starSystem.StartsWith("SDSS J"))
-            {
-                return DIGIT.Replace(starSystem.Replace("SDSS J", "SDSS J "), "$1 ").Replace("+", "plus ").Replace("-", "minus ");
-            }
-            if (starSystem.StartsWith("UGCS J"))
-            {
-                return DIGIT.Replace(starSystem.Replace("UGCS J", "UGCS J "), "$1 ").Replace("+", "plus ").Replace("-", "minus ").Replace(".", "point ");
-            }
-            if (starSystem.StartsWith("XTE J"))
-            {
-                return DIGIT.Replace(starSystem.Replace("XTE J", "XTE J "), "$1 ").Replace("+", "plus ").Replace("-", "minus ").Replace(".", "point ");
-            }
-            if (starSystem.StartsWith("XTE PSR J"))
-            {
-                return DIGIT.Replace(starSystem.Replace("XTE PSR J", "XTE PSR J "), "$1 ").Replace("+", "plus ").Replace("-", "minus ").Replace(".", "point ");
-            }
-            if (starSystem.StartsWith("BD"))
-            {
-                return DIGIT.Replace(starSystem.Replace("BD+", "BD plus ").Replace("BD-", "BD minus "), "$1 ").Replace("+", "plus ").Replace("-", "minus ");
-            }
-            if (starSystem.StartsWith("LHS ") ||
-                starSystem.StartsWith("HR ") ||
-                starSystem.StartsWith("HD ") ||
-                starSystem.StartsWith("AC +") ||
-                starSystem.StartsWith("AG+") ||
-                starSystem.StartsWith("CFBDSIR") ||
-                starSystem.StartsWith("CSI") ||
-                starSystem.ToUpper().StartsWith("CSI"))
-            {
-                // Star catalogues that use + and - as plus and minus
-                return DIGIT.Replace(starSystem.ToUpper(), "$1 ").Replace("+", "plus ").Replace("-", "minus ");
-            }
-            if (Regex.IsMatch(starSystem, "^V[0-9]"))
-            {
-                return DIGIT.Replace(starSystem.Replace("V", "V "), "$1 ").Trim();
-            }
-            return starSystem;
+
+            // Fix up digit strings.  
+            // Any digits after a decimal point are broken in to individual digits
+            starSystem = DECIMAL_DIGITS.Replace(starSystem, match => match.Groups[1].Value + string.Join<char>(" ", match.Groups[2].Value));
+            // Any string of more than two digits is broken up in to individual digits
+            return DIGITS.Replace(starSystem, match => string.Join<char>(" ", match.Value));
         }
     }
 }

@@ -22,7 +22,8 @@ EDDI makes available a large number of values related to a commander's status, s
 
 ###Ship values
 
-  * Ship model (text): the model of the ship (e.g. "Python", "Fer-de-Lance")
+  * Ship model (text): the model of the ship (e.g. "Cobra Mk", "Fer-de-Lance")
+  * Ship model (spoken) (text): the model of the ship as would be spoken (e.g. "Cobra Mark 4")
   * Ship size (text): the size of the ship (Small, Medium, or Large)
   * Ship value (decimal): the replacement cost of the ship plus modules
   * Ship value (text): the replacement cost of the ship plus modules as would be spoken
@@ -72,6 +73,7 @@ EDDI makes available a large number of values related to a commander's status, s
 ###Current system values
 
   * System name (text): the name of the system
+  * System name (spoken) (text): the name of the system as would be spoken
   * System visits (int): the number of times the commander has visited the system (whilst the plugin has been active)
   * System previous visit (datetime): the last time the commander visited the system (empty if this is their first visit)
   * System population (decimal): the population of the system
@@ -82,7 +84,8 @@ EDDI makes available a large number of values related to a commander's status, s
   * System primary economy (text): the primary economy of the system (e.g. "Industrial")
   * System state (text): the overall state of the system (e.g. "Boom")
   * System security (text): the security level in the system ("High", "Medium", "Low", "None" or empty)
-  * System power (text): the name of the power that controls the system (e.g. "Felicia Winters")
+  * System power (text): the name of the power that controls the system (e.g. "Aisling Duval")
+  * System power (spoken) (text): the name of the power that controls the system as would be spoken (e.g. "Ashling Du-val")
   * System power state (text): the state of the power in the system (e.g. "Expansion")
   * System rank (text): the rank of the Commander in the system (e.g. "Duke" if an Empire system, "Admiral" if a Federation system)
   * System X (decimal) the EDDB X co-ordinate of the system
@@ -98,6 +101,7 @@ EDDI makes available a large number of values related to a commander's status, s
 ###Last system values
 
   * Last system name (text): the name of the last system
+  * Last system name (spoken) (text): the name of the last system as would be spoken
   * Last system visits (int): the number of times the commander has visited the last system (whilst the plugin has been active)
   * Last system previous visit (datetime): the last time the commander visited the last system (empty if this is their first visit)
   * Last system population (decimal): the population of the last system
@@ -109,6 +113,7 @@ EDDI makes available a large number of values related to a commander's status, s
   * Last system state (text): the overall state of the last system (e.g. "Boom")
   * Last system security (text): the security level in the last system ("High", "Medium", "Low", "None" or empty)
   * Last system power (text): the name of the power that controls the last system (e.g. "Felicia Winters")
+  * Last system power (spoken) (text): the name of the power that controls the last system as would be spoken
   * Last system power state (text): the state of the power in the last system (e.g. "Expansion")
   * Last system rank (text): the rank of the Commander in the last system (e.g. "Duke" if an Empire system, "Admiral" if a Federation system)
   * Last system X (decimal) the EDDB X co-ordinate of the last system
@@ -118,19 +123,19 @@ EDDI makes available a large number of values related to a commander's status, s
 ###Current station values
 
   * Ship bulkheads station cost (decimal): the purchase cost of the bulkheads at the station (not set if not for sale at the station)
-  * Ship bulkheads station discount (text): the number of credits discount of the bulkheads over those currently fitted as would be spoken (not set if no additional discount)
+  * Ship bulkheads station discount (spoken) (text): the number of credits discount of the bulkheads over those currently fitted as would be spoken (not set if no additional discount)
   * Ship power plant station cost (decimal): the purchase cost of the power plant at the station (not set if not for sale at the station)
-  * Ship power plant station discount (text): the number of credits discount of the power plant over those currently fitted as would be spoken (not set if no additional discount)
+  * Ship power plant station discount (spoken) (text): the number of credits discount of the power plant over those currently fitted as would be spoken (not set if no additional discount)
   * Ship thrusters station cost (decimal): the purchase cost of the thrusters at the station (not set if not for sale at the station)
-  * Ship thrusters station discount (text): the number of credits discount of the thrusters over those currently fitted as would be spoken (not set if no additional discount)
+  * Ship thrusters station discount (spoken) (text): the number of credits discount of the thrusters over those currently fitted as would be spoken (not set if no additional discount)
   * Ship frame shift drive station cost (decimal): the purchase cost of the frame shift drive at the station (not set if not for sale at the station)
-  * Ship frame shift drive station discount (text): the number of credits discount of the frame shift drive over those currently fitted as would be spoken (not set if no additional discount)
+  * Ship frame shift drive station discount (spoken) (text): the number of credits discount of the frame shift drive over those currently fitted as would be spoken (not set if no additional discount)
   * Ship life support station cost (decimal): the purchase cost of the life support at the station (not set if not for sale at the station)
-  * Ship life support station discount (text): the number of credits discount of the life support over those currently fitted as would be spoken (not set if no additional discount)
+  * Ship life support station discount (spoken) (text): the number of credits discount of the life support over those currently fitted as would be spoken (not set if no additional discount)
   * Ship power distributor station cost (decimal): the purchase cost of the power distributor at the station (not set if not for sale at the station)
-  * Ship power distributor station discount (text): the number of credits discount of the power distributor over those currently fitted as would be spoken (not set if no additional discount)
+  * Ship power distributor station discount (spoken) (text): the number of credits discount of the power distributor over those currently fitted as would be spoken (not set if no additional discount)
   * Ship sensors station cost (decimal): the purchase cost of the sensors at the station (not set if not for sale at the station)
-  * Ship sensors station discount (text): the number of credits discount of the sensors over those currently fitted as would be spoken (not set if no additional discount)
+  * Ship sensors station discount (spoken) (text): the number of credits discount of the sensors over those currently fitted as would be spoken (not set if no additional discount)
 
 ###Shipyard values
   * Stored ships (int): the number of ships in storage

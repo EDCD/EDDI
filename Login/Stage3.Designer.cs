@@ -30,37 +30,49 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.obtainButton = new System.Windows.Forms.Button();
+            this.selectButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(13, 9);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(10, 7);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(353, 228);
+            this.label1.Size = new System.Drawing.Size(562, 222);
             this.label1.TabIndex = 1;
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // obtainButton
             // 
-            this.obtainButton.Location = new System.Drawing.Point(100, 252);
+            this.obtainButton.Location = new System.Drawing.Point(245, 231);
+            this.obtainButton.Margin = new System.Windows.Forms.Padding(2);
             this.obtainButton.Name = "obtainButton";
-            this.obtainButton.Size = new System.Drawing.Size(162, 23);
+            this.obtainButton.Size = new System.Drawing.Size(122, 23);
             this.obtainButton.TabIndex = 2;
-            this.obtainButton.Text = "Recheck";
+            this.obtainButton.Text = "Obtain";
             this.obtainButton.UseVisualStyleBackColor = true;
             this.obtainButton.Click += new System.EventHandler(this.obtainButton_Click);
             // 
+            // selectButton
+            // 
+            this.selectButton.Location = new System.Drawing.Point(257, 231);
+            this.selectButton.Name = "selectButton";
+            this.selectButton.Size = new System.Drawing.Size(97, 23);
+            this.selectButton.TabIndex = 3;
+            this.selectButton.Text = "Select directory";
+            this.selectButton.UseVisualStyleBackColor = true;
+            this.selectButton.Click += new System.EventHandler(this.selectButton_Click);
+            // 
             // Stage3
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(379, 321);
+            this.ClientSize = new System.Drawing.Size(584, 261);
+            this.Controls.Add(this.selectButton);
             this.Controls.Add(this.obtainButton);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Stage3";
-            this.Text = "Set Product Directory";
+            this.Text = "Obtain Product Directory";
             this.ResumeLayout(false);
 
         }
@@ -68,5 +80,6 @@
         #endregion
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button obtainButton;
+        private System.Windows.Forms.Button selectButton;
     }
 }
