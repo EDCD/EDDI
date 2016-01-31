@@ -1,3 +1,7 @@
+#0.7.2
+  * Ensure that Environment is set on startup
+  * Ensure that cached system data is refreshed correctly
+
 #0.7.1
   * Fix issue where Empire rating was showing incorrectly with Federation names
   * Catch errors when authenticating and obtaining the first profile and display a suitable error message

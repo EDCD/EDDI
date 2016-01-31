@@ -29,12 +29,12 @@ namespace EDDIVAPlugin
 
         public static string VA_DisplayName()
         {
-            return "EDDI 0.7.1";
+            return "EDDI 0.7.2";
         }
 
         public static string VA_DisplayInfo()
         {
-            return "Elite: Dangerous Data Interface\r\nVersion 0.7.1";
+            return "Elite: Dangerous Data Interface\r\nVersion 0.7.2";
         }
 
         public static Guid VA_Id()
@@ -75,6 +75,7 @@ namespace EDDIVAPlugin
             // Carry out initial population of information
             InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
             InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            setString(ref textValues, "Environment", CurrentEnvironment);
         }
 
         public static void StartLogMonitor()
@@ -384,37 +385,45 @@ namespace EDDIVAPlugin
                     }
                 }
 
+                bool RecordUpdated = false;
                 if (CurrentStarSystem == null || Cmdr.StarSystem != CurrentStarSystem.Name)
                 {
-                    // The star system has changed or we're in init; update the data
+                    // The star system has changed or we're in init; obtain the data ready for setting the VA values
                     EDDIStarSystem CurrentStarSystemData = starSystemRepository.GetEDDIStarSystem(Cmdr.StarSystem);
                     if (CurrentStarSystemData == null)
                     {
+                        // We have no record of this system; set it up
                         CurrentStarSystemData = new EDDIStarSystem();
                         CurrentStarSystemData.Name = Cmdr.StarSystem;
                         CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(Cmdr.StarSystem);
                         CurrentStarSystemData.LastVisit = DateTime.Now;
                         CurrentStarSystemData.StarSystemLastUpdated = CurrentStarSystemData.LastVisit;
                         CurrentStarSystemData.TotalVisits = 1;
-                        starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
+                        RecordUpdated = true;
                     }
                     else
                     {
-                        // Only update if we have moved (as opposed to restarted here)
+                        if ((DateTime.Now - CurrentStarSystemData.StarSystemLastUpdated).TotalHours > 12)
+                        {
+                            // Data is stale; refresh it
+                            CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(CurrentStarSystemData.Name);
+                            CurrentStarSystemData.StarSystemLastUpdated = CurrentStarSystemData.LastVisit;
+                            RecordUpdated = true;
+                        }
+                        // Only update if we have moved (as opposed to reinitialised here)
                         if (CurrentStarSystem != null)
                         {
                             CurrentStarSystemData.PreviousVisit = CurrentStarSystemData.LastVisit;
                             CurrentStarSystemData.LastVisit = DateTime.Now;
                             CurrentStarSystemData.TotalVisits++;
-                            if ((DateTime.Now - CurrentStarSystemData.StarSystemLastUpdated).TotalHours > 24)
-                            {
-                                // Data is stale, refetch it
-                                CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(CurrentStarSystemData.Name);
-                            }
-                            starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
+                            RecordUpdated = true;
                         }
                     }
-    
+                    if (RecordUpdated)
+                    {
+                        starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
+                    }
+
                     StarSystem ThisStarSystem = CurrentStarSystemData.StarSystem;
                     LastStarSystem = CurrentStarSystem;
                     CurrentStarSystem = ThisStarSystem;
