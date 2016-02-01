@@ -65,6 +65,7 @@ namespace EDDIVAPlugin
             if (starSystem.StartsWith("L ")
                 || starSystem.StartsWith("LFT ")
                 || starSystem.StartsWith("LHS ")
+                || starSystem.StartsWith("LP ")
                 || starSystem.StartsWith("LTT ")
                 || starSystem.StartsWith("NLTT ")
                 || starSystem.StartsWith("LPM ")
