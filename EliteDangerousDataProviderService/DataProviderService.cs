@@ -12,7 +12,16 @@ namespace EliteDangerousDataProviderService
         public static StarSystem GetSystemData(string system)
         {
             var client = new WebClient();
-            var response = client.DownloadString("http://api.eddp.co:16161/systems/" + Uri.EscapeDataString(system));
+            string response;
+            try
+            {
+                response = client.DownloadString("http://api.eddp.co:16161/systems/" + Uri.EscapeDataString(system));
+            }
+            catch (WebException wex)
+            {
+                // No information found on this system, or some other issue.  Create a very basic response
+                response = @"{""name"":""" + system + @""", ""stations"":[]}";
+            }
             return StarSystemFromEDDP(response);
         }
 
@@ -72,6 +81,8 @@ namespace EliteDangerousDataProviderService
                 {
                     Station.LargestShip = LandingPads[(string)station["max_landing_pad_size"]];
                 }
+
+                Stations.Add(Station);
             }
             return Stations;
         }

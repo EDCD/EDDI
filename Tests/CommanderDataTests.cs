@@ -5340,8 +5340,8 @@ namespace Tests
       }
     },
     ""cargo"": {
-      ""capacity"": 0,
-      ""qty"": 0,
+      ""capacity"": 10,
+      ""qty"": 5,
       ""items"": []
     },
     ""passengers"": [],
@@ -5490,6 +5490,9 @@ namespace Tests
             Assert.AreEqual(9, cmdr.Ship.Compartments.Count);
             Assert.AreEqual(2, cmdr.Ship.Compartments[8].Size);
             Assert.AreEqual(null, cmdr.Ship.Compartments[8].Module);
+
+            Assert.AreEqual(10, cmdr.Ship.CargoCapacity);
+            Assert.AreEqual(5, cmdr.Ship.CargoCarried);
 
             /// 8 stored ships
             Assert.AreEqual(8, cmdr.StoredShips.Count);
