@@ -1,3 +1,7 @@
+#0.7.3
+  * Event loop only returns if there is a new event to handle
+  * Avoid problems if VA_Init1() is called multiple times
+
 #0.7.2
   * Ensure that Environment is set on startup
   * Ensure that cached system data is refreshed correctly

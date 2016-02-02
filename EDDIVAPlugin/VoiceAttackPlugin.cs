@@ -22,19 +22,22 @@ namespace EDDIVAPlugin
         private static Commander Cmdr;
         private static StarSystem CurrentStarSystem;
         private static StarSystem LastStarSystem;
-        private static string CurrentEnvironment = "Normal space"; // We always start in normal space
+        private static string CurrentEnvironment = ENVIRONMENT_NORMAL_SPACE; // We always start in normal space
 
         private static Thread logWatcherThread;
         static BlockingCollection<dynamic> LogQueue = new BlockingCollection<dynamic>();
 
+        private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
+        private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
+
         public static string VA_DisplayName()
         {
-            return "EDDI 0.7.2";
+            return "EDDI 0.7.3";
         }
 
         public static string VA_DisplayInfo()
         {
-            return "Elite: Dangerous Data Interface\r\nVersion 0.7.2";
+            return "Elite: Dangerous Data Interface\r\nVersion 0.7.3";
         }
 
         public static Guid VA_Id()
@@ -42,35 +45,48 @@ namespace EDDIVAPlugin
             return new Guid("{4AD8E3A4-CEFA-4558-B503-1CC9B99A07C1}");
         }
 
+        private static bool initialised = false;
+        private static readonly object initLock = new object();
         public static void VA_Init1(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            // Set up and/or open our database
-            String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-            System.IO.Directory.CreateDirectory(dataDir);
-
-            // Obtain our credentials
-            Credentials credentials = Credentials.FromFile();
-            if (credentials == null)
+            if (!initialised)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to access credentials file; please log in", null);
-                return;
+                lock (initLock)
+                {
+                    if (!initialised)
+                    {
+
+                        // Set up and/or open our database
+                        String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                        System.IO.Directory.CreateDirectory(dataDir);
+
+                        // Obtain our credentials
+                        Credentials credentials = Credentials.FromFile();
+                        if (credentials == null)
+                        {
+                            setPluginStatus(ref textValues, "Failed", "Failed to access credentials file; please log in", null);
+                            return;
+                        }
+                        if (String.IsNullOrEmpty(credentials.appId) || String.IsNullOrEmpty(credentials.machineId) || String.IsNullOrEmpty(credentials.machineToken))
+                        {
+                            setPluginStatus(ref textValues, "Failed", "Credentials file does not contain required information; please log in", null);
+                            return;
+                        }
+
+                        app = new CompanionAppService(credentials);
+
+                        starSystemRepository = new EDDIStarSystemSqLiteRepository();
+
+                        setPluginStatus(ref textValues, "Operational", null, null);
+
+                        // Set up log monitor
+                        logWatcherThread = new Thread(new ThreadStart(StartLogMonitor));
+                        logWatcherThread.Start();
+
+                        initialised = true;
+                    }
+                }
             }
-            if (String.IsNullOrEmpty(credentials.appId) || String.IsNullOrEmpty(credentials.machineId) || String.IsNullOrEmpty(credentials.machineToken))
-            {
-                setPluginStatus(ref textValues, "Failed", "Credentials file does not contain required information; please log in", null);
-                return;
-            }
-
-            app = new CompanionAppService(credentials);
-
-            starSystemRepository = new EDDIStarSystemSqLiteRepository();
-
-            setPluginStatus(ref textValues, "Operational", null, null);
-
-            // Set up log monitor
-            logWatcherThread = new Thread(new ThreadStart(StartLogMonitor));
-            logWatcherThread.Start();
-
 
             // Carry out initial population of information
             InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
@@ -93,6 +109,7 @@ namespace EDDIVAPlugin
             if (logWatcherThread != null)
             {
                 logWatcherThread.Abort();
+                logWatcherThread = null;
             }
         }
 
@@ -120,54 +137,62 @@ namespace EDDIVAPlugin
 
         public static void InvokeLogWatcher(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            try
+            bool somethingToReport = false;
+            while (!somethingToReport)
             {
-                dynamic entry = LogQueue.Take();
-                switch((string)entry.type)
+                try
                 {
-                    case "Location": // Change of location
-                        if (Cmdr != null)
-                        {
-                            string newEnvironment;
-                            // Tidy up the environment string
-                            switch ((string)entry.environment)
+                    dynamic entry = LogQueue.Take();
+                    switch ((string)entry.type)
+                    {
+                        case "Location": // Change of location
+                            if (Cmdr != null)
                             {
-                                case "Supercruise":
-                                    newEnvironment = "Supercruise";
-                                    break;
-                                case "NormalFlight":
-                                    newEnvironment = "Normal space";
-                                    break;
-                                default:
-                                    newEnvironment = (string)entry.environment;
-                                    break;
-                            }
+                                string newEnvironment;
+                                // Tidy up the environment string
+                                switch ((string)entry.environment)
+                                {
+                                    case "Supercruise":
+                                        newEnvironment = ENVIRONMENT_SUPERCRUISE;
+                                        break;
+                                    case "NormalFlight":
+                                        newEnvironment = ENVIRONMENT_NORMAL_SPACE;
+                                        break;
+                                    default:
+                                        newEnvironment = (string)entry.environment;
+                                        break;
+                                }
 
-                            if ((string)entry.starsystem != Cmdr.StarSystem)
-                            {
-                                // Change of system
-                                setString(ref textValues, "EDDI event", "System change");
-                                Cmdr.StarSystem = (string)entry.starsystem;
-                                setString(ref textValues, "System name", (string)entry.starsystem);
-                                setString(ref textValues, "System name (spoken)", VATranslations.StarSystem((string)entry.starsystem));
+                                if ((string)entry.starsystem != Cmdr.StarSystem)
+                                {
+                                    // Change of system
+                                    somethingToReport = true;
+                                    setString(ref textValues, "EDDI event", "System change");
+                                    Cmdr.StarSystem = (string)entry.starsystem;
+                                    setString(ref textValues, "System name", (string)entry.starsystem);
+                                    setString(ref textValues, "System name (spoken)", VATranslations.StarSystem((string)entry.starsystem));
+                                    CurrentEnvironment = ENVIRONMENT_SUPERCRUISE;
+                                    setString(ref textValues, "Environment", CurrentEnvironment); // Whenever we jump system we always come out in supercruise
+                                }
+                                else if (newEnvironment != CurrentEnvironment)
+                                {
+                                    // Change of environment
+                                    somethingToReport = true;
+                                    setString(ref textValues, "EDDI event", "Environment change");
+                                    CurrentEnvironment = newEnvironment;
+                                    setString(ref textValues, "Environment", CurrentEnvironment);
+                                }
                             }
-                            else if (newEnvironment != CurrentEnvironment)
-                            {
-                                setString(ref textValues, "EDDI event", "Environment change");
-                                // Change of environment
-                                CurrentEnvironment = newEnvironment;
-                                setString(ref textValues, "Environment", newEnvironment);
-                            }
-                        }
-                        break;
-                    default:
-                        setPluginStatus(ref textValues, "Failed", "Unknown log entry " + entry.type, null);
-                        break;
+                            break;
+                        default:
+                            setPluginStatus(ref textValues, "Failed", "Unknown log entry " + entry.type, null);
+                            break;
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                setPluginStatus(ref textValues, "Failed", "Failed to obtain log entry", e);
+                catch (Exception e)
+                {
+                    setPluginStatus(ref textValues, "Failed", "Failed to obtain log entry", e);
+                }
             }
         }
 
@@ -188,7 +213,7 @@ namespace EDDIVAPlugin
 
                 string shipUri = Coriolis.ShipUri(Cmdr.Ship);
 
-                System.Diagnostics.Process.Start(shipUri);
+                Process.Start(shipUri);
 
                 setPluginStatus(ref textValues, "Operational", null, null);
             }
