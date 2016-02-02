@@ -142,6 +142,7 @@ EDDI makes available a large number of values related to a commander's status, s
   * Stored ship /n/ model (text): the model of the /n/th stored ship
   * Stored ship /n/ station (text): the station in which the /n/th stored ship resides
   * Stored ship /n/ system (text): the system in which the /n/th stored ship resides
+  * Stored ship /n/ distance (decimal): the number of light years between the current system and that where the /n/th ship resiedes, to two decimal places
 
 ###Miscellaneous
   * Environment (text): the environment the ship is in (either "Normal space" or "Supercruise")

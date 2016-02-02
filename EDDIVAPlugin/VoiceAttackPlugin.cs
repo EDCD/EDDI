@@ -349,6 +349,28 @@ namespace EDDIVAPlugin
                     setString(ref textValues, varBase + " model", StoredShip.Model);
                     setString(ref textValues, varBase + " system", StoredShip.StarSystem);
                     setString(ref textValues, varBase + " station", StoredShip.Station);
+
+                    // Fetch the star system in which the ship is stored
+                    EDDIStarSystem StoredShipStarSystemData = starSystemRepository.GetEDDIStarSystem(StoredShip.StarSystem);
+                    if (StoredShipStarSystemData == null)
+                    {
+                        // We have no record of this system; set it up
+                        StoredShipStarSystemData = new EDDIStarSystem();
+                        StoredShipStarSystemData.Name = StoredShip.StarSystem;
+                        StoredShipStarSystemData.StarSystem = DataProviderService.GetSystemData(StoredShip.StarSystem);
+                        StoredShipStarSystemData.LastVisit = DateTime.Now;
+                        StoredShipStarSystemData.StarSystemLastUpdated = StoredShipStarSystemData.LastVisit;
+                        StoredShipStarSystemData.TotalVisits = 1;
+                        starSystemRepository.SaveEDDIStarSystem(StoredShipStarSystemData);
+                    }
+
+                    // Work out the distance to the system where the ship is stored if we can
+                    if (CurrentStarSystem != null && CurrentStarSystem.X != null && StoredShipStarSystemData.StarSystem != null && StoredShipStarSystemData.StarSystem.X != null)
+                    {
+                        decimal distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(CurrentStarSystem.X - StoredShipStarSystemData.StarSystem.X), 2) + Math.Pow((double)(CurrentStarSystem.Y - StoredShipStarSystemData.StarSystem.Y), 2) + Math.Pow((double)(CurrentStarSystem.Z - StoredShipStarSystemData.StarSystem.Z), 2)), 2));
+                        setDecimal(ref decimalValues, varBase + " distance", distance);
+                    }
+
                     currentStoredShip++;
                 }
                 setInt(ref intValues, "Stored ships", Cmdr.StoredShips.Count);

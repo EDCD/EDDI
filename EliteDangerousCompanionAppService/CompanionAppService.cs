@@ -357,11 +357,6 @@ namespace EliteDangerousCompanionAppService
             }
 
             Ship Ship = ShipDefinitions.ShipFromModel(Model);
-            if (Ship == null)
-            {
-                Ship = new Ship();
-                Ship.Model = Model;
-            }
 
             Ship.LocalId = json["ship"]["id"];
 

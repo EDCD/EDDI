@@ -1,6 +1,7 @@
 #0.7.3
   * Event loop only returns if there is a new event to handle
   * Avoid problems if VA_Init1() is called multiple times
+  * Added decimal variables 'Stored ship *n* distance' for the distance to each stored ship from the current system
 
 #0.7.2
   * Ensure that Environment is set on startup
