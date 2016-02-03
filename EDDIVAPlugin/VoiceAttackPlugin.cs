@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 using EliteDangerousNetLogMonitor;
 using System.Threading;
 using System.Diagnostics;
+using EliteDangerousStarMapService;
 
 namespace EDDIVAPlugin
 {
@@ -18,6 +19,7 @@ namespace EDDIVAPlugin
 
         private static CompanionAppService app;
         private static IEDDIStarSystemRepository starSystemRepository;
+        private static StarMapService starMapService;
 
         private static Commander Cmdr;
         private static StarSystem CurrentStarSystem;
@@ -65,6 +67,8 @@ namespace EDDIVAPlugin
 
             starSystemRepository = new EDDIStarSystemSqLiteRepository();
 
+            starMapService = new StarMapService("8023ed4044b074115af1dd85bc8920e0ef072cb1", "Test");
+
             setPluginStatus(ref textValues, "Operational", null, null);
 
             // Set up log monitor
@@ -108,6 +112,9 @@ namespace EDDIVAPlugin
                     return;
                 case "system":
                     InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    return;
+                case "system comment":
+                    InvokeSystemComment(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
                 case "log watcher":
                     InvokeLogWatcher(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
@@ -370,6 +377,15 @@ namespace EDDIVAPlugin
             }
         }
 
+        public static void InvokeSystemComment(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            string comment = textValues["EDDI system comment"];
+            if (Cmdr != null && Cmdr.StarSystem != null && comment != null && starMapService != null)
+            {
+                starMapService.sendStarMapComment(Cmdr.StarSystem, comment);
+            }
+        }
+
         public static void InvokeNewSystem(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
             try
@@ -383,6 +399,12 @@ namespace EDDIVAPlugin
                         // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
                         return;
                     }
+                }
+
+                // If the commander is using EDSM then send an update to it
+                if (starMapService != null)
+                {
+                    starMapService.sendStarMapLog(Cmdr.StarSystem);
                 }
 
                 bool RecordUpdated = false;
@@ -512,6 +534,13 @@ namespace EDDIVAPlugin
                         setInt(ref intValues, "Last system planetary stations", LastStarSystem.Stations.Count(s => s.IsPlanetary()));
                         setInt(ref intValues, "Last system planetary outposts", LastStarSystem.Stations.Count(s => s.IsPlanetaryOutpost()));
                         setInt(ref intValues, "Last system planetary ports", LastStarSystem.Stations.Count(s => s.IsPlanetaryPort()));
+                    }
+
+                    if (starMapService != null)
+                    {
+                        StarMapInfo StarMapInfo = starMapService.getStarMapInfo(Cmdr.StarSystem);
+                        setInt(ref intValues, "System visits", StarMapInfo.Visits);
+                        setString(ref textValues, "System comment", StarMapInfo.Comment);
                     }
                 }
 
