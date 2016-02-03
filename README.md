@@ -1,5 +1,7 @@
 # EDDI: The Elite Dangerous Data Interface VoiceAttack plugin
 
+Current version: 0.7.3
+
 EDDI makes available a large number of values related to a commander's status, ship and system.  These give the basis for providing a rich VoiceAttack experience.  It is not in itself a complete VoiceAttack profile, similar to that provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.  The available values are as follows:
 
 ###Commander values
@@ -142,6 +144,7 @@ EDDI makes available a large number of values related to a commander's status, s
   * Stored ship /n/ model (text): the model of the /n/th stored ship
   * Stored ship /n/ station (text): the station in which the /n/th stored ship resides
   * Stored ship /n/ system (text): the system in which the /n/th stored ship resides
+  * Stored ship /n/ distance (decimal): the number of light years between the current system and that where the /n/th ship resiedes, to two decimal places
 
 ###Miscellaneous
   * Environment (text): the environment the ship is in (either "Normal space" or "Supercruise")
