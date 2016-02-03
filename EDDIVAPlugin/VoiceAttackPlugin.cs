@@ -22,7 +22,7 @@ namespace EDDIVAPlugin
         private static Commander Cmdr;
         private static StarSystem CurrentStarSystem;
         private static StarSystem LastStarSystem;
-        private static string CurrentEnvironment = ENVIRONMENT_NORMAL_SPACE; // We always start in normal space
+        private static string CurrentEnvironment;
 
         private static Thread logWatcherThread;
         static BlockingCollection<dynamic> LogQueue = new BlockingCollection<dynamic>();
@@ -30,14 +30,16 @@ namespace EDDIVAPlugin
         private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
 
+        public static readonly string PLUGIN_VERSION = "0.7.3";
+
         public static string VA_DisplayName()
         {
-            return "EDDI 0.7.3";
+            return "EDDI " + PLUGIN_VERSION;
         }
 
         public static string VA_DisplayInfo()
         {
-            return "Elite: Dangerous Data Interface\r\nVersion 0.7.3";
+            return "Elite: Dangerous Data Interface\r\nVersion " + PLUGIN_VERSION;
         }
 
         public static Guid VA_Id()
@@ -77,21 +79,22 @@ namespace EDDIVAPlugin
 
                         starSystemRepository = new EDDIStarSystemSqLiteRepository();
 
-                        setPluginStatus(ref textValues, "Operational", null, null);
+                        // Carry out initial population of information
+                        InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        CurrentEnvironment = ENVIRONMENT_NORMAL_SPACE;
+                        setString(ref textValues, "Environment", CurrentEnvironment);
 
                         // Set up log monitor
                         logWatcherThread = new Thread(new ThreadStart(StartLogMonitor));
                         logWatcherThread.Start();
 
+                        setPluginStatus(ref textValues, "Operational", null, null);
+
                         initialised = true;
                     }
                 }
             }
-
-            // Carry out initial population of information
-            InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-            InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-            setString(ref textValues, "Environment", CurrentEnvironment);
         }
 
         public static void StartLogMonitor()
@@ -364,10 +367,15 @@ namespace EDDIVAPlugin
                         starSystemRepository.SaveEDDIStarSystem(StoredShipStarSystemData);
                     }
 
+                    // Have to grab a local copy of our star system as CurrentStarSystem might not have been initialised yet
+                    EDDIStarSystem ThisStarSystemData = starSystemRepository.GetEDDIStarSystem(Cmdr.StarSystem);
+
                     // Work out the distance to the system where the ship is stored if we can
-                    if (CurrentStarSystem != null && CurrentStarSystem.X != null && StoredShipStarSystemData.StarSystem != null && StoredShipStarSystemData.StarSystem.X != null)
+                    if (ThisStarSystemData != null && ThisStarSystemData.StarSystem != null && ThisStarSystemData.StarSystem.X != null && StoredShipStarSystemData.StarSystem != null && StoredShipStarSystemData.StarSystem.X != null)
                     {
-                        decimal distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(CurrentStarSystem.X - StoredShipStarSystemData.StarSystem.X), 2) + Math.Pow((double)(CurrentStarSystem.Y - StoredShipStarSystemData.StarSystem.Y), 2) + Math.Pow((double)(CurrentStarSystem.Z - StoredShipStarSystemData.StarSystem.Z), 2)), 2));
+                        decimal distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(ThisStarSystemData.StarSystem.X - StoredShipStarSystemData.StarSystem.X), 2)
+                            + Math.Pow((double)(ThisStarSystemData.StarSystem.Y - StoredShipStarSystemData.StarSystem.Y), 2)
+                            + Math.Pow((double)(ThisStarSystemData.StarSystem.Z - StoredShipStarSystemData.StarSystem.Z), 2)), 2);
                         setDecimal(ref decimalValues, varBase + " distance", distance);
                     }
 
