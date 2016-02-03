@@ -79,6 +79,8 @@ namespace EDDIVAPlugin
 
                         starSystemRepository = new EDDIStarSystemSqLiteRepository();
 
+                        starMapService = new StarMapService("8023ed4044b074115af1dd85bc8920e0ef072cb1", "Test");
+                        
                         // Carry out initial population of information
                         InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                         InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
