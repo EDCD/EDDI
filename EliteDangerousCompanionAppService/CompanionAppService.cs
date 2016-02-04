@@ -57,13 +57,23 @@ namespace EliteDangerousCompanionAppService
         }
 
         ///<summary>Log in.  Returns credentials, or throws an exception if it fails</summary>
-        public static CompanionAppCredentials Login(string username, string password)
+        public static CompanionAppCredentials Login(string username, string password, CompanionAppCredentials credentials = null)
         {
-            CompanionAppCredentials credentials = null;
             string location = serverRoot + "/user/login";
             // Send the request.
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(location);
             request.AllowAutoRedirect = false;  // Don't redirect or we lose the cookies
+
+            // If we already had credentials then add them here
+            if (credentials != null)
+            {
+                var cookieContainer = new CookieContainer();
+                AddCompanionAppCookie(cookieContainer, credentials);
+                AddMachineIdCookie(cookieContainer, credentials);
+                AddMachineTokenCookie(cookieContainer, credentials);
+                request.CookieContainer = cookieContainer;
+            }
+
             request.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257";
             request.ContentType = "application/x-www-form-urlencoded";
             request.Method = "POST";
