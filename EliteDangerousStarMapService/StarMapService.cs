@@ -2,6 +2,7 @@
 using RestSharp.Deserializers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -81,6 +82,30 @@ namespace EliteDangerousStarMapService
         {
             StarMapData data = new StarMapData(commanderName, systemName, distanceToSol, distanceToMaia, distanceToRobigo, distanceTo17Draconis);
             StarMapSubmission submission = new StarMapSubmission(data);
+        }
+
+
+        public static string ObtainApiKey()
+        {
+            String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+            Directory.CreateDirectory(dataDir);
+            string filename = dataDir + "\\edsmapikey";
+            try
+            {
+                return File.ReadAllText(filename);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static void WritePath(string path)
+        {
+            String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+            Directory.CreateDirectory(dataDir);
+            string filename = dataDir + "\\edsmapikey";
+            File.WriteAllText(filename, path);
         }
     }
 

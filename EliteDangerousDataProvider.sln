@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousNetLogMonitor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousStarMapService", "EliteDangerousStarMapService\EliteDangerousStarMapService.csproj", "{6614E6AD-65AE-49FC-850B-9DF79D1CC998}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "configuration", "configuration\configuration.csproj", "{583FA617-A93D-4A69-BF2F-13911ED0099A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{6614E6AD-65AE-49FC-850B-9DF79D1CC998}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6614E6AD-65AE-49FC-850B-9DF79D1CC998}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6614E6AD-65AE-49FC-850B-9DF79D1CC998}.Release|Any CPU.Build.0 = Release|Any CPU
+		{583FA617-A93D-4A69-BF2F-13911ED0099A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{583FA617-A93D-4A69-BF2F-13911ED0099A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{583FA617-A93D-4A69-BF2F-13911ED0099A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{583FA617-A93D-4A69-BF2F-13911ED0099A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

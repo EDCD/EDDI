@@ -7,8 +7,8 @@ namespace EliteDangerousDataProvider
 {
     public partial class Stage2 : Form
     {
-        Credentials Credentials;
-        public Stage2(Credentials Credentials)
+        CompanionAppCredentials Credentials;
+        public Stage2(CompanionAppCredentials Credentials)
         {
             InitializeComponent();
             this.Credentials = Credentials;

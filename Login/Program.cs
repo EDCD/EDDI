@@ -17,7 +17,7 @@ namespace EliteDangerousDataProvider
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Credentials Credentials = Credentials.FromFile();
+            CompanionAppCredentials Credentials = CompanionAppCredentials.FromFile();
             if (Credentials == null || Credentials.appId == null || Credentials.machineId == null || Credentials.machineToken == null)
             {
                 Application.Run(new Stage1());
@@ -30,7 +30,7 @@ namespace EliteDangerousDataProvider
                 {
                     Cmdr = app.Profile();
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
                     Cmdr = null;
                 }

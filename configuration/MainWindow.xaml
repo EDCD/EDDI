@@ -1,0 +1,87 @@
+﻿<Window x:Class="configuration.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:configuration"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="400" Width="600">
+    <DockPanel LastChildFill="True">
+        <TabControl x:Name="tabControl" DockPanel.Dock="Top">
+            <TabItem Header="EDDI">
+                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+                    <Button x:Name="doneButton" Content="Done" DockPanel.Dock="Bottom"/>
+                    <TextBlock x:Name="eddiText" TextWrapping="Wrap" Margin="20" Text="EDDI has a number of features that can be configured separately.  Please click on each individual tab above to obtain an explanation of what it provides and how to configure it" VerticalAlignment="Top"/>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Companion App">
+                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+                    <TextBlock x:Name="companionAppText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="The companion app is Frontier's API in to their data.  If you configure this you can obtain information about your commander, your ship and your stored ships.  Please note that if you purchased Elite: Dangerous Horizons as a standalone product and not as an expansion to Elite: Dangerous the companion app will not work for you." VerticalAlignment="Top"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="You have not configured the companion app yet.  To start configuration enter your Elite: Dangerous email address and password" VerticalAlignment="Top"/>
+                        <Label Grid.Row="1" Grid.Column="0" Content="Email:"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="3" />
+                        <Label Grid.Row="2" Grid.Column="0" Content="Password:"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Margin="3" />
+                        <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="companionAppNextButton" Content="Next"/>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Netlog Monitor">
+                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+                    <TextBlock x:Name="netlogText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="The netlog monitor reads a file written by Elite and uses information in it to provide system information." VerticalAlignment="Top"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="To configure netlog monitoring you need to provide the path to your Elite: Dangerous product log.  This is commonly in C:\Program Files (x86)\Elite\Products\elite-dangerous-64\Logs but might be in a different location if you have installed Elite through Steam or in a non-standard location" VerticalAlignment="Top"/>
+                        <Label Grid.Row="1" Grid.Column="0" Content="Product Logs directory"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="3" />
+                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="If you are unsure of where the directory is you can start Elite: Dangerous then come back to this window and hit the 'Obtain' button below" VerticalAlignment="Top"/>
+                        <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="obtainButton" Content="Obtain" Margin="3" />
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="EDSM">
+                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+                    <TextBlock x:Name="edsmText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="EDSM is a third-party tool that provides information on the locations of star systems." VerticalAlignment="Top"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="To connect to EDSM you need to have registered an account with them.  Once you have done this you can obtain your API key by clicking on your portrait in the top-right corner of the screen and selecting 'My API Key'" VerticalAlignment="Top"/>
+                        <Label Grid.Row="1" Grid.Column="0" Content="EDSM API key"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="3" />
+                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="If you registered a different commander name to your actual one, or you have not enabled the companion app, please enter your commander name below" VerticalAlignment="Top"/>
+                        <Label Grid.Row="3" Grid.Column="0" Content="EDSM Commander name"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Margin="3" />
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

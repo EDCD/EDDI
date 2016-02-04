@@ -10,7 +10,7 @@ namespace EliteDangerousDataDefinitions
     public class StarSystem
     {
         public string Name { get; set; }
-        public long Population { get; set; }
+        public long? Population { get; set; }
         public string Allegiance { get; set;  }
         public string Government { get; set; }
         public string Faction { get; set; }

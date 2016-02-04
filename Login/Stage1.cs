@@ -17,7 +17,7 @@ namespace EliteDangerousDataProvider
             string password = passwordText.Text;
             try
             {
-                Credentials credentials = CompanionAppService.Login(username, password);
+                CompanionAppCredentials credentials = CompanionAppService.Login(username, password);
                 Stage2 stage2 = new Stage2(credentials);
                 stage2.Show();
                 this.Hide();

@@ -2,43 +2,41 @@
 using System;
 using System.IO;
 
-namespace EliteDangerousCompanionAppService
+namespace EliteDangerousStarMapService
 {
-    /// <summary>Storage of credentials for a single Elite: Dangerous user to access the Companion App</summary>
-    public class Credentials
+    /// <summary>Storage of credentials for a single Elite: Dangerous user to access EDSM</summary>
+    public class StarMapConfiguration
     {
-        [JsonProperty("CompanionApp")]
-        public String appId { get; set; }
-        [JsonProperty("mid")]
-        public String machineId { get; set; }
-        [JsonProperty("mtk")]
-        public String machineToken { get; set; }
+        [JsonProperty("apiKey")]
+        public String apiKey { get; set; }
+        [JsonProperty("commanderName")]
+        public String commanderName { get; set; }
 
         [JsonIgnore]
         private String dataPath;
 
         /// <summary>
         /// Obtain credentials from a file.  If the file name is not supplied the the default
-        /// path of %APPDATA%\EDDI\credentials.json is used
+        /// path of %APPDATA%\EDDI\edsm.json is used
         /// </summary>
-        public static Credentials FromFile(string filename=null)
+        public static StarMapConfiguration FromFile(string filename=null)
         {
             if (filename == null)
             {
                 String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\credentials.json";
+                filename = dataDir + "\\edsm.json";
             }
 
-            Credentials credentials;
+            StarMapConfiguration credentials;
             try
             {
                 String credentialsData = File.ReadAllText(filename);
-                credentials = JsonConvert.DeserializeObject<Credentials>(credentialsData);
+                credentials = JsonConvert.DeserializeObject<StarMapConfiguration>(credentialsData);
             }
             catch
             {
-                credentials = new Credentials();
+                credentials = new StarMapConfiguration();
             }
 
             credentials.dataPath = filename;
@@ -50,9 +48,8 @@ namespace EliteDangerousCompanionAppService
         /// </summary>
         public void Clear()
         {
-            appId = null;
-            machineId = null;
-            machineToken = null;
+            apiKey = null;
+            commanderName = null;
         }
 
         /// <summary>
@@ -70,7 +67,7 @@ namespace EliteDangerousCompanionAppService
             {
                 String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\credentials.json";
+                filename = dataDir + "\\edsm.json";
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);

@@ -49,17 +49,17 @@ namespace EliteDangerousCompanionAppService
 
         private static string serverRoot = "https://companion.orerve.net";
 
-        private Credentials credentials;
+        private CompanionAppCredentials credentials;
 
-        public CompanionAppService(Credentials credentials)
+        public CompanionAppService(CompanionAppCredentials credentials)
         {
             this.credentials = credentials;
         }
 
         ///<summary>Log in.  Returns credentials, or throws an exception if it fails</summary>
-        public static Credentials Login(string username, string password)
+        public static CompanionAppCredentials Login(string username, string password)
         {
-            Credentials credentials = null;
+            CompanionAppCredentials credentials = null;
             string location = serverRoot + "/user/login";
             // Send the request.
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(location);
@@ -99,19 +99,19 @@ namespace EliteDangerousCompanionAppService
                 Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
                 if (companionAppMatch.Success)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
+                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
                     credentials.appId = companionAppMatch.Groups[1].Value;
                 }
                 Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
                 if (machineIdMatch.Success)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
+                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
                     credentials.machineId = machineIdMatch.Groups[1].Value;
                 }
                 Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
                 if (machineTokenMatch.Success)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
+                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
                     credentials.machineToken = machineTokenMatch.Groups[1].Value;
                 }
             }
@@ -130,7 +130,7 @@ namespace EliteDangerousCompanionAppService
         }
 
         ///<summary>Confirm a login.  Returns credentials, or throws an exception if it fails</summary>
-        public static Credentials Confirm(Credentials credentials, string code)
+        public static CompanionAppCredentials Confirm(CompanionAppCredentials credentials, string code)
         {
             var cookieContainer = new CookieContainer();
             AddCompanionAppCookie(cookieContainer, credentials);
@@ -174,19 +174,19 @@ namespace EliteDangerousCompanionAppService
                 Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
                 if (companionAppMatch.Success)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
+                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
                     credentials.appId = companionAppMatch.Groups[1].Value;
                 }
                 Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
                 if (machineIdMatch.Success)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
+                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
                     credentials.machineId = machineIdMatch.Groups[1].Value;
                 }
                 Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
                 if (machineTokenMatch.Success)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
+                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
                     credentials.machineToken = machineTokenMatch.Groups[1].Value;
                 }
             }
@@ -244,19 +244,19 @@ namespace EliteDangerousCompanionAppService
                 Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
                 if (companionAppMatch.Success)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
+                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
                     credentials.appId = companionAppMatch.Groups[1].Value;
                 }
                 Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
                 if (machineIdMatch.Success)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
+                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
                     credentials.machineId = machineIdMatch.Groups[1].Value;
                 }
                 Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
                 if (machineTokenMatch.Success)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
+                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
                     credentials.machineToken = machineTokenMatch.Groups[1].Value;
                 }
             }
@@ -276,7 +276,7 @@ namespace EliteDangerousCompanionAppService
             }
         }
 
-        private static void AddCompanionAppCookie(CookieContainer cookies, Credentials credentials)
+        private static void AddCompanionAppCookie(CookieContainer cookies, CompanionAppCredentials credentials)
         {
             var appCookie = new Cookie();
             appCookie.Domain = "companion.orerve.net";
@@ -286,7 +286,7 @@ namespace EliteDangerousCompanionAppService
             cookies.Add(appCookie);
         }
 
-        private static void AddMachineIdCookie(CookieContainer cookies, Credentials credentials)
+        private static void AddMachineIdCookie(CookieContainer cookies, CompanionAppCredentials credentials)
         {
             var machineIdCookie = new Cookie();
             machineIdCookie.Domain = ".companion.orerve.net";
@@ -296,7 +296,7 @@ namespace EliteDangerousCompanionAppService
             cookies.Add(machineIdCookie);
         }
 
-        private static void AddMachineTokenCookie(CookieContainer cookies, Credentials credentials)
+        private static void AddMachineTokenCookie(CookieContainer cookies, CompanionAppCredentials credentials)
         {
             var machineTokenCookie = new Cookie();
             machineTokenCookie.Domain = ".companion.orerve.net";

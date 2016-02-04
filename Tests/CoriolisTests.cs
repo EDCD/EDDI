@@ -32,15 +32,15 @@ namespace Tests
             Assert.AreEqual("1110111111111111", data);
         }
 
-        [TestMethod]
-        public void TestNetLog()
-        {
-            NetLogMonitor monitor = new NetLogMonitor("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", null);
-            monitor.start();
-            System.Threading.Thread.Sleep(180000);
-            monitor.stop();
-            //NetLogMonitor.Monitor("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", null);
-        }
+        //[TestMethod]
+        //public void TestNetLog()
+        //{
+        //    NetLogMonitor monitor = new NetLogMonitor("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", null);
+        //    monitor.start();
+        //    System.Threading.Thread.Sleep(180000);
+        //    monitor.stop();
+        //    //NetLogMonitor.Monitor("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", null);
+        //}
 
         [TestMethod]
         public void TestUri()

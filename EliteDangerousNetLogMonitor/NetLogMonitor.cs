@@ -8,7 +8,7 @@ namespace EliteDangerousNetLogMonitor
     /// <summary>A log monitor for the Elite: Dangerous netlog</summary>
     public class NetLogMonitor : LogMonitor
     {
-        public NetLogMonitor(string directory, Action<dynamic> callback) : base(directory, @"netLog", (result) => HandleNetLogLine(result, callback))
+        public NetLogMonitor(NetLogConfiguration configuration, Action<dynamic> callback) : base(configuration.path, @"netLog", (result) => HandleNetLogLine(result, callback))
         {
         }
 
