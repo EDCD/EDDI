@@ -13,7 +13,7 @@ namespace EliteDangerousStarMapService
     /// <summary> Talk to the Elite: Dangerous Star Map service </summary>
     public class StarMapService
     {
-        private static string BASE_URL = "http://beta.edsm.net:8080/";
+        private static string BASE_URL = "http://www.edsm.net/";
 
         private string commanderName;
         private string apiKey;

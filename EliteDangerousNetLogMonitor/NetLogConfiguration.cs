@@ -31,13 +31,28 @@ namespace EliteDangerousNetLogMonitor
             {
                 String configurationData = File.ReadAllText(filename);
                 configuration = JsonConvert.DeserializeObject<NetLogConfiguration>(configurationData);
+                configuration.dataPath = filename;
             }
             catch
             {
                 configuration = new NetLogConfiguration();
+                configuration.dataPath = filename;
+                // See if there was old information present
+                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string oldFilename = dataDir + "\\productpath";
+                try
+                {
+                    string path = File.ReadAllText(oldFilename);
+                    if (path != null)
+                    {
+                        configuration.path = path;
+                        configuration.ToFile();
+                        File.Delete(oldFilename);
+                    }
+                }
+                catch { }
             }
 
-            configuration.dataPath = filename;
             return configuration;
         }
 

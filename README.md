@@ -158,13 +158,13 @@ You must use the latest VoiceAttack beta for EDDI to operate.  At current this i
 
 ##Upgrading
 
-If you are upgrading from an earlier version of EDDI it is recommended that you remove the existing installation before installing the new one.  This ensures that there is a clean isntallation and reduces the chances of problems occurring.
+If you are upgrading from an earlier version of EDDI it is recommended that you remove the existing installation before installing the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
 
 When upgrading EDDI you should overwrite all of the existing EDDI actions in VoiceAttack except any event handlers you have customised.
 
 ##Configuring
 
-To configure EDDI run the 'login.exe' file in the plugin directory.  This will ask for your username and password, and after that the confirmation token sent to you from Frontier via email.  These are used to authenticate the user against the Frontier API servers from where the majority of the information is gathered.  It will also require details of the path to your Elite installation, which it will obtain from the running application.
+To configure EDDI run the 'configuration.exe' file in the plugin directory.  This allows you to configure the various connectors that EDDI uses to obtain data.
 
 You will also need to configure verbose net logs for Elite: Dangerous to ensure that you receive system change messages.  To do so you need to find the AppConfig.xml file in your Elite product installation and ensure that the network section of it looks like this:
 

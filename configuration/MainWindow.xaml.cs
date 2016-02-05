@@ -55,7 +55,6 @@ namespace configuration
 
         private void companionAppNextClicked(object sender, RoutedEventArgs e)
         {
-            CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             // See if the user is entering their email address and password
             if (companionAppEmailText.Visibility == Visibility.Visible)
             {
@@ -64,19 +63,9 @@ namespace configuration
                 string password = companionAppPasswordText.Text.Trim();
                 try
                 {
-                    companionAppCredentials = CompanionAppService.Login(email, password, companionAppCredentials);
+                    CompanionAppCredentials companionAppCredentials = CompanionAppService.Login(email, password);
                     companionAppCredentials.ToFile();
-                    // See if we need to confirm the login
-                    try
-                    {
-                        CompanionAppService companionAppService = new CompanionAppService(companionAppCredentials);
-                        Commander commander = companionAppService.Profile();
-                        setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + commander.Name);
-                    }
-                    catch (Exception ignored)
-                    {
-                        setUpCompanionAppStage2();
-                    }
+                    setUpCompanionAppStage2();
                 }
                 catch (EliteDangerousCompanionAppAuthenticationException ex)
                 {
@@ -96,6 +85,7 @@ namespace configuration
                 // Stage 2 of authentication - confirmation
                 try
                 {
+                    CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
                     companionAppCredentials = CompanionAppService.Confirm(companionAppCredentials, companionAppCodeText.Text.Trim());
                     companionAppCredentials.ToFile();
                     // All done - see if it works
@@ -244,6 +234,11 @@ namespace configuration
             }
             edsmConfiguration.ToFile();
 
+        }
+
+        private void doneClicked(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

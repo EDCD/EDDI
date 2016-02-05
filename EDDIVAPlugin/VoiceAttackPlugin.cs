@@ -529,6 +529,15 @@ namespace EDDIVAPlugin
                     LastStarSystem = CurrentStarSystem;
                     CurrentStarSystem = ThisStarSystem;
 
+                    if (LastStarSystem != null)
+                    {
+                        // We have travelled; let EDSM know
+                        if (starMapService != null)
+                        {
+                            starMapService.sendStarMapLog(CurrentStarSystem.Name);
+                        }
+                    }
+
                     setString(ref textValues, "System name", CurrentStarSystem.Name);
                     setString(ref textValues, "System name (spoken)", VATranslations.StarSystem(CurrentStarSystem.Name));
                     setInt(ref intValues, "System visits", CurrentStarSystemData.TotalVisits);

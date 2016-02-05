@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:configuration"
         mc:Ignorable="d"
-        Title="EDDI Configuration" Height="400" Width="600">
+        Title="EDDI Configuration" Height="600"  Width="800">
     <DockPanel LastChildFill="True">
         <TabControl x:Name="tabControl" DockPanel.Dock="Top">
             <TabItem Header="EDDI">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <Button x:Name="doneButton" Content="Done" DockPanel.Dock="Bottom" Margin="10" />
+                    <Button x:Name="doneButton" Content="Done" DockPanel.Dock="Bottom" Margin="10" Click="doneClicked" />
                     <TextBlock x:Name="eddiText" TextWrapping="Wrap" Margin="20" Text="EDDI has a number of features that can be configured separately.  Please click on each individual tab above to obtain an explanation of what it provides and how to configure it" VerticalAlignment="Top"/>
                 </DockPanel>
             </TabItem>
@@ -56,7 +56,7 @@
                         <TextBlock x:Name="netLogText" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="To configure netlog monitoring you need to provide the path to your Elite: Dangerous product log.  This is commonly in C:\Program Files (x86)\Elite\Products\elite-dangerous-64\Logs but might be in a different location if you have installed Elite through Steam or in a non-standard location" VerticalAlignment="Top"/>
                         <Label Grid.Row="1" Grid.Column="0" Content="Product Logs directory"/>
                         <TextBox x:Name="netLogPathTextBox" Grid.Row="1" Grid.Column="1" Margin="3" TextChanged="netLogPathChanged" />
-                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="If you are unsure of where the directory is you can start Elite: Dangerous then come back to this window and hit the 'Obtain' button below" VerticalAlignment="Top"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="If you are unsure of where the directory is you can start Elite: Dangerous then come back to this window and hit the 'Obtain' button below" VerticalAlignment="Top" />
                         <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="obtainButton" Content="Obtain" Margin="10" Click="netLogObtainClicked"/>
                     </Grid>
                 </DockPanel>
