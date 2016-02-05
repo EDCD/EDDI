@@ -343,7 +343,7 @@ namespace EliteDangerousCompanionAppService
 
             Commander.Ship = ShipFromProfile(json);
 
-            Commander.StoredShips = StoredShipsFromProfile(json);
+            Commander.StoredShips = StoredShipsFromProfile(json, Commander.Ship);
 
             Commander.Outfitting = OutfittingFromProfile(json);
 
@@ -447,7 +447,7 @@ namespace EliteDangerousCompanionAppService
             return Hardpoint;
         }
 
-        public static List<Ship> StoredShipsFromProfile(dynamic json)
+        public static List<Ship> StoredShipsFromProfile(dynamic json, Ship currentShip)
         {
             List<Ship> StoredShips = new List<Ship>();
 
@@ -458,22 +458,25 @@ namespace EliteDangerousCompanionAppService
                     dynamic ship = shipJson.Value;
                     if (ship != null)
                     {
-                        Ship Ship = new Ship();
-
-                        if (ship["starsystem"] != null)
+                        if ((int)ship["id"] != currentShip.LocalId)
                         {
-                            // If we have a starsystem it means that the ship is stored
-                            Ship.LocalId = ship["id"];
-                            Ship.Model = ship["name"];
-                            if (shipTranslations.ContainsKey(Ship.Model))
+                            Ship Ship = new Ship();
+
+                            if (ship["starsystem"] != null)
                             {
-                                Ship.Model = shipTranslations[Ship.Model];
+                                // If we have a starsystem it means that the ship is stored
+                                Ship.LocalId = ship["id"];
+                                Ship.Model = ship["name"];
+                                if (shipTranslations.ContainsKey(Ship.Model))
+                                {
+                                    Ship.Model = shipTranslations[Ship.Model];
+                                }
+
+                                Ship.StarSystem = ship["starsystem"]["name"];
+                                Ship.Station = ship["station"]["name"];
+
+                                StoredShips.Add(Ship);
                             }
-
-                            Ship.StarSystem = ship["starsystem"]["name"];
-                            Ship.Station = ship["station"]["name"];
-
-                            StoredShips.Add(Ship);
                         }
                     }
                 }
