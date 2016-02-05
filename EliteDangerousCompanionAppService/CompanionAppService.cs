@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -343,11 +344,60 @@ namespace EliteDangerousCompanionAppService
 
             Commander.Ship = ShipFromProfile(json);
 
-            Commander.StoredShips = StoredShipsFromProfile(json, Commander.Ship);
+            Commander.StoredShips = StoredShipsFromProfile(json, ref Commander);
+
+            AugmentShipInfo(Commander.Ship, Commander.StoredShips);
 
             Commander.Outfitting = OutfittingFromProfile(json);
 
             return Commander;
+        }
+
+        private static void AugmentShipInfo(Ship ship, List<Ship> storedShips)
+        {
+            ShipsConfiguration shipsConfiguration = ShipsConfiguration.FromFile();
+            Dictionary<int, Ship> lookup = shipsConfiguration.Ships.ToDictionary(o => o.LocalId);
+
+            Ship shipConfig;
+            // Start with our current ship
+            if (lookup.TryGetValue(ship.LocalId, out shipConfig))
+            {
+                // Already exists; grab the relevant information and supplement it
+                ship.Name = shipConfig.Name;
+                ship.CallSign = shipConfig.CallSign;
+                ship.Role = shipConfig.Role;
+            }
+            else
+            {
+                // Doesn't already exist; add a callsign and default role
+                ship.CallSign = Ship.generateCallsign();
+                ship.Role = ShipRole.Multipurpose;
+            }
+
+            // Work through our shipyard
+            foreach (Ship storedShip in storedShips)
+            {
+
+                if (lookup.TryGetValue(storedShip.LocalId, out shipConfig))
+                {
+                    // Already exists; grab the relevant information and supplement it
+                    storedShip.Name = shipConfig.Name;
+                    storedShip.CallSign = shipConfig.CallSign;
+                    storedShip.Role = shipConfig.Role;
+                }
+                else
+                {
+                    // Doesn't already exist; add a callsign and default role
+                    storedShip.CallSign = Ship.generateCallsign();
+                    storedShip.Role = ShipRole.Multipurpose;
+                }
+            }
+
+            // Update our configuration with the new data (this also removes any old redundant ships)
+            shipsConfiguration.Ships = new List<Ship>();
+            shipsConfiguration.Ships.Add(ship);
+            shipsConfiguration.Ships.AddRange(storedShips);
+            shipsConfiguration.ToFile();
         }
 
         public static Ship ShipFromProfile(dynamic json)
@@ -447,8 +497,10 @@ namespace EliteDangerousCompanionAppService
             return Hardpoint;
         }
 
-        public static List<Ship> StoredShipsFromProfile(dynamic json, Ship currentShip)
+        public static List<Ship> StoredShipsFromProfile(dynamic json, ref Commander commander)
         {
+            Ship currentShip = commander.Ship;
+
             List<Ship> StoredShips = new List<Ship>();
 
             foreach (dynamic shipJson in json["ships"])

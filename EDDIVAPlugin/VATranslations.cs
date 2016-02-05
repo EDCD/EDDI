@@ -13,7 +13,7 @@ namespace EDDIVAPlugin
         /// <summary>Fix up ship models</summary>
         public static String ShipModel(string model)
         {
-            switch(model)
+            switch (model)
             {
                 case "Cobra Mk. III":
                     return "Cobra Mark 3";
@@ -133,6 +133,127 @@ namespace EDDIVAPlugin
             starSystem = DECIMAL_DIGITS.Replace(starSystem, match => match.Groups[1].Value + string.Join<char>(" ", match.Groups[2].Value));
             // Any string of more than two digits is broken up in to individual digits
             return DIGITS.Replace(starSystem, match => string.Join<char>(" ", match.Value));
+        }
+
+        public static string Callsign(string callsign)
+        {
+            List<string> elements = new List<string>();
+            foreach (char c in callsign)
+            {
+                switch (c)
+                {
+                    case 'A':
+                        elements.Add("AL-fah");
+                        break;
+                    case 'B':
+                        elements.Add("BRAH-vo");
+                        break;
+                    case 'C':
+                        elements.Add("CHAR-lee");
+                        break;
+                    case 'D':
+                        elements.Add("DELL-tah");
+                        break;
+                    case 'E':
+                        elements.Add("ECK-oh");
+                        break;
+                    case 'F':
+                        elements.Add("FOKS-trot");
+                        break;
+                    case 'G':
+                        elements.Add("Golf");
+                        break;
+                    case 'H':
+                        elements.Add("HO-tell");
+                        break;
+                    case 'I':
+                        elements.Add("IN-dee-ah");
+                        break;
+                    case 'J':
+                        elements.Add("JEW-lee-ett");
+                        break;
+                    case 'K':
+                        elements.Add("KEY-loh");
+                        break;
+                    case 'L':
+                        elements.Add("LEE-mah");
+                        break;
+                    case 'M':
+                        elements.Add("Mike");
+                        break;
+                    case 'N':
+                        elements.Add("NOH-vem-ber");
+                        break;
+                    case 'O':
+                        elements.Add("OSS-car");
+                        break;
+                    case 'P':
+                        elements.Add("PAH-pah");
+                        break;
+                    case 'Q':
+                        elements.Add("keh-BECK");
+                        break;
+                    case 'R':
+                        elements.Add("ROE-me-oh");
+                        break;
+                    case 'S':
+                        elements.Add("see-AIR-ah");
+                        break;
+                    case 'T':
+                        elements.Add("TANG-go");
+                        break;
+                    case 'U':
+                        elements.Add("YOU-nee-form");
+                        break;
+                    case 'V':
+                        elements.Add("VIK-ter");
+                        break;
+                    case 'W':
+                        elements.Add("WISS-key");
+                        break;
+                    case 'X':
+                        elements.Add("EKS-ray");
+                        break;
+                    case 'Y':
+                        elements.Add("YANG-kee");
+                        break;
+                    case 'Z':
+                        elements.Add("ZOO-luu");
+                        break;
+                    case '0':
+                        elements.Add("ZEE-roh");
+                        break;
+                    case '1':
+                        elements.Add("WUN");
+                        break;
+                    case '2':
+                        elements.Add("TOO");
+                        break;
+                    case '3':
+                        elements.Add("TREE");
+                        break;
+                    case '4':
+                        elements.Add("FAW-er");
+                        break;
+                    case '5':
+                        elements.Add("FIFE");
+                        break;
+                    case '6':
+                        elements.Add("SIX");
+                        break;
+                    case '7':
+                        elements.Add("SEVEN");
+                        break;
+                    case '8':
+                        elements.Add("AIT");
+                        break;
+                    case '9':
+                        elements.Add("NINE-er");
+                        break;
+                }
+            }
+
+            return elements.Aggregate((i, j) => i + " " + j);
         }
     }
 }

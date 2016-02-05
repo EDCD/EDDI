@@ -787,6 +787,23 @@ namespace EDDIVAPlugin
 
         }
 
+        ///// <summary>Work through the list of ships and ensure that every ship is present and correct</summary>
+        //public static List<Ship> rationaliseShipDetails(ref EDDIConfiguration configuration, ref Commander commander)
+        //{
+        //    List<Ship> rationalisedShipDetails = new List<Ship>();
+        //    // Start with the ship we are flying
+        //    int currentShipId = commander.Ship.LocalId;
+        //    Ship currentShip = configuration.Ships.Single(s => s.Id == currentShipId);
+        //    if (currentShip == null)
+        //    {
+        //        // Don't have details; add them
+        //        currentShip = new Ship();
+        //        currentShip.Id = currentShipId;
+        //    }
+
+
+        //    return rationalisedShipDetails;
+        //}
 
         // Debug method to allow manual updating of the system
         public static void updateSystem(string system)

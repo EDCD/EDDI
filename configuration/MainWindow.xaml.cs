@@ -1,4 +1,5 @@
-﻿using EliteDangerousCompanionAppService;
+﻿using EDDIVAPlugin;
+using EliteDangerousCompanionAppService;
 using EliteDangerousDataDefinitions;
 using EliteDangerousNetLogMonitor;
 using EliteDangerousStarMapService;
@@ -31,16 +32,25 @@ namespace configuration
             // Configure the Companion App tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             // See if the credentials work
+            Commander commander = null;
             CompanionAppService companionAppService = new CompanionAppService(companionAppCredentials);
             try
             {
-                Commander commander = companionAppService.Profile();
+                commander = companionAppService.Profile();
                 setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + commander.Name);
             }
             catch (Exception ex)
             {
                 // Fall back to stage 1
                 setUpCompanionAppStage1();
+            }
+
+            if (commander != null)
+            {
+                List<Ship> ships = new List<Ship>();
+                ships.Add(commander.Ship);
+                ships.AddRange(commander.StoredShips);
+                shipyardData.ItemsSource = ships;
             }
 
             // Configure the NetLog tab
@@ -60,7 +70,7 @@ namespace configuration
             {
                 // Stage 1 of authentication - login
                 string email = companionAppEmailText.Text.Trim();
-                string password = companionAppPasswordText.Text.Trim();
+                string password = companionAppPasswordText.Password.Trim();
                 try
                 {
                     CompanionAppCredentials companionAppCredentials = CompanionAppService.Login(email, password);
@@ -123,6 +133,7 @@ namespace configuration
             companionAppEmailText.Visibility = Visibility.Visible;
             companionAppPasswordLabel.Visibility = Visibility.Visible;
             companionAppPasswordText.Visibility = Visibility.Visible;
+            companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
             companionAppNextButton.Visibility = Visibility.Visible;
@@ -141,6 +152,7 @@ namespace configuration
 
             companionAppEmailLabel.Visibility = Visibility.Hidden;
             companionAppEmailText.Visibility = Visibility.Hidden;
+            companionAppPasswordText.Password = "";
             companionAppPasswordLabel.Visibility = Visibility.Hidden;
             companionAppPasswordText.Visibility = Visibility.Hidden;
             companionAppCodeLabel.Visibility = Visibility.Visible;
@@ -161,8 +173,10 @@ namespace configuration
 
             companionAppEmailLabel.Visibility = Visibility.Hidden;
             companionAppEmailText.Visibility = Visibility.Hidden;
+            companionAppPasswordText.Password = "";
             companionAppPasswordLabel.Visibility = Visibility.Hidden;
             companionAppPasswordText.Visibility = Visibility.Hidden;
+            companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
             companionAppNextButton.Visibility = Visibility.Hidden;

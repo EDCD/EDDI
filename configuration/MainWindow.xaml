@@ -3,9 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:j="clr-namespace:EliteDangerousDataDefinitions;assembly=EliteDangerousDataDefinitions"
         xmlns:local="clr-namespace:configuration"
         mc:Ignorable="d"
         Title="EDDI Configuration" Height="600"  Width="800">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="roleValues" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="j:ShipRole"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
     <DockPanel LastChildFill="True">
         <TabControl x:Name="tabControl" DockPanel.Dock="Top">
             <TabItem Header="EDDI">
@@ -32,7 +41,7 @@
                         <Label x:Name ="companionAppEmailLabel" Grid.Row="1" Grid.Column="0" Content="Email:"/>
                         <TextBox x:Name ="companionAppEmailText" Grid.Row="1" Grid.Column="1" Margin="3" />
                         <Label x:Name ="companionAppPasswordLabel" Grid.Row="2" Grid.Column="0" Content="Password:"/>
-                        <TextBox x:Name ="companionAppPasswordText" Grid.Row="2" Grid.Column="1" Margin="3" />
+                        <PasswordBox x:Name ="companionAppPasswordText" Grid.Row="2" Grid.Column="1" Margin="3" />
                         <Button  x:Name="companionAppNextButton" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Next" Margin="10" Click="companionAppNextClicked"/>
                         <Label x:Name ="companionAppCodeLabel" Visibility="Hidden" Grid.Row="1" Grid.Column="0" Content="Code:"/>
                         <TextBox x:Name ="companionAppCodeText" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Margin="3" />
@@ -82,6 +91,20 @@
                         <Label Grid.Row="3" Grid.Column="0" Content="EDSM Commander name"/>
                         <TextBox x:Name="edsmCommanderNameTextBox" Grid.Row="3" Grid.Column="1" Margin="3" TextChanged="edsmCommanderNameChanged"/>
                     </Grid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Shipyard">
+                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+                    <TextBlock x:Name="shipyardText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="This allows you to set names and callsigns for your ships.  The information is made available in VoiceAttack for use by scripts.  Please note that for this feature to work the companion app needs to be configured" VerticalAlignment="Top"/>
+                    <DataGrid AutoGenerateColumns="False" x:Name="shipyardData" CanUserAddRows="false">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn IsReadOnly="True" Header="Model" Binding="{Binding Path=Model}"></DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="True" Header="In Storage At" Binding="{Binding Path=StarSystem}"></DataGridTextColumn>
+                            <DataGridComboBoxColumn x:Name ="Role" Header="Role" SelectedItemBinding="{Binding Path=Role}" ItemsSource="{Binding Source={StaticResource roleValues}}"></DataGridComboBoxColumn>
+                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Path=Name}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Callsign" MinWidth="40" Binding="{Binding Path=CallSign}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </DockPanel>
             </TabItem>
         </TabControl>

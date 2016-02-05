@@ -95,5 +95,11 @@ namespace Tests
                 VATranslations.StarSystem(starSystem);
             }
         }
+
+        [TestMethod]
+        public void TestTranslateCallsigns()
+        {
+            Assert.AreEqual("Golf AL-fah EKS-ray WUN ZEE-roh NINE-er FAW-er", VATranslations.Callsign("GAX-1094"));
+        }
+        }
     }
-}
