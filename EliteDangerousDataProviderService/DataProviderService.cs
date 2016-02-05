@@ -35,21 +35,26 @@ namespace EliteDangerousDataProviderService
             StarSystem StarSystem = new StarSystem();
 
             StarSystem.Name = (string)json["name"];
-            StarSystem.Population = (long?)json["population"] == null ? 0 : (long)json["population"];
-            StarSystem.Allegiance = (string)json["allegiance"];
-            StarSystem.Government = (string)json["government"];
-            StarSystem.Faction = (string)json["faction"];
-            StarSystem.PrimaryEconomy = (string)json["primary_economy"];
-            StarSystem.State = (string)json["state"] == "None" ? null : (string)json["state"];
-            StarSystem.Security = (string)json["security"];
-            StarSystem.Power = (string)json["power"];
-            StarSystem.PowerState = (string)json["power_state"];
+            if (json["updated_at"] != null)
+            {
+                // We have real data so populate the rest of the data
+                StarSystem.Population = (long?)json["population"] == null ? 0 : (long?)json["population"];
+                StarSystem.Allegiance = (string)json["allegiance"];
+                StarSystem.Government = (string)json["government"];
+                StarSystem.Faction = (string)json["faction"];
+                StarSystem.PrimaryEconomy = (string)json["primary_economy"];
+                StarSystem.State = (string)json["state"] == "None" ? null : (string)json["state"];
+                StarSystem.Security = (string)json["security"];
+                StarSystem.Power = (string)json["power"];
+                StarSystem.PowerState = (string)json["power_state"];
 
-            StarSystem.X = (decimal?)json["x"];
-            StarSystem.Y = (decimal?)json["y"];
-            StarSystem.Z = (decimal?)json["z"];
+                StarSystem.X = (decimal?)json["x"];
+                StarSystem.Y = (decimal?)json["y"];
+                StarSystem.Z = (decimal?)json["z"];
 
-            StarSystem.Stations = StationsFromEDDP(json);
+                StarSystem.Stations = StationsFromEDDP(json);
+            }
+
             return StarSystem;
         }
 

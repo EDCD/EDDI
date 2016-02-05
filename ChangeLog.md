@@ -1,3 +1,8 @@
+#0.8.0
+  * Added EDSM integration: provide the ability for EDDI to send data to EDSM, keeping a log of every system you have visited
+  * Ensure that "Last system rank" is set appropriately
+  * Move from 'Login' to 'Configuration' binary for setting up EDDI
+
 #0.7.3
   * Event loop only returns if there is a new event to handle
   * Avoid problems if VA_Init1() is called multiple times

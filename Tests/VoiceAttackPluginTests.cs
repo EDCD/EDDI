@@ -23,7 +23,7 @@ namespace Tests
         [TestMethod]
         public void TestVAPluginHumanize3()
         {
-            Assert.AreEqual("0", VoiceAttackPlugin.humanize(0));
+            Assert.AreEqual("zero", VoiceAttackPlugin.humanize(0));
         }
 
 

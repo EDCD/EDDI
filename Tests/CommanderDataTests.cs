@@ -5465,7 +5465,7 @@ namespace Tests
   }
 }
 ";
-            EliteDangerousCompanionAppService.CompanionAppService app = new EliteDangerousCompanionAppService.CompanionAppService(Credentials.FromFile());
+            EliteDangerousCompanionAppService.CompanionAppService app = new EliteDangerousCompanionAppService.CompanionAppService(CompanionAppCredentials.FromFile());
             Commander cmdr = EliteDangerousCompanionAppService.CompanionAppService.CommanderFromProfile(data);
 
             Assert.AreEqual("Testy", cmdr.Name);
