@@ -96,12 +96,12 @@
             <TabItem Header="Shipyard">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <TextBlock x:Name="shipyardText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="This allows you to set names and callsigns for your ships.  The information is made available in VoiceAttack for use by scripts.  Please note that for this feature to work the companion app needs to be configured" VerticalAlignment="Top"/>
-                    <DataGrid AutoGenerateColumns="False" x:Name="shipyardData" CanUserAddRows="false">
+                    <DataGrid AutoGenerateColumns="False" x:Name="shipyardData" CanUserAddRows="false" TargetUpdated="shipYardUpdated">
                         <DataGrid.Columns>
                             <DataGridTextColumn IsReadOnly="True" Header="Model" Binding="{Binding Path=Model}"></DataGridTextColumn>
                             <DataGridTextColumn IsReadOnly="True" Header="In Storage At" Binding="{Binding Path=StarSystem}"></DataGridTextColumn>
-                            <DataGridComboBoxColumn x:Name ="Role" Header="Role" SelectedItemBinding="{Binding Path=Role}" ItemsSource="{Binding Source={StaticResource roleValues}}"></DataGridComboBoxColumn>
-                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Path=Name}"></DataGridTextColumn>
+                            <DataGridComboBoxColumn x:Name ="Role" Header="Role" SelectedItemBinding="{Binding Path=Role,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource roleValues}}"></DataGridComboBoxColumn>
+                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Path=Name,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></DataGridTextColumn>
                             <DataGridTextColumn Header="Callsign" MinWidth="40" Binding="{Binding Path=CallSign}"></DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>

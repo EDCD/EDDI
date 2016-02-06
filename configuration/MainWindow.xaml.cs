@@ -25,6 +25,8 @@ namespace configuration
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ShipsConfiguration shipsConfiguration;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -47,9 +49,11 @@ namespace configuration
 
             if (commander != null)
             {
+                shipsConfiguration = new ShipsConfiguration();
                 List<Ship> ships = new List<Ship>();
                 ships.Add(commander.Ship);
                 ships.AddRange(commander.StoredShips);
+                shipsConfiguration.Ships = ships;
                 shipyardData.ItemsSource = ships;
             }
 
@@ -63,6 +67,13 @@ namespace configuration
             edsmCommanderNameTextBox.Text = starMapConfiguration.commanderName;
         }
 
+        // Handle changes to the introduction tab
+        private void doneClicked(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        // Handle changes to the companion app tab
         private void companionAppNextClicked(object sender, RoutedEventArgs e)
         {
             // See if the user is entering their email address and password
@@ -250,9 +261,14 @@ namespace configuration
 
         }
 
-        private void doneClicked(object sender, RoutedEventArgs e)
+        // Handle changes to the Shipyard tab
+
+        private void shipYardUpdated(object sender, DataTransferEventArgs e)
         {
-            Application.Current.Shutdown();
+            if (shipsConfiguration != null)
+            {
+                shipsConfiguration.ToFile();
+            }            
         }
     }
 }

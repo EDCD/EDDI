@@ -102,7 +102,8 @@ namespace EliteDangerousDataDefinitions
         Multipurpose,
         Trade,
         Exploration,
-        Combat
+        Combat,
+        Smuggling
     }
 
     /// <summary>The size of a ship</summary>

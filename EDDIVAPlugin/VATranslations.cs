@@ -135,7 +135,7 @@ namespace EDDIVAPlugin
             return DIGITS.Replace(starSystem, match => string.Join<char>(" ", match.Value));
         }
 
-        public static string Callsign(string callsign)
+        public static string CallSign(string callsign)
         {
             List<string> elements = new List<string>();
             foreach (char c in callsign)
@@ -143,109 +143,109 @@ namespace EDDIVAPlugin
                 switch (c)
                 {
                     case 'A':
-                        elements.Add("AL-fah");
+                        elements.Add("alpha");
                         break;
                     case 'B':
-                        elements.Add("BRAH-vo");
+                        elements.Add("bravo");
                         break;
                     case 'C':
-                        elements.Add("CHAR-lee");
+                        elements.Add("charlie");
                         break;
                     case 'D':
-                        elements.Add("DELL-tah");
+                        elements.Add("delta");
                         break;
                     case 'E':
-                        elements.Add("ECK-oh");
+                        elements.Add("echo");
                         break;
                     case 'F':
-                        elements.Add("FOKS-trot");
+                        elements.Add("foxtrot");
                         break;
                     case 'G':
-                        elements.Add("Golf");
+                        elements.Add("golf");
                         break;
                     case 'H':
-                        elements.Add("HO-tell");
+                        elements.Add("hotel");
                         break;
                     case 'I':
-                        elements.Add("IN-dee-ah");
+                        elements.Add("india");
                         break;
                     case 'J':
                         elements.Add("JEW-lee-ett");
                         break;
                     case 'K':
-                        elements.Add("KEY-loh");
+                        elements.Add("kilo");
                         break;
                     case 'L':
-                        elements.Add("LEE-mah");
+                        elements.Add("lima");
                         break;
                     case 'M':
-                        elements.Add("Mike");
+                        elements.Add("mike");
                         break;
                     case 'N':
-                        elements.Add("NOH-vem-ber");
+                        elements.Add("november");
                         break;
                     case 'O':
-                        elements.Add("OSS-car");
+                        elements.Add("oscar");
                         break;
                     case 'P':
-                        elements.Add("PAH-pah");
+                        elements.Add("Pappa");
                         break;
                     case 'Q':
-                        elements.Add("keh-BECK");
+                        elements.Add("quebec");
                         break;
                     case 'R':
-                        elements.Add("ROE-me-oh");
+                        elements.Add("romeo");
                         break;
                     case 'S':
                         elements.Add("see-AIR-ah");
                         break;
                     case 'T':
-                        elements.Add("TANG-go");
+                        elements.Add("tango");
                         break;
                     case 'U':
                         elements.Add("YOU-nee-form");
                         break;
                     case 'V':
-                        elements.Add("VIK-ter");
+                        elements.Add("victor");
                         break;
                     case 'W':
                         elements.Add("WISS-key");
                         break;
                     case 'X':
-                        elements.Add("EKS-ray");
+                        elements.Add("x-ray");
                         break;
                     case 'Y':
-                        elements.Add("YANG-kee");
+                        elements.Add("yankee");
                         break;
                     case 'Z':
-                        elements.Add("ZOO-luu");
+                        elements.Add("zulu");
                         break;
                     case '0':
-                        elements.Add("ZEE-roh");
+                        elements.Add("zero");
                         break;
                     case '1':
-                        elements.Add("WUN");
+                        elements.Add("one");
                         break;
                     case '2':
-                        elements.Add("TOO");
+                        elements.Add("two");
                         break;
                     case '3':
-                        elements.Add("TREE");
+                        elements.Add("tree");
                         break;
                     case '4':
                         elements.Add("FAW-er");
                         break;
                     case '5':
-                        elements.Add("FIFE");
+                        elements.Add("fife");
                         break;
                     case '6':
-                        elements.Add("SIX");
+                        elements.Add("six");
                         break;
                     case '7':
-                        elements.Add("SEVEN");
+                        elements.Add("seven");
                         break;
                     case '8':
-                        elements.Add("AIT");
+                        elements.Add("eight");
                         break;
                     case '9':
                         elements.Add("NINE-er");
@@ -253,7 +253,7 @@ namespace EDDIVAPlugin
                 }
             }
 
-            return elements.Aggregate((i, j) => i + " " + j);
+            return elements.Aggregate((i, j) => i + ", " + j);
         }
     }
 }

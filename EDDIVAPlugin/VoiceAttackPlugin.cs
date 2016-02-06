@@ -70,6 +70,9 @@ namespace EDDIVAPlugin
                             String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                             System.IO.Directory.CreateDirectory(dataDir);
 
+                            // Set up our local star system repository
+                            starSystemRepository = new EDDIStarSystemSqLiteRepository();
+
                             // Set up the app service
                             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
                             if (companionAppCredentials != null && !String.IsNullOrEmpty(companionAppCredentials.appId) && !String.IsNullOrEmpty(companionAppCredentials.machineId) && !String.IsNullOrEmpty(companionAppCredentials.machineToken))
@@ -114,9 +117,6 @@ namespace EDDIVAPlugin
                             //{
                             //    starMapService = new StarMapService(edsmApiKey, Cmdr.Name);
                             //}
-
-                            // Set up our local star system repository
-                            starSystemRepository = new EDDIStarSystemSqLiteRepository();
 
                             InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                             CurrentEnvironment = ENVIRONMENT_NORMAL_SPACE;
@@ -310,6 +310,10 @@ namespace EDDIVAPlugin
                     //
                     setString(ref textValues, "Ship model", Cmdr.Ship.Model);
                     setString(ref textValues, "Ship model (spoken)", VATranslations.ShipModel(Cmdr.Ship.Model));
+                    setString(ref textValues, "Ship callsign", Cmdr.Ship.CallSign);
+                    setString(ref textValues, "Ship callsign (spoken)", VATranslations.CallSign(Cmdr.Ship.CallSign));
+                    setString(ref textValues, "Ship name", Cmdr.Ship.Name);
+                    setString(ref textValues, "Ship role", Cmdr.Ship.Role.ToString());
                     setString(ref textValues, "Ship size", Cmdr.Ship.Size.ToString());
                     setDecimal(ref decimalValues, "Ship value", (decimal)Cmdr.Ship.Value);
                     setString(ref textValues, "Ship value (spoken)", humanize(Cmdr.Ship.Value));
@@ -398,6 +402,10 @@ namespace EDDIVAPlugin
                         setString(ref textValues, varBase + " model", StoredShip.Model);
                         setString(ref textValues, varBase + " system", StoredShip.StarSystem);
                         setString(ref textValues, varBase + " station", StoredShip.Station);
+                        setString(ref textValues, varBase + " callsign", StoredShip.CallSign);
+                        setString(ref textValues, varBase + " callsign (spoken)", VATranslations.CallSign(StoredShip.CallSign));
+                        setString(ref textValues, varBase + " name", StoredShip.Name);
+                        setString(ref textValues, varBase + " role", StoredShip.Role.ToString());
 
                         // Fetch the star system in which the ship is stored
                         EDDIStarSystem StoredShipStarSystemData = starSystemRepository.GetEDDIStarSystem(StoredShip.StarSystem);
@@ -442,9 +450,9 @@ namespace EDDIVAPlugin
 
                     setPluginStatus(ref textValues, "Operational", null, null);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    setPluginStatus(ref textValues, "Failed", "Failed to access system data", e);
+                    setPluginStatus(ref textValues, "Failed", "Failed to access profile", ex);
                 }
             }
         }
@@ -786,24 +794,6 @@ namespace EDDIVAPlugin
             }
 
         }
-
-        ///// <summary>Work through the list of ships and ensure that every ship is present and correct</summary>
-        //public static List<Ship> rationaliseShipDetails(ref EDDIConfiguration configuration, ref Commander commander)
-        //{
-        //    List<Ship> rationalisedShipDetails = new List<Ship>();
-        //    // Start with the ship we are flying
-        //    int currentShipId = commander.Ship.LocalId;
-        //    Ship currentShip = configuration.Ships.Single(s => s.Id == currentShipId);
-        //    if (currentShip == null)
-        //    {
-        //        // Don't have details; add them
-        //        currentShip = new Ship();
-        //        currentShip.Id = currentShipId;
-        //    }
-
-
-        //    return rationalisedShipDetails;
-        //}
 
         // Debug method to allow manual updating of the system
         public static void updateSystem(string system)
