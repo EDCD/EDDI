@@ -67,10 +67,29 @@ namespace configuration
             edsmCommanderNameTextBox.Text = starMapConfiguration.commanderName;
         }
 
-        // Handle changes to the introduction tab
-        private void doneClicked(object sender, RoutedEventArgs e)
+        // Handle chagnes to the eddi tab
+        private void homeSystemChanged(object sender, TextChangedEventArgs e)
         {
-            Application.Current.Shutdown();
+            updateEddiConfiguration();
+        }
+
+        private void homeStationChanged(object sender, TextChangedEventArgs e)
+        {
+            updateEddiConfiguration();
+        }
+
+        private void updateEddiConfiguration()
+        {
+            EDDIConfiguration eddiConfiguration = new EDDIConfiguration();
+            if (!String.IsNullOrWhiteSpace(eddiHomeSystemText.Text))
+            {
+                eddiConfiguration.HomeSystem = eddiHomeSystemText.Text.Trim();
+            }
+            if (!String.IsNullOrWhiteSpace(eddiHomeStationText.Text))
+            {
+                eddiConfiguration.HomeStation = eddiHomeStationText.Text.Trim();
+            }
+            eddiConfiguration.ToFile();
         }
 
         // Handle changes to the companion app tab
@@ -270,5 +289,6 @@ namespace configuration
                 shipsConfiguration.ToFile();
             }            
         }
+
     }
 }

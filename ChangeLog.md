@@ -1,5 +1,6 @@
-#0.9.0
+#0.8.5
   * Added callsigns, names and roles for ships
+  * Added home system and station
 
 #0.8.0
   * Added EDSM integration: provide the ability for EDDI to send data to EDSM, keeping a log of every system you have visited

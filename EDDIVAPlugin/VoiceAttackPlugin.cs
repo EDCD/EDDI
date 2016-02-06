@@ -37,7 +37,7 @@ namespace EDDIVAPlugin
         private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
 
-        public static readonly string PLUGIN_VERSION = "0.8.0";
+        public static readonly string PLUGIN_VERSION = "0.8.5";
 
         public static string VA_DisplayName()
         {
@@ -72,6 +72,13 @@ namespace EDDIVAPlugin
 
                             // Set up our local star system repository
                             starSystemRepository = new EDDIStarSystemSqLiteRepository();
+
+                            // Set up the EDDI configuration
+                            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+                            setString(ref textValues, "Home system", eddiConfiguration.HomeSystem);
+                            setString(ref textValues, "Home system (spoken)", VATranslations.StarSystem(eddiConfiguration.HomeSystem));
+                            setString(ref textValues, "Home station", eddiConfiguration.HomeStation);
+                            // TODO distance to home system
 
                             // Set up the app service
                             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();

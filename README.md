@@ -1,12 +1,15 @@
 # EDDI: The Elite Dangerous Data Interface VoiceAttack plugin
 
-Current version: 0.8.0
+Current version: 0.8.5
 
 EDDI makes available a large number of values related to a commander's status, ship and system.  These give the basis for providing a rich VoiceAttack experience.  It is not in itself a complete VoiceAttack profile, similar to that provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.  The available values are as follows:
 
 ###Commander values
 
   * Name (text): the name of the commander
+  * Home system (text): the name of the home system of the commander, set from EDDI configuration
+  * Home system (spoken) (text): the name of the home system of the commander, set from EDDI configuration as would be spoken
+  * Home station (text): the name of the home station of the commander in the home system, set from EDDI configuration
   * Combat rating (int): the combat rating of the commander, with 0 being Harmless and 9 being Elite
   * Combat rank (text): the combat rank of the commander, from Harmless to Elite
   * Trade rating (int): the trade rating of the commander, with 0 being Penniless and 9 being Elite

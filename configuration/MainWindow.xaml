@@ -19,8 +19,23 @@
         <TabControl x:Name="tabControl" DockPanel.Dock="Top">
             <TabItem Header="EDDI">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <Button x:Name="doneButton" Content="Done" DockPanel.Dock="Bottom" Margin="10" Click="doneClicked" />
-                    <TextBlock x:Name="eddiText" TextWrapping="Wrap" Margin="20" Text="EDDI has a number of features that can be configured separately.  Please click on each individual tab above to obtain an explanation of what it provides and how to configure it" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="eddiText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="EDDI has a number of features that can be configured separately.  Please click on each individual tab above to obtain an explanation of what it provides and how to configure it" VerticalAlignment="Top"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="You can provide the name of a particular system you consider home, and also a station inside that system if you want" VerticalAlignment="Top"/>
+                        <Label x:Name ="eddiHomeSystemLabel" Grid.Row="1" Grid.Column="0" Content="Home system:" />
+                        <TextBox x:Name ="eddiHomeSystemText" Grid.Row="1" Grid.Column="1" Margin="3" TextChanged="homeSystemChanged"/>
+                        <Label x:Name ="eddiHomeStationLabel" Grid.Row="2" Grid.Column="0" Content="Home station:"/>
+                        <TextBox x:Name ="eddiHomeStationText" Grid.Row="2" Grid.Column="1" Margin="3" TextChanged="homeStationChanged"/>
+                    </Grid>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Companion App">
