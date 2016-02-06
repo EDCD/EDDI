@@ -1,3 +1,6 @@
+#0.9.0
+  * Added callsigns, names and roles for ships
+
 #0.8.0
   * Added EDSM integration: provide the ability for EDDI to send data to EDSM, keeping a log of every system you have visited
   * Ensure that "Last system rank" is set appropriately

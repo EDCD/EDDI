@@ -26,6 +26,10 @@ EDDI makes available a large number of values related to a commander's status, s
 
   * Ship model (text): the model of the ship (e.g. "Cobra Mk", "Fer-de-Lance")
   * Ship model (spoken) (text): the model of the ship as would be spoken (e.g. "Cobra Mark 4")
+  * Ship name (text): the name of the ship as set in EDDI configuration
+  * Ship callsign (text): the callsign of the ship as shown in EDDI configuration (e.g. "GEF-1020")
+  * Ship callsign (spoken) (text): the callsign of the ship as shown in EDDI configuration as would be spoken
+  * Ship role (text): the role of the ship as set in EDDI configuration (Multipurpose, Combat, Trade, Exploration, Smuggling)
   * Ship size (text): the size of the ship (Small, Medium, or Large)
   * Ship value (decimal): the replacement cost of the ship plus modules
   * Ship value (text): the replacement cost of the ship plus modules as would be spoken
@@ -142,6 +146,10 @@ EDDI makes available a large number of values related to a commander's status, s
 ###Shipyard values
   * Stored ships (int): the number of ships in storage
   * Stored ship /n/ model (text): the model of the /n/th stored ship
+  * Stored ship /n/ name (text): the name of the /n/th stored ship as set in EDDI configuration
+  * Stored ship /n/ callsign (text): the callsign of the /n/th stored ship as shown in EDDI configuration (e.g. "GEF-1020")
+  * Stored ship /n/ callsign (spoken) (text): the callsign of the /n/th stored ship as shown in EDDI configuration as would be spoken
+  * Stored ship /n/ role (text): the role of the /n/th stored ship as set in EDDI configuration (Multipurpose, Combat, Trade, Exploration, Smuggling)
   * Stored ship /n/ station (text): the station in which the /n/th stored ship resides
   * Stored ship /n/ system (text): the system in which the /n/th stored ship resides
   * Stored ship /n/ distance (decimal): the number of light years between the current system and that where the /n/th ship resiedes, to two decimal places
