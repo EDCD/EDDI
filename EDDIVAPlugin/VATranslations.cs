@@ -13,6 +13,11 @@ namespace EDDIVAPlugin
         /// <summary>Fix up ship models</summary>
         public static String ShipModel(string model)
         {
+            if (model == null)
+            {
+                return null;
+            }
+
             switch (model)
             {
                 case "Cobra Mk. III":
@@ -31,6 +36,11 @@ namespace EDDIVAPlugin
         /// <summary>Fix up power names</summary>
         public static string Power(string power)
         {
+            if (power == null)
+            {
+                return null;
+            }
+
             switch (power)
             {
                 case "Aisling Duval":
@@ -57,6 +67,11 @@ namespace EDDIVAPlugin
         /// <summary>Fix up star system names</summary>
         public static string StarSystem(string starSystem)
         {
+            if (starSystem == null)
+            {
+                return null;
+            }
+
             // Common star catalogues
             if (starSystem.StartsWith("HIP "))
             {
@@ -137,6 +152,11 @@ namespace EDDIVAPlugin
 
         public static string CallSign(string callsign)
         {
+            if (callsign == null)
+            {
+                return null;
+            }
+
             List<string> elements = new List<string>();
             foreach (char c in callsign)
             {

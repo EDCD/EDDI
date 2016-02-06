@@ -9,6 +9,7 @@ using EliteDangerousNetLogMonitor;
 using System.Threading;
 using System.Diagnostics;
 using EliteDangerousStarMapService;
+using Newtonsoft.Json.Linq;
 
 namespace EDDIVAPlugin
 {
@@ -189,6 +190,18 @@ namespace EDDIVAPlugin
                 case "log watcher":
                     InvokeLogWatcher(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
+                case "event: ship docked":
+                    // Inject a 'ship docked' event
+                    dynamic shipDockedEvent = new JObject();
+                    shipDockedEvent.type = "Ship docked";
+                    LogQueue.Add(shipDockedEvent);
+                    return;
+                case "event: ship change":
+                    // Inject a 'ship change' event
+                    dynamic shipChangedEvent = new JObject();
+                    shipChangedEvent.type = "Ship change";
+                    LogQueue.Add(shipChangedEvent);
+                    return;
                 default:
                     setPluginStatus(ref textValues, "Operational", "Unknown context " + context, null);
                     return;
@@ -243,6 +256,14 @@ namespace EDDIVAPlugin
                                     setString(ref textValues, "Environment", CurrentEnvironment);
                                 }
                             }
+                            break;
+                        case "Ship docked": // Ship docked
+                            somethingToReport = true;
+                            setString(ref textValues, "EDDI event", "Ship docked");
+                            break;
+                        case "Ship change": // New or swapped ship
+                            somethingToReport = true;
+                            setString(ref textValues, "EDDI event", "Ship change");
                             break;
                         default:
                             setPluginStatus(ref textValues, "Failed", "Unknown log entry " + entry.type, null);

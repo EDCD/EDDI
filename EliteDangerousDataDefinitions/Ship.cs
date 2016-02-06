@@ -100,10 +100,12 @@ namespace EliteDangerousDataDefinitions
     public enum ShipRole
     {
         Multipurpose,
-        Trade,
-        Exploration,
-        Combat,
-        Smuggling
+        Exploring,
+        Trading,
+        Mining,
+        Smuggling,
+        Piracy,
+        Bountyhunting
     }
 
     /// <summary>The size of a ship</summary>

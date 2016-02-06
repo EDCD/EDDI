@@ -32,7 +32,7 @@ EDDI makes available a large number of values related to a commander's status, s
   * Ship name (text): the name of the ship as set in EDDI configuration
   * Ship callsign (text): the callsign of the ship as shown in EDDI configuration (e.g. "GEF-1020")
   * Ship callsign (spoken) (text): the callsign of the ship as shown in EDDI configuration as would be spoken
-  * Ship role (text): the role of the ship as set in EDDI configuration (Multipurpose, Combat, Trade, Exploration, Smuggling)
+  * Ship role (text): the role of the ship as set in EDDI configuration (Multipurpose, Combat, Exploration, Trading, Mining, Smuggling)
   * Ship size (text): the size of the ship (Small, Medium, or Large)
   * Ship value (decimal): the replacement cost of the ship plus modules
   * Ship value (text): the replacement cost of the ship plus modules as would be spoken
