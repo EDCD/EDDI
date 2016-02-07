@@ -190,7 +190,7 @@ namespace EDDIVAPlugin
                         elements.Add("india");
                         break;
                     case 'J':
-                        elements.Add("JEW-lee-ett");
+                        elements.Add("juliette");
                         break;
                     case 'K':
                         elements.Add("kilo");
@@ -217,19 +217,19 @@ namespace EDDIVAPlugin
                         elements.Add("romeo");
                         break;
                     case 'S':
-                        elements.Add("see-AIR-ah");
+                        elements.Add("sierra");
                         break;
                     case 'T':
                         elements.Add("tango");
                         break;
                     case 'U':
-                        elements.Add("YOU-nee-form");
+                        elements.Add("uniform");
                         break;
                     case 'V':
                         elements.Add("victor");
                         break;
                     case 'W':
-                        elements.Add("WISS-key");
+                        elements.Add("whisky");
                         break;
                     case 'X':
                         elements.Add("x-ray");
@@ -253,7 +253,7 @@ namespace EDDIVAPlugin
                         elements.Add("tree");
                         break;
                     case '4':
-                        elements.Add("FAW-er");
+                        elements.Add("fawer");
                         break;
                     case '5':
                         elements.Add("fife");
@@ -268,7 +268,7 @@ namespace EDDIVAPlugin
                         elements.Add("eight");
                         break;
                     case '9':
-                        elements.Add("NINE-er");
+                        elements.Add("niner");
                         break;
                 }
             }

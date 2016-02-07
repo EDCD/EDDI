@@ -31,6 +31,11 @@ namespace configuration
         {
             InitializeComponent();
 
+            // Configured the EDDI tab
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
+            eddiHomeStationText.Text = eddiConfiguration.HomeStation;
+
             // Configure the Companion App tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             // See if the credentials work

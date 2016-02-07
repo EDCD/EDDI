@@ -105,7 +105,8 @@ namespace EliteDangerousDataDefinitions
         Mining,
         Smuggling,
         Piracy,
-        Bountyhunting
+        BountyHunting,
+        Combat
     }
 
     /// <summary>The size of a ship</summary>

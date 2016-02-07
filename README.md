@@ -147,6 +147,7 @@ EDDI makes available a large number of values related to a commander's status, s
   * Ship sensors station discount (spoken) (text): the number of credits discount of the sensors over those currently fitted as would be spoken (not set if no additional discount)
 
 ###Shipyard values
+
   * Stored ships (int): the number of ships in storage
   * Stored ship /n/ model (text): the model of the /n/th stored ship
   * Stored ship /n/ name (text): the name of the /n/th stored ship as set in EDDI configuration
@@ -158,8 +159,17 @@ EDDI makes available a large number of values related to a commander's status, s
   * Stored ship /n/ distance (decimal): the number of light years between the current system and that where the /n/th ship resiedes, to two decimal places
 
 ###Miscellaneous
+
   * Environment (text): the environment the ship is in (either "Normal space" or "Supercruise")
   * Last jump (decimal): the number of lights years between this system and the last, to two decimal places
+
+EDDI also provides a number of pre-built commands to show off some of what it is capable of.  These include:
+
+  * system information triggered whenever a pilot jumps to a new system, including role-specific information
+  * environment information triggered whenever a pilot moves from supercruise to normal space and /vice versa/
+  * a voice command spoken by the pilot whenever they finish docking ("I've docked" or "Docking complete"), including role-specific information
+  * a voice command spoken by the pilot whenever they change ship ("Ship handover complete") that provides a run-down of the ship the pilot is now in
+  * a voice command spoken by the pilot before they launch that carries out a check of areas such as insurance, fuel levels, repairs /etc./
 
 ##Installing
 
@@ -169,7 +179,7 @@ You must use the latest VoiceAttack beta for EDDI to operate.  At current this i
 
 ##Upgrading
 
-If you are upgrading from an earlier version of EDDI it is recommended that you remove the existing installation before installing the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
+If you are upgrading from an earlier version of EDDI it is recommended that you remove the existing EDDI directory from within VoiceAttack's Apps directory before installing the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
 
 When upgrading EDDI you should overwrite all of the existing EDDI actions in VoiceAttack except any event handlers you have customised.
 
