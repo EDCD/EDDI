@@ -54,6 +54,12 @@ namespace EliteDangerousCompanionAppService
         /// </summary>
         public void ToFile(string filename=null)
         {
+            // We only write to the file if there is at least one ship present in the list
+            if (Ships.Count == 0)
+            {
+                return;
+            }
+
             if (filename == null)
             {
                 filename = dataPath;

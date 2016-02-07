@@ -169,9 +169,12 @@ EDDI also provides a number of pre-built commands to show off some of what it is
 
   * system information triggered whenever a pilot jumps to a new system, including role-specific information
   * environment information triggered whenever a pilot moves from supercruise to normal space and /vice versa/
-  * a voice command spoken by the pilot whenever they finish docking ("I've docked" or "Docking complete"), including role-specific information
+  * a voice command spoken by the pilot whenever they finish docking ("I have docked" or "Docking complete"), including role-specific information
   * a voice command spoken by the pilot whenever they change ship ("Ship handover complete") that provides a run-down of the ship the pilot is now in
-  * a voice command spoken by the pilot before they launch that carries out a check of areas such as insurance, fuel levels, repairs /etc./
+  * a voice command spoken by the pilot before they launch ("run pre flight checks") that carries out a check of areas such as insurance, repairs /etc./
+  * a voice command spoken by the pilot when they wish to see their ship in http://www.coriolis.io/ ("Display my ship in coriolis")
+  * a voice command spoken by the pilot when they wish to check the current discounts on their ship ("Report on ship discounts")
+  * voice commands spoken by the pilot when they wish to check the current status of their ship ("Report" and "Quick report")
 
 ##Installing
 
