@@ -62,6 +62,8 @@ namespace EliteDangerousDataDefinitions
         [JsonIgnore]
         public Module FuelTank { get; set; }
         [JsonIgnore]
+        public decimal FuelTankCapacity { get; set; }
+        [JsonIgnore]
         public List<Hardpoint> Hardpoints { get; set; }
         [JsonIgnore]
         public List<Compartment> Compartments { get; set; }

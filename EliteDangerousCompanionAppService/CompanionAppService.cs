@@ -447,6 +447,7 @@ namespace EliteDangerousCompanionAppService
             Ship.PowerDistributor = ModuleFromProfile("PowerDistributor", json["ship"]["modules"]["PowerDistributor"]);
             Ship.Sensors = ModuleFromProfile("Radar", json["ship"]["modules"]["Radar"]);
             Ship.FuelTank = ModuleFromProfile("FuelTank", json["ship"]["modules"]["FuelTank"]);
+            Ship.FuelTankCapacity = (decimal)json["ship"]["fuel"]["main"]["capacity"];
 
             // Obtain the hardpoints
             foreach (dynamic module in json["ship"]["modules"])

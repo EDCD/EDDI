@@ -78,6 +78,7 @@ EDDI makes available a large number of values related to a commander's status, s
   * Ship fuel tank cost (decimal): the purchase cost of the fuel tank
   * Ship fuel tank value (decimal): the undiscounted cost of the fuel tank
   * Ship fuel tank discount (decimal): the percentage discount of the purchased fuel tank against the undiscounted cost
+  * Ship fuel tank capacity (decimal): the capacity of the fuel tank
 
 ###Current system values
 

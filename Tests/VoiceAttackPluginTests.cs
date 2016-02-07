@@ -100,7 +100,7 @@ namespace Tests
         [TestMethod]
         public void TestTranslateCallsigns()
         {
-            Assert.AreEqual("Golf, AL-fah, EKS-ray, one, ZEE-roh, NINE-er, FAW-er", VATranslations.CallSign("GAX-1094"));
+            Assert.AreEqual("golf, alpha, x-ray, one, zero, niner, fawer", VATranslations.CallSign("GAX-1094"));
         }
 
         [TestMethod]
