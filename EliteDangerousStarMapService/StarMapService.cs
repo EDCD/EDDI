@@ -13,20 +13,20 @@ namespace EliteDangerousStarMapService
     /// <summary> Talk to the Elite: Dangerous Star Map service </summary>
     public class StarMapService
     {
-        private static string BASE_URL = "http://www.edsm.net/";
-
         private string commanderName;
         private string apiKey;
+        private string baseUrl;
 
-        public StarMapService(string apiKey, string commanderName)
+        public StarMapService(string apiKey, string commanderName, string baseUrl="http://www.edsm.net/")
         {
             this.apiKey = apiKey;
             this.commanderName = commanderName;
+            this.baseUrl = baseUrl;
         }
 
         public void sendStarMapLog(string systemName)
         {
-            var client = new RestClient(BASE_URL);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-logs-v1/set-log");
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
@@ -40,7 +40,7 @@ namespace EliteDangerousStarMapService
 
         public void sendStarMapComment(string systemName, string comment)
         {
-            var client = new RestClient(BASE_URL);
+            var client = new RestClient(baseUrl);
             var request = new RestRequest("api-logs-v1/set-comment");
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
@@ -54,7 +54,7 @@ namespace EliteDangerousStarMapService
 
         public StarMapInfo getStarMapInfo(string systemName)
         {
-            var client = new RestClient(BASE_URL);
+            var client = new RestClient(baseUrl);
 
             // First fetch the data itself
             var logRequest = new RestRequest("api-logs-v1/get-logs");

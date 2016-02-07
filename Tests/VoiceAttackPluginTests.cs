@@ -6,6 +6,7 @@ using System;
 namespace Tests
 {
     [TestClass]
+    [DeploymentItem(@"x86\SQLite.Interop.dll", "x86")]
     public class VoiceAttackPluginTests
     {
         [TestMethod]
@@ -94,6 +95,29 @@ namespace Tests
             {
                 VATranslations.StarSystem(starSystem);
             }
+        }
+
+        [TestMethod]
+        public void TestTranslateCallsigns()
+        {
+            Assert.AreEqual("golf, alpha, x-ray, one, zero, niner, fawer", VATranslations.CallSign("GAX-1094"));
+        }
+
+        [TestMethod]
+        public void TestSqlRepositoryPresent()
+        {
+            IEDDIStarSystemRepository starSystemRepository = new EDDIStarSystemSqLiteRepository();
+            EDDIStarSystem DBData = starSystemRepository.GetEDDIStarSystem("Nangkano");
+            Assert.IsNotNull(DBData);
+            Assert.AreEqual("Nangkano", DBData.StarSystem.Name);
+        }
+
+        [TestMethod]
+        public void TestSqlRepositoryMissing()
+        {
+            IEDDIStarSystemRepository starSystemRepository = new EDDIStarSystemSqLiteRepository();
+            EDDIStarSystem DBData = starSystemRepository.GetEDDIStarSystem("Not here");
+            Assert.IsNull(DBData);
         }
     }
 }

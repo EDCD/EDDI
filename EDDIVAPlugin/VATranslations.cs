@@ -13,7 +13,12 @@ namespace EDDIVAPlugin
         /// <summary>Fix up ship models</summary>
         public static String ShipModel(string model)
         {
-            switch(model)
+            if (model == null)
+            {
+                return null;
+            }
+
+            switch (model)
             {
                 case "Cobra Mk. III":
                     return "Cobra Mark 3";
@@ -31,6 +36,11 @@ namespace EDDIVAPlugin
         /// <summary>Fix up power names</summary>
         public static string Power(string power)
         {
+            if (power == null)
+            {
+                return null;
+            }
+
             switch (power)
             {
                 case "Aisling Duval":
@@ -57,6 +67,11 @@ namespace EDDIVAPlugin
         /// <summary>Fix up star system names</summary>
         public static string StarSystem(string starSystem)
         {
+            if (starSystem == null)
+            {
+                return null;
+            }
+
             // Common star catalogues
             if (starSystem.StartsWith("HIP "))
             {
@@ -133,6 +148,132 @@ namespace EDDIVAPlugin
             starSystem = DECIMAL_DIGITS.Replace(starSystem, match => match.Groups[1].Value + string.Join<char>(" ", match.Groups[2].Value));
             // Any string of more than two digits is broken up in to individual digits
             return DIGITS.Replace(starSystem, match => string.Join<char>(" ", match.Value));
+        }
+
+        public static string CallSign(string callsign)
+        {
+            if (callsign == null)
+            {
+                return null;
+            }
+
+            List<string> elements = new List<string>();
+            foreach (char c in callsign)
+            {
+                switch (c)
+                {
+                    case 'A':
+                        elements.Add("alpha");
+                        break;
+                    case 'B':
+                        elements.Add("bravo");
+                        break;
+                    case 'C':
+                        elements.Add("charlie");
+                        break;
+                    case 'D':
+                        elements.Add("delta");
+                        break;
+                    case 'E':
+                        elements.Add("echo");
+                        break;
+                    case 'F':
+                        elements.Add("foxtrot");
+                        break;
+                    case 'G':
+                        elements.Add("golf");
+                        break;
+                    case 'H':
+                        elements.Add("hotel");
+                        break;
+                    case 'I':
+                        elements.Add("india");
+                        break;
+                    case 'J':
+                        elements.Add("juliette");
+                        break;
+                    case 'K':
+                        elements.Add("kilo");
+                        break;
+                    case 'L':
+                        elements.Add("lima");
+                        break;
+                    case 'M':
+                        elements.Add("mike");
+                        break;
+                    case 'N':
+                        elements.Add("november");
+                        break;
+                    case 'O':
+                        elements.Add("oscar");
+                        break;
+                    case 'P':
+                        elements.Add("Pappa");
+                        break;
+                    case 'Q':
+                        elements.Add("quebec");
+                        break;
+                    case 'R':
+                        elements.Add("romeo");
+                        break;
+                    case 'S':
+                        elements.Add("sierra");
+                        break;
+                    case 'T':
+                        elements.Add("tango");
+                        break;
+                    case 'U':
+                        elements.Add("uniform");
+                        break;
+                    case 'V':
+                        elements.Add("victor");
+                        break;
+                    case 'W':
+                        elements.Add("whisky");
+                        break;
+                    case 'X':
+                        elements.Add("x-ray");
+                        break;
+                    case 'Y':
+                        elements.Add("yankee");
+                        break;
+                    case 'Z':
+                        elements.Add("zulu");
+                        break;
+                    case '0':
+                        elements.Add("zero");
+                        break;
+                    case '1':
+                        elements.Add("one");
+                        break;
+                    case '2':
+                        elements.Add("two");
+                        break;
+                    case '3':
+                        elements.Add("tree");
+                        break;
+                    case '4':
+                        elements.Add("fawer");
+                        break;
+                    case '5':
+                        elements.Add("fife");
+                        break;
+                    case '6':
+                        elements.Add("six");
+                        break;
+                    case '7':
+                        elements.Add("seven");
+                        break;
+                    case '8':
+                        elements.Add("eight");
+                        break;
+                    case '9':
+                        elements.Add("niner");
+                        break;
+                }
+            }
+
+            return elements.Aggregate((i, j) => i + ", " + j);
         }
     }
 }

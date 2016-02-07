@@ -9,6 +9,7 @@ using EliteDangerousNetLogMonitor;
 using System.Threading;
 using System.Diagnostics;
 using EliteDangerousStarMapService;
+using Newtonsoft.Json.Linq;
 
 namespace EDDIVAPlugin
 {
@@ -37,7 +38,7 @@ namespace EDDIVAPlugin
         private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
 
-        public static readonly string PLUGIN_VERSION = "0.8.0";
+        public static readonly string PLUGIN_VERSION = "0.8.5";
 
         public static string VA_DisplayName()
         {
@@ -69,6 +70,16 @@ namespace EDDIVAPlugin
                             // Set up and/or open our database
                             String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                             System.IO.Directory.CreateDirectory(dataDir);
+
+                            // Set up our local star system repository
+                            starSystemRepository = new EDDIStarSystemSqLiteRepository();
+
+                            // Set up the EDDI configuration
+                            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+                            setString(ref textValues, "Home system", eddiConfiguration.HomeSystem);
+                            setString(ref textValues, "Home system (spoken)", VATranslations.StarSystem(eddiConfiguration.HomeSystem));
+                            setString(ref textValues, "Home station", eddiConfiguration.HomeStation);
+                            // TODO distance to home system
 
                             // Set up the app service
                             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
@@ -114,9 +125,6 @@ namespace EDDIVAPlugin
                             //{
                             //    starMapService = new StarMapService(edsmApiKey, Cmdr.Name);
                             //}
-
-                            // Set up our local star system repository
-                            starSystemRepository = new EDDIStarSystemSqLiteRepository();
 
                             InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                             CurrentEnvironment = ENVIRONMENT_NORMAL_SPACE;
@@ -183,7 +191,13 @@ namespace EDDIVAPlugin
                     InvokeLogWatcher(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
                 default:
-                    setPluginStatus(ref textValues, "Operational", "Unknown context " + context, null);
+                    if (context.ToLower().StartsWith("event:"))
+                    {
+                        // Inject an event
+                        string data = context.Replace("event: ", "");
+                        JObject eventData = JObject.Parse(data);
+                        LogQueue.Add(eventData);
+                    }
                     return;
             }
         }
@@ -236,6 +250,18 @@ namespace EDDIVAPlugin
                                     setString(ref textValues, "Environment", CurrentEnvironment);
                                 }
                             }
+                            break;
+                        case "Ship docked": // Ship docked
+                            somethingToReport = true;
+                            setString(ref textValues, "EDDI event", "Ship docked");
+                            // Need to refetch profile information
+                            InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                            break;
+                        case "Ship change": // New or swapped ship
+                            somethingToReport = true;
+                            setString(ref textValues, "EDDI event", "Ship change");
+                            // Need to refetch profile information
+                            InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                             break;
                         default:
                             setPluginStatus(ref textValues, "Failed", "Unknown log entry " + entry.type, null);
@@ -310,6 +336,10 @@ namespace EDDIVAPlugin
                     //
                     setString(ref textValues, "Ship model", Cmdr.Ship.Model);
                     setString(ref textValues, "Ship model (spoken)", VATranslations.ShipModel(Cmdr.Ship.Model));
+                    setString(ref textValues, "Ship callsign", Cmdr.Ship.CallSign);
+                    setString(ref textValues, "Ship callsign (spoken)", VATranslations.CallSign(Cmdr.Ship.CallSign));
+                    setString(ref textValues, "Ship name", Cmdr.Ship.Name);
+                    setString(ref textValues, "Ship role", Cmdr.Ship.Role.ToString());
                     setString(ref textValues, "Ship size", Cmdr.Ship.Size.ToString());
                     setDecimal(ref decimalValues, "Ship value", (decimal)Cmdr.Ship.Value);
                     setString(ref textValues, "Ship value (spoken)", humanize(Cmdr.Ship.Value));
@@ -363,7 +393,7 @@ namespace EDDIVAPlugin
                     setDecimal(ref decimalValues, "Ship fuel tank cost", (decimal)Cmdr.Ship.FuelTank.Cost);
                     setDecimal(ref decimalValues, "Ship fuel tank value", (decimal)Cmdr.Ship.FuelTank.Value);
                     setDecimal(ref decimalValues, "Ship fuel tank discount", Cmdr.Ship.FuelTank.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.FuelTank.Cost) / ((decimal)Cmdr.Ship.FuelTank.Value))) * 100, 1));
-                    //                setInt(ref intValues, "Ship fuel tank capacity", 0); // TODO
+                    setDecimal(ref decimalValues, "Ship fuel tank capacity", Cmdr.Ship.FuelTankCapacity);
 
                     // Hardpoints
                     int weaponHardpoints = 0;
@@ -398,6 +428,10 @@ namespace EDDIVAPlugin
                         setString(ref textValues, varBase + " model", StoredShip.Model);
                         setString(ref textValues, varBase + " system", StoredShip.StarSystem);
                         setString(ref textValues, varBase + " station", StoredShip.Station);
+                        setString(ref textValues, varBase + " callsign", StoredShip.CallSign);
+                        setString(ref textValues, varBase + " callsign (spoken)", VATranslations.CallSign(StoredShip.CallSign));
+                        setString(ref textValues, varBase + " name", StoredShip.Name);
+                        setString(ref textValues, varBase + " role", StoredShip.Role.ToString());
 
                         // Fetch the star system in which the ship is stored
                         EDDIStarSystem StoredShipStarSystemData = starSystemRepository.GetEDDIStarSystem(StoredShip.StarSystem);
@@ -440,11 +474,13 @@ namespace EDDIVAPlugin
                     SetOutfittingCost("power distributor", Cmdr.Ship.PowerDistributor, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
                     SetOutfittingCost("sensors", Cmdr.Ship.Sensors, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
 
+                    setString(ref textValues, "Last station name", Cmdr.LastStation);
+
                     setPluginStatus(ref textValues, "Operational", null, null);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    setPluginStatus(ref textValues, "Failed", "Failed to access system data", e);
+                    setPluginStatus(ref textValues, "Failed", "Failed to access profile", ex);
                 }
             }
         }
@@ -786,7 +822,6 @@ namespace EDDIVAPlugin
             }
 
         }
-
 
         // Debug method to allow manual updating of the system
         public static void updateSystem(string system)

@@ -1,4 +1,5 @@
-﻿using EliteDangerousCompanionAppService;
+﻿using EDDIVAPlugin;
+using EliteDangerousCompanionAppService;
 using EliteDangerousDataDefinitions;
 using EliteDangerousNetLogMonitor;
 using EliteDangerousStarMapService;
@@ -24,23 +25,41 @@ namespace configuration
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ShipsConfiguration shipsConfiguration;
+
         public MainWindow()
         {
             InitializeComponent();
 
+            // Configured the EDDI tab
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
+            eddiHomeStationText.Text = eddiConfiguration.HomeStation;
+
             // Configure the Companion App tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             // See if the credentials work
+            Commander commander = null;
             CompanionAppService companionAppService = new CompanionAppService(companionAppCredentials);
             try
             {
-                Commander commander = companionAppService.Profile();
+                commander = companionAppService.Profile();
                 setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + commander.Name);
             }
             catch (Exception ex)
             {
                 // Fall back to stage 1
                 setUpCompanionAppStage1();
+            }
+
+            if (commander != null)
+            {
+                shipsConfiguration = new ShipsConfiguration();
+                List<Ship> ships = new List<Ship>();
+                ships.Add(commander.Ship);
+                ships.AddRange(commander.StoredShips);
+                shipsConfiguration.Ships = ships;
+                shipyardData.ItemsSource = ships;
             }
 
             // Configure the NetLog tab
@@ -53,6 +72,32 @@ namespace configuration
             edsmCommanderNameTextBox.Text = starMapConfiguration.commanderName;
         }
 
+        // Handle chagnes to the eddi tab
+        private void homeSystemChanged(object sender, TextChangedEventArgs e)
+        {
+            updateEddiConfiguration();
+        }
+
+        private void homeStationChanged(object sender, TextChangedEventArgs e)
+        {
+            updateEddiConfiguration();
+        }
+
+        private void updateEddiConfiguration()
+        {
+            EDDIConfiguration eddiConfiguration = new EDDIConfiguration();
+            if (!String.IsNullOrWhiteSpace(eddiHomeSystemText.Text))
+            {
+                eddiConfiguration.HomeSystem = eddiHomeSystemText.Text.Trim();
+            }
+            if (!String.IsNullOrWhiteSpace(eddiHomeStationText.Text))
+            {
+                eddiConfiguration.HomeStation = eddiHomeStationText.Text.Trim();
+            }
+            eddiConfiguration.ToFile();
+        }
+
+        // Handle changes to the companion app tab
         private void companionAppNextClicked(object sender, RoutedEventArgs e)
         {
             // See if the user is entering their email address and password
@@ -60,7 +105,7 @@ namespace configuration
             {
                 // Stage 1 of authentication - login
                 string email = companionAppEmailText.Text.Trim();
-                string password = companionAppPasswordText.Text.Trim();
+                string password = companionAppPasswordText.Password.Trim();
                 try
                 {
                     CompanionAppCredentials companionAppCredentials = CompanionAppService.Login(email, password);
@@ -123,6 +168,7 @@ namespace configuration
             companionAppEmailText.Visibility = Visibility.Visible;
             companionAppPasswordLabel.Visibility = Visibility.Visible;
             companionAppPasswordText.Visibility = Visibility.Visible;
+            companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
             companionAppNextButton.Visibility = Visibility.Visible;
@@ -141,6 +187,7 @@ namespace configuration
 
             companionAppEmailLabel.Visibility = Visibility.Hidden;
             companionAppEmailText.Visibility = Visibility.Hidden;
+            companionAppPasswordText.Password = "";
             companionAppPasswordLabel.Visibility = Visibility.Hidden;
             companionAppPasswordText.Visibility = Visibility.Hidden;
             companionAppCodeLabel.Visibility = Visibility.Visible;
@@ -161,8 +208,10 @@ namespace configuration
 
             companionAppEmailLabel.Visibility = Visibility.Hidden;
             companionAppEmailText.Visibility = Visibility.Hidden;
+            companionAppPasswordText.Password = "";
             companionAppPasswordLabel.Visibility = Visibility.Hidden;
             companionAppPasswordText.Visibility = Visibility.Hidden;
+            companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
             companionAppNextButton.Visibility = Visibility.Hidden;
@@ -236,9 +285,15 @@ namespace configuration
 
         }
 
-        private void doneClicked(object sender, RoutedEventArgs e)
+        // Handle changes to the Shipyard tab
+
+        private void shipYardUpdated(object sender, DataTransferEventArgs e)
         {
-            Application.Current.Shutdown();
+            if (shipsConfiguration != null)
+            {
+                shipsConfiguration.ToFile();
+            }            
         }
+
     }
 }

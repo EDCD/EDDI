@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -320,38 +321,97 @@ namespace EliteDangerousCompanionAppService
         {
             Commander Commander = new Commander();
 
-            Commander.Name = (string)json["commander"]["name"];
+            if (json["commander"] != null)
+            {
+                Commander.Name = (string)json["commander"]["name"];
 
-            Commander.CombatRating = (int)json["commander"]["rank"]["combat"];
-            Commander.CombatRank = Commander.combatRanks[Commander.CombatRating];
+                Commander.CombatRating = (int)json["commander"]["rank"]["combat"];
+                Commander.CombatRank = Commander.combatRanks[Commander.CombatRating];
 
-            Commander.TradeRating = (int)json["commander"]["rank"]["trade"];
-            Commander.TradeRank = Commander.tradeRanks[Commander.TradeRating];
+                Commander.TradeRating = (int)json["commander"]["rank"]["trade"];
+                Commander.TradeRank = Commander.tradeRanks[Commander.TradeRating];
 
-            Commander.ExploreRating = (int)json["commander"]["rank"]["explore"];
-            Commander.ExploreRank = Commander.exploreRanks[Commander.ExploreRating];
+                Commander.ExploreRating = (int)json["commander"]["rank"]["explore"];
+                Commander.ExploreRank = Commander.exploreRanks[Commander.ExploreRating];
 
-            Commander.EmpireRating = (int)json["commander"]["rank"]["empire"];
-            Commander.EmpireRank = Commander.empireRanks[(int)Commander.EmpireRating];
-            Commander.FederationRating = (int)json["commander"]["rank"]["federation"];
-            Commander.FederationRank = Commander.federationRanks[(int)Commander.FederationRating];
+                Commander.EmpireRating = (int)json["commander"]["rank"]["empire"];
+                Commander.EmpireRank = Commander.empireRanks[(int)Commander.EmpireRating];
+                Commander.FederationRating = (int)json["commander"]["rank"]["federation"];
+                Commander.FederationRank = Commander.federationRanks[(int)Commander.FederationRating];
 
-            Commander.Credits = (long)json["commander"]["credits"];
-            Commander.Debt = (long)json["commander"]["debt"];
+                Commander.Credits = (long)json["commander"]["credits"];
+                Commander.Debt = (long)json["commander"]["debt"];
 
-            Commander.StarSystem = (string)json["lastSystem"]["name"];
+                Commander.StarSystem = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
 
-            Commander.Ship = ShipFromProfile(json);
+                Commander.Ship = ShipFromProfile(json);
 
-            Commander.StoredShips = StoredShipsFromProfile(json);
+                Commander.StoredShips = StoredShipsFromProfile(json, ref Commander);
 
-            Commander.Outfitting = OutfittingFromProfile(json);
+                AugmentShipInfo(Commander.Ship, Commander.StoredShips);
+
+                Commander.Outfitting = OutfittingFromProfile(json);
+
+                Commander.LastStation = json["lastStarport"] == null ? null : (string)json["lastStarport"]["name"];
+            }
 
             return Commander;
         }
 
+        private static void AugmentShipInfo(Ship ship, List<Ship> storedShips)
+        {
+            ShipsConfiguration shipsConfiguration = ShipsConfiguration.FromFile();
+            Dictionary<int, Ship> lookup = shipsConfiguration.Ships.ToDictionary(o => o.LocalId);
+
+            Ship shipConfig;
+            // Start with our current ship
+            if (lookup.TryGetValue(ship.LocalId, out shipConfig))
+            {
+                // Already exists; grab the relevant information and supplement it
+                ship.Name = shipConfig.Name;
+                ship.CallSign = shipConfig.CallSign;
+                ship.Role = shipConfig.Role;
+            }
+            else
+            {
+                // Doesn't already exist; add a callsign and default role
+                ship.CallSign = Ship.generateCallsign();
+                ship.Role = ShipRole.Multipurpose;
+            }
+
+            // Work through our shipyard
+            foreach (Ship storedShip in storedShips)
+            {
+
+                if (lookup.TryGetValue(storedShip.LocalId, out shipConfig))
+                {
+                    // Already exists; grab the relevant information and supplement it
+                    storedShip.Name = shipConfig.Name;
+                    storedShip.CallSign = shipConfig.CallSign;
+                    storedShip.Role = shipConfig.Role;
+                }
+                else
+                {
+                    // Doesn't already exist; add a callsign and default role
+                    storedShip.CallSign = Ship.generateCallsign();
+                    storedShip.Role = ShipRole.Multipurpose;
+                }
+            }
+
+            // Update our configuration with the new data (this also removes any old redundant ships)
+            shipsConfiguration.Ships = new List<Ship>();
+            shipsConfiguration.Ships.Add(ship);
+            shipsConfiguration.Ships.AddRange(storedShips);
+            shipsConfiguration.ToFile();
+        }
+
         public static Ship ShipFromProfile(dynamic json)
         {
+            if (json["ship"] == null)
+            {
+                return null;
+            }
+
             String Model = json["ship"]["name"];
             if (shipTranslations.ContainsKey(Model))
             {
@@ -387,6 +447,7 @@ namespace EliteDangerousCompanionAppService
             Ship.PowerDistributor = ModuleFromProfile("PowerDistributor", json["ship"]["modules"]["PowerDistributor"]);
             Ship.Sensors = ModuleFromProfile("Radar", json["ship"]["modules"]["Radar"]);
             Ship.FuelTank = ModuleFromProfile("FuelTank", json["ship"]["modules"]["FuelTank"]);
+            Ship.FuelTankCapacity = (decimal)json["ship"]["fuel"]["main"]["capacity"];
 
             // Obtain the hardpoints
             foreach (dynamic module in json["ship"]["modules"])
@@ -447,8 +508,10 @@ namespace EliteDangerousCompanionAppService
             return Hardpoint;
         }
 
-        public static List<Ship> StoredShipsFromProfile(dynamic json)
+        public static List<Ship> StoredShipsFromProfile(dynamic json, ref Commander commander)
         {
+            Ship currentShip = commander.Ship;
+
             List<Ship> StoredShips = new List<Ship>();
 
             foreach (dynamic shipJson in json["ships"])
@@ -458,22 +521,25 @@ namespace EliteDangerousCompanionAppService
                     dynamic ship = shipJson.Value;
                     if (ship != null)
                     {
-                        Ship Ship = new Ship();
-
-                        if (ship["starsystem"] != null)
+                        if ((int)ship["id"] != currentShip.LocalId)
                         {
-                            // If we have a starsystem it means that the ship is stored
-                            Ship.LocalId = ship["id"];
-                            Ship.Model = ship["name"];
-                            if (shipTranslations.ContainsKey(Ship.Model))
+                            Ship Ship = new Ship();
+
+                            if (ship["starsystem"] != null)
                             {
-                                Ship.Model = shipTranslations[Ship.Model];
+                                // If we have a starsystem it means that the ship is stored
+                                Ship.LocalId = ship["id"];
+                                Ship.Model = ship["name"];
+                                if (shipTranslations.ContainsKey(Ship.Model))
+                                {
+                                    Ship.Model = shipTranslations[Ship.Model];
+                                }
+
+                                Ship.StarSystem = ship["starsystem"]["name"];
+                                Ship.Station = ship["station"]["name"];
+
+                                StoredShips.Add(Ship);
                             }
-
-                            Ship.StarSystem = ship["starsystem"]["name"];
-                            Ship.Station = ship["station"]["name"];
-
-                            StoredShips.Add(Ship);
                         }
                     }
                 }

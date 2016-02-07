@@ -14,7 +14,7 @@ namespace Tests
         [TestMethod]
         public void TestSolLog()
         {
-            StarMapService service = new StarMapService("8023ed4044b074115af1dd85bc8920e0ef072cb1", "Test");
+            StarMapService service = new StarMapService("8023ed4044b074115af1dd85bc8920e0ef072cb1", "Test", "http://beta.edsm.net:8080/");
             service.sendStarMapLog("Sol");
 
             StarMapInfo info = service.getStarMapInfo("Sol");
@@ -24,7 +24,7 @@ namespace Tests
         [TestMethod]
         public void TestProximaCentauriComment()
         {
-            StarMapService service = new StarMapService("8023ed4044b074115af1dd85bc8920e0ef072cb1", "Test");
+            StarMapService service = new StarMapService("8023ed4044b074115af1dd85bc8920e0ef072cb1", "Test", "http://beta.edsm.net:8080/");
             service.sendStarMapLog("Proxima Centauri");
 
             service.sendStarMapComment("Proxima Centauri", "Not so far away");
