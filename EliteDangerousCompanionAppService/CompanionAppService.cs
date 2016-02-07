@@ -321,34 +321,39 @@ namespace EliteDangerousCompanionAppService
         {
             Commander Commander = new Commander();
 
-            Commander.Name = (string)json["commander"]["name"];
+            if (json["commander"] != null)
+            {
+                Commander.Name = (string)json["commander"]["name"];
 
-            Commander.CombatRating = (int)json["commander"]["rank"]["combat"];
-            Commander.CombatRank = Commander.combatRanks[Commander.CombatRating];
+                Commander.CombatRating = (int)json["commander"]["rank"]["combat"];
+                Commander.CombatRank = Commander.combatRanks[Commander.CombatRating];
 
-            Commander.TradeRating = (int)json["commander"]["rank"]["trade"];
-            Commander.TradeRank = Commander.tradeRanks[Commander.TradeRating];
+                Commander.TradeRating = (int)json["commander"]["rank"]["trade"];
+                Commander.TradeRank = Commander.tradeRanks[Commander.TradeRating];
 
-            Commander.ExploreRating = (int)json["commander"]["rank"]["explore"];
-            Commander.ExploreRank = Commander.exploreRanks[Commander.ExploreRating];
+                Commander.ExploreRating = (int)json["commander"]["rank"]["explore"];
+                Commander.ExploreRank = Commander.exploreRanks[Commander.ExploreRating];
 
-            Commander.EmpireRating = (int)json["commander"]["rank"]["empire"];
-            Commander.EmpireRank = Commander.empireRanks[(int)Commander.EmpireRating];
-            Commander.FederationRating = (int)json["commander"]["rank"]["federation"];
-            Commander.FederationRank = Commander.federationRanks[(int)Commander.FederationRating];
+                Commander.EmpireRating = (int)json["commander"]["rank"]["empire"];
+                Commander.EmpireRank = Commander.empireRanks[(int)Commander.EmpireRating];
+                Commander.FederationRating = (int)json["commander"]["rank"]["federation"];
+                Commander.FederationRank = Commander.federationRanks[(int)Commander.FederationRating];
 
-            Commander.Credits = (long)json["commander"]["credits"];
-            Commander.Debt = (long)json["commander"]["debt"];
+                Commander.Credits = (long)json["commander"]["credits"];
+                Commander.Debt = (long)json["commander"]["debt"];
 
-            Commander.StarSystem = (string)json["lastSystem"]["name"];
+                Commander.StarSystem = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
 
-            Commander.Ship = ShipFromProfile(json);
+                Commander.Ship = ShipFromProfile(json);
 
-            Commander.StoredShips = StoredShipsFromProfile(json, ref Commander);
+                Commander.StoredShips = StoredShipsFromProfile(json, ref Commander);
 
-            AugmentShipInfo(Commander.Ship, Commander.StoredShips);
+                AugmentShipInfo(Commander.Ship, Commander.StoredShips);
 
-            Commander.Outfitting = OutfittingFromProfile(json);
+                Commander.Outfitting = OutfittingFromProfile(json);
+
+                Commander.LastStation = json["lastStarport"] == null ? null : (string)json["lastStarport"]["name"];
+            }
 
             return Commander;
         }
@@ -402,6 +407,11 @@ namespace EliteDangerousCompanionAppService
 
         public static Ship ShipFromProfile(dynamic json)
         {
+            if (json["ship"] == null)
+            {
+                return null;
+            }
+
             String Model = json["ship"]["name"];
             if (shipTranslations.ContainsKey(Model))
             {

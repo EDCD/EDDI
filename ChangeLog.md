@@ -2,6 +2,7 @@
   * Added callsigns, names and roles for ships
   * Added home system and station
   * Added more events in the handler.  These are often triggered by voice actions themselves, but have been built in this way to allow for the future when these events become available directly to EDDI
+  * Added the name of the last station the commander docked at
 
 #0.8.0
   * Added EDSM integration: provide the ability for EDDI to send data to EDSM, keeping a log of every system you have visited

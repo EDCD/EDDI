@@ -162,6 +162,7 @@ EDDI makes available a large number of values related to a commander's status, s
 
   * Environment (text): the environment the ship is in (either "Normal space" or "Supercruise")
   * Last jump (decimal): the number of lights years between this system and the last, to two decimal places
+  * Last station name (text): the name of the last station the commander docked at
 
 EDDI also provides a number of pre-built commands to show off some of what it is capable of.  These include:
 
@@ -204,8 +205,10 @@ Once all of this is complete you can restart VoiceAttack and press shift-control
 
 Elite writes a number of messages to its activity log, some of which are parsed by EDDI and turned in to events.  The EDDI event loop triggers one of a number of actions depending on the event.  At current the actions are:
 
-  * (EDDI: event handler for change of system) triggered whenever the commander changes to a different system.  This triggers at the end of the hyperspace countdown.
-  * (EDDI: event handler for change of environment) triggered whenever the commander moves between supercruise and normal space.  This triggers as the move occurs.
+  * ((EDDI: event handler for change of system)) triggered whenever the commander changes to a different system.  This triggers at the end of the hyperspace countdown.
+  * ((EDDI: event handler for change of environment)) triggered whenever the commander moves between supercruise and normal space.  This triggers as the move occurs.
+  * ((EDDI: event handler for ship docked)) triggered whenever the commander issues a "ship docked" command to VoiceAttack.
+  * ((EDDI: event handler for ship changed)) triggered whenever the commander issues a "ship handover complete" command to VoiceAttack.
 
 The above actions can be customised as you see fit.  If you customise them then when you upgrade EDDI you should not overwrite the event handlers (although you should overwrite the event loop).
 

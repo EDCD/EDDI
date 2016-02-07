@@ -190,20 +190,14 @@ namespace EDDIVAPlugin
                 case "log watcher":
                     InvokeLogWatcher(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
-                case "event: ship docked":
-                    // Inject a 'ship docked' event
-                    dynamic shipDockedEvent = new JObject();
-                    shipDockedEvent.type = "Ship docked";
-                    LogQueue.Add(shipDockedEvent);
-                    return;
-                case "event: ship change":
-                    // Inject a 'ship change' event
-                    dynamic shipChangedEvent = new JObject();
-                    shipChangedEvent.type = "Ship change";
-                    LogQueue.Add(shipChangedEvent);
-                    return;
                 default:
-                    setPluginStatus(ref textValues, "Operational", "Unknown context " + context, null);
+                    if (context.ToLower().StartsWith("event:"))
+                    {
+                        // Inject an event
+                        string data = context.Replace("event: ", "");
+                        JObject eventData = JObject.Parse(data);
+                        LogQueue.Add(eventData);
+                    }
                     return;
             }
         }
@@ -260,10 +254,14 @@ namespace EDDIVAPlugin
                         case "Ship docked": // Ship docked
                             somethingToReport = true;
                             setString(ref textValues, "EDDI event", "Ship docked");
+                            // Need to refetch profile information
+                            InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                             break;
                         case "Ship change": // New or swapped ship
                             somethingToReport = true;
                             setString(ref textValues, "EDDI event", "Ship change");
+                            // Need to refetch profile information
+                            InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                             break;
                         default:
                             setPluginStatus(ref textValues, "Failed", "Unknown log entry " + entry.type, null);
@@ -475,6 +473,8 @@ namespace EDDIVAPlugin
                     SetOutfittingCost("life support", Cmdr.Ship.LifeSupport, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
                     SetOutfittingCost("power distributor", Cmdr.Ship.PowerDistributor, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
                     SetOutfittingCost("sensors", Cmdr.Ship.Sensors, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+
+                    setString(ref textValues, "Last station name", Cmdr.LastStation);
 
                     setPluginStatus(ref textValues, "Operational", null, null);
                 }
