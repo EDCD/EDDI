@@ -1,3 +1,6 @@
+#0.8.9
+  * Provide starsystem information even if profile is not available
+
 #0.8.8
   * Fix crash if starsystem has no stations
 
