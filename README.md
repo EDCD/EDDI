@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface VoiceAttack plugin
 
-Current version: 0.8.7
+Current version: 0.8.8
 
 EDDI makes available a large number of values related to a commander's status, ship and system.  These give the basis for providing a rich VoiceAttack experience.  It is not in itself a complete VoiceAttack profile, similar to that provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.  The available values are as follows:
 
@@ -176,6 +176,7 @@ EDDI also provides a number of pre-built commands to show off some of what it is
   * a voice command spoken by the pilot when they wish to see their ship in http://www.coriolis.io/ ("Display my ship in coriolis")
   * a voice command spoken by the pilot when they wish to check the current discounts on their ship ("Report on ship discounts")
   * voice commands spoken by the pilot when they wish to check the current status of their ship ("Report" and "Quick report")
+  * voice commands spoken by the pilot when they wish to check just the damage on their ship ("Damage report")
 
 ##Installing
 
@@ -188,6 +189,8 @@ You must use the latest VoiceAttack beta for EDDI to operate.  At current this i
 If you are upgrading from an earlier version of EDDI it is recommended that you remove the existing EDDI directory from within VoiceAttack's Apps directory before installing the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
 
 When upgrading EDDI you should overwrite all of the existing EDDI actions in VoiceAttack except any event handlers you have customised.
+
+Please note that as of 0.8.6 the startup command has changed from '((EDDI: event loop))' to '((EDDI: startup))'.  Please ensure that you have set the correct startup command in your profile.
 
 ##Configuring
 
@@ -202,7 +205,7 @@ You will also need to configure verbose net logs for Elite: Dangerous to ensure 
      DatestampLog="1"
      VerboseLogging="1">
 
-Once this is complete the final step is to configure VoiceAttack itself.  To do this you need to start VoiceAttack and ensure that 'Enable Plugins' is checked in the settings.  You also need to import the EDDI profile found in the plugin directory.  Finally, you need to edit the profile to set ((EDDI: event loop)) to execute when the profile is loaded.
+Once this is complete the final step is to configure VoiceAttack itself.  To do this you need to start VoiceAttack and ensure that 'Enable Plugins' is checked in the settings.  You also need to import the EDDI profile found in the plugin directory.  Finally, you need to edit the profile to set ((EDDI: startup)) to execute when the profile is loaded.
 
 Once all of this is complete you can restart VoiceAttack and press shift-control-alt-v to obtain a full list of the variables provided by EDDI.
 
