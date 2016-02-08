@@ -1,7 +1,7 @@
 #0.8.6
   * Added more checks for correct system data prior to triggering system change event
   * Added debug value for the event loop
-  * Separated the event loop from the startup, to provide better reliability for the event loop
+  * Separated the event loop from the startup, to provide better reliability for the event loop [B]Anyone updating will need to change the startup command in their profile from EDDI event loop to EDDI startup[/B]
   * Added 'System minutes since previous visit' value
 
 #0.8.5
