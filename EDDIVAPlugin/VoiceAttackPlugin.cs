@@ -88,11 +88,18 @@ namespace EDDIVAPlugin
                                 appService = new CompanionAppService(companionAppCredentials);
                                 // Carry out initial population of profile
                                 InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                            }
+                            if (Cmdr != null && Cmdr.Name != null)
+                            {
                                 setString(ref textValues, "EDDI plugin profile status", "Enabled");
                             }
                             else
                             {
+                                // If InvokeUpdatePlugin failed then it will have have left an error message, but this once we ignore it
+                                setPluginStatus(ref textValues, "Operational", null, null);
                                 setString(ref textValues, "EDDI plugin profile status", "Disabled");
+                                // We create a commander anyway, as data such as starsystem uses it
+                                Cmdr = new Commander();
                             }
 
                             // Set up the star map service
@@ -105,7 +112,7 @@ namespace EDDIVAPlugin
                                 {
                                     commanderName = starMapCredentials.commanderName;
                                 }
-                                else if (Cmdr != null)
+                                else if (Cmdr.Name != null)
                                 {
                                     commanderName = Cmdr.Name;
                                 }
@@ -597,13 +604,16 @@ namespace EDDIVAPlugin
 
                     // Allegiance-specific rank
                     string systemRank = "Commander";
-                    if (CurrentStarSystem.Allegiance == "Federation" && Cmdr.FederationRating >= minFederationRatingForTitle)
+                    if (Cmdr.Name != null) // using Name as a canary to see if the data is missing
                     {
-                        systemRank = Cmdr.FederationRank;
-                    }
-                    else if (CurrentStarSystem.Allegiance == "Empire" && Cmdr.EmpireRating >= minEmpireRatingForTitle)
-                    {
-                        systemRank = Cmdr.EmpireRank;
+                        if (CurrentStarSystem.Allegiance == "Federation" && Cmdr.FederationRating >= minFederationRatingForTitle)
+                        {
+                            systemRank = Cmdr.FederationRank;
+                        }
+                        else if (CurrentStarSystem.Allegiance == "Empire" && Cmdr.EmpireRating >= minEmpireRatingForTitle)
+                        {
+                            systemRank = Cmdr.EmpireRank;
+                        }
                     }
                     setString(ref textValues, "System rank", systemRank);
 
@@ -646,13 +656,16 @@ namespace EDDIVAPlugin
 
                         // Allegiance-specific rank
                         string lastSystemRank = "Commander";
-                        if (LastStarSystem.Allegiance == "Federation" && Cmdr.FederationRating >= minFederationRatingForTitle)
+                        if (Cmdr.Name != null) // using Name as a canary to see if the data is missing
                         {
-                            lastSystemRank = Cmdr.FederationRank;
-                        }
-                        else if (LastStarSystem.Allegiance == "Empire" && Cmdr.EmpireRating >= minEmpireRatingForTitle)
-                        {
-                            lastSystemRank = Cmdr.EmpireRank;
+                            if (LastStarSystem.Allegiance == "Federation" && Cmdr.FederationRating >= minFederationRatingForTitle)
+                            {
+                                lastSystemRank = Cmdr.FederationRank;
+                            }
+                            else if (LastStarSystem.Allegiance == "Empire" && Cmdr.EmpireRating >= minEmpireRatingForTitle)
+                            {
+                                lastSystemRank = Cmdr.EmpireRank;
+                            }
                         }
                         setString(ref textValues, "Last system rank", systemRank);
 
