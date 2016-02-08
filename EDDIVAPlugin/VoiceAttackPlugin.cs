@@ -236,8 +236,8 @@ namespace EDDIVAPlugin
                                     somethingToReport = true;
                                     setString(ref textValues, "EDDI event", "System change");
                                     Cmdr.StarSystem = (string)entry.starsystem;
-                                    setString(ref textValues, "System name", (string)entry.starsystem);
-                                    setString(ref textValues, "System name (spoken)", VATranslations.StarSystem((string)entry.starsystem));
+                                    // Need to fetch new starsystem information
+                                    InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                                     CurrentEnvironment = ENVIRONMENT_SUPERCRUISE;
                                     setString(ref textValues, "Environment", CurrentEnvironment); // Whenever we jump system we always come out in supercruise
                                 }
@@ -266,6 +266,10 @@ namespace EDDIVAPlugin
                         default:
                             setPluginStatus(ref textValues, "Failed", "Unknown log entry " + entry.type, null);
                             break;
+                    }
+                    if (somethingToReport)
+                    {
+                        setString(ref textValues, "EDDI raw event", entry.ToString());
                     }
                 }
                 catch (Exception ex)
@@ -540,7 +544,7 @@ namespace EDDIVAPlugin
                     }
                     else
                     {
-                        if ((DateTime.Now - CurrentStarSystemData.StarSystemLastUpdated).TotalHours > 12)
+                        if (CurrentStarSystemData.StarSystem == null || (DateTime.Now - CurrentStarSystemData.StarSystemLastUpdated).TotalHours > 12)
                         {
                             // Data is stale; refresh it
                             CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(CurrentStarSystemData.Name);
@@ -578,6 +582,7 @@ namespace EDDIVAPlugin
                     setString(ref textValues, "System name (spoken)", VATranslations.StarSystem(CurrentStarSystem.Name));
                     setInt(ref intValues, "System visits", CurrentStarSystemData.TotalVisits);
                     setDateTime(ref dateTimeValues, "System previous visit", CurrentStarSystemData.PreviousVisit);
+                    setInt(ref intValues, "System minutes since previous visit", (int)(DateTime.Now - CurrentStarSystemData.StarSystemLastUpdated).TotalMinutes);
                     setDecimal(ref decimalValues, "System population", (decimal?)CurrentStarSystem.Population);
                     setString(ref textValues, "System population (spoken)", humanize(CurrentStarSystem.Population));
                     setString(ref textValues, "System allegiance", CurrentStarSystem.Allegiance);
