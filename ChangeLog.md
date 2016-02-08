@@ -1,3 +1,6 @@
+#0.8.7
+  * Avoide VoiceAttack bug that causes VoiceAttack to crash
+
 #0.8.6
   * Added more checks for correct system data prior to triggering system change event
   * Added debug value for the event loop
