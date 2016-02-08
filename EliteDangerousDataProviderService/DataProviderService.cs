@@ -62,32 +62,35 @@ namespace EliteDangerousDataProviderService
         {
             List<Station> Stations = new List<Station>();
 
-            foreach (dynamic station in json["stations"])
+            if (json["stations"] != null)
             {
-                Station Station = new Station();
-                Station.Name = (string)station["name"];
-
-                Station.Allegiance = (string)station["allegiance"];
-                Station.DistanceFromStar = (long?)station["distance_to_star"];
-                Station.HasRefuel = (bool?)station["has_refuel"];
-                Station.HasRearm = (bool?)station["has_rearm"];
-                Station.HasRepair = (bool?)station["has_repair"];
-                Station.HasOutfitting = (bool?)station["has_outfitting"];
-                Station.HasShipyard = (bool?)station["has_shipyard"];
-                Station.HasMarket = (bool?)station["has_market"];
-                Station.HasBlackMarket = (bool?)station["has_blackmarket"];
-
-                if (((string)station["type"]) != null)
+                foreach (dynamic station in json["stations"])
                 {
-                    Station.Model = StationModels[(string)station["type"]];
-                }
+                    Station Station = new Station();
+                    Station.Name = (string)station["name"];
 
-                if (((string)station["max_landing_pad_size"]) != null)
-                {
-                    Station.LargestShip = LandingPads[(string)station["max_landing_pad_size"]];
-                }
+                    Station.Allegiance = (string)station["allegiance"];
+                    Station.DistanceFromStar = (long?)station["distance_to_star"];
+                    Station.HasRefuel = (bool?)station["has_refuel"];
+                    Station.HasRearm = (bool?)station["has_rearm"];
+                    Station.HasRepair = (bool?)station["has_repair"];
+                    Station.HasOutfitting = (bool?)station["has_outfitting"];
+                    Station.HasShipyard = (bool?)station["has_shipyard"];
+                    Station.HasMarket = (bool?)station["has_market"];
+                    Station.HasBlackMarket = (bool?)station["has_blackmarket"];
 
-                Stations.Add(Station);
+                    if (((string)station["type"]) != null)
+                    {
+                        Station.Model = StationModels[(string)station["type"]];
+                    }
+
+                    if (((string)station["max_landing_pad_size"]) != null)
+                    {
+                        Station.LargestShip = LandingPads[(string)station["max_landing_pad_size"]];
+                    }
+
+                    Stations.Add(Station);
+                }
             }
             return Stations;
         }

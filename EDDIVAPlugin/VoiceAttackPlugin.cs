@@ -38,7 +38,7 @@ namespace EDDIVAPlugin
         private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
 
-        public static readonly string PLUGIN_VERSION = "0.8.6";
+        public static readonly string PLUGIN_VERSION = "0.8.7";
 
         public static string VA_DisplayName()
         {
@@ -120,11 +120,7 @@ namespace EDDIVAPlugin
                                 setString(ref textValues, "EDDI plugin EDSM status", "Disabled");
                             }
 
-                            //string edsmApiKey = StarMapService.ObtainApiKey();
-                            //if (edsmApiKey != null)
-                            //{
-                            //    starMapService = new StarMapService(edsmApiKey, Cmdr.Name);
-                            //}
+                            setString(ref textValues, "EDDI version", PLUGIN_VERSION);
 
                             InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                             CurrentEnvironment = ENVIRONMENT_NORMAL_SPACE;
