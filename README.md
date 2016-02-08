@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface VoiceAttack plugin
 
-Current version: 0.8.5
+Current version: 0.8.6
 
 EDDI makes available a large number of values related to a commander's status, ship and system.  These give the basis for providing a rich VoiceAttack experience.  It is not in itself a complete VoiceAttack profile, similar to that provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.  The available values are as follows:
 
@@ -86,6 +86,7 @@ EDDI makes available a large number of values related to a commander's status, s
   * System name (spoken) (text): the name of the system as would be spoken
   * System visits (int): the number of times the commander has visited the system (whilst the plugin has been active)
   * System previous visit (datetime): the last time the commander visited the system (empty if this is their first visit)
+  * System minutes since previous visit (int): the number of minutes since the commander's last visit to the system
   * System population (decimal): the population of the system
   * System population (text): the population of the system as would be spoken (e.g. "nearly 12 and a half billion")
   * System allegiance (text): the allegiance of the system ("Federation", "Empire", "Alliance", "Independant" or empty)

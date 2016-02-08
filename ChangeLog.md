@@ -1,3 +1,9 @@
+#0.8.6
+  * Added more checks for correct system data prior to triggering system change event
+  * Added debug value for the event loop
+  * Separated the event loop from the startup, to provide better reliability for the event loop
+  * Added 'System minutes since previous visit' value
+
 #0.8.5
   * Added callsigns, names and roles for ships
   * Added home system and station

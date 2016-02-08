@@ -38,7 +38,7 @@ namespace EDDIVAPlugin
         private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
 
-        public static readonly string PLUGIN_VERSION = "0.8.5";
+        public static readonly string PLUGIN_VERSION = "0.8.6";
 
         public static string VA_DisplayName()
         {
@@ -582,7 +582,7 @@ namespace EDDIVAPlugin
                     setString(ref textValues, "System name (spoken)", VATranslations.StarSystem(CurrentStarSystem.Name));
                     setInt(ref intValues, "System visits", CurrentStarSystemData.TotalVisits);
                     setDateTime(ref dateTimeValues, "System previous visit", CurrentStarSystemData.PreviousVisit);
-                    setInt(ref intValues, "System minutes since previous visit", (int)(DateTime.Now - CurrentStarSystemData.StarSystemLastUpdated).TotalMinutes);
+                    setInt(ref intValues, "System minutes since previous visit", CurrentStarSystemData.PreviousVisit == null ? (int?)null : (int)(DateTime.Now - (DateTime)CurrentStarSystemData.PreviousVisit).TotalMinutes);
                     setDecimal(ref decimalValues, "System population", (decimal?)CurrentStarSystem.Population);
                     setString(ref textValues, "System population (spoken)", humanize(CurrentStarSystem.Population));
                     setString(ref textValues, "System allegiance", CurrentStarSystem.Allegiance);
