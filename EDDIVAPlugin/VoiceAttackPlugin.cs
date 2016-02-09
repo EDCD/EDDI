@@ -10,6 +10,7 @@ using System.Threading;
 using System.Diagnostics;
 using EliteDangerousStarMapService;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace EDDIVAPlugin
 {
@@ -79,6 +80,7 @@ namespace EDDIVAPlugin
                             setString(ref textValues, "Home system", eddiConfiguration.HomeSystem);
                             setString(ref textValues, "Home system (spoken)", VATranslations.StarSystem(eddiConfiguration.HomeSystem));
                             setString(ref textValues, "Home station", eddiConfiguration.HomeStation);
+                            enableDebugging = false;  // TODO make configuration variable
                             // TODO distance to home system
 
                             // Set up the app service
@@ -138,6 +140,7 @@ namespace EDDIVAPlugin
                             if (netLogConfiguration != null && netLogConfiguration.path != null)
                             {
                                 logWatcherThread = new Thread(() => StartLogMonitor(netLogConfiguration));
+                                logWatcherThread.IsBackground = true;
                                 logWatcherThread.Start();
                                 setString(ref textValues, "EDDI plugin NetLog status", "Enabled");
                             }
@@ -516,26 +519,42 @@ namespace EDDIVAPlugin
 
         public static void InvokeNewSystem(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
+            debug("InvokeNewSystem() entered");
             try
             {
                 if (Cmdr == null)
                 {
+                    debug("InvokeNewSystem() Cmdr is NULL - attempting to refetch");
                     // Refetch the profile to set our system
                     InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     if (Cmdr == null)
                     {
                         // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
+                        debug("InvokeNewSystem() Cmdr remained NULL - giving up");
                         return;
                     }
                 }
 
-                bool RecordUpdated = false;
-                if (CurrentStarSystem == null || Cmdr.StarSystem != CurrentStarSystem.Name)
+                debug("InvokeNewSystem() CurrentStarSystem is " +  (CurrentStarSystem == null ? "<null>" : JsonConvert.SerializeObject(CurrentStarSystem)));
+                debug("InvokeNewSystem() Cmdr is " + (Cmdr == null ? "<null>" : JsonConvert.SerializeObject(Cmdr)));
+
+                if (Cmdr.StarSystem == null)
                 {
+                    // No information available
+                    debug("InvokeNewSystem() No starsystem data available");
+                    return;
+                }
+
+                bool RecordUpdated = false;
+                if ((!initialised) || CurrentStarSystem == null || Cmdr.StarSystem != CurrentStarSystem.Name)
+                {
+                    debug("InvokeNewSystem() In init or starsystem has changed");
                     // The star system has changed or we're in init; obtain the data ready for setting the VA values
                     EDDIStarSystem CurrentStarSystemData = starSystemRepository.GetEDDIStarSystem(Cmdr.StarSystem);
+                    debug("InvokeNewSystem() CurrentStarSystemData is " + (CurrentStarSystemData == null ? "<null>" : JsonConvert.SerializeObject(CurrentStarSystemData)));
                     if (CurrentStarSystemData == null)
                     {
+                        debug("InvokeNewSystem() Creating new starsystemdata");
                         // We have no record of this system; set it up
                         CurrentStarSystemData = new EDDIStarSystem();
                         CurrentStarSystemData.Name = Cmdr.StarSystem;
@@ -547,24 +566,29 @@ namespace EDDIVAPlugin
                     }
                     else
                     {
+                        debug("InvokeNewSystem() Checking existing starsystemdata");
                         if (CurrentStarSystemData.StarSystem == null || (DateTime.Now - CurrentStarSystemData.StarSystemLastUpdated).TotalHours > 12)
                         {
+                            debug("InvokeNewSystem() Refreshing stale data");
                             // Data is stale; refresh it
                             CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(CurrentStarSystemData.Name);
                             CurrentStarSystemData.StarSystemLastUpdated = CurrentStarSystemData.LastVisit;
                             RecordUpdated = true;
                         }
-                        // Only update if we have moved (as opposed to reinitialised here)
-                        if (CurrentStarSystem != null)
+                        // Only update if we have moved (as opposed to reinitialising here)
+                        if (initialised)
                         {
+                            debug("InvokeNewSystem() Updating visit information");
                             CurrentStarSystemData.PreviousVisit = CurrentStarSystemData.LastVisit;
                             CurrentStarSystemData.LastVisit = DateTime.Now;
                             CurrentStarSystemData.TotalVisits++;
                             RecordUpdated = true;
                         }
                     }
+                    debug("InvokeNewSystem() CurrentStarSystemData is now " + (CurrentStarSystemData == null ? "<null>" : JsonConvert.SerializeObject(CurrentStarSystemData)));
                     if (RecordUpdated)
                     {
+                        debug("InvokeNewSystem() Storing updated starsystemdata");
                         starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
                     }
 
@@ -572,15 +596,21 @@ namespace EDDIVAPlugin
                     LastStarSystem = CurrentStarSystem;
                     CurrentStarSystem = ThisStarSystem;
 
-                    if (LastStarSystem != null)
+                    debug("InvokeNewSystem() CurrentStarSystem is now " + (CurrentStarSystem == null ? "<null>" : JsonConvert.SerializeObject(CurrentStarSystem)));
+                    debug("InvokeNewSystem() LastStarSystem is now " + (LastStarSystem == null ? "<null>" : JsonConvert.SerializeObject(LastStarSystem)));
+
+                    if (initialised)
                     {
                         // We have travelled; let EDSM know
                         if (starMapService != null)
                         {
+                            debug("InvokeNewSystem() Sending update to EDSM");
                             starMapService.sendStarMapLog(CurrentStarSystem.Name);
+                            debug("InvokeNewSystem() Update sent");
                         }
                     }
 
+                    debug("InvokeNewSystem() Setting system information");
                     setString(ref textValues, "System name", CurrentStarSystem.Name);
                     setString(ref textValues, "System name (spoken)", VATranslations.StarSystem(CurrentStarSystem.Name));
                     setInt(ref intValues, "System visits", CurrentStarSystemData.TotalVisits);
@@ -597,11 +627,12 @@ namespace EDDIVAPlugin
                     setString(ref textValues, "System power", CurrentStarSystem.Power);
                     setString(ref textValues, "System power (spoken)", VATranslations.Power(CurrentStarSystem.Power));
                     setString(ref textValues, "System power state", CurrentStarSystem.PowerState);
-
                     setDecimal(ref decimalValues, "System X", CurrentStarSystem.X);
                     setDecimal(ref decimalValues, "System Y", CurrentStarSystem.Y);
                     setDecimal(ref decimalValues, "System Z", CurrentStarSystem.Z);
+                    debug("InvokeNewSystem() Set system information");
 
+                    debug("InvokeNewSystem() Setting system rank");
                     // Allegiance-specific rank
                     string systemRank = "Commander";
                     if (Cmdr.Name != null) // using Name as a canary to see if the data is missing
@@ -616,8 +647,10 @@ namespace EDDIVAPlugin
                         }
                     }
                     setString(ref textValues, "System rank", systemRank);
+                    debug("InvokeNewSystem() Set system rank");
 
                     // Stations
+                    debug("InvokeNewSystem() Setting station information");
                     foreach (Station Station in CurrentStarSystem.Stations)
                     {
                         setString(ref textValues, "System station name", Station.Name);
@@ -628,9 +661,11 @@ namespace EDDIVAPlugin
                     setInt(ref intValues, "System planetary stations", CurrentStarSystem.Stations.Count(s => s.IsPlanetary()));
                     setInt(ref intValues, "System planetary outposts", CurrentStarSystem.Stations.Count(s => s.IsPlanetaryOutpost()));
                     setInt(ref intValues, "System planetary ports", CurrentStarSystem.Stations.Count(s => s.IsPlanetaryPort()));
+                    debug("InvokeNewSystem() Set station information");
 
                     if (LastStarSystem != null)
                     {
+                        debug("InvokeNewSystem() Setting last system information");
                         setString(ref textValues, "Last system name", LastStarSystem.Name);
                         setString(ref textValues, "Last system name (spoken)", VATranslations.StarSystem(LastStarSystem.Name));
                         setDecimal(ref decimalValues, "Last system population", (decimal?)LastStarSystem.Population);
@@ -644,16 +679,19 @@ namespace EDDIVAPlugin
                         setString(ref textValues, "Last system power", LastStarSystem.Power);
                         setString(ref textValues, "Last system power (spoken)", VATranslations.Power(LastStarSystem.Power));
                         setString(ref textValues, "Last system power state", LastStarSystem.PowerState);
-
                         setDecimal(ref decimalValues, "Last system X", LastStarSystem.X);
                         setDecimal(ref decimalValues, "Last system Y", LastStarSystem.Y);
                         setDecimal(ref decimalValues, "Last system Z", LastStarSystem.Z);
+                        debug("InvokeNewSystem() Set last system information");
 
+                        debug("InvokeNewSystem() Setting last jump");
                         if (LastStarSystem.X != null && CurrentStarSystem.X != null)
                         {
                             setDecimal(ref decimalValues, "Last jump", (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(CurrentStarSystem.X - LastStarSystem.X), 2) + Math.Pow((double)(CurrentStarSystem.Y - LastStarSystem.Y), 2) + Math.Pow((double)(CurrentStarSystem.Z - LastStarSystem.Z), 2)), 2));
                         }
+                        debug("InvokeNewSystem() Set last jump");
 
+                        debug("InvokeNewSystem() Setting last system rank");
                         // Allegiance-specific rank
                         string lastSystemRank = "Commander";
                         if (Cmdr.Name != null) // using Name as a canary to see if the data is missing
@@ -668,8 +706,10 @@ namespace EDDIVAPlugin
                             }
                         }
                         setString(ref textValues, "Last system rank", systemRank);
+                        debug("InvokeNewSystem() Set last system rank");
 
                         // Stations
+                        debug("InvokeNewSystem() Setting last system station information");
                         foreach (Station Station in LastStarSystem.Stations)
                         {
                             setString(ref textValues, "Last system station name", Station.Name);
@@ -680,6 +720,7 @@ namespace EDDIVAPlugin
                         setInt(ref intValues, "Last system planetary stations", LastStarSystem.Stations.Count(s => s.IsPlanetary()));
                         setInt(ref intValues, "Last system planetary outposts", LastStarSystem.Stations.Count(s => s.IsPlanetaryOutpost()));
                         setInt(ref intValues, "Last system planetary ports", LastStarSystem.Stations.Count(s => s.IsPlanetaryPort()));
+                        debug("InvokeNewSystem() Set last system station information");
                     }
                 }
 
@@ -741,6 +782,8 @@ namespace EDDIVAPlugin
             }
             else
             {
+                logError("EDDI error: " + error);
+                logError("EDDI exception: " + (exception == null ? "<null>" : exception.ToString()));
                 setString(ref values, "EDDI error", error);
                 setString(ref values, "EDDI exception", exception == null ? null : exception.ToString());
             }
@@ -845,5 +888,29 @@ namespace EDDIVAPlugin
                 Cmdr.StarSystem = system;
             }
         }
+
+
+
+        // Logging
+        private static bool enableDebugging = false;
+        private static readonly string LOGFILE = Environment.GetEnvironmentVariable("AppData") + @"\EDDI\eddi.log";
+        private static void debug(string data)
+        {
+            if (enableDebugging)
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
+                {
+                    file.WriteLine(data);
+                }
+            }
+        }
+        private static void logError(string data)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
+            {
+                file.WriteLine(data);
+            }
+        }
+
     }
 }

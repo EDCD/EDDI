@@ -11,6 +11,8 @@ namespace EliteDangerousDataProviderService
     {
         public static StarSystem GetSystemData(string system)
         {
+            if (system == null) { return null; }
+
             var client = new WebClient();
             string response;
             try
