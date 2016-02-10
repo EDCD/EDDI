@@ -18,6 +18,12 @@ namespace EliteDangerousNetLogMonitor
             Match match = SystemRegex.Match(line);
             if (match.Success)
             {
+                if (@"ProvingGround" == match.Groups[3].Value)
+                {
+                    // We ignore CQC
+                    return;
+                }
+
                 dynamic result = new JObject();
                 result.type = "Location";
                 result.starsystem = match.Groups[2].Value;

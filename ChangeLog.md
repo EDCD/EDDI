@@ -1,3 +1,7 @@
+#0.9.0
+  * Fix issue where setting a home system caused scripts not to report system information
+  * Do not create 'system change' or 'location change' events when in CQC 
+
 #0.8.9
   * Provide starsystem information even if profile is not available
 
