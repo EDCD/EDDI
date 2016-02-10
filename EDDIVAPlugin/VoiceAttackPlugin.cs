@@ -80,8 +80,10 @@ namespace EDDIVAPlugin
                             setString(ref textValues, "Home system", eddiConfiguration.HomeSystem);
                             setString(ref textValues, "Home system (spoken)", VATranslations.StarSystem(eddiConfiguration.HomeSystem));
                             setString(ref textValues, "Home station", eddiConfiguration.HomeStation);
-                            enableDebugging = false;  // TODO make configuration variable
                             // TODO distance to home system
+
+                            enableDebugging = eddiConfiguration.Debug;
+                            setBoolean(ref booleanValues, "EDDI debug", enableDebugging);
 
                             // Set up the app service
                             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
