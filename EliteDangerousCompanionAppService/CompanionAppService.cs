@@ -584,6 +584,11 @@ namespace EliteDangerousCompanionAppService
                     if (module["category"] == "weapon" || module["category"] == "module")
                     {
                         Module Module = ModuleDefinitions.ModuleFromEliteID((long)module["id"]);
+                        if (Module.Name == null)
+                        {
+                            // Unknown module
+                            // TODO log unknown module data
+                        }
                         Module.Cost = module["cost"];
                         Modules.Add(Module);
                     }
@@ -597,6 +602,11 @@ namespace EliteDangerousCompanionAppService
         {
             long id = (long)json["module"]["id"];
             Module Module = ModuleDefinitions.ModuleFromEliteID(id);
+            if (Module.Name == null)
+            {
+                // Unknown module
+                // TODO log unknown module data
+            }
 
             Module.Cost = (long)json["module"]["value"];
             Module.Enabled = (bool)json["module"]["on"];

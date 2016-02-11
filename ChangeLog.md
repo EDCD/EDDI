@@ -1,3 +1,19 @@
+#0.9.1
+  * Added ship variables for hardpoints and internal compartments
+    * Tiny/Small/Medium/Large/Huge hardpoint *n* occupied (boolean): true if there is a module in this slot, otherwise false
+    * Tiny/Small/Medium/Large/Huge hardpoint *n* module (string): the name of the module in this slot
+    * Tiny/Small/Medium/Large/Huge hardpoint *n* module health (decimal): the percentage health of the module in this slot
+    * Tiny/Small/Medium/Large/Huge hardpoint *n* module cost (decimal): the purchase cost of the module in this slot
+    * Tiny/Small/Medium/Large/Huge hardpoint *n* module value (decimal): the undiscounted cost of the module in this slot
+    * Tiny/Small/Medium/Large/Huge hardpoint *n* module discount (decimal): the percentage discount of the purchased module against the undiscounted cost
+    * Compartment *n* size: the size of this slot
+    * Compartment *n* occupied (boolean): true if there is a module in this slot, otherwise false
+    * Compartment *n* module (string): the name of the module in this slot
+    * Compartment *n* module health (decimal): the percentage health of the module in this slot
+    * Compartment *n* module cost (decimal): the purchase cost of the module in this slot
+    * Compartment *n* module value (decimal): the undiscounted cost of the module in this slot
+    * Compartment *n* module discount (decimal): the percentage discount of the purchased module against the undiscounted cost
+
 #0.9.0
   * Fix issue where setting a home system caused scripts not to report system information
   * Do not create 'system change' or 'location change' events when in CQC 

@@ -408,27 +408,68 @@ namespace EDDIVAPlugin
                     setDecimal(ref decimalValues, "Ship fuel tank capacity", Cmdr.Ship.FuelTankCapacity);
 
                     // Hardpoints
-                    int weaponHardpoints = 0;
+                    int numTinyHardpoints = 0;
+                    int numSmallHardpoints = 0;
+                    int numMediumHardpoints = 0;
+                    int numLargeHardpoints = 0;
+                    int numHugeHardpoints = 0;
                     foreach (Hardpoint Hardpoint in Cmdr.Ship.Hardpoints)
                     {
-                        if (Hardpoint.Size > 0)
+                        string baseHardpointName = "";
+                        switch (Hardpoint.Size)
                         {
-                            weaponHardpoints++;
+                            case 0:
+                                baseHardpointName = "Tiny hardpoint " + ++numTinyHardpoints;
+                                break;
+                            case 1:
+                                baseHardpointName = "Small hardpoint " + ++numSmallHardpoints;
+                                break;
+                            case 2:
+                                baseHardpointName = "Medium hardpoint " + ++numMediumHardpoints;
+                                break;
+                            case 3:
+                                baseHardpointName = "Large hardpoint " + ++numLargeHardpoints;
+                                break;
+                            case 4:
+                                baseHardpointName = "Huge hardpoint " + ++numHugeHardpoints;
+                                break;
+                        }
+
+                        setBoolean(ref booleanValues, baseHardpointName + " occupied", Hardpoint.Module != null);
+                        if (Hardpoint.Module != null)
+                        {
+                            setString(ref textValues, baseHardpointName + " module", Hardpoint.Module.Name);
+                            setInt(ref intValues, baseHardpointName + " module class", Hardpoint.Module.Class);
+                            setString(ref textValues, baseHardpointName + " module grade", Hardpoint.Module.Grade);
+                            setDecimal(ref decimalValues, baseHardpointName + " module health", Hardpoint.Module.Health);
+                            setDecimal(ref decimalValues, baseHardpointName + " module cost", Hardpoint.Module.Cost);
+                            setDecimal(ref decimalValues, baseHardpointName + " module value", Hardpoint.Module.Value);
+                            setDecimal(ref decimalValues, baseHardpointName + " module discount", Hardpoint.Module.Value == 0 ? 0 : Math.Round((1 - (((decimal)Hardpoint.Module.Cost) / ((decimal)Hardpoint.Module.Value))) * 100, 1));
                         }
                     }
-                    setInt(ref intValues, "Ship hardpoints", weaponHardpoints);
-                    setInt(ref intValues, "Ship utility slots", Cmdr.Ship.Hardpoints.Count - weaponHardpoints);
+
+                    setInt(ref intValues, "Ship hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
+                    setInt(ref intValues, "Ship utility slots", numTinyHardpoints);
 
                     // Compartments
-                    //foreach (Compartment Compartment in Cmdr.Ship.Hardpoints)
-                    //{
-                    //    if (Compartment.Size > 0)
-                    //    {
-                    //        weaponHardpoints++;
-                    //    }
-                    //}
-                    setInt(ref intValues, "Ship compartments", Cmdr.Ship.Compartments.Count);
-
+                    int curCompartment = 0;
+                    foreach (Compartment Compartment in Cmdr.Ship.Compartments)
+                    {
+                        string baseCompartmentName = "Compartment " + ++curCompartment;
+                        setInt(ref intValues, baseCompartmentName + " size", Compartment.Size);
+                        setBoolean(ref booleanValues, baseCompartmentName + " occupied", Compartment.Module != null);
+                        if (Compartment.Module != null)
+                        {
+                            setString(ref textValues, baseCompartmentName + " module", Compartment.Module.Name);
+                            setInt(ref intValues, baseCompartmentName + " module class", Compartment.Module.Class);
+                            setString(ref textValues, baseCompartmentName + " module grade", Compartment.Module.Grade);
+                            setDecimal(ref decimalValues, baseCompartmentName + " module health", Compartment.Module.Health);
+                            setDecimal(ref decimalValues, baseCompartmentName + " module cost", Compartment.Module.Cost);
+                            setDecimal(ref decimalValues, baseCompartmentName + " module value", Compartment.Module.Value);
+                            setDecimal(ref decimalValues, baseCompartmentName + " module discount", Compartment.Module.Value == 0 ? 0 : Math.Round((1 - (((decimal)Compartment.Module.Cost) / ((decimal)Compartment.Module.Value))) * 100, 1));
+                        }
+                    }
+                    setInt(ref intValues, "Ship compartments", curCompartment);
 
                     //
                     // Stored ships data
@@ -487,6 +528,13 @@ namespace EDDIVAPlugin
                     SetOutfittingCost("sensors", Cmdr.Ship.Sensors, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
 
                     setString(ref textValues, "Last station name", Cmdr.LastStation);
+
+                    debug("InvokeUpdateProfile(): Resultant shortint values " + JsonConvert.SerializeObject(shortIntValues));
+                    debug("InvokeUpdateProfile(): Resultant text values " + JsonConvert.SerializeObject(textValues));
+                    debug("InvokeUpdateProfile(): Resultant int values " + JsonConvert.SerializeObject(intValues));
+                    debug("InvokeUpdateProfile(): Resultant decimal values " + JsonConvert.SerializeObject(decimalValues));
+                    debug("InvokeUpdateProfile(): Resultant boolean values " + JsonConvert.SerializeObject(booleanValues));
+                    debug("InvokeUpdateProfile(): Resultant datetime values " + JsonConvert.SerializeObject(dateTimeValues));
 
                     setPluginStatus(ref textValues, "Operational", null, null);
                 }
@@ -725,6 +773,13 @@ namespace EDDIVAPlugin
                         debug("InvokeNewSystem() Set last system station information");
                     }
                 }
+
+                debug("InvokeNewSystem(): Resultant shortint values " + JsonConvert.SerializeObject(shortIntValues));
+                debug("InvokeNewSystem(): Resultant text values " + JsonConvert.SerializeObject(textValues));
+                debug("InvokeNewSystem(): Resultant int values " + JsonConvert.SerializeObject(intValues));
+                debug("InvokeNewSystem(): Resultant decimal values " + JsonConvert.SerializeObject(decimalValues));
+                debug("InvokeNewSystem(): Resultant boolean values " + JsonConvert.SerializeObject(booleanValues));
+                debug("InvokeNewSystem(): Resultant datetime values " + JsonConvert.SerializeObject(dateTimeValues));
 
                 setPluginStatus(ref textValues, "Operational", null, null);
             }
