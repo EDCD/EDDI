@@ -68,16 +68,21 @@ namespace EliteDangerousDataDefinitions
         [JsonIgnore]
         public List<Compartment> Compartments { get; set; }
 
+        // Admin
+        // The ID in Elite: Dangerous' database
+        public long EDID { get; set; }
+
         public Ship()
         {
             Hardpoints = new List<Hardpoint>();
             Compartments = new List<Compartment>();
         }
 
-        public Ship(string model, ShipSize size)
+        public Ship(long EDID, string Model, ShipSize Size)
         {
-            Model = model;
-            Size = size;
+            this.EDID = EDID;
+            this.Model = Model;
+            this.Size = Size;
             Hardpoints = new List<Hardpoint>();
             Compartments = new List<Compartment>();
         }
