@@ -11,6 +11,7 @@ using System.Diagnostics;
 using EliteDangerousStarMapService;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using EliteDangerousSpeechService;
 
 namespace EDDIVAPlugin
 {
@@ -28,6 +29,8 @@ namespace EDDIVAPlugin
         // Information obtained from the star map service
         private static StarMapService starMapService;
 
+        private static SpeechService speechService;
+        
         // Information obtained from the log watcher
         private static Thread logWatcherThread;
         static BlockingCollection<dynamic> LogQueue = new BlockingCollection<dynamic>();
@@ -78,7 +81,7 @@ namespace EDDIVAPlugin
                             // Set up the EDDI configuration
                             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
                             setString(ref textValues, "Home system", eddiConfiguration.HomeSystem);
-                            setString(ref textValues, "Home system (spoken)", VATranslations.StarSystem(eddiConfiguration.HomeSystem));
+                            setString(ref textValues, "Home system (spoken)", Translations.StarSystem(eddiConfiguration.HomeSystem));
                             setString(ref textValues, "Home station", eddiConfiguration.HomeStation);
                             // TODO distance to home system
 
@@ -133,6 +136,8 @@ namespace EDDIVAPlugin
 
                             setString(ref textValues, "EDDI version", PLUGIN_VERSION);
 
+                            speechService = new SpeechService();
+
                             InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                             CurrentEnvironment = ENVIRONMENT_NORMAL_SPACE;
                             setString(ref textValues, "Environment", CurrentEnvironment);
@@ -143,6 +148,7 @@ namespace EDDIVAPlugin
                             {
                                 logWatcherThread = new Thread(() => StartLogMonitor(netLogConfiguration));
                                 logWatcherThread.IsBackground = true;
+                                logWatcherThread.Name = "EDDI netlog watcher";
                                 logWatcherThread.Start();
                                 setString(ref textValues, "EDDI plugin NetLog status", "Enabled");
                             }
@@ -197,6 +203,15 @@ namespace EDDIVAPlugin
                     return;
                 case "log watcher":
                     InvokeLogWatcher(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    return;
+                case "say":
+                    InvokeSay(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    return;
+                case "transmit":
+                    InvokeTransmit(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    return;
+                case "receive":
+                    InvokeReceive(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
                 default:
                     if (context.ToLower().StartsWith("event:"))
@@ -347,9 +362,9 @@ namespace EDDIVAPlugin
                     // Ship data
                     //
                     setString(ref textValues, "Ship model", Cmdr.Ship.Model);
-                    setString(ref textValues, "Ship model (spoken)", VATranslations.ShipModel(Cmdr.Ship.Model));
+                    setString(ref textValues, "Ship model (spoken)", Translations.ShipModel(Cmdr.Ship.Model));
                     setString(ref textValues, "Ship callsign", Cmdr.Ship.CallSign);
-                    setString(ref textValues, "Ship callsign (spoken)", VATranslations.CallSign(Cmdr.Ship.CallSign));
+                    setString(ref textValues, "Ship callsign (spoken)", Translations.CallSign(Cmdr.Ship.CallSign));
                     setString(ref textValues, "Ship name", Cmdr.Ship.Name);
                     setString(ref textValues, "Ship role", Cmdr.Ship.Role.ToString());
                     setString(ref textValues, "Ship size", Cmdr.Ship.Size.ToString());
@@ -440,7 +455,7 @@ namespace EDDIVAPlugin
                         setString(ref textValues, varBase + " system", StoredShip.StarSystem);
                         setString(ref textValues, varBase + " station", StoredShip.Station);
                         setString(ref textValues, varBase + " callsign", StoredShip.CallSign);
-                        setString(ref textValues, varBase + " callsign (spoken)", VATranslations.CallSign(StoredShip.CallSign));
+                        setString(ref textValues, varBase + " callsign (spoken)", Translations.CallSign(StoredShip.CallSign));
                         setString(ref textValues, varBase + " name", StoredShip.Name);
                         setString(ref textValues, varBase + " role", StoredShip.Role.ToString());
 
@@ -658,7 +673,7 @@ namespace EDDIVAPlugin
 
                     debug("InvokeNewSystem() Setting system information");
                     setString(ref textValues, "System name", CurrentStarSystem.Name);
-                    setString(ref textValues, "System name (spoken)", VATranslations.StarSystem(CurrentStarSystem.Name));
+                    setString(ref textValues, "System name (spoken)", Translations.StarSystem(CurrentStarSystem.Name));
                     setInt(ref intValues, "System visits", CurrentStarSystemData.TotalVisits);
                     setDateTime(ref dateTimeValues, "System previous visit", CurrentStarSystemData.PreviousVisit);
                     setInt(ref intValues, "System minutes since previous visit", CurrentStarSystemData.PreviousVisit == null ? (int?)null : (int)(DateTime.Now - (DateTime)CurrentStarSystemData.PreviousVisit).TotalMinutes);
@@ -671,7 +686,7 @@ namespace EDDIVAPlugin
                     setString(ref textValues, "System state", CurrentStarSystem.State);
                     setString(ref textValues, "System security", CurrentStarSystem.Security);
                     setString(ref textValues, "System power", CurrentStarSystem.Power);
-                    setString(ref textValues, "System power (spoken)", VATranslations.Power(CurrentStarSystem.Power));
+                    setString(ref textValues, "System power (spoken)", Translations.Power(CurrentStarSystem.Power));
                     setString(ref textValues, "System power state", CurrentStarSystem.PowerState);
                     setDecimal(ref decimalValues, "System X", CurrentStarSystem.X);
                     setDecimal(ref decimalValues, "System Y", CurrentStarSystem.Y);
@@ -713,7 +728,7 @@ namespace EDDIVAPlugin
                     {
                         debug("InvokeNewSystem() Setting last system information");
                         setString(ref textValues, "Last system name", LastStarSystem.Name);
-                        setString(ref textValues, "Last system name (spoken)", VATranslations.StarSystem(LastStarSystem.Name));
+                        setString(ref textValues, "Last system name (spoken)", Translations.StarSystem(LastStarSystem.Name));
                         setDecimal(ref decimalValues, "Last system population", (decimal?)LastStarSystem.Population);
                         setString(ref textValues, "Last system population (spoken)", humanize(LastStarSystem.Population));
                         setString(ref textValues, "Last system allegiance", LastStarSystem.Allegiance);
@@ -723,7 +738,7 @@ namespace EDDIVAPlugin
                         setString(ref textValues, "Last system state", LastStarSystem.State);
                         setString(ref textValues, "Last system security", LastStarSystem.Security);
                         setString(ref textValues, "Last system power", LastStarSystem.Power);
-                        setString(ref textValues, "Last system power (spoken)", VATranslations.Power(LastStarSystem.Power));
+                        setString(ref textValues, "Last system power (spoken)", Translations.Power(LastStarSystem.Power));
                         setString(ref textValues, "Last system power state", LastStarSystem.PowerState);
                         setDecimal(ref decimalValues, "Last system X", LastStarSystem.X);
                         setDecimal(ref decimalValues, "Last system Y", LastStarSystem.Y);
@@ -786,6 +801,69 @@ namespace EDDIVAPlugin
             {
                 setPluginStatus(ref textValues, "Failed", "Failed to obtain system data", e);
             }
+        }
+
+        /// <summary>
+        /// Say something inside the cockpit with text-to-speech
+        /// </summary>
+        public static void InvokeSay(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            string script = null;
+            foreach (string key in textValues.Keys)
+            {
+                if (key.EndsWith(" script"))
+                {
+                    script = textValues[key];
+                    break;
+                }
+            }
+            if (script == null)
+            {
+                return;
+            }
+            speechService.Say(Cmdr.Ship, script);
+        }
+
+        /// <summary>
+        /// Transmit something on the radio with text-to-speech
+        /// </summary>
+        public static void InvokeTransmit(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            string script = null;
+            foreach (string key in textValues.Keys)
+            {
+                if (key.EndsWith(" script"))
+                {
+                    script = textValues[key];
+                    break;
+                }
+            }
+            if (script == null)
+            {
+                return;
+            }
+            speechService.Transmit(Cmdr.Ship, script);
+        }
+
+        /// <summary>
+        /// Receive something on the radio with text-to-speech
+        /// </summary>
+        public static void InvokeReceive(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            string script = null;
+            foreach (string key in textValues.Keys)
+            {
+                if (key.EndsWith(" script"))
+                {
+                    script = textValues[key];
+                    break;
+                }
+            }
+            if (script == null)
+            {
+                return;
+            }
+            speechService.Receive(Cmdr.Ship, script);
         }
 
         private static void setInt(ref Dictionary<string, int?> values, string key, int? value)
