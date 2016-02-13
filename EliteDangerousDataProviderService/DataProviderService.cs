@@ -2,7 +2,9 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
+using System.Text;
 
 namespace EliteDangerousDataProviderService
 {
@@ -13,18 +15,20 @@ namespace EliteDangerousDataProviderService
         {
             if (system == null) { return null; }
 
-            var client = new WebClient();
-            string response;
-            try
+            using (var client = new WebClient())
             {
-                response = client.DownloadString("http://api.eddp.co:16161/systems/" + Uri.EscapeDataString(system));
+                string response;
+                try
+                {
+                    response = client.DownloadString("http://api.eddp.co:16161/systems/" + Uri.EscapeDataString(system));
+                }
+                catch (WebException wex)
+                {
+                    // No information found on this system, or some other issue.  Create a very basic response
+                    response = @"{""name"":""" + system + @""", ""stations"":[]}";
+                }
+                return StarSystemFromEDDP(response);
             }
-            catch (WebException wex)
-            {
-                // No information found on this system, or some other issue.  Create a very basic response
-                response = @"{""name"":""" + system + @""", ""stations"":[]}";
-            }
-            return StarSystemFromEDDP(response);
         }
 
         public static StarSystem StarSystemFromEDDP(string data)
@@ -47,7 +51,7 @@ namespace EliteDangerousDataProviderService
                 StarSystem.PrimaryEconomy = (string)json["primary_economy"];
                 StarSystem.State = (string)json["state"] == "None" ? null : (string)json["state"];
                 StarSystem.Security = (string)json["security"];
-                StarSystem.Power = (string)json["power"];
+                StarSystem.Power = (string)json["power"] == "None" ? null : (string)json["power"];
                 StarSystem.PowerState = (string)json["power_state"];
 
                 StarSystem.X = (decimal?)json["x"];
@@ -123,5 +127,48 @@ namespace EliteDangerousDataProviderService
             { "Unknown Starport", StationModel.UnknownStarport},
             { "Unsanctioned Outpost", StationModel.UnsanctionedOutpost},
         };
+
+        static DataProviderService()
+        {
+            // We need to not use an expect header as it causes problems when sending data to a REST service
+            var profileUri = new Uri("http://api.eddp.co:16161/profile");
+            var profileServicePoint = ServicePointManager.FindServicePoint(profileUri);
+            profileServicePoint.Expect100Continue = false;
+            var errorUri = new Uri("http://api.eddp.co:16161/error");
+            var errorServicePoint = ServicePointManager.FindServicePoint(errorUri);
+            errorServicePoint.Expect100Continue = false;
+        }
+
+        public static void LogProfile(string profile)
+        {
+            using (var client = new WebClient())
+            {
+                try
+                {
+                    client.UploadString(@"http://api.eddp.co:16161/profile", profile);
+                }
+                catch (WebException wex)
+                {
+                    LogException(wex);
+                }
+            }
+        }
+
+        public static void LogException(Exception ex)
+        {
+            LogError(ex.ToString());
+        }
+
+        public static void LogError(String error)
+        {
+            using (var client = new WebClient())
+            {
+                try
+                {
+                    client.UploadString(@"http://api.eddp.co:16161/error", error.ToString());
+                }
+                catch {}
+            }
+        }
     }
 }

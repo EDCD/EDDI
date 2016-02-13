@@ -1,8 +1,8 @@
 # EDDI: The Elite Dangerous Data Interface VoiceAttack plugin
 
-Current version: 0.9.0
+Current version: 0.9.1
 
-EDDI makes available a large number of values related to a commander's status, ship and system.  These give the basis for providing a rich VoiceAttack experience.  It is not in itself a complete VoiceAttack profile, similar to that provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.  The available values are as follows:
+EDDI is a VoiceAttack plugin that provides over 150 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  It is not in itself a complete VoiceAttack profile, similar to that provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.  The available values are as follows:
 
 ###Commander values
 
@@ -79,6 +79,23 @@ EDDI makes available a large number of values related to a commander's status, s
   * Ship fuel tank value (decimal): the undiscounted cost of the fuel tank
   * Ship fuel tank discount (decimal): the percentage discount of the purchased fuel tank against the undiscounted cost
   * Ship fuel tank capacity (decimal): the capacity of the fuel tank
+  * Ship tiny/small/medium/large/huge hardpoint *n* occupied (boolean): true if there is a module in this slot, otherwise false
+  * Ship tiny/small/medium/large/huge hardpoint *n* module (string): the name of the module in this slot
+  * Ship tiny/small/medium/large/huge hardpoint *n* module class (int): the class of the module in this slot
+  * Ship tiny/small/medium/large/huge hardpoint *n* module grade(grade): the grade of the module in this slot
+  * Ship tiny/small/medium/large/huge hardpoint *n* module health (decimal): the percentage health of the module in this slot
+  * Ship tiny/small/medium/large/huge hardpoint *n* module cost (decimal): the purchase cost of the module in this slot
+  * Ship tiny/small/medium/large/huge hardpoint *n* module value (decimal): the undiscounted cost of the module in this slot
+  * Ship tiny/small/medium/large/huge hardpoint *n* module discount (decimal): the percentage discount of the purchased module against the undiscounted cost
+  * Ship Compartment *n* size: the size of this slot
+  * Ship Compartment *n* occupied (boolean): true if there is a module in this slot, otherwise false
+  * Ship compartment *n* module (string): the name of the module in this slot
+  * Ship compartment *n* module class (int): the class of the module in this slot
+  * Ship compartment *n* module grade (string): the grade of the module in this slot
+  * Ship compartment *n* module health (decimal): the percentage health of the module in this slot
+  * Ship compartment *n* module cost (decimal): the purchase cost of the module in this slot
+  * Ship compartment *n* module value (decimal): the undiscounted cost of the module in this slot
+  * Ship compartment *n* module station cost (decimal): the purchase cost of the module at this station
 
 ###Current system values
 
@@ -134,31 +151,44 @@ EDDI makes available a large number of values related to a commander's status, s
 ###Current station values
 
   * Ship bulkheads station cost (decimal): the purchase cost of the bulkheads at the station (not set if not for sale at the station)
+  * Ship bulkheads station discount (decimal): the number of credits discount of the bulkheads over those currently fitted (not set if no additional discount)
   * Ship bulkheads station discount (spoken) (text): the number of credits discount of the bulkheads over those currently fitted as would be spoken (not set if no additional discount)
   * Ship power plant station cost (decimal): the purchase cost of the power plant at the station (not set if not for sale at the station)
-  * Ship power plant station discount (spoken) (text): the number of credits discount of the power plant over those currently fitted as would be spoken (not set if no additional discount)
+  * Ship power plant station discount (decimal): the number of credits discount of the power plant over that currently fitted (not set if no additional discount)
+  * Ship power plant station discount (spoken) (text): the number of credits discount of the power plant over thothatse currently fitted as would be spoken (not set if no additional discount)
   * Ship thrusters station cost (decimal): the purchase cost of the thrusters at the station (not set if not for sale at the station)
+  * Ship thrusters station discount (decimal): the number of credits discount of the thrusters over those currently fitted (not set if no additional discount)
   * Ship thrusters station discount (spoken) (text): the number of credits discount of the thrusters over those currently fitted as would be spoken (not set if no additional discount)
   * Ship frame shift drive station cost (decimal): the purchase cost of the frame shift drive at the station (not set if not for sale at the station)
+  * Ship frame shift drive station discount (decimal): the number of credits discount of the frame shift drive over those currently fitted (not set if no additional discount)
   * Ship frame shift drive station discount (spoken) (text): the number of credits discount of the frame shift drive over those currently fitted as would be spoken (not set if no additional discount)
   * Ship life support station cost (decimal): the purchase cost of the life support at the station (not set if not for sale at the station)
+  * Ship life support station discount (decimal): the number of credits discount of the life support over that currently fitted (not set if no additional discount)
   * Ship life support station discount (spoken) (text): the number of credits discount of the life support over those currently fitted as would be spoken (not set if no additional discount)
   * Ship power distributor station cost (decimal): the purchase cost of the power distributor at the station (not set if not for sale at the station)
+  * Ship power distributor station discount (decimal): the number of credits discount of the power distributor over those currently fitted (not set if no additional discount)
   * Ship power distributor station discount (spoken) (text): the number of credits discount of the power distributor over those currently fitted as would be spoken (not set if no additional discount)
   * Ship sensors station cost (decimal): the purchase cost of the sensors at the station (not set if not for sale at the station)
+  * Ship sensors station discount (decimal): the number of credits discount of the sensors over those currently fitted (not set if no additional discount)
   * Ship sensors station discount (spoken) (text): the number of credits discount of the sensors over those currently fitted as would be spoken (not set if no additional discount)
+  * Ship tiny/small/medium/large/huge hardpoint *n* module station cost (decimal): the purchase cost of this module at this station (not set if not for sale at the station)
+  * Ship tiny/small/medium/large/huge hardpoint *n* module station discount (decimal): the number of credits discount of the module over that currently fitted (not set if no additional discount)
+  * Ship tiny/small/medium/large/huge hardpoint *n* module station discount (spoken) (text): the number of credits discount of the module over that currently fitted as would be spoken (not set if no additional discount)
+  * Ship compartment *n* module station cost (decimal): the purchase cost of this module at this station (not set if not for sale at the station)
+  * Ship compartment *n* module station discount (decimal): the number of credits discount of the module over that currently fitted (not set if no additional discount)
+  * Ship compartment *n* module station discount (spoken) (text): the number of credits discount of the module over that currently fitted as would be spoken (not set if no additional discount)
 
 ###Shipyard values
 
   * Stored ships (int): the number of ships in storage
-  * Stored ship /n/ model (text): the model of the /n/th stored ship
-  * Stored ship /n/ name (text): the name of the /n/th stored ship as set in EDDI configuration
-  * Stored ship /n/ callsign (text): the callsign of the /n/th stored ship as shown in EDDI configuration (e.g. "GEF-1020")
-  * Stored ship /n/ callsign (spoken) (text): the callsign of the /n/th stored ship as shown in EDDI configuration as would be spoken
-  * Stored ship /n/ role (text): the role of the /n/th stored ship as set in EDDI configuration (Multipurpose, Combat, Trade, Exploration, Smuggling)
-  * Stored ship /n/ station (text): the station in which the /n/th stored ship resides
-  * Stored ship /n/ system (text): the system in which the /n/th stored ship resides
-  * Stored ship /n/ distance (decimal): the number of light years between the current system and that where the /n/th ship resiedes, to two decimal places
+  * Stored ship *n* model (text): the model of the *n*th stored ship
+  * Stored ship *n* name (text): the name of the *n*th stored ship as set in EDDI configuration
+  * Stored ship *n* callsign (text): the callsign of the *n*th stored ship as shown in EDDI configuration (e.g. "GEF-1020")
+  * Stored ship *n* callsign (spoken) (text): the callsign of the *n*th stored ship as shown in EDDI configuration as would be spoken
+  * Stored ship *n* role (text): the role of the *n*th stored ship as set in EDDI configuration (Multipurpose, Combat, Trade, Exploration, Smuggling)
+  * Stored ship *n* station (text): the station in which the *n*th stored ship resides
+  * Stored ship *n* system (text): the system in which the *n*th stored ship resides
+  * Stored ship *n* distance (decimal): the number of light years between the current system and that where the *n*th ship resiedes, to two decimal places
 
 ###Miscellaneous
 

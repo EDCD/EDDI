@@ -11,9 +11,16 @@ namespace EDDIVAPlugin
         public String HomeSystem { get; set; }
         [JsonProperty("homeStation")]
         public String HomeStation { get; set; }
+        [JsonProperty("debug")]
+        public bool Debug { get; set; }
 
         [JsonIgnore]
         private String dataPath;
+
+        public EDDIConfiguration()
+        {
+            Debug = false;
+        }
 
         /// <summary>
         /// Obtain configuration from a file.  If the file name is not supplied the the default

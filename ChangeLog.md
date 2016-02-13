@@ -1,3 +1,27 @@
+#0.9.1
+  * Added ship variables for hardpoints and internal compartments
+    * Ship tiny/small/medium/large/huge hardpoint *n* occupied (boolean): true if there is a module in this slot, otherwise false
+    * Ship tiny/small/medium/large/huge hardpoint *n* module (string): the name of the module in this slot
+    * Ship tiny/small/medium/large/huge hardpoint *n* module class (int): the class of the module in this slot
+    * Ship tiny/small/medium/large/huge hardpoint *n* module grade(grade): the grade of the module in this slot
+    * Ship tiny/small/medium/large/huge hardpoint *n* module health (decimal): the percentage health of the module in this slot
+    * Ship tiny/small/medium/large/huge hardpoint *n* module cost (decimal): the purchase cost of the module in this slot
+    * Ship tiny/small/medium/large/huge hardpoint *n* module value (decimal): the undiscounted cost of the module in this slot
+    * Ship tiny/small/medium/large/huge hardpoint *n* module discount (decimal): the percentage discount of the purchased module against the undiscounted cost
+    * Ship tiny/small/medium/large/huge hardpoint *n* module discount (spoken) (text): the percentage discount of the purchased module against the undiscounted cost
+    * Ship Compartment *n* size: the size of this slot
+    * Ship Compartment *n* occupied (boolean): true if there is a module in this slot, otherwise false
+    * Ship compartment *n* module (string): the name of the module in this slot
+    * Ship compartment *n* module class (int): the class of the module in this slot
+    * Ship compartment *n* module grade (string): the grade of the module in this slot
+    * Ship compartment *n* module health (decimal): the percentage health of the module in this slot
+    * Ship compartment *n* module cost (decimal): the purchase cost of the module in this slot
+    * Ship compartment *n* module value (decimal): the undiscounted cost of the module in this slot
+    * Ship compartment *n* module discount (decimal): the percentage discount of the purchased module against the undiscounted cost
+    * Ship compartment *n* module discount (spoken) (text): the percentage discount of the purchased module against the undiscounted cost
+  * Created separate variable debug commands for commander, ship, ship hardpoints, ship compartments, and shipyard
+  * Ensure that 'System power' is not set if a system is not controlled by a power
+
 #0.9.0
   * Fix issue where setting a home system caused scripts not to report system information
   * Do not create 'system change' or 'location change' events when in CQC 

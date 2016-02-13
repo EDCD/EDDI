@@ -1,4 +1,5 @@
 ﻿using EliteDangerousDataDefinitions;
+using EliteDangerousDataProviderService;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -77,45 +78,47 @@ namespace EliteDangerousCompanionAppService
             Stream dataStream = request.GetRequestStream();
             dataStream.Write(data, 0, data.Length);
             dataStream.Close();
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            if ((int)response.StatusCode == 200)
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
-                // This means that the username or password was incorrect (yes, really)
-                throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
-            }
-            else if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
-            {
-                // Problem with the service
-                throw new EliteDangerousCompanionAppAuthenticationException("There is a problem with the Elite: Dangerous servers; please try again later");
-            }
-            else if ((int)response.StatusCode < 300 || (int)response.StatusCode > 399)
-            {
-                // We were expecting a redirect to the confirmation page and didn't get it; complain
-                throw new EliteDangerousCompanionAppErrorException("Error code " + response.StatusCode);
-            }
+                if ((int)response.StatusCode == 200)
+                {
+                    // This means that the username or password was incorrect (yes, really)
+                    throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
+                }
+                else if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
+                {
+                    // Problem with the service
+                    throw new EliteDangerousCompanionAppAuthenticationException("There is a problem with the Elite: Dangerous servers; please try again later");
+                }
+                else if ((int)response.StatusCode < 300 || (int)response.StatusCode > 399)
+                {
+                    // We were expecting a redirect to the confirmation page and didn't get it; complain
+                    throw new EliteDangerousCompanionAppErrorException("Error code " + response.StatusCode);
+                }
 
-            // Obtain the cookies from the raw information available to us
-            String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
-            if (cookieHeader != null)
-            {
-                Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
-                if (companionAppMatch.Success)
+                // Obtain the cookies from the raw information available to us
+                String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
+                if (cookieHeader != null)
                 {
-                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
-                    credentials.appId = companionAppMatch.Groups[1].Value;
-                }
-                Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
-                if (machineIdMatch.Success)
-                {
-                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
-                    credentials.machineId = machineIdMatch.Groups[1].Value;
-                }
-                Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
-                if (machineTokenMatch.Success)
-                {
-                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
-                    credentials.machineToken = machineTokenMatch.Groups[1].Value;
+                    Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
+                    if (companionAppMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.appId = companionAppMatch.Groups[1].Value;
+                    }
+                    Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
+                    if (machineIdMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.machineId = machineIdMatch.Groups[1].Value;
+                    }
+                    Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
+                    if (machineTokenMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.machineToken = machineTokenMatch.Groups[1].Value;
+                    }
                 }
             }
 
@@ -152,60 +155,63 @@ namespace EliteDangerousCompanionAppService
             Stream dataStream = request.GetRequestStream();
             dataStream.Write(data, 0, data.Length);
             dataStream.Close();
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            if ((int)response.StatusCode == 200)
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
-                // This means that the username or password was incorrect (yes, really)
-                throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect");
-            }
-            else if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
-            {
-                // Problem with the service
-                throw new EliteDangerousCompanionAppAuthenticationException("There is a problem with the Elite: Dangerous servers; please try again later");
-            }
-            else if ((int)response.StatusCode < 300 || (int)response.StatusCode > 399)
-            {
-                // We were expecting a redirect to the confirmation page and didn't get it; complain
-                throw new EliteDangerousCompanionAppErrorException("Error code " + response.StatusCode);
-            }
 
-            // Refresh the cookies from the raw information available to us
-            String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
-            if (cookieHeader != null)
-            {
-                Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
-                if (companionAppMatch.Success)
+                if ((int)response.StatusCode == 200)
                 {
-                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
-                    credentials.appId = companionAppMatch.Groups[1].Value;
+                    // This means that the username or password was incorrect (yes, really)
+                    throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect");
                 }
-                Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
-                if (machineIdMatch.Success)
+                else if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
                 {
-                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
-                    credentials.machineId = machineIdMatch.Groups[1].Value;
+                    // Problem with the service
+                    throw new EliteDangerousCompanionAppAuthenticationException("There is a problem with the Elite: Dangerous servers; please try again later");
                 }
-                Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
-                if (machineTokenMatch.Success)
+                else if ((int)response.StatusCode < 300 || (int)response.StatusCode > 399)
                 {
-                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
-                    credentials.machineToken = machineTokenMatch.Groups[1].Value;
+                    // We were expecting a redirect to the confirmation page and didn't get it; complain
+                    throw new EliteDangerousCompanionAppErrorException("Error code " + response.StatusCode);
                 }
-            }
 
-            // At this stage we should have the CompanionApp, mid and mtk values
-            if (credentials.appId == null)
-            {
-                throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing companion app ID");
-            }
-            if (credentials.machineId == null)
-            {
-                throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing machine ID");
-            }
-            if (credentials.machineToken == null)
-            {
-                throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing machine token");
+                // Refresh the cookies from the raw information available to us
+                String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
+                if (cookieHeader != null)
+                {
+                    Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
+                    if (companionAppMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.appId = companionAppMatch.Groups[1].Value;
+                    }
+                    Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
+                    if (machineIdMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.machineId = machineIdMatch.Groups[1].Value;
+                    }
+                    Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
+                    if (machineTokenMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.machineToken = machineTokenMatch.Groups[1].Value;
+                    }
+                }
+
+                // At this stage we should have the CompanionApp, mid and mtk values
+                if (credentials.appId == null)
+                {
+                    throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing companion app ID");
+                }
+                if (credentials.machineId == null)
+                {
+                    throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing machine ID");
+                }
+                if (credentials.machineToken == null)
+                {
+                    throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing machine token");
+                }
             }
 
             return credentials;
@@ -222,60 +228,63 @@ namespace EliteDangerousCompanionAppService
             request.AllowAutoRedirect = false;
             request.CookieContainer = cookieContainer;
             request.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257";
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            if ((int)response.StatusCode >= 300 && (int)response.StatusCode < 400)
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
-                // Redirect means the user needs to log in again
-                throw new EliteDangerousCompanionAppAuthenticationException("You need to re-run the configuration application");
-            }
-            if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
-            {
-                // Error probably means that the service is down
-                throw new EliteDangerousCompanionAppErrorException("Elite: Dangerous service is down; please try later");
-            }
-            if ((int)response.StatusCode < 200 || (int)response.StatusCode > 299)
-            {
-                // Some other generic problem
-                throw new EliteDangerousCompanionAppException("Error code " + response.StatusCode);
-            }
-
-            // Refresh the cookies from the raw information available to us
-            String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
-            if (cookieHeader != null)
-            {
-                Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
-                if (companionAppMatch.Success)
+                if ((int)response.StatusCode >= 300 && (int)response.StatusCode < 400)
                 {
-                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
-                    credentials.appId = companionAppMatch.Groups[1].Value;
+                    // Redirect means the user needs to log in again
+                    throw new EliteDangerousCompanionAppAuthenticationException("You need to re-run the configuration application");
                 }
-                Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
-                if (machineIdMatch.Success)
+                if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
                 {
-                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
-                    credentials.machineId = machineIdMatch.Groups[1].Value;
+                    // Error probably means that the service is down
+                    throw new EliteDangerousCompanionAppErrorException("Elite: Dangerous service is down; please try later");
                 }
-                Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
-                if (machineTokenMatch.Success)
+                if ((int)response.StatusCode < 200 || (int)response.StatusCode > 299)
                 {
-                    if (credentials == null) { credentials = new CompanionAppCredentials(); }
-                    credentials.machineToken = machineTokenMatch.Groups[1].Value;
+                    // Some other generic problem
+                    throw new EliteDangerousCompanionAppException("Error code " + response.StatusCode);
                 }
-            }
 
-            // Update our credentials
-            credentials.ToFile();
+                // Refresh the cookies from the raw information available to us
+                String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
+                if (cookieHeader != null)
+                {
+                    Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
+                    if (companionAppMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.appId = companionAppMatch.Groups[1].Value;
+                    }
+                    Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
+                    if (machineIdMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.machineId = machineIdMatch.Groups[1].Value;
+                    }
+                    Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
+                    if (machineTokenMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.machineToken = machineTokenMatch.Groups[1].Value;
+                    }
+                }
 
-            // Obtain and parse our response
-            var encoding = response.CharacterSet == ""
-                        ? Encoding.UTF8
-                        : Encoding.GetEncoding(response.CharacterSet);
+                // Update our credentials
+                credentials.ToFile();
 
-            using (var stream = response.GetResponseStream())
-            {
-                var reader = new StreamReader(stream, encoding);
-                return CommanderFromProfile(reader.ReadToEnd());
+                // Obtain and parse our response
+                var encoding = response.CharacterSet == ""
+                            ? Encoding.UTF8
+                            : Encoding.GetEncoding(response.CharacterSet);
+
+                using (var stream = response.GetResponseStream())
+                {
+                    var reader = new StreamReader(stream, encoding);
+                    string data = reader.ReadToEnd();
+                    return CommanderFromProfile(data);
+                }
             }
         }
 
@@ -584,6 +593,11 @@ namespace EliteDangerousCompanionAppService
                     if (module["category"] == "weapon" || module["category"] == "module")
                     {
                         Module Module = ModuleDefinitions.ModuleFromEliteID((long)module["id"]);
+                        if (Module.Name == null)
+                        {
+                            // Unknown module; log an error so that we can update the definitions
+                            DataProviderService.LogError("No definition for outfitting module " + module.ToString());
+                        }
                         Module.Cost = module["cost"];
                         Modules.Add(Module);
                     }
@@ -597,6 +611,11 @@ namespace EliteDangerousCompanionAppService
         {
             long id = (long)json["module"]["id"];
             Module Module = ModuleDefinitions.ModuleFromEliteID(id);
+            if (Module.Name == null)
+            {
+                // Unknown module; log an error so that we can update the definitions
+                DataProviderService.LogError("No definition for ship module " + Module.ToString());
+            }
 
             Module.Cost = (long)json["module"]["value"];
             Module.Enabled = (bool)json["module"]["on"];

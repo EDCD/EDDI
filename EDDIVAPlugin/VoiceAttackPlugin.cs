@@ -39,7 +39,7 @@ namespace EDDIVAPlugin
         private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
 
-        public static readonly string PLUGIN_VERSION = "0.9.0";
+        public static readonly string PLUGIN_VERSION = "0.9.1";
 
         public static string VA_DisplayName()
         {
@@ -80,8 +80,10 @@ namespace EDDIVAPlugin
                             setString(ref textValues, "Home system", eddiConfiguration.HomeSystem);
                             setString(ref textValues, "Home system (spoken)", VATranslations.StarSystem(eddiConfiguration.HomeSystem));
                             setString(ref textValues, "Home station", eddiConfiguration.HomeStation);
-                            enableDebugging = false;  // TODO make configuration variable
                             // TODO distance to home system
+
+                            enableDebugging = eddiConfiguration.Debug;
+                            setBoolean(ref booleanValues, "EDDI debug", enableDebugging);
 
                             // Set up the app service
                             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
@@ -357,76 +359,75 @@ namespace EDDIVAPlugin
                     setInt(ref intValues, "Ship cargo capacity", Cmdr.Ship.CargoCapacity);
                     setInt(ref intValues, "Ship cargo carried", Cmdr.Ship.CargoCarried);
 
-                    setString(ref textValues, "Ship bulkheads", Cmdr.Ship.Bulkheads.Name);
-                    setDecimal(ref decimalValues, "Ship bulkheads health", Cmdr.Ship.Bulkheads.Health);
-                    setDecimal(ref decimalValues, "Ship bulkheads cost", (decimal)Cmdr.Ship.Bulkheads.Cost);
-                    setDecimal(ref decimalValues, "Ship bulkheads value", (decimal)Cmdr.Ship.Bulkheads.Value);
-                    setDecimal(ref decimalValues, "Ship bulkheads discount", Cmdr.Ship.Bulkheads.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.Bulkheads.Cost) / ((decimal)Cmdr.Ship.Bulkheads.Value))) * 100, 1));
-
-                    setString(ref textValues, "Ship power plant", Cmdr.Ship.PowerPlant.Class + Cmdr.Ship.PowerPlant.Grade);
-                    setDecimal(ref decimalValues, "Ship power plant health", Cmdr.Ship.PowerPlant.Health);
-                    setDecimal(ref decimalValues, "Ship power plant cost", (decimal)Cmdr.Ship.PowerPlant.Cost);
-                    setDecimal(ref decimalValues, "Ship power plant value", (decimal)Cmdr.Ship.PowerPlant.Value);
-                    setDecimal(ref decimalValues, "Ship power plant discount", Cmdr.Ship.PowerPlant.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.PowerPlant.Cost) / ((decimal)Cmdr.Ship.PowerPlant.Value))) * 100, 1));
-
-                    setString(ref textValues, "Ship thrusters", Cmdr.Ship.Thrusters.Class + Cmdr.Ship.Thrusters.Grade);
-                    setDecimal(ref decimalValues, "Ship thrusters health", Cmdr.Ship.Thrusters.Health);
-                    setDecimal(ref decimalValues, "Ship thrusters cost", (decimal)Cmdr.Ship.Thrusters.Cost);
-                    setDecimal(ref decimalValues, "Ship thrusters value", (decimal)Cmdr.Ship.Thrusters.Value);
-                    setDecimal(ref decimalValues, "Ship thrusters discount", Cmdr.Ship.Thrusters.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.Thrusters.Cost) / ((decimal)Cmdr.Ship.Thrusters.Value))) * 100, 1));
-
-                    setString(ref textValues, "Ship frame shift drive", Cmdr.Ship.FrameShiftDrive.Class + Cmdr.Ship.FrameShiftDrive.Grade);
-                    setDecimal(ref decimalValues, "Ship frame shift drive health", Cmdr.Ship.FrameShiftDrive.Health);
-                    setDecimal(ref decimalValues, "Ship frame shift drive cost", (decimal)Cmdr.Ship.FrameShiftDrive.Cost);
-                    setDecimal(ref decimalValues, "Ship frame shift drive value", (decimal)Cmdr.Ship.FrameShiftDrive.Value);
-                    setDecimal(ref decimalValues, "Ship frame shift drive discount", Cmdr.Ship.FrameShiftDrive.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.FrameShiftDrive.Cost) / ((decimal)Cmdr.Ship.FrameShiftDrive.Value))) * 100, 1));
-
-                    setString(ref textValues, "Ship life support", Cmdr.Ship.LifeSupport.Class + Cmdr.Ship.LifeSupport.Grade);
-                    setDecimal(ref decimalValues, "Ship life support health", Cmdr.Ship.LifeSupport.Health);
-                    setDecimal(ref decimalValues, "Ship life support cost", (decimal)Cmdr.Ship.LifeSupport.Cost);
-                    setDecimal(ref decimalValues, "Ship life support value", (decimal)Cmdr.Ship.LifeSupport.Value);
-                    setDecimal(ref decimalValues, "Ship life support discount", Cmdr.Ship.LifeSupport.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.LifeSupport.Cost) / ((decimal)Cmdr.Ship.LifeSupport.Value))) * 100, 1));
-
-                    setString(ref textValues, "Ship power distributor", Cmdr.Ship.PowerDistributor.Class + Cmdr.Ship.PowerDistributor.Grade);
-                    setDecimal(ref decimalValues, "Ship power distributor health", Cmdr.Ship.PowerDistributor.Health);
-                    setDecimal(ref decimalValues, "Ship power distributor cost", (decimal)Cmdr.Ship.PowerDistributor.Cost);
-                    setDecimal(ref decimalValues, "Ship power distributor value", (decimal)Cmdr.Ship.PowerDistributor.Value);
-                    setDecimal(ref decimalValues, "Ship power distributor discount", Cmdr.Ship.PowerDistributor.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.PowerDistributor.Cost) / ((decimal)Cmdr.Ship.PowerDistributor.Value))) * 100, 1));
-
-                    setString(ref textValues, "Ship sensors", Cmdr.Ship.Sensors.Class + Cmdr.Ship.Sensors.Grade);
-                    setDecimal(ref decimalValues, "Ship sensors health", Cmdr.Ship.Sensors.Health);
-                    setDecimal(ref decimalValues, "Ship sensors cost", (decimal)Cmdr.Ship.Sensors.Cost);
-                    setDecimal(ref decimalValues, "Ship sensors value", (decimal)Cmdr.Ship.Sensors.Value);
-                    setDecimal(ref decimalValues, "Ship sensors discount", Cmdr.Ship.Sensors.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.Sensors.Cost) / ((decimal)Cmdr.Ship.Sensors.Value))) * 100, 1));
-
-                    setString(ref textValues, "Ship fuel tank", Cmdr.Ship.FuelTank.Class + Cmdr.Ship.FuelTank.Grade);
-                    setDecimal(ref decimalValues, "Ship fuel tank cost", (decimal)Cmdr.Ship.FuelTank.Cost);
-                    setDecimal(ref decimalValues, "Ship fuel tank value", (decimal)Cmdr.Ship.FuelTank.Value);
-                    setDecimal(ref decimalValues, "Ship fuel tank discount", Cmdr.Ship.FuelTank.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.FuelTank.Cost) / ((decimal)Cmdr.Ship.FuelTank.Value))) * 100, 1));
-                    setDecimal(ref decimalValues, "Ship fuel tank capacity", Cmdr.Ship.FuelTankCapacity);
+                    SetModuleDetails("Ship bulkheads", Cmdr.Ship.Bulkheads, ref textValues, ref intValues, ref decimalValues);
+                    SetOutfittingCost("Ship bulkheads", Cmdr.Ship.Bulkheads, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                    SetModuleDetails("Ship power plant", Cmdr.Ship.PowerPlant, ref textValues, ref intValues, ref decimalValues);
+                    SetOutfittingCost("Ship power plant", Cmdr.Ship.PowerPlant, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                    SetModuleDetails("Ship thrusters", Cmdr.Ship.Thrusters, ref textValues, ref intValues, ref decimalValues);
+                    SetOutfittingCost("Ship thrusters", Cmdr.Ship.Thrusters, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                    SetModuleDetails("Ship frame shift drive", Cmdr.Ship.FrameShiftDrive, ref textValues, ref intValues, ref decimalValues);
+                    SetOutfittingCost("Ship frame shift drive", Cmdr.Ship.FrameShiftDrive, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                    SetModuleDetails("Ship life support", Cmdr.Ship.LifeSupport, ref textValues, ref intValues, ref decimalValues);
+                    SetOutfittingCost("Ship life support", Cmdr.Ship.LifeSupport, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                    SetModuleDetails("Ship power distributor", Cmdr.Ship.PowerDistributor, ref textValues, ref intValues, ref decimalValues);
+                    SetOutfittingCost("Ship power distributor", Cmdr.Ship.PowerDistributor, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                    SetModuleDetails("Ship sensors", Cmdr.Ship.Sensors, ref textValues, ref intValues, ref decimalValues);
+                    SetOutfittingCost("Ship sensors", Cmdr.Ship.Sensors, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                    SetModuleDetails("Ship fuel tank", Cmdr.Ship.FuelTank, ref textValues, ref intValues, ref decimalValues);
+                    SetOutfittingCost("Ship fuel tank", Cmdr.Ship.FuelTank, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                    //setString(ref textValues, "Ship fuel tank", Cmdr.Ship.FuelTank.Class + Cmdr.Ship.FuelTank.Grade);
+                    //setDecimal(ref decimalValues, "Ship fuel tank cost", (decimal)Cmdr.Ship.FuelTank.Cost);
+                    //setDecimal(ref decimalValues, "Ship fuel tank value", (decimal)Cmdr.Ship.FuelTank.Value);
+                    //setDecimal(ref decimalValues, "Ship fuel tank discount", Cmdr.Ship.FuelTank.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.FuelTank.Cost) / ((decimal)Cmdr.Ship.FuelTank.Value))) * 100, 1));
+                    //setDecimal(ref decimalValues, "Ship fuel tank capacity", Cmdr.Ship.FuelTankCapacity);
 
                     // Hardpoints
-                    int weaponHardpoints = 0;
+                    int numTinyHardpoints = 0;
+                    int numSmallHardpoints = 0;
+                    int numMediumHardpoints = 0;
+                    int numLargeHardpoints = 0;
+                    int numHugeHardpoints = 0;
                     foreach (Hardpoint Hardpoint in Cmdr.Ship.Hardpoints)
                     {
-                        if (Hardpoint.Size > 0)
+                        string baseHardpointName = "";
+                        switch (Hardpoint.Size)
                         {
-                            weaponHardpoints++;
+                            case 0:
+                                baseHardpointName = "Ship tiny hardpoint " + ++numTinyHardpoints;
+                                break;
+                            case 1:
+                                baseHardpointName = "Ship small hardpoint " + ++numSmallHardpoints;
+                                break;
+                            case 2:
+                                baseHardpointName = "Ship medium hardpoint " + ++numMediumHardpoints;
+                                break;
+                            case 3:
+                                baseHardpointName = "Ship large hardpoint " + ++numLargeHardpoints;
+                                break;
+                            case 4:
+                                baseHardpointName = "Ship huge hardpoint " + ++numHugeHardpoints;
+                                break;
                         }
+
+                        setBoolean(ref booleanValues, baseHardpointName + " occupied", Hardpoint.Module != null);
+                        SetModuleDetails(baseHardpointName + " module", Hardpoint.Module, ref textValues, ref intValues, ref decimalValues);
+                        SetOutfittingCost(baseHardpointName + " module", Hardpoint.Module, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
                     }
-                    setInt(ref intValues, "Ship hardpoints", weaponHardpoints);
-                    setInt(ref intValues, "Ship utility slots", Cmdr.Ship.Hardpoints.Count - weaponHardpoints);
+
+                    setInt(ref intValues, "Ship hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
+                    setInt(ref intValues, "Ship utility slots", numTinyHardpoints);
 
                     // Compartments
-                    //foreach (Compartment Compartment in Cmdr.Ship.Hardpoints)
-                    //{
-                    //    if (Compartment.Size > 0)
-                    //    {
-                    //        weaponHardpoints++;
-                    //    }
-                    //}
-                    setInt(ref intValues, "Ship compartments", Cmdr.Ship.Compartments.Count);
-
+                    int curCompartment = 0;
+                    foreach (Compartment Compartment in Cmdr.Ship.Compartments)
+                    {
+                        string baseCompartmentName = "Ship compartment " + ++curCompartment;
+                        setInt(ref intValues, baseCompartmentName + " size", Compartment.Size);
+                        setBoolean(ref booleanValues, baseCompartmentName + " occupied", Compartment.Module != null);
+                        SetModuleDetails(baseCompartmentName + " module", Compartment.Module, ref textValues, ref intValues, ref decimalValues);
+                        SetOutfittingCost(baseCompartmentName + " module", Compartment.Module, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
+                    }
+                    setInt(ref intValues, "Ship compartments", curCompartment);
 
                     //
                     // Stored ships data
@@ -473,18 +474,14 @@ namespace EDDIVAPlugin
                     }
                     setInt(ref intValues, "Stored ships", Cmdr.StoredShips.Count);
 
-                    //
-                    // Outfitting data
-                    //
-                    SetOutfittingCost("bulkheads", Cmdr.Ship.Bulkheads, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    SetOutfittingCost("power plant", Cmdr.Ship.PowerPlant, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    SetOutfittingCost("thrusters", Cmdr.Ship.Thrusters, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    SetOutfittingCost("frame shift drive", Cmdr.Ship.FrameShiftDrive, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    SetOutfittingCost("life support", Cmdr.Ship.LifeSupport, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    SetOutfittingCost("power distributor", Cmdr.Ship.PowerDistributor, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    SetOutfittingCost("sensors", Cmdr.Ship.Sensors, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-
                     setString(ref textValues, "Last station name", Cmdr.LastStation);
+
+                    debug("InvokeUpdateProfile(): Resultant shortint values " + JsonConvert.SerializeObject(shortIntValues));
+                    debug("InvokeUpdateProfile(): Resultant text values " + JsonConvert.SerializeObject(textValues));
+                    debug("InvokeUpdateProfile(): Resultant int values " + JsonConvert.SerializeObject(intValues));
+                    debug("InvokeUpdateProfile(): Resultant decimal values " + JsonConvert.SerializeObject(decimalValues));
+                    debug("InvokeUpdateProfile(): Resultant boolean values " + JsonConvert.SerializeObject(booleanValues));
+                    debug("InvokeUpdateProfile(): Resultant datetime values " + JsonConvert.SerializeObject(dateTimeValues));
 
                     setPluginStatus(ref textValues, "Operational", null, null);
                 }
@@ -495,26 +492,52 @@ namespace EDDIVAPlugin
             }
         }
 
-        /// <summary>Find a module int outfitting that matches our existing module and provide its price</summary>
+
+        /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
+        private static void SetModuleDetails(string name, Module module, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues)
+        {
+            setString(ref textValues, name, module == null ? null : module.Name);
+            setInt(ref intValues, name + " class", module == null ? (int?)null : module.Class);
+            setString(ref textValues, name + " grade", module == null ? null : module.Grade);
+            setDecimal(ref decimalValues, name + " health", module == null ? (decimal?)null : module.Health);
+            setDecimal(ref decimalValues, name + " cost", module == null ? (decimal?)null : (decimal)module.Cost);
+            setDecimal(ref decimalValues, name + " value", module == null ? (decimal?)null : (decimal)module.Value);
+            if (module != null && module.Cost < module.Value)
+            {
+                decimal discount = Math.Round((1 - (((decimal)module.Cost) / ((decimal)module.Value))) * 100, 1);
+                setDecimal(ref decimalValues, name + " discount", discount > 0.01M ? discount : (decimal?)null);
+            }
+            else
+            {
+                setDecimal(ref decimalValues, name + " discount", null);
+            }
+        }
+
+        /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
         private static void SetOutfittingCost(string name, Module existing, ref List<Module> outfittingModules, ref Dictionary<string, string> textValues, ref Dictionary<string, decimal?> decimalValues)
         {
-            foreach (Module Module in outfittingModules)
+            if (existing != null)
             {
-                if (existing.EDDBID == Module.EDDBID)
+                foreach (Module Module in outfittingModules)
                 {
-                    // Found it
-                    setDecimal(ref decimalValues, "Ship " + name + " station cost", (decimal?)Module.Cost);
-                    if (Module.Cost < existing.Cost)
+                    if (existing.EDDBID == Module.EDDBID)
                     {
-                        // And it's cheaper
-                        setString(ref textValues, "Ship " + name + " station discount (spoken)", humanize(existing.Cost - Module.Cost));
+                        // Found it
+                        setDecimal(ref decimalValues, name + " station cost", (decimal?)Module.Cost);
+                        if (Module.Cost < existing.Cost)
+                        {
+                            // And it's cheaper
+                            setDecimal(ref decimalValues, name + " station discount", existing.Cost - Module.Cost);
+                            setString(ref textValues, name + " station discount (spoken)", humanize(existing.Cost - Module.Cost));
+                        }
+                        return;
                     }
-                    return;
                 }
-                // Not found so remove any existing
-                setDecimal(ref decimalValues, "Ship " + name + " station cost", (decimal?)null);
-                setString(ref textValues, "Ship " + name + " station discount", (string)null);
             }
+            // Not found so remove any existing
+            setDecimal(ref decimalValues, "Ship " + name + " station cost", (decimal?)null);
+            setDecimal(ref decimalValues, "Ship " + name + " station discount", (decimal?)null);
+            setString(ref textValues, "Ship " + name + " station discount (spoken)", (string)null);
         }
 
         public static void InvokeNewSystem(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
@@ -723,6 +746,13 @@ namespace EDDIVAPlugin
                         debug("InvokeNewSystem() Set last system station information");
                     }
                 }
+
+                debug("InvokeNewSystem(): Resultant shortint values " + JsonConvert.SerializeObject(shortIntValues));
+                debug("InvokeNewSystem(): Resultant text values " + JsonConvert.SerializeObject(textValues));
+                debug("InvokeNewSystem(): Resultant int values " + JsonConvert.SerializeObject(intValues));
+                debug("InvokeNewSystem(): Resultant decimal values " + JsonConvert.SerializeObject(decimalValues));
+                debug("InvokeNewSystem(): Resultant boolean values " + JsonConvert.SerializeObject(booleanValues));
+                debug("InvokeNewSystem(): Resultant datetime values " + JsonConvert.SerializeObject(dateTimeValues));
 
                 setPluginStatus(ref textValues, "Operational", null, null);
             }
