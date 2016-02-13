@@ -5,13 +5,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace EDDIVAPlugin
+namespace EliteDangerousSpeechService
 {
-    /// <summary>Translations for VoiceAttack</summary>
-    public class VATranslations
+    /// <summary>Translations for Elite items for text-to-speech</summary>
+    public class Translations
     {
         /// <summary>Fix up ship models</summary>
-        public static String ShipModel(string model)
+        public static string ShipModel(string model)
         {
             if (model == null)
             {
@@ -273,7 +273,7 @@ namespace EDDIVAPlugin
                 }
             }
 
-            return elements.Aggregate((i, j) => i + ", " + j);
+            return elements.Aggregate((i, j) => i + " " + j);
         }
     }
 }
