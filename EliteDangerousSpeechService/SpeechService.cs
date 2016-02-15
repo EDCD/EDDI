@@ -19,7 +19,14 @@ namespace EliteDangerousSpeechService
     {
         private readonly Random random = new Random();
 
+        private string locale = "en-GB";
+
         private HashSet<ISoundOut> activeSpeeches = new HashSet<ISoundOut>();
+
+        public SpeechService()
+        {
+            var locale = Thread.CurrentThread.CurrentCulture.Name;
+        }
 
         public void Say(Ship ship, string script, int health=100)
         {
@@ -72,7 +79,16 @@ namespace EliteDangerousSpeechService
                     }
 
                     synth.SetOutputToWaveStream(stream);
-                    synth.Speak(SpeechFromScript(script));
+                    string speech = SpeechFromScript(script);
+                    if (speech.Contains("<phoneme"))
+                    {
+                        speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + locale + "\"><s>" + speech + "</s></speak>";
+                        synth.SpeakSsml(speech);
+                    }
+                    else
+                    {
+                        synth.Speak(speech);
+                    }
                     stream.Seek(0, SeekOrigin.Begin);
 
                     IWaveSource source = new WaveFileReader(stream);

@@ -60,6 +60,12 @@ namespace EliteDangerousSpeechService
             }
         }
 
+        private static Dictionary<string, string> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string>()
+        {
+            { "Achenar", "ækɜˈnɑ" },
+            { "Maia", "me.ɪˈya" },
+        };
+
         private static Regex DIGITS = new Regex(@"\d{3,}");
         private static Regex DECIMAL_DIGITS = new Regex(@"( point )(\d{2,})");
         // Regular expression to locate generated star systems
@@ -70,6 +76,12 @@ namespace EliteDangerousSpeechService
             if (starSystem == null)
             {
                 return null;
+            }
+
+            // Specific translations
+            if (STAR_SYSTEM_PRONUNCIATIONS.ContainsKey(starSystem))
+            {
+                return "<phoneme alphabet=\"ipa\" ph=\"" + STAR_SYSTEM_PRONUNCIATIONS[starSystem] + "\">" + starSystem + "</phoneme>";
             }
 
             // Common star catalogues
@@ -147,7 +159,9 @@ namespace EliteDangerousSpeechService
             // Any digits after a decimal point are broken in to individual digits
             starSystem = DECIMAL_DIGITS.Replace(starSystem, match => match.Groups[1].Value + string.Join<char>(" ", match.Groups[2].Value));
             // Any string of more than two digits is broken up in to individual digits
-            return DIGITS.Replace(starSystem, match => string.Join<char>(" ", match.Value));
+            starSystem = DIGITS.Replace(starSystem, match => string.Join<char>(" ", match.Value));
+
+            return starSystem;
         }
 
         public static string CallSign(string callsign)
