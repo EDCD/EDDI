@@ -618,7 +618,7 @@ namespace EliteDangerousCompanionAppService
             if (module.Name == null)
             {
                 // Unknown module; log an error so that we can update the definitions
-                DataProviderService.LogError("No definition for ship module " + module.ToString());
+                DataProviderService.LogError("No definition for ship module " + json["module"].ToString());
             }
 
             module.Cost = (long)json["module"]["value"];

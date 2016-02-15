@@ -71,6 +71,8 @@ namespace EDDIVAPlugin
                     {
                         try
                         {
+                            logInfo("EDDI " + PLUGIN_VERSION + " starting");
+
                             // Set up and/or open our database
                             String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                             System.IO.Directory.CreateDirectory(dataDir);
@@ -186,6 +188,13 @@ namespace EDDIVAPlugin
                 logWatcherThread.Abort();
                 logWatcherThread = null;
             }
+
+            if (speechService != null)
+            {
+                speechService.ShutdownSpeech();
+            }
+
+            logInfo("EDDI " + PLUGIN_VERSION + " shutting down");
         }
 
         public static void VA_Invoke1(String context, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
@@ -522,10 +531,12 @@ namespace EDDIVAPlugin
                     }
 
                     setPluginStatus(ref textValues, "Operational", null, null);
+                    setString(ref textValues, "EDDI plugin profile status", "Enabled");
                 }
                 catch (Exception ex)
                 {
                     setPluginStatus(ref textValues, "Failed", "Failed to access profile", ex);
+                    setString(ref textValues, "EDDI plugin profile status", "Disabled");
                 }
             }
         }
@@ -1034,17 +1045,23 @@ namespace EDDIVAPlugin
             {
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
                 {
-                    file.WriteLine(data);
+                    file.WriteLine(DateTime.Now.ToString() + ": " + data);
                 }
+            }
+        }
+        private static void logInfo(string data)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
+            {
+                file.WriteLine(DateTime.Now.ToString() + ": " + data);
             }
         }
         private static void logError(string data)
         {
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
             {
-                file.WriteLine(data);
+                file.WriteLine(DateTime.Now.ToString() + ": " + data);
             }
         }
-
     }
 }

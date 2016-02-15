@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtendedDurationWaveSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpeechService.cs" />
     <Compile Include="Translations.cs" />

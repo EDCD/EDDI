@@ -14,6 +14,7 @@ using CSCore;
 using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
 using CSCore.Streams.Effects;
+using EliteDangerousDataDefinitions;
 
 namespace Tests
 {
@@ -21,44 +22,62 @@ namespace Tests
     public class SpeechTests
     {
         [TestMethod]
-        public void testVariants()
+        public void TestExtendedSource()
+        {
+            EventWaitHandle waitHandle = new AutoResetEvent(false);
+
+            using (MemoryStream stream = new MemoryStream())
+            using (SpeechSynthesizer synth = new SpeechSynthesizer())
+            {
+                synth.SetOutputToWaveStream(stream);
+                synth.Speak("Test.");
+                stream.Seek(0, SeekOrigin.Begin);
+
+                IWaveSource source = new ExtendedDurationWaveSource(new WaveFileReader(stream), 2000).AppendSource(x => new DmoWavesReverbEffect(x) { ReverbMix = -10 });
+
+                var soundOut = new WasapiOut();
+                soundOut.Stopped += (s, e) => waitHandle.Set();
+
+                soundOut.Initialize(source);
+                soundOut.Play();
+
+                waitHandle.WaitOne();
+                soundOut.Dispose();
+                source.Dispose();
+            }
+        }
+
+        [TestMethod]
+        public void TestDamage()
+        {
+            SpeechService SpeechService = new SpeechService();
+            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Systems fully operational.", 100);
+            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Systems at 80%.", 80);
+            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Systems at 60%.", 60);
+            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Systems at 40%.", 40);
+            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Systems at 20%.", 20);
+            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Systems critical.", 0);
+        }
+
+        [TestMethod]
+        public void TestExtended()
+        {
+            SpeechService SpeechService = new SpeechService();
+            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Welcome to your Anaconda.  All systems operational.");
+        }
+
+        [TestMethod]
+        public void TestVariants()
         {
             SpeechService SpeechService = new SpeechService();
 
-            //SpeechService.Speak("Hello", null, 0, 0, 0, 0, 0, true);
-            //SpeechService.Speak("Welcome to your small ship.", "IVONA 2 Emma", 25, 0, 40, 50, 0, true);
-            //SpeechService.Speak("Vulture x-ray whiskey tango seven one seven six requesting docking.", "IVONA 2 Emma", 25, 5, 40, 25, 100, true);
-            //SpeechService.Speak("Welcome to your medium ship.", "IVONA 2 Emma", 50, 0, 60, 50, 0, true);
-            //SpeechService.Speak("Python victor oscar Pappa fife tree fawer niner requesting docking.", "IVONA 2 Emma", 50, 5, 60, 35, 8, true);
-            //SpeechService.Speak("Welcome to your large ship.", "IVONA 2 Emma", 100, 0, 80, 50, 0, true);
-            //SpeechService.Speak("Anaconda charlie november delta one niner eight fawer requesting docking.", "IVONA 2 Emma", 100, 5, 80, 25, 8, true);
-            //SpeechService.Speak("Welcome to your huge ship.", "IVONA 2 Emma", 200, 0, 100, 50, 0, true);
-            //SpeechService.Speak("Panther Clipper charlie november delta one niner eight fawer requesting docking.", "IVONA 2 Emma", 200, 5, 100, 25, 8, true);
-
-            SpeechService.Speak("Welcome to your Vulture.  All systems operational.", "IVONA 2 Emma", 0, 0, 40, -60, 0, true);
-            SpeechService.Speak("Vulture x-ray whiskey tango seven one seven six requesting docking.", "IVONA 2 Emma", 0, 10, 40, -60, 0, true);
-            SpeechService.Speak("Welcome to your Python.  Ready for combat.", "IVONA 2 Emma", 0, 0, 60, -30, 0, true);
-            SpeechService.Speak("Python victor oscar Pappa fife tree fawer niner requesting docking.", "IVONA 2 Emma", 0, 10, 60, -30, 0, true);
-            SpeechService.Speak("Welcome to your Anaconda. Cargo hold is currently empty.", "IVONA 2 Emma", 0, 0, 80, -20, 0, true);
-            SpeechService.Speak("Anaconda charlie november delta one niner eight fawer requesting docking.", "IVONA 2 Emma", 0, 10, 80, -20, 0, true);
-            //SpeechService.Speak("Welcome to your huge ship.", "IVONA 2 Emma", 0, 0, 80, -10, 0, true);
-            //SpeechService.Speak("Panther Clipper charlie november delta one niner eight fawer requesting docking.", "IVONA 2 Emma", 0, 10, 100, -10, 0, true);
-
-            //SpeechService.Speak("Welcome to your small ship.", "IVONA 2 Emma", 0, 0, 40, -50, 0, true);
-            //SpeechService.Speak("Vulture x-ray whiskey tango seven one seven six requesting docking.", "IVONA 2 Emma", 0, 10, 40, -50, 0, true);
-            ////SpeechService.Speak("Vulture x-ray whiskey tango seven one seven six requesting docking.", "IVONA 2 Emma", 0, 10, 40, 0, 0, true);
-            //SpeechService.Speak("Welcome to your medium ship.", "IVONA 2 Emma", 0, 0, 60, -25, 0, true);
-            //SpeechService.Speak("Python victor oscar Pappa fife tree fawer niner requesting docking.", "IVONA 2 Emma", 0, 10, 60, -25, 0, true);
-            ////SpeechService.Speak("Python victor oscar Pappa fife tree fawer niner requesting docking.", "IVONA 2 Emma", 0, 10, 60, 0, 0, true);
-            //SpeechService.Speak("Welcome to your large ship.", "IVONA 2 Emma", 0, 0, 80, -10, 0, true);
-            //SpeechService.Speak("Anaconda charlie november delta one niner eight fawer requesting docking.", "IVONA 2 Emma", 0, 10, 80, -10, 0, true);
-            ////SpeechService.Speak("Anaconda charlie november delta one niner eight fawer requesting docking.", "IVONA 2 Emma", 0, 10, 80, 0, 0, true);
-            //SpeechService.Speak("Welcome to your huge ship.", "IVONA 2 Emma", 0, 0, 80, -5, 0, true);
-            //SpeechService.Speak("Panther Clipper charlie november delta one niner eight fawer requesting docking.", "IVONA 2 Emma", 0, 10, 100, -5, 0, true);
-            ////SpeechService.Speak("Panther Clipper charlie november delta one niner eight fawer requesting docking.", "IVONA 2 Emma", 0, 10, 100, 0, 0, true);
+            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049309), "Welcome to your Vulture.  Weapons online.");
+            SpeechService.Transmit(ShipDefinitions.ShipFromEliteID(128049309), "Vulture x-ray whiskey tango seven one seven six requesting docking.");
+            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049339), "Welcome to your Python.  Scanning at full range.");
+            SpeechService.Transmit(ShipDefinitions.ShipFromEliteID(128049339), "Python victor oscar Pappa fife tree fawer niner requesting docking.");
+            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Welcome to your Anaconda.  All systems operational.");
+            SpeechService.Transmit(ShipDefinitions.ShipFromEliteID(128049363), "Anaconda charlie november delta one niner eight fawer requesting docking.");
         }
-        //synth.Speak("Anaconda golf foxtrot lima one niner six eight requesting docking.");
-
 
         [TestMethod]
         public void TestChorus()
