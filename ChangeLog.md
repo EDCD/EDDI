@@ -1,3 +1,9 @@
+#0.9.2
+  * Fix issue where sold ships still showed up in the shipyard
+  * Add information on modules and hardpoints to damage and outfitting reports
+  * Add missing IDs for some EDDB->Coriolis mappings
+  * Fix issue where removed ship names are not treated as absent
+
 #0.9.1
   * Added ship variables for hardpoints and internal compartments
     * Ship tiny/small/medium/large/huge hardpoint *n* occupied (boolean): true if there is a module in this slot, otherwise false

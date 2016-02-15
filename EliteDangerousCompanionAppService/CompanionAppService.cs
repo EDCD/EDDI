@@ -377,7 +377,11 @@ namespace EliteDangerousCompanionAppService
             if (lookup.TryGetValue(ship.LocalId, out shipConfig))
             {
                 // Already exists; grab the relevant information and supplement it
-                ship.Name = shipConfig.Name;
+                // Ship config name might be just whitespace, in which case we unset it
+                if (shipConfig.Name != null && shipConfig.Name.Trim().Length > 0)
+                {
+                    ship.Name = shipConfig.Name.Trim();
+                }
                 ship.CallSign = shipConfig.CallSign;
                 ship.Role = shipConfig.Role;
             }
@@ -610,27 +614,27 @@ namespace EliteDangerousCompanionAppService
         public static Module ModuleFromProfile(string name, dynamic json)
         {
             long id = (long)json["module"]["id"];
-            Module Module = ModuleDefinitions.ModuleFromEliteID(id);
-            if (Module.Name == null)
+            Module module = ModuleDefinitions.ModuleFromEliteID(id);
+            if (module.Name == null)
             {
                 // Unknown module; log an error so that we can update the definitions
-                DataProviderService.LogError("No definition for ship module " + Module.ToString());
+                DataProviderService.LogError("No definition for ship module " + module.ToString());
             }
 
-            Module.Cost = (long)json["module"]["value"];
-            Module.Enabled = (bool)json["module"]["on"];
-            Module.Priority = (int)json["module"]["priority"];
+            module.Cost = (long)json["module"]["value"];
+            module.Enabled = (bool)json["module"]["on"];
+            module.Priority = (int)json["module"]["priority"];
             // Be sensible with health - round it unless it's very low
             decimal Health = (decimal)json["module"]["health"] / 10000;
             if (Health < 5)
             {
-                Module.Health = Math.Round(Health, 1);
+                module.Health = Math.Round(Health, 1);
             }
             else
             {
-                Module.Health = Math.Round(Health);
+                module.Health = Math.Round(Health);
             }
-            return Module;
+            return module;
         }
 
     }

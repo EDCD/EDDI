@@ -19,7 +19,7 @@
         <TabControl x:Name="tabControl" DockPanel.Dock="Top">
             <TabItem Header="EDDI">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <TextBlock x:Name="eddiText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="EDDI has a number of features that can be configured separately.  Please click on each individual tab above to obtain an explanation of what it provides and how to configure it" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="eddiText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="EDDI has a number of features that can be configured separately.  Please click on each individual tab above to obtain an explanation of what it provides and how to configure it.  Once you have made changes here you will need to restart VoiceAttack for them to take effect.a" VerticalAlignment="Top"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />

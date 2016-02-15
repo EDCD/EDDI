@@ -39,7 +39,7 @@ namespace EDDIVAPlugin
         private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
 
-        public static readonly string PLUGIN_VERSION = "0.9.1";
+        public static readonly string PLUGIN_VERSION = "0.9.2";
 
         public static string VA_DisplayName()
         {
@@ -469,19 +469,42 @@ namespace EDDIVAPlugin
                                 + Math.Pow((double)(ThisStarSystemData.StarSystem.Z - StoredShipStarSystemData.StarSystem.Z), 2)), 2);
                             setDecimal(ref decimalValues, varBase + " distance", distance);
                         }
+                        else
+                        {
+                            // We don't know how far away the ship is
+                            setDecimal(ref decimalValues, varBase + " distance", (decimal?)null);
+                        }
 
                         currentStoredShip++;
                     }
                     setInt(ref intValues, "Stored ships", Cmdr.StoredShips.Count);
+                    // We also clear out any ships that have been sold since the last run.  We don't know
+                    // how many there are so just clear out the succeeding 10 slots and hope that the commander
+                    // hasn't gone on a selling spree
+                    for (int i = 0; i < 10; i++)
+                    {
+                        string varBase = "Stored ship " + (currentStoredShip + i);
+                        setString(ref textValues, varBase + " model", null);
+                        setString(ref textValues, varBase + " system", null);
+                        setString(ref textValues, varBase + " station", null);
+                        setString(ref textValues, varBase + " callsign", null);
+                        setString(ref textValues, varBase + " callsign (spoken)", null);
+                        setString(ref textValues, varBase + " name", null);
+                        setString(ref textValues, varBase + " role", null);
+                        setDecimal(ref decimalValues, varBase + " distance", null);
+                    }
 
                     setString(ref textValues, "Last station name", Cmdr.LastStation);
 
-                    debug("InvokeUpdateProfile(): Resultant shortint values " + JsonConvert.SerializeObject(shortIntValues));
-                    debug("InvokeUpdateProfile(): Resultant text values " + JsonConvert.SerializeObject(textValues));
-                    debug("InvokeUpdateProfile(): Resultant int values " + JsonConvert.SerializeObject(intValues));
-                    debug("InvokeUpdateProfile(): Resultant decimal values " + JsonConvert.SerializeObject(decimalValues));
-                    debug("InvokeUpdateProfile(): Resultant boolean values " + JsonConvert.SerializeObject(booleanValues));
-                    debug("InvokeUpdateProfile(): Resultant datetime values " + JsonConvert.SerializeObject(dateTimeValues));
+                    if (enableDebugging)
+                    {
+                        debug("InvokeUpdateProfile(): Resultant shortint values " + JsonConvert.SerializeObject(shortIntValues));
+                        debug("InvokeUpdateProfile(): Resultant text values " + JsonConvert.SerializeObject(textValues));
+                        debug("InvokeUpdateProfile(): Resultant int values " + JsonConvert.SerializeObject(intValues));
+                        debug("InvokeUpdateProfile(): Resultant decimal values " + JsonConvert.SerializeObject(decimalValues));
+                        debug("InvokeUpdateProfile(): Resultant boolean values " + JsonConvert.SerializeObject(booleanValues));
+                        debug("InvokeUpdateProfile(): Resultant datetime values " + JsonConvert.SerializeObject(dateTimeValues));
+                    }
 
                     setPluginStatus(ref textValues, "Operational", null, null);
                 }
@@ -747,12 +770,15 @@ namespace EDDIVAPlugin
                     }
                 }
 
-                debug("InvokeNewSystem(): Resultant shortint values " + JsonConvert.SerializeObject(shortIntValues));
-                debug("InvokeNewSystem(): Resultant text values " + JsonConvert.SerializeObject(textValues));
-                debug("InvokeNewSystem(): Resultant int values " + JsonConvert.SerializeObject(intValues));
-                debug("InvokeNewSystem(): Resultant decimal values " + JsonConvert.SerializeObject(decimalValues));
-                debug("InvokeNewSystem(): Resultant boolean values " + JsonConvert.SerializeObject(booleanValues));
-                debug("InvokeNewSystem(): Resultant datetime values " + JsonConvert.SerializeObject(dateTimeValues));
+                if (enableDebugging)
+                {
+                    debug("InvokeNewSystem(): Resultant shortint values " + JsonConvert.SerializeObject(shortIntValues));
+                    debug("InvokeNewSystem(): Resultant text values " + JsonConvert.SerializeObject(textValues));
+                    debug("InvokeNewSystem(): Resultant int values " + JsonConvert.SerializeObject(intValues));
+                    debug("InvokeNewSystem(): Resultant decimal values " + JsonConvert.SerializeObject(decimalValues));
+                    debug("InvokeNewSystem(): Resultant boolean values " + JsonConvert.SerializeObject(booleanValues));
+                    debug("InvokeNewSystem(): Resultant datetime values " + JsonConvert.SerializeObject(dateTimeValues));
+                }
 
                 setPluginStatus(ref textValues, "Operational", null, null);
             }
