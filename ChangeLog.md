@@ -1,3 +1,6 @@
+#0.9.3
+  * Move to internal speech generation routines for computer voice
+
 #0.9.2
   * Fix issue where sold ships still showed up in the shipyard
   * Add information on modules and hardpoints to damage and outfitting reports

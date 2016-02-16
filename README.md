@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface VoiceAttack plugin
 
-Current version: 0.9.2
+Current version: 0.9.3
 
 EDDI is a VoiceAttack plugin that provides over 150 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  It is not in itself a complete VoiceAttack profile, similar to that provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.  The available values are as follows:
 
@@ -207,6 +207,7 @@ EDDI also provides a number of pre-built commands to show off some of what it is
   * a voice command spoken by the pilot when they wish to check the current discounts on their ship ("Report on ship discounts")
   * voice commands spoken by the pilot when they wish to check the current status of their ship ("Report" and "Quick report")
   * voice commands spoken by the pilot when they wish to check just the damage on their ship ("Damage report")
+  * voice commands spoken by the pilot when they wish to carry out checks prior to undocking ("Run pre-flight checks")
 
 ##Installing
 
