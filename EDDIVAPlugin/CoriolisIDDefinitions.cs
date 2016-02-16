@@ -824,7 +824,7 @@ namespace EDDIVAPlugin
             {
                 try
                 {
-                    client.UploadString(@"http://api.eddp.co:16161/error", error);
+                    client.UploadString(@"http://api.eddp.co/error", error);
                 }
                 catch { }
             }

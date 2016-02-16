@@ -20,7 +20,7 @@ namespace EliteDangerousDataProviderService
                 string response;
                 try
                 {
-                    response = client.DownloadString("http://api.eddp.co:16161/systems/" + Uri.EscapeDataString(system));
+                    response = client.DownloadString("http://api.eddp.co/systems/" + Uri.EscapeDataString(system));
                 }
                 catch (WebException wex)
                 {
@@ -131,10 +131,10 @@ namespace EliteDangerousDataProviderService
         static DataProviderService()
         {
             // We need to not use an expect header as it causes problems when sending data to a REST service
-            var profileUri = new Uri("http://api.eddp.co:16161/profile");
+            var profileUri = new Uri("http://api.eddp.co/profile");
             var profileServicePoint = ServicePointManager.FindServicePoint(profileUri);
             profileServicePoint.Expect100Continue = false;
-            var errorUri = new Uri("http://api.eddp.co:16161/error");
+            var errorUri = new Uri("http://api.eddp.co/error");
             var errorServicePoint = ServicePointManager.FindServicePoint(errorUri);
             errorServicePoint.Expect100Continue = false;
         }
@@ -145,7 +145,7 @@ namespace EliteDangerousDataProviderService
             {
                 try
                 {
-                    client.UploadString(@"http://api.eddp.co:16161/profile", profile);
+                    client.UploadString(@"http://api.eddp.co/profile", profile);
                 }
                 catch (WebException wex)
                 {
@@ -165,7 +165,7 @@ namespace EliteDangerousDataProviderService
             {
                 try
                 {
-                    client.UploadString(@"http://api.eddp.co:16161/error", error.ToString());
+                    client.UploadString(@"http://api.eddp.co/error", error.ToString());
                 }
                 catch {}
             }
