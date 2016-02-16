@@ -18,6 +18,12 @@ namespace EliteDangerousNetLogMonitor
             Match match = SystemRegex.Match(line);
             if (match.Success)
             {
+                if (@"Training" == match.Groups[1].Value || @"Destination" == match.Groups[2].Value)
+                {
+                    // We ignore training missions
+                    return;
+                }
+
                 if (@"ProvingGround" == match.Groups[3].Value)
                 {
                     // We ignore CQC

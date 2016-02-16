@@ -55,8 +55,6 @@ namespace EliteDangerousSpeechService
                     return "Zemeena Torvalll";
                 default:
                     return power;
-
-
             }
         }
 
@@ -217,7 +215,7 @@ namespace EliteDangerousSpeechService
                 switch (c)
                 {
                     case 'A':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈælfɑ\">alpha</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈælfə\">alpha</phoneme>");
                         break;
                     case 'B':
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈbrɑːˈvo\">bravo</phoneme>");
@@ -232,10 +230,10 @@ namespace EliteDangerousSpeechService
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈeko\">echo</phoneme>");
                         break;
                     case 'F':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈfɔkstrɔt\">foxtrot</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈfɒkstrɒt\">foxtrot</phoneme>");
                         break;
                     case 'G':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ɡʌlf\">golf</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ɡɒlf\">golf</phoneme>");
                         break;
                     case 'H':
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"hoːˈtel\">hotel</phoneme>");
@@ -253,13 +251,13 @@ namespace EliteDangerousSpeechService
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈliːmɑ\">lima</phoneme>");
                         break;
                     case 'M':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"mɑik\">mike</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"maɪk\">mike</phoneme>");
                         break;
                     case 'N':
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"noˈvembə\">november</phoneme>");
                         break;
                     case 'O':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈɔskɑ\">oscar</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈɒskə\">oscar</phoneme>");
                         break;
                     case 'P':
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"pəˈpɑ\">papa</phoneme>");
@@ -271,7 +269,7 @@ namespace EliteDangerousSpeechService
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈroːmiˑo\">romeo</phoneme>");
                         break;
                     case 'S':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"siˈerɑ\">sierra</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"siˈerə\">sierra</phoneme>");
                         break;
                     case 'T':
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtænɡo\">tango</phoneme>");
@@ -280,7 +278,7 @@ namespace EliteDangerousSpeechService
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈjuːnifɔːm\">uniform</phoneme>");
                         break;
                     case 'V':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈviktɑ\">victor</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈvɪktə\">victor</phoneme>");
                         break;
                     case 'W':
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈwiski\">whiskey</phoneme>");
@@ -295,7 +293,7 @@ namespace EliteDangerousSpeechService
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈzuːluː\">zulu</phoneme>");
                         break;
                     case '0':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈziːroʊ\">zero</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈzɪərəʊ\">zero</phoneme>");
                         break;
                     case '1':
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈwʌn\">one</phoneme>");

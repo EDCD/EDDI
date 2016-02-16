@@ -56,6 +56,14 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestCallsign()
+        {
+            SpeechService SpeechService = new SpeechService();
+            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049309), Translations.CallSign("GAB-1655"));
+        }
+
+
+        [TestMethod]
         public void TestSsml()
         {
             SpeechService SpeechService = new SpeechService();

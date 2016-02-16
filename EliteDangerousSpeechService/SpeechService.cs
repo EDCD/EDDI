@@ -146,13 +146,17 @@ namespace EliteDangerousSpeechService
                     activeSpeeches.Add(soundOut);
                     soundOut.Play();
 
-                    waitHandle.WaitOne();
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true)) { file.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": Starting speech " + speech); }
+                    // Add a timeout, in case it doesn't come back
+                    waitHandle.WaitOne(source.GetTime(source.Length));
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true)) { file.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": Speech complete"); }
 
                     // It's possible that this has been disposed of, so ensure that it's still there before we try to finish it
                     lock (activeSpeeches)
                     {
                         if (activeSpeeches.Contains(soundOut))
                         {
+                            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true)) { file.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": disposing of resources"); }
                             activeSpeeches.Remove(soundOut);
                             soundOut.Stop();
                             soundOut.Dispose();
