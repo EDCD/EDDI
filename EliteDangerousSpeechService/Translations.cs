@@ -60,10 +60,33 @@ namespace EliteDangerousSpeechService
             }
         }
 
-        private static Dictionary<string, string> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string>()
+        private static Dictionary<string, string[]> ASTRONOMY_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
-            { "Achenar", "ækɜˈnɑ" },
-            { "Maia", "me.ɪˈya" },
+            // Star systems
+            { "Achenar", new string[] { "ˈakɜːnɑ" } },
+            { "Alcyone", new string[] { "ælˈsaɪəniː" } },
+            { "Arque", new string[] { "ɑːrk" } },
+            { "Asterope", new string[] { "əˈstɛroʊpiː" } },
+            { "Atlas", new string[] {  "ˈætləs" } },
+            { "Celaeno", new string[] {  "sᵻˈliːnoʊ" }  },
+            { "Cygnus", new string[] { "ˈsɪɡnəs" }  },
+            { "Diso ", new string[] { "ˈdiːsəʊ" } },
+            { "Electra", new string[] { "ᵻˈlɛktrə" } },
+            { "Lave", new string[] { "leɪv" } },
+            { "Leesti", new string[] { "ˈliːstiː" } },
+            { "Maia", new string[] { "ˈmaɪ.ə" } },
+            { "Merope", new string[] { "ˈmɛrəpiː" } },
+            { "Nuenets", new string[] { "ˈnjuːənɛts" } },
+            { "Orrere", new string[] { "ɒrˈɪər" } },
+            { "Pleione", new string[] { "ˈplaɪəniː" } },
+            { "Reorte", new string[] { "ˌriːˈɔːt" } },
+            { "Shinrarta Dezhra", new string[] { "ʃɪnˈrɑːrtə", "ˈdezɦrə" } },
+            { "Taygeta", new string[] { "teɪˈɪdʒᵻtə" } },
+            { "Zaonce", new string[] { "ˈzeɪɒns" } },
+
+            // Sectors
+            { "Pleiades" , new string[] { "ˈplaɪədiːz" } },
+            { "Sagittarius", new string[] { "ˌsædʒˈtɛəriəs" } },
         };
 
         private static Regex DIGITS = new Regex(@"\d{3,}");
@@ -79,9 +102,26 @@ namespace EliteDangerousSpeechService
             }
 
             // Specific translations
-            if (STAR_SYSTEM_PRONUNCIATIONS.ContainsKey(starSystem))
+            if (ASTRONOMY_PRONUNCIATIONS.ContainsKey(starSystem))
             {
-                return "<phoneme alphabet=\"ipa\" ph=\"" + STAR_SYSTEM_PRONUNCIATIONS[starSystem] + "\">" + starSystem + "</phoneme>";
+                string[] fragmentTranslations = ASTRONOMY_PRONUNCIATIONS[starSystem];
+
+                // Need to break down in to individual words
+                StringBuilder sb = new StringBuilder();
+                int i = 0;
+                foreach (string starSystemFragment in starSystem.Split(' '))
+                {
+                    if (i > 0)
+                    {
+                        sb.Append(" ");
+                    }
+                    sb.Append("<phoneme alphabet=\"ipa\" ph=\"");
+                    sb.Append(fragmentTranslations[i++]);
+                    sb.Append("\">");
+                    sb.Append(starSystemFragment);
+                    sb.Append("</phoneme>");
+                }
+                return sb.ToString();
             }
 
             // Common star catalogues
