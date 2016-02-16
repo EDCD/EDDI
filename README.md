@@ -240,6 +240,14 @@ Once this is complete the final step is to configure VoiceAttack itself.  To do 
 
 Once all of this is complete you can restart VoiceAttack and press shift-control-alt-v to obtain a full list of the variables provided by EDDI.
 
+##Ship Voice
+
+EDDI provides a ship's voice through use of the 'say' EDDI plugin command.  To use this yourself set a variable ending with the name " script" and pass it in to the say command.
+
+Say translates variables.  Current variables available are:
+
+  * $= this translates to the name of the ship, or "your ship" if the ship has not been named.
+
 ##The EDDI Event Handler
 
 Elite writes a number of messages to its activity log, some of which are parsed by EDDI and turned in to events.  The EDDI event loop triggers one of a number of actions depending on the event.  At current the actions are:

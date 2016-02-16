@@ -28,10 +28,10 @@ namespace EliteDangerousSpeechService
             var locale = Thread.CurrentThread.CurrentCulture.Name;
         }
 
-        public void Say(Ship ship, string script, int health=100)
+        public void Say(Ship ship, string script)
         {
             script = script.Replace("$=", ship.Name == null ? "your ship" : ship.Name);
-            Speak(script, null, echoDelayForShip(ship), distortionLevelForHealth(health), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, false);
+            Speak(script, null, echoDelayForShip(ship), distortionLevelForHealth(ship.Health), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, false);
         }
 
         public void Transmit(Ship ship, string script, int health=100)
@@ -281,9 +281,9 @@ namespace EliteDangerousSpeechService
             return reverbLevel;
         }
 
-        private static int distortionLevelForHealth(int health)
+        private static int distortionLevelForHealth(decimal health)
         {
-            return Math.Min((100 - health) / 2, 30);
+            return Math.Min((100 - (int)health) / 2, 30);
         }
     }
 }

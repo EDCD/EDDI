@@ -36,9 +36,10 @@ namespace Tests
                 //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈsɪɡni\">Cygni</phoneme> system.</s></speak>");
                 //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈsɪɡnəs\">Cygnus</phoneme> system.</s></speak>");
                 // synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> system.</s></speak>");
-                synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈnjuːənɛts\">Reorte</phoneme> system.</s></speak>");
-                
-                    stream.Seek(0, SeekOrigin.Begin);
+                //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈnjuːənɛts\">Reorte</phoneme> system.</s></speak>");
+                synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the Eravate system.</s></speak>");
+
+                stream.Seek(0, SeekOrigin.Begin);
 
                 IWaveSource source = new WaveFileReader(stream);
 
@@ -92,12 +93,19 @@ namespace Tests
         public void TestDamage()
         {
             SpeechService SpeechService = new SpeechService();
-            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Systems fully operational.", 100);
-            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Systems at 80%.", 80);
-            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Systems at 60%.", 60);
-            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Systems at 40%.", 40);
-            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Systems at 20%.", 20);
-            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "Systems critical.", 0);
+            Ship ship = ShipDefinitions.ShipFromEliteID(128049363);
+            ship.Health = 100;
+            SpeechService.Say(ship, "Systems fully operational.");
+            ship.Health = 80;
+            SpeechService.Say(ship, "Systems at 80%.");
+            ship.Health = 60;
+            SpeechService.Say(ship, "Systems at 60%.");
+            ship.Health = 40;
+            SpeechService.Say(ship, "Systems at 40%.");
+            ship.Health = 20;
+            SpeechService.Say(ship, "Systems at 20%.");
+            ship.Health = 0;
+            SpeechService.Say(ship, "Systems critical.");
         }
 
         [TestMethod]
