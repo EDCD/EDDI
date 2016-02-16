@@ -217,112 +217,112 @@ namespace EliteDangerousSpeechService
                 switch (c)
                 {
                     case 'A':
-                        elements.Add("alpha");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈælfɑ\">alpha</phoneme>");
                         break;
                     case 'B':
-                        elements.Add("bravo");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈbrɑːˈvo\">bravo</phoneme>");
                         break;
                     case 'C':
-                        elements.Add("charlie");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtʃɑːli\">charlie</phoneme>");
                         break;
                     case 'D':
-                        elements.Add("delta");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈdeltɑ\">delta</phoneme>");
                         break;
                     case 'E':
-                        elements.Add("echo");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈeko\">echo</phoneme>");
                         break;
                     case 'F':
-                        elements.Add("foxtrot");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈfɔkstrɔt\">foxtrot</phoneme>");
                         break;
                     case 'G':
-                        elements.Add("golf");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ɡʌlf\">golf</phoneme>");
                         break;
                     case 'H':
-                        elements.Add("hotel");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"hoːˈtel\">hotel</phoneme>");
                         break;
                     case 'I':
-                        elements.Add("india");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈindiˑɑ\">india</phoneme>");
                         break;
                     case 'J':
-                        elements.Add("juliette");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈdʒuːliˑˈet\">juliet</phoneme>");
                         break;
                     case 'K':
-                        elements.Add("kilo");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈkiːlo\">kilo</phoneme>");
                         break;
                     case 'L':
-                        elements.Add("lima");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈliːmɑ\">lima</phoneme>");
                         break;
                     case 'M':
-                        elements.Add("mike");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"mɑik\">mike</phoneme>");
                         break;
                     case 'N':
-                        elements.Add("november");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"noˈvembə\">november</phoneme>");
                         break;
                     case 'O':
-                        elements.Add("oscar");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈɔskɑ\">oscar</phoneme>");
                         break;
                     case 'P':
-                        elements.Add("Pappa");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"pəˈpɑ\">papa</phoneme>");
                         break;
                     case 'Q':
-                        elements.Add("quebec");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"keˈbek\">quebec</phoneme>");
                         break;
                     case 'R':
-                        elements.Add("romeo");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈroːmiˑo\">romeo</phoneme>");
                         break;
                     case 'S':
-                        elements.Add("sierra");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"siˈerɑ\">sierra</phoneme>");
                         break;
                     case 'T':
-                        elements.Add("tango");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtænɡo\">tango</phoneme>");
                         break;
                     case 'U':
-                        elements.Add("uniform");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈjuːnifɔːm\">uniform</phoneme>");
                         break;
                     case 'V':
-                        elements.Add("victor");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈviktɑ\">victor</phoneme>");
                         break;
                     case 'W':
-                        elements.Add("whisky");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈwiski\">whiskey</phoneme>");
                         break;
                     case 'X':
-                        elements.Add("x-ray");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈeksˈrei\">x-ray</phoneme>");
                         break;
                     case 'Y':
-                        elements.Add("yankee");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈjænki\">yankee</phoneme>");
                         break;
                     case 'Z':
-                        elements.Add("zulu");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈzuːluː\">zulu</phoneme>");
                         break;
                     case '0':
-                        elements.Add("zero");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈziːroʊ\">zero</phoneme>");
                         break;
                     case '1':
-                        elements.Add("one");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈwʌn\">one</phoneme>");
                         break;
                     case '2':
-                        elements.Add("two");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtuː\">two</phoneme>");
                         break;
                     case '3':
-                        elements.Add("tree");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtriː\">tree</phoneme>");
                         break;
                     case '4':
-                        elements.Add("fawer");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈfoʊ.ər\">fawer</phoneme>");
                         break;
                     case '5':
-                        elements.Add("fife");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈfaɪf\">fife</phoneme>");
                         break;
                     case '6':
-                        elements.Add("six");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈsɪks\">six</phoneme>");
                         break;
                     case '7':
-                        elements.Add("seven");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈsɛvɛn\">seven</phoneme>");
                         break;
                     case '8':
-                        elements.Add("eight");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈeɪt\">eight</phoneme>");
                         break;
                     case '9':
-                        elements.Add("niner");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈnaɪnər\">niner</phoneme>");
                         break;
                 }
             }
