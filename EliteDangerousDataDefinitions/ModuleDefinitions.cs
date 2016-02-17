@@ -789,6 +789,8 @@ namespace EliteDangerousDataDefinitions
                 {128671336, new Module(128671336, 1535, "Bi-Weave Shield Generator", 6, "C", 2696600) },
                 {128671337, new Module(128671337, 1536, "Bi-Weave Shield Generator", 7, "C", 8548200) },
                 {128671338, new Module(128671338, 1537, "Bi-Weave Shield Generator", 8, "C", 27097750) },
+                // Currently not in EDDB, so use a fake ID
+                {128672317, new Module(128672317, 9999, "Planetary Approach Suite", 1, "I", 500) },
         };
 
         /// <summary>Obtain details of a module given its Elite ID</summary>
