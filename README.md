@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface VoiceAttack plugin
 
-Current version: 0.9.3
+Current version: 0.9.4
 
 EDDI is a VoiceAttack plugin that provides over 150 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  It is not in itself a complete VoiceAttack profile, similar to that provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.  The available values are as follows:
 
@@ -101,6 +101,7 @@ EDDI is a VoiceAttack plugin that provides over 150 values related to a commande
 
   * System name (text): the name of the system
   * System name (spoken) (text): the name of the system as would be spoken
+  * System distance from home (decimal): the number of lights years between this system and the your home system, to two decimal places
   * System visits (int): the number of times the commander has visited the system (whilst the plugin has been active)
   * System previous visit (datetime): the last time the commander visited the system (empty if this is their first visit)
   * System minutes since previous visit (int): the number of minutes since the commander's last visit to the system

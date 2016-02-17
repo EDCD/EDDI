@@ -91,6 +91,8 @@ namespace EliteDangerousSpeechService
                     }
                     stream.Seek(0, SeekOrigin.Begin);
 
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true)) { file.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": Turned script " + script + " in to speech " + speech); }
+
                     IWaveSource source = new WaveFileReader(stream);
 
                     // We need to extend the duration of the wave source if we have any effects going on

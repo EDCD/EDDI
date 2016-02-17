@@ -1,3 +1,9 @@
+#0.9.4
+  * Added 'System distance from home'
+  * Provide information about primary faction, number of stations and distance from home with the system report
+  * Added 'Tell me about this system' command to trigger the system report
+  * Reworked star system name translation routines to provide correct result in more situations
+
 #0.9.3
   * Move to internal speech generation routines for computer voice
 
