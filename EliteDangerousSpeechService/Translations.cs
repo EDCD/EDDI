@@ -94,6 +94,7 @@ namespace EliteDangerousSpeechService
         {
             { "Alrai" , new string[] { "ˈalraɪ" } },
             { "Antliae" , new string[] { "ˈæntlɪˌiː" } },
+            { "Aquarii" , new string[] { "əˈkwɛərɪˌaɪ" } },
             { "Arietis" , new string[] { "əˈraɪɪtɪs" } },
             { "Bei Dou" , new string[] { "beɪ", "ˈduː" } },
             { "Blanco" , new string[] { "blæŋkˌəʊ" } },
