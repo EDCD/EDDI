@@ -58,39 +58,80 @@ namespace EliteDangerousSpeechService
             }
         }
 
-        private static Dictionary<string, string[]> ASTRONOMY_PRONUNCIATIONS = new Dictionary<string, string[]>()
+        private static Dictionary<string, string[]> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
-            // Star systems
             { "Achenar", new string[] { "ˈakɜːnɑ" } },
+            { "Acihault", new string[] { "əˈsɪhɔːt" } },
             { "Alcyone", new string[] { "ælˈsaɪəniː" } },
+            { "Aldebaran", new string[] { "alˈdɛbəɹən" } },
             { "Arque", new string[] { "ɑːrk" } },
             { "Asterope", new string[] { "əˈstɛroʊpiː" } },
             { "Atlas", new string[] {  "ˈætləs" } },
+            { "Aulin", new string[] { "ˈɔːlɪn" } },
             { "Celaeno", new string[] {  "sᵻˈliːnoʊ" }  },
             { "Cygnus", new string[] { "ˈsɪɡnəs" }  },
             { "Diso ", new string[] { "ˈdiːsəʊ" } },
             { "Electra", new string[] { "ᵻˈlɛktrə" } },
+            { "Eravate" , new string[] { "ɛrəˈvɑːtˌeɪ" } },
+            { "Eranin" , new string[] { "ˈɛrənin" } },
+            { "i Bootis" , new string[] { "aɪ", "bəʊˈəʊtɪs" } },
             { "Lave", new string[] { "leɪv" } },
             { "Leesti", new string[] { "ˈliːstiː" } },
             { "Maia", new string[] { "ˈmaɪ.ə" } },
             { "Merope", new string[] { "ˈmɛrəpiː" } },
             { "Nuenets", new string[] { "ˈnjuːənɛts" } },
+            { "Okinura", new string[] { "ɒkɪˈnjʊrə" } },
             { "Orrere", new string[] { "ɒrˈɪər" } },
             { "Pleione", new string[] { "ˈplaɪəniː" } },
             { "Reorte", new string[] { "ˌriːˈɔːt" } },
             { "Shinrarta Dezhra", new string[] { "ʃɪnˈrɑːrtə", "ˈdezɦrə" } },
             { "Taygeta", new string[] { "teɪˈɪdʒᵻtə" } },
+            { "Xihe", new string[] { "ʃiː.hər" } },
             { "Zaonce", new string[] { "ˈzeɪɒns" } },
+        };
 
-            // Sectors
+        private static Dictionary<string, string[]> CONSTELLATION_PRONUNCIATIONS = new Dictionary<string, string[]>()
+        {
+            { "Alrai" , new string[] { "ˈalraɪ" } },
+            { "Antliae" , new string[] { "ˈæntlɪˌiː" } },
+            { "Arietis" , new string[] { "əˈraɪɪtɪs" } },
+            { "Bei Dou" , new string[] { "beɪ", "ˈduː" } },
+            { "Blanco" , new string[] { "blæŋkˌəʊ" } },
+            { "Capricorni" , new string[] { "ˌkæprɪˈkɔːnaɪ" } },
+            { "Cepheus" , new string[] { "ˈsiːfjuːs" } },
+            { "Cephei" , new string[] { "ˈsiːfɪˌaɪ" } },
+            { "Ceti" , new string[] { "ˈsiːtaɪ" } },
+            { "Chi Persei" , new string[] { "kaɪ", "ˈpɜːsɪˌaɪ" } },
+            { "Crucis" , new string[] { "ˈkruːsɪs" } },
+            { "Cygni" , new string[] { "ˈsɪɡnaɪ" } },
+            { "Eta Carina" , new string[] { "ˈiːtə", "kəˈriːnə" } },
+            { "Herculis" , new string[] { "hɜːkjʊˈlɪs" } },
+            { "Hyades" , new string[] { "ˈhaɪəˌdiːz" } },
+            { "Hydrae" , new string[] { "ˈhaɪdriː" } },
+            { "Lupus" , new string[] { "ˈluːpəs" } },
+            { "Lyncis" , new string[] { "ˈlɪnsɪs" } },
+            { "Omega" , new string[] { "ˈəʊmɪɡə" } },
+            { "Ophiuchus" , new string[] { "ɒˈfjuːkəs" } },
+            { "Pegasi" , new string[] { "ˈpɛɡəˌsaɪ" } },
+            { "Persei" , new string[] { "ˈpɜːsɪˌaɪ" } },
+            { "Piscium" , new string[] { "ˈpaɪsɪəm" } },
             { "Pleiades" , new string[] { "ˈplaɪədiːz" } },
+            { "Puppis" , new string[] { "ˈpʌpɪs" } },
+            { "Rho Ophiuchi" , new string[] { "rəʊ", "ɒˈfjuːkaɪ" } },
             { "Sagittarius", new string[] { "ˌsædʒˈtɛəriəs" } },
+            { "Scorpii", new string[] { "ˈskɔːpɪˌaɪ" } },
+            { "Shui Wei", new string[] { "ˈʃuːi", "weɪ" } },
+            { "Tascheter", new string[] { "ˈtɑːʃətɜː" } },
+            { "Trianguli", new string[] { "traɪˈæŋˌɡjʊˌlaɪ" } },
+            { "Trifid", new string[] { "ˈtraɪfɪd" } },
+            { "Tucanae", new string[] { "tuːˈkɑːniː" } },
         };
 
         private static Regex DIGITS = new Regex(@"\d{3,}");
         private static Regex DECIMAL_DIGITS = new Regex(@"( point )(\d{2,})");
         // Regular expression to locate generated star systems
         private static Regex SECTOR = new Regex("(.*) ([A-Za-z][A-Za-z]-[A-Za-z] .*)");
+
         /// <summary>Fix up star system names</summary>
         public static string StarSystem(string starSystem)
         {
@@ -100,26 +141,9 @@ namespace EliteDangerousSpeechService
             }
 
             // Specific translations
-            if (ASTRONOMY_PRONUNCIATIONS.ContainsKey(starSystem))
+            if (STAR_SYSTEM_PRONUNCIATIONS.ContainsKey(starSystem))
             {
-                string[] fragmentTranslations = ASTRONOMY_PRONUNCIATIONS[starSystem];
-
-                // Need to break down in to individual words
-                StringBuilder sb = new StringBuilder();
-                int i = 0;
-                foreach (string starSystemFragment in starSystem.Split(' '))
-                {
-                    if (i > 0)
-                    {
-                        sb.Append(" ");
-                    }
-                    sb.Append("<phoneme alphabet=\"ipa\" ph=\"");
-                    sb.Append(fragmentTranslations[i++]);
-                    sb.Append("\">");
-                    sb.Append(starSystemFragment);
-                    sb.Append("</phoneme>");
-                }
-                return sb.ToString();
+                return replaceWithPronunciation(starSystem, STAR_SYSTEM_PRONUNCIATIONS[starSystem]);
             }
 
             // Common star catalogues
@@ -127,7 +151,7 @@ namespace EliteDangerousSpeechService
             {
                 starSystem = starSystem.Replace("HIP ", "Hip ");
             }
-            if (starSystem.StartsWith("L ")
+            else if (starSystem.StartsWith("L ")
                 || starSystem.StartsWith("LFT ")
                 || starSystem.StartsWith("LHS ")
                 || starSystem.StartsWith("LP ")
@@ -142,14 +166,13 @@ namespace EliteDangerousSpeechService
             {
                 starSystem = starSystem.Replace("-", "dash ");
             }
-            if (starSystem.StartsWith("Gliese "))
+            else if (starSystem.StartsWith("Gliese "))
             {
                 starSystem = starSystem.Replace(".", " point ");
             }
-
-            // Generated star systems
-            if (SECTOR.IsMatch(starSystem))
+            else if (SECTOR.IsMatch(starSystem))
             {
+                // Generated star systems
                 // Need to handle the pieces before and after the sector marker separately
                 Match Match = SECTOR.Match(starSystem);
 
@@ -161,13 +184,32 @@ namespace EliteDangerousSpeechService
                     .Replace("Skull and Crossbones Neb. ", "Skull and Crossbones ")
                     .Replace("(", "").Replace(")", "");
 
+                // Various items between the sector name and 'Sector' need to be removed to allow us to find the base pronunciation
+                string subPiece = "";
+                if (firstPiece.EndsWith(" Dark Region B Sector"))
+                {
+                    firstPiece = firstPiece.Replace(" Dark Region B Sector", "");
+                    subPiece = " Dark Region B Sector";
+                }
+                else if (firstPiece.EndsWith(" Sector"))
+                {
+                    firstPiece = firstPiece.Replace(" Sector", "");
+                    subPiece = " Sector";
+                }
+
+                // Might be a name that we need to translate
+                if (CONSTELLATION_PRONUNCIATIONS.ContainsKey(firstPiece))
+                {
+                    firstPiece = replaceWithPronunciation(firstPiece, CONSTELLATION_PRONUNCIATIONS[firstPiece]);
+                }
+
+                // TODO need to break apart any letter combinations to stop voices from guessing pronunciation incorrectly
+
                 string secondPiece = Match.Groups[2].Value.Replace("-", " dash ");
 
-                starSystem = firstPiece + " " + secondPiece;
+                starSystem = firstPiece + subPiece + " " + secondPiece;
             }
-
-            // Star systems with +/- (and sometimes .)
-            if (starSystem.StartsWith("2MASS ")
+            else if (starSystem.StartsWith("2MASS ")
                 || starSystem.StartsWith("AC ")
                 || starSystem.StartsWith("AG") // Note no space
                 || starSystem.StartsWith("BD")
@@ -185,12 +227,26 @@ namespace EliteDangerousSpeechService
                 || starSystem.StartsWith("XTE ")
                 )
             {
+                // Star systems with +/- (and sometimes .)
                 starSystem = starSystem.Replace("Csi ", "CSI ")
                                        .Replace("WISE ", "Wise ")
                                        .Replace("2MASS ", "2 mass ")
                                        .Replace("+", " plus ")
                                        .Replace("-", " minus ")
                                        .Replace(".", " point ");
+            }
+            else
+            {
+                // It's possible that the name contains a constellation, in which case translate it
+                string[] pieces = starSystem.Split(' ');
+                for (int i = 0; i < pieces.Length; i++)
+                {
+                    if (CONSTELLATION_PRONUNCIATIONS.ContainsKey(pieces[i]))
+                    {
+                        pieces[i] = replaceWithPronunciation(pieces[i], CONSTELLATION_PRONUNCIATIONS[pieces[i]]);
+                    }
+                }
+                starSystem = string.Join(" ", pieces);
             }
 
             // Fix up digit strings.  
@@ -200,6 +256,25 @@ namespace EliteDangerousSpeechService
             starSystem = DIGITS.Replace(starSystem, match => string.Join<char>(" ", match.Value));
 
             return starSystem;
+        }
+
+        private static string replaceWithPronunciation(string sourcePhrase, string[] pronunciation)
+        {
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+            foreach (string source in sourcePhrase.Split(' '))
+            {
+                if (i > 0)
+                {
+                    sb.Append(" ");
+                }
+                sb.Append("<phoneme alphabet=\"ipa\" ph=\"");
+                sb.Append(pronunciation[i++]);
+                sb.Append("\">");
+                sb.Append(source);
+                sb.Append("</phoneme>");
+            }
+            return sb.ToString();
         }
 
         public static string CallSign(string callsign)
