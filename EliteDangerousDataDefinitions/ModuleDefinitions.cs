@@ -796,7 +796,7 @@ namespace EliteDangerousDataDefinitions
                 {128671327, new Module(128671327, 1489, "Prismatic Shield Generator", 5, "A", 7655930) },
                 {128671328, new Module(128671328, 1490, "Prismatic Shield Generator", 6, "A", 24269300) },
                 {128671329, new Module(128671329, 1491, "Prismatic Shield Generator", 7, "A", 76933670) },
-                {202115326, new Module(202115326, 1485, "Prismatic Shield Generator", 8, "A", 243879730) },
+                {128671330, new Module(128671330, 1485, "Prismatic Shield Generator", 8, "A", 243879730) },
                 // Currently not in EDDB, so use a fake ID
                 {128672317, new Module(128672317, 9999, "Planetary Approach Suite", 1, "I", 500) },
         };
