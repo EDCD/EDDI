@@ -775,6 +775,7 @@ namespace EliteDangerousDataDefinitions
                 {128672267, new Module(128672267, 1521, "Mirrored Surface Composite", 1, "I", 797410, 128672262) },
                 {128672268, new Module(128672268, 1522, "Reactive Surface Composite", 1, "I", 895000, 128672262) },
                 {128671448, new Module(128671448, 1523, "Shock Mine Launcher", 1, "I", 36400, Module.ModuleMount.Fixed) },
+                {128671449, new Module(128671449, 1477, "Cytoscrambler", 1, "F", 8800, Module.ModuleMount.Fixed) },
                 {128672292, new Module(128672292, 1524, "Planetary Vehicle Hangar", 6, "H", 518400) },
                 {128672293, new Module(128672293, 1525, "Planetary Vehicle Hangar", 6, "G", 622080) },
                 {128672290, new Module(128672290, 1526, "Planetary Vehicle Hangar", 4, "H", 64800) },
