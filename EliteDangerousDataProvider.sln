@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "configuration", "configurat
 		{C5F48807-921B-456D-A9E4-A0282E5E8CF1} = {C5F48807-921B-456D-A9E4-A0282E5E8CF1}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousSpeechService", "EliteDangerousSpeechService\EliteDangerousSpeechService.csproj", "{19572A69-C13A-459D-AB72-2B0F034AC27F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{583FA617-A93D-4A69-BF2F-13911ED0099A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{583FA617-A93D-4A69-BF2F-13911ED0099A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{583FA617-A93D-4A69-BF2F-13911ED0099A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19572A69-C13A-459D-AB72-2B0F034AC27F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19572A69-C13A-459D-AB72-2B0F034AC27F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19572A69-C13A-459D-AB72-2B0F034AC27F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19572A69-C13A-459D-AB72-2B0F034AC27F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

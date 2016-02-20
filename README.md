@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface VoiceAttack plugin
 
-Current version: 0.9.2
+Current version: 0.9.4
 
 EDDI is a VoiceAttack plugin that provides over 150 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  It is not in itself a complete VoiceAttack profile, similar to that provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.  The available values are as follows:
 
@@ -101,6 +101,7 @@ EDDI is a VoiceAttack plugin that provides over 150 values related to a commande
 
   * System name (text): the name of the system
   * System name (spoken) (text): the name of the system as would be spoken
+  * System distance from home (decimal): the number of lights years between this system and the your home system, to two decimal places
   * System visits (int): the number of times the commander has visited the system (whilst the plugin has been active)
   * System previous visit (datetime): the last time the commander visited the system (empty if this is their first visit)
   * System minutes since previous visit (int): the number of minutes since the commander's last visit to the system
@@ -207,6 +208,7 @@ EDDI also provides a number of pre-built commands to show off some of what it is
   * a voice command spoken by the pilot when they wish to check the current discounts on their ship ("Report on ship discounts")
   * voice commands spoken by the pilot when they wish to check the current status of their ship ("Report" and "Quick report")
   * voice commands spoken by the pilot when they wish to check just the damage on their ship ("Damage report")
+  * voice commands spoken by the pilot when they wish to carry out checks prior to undocking ("Run pre-flight checks")
 
 ##Installing
 
@@ -238,6 +240,14 @@ You will also need to configure verbose net logs for Elite: Dangerous to ensure 
 Once this is complete the final step is to configure VoiceAttack itself.  To do this you need to start VoiceAttack and ensure that 'Enable Plugins' is checked in the settings.  You also need to import the EDDI profile found in the plugin directory.  Finally, you need to edit the profile to set ((EDDI: startup)) to execute when the profile is loaded.
 
 Once all of this is complete you can restart VoiceAttack and press shift-control-alt-v to obtain a full list of the variables provided by EDDI.
+
+##Ship Voice
+
+EDDI provides a ship's voice through use of the 'say' EDDI plugin command.  To use this yourself set a variable ending with the name " script" and pass it in to the say command.
+
+Say translates variables.  Current variables available are:
+
+  * $= this translates to the name of the ship, or "your ship" if the ship has not been named.
 
 ##The EDDI Event Handler
 
