@@ -117,7 +117,7 @@
                             <DataGridTextColumn IsReadOnly="True" Header="In Storage At" Binding="{Binding Path=StarSystem}"></DataGridTextColumn>
                             <DataGridComboBoxColumn x:Name ="Role" Header="Role" SelectedItemBinding="{Binding Path=Role,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource roleValues}}"></DataGridComboBoxColumn>
                             <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Path=Name,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Callsign" MinWidth="40" Binding="{Binding Path=CallSign}"></DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="True" Header="Callsign" MinWidth="40" Binding="{Binding Path=CallSign}"></DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>

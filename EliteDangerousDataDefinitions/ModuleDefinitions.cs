@@ -775,6 +775,7 @@ namespace EliteDangerousDataDefinitions
                 {128672267, new Module(128672267, 1521, "Mirrored Surface Composite", 1, "I", 797410, 128672262) },
                 {128672268, new Module(128672268, 1522, "Reactive Surface Composite", 1, "I", 895000, 128672262) },
                 {128671448, new Module(128671448, 1523, "Shock Mine Launcher", 1, "I", 36400, Module.ModuleMount.Fixed) },
+                {128671449, new Module(128671449, 1477, "Cytoscrambler", 1, "F", 8800, Module.ModuleMount.Fixed) },
                 {128672292, new Module(128672292, 1524, "Planetary Vehicle Hangar", 6, "H", 518400) },
                 {128672293, new Module(128672293, 1525, "Planetary Vehicle Hangar", 6, "G", 622080) },
                 {128672290, new Module(128672290, 1526, "Planetary Vehicle Hangar", 4, "H", 64800) },
@@ -789,6 +790,16 @@ namespace EliteDangerousDataDefinitions
                 {128671336, new Module(128671336, 1535, "Bi-Weave Shield Generator", 6, "C", 2696600) },
                 {128671337, new Module(128671337, 1536, "Bi-Weave Shield Generator", 7, "C", 8548200) },
                 {128671338, new Module(128671338, 1537, "Bi-Weave Shield Generator", 8, "C", 27097750) },
+                {128671323, new Module(128671323, 1485, "Prismatic Shield Generator", 1, "A", 132200) },
+                {128671324, new Module(128671324, 1486, "Prismatic Shield Generator", 2, "A", 240340) },
+                {128671325, new Module(128671325, 1487, "Prismatic Shield Generator", 3, "A", 761870) },
+                {128671326, new Module(128671326, 1488, "Prismatic Shield Generator", 4, "A", 2415120) },
+                {128671327, new Module(128671327, 1489, "Prismatic Shield Generator", 5, "A", 7655930) },
+                {128671328, new Module(128671328, 1490, "Prismatic Shield Generator", 6, "A", 24269300) },
+                {128671329, new Module(128671329, 1491, "Prismatic Shield Generator", 7, "A", 76933670) },
+                {128671330, new Module(128671330, 1485, "Prismatic Shield Generator", 8, "A", 243879730) },
+                // Currently not in EDDB, so use a fake ID
+                {128672317, new Module(128672317, 9999, "Planetary Approach Suite", 1, "I", 500) },
         };
 
         /// <summary>Obtain details of a module given its Elite ID</summary>

@@ -243,19 +243,19 @@ namespace configuration
             }
             else
             {
-                netLogText.Text = @"Unfortuantely we were unable to locate your product directory.  Please type in the location of your 'elite-dangerous-64' directory.  Possible locations include:";
+                netLogText.Text = @"Unfortuantely we were unable to locate your product directory.  Please type in the location of the 'Logs' directory in your 'elite-dangerous-64' directory.  Possible locations include:";
                 List<string> paths = new Finder().FindInstallationPaths();
                 if (paths.Count == 0)
                 {
                     paths.Add(Finder.DefProductsPath + @"\elite-dangerous-64");
                     paths.Add(Finder.DefLauncherPath + @"\elite-dangerous-64");
-                    paths.Add(@"C:\Program Files (x86)\Steam\\SteamApps\common\Elite Dangerous\Products\elite-dangerous-64 (for Steam)");
+                    paths.Add(@"C:\Program Files (x86)\Steam\\SteamApps\common\Elite Dangerous\Products\elite-dangerous-64");
                 }
                 foreach (string path in paths)
                 {
-                    netLogText.Text += "\r\n\r\n" + path;
+                    netLogText.Text += "\r\n\r\n" + path + @"\Logs";
                 }
-                netLogText.Text += "\r\n\r\nWhichever directory you select should contain a Logs directory and inside that a number of 'debugLog' files.";
+                netLogText.Text += "\r\n\r\nWhichever directory you select should contain a number of 'debugLog' files.";
             }
         }
 
