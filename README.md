@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface VoiceAttack plugin
 
-Current version: 0.9.4
+Current version: 1.0.0
 
 EDDI is a VoiceAttack plugin that provides over 150 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  It is not in itself a complete VoiceAttack profile, similar to that provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.  The available values are as follows:
 
@@ -40,41 +40,57 @@ EDDI is a VoiceAttack plugin that provides over 150 values related to a commande
   * Ship cargo carried (int): the cargo currently being carried by the ship
   * Ship health (decimal): the percentage health of the ship's hull
   * Ship bulkheads (text): the type of bulkheads fitted to the ship (e.g. "Military Grade Composite")
+  * Ship bulkheads class (text): the class of bulkheads fitted to the ship (e.g. 3)
+  * Ship bulkheads grade (text): the grade of bulkheads fitted to the ship (e.g. "A")
   * Ship bulkheads health (decimal): the percentage health of the bulkheads fitted to the ship
   * Ship bulkheads cost (decimal): the purchase cost of the bulkheads
   * Ship bulkheads value (decimal): the undiscounted cost of the bulkheads
   * Ship bulkheads discount (decimal): the percentage discount of the purchased bulkheads against the undiscounted cost
-  * Ship power plant (text): the model of power plant fitted to the ship (e.g. "6D")
+  * Ship power plant (text): the name of power plant fitted to the ship
+  * Ship power plant class (text): the class of bulkheads fitted to the ship (e.g. 3)
+  * Ship power plant grade (text): the grade of bulkheads fitted to the ship (e.g. "A")
   * Ship power plant health (decimal): the percentage health of the power plant fitted to the ship
   * Ship power plant cost (decimal): the purchase cost of the power plant
   * Ship power plant value (decimal): the undiscounted cost of the power plant
   * Ship power plant discount (decimal): the percentage discount of the purchased power plant against the undiscounted cost
-  * Ship thrusters (text): the model of thrusters fitted to the ship (e.g. "6D")
+  * Ship thrusters (text): the name of thrusters fitted to the ship
+  * Ship thrusters class (text): the class of thrusters fitted to the ship (e.g. 3)
+  * Ship thrusters grade (text): the grade of thrusters fitted to the ship (e.g. "A")
   * Ship thrusters health (decimal): the percentage health of the thrusters fitted to the ship
   * Ship thrusters cost (decimal): the purchase cost of the thrusters
   * Ship thrusters value (decimal): the undiscounted cost of the thrusters
   * Ship thrusters discount (decimal): the percentage discount of the purchased thrusters against the undiscounted cost
-  * Ship frame shift drive (text): the model of frame shift drive fitted to the ship (e.g. "6D")
+  * Ship frame shift drive (text): the name of frame shift drive fitted to the ship
+  * Ship frame shift drive class (text): the class of frame shift drive fitted to the ship (e.g. 3)
+  * Ship frame shift drive grade (text): the grade of frame shift drive fitted to the ship (e.g. "A")
   * Ship frame shift drive health (decimal): the percentage health of the frame shift drive fitted to the ship
   * Ship frame shift drive cost (decimal): the purchase cost of the frame shift drive
   * Ship frame shift drive value (decimal): the undiscounted cost of the frame shift drive
   * Ship frame shift drive discount (decimal): the percentage discount of the purchased frame shift drive against the undiscounted cost
-  * Ship life support (text): the model of life support fitted to the ship (e.g. "6D")
+  * Ship life support (text): the name of life support fitted to the ship (e.g. "6D")
+  * Ship life support class (text): the class of life support fitted to the ship (e.g. 3)
+  * Ship life support drive grade (text): the grade of life support fitted to the ship (e.g. "A")
   * Ship life support health (decimal): the percentage health of the life support fitted to the ship
   * Ship life support cost (decimal): the purchase cost of the life support
   * Ship life support value (decimal): the undiscounted cost of the life support
   * Ship life support discount (decimal): the percentage discount of the purchased life support against the undiscounted cost
-  * Ship power distributor (text): the model of power distributor fitted to the ship (e.g. "6D")
+  * Ship power distributor (text): the name of power distributor fitted to the ship
+  * Ship power distributor class (text): the class of power distributor fitted to the ship (e.g. 3)
+  * Ship power distributor drive grade (text): the grade of power distributor fitted to the ship (e.g. "A")
   * Ship power distributor health (decimal): the percentage health of the power distributor fitted to the ship
   * Ship power distributor cost (decimal): the purchase cost of the power distributor
   * Ship power distributor value (decimal): the undiscounted cost of the power distributor
   * Ship power distributor discount (decimal): the percentage discount of the purchased power distributor against the undiscounted cost
-  * Ship sensors (text): the model of sensors fitted to the ship (e.g. "6D")
+  * Ship sensors (text): the name of sensors fitted to the ship
+  * Ship sensors class (text): the class of sensors fitted to the ship (e.g. 3)
+  * Ship sensors drive grade (text): the grade of sensors fitted to the ship (e.g. "A")
   * Ship sensors health (decimal): the percentage health of the sensors fitted to the ship
   * Ship sensors cost (decimal): the purchase cost of the sensors
   * Ship sensors value (decimal): the undiscounted cost of the sensors
   * Ship sensors discount (decimal): the percentage discount of the purchased sensors against the undiscounted cost
-  * Ship fuel tank (text): the model of fuel tank fitted to the ship (e.g. "5C")
+  * Ship fuel tank (text): the name of fuel tank fitted to the ship
+  * Ship fuel tank class (text): the class of fuel tank fitted to the ship (e.g. 3)
+  * Ship fuel tank drive grade (text): the grade of fuel tank fitted to the ship (e.g. "A")
   * Ship fuel tank cost (decimal): the purchase cost of the fuel tank
   * Ship fuel tank value (decimal): the undiscounted cost of the fuel tank
   * Ship fuel tank discount (decimal): the percentage discount of the purchased fuel tank against the undiscounted cost
@@ -222,13 +238,11 @@ If you are upgrading from an earlier version of EDDI it is recommended that you 
 
 When upgrading EDDI you should overwrite all of the existing EDDI actions in VoiceAttack except any event handlers you have customised.
 
-Please note that as of 0.8.6 the startup command has changed from '((EDDI: event loop))' to '((EDDI: startup))'.  Please ensure that you have set the correct startup command in your profile.
-
 ##Configuring
 
-To configure EDDI run the 'configuration.exe' file in the plugin directory.  This allows you to configure the various connectors that EDDI uses to obtain data.
+To configure EDDI run the 'configuration.exe' file in the plugin directory.  This allows you to configure the various sources that EDDI uses to obtain data.
 
-You will also need to configure verbose net logs for Elite: Dangerous to ensure that you receive system change messages.  To do so you need to find the AppConfig.xml file in your Elite product installation and ensure that the network section of it looks like this:
+You will also need to configure verbose net logs for Elite: Dangerous to ensure that you receive system change messages.  You can do this using the tool at https://forums.frontier.co.uk/showthread.php?t=116684 or manually by finding the AppConfig.xml file in your Elite product installation and ensure that the network section of it looks like this:
 
     <Network
      Port="0"
@@ -237,21 +251,19 @@ You will also need to configure verbose net logs for Elite: Dangerous to ensure 
      DatestampLog="1"
      VerboseLogging="1">
 
-Once this is complete the final step is to configure VoiceAttack itself.  To do this you need to start VoiceAttack and ensure that 'Enable Plugins' is checked in the settings.  You also need to import the EDDI profile found in the plugin directory.  Finally, you need to edit the profile to set ((EDDI: startup)) to execute when the profile is loaded.
+You will also need to configure VoiceAttack itself.  To do this you need to start VoiceAttack and import the 'EDDI.vap' profile that is in the EDDI directory.  You can either import the commands in to their own profile or an existing profile if you already have one.  If you import the commands in to an existing profile you must edit the profile to ensure that '((EDDI: startup))' is executed when the profile is loaded.  You must also ensure that 'Enable Plugins' is checked in the settings.
 
-Once all of this is complete you can restart VoiceAttack and press shift-control-alt-v to obtain a full list of the variables provided by EDDI.
+Once all of this is complete you can restart VoiceAttack.  To check that EDDI is working you can say "ship handover confirmed", or change system.
 
-##Ship Voice
+##How EDDI Works
 
-EDDI provides a ship's voice through use of the 'say' EDDI plugin command.  To use this yourself set a variable ending with the name " script" and pass it in to the say command.
+EDDI obtains information from a number of sources to provide the variables.  The sources are:
 
-Say translates variables.  Current variables available are:
+  * The Elite Dangerous companion app API, which contains data about the commander and their ships
+  * The Elite Dangerous netlog, which obtains events when the commander changes system or environment (supercruise/normal space)
+  * The EDDB database, which contains data about the system's population, government, stations etc.
 
-  * $= this translates to the name of the ship, or "your ship" if the ship has not been named.
-
-##The EDDI Event Handler
-
-Elite writes a number of messages to its activity log, some of which are parsed by EDDI and turned in to events.  The EDDI event loop triggers one of a number of actions depending on the event.  At current the actions are:
+The data is made available through Voice Attack variables as above.  In addition, a number of actions trigger events.  Events are used by EDDI to run pre-set commands when they occur.  The EDDI event loop triggers one of a number of actions depending on the event.  At current the actions are:
 
   * ((EDDI: event handler for change of system)) triggered whenever the commander changes to a different system.  This triggers at the end of the hyperspace countdown.
   * ((EDDI: event handler for change of environment)) triggered whenever the commander moves between supercruise and normal space.  This triggers as the move occurs.
@@ -260,10 +272,22 @@ Elite writes a number of messages to its activity log, some of which are parsed 
 
 The above actions can be customised as you see fit.  If you customise them then when you upgrade EDDI you should not overwrite the event handlers (although you should overwrite the event loop).
 
-#Using EDDI Elsewhere
+##Ship Voice
 
-Although EDDI is primarily used for the VoiceAttack plugin all of the relevant functions are in separate DLLs and the data access and storage pieces can be used for purposes other than VoiceAttack if desired.
+EDDI provides a ship's voice through use of the 'say' EDDI plugin command.  This uses the Windows TTS, so relies on you installing your own voice if you you do not want to use the built-in Windows voices.  To use this yourself set a text variable ending with the name " script" and pass it in to the say command.
 
-#Issues
+Say translates variables.  Current variables available are:
+
+  * $= this translates to the name of the ship, or "your ship" if the ship has not been named.
+
+#Known Issues
+
+  * EDDI relies on the Elite: Dangerous companion app API for a lot of its information.  Sometimes EDDI loses connection to the API and needs to re-authenticate.  If you think that this is a problem you can re-run the 'configuration.exe' and if the connection is bad it will ask for re-authentication
+  * If you edit the VoiceAttack profile it will stop the EDDI event loop, so you should restart VoiceAttack after doing so to ensure that the event loop has restarted
+  * EDDI is unable to know for sure if you have provided the correct path to the Logs directory.  The only way of knowing this for sure is to jump and see if EDDI tells you about your destination
 
 If you have an issue with EDDI then please report it at https://github.com/cmdrmcdonald/EliteDangerousDataProvider/issues  If you have encountered a problem then please provide the output of the error report (shift-control-alt-e) to aid in fixing the issue.
+
+#Using EDDI Elsewhere
+
+Although EDDI is primarily used for the VoiceAttack plugin all of the relevant functions are in separate DLLs and the data access and storage pieces can be used for purposes other than VoiceAttack if desired.  Full source code is available at https://github.com/cmdrmcdonald/EliteDangerousDataProvider/

@@ -1,3 +1,6 @@
+#1.0.0
+  * Fix minor VoiceAttack script issues
+
 #0.9.4
   * Added 'System distance from home'
   * Provide information about primary faction, number of stations and distance from home with the system report
