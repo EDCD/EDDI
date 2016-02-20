@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EliteDangerousDataProvider.Properties
+namespace configuration.Properties
 {
 
 

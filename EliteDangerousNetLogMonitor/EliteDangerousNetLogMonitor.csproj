@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NetLogConfiguration.cs" />
     <Compile Include="Finder.cs" />
     <Compile Include="LogMonitor.cs" />
     <Compile Include="NetLogMonitor.cs" />

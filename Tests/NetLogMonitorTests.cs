@@ -3,6 +3,7 @@ using EDDIVAPlugin;
 using EliteDangerousNetLogMonitor;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Tests
 {
@@ -10,14 +11,17 @@ namespace Tests
     public class NetLogMonitorTests
     {
         [TestMethod]
-        public void TestFinder()
+        public void TestNetLogConfiguration()
         {
-            List<string> paths = new Finder().FindInstallationPaths();
-            foreach (string path in paths)
-            {
-                Console.WriteLine(path);
-            }
-            Assert.AreEqual("on the way to 12 and a half thousand", VoiceAttackPlugin.humanize(12345));
+            NetLogConfiguration configuration = JsonConvert.DeserializeObject<NetLogConfiguration>("{\"path\":\"test\"}");
+            Assert.AreEqual("test", configuration.path);
+        }
+
+        [TestMethod]
+        public void TestNetLogConfiguration2()
+        {
+            NetLogConfiguration configuration = NetLogConfiguration.FromFile();
+            Assert.AreEqual("C:\\Program Files (x86)\\Elite\\Products\\elite-dangerous-64\\Logs", configuration.path);
         }
     }
 }

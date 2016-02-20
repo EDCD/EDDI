@@ -5465,7 +5465,7 @@ namespace Tests
   }
 }
 ";
-            EliteDangerousCompanionAppService.CompanionAppService app = new EliteDangerousCompanionAppService.CompanionAppService(Credentials.FromFile());
+            EliteDangerousCompanionAppService.CompanionAppService app = new EliteDangerousCompanionAppService.CompanionAppService(CompanionAppCredentials.FromFile());
             Commander cmdr = EliteDangerousCompanionAppService.CompanionAppService.CommanderFromProfile(data);
 
             Assert.AreEqual("Testy", cmdr.Name);
@@ -5494,8 +5494,8 @@ namespace Tests
             Assert.AreEqual(10, cmdr.Ship.CargoCapacity);
             Assert.AreEqual(5, cmdr.Ship.CargoCarried);
 
-            /// 8 stored ships
-            Assert.AreEqual(8, cmdr.StoredShips.Count);
+            /// 7 stored ships
+            Assert.AreEqual(7, cmdr.StoredShips.Count);
 
             // First stored ship is a Vulture at Snyder Enterprise
             Ship StoredShip1 = cmdr.StoredShips[0];

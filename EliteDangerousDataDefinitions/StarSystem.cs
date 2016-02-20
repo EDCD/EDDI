@@ -10,7 +10,7 @@ namespace EliteDangerousDataDefinitions
     public class StarSystem
     {
         public string Name { get; set; }
-        public long Population { get; set; }
+        public long? Population { get; set; }
         public string Allegiance { get; set;  }
         public string Government { get; set; }
         public string Faction { get; set; }
@@ -29,5 +29,10 @@ namespace EliteDangerousDataDefinitions
 
         /// <summary>Details of stations</summary>
         public List<Station> Stations { get; set; }
+
+        public StarSystem()
+        {
+            Stations = new List<Station>();
+        }
     }
 }

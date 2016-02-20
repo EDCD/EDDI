@@ -1,8 +1,10 @@
 ﻿using EliteDangerousDataDefinitions;
+using EliteDangerousDataProviderService;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -49,21 +51,23 @@ namespace EliteDangerousCompanionAppService
 
         private static string serverRoot = "https://companion.orerve.net";
 
-        private Credentials credentials;
+        private CompanionAppCredentials credentials;
 
-        public CompanionAppService(Credentials credentials)
+        public CompanionAppService(CompanionAppCredentials credentials)
         {
             this.credentials = credentials;
         }
 
         ///<summary>Log in.  Returns credentials, or throws an exception if it fails</summary>
-        public static Credentials Login(string username, string password)
+        public static CompanionAppCredentials Login(string username, string password)
         {
-            Credentials credentials = null;
+            CompanionAppCredentials credentials = null;
+
             string location = serverRoot + "/user/login";
             // Send the request.
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(location);
             request.AllowAutoRedirect = false;  // Don't redirect or we lose the cookies
+
             request.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257";
             request.ContentType = "application/x-www-form-urlencoded";
             request.Method = "POST";
@@ -74,45 +78,47 @@ namespace EliteDangerousCompanionAppService
             Stream dataStream = request.GetRequestStream();
             dataStream.Write(data, 0, data.Length);
             dataStream.Close();
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            if ((int)response.StatusCode == 200)
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
-                // This means that the username or password was incorrect (yes, really)
-                throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
-            }
-            else if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
-            {
-                // Problem with the service
-                throw new EliteDangerousCompanionAppAuthenticationException("There is a problem with the Elite: Dangerous servers; please try again later");
-            }
-            else if ((int)response.StatusCode < 300 || (int)response.StatusCode > 399)
-            {
-                // We were expecting a redirect to the confirmation page and didn't get it; complain
-                throw new EliteDangerousCompanionAppErrorException("Error code " + response.StatusCode);
-            }
+                if ((int)response.StatusCode == 200)
+                {
+                    // This means that the username or password was incorrect (yes, really)
+                    throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
+                }
+                else if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
+                {
+                    // Problem with the service
+                    throw new EliteDangerousCompanionAppAuthenticationException("There is a problem with the Elite: Dangerous servers; please try again later");
+                }
+                else if ((int)response.StatusCode < 300 || (int)response.StatusCode > 399)
+                {
+                    // We were expecting a redirect to the confirmation page and didn't get it; complain
+                    throw new EliteDangerousCompanionAppErrorException("Error code " + response.StatusCode);
+                }
 
-            // Obtain the cookies from the raw information available to us
-            String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
-            if (cookieHeader != null)
-            {
-                Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
-                if (companionAppMatch.Success)
+                // Obtain the cookies from the raw information available to us
+                String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
+                if (cookieHeader != null)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
-                    credentials.appId = companionAppMatch.Groups[1].Value;
-                }
-                Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
-                if (machineIdMatch.Success)
-                {
-                    if (credentials == null) { credentials = new Credentials(); }
-                    credentials.machineId = machineIdMatch.Groups[1].Value;
-                }
-                Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
-                if (machineTokenMatch.Success)
-                {
-                    if (credentials == null) { credentials = new Credentials(); }
-                    credentials.machineToken = machineTokenMatch.Groups[1].Value;
+                    Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
+                    if (companionAppMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.appId = companionAppMatch.Groups[1].Value;
+                    }
+                    Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
+                    if (machineIdMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.machineId = machineIdMatch.Groups[1].Value;
+                    }
+                    Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
+                    if (machineTokenMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.machineToken = machineTokenMatch.Groups[1].Value;
+                    }
                 }
             }
 
@@ -130,7 +136,7 @@ namespace EliteDangerousCompanionAppService
         }
 
         ///<summary>Confirm a login.  Returns credentials, or throws an exception if it fails</summary>
-        public static Credentials Confirm(Credentials credentials, string code)
+        public static CompanionAppCredentials Confirm(CompanionAppCredentials credentials, string code)
         {
             var cookieContainer = new CookieContainer();
             AddCompanionAppCookie(cookieContainer, credentials);
@@ -149,60 +155,63 @@ namespace EliteDangerousCompanionAppService
             Stream dataStream = request.GetRequestStream();
             dataStream.Write(data, 0, data.Length);
             dataStream.Close();
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            if ((int)response.StatusCode == 200)
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
-                // This means that the username or password was incorrect (yes, really)
-                throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect");
-            }
-            else if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
-            {
-                // Problem with the service
-                throw new EliteDangerousCompanionAppAuthenticationException("There is a problem with the Elite: Dangerous servers; please try again later");
-            }
-            else if ((int)response.StatusCode < 300 || (int)response.StatusCode > 399)
-            {
-                // We were expecting a redirect to the confirmation page and didn't get it; complain
-                throw new EliteDangerousCompanionAppErrorException("Error code " + response.StatusCode);
-            }
 
-            // Refresh the cookies from the raw information available to us
-            String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
-            if (cookieHeader != null)
-            {
-                Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
-                if (companionAppMatch.Success)
+                if ((int)response.StatusCode == 200)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
-                    credentials.appId = companionAppMatch.Groups[1].Value;
+                    // This means that the username or password was incorrect (yes, really)
+                    throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect");
                 }
-                Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
-                if (machineIdMatch.Success)
+                else if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
-                    credentials.machineId = machineIdMatch.Groups[1].Value;
+                    // Problem with the service
+                    throw new EliteDangerousCompanionAppAuthenticationException("There is a problem with the Elite: Dangerous servers; please try again later");
                 }
-                Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
-                if (machineTokenMatch.Success)
+                else if ((int)response.StatusCode < 300 || (int)response.StatusCode > 399)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
-                    credentials.machineToken = machineTokenMatch.Groups[1].Value;
+                    // We were expecting a redirect to the confirmation page and didn't get it; complain
+                    throw new EliteDangerousCompanionAppErrorException("Error code " + response.StatusCode);
                 }
-            }
 
-            // At this stage we should have the CompanionApp, mid and mtk values
-            if (credentials.appId == null)
-            {
-                throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing companion app ID");
-            }
-            if (credentials.machineId == null)
-            {
-                throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing machine ID");
-            }
-            if (credentials.machineToken == null)
-            {
-                throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing machine token");
+                // Refresh the cookies from the raw information available to us
+                String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
+                if (cookieHeader != null)
+                {
+                    Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
+                    if (companionAppMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.appId = companionAppMatch.Groups[1].Value;
+                    }
+                    Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
+                    if (machineIdMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.machineId = machineIdMatch.Groups[1].Value;
+                    }
+                    Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
+                    if (machineTokenMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.machineToken = machineTokenMatch.Groups[1].Value;
+                    }
+                }
+
+                // At this stage we should have the CompanionApp, mid and mtk values
+                if (credentials.appId == null)
+                {
+                    throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing companion app ID");
+                }
+                if (credentials.machineId == null)
+                {
+                    throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing machine ID");
+                }
+                if (credentials.machineToken == null)
+                {
+                    throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing machine token");
+                }
             }
 
             return credentials;
@@ -219,64 +228,67 @@ namespace EliteDangerousCompanionAppService
             request.AllowAutoRedirect = false;
             request.CookieContainer = cookieContainer;
             request.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257";
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            if ((int)response.StatusCode >= 300 && (int)response.StatusCode < 400)
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
-                // Redirect means the user needs to log in again
-                throw new EliteDangerousCompanionAppAuthenticationException("You need to re-run the configuration application");
-            }
-            if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
-            {
-                // Error probably means that the service is down
-                throw new EliteDangerousCompanionAppErrorException("Elite: Dangerous service is down; please try later");
-            }
-            if ((int)response.StatusCode < 200 || (int)response.StatusCode > 299)
-            {
-                // Some other generic problem
-                throw new EliteDangerousCompanionAppException("Error code " + response.StatusCode);
-            }
-
-            // Refresh the cookies from the raw information available to us
-            String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
-            if (cookieHeader != null)
-            {
-                Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
-                if (companionAppMatch.Success)
+                if ((int)response.StatusCode >= 300 && (int)response.StatusCode < 400)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
-                    credentials.appId = companionAppMatch.Groups[1].Value;
+                    // Redirect means the user needs to log in again
+                    throw new EliteDangerousCompanionAppAuthenticationException("You need to re-run the configuration application");
                 }
-                Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
-                if (machineIdMatch.Success)
+                if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
-                    credentials.machineId = machineIdMatch.Groups[1].Value;
+                    // Error probably means that the service is down
+                    throw new EliteDangerousCompanionAppErrorException("Elite: Dangerous service is down; please try later");
                 }
-                Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
-                if (machineTokenMatch.Success)
+                if ((int)response.StatusCode < 200 || (int)response.StatusCode > 299)
                 {
-                    if (credentials == null) { credentials = new Credentials(); }
-                    credentials.machineToken = machineTokenMatch.Groups[1].Value;
+                    // Some other generic problem
+                    throw new EliteDangerousCompanionAppException("Error code " + response.StatusCode);
                 }
-            }
 
-            // Update our credentials
-            credentials.ToFile();
+                // Refresh the cookies from the raw information available to us
+                String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
+                if (cookieHeader != null)
+                {
+                    Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
+                    if (companionAppMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.appId = companionAppMatch.Groups[1].Value;
+                    }
+                    Match machineIdMatch = Regex.Match(cookieHeader, @"mid=([^;]+)");
+                    if (machineIdMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.machineId = machineIdMatch.Groups[1].Value;
+                    }
+                    Match machineTokenMatch = Regex.Match(cookieHeader, @"mtk=([^;]+)");
+                    if (machineTokenMatch.Success)
+                    {
+                        if (credentials == null) { credentials = new CompanionAppCredentials(); }
+                        credentials.machineToken = machineTokenMatch.Groups[1].Value;
+                    }
+                }
 
-            // Obtain and parse our response
-            var encoding = response.CharacterSet == ""
-                        ? Encoding.UTF8
-                        : Encoding.GetEncoding(response.CharacterSet);
+                // Update our credentials
+                credentials.ToFile();
 
-            using (var stream = response.GetResponseStream())
-            {
-                var reader = new StreamReader(stream, encoding);
-                return CommanderFromProfile(reader.ReadToEnd());
+                // Obtain and parse our response
+                var encoding = response.CharacterSet == ""
+                            ? Encoding.UTF8
+                            : Encoding.GetEncoding(response.CharacterSet);
+
+                using (var stream = response.GetResponseStream())
+                {
+                    var reader = new StreamReader(stream, encoding);
+                    string data = reader.ReadToEnd();
+                    return CommanderFromProfile(data);
+                }
             }
         }
 
-        private static void AddCompanionAppCookie(CookieContainer cookies, Credentials credentials)
+        private static void AddCompanionAppCookie(CookieContainer cookies, CompanionAppCredentials credentials)
         {
             var appCookie = new Cookie();
             appCookie.Domain = "companion.orerve.net";
@@ -286,7 +298,7 @@ namespace EliteDangerousCompanionAppService
             cookies.Add(appCookie);
         }
 
-        private static void AddMachineIdCookie(CookieContainer cookies, Credentials credentials)
+        private static void AddMachineIdCookie(CookieContainer cookies, CompanionAppCredentials credentials)
         {
             var machineIdCookie = new Cookie();
             machineIdCookie.Domain = ".companion.orerve.net";
@@ -296,7 +308,7 @@ namespace EliteDangerousCompanionAppService
             cookies.Add(machineIdCookie);
         }
 
-        private static void AddMachineTokenCookie(CookieContainer cookies, Credentials credentials)
+        private static void AddMachineTokenCookie(CookieContainer cookies, CompanionAppCredentials credentials)
         {
             var machineTokenCookie = new Cookie();
             machineTokenCookie.Domain = ".companion.orerve.net";
@@ -318,38 +330,101 @@ namespace EliteDangerousCompanionAppService
         {
             Commander Commander = new Commander();
 
-            Commander.Name = (string)json["commander"]["name"];
+            if (json["commander"] != null)
+            {
+                Commander.Name = (string)json["commander"]["name"];
 
-            Commander.CombatRating = (int)json["commander"]["rank"]["combat"];
-            Commander.CombatRank = Commander.combatRanks[Commander.CombatRating];
+                Commander.CombatRating = (int)json["commander"]["rank"]["combat"];
+                Commander.CombatRank = Commander.combatRanks[Commander.CombatRating];
 
-            Commander.TradeRating = (int)json["commander"]["rank"]["trade"];
-            Commander.TradeRank = Commander.tradeRanks[Commander.TradeRating];
+                Commander.TradeRating = (int)json["commander"]["rank"]["trade"];
+                Commander.TradeRank = Commander.tradeRanks[Commander.TradeRating];
 
-            Commander.ExploreRating = (int)json["commander"]["rank"]["explore"];
-            Commander.ExploreRank = Commander.exploreRanks[Commander.ExploreRating];
+                Commander.ExploreRating = (int)json["commander"]["rank"]["explore"];
+                Commander.ExploreRank = Commander.exploreRanks[Commander.ExploreRating];
 
-            Commander.EmpireRating = (int)json["commander"]["rank"]["empire"];
-            Commander.EmpireRank = Commander.empireRanks[(int)Commander.EmpireRating];
-            Commander.FederationRating = (int)json["commander"]["rank"]["federation"];
-            Commander.FederationRank = Commander.federationRanks[(int)Commander.FederationRating];
+                Commander.EmpireRating = (int)json["commander"]["rank"]["empire"];
+                Commander.EmpireRank = Commander.empireRanks[(int)Commander.EmpireRating];
+                Commander.FederationRating = (int)json["commander"]["rank"]["federation"];
+                Commander.FederationRank = Commander.federationRanks[(int)Commander.FederationRating];
 
-            Commander.Credits = (long)json["commander"]["credits"];
-            Commander.Debt = (long)json["commander"]["debt"];
+                Commander.Credits = (long)json["commander"]["credits"];
+                Commander.Debt = (long)json["commander"]["debt"];
 
-            Commander.StarSystem = (string)json["lastSystem"]["name"];
+                Commander.StarSystem = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
 
-            Commander.Ship = ShipFromProfile(json);
+                Commander.Ship = ShipFromProfile(json);
 
-            Commander.StoredShips = StoredShipsFromProfile(json);
+                Commander.StoredShips = StoredShipsFromProfile(json, ref Commander);
 
-            Commander.Outfitting = OutfittingFromProfile(json);
+                AugmentShipInfo(Commander.Ship, Commander.StoredShips);
+
+                Commander.Outfitting = OutfittingFromProfile(json);
+
+                Commander.LastStation = json["lastStarport"] == null ? null : (string)json["lastStarport"]["name"];
+            }
 
             return Commander;
         }
 
+        private static void AugmentShipInfo(Ship ship, List<Ship> storedShips)
+        {
+            ShipsConfiguration shipsConfiguration = ShipsConfiguration.FromFile();
+            Dictionary<int, Ship> lookup = shipsConfiguration.Ships.ToDictionary(o => o.LocalId);
+
+            Ship shipConfig;
+            // Start with our current ship
+            if (lookup.TryGetValue(ship.LocalId, out shipConfig))
+            {
+                // Already exists; grab the relevant information and supplement it
+                // Ship config name might be just whitespace, in which case we unset it
+                if (shipConfig.Name != null && shipConfig.Name.Trim().Length > 0)
+                {
+                    ship.Name = shipConfig.Name.Trim();
+                }
+                ship.CallSign = shipConfig.CallSign;
+                ship.Role = shipConfig.Role;
+            }
+            else
+            {
+                // Doesn't already exist; add a callsign and default role
+                ship.CallSign = Ship.generateCallsign();
+                ship.Role = ShipRole.Multipurpose;
+            }
+
+            // Work through our shipyard
+            foreach (Ship storedShip in storedShips)
+            {
+
+                if (lookup.TryGetValue(storedShip.LocalId, out shipConfig))
+                {
+                    // Already exists; grab the relevant information and supplement it
+                    storedShip.Name = shipConfig.Name;
+                    storedShip.CallSign = shipConfig.CallSign;
+                    storedShip.Role = shipConfig.Role;
+                }
+                else
+                {
+                    // Doesn't already exist; add a callsign and default role
+                    storedShip.CallSign = Ship.generateCallsign();
+                    storedShip.Role = ShipRole.Multipurpose;
+                }
+            }
+
+            // Update our configuration with the new data (this also removes any old redundant ships)
+            shipsConfiguration.Ships = new List<Ship>();
+            shipsConfiguration.Ships.Add(ship);
+            shipsConfiguration.Ships.AddRange(storedShips);
+            shipsConfiguration.ToFile();
+        }
+
         public static Ship ShipFromProfile(dynamic json)
         {
+            if (json["ship"] == null)
+            {
+                return null;
+            }
+
             String Model = json["ship"]["name"];
             if (shipTranslations.ContainsKey(Model))
             {
@@ -357,11 +432,6 @@ namespace EliteDangerousCompanionAppService
             }
 
             Ship Ship = ShipDefinitions.ShipFromModel(Model);
-            if (Ship == null)
-            {
-                Ship = new Ship();
-                Ship.Model = Model;
-            }
 
             Ship.LocalId = json["ship"]["id"];
 
@@ -390,6 +460,7 @@ namespace EliteDangerousCompanionAppService
             Ship.PowerDistributor = ModuleFromProfile("PowerDistributor", json["ship"]["modules"]["PowerDistributor"]);
             Ship.Sensors = ModuleFromProfile("Radar", json["ship"]["modules"]["Radar"]);
             Ship.FuelTank = ModuleFromProfile("FuelTank", json["ship"]["modules"]["FuelTank"]);
+            Ship.FuelTankCapacity = (decimal)json["ship"]["fuel"]["main"]["capacity"];
 
             // Obtain the hardpoints
             foreach (dynamic module in json["ship"]["modules"])
@@ -450,8 +521,10 @@ namespace EliteDangerousCompanionAppService
             return Hardpoint;
         }
 
-        public static List<Ship> StoredShipsFromProfile(dynamic json)
+        public static List<Ship> StoredShipsFromProfile(dynamic json, ref Commander commander)
         {
+            Ship currentShip = commander.Ship;
+
             List<Ship> StoredShips = new List<Ship>();
 
             foreach (dynamic shipJson in json["ships"])
@@ -461,22 +534,25 @@ namespace EliteDangerousCompanionAppService
                     dynamic ship = shipJson.Value;
                     if (ship != null)
                     {
-                        Ship Ship = new Ship();
-
-                        if (ship["starsystem"] != null)
+                        if ((int)ship["id"] != currentShip.LocalId)
                         {
-                            // If we have a starsystem it means that the ship is stored
-                            Ship.LocalId = ship["id"];
-                            Ship.Model = ship["name"];
-                            if (shipTranslations.ContainsKey(Ship.Model))
+                            Ship Ship = new Ship();
+
+                            if (ship["starsystem"] != null)
                             {
-                                Ship.Model = shipTranslations[Ship.Model];
+                                // If we have a starsystem it means that the ship is stored
+                                Ship.LocalId = ship["id"];
+                                Ship.Model = ship["name"];
+                                if (shipTranslations.ContainsKey(Ship.Model))
+                                {
+                                    Ship.Model = shipTranslations[Ship.Model];
+                                }
+
+                                Ship.StarSystem = ship["starsystem"]["name"];
+                                Ship.Station = ship["station"]["name"];
+
+                                StoredShips.Add(Ship);
                             }
-
-                            Ship.StarSystem = ship["starsystem"]["name"];
-                            Ship.Station = ship["station"]["name"];
-
-                            StoredShips.Add(Ship);
                         }
                     }
                 }
@@ -521,6 +597,11 @@ namespace EliteDangerousCompanionAppService
                     if (module["category"] == "weapon" || module["category"] == "module")
                     {
                         Module Module = ModuleDefinitions.ModuleFromEliteID((long)module["id"]);
+                        if (Module.Name == null)
+                        {
+                            // Unknown module; log an error so that we can update the definitions
+                            DataProviderService.LogError("No definition for outfitting module " + module.ToString());
+                        }
                         Module.Cost = module["cost"];
                         Modules.Add(Module);
                     }
@@ -533,22 +614,27 @@ namespace EliteDangerousCompanionAppService
         public static Module ModuleFromProfile(string name, dynamic json)
         {
             long id = (long)json["module"]["id"];
-            Module Module = ModuleDefinitions.ModuleFromEliteID(id);
+            Module module = ModuleDefinitions.ModuleFromEliteID(id);
+            if (module.Name == null)
+            {
+                // Unknown module; log an error so that we can update the definitions
+                DataProviderService.LogError("No definition for ship module " + json["module"].ToString());
+            }
 
-            Module.Cost = (long)json["module"]["value"];
-            Module.Enabled = (bool)json["module"]["on"];
-            Module.Priority = (int)json["module"]["priority"];
+            module.Cost = (long)json["module"]["value"];
+            module.Enabled = (bool)json["module"]["on"];
+            module.Priority = (int)json["module"]["priority"];
             // Be sensible with health - round it unless it's very low
             decimal Health = (decimal)json["module"]["health"] / 10000;
             if (Health < 5)
             {
-                Module.Health = Math.Round(Health, 1);
+                module.Health = Math.Round(Health, 1);
             }
             else
             {
-                Module.Health = Math.Round(Health);
+                module.Health = Math.Round(Health);
             }
-            return Module;
+            return module;
         }
 
     }

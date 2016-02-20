@@ -1,3 +1,83 @@
+#1.0.0
+  * Fix minor VoiceAttack script issues
+
+#0.9.4
+  * Added 'System distance from home'
+  * Provide information about primary faction, number of stations and distance from home with the system report
+  * Added 'Tell me about this system' command to trigger the system report
+  * Reworked star system name translation routines to provide correct result in more situations
+
+#0.9.3
+  * Move to internal speech generation routines for computer voice
+
+#0.9.2
+  * Fix issue where sold ships still showed up in the shipyard
+  * Add information on modules and hardpoints to damage and outfitting reports
+  * Add missing IDs for some EDDB->Coriolis mappings
+  * Fix issue where removed ship names are not treated as absent
+
+#0.9.1
+  * Added ship variables for hardpoints and internal compartments
+    * Ship tiny/small/medium/large/huge hardpoint *n* occupied (boolean): true if there is a module in this slot, otherwise false
+    * Ship tiny/small/medium/large/huge hardpoint *n* module (string): the name of the module in this slot
+    * Ship tiny/small/medium/large/huge hardpoint *n* module class (int): the class of the module in this slot
+    * Ship tiny/small/medium/large/huge hardpoint *n* module grade(grade): the grade of the module in this slot
+    * Ship tiny/small/medium/large/huge hardpoint *n* module health (decimal): the percentage health of the module in this slot
+    * Ship tiny/small/medium/large/huge hardpoint *n* module cost (decimal): the purchase cost of the module in this slot
+    * Ship tiny/small/medium/large/huge hardpoint *n* module value (decimal): the undiscounted cost of the module in this slot
+    * Ship tiny/small/medium/large/huge hardpoint *n* module discount (decimal): the percentage discount of the purchased module against the undiscounted cost
+    * Ship tiny/small/medium/large/huge hardpoint *n* module discount (spoken) (text): the percentage discount of the purchased module against the undiscounted cost
+    * Ship Compartment *n* size: the size of this slot
+    * Ship Compartment *n* occupied (boolean): true if there is a module in this slot, otherwise false
+    * Ship compartment *n* module (string): the name of the module in this slot
+    * Ship compartment *n* module class (int): the class of the module in this slot
+    * Ship compartment *n* module grade (string): the grade of the module in this slot
+    * Ship compartment *n* module health (decimal): the percentage health of the module in this slot
+    * Ship compartment *n* module cost (decimal): the purchase cost of the module in this slot
+    * Ship compartment *n* module value (decimal): the undiscounted cost of the module in this slot
+    * Ship compartment *n* module discount (decimal): the percentage discount of the purchased module against the undiscounted cost
+    * Ship compartment *n* module discount (spoken) (text): the percentage discount of the purchased module against the undiscounted cost
+  * Created separate variable debug commands for commander, ship, ship hardpoints, ship compartments, and shipyard
+  * Ensure that 'System power' is not set if a system is not controlled by a power
+
+#0.9.0
+  * Fix issue where setting a home system caused scripts not to report system information
+  * Do not create 'system change' or 'location change' events when in CQC 
+
+#0.8.9
+  * Provide starsystem information even if profile is not available
+
+#0.8.8
+  * Fix crash if starsystem has no stations
+
+#0.8.7
+  * Avoid VoiceAttack bug that causes VoiceAttack to crash
+
+#0.8.6
+  * Added more checks for correct system data prior to triggering system change event
+  * Added debug value for the event loop
+  * Separated the event loop from the startup, to provide better reliability for the event loop [B]Anyone updating will need to change the startup command in their profile from EDDI event loop to EDDI startup[/B]
+  * Added 'System minutes since previous visit' value
+
+#0.8.5
+  * Added callsigns, names and roles for ships
+  * Added home system and station
+  * Added more events in the handler.  These are often triggered by voice actions themselves, but have been built in this way to allow for the future when these events become available directly to EDDI
+  * Added the name of the last station the commander docked at
+  * Added the ship's fuel tank capacity
+  * Add ship name and callsign to coriolis export
+  * Provided a number of voice-activated commands; see the README for details
+
+#0.8.0
+  * Added EDSM integration: provide the ability for EDDI to send data to EDSM, keeping a log of every system you have visited
+  * Ensure that "Last system rank" is set appropriately
+  * Move from 'Login' to 'Configuration' binary for setting up EDDI
+
+#0.7.3
+  * Event loop only returns if there is a new event to handle
+  * Avoid problems if VA_Init1() is called multiple times
+  * Added decimal variables 'Stored ship *n* distance' for the distance to each stored ship from the current system
+
 #0.7.2
   * Ensure that Environment is set on startup
   * Ensure that cached system data is refreshed correctly

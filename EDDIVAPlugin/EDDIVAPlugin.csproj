@@ -72,8 +72,8 @@
     <Compile Include="EDDIStarSystem.cs" />
     <Compile Include="EDDIStarSystemSqLiteRepository.cs" />
     <Compile Include="LZString.cs" />
+    <Compile Include="EDDIConfiguration.cs" />
     <Compile Include="SqlLiteBaseRepository.cs" />
-    <Compile Include="VATranslations.cs" />
     <Compile Include="VoiceAttackPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -93,6 +93,14 @@
     <ProjectReference Include="..\EliteDangerousNetLogMonitor\EliteDangerousNetLogMonitor.csproj">
       <Project>{0928ade6-f260-4820-afbc-1661130c3474}</Project>
       <Name>EliteDangerousNetLogMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousSpeechService\EliteDangerousSpeechService.csproj">
+      <Project>{19572a69-c13a-459d-ab72-2b0f034ac27f}</Project>
+      <Name>EliteDangerousSpeechService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousStarMapService\EliteDangerousStarMapService.csproj">
+      <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
+      <Name>EliteDangerousStarMapService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

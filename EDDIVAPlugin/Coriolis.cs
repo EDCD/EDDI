@@ -1,5 +1,6 @@
 ﻿using EliteDangerousCompanionAppService;
 using EliteDangerousDataDefinitions;
+using System;
 using System.Collections.Generic;
 
 namespace EDDIVAPlugin
@@ -127,6 +128,17 @@ namespace EDDIVAPlugin
             uri += LZString.compressToBase64(enableds).Replace('/', '-');
             uri += ".";
             uri += LZString.compressToBase64(priorities).Replace('/', '-');
+
+            string bn;
+            if (ship.Name == null)
+            {
+                bn = ship.CallSign;
+            }
+            else
+            {
+                bn = ship.Name + " (" + ship.CallSign + ")";
+            }
+            uri += "?bn=" + Uri.EscapeDataString(bn);
 
             return uri;
         }
