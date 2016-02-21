@@ -3,6 +3,7 @@ using EliteDangerousCompanionAppService;
 using EliteDangerousDataDefinitions;
 using EliteDangerousNetLogMonitor;
 using EliteDangerousStarMapService;
+using EliteDangerousSpeechService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Speech.Synthesis;
 
 namespace configuration
 {
@@ -70,6 +72,30 @@ namespace configuration
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
             edsmApiKeyTextBox.Text = starMapConfiguration.apiKey;
             edsmCommanderNameTextBox.Text = starMapConfiguration.commanderName;
+
+            // Configure the Text-to-speech tab
+            SpeechServiceConfiguration speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
+            List<VoiceInfo> speechOptions = new List<VoiceInfo>();
+            try
+            {
+                using (SpeechSynthesizer synth = new SpeechSynthesizer())
+                {
+                    foreach (InstalledVoice voice in synth.GetInstalledVoices())
+                    {
+                        speechOptions.Add(voice.VoiceInfo);
+                    }
+                }
+
+                ttsVoiceDropDown.ItemsSource = speechOptions;
+                ttsVoiceDropDown.Text = speechServiceConfiguration.StandardVoice;
+            }
+            catch (Exception e)
+            {
+                using (System.IO.StreamWriter errLog = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true))
+                {
+                   errLog.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": Caught exception " + e);
+                }
+            }
         }
 
         // Handle chagnes to the eddi tab
