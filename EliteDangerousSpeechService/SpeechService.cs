@@ -21,11 +21,14 @@ namespace EliteDangerousSpeechService
 
         private string locale = "en-GB";
 
+        private string standardVoice;
+
         private HashSet<ISoundOut> activeSpeeches = new HashSet<ISoundOut>();
 
         public SpeechService()
         {
             var locale = Thread.CurrentThread.CurrentCulture.Name;
+            var standardVoice = SpeechServiceConfiguration.FromFile().StandardVoice;
         }
 
         public void Say(Ship ship, string script)
@@ -69,6 +72,10 @@ namespace EliteDangerousSpeechService
                 using (SpeechSynthesizer synth = new SpeechSynthesizer())
                 using (MemoryStream stream = new MemoryStream())
                 {
+                    if (voice == null)
+                    {
+                        voice = standardVoice;
+                    }
                     if (voice != null)
                     {
                         try
