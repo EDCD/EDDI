@@ -13,6 +13,8 @@ namespace EDDIVAPlugin
         public String HomeStation { get; set; }
         [JsonProperty("debug")]
         public bool Debug { get; set; }
+        [JsonProperty("insurance")]
+        public decimal Insurance { get; set; }
 
         [JsonIgnore]
         private String dataPath;
@@ -20,6 +22,7 @@ namespace EDDIVAPlugin
         public EDDIConfiguration()
         {
             Debug = false;
+            Insurance = 5;
         }
 
         /// <summary>

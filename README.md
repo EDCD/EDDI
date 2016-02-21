@@ -24,6 +24,7 @@ EDDI is a VoiceAttack plugin that provides over 150 values related to a commande
   * Credits (text): the number of credits owned by the commander as would be spoken (e.g. "just over 2 million")
   * Debt (decimal): the number of credits owed by the commander
   * Debt (text): the number of credits owed by the commander as would be spoken (e.g. "a little under 100 thousand")
+  * Insurance (decimal): the percentage insurance excess for the commander (usually 5, 3.75 or 2.5)
 
 ###Ship values
 

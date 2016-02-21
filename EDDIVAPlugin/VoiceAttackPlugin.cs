@@ -36,7 +36,9 @@ namespace EDDIVAPlugin
         static BlockingCollection<dynamic> LogQueue = new BlockingCollection<dynamic>();
         private static string CurrentEnvironment;
 
+        // Information obtained from EDDI configuration
         private static StarSystem HomeStarSystem;
+
         private static StarSystem CurrentStarSystem;
         private static StarSystem LastStarSystem;
 
@@ -86,6 +88,7 @@ namespace EDDIVAPlugin
                             setString(ref textValues, "Home system", eddiConfiguration.HomeSystem != null && eddiConfiguration.HomeSystem.Trim().Length > 0 ? eddiConfiguration.HomeSystem : null);
                             setString(ref textValues, "Home system (spoken)", eddiConfiguration.HomeSystem != null && eddiConfiguration.HomeSystem.Trim().Length > 0 ? Translations.StarSystem(eddiConfiguration.HomeSystem) : null);
                             setString(ref textValues, "Home station", eddiConfiguration.HomeStation != null && eddiConfiguration.HomeStation.Trim().Length > 0 ? eddiConfiguration.HomeStation : null);
+                            setDecimal(ref decimalValues, "Insurance", eddiConfiguration.Insurance);
                             if (eddiConfiguration.HomeSystem != null && eddiConfiguration.HomeSystem.Trim().Length > 0)
                             {
                                 EDDIStarSystem HomeStarSystemData = starSystemRepository.GetEDDIStarSystem(eddiConfiguration.HomeSystem.Trim());

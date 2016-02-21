@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:j="clr-namespace:EliteDangerousDataDefinitions;assembly=EliteDangerousDataDefinitions"
         xmlns:local="clr-namespace:configuration"
@@ -29,12 +30,17 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="You can provide the name of a particular system you consider home, and also a station inside that system if you want" VerticalAlignment="Top"/>
                         <Label x:Name ="eddiHomeSystemLabel" Grid.Row="1" Grid.Column="0" Content="Home system:" />
                         <TextBox x:Name ="eddiHomeSystemText" Grid.Row="1" Grid.Column="1" Margin="3" TextChanged="homeSystemChanged"/>
                         <Label x:Name ="eddiHomeStationLabel" Grid.Row="2" Grid.Column="0" Content="Home station:"/>
                         <TextBox x:Name ="eddiHomeStationText" Grid.Row="2" Grid.Column="1" Margin="3" TextChanged="homeStationChanged"/>
+                        <TextBlock x:Name ="eddi3Text" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="Your insurance excess is the % of your ship's value you have to pay if your ship is destroyed.  This will usually be 5 but could be less if you are an early backer of Elite with alpha backers being 2.5 and beta backers being 3.75.  If you aren't sure then leave it at 5" VerticalAlignment="Top"/>
+                        <Label x:Name ="eddiInsuranceLabel" Grid.Row="4" Grid.Column="0" Content="Insurance excess (%):"/>
+                        <xctk:DecimalUpDown x:Name="eddiInsuranceDecimal" FormatString="F2" Increment=".25" Grid.Row="4" Grid.Column="1" Margin="3" ValueChanged="insuranceChanged"/>
                     </Grid>
                 </DockPanel>
             </TabItem>

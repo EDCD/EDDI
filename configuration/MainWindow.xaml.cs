@@ -35,6 +35,7 @@ namespace configuration
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;
+            eddiInsuranceDecimal.Value = eddiConfiguration.Insurance;
 
             // Configure the Companion App tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
@@ -83,6 +84,12 @@ namespace configuration
             updateEddiConfiguration();
         }
 
+
+        private void insuranceChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            updateEddiConfiguration();
+        }
+
         private void updateEddiConfiguration()
         {
             EDDIConfiguration eddiConfiguration = new EDDIConfiguration();
@@ -93,6 +100,10 @@ namespace configuration
             if (!String.IsNullOrWhiteSpace(eddiHomeStationText.Text))
             {
                 eddiConfiguration.HomeStation = eddiHomeStationText.Text.Trim();
+            }
+            if (eddiInsuranceDecimal.Value != null)
+            {
+                eddiConfiguration.Insurance = (decimal)eddiInsuranceDecimal.Value;
             }
             eddiConfiguration.ToFile();
         }
@@ -294,6 +305,5 @@ namespace configuration
                 shipsConfiguration.ToFile();
             }            
         }
-
     }
 }
