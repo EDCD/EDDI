@@ -321,5 +321,24 @@ namespace configuration
             }            
         }
 
+        // Handle Text-to-speech tab
+
+        private void ttsVoiceDropDownUpdated(object sender, SelectionChangedEventArgs e)
+        {
+            ttsUpdated();
+        } 
+
+        /// <summary>
+        /// fetch the Text-to-Speech Configuration and write it to File
+        /// </summary>
+        private void ttsUpdated()
+        {
+            SpeechServiceConfiguration speechConfiguration = new SpeechServiceConfiguration();
+            if (!String.IsNullOrWhiteSpace(ttsVoiceDropDown.SelectedValue.ToString()))
+            {
+                speechConfiguration.StandardVoice = ((VoiceInfo)ttsVoiceDropDown.SelectedValue).Name;
+            }
+            speechConfiguration.ToFile();
+        }
     }
 }

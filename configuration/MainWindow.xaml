@@ -134,7 +134,7 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Label x:Name="ttsVoiceLabel" Grid.Column="0" Grid.Row="0" Content="Standard Voice:" />
-                        <ComboBox x:Name="ttsVoiceDropDown" DisplayMemberPath="Name" Margin="3" Grid.Column="1" Grid.Row="0" />
+                        <ComboBox x:Name="ttsVoiceDropDown" DisplayMemberPath="Name" Margin="3" Grid.Column="1" Grid.Row="0" SelectionChanged="ttsVoiceDropDownUpdated"/>
                     </Grid>
                 </DockPanel>
             </TabItem>
