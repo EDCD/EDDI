@@ -259,6 +259,8 @@ namespace EDDIVAPlugin
                 try
                 {
                     dynamic entry = LogQueue.Take();
+                    debug("InvokeLogWatcher(): queue has " + LogQueue.Count + " entries");
+                    debug("InvokeLogWatcher(): entry is " + entry);
                     switch ((string)entry.type)
                     {
                         case "Location": // Change of location
@@ -282,35 +284,37 @@ namespace EDDIVAPlugin
                                 if ((string)entry.starsystem != Cmdr.StarSystem)
                                 {
                                     // Change of system
-                                    somethingToReport = true;
                                     setString(ref textValues, "EDDI event", "System change");
                                     Cmdr.StarSystem = (string)entry.starsystem;
                                     // Need to fetch new starsystem information
                                     InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                                    debug("InvokeLogWatcher(): obtained new system data");
                                     CurrentEnvironment = ENVIRONMENT_SUPERCRUISE;
                                     setString(ref textValues, "Environment", CurrentEnvironment); // Whenever we jump system we always come out in supercruise
+                                    somethingToReport = true;
                                 }
                                 else if (newEnvironment != CurrentEnvironment)
                                 {
                                     // Change of environment
-                                    somethingToReport = true;
                                     setString(ref textValues, "EDDI event", "Environment change");
                                     CurrentEnvironment = newEnvironment;
                                     setString(ref textValues, "Environment", CurrentEnvironment);
+                                    somethingToReport = true;
                                 }
                             }
                             break;
                         case "Ship docked": // Ship docked
-                            somethingToReport = true;
                             setString(ref textValues, "EDDI event", "Ship docked");
                             // Need to refetch profile information
                             InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                            somethingToReport = true;
                             break;
                         case "Ship change": // New or swapped ship
-                            somethingToReport = true;
+                            debug("InvokeLogWatcher(): handling change of ship");
                             setString(ref textValues, "EDDI event", "Ship change");
                             // Need to refetch profile information
                             InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                            somethingToReport = true;
                             break;
                         default:
                             setPluginStatus(ref textValues, "Failed", "Unknown log entry " + entry.type, null);
@@ -843,20 +847,27 @@ namespace EDDIVAPlugin
         /// </summary>
         public static void InvokeSay(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            string script = null;
-            foreach (string key in textValues.Keys)
+            try
             {
-                if (key.EndsWith(" script"))
+                string script = null;
+                foreach (string key in textValues.Keys)
                 {
-                    script = textValues[key];
-                    break;
+                    if (key.EndsWith(" script"))
+                    {
+                        script = textValues[key];
+                        break;
+                    }
                 }
+                if (script == null)
+                {
+                    return;
+                }
+                speechService.Say(Cmdr.Ship, script);
             }
-            if (script == null)
+            catch (Exception e)
             {
-                return;
+                setPluginStatus(ref textValues, "Failed", "Failed to run internal speech system", e);
             }
-            speechService.Say(Cmdr.Ship, script);
         }
 
         /// <summary>
@@ -864,20 +875,27 @@ namespace EDDIVAPlugin
         /// </summary>
         public static void InvokeTransmit(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            string script = null;
-            foreach (string key in textValues.Keys)
+            try
             {
-                if (key.EndsWith(" script"))
+                string script = null;
+                foreach (string key in textValues.Keys)
                 {
-                    script = textValues[key];
-                    break;
+                    if (key.EndsWith(" script"))
+                    {
+                        script = textValues[key];
+                        break;
+                    }
                 }
+                if (script == null)
+                {
+                    return;
+                }
+                speechService.Transmit(Cmdr.Ship, script);
             }
-            if (script == null)
+            catch (Exception e)
             {
-                return;
+                setPluginStatus(ref textValues, "Failed", "Failed to run internal speech system", e);
             }
-            speechService.Transmit(Cmdr.Ship, script);
         }
 
         /// <summary>
@@ -885,20 +903,27 @@ namespace EDDIVAPlugin
         /// </summary>
         public static void InvokeReceive(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            string script = null;
-            foreach (string key in textValues.Keys)
+            try
             {
-                if (key.EndsWith(" script"))
+                string script = null;
+                foreach (string key in textValues.Keys)
                 {
-                    script = textValues[key];
-                    break;
+                    if (key.EndsWith(" script"))
+                    {
+                        script = textValues[key];
+                        break;
+                    }
                 }
+                if (script == null)
+                {
+                    return;
+                }
+                speechService.Receive(Cmdr.Ship, script);
             }
-            if (script == null)
+            catch (Exception e)
             {
-                return;
+                setPluginStatus(ref textValues, "Failed", "Failed to run internal speech system", e);
             }
-            speechService.Receive(Cmdr.Ship, script);
         }
 
         private static void setInt(ref Dictionary<string, int?> values, string key, int? value)
