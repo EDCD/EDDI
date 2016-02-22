@@ -67,6 +67,7 @@ namespace EliteDangerousDataDefinitions
             Ship Template;
             if (ShipsByModel.TryGetValue(model, out Template))
             {
+                Ship.EDID = Template.EDID;
                 Ship.Model = Template.Model;
                 Ship.Size = Template.Size;
             }
