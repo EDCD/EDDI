@@ -21,11 +21,14 @@ namespace EliteDangerousSpeechService
 
         private string locale = "en-GB";
 
+        private SpeechServiceConfiguration configuration;
+
         private HashSet<ISoundOut> activeSpeeches = new HashSet<ISoundOut>();
 
-        public SpeechService()
+        public SpeechService(SpeechServiceConfiguration configuration = null)
         {
-            var locale = Thread.CurrentThread.CurrentCulture.Name;
+            this.configuration = configuration == null ? new SpeechServiceConfiguration() : configuration;
+            locale = Thread.CurrentThread.CurrentCulture.Name;
         }
 
         public void Say(Ship ship, string script)
@@ -71,7 +74,7 @@ namespace EliteDangerousSpeechService
                 {
                     if (String.IsNullOrWhiteSpace(voice))
                     {
-                        voice = SpeechServiceConfiguration.FromFile().StandardVoice;
+                        voice = configuration.StandardVoice;
                     }
                     if (voice != null)
                     {
@@ -81,6 +84,8 @@ namespace EliteDangerousSpeechService
                         }
                         catch { }
                     }
+
+                    synth.Rate = configuration.Rate;
 
                     synth.SetOutputToWaveStream(stream);
                     string speech = SpeechFromScript(script);
@@ -102,8 +107,8 @@ namespace EliteDangerousSpeechService
                     // We need to extend the duration of the wave source if we have any effects going on
                     if (chorusLevel != 0 || reverbLevel != 0 || echoDelay != 0)
                     {
-                        // For now add a flat 500ms
-                        source = source.AppendSource(x => new ExtendedDurationWaveSource(x, 500));
+                        // Add a base of 500ms plus 10ms per effect level over 50
+                        source = source.AppendSource(x => new ExtendedDurationWaveSource(x, 500 + Math.Max(0, (configuration.EffectsLevel - 50) * 10)));
                     }
 
                     // Add various effects...
@@ -111,7 +116,7 @@ namespace EliteDangerousSpeechService
                     // We always have chorus
                     if (chorusLevel != 0)
                     {
-                        source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = 90, Delay = 20, Frequency = 2, Feedback = 10 });
+                        source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = Math.Min(100, (int)(180 * ((decimal)configuration.EffectsLevel) / ((decimal)100))), Delay = 16, Frequency = 2, Feedback = 25 });
                     }
 
                     // We only have reverb and echo if we're not transmitting or receiving
@@ -120,20 +125,20 @@ namespace EliteDangerousSpeechService
                         if (reverbLevel != 0)
                         {
                             // We tone down the reverb level with the distortion level, as the combination is nasty
-                            source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = 500, ReverbMix = reverbLevel - distortionLevel });
+                            source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = (int)(1 + 999 * ((decimal)configuration.EffectsLevel) / ((decimal)100)), ReverbMix = Math.Max(-96, -96 + (96 * reverbLevel / 100) - distortionLevel) });
                         }
 
                         if (echoDelay != 0)
                         {
                             // We tone down the echo level with the distortion level, as the combination is nasty
-                            source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = 4, Feedback = Math.Max(0, 10 - distortionLevel / 2) });
+                            source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = Math.Max(5, (int)(10 * ((decimal)configuration.EffectsLevel) / ((decimal)100)) - distortionLevel), Feedback = Math.Max(0, 10 - distortionLevel / 2) });
                         }
                     }
 
-                    // We always apply the distortion effect, as otherwise we have an uneven volume when distortion kicks in
-                    if (distortionLevel > 0)
+                    // We always apply the distortion effect if we have any effect, as otherwise we have an uneven volume when distortion kicks in
+                    if (configuration.EffectsLevel > 0)
                     {
-                        source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = distortionLevel, Gain = -5-distortionLevel / 2, PostEQBandwidth = 4000, PostEQCenterFrequency = 4000 });
+                        source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = distortionLevel, Gain = -16, PostEQBandwidth = 4000, PostEQCenterFrequency = 4000 });
                     }
 
                     if (radio)
@@ -142,8 +147,6 @@ namespace EliteDangerousSpeechService
                         source = source.AppendSource(x => new DmoCompressorEffect(x) { Attack = 1, Ratio = 3, Threshold = -10 });
                     }
 
-
-                    // We should be able to use a waithandle but for some reason it isn't working, so do a sleep-and-stop method
                     EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
                     var soundOut = new WasapiOut();
                     soundOut.Initialize(source);
@@ -152,17 +155,14 @@ namespace EliteDangerousSpeechService
                     activeSpeeches.Add(soundOut);
                     soundOut.Play();
 
-                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true)) { file.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": Starting speech " + speech); }
                     // Add a timeout, in case it doesn't come back
                     waitHandle.WaitOne(source.GetTime(source.Length));
-                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true)) { file.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": Speech complete"); }
 
                     // It's possible that this has been disposed of, so ensure that it's still there before we try to finish it
                     lock (activeSpeeches)
                     {
                         if (activeSpeeches.Contains(soundOut))
                         {
-                            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true)) { file.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": disposing of resources"); }
                             activeSpeeches.Remove(soundOut);
                             soundOut.Stop();
                             soundOut.Dispose();
@@ -230,6 +230,7 @@ namespace EliteDangerousSpeechService
 
         private int echoDelayForShip(Ship ship)
         {
+            // this is affected by ship size
             int echoDelay = 50; // Default
             if (ship != null)
             {
@@ -254,59 +255,24 @@ namespace EliteDangerousSpeechService
 
         private int chorusLevelForShip(Ship ship)
         {
-            int chorusLevel = 40; // Default
-            if (ship != null)
-            {
-                switch (ship.Size)
-                {
-                    case ShipSize.Small:
-                        chorusLevel = 40;
-                        break;
-                    case ShipSize.Medium:
-                        chorusLevel = 60;
-                        break;
-                    case ShipSize.Large:
-                        chorusLevel = 80;
-                        break;
-                    case ShipSize.Huge:
-                        chorusLevel = 100;
-                        break;
-                }
-            }
-            return chorusLevel;
+            // This is not affected by ship parameters
+            return (int)(60 * ((decimal)configuration.EffectsLevel)/((decimal)100));
         }
 
-        private static int reverbLevelForShip(Ship ship)
+        private int reverbLevelForShip(Ship ship)
         {
-            int reverbLevel = 0;
-            if (ship != null)
-            {
-                switch (ship.Size)
-                {
-                    case ShipSize.Small:
-                        reverbLevel = -50;
-                        break;
-                    case ShipSize.Medium:
-                        reverbLevel = -25;
-                        break;
-                    case ShipSize.Large:
-                        reverbLevel = -10;
-                        break;
-                    case ShipSize.Huge:
-                        reverbLevel = -2;
-                        break;
-                }
-            }
-            return reverbLevel;
+            // This is not affected by ship parameters
+            return (int)(80 * ((decimal)configuration.EffectsLevel) / ((decimal)100));
         }
 
-        private static int distortionLevelForShip(Ship ship)
+        private int distortionLevelForShip(Ship ship)
         {
+            // This is affected by ship health
             int distortionLevel = 0;
-            if (ship != null)
+            if (ship != null && configuration.DistortOnDamage)
             {
 
-                distortionLevel = Math.Min((100 - (int)ship.Health) / 2, 30);
+                distortionLevel = Math.Min((100 - (int)ship.Health) / 2, 15);
             }
             return distortionLevel;
 

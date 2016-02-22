@@ -13,15 +13,24 @@ namespace EliteDangerousSpeechService
     /// </summary>
     public class SpeechServiceConfiguration
     {
-        [JsonProperty("StandardVoice")]
+        [JsonProperty("standardVoice")]
         public String StandardVoice { get; set; }
+
+        [JsonProperty("effectsLevel")]
+        public int EffectsLevel { get; set; } = 50;
+
+        [JsonProperty("distortOnDamage")]
+        public bool DistortOnDamage { get; set; } = true;
+
+        [JsonProperty("rate")]
+        public int Rate{ get; set; } = 0;
 
         [JsonIgnore]
         private String dataPath;
 
         /// <summary>
         /// Obtain speech config from a file. If  If the file name is not supplied the the default
-        /// path of %APPDATA%\EDDI\edsm.json is used
+        /// path of %APPDATA%\EDDI\speech.json is used
         /// </summary>
         /// <param name="filename"></param>
         public static SpeechServiceConfiguration FromFile(string filename = null)
@@ -54,6 +63,8 @@ namespace EliteDangerousSpeechService
         public void Clear()
         {
             StandardVoice = null;
+            EffectsLevel = 50;
+            DistortOnDamage = true;
         }
 
         public void ToFile(string filename = null)

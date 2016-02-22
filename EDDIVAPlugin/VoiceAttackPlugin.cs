@@ -155,7 +155,7 @@ namespace EDDIVAPlugin
 
                             setString(ref textValues, "EDDI version", PLUGIN_VERSION);
 
-                            speechService = new SpeechService();
+                            speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
 
                             InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                             CurrentEnvironment = ENVIRONMENT_NORMAL_SPACE;
