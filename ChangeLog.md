@@ -1,3 +1,5 @@
+  * Added configuration of the ship voice
+
 #1.0.0
   * Fix minor VoiceAttack script issues
 
