@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -111,6 +112,10 @@
     <ProjectReference Include="..\EliteDangerousNetLogMonitor\EliteDangerousNetLogMonitor.csproj">
       <Project>{0928ade6-f260-4820-afbc-1661130c3474}</Project>
       <Name>EliteDangerousNetLogMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousSpeechService\EliteDangerousSpeechService.csproj">
+      <Project>{19572a69-c13a-459d-ab72-2b0f034ac27f}</Project>
+      <Name>EliteDangerousSpeechService</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteDangerousStarMapService\EliteDangerousStarMapService.csproj">
       <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>

@@ -69,6 +69,10 @@ namespace EliteDangerousSpeechService
                 using (SpeechSynthesizer synth = new SpeechSynthesizer())
                 using (MemoryStream stream = new MemoryStream())
                 {
+                    if (String.IsNullOrWhiteSpace(voice))
+                    {
+                        voice = SpeechServiceConfiguration.FromFile().StandardVoice;
+                    }
                     if (voice != null)
                     {
                         try

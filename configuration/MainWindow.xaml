@@ -122,6 +122,22 @@
                     </DataGrid>
                 </DockPanel>
             </TabItem>
+            <TabItem Header="Text-to-Speech">
+                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+                    <TextBlock x:Name="ttsText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="EDDI has a Text-to-Speech feature Using SSML, to make your Texts more immersive. It is adding ambient effects specific to your ships cockpit design." />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Label x:Name="ttsVoiceLabel" Grid.Column="0" Grid.Row="0" Content="Standard Voice:" />
+                        <ComboBox x:Name="ttsVoiceDropDown" DisplayMemberPath="Name" Margin="3" Grid.Column="1" Grid.Row="0" SelectionChanged="ttsVoiceDropDownUpdated"/>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>
