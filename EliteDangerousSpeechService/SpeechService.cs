@@ -30,11 +30,11 @@ namespace EliteDangerousSpeechService
 
         public void Say(Ship ship, string script)
         {
-            script = script.Replace("$=", ship.Name == null ? "your ship" : ship.Name);
-            Speak(script, null, echoDelayForShip(ship), distortionLevelForHealth(ship.Health), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, false);
+            script = script.Replace("$=", ship == null || ship.Name == null ? "your ship" : ship.Name);
+            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, false);
         }
 
-        public void Transmit(Ship ship, string script, int health=100)
+        public void Transmit(Ship ship, string script)
         {
             if (ship.CallSign == null)
             {
@@ -44,10 +44,10 @@ namespace EliteDangerousSpeechService
             {
                 script = script.Replace("$=", "" + ship.Model + " " + Translations.CallSign(ship.CallSign));
             }
-            Speak(script, null, echoDelayForShip(ship), distortionLevelForHealth(health), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true);
+            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true);
         }
 
-        public void Receive(Ship ship, string script, int health=100)
+        public void Receive(Ship ship, string script)
         {
             if (ship.CallSign == null)
             {
@@ -57,7 +57,7 @@ namespace EliteDangerousSpeechService
             {
                 script = script.Replace("$=", "" + ship.Model + " " + Translations.CallSign(ship.CallSign));
             }
-            Speak(script, null, echoDelayForShip(ship), distortionLevelForHealth(health), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true);
+            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true);
         }
 
         public void Speak(string script, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio)
@@ -227,20 +227,23 @@ namespace EliteDangerousSpeechService
         private int echoDelayForShip(Ship ship)
         {
             int echoDelay = 50; // Default
-            switch (ship.Size)
+            if (ship != null)
             {
-                case ShipSize.Small:
-                    echoDelay = 50;
-                    break;
-                case ShipSize.Medium:
-                    echoDelay = 100;
-                    break;
-                case ShipSize.Large:
-                    echoDelay = 200;
-                    break;
-                case ShipSize.Huge:
-                    echoDelay = 400;
-                    break;
+                switch (ship.Size)
+                {
+                    case ShipSize.Small:
+                        echoDelay = 50;
+                        break;
+                    case ShipSize.Medium:
+                        echoDelay = 100;
+                        break;
+                    case ShipSize.Large:
+                        echoDelay = 200;
+                        break;
+                    case ShipSize.Huge:
+                        echoDelay = 400;
+                        break;
+                }
             }
             return echoDelay;
         }
@@ -248,20 +251,23 @@ namespace EliteDangerousSpeechService
         private int chorusLevelForShip(Ship ship)
         {
             int chorusLevel = 40; // Default
-            switch (ship.Size)
+            if (ship != null)
             {
-                case ShipSize.Small:
-                    chorusLevel = 40;
-                    break;
-                case ShipSize.Medium:
-                    chorusLevel = 60;
-                    break;
-                case ShipSize.Large:
-                    chorusLevel = 80;
-                    break;
-                case ShipSize.Huge:
-                    chorusLevel = 100;
-                    break;
+                switch (ship.Size)
+                {
+                    case ShipSize.Small:
+                        chorusLevel = 40;
+                        break;
+                    case ShipSize.Medium:
+                        chorusLevel = 60;
+                        break;
+                    case ShipSize.Large:
+                        chorusLevel = 80;
+                        break;
+                    case ShipSize.Huge:
+                        chorusLevel = 100;
+                        break;
+                }
             }
             return chorusLevel;
         }
@@ -269,27 +275,37 @@ namespace EliteDangerousSpeechService
         private static int reverbLevelForShip(Ship ship)
         {
             int reverbLevel = 0;
-            switch (ship.Size)
+            if (ship != null)
             {
-                case ShipSize.Small:
-                    reverbLevel = -50;
-                    break;
-                case ShipSize.Medium:
-                    reverbLevel = -25;
-                    break;
-                case ShipSize.Large:
-                    reverbLevel = -10;
-                    break;
-                case ShipSize.Huge:
-                    reverbLevel = -2;
-                    break;
+                switch (ship.Size)
+                {
+                    case ShipSize.Small:
+                        reverbLevel = -50;
+                        break;
+                    case ShipSize.Medium:
+                        reverbLevel = -25;
+                        break;
+                    case ShipSize.Large:
+                        reverbLevel = -10;
+                        break;
+                    case ShipSize.Huge:
+                        reverbLevel = -2;
+                        break;
+                }
             }
             return reverbLevel;
         }
 
-        private static int distortionLevelForHealth(decimal health)
+        private static int distortionLevelForShip(Ship ship)
         {
-            return Math.Min((100 - (int)health) / 2, 30);
+            int distortionLevel = 0;
+            if (ship != null)
+            {
+
+                distortionLevel = Math.Min((100 - (int)ship.Health) / 2, 30);
+            }
+            return distortionLevel;
+
         }
     }
 }
