@@ -76,19 +76,23 @@ namespace configuration
 
             // Configure the Text-to-speech tab
             SpeechServiceConfiguration speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
-            List<VoiceInfo> speechOptions = new List<VoiceInfo>();
+            List<String> speechOptions = new List<String>();
+            speechOptions.Add("Windows TTS default");
             try
             {
                 using (SpeechSynthesizer synth = new SpeechSynthesizer())
                 {
                     foreach (InstalledVoice voice in synth.GetInstalledVoices())
                     {
-                        speechOptions.Add(voice.VoiceInfo);
+                        if (voice.Enabled)
+                        {
+                            speechOptions.Add(voice.VoiceInfo.Name);
+                        }
                     }
                 }
 
                 ttsVoiceDropDown.ItemsSource = speechOptions;
-                ttsVoiceDropDown.Text = speechServiceConfiguration.StandardVoice;
+                ttsVoiceDropDown.Text = speechServiceConfiguration.StandardVoice == null ? "Windows TTS default" : speechServiceConfiguration.StandardVoice;
             }
             catch (Exception e)
             {
@@ -97,6 +101,12 @@ namespace configuration
                    errLog.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": Caught exception " + e);
                 }
             }
+            ttsRateSlider.Value = speechServiceConfiguration.Rate;
+            ttsEffectsLevelSlider.Value = speechServiceConfiguration.EffectsLevel;
+            ttsDistortCheckbox.IsChecked = speechServiceConfiguration.DistortOnDamage;
+
+            ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels;
+            ttsTestShipDropDown.Text = "Adder";
         }
 
         // Handle chagnes to the eddi tab
@@ -337,7 +347,40 @@ namespace configuration
         private void ttsVoiceDropDownUpdated(object sender, SelectionChangedEventArgs e)
         {
             ttsUpdated();
-        } 
+        }
+
+        private void ttsEffectsLevelUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            ttsUpdated();
+        }
+
+        private void ttsDistortionLevelUpdated(object sender, RoutedEventArgs e)
+        {
+            ttsUpdated();
+        }
+
+        private void ttsRateUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            ttsUpdated();
+        }
+
+        private void ttsTestVoiceButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Ship testShip = ShipDefinitions.ShipFromModel((string)ttsTestShipDropDown.SelectedValue);
+            testShip.Health = 100;
+            SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
+            SpeechService speechService = new SpeechService(speechConfiguration);
+            speechService.Say(testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
+        }
+
+        private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Ship testShip = ShipDefinitions.ShipFromModel((string)ttsTestShipDropDown.SelectedValue);
+            testShip.Health = 20;
+            SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
+            SpeechService speechService = new SpeechService(speechConfiguration);
+            speechService.Say(testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
+        }
 
         /// <summary>
         /// fetch the Text-to-Speech Configuration and write it to File
@@ -345,10 +388,10 @@ namespace configuration
         private void ttsUpdated()
         {
             SpeechServiceConfiguration speechConfiguration = new SpeechServiceConfiguration();
-            if (!String.IsNullOrWhiteSpace(ttsVoiceDropDown.SelectedValue.ToString()))
-            {
-                speechConfiguration.StandardVoice = ((VoiceInfo)ttsVoiceDropDown.SelectedValue).Name;
-            }
+            speechConfiguration.StandardVoice = ttsVoiceDropDown.SelectedValue == null || ttsVoiceDropDown.SelectedValue.ToString() == "Windows TTS default" ? null : ttsVoiceDropDown.SelectedValue.ToString();
+            speechConfiguration.Rate = (int)ttsRateSlider.Value;
+            speechConfiguration.EffectsLevel = (int)ttsEffectsLevelSlider.Value;
+            speechConfiguration.DistortOnDamage = ttsDistortCheckbox.IsChecked.Value;
             speechConfiguration.ToFile();
         }
     }
