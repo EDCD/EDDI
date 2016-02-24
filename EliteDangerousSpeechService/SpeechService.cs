@@ -135,10 +135,9 @@ namespace EliteDangerousSpeechService
                         }
                     }
 
-                    // We always apply the distortion effect if we have any effect, as otherwise we have an uneven volume when distortion kicks in
-                    if (configuration.EffectsLevel > 0)
+                    if (configuration.EffectsLevel > 0 && distortionLevel > 0)
                     {
-                        source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = distortionLevel, Gain = -16, PostEQBandwidth = 4000, PostEQCenterFrequency = 4000 });
+                        source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = distortionLevel, Gain = -6 - (distortionLevel / 2), PostEQBandwidth = 4000, PostEQCenterFrequency = 4000 });
                     }
 
                     if (radio)

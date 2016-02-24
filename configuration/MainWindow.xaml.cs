@@ -27,6 +27,7 @@ namespace configuration
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Commander commander;
         private ShipsConfiguration shipsConfiguration;
 
         public MainWindow()
@@ -42,7 +43,6 @@ namespace configuration
             // Configure the Companion App tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             // See if the credentials work
-            Commander commander = null;
             CompanionAppService companionAppService = new CompanionAppService(companionAppCredentials);
             try
             {
@@ -57,12 +57,7 @@ namespace configuration
 
             if (commander != null)
             {
-                shipsConfiguration = new ShipsConfiguration();
-                List<Ship> ships = new List<Ship>();
-                ships.Add(commander.Ship);
-                ships.AddRange(commander.StoredShips);
-                shipsConfiguration.Ships = ships;
-                shipyardData.ItemsSource = ships;
+                setShipyardFromConfiguration();
             }
 
             // Configure the NetLog tab
@@ -109,7 +104,7 @@ namespace configuration
             ttsTestShipDropDown.Text = "Adder";
         }
 
-        // Handle chagnes to the eddi tab
+        // Handle changes to the eddi tab
         private void homeSystemChanged(object sender, TextChangedEventArgs e)
         {
             updateEddiConfiguration();
@@ -182,8 +177,9 @@ namespace configuration
                     companionAppCredentials.ToFile();
                     // All done - see if it works
                     CompanionAppService companionAppService = new CompanionAppService(companionAppCredentials);
-                    Commander commander = companionAppService.Profile();
+                    commander = companionAppService.Profile();
                     setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + commander.Name);
+                    setShipyardFromConfiguration();
                 }
                 catch (EliteDangerousCompanionAppAuthenticationException ex)
                 {
@@ -333,6 +329,18 @@ namespace configuration
         }
 
         // Handle changes to the Shipyard tab
+        private void setShipyardFromConfiguration()
+        {
+            shipsConfiguration = new ShipsConfiguration();
+            List<Ship> ships = new List<Ship>();
+            if (commander != null)
+            {
+                ships.Add(commander.Ship);
+                ships.AddRange(commander.StoredShips);
+            }
+            shipsConfiguration.Ships = ships;
+            shipyardData.ItemsSource = ships;
+        }
 
         private void shipYardUpdated(object sender, DataTransferEventArgs e)
         {
