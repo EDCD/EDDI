@@ -106,6 +106,7 @@ namespace EliteDangerousSpeechService
             { "Crucis" , new string[] { "ˈkruːsɪs" } },
             { "Cygni" , new string[] { "ˈsɪɡnaɪ" } },
             { "Eta Carina" , new string[] { "ˈiːtə", "kəˈriːnə" } },
+            { "Fornacis" , new string[] { "fɔːˈneɪsɪs" } },
             { "Herculis" , new string[] { "hɜːkjʊˈlɪs" } },
             { "Hyades" , new string[] { "ˈhaɪəˌdiːz" } },
             { "Hydrae" , new string[] { "ˈhaɪdriː" } },
@@ -217,6 +218,7 @@ namespace EliteDangerousSpeechService
                 || starSystem.StartsWith("CFBDSIR ")
                 || starSystem.StartsWith("CXOONC ")
                 || starSystem.StartsWith("CXOU ")
+                || starSystem.StartsWith("CPD") // Note no space
                 || starSystem.StartsWith("CSI") // Note no space
                 || starSystem.StartsWith("Csi") // Note no space
                 || starSystem.StartsWith("IDS ")
