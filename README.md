@@ -113,6 +113,7 @@ EDDI is a VoiceAttack plugin that provides over 150 values related to a commande
   * Ship compartment *n* module cost (decimal): the purchase cost of the module in this slot
   * Ship compartment *n* module value (decimal): the undiscounted cost of the module in this slot
   * Ship compartment *n* module station cost (decimal): the purchase cost of the module at this station
+  * Ship limpets carried (int): the number of limpets carried by the ship
 
 ###Current system values
 

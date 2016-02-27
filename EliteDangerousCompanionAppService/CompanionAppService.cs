@@ -295,6 +295,7 @@ namespace EliteDangerousCompanionAppService
             appCookie.Path = "/";
             appCookie.Name = "CompanionApp";
             appCookie.Value = credentials.appId;
+            appCookie.Secure = false;
             cookies.Add(appCookie);
         }
 
@@ -305,6 +306,11 @@ namespace EliteDangerousCompanionAppService
             machineIdCookie.Path = "/";
             machineIdCookie.Name = "mid";
             machineIdCookie.Value = credentials.machineId;
+            machineIdCookie.Secure = true;
+            // The expiry is embedded in the cookie value
+            DateTime expiryDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            expiryDateTime.AddSeconds(Convert.ToInt64(credentials.machineId.Substring(0, credentials.machineId.IndexOf("%7C"))));
+            machineIdCookie.Expires = expiryDateTime;
             cookies.Add(machineIdCookie);
         }
 
@@ -315,6 +321,11 @@ namespace EliteDangerousCompanionAppService
             machineTokenCookie.Path = "/";
             machineTokenCookie.Name = "mtk";
             machineTokenCookie.Value = credentials.machineToken;
+            machineTokenCookie.Secure = true;
+            // The expiry is embedded in the cookie value
+            DateTime expiryDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            expiryDateTime.AddSeconds(Convert.ToInt64(credentials.machineId.Substring(0, credentials.machineId.IndexOf("%7C"))));
+            machineTokenCookie.Expires = expiryDateTime;
             cookies.Add(machineTokenCookie);
         }
 
@@ -477,6 +488,27 @@ namespace EliteDangerousCompanionAppService
                 if (module.Name.Contains("Slot"))
                 {
                     Ship.Compartments.Add(CompartmentFromProfile(module));
+                }
+            }
+
+            // Obtain the cargo
+            Ship.Cargo = new List<Cargo>();
+            if (json["ship"]["cargo"] != null && json["ship"]["cargo"]["items"] != null)
+            {
+                foreach (dynamic cargoJson in json["ship"]["cargo"]["items"])
+                {
+                    string name = (string)cargoJson["commodity"];
+                    Cargo cargo = new Cargo();
+                    cargo.Commodity = CommodityDefinitions.CommodityFromCargoName(name);
+                    if (cargo.Commodity.Name == null)
+                    {
+                        // Unknown commodity; log an error so that we can update the definitions
+                        DataProviderService.LogError("No commodity definition for cargo " + cargo.ToString());
+                        cargo.Commodity.Name = name;
+                    }
+                    cargo.Quantity = (int)cargoJson["qty"];
+                    cargo.Cost = (long)cargoJson["value"];
+                    Ship.Cargo.Add(cargo);
                 }
             }
 
