@@ -119,7 +119,8 @@ namespace configuration
                 string password = companionAppPasswordText.Password.Trim();
                 try
                 {
-                    CompanionAppCredentials companionAppCredentials = CompanionAppService.Login(email, password);
+                    CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
+                    companionAppCredentials = CompanionAppService.Login(companionAppCredentials, email, password);
                     companionAppCredentials.ToFile();
                     setUpCompanionAppStage2();
                 }

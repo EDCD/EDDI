@@ -242,6 +242,9 @@ namespace EDDIVAPlugin
                 case "receive":
                     InvokeReceive(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
+                case "generate callsign":
+                    InvokeGenerateCallsign(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    return;
                 default:
                     if (context.ToLower().StartsWith("event:"))
                     {
@@ -913,6 +916,16 @@ namespace EDDIVAPlugin
                 return;
             }
             speechService.Receive(Cmdr.Ship, script);
+        }
+
+        /// <summary>
+        /// Generate a callsign
+        /// </summary>
+        public static void InvokeGenerateCallsign(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            string callsign = Ship.generateCallsign();
+            setString(ref textValues, "EDDI generated callsign", callsign);
+            setString(ref textValues, "EDDI generated callsign (spoken)", Translations.CallSign(callsign));
         }
 
         private static void setInt(ref Dictionary<string, int?> values, string key, int? value)

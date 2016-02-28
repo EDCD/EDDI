@@ -49,7 +49,11 @@ namespace EliteDangerousCompanionAppService
             { "Vulture", "Vulture" }
         };
 
-        private static string serverRoot = "https://companion.orerve.net";
+        private static string BASE_URL = "https://companion.orerve.net";
+        private static string ROOT_URL = "/";
+        private static string LOGIN_URL = "/user/login";
+        private static string CONFIRM_URL = "/user/confirm";
+        private static string PROFILE_URL = "/profile";
 
         private CompanionAppCredentials credentials;
 
@@ -59,13 +63,15 @@ namespace EliteDangerousCompanionAppService
         }
 
         ///<summary>Log in.  Returns credentials, or throws an exception if it fails</summary>
-        public static CompanionAppCredentials Login(string username, string password)
+        public static CompanionAppCredentials Login(CompanionAppCredentials credentials, string username, string password)
         {
-            CompanionAppCredentials credentials = null;
+            var cookieContainer = new CookieContainer();
+            AddCompanionAppCookie(cookieContainer, credentials);
+            AddMachineIdCookie(cookieContainer, credentials);
+            AddMachineTokenCookie(cookieContainer, credentials);
 
-            string location = serverRoot + "/user/login";
-            // Send the request.
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(location);
+            // Send the request
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(BASE_URL + LOGIN_URL);
             request.AllowAutoRedirect = false;  // Don't redirect or we lose the cookies
 
             request.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257";
@@ -81,24 +87,19 @@ namespace EliteDangerousCompanionAppService
 
             using (var response = (HttpWebResponse)request.GetResponse())
             {
-                if ((int)response.StatusCode == 200)
-                {
-                    // This means that the username or password was incorrect (yes, really)
-                    throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
-                }
-                else if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
+                if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
                 {
                     // Problem with the service
                     throw new EliteDangerousCompanionAppAuthenticationException("There is a problem with the Elite: Dangerous servers; please try again later");
                 }
-                else if ((int)response.StatusCode < 300 || (int)response.StatusCode > 399)
+                string location = response.Headers[HttpResponseHeader.Location];
+                if (CONFIRM_URL != location && ROOT_URL != location)
                 {
-                    // We were expecting a redirect to the confirmation page and didn't get it; complain
-                    throw new EliteDangerousCompanionAppErrorException("Error code " + response.StatusCode);
+                    throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
                 }
 
                 // Obtain the cookies from the raw information available to us
-                String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
+                string cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
                 if (cookieHeader != null)
                 {
                     Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
@@ -122,7 +123,7 @@ namespace EliteDangerousCompanionAppService
                 }
             }
 
-            // At this stage we should have the CompanionApp and mid values
+            // At this stage we should have the CompanionApp and mid values (and maybe the mtk, but not necessarily so don't check for it)
             if (credentials.appId == null)
             {
                 throw new EliteDangerousCompanionAppAuthenticationException("Credentials are missing companion app ID");
@@ -143,7 +144,7 @@ namespace EliteDangerousCompanionAppService
             AddMachineIdCookie(cookieContainer, credentials);
             AddMachineTokenCookie(cookieContainer, credentials);
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(serverRoot + "/user/confirm");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(BASE_URL + CONFIRM_URL);
             request.AllowAutoRedirect = false;
             request.CookieContainer = cookieContainer;
             request.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257";
@@ -158,25 +159,19 @@ namespace EliteDangerousCompanionAppService
 
             using (var response = (HttpWebResponse)request.GetResponse())
             {
-
-                if ((int)response.StatusCode == 200)
-                {
-                    // This means that the username or password was incorrect (yes, really)
-                    throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect");
-                }
-                else if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
+                string location = response.Headers[HttpResponseHeader.Location];
+                if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
                 {
                     // Problem with the service
                     throw new EliteDangerousCompanionAppAuthenticationException("There is a problem with the Elite: Dangerous servers; please try again later");
                 }
-                else if ((int)response.StatusCode < 300 || (int)response.StatusCode > 399)
+                if (ROOT_URL != location)
                 {
-                    // We were expecting a redirect to the confirmation page and didn't get it; complain
-                    throw new EliteDangerousCompanionAppErrorException("Error code " + response.StatusCode);
+                    throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect");
                 }
 
                 // Refresh the cookies from the raw information available to us
-                String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
+                string cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
                 if (cookieHeader != null)
                 {
                     Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
@@ -224,31 +219,27 @@ namespace EliteDangerousCompanionAppService
             AddMachineIdCookie(cookieContainer, credentials);
             AddMachineTokenCookie(cookieContainer, credentials);
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(serverRoot + "/profile");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(BASE_URL + PROFILE_URL);
             request.AllowAutoRedirect = false;
             request.CookieContainer = cookieContainer;
             request.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257";
 
             using (var response = (HttpWebResponse)request.GetResponse())
             {
-                if ((int)response.StatusCode >= 300 && (int)response.StatusCode < 400)
+                string location = response.Headers[HttpResponseHeader.Location];
+                if (LOGIN_URL == location || response.StatusCode == HttpStatusCode.Forbidden)
                 {
-                    // Redirect means the user needs to log in again
+                    // The user needs to log in again
                     throw new EliteDangerousCompanionAppAuthenticationException("You need to re-run the configuration application");
                 }
-                if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
+                if (response.StatusCode != HttpStatusCode.OK)
                 {
                     // Error probably means that the service is down
                     throw new EliteDangerousCompanionAppErrorException("Elite: Dangerous service is down; please try later");
                 }
-                if ((int)response.StatusCode < 200 || (int)response.StatusCode > 299)
-                {
-                    // Some other generic problem
-                    throw new EliteDangerousCompanionAppException("Error code " + response.StatusCode);
-                }
 
                 // Refresh the cookies from the raw information available to us
-                String cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
+                string cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
                 if (cookieHeader != null)
                 {
                     Match companionAppMatch = Regex.Match(cookieHeader, @"CompanionApp=([^;]+)");
@@ -302,14 +293,14 @@ namespace EliteDangerousCompanionAppService
         private static void AddMachineIdCookie(CookieContainer cookies, CompanionAppCredentials credentials)
         {
             var machineIdCookie = new Cookie();
-            machineIdCookie.Domain = ".companion.orerve.net";
+            machineIdCookie.Domain = "companion.orerve.net";
             machineIdCookie.Path = "/";
             machineIdCookie.Name = "mid";
             machineIdCookie.Value = credentials.machineId;
             machineIdCookie.Secure = true;
             // The expiry is embedded in the cookie value
             DateTime expiryDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            expiryDateTime.AddSeconds(Convert.ToInt64(credentials.machineId.Substring(0, credentials.machineId.IndexOf("%7C"))));
+            expiryDateTime = expiryDateTime.AddSeconds(Convert.ToInt64(credentials.machineId.Substring(0, credentials.machineId.IndexOf("%7C"))));
             machineIdCookie.Expires = expiryDateTime;
             cookies.Add(machineIdCookie);
         }
@@ -317,14 +308,14 @@ namespace EliteDangerousCompanionAppService
         private static void AddMachineTokenCookie(CookieContainer cookies, CompanionAppCredentials credentials)
         {
             var machineTokenCookie = new Cookie();
-            machineTokenCookie.Domain = ".companion.orerve.net";
+            machineTokenCookie.Domain = "companion.orerve.net";
             machineTokenCookie.Path = "/";
             machineTokenCookie.Name = "mtk";
             machineTokenCookie.Value = credentials.machineToken;
             machineTokenCookie.Secure = true;
             // The expiry is embedded in the cookie value
             DateTime expiryDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            expiryDateTime.AddSeconds(Convert.ToInt64(credentials.machineId.Substring(0, credentials.machineId.IndexOf("%7C"))));
+            expiryDateTime = expiryDateTime.AddSeconds(Convert.ToInt64(credentials.machineId.Substring(0, credentials.machineId.IndexOf("%7C"))));
             machineTokenCookie.Expires = expiryDateTime;
             cookies.Add(machineTokenCookie);
         }
@@ -436,7 +427,7 @@ namespace EliteDangerousCompanionAppService
                 return null;
             }
 
-            String Model = json["ship"]["name"];
+            string Model = json["ship"]["name"];
             if (shipTranslations.ContainsKey(Model))
             {
                 Model = shipTranslations[Model];
