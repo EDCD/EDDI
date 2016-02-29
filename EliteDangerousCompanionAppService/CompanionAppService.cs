@@ -494,7 +494,7 @@ namespace EliteDangerousCompanionAppService
                     if (cargo.Commodity.Name == null)
                     {
                         // Unknown commodity; log an error so that we can update the definitions
-                        DataProviderService.LogError("No commodity definition for cargo " + cargo.ToString());
+                        DataProviderService.LogError("No commodity definition for cargo " + cargoJson.ToString());
                         cargo.Commodity.Name = name;
                     }
                     cargo.Quantity = (int)cargoJson["qty"];
