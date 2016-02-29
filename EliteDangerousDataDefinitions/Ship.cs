@@ -26,6 +26,9 @@ namespace EliteDangerousDataDefinitions
         [JsonIgnore]
         public int CargoCarried { get; set; }
 
+        /// <summary>the specific cargo carried</summary>
+        public List<Cargo> Cargo { get; set; }
+
         /// <summary>the callsign of this ship</summary>
         [JsonProperty("callSign")]
         public string CallSign { get; set;  }

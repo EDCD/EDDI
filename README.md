@@ -39,6 +39,7 @@ EDDI is a VoiceAttack plugin that provides over 150 values related to a commande
   * Ship value (text): the replacement cost of the ship plus modules as would be spoken
   * Ship cargo capacity (int): the maximum cargo capacity of the ship as currently configured
   * Ship cargo carried (int): the cargo currently being carried by the ship
+  * Ship limpets carried (int): the number of limpets currently being carried by the ship
   * Ship health (decimal): the percentage health of the ship's hull
   * Ship bulkheads (text): the type of bulkheads fitted to the ship (e.g. "Military Grade Composite")
   * Ship bulkheads class (text): the class of bulkheads fitted to the ship (e.g. 3)
@@ -273,6 +274,12 @@ The data is made available through Voice Attack variables as above.  In addition
 
 The above actions can be customised as you see fit.  If you customise them then when you upgrade EDDI you should not overwrite the event handlers (although you should overwrite the event loop).
 
+##Callsigns
+
+EDDI attaches a callsign to every ship it knows about.  Callsigns are always of the form *AAA-0000* where 'A' is an upper-case alphabetic character and '0' is a digit.  Callsigns are persistent for the lifetime of the ship.
+
+You can ask EDDI to generate callsigns for you.  To do so run the EDDI plugin with the context 'generate callsign'.  When it returns it will have populated the text values "EDDI generated callsign"  and "EDDI generated callsign (spoken)" with appropriate values.
+
 ##Ship Voice
 
 EDDI provides a ship's voice through use of the 'say' EDDI plugin command.  This uses the Windows TTS, so relies on you installing your own voice if you you do not want to use the built-in Windows voices.  To use this yourself set a text variable ending with the name " script" and pass it in to the say command.
@@ -285,7 +292,7 @@ Say translates variables.  Current variables available are:
 
   * EDDI relies on the Elite: Dangerous companion app API for a lot of its information.  Sometimes EDDI loses connection to the API and needs to re-authenticate.  If you think that this is a problem you can re-run the 'configuration.exe' and if the connection is bad it will ask for re-authentication
   * If you edit the VoiceAttack profile it will stop the EDDI event loop, so you should restart VoiceAttack after doing so to ensure that the event loop has restarted
-  * EDDI is unable to know for sure if you have provided the correct path to the Logs directory.  The only way of knowing this for sure is to jump and see if EDDI tells you about your destination
+  * EDDI is unable to know for sure if you have provided the correct path to the Logs directory.  The only way of knowing this for sure is to jump and see if EDDI tells you about your destination when you make a jump
 
 If you have an issue with EDDI then please report it at https://github.com/cmdrmcdonald/EliteDangerousDataProvider/issues  If you have encountered a problem then please provide the output of the error report (shift-control-alt-e) to aid in fixing the issue.
 

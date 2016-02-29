@@ -44,7 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cargo.cs" />
     <Compile Include="Commander.cs" />
+    <Compile Include="CommodityDefinitions.cs" />
     <Compile Include="Compartment.cs" />
     <Compile Include="Hardpoint.cs" />
     <Compile Include="Commodity.cs" />

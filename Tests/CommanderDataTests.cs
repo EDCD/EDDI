@@ -2,6 +2,7 @@
 using EliteDangerousCompanionAppService;
 using EliteDangerousDataDefinitions;
 using System.Collections.Generic;
+using System;
 
 namespace Tests
 {
@@ -11,7 +12,7 @@ namespace Tests
         [TestMethod]
         public void TestCommanderFromProfile()
         {
-            string data =@"{
+            string data = @"{
   ""commander"": {
                 ""id"": 123456,
     ""name"": ""Testy"",
@@ -5341,8 +5342,41 @@ namespace Tests
     },
     ""cargo"": {
       ""capacity"": 10,
-      ""qty"": 5,
-      ""items"": []
+      ""qty"": 6,
+      ""items"": [
+       {
+          ""commodity"": ""drones"",
+          ""origin"": 3226643968,
+          ""powerplayOrigin"": null,
+          ""masq"": null,
+          ""owner"": 593409,
+          ""mission"": null,
+          ""qty"": 4,
+          ""value"": 404,
+          ""xyz"": {
+                ""x"": 49889.5,
+            ""y"": 40996.3125,
+            ""z"": 24144.90625
+          },
+          ""marked"": 0
+        },
+        {
+          ""commodity"": ""beer"",
+          ""origin"": 3226643968,
+          ""powerplayOrigin"": null,
+          ""masq"": null,
+          ""owner"": 593409,
+          ""mission"": null,
+          ""qty"": 2,
+          ""value"": 202,
+          ""xyz"": {
+            ""x"": 49889.5,
+            ""y"": 40996.3125,
+            ""z"": 24144.90625
+          },
+          ""marked"": 0
+        }
+        ]
     },
     ""passengers"": [],
     ""refinery"": null,
@@ -5492,7 +5526,7 @@ namespace Tests
             Assert.AreEqual(null, cmdr.Ship.Compartments[8].Module);
 
             Assert.AreEqual(10, cmdr.Ship.CargoCapacity);
-            Assert.AreEqual(5, cmdr.Ship.CargoCarried);
+            Assert.AreEqual(6, cmdr.Ship.CargoCarried);
 
             /// 7 stored ships
             Assert.AreEqual(7, cmdr.StoredShips.Count);
@@ -5502,6 +5536,20 @@ namespace Tests
             Assert.AreEqual("Vulture", StoredShip1.Model);
             Assert.AreEqual("TZ Arietis", StoredShip1.StarSystem);
             Assert.AreEqual("Snyder Enterprise", StoredShip1.Station);
+
+            // Two lots of cargo
+            Assert.AreEqual(2, cmdr.Ship.Cargo.Count);
+            // Ensure that we have some drones
+            // Add number of limpets carried
+            int limpets = 0;
+            foreach (Cargo cargo in cmdr.Ship.Cargo)
+            {
+                if (cargo.Commodity.Name == "Limpet")
+                {
+                    limpets += cargo.Quantity;
+                }
+            }
+            Assert.AreEqual(4, limpets);
         }
     }
 }

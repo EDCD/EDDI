@@ -242,6 +242,9 @@ namespace EDDIVAPlugin
                 case "receive":
                     InvokeReceive(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
+                case "generate callsign":
+                    InvokeGenerateCallsign(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    return;
                 default:
                     if (context.ToLower().StartsWith("event:"))
                     {
@@ -402,6 +405,17 @@ namespace EDDIVAPlugin
                     setDecimal(ref decimalValues, "Ship health", Cmdr.Ship.Health);
                     setInt(ref intValues, "Ship cargo capacity", Cmdr.Ship.CargoCapacity);
                     setInt(ref intValues, "Ship cargo carried", Cmdr.Ship.CargoCarried);
+                    // Add number of limpets carried
+                    int limpets = 0;
+                    foreach (Cargo cargo in Cmdr.Ship.Cargo)
+                    {
+                        if (cargo.Commodity.Name == "Limpet")
+                        {
+                            limpets += cargo.Quantity;
+                        }
+                    }
+                    setInt(ref intValues, "Ship limpets carried", limpets);
+
 
                     SetModuleDetails("Ship bulkheads", Cmdr.Ship.Bulkheads, ref textValues, ref intValues, ref decimalValues);
                     SetOutfittingCost("Ship bulkheads", Cmdr.Ship.Bulkheads, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
@@ -902,6 +916,16 @@ namespace EDDIVAPlugin
                 return;
             }
             speechService.Receive(Cmdr.Ship, script);
+        }
+
+        /// <summary>
+        /// Generate a callsign
+        /// </summary>
+        public static void InvokeGenerateCallsign(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            string callsign = Ship.generateCallsign();
+            setString(ref textValues, "EDDI generated callsign", callsign);
+            setString(ref textValues, "EDDI generated callsign (spoken)", Translations.CallSign(callsign));
         }
 
         private static void setInt(ref Dictionary<string, int?> values, string key, int? value)
