@@ -121,12 +121,14 @@ namespace EDDIVAPlugin
                             if (Cmdr != null && Cmdr.Name != null)
                             {
                                 setString(ref textValues, "EDDI plugin profile status", "Enabled");
+                                logInfo("EDDI access to the companion app is enabled");
                             }
                             else
                             {
                                 // If InvokeUpdatePlugin failed then it will have have left an error message, but this once we ignore it
                                 setPluginStatus(ref textValues, "Operational", null, null);
                                 setString(ref textValues, "EDDI plugin profile status", "Disabled");
+                                logInfo("EDDI access to the companion app is disabled");
                                 // We create a commander anyway, as data such as starsystem uses it
                                 Cmdr = new Commander();
                             }
@@ -149,11 +151,13 @@ namespace EDDIVAPlugin
                                 {
                                     starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
                                     setString(ref textValues, "EDDI plugin EDSM status", "Enabled");
+                                    logInfo("EDDI access to EDSM is enabled");
                                 }
                             }
                             if (starMapService == null)
                             {
                                 setString(ref textValues, "EDDI plugin EDSM status", "Disabled");
+                                logInfo("EDDI access to EDSM is disabled");
                             }
 
                             setString(ref textValues, "EDDI version", PLUGIN_VERSION);
@@ -173,10 +177,12 @@ namespace EDDIVAPlugin
                                 logWatcherThread.Name = "EDDI netlog watcher";
                                 logWatcherThread.Start();
                                 setString(ref textValues, "EDDI plugin NetLog status", "Enabled");
+                                logInfo("EDDI netlog monitor is enabled for " + netLogConfiguration.path);
                             }
                             else
                             {
                                 setString(ref textValues, "EDDI plugin NetLog status", "Disabled");
+                                logInfo("EDDI netlog monitor is disabled");
                             }
 
                             setPluginStatus(ref textValues, "Operational", null, null);
@@ -244,6 +250,12 @@ namespace EDDIVAPlugin
                     return;
                 case "generate callsign":
                     InvokeGenerateCallsign(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    return;
+                case "system distance":
+                    InvokeStarMapSystemDistance(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    return;
+                case "system note":
+                    InvokeStarMapSystemComment(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
                 default:
                     if (context.ToLower().StartsWith("event:"))
@@ -780,6 +792,14 @@ namespace EDDIVAPlugin
                     }
                     debug("InvokeNewSystem() Set distance from home");
 
+                    debug("InvokeNewSystem() Setting EDSM comment");
+                    if (starMapService != null)
+                    {
+                        StarMapInfo info = starMapService.getStarMapInfo(CurrentStarSystem.Name);
+                        setString(ref textValues, "System comment", info == null ? null : info.Comment);
+                    }
+                    debug("InvokeNewSystem() Set EDSM comment");
+
                     if (LastStarSystem != null)
                     {
                         debug("InvokeNewSystem() Setting last system information");
@@ -948,9 +968,91 @@ namespace EDDIVAPlugin
         /// </summary>
         public static void InvokeGenerateCallsign(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            string callsign = Ship.generateCallsign();
-            setString(ref textValues, "EDDI generated callsign", callsign);
-            setString(ref textValues, "EDDI generated callsign (spoken)", Translations.CallSign(callsign));
+            try
+            {
+                string callsign = Ship.generateCallsign();
+                setString(ref textValues, "EDDI generated callsign", callsign);
+                setString(ref textValues, "EDDI generated callsign (spoken)", Translations.CallSign(callsign));
+            }
+            catch (Exception e)
+            {
+                setPluginStatus(ref textValues, "Failed", "Failed to generate callsign", e);
+            }
+        }
+
+        /// <summary>
+        /// Send a system distance to the starmap service
+        /// </summary>
+        public static void InvokeStarMapSystemDistance(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            try
+            {
+                string system = null;
+                foreach (string key in textValues.Keys)
+                {
+                    if (key == "EDDI remote system name")
+                    {
+                        system = textValues[key];
+                    }
+                }
+                if (system == null)
+                {
+                    return;
+                }
+
+                decimal? distance = null;
+                foreach (string key in decimalValues.Keys)
+                {
+                    if (key == "EDDI remote system distance")
+                    {
+                        distance = decimalValues[key];
+                    }
+                }
+                if (distance == null)
+                {
+                    return;
+                }
+
+                if (Cmdr != null && starMapService != null)
+                {
+                    starMapService.sendStarMapDistance(Cmdr.StarSystem, system, (decimal)distance);
+                }
+            }
+            catch (Exception e)
+            {
+                setPluginStatus(ref textValues, "Failed", "Failed to send system distance to EDSM", e);
+            }
+        }
+
+        /// <summary>
+        /// Send a comment to the starmap service
+        /// </summary>
+        public static void InvokeStarMapSystemComment(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            try
+            {
+                string comment = null;
+                foreach (string key in textValues.Keys)
+                {
+                    if (key == "EDDI system comment")
+                    {
+                        comment = textValues[key];
+                    }
+                }
+                if (comment == null)
+                {
+                    return;
+                }
+
+                if (Cmdr != null && starMapService != null)
+                {
+                    starMapService.sendStarMapComment(Cmdr.StarSystem, comment);
+                }
+            }
+            catch (Exception e)
+            {
+                setPluginStatus(ref textValues, "Failed", "Failed to send system comment to EDSM", e);
+            }
         }
 
         private static void setInt(ref Dictionary<string, int?> values, string key, int? value)
