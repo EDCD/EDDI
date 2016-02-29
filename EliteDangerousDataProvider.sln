@@ -24,6 +24,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{21887F65-3357-4D63-890C-CDDBDDD9DB14}"
 	ProjectSection(SolutionItems) = preProject
 		ChangeLog.md = ChangeLog.md
+		Contributors.md = Contributors.md
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -34,6 +35,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "configuration", "configuration\configuration.csproj", "{583FA617-A93D-4A69-BF2F-13911ED0099A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C5F48807-921B-456D-A9E4-A0282E5E8CF1} = {C5F48807-921B-456D-A9E4-A0282E5E8CF1}
+		{19572A69-C13A-459D-AB72-2B0F034AC27F} = {19572A69-C13A-459D-AB72-2B0F034AC27F}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousSpeechService", "EliteDangerousSpeechService\EliteDangerousSpeechService.csproj", "{19572A69-C13A-459D-AB72-2B0F034AC27F}"

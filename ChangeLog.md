@@ -2,6 +2,7 @@
   * Added Insurance (decimal): the percentage insurance excess (usually 5, 3.75 or 2.5)
   * Added Ship limpets carried (int): the number of limpets carried by the ship
   * Added 'generate callsign' plugin context
+  * Added configuration of the ship voice
 
 #1.0.0
   * Fix minor VoiceAttack script issues

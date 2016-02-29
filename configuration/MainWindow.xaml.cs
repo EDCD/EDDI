@@ -3,6 +3,7 @@ using EliteDangerousCompanionAppService;
 using EliteDangerousDataDefinitions;
 using EliteDangerousNetLogMonitor;
 using EliteDangerousStarMapService;
+using EliteDangerousSpeechService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Speech.Synthesis;
 
 namespace configuration
 {
@@ -25,6 +27,7 @@ namespace configuration
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Commander commander;
         private ShipsConfiguration shipsConfiguration;
 
         public MainWindow()
@@ -40,7 +43,6 @@ namespace configuration
             // Configure the Companion App tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             // See if the credentials work
-            Commander commander = null;
             CompanionAppService companionAppService = new CompanionAppService(companionAppCredentials);
             try
             {
@@ -55,12 +57,7 @@ namespace configuration
 
             if (commander != null)
             {
-                shipsConfiguration = new ShipsConfiguration();
-                List<Ship> ships = new List<Ship>();
-                ships.Add(commander.Ship);
-                ships.AddRange(commander.StoredShips);
-                shipsConfiguration.Ships = ships;
-                shipyardData.ItemsSource = ships;
+                setShipyardFromConfiguration();
             }
 
             // Configure the NetLog tab
@@ -71,9 +68,43 @@ namespace configuration
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
             edsmApiKeyTextBox.Text = starMapConfiguration.apiKey;
             edsmCommanderNameTextBox.Text = starMapConfiguration.commanderName;
+
+            // Configure the Text-to-speech tab
+            SpeechServiceConfiguration speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
+            List<String> speechOptions = new List<String>();
+            speechOptions.Add("Windows TTS default");
+            try
+            {
+                using (SpeechSynthesizer synth = new SpeechSynthesizer())
+                {
+                    foreach (InstalledVoice voice in synth.GetInstalledVoices())
+                    {
+                        if (voice.Enabled)
+                        {
+                            speechOptions.Add(voice.VoiceInfo.Name);
+                        }
+                    }
+                }
+
+                ttsVoiceDropDown.ItemsSource = speechOptions;
+                ttsVoiceDropDown.Text = speechServiceConfiguration.StandardVoice == null ? "Windows TTS default" : speechServiceConfiguration.StandardVoice;
+            }
+            catch (Exception e)
+            {
+                using (System.IO.StreamWriter errLog = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true))
+                {
+                   errLog.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": Caught exception " + e);
+                }
+            }
+            ttsRateSlider.Value = speechServiceConfiguration.Rate;
+            ttsEffectsLevelSlider.Value = speechServiceConfiguration.EffectsLevel;
+            ttsDistortCheckbox.IsChecked = speechServiceConfiguration.DistortOnDamage;
+
+            ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels;
+            ttsTestShipDropDown.Text = "Adder";
         }
 
-        // Handle chagnes to the eddi tab
+        // Handle changes to the eddi tab
         private void homeSystemChanged(object sender, TextChangedEventArgs e)
         {
             updateEddiConfiguration();
@@ -147,8 +178,9 @@ namespace configuration
                     companionAppCredentials.ToFile();
                     // All done - see if it works
                     CompanionAppService companionAppService = new CompanionAppService(companionAppCredentials);
-                    Commander commander = companionAppService.Profile();
+                    commander = companionAppService.Profile();
                     setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + commander.Name);
+                    setShipyardFromConfiguration();
                 }
                 catch (EliteDangerousCompanionAppAuthenticationException ex)
                 {
@@ -298,6 +330,18 @@ namespace configuration
         }
 
         // Handle changes to the Shipyard tab
+        private void setShipyardFromConfiguration()
+        {
+            shipsConfiguration = new ShipsConfiguration();
+            List<Ship> ships = new List<Ship>();
+            if (commander != null)
+            {
+                ships.Add(commander.Ship);
+                ships.AddRange(commander.StoredShips);
+            }
+            shipsConfiguration.Ships = ships;
+            shipyardData.ItemsSource = ships;
+        }
 
         private void shipYardUpdated(object sender, DataTransferEventArgs e)
         {
@@ -305,6 +349,59 @@ namespace configuration
             {
                 shipsConfiguration.ToFile();
             }            
+        }
+
+        // Handle Text-to-speech tab
+
+        private void ttsVoiceDropDownUpdated(object sender, SelectionChangedEventArgs e)
+        {
+            ttsUpdated();
+        }
+
+        private void ttsEffectsLevelUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            ttsUpdated();
+        }
+
+        private void ttsDistortionLevelUpdated(object sender, RoutedEventArgs e)
+        {
+            ttsUpdated();
+        }
+
+        private void ttsRateUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            ttsUpdated();
+        }
+
+        private void ttsTestVoiceButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Ship testShip = ShipDefinitions.ShipFromModel((string)ttsTestShipDropDown.SelectedValue);
+            testShip.Health = 100;
+            SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
+            SpeechService speechService = new SpeechService(speechConfiguration);
+            speechService.Say(testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
+        }
+
+        private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Ship testShip = ShipDefinitions.ShipFromModel((string)ttsTestShipDropDown.SelectedValue);
+            testShip.Health = 20;
+            SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
+            SpeechService speechService = new SpeechService(speechConfiguration);
+            speechService.Say(testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
+        }
+
+        /// <summary>
+        /// fetch the Text-to-Speech Configuration and write it to File
+        /// </summary>
+        private void ttsUpdated()
+        {
+            SpeechServiceConfiguration speechConfiguration = new SpeechServiceConfiguration();
+            speechConfiguration.StandardVoice = ttsVoiceDropDown.SelectedValue == null || ttsVoiceDropDown.SelectedValue.ToString() == "Windows TTS default" ? null : ttsVoiceDropDown.SelectedValue.ToString();
+            speechConfiguration.Rate = (int)ttsRateSlider.Value;
+            speechConfiguration.EffectsLevel = (int)ttsEffectsLevelSlider.Value;
+            speechConfiguration.DistortOnDamage = ttsDistortCheckbox.IsChecked.Value;
+            speechConfiguration.ToFile();
         }
     }
 }

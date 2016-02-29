@@ -41,6 +41,9 @@ namespace EliteDangerousDataDefinitions
             { 128049309, new Ship(128049309, "Vulture", ShipSize.Small) },
         };
 
+
+        public static List<String> ShipModels = ShipsByEliteID.Select(kp => kp.Value.Model).ToList();
+
         private static Dictionary<string, Ship> ShipsByModel = ShipsByEliteID.ToDictionary(kp => kp.Value.Model, kp => kp.Value);
 
         /// <summary>Obtain details of a ship given its Elite ID</summary>
@@ -67,6 +70,7 @@ namespace EliteDangerousDataDefinitions
             Ship Template;
             if (ShipsByModel.TryGetValue(model, out Template))
             {
+                Ship.EDID = Template.EDID;
                 Ship.Model = Template.Model;
                 Ship.Size = Template.Size;
             }
