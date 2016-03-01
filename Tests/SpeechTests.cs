@@ -67,8 +67,7 @@ namespace Tests
         public void TestSsml()
         {
             SpeechService SpeechService = new SpeechService();
-            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "You are travelling to the " + Translations.StarSystem("61 Cygni") + " system.");
-            //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "You are travelling to the " + Translations.StarSystem("Shinrarta Dezhra") + " system.");
+            SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), "You are travelling to the " + Translations.StarSystem("Hotas") + " system.");
         }
 
         [TestMethod]
