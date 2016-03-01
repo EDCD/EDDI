@@ -227,6 +227,7 @@ EDDI also provides a number of pre-built commands to show off some of what it is
   * voice commands spoken by the pilot when they wish to check the current status of their ship ("Report" and "Quick report")
   * voice commands spoken by the pilot when they wish to check just the damage on their ship ("Damage report")
   * voice commands spoken by the pilot when they wish to carry out checks prior to undocking ("Run pre-flight checks")
+  * voice commands to interact with EDSM for setting of notes and trilateration (see below for details)
 
 ##Installing
 
@@ -273,6 +274,20 @@ The data is made available through Voice Attack variables as above.  In addition
   * ((EDDI: event handler for ship changed)) triggered whenever the commander issues a "ship handover complete" command to VoiceAttack.
 
 The above actions can be customised as you see fit.  If you customise them then when you upgrade EDDI you should not overwrite the event handlers (although you should overwrite the event loop).
+
+##EDSM Integration
+
+EDDI can integrate with EDSM, sending an automatic update to the commander's EDSM log whenever the commander changes system.
+
+EDDI also allows for setting and clearing of EDSM system notes.  To set a system note the commander should say "Make a note on this system" and follow the instructions given.  To clear a system note the commander should say "Clear the note on this system".  Any system-specific note will be spoken by EDDI on entering the system.
+
+EDDI allows a voice interface for EDSM trilateration.  If you are in a system that does not have co-ordinates you can add distances to a number of common systems (Sol, 17 Draconis, Maia, Robigo, Sothis) so that EDSM can calculate the co-ordinates.  The process for setting these co-ordinates requires the user saying the system for which they are providing a distance and confirming the distance prior to submission.  The flow goes as follows:
+
+   * The Commander says "Distance to Sol" (or whichever of the systems noted above they wish to measure distance to)
+   * The Commander says the distance (the best format is to say something like "one hundred and twenty three point one seven")
+   * The Commander says "Repeat distance" and listens to the value as EDDI believes it to be
+   * If EDDI has the correct distance then the Commander says "Distance confirmed" and the distance will be submitted to EDDI
+   * If EDDI does not have the correct distance then the Commander says "Distance to Sol" and tries again
 
 ##Callsigns
 

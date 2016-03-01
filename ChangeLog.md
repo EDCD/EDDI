@@ -3,6 +3,9 @@
   * Added Ship limpets carried (int): the number of limpets carried by the ship
   * Added 'generate callsign' plugin context
   * Added configuration of the ship voice
+  * Added configuration option to sync EDSM data with local information
+  * Added ability to set and recollect notes from EDSM
+  * Added ability to carry out trilateration of systems for EDSM
 
 #1.0.0
   * Fix minor VoiceAttack script issues
