@@ -25,9 +25,10 @@ namespace EDDIVAPlugin
                      , name
                      , totalvisits
                      , lastvisit
+                     , previousvisit
                      , starsystem
                      , starsystemlastupdated)
-                    VALUES(@eliteid, @eddbid, @name, @totalvisits, @lastvisit, @starsystem, @starsystemlastupdated)";
+                    VALUES(@eliteid, @eddbid, @name, @totalvisits, @lastvisit, @previousvisit, @starsystem, @starsystemlastupdated)";
         private static string UPDATE_SQL = @"
                     UPDATE starsystems
                     SET eliteid = @eliteid
@@ -94,11 +95,12 @@ namespace EDDIVAPlugin
         public void SaveEDDIStarSystem(EDDIStarSystem eddiStarSystem)
         {
             if (!File.Exists(DbFile)) CreateDatabase();
-
+            
             using (var con = SimpleDbConnection())
             {
                 con.Open();
-                if (eddiStarSystem.TotalVisits == 1)
+
+                if (GetEDDIStarSystem(eddiStarSystem.Name) == null)
                 {
                     using (var cmd = new SQLiteCommand(con))
                     {
@@ -109,6 +111,7 @@ namespace EDDIVAPlugin
                         cmd.Parameters.AddWithValue("@name",eddiStarSystem.Name);
                         cmd.Parameters.AddWithValue("@totalvisits", eddiStarSystem.TotalVisits);
                         cmd.Parameters.AddWithValue("@lastvisit", eddiStarSystem.LastVisit);
+                        cmd.Parameters.AddWithValue("@previousvisit", eddiStarSystem.PreviousVisit);
                         cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(eddiStarSystem.StarSystem));
                         cmd.Parameters.AddWithValue("@starsystemlastupdated", eddiStarSystem.StarSystemLastUpdated);
                         cmd.ExecuteNonQuery();
