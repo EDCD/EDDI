@@ -39,5 +39,13 @@ namespace Tests
             StarMapService service = new StarMapService("secret", "McDonald", "http://beta.edsm.net:8080/");
             service.sendStarMapDistance("Sol", "HIP 11658", 350.35M);
         }
+
+        [TestMethod]
+        public void TestGetLogs()
+        {
+            StarMapService service = new StarMapService("secret", "McDonald", "http://beta.edsm.net:8000/");
+            Dictionary<string, StarMapLogInfo> logs = service.getStarMapLog();
+            Assert.AreEqual(1, logs.Count);
+        }
     }
 }

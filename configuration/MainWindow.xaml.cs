@@ -19,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Speech.Synthesis;
+using EliteDangerousDataProviderService;
 
 namespace configuration
 {
@@ -402,6 +403,62 @@ namespace configuration
             speechConfiguration.EffectsLevel = (int)ttsEffectsLevelSlider.Value;
             speechConfiguration.DistortOnDamage = ttsDistortCheckbox.IsChecked.Value;
             speechConfiguration.ToFile();
+        }
+
+        /// <summary>
+        /// Obtain the EDSM log and sync it with the local datastore
+        /// </summary>
+        private void edsmObtainLogClicked(object sender, RoutedEventArgs e)
+        {
+            IEDDIStarSystemRepository starSystemRepository = new EDDIStarSystemSqLiteRepository();
+            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
+
+            string commanderName;
+            if (String.IsNullOrEmpty(starMapConfiguration.commanderName))
+            {
+                // Fetch the commander name from the companion app
+                CompanionAppService companionAppService = new CompanionAppService(CompanionAppCredentials.FromFile());
+                Commander cmdr = companionAppService.Profile();
+                if (cmdr != null && cmdr.Name != null)
+                {
+                    commanderName = cmdr.Name;
+                }
+                else
+                {
+                    edsmFetchLogsButton.IsEnabled = false;
+                    edsmFetchLogsButton.Content = "Companion app not configured and no name supplied; cannot obtain logs";
+                    return;
+                }
+            }
+            else
+            {
+                commanderName = starMapConfiguration.commanderName;
+            }
+
+            edsmFetchLogsButton.IsEnabled = false;
+            edsmFetchLogsButton.Content = "Obtaining log...";
+
+            StarMapService starMapService = new StarMapService(starMapConfiguration.apiKey, commanderName);
+
+            Dictionary<string, StarMapLogInfo> systems = starMapService.getStarMapLog();
+            foreach (string system in systems.Keys)
+            {
+                EDDIStarSystem CurrentStarSystemData = starSystemRepository.GetEDDIStarSystem(system);
+                if (CurrentStarSystemData == null)
+                {
+                    // We have no record of this system; set it up
+                    CurrentStarSystemData = new EDDIStarSystem();
+                    CurrentStarSystemData.Name = system;
+                    CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(system);
+                    CurrentStarSystemData.StarSystemLastUpdated = DateTime.Now;
+                }
+                CurrentStarSystemData.TotalVisits = systems[system].visits;
+                CurrentStarSystemData.LastVisit = systems[system].lastVisit;
+                CurrentStarSystemData.PreviousVisit = systems[system].previousVisit;
+                starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
+            }
+
+            edsmFetchLogsButton.Content = "Log obtained";
         }
     }
 }

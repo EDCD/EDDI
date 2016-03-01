@@ -97,6 +97,50 @@ namespace EliteDangerousStarMapService
             StarMapDistanceResponse response = clientResponse.Data;
         }
 
+        public Dictionary<string, StarMapLogInfo> getStarMapLog(DateTime? since = null)
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-logs-v1/get-logs");
+            request.AddParameter("apiKey", apiKey);
+            request.AddParameter("commanderName", commanderName);
+            if (since.HasValue)
+            {
+                request.AddParameter("startdatetime", since.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+            }
+            var starMapLogResponse = client.Execute<StarMapLogResponse>(request);
+            StarMapLogResponse response = starMapLogResponse.Data;
+
+            Dictionary<string, StarMapLogInfo> vals = new Dictionary<string, StarMapLogInfo>();
+            if (response != null)
+            {
+                foreach (StarMapResponseLogEntry entry in response.logs)
+                {
+                    Console.WriteLine("Entry found for " + entry.system);
+                    if (vals.ContainsKey(entry.system))
+                    {
+                        vals[entry.system].visits = vals[entry.system].visits + 1;
+                        if (entry.date > vals[entry.system].lastVisit)
+                        {
+                            vals[entry.system].previousVisit = vals[entry.system].lastVisit;
+                            vals[entry.system].lastVisit = entry.date;
+                        }
+                        else if (vals[entry.system].previousVisit == null || entry.date > vals[entry.system].previousVisit)
+                        {
+                            vals[entry.system].previousVisit = entry.date;
+                        }
+                    }
+                    else
+                    {
+                        vals[entry.system] = new StarMapLogInfo();
+                        vals[entry.system].system = entry.system;
+                        vals[entry.system].visits = 1;
+                        vals[entry.system].lastVisit = entry.date;
+                    }
+                }
+            }
+            return vals;
+        }
+
         public static string ObtainApiKey()
         {
             String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
@@ -135,6 +179,14 @@ namespace EliteDangerousStarMapService
         public string comment { get; set; }
         public DateTime? lastUpdate { get; set; }
         public List<StarMapResponseLogEntry> logs { get; set; }
+    }
+
+    public class StarMapLogInfo
+    {
+        public string system { get; set; }
+        public int visits { get; set; }
+        public DateTime lastVisit { get; set; }
+        public DateTime? previousVisit { get; set; }
     }
 
     class StarMapResponseLogEntry
