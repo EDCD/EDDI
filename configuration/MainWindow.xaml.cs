@@ -342,6 +342,22 @@ namespace configuration
             shipyardData.ItemsSource = ships;
         }
 
+        private void testShipName(object sender, RoutedEventArgs e)
+        {
+            Ship ship = (Ship)((Button)e.Source).DataContext;
+            ship.Health = 100;
+            SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
+            SpeechService speechService = new SpeechService(speechConfiguration);
+            if (String.IsNullOrEmpty(ship.PhoneticName))
+            {
+                speechService.Say(ship, ship.Name + " stands ready.");
+            }
+            else
+            {
+                speechService.Say(ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.PhoneticName + "\">" + ship.Name + "</phoneme>" + " stands ready.");
+            }
+        }
+
         private void shipYardUpdated(object sender, DataTransferEventArgs e)
         {
             if (shipsConfiguration != null)

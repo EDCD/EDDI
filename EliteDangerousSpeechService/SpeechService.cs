@@ -33,15 +33,33 @@ namespace EliteDangerousSpeechService
 
         public void Say(Ship ship, string script)
         {
-            script = script.Replace("$=", ship == null || ship.Name == null ? "your ship" : ship.Name);
+            string shipScript;
+            if (ship == null || ship.Name == null || ship.Name.Trim().Length == 0)
+            {
+                shipScript = "your ship";
+            }
+            else if (ship.PhoneticName == null || ship.PhoneticName.Trim().Length == 0)
+            {
+                shipScript = ship.Name;
+            }
+            else
+            {
+                shipScript = "<phoneme alphabet=\"ipa\" ph=\"" + ship.PhoneticName + "\">" + ship.Name + "</phoneme>";
+            }
+            script = script.Replace("$=", shipScript);
+
             Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, false);
         }
 
         public void Transmit(Ship ship, string script)
         {
-            if (ship.CallSign == null)
+            if (ship == null)
             {
-                script = script.Replace("$=", "Unidentified " + ship.Model == null ? "ship" : ship.Model);
+                script = script.Replace("$=", "Unidentified ship");
+            }
+            else if (ship.CallSign == null)
+            {
+                script = script.Replace("$=", "Unidentified " + Translations.ShipModel(ship.Model));
             }
             else
             {
@@ -52,9 +70,13 @@ namespace EliteDangerousSpeechService
 
         public void Receive(Ship ship, string script)
         {
-            if (ship.CallSign == null)
+            if (ship == null)
             {
-                script = script.Replace("$=", "Unidentified " + ship.Model == null ? "ship" : ship.Model);
+                script = script.Replace("$=", "Unidentified ship");
+            }
+            else if (ship.CallSign == null)
+            {
+                script = script.Replace("$=", "Unidentified " + Translations.ShipModel(ship.Model));
             }
             else
             {

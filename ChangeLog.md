@@ -1,6 +1,7 @@
   * Added configuration option to set insurance excess percentage
   * Added Insurance (decimal): the percentage insurance excess (usually 5, 3.75 or 2.5)
   * Added configuration of the ship voice
+  * Added phonetic pronunciation for ship names
 
 #1.0.0
   * Fix minor VoiceAttack script issues

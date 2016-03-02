@@ -32,6 +32,9 @@ namespace EliteDangerousDataDefinitions
         /// <summary>the name of this ship</summary>
         [JsonProperty("name")]
         public string Name { get; set; }
+        /// <summary>the phonetic name of this ship</summary>
+        [JsonProperty("phoneticName")]
+        public string PhoneticName { get; set; }
         /// <summary>the role of this ship</summary>
         [JsonProperty("role")]
         public ShipRole Role { get; set; }

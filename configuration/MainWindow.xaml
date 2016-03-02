@@ -116,13 +116,21 @@
             </TabItem>
             <TabItem Header="Shipyard">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <TextBlock x:Name="shipyardText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="This allows you to set names and callsigns for your ships.  The information is made available in VoiceAttack for use by scripts.  Please note that for this feature to work the companion app needs to be configured" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="shipyardText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="This allows you to set names and callsigns for your ships.  The information is made available in VoiceAttack for use by scripts.  If the name of your ship is hard for EDDI to pronounce then you can add a spoken version of the ship using IPA.  For example, if your ship was called 'Pride of Achenar' then your spoken name would be 'praɪdɒvˈakɜːnɑ' (note no spaces in the phonetic version).  Please note that for this feature to work the companion app needs to be configured" VerticalAlignment="Top"/>
                     <DataGrid AutoGenerateColumns="False" x:Name="shipyardData" CanUserAddRows="false" TargetUpdated="shipYardUpdated">
                         <DataGrid.Columns>
                             <DataGridTextColumn IsReadOnly="True" Header="Model" Binding="{Binding Path=Model}"></DataGridTextColumn>
                             <DataGridTextColumn IsReadOnly="True" Header="In Storage At" Binding="{Binding Path=StarSystem}"></DataGridTextColumn>
                             <DataGridComboBoxColumn x:Name ="Role" Header="Role" SelectedItemBinding="{Binding Path=Role,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource roleValues}}"></DataGridComboBoxColumn>
-                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Path=Name,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Path=Name,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Name (spoken)" Width="*" Binding="{Binding Path=PhoneticName,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="testShipName">Hear it</Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn IsReadOnly="True" Header="Callsign" MinWidth="40" Binding="{Binding Path=CallSign}"></DataGridTextColumn>
                         </DataGrid.Columns>
                     </DataGrid>
