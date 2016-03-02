@@ -1,5 +1,7 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json;
+using RestSharp;
 using RestSharp.Deserializers;
+using RestSharp.Serializers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,8 +35,8 @@ namespace EliteDangerousStarMapService
             request.AddParameter("systemName", systemName);
             request.AddParameter("dateVisited", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
-            var clientResponse = client.Execute<StarMapResponse>(request);
-            StarMapResponse response = clientResponse.Data;
+            var clientResponse = client.Execute<StarMapLogResponse>(request);
+            StarMapLogResponse response = clientResponse.Data;
             // TODO check response
         }
 
@@ -47,8 +49,8 @@ namespace EliteDangerousStarMapService
             request.AddParameter("systemName", systemName);
             request.AddParameter("comment", comment);
 
-            var clientResponse = client.Execute<StarMapResponse>(request);
-            StarMapResponse response = clientResponse.Data;
+            var clientResponse = client.Execute<StarMapLogResponse>(request);
+            StarMapLogResponse response = clientResponse.Data;
             // TODO check response
         }
 
@@ -61,8 +63,8 @@ namespace EliteDangerousStarMapService
             logRequest.AddParameter("apiKey", apiKey);
             logRequest.AddParameter("commanderName", commanderName);
             logRequest.AddParameter("systemName", systemName);
-            var logClientResponse = client.Execute<StarMapResponse>(logRequest);
-            StarMapResponse logResponse = logClientResponse.Data;
+            var logClientResponse = client.Execute<StarMapLogResponse>(logRequest);
+            StarMapLogResponse logResponse = logClientResponse.Data;
             // TODO check response
 
             // Also grab any comment that might be present
@@ -70,20 +72,74 @@ namespace EliteDangerousStarMapService
             commentRequest.AddParameter("apiKey", apiKey);
             commentRequest.AddParameter("commanderName", commanderName);
             commentRequest.AddParameter("systemName", systemName);
-            var commentClientResponse = client.Execute<StarMapResponse>(commentRequest);
-            StarMapResponse commentResponse = commentClientResponse.Data;
+            var commentClientResponse = client.Execute<StarMapLogResponse>(commentRequest);
+            StarMapLogResponse commentResponse = commentClientResponse.Data;
             // TODO check response
 
             return new StarMapInfo(logResponse.logs.Count, logResponse.lastUpdate, commentResponse.comment);
         }
 
 
-        public void sendStarMapDistances(string systemName, decimal distanceToSol, decimal distanceToMaia, decimal distanceToRobigo, decimal distanceTo17Draconis)
+        public void sendStarMapDistance(string systemName, string remoteSystemName, decimal distance)
         {
-            StarMapData data = new StarMapData(commanderName, systemName, distanceToSol, distanceToMaia, distanceToRobigo, distanceTo17Draconis);
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest(Method.POST);
+            request.Resource = "api-v1/submit-distances";
+
+            StarMapData data = new StarMapData(commanderName, systemName, remoteSystemName, distance);
             StarMapSubmission submission = new StarMapSubmission(data);
+
+            request.JsonSerializer = NewtonsoftJsonSerializer.Default;
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(submission);
+
+            var clientResponse = client.Execute<StarMapDistanceResponse>(request);
+            StarMapDistanceResponse response = clientResponse.Data;
         }
 
+        public Dictionary<string, StarMapLogInfo> getStarMapLog(DateTime? since = null)
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-logs-v1/get-logs");
+            request.AddParameter("apiKey", apiKey);
+            request.AddParameter("commanderName", commanderName);
+            if (since.HasValue)
+            {
+                request.AddParameter("startdatetime", since.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+            }
+            var starMapLogResponse = client.Execute<StarMapLogResponse>(request);
+            StarMapLogResponse response = starMapLogResponse.Data;
+
+            Dictionary<string, StarMapLogInfo> vals = new Dictionary<string, StarMapLogInfo>();
+            if (response != null)
+            {
+                foreach (StarMapResponseLogEntry entry in response.logs)
+                {
+                    Console.WriteLine("Entry found for " + entry.system);
+                    if (vals.ContainsKey(entry.system))
+                    {
+                        vals[entry.system].visits = vals[entry.system].visits + 1;
+                        if (entry.date > vals[entry.system].lastVisit)
+                        {
+                            vals[entry.system].previousVisit = vals[entry.system].lastVisit;
+                            vals[entry.system].lastVisit = entry.date;
+                        }
+                        else if (vals[entry.system].previousVisit == null || entry.date > vals[entry.system].previousVisit)
+                        {
+                            vals[entry.system].previousVisit = entry.date;
+                        }
+                    }
+                    else
+                    {
+                        vals[entry.system] = new StarMapLogInfo();
+                        vals[entry.system].system = entry.system;
+                        vals[entry.system].visits = 1;
+                        vals[entry.system].lastVisit = entry.date;
+                    }
+                }
+            }
+            return vals;
+        }
 
         public static string ObtainApiKey()
         {
@@ -109,26 +165,28 @@ namespace EliteDangerousStarMapService
         }
     }
 
-    public class StarMapDistance
+    // response from the Star Map distance API
+    class StarMapDistanceResponse
     {
-        public string systemName { get; set; }
-        public decimal distance { get; set; }
 
-        public StarMapDistance(string systemName, decimal distance)
-        {
-            this.systemName = systemName;
-            this.distance = distance;
-        }
     }
 
-    // response from the Star Map API
-    class StarMapResponse
+    // response from the Star Map log API
+    class StarMapLogResponse
     {
         public int msgnum { get; set; }
         public string msg { get; set; }
         public string comment { get; set; }
         public DateTime? lastUpdate { get; set; }
         public List<StarMapResponseLogEntry> logs { get; set; }
+    }
+
+    public class StarMapLogInfo
+    {
+        public string system { get; set; }
+        public int visits { get; set; }
+        public DateTime lastVisit { get; set; }
+        public DateTime? previousVisit { get; set; }
     }
 
     class StarMapResponseLogEntry
@@ -185,7 +243,7 @@ namespace EliteDangerousStarMapService
 
     class StarMapSubmission
     {
-        private StarMapData data { get; set; }
+        public StarMapData data { get; set; }
 
         public StarMapSubmission(StarMapData data)
         {
@@ -193,41 +251,101 @@ namespace EliteDangerousStarMapService
         }
     }
 
-    class Reference
+    public class StarMapDistance
     {
-        private string name { get; set; }
-        private decimal? distance { get; set; }
+        [JsonProperty("name")]
+        public string systemName { get; set; }
+        [JsonProperty("dist")]
+        public decimal? distance { get; set; }
 
-        public Reference(string name)
+        public StarMapDistance(string systemName)
         {
-            this.name = name;
+            this.systemName = systemName;
         }
-        public Reference(string name, decimal distance)
+
+        public StarMapDistance(string systemName, decimal distance)
         {
-            this.name = name;
+            this.systemName = systemName;
             this.distance = distance;
         }
     }
 
-    class StarMapData
+    public class StarMapData
     {
-        private string commander { get; set; }
-        private string fromSoftware { get; set; }
-        private string fromSoftwareVersion { get; set; }
-        private Reference p0 { get; set; }
-        private List<Reference> refs { get; set; }
+        public string commander { get; set; }
+        public string fromSoftware { get; set; }
+        public string fromSoftwareVersion { get; set; }
+        public StarMapDistance p0 { get; set; }
+        public List<StarMapDistance> refs { get; set; }
 
-        public StarMapData(string commanderName, string systemName, decimal distanceToSol, decimal distanceToMaia, decimal distanceToRobigo, decimal distanceTo17Draconis)
+        public StarMapData(string commanderName, string systemName, string remoteSystemName, decimal distance)
         {
             this.commander = commanderName;
             this.fromSoftware = "EDDI";
-            this.fromSoftwareVersion = "0.7.2";
-            this.p0 = new Reference(systemName);
-            this.refs = new List<Reference>();
-            this.refs.Add(new Reference("Sol", distanceToSol));
-            this.refs.Add(new Reference("Maia", distanceToMaia));
-            this.refs.Add(new Reference("Robigo", distanceToRobigo));
-            this.refs.Add(new Reference("17 Draconis", distanceTo17Draconis));
+            this.fromSoftwareVersion = "1.1.0";
+            this.p0 = new StarMapDistance(systemName);
+            this.refs = new List<StarMapDistance>();
+            this.refs.Add(new StarMapDistance(remoteSystemName, distance));
+        }
+    }
+
+    // Custom serializer for REST requests
+    public class NewtonsoftJsonSerializer : ISerializer
+    {
+        private Newtonsoft.Json.JsonSerializer serializer;
+
+        public NewtonsoftJsonSerializer(Newtonsoft.Json.JsonSerializer serializer)
+        {
+            this.serializer = serializer;
+        }
+
+        public string ContentType
+        {
+            get { return "application/json"; } // Probably used for Serialization?
+            set { }
+        }
+
+        public string DateFormat { get; set; }
+
+        public string Namespace { get; set; }
+
+        public string RootElement { get; set; }
+
+        public string Serialize(object obj)
+        {
+            using (var stringWriter = new StringWriter())
+            {
+                using (var jsonTextWriter = new JsonTextWriter(stringWriter))
+                {
+                    serializer.Serialize(jsonTextWriter, obj);
+
+                    return stringWriter.ToString();
+                }
+            }
+        }
+
+        public T Deserialize<T>(RestSharp.IRestResponse response)
+        {
+            var content = response.Content;
+
+            using (var stringReader = new StringReader(content))
+            {
+                using (var jsonTextReader = new JsonTextReader(stringReader))
+                {
+                    return serializer.Deserialize<T>(jsonTextReader);
+                }
+            }
+        }
+
+        public static NewtonsoftJsonSerializer Default
+        {
+            get
+            {
+                return new NewtonsoftJsonSerializer(new Newtonsoft.Json.JsonSerializer()
+                {
+                    NullValueHandling = NullValueHandling.Ignore,
+                });
+            }
         }
     }
 }

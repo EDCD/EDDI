@@ -14,7 +14,7 @@ namespace Tests
         [TestMethod]
         public void TestSolLog()
         {
-            StarMapService service = new StarMapService("8023ed4044b074115af1dd85bc8920e0ef072cb1", "Test", "http://beta.edsm.net:8080/");
+            StarMapService service = new StarMapService("secret", "McDonald", "http://beta.edsm.net:8080/");
             service.sendStarMapLog("Sol");
 
             StarMapInfo info = service.getStarMapInfo("Sol");
@@ -24,13 +24,28 @@ namespace Tests
         [TestMethod]
         public void TestProximaCentauriComment()
         {
-            StarMapService service = new StarMapService("8023ed4044b074115af1dd85bc8920e0ef072cb1", "Test", "http://beta.edsm.net:8080/");
+            StarMapService service = new StarMapService("secret", "McDonald", "http://beta.edsm.net:8080/");
             service.sendStarMapLog("Proxima Centauri");
 
             service.sendStarMapComment("Proxima Centauri", "Not so far away");
 
             StarMapInfo info = service.getStarMapInfo("Proxima Centauri");
             Assert.AreEqual("Not so far away", info.Comment);
+        }
+
+        [TestMethod]
+        public void TestProximaDistance()
+        {
+            StarMapService service = new StarMapService("secret", "McDonald", "http://beta.edsm.net:8080/");
+            service.sendStarMapDistance("Sol", "HIP 11658", 350.35M);
+        }
+
+        [TestMethod]
+        public void TestGetLogs()
+        {
+            StarMapService service = new StarMapService("secret", "McDonald", "http://beta.edsm.net:8000/");
+            Dictionary<string, StarMapLogInfo> logs = service.getStarMapLog();
+            Assert.AreEqual(1, logs.Count);
         }
     }
 }
