@@ -384,6 +384,10 @@ namespace EliteDangerousCompanionAppService
                 {
                     ship.Name = shipConfig.Name.Trim();
                 }
+                if (shipConfig.PhoneticName != null && shipConfig.PhoneticName.Trim().Length > 0)
+                {
+                    ship.PhoneticName = shipConfig.PhoneticName.Trim();
+                }
                 ship.CallSign = shipConfig.CallSign;
                 ship.Role = shipConfig.Role;
             }

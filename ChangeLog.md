@@ -6,6 +6,7 @@
   * Added configuration option to sync EDSM data with local information
   * Added ability to set and recollect notes from EDSM
   * Added ability to carry out trilateration of systems for EDSM
+  * Added phonetic pronunciation for ship names
 
 #1.0.0
   * Fix minor VoiceAttack script issues
