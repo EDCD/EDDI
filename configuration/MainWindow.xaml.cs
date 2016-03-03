@@ -465,8 +465,7 @@ namespace configuration
                     // We have no record of this system; set it up
                     CurrentStarSystemData = new EDDIStarSystem();
                     CurrentStarSystemData.Name = system;
-                    CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(system);
-                    CurrentStarSystemData.StarSystemLastUpdated = DateTime.Now;
+                    // Due to the potential large number of systems being imported we don't pull individual system data at this time
                 }
                 CurrentStarSystemData.TotalVisits = systems[system].visits;
                 CurrentStarSystemData.LastVisit = systems[system].lastVisit;

@@ -693,7 +693,7 @@ namespace EDDIVAPlugin
                         debug("InvokeNewSystem() Checking existing starsystemdata");
                         if (CurrentStarSystemData.StarSystem == null || (DateTime.Now - CurrentStarSystemData.StarSystemLastUpdated).TotalHours > 12)
                         {
-                            debug("InvokeNewSystem() Refreshing stale data");
+                            debug("InvokeNewSystem() Refreshing stale or missing data");
                             // Data is stale; refresh it
                             CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(CurrentStarSystemData.Name);
                             CurrentStarSystemData.StarSystemLastUpdated = CurrentStarSystemData.LastVisit;
