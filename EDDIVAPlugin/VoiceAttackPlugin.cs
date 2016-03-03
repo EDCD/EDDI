@@ -45,7 +45,7 @@ namespace EDDIVAPlugin
         private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
 
-        public static readonly string PLUGIN_VERSION = "1.0.0";
+        public static readonly string PLUGIN_VERSION = "1.1.0-beta1";
 
         public static string VA_DisplayName()
         {
@@ -352,6 +352,7 @@ namespace EDDIVAPlugin
 
         public static void InvokeCoriolis(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
+            debug("InvokeCoriolis(): entered");
             try
             {
                 if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
@@ -361,11 +362,14 @@ namespace EDDIVAPlugin
                     if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
                     {
                         // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
+                        debug("InvokeCoriolis(): cannot obtain profile information; leaving");
                         return;
                     }
                 }
 
                 string shipUri = Coriolis.ShipUri(Cmdr.Ship);
+
+                debug("InvokeCoriolis(): starting process with uri " + shipUri);
 
                 Process.Start(shipUri);
 
@@ -375,16 +379,20 @@ namespace EDDIVAPlugin
             {
                 setPluginStatus(ref textValues, "Failed", "Failed to send ship data to coriolis", e);
             }
+            debug("InvokeCoriolis(): leaving");
         }
 
         public static void InvokeUpdateProfile(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
+            debug("InvokeUpdateProfile(): entered.  App service is " + (appService == null ? "disabled" : "enabled"));
             if (appService != null)
             {
                 try
                 {
                     // Obtain the command profile
                     Cmdr = appService.Profile();
+
+                    debug("InvokeUpdateProfile(): Commander is " + JsonConvert.SerializeObject(Cmdr));
 
                     //
                     // Commander data
@@ -432,7 +440,6 @@ namespace EDDIVAPlugin
                     }
                     setInt(ref intValues, "Ship limpets carried", limpets);
 
-
                     SetModuleDetails("Ship bulkheads", Cmdr.Ship.Bulkheads, ref textValues, ref intValues, ref decimalValues);
                     SetOutfittingCost("Ship bulkheads", Cmdr.Ship.Bulkheads, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
                     SetModuleDetails("Ship power plant", Cmdr.Ship.PowerPlant, ref textValues, ref intValues, ref decimalValues);
@@ -449,11 +456,6 @@ namespace EDDIVAPlugin
                     SetOutfittingCost("Ship sensors", Cmdr.Ship.Sensors, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
                     SetModuleDetails("Ship fuel tank", Cmdr.Ship.FuelTank, ref textValues, ref intValues, ref decimalValues);
                     SetOutfittingCost("Ship fuel tank", Cmdr.Ship.FuelTank, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    //setString(ref textValues, "Ship fuel tank", Cmdr.Ship.FuelTank.Class + Cmdr.Ship.FuelTank.Grade);
-                    //setDecimal(ref decimalValues, "Ship fuel tank cost", (decimal)Cmdr.Ship.FuelTank.Cost);
-                    //setDecimal(ref decimalValues, "Ship fuel tank value", (decimal)Cmdr.Ship.FuelTank.Value);
-                    //setDecimal(ref decimalValues, "Ship fuel tank discount", Cmdr.Ship.FuelTank.Value == 0 ? 0 : Math.Round((1 - (((decimal)Cmdr.Ship.FuelTank.Cost) / ((decimal)Cmdr.Ship.FuelTank.Value))) * 100, 1));
-                    //setDecimal(ref decimalValues, "Ship fuel tank capacity", Cmdr.Ship.FuelTankCapacity);
 
                     // Hardpoints
                     int numTinyHardpoints = 0;
