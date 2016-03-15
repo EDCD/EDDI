@@ -5499,7 +5499,7 @@ namespace Tests
   }
 }
 ";
-            EliteDangerousCompanionAppService.CompanionAppService app = new EliteDangerousCompanionAppService.CompanionAppService(CompanionAppCredentials.FromFile());
+            EliteDangerousCompanionAppService.CompanionAppService app = new EliteDangerousCompanionAppService.CompanionAppService(true);
             Commander cmdr = EliteDangerousCompanionAppService.CompanionAppService.CommanderFromProfile(data);
 
             Assert.AreEqual("Testy", cmdr.Name);

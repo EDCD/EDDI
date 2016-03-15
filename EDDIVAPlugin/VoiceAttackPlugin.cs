@@ -111,10 +111,9 @@ namespace EDDIVAPlugin
                             setBoolean(ref booleanValues, "EDDI debug", enableDebugging);
 
                             // Set up the app service
-                            CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
-                            if (companionAppCredentials != null && !String.IsNullOrEmpty(companionAppCredentials.appId) && !String.IsNullOrEmpty(companionAppCredentials.machineId) && !String.IsNullOrEmpty(companionAppCredentials.machineToken))
+                            appService = new CompanionAppService(enableDebugging);
+                            if (appService.CurrentState == CompanionAppService.State.READY)
                             {
-                                appService = new CompanionAppService(companionAppCredentials);
                                 // Carry out initial population of profile
                                 InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                             }
@@ -301,6 +300,7 @@ namespace EDDIVAPlugin
 
                                 if ((string)entry.starsystem != Cmdr.StarSystem)
                                 {
+                                    debug("InvokeLogWatcher(): system changed from " + Cmdr.StarSystem + " to " + entry.starsystem);
                                     // Change of system
                                     setString(ref textValues, "EDDI event", "System change");
                                     Cmdr.StarSystem = (string)entry.starsystem;
@@ -313,6 +313,7 @@ namespace EDDIVAPlugin
                                 }
                                 else if (newEnvironment != CurrentEnvironment)
                                 {
+                                    debug("InvokeLogWatcher(): environment changed from " + CurrentEnvironment + " to " + newEnvironment);
                                     // Change of environment
                                     setString(ref textValues, "EDDI event", "Environment change");
                                     CurrentEnvironment = newEnvironment;
@@ -723,7 +724,7 @@ namespace EDDIVAPlugin
                     debug("InvokeNewSystem() CurrentStarSystem is now " + (CurrentStarSystem == null ? "<null>" : JsonConvert.SerializeObject(CurrentStarSystem)));
                     debug("InvokeNewSystem() LastStarSystem is now " + (LastStarSystem == null ? "<null>" : JsonConvert.SerializeObject(LastStarSystem)));
 
-                    if (initialised)
+                    if (initialised && LastStarSystem != null && LastStarSystem.Name != CurrentStarSystem.Name)
                     {
                         // We have travelled; let EDSM know
                         if (starMapService != null)
@@ -798,7 +799,7 @@ namespace EDDIVAPlugin
                     if (starMapService != null)
                     {
                         StarMapInfo info = starMapService.getStarMapInfo(CurrentStarSystem.Name);
-                        setString(ref textValues, "System comment", info == null ? null : info.Comment);
+                        setString(ref textValues, "System comment", info == null || info.Comment == null || info.Comment.Trim() == "" ? null : info.Comment);
                     }
                     debug("InvokeNewSystem() Set EDSM comment");
 

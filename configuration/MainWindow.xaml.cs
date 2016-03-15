@@ -31,12 +31,16 @@ namespace configuration
         private Commander commander;
         private ShipsConfiguration shipsConfiguration;
 
+        private EDDIConfiguration eddiConfiguration;
+
+        private CompanionAppService companionAppService;
+
         public MainWindow()
         {
             InitializeComponent();
 
             // Configured the EDDI tab
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration = EDDIConfiguration.FromFile();
             eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;
             eddiInsuranceDecimal.Value = eddiConfiguration.Insurance;
@@ -44,7 +48,7 @@ namespace configuration
             // Configure the Companion App tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             // See if the credentials work
-            CompanionAppService companionAppService = new CompanionAppService(companionAppCredentials);
+            companionAppService = new CompanionAppService(eddiConfiguration.Debug);
             try
             {
                 commander = companionAppService.Profile();
@@ -52,8 +56,16 @@ namespace configuration
             }
             catch (Exception ex)
             {
-                // Fall back to stage 1
-                setUpCompanionAppStage1();
+                if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_LOGIN)
+                {
+                    // Fall back to stage 1
+                    setUpCompanionAppStage1();
+                }
+                else if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_CONFIRMATION)
+                {
+                    // Fall back to stage 2
+                    setUpCompanionAppStage2();
+                }
             }
 
             if (commander != null)
@@ -124,19 +136,9 @@ namespace configuration
 
         private void updateEddiConfiguration()
         {
-            EDDIConfiguration eddiConfiguration = new EDDIConfiguration();
-            if (!String.IsNullOrWhiteSpace(eddiHomeSystemText.Text))
-            {
-                eddiConfiguration.HomeSystem = eddiHomeSystemText.Text.Trim();
-            }
-            if (!String.IsNullOrWhiteSpace(eddiHomeStationText.Text))
-            {
-                eddiConfiguration.HomeStation = eddiHomeStationText.Text.Trim();
-            }
-            if (eddiInsuranceDecimal.Value != null)
-            {
-                eddiConfiguration.Insurance = (decimal)eddiInsuranceDecimal.Value;
-            }
+            eddiConfiguration.HomeSystem = String.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
+            eddiConfiguration.HomeStation = String.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
+            eddiConfiguration.Insurance = eddiInsuranceDecimal.Value == null ? 5 : (decimal)eddiInsuranceDecimal.Value;
             eddiConfiguration.ToFile();
         }
 
@@ -147,14 +149,20 @@ namespace configuration
             if (companionAppEmailText.Visibility == Visibility.Visible)
             {
                 // Stage 1 of authentication - login
-                string email = companionAppEmailText.Text.Trim();
-                string password = companionAppPasswordText.Password.Trim();
+                companionAppService.Credentials.email = companionAppEmailText.Text.Trim();
+                companionAppService.Credentials.password = companionAppPasswordText.Password.Trim();
                 try
                 {
-                    CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
-                    companionAppCredentials = CompanionAppService.Login(companionAppCredentials, email, password);
-                    companionAppCredentials.ToFile();
-                    setUpCompanionAppStage2();
+                    companionAppService.Login();
+                    if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_CONFIRMATION)
+                    {
+                        setUpCompanionAppStage2();
+                    }
+                    else if (companionAppService.CurrentState == CompanionAppService.State.READY)
+                    {
+                        setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + commander.Name);
+                        setShipyardFromConfiguration();
+                    }
                 }
                 catch (EliteDangerousCompanionAppAuthenticationException ex)
                 {
@@ -172,13 +180,11 @@ namespace configuration
             else if (companionAppCodeText.Visibility == Visibility.Visible)
             {
                 // Stage 2 of authentication - confirmation
+                string code = companionAppCodeText.Text.Trim();
                 try
                 {
-                    CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
-                    companionAppCredentials = CompanionAppService.Confirm(companionAppCredentials, companionAppCodeText.Text.Trim());
-                    companionAppCredentials.ToFile();
+                    companionAppService.Confirm(code);
                     // All done - see if it works
-                    CompanionAppService companionAppService = new CompanionAppService(companionAppCredentials);
                     commander = companionAppService.Profile();
                     setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + commander.Name);
                     setShipyardFromConfiguration();
@@ -211,8 +217,10 @@ namespace configuration
 
             companionAppEmailLabel.Visibility = Visibility.Visible;
             companionAppEmailText.Visibility = Visibility.Visible;
+            companionAppEmailText.Text = companionAppService.Credentials.email;
             companionAppPasswordLabel.Visibility = Visibility.Visible;
             companionAppPasswordText.Visibility = Visibility.Visible;
+            companionAppPasswordText.Password = companionAppService.Credentials.password;
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
@@ -433,7 +441,7 @@ namespace configuration
             if (String.IsNullOrEmpty(starMapConfiguration.commanderName))
             {
                 // Fetch the commander name from the companion app
-                CompanionAppService companionAppService = new CompanionAppService(CompanionAppCredentials.FromFile());
+                CompanionAppService companionAppService = new CompanionAppService(eddiConfiguration.Debug);
                 Commander cmdr = companionAppService.Profile();
                 if (cmdr != null && cmdr.Name != null)
                 {
