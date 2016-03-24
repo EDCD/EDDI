@@ -176,7 +176,6 @@ namespace EliteDangerousCompanionAppService
             }
 
             HttpWebRequest request = GetRequest(BASE_URL + PROFILE_URL);
-
             HttpWebResponse response = GetResponse(request);
 
             if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
@@ -188,6 +187,8 @@ namespace EliteDangerousCompanionAppService
                 {
                     throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile");
                 }
+                // Rerun the profile request
+                request = GetRequest(BASE_URL + PROFILE_URL);
                 response = GetResponse(request);
             }
 
