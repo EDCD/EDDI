@@ -33,7 +33,7 @@ namespace EliteDangerousStarMapService
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("systemName", systemName);
-            request.AddParameter("dateVisited", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            request.AddParameter("dateVisited", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
 
             var clientResponse = client.Execute<StarMapLogResponse>(request);
             StarMapLogResponse response = clientResponse.Data;
