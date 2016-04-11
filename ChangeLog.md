@@ -1,3 +1,5 @@
+#1.1.0
+  * Fixed issue where EDDI would need the user to log in repeatedly to maintain a connection to the Elite servers
   * Added configuration option to set insurance excess percentage
   * Added Insurance (decimal): the percentage insurance excess (usually 5, 3.75 or 2.5)
   * Added Ship limpets carried (int): the number of limpets carried by the ship
