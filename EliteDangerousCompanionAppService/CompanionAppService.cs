@@ -78,16 +78,30 @@ namespace EliteDangerousCompanionAppService
         {
             this.enableDebugging = enableDebugging;
             Credentials = CompanionAppCredentials.FromFile();
-            // Assume that we're in ready state for now - profile will reset it if we aren't
-            CurrentState = State.READY;
-            // Fetch data to see what state we are in
-            try
+
+            // Need to work out our current state.
+
+            //If we're missing username and password then we need to log in again
+            if (String.IsNullOrEmpty(Credentials.email) || String.IsNullOrEmpty(Credentials.password))
             {
-                Profile();
+                CurrentState = State.NEEDS_LOGIN;
             }
-            catch (EliteDangerousCompanionAppException ex)
+            else if (String.IsNullOrEmpty(Credentials.machineId) || String.IsNullOrEmpty(Credentials.machineToken))
             {
-                // Ignored
+                CurrentState = State.NEEDS_LOGIN;
+            }
+            else
+            {
+                // Looks like we're ready but test it to find out
+                CurrentState = State.READY;
+                try
+                {
+                    Profile();
+                }
+                catch (EliteDangerousCompanionAppException ex)
+                {
+                    // Ignored - current state will have been corrected by Profile() if we guessed incorrectly
+                }
             }
         }
 
@@ -97,7 +111,7 @@ namespace EliteDangerousCompanionAppService
             if (CurrentState != State.NEEDS_LOGIN)
             {
                 // Shouldn't be here
-                throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to login");
+                throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to login (" + CurrentState + ")");
             }
 
             HttpWebRequest request = GetRequest(BASE_URL + LOGIN_URL);
@@ -135,7 +149,7 @@ namespace EliteDangerousCompanionAppService
             if (CurrentState != State.NEEDS_CONFIRMATION)
             {
                 // Shouldn't be here
-                throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to confirm login");
+                throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to confirm login (" + CurrentState + ")");
             }
 
             HttpWebRequest request = GetRequest(BASE_URL + CONFIRM_URL);
@@ -167,7 +181,7 @@ namespace EliteDangerousCompanionAppService
             if (CurrentState != State.READY)
             {
                 // Shouldn't be here
-                throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile");
+                throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
             }
             if (cachedProfileExpires > DateTime.Now)
             {
@@ -185,7 +199,7 @@ namespace EliteDangerousCompanionAppService
                 Login();
                 if (CurrentState != State.READY)
                 {
-                    throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile");
+                    throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
                 }
                 // Rerun the profile request
                 request = GetRequest(BASE_URL + PROFILE_URL);
@@ -312,7 +326,9 @@ namespace EliteDangerousCompanionAppService
         /// <summary>Create a commander profile given the results from a /profile call</summary>
         public static Commander CommanderFromProfile(string data)
         {
-            return CommanderFromProfile(JObject.Parse(data));
+            Commander cmdr = CommanderFromProfile(JObject.Parse(data));
+            AugmentCmdrInfo(cmdr);
+            return cmdr;
         }
 
 
@@ -356,6 +372,22 @@ namespace EliteDangerousCompanionAppService
             }
 
             return Commander;
+        }
+
+        private static void AugmentCmdrInfo(Commander cmdr)
+        {
+            if (cmdr != null)
+            {
+                CommanderConfiguration cmdrConfiguration = CommanderConfiguration.FromFile();
+                if (cmdrConfiguration.PhoneticName == null || cmdrConfiguration.PhoneticName.Trim().Length == 0)
+                {
+                    cmdr.PhoneticName = null;
+                }
+                else
+                {
+                    cmdr.PhoneticName = cmdrConfiguration.PhoneticName;
+                }
+            }
         }
 
         private static void AugmentShipInfo(Ship ship, List<Ship> storedShips)

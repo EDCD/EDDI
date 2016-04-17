@@ -153,13 +153,22 @@ namespace configuration
                 companionAppService.Credentials.password = companionAppPasswordText.Password.Trim();
                 try
                 {
-                    companionAppService.Login();
+                    // It is possible that we have valid cookies at this point so don't log in, but we did
+                    // need the credentials
+                    if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_LOGIN)
+                    {
+                        companionAppService.Login();
+                    }
                     if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_CONFIRMATION)
                     {
                         setUpCompanionAppStage2();
                     }
                     else if (companionAppService.CurrentState == CompanionAppService.State.READY)
                     {
+                        if (commander == null)
+                        {
+                            commander = companionAppService.Profile();
+                        }
                         setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + commander.Name);
                         setShipyardFromConfiguration();
                     }
@@ -360,11 +369,11 @@ namespace configuration
             SpeechService speechService = new SpeechService(speechConfiguration);
             if (String.IsNullOrEmpty(ship.PhoneticName))
             {
-                speechService.Say(ship, ship.Name + " stands ready.");
+                speechService.Say(null, ship, ship.Name + " stands ready.");
             }
             else
             {
-                speechService.Say(ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.PhoneticName + "\">" + ship.Name + "</phoneme>" + " stands ready.");
+                speechService.Say(null, ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.PhoneticName + "\">" + ship.Name + "</phoneme>" + " stands ready.");
             }
         }
 
@@ -404,7 +413,7 @@ namespace configuration
             testShip.Health = 100;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             SpeechService speechService = new SpeechService(speechConfiguration);
-            speechService.Say(testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
+            speechService.Say(null, testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
         }
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
@@ -413,7 +422,7 @@ namespace configuration
             testShip.Health = 20;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             SpeechService speechService = new SpeechService(speechConfiguration);
-            speechService.Say(testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
+            speechService.Say(null, testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
         }
 
         /// <summary>

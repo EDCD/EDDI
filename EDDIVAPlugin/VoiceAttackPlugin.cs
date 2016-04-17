@@ -45,7 +45,7 @@ namespace EDDIVAPlugin
         private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
 
-        public static readonly string PLUGIN_VERSION = "1.1.0-beta2";
+        public static readonly string PLUGIN_VERSION = "1.1.0";
 
         public static string VA_DisplayName()
         {
@@ -902,7 +902,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Say(Cmdr.Ship, script);
+                speechService.Say(Cmdr, Cmdr.Ship, script);
             }
             catch (Exception e)
             {
@@ -930,7 +930,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Transmit(Cmdr.Ship, script);
+                speechService.Transmit(Cmdr, Cmdr.Ship, script);
             }
             catch (Exception e)
             {
@@ -958,7 +958,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Receive(Cmdr.Ship, script);
+                speechService.Receive(Cmdr, Cmdr.Ship, script);
             }
             catch (Exception e)
             {

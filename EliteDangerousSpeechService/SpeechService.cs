@@ -31,7 +31,7 @@ namespace EliteDangerousSpeechService
             locale = Thread.CurrentThread.CurrentCulture.Name;
         }
 
-        public void Say(Ship ship, string script)
+        public void Say(Commander commander, Ship ship, string script)
         {
             string shipScript;
             if (ship == null || ship.Name == null || ship.Name.Trim().Length == 0)
@@ -48,10 +48,25 @@ namespace EliteDangerousSpeechService
             }
             script = script.Replace("$=", shipScript);
 
+            string cmdrScript;
+            if (commander == null || commander.Name == null || commander.Name.Trim().Length == 0)
+            {
+                cmdrScript = "commander";
+            }
+            else if (commander.PhoneticName == null || commander.PhoneticName.Trim().Length == 0)
+            {
+                cmdrScript = "commander " + commander.Name;
+            }
+            else
+            {
+                cmdrScript = "commander <phoneme alphabet=\"ipa\" ph=\"" + commander.PhoneticName + "\">" + commander.Name + "</phoneme>";
+            }
+            script = script.Replace("$-", cmdrScript);
+
             Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, false);
         }
 
-        public void Transmit(Ship ship, string script)
+        public void Transmit(Commander commander, Ship ship, string script)
         {
             if (ship == null)
             {
@@ -68,7 +83,7 @@ namespace EliteDangerousSpeechService
             Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true);
         }
 
-        public void Receive(Ship ship, string script)
+        public void Receive(Commander commander, Ship ship, string script)
         {
             if (ship == null)
             {
