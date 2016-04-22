@@ -12,19 +12,19 @@ namespace EliteDangerousNetLogMonitor
         {
         }
 
-        private static Regex SystemRegex = new Regex(@"^{[0-9][0-9]:[0-9][0-9]:[0-9][0-9]} System:([0-9]+)\(([^\)]+)\).* ([A-Za-z]+)$");
+        private static Regex SystemRegex = new Regex(@"^{([0-9][0-9]:[0-9][0-9]:[0-9][0-9])} System:([0-9]+)\(([^\)]+)\).* ([A-Za-z]+)$");
         private static void HandleNetLogLine(string line, Action<dynamic> callback)
         {
             Match match = SystemRegex.Match(line);
             if (match.Success)
             {
-                if (@"Training" == match.Groups[1].Value || @"Destination" == match.Groups[2].Value)
+                if (@"Training" == match.Groups[3].Value || @"Destination" == match.Groups[3].Value)
                 {
                     // We ignore training missions
                     return;
                 }
 
-                if (@"ProvingGround" == match.Groups[3].Value)
+                if (@"ProvingGround" == match.Groups[4].Value)
                 {
                     // We ignore CQC
                     return;
@@ -32,8 +32,8 @@ namespace EliteDangerousNetLogMonitor
 
                 dynamic result = new JObject();
                 result.type = "Location";
-                result.starsystem = match.Groups[2].Value;
-                result.environment = match.Groups[3].Value;
+                result.starsystem = match.Groups[3].Value;
+                result.environment = match.Groups[4].Value;
                 callback(result);
             }
         }

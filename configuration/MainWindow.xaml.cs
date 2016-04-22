@@ -3,6 +3,7 @@ using EliteDangerousCompanionAppService;
 using EliteDangerousDataDefinitions;
 using EliteDangerousNetLogMonitor;
 using EliteDangerousStarMapService;
+using EliteDangerousSpeechService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Speech.Synthesis;
+using EliteDangerousDataProviderService;
 
 namespace configuration
 {
@@ -25,22 +28,27 @@ namespace configuration
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Commander commander;
         private ShipsConfiguration shipsConfiguration;
+
+        private EDDIConfiguration eddiConfiguration;
+
+        private CompanionAppService companionAppService;
 
         public MainWindow()
         {
             InitializeComponent();
 
             // Configured the EDDI tab
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration = EDDIConfiguration.FromFile();
             eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;
+            eddiInsuranceDecimal.Value = eddiConfiguration.Insurance;
 
             // Configure the Companion App tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             // See if the credentials work
-            Commander commander = null;
-            CompanionAppService companionAppService = new CompanionAppService(companionAppCredentials);
+            companionAppService = new CompanionAppService(eddiConfiguration.Debug);
             try
             {
                 commander = companionAppService.Profile();
@@ -48,18 +56,21 @@ namespace configuration
             }
             catch (Exception ex)
             {
-                // Fall back to stage 1
-                setUpCompanionAppStage1();
+                if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_LOGIN)
+                {
+                    // Fall back to stage 1
+                    setUpCompanionAppStage1();
+                }
+                else if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_CONFIRMATION)
+                {
+                    // Fall back to stage 2
+                    setUpCompanionAppStage2();
+                }
             }
 
             if (commander != null)
             {
-                shipsConfiguration = new ShipsConfiguration();
-                List<Ship> ships = new List<Ship>();
-                ships.Add(commander.Ship);
-                ships.AddRange(commander.StoredShips);
-                shipsConfiguration.Ships = ships;
-                shipyardData.ItemsSource = ships;
+                setShipyardFromConfiguration();
             }
 
             // Configure the NetLog tab
@@ -70,9 +81,43 @@ namespace configuration
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
             edsmApiKeyTextBox.Text = starMapConfiguration.apiKey;
             edsmCommanderNameTextBox.Text = starMapConfiguration.commanderName;
+
+            // Configure the Text-to-speech tab
+            SpeechServiceConfiguration speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
+            List<String> speechOptions = new List<String>();
+            speechOptions.Add("Windows TTS default");
+            try
+            {
+                using (SpeechSynthesizer synth = new SpeechSynthesizer())
+                {
+                    foreach (InstalledVoice voice in synth.GetInstalledVoices())
+                    {
+                        if (voice.Enabled)
+                        {
+                            speechOptions.Add(voice.VoiceInfo.Name);
+                        }
+                    }
+                }
+
+                ttsVoiceDropDown.ItemsSource = speechOptions;
+                ttsVoiceDropDown.Text = speechServiceConfiguration.StandardVoice == null ? "Windows TTS default" : speechServiceConfiguration.StandardVoice;
+            }
+            catch (Exception e)
+            {
+                using (System.IO.StreamWriter errLog = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true))
+                {
+                   errLog.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": Caught exception " + e);
+                }
+            }
+            ttsRateSlider.Value = speechServiceConfiguration.Rate;
+            ttsEffectsLevelSlider.Value = speechServiceConfiguration.EffectsLevel;
+            ttsDistortCheckbox.IsChecked = speechServiceConfiguration.DistortOnDamage;
+
+            ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels;
+            ttsTestShipDropDown.Text = "Adder";
         }
 
-        // Handle chagnes to the eddi tab
+        // Handle changes to the eddi tab
         private void homeSystemChanged(object sender, TextChangedEventArgs e)
         {
             updateEddiConfiguration();
@@ -83,17 +128,17 @@ namespace configuration
             updateEddiConfiguration();
         }
 
+
+        private void insuranceChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            updateEddiConfiguration();
+        }
+
         private void updateEddiConfiguration()
         {
-            EDDIConfiguration eddiConfiguration = new EDDIConfiguration();
-            if (!String.IsNullOrWhiteSpace(eddiHomeSystemText.Text))
-            {
-                eddiConfiguration.HomeSystem = eddiHomeSystemText.Text.Trim();
-            }
-            if (!String.IsNullOrWhiteSpace(eddiHomeStationText.Text))
-            {
-                eddiConfiguration.HomeStation = eddiHomeStationText.Text.Trim();
-            }
+            eddiConfiguration.HomeSystem = String.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
+            eddiConfiguration.HomeStation = String.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
+            eddiConfiguration.Insurance = eddiInsuranceDecimal.Value == null ? 5 : (decimal)eddiInsuranceDecimal.Value;
             eddiConfiguration.ToFile();
         }
 
@@ -104,13 +149,29 @@ namespace configuration
             if (companionAppEmailText.Visibility == Visibility.Visible)
             {
                 // Stage 1 of authentication - login
-                string email = companionAppEmailText.Text.Trim();
-                string password = companionAppPasswordText.Password.Trim();
+                companionAppService.Credentials.email = companionAppEmailText.Text.Trim();
+                companionAppService.Credentials.password = companionAppPasswordText.Password.Trim();
                 try
                 {
-                    CompanionAppCredentials companionAppCredentials = CompanionAppService.Login(email, password);
-                    companionAppCredentials.ToFile();
-                    setUpCompanionAppStage2();
+                    // It is possible that we have valid cookies at this point so don't log in, but we did
+                    // need the credentials
+                    if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_LOGIN)
+                    {
+                        companionAppService.Login();
+                    }
+                    if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_CONFIRMATION)
+                    {
+                        setUpCompanionAppStage2();
+                    }
+                    else if (companionAppService.CurrentState == CompanionAppService.State.READY)
+                    {
+                        if (commander == null)
+                        {
+                            commander = companionAppService.Profile();
+                        }
+                        setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + commander.Name);
+                        setShipyardFromConfiguration();
+                    }
                 }
                 catch (EliteDangerousCompanionAppAuthenticationException ex)
                 {
@@ -128,15 +189,14 @@ namespace configuration
             else if (companionAppCodeText.Visibility == Visibility.Visible)
             {
                 // Stage 2 of authentication - confirmation
+                string code = companionAppCodeText.Text.Trim();
                 try
                 {
-                    CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
-                    companionAppCredentials = CompanionAppService.Confirm(companionAppCredentials, companionAppCodeText.Text.Trim());
-                    companionAppCredentials.ToFile();
+                    companionAppService.Confirm(code);
                     // All done - see if it works
-                    CompanionAppService companionAppService = new CompanionAppService(companionAppCredentials);
-                    Commander commander = companionAppService.Profile();
+                    commander = companionAppService.Profile();
                     setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + commander.Name);
+                    setShipyardFromConfiguration();
                 }
                 catch (EliteDangerousCompanionAppAuthenticationException ex)
                 {
@@ -166,8 +226,10 @@ namespace configuration
 
             companionAppEmailLabel.Visibility = Visibility.Visible;
             companionAppEmailText.Visibility = Visibility.Visible;
+            companionAppEmailText.Text = companionAppService.Credentials.email;
             companionAppPasswordLabel.Visibility = Visibility.Visible;
             companionAppPasswordText.Visibility = Visibility.Visible;
+            companionAppPasswordText.Password = companionAppService.Credentials.password;
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
@@ -286,6 +348,34 @@ namespace configuration
         }
 
         // Handle changes to the Shipyard tab
+        private void setShipyardFromConfiguration()
+        {
+            shipsConfiguration = new ShipsConfiguration();
+            List<Ship> ships = new List<Ship>();
+            if (commander != null)
+            {
+                ships.Add(commander.Ship);
+                ships.AddRange(commander.StoredShips);
+            }
+            shipsConfiguration.Ships = ships;
+            shipyardData.ItemsSource = ships;
+        }
+
+        private void testShipName(object sender, RoutedEventArgs e)
+        {
+            Ship ship = (Ship)((Button)e.Source).DataContext;
+            ship.Health = 100;
+            SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
+            SpeechService speechService = new SpeechService(speechConfiguration);
+            if (String.IsNullOrEmpty(ship.PhoneticName))
+            {
+                speechService.Say(null, ship, ship.Name + " stands ready.");
+            }
+            else
+            {
+                speechService.Say(null, ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.PhoneticName + "\">" + ship.Name + "</phoneme>" + " stands ready.");
+            }
+        }
 
         private void shipYardUpdated(object sender, DataTransferEventArgs e)
         {
@@ -295,5 +385,112 @@ namespace configuration
             }            
         }
 
+        // Handle Text-to-speech tab
+
+        private void ttsVoiceDropDownUpdated(object sender, SelectionChangedEventArgs e)
+        {
+            ttsUpdated();
+        }
+
+        private void ttsEffectsLevelUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            ttsUpdated();
+        }
+
+        private void ttsDistortionLevelUpdated(object sender, RoutedEventArgs e)
+        {
+            ttsUpdated();
+        }
+
+        private void ttsRateUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            ttsUpdated();
+        }
+
+        private void ttsTestVoiceButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Ship testShip = ShipDefinitions.ShipFromModel((string)ttsTestShipDropDown.SelectedValue);
+            testShip.Health = 100;
+            SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
+            SpeechService speechService = new SpeechService(speechConfiguration);
+            speechService.Say(null, testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
+        }
+
+        private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Ship testShip = ShipDefinitions.ShipFromModel((string)ttsTestShipDropDown.SelectedValue);
+            testShip.Health = 20;
+            SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
+            SpeechService speechService = new SpeechService(speechConfiguration);
+            speechService.Say(null, testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
+        }
+
+        /// <summary>
+        /// fetch the Text-to-Speech Configuration and write it to File
+        /// </summary>
+        private void ttsUpdated()
+        {
+            SpeechServiceConfiguration speechConfiguration = new SpeechServiceConfiguration();
+            speechConfiguration.StandardVoice = ttsVoiceDropDown.SelectedValue == null || ttsVoiceDropDown.SelectedValue.ToString() == "Windows TTS default" ? null : ttsVoiceDropDown.SelectedValue.ToString();
+            speechConfiguration.Rate = (int)ttsRateSlider.Value;
+            speechConfiguration.EffectsLevel = (int)ttsEffectsLevelSlider.Value;
+            speechConfiguration.DistortOnDamage = ttsDistortCheckbox.IsChecked.Value;
+            speechConfiguration.ToFile();
+        }
+
+        /// <summary>
+        /// Obtain the EDSM log and sync it with the local datastore
+        /// </summary>
+        private void edsmObtainLogClicked(object sender, RoutedEventArgs e)
+        {
+            IEDDIStarSystemRepository starSystemRepository = new EDDIStarSystemSqLiteRepository();
+            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
+
+            string commanderName;
+            if (String.IsNullOrEmpty(starMapConfiguration.commanderName))
+            {
+                // Fetch the commander name from the companion app
+                CompanionAppService companionAppService = new CompanionAppService(eddiConfiguration.Debug);
+                Commander cmdr = companionAppService.Profile();
+                if (cmdr != null && cmdr.Name != null)
+                {
+                    commanderName = cmdr.Name;
+                }
+                else
+                {
+                    edsmFetchLogsButton.IsEnabled = false;
+                    edsmFetchLogsButton.Content = "Companion app not configured and no name supplied; cannot obtain logs";
+                    return;
+                }
+            }
+            else
+            {
+                commanderName = starMapConfiguration.commanderName;
+            }
+
+            edsmFetchLogsButton.IsEnabled = false;
+            edsmFetchLogsButton.Content = "Obtaining log...";
+
+            StarMapService starMapService = new StarMapService(starMapConfiguration.apiKey, commanderName);
+
+            Dictionary<string, StarMapLogInfo> systems = starMapService.getStarMapLog();
+            foreach (string system in systems.Keys)
+            {
+                EDDIStarSystem CurrentStarSystemData = starSystemRepository.GetEDDIStarSystem(system);
+                if (CurrentStarSystemData == null)
+                {
+                    // We have no record of this system; set it up
+                    CurrentStarSystemData = new EDDIStarSystem();
+                    CurrentStarSystemData.Name = system;
+                    // Due to the potential large number of systems being imported we don't pull individual system data at this time
+                }
+                CurrentStarSystemData.TotalVisits = systems[system].visits;
+                CurrentStarSystemData.LastVisit = systems[system].lastVisit;
+                CurrentStarSystemData.PreviousVisit = systems[system].previousVisit;
+                starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
+            }
+
+            edsmFetchLogsButton.Content = "Log obtained";
+        }
     }
 }

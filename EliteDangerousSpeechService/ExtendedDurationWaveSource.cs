@@ -10,7 +10,7 @@ namespace EliteDangerousSpeechService
     public class ExtendedDurationWaveSource : WaveAggregatorBase
     {
         private int bytesToExtend;
-        public new long Length { get; }
+        public override long Length { get; }
 
         public ExtendedDurationWaveSource(IWaveSource waveSource, int milliSecondsToExtend) : base(waveSource)
         {

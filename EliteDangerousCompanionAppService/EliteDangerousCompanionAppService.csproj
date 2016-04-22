@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EliteDangerousCompanionIllegalStateException.cs" />
+    <Compile Include="RijndaelHelper.cs" />
     <Compile Include="ShipsConfiguration.cs" />
     <Compile Include="CompanionAppService.cs" />
     <Compile Include="CompanionAppCredentials.cs" />
@@ -51,6 +53,7 @@
     <Compile Include="EliteDangerousCompanionAppAuthenticationException.cs" />
     <Compile Include="EliteDangerousCompanionAppException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CommanderConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EliteDangerousDataDefinitions\EliteDangerousDataDefinitions.csproj">

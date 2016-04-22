@@ -43,16 +43,26 @@ namespace EliteDangerousSpeechService
 
             switch (power)
             {
+                case "Archon Delaine":
+                    return "<phoneme alphabet=\"ipa\" ph=\"ˈɑːkɒn\">Archon</phoneme> <phoneme alphabet=\"ipa\" ph=\"dəˈleɪn\">Delaine</phoneme>";
                 case "Aisling Duval":
-                    return "Ashling Du-val";
+                    return "<phoneme alphabet=\"ipa\" ph=\"ˈæʃlɪŋ\">Aisling</phoneme> <phoneme alphabet=\"ipa\" ph=\"duːˈvæl\">Duval</phoneme>";
                 case "Arissa Lavigny-Duval":
-                    return "Arissa Lavigny Du-val";
+                    return "<phoneme alphabet=\"ipa\" ph=\"əˈrɪsə\">Arissa</phoneme> <phoneme alphabet=\"ipa\" ph=\"ləˈviːniː\">Lavigny</phoneme> <phoneme alphabet=\"ipa\" ph=\"duːˈvæl\">Duval</phoneme>";
                 case "Denton Patreus":
-                    return "Denton Patreyus";
+                    return "<phoneme alphabet=\"ipa\" ph=\"ˈdɛntən\">Denton</phoneme> <phoneme alphabet=\"ipa\" ph=\"pətˈreɪəs\">Patreus</phoneme>";
                 case "Edmund Mahon":
-                    return "Edmund Mahonn";
+                    return "<phoneme alphabet=\"ipa\" ph=\"ˈɛdmənd\">Edmund</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈmɑːn\">Mahon</phoneme>";
+                case "Felicia Winters":
+                    return "<phoneme alphabet=\"ipa\" ph=\"fəˈlɪʃɪə\">Felicia</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈwɪntəs\">Winters</phoneme>";
+                case "Pranav Antal":
+                    return "<phoneme alphabet=\"ipa\" ph=\"pɜːnʌv\">Pranav</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˌænˈtæl\">Antal</phoneme>";
+                case "Zachary Hudson":
+                    return "<phoneme alphabet=\"ipa\" ph=\"ˈzækərɪ\">Zachary</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈhʌdsən\">Hudson</phoneme>";
                 case "Zemina Torval":
-                    return "Zemeena Torvalll";
+                    return "<phoneme alphabet=\"ipa\" ph=\"zəˈmiːnə\">Zemina</phoneme> <phoneme alphabet=\"ipa\" ph=\"tɔːˈvæl\">Torval</phoneme>";
+                case "Li Yong-Rui":
+                    return "<phoneme alphabet=\"ipa\" ph=\"liː\">Li</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈjɒŋ\">Yong</phoneme> <phoneme alphabet=\"ipa\" ph=\"reɪ\">Rui</phoneme>";
                 default:
                     return power;
             }
@@ -62,6 +72,7 @@ namespace EliteDangerousSpeechService
         {
             { "Achenar", new string[] { "ˈakɜːnɑ" } },
             { "Acihault", new string[] { "əˈsɪhɔːt" } },
+            { "Adan", new string[] { "ˈædən" } },
             { "Alcyone", new string[] { "ælˈsaɪəniː" } },
             { "Aldebaran", new string[] { "alˈdɛbəɹən" } },
             { "Arque", new string[] { "ɑːrk" } },
@@ -71,9 +82,11 @@ namespace EliteDangerousSpeechService
             { "Celaeno", new string[] {  "sᵻˈliːnoʊ" }  },
             { "Cygnus", new string[] { "ˈsɪɡnəs" }  },
             { "Diso ", new string[] { "ˈdiːsəʊ" } },
+            { "Dvorsi", new string[] { "ˈdvɔːsiː" } },
             { "Electra", new string[] { "ᵻˈlɛktrə" } },
             { "Eravate" , new string[] { "ɛrəˈvɑːtˌeɪ" } },
             { "Eranin" , new string[] { "ˈɛrənin" } },
+            { "Hotas" , new string[] { "həʊtæs" } },
             { "i Bootis" , new string[] { "aɪ", "bəʊˈəʊtɪs" } },
             { "Lave", new string[] { "leɪv" } },
             { "Leesti", new string[] { "ˈliːstiː" } },
@@ -106,6 +119,7 @@ namespace EliteDangerousSpeechService
             { "Crucis" , new string[] { "ˈkruːsɪs" } },
             { "Cygni" , new string[] { "ˈsɪɡnaɪ" } },
             { "Eta Carina" , new string[] { "ˈiːtə", "kəˈriːnə" } },
+            { "Fornacis" , new string[] { "fɔːˈneɪsɪs" } },
             { "Herculis" , new string[] { "hɜːkjʊˈlɪs" } },
             { "Hyades" , new string[] { "ˈhaɪəˌdiːz" } },
             { "Hydrae" , new string[] { "ˈhaɪdriː" } },
@@ -217,6 +231,7 @@ namespace EliteDangerousSpeechService
                 || starSystem.StartsWith("CFBDSIR ")
                 || starSystem.StartsWith("CXOONC ")
                 || starSystem.StartsWith("CXOU ")
+                || starSystem.StartsWith("CPD") // Note no space
                 || starSystem.StartsWith("CSI") // Note no space
                 || starSystem.StartsWith("Csi") // Note no space
                 || starSystem.StartsWith("IDS ")

@@ -1,8 +1,43 @@
-# EDDI: The Elite Dangerous Data Interface VoiceAttack plugin
+# EDDI: The Elite Dangerous Data Interface
 
-Current version: 1.0.0
+Current version: 1.1.0
 
-EDDI is a VoiceAttack plugin that provides over 150 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  It is not in itself a complete VoiceAttack profile, similar to that provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.  The available values are as follows:
+EDDI is a VoiceAttack plugin that provides over 200 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  Although it provides a number of commands it is not in itself a complete VoiceAttack profile similar to those provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.
+
+##Installing
+
+Download the EDDI ZIP file from [http://www.mcdee.net/elite/EDDI.zip](http://www.mcdee.net/elite/EDDI.zip) or compile it from the sources at [https://github.com/cmdrmcdonald/EliteDangerousDataProvider](https://github.com/cmdrmcdonald/EliteDangerousDataProvider).  The files need to be installed in the 'Apps' directory within the VoiceAttack program directory (usually installed at c:\Program Files (x86)\VoiceAttack).  The resultant directory structure, assuming the standard directories, should be c:\Program Files (x86)\VoiceAttack\Apps\EDDI.
+
+You must use the latest VoiceAttack beta for EDDI to operate correctly.  At current this is version 1.5.8.16
+
+##Upgrading
+
+If you are upgrading from an earlier version of EDDI it is recommended that you remove the existing EDDI directory from within VoiceAttack's Apps directory before installing the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
+
+When upgrading EDDI you should overwrite all of the existing EDDI actions in VoiceAttack except any event handlers you have customised.
+
+##Configuring
+
+To configure EDDI run the 'configuration.exe' file in the plugin directory.  This allows you to configure the various sources that EDDI uses to obtain data.
+
+You will also need to configure verbose net logs for Elite: Dangerous to ensure that you receive system change messages.  You can do this using the tool at [https://forums.frontier.co.uk/showthread.php?t=116684](https://forums.frontier.co.uk/showthread.php?t=116684) or manually by finding the AppConfig.xml file in your Elite product installation and ensure that the network section of it looks like this:
+
+    <Network
+     Port="0"
+     upnpenabled="1"
+     LogFile="netLog"
+     DatestampLog="1"
+     VerboseLogging="1">
+
+You will also need to configure VoiceAttack itself.  To do this you need to start VoiceAttack and import the 'EDDI-profile.vap' profile that is in the EDDI directory.  You can either import the commands in to their own profile or an existing profile if you already have one.  If you import the commands in to an existing profile you must edit the profile to ensure that '((EDDI: startup))' is executed when the profile is loaded.  You must also ensure that 'Enable Plugins' is checked.
+
+Once all of this is complete you can restart VoiceAttack.  To check that EDDI is working you can say "ship handover confirmed": EDDI should respond with information about your ship.
+
+##Available values
+
+EDDI makes a large number of values available to augment your existing scripts.  The values are shown below, along with the type of the value listed in brackets and a brief description of what the value holds.
+
+If a value is not available it will be not set rather than empty.
 
 ###Commander values
 
@@ -24,6 +59,7 @@ EDDI is a VoiceAttack plugin that provides over 150 values related to a commande
   * Credits (text): the number of credits owned by the commander as would be spoken (e.g. "just over 2 million")
   * Debt (decimal): the number of credits owed by the commander
   * Debt (text): the number of credits owed by the commander as would be spoken (e.g. "a little under 100 thousand")
+  * Insurance (decimal): the percentage insurance excess for the commander (usually 5, 3.75 or 2.5)
 
 ###Ship values
 
@@ -38,6 +74,7 @@ EDDI is a VoiceAttack plugin that provides over 150 values related to a commande
   * Ship value (text): the replacement cost of the ship plus modules as would be spoken
   * Ship cargo capacity (int): the maximum cargo capacity of the ship as currently configured
   * Ship cargo carried (int): the cargo currently being carried by the ship
+  * Ship limpets carried (int): the number of limpets currently being carried by the ship
   * Ship health (decimal): the percentage health of the ship's hull
   * Ship bulkheads (text): the type of bulkheads fitted to the ship (e.g. "Military Grade Composite")
   * Ship bulkheads class (text): the class of bulkheads fitted to the ship (e.g. 3)
@@ -225,43 +262,16 @@ EDDI also provides a number of pre-built commands to show off some of what it is
   * voice commands spoken by the pilot when they wish to check the current status of their ship ("Report" and "Quick report")
   * voice commands spoken by the pilot when they wish to check just the damage on their ship ("Damage report")
   * voice commands spoken by the pilot when they wish to carry out checks prior to undocking ("Run pre-flight checks")
-
-##Installing
-
-Download the EDDI ZIP file from http://www.mcdee.net/elite/EDDI.zip or compile it from the sources at https://github.com/cmdrmcdonald/EliteDangerousDataProvider  The files need to be installed in the 'Apps' directory within the VoiceAttack program directory (usually installed at c:\program files (x86)\VoiceAttack).  The resultant directory structure, assuming the standard directories, should be c:\program files (x86)\VoiceAttack\Apps\EDDI.
-
-You must use the latest VoiceAttack beta for EDDI to operate.  At current this is version 1.5.8.14
-
-##Upgrading
-
-If you are upgrading from an earlier version of EDDI it is recommended that you remove the existing EDDI directory from within VoiceAttack's Apps directory before installing the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
-
-When upgrading EDDI you should overwrite all of the existing EDDI actions in VoiceAttack except any event handlers you have customised.
-
-##Configuring
-
-To configure EDDI run the 'configuration.exe' file in the plugin directory.  This allows you to configure the various sources that EDDI uses to obtain data.
-
-You will also need to configure verbose net logs for Elite: Dangerous to ensure that you receive system change messages.  You can do this using the tool at https://forums.frontier.co.uk/showthread.php?t=116684 or manually by finding the AppConfig.xml file in your Elite product installation and ensure that the network section of it looks like this:
-
-    <Network
-     Port="0"
-     upnpenabled="1"
-     LogFile="netLog"
-     DatestampLog="1"
-     VerboseLogging="1">
-
-You will also need to configure VoiceAttack itself.  To do this you need to start VoiceAttack and import the 'EDDI.vap' profile that is in the EDDI directory.  You can either import the commands in to their own profile or an existing profile if you already have one.  If you import the commands in to an existing profile you must edit the profile to ensure that '((EDDI: startup))' is executed when the profile is loaded.  You must also ensure that 'Enable Plugins' is checked in the settings.
-
-Once all of this is complete you can restart VoiceAttack.  To check that EDDI is working you can say "ship handover confirmed", or change system.
+  * voice commands to interact with EDSM for setting of notes and trilateration (see below for details)
 
 ##How EDDI Works
 
 EDDI obtains information from a number of sources to provide the variables.  The sources are:
 
   * The Elite Dangerous companion app API, which contains data about the commander and their ships
-  * The Elite Dangerous netlog, which obtains events when the commander changes system or environment (supercruise/normal space)
-  * The EDDB database, which contains data about the system's population, government, stations etc.
+  * The Elite Dangerous netlog, which contains events when the commander changes system or environment (supercruise/normal space)
+  * The Elite Dangerous star map ([http://edsm.net](http://edsm.net)), which contains the commander's travel log and system notes
+  * The EDDB database ([http://eddb.io](http://eddb.io/)), which contains data about the system's population, government, stations etc.
 
 The data is made available through Voice Attack variables as above.  In addition, a number of actions trigger events.  Events are used by EDDI to run pre-set commands when they occur.  The EDDI event loop triggers one of a number of actions depending on the event.  At current the actions are:
 
@@ -271,6 +281,26 @@ The data is made available through Voice Attack variables as above.  In addition
   * ((EDDI: event handler for ship changed)) triggered whenever the commander issues a "ship handover complete" command to VoiceAttack.
 
 The above actions can be customised as you see fit.  If you customise them then when you upgrade EDDI you should not overwrite the event handlers (although you should overwrite the event loop).
+
+##EDSM Integration
+
+EDDI can integrate with EDSM, sending an automatic update to the commander's EDSM log whenever the commander changes system.
+
+EDDI also allows for setting and clearing of EDSM system notes.  To set a system note the commander should say "Make a note on this system" and follow the instructions given.  To clear a system note the commander should say "Clear the note on this system".  Any system-specific note will be spoken by EDDI on entering the system.
+
+EDDI allows a voice interface for EDSM trilateration.  If you are in a system that does not have co-ordinates you can add distances to a number of common systems (Sol, 17 Draconis, Maia, Robigo, Sothis) so that EDSM can calculate the co-ordinates.  The process for setting these co-ordinates requires the user saying the system for which they are providing a distance and confirming the distance prior to submission.  The flow goes as follows:
+
+   * The Commander says "Distance to Sol" (or whichever of the systems noted above they wish to measure distance to)
+   * The Commander says the distance (the best format is to say something like "one hundred and twenty three point one seven")
+   * The Commander says "Repeat distance" and listens to the value as EDDI believes it to be
+   * If EDDI has the correct distance then the Commander says "Distance confirmed" and the distance will be submitted to EDDI
+   * If EDDI does not have the correct distance then the Commander says "Distance to Sol" and tries again
+
+##Callsigns
+
+EDDI attaches a callsign to every ship it knows about.  Callsigns are always of the form *AAA-0000* where 'A' is an upper-case alphabetic character and '0' is a digit.  Callsigns are persistent for the lifetime of the ship.
+
+You can ask EDDI to generate callsigns for you.  To do so run the EDDI plugin with the context 'generate callsign'.  When it returns it will have populated the text values "EDDI generated callsign"  and "EDDI generated callsign (spoken)" with appropriate values.
 
 ##Ship Voice
 
@@ -284,7 +314,7 @@ Say translates variables.  Current variables available are:
 
   * EDDI relies on the Elite: Dangerous companion app API for a lot of its information.  Sometimes EDDI loses connection to the API and needs to re-authenticate.  If you think that this is a problem you can re-run the 'configuration.exe' and if the connection is bad it will ask for re-authentication
   * If you edit the VoiceAttack profile it will stop the EDDI event loop, so you should restart VoiceAttack after doing so to ensure that the event loop has restarted
-  * EDDI is unable to know for sure if you have provided the correct path to the Logs directory.  The only way of knowing this for sure is to jump and see if EDDI tells you about your destination
+  * EDDI is unable to know for sure if you have provided the correct path to the Logs directory.  The only way of knowing this for sure is to jump and see if EDDI tells you about your destination when you make a jump
 
 If you have an issue with EDDI then please report it at https://github.com/cmdrmcdonald/EliteDangerousDataProvider/issues  If you have encountered a problem then please provide the output of the error report (shift-control-alt-e) to aid in fixing the issue.
 
