@@ -9,6 +9,7 @@
   * Added ability to set and recollect notes from EDSM
   * Added ability to carry out trilateration of systems for EDSM
   * Added phonetic pronunciation for ship names
+  * Added further Powerplay weapons
 
 #1.0.0
   * Fix minor VoiceAttack script issues

@@ -745,8 +745,13 @@ namespace EliteDangerousDataDefinitions
                 {128672157, new Module(128672157, 1474, "Mirrored Surface Composite", 1, "I", 76176810, 128672152) },
                 {128672158, new Module(128672158, 1475, "Reactive Surface Composite", 1, "I", 84414090, 128672152) },
                 {128671449, new Module(128671449, 1477, "Cytoscrambler", 1, "F", 8800, Module.ModuleMount.Fixed) },
-                {128671343, new Module(128671343, 1478, "Pacifier", 3, "C", 1400830, Module.ModuleMount.Fixed) },
-                {128671341, new Module(128671341, 1484, "Imperial Hammer", 2, "B", 619200, Module.ModuleMount.Fixed) },
+                {128671343, new Module(128671343, 1478, "Pacifier", 3, "C", 1400830, Module.ModuleMount.Fixed, 3, 90) },
+                // 1479 is Mining lance
+                {128671344, new Module(128671344, 1480, "Pack-Hound", 2, "B", 768600, Module.ModuleMount.Fixed, 12, 120) },
+                // 1481 is Enforcer
+                {128671339, new Module(128671339, 1482, "Advanced Plasma Accelerator", 3, "B", 4119120, Module.ModuleMount.Fixed, 20, 300) },
+                // 1483 is Disruptor
+                {128671341, new Module(128671341, 1484, "Imperial Hammer", 2, "B", 619200, Module.ModuleMount.Fixed, 3, 90) },
                 {128671323, new Module(128671323, 1485, "Prismatic Shield Generator", 1, "A", 132200) },
                 {128671324, new Module(128671324, 1486, "Prismatic Shield Generator", 2, "A", 240340) },
                 {128671325, new Module(128671325, 1487, "Prismatic Shield Generator", 3, "A", 761870) },
