@@ -18,7 +18,7 @@ namespace EliteDangerousNetLogMonitor
             Match match = SystemRegex.Match(line);
             if (match.Success)
             {
-                if (@"Training" == match.Groups[2].Value || @"Destination" == match.Groups[3].Value)
+                if (@"Training" == match.Groups[3].Value || @"Destination" == match.Groups[3].Value)
                 {
                     // We ignore training missions
                     return;
