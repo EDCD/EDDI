@@ -1,5 +1,6 @@
 #1.x
   * Fixed issue where unknown station models would cause EDDI to crash
+  * Fixed issue where commander's home system and insurance discount were reset on configuration startup
 
 #1.1.0
   * Fixed issue where EDDI would need the user to log in repeatedly to maintain a connection to the Elite servers

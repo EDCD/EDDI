@@ -31,7 +31,7 @@ namespace configuration
         private Commander commander;
         private ShipsConfiguration shipsConfiguration;
 
-        private EDDIConfiguration eddiConfiguration;
+        private bool debug = false;
 
         private CompanionAppService companionAppService;
 
@@ -40,15 +40,16 @@ namespace configuration
             InitializeComponent();
 
             // Configured the EDDI tab
-            eddiConfiguration = EDDIConfiguration.FromFile();
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;
             eddiInsuranceDecimal.Value = eddiConfiguration.Insurance;
+            debug = eddiConfiguration.Debug;
 
             // Configure the Companion App tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             // See if the credentials work
-            companionAppService = new CompanionAppService(eddiConfiguration.Debug);
+            companionAppService = new CompanionAppService(debug);
             try
             {
                 commander = companionAppService.Profile();
@@ -136,9 +137,11 @@ namespace configuration
 
         private void updateEddiConfiguration()
         {
+            EDDIConfiguration eddiConfiguration = new EDDIConfiguration();
             eddiConfiguration.HomeSystem = String.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
             eddiConfiguration.HomeStation = String.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
             eddiConfiguration.Insurance = eddiInsuranceDecimal.Value == null ? 5 : (decimal)eddiInsuranceDecimal.Value;
+            eddiConfiguration.Debug = debug;
             eddiConfiguration.ToFile();
         }
 
@@ -344,7 +347,6 @@ namespace configuration
                 edsmConfiguration.commanderName = edsmCommanderNameTextBox.Text.Trim();
             }
             edsmConfiguration.ToFile();
-
         }
 
         // Handle changes to the Shipyard tab
@@ -450,7 +452,7 @@ namespace configuration
             if (String.IsNullOrEmpty(starMapConfiguration.commanderName))
             {
                 // Fetch the commander name from the companion app
-                CompanionAppService companionAppService = new CompanionAppService(eddiConfiguration.Debug);
+                CompanionAppService companionAppService = new CompanionAppService(debug);
                 Commander cmdr = companionAppService.Profile();
                 if (cmdr != null && cmdr.Name != null)
                 {
