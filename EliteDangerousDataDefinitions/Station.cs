@@ -71,6 +71,7 @@ namespace EliteDangerousDataDefinitions
         UnsanctionedOutpost,
         PlanetaryOutpost,
         PlanetaryPort,
+        PlanetarySettlement,
         UnknownStarport,
         UnknownOutpost,
         UnknownPlanetary

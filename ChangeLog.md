@@ -1,3 +1,6 @@
+#1.x
+  * Fixed issue where unknown station models would cause EDDI to crash
+
 #1.1.0
   * Fixed issue where EDDI would need the user to log in repeatedly to maintain a connection to the Elite servers
   * Added configuration option to set insurance excess percentage

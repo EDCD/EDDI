@@ -87,12 +87,26 @@ namespace EliteDangerousDataProviderService
 
                     if (((string)station["type"]) != null)
                     {
-                        Station.Model = StationModels[(string)station["type"]];
+                        if (StationModels.ContainsKey((string)station["type"]))
+                        {
+                            Station.Model = StationModels[(string)station["type"]];
+                        }
+                        else
+                        {
+                            LogError("Unknown station model " + ((string)station["type"]));
+                        }
                     }
 
                     if (((string)station["max_landing_pad_size"]) != null)
                     {
-                        Station.LargestShip = LandingPads[(string)station["max_landing_pad_size"]];
+                        if (LandingPads.ContainsKey((string)station["max_landing_pad_size"]))
+                        {
+                            Station.LargestShip = LandingPads[(string)station["max_landing_pad_size"]];
+                        }
+                        else
+                        {
+                            LogError("Unknown landing pad size " + ((string)station["max_landing_pad_size"]));
+                        }
                     }
 
                     Stations.Add(Station);
@@ -121,6 +135,7 @@ namespace EliteDangerousDataProviderService
             { "Orbis Starport", StationModel.OrbisStarport },
             { "Planetary Outpost", StationModel.PlanetaryOutpost },
             { "Planetary Port", StationModel.PlanetaryPort },
+            { "Planetary Settlement", StationModel.PlanetarySettlement },
             { "Scientific Outpost", StationModel.ScientificOutpost},
             { "Unknown Outpost", StationModel.UnknownOutpost},
             { "Unknown Planetary", StationModel.UnknownPlanetary},
