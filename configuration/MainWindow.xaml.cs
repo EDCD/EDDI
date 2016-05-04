@@ -110,6 +110,7 @@ namespace configuration
                    errLog.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": Caught exception " + e);
                 }
             }
+            ttsVolumeSlider.Value = speechServiceConfiguration.Volume;
             ttsRateSlider.Value = speechServiceConfiguration.Rate;
             ttsEffectsLevelSlider.Value = speechServiceConfiguration.EffectsLevel;
             ttsDistortCheckbox.IsChecked = speechServiceConfiguration.DistortOnDamage;
@@ -409,6 +410,11 @@ namespace configuration
             ttsUpdated();
         }
 
+        private void ttsVolumeUpdated(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            ttsUpdated();
+        }
+
         private void ttsTestVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
             Ship testShip = ShipDefinitions.ShipFromModel((string)ttsTestShipDropDown.SelectedValue);
@@ -434,6 +440,7 @@ namespace configuration
         {
             SpeechServiceConfiguration speechConfiguration = new SpeechServiceConfiguration();
             speechConfiguration.StandardVoice = ttsVoiceDropDown.SelectedValue == null || ttsVoiceDropDown.SelectedValue.ToString() == "Windows TTS default" ? null : ttsVoiceDropDown.SelectedValue.ToString();
+            speechConfiguration.Volume = (int)ttsVolumeSlider.Value;
             speechConfiguration.Rate = (int)ttsRateSlider.Value;
             speechConfiguration.EffectsLevel = (int)ttsEffectsLevelSlider.Value;
             speechConfiguration.DistortOnDamage = ttsDistortCheckbox.IsChecked.Value;

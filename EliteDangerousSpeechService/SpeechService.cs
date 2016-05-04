@@ -123,6 +123,7 @@ namespace EliteDangerousSpeechService
                     }
 
                     synth.Rate = configuration.Rate;
+                    synth.Volume = configuration.Volume;
 
                     synth.SetOutputToWaveStream(stream);
                     string speech = SpeechFromScript(script);

@@ -16,6 +16,9 @@ namespace EliteDangerousSpeechService
         [JsonProperty("standardVoice")]
         public String StandardVoice { get; set; }
 
+        [JsonProperty("volume")]
+        public int Volume { get; set; } = 100;
+
         [JsonProperty("effectsLevel")]
         public int EffectsLevel { get; set; } = 50;
 
@@ -63,6 +66,7 @@ namespace EliteDangerousSpeechService
         public void Clear()
         {
             StandardVoice = null;
+            Volume = 100;
             EffectsLevel = 50;
             DistortOnDamage = true;
         }
