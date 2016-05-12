@@ -11,9 +11,23 @@ namespace EliteDangerousDataProviderService
     /// <summary>Access to EDDP data<summary>
     public class DataProviderService
     {
-        public static StarSystem GetSystemData(string system)
+        public static StarSystem GetSystemData(string system, decimal? x, decimal?y, decimal? z)
         {
             if (system == null) { return null; }
+
+            // X Y and Z are provided to us with 3dp of accuracy even though they are x/32; fix that here
+            if (x.HasValue)
+            {
+                x = (Math.Round(x.Value * 32))/32;
+            }
+            if (y.HasValue)
+            {
+                y = (Math.Round(y.Value * 32)) / 32;
+            }
+            if (z.HasValue)
+            {
+                z = (Math.Round(z.Value * 32)) / 32;
+            }
 
             using (var client = new WebClient())
             {
@@ -21,25 +35,42 @@ namespace EliteDangerousDataProviderService
                 try
                 {
                     response = client.DownloadString("http://api.eddp.co/systems/" + Uri.EscapeDataString(system));
+                    logInfo("Response is " + response);
                 }
                 catch (WebException wex)
                 {
                     // No information found on this system, or some other issue.  Create a very basic response
-                    response = @"{""name"":""" + system + @""", ""stations"":[]}";
+                    response = @"{""name"":""" + system + @"""";
+                    if (x.HasValue)
+                    {
+                        response = response = @", ""x"":" + x;
+                    }
+                    if (y.HasValue)
+                    {
+                        response = response = @", ""y"":" + y;
+                    }
+                    if (x.HasValue)
+                    {
+                        response = response = @", ""z"":" + z;
+                    }
+                    response = response + @", ""stations"":[]}";
+                    logInfo("Generating dummy response " + response);
                 }
-                return StarSystemFromEDDP(response);
+                return StarSystemFromEDDP(response, x, y, z);
             }
         }
 
-        public static StarSystem StarSystemFromEDDP(string data)
+        public static StarSystem StarSystemFromEDDP(string data, decimal? x, decimal? y, decimal? z)
         {
-            return StarSystemFromEDDP(JObject.Parse(data));
+            return StarSystemFromEDDP(JObject.Parse(data), x, y, z);
         }
 
-        public static StarSystem StarSystemFromEDDP(dynamic json)
+        public static StarSystem StarSystemFromEDDP(dynamic json, decimal? x, decimal? y, decimal? z)
         {
             StarSystem StarSystem = new StarSystem();
-
+            logInfo("here - " + json);
+            logInfo("here2 - " + json["name"]);
+            logInfo("here3 - " + (string)json["name"]);
             StarSystem.Name = (string)json["name"];
             if (json["updated_at"] != null)
             {
@@ -54,9 +85,9 @@ namespace EliteDangerousDataProviderService
                 StarSystem.Power = (string)json["power"] == "None" ? null : (string)json["power"];
                 StarSystem.PowerState = (string)json["power_state"];
 
-                StarSystem.X = (decimal?)json["x"];
-                StarSystem.Y = (decimal?)json["y"];
-                StarSystem.Z = (decimal?)json["z"];
+                StarSystem.X = json["x"] == null ? x : (decimal?)json["x"];
+                StarSystem.Y = json["y"] == null ? y : (decimal?)json["y"];
+                StarSystem.Z = json["z"] == null ? y : (decimal?)json["z"];
 
                 StarSystem.Stations = StationsFromEDDP(json);
             }
@@ -183,6 +214,34 @@ namespace EliteDangerousDataProviderService
                     client.UploadString(@"http://api.eddp.co/error", error.ToString());
                 }
                 catch {}
+            }
+        }
+
+        // Logging
+        private static bool enableDebugging = false;
+        private static readonly string LOGFILE = Environment.GetEnvironmentVariable("AppData") + @"\EDDI\eddi.log";
+        private static void debug(string data)
+        {
+            if (enableDebugging)
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
+                {
+                    file.WriteLine(DateTime.Now.ToString() + ": " + data);
+                }
+            }
+        }
+        private static void logInfo(string data)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
+            {
+                file.WriteLine(DateTime.Now.ToString() + ": " + data);
+            }
+        }
+        private static void logError(string data)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
+            {
+                file.WriteLine(DateTime.Now.ToString() + ": " + data);
             }
         }
     }

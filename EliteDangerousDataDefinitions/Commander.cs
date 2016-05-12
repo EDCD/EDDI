@@ -51,6 +51,15 @@ namespace EliteDangerousDataDefinitions
         /// <summary>The name of the current starsystem</summary>
         public string StarSystem { get; set; }
 
+        /// <summary>The X co-ordinate of the current starsystem</summary>
+        public decimal? StarSystemX { get; set; }
+
+        /// <summary>The Y co-ordinate of the current starsystem</summary>
+        public decimal? StarSystemY { get; set; }
+        
+        /// <summary>The Z co-ordinate of the current starsystem</summary>
+        public decimal? StarSystemZ { get; set; }
+
         /// <summary>The commander's current ship</summary>
         public Ship Ship { get; set; }
 

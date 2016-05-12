@@ -11,6 +11,8 @@ namespace EliteDangerousNetLogMonitor
 {
     public class LogMonitor
     {
+        private bool enableDebugging;
+
         // What we are monitoring and what to do with it
         private string directory;
         private Regex filter;
@@ -19,11 +21,12 @@ namespace EliteDangerousNetLogMonitor
         // Keep track of status
         private bool running;
 
-        public LogMonitor(string directory, string filter, Action<string> callback)
+        public LogMonitor(string directory, string filter, bool enableDebugging, Action<string> callback)
         {
             this.directory = directory;
             this.filter = new Regex(filter);
             this.callback = callback;
+            this.enableDebugging = enableDebugging;
         }
 
         /// <summary>Monitor the netlog for changes, running a callback when the file changes</summary>
@@ -43,6 +46,7 @@ namespace EliteDangerousNetLogMonitor
             while (running)
             {
                 fileInfo = FindLatestFile(directory, filter);
+//                logInfo("Monitoring " + fileInfo.Name);
 
                 if (fileInfo == null)
                 {
@@ -84,6 +88,7 @@ namespace EliteDangerousNetLogMonitor
                             string[] lines = Regex.Split(s, "\r?\n");
                             foreach (string line in lines)
                             {
+//                                logDebug("Checking line " + line);
                                 callback(line);
                             }
                         }
@@ -110,6 +115,33 @@ namespace EliteDangerousNetLogMonitor
             catch
             {
                 return null;
+            }
+        }
+
+        // Logging
+        private static readonly string LOGFILE = Environment.GetEnvironmentVariable("AppData") + @"\EDDI\eddi.log";
+        protected void logDebug(string data)
+        {
+            if (enableDebugging)
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
+                {
+                    file.WriteLine(DateTime.Now.ToString() + ": " + data);
+                }
+            }
+        }
+        protected void logInfo(string data)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
+            {
+                file.WriteLine(DateTime.Now.ToString() + ": " + data);
+            }
+        }
+        protected void logError(string data)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
+            {
+                file.WriteLine(DateTime.Now.ToString() + ": " + data);
             }
         }
     }
