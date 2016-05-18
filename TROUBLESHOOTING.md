@@ -42,4 +42,4 @@ Then confirm that the "Execute a command each time this profile is loaded" optio
 
 ![](images/ProfileOptionsOnLoad.jpg)
 
-If none of these fix your isse then please report it on the issues page.
+If none of these fix your issue then please report it on the issues page.
