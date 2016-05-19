@@ -35,7 +35,7 @@ namespace EliteDangerousDataProviderService
                 try
                 {
                     response = client.DownloadString("http://api.eddp.co/systems/" + Uri.EscapeDataString(system));
-                    logInfo("Response is " + response);
+                    //logInfo("Response is " + response);
                 }
                 catch (WebException wex)
                 {
@@ -68,9 +68,6 @@ namespace EliteDangerousDataProviderService
         public static StarSystem StarSystemFromEDDP(dynamic json, decimal? x, decimal? y, decimal? z)
         {
             StarSystem StarSystem = new StarSystem();
-            logInfo("here - " + json);
-            logInfo("here2 - " + json["name"]);
-            logInfo("here3 - " + (string)json["name"]);
             StarSystem.Name = (string)json["name"];
             if (json["updated_at"] != null)
             {
