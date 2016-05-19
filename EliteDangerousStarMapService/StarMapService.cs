@@ -26,7 +26,7 @@ namespace EliteDangerousStarMapService
             this.baseUrl = baseUrl;
         }
 
-        public void sendStarMapLog(string systemName)
+        public void sendStarMapLog(string systemName, decimal? x, decimal? y, decimal? z)
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest("api-logs-v1/set-log");
@@ -34,6 +34,18 @@ namespace EliteDangerousStarMapService
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("systemName", systemName);
             request.AddParameter("dateVisited", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
+            if (x.HasValue)
+            {
+                request.AddParameter("x", x);
+            }
+            if (y.HasValue)
+            {
+                request.AddParameter("y", y);
+            }
+            if (z.HasValue)
+            {
+                request.AddParameter("z", z);
+            }
 
             var clientResponse = client.Execute<StarMapLogResponse>(request);
             StarMapLogResponse response = clientResponse.Data;
@@ -76,7 +88,11 @@ namespace EliteDangerousStarMapService
             StarMapLogResponse commentResponse = commentClientResponse.Data;
             // TODO check response
 
-            return new StarMapInfo(logResponse.logs.Count, logResponse.lastUpdate, commentResponse.comment);
+            int visits = (logResponse != null && logResponse.logs != null) ? logResponse.logs.Count : 1;
+            DateTime lastUpdate = (logResponse != null && logResponse.lastUpdate != null) ? (DateTime)logResponse.lastUpdate : new DateTime();
+            String comment = (commentResponse != null) ? commentResponse.comment : null;
+
+            return new StarMapInfo(visits, lastUpdate, comment);
         }
 
 
@@ -209,37 +225,6 @@ namespace EliteDangerousStarMapService
             this.Comment = comment;
         }
     }
-
-    //class StarMapLog
-    //{
-    //    private string apiKey;
-    //    private string commanderName;
-    //    private string systemName;
-    //    private DateTime dateVisited;
-
-    //    public StarMapLog(string apiKey, string commanderName, string systemName)
-    //    {
-    //        this.apiKey = apiKey;
-    //        this.commanderName = commanderName;
-    //        this.systemName = systemName;
-    //    }
-    //}
-
-    //class StarMapComment
-    //{
-    //    private string apiKey;
-    //    private string commanderName;
-    //    private string systemName;
-    //    private string comment;
-
-    //    public StarMapComment(string apiKey, string commanderName, string systemName, string comment)
-    //    {
-    //        this.apiKey = apiKey;
-    //        this.commanderName = commanderName;
-    //        this.systemName = systemName;
-    //        this.comment = comment;
-    //    }
-    //}
 
     class StarMapSubmission
     {

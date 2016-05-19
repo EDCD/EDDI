@@ -33,6 +33,11 @@ You will also need to configure VoiceAttack itself.  To do this you need to star
 
 Once all of this is complete you can restart VoiceAttack.  To check that EDDI is working you can say "ship handover confirmed": EDDI should respond with information about your ship.
 
+##Troubleshooting
+
+If you have any problems with making the plugin work please work through the items in the [troubleshooting guide](TROUBLESHOOTING.md).
+
+
 ##Available values
 
 EDDI makes a large number of values available to augment your existing scripts.  The values are shown below, along with the type of the value listed in brackets and a brief description of what the value holds.
