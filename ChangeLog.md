@@ -1,3 +1,12 @@
+#1.2.0
+  * Compatibility with Elite: Dangerous 1.6/2.1
+  * Fixed issue where unknown station models would cause EDDI to crash
+  * Fixed issue where commander's home system and insurance discount were reset on configuration startup
+  * Added relative volume for text-to-speech voice
+  * Added support for 1.6/2.1 new-style system change messages
+  * Send system co-ordinates to EDSM as part of the travel log if available
+  * Added more star system translations
+
 #1.1.0
   * Fixed issue where EDDI would need the user to log in repeatedly to maintain a connection to the Elite servers
   * Added configuration option to set insurance excess percentage

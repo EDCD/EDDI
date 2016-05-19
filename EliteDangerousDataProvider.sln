@@ -25,8 +25,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		ChangeLog.md = ChangeLog.md
 		Contributors.md = Contributors.md
+		images\Directory.jpg = images\Directory.jpg
 		LICENSE.md = LICENSE.md
+		images\MainOptions.jpg = images\MainOptions.jpg
+		images\MainProfile.jpg = images\MainProfile.jpg
+		images\OptionsPluginSupport.jpg = images\OptionsPluginSupport.jpg
+		images\OptionsVersion.jpg = images\OptionsVersion.jpg
+		images\ProfileOptions.jpg = images\ProfileOptions.jpg
+		images\ProfileOptionsOnLoad.jpg = images\ProfileOptionsOnLoad.jpg
 		README.md = README.md
+		TROUBLESHOOTING.md = TROUBLESHOOTING.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousNetLogMonitor", "EliteDangerousNetLogMonitor\EliteDangerousNetLogMonitor.csproj", "{0928ADE6-F260-4820-AFBC-1661130C3474}"
