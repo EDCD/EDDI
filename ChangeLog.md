@@ -1,4 +1,4 @@
-#1.1.x
+#1.2.0
   * Compatibility with Elite: Dangerous 1.6/2.1
   * Fixed issue where unknown station models would cause EDDI to crash
   * Fixed issue where commander's home system and insurance discount were reset on configuration startup

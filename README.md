@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface
 
-Current version: 1.1.0
+Current version: 1.2.0
 
 EDDI is a VoiceAttack plugin that provides over 200 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  Although it provides a number of commands it is not in itself a complete VoiceAttack profile similar to those provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.
 
@@ -8,7 +8,7 @@ EDDI is a VoiceAttack plugin that provides over 200 values related to a commande
 
 Download the EDDI ZIP file from [http://www.mcdee.net/elite/EDDI.zip](http://www.mcdee.net/elite/EDDI.zip) or compile it from the sources at [https://github.com/cmdrmcdonald/EliteDangerousDataProvider](https://github.com/cmdrmcdonald/EliteDangerousDataProvider).  The files need to be installed in the 'Apps' directory within the VoiceAttack program directory (usually installed at c:\Program Files (x86)\VoiceAttack).  The resultant directory structure, assuming the standard directories, should be c:\Program Files (x86)\VoiceAttack\Apps\EDDI.
 
-You must use the latest VoiceAttack beta for EDDI to operate correctly.  At current this is version 1.5.8.16
+You must use a suitable version of VoiceAttack for EDDI to operate correctly.  At current the minimum version 1.5.8.16, which is a beta release.  Please note that the current release version, 1.5.8, will *not* work.
 
 ##Upgrading
 

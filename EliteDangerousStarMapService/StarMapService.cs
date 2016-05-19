@@ -267,7 +267,7 @@ namespace EliteDangerousStarMapService
         {
             this.commander = commanderName;
             this.fromSoftware = "EDDI";
-            this.fromSoftwareVersion = "1.1.0";
+            this.fromSoftwareVersion = "1.2.0";
             this.p0 = new StarMapDistance(systemName);
             this.refs = new List<StarMapDistance>();
             this.refs.Add(new StarMapDistance(remoteSystemName, distance));

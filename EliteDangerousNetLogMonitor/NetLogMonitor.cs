@@ -72,10 +72,10 @@ namespace EliteDangerousNetLogMonitor
         private static readonly string LOGFILE = Environment.GetEnvironmentVariable("AppData") + @"\EDDI\eddi.log";
         protected static void logDebug(string data)
         {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
-                {
-                    file.WriteLine(DateTime.Now.ToString() + ": " + data);
-                }
+                //using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
+                //{
+                    //file.WriteLine(DateTime.Now.ToString() + ": " + data);
+                //}
         }
     }
 }
