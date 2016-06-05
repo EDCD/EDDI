@@ -45,7 +45,7 @@ namespace EDDIVAPlugin
         private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
 
-        public static readonly string PLUGIN_VERSION = "1.1.0";
+        public static readonly string PLUGIN_VERSION = "1.2.1";
 
         public static string VA_DisplayName()
         {
@@ -351,6 +351,7 @@ namespace EDDIVAPlugin
                 }
                 catch (Exception ex)
                 {
+                    logError("Error occurred: " + ex);
                     setPluginStatus(ref textValues, "Failed", "Failed to obtain log entry", ex);
                 }
             }

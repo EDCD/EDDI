@@ -34,6 +34,8 @@ namespace EliteDangerousStarMapService
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("systemName", systemName);
             request.AddParameter("dateVisited", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
+            request.AddParameter("fromSoftware", "EDDI");
+            request.AddParameter("fromSoftwareVersion", "1.2.1");
             if (x.HasValue)
             {
                 request.AddParameter("x", x);
@@ -267,7 +269,7 @@ namespace EliteDangerousStarMapService
         {
             this.commander = commanderName;
             this.fromSoftware = "EDDI";
-            this.fromSoftwareVersion = "1.2.0";
+            this.fromSoftwareVersion = "1.2.1";
             this.p0 = new StarMapDistance(systemName);
             this.refs = new List<StarMapDistance>();
             this.refs.Add(new StarMapDistance(remoteSystemName, distance));

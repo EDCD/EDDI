@@ -204,20 +204,30 @@ namespace EliteDangerousCompanionAppService
                 // Rerun the profile request
                 request = GetRequest(BASE_URL + PROFILE_URL);
                 response = GetResponse(request);
+                // Handle the situation where a login is still required
+                if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
+                {
+                    // Need to log in again but we have already tried to do so - revert
+                    CurrentState = State.NEEDS_LOGIN;
+                    throw new EliteDangerousCompanionAppIllegalStateException("Service not accepting profile requests");
+                }
             }
 
             // Obtain and parse our response
             var encoding = response.CharacterSet == ""
-                        ? Encoding.UTF8
-                        : Encoding.GetEncoding(response.CharacterSet);
+                    ? Encoding.UTF8
+                    : Encoding.GetEncoding(response.CharacterSet);
 
+            debug("Reading response");
             using (var stream = response.GetResponseStream())
             {
                 var reader = new StreamReader(stream, encoding);
                 string data = reader.ReadToEnd();
+                debug("Data is: " + data);
                 response.Close();
                 cachedProfile = CommanderFromProfile(data);
                 cachedProfileExpires = DateTime.Now.AddSeconds(30);
+                debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
                 return cachedProfile;
             }
         }
@@ -245,7 +255,6 @@ namespace EliteDangerousCompanionAppService
             Credentials.ToFile();
             debug("GetResponse(): Response is " + JsonConvert.SerializeObject(response));
             debug("GetResponse(): Credentials are " + JsonConvert.SerializeObject(Credentials, Formatting.Indented));
-
             return response;
         }
 
