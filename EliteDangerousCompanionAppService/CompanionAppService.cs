@@ -588,7 +588,8 @@ namespace EliteDangerousCompanionAppService
             {
                 if (shipJson != null)
                 {
-                    dynamic ship = shipJson.Value;
+                    // Take underlying value if present
+                    dynamic ship = shipJson.Value == null ? shipJson : shipJson.Value;
                     if (ship != null)
                     {
                         if ((int)ship["id"] != currentShip.LocalId)
