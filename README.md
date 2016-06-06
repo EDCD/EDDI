@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface
 
-Current version: 1.2.0
+Current version: 1.2.1
 
 EDDI is a VoiceAttack plugin that provides over 200 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  Although it provides a number of commands it is not in itself a complete VoiceAttack profile similar to those provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.
 
@@ -19,15 +19,6 @@ When upgrading EDDI you should overwrite all of the existing EDDI actions in Voi
 ##Configuring
 
 To configure EDDI run the 'configuration.exe' file in the plugin directory.  This allows you to configure the various sources that EDDI uses to obtain data.
-
-You will also need to configure verbose net logs for Elite: Dangerous to ensure that you receive system change messages.  You can do this using the tool at [https://forums.frontier.co.uk/showthread.php?t=116684](https://forums.frontier.co.uk/showthread.php?t=116684) or manually by finding the AppConfig.xml file in your Elite product installation and ensure that the network section of it looks like this:
-
-    <Network
-     Port="0"
-     upnpenabled="1"
-     LogFile="netLog"
-     DatestampLog="1"
-     VerboseLogging="1">
 
 You will also need to configure VoiceAttack itself.  To do this you need to start VoiceAttack and import the 'EDDI-profile.vap' profile that is in the EDDI directory.  You can either import the commands in to their own profile or an existing profile if you already have one.  If you import the commands in to an existing profile you must edit the profile to ensure that '((EDDI: startup))' is executed when the profile is loaded.  You must also ensure that 'Enable Plugins' is checked.
 
