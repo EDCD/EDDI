@@ -45,7 +45,7 @@ namespace EDDIVAPlugin
         {
             string enableds = "";
             string priorities = "";
-            string uri = "http://coriolis.io/outfit/";
+            string uri = "https://coriolis.io/outfit/";
             uri += shipModels[ship.Model];
             uri += "/";
             uri += ShipBulkheads(ship.Bulkheads.Name);
