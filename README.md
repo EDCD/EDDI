@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface
 
-Current version: 1.2.0
+Current version: 1.2.1
 
 EDDI is a VoiceAttack plugin that provides over 200 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  Although it provides a number of commands it is not in itself a complete VoiceAttack profile similar to those provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.
 
@@ -19,15 +19,6 @@ When upgrading EDDI you should overwrite all of the existing EDDI actions in Voi
 ##Configuring
 
 To configure EDDI run the 'configuration.exe' file in the plugin directory.  This allows you to configure the various sources that EDDI uses to obtain data.
-
-You will also need to configure verbose net logs for Elite: Dangerous to ensure that you receive system change messages.  You can do this using the tool at [https://forums.frontier.co.uk/showthread.php?t=116684](https://forums.frontier.co.uk/showthread.php?t=116684) or manually by finding the AppConfig.xml file in your Elite product installation and ensure that the network section of it looks like this:
-
-    <Network
-     Port="0"
-     upnpenabled="1"
-     LogFile="netLog"
-     DatestampLog="1"
-     VerboseLogging="1">
 
 You will also need to configure VoiceAttack itself.  To do this you need to start VoiceAttack and import the 'EDDI-profile.vap' profile that is in the EDDI directory.  You can either import the commands in to their own profile or an existing profile if you already have one.  If you import the commands in to an existing profile you must edit the profile to ensure that '((EDDI: startup))' is executed when the profile is loaded.  You must also ensure that 'Enable Plugins' is checked.
 
@@ -262,7 +253,7 @@ EDDI also provides a number of pre-built commands to show off some of what it is
   * a voice command spoken by the pilot whenever they finish docking ("I have docked" or "Docking complete"), including role-specific information
   * a voice command spoken by the pilot whenever they change ship ("Ship handover complete") that provides a run-down of the ship the pilot is now in
   * a voice command spoken by the pilot before they launch ("run pre flight checks") that carries out a check of areas such as insurance, repairs /etc./
-  * a voice command spoken by the pilot when they wish to see their ship in http://www.coriolis.io/ ("Display my ship in coriolis")
+  * a voice command spoken by the pilot when they wish to see their ship in https://www.coriolis.io/ ("Display my ship in coriolis")
   * a voice command spoken by the pilot when they wish to check the current discounts on their ship ("Report on ship discounts")
   * voice commands spoken by the pilot when they wish to check the current status of their ship ("Report" and "Quick report")
   * voice commands spoken by the pilot when they wish to check just the damage on their ship ("Damage report")
@@ -293,13 +284,7 @@ EDDI can integrate with EDSM, sending an automatic update to the commander's EDS
 
 EDDI also allows for setting and clearing of EDSM system notes.  To set a system note the commander should say "Make a note on this system" and follow the instructions given.  To clear a system note the commander should say "Clear the note on this system".  Any system-specific note will be spoken by EDDI on entering the system.
 
-EDDI allows a voice interface for EDSM trilateration.  If you are in a system that does not have co-ordinates you can add distances to a number of common systems (Sol, 17 Draconis, Maia, Robigo, Sothis) so that EDSM can calculate the co-ordinates.  The process for setting these co-ordinates requires the user saying the system for which they are providing a distance and confirming the distance prior to submission.  The flow goes as follows:
-
-   * The Commander says "Distance to Sol" (or whichever of the systems noted above they wish to measure distance to)
-   * The Commander says the distance (the best format is to say something like "one hundred and twenty three point one seven")
-   * The Commander says "Repeat distance" and listens to the value as EDDI believes it to be
-   * If EDDI has the correct distance then the Commander says "Distance confirmed" and the distance will be submitted to EDDI
-   * If EDDI does not have the correct distance then the Commander says "Distance to Sol" and tries again
+EDDI sends system co-ordinates directly to EDSM, avoiding the need for trilateration.
 
 ##Callsigns
 

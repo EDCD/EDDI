@@ -1,3 +1,11 @@
+#1.2.1
+  * Added modules from 1.6/2.1
+  * Added commodities from 1.6/2.1
+  * Support for new modules when exporting to Coriolis
+  * Handle situation where companion API is available but not responding with data
+  * Added more star system translations
+  * Removed requirement for verbose logging
+
 #1.2.0
   * Compatibility with Elite: Dangerous 1.6/2.1
   * Fixed issue where unknown station models would cause EDDI to crash
