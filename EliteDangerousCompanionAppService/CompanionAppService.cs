@@ -128,17 +128,23 @@ namespace EliteDangerousCompanionAppService
             dataStream.Close();
 
             HttpWebResponse response = GetResponse(request);
-
+            if (response == null)
+            {
+                throw new EliteDangerousCompanionAppException("Failed to contact API server");
+            }
             if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == CONFIRM_URL)
             {
+                response.Close();
                 CurrentState = State.NEEDS_CONFIRMATION;
             }
             else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
             {
+                response.Close();
                 CurrentState = State.READY;
             }
             else
             {
+                response.Close();
                 throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
             }
         }
@@ -164,13 +170,19 @@ namespace EliteDangerousCompanionAppService
             dataStream.Close();
 
             HttpWebResponse response = GetResponse(request);
+            if (response == null)
+            {
+                throw new EliteDangerousCompanionAppException("Failed to contact API server");
+            }
 
             if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
             {
+                response.Close();
                 CurrentState = State.READY;
             }
             else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
             {
+                response.Close();
                 CurrentState = State.NEEDS_LOGIN;
                 throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect or expired");
             }
@@ -186,14 +198,20 @@ namespace EliteDangerousCompanionAppService
             if (cachedProfileExpires > DateTime.Now)
             {
                 // return the cached version
+                debug("Profile(): returning cached profile");
                 return cachedProfile;
             }
 
             HttpWebRequest request = GetRequest(BASE_URL + PROFILE_URL);
             HttpWebResponse response = GetResponse(request);
+            if (response == null)
+            {
+                throw new EliteDangerousCompanionAppException("Failed to contact API server");
+            }
 
             if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
             {
+                response.Close();
                 // Need to log in again.
                 CurrentState = State.NEEDS_LOGIN;
                 Login();
@@ -202,11 +220,16 @@ namespace EliteDangerousCompanionAppService
                     throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
                 }
                 // Rerun the profile request
-                request = GetRequest(BASE_URL + PROFILE_URL);
-                response = GetResponse(request);
-                // Handle the situation where a login is still required
-                if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
+                HttpWebRequest reRequest = GetRequest(BASE_URL + PROFILE_URL);
+                HttpWebResponse reResponse = GetResponse(reRequest);
+                if (reResponse == null)
                 {
+                    throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                }
+                // Handle the situation where a login is still required
+                if (reResponse.StatusCode == HttpStatusCode.Found && reResponse.Headers["Location"] == LOGIN_URL)
+                {
+                    reResponse.Close();
                     // Need to log in again but we have already tried to do so - revert
                     CurrentState = State.NEEDS_LOGIN;
                     throw new EliteDangerousCompanionAppIllegalStateException("Service not accepting profile requests");
@@ -242,6 +265,8 @@ namespace EliteDangerousCompanionAppService
             AddMachineTokenCookie(cookieContainer, Credentials);
             request.CookieContainer = cookieContainer;
             request.AllowAutoRedirect = false;
+            request.Timeout = 10000;
+            request.ReadWriteTimeout = 10000;
             request.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257";
             return request;
         }
@@ -250,10 +275,20 @@ namespace EliteDangerousCompanionAppService
         private HttpWebResponse GetResponse(HttpWebRequest request)
         {
             debug("GetResponse(): Requesting " + request.RequestUri);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            HttpWebResponse response;
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
+            }
+            catch (WebException wex)
+            {
+                warn("GetResponse(): failed to obtain response, error code " + wex.Status);
+                return null;
+            }
+            debug("GetResponse(): Response is " + JsonConvert.SerializeObject(response));
             UpdateCredentials(response);
             Credentials.ToFile();
-            debug("GetResponse(): Response is " + JsonConvert.SerializeObject(response));
             debug("GetResponse(): Credentials are " + JsonConvert.SerializeObject(Credentials, Formatting.Indented));
             return response;
         }
@@ -706,5 +741,12 @@ namespace EliteDangerousCompanionAppService
             }
         }
 
+        private void warn(string data)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
+            {
+                file.WriteLine(DateTime.Now.ToString() + ": " + data);
+            }
+        }
     }
 }
