@@ -45,7 +45,7 @@ namespace EDDIVAPlugin
         private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
 
-        public static readonly string PLUGIN_VERSION = "1.2.1";
+        public static readonly string PLUGIN_VERSION = "1.2.2";
 
         public static string VA_DisplayName()
         {
@@ -788,6 +788,7 @@ namespace EDDIVAPlugin
                         setString(ref textValues, "System station name", Station.Name);
                     }
                     setInt(ref intValues, "System stations", CurrentStarSystem.Stations.Count);
+                    setInt(ref intValues, "System orbital stations", CurrentStarSystem.Stations.Count(s => !s.IsPlanetary()));
                     setInt(ref intValues, "System starports", CurrentStarSystem.Stations.Count(s => s.IsStarport()));
                     setInt(ref intValues, "System outposts", CurrentStarSystem.Stations.Count(s => s.IsOutpost()));
                     setInt(ref intValues, "System planetary stations", CurrentStarSystem.Stations.Count(s => s.IsPlanetary()));
