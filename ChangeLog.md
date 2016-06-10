@@ -2,6 +2,7 @@
   * Fix issue where shipyard would not be populated in some situations
   * Close down HTTP responses sooner, hopefully fixing occasional hangs
   * Populate the email address field in the configuration GUI from stored data if available
+  * Ensure that co-ordinates are sent to EDSM in US format regardless of client locale
 
 #1.2.1
   * Added modules from 1.6/2.1
