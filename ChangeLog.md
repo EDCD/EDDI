@@ -1,3 +1,6 @@
+#1.x
+  * Fix issue where unknown systems provided an incorrect JSON result
+
 #1.2.2
   * Fix issue where shipyard would not be populated in some situations
   * Close down HTTP responses sooner, hopefully fixing occasional hangs

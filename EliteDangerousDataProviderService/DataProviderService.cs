@@ -43,15 +43,15 @@ namespace EliteDangerousDataProviderService
                     response = @"{""name"":""" + system + @"""";
                     if (x.HasValue)
                     {
-                        response = response = @", ""x"":" + x;
+                        response = response + @", ""x"":" + x;
                     }
                     if (y.HasValue)
                     {
-                        response = response = @", ""y"":" + y;
+                        response = response + @", ""y"":" + y;
                     }
-                    if (x.HasValue)
+                    if (z.HasValue)
                     {
-                        response = response = @", ""z"":" + z;
+                        response = response + @", ""z"":" + z;
                     }
                     response = response + @", ""stations"":[]}";
                     logInfo("Generating dummy response " + response);
