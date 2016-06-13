@@ -68,6 +68,7 @@ namespace EliteDangerousDataProviderService
         public static StarSystem StarSystemFromEDDP(dynamic json, decimal? x, decimal? y, decimal? z)
         {
             StarSystem StarSystem = new StarSystem();
+            StarSystem.EDDBID = (long)json["id"];
             StarSystem.Name = (string)json["name"];
             if (json["updated_at"] != null)
             {
@@ -101,6 +102,7 @@ namespace EliteDangerousDataProviderService
                 foreach (dynamic station in json["stations"])
                 {
                     Station Station = new Station();
+                    Station.EDDBID = (long)station["id"];
                     Station.Name = (string)station["name"];
 
                     Station.Allegiance = (string)station["allegiance"];

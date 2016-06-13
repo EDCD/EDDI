@@ -1,5 +1,7 @@
 #1.x
   * Fix issue where unknown systems provided an incorrect JSON result
+  * Add command to show the current system in EDDB
+  * Add command to show the current station in EDDB
 
 #1.2.2
   * Fix issue where shipyard would not be populated in some situations

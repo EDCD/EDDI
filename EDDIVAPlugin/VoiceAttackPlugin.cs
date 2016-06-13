@@ -230,6 +230,12 @@ namespace EDDIVAPlugin
                 case "coriolis":
                     InvokeCoriolis(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
+                case "eddbsystem":
+                    InvokeEDDBSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    return;
+                case "eddbstation":
+                    InvokeEDDBStation(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    return;
                 case "profile":
                     InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
@@ -276,8 +282,8 @@ namespace EDDIVAPlugin
             {
                 try
                 {
-                    dynamic entry = LogQueue.Take();
                     logDebug("InvokeLogWatcher(): queue has " + LogQueue.Count + " entries");
+                    dynamic entry = LogQueue.Take();
                     logDebug("InvokeLogWatcher(): entry is " + entry);
                     switch ((string)entry.type)
                     {
@@ -355,6 +361,91 @@ namespace EDDIVAPlugin
                     setPluginStatus(ref textValues, "Failed", "Failed to obtain log entry", ex);
                 }
             }
+        }
+
+        public static void InvokeEDDBSystem(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            logDebug("InvokeEDDBSystem(): entered");
+            try
+            {
+                if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
+                {
+                    // Refetch the profile to set our system
+                    InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
+                    {
+                        // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
+                        logDebug("InvokeEDDBSystem(): cannot obtain profile information; leaving");
+                        return;
+                    }
+                }
+
+                if (CurrentStarSystem == null)
+                {
+                    // Missing current star system information
+                    logDebug("InvokeEDDBSystem(): no information on current system");
+                    return;
+                }
+                string systemUri = "https://eddb.io/system/" + CurrentStarSystem.EDDBID;
+
+                logDebug("InvokeEDDBSystem(): starting process with uri " + systemUri);
+
+                Process.Start(systemUri);
+
+                setPluginStatus(ref textValues, "Operational", null, null);
+            }
+            catch (Exception e)
+            {
+                setPluginStatus(ref textValues, "Failed", "Failed to send system data to EDDB", e);
+            }
+            logDebug("InvokeEDDBSystem(): leaving");
+        }
+
+        public static void InvokeEDDBStation(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            logDebug("InvokeEDDBStation(): entered");
+            try
+            {
+                if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
+                {
+                    // Refetch the profile to set our station
+                    InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
+                    {
+                        // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
+                        logDebug("InvokeEDDBStation(): cannot obtain profile information; leaving");
+                        return;
+                    }
+                }
+
+                if (CurrentStarSystem == null || Cmdr.LastStation == null)
+                {
+                    // Missing current star system information
+                    logDebug("InvokeEDDBStation(): no information on current station");
+                    return;
+                }
+                logDebug("InvokeEDDBStation(): current star system is " + JsonConvert.SerializeObject(CurrentStarSystem));
+                logDebug("InvokeEDDBStation(): attempting to find station " + Cmdr.LastStation);
+                Station thisStation = CurrentStarSystem.Stations.SingleOrDefault(s => s.Name == Cmdr.LastStation);
+                if (thisStation == null)
+                {
+                    // Missing current star system information
+                    logDebug("InvokeEDDBStation(): no information on current station");
+                    return;
+                }
+                string stationUri = "https://eddb.io/station/" + thisStation.EDDBID;
+
+                logDebug("InvokeEDDBStation(): starting process with uri " + stationUri);
+
+                Process.Start(stationUri);
+
+                setPluginStatus(ref textValues, "Operational", null, null);
+            }
+            catch (Exception e)
+            {
+                setPluginStatus(ref textValues, "Failed", "Failed to send station data to EDDB", e);
+            }
+            logDebug("InvokeEDDBStation(): leaving");
         }
 
         public static void InvokeCoriolis(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
