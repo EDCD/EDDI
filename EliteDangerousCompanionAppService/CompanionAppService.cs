@@ -15,6 +15,9 @@ namespace EliteDangerousCompanionAppService
 {
     public class CompanionAppService
     {
+        // We only send module modification data the first time we obtain a profile
+        private static bool firstRun = true;
+
         private static List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
 
         // Translations from the internal names used by Frontier to clean human-readable
@@ -102,7 +105,7 @@ namespace EliteDangerousCompanionAppService
                 }
                 catch (EliteDangerousCompanionAppException ex)
                 {
-                    // Ignored - current state will have been corrected by Profile() if we guessed incorrectly
+                    warn("Failed to obtain profile: " + ex.ToString());
                 }
             }
         }
@@ -253,6 +256,8 @@ namespace EliteDangerousCompanionAppService
                 cachedProfile = CommanderFromProfile(data);
                 cachedProfileExpires = DateTime.Now.AddSeconds(30);
                 debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
+                // We have obtained a profile so have finished our run
+                firstRun = false;
                 return cachedProfile;
             }
         }
@@ -742,6 +747,11 @@ namespace EliteDangerousCompanionAppService
             else
             {
                 module.Health = Math.Round(Health);
+            }
+
+            if (json["module"]["modifiers"] != null && firstRun)
+            {
+                DataProviderService.LogError("Module with modification " + json["module"].ToString());
             }
             return module;
         }

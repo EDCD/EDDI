@@ -4,6 +4,7 @@
   * Add command to show the current station in EDDB
   * Add timeout for EDDP queries
   * Fix isue where hardpoints returned out of order resulted in incorrect export URL for Coriolis
+  * Log engineer modifications as part of module definition
 
 #1.2.2
   * Fix issue where shipyard would not be populated in some situations
