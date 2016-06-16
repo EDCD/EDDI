@@ -9,6 +9,7 @@ namespace EliteDangerousDataDefinitions
     /// <summary>Details for a star system</summary>
     public class StarSystem
     {
+        public long EDDBID { get; set; }
         public string Name { get; set; }
         public long? Population { get; set; }
         public string Allegiance { get; set;  }

@@ -1,3 +1,18 @@
+#1.3.0
+  * Fix issue where unknown systems provided an incorrect JSON result
+  * Add command to show the current system in EDDB
+  * Add command to show the current station in EDDB
+  * Add timeout for EDDP queries
+  * Fix isue where hardpoints returned out of order resulted in incorrect export URL for Coriolis
+  * Log engineer modifications as part of module definition
+
+#1.2.2
+  * Fix issue where shipyard would not be populated in some situations
+  * Close down HTTP responses sooner, hopefully fixing occasional hangs
+  * Populate the email address field in the configuration GUI from stored data if available
+  * Ensure that co-ordinates are sent to EDSM in US format regardless of client locale
+  * Added 'System orbital stations' value
+
 #1.2.1
   * Added modules from 1.6/2.1
   * Added commodities from 1.6/2.1

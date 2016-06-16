@@ -47,5 +47,16 @@ namespace Tests
             Dictionary<string, StarMapLogInfo> logs = service.getStarMapLog();
             Assert.AreEqual(1, logs.Count);
         }
+
+        [TestMethod]
+        public void TestWriteDecimal()
+        {
+            decimal val1 = 0.735m;
+            Assert.AreEqual("0,735", val1.ToString("0.000", new System.Globalization.CultureInfo("fr-FR")));
+            Assert.AreEqual("0.735", val1.ToString("0.000", new System.Globalization.CultureInfo("en-US")));
+            decimal val2 = 1234.735m;
+            Assert.AreEqual("1234,735", val2.ToString("0.000", new System.Globalization.CultureInfo("fr-FR")));
+            Assert.AreEqual("1234.735", val2.ToString("0.000", new System.Globalization.CultureInfo("en-US")));
+        }
     }
 }

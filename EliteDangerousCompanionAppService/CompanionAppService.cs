@@ -15,6 +15,11 @@ namespace EliteDangerousCompanionAppService
 {
     public class CompanionAppService
     {
+        // We only send module modification data the first time we obtain a profile
+        private static bool firstRun = true;
+
+        private static List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
+
         // Translations from the internal names used by Frontier to clean human-readable
         private static Dictionary<string, string> shipTranslations = new Dictionary<string, string>()
         {
@@ -100,7 +105,7 @@ namespace EliteDangerousCompanionAppService
                 }
                 catch (EliteDangerousCompanionAppException ex)
                 {
-                    // Ignored - current state will have been corrected by Profile() if we guessed incorrectly
+                    warn("Failed to obtain profile: " + ex.ToString());
                 }
             }
         }
@@ -128,17 +133,23 @@ namespace EliteDangerousCompanionAppService
             dataStream.Close();
 
             HttpWebResponse response = GetResponse(request);
-
+            if (response == null)
+            {
+                throw new EliteDangerousCompanionAppException("Failed to contact API server");
+            }
             if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == CONFIRM_URL)
             {
+                response.Close();
                 CurrentState = State.NEEDS_CONFIRMATION;
             }
             else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
             {
+                response.Close();
                 CurrentState = State.READY;
             }
             else
             {
+                response.Close();
                 throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
             }
         }
@@ -164,13 +175,19 @@ namespace EliteDangerousCompanionAppService
             dataStream.Close();
 
             HttpWebResponse response = GetResponse(request);
+            if (response == null)
+            {
+                throw new EliteDangerousCompanionAppException("Failed to contact API server");
+            }
 
             if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
             {
+                response.Close();
                 CurrentState = State.READY;
             }
             else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
             {
+                response.Close();
                 CurrentState = State.NEEDS_LOGIN;
                 throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect or expired");
             }
@@ -186,14 +203,20 @@ namespace EliteDangerousCompanionAppService
             if (cachedProfileExpires > DateTime.Now)
             {
                 // return the cached version
+                debug("Profile(): returning cached profile");
                 return cachedProfile;
             }
 
             HttpWebRequest request = GetRequest(BASE_URL + PROFILE_URL);
             HttpWebResponse response = GetResponse(request);
+            if (response == null)
+            {
+                throw new EliteDangerousCompanionAppException("Failed to contact API server");
+            }
 
             if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
             {
+                response.Close();
                 // Need to log in again.
                 CurrentState = State.NEEDS_LOGIN;
                 Login();
@@ -202,11 +225,16 @@ namespace EliteDangerousCompanionAppService
                     throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
                 }
                 // Rerun the profile request
-                request = GetRequest(BASE_URL + PROFILE_URL);
-                response = GetResponse(request);
-                // Handle the situation where a login is still required
-                if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
+                HttpWebRequest reRequest = GetRequest(BASE_URL + PROFILE_URL);
+                HttpWebResponse reResponse = GetResponse(reRequest);
+                if (reResponse == null)
                 {
+                    throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                }
+                // Handle the situation where a login is still required
+                if (reResponse.StatusCode == HttpStatusCode.Found && reResponse.Headers["Location"] == LOGIN_URL)
+                {
+                    reResponse.Close();
                     // Need to log in again but we have already tried to do so - revert
                     CurrentState = State.NEEDS_LOGIN;
                     throw new EliteDangerousCompanionAppIllegalStateException("Service not accepting profile requests");
@@ -228,6 +256,8 @@ namespace EliteDangerousCompanionAppService
                 cachedProfile = CommanderFromProfile(data);
                 cachedProfileExpires = DateTime.Now.AddSeconds(30);
                 debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
+                // We have obtained a profile so have finished our run
+                firstRun = false;
                 return cachedProfile;
             }
         }
@@ -242,6 +272,8 @@ namespace EliteDangerousCompanionAppService
             AddMachineTokenCookie(cookieContainer, Credentials);
             request.CookieContainer = cookieContainer;
             request.AllowAutoRedirect = false;
+            request.Timeout = 10000;
+            request.ReadWriteTimeout = 10000;
             request.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257";
             return request;
         }
@@ -250,10 +282,20 @@ namespace EliteDangerousCompanionAppService
         private HttpWebResponse GetResponse(HttpWebRequest request)
         {
             debug("GetResponse(): Requesting " + request.RequestUri);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            HttpWebResponse response;
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
+            }
+            catch (WebException wex)
+            {
+                warn("GetResponse(): failed to obtain response, error code " + wex.Status);
+                return null;
+            }
+            debug("GetResponse(): Response is " + JsonConvert.SerializeObject(response));
             UpdateCredentials(response);
             Credentials.ToFile();
-            debug("GetResponse(): Response is " + JsonConvert.SerializeObject(response));
             debug("GetResponse(): Credentials are " + JsonConvert.SerializeObject(Credentials, Formatting.Indented));
             return response;
         }
@@ -498,12 +540,26 @@ namespace EliteDangerousCompanionAppService
             Ship.FuelTank = ModuleFromProfile("FuelTank", json["ship"]["modules"]["FuelTank"]);
             Ship.FuelTankCapacity = (decimal)json["ship"]["fuel"]["main"]["capacity"];
 
-            // Obtain the hardpoints
+            // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
+            Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
             foreach (dynamic module in json["ship"]["modules"])
             {
                 if (module.Name.Contains("Hardpoint"))
                 {
-                    Ship.Hardpoints.Add(HardpointFromProfile(module));
+                    hardpoints.Add(module.Name, HardpointFromProfile(module));
+                }
+            }
+
+            foreach (string size in HARDPOINT_SIZES)
+            {
+                for(int i = 1; i < 8; i++)
+                {
+                    Hardpoint hardpoint;
+                    hardpoints.TryGetValue(size + "Hardpoint" + i, out hardpoint);
+                    if (hardpoint != null)
+                    {
+                        Ship.Hardpoints.Add(hardpoint);
+                    }
                 }
             }
 
@@ -588,7 +644,8 @@ namespace EliteDangerousCompanionAppService
             {
                 if (shipJson != null)
                 {
-                    dynamic ship = shipJson.Value;
+                    // Take underlying value if present
+                    dynamic ship = shipJson.Value == null ? shipJson : shipJson.Value;
                     if (ship != null)
                     {
                         if ((int)ship["id"] != currentShip.LocalId)
@@ -691,6 +748,11 @@ namespace EliteDangerousCompanionAppService
             {
                 module.Health = Math.Round(Health);
             }
+
+            if (json["module"]["modifiers"] != null && firstRun)
+            {
+                DataProviderService.LogError("Module with modification " + json["module"].ToString());
+            }
             return module;
         }
 
@@ -705,5 +767,12 @@ namespace EliteDangerousCompanionAppService
             }
         }
 
+        private void warn(string data)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
+            {
+                file.WriteLine(DateTime.Now.ToString() + ": " + data);
+            }
+        }
     }
 }

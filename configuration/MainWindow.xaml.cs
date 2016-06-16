@@ -48,6 +48,7 @@ namespace configuration
 
             // Configure the Companion App tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
+            companionAppEmailText.Text = companionAppCredentials.email;
             // See if the credentials work
             companionAppService = new CompanionAppService(debug);
             try

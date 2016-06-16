@@ -1,4 +1,5 @@
 ﻿using EliteDangerousDataDefinitions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -29,35 +30,32 @@ namespace EliteDangerousDataProviderService
                 z = (Math.Round(z.Value * 32)) / 32;
             }
 
-            using (var client = new WebClient())
+            string response;
+            try
             {
-                string response;
-                try
-                {
-                    response = client.DownloadString("http://api.eddp.co/systems/" + Uri.EscapeDataString(system));
-                    //logInfo("Response is " + response);
-                }
-                catch (WebException wex)
-                {
-                    // No information found on this system, or some other issue.  Create a very basic response
-                    response = @"{""name"":""" + system + @"""";
-                    if (x.HasValue)
-                    {
-                        response = response = @", ""x"":" + x;
-                    }
-                    if (y.HasValue)
-                    {
-                        response = response = @", ""y"":" + y;
-                    }
-                    if (x.HasValue)
-                    {
-                        response = response = @", ""z"":" + z;
-                    }
-                    response = response + @", ""stations"":[]}";
-                    logInfo("Generating dummy response " + response);
-                }
-                return StarSystemFromEDDP(response, x, y, z);
+                response = downloadString("http://api.eddp.co/systems/" + Uri.EscapeDataString(system));
+                //logInfo("Response is " + response);
             }
+            catch (WebException wex)
+            {
+                // No information found on this system, or some other issue.  Create a very basic response
+                response = @"{""name"":""" + system + @"""";
+                if (x.HasValue)
+                {
+                    response = response + @", ""x"":" + x;
+                }
+                if (y.HasValue)
+                {
+                    response = response + @", ""y"":" + y;
+                }
+                if (z.HasValue)
+                {
+                    response = response + @", ""z"":" + z;
+                }
+                response = response + @", ""stations"":[]}";
+                logInfo("Generating dummy response " + response);
+            }
+            return StarSystemFromEDDP(response, x, y, z);
         }
 
         public static StarSystem StarSystemFromEDDP(string data, decimal? x, decimal? y, decimal? z)
@@ -68,6 +66,7 @@ namespace EliteDangerousDataProviderService
         public static StarSystem StarSystemFromEDDP(dynamic json, decimal? x, decimal? y, decimal? z)
         {
             StarSystem StarSystem = new StarSystem();
+            StarSystem.EDDBID = (long)json["id"];
             StarSystem.Name = (string)json["name"];
             if (json["updated_at"] != null)
             {
@@ -101,6 +100,7 @@ namespace EliteDangerousDataProviderService
                 foreach (dynamic station in json["stations"])
                 {
                     Station Station = new Station();
+                    Station.EDDBID = (long)station["id"];
                     Station.Name = (string)station["name"];
 
                     Station.Allegiance = (string)station["allegiance"];
@@ -240,6 +240,58 @@ namespace EliteDangerousDataProviderService
             {
                 file.WriteLine(DateTime.Now.ToString() + ": " + data);
             }
+        }
+
+        private static String downloadString(string url)
+        {
+            HttpWebRequest request = GetRequest(url);
+            HttpWebResponse response = GetResponse(request);
+            if (response == null)
+            {
+                return null;
+            }
+
+            // Obtain and parse our response
+            var encoding = response.CharacterSet == ""
+                    ? Encoding.UTF8
+                    : Encoding.GetEncoding(response.CharacterSet);
+
+            debug("Reading response");
+            using (var stream = response.GetResponseStream())
+            {
+                var reader = new StreamReader(stream, encoding);
+                string data = reader.ReadToEnd();
+                debug("Data is: " + data);
+                response.Close();
+                return data;
+            }
+        }
+        // Set up a request with the correct parameters for talking to the companion app
+        private static HttpWebRequest GetRequest(string url)
+        {
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.Timeout = 10000;
+            request.ReadWriteTimeout = 10000;
+            return request;
+        }
+
+        // Obtain a response, ensuring that we obtain the response's cookies
+        private static HttpWebResponse GetResponse(HttpWebRequest request)
+        {
+            debug("GetResponse(): Requesting " + request.RequestUri);
+
+            HttpWebResponse response;
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
+            }
+            catch (WebException wex)
+            {
+                logInfo("GetResponse(): failed to obtain response, error code " + wex.Status);
+                return null;
+            }
+            debug("GetResponse(): Response is " + JsonConvert.SerializeObject(response));
+            return response;
         }
     }
 }

@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface
 
-Current version: 1.2.1
+Current version: 1.3.0
 
 EDDI is a VoiceAttack plugin that provides over 200 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  Although it provides a number of commands it is not in itself a complete VoiceAttack profile similar to those provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.
 
@@ -169,10 +169,11 @@ If a value is not available it will be not set rather than empty.
   * System X (decimal) the EDDB X co-ordinate of the system
   * System Y (decimal) the EDDB X co-ordinate of the system
   * System Z (decimal) the EDDB X co-ordinate of the system
-  * System stations (int): the total number of stations (starports and outposts) in the system
-  * System starports (int): the total number of starports in the system
-  * System outposts (int): the total number of outposts in the system
-  * System planetary stations (int): the total number of plaentary stations (outposts and ports) in the system
+  * System stations (int): the total number of stations, both in orbit and on planets, in the system
+  * System orbital stations (int): the number of orbital stations in the system
+  * System starports (int): the total number of orbital starports in the system
+  * System outposts (int): the total number of orbital outposts in the system
+  * System planetary stations (int): the total number of planetary stations (outposts and ports) in the system
   * System planetary outposts (int): the total number of planetary outposts in the system
   * System planetary ports (int): the total number of planetary ports in the system
 
@@ -254,6 +255,8 @@ EDDI also provides a number of pre-built commands to show off some of what it is
   * a voice command spoken by the pilot whenever they change ship ("Ship handover complete") that provides a run-down of the ship the pilot is now in
   * a voice command spoken by the pilot before they launch ("run pre flight checks") that carries out a check of areas such as insurance, repairs /etc./
   * a voice command spoken by the pilot when they wish to see their ship in https://www.coriolis.io/ ("Display my ship in coriolis")
+  * a voice command spoken by the pilot when they wish to see their current system in https://www.eddb.io/ ("Show this system in EDDB")
+  * a voice command spoken by the pilot when they wish to see their current station in https://www.eddb.io/ ("Show this station in EDDB")
   * a voice command spoken by the pilot when they wish to check the current discounts on their ship ("Report on ship discounts")
   * voice commands spoken by the pilot when they wish to check the current status of their ship ("Report" and "Quick report")
   * voice commands spoken by the pilot when they wish to check just the damage on their ship ("Damage report")

@@ -11,6 +11,9 @@ namespace EliteDangerousDataDefinitions
     /// </summary>
     public class Station
     {
+        /// <summary>The ID of this station in EDDB</summary>
+        public long EDDBID { get; set; }
+
         /// <summary>The name</summary>
         public String Name { get; set;  }
 

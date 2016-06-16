@@ -4,6 +4,7 @@ using RestSharp.Deserializers;
 using RestSharp.Serializers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -15,6 +16,9 @@ namespace EliteDangerousStarMapService
     /// <summary> Talk to the Elite: Dangerous Star Map service </summary>
     public class StarMapService
     {
+        // Use en-US everywhere to ensure that we don't use , rather than . for our separator
+        private static CultureInfo EN_US_CULTURE = new System.Globalization.CultureInfo("en-US");
+
         private string commanderName;
         private string apiKey;
         private string baseUrl;
@@ -35,18 +39,18 @@ namespace EliteDangerousStarMapService
             request.AddParameter("systemName", systemName);
             request.AddParameter("dateVisited", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
             request.AddParameter("fromSoftware", "EDDI");
-            request.AddParameter("fromSoftwareVersion", "1.2.1");
+            request.AddParameter("fromSoftwareVersion", "1.3.0");
             if (x.HasValue)
             {
-                request.AddParameter("x", x);
+                request.AddParameter("x", ((decimal)x).ToString("0.000", EN_US_CULTURE));
             }
             if (y.HasValue)
             {
-                request.AddParameter("y", y);
+                request.AddParameter("y", ((decimal)y).ToString("0.000", EN_US_CULTURE));
             }
             if (z.HasValue)
             {
-                request.AddParameter("z", z);
+                request.AddParameter("z", ((decimal)z).ToString("0.000", EN_US_CULTURE));
             }
 
             var clientResponse = client.Execute<StarMapLogResponse>(request);
@@ -269,7 +273,7 @@ namespace EliteDangerousStarMapService
         {
             this.commander = commanderName;
             this.fromSoftware = "EDDI";
-            this.fromSoftwareVersion = "1.2.1";
+            this.fromSoftwareVersion = "1.3.0";
             this.p0 = new StarMapDistance(systemName);
             this.refs = new List<StarMapDistance>();
             this.refs.Add(new StarMapDistance(remoteSystemName, distance));
