@@ -15,6 +15,8 @@ namespace EliteDangerousCompanionAppService
 {
     public class CompanionAppService
     {
+        private static List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
+
         // Translations from the internal names used by Frontier to clean human-readable
         private static Dictionary<string, string> shipTranslations = new Dictionary<string, string>()
         {
@@ -533,12 +535,26 @@ namespace EliteDangerousCompanionAppService
             Ship.FuelTank = ModuleFromProfile("FuelTank", json["ship"]["modules"]["FuelTank"]);
             Ship.FuelTankCapacity = (decimal)json["ship"]["fuel"]["main"]["capacity"];
 
-            // Obtain the hardpoints
+            // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
+            Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
             foreach (dynamic module in json["ship"]["modules"])
             {
                 if (module.Name.Contains("Hardpoint"))
                 {
-                    Ship.Hardpoints.Add(HardpointFromProfile(module));
+                    hardpoints.Add(module.Name, HardpointFromProfile(module));
+                }
+            }
+
+            foreach (string size in HARDPOINT_SIZES)
+            {
+                for(int i = 1; i < 8; i++)
+                {
+                    Hardpoint hardpoint;
+                    hardpoints.TryGetValue(size + "Hardpoint" + i, out hardpoint);
+                    if (hardpoint != null)
+                    {
+                        Ship.Hardpoints.Add(hardpoint);
+                    }
                 }
             }
 

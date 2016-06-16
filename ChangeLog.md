@@ -1,8 +1,9 @@
-#1.x
+#1.3.0
   * Fix issue where unknown systems provided an incorrect JSON result
   * Add command to show the current system in EDDB
   * Add command to show the current station in EDDB
   * Add timeout for EDDP queries
+  * Fix isue where hardpoints returned out of order resulted in incorrect export URL for Coriolis
 
 #1.2.2
   * Fix issue where shipyard would not be populated in some situations
