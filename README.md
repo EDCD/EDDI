@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface
 
-Current version: 1.3.0
+Current version: 1.3.1
 
 EDDI is a VoiceAttack plugin that provides over 200 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  Although it provides a number of commands it is not in itself a complete VoiceAttack profile similar to those provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.
 

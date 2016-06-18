@@ -1,4 +1,4 @@
-#1.x
+#1.3.1
   * Add station variables.  Note that these are all prefixed 'Last station' because there is no way of knowing if a ship is currently docked at a station or has already left it from the information provided in the API
       * Last station name (string): the name of the last station
       * Last station faction (string): the name of the controlling faction of the last station
