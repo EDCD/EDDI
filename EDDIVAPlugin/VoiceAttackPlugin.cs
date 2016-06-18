@@ -45,7 +45,7 @@ namespace EDDIVAPlugin
         private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
 
-        public static readonly string PLUGIN_VERSION = "1.3.0";
+        public static readonly string PLUGIN_VERSION = "1.3.1";
 
         public static string VA_DisplayName()
         {
@@ -337,6 +337,7 @@ namespace EDDIVAPlugin
                             setString(ref textValues, "EDDI event", "Ship docked");
                             // Need to refetch profile information
                             InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                            InvokeUpdateStation(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                             somethingToReport = true;
                             break;
                         case "Ship change": // New or swapped ship
@@ -668,6 +669,7 @@ namespace EDDIVAPlugin
                         setDecimal(ref decimalValues, varBase + " distance", null);
                     }
 
+                    // Last station
                     setString(ref textValues, "Last station name", Cmdr.LastStation);
 
                     if (enableDebugging)
@@ -737,6 +739,84 @@ namespace EDDIVAPlugin
             setDecimal(ref decimalValues, "Ship " + name + " station cost", (decimal?)null);
             setDecimal(ref decimalValues, "Ship " + name + " station discount", (decimal?)null);
             setString(ref textValues, "Ship " + name + " station discount (spoken)", (string)null);
+        }
+
+
+        public static void InvokeUpdateStation(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            logDebug("InvokeUpdateStation() entered");
+            try
+            {
+                Boolean hasData = false;
+                if (Cmdr != null && Cmdr.LastStation != null)
+                {
+                    if (CurrentStarSystem != null)
+                    {
+                        Station currentStation = CurrentStarSystem.Stations.SingleOrDefault(s => s.Name == Cmdr.LastStation);
+                        if (currentStation != null)
+                        {
+                            hasData = true;
+
+
+                            // Station information
+                            setDecimal(ref decimalValues, "Last station distance from star", currentStation.DistanceFromStar);
+                            setString(ref textValues, "Last station government", currentStation.Government);
+                            setString(ref textValues, "Last station allegiance", currentStation.Allegiance);
+                            setString(ref textValues, "Last station faction", currentStation.Faction);
+                            setString(ref textValues, "Last station state", currentStation.State);
+                            if (currentStation.Economies != null)
+                            {
+                                if (currentStation.Economies.Count > 0)
+                                {
+                                    setString(ref textValues, "Last station primary economy", currentStation.Economies[0]);
+                                }
+                                if (currentStation.Economies.Count > 1)
+                                {
+                                    setString(ref textValues, "Last station secondary economy", currentStation.Economies[1]);
+                                }
+                                if (currentStation.Economies.Count > 2)
+                                {
+                                    setString(ref textValues, "Last station tertiary economy", currentStation.Economies[2]);
+                                }
+                            }
+
+                            // Services
+                            setBoolean(ref booleanValues, "Last station has refuel", currentStation.HasRefuel);
+                            setBoolean(ref booleanValues, "Last station has repair", currentStation.HasRepair);
+                            setBoolean(ref booleanValues, "Last station has rearm", currentStation.HasRearm);
+                            setBoolean(ref booleanValues, "Last station has market", currentStation.HasMarket);
+                            setBoolean(ref booleanValues, "Last station has black market", currentStation.HasBlackMarket);
+                            setBoolean(ref booleanValues, "Last station has outfitting", currentStation.HasOutfitting);
+                            setBoolean(ref booleanValues, "Last station has shipyard", currentStation.HasShipyard);
+                        }
+                    }
+                }
+                if (!hasData)
+                {
+                    // We don't have any data so remove any info that we might have in history
+                    setDecimal(ref decimalValues, "Last station distance from star", null);
+                    setString(ref textValues, "Last station government", null);
+                    setString(ref textValues, "Last station allegiance", null);
+                    setString(ref textValues, "Last station faction", null);
+                    setString(ref textValues, "Last station state", null);
+                    setString(ref textValues, "Last station primary economy", null);
+                    setString(ref textValues, "Last station secondary economy", null);
+                    setString(ref textValues, "Last station tertiary economy", null);
+                    setBoolean(ref booleanValues, "Last station has refuel", null);
+                    setBoolean(ref booleanValues, "Last station has repair", null);
+                    setBoolean(ref booleanValues, "Last station has rearm", null);
+                    setBoolean(ref booleanValues, "Last station has market", null);
+                    setBoolean(ref booleanValues, "Last station has black market", null);
+                    setBoolean(ref booleanValues, "Last station has outfitting", null);
+                    setBoolean(ref booleanValues, "Last station has shipyard", null);
+                }
+                setPluginStatus(ref textValues, "Operational", null, null);
+
+            }
+            catch (Exception e)
+            {
+                setPluginStatus(ref textValues, "Failed", "Failed to obtain station data", e);
+            }
         }
 
         public static void InvokeNewSystem(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)

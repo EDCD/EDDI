@@ -17,8 +17,20 @@ namespace EliteDangerousDataDefinitions
         /// <summary>The name</summary>
         public String Name { get; set;  }
 
+        /// <summary>The government</summary>
+        public String Government { get; set; }
+
+        /// <summary>The faction</summary>
+        public String Faction { get; set; }
+
         /// <summary>The allegiance</summary>
         public String Allegiance { get; set; }
+
+        /// <summary>The state of the system</summary>
+        public String State { get; set; }
+
+        /// <summary>The economies of the station</summary>
+        public List<String> Economies { get; set; }
 
         /// <summary>How far this is from the star</summary>
         public long? DistanceFromStar { get; set; }

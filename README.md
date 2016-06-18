@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface
 
-Current version: 1.3.0
+Current version: 1.3.1
 
 EDDI is a VoiceAttack plugin that provides over 200 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  Although it provides a number of commands it is not in itself a complete VoiceAttack profile similar to those provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.
 
@@ -228,6 +228,22 @@ If a value is not available it will be not set rather than empty.
   * Ship compartment *n* module station cost (decimal): the purchase cost of this module at this station (not set if not for sale at the station)
   * Ship compartment *n* module station discount (decimal): the number of credits discount of the module over that currently fitted (not set if no additional discount)
   * Ship compartment *n* module station discount (spoken) (text): the number of credits discount of the module over that currently fitted as would be spoken (not set if no additional discount)
+  * Last station name (text): the name of the last station the commander docked at
+  * Last station faction (string): the name of the controlling faction of the last station
+  * Last station government (string): the name of the government of the last station
+  * Last station allegiance (string): the name of the allegiance of the last station (Federation, Empire, etc.)
+  * Last station state (string): the name of the state of the last station (boom, outbreak, etc.)
+  * Last station distance from star (decimal): the distance from the primary star to this station, in light seconds
+  * Last station primary economy (string): the primary economy of this station (extraction, prison colony, etc.)
+  * Last station secondary economy (string): the secondary economy of this station (extraction, prison colony, etc.)
+  * Last station tertiary economy (string): the tertiary economy of this station (extraction, prison colony, etc.)
+  * Last station has refuel (boolean): true if this station has refuel capability
+  * Last station has rearm (boolean): true if this station has rearm capability
+  * Last station has repair (boolean): true if this station has repair capability
+  * Last station has market (boolean): true if this station has a commodities market
+  * Last station has black market (boolean): true if this station has a black market
+  * Last station has outfitting (boolean): true if this station has outfitting
+  * Last station has shipyard (boolean): true if this station has a shipyard
 
 ###Shipyard values
 
@@ -245,7 +261,6 @@ If a value is not available it will be not set rather than empty.
 
   * Environment (text): the environment the ship is in (either "Normal space" or "Supercruise")
   * Last jump (decimal): the number of lights years between this system and the last, to two decimal places
-  * Last station name (text): the name of the last station the commander docked at
 
 EDDI also provides a number of pre-built commands to show off some of what it is capable of.  These include:
 

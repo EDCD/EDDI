@@ -1,3 +1,24 @@
+#1.3.1
+  * Add station variables.  Note that these are all prefixed 'Last station' because there is no way of knowing if a ship is currently docked at a station or has already left it from the information provided in the API
+      * Last station name (string): the name of the last station
+      * Last station faction (string): the name of the controlling faction of the last station
+      * Last station government (string): the name of the government of the last station
+      * Last station allegiance (string): the name of the allegiance of the last station (Federation, Empire, etc.)
+      * Last station state (string): the name of the state of the last station (boom, outbreak, etc.)
+      * Last station distance from star (decimal): the distance from the primary star to this station, in light seconds
+      * Last station primary economy (string): the primary economy of this station (extraction, prison colony, etc.)
+      * Last station secondary economy (string): the secondary economy of this station (extraction, prison colony, etc.)
+      * Last station tertiary economy (string): the tertiary economy of this station (extraction, prison colony, etc.)
+      * Last station has refuel (boolean): true if this station has refuel capability
+      * Last station has rearm (boolean): true if this station has rearm capability
+      * Last station has repair (boolean): true if this station has repair capability
+      * Last station has market (boolean): true if this station has a commodities market
+      * Last station has black market (boolean): true if this station has a black market
+      * Last station has outfitting (boolean): true if this station has outfitting
+      * Last station has shipyard (boolean): true if this station has a shipyard
+  * Add more system translations
+  * Fix issue with 0-cargo ships causing profile problems
+
 #1.3.0
   * Fix issue where unknown systems provided an incorrect JSON result
   * Add command to show the current system in EDDB
