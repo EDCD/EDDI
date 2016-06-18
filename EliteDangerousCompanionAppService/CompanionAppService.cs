@@ -578,18 +578,21 @@ namespace EliteDangerousCompanionAppService
             {
                 foreach (dynamic cargoJson in json["ship"]["cargo"]["items"])
                 {
-                    string name = (string)cargoJson["commodity"];
-                    Cargo cargo = new Cargo();
-                    cargo.Commodity = CommodityDefinitions.CommodityFromCargoName(name);
-                    if (cargo.Commodity.Name == null)
+                    if (cargoJson != null && cargoJson["commodity"] != null)
                     {
-                        // Unknown commodity; log an error so that we can update the definitions
-                        DataProviderService.LogError("No commodity definition for cargo " + cargoJson.ToString());
-                        cargo.Commodity.Name = name;
+                        string name = (string)cargoJson["commodity"];
+                        Cargo cargo = new Cargo();
+                        cargo.Commodity = CommodityDefinitions.CommodityFromCargoName(name);
+                        if (cargo.Commodity.Name == null)
+                        {
+                            // Unknown commodity; log an error so that we can update the definitions
+                            DataProviderService.LogError("No commodity definition for cargo " + cargoJson.ToString());
+                            cargo.Commodity.Name = name;
+                        }
+                        cargo.Quantity = (int)cargoJson["qty"];
+                        cargo.Cost = (long)cargoJson["value"];
+                        Ship.Cargo.Add(cargo);
                     }
-                    cargo.Quantity = (int)cargoJson["qty"];
-                    cargo.Cost = (long)cargoJson["value"];
-                    Ship.Cargo.Add(cargo);
                 }
             }
 

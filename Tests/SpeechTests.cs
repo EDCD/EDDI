@@ -31,10 +31,10 @@ namespace Tests
             {
                 synth.SetOutputToWaveStream(stream);
 
-                synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈprəʊˌsɪən\">Procyon</phoneme> system.</s></speak>");
+                //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"aɪlˈetə\">Isleta</phoneme> system.</s></speak>");
                 //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈkaɪə\">Kaia</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈbɑːhɑːhɑː\">Bajaja</phoneme> system.</s></speak>");
                 //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the Amnemoi system.</s></speak>");
-                //synth.Speak("Anemoi");
+                synth.Speak("You are travelling to the Barnard's Star system.");
                 stream.Seek(0, SeekOrigin.Begin);
 
                 IWaveSource source = new WaveFileReader(stream);

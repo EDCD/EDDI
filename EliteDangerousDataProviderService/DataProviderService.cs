@@ -103,7 +103,19 @@ namespace EliteDangerousDataProviderService
                     Station.EDDBID = (long)station["id"];
                     Station.Name = (string)station["name"];
 
+                    Station.Economies = new List<String>();
+                    if (station["economies"] != null)
+                    {
+                        foreach (dynamic economy in station["economies"])
+                        {
+                            Station.Economies.Add((String)economy);
+                        }
+                    }
+
                     Station.Allegiance = (string)station["allegiance"];
+                    Station.Government = (string)station["government"];
+                    Station.Faction = (string)station["faction"];
+                    Station.State = (string)station["state"] == "None" ? null : (string)station["state"];
                     Station.DistanceFromStar = (long?)station["distance_to_star"];
                     Station.HasRefuel = (bool?)station["has_refuel"];
                     Station.HasRearm = (bool?)station["has_rearm"];
