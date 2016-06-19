@@ -552,7 +552,7 @@ namespace EliteDangerousCompanionAppService
 
             foreach (string size in HARDPOINT_SIZES)
             {
-                for(int i = 1; i < 8; i++)
+                for (int i = 1; i < 12; i++)
                 {
                     Hardpoint hardpoint;
                     hardpoints.TryGetValue(size + "Hardpoint" + i, out hardpoint);
