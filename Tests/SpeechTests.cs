@@ -349,5 +349,28 @@ namespace Tests
                 source.Dispose();
             }
         }
+
+        [TestMethod]
+        public void TestDropOff()
+        {
+            SpeechSynthesizer synth = new SpeechSynthesizer();
+            using (MemoryStream stream = new MemoryStream())
+            {
+                synth.SetOutputToWaveStream(stream);
+                synth.Speak("Testing drop-off.");
+                stream.Seek(0, SeekOrigin.Begin);
+                IWaveSource source = new WaveFileReader(stream);
+                EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+                var soundOut = new WasapiOut();
+                soundOut.Initialize(source);
+                soundOut.Stopped += (s, e) => waitHandle.Set();
+                soundOut.Play();
+                waitHandle.WaitOne();
+                soundOut.Dispose();
+                source.Dispose();
+            }
+            SpeechService SpeechService = new SpeechService();
+            SpeechService.Speak("Testing drop-off.", null, 50, 1, 30, 40, 0, false);
+        }
     }
 }

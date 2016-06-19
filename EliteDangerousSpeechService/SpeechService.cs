@@ -154,7 +154,7 @@ namespace EliteDangerousSpeechService
                     // We always have chorus
                     if (chorusLevel != 0)
                     {
-                        source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = Math.Min(100, (int)(180 * ((decimal)configuration.EffectsLevel) / ((decimal)100))), Delay = 16, Frequency = 2, Feedback = 25 });
+                        source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = Math.Min(100, (int)(180 * ((decimal)configuration.EffectsLevel) / ((decimal)100))), Delay = 16, Frequency = (configuration.EffectsLevel/10), Feedback = 25 });
                     }
 
                     // We only have reverb and echo if we're not transmitting or receiving
@@ -175,12 +175,12 @@ namespace EliteDangerousSpeechService
 
                     if (configuration.EffectsLevel > 0 && distortionLevel > 0)
                     {
-                        source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = distortionLevel, Gain = -6 - (distortionLevel / 2), PostEQBandwidth = 4000, PostEQCenterFrequency = 4000 });
+                        source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = distortionLevel, Gain = -distortionLevel / 2, PostEQBandwidth = 4000, PostEQCenterFrequency = 4000 });
                     }
 
                     if (radio)
                     {
-                        source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = 7, Gain = -4 - distortionLevel / 2, PostEQBandwidth = 2000, PostEQCenterFrequency = 6000 });
+                        source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = 7, Gain =- distortionLevel / 2, PostEQBandwidth = 2000, PostEQCenterFrequency = 6000 });
                         source = source.AppendSource(x => new DmoCompressorEffect(x) { Attack = 1, Ratio = 3, Threshold = -10 });
                     }
 
