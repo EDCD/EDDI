@@ -1,6 +1,7 @@
 #1.x
   * Tweaks to increase volume of processed voice
   * Fix issue with last utility slots on large ships being missed
+  * Add verbose logging option to configuration UI
 
 #1.3.1
   * Add station variables.  Note that these are all prefixed 'Last station' because there is no way of knowing if a ship is currently docked at a station or has already left it from the information provided in the API
