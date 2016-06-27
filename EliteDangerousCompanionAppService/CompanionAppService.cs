@@ -296,7 +296,6 @@ namespace EliteDangerousCompanionAppService
             debug("GetResponse(): Response is " + JsonConvert.SerializeObject(response));
             UpdateCredentials(response);
             Credentials.ToFile();
-            debug("GetResponse(): Credentials are " + JsonConvert.SerializeObject(Credentials, Formatting.Indented));
             return response;
         }
 
