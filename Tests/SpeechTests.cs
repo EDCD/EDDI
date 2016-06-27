@@ -31,10 +31,10 @@ namespace Tests
             {
                 synth.SetOutputToWaveStream(stream);
 
-                //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"aɪlˈetə\">Isleta</phoneme> system.</s></speak>");
+                synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈredɡaɪə\">Wredguia</phoneme> system.</s></speak>");
                 //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈkaɪə\">Kaia</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈbɑːhɑːhɑː\">Bajaja</phoneme> system.</s></speak>");
                 //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the Amnemoi system.</s></speak>");
-                synth.Speak("You are travelling to the Barnard's Star system.");
+                //synth.Speak("You are travelling to the Barnard's Star system.");
                 stream.Seek(0, SeekOrigin.Begin);
 
                 IWaveSource source = new WaveFileReader(stream);
@@ -348,6 +348,29 @@ namespace Tests
                 soundOut.Dispose();
                 source.Dispose();
             }
+        }
+
+        [TestMethod]
+        public void TestDropOff()
+        {
+            SpeechSynthesizer synth = new SpeechSynthesizer();
+            using (MemoryStream stream = new MemoryStream())
+            {
+                synth.SetOutputToWaveStream(stream);
+                synth.Speak("Testing drop-off.");
+                stream.Seek(0, SeekOrigin.Begin);
+                IWaveSource source = new WaveFileReader(stream);
+                EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+                var soundOut = new WasapiOut();
+                soundOut.Initialize(source);
+                soundOut.Stopped += (s, e) => waitHandle.Set();
+                soundOut.Play();
+                waitHandle.WaitOne();
+                soundOut.Dispose();
+                source.Dispose();
+            }
+            SpeechService SpeechService = new SpeechService();
+            SpeechService.Speak("Testing drop-off.", null, 50, 1, 30, 40, 0, false);
         }
     }
 }

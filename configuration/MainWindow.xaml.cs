@@ -31,8 +31,6 @@ namespace configuration
         private Commander commander;
         private ShipsConfiguration shipsConfiguration;
 
-        private bool debug = false;
-
         private CompanionAppService companionAppService;
 
         public MainWindow()
@@ -44,13 +42,13 @@ namespace configuration
             eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;
             eddiInsuranceDecimal.Value = eddiConfiguration.Insurance;
-            debug = eddiConfiguration.Debug;
+            eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
 
             // Configure the Companion App tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             companionAppEmailText.Text = companionAppCredentials.email;
             // See if the credentials work
-            companionAppService = new CompanionAppService(debug);
+            companionAppService = new CompanionAppService(eddiConfiguration.Debug);
             try
             {
                 commander = companionAppService.Profile();
@@ -137,13 +135,23 @@ namespace configuration
             updateEddiConfiguration();
         }
 
+        private void verboseLoggingEnabled(object sender, RoutedEventArgs e)
+        {
+            updateEddiConfiguration();
+        }
+
+        private void verboseLoggingDisabled(object sender, RoutedEventArgs e)
+        {
+            updateEddiConfiguration();
+        }
+
         private void updateEddiConfiguration()
         {
             EDDIConfiguration eddiConfiguration = new EDDIConfiguration();
             eddiConfiguration.HomeSystem = String.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
             eddiConfiguration.HomeStation = String.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
             eddiConfiguration.Insurance = eddiInsuranceDecimal.Value == null ? 5 : (decimal)eddiInsuranceDecimal.Value;
-            eddiConfiguration.Debug = debug;
+            eddiConfiguration.Debug = eddiVerboseLogging.IsChecked.Value;
             eddiConfiguration.ToFile();
         }
 
@@ -460,7 +468,7 @@ namespace configuration
             if (String.IsNullOrEmpty(starMapConfiguration.commanderName))
             {
                 // Fetch the commander name from the companion app
-                CompanionAppService companionAppService = new CompanionAppService(debug);
+                CompanionAppService companionAppService = new CompanionAppService(EDDIConfiguration.FromFile().Debug);
                 Commander cmdr = companionAppService.Profile();
                 if (cmdr != null && cmdr.Name != null)
                 {

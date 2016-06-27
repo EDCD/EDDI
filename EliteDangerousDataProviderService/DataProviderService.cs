@@ -34,9 +34,12 @@ namespace EliteDangerousDataProviderService
             try
             {
                 response = downloadString("http://api.eddp.co/systems/" + Uri.EscapeDataString(system));
-                //logInfo("Response is " + response);
             }
             catch (WebException wex)
+            {
+                response = null;
+            }
+            if (response == null)
             {
                 // No information found on this system, or some other issue.  Create a very basic response
                 response = @"{""name"":""" + system + @"""";
@@ -66,11 +69,15 @@ namespace EliteDangerousDataProviderService
         public static StarSystem StarSystemFromEDDP(dynamic json, decimal? x, decimal? y, decimal? z)
         {
             StarSystem StarSystem = new StarSystem();
-            StarSystem.EDDBID = (long)json["id"];
             StarSystem.Name = (string)json["name"];
+            StarSystem.X = json["x"] == null ? x : (decimal?)json["x"];
+            StarSystem.Y = json["y"] == null ? y : (decimal?)json["y"];
+            StarSystem.Z = json["z"] == null ? y : (decimal?)json["z"];
+
             if (json["updated_at"] != null)
             {
                 // We have real data so populate the rest of the data
+                StarSystem.EDDBID = (long)json["id"];
                 StarSystem.Population = (long?)json["population"] == null ? 0 : (long?)json["population"];
                 StarSystem.Allegiance = (string)json["allegiance"];
                 StarSystem.Government = (string)json["government"];
@@ -81,9 +88,6 @@ namespace EliteDangerousDataProviderService
                 StarSystem.Power = (string)json["power"] == "None" ? null : (string)json["power"];
                 StarSystem.PowerState = (string)json["power_state"];
 
-                StarSystem.X = json["x"] == null ? x : (decimal?)json["x"];
-                StarSystem.Y = json["y"] == null ? y : (decimal?)json["y"];
-                StarSystem.Z = json["z"] == null ? y : (decimal?)json["z"];
 
                 StarSystem.Stations = StationsFromEDDP(json);
             }
@@ -258,7 +262,7 @@ namespace EliteDangerousDataProviderService
         {
             HttpWebRequest request = GetRequest(url);
             HttpWebResponse response = GetResponse(request);
-            if (response == null)
+            if (response == null) // Means that the system was not found
             {
                 return null;
             }
@@ -278,6 +282,7 @@ namespace EliteDangerousDataProviderService
                 return data;
             }
         }
+
         // Set up a request with the correct parameters for talking to the companion app
         private static HttpWebRequest GetRequest(string url)
         {
@@ -299,8 +304,17 @@ namespace EliteDangerousDataProviderService
             }
             catch (WebException wex)
             {
-                logInfo("GetResponse(): failed to obtain response, error code " + wex.Status);
-                return null;
+                HttpWebResponse errorResponse = wex.Response as HttpWebResponse;
+                if (errorResponse.StatusCode == HttpStatusCode.NotFound)
+                {
+                    // Not found is usual
+                    return null;
+                }
+                else
+                {
+                    logInfo("GetResponse(): failed to obtain response, error code " + wex.Status);
+                    throw wex;
+                }
             }
             debug("GetResponse(): Response is " + JsonConvert.SerializeObject(response));
             return response;

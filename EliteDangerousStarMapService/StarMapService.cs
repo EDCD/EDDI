@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 
 namespace EliteDangerousStarMapService
 {
@@ -39,7 +40,7 @@ namespace EliteDangerousStarMapService
             request.AddParameter("systemName", systemName);
             request.AddParameter("dateVisited", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
             request.AddParameter("fromSoftware", "EDDI");
-            request.AddParameter("fromSoftwareVersion", "1.3.1");
+            request.AddParameter("fromSoftwareVersion", "1.3.5");
             if (x.HasValue)
             {
                 request.AddParameter("x", ((decimal)x).ToString("0.000", EN_US_CULTURE));
@@ -53,9 +54,13 @@ namespace EliteDangerousStarMapService
                 request.AddParameter("z", ((decimal)z).ToString("0.000", EN_US_CULTURE));
             }
 
-            var clientResponse = client.Execute<StarMapLogResponse>(request);
-            StarMapLogResponse response = clientResponse.Data;
-            // TODO check response
+            new Thread(() =>
+            {
+                var clientResponse = client.Execute<StarMapLogResponse>(request);
+                StarMapLogResponse response = clientResponse.Data;
+                // TODO check response
+
+            }).Start();
         }
 
         public void sendStarMapComment(string systemName, string comment)
@@ -67,9 +72,12 @@ namespace EliteDangerousStarMapService
             request.AddParameter("systemName", systemName);
             request.AddParameter("comment", comment);
 
-            var clientResponse = client.Execute<StarMapLogResponse>(request);
-            StarMapLogResponse response = clientResponse.Data;
-            // TODO check response
+            new Thread(() =>
+            {
+                var clientResponse = client.Execute<StarMapLogResponse>(request);
+                StarMapLogResponse response = clientResponse.Data;
+                // TODO check response
+            }).Start();
         }
 
         public StarMapInfo getStarMapInfo(string systemName)
@@ -273,7 +281,7 @@ namespace EliteDangerousStarMapService
         {
             this.commander = commanderName;
             this.fromSoftware = "EDDI";
-            this.fromSoftwareVersion = "1.3.";
+            this.fromSoftwareVersion = "1.3.5";
             this.p0 = new StarMapDistance(systemName);
             this.refs = new List<StarMapDistance>();
             this.refs.Add(new StarMapDistance(remoteSystemName, distance));

@@ -1,3 +1,13 @@
+#1.3.5
+  * Tweaks to increase volume of processed voice
+  * Fix issue with last utility slots on large ships being missed
+  * Add verbose logging option to configuration UI
+  * Add definition for huge burst lasers (fixed, gimballed)
+  * Avoid hang when sending to EDSM
+  * Avoid hang when sending to EDDP
+  * Provide local co-ordinates when systems are not available in EDSM
+  * Never write credentials to log file
+
 #1.3.1
   * Add station variables.  Note that these are all prefixed 'Last station' because there is no way of knowing if a ship is currently docked at a station or has already left it from the information provided in the API
       * Last station name (string): the name of the last station
