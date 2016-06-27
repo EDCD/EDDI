@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 
 namespace EliteDangerousStarMapService
 {
@@ -53,9 +54,13 @@ namespace EliteDangerousStarMapService
                 request.AddParameter("z", ((decimal)z).ToString("0.000", EN_US_CULTURE));
             }
 
-            var clientResponse = client.Execute<StarMapLogResponse>(request);
-            StarMapLogResponse response = clientResponse.Data;
-            // TODO check response
+            new Thread(() =>
+            {
+                var clientResponse = client.Execute<StarMapLogResponse>(request);
+                StarMapLogResponse response = clientResponse.Data;
+                // TODO check response
+
+            }).Start();
         }
 
         public void sendStarMapComment(string systemName, string comment)
@@ -67,9 +72,12 @@ namespace EliteDangerousStarMapService
             request.AddParameter("systemName", systemName);
             request.AddParameter("comment", comment);
 
-            var clientResponse = client.Execute<StarMapLogResponse>(request);
-            StarMapLogResponse response = clientResponse.Data;
-            // TODO check response
+            new Thread(() =>
+            {
+                var clientResponse = client.Execute<StarMapLogResponse>(request);
+                StarMapLogResponse response = clientResponse.Data;
+                // TODO check response
+            }).Start();
         }
 
         public StarMapInfo getStarMapInfo(string systemName)

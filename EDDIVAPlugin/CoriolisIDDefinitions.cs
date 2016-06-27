@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Threading;
 
 namespace EDDIVAPlugin
 {
@@ -817,6 +818,8 @@ namespace EDDIVAPlugin
             { 1546, "7o"},
             { 1547, "u0"},
             { 1548, "tz"},
+            { 1549, "7s"},
+            { 1550, "7t"},
         };
         public static string FromEDDBID(long eddbid)
         {
@@ -830,14 +833,17 @@ namespace EDDIVAPlugin
         }
         private static void LogError(string error)
         {
-            using (var client = new WebClient())
+            new Thread(() =>
             {
-                try
+                using (var client = new WebClient())
                 {
-                    client.UploadString(@"http://api.eddp.co/error", error);
+                    try
+                    {
+                        client.UploadString(@"http://api.eddp.co/error", error);
+                    }
+                    catch { }
                 }
-                catch { }
-            }
+            }).Start();
         }
     }
 }

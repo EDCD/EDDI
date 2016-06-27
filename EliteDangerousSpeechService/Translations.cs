@@ -82,6 +82,7 @@ namespace EliteDangerousSpeechService
             { "Atlas", new string[] {  "ˈætləs" } },
             { "Aulin", new string[] { "ˈɔːlɪn" } },
             { "Celaeno", new string[] {  "sᵻˈliːnoʊ" }  },
+            { "Ceos", new string[] { "ˈkeɪɒs" }  },
             { "Cygnus", new string[] { "ˈsɪɡnəs" }  },
             { "Deciat", new string[] { "ˈdɛsiːæt" } },
             { "Diso ", new string[] { "ˈdiːsəʊ" } },
@@ -157,6 +158,7 @@ namespace EliteDangerousSpeechService
             { "Trianguli", new string[] { "traɪˈæŋˌɡjʊˌlaɪ" } },
             { "Trifid", new string[] { "ˈtraɪfɪd" } },
             { "Tucanae", new string[] { "tuːˈkɑːniː" } },
+            { "Wredguia", new string[] { "ˈredɡaɪə" } },
         };
 
         private static Regex DIGITS = new Regex(@"\d{3,}");
