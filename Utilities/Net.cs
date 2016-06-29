@@ -15,26 +15,26 @@ namespace Utilities
         public static String DownloadString(string uri)
         {
             HttpWebRequest request = GetRequest(uri);
-            HttpWebResponse response = GetResponse(request);
-            if (response == null) // Means that the system was not found
+            using (HttpWebResponse response = GetResponse(request))
             {
-                return null;
-            }
+                if (response == null) // Means that the system was not found
+                {
+                    return null;
+                }
 
-            // Obtain and parse our response
-            var encoding = response.CharacterSet == ""
-                    ? Encoding.UTF8
-                    : Encoding.GetEncoding(response.CharacterSet);
+                // Obtain and parse our response
+                var encoding = response.CharacterSet == ""
+                        ? Encoding.UTF8
+                        : Encoding.GetEncoding(response.CharacterSet);
 
-            Logging.Debug("Reading response");
-            using (var stream = response.GetResponseStream())
-            {
-                var reader = new StreamReader(stream, encoding);
-                string data = reader.ReadToEnd();
-                Logging.Debug("Data is: " + data);
-                response.Close();
-                Logging.Debug("Closed response stream");
-                return data;
+                Logging.Debug("Reading response");
+                using (var stream = response.GetResponseStream())
+                {
+                    var reader = new StreamReader(stream, encoding);
+                    string data = reader.ReadToEnd();
+                    Logging.Debug("Data is: " + data);
+                    return data;
+                }
             }
         }
 

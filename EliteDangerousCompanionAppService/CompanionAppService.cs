@@ -125,29 +125,29 @@ namespace EliteDangerousCompanionAppService
             string encodedPassword = WebUtility.UrlEncode(Credentials.password);
             byte[] data = Encoding.UTF8.GetBytes("email=" + encodedUsername + "&password=" + encodedPassword);
             request.ContentLength = data.Length;
-            Stream dataStream = request.GetRequestStream();
-            dataStream.Write(data, 0, data.Length);
-            dataStream.Close();
+            using (Stream dataStream = request.GetRequestStream())
+            {
+                dataStream.Write(data, 0, data.Length);
+            }
 
-            HttpWebResponse response = GetResponse(request);
-            if (response == null)
+            using (HttpWebResponse response = GetResponse(request))
             {
-                throw new EliteDangerousCompanionAppException("Failed to contact API server");
-            }
-            if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == CONFIRM_URL)
-            {
-                response.Close();
-                CurrentState = State.NEEDS_CONFIRMATION;
-            }
-            else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
-            {
-                response.Close();
-                CurrentState = State.READY;
-            }
-            else
-            {
-                response.Close();
-                throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
+                if (response == null)
+                {
+                    throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                }
+                if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == CONFIRM_URL)
+                {
+                    CurrentState = State.NEEDS_CONFIRMATION;
+                }
+                else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
+                {
+                    CurrentState = State.READY;
+                }
+                else
+                {
+                    throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
+                }
             }
         }
 
@@ -167,26 +167,27 @@ namespace EliteDangerousCompanionAppService
             string encodedCode = WebUtility.UrlEncode(code);
             byte[] data = Encoding.UTF8.GetBytes("code=" + encodedCode);
             request.ContentLength = data.Length;
-            Stream dataStream = request.GetRequestStream();
-            dataStream.Write(data, 0, data.Length);
-            dataStream.Close();
-
-            HttpWebResponse response = GetResponse(request);
-            if (response == null)
+            using (Stream dataStream = request.GetRequestStream())
             {
-                throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                dataStream.Write(data, 0, data.Length);
             }
 
-            if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
+            using (HttpWebResponse response = GetResponse(request))
             {
-                response.Close();
-                CurrentState = State.READY;
-            }
-            else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
-            {
-                response.Close();
-                CurrentState = State.NEEDS_LOGIN;
-                throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect or expired");
+                if (response == null)
+                {
+                    throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                }
+
+                if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
+                {
+                    CurrentState = State.READY;
+                }
+                else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
+                {
+                    CurrentState = State.NEEDS_LOGIN;
+                    throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect or expired");
+                }
             }
         }
 
@@ -209,69 +210,69 @@ namespace EliteDangerousCompanionAppService
             }
 
             HttpWebRequest request = GetRequest(BASE_URL + PROFILE_URL);
-            HttpWebResponse response = GetResponse(request);
-            if (response == null)
+            using (HttpWebResponse response = GetResponse(request))
             {
-                Logging.Debug("Failed to contact API server");
-                Logging.Debug("Leaving");
-                throw new EliteDangerousCompanionAppException("Failed to contact API server");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
-            {
-                response.Close();
-                // Need to log in again.
-                CurrentState = State.NEEDS_LOGIN;
-                Login();
-                if (CurrentState != State.READY)
-                {
-                    Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
-                    Logging.Debug("Leaving");
-                    throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
-                }
-                // Rerun the profile request
-                HttpWebRequest reRequest = GetRequest(BASE_URL + PROFILE_URL);
-                HttpWebResponse reResponse = GetResponse(reRequest);
-                if (reResponse == null)
+                if (response == null)
                 {
                     Logging.Debug("Failed to contact API server");
                     Logging.Debug("Leaving");
                     throw new EliteDangerousCompanionAppException("Failed to contact API server");
                 }
-                // Handle the situation where a login is still required
-                if (reResponse.StatusCode == HttpStatusCode.Found && reResponse.Headers["Location"] == LOGIN_URL)
+
+                if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
                 {
-                    reResponse.Close();
-                    // Need to log in again but we have already tried to do so - revert
+                    // Need to log in again.
                     CurrentState = State.NEEDS_LOGIN;
-                    Logging.Debug("Service not accepting profile requests");
-                    Logging.Debug("Leaving");
-                    throw new EliteDangerousCompanionAppIllegalStateException("Service not accepting profile requests");
+                    Login();
+                    if (CurrentState != State.READY)
+                    {
+                        Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
+                        Logging.Debug("Leaving");
+                        throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
+                    }
+                    // Rerun the profile request
+                    HttpWebRequest reRequest = GetRequest(BASE_URL + PROFILE_URL);
+                    using (HttpWebResponse reResponse = GetResponse(reRequest))
+                    {
+                        if (reResponse == null)
+                        {
+                            Logging.Debug("Failed to contact API server");
+                            Logging.Debug("Leaving");
+                            throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                        }
+                        // Handle the situation where a login is still required
+                        if (reResponse.StatusCode == HttpStatusCode.Found && reResponse.Headers["Location"] == LOGIN_URL)
+                        {
+                            // Need to log in again but we have already tried to do so - revert
+                            CurrentState = State.NEEDS_LOGIN;
+                            Logging.Debug("Service not accepting profile requests");
+                            Logging.Debug("Leaving");
+                            throw new EliteDangerousCompanionAppIllegalStateException("Service not accepting profile requests");
+                        }
+                    }
                 }
-            }
 
-            // Obtain and parse our response
-            var encoding = response.CharacterSet == ""
-                    ? Encoding.UTF8
-                    : Encoding.GetEncoding(response.CharacterSet);
+                // Obtain and parse our response
+                var encoding = response.CharacterSet == ""
+                        ? Encoding.UTF8
+                        : Encoding.GetEncoding(response.CharacterSet);
 
-            Logging.Debug("Reading response");
-            using (var stream = response.GetResponseStream())
-            {
-                var reader = new StreamReader(stream, encoding);
-                string data = reader.ReadToEnd();
-                Logging.Debug("Data is " + data);
-                response.Close();
-                Logging.Debug("Closed response");
-                cachedProfile = CommanderFromProfile(data);
-                cachedProfileExpires = DateTime.Now.AddSeconds(30);
-                Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
+                Logging.Debug("Reading response");
+                using (var stream = response.GetResponseStream())
+                {
+                    var reader = new StreamReader(stream, encoding);
+                    string data = reader.ReadToEnd();
+                    Logging.Debug("Data is " + data);
+                    cachedProfile = CommanderFromProfile(data);
+                    cachedProfileExpires = DateTime.Now.AddSeconds(30);
+                    Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
 
-                // We have obtained a profile so have finished our run
-                firstRun = false;
+                    // We have obtained a profile so have finished our run
+                    firstRun = false;
 
-                Logging.Debug("Leaving");
-                return cachedProfile;
+                    Logging.Debug("Leaving");
+                    return cachedProfile;
+                }
             }
         }
 
