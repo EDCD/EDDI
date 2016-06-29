@@ -2,13 +2,14 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using Utilities;
 
 namespace EliteDangerousNetLogMonitor
 {
     /// <summary>A log monitor for the Elite: Dangerous netlog</summary>
     public class NetLogMonitor : LogMonitor
     {
-        public NetLogMonitor(NetLogConfiguration configuration, Action<dynamic> callback, bool enableDebugging=false) : base(configuration.path, @"netLog", enableDebugging, (result) => HandleNetLogLine(result, callback))
+        public NetLogMonitor(NetLogConfiguration configuration, Action<dynamic> callback) : base(configuration.path, @"netLog", (result) => HandleNetLogLine(result, callback))
         {
         }
 
@@ -21,7 +22,7 @@ namespace EliteDangerousNetLogMonitor
             Match oldMatch = OldSystemRegex.Match(line);
             if (oldMatch.Success)
             {
-                logDebug("Match against old regex");
+                Logging.Debug("Match against old regex");
                 if (@"Training" == oldMatch.Groups[3].Value || @"Destination" == oldMatch.Groups[3].Value)
                 {
                     // We ignore training missions
@@ -44,7 +45,7 @@ namespace EliteDangerousNetLogMonitor
             Match match = SystemRegex.Match(line);
             if (match.Success)
             {
-                logDebug("Match against new regex");
+                Logging.Debug("Match against new regex");
                 if (@"Training" == match.Groups[2].Value || @"Destination" == match.Groups[2].Value)
                 {
                     // We ignore training missions
@@ -64,18 +65,9 @@ namespace EliteDangerousNetLogMonitor
                 result.y = match.Groups[4].Value;
                 result.z = match.Groups[5].Value;
                 result.environment = match.Groups[6].Value;
-                logDebug("Callback with " + result);
+                Logging.Debug("Callback with " + result);
                 callback(result);
             }
-        }
-
-        private static readonly string LOGFILE = Environment.GetEnvironmentVariable("AppData") + @"\EDDI\eddi.log";
-        protected static void logDebug(string data)
-        {
-                //using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
-                //{
-                    //file.WriteLine(DateTime.Now.ToString() + ": " + data);
-                //}
         }
     }
 }

@@ -11,6 +11,7 @@ using System.Speech.Synthesis;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Utilities;
 
 namespace EliteDangerousSpeechService
 {
@@ -138,7 +139,7 @@ namespace EliteDangerousSpeechService
                     }
                     stream.Seek(0, SeekOrigin.Begin);
 
-                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true)) { file.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": Turned script " + script + " in to speech " + speech); }
+                    Logging.Info("Turned script " + script + " in to speech " + speech);
 
                     IWaveSource source = new WaveFileReader(stream);
 
@@ -211,7 +212,7 @@ namespace EliteDangerousSpeechService
             }
             catch (Exception ex)
             {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true)) { file.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": Caught exception " + ex); }
+                Logging.Error("Caught exception " + ex);
             }
         }
 

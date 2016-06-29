@@ -20,6 +20,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Speech.Synthesis;
 using EliteDangerousDataProviderService;
+using Utilities;
 
 namespace configuration
 {
@@ -44,11 +45,13 @@ namespace configuration
             eddiInsuranceDecimal.Value = eddiConfiguration.Insurance;
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
 
+            Logging.Verbose = eddiConfiguration.Debug;
+
             // Configure the Companion App tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             companionAppEmailText.Text = companionAppCredentials.email;
             // See if the credentials work
-            companionAppService = new CompanionAppService(eddiConfiguration.Debug);
+            companionAppService = new CompanionAppService();
             try
             {
                 commander = companionAppService.Profile();
@@ -468,7 +471,7 @@ namespace configuration
             if (String.IsNullOrEmpty(starMapConfiguration.commanderName))
             {
                 // Fetch the commander name from the companion app
-                CompanionAppService companionAppService = new CompanionAppService(EDDIConfiguration.FromFile().Debug);
+                CompanionAppService companionAppService = new CompanionAppService();
                 Commander cmdr = companionAppService.Profile();
                 if (cmdr != null && cmdr.Name != null)
                 {

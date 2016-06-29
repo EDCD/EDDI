@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using Utilities;
 
 namespace EliteDangerousCompanionAppService
 {
@@ -62,9 +63,6 @@ namespace EliteDangerousCompanionAppService
         private static string CONFIRM_URL = "/user/confirm";
         private static string PROFILE_URL = "/profile";
 
-        private static readonly string LOGFILE = Environment.GetEnvironmentVariable("AppData") + @"\EDDI\eddi.log";
-        private bool enableDebugging;
-
         // We cache the profile to avoid spamming the service
         private Commander cachedProfile;
         private DateTime cachedProfileExpires;
@@ -79,9 +77,8 @@ namespace EliteDangerousCompanionAppService
 
         public CompanionAppCredentials Credentials;
 
-        public CompanionAppService(bool enableDebugging=false)
+        public CompanionAppService()
         {
-            this.enableDebugging = enableDebugging;
             Credentials = CompanionAppCredentials.FromFile();
 
             // Need to work out our current state.
@@ -105,7 +102,7 @@ namespace EliteDangerousCompanionAppService
                 }
                 catch (EliteDangerousCompanionAppException ex)
                 {
-                    warn("Failed to obtain profile: " + ex.ToString());
+                    Logging.Warn("Failed to obtain profile: " + ex.ToString());
                 }
             }
         }
@@ -203,7 +200,7 @@ namespace EliteDangerousCompanionAppService
             if (cachedProfileExpires > DateTime.Now)
             {
                 // return the cached version
-                debug("Profile(): returning cached profile");
+                Logging.Debug("Profile(): returning cached profile");
                 return cachedProfile;
             }
 
@@ -246,16 +243,16 @@ namespace EliteDangerousCompanionAppService
                     ? Encoding.UTF8
                     : Encoding.GetEncoding(response.CharacterSet);
 
-            debug("Reading response");
+            Logging.Debug("Reading response");
             using (var stream = response.GetResponseStream())
             {
                 var reader = new StreamReader(stream, encoding);
                 string data = reader.ReadToEnd();
-                debug("Data is: " + data);
+                Logging.Debug("Data is: " + data);
                 response.Close();
                 cachedProfile = CommanderFromProfile(data);
                 cachedProfileExpires = DateTime.Now.AddSeconds(30);
-                debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
+                Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
                 // We have obtained a profile so have finished our run
                 firstRun = false;
                 return cachedProfile;
@@ -281,7 +278,7 @@ namespace EliteDangerousCompanionAppService
         // Obtain a response, ensuring that we obtain the response's cookies
         private HttpWebResponse GetResponse(HttpWebRequest request)
         {
-            debug("GetResponse(): Requesting " + request.RequestUri);
+            Logging.Debug("GetResponse(): Requesting " + request.RequestUri);
 
             HttpWebResponse response;
             try
@@ -290,10 +287,10 @@ namespace EliteDangerousCompanionAppService
             }
             catch (WebException wex)
             {
-                warn("GetResponse(): failed to obtain response, error code " + wex.Status);
+                Logging.Warn("GetResponse(): failed to obtain response, error code " + wex.Status);
                 return null;
             }
-            debug("GetResponse(): Response is " + JsonConvert.SerializeObject(response));
+            Logging.Debug("GetResponse(): Response is " + JsonConvert.SerializeObject(response));
             UpdateCredentials(response);
             Credentials.ToFile();
             return response;
@@ -380,7 +377,6 @@ namespace EliteDangerousCompanionAppService
             AugmentCmdrInfo(cmdr);
             return cmdr;
         }
-
 
         /// <summary>Create a commander profile given the results from a /profile call</summary>
         public static Commander CommanderFromProfile(dynamic json)
@@ -585,7 +581,7 @@ namespace EliteDangerousCompanionAppService
                         if (cargo.Commodity.Name == null)
                         {
                             // Unknown commodity; log an error so that we can update the definitions
-                            DataProviderService.LogError("No commodity definition for cargo " + cargoJson.ToString());
+                            Logging.Error("No commodity definition for cargo " + cargoJson.ToString());
                             cargo.Commodity.Name = name;
                         }
                         cargo.Quantity = (int)cargoJson["qty"];
@@ -716,7 +712,7 @@ namespace EliteDangerousCompanionAppService
                         if (Module.Name == null)
                         {
                             // Unknown module; log an error so that we can update the definitions
-                            DataProviderService.LogError("No definition for outfitting module " + module.ToString());
+                            Logging.Error("No definition for outfitting module " + module.ToString());
                         }
                         Module.Cost = module["cost"];
                         Modules.Add(Module);
@@ -734,7 +730,7 @@ namespace EliteDangerousCompanionAppService
             if (module.Name == null)
             {
                 // Unknown module; log an error so that we can update the definitions
-                DataProviderService.LogError("No definition for ship module " + json["module"].ToString());
+                Logging.Error("No definition for ship module " + json["module"].ToString());
             }
 
             module.Cost = (long)json["module"]["value"];
@@ -753,28 +749,9 @@ namespace EliteDangerousCompanionAppService
 
             if (json["module"]["modifiers"] != null && firstRun)
             {
-                DataProviderService.LogError("Module with modification " + json["module"].ToString());
+                Logging.Error("Module with modification " + json["module"].ToString());
             }
             return module;
-        }
-
-        private void debug(string data)
-        {
-            if (enableDebugging)
-            {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
-                {
-                    file.WriteLine(DateTime.Now.ToString() + ": " + data);
-                }
-            }
-        }
-
-        private void warn(string data)
-        {
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
-            {
-                file.WriteLine(DateTime.Now.ToString() + ": " + data);
-            }
         }
     }
 }

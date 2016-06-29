@@ -1,11 +1,11 @@
 ﻿using EliteDangerousDataDefinitions;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using Utilities;
 
 namespace EliteDangerousDataProviderService
 {
@@ -33,7 +33,7 @@ namespace EliteDangerousDataProviderService
             string response;
             try
             {
-                response = downloadString("http://api.eddp.co/systems/" + Uri.EscapeDataString(system));
+                response = Net.DownloadString("http://api.eddp.co:16161/systems/" + Uri.EscapeDataString(system));
             }
             catch (WebException wex)
             {
@@ -56,7 +56,7 @@ namespace EliteDangerousDataProviderService
                     response = response + @", ""z"":" + z;
                 }
                 response = response + @", ""stations"":[]}";
-                logInfo("Generating dummy response " + response);
+                Logging.Info("Generating dummy response " + response);
             }
             return StarSystemFromEDDP(response, x, y, z);
         }
@@ -137,11 +137,11 @@ namespace EliteDangerousDataProviderService
                         }
                         else
                         {
-                            LogError("Unknown station model " + ((string)station["type"]));
+                            Logging.Error("Unknown station model " + ((string)station["type"]));
                         }
                     }
 
-                    if (((string)station["max_landing_pad_size"]) != null)
+                    if (((string)station["max_landing_pad_size"]) != null && ((string)station["max_landing_pad_size"]) != "None")
                     {
                         if (LandingPads.ContainsKey((string)station["max_landing_pad_size"]))
                         {
@@ -149,7 +149,7 @@ namespace EliteDangerousDataProviderService
                         }
                         else
                         {
-                            LogError("Unknown landing pad size " + ((string)station["max_landing_pad_size"]));
+                            Logging.Error("Unknown landing pad size " + ((string)station["max_landing_pad_size"]));
                         }
                     }
 
@@ -177,6 +177,7 @@ namespace EliteDangerousDataProviderService
             { "Mining Outpost", StationModel.MiningOutpost },
             { "Ocellus Starport", StationModel.OcellusStarport },
             { "Orbis Starport", StationModel.OrbisStarport },
+            { "Planetary Engineer Base", StationModel.PlanetaryEngineerBase },
             { "Planetary Outpost", StationModel.PlanetaryOutpost },
             { "Planetary Port", StationModel.PlanetaryPort },
             { "Planetary Settlement", StationModel.PlanetarySettlement },
@@ -190,134 +191,9 @@ namespace EliteDangerousDataProviderService
         static DataProviderService()
         {
             // We need to not use an expect header as it causes problems when sending data to a REST service
-            var profileUri = new Uri("http://api.eddp.co/profile");
-            var profileServicePoint = ServicePointManager.FindServicePoint(profileUri);
-            profileServicePoint.Expect100Continue = false;
             var errorUri = new Uri("http://api.eddp.co/error");
             var errorServicePoint = ServicePointManager.FindServicePoint(errorUri);
             errorServicePoint.Expect100Continue = false;
-        }
-
-        public static void LogProfile(string profile)
-        {
-            using (var client = new WebClient())
-            {
-                try
-                {
-                    client.UploadString(@"http://api.eddp.co/profile", profile);
-                }
-                catch (WebException wex)
-                {
-                    LogException(wex);
-                }
-            }
-        }
-
-        public static void LogException(Exception ex)
-        {
-            LogError(ex.ToString());
-        }
-
-        public static void LogError(String error)
-        {
-            using (var client = new WebClient())
-            {
-                try
-                {
-                    client.UploadString(@"http://api.eddp.co/error", error.ToString());
-                }
-                catch {}
-            }
-        }
-
-        // Logging
-        private static bool enableDebugging = false;
-        private static readonly string LOGFILE = Environment.GetEnvironmentVariable("AppData") + @"\EDDI\eddi.log";
-        private static void debug(string data)
-        {
-            if (enableDebugging)
-            {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
-                {
-                    file.WriteLine(DateTime.Now.ToString() + ": " + data);
-                }
-            }
-        }
-        private static void logInfo(string data)
-        {
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
-            {
-                file.WriteLine(DateTime.Now.ToString() + ": " + data);
-            }
-        }
-        private static void logError(string data)
-        {
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
-            {
-                file.WriteLine(DateTime.Now.ToString() + ": " + data);
-            }
-        }
-
-        private static String downloadString(string url)
-        {
-            HttpWebRequest request = GetRequest(url);
-            HttpWebResponse response = GetResponse(request);
-            if (response == null) // Means that the system was not found
-            {
-                return null;
-            }
-
-            // Obtain and parse our response
-            var encoding = response.CharacterSet == ""
-                    ? Encoding.UTF8
-                    : Encoding.GetEncoding(response.CharacterSet);
-
-            debug("Reading response");
-            using (var stream = response.GetResponseStream())
-            {
-                var reader = new StreamReader(stream, encoding);
-                string data = reader.ReadToEnd();
-                debug("Data is: " + data);
-                response.Close();
-                return data;
-            }
-        }
-
-        // Set up a request with the correct parameters for talking to the companion app
-        private static HttpWebRequest GetRequest(string url)
-        {
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
-            request.Timeout = 10000;
-            request.ReadWriteTimeout = 10000;
-            return request;
-        }
-
-        // Obtain a response, ensuring that we obtain the response's cookies
-        private static HttpWebResponse GetResponse(HttpWebRequest request)
-        {
-            debug("GetResponse(): Requesting " + request.RequestUri);
-
-            HttpWebResponse response;
-            try
-            {
-                response = (HttpWebResponse)request.GetResponse();
-            }
-            catch (WebException wex)
-            {
-                HttpWebResponse errorResponse = wex.Response as HttpWebResponse;
-                if (errorResponse.StatusCode == HttpStatusCode.NotFound)
-                {
-                    // Not found is usual
-                    return null;
-                }
-                else
-                {
-                    logInfo("GetResponse(): failed to obtain response, error code " + wex.Status);
-                    throw wex;
-                }
-            }
-            debug("GetResponse(): Response is " + JsonConvert.SerializeObject(response));
-            return response;
         }
     }
 }

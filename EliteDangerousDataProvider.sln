@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "configuration", "configurat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousSpeechService", "EliteDangerousSpeechService\EliteDangerousSpeechService.csproj", "{19572A69-C13A-459D-AB72-2B0F034AC27F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{CD71DD2A-86AC-44A8-959B-E1C3069966BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{19572A69-C13A-459D-AB72-2B0F034AC27F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19572A69-C13A-459D-AB72-2B0F034AC27F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19572A69-C13A-459D-AB72-2B0F034AC27F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD71DD2A-86AC-44A8-959B-E1C3069966BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD71DD2A-86AC-44A8-959B-E1C3069966BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD71DD2A-86AC-44A8-959B-E1C3069966BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD71DD2A-86AC-44A8-959B-E1C3069966BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

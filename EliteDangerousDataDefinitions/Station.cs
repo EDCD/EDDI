@@ -89,6 +89,7 @@ namespace EliteDangerousDataDefinitions
         PlanetarySettlement,
         UnknownStarport,
         UnknownOutpost,
-        UnknownPlanetary
+        UnknownPlanetary,
+        PlanetaryEngineerBase
     }
 }
