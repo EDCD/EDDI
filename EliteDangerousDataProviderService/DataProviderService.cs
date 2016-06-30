@@ -39,7 +39,7 @@ namespace EliteDangerousDataProviderService
             {
                 response = null;
             }
-            if (response == null)
+            if (response == null || response == "")
             {
                 // No information found on this system, or some other issue.  Create a very basic response
                 response = @"{""name"":""" + system + @"""";
