@@ -1,3 +1,7 @@
+#1.x
+  * Rework network communications to provide better debug information
+  * Unify logging to a single file
+
 #1.3.5
   * Tweaks to increase volume of processed voice
   * Fix issue with last utility slots on large ships being missed
