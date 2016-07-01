@@ -132,7 +132,7 @@
                             <DataGridTextColumn IsReadOnly="True" Header="In Storage At" Binding="{Binding Path=StarSystem}"></DataGridTextColumn>
                             <DataGridComboBoxColumn x:Name ="Role" Header="Role" SelectedItemBinding="{Binding Path=Role,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource roleValues}}"></DataGridComboBoxColumn>
                             <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Path=Name,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Name (spoken)" Width="*" Binding="{Binding Path=PhoneticName,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Name (spoken)" Width="*" Binding="{Binding Path=PhoneticName,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}, ValidatesOnExceptions=True }"></DataGridTextColumn>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

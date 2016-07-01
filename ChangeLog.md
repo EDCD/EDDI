@@ -2,6 +2,7 @@
   * Rework network communications to provide better debug information
   * Unify logging to a single file
   * Always use the selected voice's default language when using phonemes
+  * Validate spoken ship names for valid IPA
 
 #1.3.5
   * Tweaks to increase volume of processed voice

@@ -2,12 +2,15 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EliteDangerousDataDefinitions
 {
     /// <summary>A ship</summary>
     public class Ship
     {
+        private static Regex IPA_REGEX = new Regex(@"^[bdfɡhjklmnprstvwzxaɪ˜iu\.ᵻᵿɑɐɒæɓʙβɔɕçɗɖðʤəɘɚɛɜɝɞɟʄɡ(ɠɢʛɦɧħɥʜɨɪʝɭɬɫɮʟɱɯɰŋɳɲɴøɵɸθœɶʘɹɺɾɻʀʁɽʂʃʈʧʉʊʋⱱʌɣɤʍχʎʏʑʐʒʔʡʕʢǀǁǂǃˈˌːˑʼʴʰʱʲʷˠˤ˞n̥d̥ŋ̊b̤a̤t̪d̪s̬t̬b̰a̰t̺d̺t̼d̼t̻d̻t̚ɔ̹ẽɔ̜u̟e̠ël̴n̴ɫe̽e̝ɹ̝m̩n̩l̩e̞β̞e̯e̘e̙ĕe̋éēèȅx͜xx͡x↓↑→↗↘]+$");
+
         /// <summary>the ID of this ship for this commander</summary>
         public int LocalId { get; set; }
         /// <summary>the model of the ship (Python, Anaconda, etc.)</summary>
@@ -35,9 +38,30 @@ namespace EliteDangerousDataDefinitions
         /// <summary>the name of this ship</summary>
         [JsonProperty("name")]
         public string Name { get; set; }
+        [JsonIgnore]
+        private string phoneticName;
         /// <summary>the phonetic name of this ship</summary>
         [JsonProperty("phoneticName")]
-        public string PhoneticName { get; set; }
+        public string PhoneticName
+        {
+            get { return this.phoneticName; }
+            set {
+                if (value == null || value == "")
+                {
+                    this.phoneticName = null;
+                }
+                else
+                {
+                    if (!IPA_REGEX.Match(value).Success)
+                    {
+                        // Invalid
+                        this.phoneticName = null;
+                        throw new ArgumentException("Not a valid IPA string");
+                    }
+                    this.phoneticName = value;
+                }
+            }
+        }
         /// <summary>the role of this ship</summary>
         [JsonProperty("role")]
         public ShipRole Role { get; set; }
