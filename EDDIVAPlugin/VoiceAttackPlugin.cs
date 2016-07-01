@@ -979,13 +979,14 @@ namespace EDDIVAPlugin
                     }
                     Logging.Debug("Set distance from home");
 
-                    Logging.Debug("Setting EDSM comment");
+                    Logging.Debug("Setting comment");
                     if (starMapService != null)
                     {
-                        StarMapInfo info = starMapService.getStarMapInfo(CurrentStarSystem.Name);
-                        setString(ref textValues, "System comment", info == null || info.Comment == null || info.Comment.Trim() == "" ? null : info.Comment);
+                        //StarMapInfo info = starMapService.getStarMapInfo(CurrentStarSystem.Name);
+                        String comment = starMapService.getStarMapComment(CurrentStarSystem.Name);
+                        setString(ref textValues, "System comment", comment);
                     }
-                    Logging.Debug("Set EDSM comment");
+                    Logging.Debug("Set comment");
 
                     if (LastStarSystem != null)
                     {

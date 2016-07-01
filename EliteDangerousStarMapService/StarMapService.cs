@@ -80,6 +80,18 @@ namespace EliteDangerousStarMapService
             }).Start();
         }
 
+        public string getStarMapComment(string systemName)
+        {
+            var client = new RestClient(baseUrl);
+            var commentRequest = new RestRequest("api-logs-v1/get-comment");
+            commentRequest.AddParameter("apiKey", apiKey);
+            commentRequest.AddParameter("commanderName", commanderName);
+            commentRequest.AddParameter("systemName", systemName);
+            var commentClientResponse = client.Execute<StarMapLogResponse>(commentRequest);
+            StarMapLogResponse commentResponse = commentClientResponse.Data;
+            return (commentResponse != null) ? commentResponse.comment : null;
+        }
+
         public StarMapInfo getStarMapInfo(string systemName)
         {
             var client = new RestClient(baseUrl);
