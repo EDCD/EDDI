@@ -20,8 +20,6 @@ namespace EliteDangerousSpeechService
     {
         private readonly Random random = new Random();
 
-        private string locale = "en-GB";
-
         private SpeechServiceConfiguration configuration;
 
         private HashSet<ISoundOut> activeSpeeches = new HashSet<ISoundOut>();
@@ -29,7 +27,6 @@ namespace EliteDangerousSpeechService
         public SpeechService(SpeechServiceConfiguration configuration = null)
         {
             this.configuration = configuration == null ? new SpeechServiceConfiguration() : configuration;
-            locale = Thread.CurrentThread.CurrentCulture.Name;
         }
 
         public void Say(Commander commander, Ship ship, string script)
@@ -130,7 +127,7 @@ namespace EliteDangerousSpeechService
                     string speech = SpeechFromScript(script);
                     if (speech.Contains("<phoneme"))
                     {
-                        speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + locale + "\"><s>" + speech + "</s></speak>";
+                        speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + synth.Voice.Culture.Name + "\"><s>" + speech + "</s></speak>";
                         synth.SpeakSsml(speech);
                     }
                     else
@@ -155,7 +152,7 @@ namespace EliteDangerousSpeechService
                     // We always have chorus
                     if (chorusLevel != 0)
                     {
-                        source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = Math.Min(100, (int)(180 * ((decimal)configuration.EffectsLevel) / ((decimal)100))), Delay = 16, Frequency = (configuration.EffectsLevel/10), Feedback = 25 });
+                        source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = Math.Min(100, (int)(180 * ((decimal)configuration.EffectsLevel) / ((decimal)100))), Delay = 16, Frequency = (configuration.EffectsLevel / 10), Feedback = 25 });
                     }
 
                     // We only have reverb and echo if we're not transmitting or receiving
@@ -181,7 +178,7 @@ namespace EliteDangerousSpeechService
 
                     if (radio)
                     {
-                        source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = 7, Gain =- distortionLevel / 2, PostEQBandwidth = 2000, PostEQCenterFrequency = 6000 });
+                        source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = 7, Gain = -distortionLevel / 2, PostEQBandwidth = 2000, PostEQCenterFrequency = 6000 });
                         source = source.AppendSource(x => new DmoCompressorEffect(x) { Attack = 1, Ratio = 3, Threshold = -10 });
                     }
 
@@ -193,7 +190,7 @@ namespace EliteDangerousSpeechService
                     activeSpeeches.Add(soundOut);
                     soundOut.Play();
 
-                    // Add a timeout, in case it doesn't come back
+                    // Add a timeout, in case it doesn't come back with the signal
                     waitHandle.WaitOne(source.GetTime(source.Length));
 
                     // It's possible that this has been disposed of, so ensure that it's still there before we try to finish it
@@ -212,7 +209,7 @@ namespace EliteDangerousSpeechService
             }
             catch (Exception ex)
             {
-                Logging.Error("Caught exception " + ex);
+                Logging.Error("Failed to speak: " + ex);
             }
         }
 

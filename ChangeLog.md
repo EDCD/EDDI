@@ -1,6 +1,7 @@
 #1.x
   * Rework network communications to provide better debug information
   * Unify logging to a single file
+  * Always use the selected voice's default language when using phonemes
 
 #1.3.5
   * Tweaks to increase volume of processed voice
