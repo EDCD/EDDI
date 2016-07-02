@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Utilities;
 
 namespace EliteDangerousDataDefinitions
 {
@@ -54,11 +55,14 @@ namespace EliteDangerousDataDefinitions
                 {
                     if (!IPA_REGEX.Match(value).Success)
                     {
-                        // Invalid
+                        // Invalid - drop silently
+                        Logging.Debug("Invalid IPA " + value + "; discarding");
                         this.phoneticName = null;
-                        throw new ArgumentException("Not a valid IPA string");
                     }
-                    this.phoneticName = value;
+                    else
+                    {
+                        this.phoneticName = value;
+                    }
                 }
             }
         }

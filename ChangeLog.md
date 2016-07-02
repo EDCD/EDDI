@@ -5,6 +5,7 @@
   * Validate spoken ship names for valid IPA
   * Provide more details when obtaining EDSM logs from configuration UI
   * Use local store as primary for star system data and update EDSM asynchronously
+  * Silently drop existing phonetic ship names with invalid IPA
 
 #1.3.5
   * Tweaks to increase volume of processed voice

@@ -22,6 +22,8 @@ using System.Speech.Synthesis;
 using EliteDangerousDataProviderService;
 using Utilities;
 using System.Threading;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace configuration
 {
@@ -523,6 +525,28 @@ namespace configuration
                     CurrentStarSystemData.Comment = comments[system];
                 }
                 starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
+            }
+        }
+    }
+
+    public class ValidIPARule : ValidationRule
+    {
+        private static Regex IPA_REGEX = new Regex(@"^[bdfɡhjklmnprstvwzxaɪ˜iu\.ᵻᵿɑɐɒæɓʙβɔɕçɗɖðʤəɘɚɛɜɝɞɟʄɡ(ɠɢʛɦɧħɥʜɨɪʝɭɬɫɮʟɱɯɰŋɳɲɴøɵɸθœɶʘɹɺɾɻʀʁɽʂʃʈʧʉʊʋⱱʌɣɤʍχʎʏʑʐʒʔʡʕʢǀǁǂǃˈˌːˑʼʴʰʱʲʷˠˤ˞n̥d̥ŋ̊b̤a̤t̪d̪s̬t̬b̰a̰t̺d̺t̼d̼t̻d̻t̚ɔ̹ẽɔ̜u̟e̠ël̴n̴ɫe̽e̝ɹ̝m̩n̩l̩e̞β̞e̯e̘e̙ĕe̋éēèȅx͜xx͡x↓↑→↗↘]+$");
+
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            if (value == null)
+            {
+                return ValidationResult.ValidResult;
+            }
+            string val = value.ToString();
+            if (IPA_REGEX.Match(val).Success)
+            {
+                return ValidationResult.ValidResult;
+            }
+            else
+            {
+                return new ValidationResult(false, "Invalid IPA");
             }
         }
     }
