@@ -3,6 +3,8 @@
   * Unify logging to a single file
   * Always use the selected voice's default language when using phonemes
   * Validate spoken ship names for valid IPA
+  * Provide more details when obtaining EDSM logs from configuration UI
+  * Use local store as primary for star system data and update EDSM asynchronously
 
 #1.3.5
   * Tweaks to increase volume of processed voice

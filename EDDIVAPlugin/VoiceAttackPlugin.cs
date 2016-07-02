@@ -898,6 +898,7 @@ namespace EDDIVAPlugin
                         Logging.Debug("Storing updated starsystemdata");
                         starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
                     }
+                    setString(ref textValues, "System comment", CurrentStarSystemData.Comment);
 
                     StarSystem ThisStarSystem = CurrentStarSystemData.StarSystem;
                     LastStarSystem = CurrentStarSystem;
@@ -911,10 +912,8 @@ namespace EDDIVAPlugin
                         // We have travelled; let EDSM know
                         if (starMapService != null)
                         {
-                            Logging.Debug("Sending update to EDSM");
                             // Take information directly from the commander structure as it hasn't been munged
                             starMapService.sendStarMapLog(Cmdr.StarSystem, Cmdr.StarSystemX, Cmdr.StarSystemY, Cmdr.StarSystemZ);
-                            Logging.Debug("Update sent");
                         }
                     }
 
@@ -979,14 +978,6 @@ namespace EDDIVAPlugin
                     }
                     Logging.Debug("Set distance from home");
 
-                    Logging.Debug("Setting comment");
-                    if (starMapService != null)
-                    {
-                        //StarMapInfo info = starMapService.getStarMapInfo(CurrentStarSystem.Name);
-                        String comment = starMapService.getStarMapComment(CurrentStarSystem.Name);
-                        setString(ref textValues, "System comment", comment);
-                    }
-                    Logging.Debug("Set comment");
 
                     if (LastStarSystem != null)
                     {
@@ -1213,7 +1204,7 @@ namespace EDDIVAPlugin
         }
 
         /// <summary>
-        /// Send a comment to the starmap service
+        /// Send a comment to the starmap service and store locally
         /// </summary>
         public static void InvokeStarMapSystemComment(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
@@ -1232,14 +1223,26 @@ namespace EDDIVAPlugin
                     return;
                 }
 
-                if (Cmdr != null && starMapService != null)
+                if (Cmdr != null)
                 {
-                    starMapService.sendStarMapComment(Cmdr.StarSystem, comment);
+                    // Store locally
+                    EDDIStarSystem here = starSystemRepository.GetEDDIStarSystem(Cmdr.StarSystem);
+                    if (here != null)
+                    {
+                        here.Comment = comment == "" ? null : comment;
+                        starSystemRepository.SaveEDDIStarSystem(here);
+                    }
+
+                    if (starMapService != null)
+                    {
+                        // Store in EDSM
+                        starMapService.sendStarMapComment(Cmdr.StarSystem, comment);
+                    }
                 }
             }
             catch (Exception e)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to send system comment to EDSM", e);
+                setPluginStatus(ref textValues, "Failed", "Failed to store system comment", e);
             }
         }
 

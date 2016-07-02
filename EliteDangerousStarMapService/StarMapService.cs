@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
+using Utilities;
 
 namespace EliteDangerousStarMapService
 {
@@ -56,10 +57,11 @@ namespace EliteDangerousStarMapService
 
             new Thread(() =>
             {
+                Logging.Debug("Sending data to EDSM: " + request);
                 var clientResponse = client.Execute<StarMapLogResponse>(request);
                 StarMapLogResponse response = clientResponse.Data;
+                Logging.Debug("Data sent to EDSM");
                 // TODO check response
-
             }).Start();
         }
 
@@ -139,6 +141,30 @@ namespace EliteDangerousStarMapService
             StarMapDistanceResponse response = clientResponse.Data;
         }
 
+        public Dictionary<string, string> getStarMapComments()
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-logs-v1/get-comments");
+            request.AddParameter("apiKey", apiKey);
+            request.AddParameter("commanderName", commanderName);
+            var starMapCommentResponse = client.Execute<StarMapCommentResponse>(request);
+            StarMapCommentResponse response = starMapCommentResponse.Data;
+
+            Dictionary<string, string> vals = new Dictionary<string, string>();
+            if (response != null && response.comments != null)
+            {
+                foreach (StarMapResponseCommentEntry entry in response.comments)
+                {
+                    if (entry.comment != null && entry.comment != "")
+                    {
+                        Logging.Debug("Comment found for " + entry.system);
+                        vals[entry.system] = entry.comment;
+                    }
+                }
+            }
+            return vals;
+        }
+
         public Dictionary<string, StarMapLogInfo> getStarMapLog(DateTime? since = null)
         {
             var client = new RestClient(baseUrl);
@@ -153,11 +179,11 @@ namespace EliteDangerousStarMapService
             StarMapLogResponse response = starMapLogResponse.Data;
 
             Dictionary<string, StarMapLogInfo> vals = new Dictionary<string, StarMapLogInfo>();
-            if (response != null)
+            if (response != null && response.logs != null)
             {
                 foreach (StarMapResponseLogEntry entry in response.logs)
                 {
-                    Console.WriteLine("Entry found for " + entry.system);
+                    Logging.Debug("Log entry found for " + entry.system);
                     if (vals.ContainsKey(entry.system))
                     {
                         vals[entry.system].visits = vals[entry.system].visits + 1;
@@ -235,6 +261,22 @@ namespace EliteDangerousStarMapService
     {
         public string system { get; set; }
         public DateTime date { get; set; }
+    }
+
+    // response from the Star Map comment API
+    class StarMapCommentResponse
+    {
+        public int msgnum { get; set; }
+        public string msg { get; set; }
+        public string comment { get; set; }
+        public DateTime? lastUpdate { get; set; }
+        public List<StarMapResponseCommentEntry> comments { get; set; }
+    }
+
+    class StarMapResponseCommentEntry
+    {
+        public string system { get; set; }
+        public string comment { get; set; }
     }
 
     // public consolidated version of star map log information

@@ -21,6 +21,7 @@ using System.Windows.Shapes;
 using System.Speech.Synthesis;
 using EliteDangerousDataProviderService;
 using Utilities;
+using System.Threading;
 
 namespace configuration
 {
@@ -462,7 +463,7 @@ namespace configuration
         /// <summary>
         /// Obtain the EDSM log and sync it with the local datastore
         /// </summary>
-        private void edsmObtainLogClicked(object sender, RoutedEventArgs e)
+        private async void edsmObtainLogClicked(object sender, RoutedEventArgs e)
         {
             IEDDIStarSystemRepository starSystemRepository = new EDDIStarSystemSqLiteRepository();
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
@@ -492,11 +493,20 @@ namespace configuration
             edsmFetchLogsButton.IsEnabled = false;
             edsmFetchLogsButton.Content = "Obtaining log...";
 
-            StarMapService starMapService = new StarMapService(starMapConfiguration.apiKey, commanderName);
+            var progress = new Progress<string>(s => edsmFetchLogsButton.Content = "Obtaining log..." + s);
+            await Task.Factory.StartNew(() => obtainEdsmLogs(starMapConfiguration, starSystemRepository, commanderName, progress),
+                                            TaskCreationOptions.LongRunning);
+            edsmFetchLogsButton.Content = "Obtained log";
+        }
 
+        public static void obtainEdsmLogs(StarMapConfiguration starMapConfiguration, IEDDIStarSystemRepository starSystemRepository, string commanderName, IProgress<string> progress)
+        {
+            StarMapService starMapService = new StarMapService(starMapConfiguration.apiKey, commanderName);
             Dictionary<string, StarMapLogInfo> systems = starMapService.getStarMapLog();
+            Dictionary<string, string> comments = starMapService.getStarMapComments();
             foreach (string system in systems.Keys)
             {
+                progress.Report(system);
                 EDDIStarSystem CurrentStarSystemData = starSystemRepository.GetEDDIStarSystem(system);
                 if (CurrentStarSystemData == null)
                 {
@@ -508,10 +518,12 @@ namespace configuration
                 CurrentStarSystemData.TotalVisits = systems[system].visits;
                 CurrentStarSystemData.LastVisit = systems[system].lastVisit;
                 CurrentStarSystemData.PreviousVisit = systems[system].previousVisit;
+                if (comments.ContainsKey(system))
+                {
+                    CurrentStarSystemData.Comment = comments[system];
+                }
                 starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
             }
-
-            edsmFetchLogsButton.Content = "Log obtained";
         }
     }
 }
