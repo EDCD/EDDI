@@ -31,9 +31,13 @@ namespace EliteDangerousDataDefinitions
         /// <summary>Details of stations</summary>
         public List<Station> Stations { get; set; }
 
+        /// <summary>Details of bodies (stars/planets)</summary>
+        public List<Body> Bodies { get; set; }
+
         public StarSystem()
         {
             Stations = new List<Station>();
+            Bodies = new List<Body>();
         }
     }
 }

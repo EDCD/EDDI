@@ -20,6 +20,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Speech.Synthesis;
 using EliteDangerousDataProviderService;
+using Utilities;
+using System.Threading;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace configuration
 {
@@ -44,11 +48,13 @@ namespace configuration
             eddiInsuranceDecimal.Value = eddiConfiguration.Insurance;
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
 
+            Logging.Verbose = eddiConfiguration.Debug;
+
             // Configure the Companion App tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             companionAppEmailText.Text = companionAppCredentials.email;
             // See if the credentials work
-            companionAppService = new CompanionAppService(eddiConfiguration.Debug);
+            companionAppService = new CompanionAppService();
             try
             {
                 commander = companionAppService.Profile();
@@ -459,7 +465,7 @@ namespace configuration
         /// <summary>
         /// Obtain the EDSM log and sync it with the local datastore
         /// </summary>
-        private void edsmObtainLogClicked(object sender, RoutedEventArgs e)
+        private async void edsmObtainLogClicked(object sender, RoutedEventArgs e)
         {
             IEDDIStarSystemRepository starSystemRepository = new EDDIStarSystemSqLiteRepository();
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
@@ -468,7 +474,7 @@ namespace configuration
             if (String.IsNullOrEmpty(starMapConfiguration.commanderName))
             {
                 // Fetch the commander name from the companion app
-                CompanionAppService companionAppService = new CompanionAppService(EDDIConfiguration.FromFile().Debug);
+                CompanionAppService companionAppService = new CompanionAppService();
                 Commander cmdr = companionAppService.Profile();
                 if (cmdr != null && cmdr.Name != null)
                 {
@@ -489,11 +495,20 @@ namespace configuration
             edsmFetchLogsButton.IsEnabled = false;
             edsmFetchLogsButton.Content = "Obtaining log...";
 
-            StarMapService starMapService = new StarMapService(starMapConfiguration.apiKey, commanderName);
+            var progress = new Progress<string>(s => edsmFetchLogsButton.Content = "Obtaining log..." + s);
+            await Task.Factory.StartNew(() => obtainEdsmLogs(starMapConfiguration, starSystemRepository, commanderName, progress),
+                                            TaskCreationOptions.LongRunning);
+            edsmFetchLogsButton.Content = "Obtained log";
+        }
 
+        public static void obtainEdsmLogs(StarMapConfiguration starMapConfiguration, IEDDIStarSystemRepository starSystemRepository, string commanderName, IProgress<string> progress)
+        {
+            StarMapService starMapService = new StarMapService(starMapConfiguration.apiKey, commanderName);
             Dictionary<string, StarMapLogInfo> systems = starMapService.getStarMapLog();
+            Dictionary<string, string> comments = starMapService.getStarMapComments();
             foreach (string system in systems.Keys)
             {
+                progress.Report(system);
                 EDDIStarSystem CurrentStarSystemData = starSystemRepository.GetEDDIStarSystem(system);
                 if (CurrentStarSystemData == null)
                 {
@@ -505,10 +520,34 @@ namespace configuration
                 CurrentStarSystemData.TotalVisits = systems[system].visits;
                 CurrentStarSystemData.LastVisit = systems[system].lastVisit;
                 CurrentStarSystemData.PreviousVisit = systems[system].previousVisit;
+                if (comments.ContainsKey(system))
+                {
+                    CurrentStarSystemData.Comment = comments[system];
+                }
                 starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
             }
+        }
+    }
 
-            edsmFetchLogsButton.Content = "Log obtained";
+    public class ValidIPARule : ValidationRule
+    {
+        private static Regex IPA_REGEX = new Regex(@"^[bdfɡhjklmnprstvwzxaɪ˜iu\.ᵻᵿɑɐɒæɓʙβɔɕçɗɖðʤəɘɚɛɜɝɞɟʄɡ(ɠɢʛɦɧħɥʜɨɪʝɭɬɫɮʟɱɯɰŋɳɲɴøɵɸθœɶʘɹɺɾɻʀʁɽʂʃʈʧʉʊʋⱱʌɣɤʍχʎʏʑʐʒʔʡʕʢǀǁǂǃˈˌːˑʼʴʰʱʲʷˠˤ˞n̥d̥ŋ̊b̤a̤t̪d̪s̬t̬b̰a̰t̺d̺t̼d̼t̻d̻t̚ɔ̹ẽɔ̜u̟e̠ël̴n̴ɫe̽e̝ɹ̝m̩n̩l̩e̞β̞e̯e̘e̙ĕe̋éēèȅx͜xx͡x↓↑→↗↘]+$");
+
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            if (value == null)
+            {
+                return ValidationResult.ValidResult;
+            }
+            string val = value.ToString();
+            if (IPA_REGEX.Match(val).Success)
+            {
+                return ValidationResult.ValidResult;
+            }
+            else
+            {
+                return new ValidationResult(false, "Invalid IPA");
+            }
         }
     }
 }

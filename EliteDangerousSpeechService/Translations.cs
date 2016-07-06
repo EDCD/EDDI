@@ -92,6 +92,7 @@ namespace EliteDangerousSpeechService
             { "Eravate" , new string[] { "ɛrəˈvɑːtˌeɪ" } },
             { "Eranin" , new string[] { "ˈɛrənin" } },
             { "Frigaha", new string[] { "frɪɡˈɑːhɑːr" } },
+            { "Hecate" , new string[] { "ˈhɛkətɪ" } },
             { "Hotas" , new string[] { "həʊtæs" } },
             { "Isleta" , new string[] { "aɪlˈetə" } },
             { "i Bootis" , new string[] { "aɪ", "bəʊˈəʊtɪs" } },

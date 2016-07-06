@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading;
+using Utilities;
 
 namespace EDDIVAPlugin
 {
@@ -826,24 +827,10 @@ namespace EDDIVAPlugin
             string CoriolisID;
             if (!CoriolisIDs.TryGetValue(eddbid, out CoriolisID))
             {
-                LogError("Missing Coriolis ID for EDDB ID " + eddbid);
+                Logging.Error("Missing Coriolis ID for EDDB ID " + eddbid);
                 CoriolisID = "-";
             }
             return CoriolisID;
-        }
-        private static void LogError(string error)
-        {
-            new Thread(() =>
-            {
-                using (var client = new WebClient())
-                {
-                    try
-                    {
-                        client.UploadString(@"http://api.eddp.co/error", error);
-                    }
-                    catch { }
-                }
-            }).Start();
         }
     }
 }

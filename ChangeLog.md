@@ -1,3 +1,12 @@
+#1.x
+  * Rework network communications to provide better debug information
+  * Unify logging to a single file
+  * Always use the selected voice's default language when using phonemes
+  * Validate spoken ship names for valid IPA
+  * Provide more details when obtaining EDSM logs from configuration UI
+  * Use local store as primary for star system data and update EDSM asynchronously
+  * Silently drop existing phonetic ship names with invalid IPA
+
 #1.3.5
   * Tweaks to increase volume of processed voice
   * Fix issue with last utility slots on large ships being missed

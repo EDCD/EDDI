@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using Utilities;
 
 namespace EliteDangerousCompanionAppService
 {
@@ -62,9 +63,6 @@ namespace EliteDangerousCompanionAppService
         private static string CONFIRM_URL = "/user/confirm";
         private static string PROFILE_URL = "/profile";
 
-        private static readonly string LOGFILE = Environment.GetEnvironmentVariable("AppData") + @"\EDDI\eddi.log";
-        private bool enableDebugging;
-
         // We cache the profile to avoid spamming the service
         private Commander cachedProfile;
         private DateTime cachedProfileExpires;
@@ -79,9 +77,8 @@ namespace EliteDangerousCompanionAppService
 
         public CompanionAppCredentials Credentials;
 
-        public CompanionAppService(bool enableDebugging=false)
+        public CompanionAppService()
         {
-            this.enableDebugging = enableDebugging;
             Credentials = CompanionAppCredentials.FromFile();
 
             // Need to work out our current state.
@@ -105,7 +102,7 @@ namespace EliteDangerousCompanionAppService
                 }
                 catch (EliteDangerousCompanionAppException ex)
                 {
-                    warn("Failed to obtain profile: " + ex.ToString());
+                    Logging.Warn("Failed to obtain profile: " + ex.ToString());
                 }
             }
         }
@@ -128,29 +125,29 @@ namespace EliteDangerousCompanionAppService
             string encodedPassword = WebUtility.UrlEncode(Credentials.password);
             byte[] data = Encoding.UTF8.GetBytes("email=" + encodedUsername + "&password=" + encodedPassword);
             request.ContentLength = data.Length;
-            Stream dataStream = request.GetRequestStream();
-            dataStream.Write(data, 0, data.Length);
-            dataStream.Close();
+            using (Stream dataStream = request.GetRequestStream())
+            {
+                dataStream.Write(data, 0, data.Length);
+            }
 
-            HttpWebResponse response = GetResponse(request);
-            if (response == null)
+            using (HttpWebResponse response = GetResponse(request))
             {
-                throw new EliteDangerousCompanionAppException("Failed to contact API server");
-            }
-            if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == CONFIRM_URL)
-            {
-                response.Close();
-                CurrentState = State.NEEDS_CONFIRMATION;
-            }
-            else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
-            {
-                response.Close();
-                CurrentState = State.READY;
-            }
-            else
-            {
-                response.Close();
-                throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
+                if (response == null)
+                {
+                    throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                }
+                if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == CONFIRM_URL)
+                {
+                    CurrentState = State.NEEDS_CONFIRMATION;
+                }
+                else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
+                {
+                    CurrentState = State.READY;
+                }
+                else
+                {
+                    throw new EliteDangerousCompanionAppAuthenticationException("Username or password incorrect");
+                }
             }
         }
 
@@ -170,101 +167,120 @@ namespace EliteDangerousCompanionAppService
             string encodedCode = WebUtility.UrlEncode(code);
             byte[] data = Encoding.UTF8.GetBytes("code=" + encodedCode);
             request.ContentLength = data.Length;
-            Stream dataStream = request.GetRequestStream();
-            dataStream.Write(data, 0, data.Length);
-            dataStream.Close();
-
-            HttpWebResponse response = GetResponse(request);
-            if (response == null)
+            using (Stream dataStream = request.GetRequestStream())
             {
-                throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                dataStream.Write(data, 0, data.Length);
             }
 
-            if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
+            using (HttpWebResponse response = GetResponse(request))
             {
-                response.Close();
-                CurrentState = State.READY;
-            }
-            else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
-            {
-                response.Close();
-                CurrentState = State.NEEDS_LOGIN;
-                throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect or expired");
+                if (response == null)
+                {
+                    throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                }
+
+                if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == ROOT_URL)
+                {
+                    CurrentState = State.READY;
+                }
+                else if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
+                {
+                    CurrentState = State.NEEDS_LOGIN;
+                    throw new EliteDangerousCompanionAppAuthenticationException("Confirmation code incorrect or expired");
+                }
             }
         }
 
         public Commander Profile()
         {
+            Logging.Debug("Entered");
             if (CurrentState != State.READY)
             {
                 // Shouldn't be here
+                Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
+                Logging.Debug("Leaving");
                 throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
             }
             if (cachedProfileExpires > DateTime.Now)
             {
                 // return the cached version
-                debug("Profile(): returning cached profile");
+                Logging.Debug("Returning cached profile");
+                Logging.Debug("Leaving");
                 return cachedProfile;
             }
 
             HttpWebRequest request = GetRequest(BASE_URL + PROFILE_URL);
-            HttpWebResponse response = GetResponse(request);
-            if (response == null)
+            using (HttpWebResponse response = GetResponse(request))
             {
-                throw new EliteDangerousCompanionAppException("Failed to contact API server");
-            }
-
-            if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
-            {
-                response.Close();
-                // Need to log in again.
-                CurrentState = State.NEEDS_LOGIN;
-                Login();
-                if (CurrentState != State.READY)
+                if (response == null)
                 {
-                    throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
-                }
-                // Rerun the profile request
-                HttpWebRequest reRequest = GetRequest(BASE_URL + PROFILE_URL);
-                HttpWebResponse reResponse = GetResponse(reRequest);
-                if (reResponse == null)
-                {
+                    Logging.Debug("Failed to contact API server");
+                    Logging.Debug("Leaving");
                     throw new EliteDangerousCompanionAppException("Failed to contact API server");
                 }
-                // Handle the situation where a login is still required
-                if (reResponse.StatusCode == HttpStatusCode.Found && reResponse.Headers["Location"] == LOGIN_URL)
+
+                if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
                 {
-                    reResponse.Close();
-                    // Need to log in again but we have already tried to do so - revert
+                    // Need to log in again.
                     CurrentState = State.NEEDS_LOGIN;
-                    throw new EliteDangerousCompanionAppIllegalStateException("Service not accepting profile requests");
+                    Login();
+                    if (CurrentState != State.READY)
+                    {
+                        Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
+                        Logging.Debug("Leaving");
+                        throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
+                    }
+                    // Rerun the profile request
+                    HttpWebRequest reRequest = GetRequest(BASE_URL + PROFILE_URL);
+                    using (HttpWebResponse reResponse = GetResponse(reRequest))
+                    {
+                        if (reResponse == null)
+                        {
+                            Logging.Debug("Failed to contact API server");
+                            Logging.Debug("Leaving");
+                            throw new EliteDangerousCompanionAppException("Failed to contact API server");
+                        }
+                        // Handle the situation where a login is still required
+                        if (reResponse.StatusCode == HttpStatusCode.Found && reResponse.Headers["Location"] == LOGIN_URL)
+                        {
+                            // Need to log in again but we have already tried to do so - revert
+                            CurrentState = State.NEEDS_LOGIN;
+                            Logging.Debug("Service not accepting profile requests");
+                            Logging.Debug("Leaving");
+                            throw new EliteDangerousCompanionAppIllegalStateException("Service not accepting profile requests");
+                        }
+                    }
                 }
-            }
 
-            // Obtain and parse our response
-            var encoding = response.CharacterSet == ""
-                    ? Encoding.UTF8
-                    : Encoding.GetEncoding(response.CharacterSet);
+                // Obtain and parse our response
+                var encoding = response.CharacterSet == ""
+                        ? Encoding.UTF8
+                        : Encoding.GetEncoding(response.CharacterSet);
 
-            debug("Reading response");
-            using (var stream = response.GetResponseStream())
-            {
-                var reader = new StreamReader(stream, encoding);
-                string data = reader.ReadToEnd();
-                debug("Data is: " + data);
-                response.Close();
-                cachedProfile = CommanderFromProfile(data);
-                cachedProfileExpires = DateTime.Now.AddSeconds(30);
-                debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
-                // We have obtained a profile so have finished our run
-                firstRun = false;
-                return cachedProfile;
+                Logging.Debug("Reading response");
+                using (var stream = response.GetResponseStream())
+                {
+                    var reader = new StreamReader(stream, encoding);
+                    string data = reader.ReadToEnd();
+                    Logging.Debug("Data is " + data);
+                    cachedProfile = CommanderFromProfile(data);
+                    cachedProfileExpires = DateTime.Now.AddSeconds(30);
+                    Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
+
+                    // We have obtained a profile so have finished our run
+                    firstRun = false;
+
+                    Logging.Debug("Leaving");
+                    return cachedProfile;
+                }
             }
         }
 
         // Set up a request with the correct parameters for talking to the companion app
         private HttpWebRequest GetRequest(string url)
         {
+            Logging.Debug("Entered");
+
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
             CookieContainer cookieContainer = new CookieContainer();
             AddCompanionAppCookie(cookieContainer, Credentials);
@@ -275,13 +291,16 @@ namespace EliteDangerousCompanionAppService
             request.Timeout = 10000;
             request.ReadWriteTimeout = 10000;
             request.UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Mobile/11D257";
+
+            Logging.Debug("Leaving");
             return request;
         }
 
         // Obtain a response, ensuring that we obtain the response's cookies
         private HttpWebResponse GetResponse(HttpWebRequest request)
         {
-            debug("GetResponse(): Requesting " + request.RequestUri);
+            Logging.Debug("Entered");
+            Logging.Debug("Requesting " + request.RequestUri);
 
             HttpWebResponse response;
             try
@@ -290,17 +309,21 @@ namespace EliteDangerousCompanionAppService
             }
             catch (WebException wex)
             {
-                warn("GetResponse(): failed to obtain response, error code " + wex.Status);
+                Logging.Warn("Failed to obtain response, error code " + wex.Status);
                 return null;
             }
-            debug("GetResponse(): Response is " + JsonConvert.SerializeObject(response));
+            Logging.Debug("Response is " + JsonConvert.SerializeObject(response));
             UpdateCredentials(response);
             Credentials.ToFile();
+
+            Logging.Debug("Leaving");
             return response;
         }
 
         private void UpdateCredentials(HttpWebResponse response)
         {
+            Logging.Debug("Entered");
+
             // Obtain the cookies from the raw information available to us
             string cookieHeader = response.Headers[HttpResponseHeader.SetCookie];
             if (cookieHeader != null)
@@ -321,6 +344,8 @@ namespace EliteDangerousCompanionAppService
                     Credentials.machineToken = machineTokenMatch.Groups[1].Value;
                 }
             }
+
+            Logging.Debug("Leaving");
         }
 
         private static void AddCompanionAppCookie(CookieContainer cookies, CompanionAppCredentials credentials)
@@ -376,15 +401,17 @@ namespace EliteDangerousCompanionAppService
         /// <summary>Create a commander profile given the results from a /profile call</summary>
         public static Commander CommanderFromProfile(string data)
         {
+            Logging.Debug("Entered");
             Commander cmdr = CommanderFromProfile(JObject.Parse(data));
             AugmentCmdrInfo(cmdr);
+            Logging.Debug("Leaving");
             return cmdr;
         }
-
 
         /// <summary>Create a commander profile given the results from a /profile call</summary>
         public static Commander CommanderFromProfile(dynamic json)
         {
+            Logging.Debug("Entered");
             Commander Commander = new Commander();
 
             if (json["commander"] != null)
@@ -421,11 +448,13 @@ namespace EliteDangerousCompanionAppService
                 Commander.LastStation = json["lastStarport"] == null ? null : (string)json["lastStarport"]["name"];
             }
 
+            Logging.Debug("Leaving");
             return Commander;
         }
 
         private static void AugmentCmdrInfo(Commander cmdr)
         {
+            Logging.Debug("Entered");
             if (cmdr != null)
             {
                 CommanderConfiguration cmdrConfiguration = CommanderConfiguration.FromFile();
@@ -438,10 +467,12 @@ namespace EliteDangerousCompanionAppService
                     cmdr.PhoneticName = cmdrConfiguration.PhoneticName;
                 }
             }
+            Logging.Debug("Leaving");
         }
 
         private static void AugmentShipInfo(Ship ship, List<Ship> storedShips)
         {
+            Logging.Debug("Entered");
             ShipsConfiguration shipsConfiguration = ShipsConfiguration.FromFile();
             Dictionary<int, Ship> lookup = shipsConfiguration.Ships.ToDictionary(o => o.LocalId);
 
@@ -493,12 +524,15 @@ namespace EliteDangerousCompanionAppService
             shipsConfiguration.Ships.Add(ship);
             shipsConfiguration.Ships.AddRange(storedShips);
             shipsConfiguration.ToFile();
+            Logging.Debug("Leaving");
         }
 
         public static Ship ShipFromProfile(dynamic json)
         {
+            Logging.Debug("Entered");
             if (json["ship"] == null)
             {
+                Logging.Debug("Leaving");
                 return null;
             }
 
@@ -585,7 +619,7 @@ namespace EliteDangerousCompanionAppService
                         if (cargo.Commodity.Name == null)
                         {
                             // Unknown commodity; log an error so that we can update the definitions
-                            DataProviderService.LogError("No commodity definition for cargo " + cargoJson.ToString());
+                            Logging.Error("No commodity definition for cargo " + cargoJson.ToString());
                             cargo.Commodity.Name = name;
                         }
                         cargo.Quantity = (int)cargoJson["qty"];
@@ -595,6 +629,7 @@ namespace EliteDangerousCompanionAppService
                 }
             }
 
+            Logging.Debug("Leaving");
             return Ship;
         }
 
@@ -638,6 +673,8 @@ namespace EliteDangerousCompanionAppService
 
         public static List<Ship> StoredShipsFromProfile(dynamic json, ref Commander commander)
         {
+            Logging.Debug("Entered");
+
             Ship currentShip = commander.Ship;
 
             List<Ship> StoredShips = new List<Ship>();
@@ -674,6 +711,7 @@ namespace EliteDangerousCompanionAppService
                 }
             }
 
+            Logging.Debug("Leaving");
             return StoredShips;
         }
 
@@ -716,7 +754,7 @@ namespace EliteDangerousCompanionAppService
                         if (Module.Name == null)
                         {
                             // Unknown module; log an error so that we can update the definitions
-                            DataProviderService.LogError("No definition for outfitting module " + module.ToString());
+                            Logging.Error("No definition for outfitting module " + module.ToString());
                         }
                         Module.Cost = module["cost"];
                         Modules.Add(Module);
@@ -734,7 +772,7 @@ namespace EliteDangerousCompanionAppService
             if (module.Name == null)
             {
                 // Unknown module; log an error so that we can update the definitions
-                DataProviderService.LogError("No definition for ship module " + json["module"].ToString());
+                Logging.Error("No definition for ship module " + json["module"].ToString());
             }
 
             module.Cost = (long)json["module"]["value"];
@@ -753,28 +791,9 @@ namespace EliteDangerousCompanionAppService
 
             if (json["module"]["modifiers"] != null && firstRun)
             {
-                DataProviderService.LogError("Module with modification " + json["module"].ToString());
+                Logging.Error("Module with modification " + json["module"].ToString());
             }
             return module;
-        }
-
-        private void debug(string data)
-        {
-            if (enableDebugging)
-            {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
-                {
-                    file.WriteLine(DateTime.Now.ToString() + ": " + data);
-                }
-            }
-        }
-
-        private void warn(string data)
-        {
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(LOGFILE, true))
-            {
-                file.WriteLine(DateTime.Now.ToString() + ": " + data);
-            }
         }
     }
 }

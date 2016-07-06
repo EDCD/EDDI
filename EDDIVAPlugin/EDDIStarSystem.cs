@@ -16,6 +16,7 @@ namespace EDDIVAPlugin
         public DateTime? PreviousVisit { get; set; }
         public StarSystem StarSystem { get; set; }
         public DateTime StarSystemLastUpdated { get; set; }
+        public String Comment { get; set; }
     }
 
     public interface IEDDIStarSystemRepository

@@ -3,21 +3,23 @@ using Newtonsoft.Json;
 using System;
 using System.Data.SQLite;
 using System.IO;
+using Utilities;
 
 namespace EDDIVAPlugin
 {
     public class EDDIStarSystemSqLiteRepository : SqLiteBaseRepository, IEDDIStarSystemRepository
     {
         private static string CREATE_SQL = @"
-                        CREATE TABLE IF NOT EXISTS starsystems(
-                          eliteid INT
-                         ,eddbid INT
-                         ,name TEXT NOT NULL
-                         ,totalvisits INT NOT NULL
-                         ,lastvisit DATETIME NOT NULL
-                         ,previousvisit DATETIME
-                         ,starsystem TEXT NOT NULL
-                         ,starsystemlastupdated DATETIME NOT NULL)";
+                    CREATE TABLE IF NOT EXISTS starsystems(
+                      eliteid INT
+                     ,eddbid INT
+                     ,name TEXT NOT NULL
+                     ,totalvisits INT NOT NULL
+                     ,lastvisit DATETIME NOT NULL
+                     ,previousvisit DATETIME
+                     ,starsystem TEXT NOT NULL
+                     ,starsystemlastupdated DATETIME NOT NULL
+                     ,comment TEXT)";
         private static string INSERT_SQL = @"
                     INSERT INTO starsystems(
                       eliteid
@@ -27,8 +29,9 @@ namespace EDDIVAPlugin
                      , lastvisit
                      , previousvisit
                      , starsystem
-                     , starsystemlastupdated)
-                    VALUES(@eliteid, @eddbid, @name, @totalvisits, @lastvisit, @previousvisit, @starsystem, @starsystemlastupdated)";
+                     , starsystemlastupdated
+                     ,comment)
+                    VALUES(@eliteid, @eddbid, @name, @totalvisits, @lastvisit, @previousvisit, @starsystem, @starsystemlastupdated, @comment)";
         private static string UPDATE_SQL = @"
                     UPDATE starsystems
                     SET eliteid = @eliteid
@@ -38,6 +41,7 @@ namespace EDDIVAPlugin
                        ,previousvisit = @previousvisit
                        ,starsystem = @starsystem
                        ,starsystemlastupdated = @starsystemlastupdated
+                       ,comment = @comment
                     WHERE name = @name";
         private static string SELECT_BY_NAME_SQL = @"
                     SELECT eliteId,
@@ -47,9 +51,17 @@ namespace EDDIVAPlugin
                            lastvisit,
                            previousvisit,
                            starsystem,
-                           starsystemlastupdated
+                           starsystemlastupdated,
+                           comment
                     FROM starsystems
                     WHERE name = @name";
+        private static string TABLE_SQL = @"PRAGMA table_info(starsystems)";
+        private static string ALTER_ADD_COMMENT_SQL = @"ALTER TABLE starsystems ADD COLUMN comment TEXT";
+
+        static EDDIStarSystemSqLiteRepository()
+        {
+            CreateDatabase();
+        }
 
         public EDDIStarSystem GetEDDIStarSystem(string name)
         {
@@ -79,6 +91,7 @@ namespace EDDIVAPlugin
                                 if (!rdr.IsDBNull(5)) result.PreviousVisit = rdr.GetDateTime(5);
                                 result.StarSystem = JsonConvert.DeserializeObject<StarSystem>(rdr.GetString(6));
                                 result.StarSystemLastUpdated = rdr.GetDateTime(7);
+                                if (!rdr.IsDBNull(8)) result.Comment = rdr.GetString(8);
                             }
                         }
                     }
@@ -87,15 +100,13 @@ namespace EDDIVAPlugin
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Logging.Warn("Problem obtaining data: " + ex);
             }
             return result;
         }
 
         public void SaveEDDIStarSystem(EDDIStarSystem eddiStarSystem)
         {
-            if (!File.Exists(DbFile)) CreateDatabase();
-            
             using (var con = SimpleDbConnection())
             {
                 con.Open();
@@ -114,6 +125,7 @@ namespace EDDIVAPlugin
                         cmd.Parameters.AddWithValue("@previousvisit", eddiStarSystem.PreviousVisit);
                         cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(eddiStarSystem.StarSystem));
                         cmd.Parameters.AddWithValue("@starsystemlastupdated", eddiStarSystem.StarSystemLastUpdated);
+                        cmd.Parameters.AddWithValue("@comment", eddiStarSystem.Comment);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -131,6 +143,7 @@ namespace EDDIVAPlugin
                         cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(eddiStarSystem.StarSystem));
                         cmd.Parameters.AddWithValue("@starsystemlastupdated", eddiStarSystem.StarSystemLastUpdated);
                         cmd.Parameters.AddWithValue("@name", eddiStarSystem.Name);
+                        cmd.Parameters.AddWithValue("@comment", eddiStarSystem.Comment);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -140,32 +153,41 @@ namespace EDDIVAPlugin
 
         private static void CreateDatabase()
         {
-            //SQLiteConnection.CreateFile(DbFile);
             using (var con = SimpleDbConnection())
             {
                 con.Open();
                 using (var cmd = new SQLiteCommand(CREATE_SQL, con))
                 {
+                    Logging.Info("Creating starsystem repository");
                     cmd.ExecuteNonQuery();
+                }
+
+                // Also need to update if an older version
+                bool hasComment = false;
+                using (var cmd = new SQLiteCommand(TABLE_SQL, con))
+                {
+                    using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            if ("comment" == rdr.GetString(1))
+                            {
+                                hasComment = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (!hasComment)
+                {
+                    Logging.Info("Updating starsystem repository (1)");
+                    using (var cmd = new SQLiteCommand(ALTER_ADD_COMMENT_SQL, con))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
                 }
                 con.Close();
             }
         }
-
-        // Used for debug
-        //private static void logSql(SQLiteCommand cmd)
-        //{
-        //    string query = cmd.CommandText;
-        //    foreach (SQLiteParameter p in cmd.Parameters)
-        //    {
-        //        query = query.Replace(p.ParameterName, p.Value == null ? "null" : p.Value.ToString());
-        //    }
-        //    query = query.Replace("\r\n", " ");
-        //    using (EventLog eventLog = new EventLog("Application"))
-        //    {
-        //        eventLog.Source = "EDDI";
-        //        eventLog.WriteEntry("SQL is " + query, EventLogEntryType.Information);
-        //    }
-        //}
     }
 }
