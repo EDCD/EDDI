@@ -90,6 +90,10 @@
       <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
       <Name>EliteDangerousDataProviderService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousJournalMonitor\EliteDangerousJournalMonitor.csproj">
+      <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>
+      <Name>EliteDangerousJournalMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EliteDangerousNetLogMonitor\EliteDangerousNetLogMonitor.csproj">
       <Project>{0928ade6-f260-4820-afbc-1661130c3474}</Project>
       <Name>EliteDangerousNetLogMonitor</Name>

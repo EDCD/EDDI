@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using EliteDangerousSpeechService;
 using Utilities;
+using EliteDangerousJournalMonitor;
 
 namespace EDDIVAPlugin
 {
@@ -202,7 +203,8 @@ namespace EDDIVAPlugin
         {
             if (configuration != null)
             {
-                NetLogMonitor monitor = new NetLogMonitor(configuration, (result) => LogQueue.Add(result));
+                // NetLogMonitor monitor = new NetLogMonitor(configuration, (result) => LogQueue.Add(result));
+                JournalMonitor monitor = new JournalMonitor(configuration, (result) => LogQueue.Add(result));
                 monitor.start();
             }
         }
@@ -243,7 +245,7 @@ namespace EDDIVAPlugin
                     InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
                 case "log watcher":
-                    InvokeLogWatcher(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    InvokeJournalWatcher(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     return;
                 case "say":
                     InvokeSay(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
@@ -272,6 +274,109 @@ namespace EDDIVAPlugin
                         LogQueue.Add(eventData);
                     }
                     return;
+            }
+        }
+
+        public static void InvokeJournalWatcher(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            bool somethingToReport = false;
+            while (!somethingToReport)
+            {
+                try
+                {
+                    Logging.Debug("Queue has " + LogQueue.Count + " entries");
+                    JournalEntry entry = LogQueue.Take();
+                    Logging.Debug("Entry is " + JsonConvert.SerializeObject(entry));
+                    if (entry.refetchProfile)
+                    {
+                        // Whatever has happened needs us to refetch the profile
+                        InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    }
+
+                    bool discardEvent = false;
+                    // Handle any type-specific items
+                    switch ((string)entry.type)
+                    {
+                        case "Docked":
+                            InvokeUpdateStation(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                            break;
+                        case "Jumped":
+                            if (Cmdr.StarSystem == entry.stringData["starsystem"])
+                            {
+                                discardEvent = true;
+                            }
+                            else
+                            {
+                                Cmdr.StarSystem = entry.stringData["starsystem"];
+                                //Cmdr.StarSystemX = (decimal?)entry.x;
+                                //Cmdr.StarSystemY = (decimal?)entry.y;
+                                //Cmdr.StarSystemZ = (decimal?)entry.z;
+                                InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                                // Whenever we jump system we always come out in supercruise
+                                CurrentEnvironment = ENVIRONMENT_SUPERCRUISE;
+                                setString(ref textValues, "Environment", CurrentEnvironment);
+                            }
+                            break;
+                        case "Entered supercruise":
+                            if (CurrentEnvironment == ENVIRONMENT_SUPERCRUISE)
+                            {
+                                // Already in supercruise
+                                discardEvent = true;
+                            }
+                            else
+                            {
+                                CurrentEnvironment = ENVIRONMENT_SUPERCRUISE;
+                            }
+                            break;
+                        case "Left supercruise":
+                            if (CurrentEnvironment == ENVIRONMENT_NORMAL_SPACE)
+                            {
+                                // Already in normal space
+                                discardEvent = true;
+                            }
+                            else
+                            {
+                                CurrentEnvironment = ENVIRONMENT_NORMAL_SPACE;
+                            }
+                            break;
+                    }
+
+                    if (discardEvent)
+                    {
+                        // This event is a duplicate or extraneous; ignore it
+                        continue;
+                    }
+                    somethingToReport = true;
+
+                    // At this point our internal data should be up-to-date
+
+                    setString(ref textValues, "EDDI event", entry.type);
+                    foreach (var key in entry.stringData.Keys)
+                    {
+                        setString(ref textValues, entry.type + " " + key.ToLower(), entry.stringData[key]);
+                    }
+                    foreach (var key in entry.intData.Keys)
+                    {
+                        setInt(ref intValues, entry.type + " " + key.ToLower(), entry.intData[key]);
+                    }
+                    foreach (var key in entry.boolData.Keys)
+                    {
+                        setBoolean(ref booleanValues, entry.type + " " + key.ToLower(), entry.boolData[key]);
+                    }
+                    foreach (var key in entry.datetimeData.Keys)
+                    {
+                        setDateTime(ref dateTimeValues, entry.type + " " + key.ToLower(), entry.datetimeData[key]);
+                    }
+                    foreach (var key in entry.decimalData.Keys)
+                    {
+                        setDecimal(ref decimalValues, entry.type + " " + key.ToLower(), entry.decimalData[key]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Error occurred: " + ex);
+                    setPluginStatus(ref textValues, "Failed", "Failed to process journal entry", ex);
+                }
             }
         }
 

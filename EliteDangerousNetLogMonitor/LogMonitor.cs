@@ -83,14 +83,13 @@ namespace EliteDangerousNetLogMonitor
                             string[] lines = Regex.Split(s, "\r?\n");
                             foreach (string line in lines)
                             {
-//                                logDebug("Checking line " + line);
                                 callback(line);
                             }
                         }
                     }
                     lastSize = thisSize;
                 }
-                Thread.Sleep(1000);
+                Thread.Sleep(100);
             }
         }
 
