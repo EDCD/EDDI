@@ -45,22 +45,22 @@ namespace EliteDangerousJournalMonitor
                 switch (edType)
                 {
                     case "Docked":
-                        journalEntry.type = "Docked";
+                        journalEntry.type = "Ship docked";
                         journalEntry.refetchProfile = true;
                         handled = true;
                         break;
                     case "Undocked":
-                        journalEntry.type = "Undocked";
+                        journalEntry.type = "Ship undocked";
                         journalEntry.refetchProfile = false;
                         handled = true;
                         break;
                     case "Touchdown":
-                        journalEntry.type = "Landed";
+                        journalEntry.type = "Ship landed";
                         journalEntry.refetchProfile = false;
                         handled = true;
                         break;
                     case "Liftoff":
-                        journalEntry.type = "Lifted off";
+                        journalEntry.type = "Ship lifted off";
                         journalEntry.refetchProfile = false;
                         handled = true;
                         break;
@@ -178,13 +178,13 @@ namespace EliteDangerousJournalMonitor
                         }
                         break;
                     case "ShipyardBuy":
-                        journalEntry.type = "Swapped ship";
+                        journalEntry.type = "Ship swapped";
                         journalEntry.boolData.Add("new", true);
                         journalEntry.refetchProfile = true;
                         handled = true;
                         break;
                     case "ShipyardSwap":
-                        journalEntry.type = "Swapped ship";
+                        journalEntry.type = "Ship swapped";
                         journalEntry.boolData.Add("new", false);
                         journalEntry.refetchProfile = true;
                         handled = true;
@@ -213,6 +213,60 @@ namespace EliteDangerousJournalMonitor
                         journalEntry.type = "Message received";
                         journalEntry.stringData.Add("from", (string)data["from"]);
                         journalEntry.stringData.Add("message", (string)data["message"]);
+                        journalEntry.refetchProfile = false;
+                        handled = true;
+                        break;
+                    case "DockingRequested":
+                        journalEntry.type = "Docking request sent";
+                        journalEntry.stringData.Add("station", (string)data["stationname"]);
+                        journalEntry.refetchProfile = false;
+                        handled = true;
+                        break;
+                    case "DockingGranted":
+                        journalEntry.type = "Docking request granted";
+                        journalEntry.stringData.Add("station", (string)data["stationname"]);
+                        journalEntry.intData.Add("pad", (int)data["landingpad"]);
+                        journalEntry.refetchProfile = false;
+                        handled = true;
+                        break;
+                    case "DockingDenied":
+                        journalEntry.type = "Docking request denied";
+                        journalEntry.stringData.Add("station", (string)data["stationname"]);
+                        journalEntry.stringData.Add("reason", (string)data["reason"]);
+                        journalEntry.refetchProfile = false;
+                        handled = true;
+                        break;
+                    case "DockingCancelled":
+                        journalEntry.type = "Docking request cancelled";
+                        journalEntry.stringData.Add("station", (string)data["stationname"]);
+                        journalEntry.refetchProfile = false;
+                        handled = true;
+                        break;
+                    case "DockingTimeout":
+                        journalEntry.type = "Docking request timed out";
+                        journalEntry.stringData.Add("station", (string)data["stationname"]);
+                        journalEntry.refetchProfile = false;
+                        handled = true;
+                        break;
+                    case "HeatWarning":
+                        journalEntry.type = "Ship overheating";
+                        journalEntry.refetchProfile = false;
+                        handled = true;
+                        break;
+                    case "HullDamage":
+                        journalEntry.type = "Ship hull damaged";
+                        journalEntry.refetchProfile = true;
+                        handled = true;
+                        break;
+                    case "ShieldState":
+                        if ((int)data["ShieldsUp"] == 1)
+                        {
+                            journalEntry.type = "Shields up";
+                        }
+                        else
+                        {
+                            journalEntry.type = "Shields down";
+                        }
                         journalEntry.refetchProfile = false;
                         handled = true;
                         break;
