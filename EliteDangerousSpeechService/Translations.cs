@@ -162,6 +162,7 @@ namespace EliteDangerousSpeechService
             { "Wredguia", new string[] { "ˈredɡaɪə" } },
         };
 
+        private static Regex UPPERCASE = new Regex(@"[A-Z]{2,}");
         private static Regex DIGITS = new Regex(@"\d{3,}");
         private static Regex DECIMAL_DIGITS = new Regex(@"( point )(\d{2,})");
         // Regular expression to locate generated star systems
@@ -238,8 +239,6 @@ namespace EliteDangerousSpeechService
                     firstPiece = replaceWithPronunciation(firstPiece, CONSTELLATION_PRONUNCIATIONS[firstPiece]);
                 }
 
-                // TODO need to break apart any letter combinations to stop voices from guessing pronunciation incorrectly
-
                 string secondPiece = Match.Groups[2].Value.Replace("-", " dash ");
 
                 starSystem = firstPiece + subPiece + " " + secondPiece;
@@ -290,6 +289,9 @@ namespace EliteDangerousSpeechService
             starSystem = DECIMAL_DIGITS.Replace(starSystem, match => match.Groups[1].Value + string.Join<char>(" ", match.Groups[2].Value));
             // Any string of more than two digits is broken up in to individual digits
             starSystem = DIGITS.Replace(starSystem, match => string.Join<char>(" ", match.Value));
+
+            // Any string of more than two upper-case letters is broken up to avoid issues such as 'DR' being pronounced as 'Doctor'
+            starSystem = UPPERCASE.Replace(starSystem, match => string.Join<char>(" ", match.Value));
 
             return starSystem;
         }
