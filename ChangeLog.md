@@ -1,4 +1,4 @@
-#1.x
+#1.4.0
   * Rework network communications to provide better debug information
   * Unify logging to a single file
   * Always use the selected voice's default language when using phonemes

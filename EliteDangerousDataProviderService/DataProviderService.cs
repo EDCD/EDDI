@@ -33,7 +33,7 @@ namespace EliteDangerousDataProviderService
             string response;
             try
             {
-                response = Net.DownloadString("http://api.eddp.co:16161/systems/" + Uri.EscapeDataString(system));
+                response = Net.DownloadString("http://api.eddp.co/systems/" + Uri.EscapeDataString(system));
             }
             catch (WebException wex)
             {
