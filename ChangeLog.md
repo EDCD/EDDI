@@ -1,4 +1,6 @@
 #1.x
+  * Fix issue with text-to-speech engines mispronouncing sector names with two-letter phrases such as DR and NY
+#1.4.0
   * Rework network communications to provide better debug information
   * Unify logging to a single file
   * Always use the selected voice's default language when using phonemes

@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface
 
-Current version: 1.3.5
+Current version: 1.4.0
 
 EDDI is a VoiceAttack plugin that provides over 200 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  Although it provides a number of commands it is not in itself a complete VoiceAttack profile similar to those provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.
 
@@ -23,6 +23,44 @@ To configure EDDI run the 'configuration.exe' file in the plugin directory.  Thi
 You will also need to configure VoiceAttack itself.  To do this you need to start VoiceAttack and import the 'EDDI-profile.vap' profile that is in the EDDI directory.  You can either import the commands in to their own profile or an existing profile if you already have one.  If you import the commands in to an existing profile you must edit the profile to ensure that '((EDDI: startup))' is executed when the profile is loaded.  You must also ensure that 'Enable Plugins' is checked.
 
 Once all of this is complete you can restart VoiceAttack.  To check that EDDI is working you can say "ship handover confirmed": EDDI should respond with information about your ship.
+
+##EDDI Events
+
+EDDI works on the idea of an event loop.  It monitors the Elite: Dangerous journal and generates events when specific events are encountered.  The events that EDDI recognises are as follows:
+
+  - Ship docked: triggered whenever the ship docks at an orbital station or outpost, or a planetary base
+  - Ship undocked: triggered whenever the ship undocks from an orbital station or outpost, or a planetary base
+  - Ship landed: triggered whenever the ship touches down on the surface
+  - Ship lifted off: triggered whenever the ship lifts off from the surface
+  - Star scanned: triggered whenever the player completes the scan of a star
+  - Body scanned: triggered whenever the player completes the scan of a body (planet or satellite)
+  - Entered supercruise: triggered whenever the player enters supercruise
+  - Left supercruise: triggered whenever the player leaves supercruise
+  - Jumped: triggered whenever the player jumps to another system
+  - Died: triggered whenever the player's ship is destroyed
+  - Bounty awarded: triggered whenever the player is awarded a bounty
+  - Bond awarded: triggered whenever the player is awarded a combat bond
+  - Bounty incurred: triggered whenever the player incurs a bounty
+  - Fine incurred: triggered whenever the player incurs a fine
+  - Combat promotion: triggered whenever the player's combat rating increases
+  - Trade promotion: triggered whenever the player's trade rating increases
+  - Exploration promotion: triggered whenever the player's exploration rating increases
+  - CQC promotion: triggered whenever the player's CQC rating increases
+  - Illegal cargo scooped: triggered whenever the player scoops illegal cargo (including delivered by drone)
+  - Cockpit breached: triggered whenever the player's cockpit is breached
+  - Docking request sent: triggered whenever the player requests docking from an orbital station, outpost or planetary base
+  - Docking request granted: triggered whenever an orbital station, outpost or planetary base grants docking permission
+  - Docking request denied: triggered whenever an orbital station, outpost or planetary base denies docking permission
+  - Docking request cancelled: triggered whenever the player cancels an active docking request for an orbital station, outpost or planetary base
+  - Docking request timed out: triggered whenever a docking request times out without response
+  - Ship overheating: triggered whenever the heat of the ship goes above 100%
+  - Hull damaged: triggered whenever the hull of the player's vehicle drops below 80/60/40/20%
+  - Shields up: triggered whenever the shields of the player's vehicle come online
+  - Shields down: triggered whenever the shields of the player's vehicle go offline
+
+##Customising EDDI
+
+(Talk about the EDDI events profile).
 
 ##Troubleshooting
 
@@ -287,14 +325,7 @@ EDDI obtains information from a number of sources to provide the variables.  The
   * The Elite Dangerous star map ([http://edsm.net](http://edsm.net)), which contains the commander's travel log and system notes
   * The EDDB database ([http://eddb.io](http://eddb.io/)), which contains data about the system's population, government, stations etc.
 
-The data is made available through Voice Attack variables as above.  In addition, a number of actions trigger events.  Events are used by EDDI to run pre-set commands when they occur.  The EDDI event loop triggers one of a number of actions depending on the event.  At current the actions are:
-
-  * ((EDDI: event handler for change of system)) triggered whenever the commander changes to a different system.  This triggers at the end of the hyperspace countdown.
-  * ((EDDI: event handler for change of environment)) triggered whenever the commander moves between supercruise and normal space.  This triggers as the move occurs.
-  * ((EDDI: event handler for ship docked)) triggered whenever the commander issues a "ship docked" command to VoiceAttack.
-  * ((EDDI: event handler for ship changed)) triggered whenever the commander issues a "ship handover complete" command to VoiceAttack.
-
-The above actions can be customised as you see fit.  If you customise them then when you upgrade EDDI you should not overwrite the event handlers (although you should overwrite the event loop).
+The data is made available through Voice Attack variables as above.
 
 ##EDSM Integration
 

@@ -22,6 +22,8 @@
         // Admin
         // The ID in Elite: Dangerous' database
         public long EDID { get; set; }
+        // The name in Elite: Dangerous' database
+        public string EDName { get; set; }
         // The ID in eddb.io
         public long EDDBID { get; set; }
 
@@ -29,6 +31,7 @@
 
         public Module(Module Module)
         {
+            this.EDName = Module.EDName;
             this.Name = Module.Name;
             this.Class = Module.Class;
             this.Grade = Module.Grade;
@@ -41,9 +44,10 @@
             this.EDDBID = Module.EDDBID;
         }
 
-        public Module(long EDID, long EDDBID, string Name, int Class, string Grade, long Value)
+        public Module(long EDID, string EDName, long EDDBID, string Name, int Class, string Grade, long Value)
         {
-            this.EDID = EDDBID;
+            this.EDID = EDID;
+            this.EDName = EDName;
             this.EDDBID = EDDBID;
             this.Name = Name;
             this.Class = Class;
@@ -52,9 +56,10 @@
         }
 
         // Module definition for a bulkhead - requires ship ID
-        public Module(long EDID, long EDDBID, string Name, int Class, string Grade, long Value, int ShipId)
+        public Module(long EDID, string EDName, long EDDBID, string Name, int Class, string Grade, long Value, int ShipId)
         {
             this.EDID = EDID;
+            this.EDName = EDName;
             this.EDDBID = EDDBID;
             this.Name = Name;
             this.Class = Class;
@@ -64,9 +69,10 @@
         }
 
         // Module definition for a weapon - requires mount and optional ammo
-        public Module(long EDID, long EDDBID, string Name, int Class, string Grade, long Value, ModuleMount Mount, int? AmmoClipCapacity = null, int? AmmoHopperCapacity = null)
+        public Module(long EDID, string EDName, long EDDBID, string Name, int Class, string Grade, long Value, ModuleMount Mount, int? AmmoClipCapacity = null, int? AmmoHopperCapacity = null)
         {
             this.EDID = EDID;
+            this.EDName = EDName;
             this.EDDBID = EDDBID;
             this.Name = Name;
             this.Class = Class;
