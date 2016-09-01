@@ -5,6 +5,8 @@ using EliteDangerousJournalMonitor;
 using EliteDangerousNetLogMonitor;
 using EliteDangerousSpeechService;
 using EliteDangerousStarMapService;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -74,7 +76,7 @@ namespace EDDI
         public StarSystem LastStarSystem { get; private set; }
 
         private Thread logWatcherThread;
-        private BlockingCollection<dynamic> LogQueue = new BlockingCollection<dynamic>();
+        //private BlockingCollection<dynamic> LogQueue = new BlockingCollection<dynamic>();
 
         public static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         public static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
@@ -200,7 +202,8 @@ namespace EDDI
         {
             if (configuration != null)
             {
-                JournalMonitor monitor = new JournalMonitor(configuration, (result) => LogQueue.Add(result));
+                //JournalMonitor monitor = new JournalMonitor(configuration, (result) => eventHandler(result));
+                NetLogMonitor monitor = new NetLogMonitor(configuration, (result) => eventHandler(result));
                 monitor.start();
             }
         }
@@ -224,25 +227,26 @@ namespace EDDI
             Logging.Info("EDDI " + EDDI_VERSION + " shutting down");
         }
 
-        public int EventsOutstanding()
-        {
-            return LogQueue.Count;
-        }
+        //public int EventsOutstanding()
+        //{
+        //    return LogQueue.Count;
+        //}
 
-        public JournalEntry GetNextEvent()
-        {
-            return LogQueue.Take();
-        }
+        //public JournalEntry GetNextEvent()
+        //{
+        //    return LogQueue.Take();
+        //}
 
-        void eventHandler(JournalEntry entry)
+        void eventHandler(dynamic entry)
         {
-            switch (entry.stringData["Event"])
+            Logging.Debug("Handling event " + JsonConvert.SerializeObject(entry));
+            switch ((string)entry.type)
             {
-                case "Jump":
+                case "Location":
                     eventJumped(entry);
                     break;
                 default:
-                    speechService.Say(Cmdr, Ship, "Unknown event " + entry.stringData["Event"]);
+                    speechService.Say(Cmdr, Ship, "Unknown event " + entry.type);
                     break;
             }
         }
