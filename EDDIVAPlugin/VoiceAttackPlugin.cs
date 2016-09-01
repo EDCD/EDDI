@@ -14,49 +14,25 @@ using Newtonsoft.Json;
 using EliteDangerousSpeechService;
 using Utilities;
 using EliteDangerousJournalMonitor;
+using EDDI;
 
 namespace EDDIVAPlugin
 {
     public class VoiceAttackPlugin
     {
+        private static Eddi eddi;
+
         private static int minEmpireRatingForTitle = 3;
         private static int minFederationRatingForTitle = 1;
 
-        private static IEDDIStarSystemRepository starSystemRepository;
-
-        // Information obtained from the companion app service
-        private static CompanionAppService appService;
-        private static Commander Cmdr;
-
-        // Information obtained from the star map service
-        private static StarMapService starMapService;
-
-        private static SpeechService speechService;
-        
-        // Information obtained from the log watcher
-        private static Thread logWatcherThread;
-        static BlockingCollection<dynamic> LogQueue = new BlockingCollection<dynamic>();
-        private static string CurrentEnvironment;
-
-        // Information obtained from EDDI configuration
-        private static StarSystem HomeStarSystem;
-
-        private static StarSystem CurrentStarSystem;
-        private static StarSystem LastStarSystem;
-
-        private static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
-        private static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
-
-        public static readonly string PLUGIN_VERSION = "1.4.0b2";
-
         public static string VA_DisplayName()
         {
-            return "EDDI " + PLUGIN_VERSION;
+            return "EDDI " + Eddi.EDDI_VERSION;
         }
 
         public static string VA_DisplayInfo()
         {
-            return "Elite: Dangerous Data Interface\r\nVersion " + PLUGIN_VERSION;
+            return "Elite: Dangerous Data Interface\r\nVersion " + Eddi.EDDI_VERSION;
         }
 
         public static Guid VA_Id()
@@ -64,165 +40,164 @@ namespace EDDIVAPlugin
             return new Guid("{4AD8E3A4-CEFA-4558-B503-1CC9B99A07C1}");
         }
 
-        private static bool initialised = false;
-        private static readonly object initLock = new object();
-        public static void VA_Init1(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        private static void EventPosted(String eventName)
         {
-            if (!initialised)
-            {
-                lock (initLock)
-                {
-                    if (!initialised)
-                    {
-                        try
-                        {
-                            Logging.Info("EDDI " + PLUGIN_VERSION + " starting");
-
-                            // Set up and/or open our database
-                            String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                            System.IO.Directory.CreateDirectory(dataDir);
-
-                            // Set up our local star system repository
-                            starSystemRepository = new EDDIStarSystemSqLiteRepository();
-
-                            // Set up the EDDI configuration
-                            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-                            setString(ref textValues, "Home system", eddiConfiguration.HomeSystem != null && eddiConfiguration.HomeSystem.Trim().Length > 0 ? eddiConfiguration.HomeSystem : null);
-                            setString(ref textValues, "Home system (spoken)", eddiConfiguration.HomeSystem != null && eddiConfiguration.HomeSystem.Trim().Length > 0 ? Translations.StarSystem(eddiConfiguration.HomeSystem) : null);
-                            setString(ref textValues, "Home station", eddiConfiguration.HomeStation != null && eddiConfiguration.HomeStation.Trim().Length > 0 ? eddiConfiguration.HomeStation : null);
-                            setDecimal(ref decimalValues, "Insurance", eddiConfiguration.Insurance);
-                            if (eddiConfiguration.HomeSystem != null && eddiConfiguration.HomeSystem.Trim().Length > 0)
-                            {
-                                EDDIStarSystem HomeStarSystemData = starSystemRepository.GetEDDIStarSystem(eddiConfiguration.HomeSystem.Trim());
-                                if (HomeStarSystemData == null)
-                                {
-                                    // We have no record of this system; set it up
-                                    HomeStarSystemData = new EDDIStarSystem();
-                                    HomeStarSystemData.Name = eddiConfiguration.HomeSystem.Trim();
-                                    HomeStarSystemData.StarSystem = DataProviderService.GetSystemData(eddiConfiguration.HomeSystem.Trim(), null, null ,null);
-                                    HomeStarSystemData.LastVisit = DateTime.Now;
-                                    HomeStarSystemData.StarSystemLastUpdated = HomeStarSystemData.LastVisit;
-                                    HomeStarSystemData.TotalVisits = 1;
-                                    starSystemRepository.SaveEDDIStarSystem(HomeStarSystemData);
-                                }
-                                HomeStarSystem = HomeStarSystemData.StarSystem;
-                            }
-
-
-                            Logging.Verbose = eddiConfiguration.Debug;
-
-                            // Set up the app service
-                            appService = new CompanionAppService();
-                            if (appService.CurrentState == CompanionAppService.State.READY)
-                            {
-                                // Carry out initial population of profile
-                                InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                            }
-                            if (Cmdr != null && Cmdr.Name != null)
-                            {
-                                setString(ref textValues, "EDDI plugin profile status", "Enabled");
-                                Logging.Info("EDDI access to the companion app is enabled");
-                            }
-                            else
-                            {
-                                // If InvokeUpdatePlugin failed then it will have have left an error message, but this once we ignore it
-                                setPluginStatus(ref textValues, "Operational", null, null);
-                                setString(ref textValues, "EDDI plugin profile status", "Disabled");
-                                Logging.Info("EDDI access to the companion app is disabled");
-                                // We create a commander anyway, as data such as starsystem uses it
-                                Cmdr = new Commander();
-                            }
-
-                            // Set up the star map service
-                            StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
-                            if (starMapCredentials != null && starMapCredentials.apiKey != null)
-                            {
-                                // Commander name might come from star map credentials or the companion app's profile
-                                string commanderName = null;
-                                if (starMapCredentials.commanderName != null)
-                                {
-                                    commanderName = starMapCredentials.commanderName;
-                                }
-                                else if (Cmdr.Name != null)
-                                {
-                                    commanderName = Cmdr.Name;
-                                }
-                                if (commanderName != null)
-                                {
-                                    starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
-                                    setString(ref textValues, "EDDI plugin EDSM status", "Enabled");
-                                    Logging.Info("EDDI access to EDSM is enabled");
-                                }
-                            }
-                            if (starMapService == null)
-                            {
-                                setString(ref textValues, "EDDI plugin EDSM status", "Disabled");
-                                Logging.Info("EDDI access to EDSM is disabled");
-                            }
-
-                            setString(ref textValues, "EDDI version", PLUGIN_VERSION);
-
-                            speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
-
-                            InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                            CurrentEnvironment = ENVIRONMENT_NORMAL_SPACE;
-                            setString(ref textValues, "Environment", CurrentEnvironment);
-
-                            // Set up log monitor
-                            NetLogConfiguration netLogConfiguration = NetLogConfiguration.FromFile();
-                            if (netLogConfiguration != null && netLogConfiguration.path != null)
-                            {
-                                logWatcherThread = new Thread(() => StartLogMonitor(netLogConfiguration));
-                                logWatcherThread.IsBackground = true;
-                                logWatcherThread.Name = "EDDI netlog watcher";
-                                logWatcherThread.Start();
-                                setString(ref textValues, "EDDI plugin NetLog status", "Enabled");
-                                Logging.Info("EDDI netlog monitor is enabled for " + netLogConfiguration.path);
-                            }
-                            else
-                            {
-                                setString(ref textValues, "EDDI plugin NetLog status", "Disabled");
-                                Logging.Info("EDDI netlog monitor is disabled");
-                            }
-
-                            setPluginStatus(ref textValues, "Operational", null, null);
-
-                            initialised = true;
-                            Logging.Info("EDDI " + PLUGIN_VERSION + " initialised");
-                        }
-                        catch (Exception ex)
-                        {
-                            setPluginStatus(ref textValues, "Failed", "Failed to initialise", ex);
-                        }
-                    }
-                }
-            }
+            eddi.speechService.Say(null, null, "Event " + eventName + " was posted");
         }
 
-        public static void StartLogMonitor(NetLogConfiguration configuration)
+        public static void VA_Init1(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            if (configuration != null)
+            eddi = Eddi.Instance;
+            eddi.EventHandler += new OnEventHandler(EventPosted);
+            if (eddi.HomeStarSystem != null)
             {
-                // NetLogMonitor monitor = new NetLogMonitor(configuration, (result) => LogQueue.Add(result));
-                JournalMonitor monitor = new JournalMonitor(configuration, (result) => LogQueue.Add(result));
-                monitor.start();
+                setStarSystemValues(eddi.Cmdr, eddi.HomeStarSystem, "Home system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
             }
+
+            if (eddi.HomeStation != null)
+            {
+                setString(ref textValues, "Home station", eddi.HomeStation.Name);
+
+            }
+
+            if (eddi.Insurance != null)
+            {
+                setDecimal(ref decimalValues, "Insurance", eddi.Insurance);
+            }
+
+            setString(ref textValues, "Environment", eddi.Environment);
+
+            // If (Cmdr != null && Cmdr.Name != null)
+            setString(ref textValues, "EDDI plugin profile status", "Enabled");
+
+            //if (!initialised)
+            //{
+            //    lock (initLock)
+            //    {
+            //        if (!initialised)
+            //        {
+            //            try
+            //            {
+            //                Logging.Info("EDDI " + PLUGIN_VERSION + " starting");
+
+            //                // Set up and/or open our database
+            //                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+            //                System.IO.Directory.CreateDirectory(dataDir);
+
+            //                // Set up our local star system repository
+            //                starSystemRepository = new EDDIStarSystemSqLiteRepository();
+
+            //                // Set up the EDDI configuration
+            //                EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            //                if (eddiConfiguration.HomeSystem != null && eddiConfiguration.HomeSystem.Trim().Length > 0)
+            //                {
+            //                    EDDIStarSystem HomeStarSystemData = starSystemRepository.GetEDDIStarSystem(eddiConfiguration.HomeSystem.Trim());
+            //                    if (HomeStarSystemData == null)
+            //                    {
+            //                        // We have no record of this system; set it up
+            //                        HomeStarSystemData = new EDDIStarSystem();
+            //                        HomeStarSystemData.Name = eddiConfiguration.HomeSystem.Trim();
+            //                        HomeStarSystemData.StarSystem = DataProviderService.GetSystemData(eddiConfiguration.HomeSystem.Trim(), null, null ,null);
+            //                        HomeStarSystemData.LastVisit = DateTime.Now;
+            //                        HomeStarSystemData.StarSystemLastUpdated = HomeStarSystemData.LastVisit;
+            //                        HomeStarSystemData.TotalVisits = 1;
+            //                        starSystemRepository.SaveEDDIStarSystem(HomeStarSystemData);
+            //                    }
+            //                    HomeStarSystem = HomeStarSystemData.StarSystem;
+            //                }
+
+
+            //                Logging.Verbose = eddiConfiguration.Debug;
+
+            //                // Set up the app service
+            //                appService = new CompanionAppService();
+            //                if (appService.CurrentState == CompanionAppService.State.READY)
+            //                {
+            //                    // Carry out initial population of profile
+            //                    InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //                }
+            //                if (Cmdr != null && Cmdr.Name != null)
+            //                {
+            //                    Logging.Info("EDDI access to the companion app is enabled");
+            //                }
+            //                else
+            //                {
+            //                    // If InvokeUpdatePlugin failed then it will have have left an error message, but this once we ignore it
+            //                    setPluginStatus(ref textValues, "Operational", null, null);
+            //                    setString(ref textValues, "EDDI plugin profile status", "Disabled");
+            //                    Logging.Info("EDDI access to the companion app is disabled");
+            //                    // We create a commander anyway, as data such as starsystem uses it
+            //                    Cmdr = new Commander();
+            //                }
+
+            //                // Set up the star map service
+            //                StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
+            //                if (starMapCredentials != null && starMapCredentials.apiKey != null)
+            //                {
+            //                    // Commander name might come from star map credentials or the companion app's profile
+            //                    string commanderName = null;
+            //                    if (starMapCredentials.commanderName != null)
+            //                    {
+            //                        commanderName = starMapCredentials.commanderName;
+            //                    }
+            //                    else if (Cmdr.Name != null)
+            //                    {
+            //                        commanderName = Cmdr.Name;
+            //                    }
+            //                    if (commanderName != null)
+            //                    {
+            //                        starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
+            //                        setString(ref textValues, "EDDI plugin EDSM status", "Enabled");
+            //                        Logging.Info("EDDI access to EDSM is enabled");
+            //                    }
+            //                }
+            //                if (starMapService == null)
+            //                {
+            //                    setString(ref textValues, "EDDI plugin EDSM status", "Disabled");
+            //                    Logging.Info("EDDI access to EDSM is disabled");
+            //                }
+
+            //                setString(ref textValues, "EDDI version", PLUGIN_VERSION);
+
+            //                speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
+
+            //                InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //                CurrentEnvironment = ENVIRONMENT_NORMAL_SPACE;
+
+            //                // Set up log monitor
+            //                NetLogConfiguration netLogConfiguration = NetLogConfiguration.FromFile();
+            //                if (netLogConfiguration != null && netLogConfiguration.path != null)
+            //                {
+            //                    logWatcherThread = new Thread(() => StartLogMonitor(netLogConfiguration));
+            //                    logWatcherThread.IsBackground = true;
+            //                    logWatcherThread.Name = "EDDI netlog watcher";
+            //                    logWatcherThread.Start();
+            //                    setString(ref textValues, "EDDI plugin NetLog status", "Enabled");
+            //                    Logging.Info("EDDI netlog monitor is enabled for " + netLogConfiguration.path);
+            //                }
+            //                else
+            //                {
+            //                    setString(ref textValues, "EDDI plugin NetLog status", "Disabled");
+            //                    Logging.Info("EDDI netlog monitor is disabled");
+            //                }
+
+            //                setPluginStatus(ref textValues, "Operational", null, null);
+
+            //                initialised = true;
+            //                Logging.Info("EDDI " + PLUGIN_VERSION + " initialised");
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                setPluginStatus(ref textValues, "Failed", "Failed to initialise", ex);
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         public static void VA_Exit1(ref Dictionary<string, object> state)
         {
-            if (logWatcherThread != null)
-            {
-                logWatcherThread.Abort();
-                logWatcherThread = null;
-            }
-
-            if (speechService != null)
-            {
-                speechService.ShutdownSpeech();
-            }
-
-            Logging.Info("EDDI " + PLUGIN_VERSION + " shutting down");
+            eddi.Stop();
         }
 
         public static void VA_Invoke1(String context, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
@@ -271,7 +246,7 @@ namespace EDDIVAPlugin
                         // Inject an event
                         string data = context.Replace("event: ", "");
                         JObject eventData = JObject.Parse(data);
-                        LogQueue.Add(eventData);
+                        //LogQueue.Add(eventData);
                     }
                     return;
             }
@@ -279,530 +254,394 @@ namespace EDDIVAPlugin
 
         public static void InvokeJournalWatcher(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            bool somethingToReport = false;
-            while (!somethingToReport)
-            {
-                try
-                {
-                    Logging.Debug("Queue has " + LogQueue.Count + " entries");
-                    JournalEntry entry = LogQueue.Take();
-                    Logging.Debug("Entry is " + JsonConvert.SerializeObject(entry));
-                    if (entry.refetchProfile)
-                    {
-                        // Whatever has happened needs us to refetch the profile
-                        InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    }
+            //bool somethingToReport = false;
+            //while (!somethingToReport)
+            //{
+            //    try
+            //    {
+            //        Logging.Debug("Queue has " + eddi.EventsOutstanding() + " entries");
+            //        JournalEntry entry = eddi.GetNextEvent();
+            //        Logging.Debug("Entry is " + JsonConvert.SerializeObject(entry));
+            //        if (entry.refetchProfile)
+            //        {
+            //            // Whatever has happened needs us to refetch the profile
+            //            InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //        }
 
-                    bool discardEvent = false;
-                    // Handle any type-specific items
-                    switch ((string)entry.type)
-                    {
-                        case "Docked":
-                            InvokeUpdateStation(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                            break;
-                        case "Jumped":
-                            if (Cmdr.StarSystem == entry.stringData["starsystem"])
-                            {
-                                discardEvent = true;
-                            }
-                            else
-                            {
-                                Cmdr.StarSystem = entry.stringData["starsystem"];
-                                //Cmdr.StarSystemX = (decimal?)entry.x;
-                                //Cmdr.StarSystemY = (decimal?)entry.y;
-                                //Cmdr.StarSystemZ = (decimal?)entry.z;
-                                InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                                // Whenever we jump system we always come out in supercruise
-                                CurrentEnvironment = ENVIRONMENT_SUPERCRUISE;
-                                setString(ref textValues, "Environment", CurrentEnvironment);
-                            }
-                            break;
-                        case "Entered supercruise":
-                            if (CurrentEnvironment == ENVIRONMENT_SUPERCRUISE)
-                            {
-                                // Already in supercruise
-                                discardEvent = true;
-                            }
-                            else
-                            {
-                                CurrentEnvironment = ENVIRONMENT_SUPERCRUISE;
-                            }
-                            break;
-                        case "Left supercruise":
-                            if (CurrentEnvironment == ENVIRONMENT_NORMAL_SPACE)
-                            {
-                                // Already in normal space
-                                discardEvent = true;
-                            }
-                            else
-                            {
-                                CurrentEnvironment = ENVIRONMENT_NORMAL_SPACE;
-                            }
-                            break;
-                    }
+            //        bool discardEvent = false;
+            //        // Handle any type-specific items
+            //        switch ((string)entry.type)
+            //        {
+            //            case "Docked":
+            //                InvokeUpdateStation(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //                break;
+            //            case "Jumped":
+            //                if (Cmdr.StarSystem == entry.stringData["starsystem"])
+            //                {
+            //                    discardEvent = true;
+            //                }
+            //                else
+            //                {
+            //                    Cmdr.StarSystem = entry.stringData["starsystem"];
+            //                    //Cmdr.StarSystemX = (decimal?)entry.x;
+            //                    //Cmdr.StarSystemY = (decimal?)entry.y;
+            //                    //Cmdr.StarSystemZ = (decimal?)entry.z;
+            //                    InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //                    // Whenever we jump system we always come out in supercruise
+            //                    eddi.Environment = Eddi.ENVIRONMENT_SUPERCRUISE;
+            //                    setString(ref textValues, "Environment", eddi.Environment);
+            //                }
+            //                break;
+            //            case "Entered supercruise":
+            //                if (eddi.Environment == Eddi.ENVIRONMENT_SUPERCRUISE)
+            //                {
+            //                    // Already in supercruise
+            //                    discardEvent = true;
+            //                }
+            //                else
+            //                {
+            //                    eddi.Environment = Eddi.ENVIRONMENT_SUPERCRUISE;
+            //                }
+            //                break;
+            //            case "Left supercruise":
+            //                if (eddi.Environment == Eddi.ENVIRONMENT_NORMAL_SPACE)
+            //                {
+            //                    // Already in normal space
+            //                    discardEvent = true;
+            //                }
+            //                else
+            //                {
+            //                    eddi.Environment = Eddi.ENVIRONMENT_NORMAL_SPACE;
+            //                }
+            //                break;
+            //        }
 
-                    if (discardEvent)
-                    {
-                        // This event is a duplicate or extraneous; ignore it
-                        continue;
-                    }
-                    somethingToReport = true;
+            //        if (discardEvent)
+            //        {
+            //            // This event is a duplicate or extraneous; ignore it
+            //            continue;
+            //        }
+            //        somethingToReport = true;
 
-                    // At this point our internal data should be up-to-date
+            //        // At this point our internal data should be up-to-date
 
-                    setString(ref textValues, "EDDI event", entry.type);
-                    foreach (var key in entry.stringData.Keys)
-                    {
-                        setString(ref textValues, entry.type + " " + key.ToLower(), entry.stringData[key]);
-                    }
-                    foreach (var key in entry.intData.Keys)
-                    {
-                        setInt(ref intValues, entry.type + " " + key.ToLower(), entry.intData[key]);
-                    }
-                    foreach (var key in entry.boolData.Keys)
-                    {
-                        setBoolean(ref booleanValues, entry.type + " " + key.ToLower(), entry.boolData[key]);
-                    }
-                    foreach (var key in entry.datetimeData.Keys)
-                    {
-                        setDateTime(ref dateTimeValues, entry.type + " " + key.ToLower(), entry.datetimeData[key]);
-                    }
-                    foreach (var key in entry.decimalData.Keys)
-                    {
-                        setDecimal(ref decimalValues, entry.type + " " + key.ToLower(), entry.decimalData[key]);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logging.Warn("Error occurred: " + ex);
-                    setPluginStatus(ref textValues, "Failed", "Failed to process journal entry", ex);
-                }
-            }
+            //        setString(ref textValues, "EDDI event", entry.type);
+            //        foreach (var key in entry.stringData.Keys)
+            //        {
+            //            setString(ref textValues, entry.type + " " + key.ToLower(), entry.stringData[key]);
+            //        }
+            //        foreach (var key in entry.intData.Keys)
+            //        {
+            //            setInt(ref intValues, entry.type + " " + key.ToLower(), entry.intData[key]);
+            //        }
+            //        foreach (var key in entry.boolData.Keys)
+            //        {
+            //            setBoolean(ref booleanValues, entry.type + " " + key.ToLower(), entry.boolData[key]);
+            //        }
+            //        foreach (var key in entry.datetimeData.Keys)
+            //        {
+            //            setDateTime(ref dateTimeValues, entry.type + " " + key.ToLower(), entry.datetimeData[key]);
+            //        }
+            //        foreach (var key in entry.decimalData.Keys)
+            //        {
+            //            setDecimal(ref decimalValues, entry.type + " " + key.ToLower(), entry.decimalData[key]);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Logging.Warn("Error occurred: " + ex);
+            //        setPluginStatus(ref textValues, "Failed", "Failed to process journal entry", ex);
+            //    }
+            //}
         }
 
         public static void InvokeLogWatcher(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            bool somethingToReport = false;
-            while (!somethingToReport)
-            {
-                try
-                {
-                    Logging.Debug("Queue has " + LogQueue.Count + " entries");
-                    dynamic entry = LogQueue.Take();
-                    Logging.Debug("Entry is " + entry);
-                    switch ((string)entry.type)
-                    {
-                        case "Location": // Change of location
-                            Logging.Debug("Handling change of location");
-                            if (Cmdr != null)
-                            {
-                                string newEnvironment;
-                                // Tidy up the environment string
-                                switch ((string)entry.environment)
-                                {
-                                    case "Supercruise":
-                                        newEnvironment = ENVIRONMENT_SUPERCRUISE;
-                                        break;
-                                    case "NormalFlight":
-                                        newEnvironment = ENVIRONMENT_NORMAL_SPACE;
-                                        break;
-                                    default:
-                                        newEnvironment = (string)entry.environment;
-                                        break;
-                                }
+            //bool somethingToReport = false;
+            //while (!somethingToReport)
+            //{
+            //    try
+            //    {
+            //        Logging.Debug("Queue has " + LogQueue.Count + " entries");
+            //        dynamic entry = LogQueue.Take();
+            //        Logging.Debug("Entry is " + entry);
+            //        switch ((string)entry.type)
+            //        {
+            //            case "Location": // Change of location
+            //                Logging.Debug("Handling change of location");
+            //                if (Cmdr != null)
+            //                {
+            //                    string newEnvironment;
+            //                    // Tidy up the environment string
+            //                    switch ((string)entry.environment)
+            //                    {
+            //                        case "Supercruise":
+            //                            newEnvironment = ENVIRONMENT_SUPERCRUISE;
+            //                            break;
+            //                        case "NormalFlight":
+            //                            newEnvironment = ENVIRONMENT_NORMAL_SPACE;
+            //                            break;
+            //                        default:
+            //                            newEnvironment = (string)entry.environment;
+            //                            break;
+            //                    }
 
-                                if ((string)entry.starsystem != Cmdr.StarSystem)
-                                {
-                                    Logging.Debug("System changed from " + Cmdr.StarSystem + " to " + entry.starsystem);
-                                    // Change of system
-                                    setString(ref textValues, "EDDI event", "System change");
-                                    Cmdr.StarSystem = (string)entry.starsystem;
-                                    Cmdr.StarSystemX = (decimal?)entry.x;
-                                    Cmdr.StarSystemY = (decimal?)entry.y;
-                                    Cmdr.StarSystemZ = (decimal?)entry.z;
+            //                    if ((string)entry.starsystem != Cmdr.StarSystem)
+            //                    {
+            //                        Logging.Debug("System changed from " + Cmdr.StarSystem + " to " + entry.starsystem);
+            //                        // Change of system
+            //                        setString(ref textValues, "EDDI event", "System change");
+            //                        Cmdr.StarSystem = (string)entry.starsystem;
+            //                        Cmdr.StarSystemX = (decimal?)entry.x;
+            //                        Cmdr.StarSystemY = (decimal?)entry.y;
+            //                        Cmdr.StarSystemZ = (decimal?)entry.z;
 
-                                    // Need to fetch new starsystem information
-                                    InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                                    Logging.Debug("Obtained new system data");
-                                    CurrentEnvironment = ENVIRONMENT_SUPERCRUISE;
-                                    setString(ref textValues, "Environment", CurrentEnvironment); // Whenever we jump system we always come out in supercruise
-                                    somethingToReport = true;
-                                }
-                                else if (newEnvironment != CurrentEnvironment)
-                                {
-                                    Logging.Debug("Environment changed from " + CurrentEnvironment + " to " + newEnvironment);
-                                    // Change of environment
-                                    setString(ref textValues, "EDDI event", "Environment change");
-                                    CurrentEnvironment = newEnvironment;
-                                    setString(ref textValues, "Environment", CurrentEnvironment);
-                                    somethingToReport = true;
-                                }
-                            }
-                            break;
-                        case "Ship docked": // Ship docked
-                            Logging.Debug("Handling docking of ship");
-                            setString(ref textValues, "EDDI event", "Ship docked");
-                            // Need to refetch profile information
-                            InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                            InvokeUpdateStation(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                            somethingToReport = true;
-                            break;
-                        case "Ship change": // New or swapped ship
-                            Logging.Debug("Handling change of ship");
-                            setString(ref textValues, "EDDI event", "Ship change");
-                            // Need to refetch profile information
-                            InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                            somethingToReport = true;
-                            break;
-                        default:
-                            setPluginStatus(ref textValues, "Failed", "Unknown log entry " + entry.type, null);
-                            break;
-                    }
-                    if (somethingToReport)
-                    {
-                        setString(ref textValues, "EDDI raw event", entry.ToString());
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logging.Warn("Error occurred: " + ex);
-                    setPluginStatus(ref textValues, "Failed", "Failed to obtain log entry", ex);
-                }
-            }
+            //                        // Need to fetch new starsystem information
+            //                        InvokeNewSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //                        Logging.Debug("Obtained new system data");
+            //                        CurrentEnvironment = ENVIRONMENT_SUPERCRUISE;
+            //                        setString(ref textValues, "Environment", CurrentEnvironment); // Whenever we jump system we always come out in supercruise
+            //                        somethingToReport = true;
+            //                    }
+            //                    else if (newEnvironment != CurrentEnvironment)
+            //                    {
+            //                        Logging.Debug("Environment changed from " + CurrentEnvironment + " to " + newEnvironment);
+            //                        // Change of environment
+            //                        setString(ref textValues, "EDDI event", "Environment change");
+            //                        CurrentEnvironment = newEnvironment;
+            //                        setString(ref textValues, "Environment", CurrentEnvironment);
+            //                        somethingToReport = true;
+            //                    }
+            //                }
+            //                break;
+            //            case "Ship docked": // Ship docked
+            //                Logging.Debug("Handling docking of ship");
+            //                setString(ref textValues, "EDDI event", "Ship docked");
+            //                // Need to refetch profile information
+            //                InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //                InvokeUpdateStation(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //                somethingToReport = true;
+            //                break;
+            //            case "Ship change": // New or swapped ship
+            //                Logging.Debug("Handling change of ship");
+            //                setString(ref textValues, "EDDI event", "Ship change");
+            //                // Need to refetch profile information
+            //                InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //                somethingToReport = true;
+            //                break;
+            //            default:
+            //                setPluginStatus(ref textValues, "Failed", "Unknown log entry " + entry.type, null);
+            //                break;
+            //        }
+            //        if (somethingToReport)
+            //        {
+            //            setString(ref textValues, "EDDI raw event", entry.ToString());
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Logging.Warn("Error occurred: " + ex);
+            //        setPluginStatus(ref textValues, "Failed", "Failed to obtain log entry", ex);
+            //    }
+            //}
         }
 
         public static void InvokeEDDBSystem(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            Logging.Debug("Entered");
-            try
-            {
-                if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
-                {
-                    // Refetch the profile to set our system
-                    InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
-                    {
-                        // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
-                        Logging.Debug("Cannot obtain profile information; leaving");
-                        return;
-                    }
-                }
+            //Logging.Debug("Entered");
+            //try
+            //{
+            //    if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
+            //    {
+            //        // Refetch the profile to set our system
+            //        InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //        if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
+            //        {
+            //            // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
+            //            Logging.Debug("Cannot obtain profile information; leaving");
+            //            return;
+            //        }
+            //    }
 
-                if (CurrentStarSystem == null)
-                {
-                    // Missing current star system information
-                    Logging.Debug("No information on current system");
-                    return;
-                }
-                string systemUri = "https://eddb.io/system/" + CurrentStarSystem.EDDBID;
+            //    if (eddi.CurrentStarSystem == null)
+            //    {
+            //        // Missing current star system information
+            //        Logging.Debug("No information on current system");
+            //        return;
+            //    }
+            //    string systemUri = "https://eddb.io/system/" + eddi.CurrentStarSystem.EDDBID;
 
-                Logging.Debug("Starting process with uri " + systemUri);
+            //    Logging.Debug("Starting process with uri " + systemUri);
 
-                Process.Start(systemUri);
+            //    Process.Start(systemUri);
 
-                setPluginStatus(ref textValues, "Operational", null, null);
-            }
-            catch (Exception e)
-            {
-                setPluginStatus(ref textValues, "Failed", "Failed to send system data to EDDB", e);
-            }
-            Logging.Debug("Leaving");
+            //    setPluginStatus(ref textValues, "Operational", null, null);
+            //}
+            //catch (Exception e)
+            //{
+            //    setPluginStatus(ref textValues, "Failed", "Failed to send system data to EDDB", e);
+            //}
+            //Logging.Debug("Leaving");
         }
 
         public static void InvokeEDDBStation(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            Logging.Debug("Entered");
-            try
-            {
-                if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
-                {
-                    // Refetch the profile to set our station
-                    InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
-                    {
-                        // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
-                        Logging.Debug("Cannot obtain profile information; leaving");
-                        return;
-                    }
-                }
+            //Logging.Debug("Entered");
+            //try
+            //{
+            //    if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
+            //    {
+            //        // Refetch the profile to set our station
+            //        InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //        if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
+            //        {
+            //            // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
+            //            Logging.Debug("Cannot obtain profile information; leaving");
+            //            return;
+            //        }
+            //    }
 
-                if (CurrentStarSystem == null || Cmdr.LastStation == null)
-                {
-                    // Missing current star system information
-                    Logging.Debug("No information on current station");
-                    return;
-                }
-                Logging.Debug("Current star system is " + JsonConvert.SerializeObject(CurrentStarSystem));
-                Logging.Debug("Attempting to find station " + Cmdr.LastStation);
-                Station thisStation = CurrentStarSystem.Stations.SingleOrDefault(s => s.Name == Cmdr.LastStation);
-                if (thisStation == null)
-                {
-                    // Missing current star system information
-                    Logging.Debug("No information on current station");
-                    return;
-                }
-                string stationUri = "https://eddb.io/station/" + thisStation.EDDBID;
+            //    if (eddi.CurrentStarSystem == null || Cmdr.LastStation == null)
+            //    {
+            //        // Missing current star system information
+            //        Logging.Debug("No information on current station");
+            //        return;
+            //    }
+            //    Logging.Debug("Current star system is " + JsonConvert.SerializeObject(eddi.CurrentStarSystem));
+            //    Logging.Debug("Attempting to find station " + Cmdr.LastStation);
+            //    Station thisStation = eddi.CurrentStarSystem.Stations.SingleOrDefault(s => s.Name == Cmdr.LastStation);
+            //    if (thisStation == null)
+            //    {
+            //        // Missing current star system information
+            //        Logging.Debug("No information on current station");
+            //        return;
+            //    }
+            //    string stationUri = "https://eddb.io/station/" + thisStation.EDDBID;
 
-                Logging.Debug("Starting process with uri " + stationUri);
+            //    Logging.Debug("Starting process with uri " + stationUri);
 
-                Process.Start(stationUri);
+            //    Process.Start(stationUri);
 
-                setPluginStatus(ref textValues, "Operational", null, null);
-            }
-            catch (Exception e)
-            {
-                setPluginStatus(ref textValues, "Failed", "Failed to send station data to EDDB", e);
-            }
-            Logging.Debug("Leaving");
+            //    setPluginStatus(ref textValues, "Operational", null, null);
+            //}
+            //catch (Exception e)
+            //{
+            //    setPluginStatus(ref textValues, "Failed", "Failed to send station data to EDDB", e);
+            //}
+            //Logging.Debug("Leaving");
         }
 
         public static void InvokeCoriolis(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            Logging.Debug("Entered");
-            try
-            {
-                if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
-                {
-                    // Refetch the profile to set our ship
-                    InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
-                    {
-                        // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
-                        Logging.Debug("Cannot obtain profile information; leaving");
-                        return;
-                    }
-                }
+            //Logging.Debug("Entered");
+            //try
+            //{
+            //    if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
+            //    {
+            //        // Refetch the profile to set our ship
+            //        InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //        if (Cmdr == null || Cmdr.Ship == null || Cmdr.Ship.Model == null)
+            //        {
+            //            // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
+            //            Logging.Debug("Cannot obtain profile information; leaving");
+            //            return;
+            //        }
+            //    }
 
-                string shipUri = Coriolis.ShipUri(Cmdr.Ship);
+            //    string shipUri = Coriolis.ShipUri(Cmdr.Ship);
 
-                Logging.Debug("Starting process with uri " + shipUri);
+            //    Logging.Debug("Starting process with uri " + shipUri);
 
-                Process.Start(shipUri);
+            //    Process.Start(shipUri);
 
-                setPluginStatus(ref textValues, "Operational", null, null);
-            }
-            catch (Exception e)
-            {
-                setPluginStatus(ref textValues, "Failed", "Failed to send ship data to coriolis", e);
-            }
-            Logging.Debug("Leaving");
+            //    setPluginStatus(ref textValues, "Operational", null, null);
+            //}
+            //catch (Exception e)
+            //{
+            //    setPluginStatus(ref textValues, "Failed", "Failed to send ship data to coriolis", e);
+            //}
+            //Logging.Debug("Leaving");
         }
 
         public static void InvokeUpdateProfile(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            Logging.Debug("Entered.  App service is " + (appService == null ? "disabled" : "enabled"));
-            if (appService != null)
+            //Logging.Debug("Entered.  App service is " + (eddi.appService == null ? "disabled" : "enabled"));
+            //if (eddi.appService != null)
+            //{
+            try
             {
-                try
+                //        // Obtain the command profile
+                //        Cmdr = eddi.appService.Profile();
+
+                Logging.Debug("Commander is " + JsonConvert.SerializeObject(eddi.Cmdr));
+
+                //
+                // Commander data
+                //
+                setCommanderValues(eddi.Cmdr, ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+
+                setShipValues(eddi.Ship, "Ship", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+
+
+                //
+                // Stored ships data
+                //
+                int currentStoredShip = 1;
+                foreach (Ship StoredShip in eddi.StoredShips)
                 {
-                    // Obtain the command profile
-                    Cmdr = appService.Profile();
+                    setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
 
-                    Logging.Debug("Commander is " + JsonConvert.SerializeObject(Cmdr));
-
-                    //
-                    // Commander data
-                    //
-                    setString(ref textValues, "Name", Cmdr.Name);
-                    setInt(ref intValues, "Combat rating", Cmdr.CombatRating);
-                    setString(ref textValues, "Combat rank", Cmdr.CombatRank);
-                    setInt(ref intValues, "Trade rating", Cmdr.TradeRating);
-                    setString(ref textValues, "Trade rank", Cmdr.TradeRank);
-                    setInt(ref intValues, "Explore rating", Cmdr.ExploreRating);
-                    setString(ref textValues, "Explore rank", Cmdr.ExploreRank);
-                    setInt(ref intValues, "Empire rating", Cmdr.EmpireRating);
-                    setString(ref textValues, "Empire rank", Cmdr.EmpireRank);
-                    setInt(ref intValues, "Federation rating", Cmdr.FederationRating);
-                    setString(ref textValues, "Federation rank", Cmdr.FederationRank);
-                    setDecimal(ref decimalValues, "Credits", (decimal)Cmdr.Credits);
-                    setString(ref textValues, "Credits (spoken)", humanize(Cmdr.Credits));
-                    setDecimal(ref decimalValues, "Debt", (decimal)Cmdr.Debt);
-                    setString(ref textValues, "Debt (spoken)", humanize(Cmdr.Debt));
-
-
-                    //
-                    // Ship data
-                    //
-                    setString(ref textValues, "Ship model", Cmdr.Ship.Model);
-                    setString(ref textValues, "Ship model (spoken)", Translations.ShipModel(Cmdr.Ship.Model));
-                    setString(ref textValues, "Ship callsign", Cmdr.Ship.CallSign);
-                    setString(ref textValues, "Ship callsign (spoken)", Translations.CallSign(Cmdr.Ship.CallSign));
-                    setString(ref textValues, "Ship name", Cmdr.Ship.Name);
-                    setString(ref textValues, "Ship role", Cmdr.Ship.Role.ToString());
-                    setString(ref textValues, "Ship size", Cmdr.Ship.Size.ToString());
-                    setDecimal(ref decimalValues, "Ship value", (decimal)Cmdr.Ship.Value);
-                    setString(ref textValues, "Ship value (spoken)", humanize(Cmdr.Ship.Value));
-                    setDecimal(ref decimalValues, "Ship health", Cmdr.Ship.Health);
-                    setInt(ref intValues, "Ship cargo capacity", Cmdr.Ship.CargoCapacity);
-                    setInt(ref intValues, "Ship cargo carried", Cmdr.Ship.CargoCarried);
-                    // Add number of limpets carried
-                    int limpets = 0;
-                    foreach (Cargo cargo in Cmdr.Ship.Cargo)
-                    {
-                        if (cargo.Commodity.Name == "Limpet")
-                        {
-                            limpets += cargo.Quantity;
-                        }
-                    }
-                    setInt(ref intValues, "Ship limpets carried", limpets);
-
-                    SetModuleDetails("Ship bulkheads", Cmdr.Ship.Bulkheads, ref textValues, ref intValues, ref decimalValues);
-                    SetOutfittingCost("Ship bulkheads", Cmdr.Ship.Bulkheads, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    SetModuleDetails("Ship power plant", Cmdr.Ship.PowerPlant, ref textValues, ref intValues, ref decimalValues);
-                    SetOutfittingCost("Ship power plant", Cmdr.Ship.PowerPlant, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    SetModuleDetails("Ship thrusters", Cmdr.Ship.Thrusters, ref textValues, ref intValues, ref decimalValues);
-                    SetOutfittingCost("Ship thrusters", Cmdr.Ship.Thrusters, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    SetModuleDetails("Ship frame shift drive", Cmdr.Ship.FrameShiftDrive, ref textValues, ref intValues, ref decimalValues);
-                    SetOutfittingCost("Ship frame shift drive", Cmdr.Ship.FrameShiftDrive, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    SetModuleDetails("Ship life support", Cmdr.Ship.LifeSupport, ref textValues, ref intValues, ref decimalValues);
-                    SetOutfittingCost("Ship life support", Cmdr.Ship.LifeSupport, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    SetModuleDetails("Ship power distributor", Cmdr.Ship.PowerDistributor, ref textValues, ref intValues, ref decimalValues);
-                    SetOutfittingCost("Ship power distributor", Cmdr.Ship.PowerDistributor, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    SetModuleDetails("Ship sensors", Cmdr.Ship.Sensors, ref textValues, ref intValues, ref decimalValues);
-                    SetOutfittingCost("Ship sensors", Cmdr.Ship.Sensors, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    SetModuleDetails("Ship fuel tank", Cmdr.Ship.FuelTank, ref textValues, ref intValues, ref decimalValues);
-                    SetOutfittingCost("Ship fuel tank", Cmdr.Ship.FuelTank, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-
-                    // Hardpoints
-                    int numTinyHardpoints = 0;
-                    int numSmallHardpoints = 0;
-                    int numMediumHardpoints = 0;
-                    int numLargeHardpoints = 0;
-                    int numHugeHardpoints = 0;
-                    foreach (Hardpoint Hardpoint in Cmdr.Ship.Hardpoints)
-                    {
-                        string baseHardpointName = "";
-                        switch (Hardpoint.Size)
-                        {
-                            case 0:
-                                baseHardpointName = "Ship tiny hardpoint " + ++numTinyHardpoints;
-                                break;
-                            case 1:
-                                baseHardpointName = "Ship small hardpoint " + ++numSmallHardpoints;
-                                break;
-                            case 2:
-                                baseHardpointName = "Ship medium hardpoint " + ++numMediumHardpoints;
-                                break;
-                            case 3:
-                                baseHardpointName = "Ship large hardpoint " + ++numLargeHardpoints;
-                                break;
-                            case 4:
-                                baseHardpointName = "Ship huge hardpoint " + ++numHugeHardpoints;
-                                break;
-                        }
-
-                        setBoolean(ref booleanValues, baseHardpointName + " occupied", Hardpoint.Module != null);
-                        SetModuleDetails(baseHardpointName + " module", Hardpoint.Module, ref textValues, ref intValues, ref decimalValues);
-                        SetOutfittingCost(baseHardpointName + " module", Hardpoint.Module, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    }
-
-                    setInt(ref intValues, "Ship hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
-                    setInt(ref intValues, "Ship utility slots", numTinyHardpoints);
-
-                    // Compartments
-                    int curCompartment = 0;
-                    foreach (Compartment Compartment in Cmdr.Ship.Compartments)
-                    {
-                        string baseCompartmentName = "Ship compartment " + ++curCompartment;
-                        setInt(ref intValues, baseCompartmentName + " size", Compartment.Size);
-                        setBoolean(ref booleanValues, baseCompartmentName + " occupied", Compartment.Module != null);
-                        SetModuleDetails(baseCompartmentName + " module", Compartment.Module, ref textValues, ref intValues, ref decimalValues);
-                        SetOutfittingCost(baseCompartmentName + " module", Compartment.Module, ref Cmdr.Outfitting, ref textValues, ref decimalValues);
-                    }
-                    setInt(ref intValues, "Ship compartments", curCompartment);
-
-                    //
-                    // Stored ships data
-                    //
-                    int currentStoredShip = 1;
-                    foreach (Ship StoredShip in Cmdr.StoredShips)
-                    {
-                        string varBase = "Stored ship " + currentStoredShip;
-                        setString(ref textValues, varBase + " model", StoredShip.Model);
-                        setString(ref textValues, varBase + " system", StoredShip.StarSystem);
-                        setString(ref textValues, varBase + " station", StoredShip.Station);
-                        setString(ref textValues, varBase + " callsign", StoredShip.CallSign);
-                        setString(ref textValues, varBase + " callsign (spoken)", Translations.CallSign(StoredShip.CallSign));
-                        setString(ref textValues, varBase + " name", StoredShip.Name);
-                        setString(ref textValues, varBase + " role", StoredShip.Role.ToString());
-
-                        // Fetch the star system in which the ship is stored
-                        EDDIStarSystem StoredShipStarSystemData = starSystemRepository.GetEDDIStarSystem(StoredShip.StarSystem);
-                        if (StoredShipStarSystemData == null)
-                        {
-                            // We have no record of this system; set it up
-                            StoredShipStarSystemData = new EDDIStarSystem();
-                            StoredShipStarSystemData.Name = StoredShip.StarSystem;
-                            StoredShipStarSystemData.StarSystem = DataProviderService.GetSystemData(StoredShip.StarSystem, null, null, null);
-                            StoredShipStarSystemData.LastVisit = DateTime.Now;
-                            StoredShipStarSystemData.StarSystemLastUpdated = StoredShipStarSystemData.LastVisit;
-                            StoredShipStarSystemData.TotalVisits = 1;
-                            starSystemRepository.SaveEDDIStarSystem(StoredShipStarSystemData);
-                        }
-
-                        // Have to grab a local copy of our star system as CurrentStarSystem might not have been initialised yet
-                        EDDIStarSystem ThisStarSystemData = starSystemRepository.GetEDDIStarSystem(Cmdr.StarSystem);
-
-                        // Work out the distance to the system where the ship is stored if we can
-                        if (ThisStarSystemData != null && ThisStarSystemData.StarSystem != null && ThisStarSystemData.StarSystem.X != null && StoredShipStarSystemData.StarSystem != null && StoredShipStarSystemData.StarSystem.X != null)
-                        {
-                            decimal distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(ThisStarSystemData.StarSystem.X - StoredShipStarSystemData.StarSystem.X), 2)
-                                + Math.Pow((double)(ThisStarSystemData.StarSystem.Y - StoredShipStarSystemData.StarSystem.Y), 2)
-                                + Math.Pow((double)(ThisStarSystemData.StarSystem.Z - StoredShipStarSystemData.StarSystem.Z), 2)), 2);
-                            setDecimal(ref decimalValues, varBase + " distance", distance);
-                        }
-                        else
-                        {
-                            // We don't know how far away the ship is
-                            setDecimal(ref decimalValues, varBase + " distance", (decimal?)null);
-                        }
-
-                        currentStoredShip++;
-                    }
-                    setInt(ref intValues, "Stored ships", Cmdr.StoredShips.Count);
-                    // We also clear out any ships that have been sold since the last run.  We don't know
-                    // how many there are so just clear out the succeeding 10 slots and hope that the commander
-                    // hasn't gone on a selling spree
-                    for (int i = 0; i < 10; i++)
-                    {
-                        string varBase = "Stored ship " + (currentStoredShip + i);
-                        setString(ref textValues, varBase + " model", null);
-                        setString(ref textValues, varBase + " system", null);
-                        setString(ref textValues, varBase + " station", null);
-                        setString(ref textValues, varBase + " callsign", null);
-                        setString(ref textValues, varBase + " callsign (spoken)", null);
-                        setString(ref textValues, varBase + " name", null);
-                        setString(ref textValues, varBase + " role", null);
-                        setDecimal(ref decimalValues, varBase + " distance", null);
-                    }
-
-                    // Last station
-                    setString(ref textValues, "Last station name", Cmdr.LastStation);
-
-                    if (Logging.Verbose)
-                    {
-                        Logging.Debug("Resultant shortint values " + JsonConvert.SerializeObject(shortIntValues));
-                        Logging.Debug("Resultant text values " + JsonConvert.SerializeObject(textValues));
-                        Logging.Debug("Resultant int values " + JsonConvert.SerializeObject(intValues));
-                        Logging.Debug("Resultant decimal values " + JsonConvert.SerializeObject(decimalValues));
-                        Logging.Debug(" Resultant boolean values " + JsonConvert.SerializeObject(booleanValues));
-                        Logging.Debug("Resultant datetime values " + JsonConvert.SerializeObject(dateTimeValues));
-                    }
-
-                    setPluginStatus(ref textValues, "Operational", null, null);
-                    setString(ref textValues, "EDDI plugin profile status", "Enabled");
+                    currentStoredShip++;
                 }
-                catch (Exception ex)
+
+                setInt(ref intValues, "Stored ships", eddi.StoredShips.Count);
+                // We also clear out any ships that have been sold since the last run.  We don't know
+                // how many there are so just clear out the succeeding 10 slots and hope that the commander
+                // hasn't gone on a selling spree
+                for (int i = 0; i < 10; i++)
                 {
-                    setPluginStatus(ref textValues, "Failed", "Failed to access profile", ex);
-                    setString(ref textValues, "EDDI plugin profile status", "Disabled");
+                    string varBase = "Stored ship " + (currentStoredShip + i);
+                    setString(ref textValues, varBase + " model", null);
+                    setString(ref textValues, varBase + " system", null);
+                    setString(ref textValues, varBase + " station", null);
+                    setString(ref textValues, varBase + " callsign", null);
+                    setString(ref textValues, varBase + " callsign (spoken)", null);
+                    setString(ref textValues, varBase + " name", null);
+                    setString(ref textValues, varBase + " role", null);
+                    setDecimal(ref decimalValues, varBase + " distance", null);
                 }
+
+                // Last station
+                if (eddi.LastStation != null)
+                {
+                    //setStationValues(eddi.LastStation, ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                }
+                setString(ref textValues, "Last station name", eddi.LastStation.Name);
+
+                if (Logging.Verbose)
+                {
+                    Logging.Debug("Resultant shortint values " + JsonConvert.SerializeObject(shortIntValues));
+                    Logging.Debug("Resultant text values " + JsonConvert.SerializeObject(textValues));
+                    Logging.Debug("Resultant int values " + JsonConvert.SerializeObject(intValues));
+                    Logging.Debug("Resultant decimal values " + JsonConvert.SerializeObject(decimalValues));
+                    Logging.Debug(" Resultant boolean values " + JsonConvert.SerializeObject(booleanValues));
+                    Logging.Debug("Resultant datetime values " + JsonConvert.SerializeObject(dateTimeValues));
+                }
+
+                setPluginStatus(ref textValues, "Operational", null, null);
+                setString(ref textValues, "EDDI plugin profile status", "Enabled");
             }
+            catch (Exception ex)
+            {
+                setPluginStatus(ref textValues, "Failed", "Failed to access profile", ex);
+                setString(ref textValues, "EDDI plugin profile status", "Disabled");
+            }
+            //}
         }
 
 
         /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
-        private static void SetModuleDetails(string name, Module module, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues)
+        private static void SetShipModuleValues(string name, Module module, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues)
         {
             setString(ref textValues, name, module == null ? null : module.Name);
             setInt(ref intValues, name + " class", module == null ? (int?)null : module.Class);
@@ -822,7 +661,7 @@ namespace EDDIVAPlugin
         }
 
         /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
-        private static void SetOutfittingCost(string name, Module existing, ref List<Module> outfittingModules, ref Dictionary<string, string> textValues, ref Dictionary<string, decimal?> decimalValues)
+        private static void SetShipModuleOutfittingValues(string name, Module existing, List<Module> outfittingModules, ref Dictionary<string, string> textValues, ref Dictionary<string, decimal?> decimalValues)
         {
             if (existing != null)
             {
@@ -851,316 +690,423 @@ namespace EDDIVAPlugin
 
         public static void InvokeUpdateStation(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            Logging.Debug("Entered");
-            try
-            {
-                Boolean hasData = false;
-                if (Cmdr != null && Cmdr.LastStation != null)
-                {
-                    if (CurrentStarSystem != null)
-                    {
-                        Station currentStation = CurrentStarSystem.Stations.SingleOrDefault(s => s.Name == Cmdr.LastStation);
-                        if (currentStation != null)
-                        {
-                            hasData = true;
+            //Logging.Debug("Entered");
+            //try
+            //{
+            //    Boolean hasData = false;
+            //    if (Cmdr != null && Cmdr.LastStation != null)
+            //    {
+            //        if (eddi.CurrentStarSystem != null)
+            //        {
+            //            Station currentStation = eddi.CurrentStarSystem.Stations.SingleOrDefault(s => s.Name == Cmdr.LastStation);
+            //            if (currentStation != null)
+            //            {
+            //                hasData = true;
 
 
-                            // Station information
-                            setDecimal(ref decimalValues, "Last station distance from star", currentStation.DistanceFromStar);
-                            setString(ref textValues, "Last station government", currentStation.Government);
-                            setString(ref textValues, "Last station allegiance", currentStation.Allegiance);
-                            setString(ref textValues, "Last station faction", currentStation.Faction);
-                            setString(ref textValues, "Last station state", currentStation.State);
-                            if (currentStation.Economies != null)
-                            {
-                                if (currentStation.Economies.Count > 0)
-                                {
-                                    setString(ref textValues, "Last station primary economy", currentStation.Economies[0]);
-                                }
-                                if (currentStation.Economies.Count > 1)
-                                {
-                                    setString(ref textValues, "Last station secondary economy", currentStation.Economies[1]);
-                                }
-                                if (currentStation.Economies.Count > 2)
-                                {
-                                    setString(ref textValues, "Last station tertiary economy", currentStation.Economies[2]);
-                                }
-                            }
+            //                // Station information
+            //                setDecimal(ref decimalValues, "Last station distance from star", currentStation.DistanceFromStar);
+            //                setString(ref textValues, "Last station government", currentStation.Government);
+            //                setString(ref textValues, "Last station allegiance", currentStation.Allegiance);
+            //                setString(ref textValues, "Last station faction", currentStation.Faction);
+            //                setString(ref textValues, "Last station state", currentStation.State);
+            //                if (currentStation.Economies != null)
+            //                {
+            //                    if (currentStation.Economies.Count > 0)
+            //                    {
+            //                        setString(ref textValues, "Last station primary economy", currentStation.Economies[0]);
+            //                    }
+            //                    if (currentStation.Economies.Count > 1)
+            //                    {
+            //                        setString(ref textValues, "Last station secondary economy", currentStation.Economies[1]);
+            //                    }
+            //                    if (currentStation.Economies.Count > 2)
+            //                    {
+            //                        setString(ref textValues, "Last station tertiary economy", currentStation.Economies[2]);
+            //                    }
+            //                }
 
-                            // Services
-                            setBoolean(ref booleanValues, "Last station has refuel", currentStation.HasRefuel);
-                            setBoolean(ref booleanValues, "Last station has repair", currentStation.HasRepair);
-                            setBoolean(ref booleanValues, "Last station has rearm", currentStation.HasRearm);
-                            setBoolean(ref booleanValues, "Last station has market", currentStation.HasMarket);
-                            setBoolean(ref booleanValues, "Last station has black market", currentStation.HasBlackMarket);
-                            setBoolean(ref booleanValues, "Last station has outfitting", currentStation.HasOutfitting);
-                            setBoolean(ref booleanValues, "Last station has shipyard", currentStation.HasShipyard);
-                        }
-                    }
-                }
-                if (!hasData)
-                {
-                    // We don't have any data so remove any info that we might have in history
-                    setDecimal(ref decimalValues, "Last station distance from star", null);
-                    setString(ref textValues, "Last station government", null);
-                    setString(ref textValues, "Last station allegiance", null);
-                    setString(ref textValues, "Last station faction", null);
-                    setString(ref textValues, "Last station state", null);
-                    setString(ref textValues, "Last station primary economy", null);
-                    setString(ref textValues, "Last station secondary economy", null);
-                    setString(ref textValues, "Last station tertiary economy", null);
-                    setBoolean(ref booleanValues, "Last station has refuel", null);
-                    setBoolean(ref booleanValues, "Last station has repair", null);
-                    setBoolean(ref booleanValues, "Last station has rearm", null);
-                    setBoolean(ref booleanValues, "Last station has market", null);
-                    setBoolean(ref booleanValues, "Last station has black market", null);
-                    setBoolean(ref booleanValues, "Last station has outfitting", null);
-                    setBoolean(ref booleanValues, "Last station has shipyard", null);
-                }
-                setPluginStatus(ref textValues, "Operational", null, null);
-            }
-            catch (Exception e)
-            {
-                setPluginStatus(ref textValues, "Failed", "Failed to obtain station data", e);
-            }
-            Logging.Debug("Leaving");
+            //                // Services
+            //                setBoolean(ref booleanValues, "Last station has refuel", currentStation.HasRefuel);
+            //                setBoolean(ref booleanValues, "Last station has repair", currentStation.HasRepair);
+            //                setBoolean(ref booleanValues, "Last station has rearm", currentStation.HasRearm);
+            //                setBoolean(ref booleanValues, "Last station has market", currentStation.HasMarket);
+            //                setBoolean(ref booleanValues, "Last station has black market", currentStation.HasBlackMarket);
+            //                setBoolean(ref booleanValues, "Last station has outfitting", currentStation.HasOutfitting);
+            //                setBoolean(ref booleanValues, "Last station has shipyard", currentStation.HasShipyard);
+            //            }
+            //        }
+            //    }
+            //    if (!hasData)
+            //    {
+            //        // We don't have any data so remove any info that we might have in history
+            //        setDecimal(ref decimalValues, "Last station distance from star", null);
+            //        setString(ref textValues, "Last station government", null);
+            //        setString(ref textValues, "Last station allegiance", null);
+            //        setString(ref textValues, "Last station faction", null);
+            //        setString(ref textValues, "Last station state", null);
+            //        setString(ref textValues, "Last station primary economy", null);
+            //        setString(ref textValues, "Last station secondary economy", null);
+            //        setString(ref textValues, "Last station tertiary economy", null);
+            //        setBoolean(ref booleanValues, "Last station has refuel", null);
+            //        setBoolean(ref booleanValues, "Last station has repair", null);
+            //        setBoolean(ref booleanValues, "Last station has rearm", null);
+            //        setBoolean(ref booleanValues, "Last station has market", null);
+            //        setBoolean(ref booleanValues, "Last station has black market", null);
+            //        setBoolean(ref booleanValues, "Last station has outfitting", null);
+            //        setBoolean(ref booleanValues, "Last station has shipyard", null);
+            //    }
+            //    setPluginStatus(ref textValues, "Operational", null, null);
+            //}
+            //catch (Exception e)
+            //{
+            //    setPluginStatus(ref textValues, "Failed", "Failed to obtain station data", e);
+            //}
+            //Logging.Debug("Leaving");
         }
 
         public static void InvokeNewSystem(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            Logging.Debug("Entered");
-            try
+            //Logging.Debug("Entered");
+            //try
+            //{
+            //    if (Cmdr == null)
+            //    {
+            //        Logging.Debug("Cmdr is NULL - attempting to refetch");
+            //        // Refetch the profile to set our system
+            //        InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            //        if (Cmdr == null)
+            //        {
+            //            // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
+            //            Logging.Debug("Cmdr remained NULL - giving up");
+            //            return;
+            //        }
+            //    }
+
+            //    Logging.Debug("CurrentStarSystem is " + (eddi.CurrentStarSystem == null ? "<null>" : JsonConvert.SerializeObject(eddi.CurrentStarSystem)));
+
+            //    if (Cmdr.StarSystem == null)
+            //    {
+            //        // No information available
+            //        Logging.Debug("No starsystem data available");
+            //        return;
+            //    }
+
+            //    bool RecordUpdated = false;
+            //    if (eddi == null || || eddi.CurrentStarSystem == null || Cmdr.StarSystem != eddi.CurrentStarSystem.Name)
+            //    {
+            //        if (initialised)
+            //        {
+            //            Logging.Debug("Starsystem has changed");
+            //        }
+
+            //        // The star system has changed or we're in init; obtain the data ready for setting the VA values
+            //        EDDIStarSystem CurrentStarSystemData = starSystemRepository.GetEDDIStarSystem(Cmdr.StarSystem);
+            //        Logging.Debug("CurrentStarSystemData is " + (CurrentStarSystemData == null ? "<null>" : JsonConvert.SerializeObject(CurrentStarSystemData)));
+            //        if (CurrentStarSystemData == null)
+            //        {
+            //            Logging.Debug("Creating new starsystemdata");
+            //            // We have no record of this system; set it up
+            //            CurrentStarSystemData = new EDDIStarSystem();
+            //            CurrentStarSystemData.Name = Cmdr.StarSystem;
+            //            CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(Cmdr.StarSystem, Cmdr.StarSystemX, Cmdr.StarSystemY, Cmdr.StarSystemZ);
+            //            CurrentStarSystemData.LastVisit = DateTime.Now;
+            //            CurrentStarSystemData.StarSystemLastUpdated = CurrentStarSystemData.LastVisit;
+            //            CurrentStarSystemData.TotalVisits = 1;
+            //            RecordUpdated = true;
+            //        }
+            //        else
+            //        {
+            //            Logging.Debug("Checking existing starsystemdata");
+            //            if (CurrentStarSystemData.StarSystem == null || (DateTime.Now - CurrentStarSystemData.StarSystemLastUpdated).TotalHours > 12)
+            //            {
+            //                Logging.Debug("Refreshing stale or missing data");
+            //                // Data is stale; refresh it
+            //                CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(CurrentStarSystemData.Name, Cmdr.StarSystemX, Cmdr.StarSystemY, Cmdr.StarSystemZ);
+            //                CurrentStarSystemData.StarSystemLastUpdated = CurrentStarSystemData.LastVisit;
+            //                RecordUpdated = true;
+            //            }
+            //            // Only update if we have moved (as opposed to reinitialising here)
+            //            if (initialised)
+            //            {
+            //                Logging.Debug("Updating visit information");
+            //                CurrentStarSystemData.PreviousVisit = CurrentStarSystemData.LastVisit;
+            //                CurrentStarSystemData.LastVisit = DateTime.Now;
+            //                CurrentStarSystemData.TotalVisits++;
+            //                RecordUpdated = true;
+            //            }
+            //        }
+            //        Logging.Debug("CurrentStarSystemData is now " + (CurrentStarSystemData == null ? "<null>" : JsonConvert.SerializeObject(CurrentStarSystemData)));
+            //        if (RecordUpdated)
+            //        {
+            //            Logging.Debug("Storing updated starsystemdata");
+            //            eddi.starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
+            //        }
+            //        setString(ref textValues, "System comment", CurrentStarSystemData.Comment);
+
+            //        StarSystem ThisStarSystem = CurrentStarSystemData.StarSystem;
+            //        LastStarSystem = CurrentStarSystem;
+            //        CurrentStarSystem = ThisStarSystem;
+
+            //        Logging.Debug("CurrentStarSystem is now " + (eddi.CurrentStarSystem == null ? "<null>" : JsonConvert.SerializeObject(eddi.CurrentStarSystem)));
+            //        Logging.Debug("LastStarSystem is now " + (eddi.LastStarSystem == null ? "<null>" : JsonConvert.SerializeObject(eddi.LastStarSystem)));
+
+            //        if (eddi != null && eddi.LastStarSystem != null && eddi.LastStarSystem.Name != eddi.CurrentStarSystem.Name)
+            //        {
+            //            // We have travelled; let EDSM know
+            //            if (eddi.starMapService != null)
+            //            {
+            //                // Take information directly from the commander structure as it hasn't been munged
+            //                eddi.starMapService.sendStarMapLog(Cmdr.StarSystem, Cmdr.StarSystemX, Cmdr.StarSystemY, Cmdr.StarSystemZ);
+            //            }
+            //        }
+
+            //        setStarSystemValues(eddi.Cmdr, eddi.CurrentStarSystem, "System", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+
+            //        setInt(ref intValues, "System  visits", CurrentStarSystemData.TotalVisits);
+            //        setDateTime(ref dateTimeValues, "System  previous visit", CurrentStarSystemData.PreviousVisit);
+            //        setInt(ref intValues, "System  minutes since previous visit", CurrentStarSystemData.PreviousVisit == null ? (int?)null : (int)(DateTime.Now - (DateTime)CurrentStarSystemData.PreviousVisit).TotalMinutes);
+
+            //        setStarSystemValues(eddi.Cmdr, eddi.LastStarSystem, "Last system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+
+
+            //        Logging.Debug(" Setting last jump");
+            //        if (eddi.LastStarSystem.X != null && eddi.CurrentStarSystem.X != null)
+            //        {
+            //            setDecimal(ref decimalValues, "Last jump", (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(eddi.CurrentStarSystem.X - eddi.LastStarSystem.X), 2) + Math.Pow((double)(eddi.CurrentStarSystem.Y - eddi.LastStarSystem.Y), 2) + Math.Pow((double)(eddi.CurrentStarSystem.Z - eddi.LastStarSystem.Z), 2)), 2));
+            //        }
+            //        Logging.Debug("Set last jump");
+
+            //    }
+
+            //    if (Logging.Verbose)
+            //    {
+            //        Logging.Debug("Resultant shortint values " + JsonConvert.SerializeObject(shortIntValues));
+            //        Logging.Debug("Resultant text values " + JsonConvert.SerializeObject(textValues));
+            //        Logging.Debug("Resultant int values " + JsonConvert.SerializeObject(intValues));
+            //        Logging.Debug("Resultant decimal values " + JsonConvert.SerializeObject(decimalValues));
+            //        Logging.Debug("Resultant boolean values " + JsonConvert.SerializeObject(booleanValues));
+            //        Logging.Debug("Resultant datetime values " + JsonConvert.SerializeObject(dateTimeValues));
+            //    }
+
+            //    setPluginStatus(ref textValues, "Operational", null, null);
+            //}
+            //catch (Exception e)
+            //{
+            //    setPluginStatus(ref textValues, "Failed", "Failed to obtain system data", e);
+            //}
+        }
+
+        private static void setCommanderValues(Commander cmdr, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            Logging.Debug("Setting commander information");
+            setString(ref textValues, "Name", cmdr == null ? null : cmdr.Name);
+            setInt(ref intValues, "Combat rating", cmdr == null ? (int?)null : cmdr.CombatRating);
+            setString(ref textValues, "Combat rank", cmdr == null ? null : cmdr.CombatRank);
+            setInt(ref intValues, "Trade rating", cmdr == null ? (int?)null : cmdr.TradeRating);
+            setString(ref textValues, "Trade rank", cmdr == null ? null : cmdr.TradeRank);
+            setInt(ref intValues, "Explore rating", cmdr == null ? (int?)null : cmdr.ExploreRating);
+            setString(ref textValues, "Explore rank", cmdr == null ? null : cmdr.ExploreRank);
+            setInt(ref intValues, "Empire rating", cmdr == null ? (int?)null : cmdr.EmpireRating);
+            setString(ref textValues, "Empire rank", cmdr == null ? null : cmdr.EmpireRank);
+            setInt(ref intValues, "Federation rating", cmdr == null ? (int?)null : cmdr.FederationRating);
+            setString(ref textValues, "Federation rank", cmdr == null ? null : cmdr.FederationRank);
+            setDecimal(ref decimalValues, "Credits", cmdr == null ? (decimal?)null : cmdr.Credits);
+            setString(ref textValues, "Credits (spoken)", cmdr == null ? null : humanize(cmdr.Credits));
+            setDecimal(ref decimalValues, "Debt", cmdr == null ? (decimal?)null : cmdr.Debt);
+            setString(ref textValues, "Debt (spoken)", cmdr == null ? null : humanize(cmdr.Debt));
+            Logging.Debug("Set commander information");
+        }
+
+        private static void setShipValues(Ship ship, string prefix, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            Logging.Debug("Setting ship information");
+            //
+            // Ship data
+            //
+            setString(ref textValues, prefix + " model", ship == null ? null : ship.Model);
+            setString(ref textValues, prefix + " model (spoken)", ship == null ? null : Translations.ShipModel(ship.Model));
+            setString(ref textValues, prefix + " callsign", ship == null ? null : ship.CallSign);
+            setString(ref textValues, prefix + " callsign (spoken)", ship == null ? null : Translations.CallSign(ship.CallSign));
+            setString(ref textValues, prefix + " name", ship == null ? null : ship.Name);
+            setString(ref textValues, prefix + " role", ship == null ? null : ship.Role.ToString());
+            setString(ref textValues, prefix + " size", ship == null ? null : ship.Size.ToString());
+            setDecimal(ref decimalValues, prefix + " value", ship == null ? (decimal?)null : ship.Value);
+            setString(ref textValues, prefix + " value (spoken)", ship == null ? null : humanize(ship.Value));
+            setDecimal(ref decimalValues, prefix + " health", ship == null ? (decimal?)null : ship.Health);
+            setInt(ref intValues, prefix + " cargo capacity", ship == null ? (int?)null : ship.CargoCapacity);
+            setInt(ref intValues, prefix + " cargo carried", ship == null ? (int?)null : ship.CargoCarried);
+            // Add number of limpets carried
+            int limpets = 0;
+            foreach (Cargo cargo in ship.Cargo)
             {
-                if (Cmdr == null)
+                if (cargo.Commodity.Name == "Limpet")
                 {
-                    Logging.Debug("Cmdr is NULL - attempting to refetch");
-                    // Refetch the profile to set our system
-                    InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    if (Cmdr == null)
-                    {
-                        // Still no luck; assume an error of some sort has been logged by InvokeUpdateProfile()
-                        Logging.Debug("Cmdr remained NULL - giving up");
-                        return;
-                    }
+                    limpets += cargo.Quantity;
                 }
-
-                Logging.Debug("CurrentStarSystem is " +  (CurrentStarSystem == null ? "<null>" : JsonConvert.SerializeObject(CurrentStarSystem)));
-
-                if (Cmdr.StarSystem == null)
-                {
-                    // No information available
-                    Logging.Debug("No starsystem data available");
-                    return;
-                }
-
-                bool RecordUpdated = false;
-                if ((!initialised) || CurrentStarSystem == null || Cmdr.StarSystem != CurrentStarSystem.Name)
-                {
-                    if (initialised)
-                    {
-                        Logging.Debug("Starsystem has changed");
-                    }
-
-                    // The star system has changed or we're in init; obtain the data ready for setting the VA values
-                    EDDIStarSystem CurrentStarSystemData = starSystemRepository.GetEDDIStarSystem(Cmdr.StarSystem);
-                    Logging.Debug("CurrentStarSystemData is " + (CurrentStarSystemData == null ? "<null>" : JsonConvert.SerializeObject(CurrentStarSystemData)));
-                    if (CurrentStarSystemData == null)
-                    {
-                        Logging.Debug("Creating new starsystemdata");
-                        // We have no record of this system; set it up
-                        CurrentStarSystemData = new EDDIStarSystem();
-                        CurrentStarSystemData.Name = Cmdr.StarSystem;
-                        CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(Cmdr.StarSystem, Cmdr.StarSystemX, Cmdr.StarSystemY, Cmdr.StarSystemZ);
-                        CurrentStarSystemData.LastVisit = DateTime.Now;
-                        CurrentStarSystemData.StarSystemLastUpdated = CurrentStarSystemData.LastVisit;
-                        CurrentStarSystemData.TotalVisits = 1;
-                        RecordUpdated = true;
-                    }
-                    else
-                    {
-                        Logging.Debug("Checking existing starsystemdata");
-                        if (CurrentStarSystemData.StarSystem == null || (DateTime.Now - CurrentStarSystemData.StarSystemLastUpdated).TotalHours > 12)
-                        {
-                            Logging.Debug("Refreshing stale or missing data");
-                            // Data is stale; refresh it
-                            CurrentStarSystemData.StarSystem = DataProviderService.GetSystemData(CurrentStarSystemData.Name, Cmdr.StarSystemX, Cmdr.StarSystemY, Cmdr.StarSystemZ);
-                            CurrentStarSystemData.StarSystemLastUpdated = CurrentStarSystemData.LastVisit;
-                            RecordUpdated = true;
-                        }
-                        // Only update if we have moved (as opposed to reinitialising here)
-                        if (initialised)
-                        {
-                            Logging.Debug("Updating visit information");
-                            CurrentStarSystemData.PreviousVisit = CurrentStarSystemData.LastVisit;
-                            CurrentStarSystemData.LastVisit = DateTime.Now;
-                            CurrentStarSystemData.TotalVisits++;
-                            RecordUpdated = true;
-                        }
-                    }
-                    Logging.Debug("CurrentStarSystemData is now " + (CurrentStarSystemData == null ? "<null>" : JsonConvert.SerializeObject(CurrentStarSystemData)));
-                    if (RecordUpdated)
-                    {
-                        Logging.Debug("Storing updated starsystemdata");
-                        starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
-                    }
-                    setString(ref textValues, "System comment", CurrentStarSystemData.Comment);
-
-                    StarSystem ThisStarSystem = CurrentStarSystemData.StarSystem;
-                    LastStarSystem = CurrentStarSystem;
-                    CurrentStarSystem = ThisStarSystem;
-
-                    Logging.Debug("CurrentStarSystem is now " + (CurrentStarSystem == null ? "<null>" : JsonConvert.SerializeObject(CurrentStarSystem)));
-                    Logging.Debug("LastStarSystem is now " + (LastStarSystem == null ? "<null>" : JsonConvert.SerializeObject(LastStarSystem)));
-
-                    if (initialised && LastStarSystem != null && LastStarSystem.Name != CurrentStarSystem.Name)
-                    {
-                        // We have travelled; let EDSM know
-                        if (starMapService != null)
-                        {
-                            // Take information directly from the commander structure as it hasn't been munged
-                            starMapService.sendStarMapLog(Cmdr.StarSystem, Cmdr.StarSystemX, Cmdr.StarSystemY, Cmdr.StarSystemZ);
-                        }
-                    }
-
-                    Logging.Debug("Setting system information");
-                    setString(ref textValues, "System name", CurrentStarSystem.Name);
-                    setString(ref textValues, "System name (spoken)", Translations.StarSystem(CurrentStarSystem.Name));
-                    setInt(ref intValues, "System visits", CurrentStarSystemData.TotalVisits);
-                    setDateTime(ref dateTimeValues, "System previous visit", CurrentStarSystemData.PreviousVisit);
-                    setInt(ref intValues, "System minutes since previous visit", CurrentStarSystemData.PreviousVisit == null ? (int?)null : (int)(DateTime.Now - (DateTime)CurrentStarSystemData.PreviousVisit).TotalMinutes);
-                    setDecimal(ref decimalValues, "System population", (decimal?)CurrentStarSystem.Population);
-                    setString(ref textValues, "System population (spoken)", humanize(CurrentStarSystem.Population));
-                    setString(ref textValues, "System allegiance", CurrentStarSystem.Allegiance);
-                    setString(ref textValues, "System government", CurrentStarSystem.Government);
-                    setString(ref textValues, "System faction", CurrentStarSystem.Faction);
-                    setString(ref textValues, "System primary economy", CurrentStarSystem.PrimaryEconomy);
-                    setString(ref textValues, "System state", CurrentStarSystem.State);
-                    setString(ref textValues, "System security", CurrentStarSystem.Security);
-                    setString(ref textValues, "System power", CurrentStarSystem.Power);
-                    setString(ref textValues, "System power (spoken)", Translations.Power(CurrentStarSystem.Power));
-                    setString(ref textValues, "System power state", CurrentStarSystem.PowerState);
-                    setDecimal(ref decimalValues, "System X", CurrentStarSystem.X);
-                    setDecimal(ref decimalValues, "System Y", CurrentStarSystem.Y);
-                    setDecimal(ref decimalValues, "System Z", CurrentStarSystem.Z);
-                    Logging.Debug("Set system information");
-
-                    Logging.Debug("Setting system rank");
-                    // Allegiance-specific rank
-                    string systemRank = "Commander";
-                    if (Cmdr.Name != null) // using Name as a canary to see if the data is missing
-                    {
-                        if (CurrentStarSystem.Allegiance == "Federation" && Cmdr.FederationRating >= minFederationRatingForTitle)
-                        {
-                            systemRank = Cmdr.FederationRank;
-                        }
-                        else if (CurrentStarSystem.Allegiance == "Empire" && Cmdr.EmpireRating >= minEmpireRatingForTitle)
-                        {
-                            systemRank = Cmdr.EmpireRank;
-                        }
-                    }
-                    setString(ref textValues, "System rank", systemRank);
-                    Logging.Debug("Set system rank");
-
-                    // Stations
-                    Logging.Debug("Setting station information");
-                    foreach (Station Station in CurrentStarSystem.Stations)
-                    {
-                        setString(ref textValues, "System station name", Station.Name);
-                    }
-                    setInt(ref intValues, "System stations", CurrentStarSystem.Stations.Count);
-                    setInt(ref intValues, "System orbital stations", CurrentStarSystem.Stations.Count(s => !s.IsPlanetary()));
-                    setInt(ref intValues, "System starports", CurrentStarSystem.Stations.Count(s => s.IsStarport()));
-                    setInt(ref intValues, "System outposts", CurrentStarSystem.Stations.Count(s => s.IsOutpost()));
-                    setInt(ref intValues, "System planetary stations", CurrentStarSystem.Stations.Count(s => s.IsPlanetary()));
-                    setInt(ref intValues, "System planetary outposts", CurrentStarSystem.Stations.Count(s => s.IsPlanetaryOutpost()));
-                    setInt(ref intValues, "System planetary ports", CurrentStarSystem.Stations.Count(s => s.IsPlanetaryPort()));
-                    Logging.Debug("Set station information");
-
-                    Logging.Debug("Setting distance from home");
-                    if (HomeStarSystem != null && HomeStarSystem.X != null && CurrentStarSystem.X != null)
-                    {
-                        setDecimal(ref decimalValues, "System distance from home", (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(CurrentStarSystem.X - HomeStarSystem.X), 2) + Math.Pow((double)(CurrentStarSystem.Y - HomeStarSystem.Y), 2) + Math.Pow((double)(CurrentStarSystem.Z - HomeStarSystem.Z), 2)), 2));
-                    }
-                    Logging.Debug("Set distance from home");
-
-
-                    if (LastStarSystem != null)
-                    {
-                        Logging.Debug("Setting last system information");
-                        setString(ref textValues, "Last system name", LastStarSystem.Name);
-                        setString(ref textValues, "Last system name (spoken)", Translations.StarSystem(LastStarSystem.Name));
-                        setDecimal(ref decimalValues, "Last system population", (decimal?)LastStarSystem.Population);
-                        setString(ref textValues, "Last system population (spoken)", humanize(LastStarSystem.Population));
-                        setString(ref textValues, "Last system allegiance", LastStarSystem.Allegiance);
-                        setString(ref textValues, "Last system government", LastStarSystem.Government);
-                        setString(ref textValues, "Last system faction", LastStarSystem.Faction);
-                        setString(ref textValues, "Last system primary economy", LastStarSystem.PrimaryEconomy);
-                        setString(ref textValues, "Last system state", LastStarSystem.State);
-                        setString(ref textValues, "Last system security", LastStarSystem.Security);
-                        setString(ref textValues, "Last system power", LastStarSystem.Power);
-                        setString(ref textValues, "Last system power (spoken)", Translations.Power(LastStarSystem.Power));
-                        setString(ref textValues, "Last system power state", LastStarSystem.PowerState);
-                        setDecimal(ref decimalValues, "Last system X", LastStarSystem.X);
-                        setDecimal(ref decimalValues, "Last system Y", LastStarSystem.Y);
-                        setDecimal(ref decimalValues, "Last system Z", LastStarSystem.Z);
-                        Logging.Debug("Set last system information");
-
-                        Logging.Debug(" Setting last jump");
-                        if (LastStarSystem.X != null && CurrentStarSystem.X != null)
-                        {
-                            setDecimal(ref decimalValues, "Last jump", (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(CurrentStarSystem.X - LastStarSystem.X), 2) + Math.Pow((double)(CurrentStarSystem.Y - LastStarSystem.Y), 2) + Math.Pow((double)(CurrentStarSystem.Z - LastStarSystem.Z), 2)), 2));
-                        }
-                        Logging.Debug("Set last jump");
-
-                        Logging.Debug("Setting last system rank");
-                        // Allegiance-specific rank
-                        string lastSystemRank = "Commander";
-                        if (Cmdr.Name != null) // using Name as a canary to see if the data is missing
-                        {
-                            if (LastStarSystem.Allegiance == "Federation" && Cmdr.FederationRating >= minFederationRatingForTitle)
-                            {
-                                lastSystemRank = Cmdr.FederationRank;
-                            }
-                            else if (LastStarSystem.Allegiance == "Empire" && Cmdr.EmpireRating >= minEmpireRatingForTitle)
-                            {
-                                lastSystemRank = Cmdr.EmpireRank;
-                            }
-                        }
-                        setString(ref textValues, "Last system rank", systemRank);
-                        Logging.Debug("Set last system rank");
-
-                        // Stations
-                        Logging.Debug("Setting last system station information");
-                        foreach (Station Station in LastStarSystem.Stations)
-                        {
-                            setString(ref textValues, "Last system station name", Station.Name);
-                        }
-                        setInt(ref intValues, "Last system stations", LastStarSystem.Stations.Count);
-                        setInt(ref intValues, "Last system starports", LastStarSystem.Stations.Count(s => s.IsStarport()));
-                        setInt(ref intValues, "Last system outposts", LastStarSystem.Stations.Count(s => s.IsOutpost()));
-                        setInt(ref intValues, "Last system planetary stations", LastStarSystem.Stations.Count(s => s.IsPlanetary()));
-                        setInt(ref intValues, "Last system planetary outposts", LastStarSystem.Stations.Count(s => s.IsPlanetaryOutpost()));
-                        setInt(ref intValues, "Last system planetary ports", LastStarSystem.Stations.Count(s => s.IsPlanetaryPort()));
-                        Logging.Debug("Set last system station information");
-                    }
-                }
-
-                if (Logging.Verbose)
-                {
-                    Logging.Debug("Resultant shortint values " + JsonConvert.SerializeObject(shortIntValues));
-                    Logging.Debug("Resultant text values " + JsonConvert.SerializeObject(textValues));
-                    Logging.Debug("Resultant int values " + JsonConvert.SerializeObject(intValues));
-                    Logging.Debug("Resultant decimal values " + JsonConvert.SerializeObject(decimalValues));
-                    Logging.Debug("Resultant boolean values " + JsonConvert.SerializeObject(booleanValues));
-                    Logging.Debug("Resultant datetime values " + JsonConvert.SerializeObject(dateTimeValues));
-                }
-
-                setPluginStatus(ref textValues, "Operational", null, null);
             }
-            catch (Exception e)
+            setInt(ref intValues, prefix + " limpets carried", limpets);
+
+            SetShipModuleValues(prefix + " bulkheads", ship == null ? null : ship.Bulkheads, ref textValues, ref intValues, ref decimalValues);
+            SetShipModuleOutfittingValues(prefix + " bulkheads", ship == null ? null : ship.Bulkheads, eddi.Outfitting, ref textValues, ref decimalValues);
+            SetShipModuleValues(prefix + " power plant", ship == null ? null : ship.PowerPlant, ref textValues, ref intValues, ref decimalValues);
+            SetShipModuleOutfittingValues(prefix + " power plant", ship == null ? null : ship.PowerPlant, eddi.Outfitting, ref textValues, ref decimalValues);
+            SetShipModuleValues(prefix + " thrusters", ship == null ? null : ship.Thrusters, ref textValues, ref intValues, ref decimalValues);
+            SetShipModuleOutfittingValues(prefix + " thrusters", ship == null ? null : ship.Thrusters, eddi.Outfitting, ref textValues, ref decimalValues);
+            SetShipModuleValues(prefix + " frame shift drive", ship == null ? null : ship.FrameShiftDrive, ref textValues, ref intValues, ref decimalValues);
+            SetShipModuleOutfittingValues(prefix + " frame shift drive", ship == null ? null : ship.FrameShiftDrive, eddi.Outfitting, ref textValues, ref decimalValues);
+            SetShipModuleValues(prefix + " life support", ship == null ? null : ship.LifeSupport, ref textValues, ref intValues, ref decimalValues);
+            SetShipModuleOutfittingValues(prefix + " life support", ship == null ? null : ship.LifeSupport, eddi.Outfitting, ref textValues, ref decimalValues);
+            SetShipModuleValues(prefix + " power distributor", ship == null ? null : ship.PowerDistributor, ref textValues, ref intValues, ref decimalValues);
+            SetShipModuleOutfittingValues(prefix + " power distributor", ship == null ? null : ship.PowerDistributor, eddi.Outfitting, ref textValues, ref decimalValues);
+            SetShipModuleValues(prefix + " sensors", ship == null ? null : ship.Sensors, ref textValues, ref intValues, ref decimalValues);
+            SetShipModuleOutfittingValues(prefix + " sensors", ship == null ? null : ship.Sensors, eddi.Outfitting, ref textValues, ref decimalValues);
+            SetShipModuleValues(prefix + " fuel tank", ship == null ? null : ship.FuelTank, ref textValues, ref intValues, ref decimalValues);
+            SetShipModuleOutfittingValues(prefix + " fuel tank", ship == null ? null : ship.FuelTank, eddi.Outfitting, ref textValues, ref decimalValues);
+
+            // Hardpoints
+            if (ship != null)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to obtain system data", e);
+                int numTinyHardpoints = 0;
+                int numSmallHardpoints = 0;
+                int numMediumHardpoints = 0;
+                int numLargeHardpoints = 0;
+                int numHugeHardpoints = 0;
+                foreach (Hardpoint Hardpoint in ship.Hardpoints)
+                {
+                    string baseHardpointName = prefix;
+                    switch (Hardpoint.Size)
+                    {
+                        case 0:
+                            baseHardpointName = " tiny hardpoint " + ++numTinyHardpoints;
+                            break;
+                        case 1:
+                            baseHardpointName = " small hardpoint " + ++numSmallHardpoints;
+                            break;
+                        case 2:
+                            baseHardpointName = " medium hardpoint " + ++numMediumHardpoints;
+                            break;
+                        case 3:
+                            baseHardpointName = " large hardpoint " + ++numLargeHardpoints;
+                            break;
+                        case 4:
+                            baseHardpointName = " huge hardpoint " + ++numHugeHardpoints;
+                            break;
+                    }
+
+                    setBoolean(ref booleanValues, baseHardpointName + " occupied", Hardpoint.Module != null);
+                    SetShipModuleValues(baseHardpointName + " module", Hardpoint.Module, ref textValues, ref intValues, ref decimalValues);
+                    SetShipModuleOutfittingValues(baseHardpointName + " module", Hardpoint.Module, eddi.Outfitting, ref textValues, ref decimalValues);
+                }
+
+                setInt(ref intValues, prefix + " hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
+                setInt(ref intValues, prefix + " utility slots", numTinyHardpoints);
+                // Compartments
+                int curCompartment = 0;
+                foreach (Compartment Compartment in ship.Compartments)
+                {
+                    string baseCompartmentName = prefix + " compartment " + ++curCompartment;
+                    setInt(ref intValues, baseCompartmentName + " size", Compartment.Size);
+                    setBoolean(ref booleanValues, baseCompartmentName + " occupied", Compartment.Module != null);
+                    SetShipModuleValues(baseCompartmentName + " module", Compartment.Module, ref textValues, ref intValues, ref decimalValues);
+                    SetShipModuleOutfittingValues(baseCompartmentName + " module", Compartment.Module, eddi.Outfitting, ref textValues, ref decimalValues);
+                }
+                setInt(ref intValues, prefix + " compartments", curCompartment);
             }
+
+
+            // Fetch the star system in which the ship is stored
+            EDDIStarSystem StoredShipStarSystemData = eddi.starSystemRepository.GetEDDIStarSystem(ship.StarSystem);
+            if (StoredShipStarSystemData == null)
+            {
+                // We have no record of this system; set it up
+                StoredShipStarSystemData = new EDDIStarSystem();
+                StoredShipStarSystemData.Name = ship.StarSystem;
+                StoredShipStarSystemData.StarSystem = DataProviderService.GetSystemData(ship.StarSystem, null, null, null);
+                StoredShipStarSystemData.LastVisit = DateTime.Now;
+                StoredShipStarSystemData.StarSystemLastUpdated = StoredShipStarSystemData.LastVisit;
+                StoredShipStarSystemData.TotalVisits = 1;
+                eddi.starSystemRepository.SaveEDDIStarSystem(StoredShipStarSystemData);
+            }
+
+            // Have to grab a local copy of our star system as CurrentStarSystem might not have been initialised yet
+            EDDIStarSystem ThisStarSystemData = eddi.starSystemRepository.GetEDDIStarSystem(eddi.CurrentStarSystem.Name);
+
+            // Work out the distance to the system where the ship is stored if we can
+            if (ThisStarSystemData != null && ThisStarSystemData.StarSystem != null && ThisStarSystemData.StarSystem.X != null && StoredShipStarSystemData.StarSystem != null && StoredShipStarSystemData.StarSystem.X != null)
+            {
+                decimal distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(ThisStarSystemData.StarSystem.X - StoredShipStarSystemData.StarSystem.X), 2)
+                    + Math.Pow((double)(ThisStarSystemData.StarSystem.Y - StoredShipStarSystemData.StarSystem.Y), 2)
+                    + Math.Pow((double)(ThisStarSystemData.StarSystem.Z - StoredShipStarSystemData.StarSystem.Z), 2)), 2);
+                setDecimal(ref decimalValues, prefix + " distance", distance);
+            }
+            else
+            {
+                // We don't know how far away the ship is
+                setDecimal(ref decimalValues, prefix + " distance", (decimal?)null);
+            }
+
+
+            Logging.Debug("Set ship information");
+        }
+
+        private static void setStarSystemValues(Commander cmdr, StarSystem system, string prefix, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        {
+            Logging.Debug("Setting system information (" + prefix + ")");
+            setString(ref textValues, prefix + " name", system == null ? null : system.Name);
+            setString(ref textValues, prefix + " name (spoken)", system == null ? null : Translations.StarSystem(system.Name));
+            setDecimal(ref decimalValues, prefix + " population", system == null ? null : (decimal?)system.Population);
+            setString(ref textValues, prefix + " population (spoken)", system == null ? null : humanize(system.Population));
+            setString(ref textValues, prefix + " allegiance", system == null ? null : system.Allegiance);
+            setString(ref textValues, prefix + " government", system == null ? null : system.Government);
+            setString(ref textValues, prefix + " faction", system == null ? null : system.Faction);
+            setString(ref textValues, prefix + " primary economy", system == null ? null : system.PrimaryEconomy);
+            setString(ref textValues, prefix + " state", system == null ? null : system.State);
+            setString(ref textValues, prefix + " security", system == null ? null : system.Security);
+            setString(ref textValues, prefix + " power", system == null ? null : system.Power);
+            setString(ref textValues, prefix + " power (spoken)", Translations.Power(eddi.CurrentStarSystem.Power));
+            setString(ref textValues, prefix + " power state", system == null ? null : system.PowerState);
+            setDecimal(ref decimalValues, prefix + " X", system == null ? null : system.X);
+            setDecimal(ref decimalValues, prefix + " Y", system == null ? null : system.Y);
+            setDecimal(ref decimalValues, prefix + " Z", system == null ? null : system.Z);
+
+            if (eddi.HomeStarSystem != null && eddi.HomeStarSystem.X != null && system.X != null)
+            {
+                setDecimal(ref decimalValues, prefix + " distance from home", (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.X - eddi.HomeStarSystem.X), 2) + Math.Pow((double)(system.Y - eddi.HomeStarSystem.Y), 2) + Math.Pow((double)(system.Z - eddi.HomeStarSystem.Z), 2)), 2));
+            }
+
+            //
+            if (system != null)
+            {
+                foreach (Station Station in system.Stations)
+                {
+                    setString(ref textValues, prefix + " station name", Station.Name);
+                }
+                setInt(ref intValues, prefix + " stations", system.Stations.Count);
+                setInt(ref intValues, prefix + " orbital stations", system.Stations.Count(s => !s.IsPlanetary()));
+                setInt(ref intValues, prefix + " starports", system.Stations.Count(s => s.IsStarport()));
+                setInt(ref intValues, prefix + " outposts", system.Stations.Count(s => s.IsOutpost()));
+                setInt(ref intValues, prefix + " planetary stations", system.Stations.Count(s => s.IsPlanetary()));
+                setInt(ref intValues, prefix + " planetary outposts", system.Stations.Count(s => s.IsPlanetaryOutpost()));
+                setInt(ref intValues, prefix + " planetary ports", system.Stations.Count(s => s.IsPlanetaryPort()));
+            }
+
+            // Allegiance-specific rank
+            string systemRank = "Commander";
+            if (cmdr.Name != null) // using Name as a canary to see if the data is missing
+            {
+                if (system.Allegiance == "Federation" && cmdr.FederationRating >= minFederationRatingForTitle)
+                {
+                    systemRank = cmdr.FederationRank;
+                }
+                else if (system.Allegiance == "Empire" && cmdr.EmpireRating >= minEmpireRatingForTitle)
+                {
+                    systemRank = cmdr.EmpireRank;
+                }
+            }
+            setString(ref textValues, prefix + " rank", systemRank);
+
+            Logging.Debug("Set system information (" + prefix + ")");
         }
 
         /// <summary>
@@ -1183,7 +1129,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Say(Cmdr, Cmdr.Ship, script);
+                eddi.speechService.Say(eddi.Cmdr, eddi.Ship, script);
             }
             catch (Exception e)
             {
@@ -1211,7 +1157,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Transmit(Cmdr, Cmdr.Ship, script);
+                eddi.speechService.Transmit(eddi.Cmdr, eddi.Ship, script);
             }
             catch (Exception e)
             {
@@ -1239,7 +1185,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Receive(Cmdr, Cmdr.Ship, script);
+                eddi.speechService.Receive(eddi.Cmdr, eddi.Ship, script);
             }
             catch (Exception e)
             {
@@ -1297,9 +1243,9 @@ namespace EDDIVAPlugin
                     return;
                 }
 
-                if (Cmdr != null && starMapService != null)
+                if (eddi.Cmdr != null && eddi.starMapService != null)
                 {
-                    starMapService.sendStarMapDistance(Cmdr.StarSystem, system, (decimal)distance);
+                    eddi.starMapService.sendStarMapDistance(eddi.CurrentStarSystem.Name, system, (decimal)distance);
                 }
             }
             catch (Exception e)
@@ -1328,20 +1274,20 @@ namespace EDDIVAPlugin
                     return;
                 }
 
-                if (Cmdr != null)
+                if (eddi.Cmdr != null)
                 {
                     // Store locally
-                    EDDIStarSystem here = starSystemRepository.GetEDDIStarSystem(Cmdr.StarSystem);
+                    EDDIStarSystem here = eddi.starSystemRepository.GetEDDIStarSystem(eddi.CurrentStarSystem.Name);
                     if (here != null)
                     {
                         here.Comment = comment == "" ? null : comment;
-                        starSystemRepository.SaveEDDIStarSystem(here);
+                        eddi.starSystemRepository.SaveEDDIStarSystem(here);
                     }
 
-                    if (starMapService != null)
+                    if (eddi.starMapService != null)
                     {
                         // Store in EDSM
-                        starMapService.sendStarMapComment(Cmdr.StarSystem, comment);
+                        eddi.starMapService.sendStarMapComment(eddi.CurrentStarSystem.Name, comment);
                     }
                 }
             }
@@ -1499,13 +1445,13 @@ namespace EDDIVAPlugin
 
         }
 
-        // Debug method to allow manual updating of the system
-        public static void updateSystem(string system)
-        {
-            if (Cmdr != null)
-            {
-                Cmdr.StarSystem = system;
-            }
-        }
+        //// Debug method to allow manual updating of the system
+        //public static void updateSystem(string system)
+        //{
+        //    if (eddi.Cmdr != null)
+        //    {
+        //        eddi.Cmdr.StarSystem = system;
+        //    }
+        //}
     }
 }

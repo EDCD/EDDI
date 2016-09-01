@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace EDDIVAPlugin
+namespace EDDI
 {
     /// <summary>Configuration for EDDI</summary>
     public class EDDIConfiguration

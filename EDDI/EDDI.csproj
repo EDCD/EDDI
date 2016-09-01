@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{583FA617-A93D-4A69-BF2F-13911ED0099A}</ProjectGuid>
+    <ProjectGuid>{EC7BA042-A370-447F-8C3E-241358CEBCBB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>configuration</RootNamespace>
-    <AssemblyName>configuration</AssemblyName>
+    <RootNamespace>EDDI</RootNamespace>
+    <AssemblyName>EDDI</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -45,6 +45,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -60,7 +64,6 @@
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.102.0\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Speech" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -73,36 +76,14 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Xceed.Wpf.AvalonDock, Version=2.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.9\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=2.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.9\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=2.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.9\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=2.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.9\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xceed.Wpf.DataGrid, Version=2.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.9\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Xceed.Wpf.Toolkit, Version=2.9.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.9\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EDDI.cs" />
+    <Compile Include="SqlLiteBaseRepository.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -111,6 +92,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EDDIConfiguration.cs" />
+    <Compile Include="EDDIStarSystem.cs" />
+    <Compile Include="EDDIStarSystemSqLiteRepository.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -145,14 +129,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EDDIVAPlugin\EDDIVAPlugin.csproj">
-      <Project>{e98b76a0-b7bc-4f59-8e4f-bd16b22a5ac6}</Project>
-      <Name>EDDIVAPlugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EDDI\EDDI.csproj">
-      <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
-      <Name>EDDI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EliteDangerousCompanionAppService\EliteDangerousCompanionAppService.csproj">
       <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
       <Name>EliteDangerousCompanionAppService</Name>

@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EliteDangerousCompanionIllegalStateException.cs" />
+    <Compile Include="Profile.cs" />
     <Compile Include="RijndaelHelper.cs" />
     <Compile Include="ShipsConfiguration.cs" />
     <Compile Include="CompanionAppService.cs" />

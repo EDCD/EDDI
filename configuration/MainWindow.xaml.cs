@@ -24,6 +24,7 @@ using Utilities;
 using System.Threading;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using EDDI;
 
 namespace configuration
 {
@@ -32,7 +33,7 @@ namespace configuration
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Commander commander;
+        private Profile profile;
         private ShipsConfiguration shipsConfiguration;
 
         private CompanionAppService companionAppService;
@@ -57,8 +58,8 @@ namespace configuration
             companionAppService = new CompanionAppService();
             try
             {
-                commander = companionAppService.Profile();
-                setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + commander.Name);
+                profile = companionAppService.Profile();
+                setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.Name);
             }
             catch (Exception ex)
             {
@@ -74,7 +75,7 @@ namespace configuration
                 }
             }
 
-            if (commander != null)
+            if (profile != null)
             {
                 setShipyardFromConfiguration();
             }
@@ -184,11 +185,11 @@ namespace configuration
                     }
                     else if (companionAppService.CurrentState == CompanionAppService.State.READY)
                     {
-                        if (commander == null)
+                        if (profile == null)
                         {
-                            commander = companionAppService.Profile();
+                            profile = companionAppService.Profile();
                         }
-                        setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + commander.Name);
+                        setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.Name);
                         setShipyardFromConfiguration();
                     }
                 }
@@ -213,8 +214,8 @@ namespace configuration
                 {
                     companionAppService.Confirm(code);
                     // All done - see if it works
-                    commander = companionAppService.Profile();
-                    setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + commander.Name);
+                    profile = companionAppService.Profile();
+                    setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.Name);
                     setShipyardFromConfiguration();
                 }
                 catch (EliteDangerousCompanionAppAuthenticationException ex)
@@ -370,10 +371,10 @@ namespace configuration
         {
             shipsConfiguration = new ShipsConfiguration();
             List<Ship> ships = new List<Ship>();
-            if (commander != null)
+            if (profile != null)
             {
-                ships.Add(commander.Ship);
-                ships.AddRange(commander.StoredShips);
+                ships.Add(profile.Ship);
+                ships.AddRange(profile.StoredShips);
             }
             shipsConfiguration.Ships = ships;
             shipyardData.ItemsSource = ships;
@@ -475,10 +476,10 @@ namespace configuration
             {
                 // Fetch the commander name from the companion app
                 CompanionAppService companionAppService = new CompanionAppService();
-                Commander cmdr = companionAppService.Profile();
-                if (cmdr != null && cmdr.Name != null)
+                Profile profile = companionAppService.Profile();
+                if (profile != null && profile.Cmdr != null && profile.Cmdr.Name != null)
                 {
-                    commanderName = cmdr.Name;
+                    commanderName = profile.Cmdr.Name;
                 }
                 else
                 {

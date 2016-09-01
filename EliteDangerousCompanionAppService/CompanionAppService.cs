@@ -64,7 +64,7 @@ namespace EliteDangerousCompanionAppService
         private static string PROFILE_URL = "/profile";
 
         // We cache the profile to avoid spamming the service
-        private Commander cachedProfile;
+        private Profile cachedProfile;
         private DateTime cachedProfileExpires;
 
         public enum State
@@ -191,7 +191,7 @@ namespace EliteDangerousCompanionAppService
             }
         }
 
-        public Commander Profile()
+        public Profile Profile()
         {
             Logging.Debug("Entered");
             if (CurrentState != State.READY)
@@ -263,7 +263,7 @@ namespace EliteDangerousCompanionAppService
                     var reader = new StreamReader(stream, encoding);
                     string data = reader.ReadToEnd();
                     Logging.Debug("Data is " + data);
-                    cachedProfile = CommanderFromProfile(data);
+                    cachedProfile = ProfileFromJson(data);
                     cachedProfileExpires = DateTime.Now.AddSeconds(30);
                     Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
 
@@ -398,24 +398,25 @@ namespace EliteDangerousCompanionAppService
             }
         }
 
-        /// <summary>Create a commander profile given the results from a /profile call</summary>
-        public static Commander CommanderFromProfile(string data)
+        /// <summary>Create a  profile given the results from a /profile call</summary>
+        public static Profile ProfileFromJson(string data)
         {
             Logging.Debug("Entered");
-            Commander cmdr = CommanderFromProfile(JObject.Parse(data));
-            AugmentCmdrInfo(cmdr);
+            Profile profile = ProfileFromJson(JObject.Parse(data));
+            AugmentCmdrInfo(profile.Cmdr);
             Logging.Debug("Leaving");
-            return cmdr;
+            return profile;
         }
 
-        /// <summary>Create a commander profile given the results from a /profile call</summary>
-        public static Commander CommanderFromProfile(dynamic json)
+        /// <summary>Create a profile given the results from a /profile call</summary>
+        public static Profile ProfileFromJson(dynamic json)
         {
             Logging.Debug("Entered");
-            Commander Commander = new Commander();
+            Profile Profile = new Profile();
 
             if (json["commander"] != null)
             {
+                Commander Commander = new Commander();
                 Commander.Name = (string)json["commander"]["name"];
 
                 Commander.CombatRating = (int)json["commander"]["rank"]["combat"];
@@ -434,22 +435,27 @@ namespace EliteDangerousCompanionAppService
 
                 Commander.Credits = (long)json["commander"]["credits"];
                 Commander.Debt = (long)json["commander"]["debt"];
+                Profile.Cmdr = Commander;
 
-                Commander.StarSystem = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
+                string systemName = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
+                if (systemName != null)
+                {
+                    Profile.CurrentStarSystem = DataProviderService.GetSystemData(systemName, null, null, null);
+                }
 
-                Commander.Ship = ShipFromProfile(json);
+                Profile.Ship = ShipFromProfile(json);
 
-                Commander.StoredShips = StoredShipsFromProfile(json, ref Commander);
+                Profile.StoredShips = StoredShipsFromProfile(json, ref Profile);
 
-                AugmentShipInfo(Commander.Ship, Commander.StoredShips);
+                AugmentShipInfo(Profile.Ship, Profile.StoredShips);
 
-                Commander.Outfitting = OutfittingFromProfile(json);
+                Profile.Outfitting = OutfittingFromProfile(json);
 
-                Commander.LastStation = json["lastStarport"] == null ? null : (string)json["lastStarport"]["name"];
+                Profile.LastStation = json["lastStarport"] == null ? null : (string)json["lastStarport"]["name"];
             }
 
             Logging.Debug("Leaving");
-            return Commander;
+            return Profile;
         }
 
         private static void AugmentCmdrInfo(Commander cmdr)
@@ -671,11 +677,11 @@ namespace EliteDangerousCompanionAppService
             return Hardpoint;
         }
 
-        public static List<Ship> StoredShipsFromProfile(dynamic json, ref Commander commander)
+        public static List<Ship> StoredShipsFromProfile(dynamic json, ref Profile profile)
         {
             Logging.Debug("Entered");
 
-            Ship currentShip = commander.Ship;
+            Ship currentShip = profile.Ship;
 
             List<Ship> StoredShips = new List<Ship>();
 

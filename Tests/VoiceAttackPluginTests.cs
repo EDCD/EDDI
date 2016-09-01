@@ -3,6 +3,7 @@ using EliteDangerousSpeechService;
 using EDDIVAPlugin;
 using System.Collections.Generic;
 using System;
+using EDDI;
 
 namespace Tests
 {
@@ -28,29 +29,28 @@ namespace Tests
             Assert.AreEqual("zero", VoiceAttackPlugin.humanize(0));
         }
 
+        //[TestMethod]
+        //public void TestVAVisitStarSystems()
+        //{
+        //    Dictionary<string, object> state = new Dictionary<string, object>();
+        //    Dictionary<string, short?> shortIntValues = new Dictionary<string, short?>();
+        //    Dictionary<string, string> textValues = new Dictionary<string, string>();
+        //    Dictionary<string, int?> intValues = new Dictionary<string, int?>();
+        //    Dictionary<string, decimal?> decimalValues = new Dictionary<string, decimal?>();
+        //    Dictionary<string, bool?> booleanValues = new Dictionary<string, bool?>();
+        //    Dictionary<string, DateTime?> dateTimeValues = new Dictionary<string, DateTime?>();
+        //    Dictionary<string, object> extendedValues = new Dictionary<string, object>();
+        //    VoiceAttackPlugin.VA_Init1(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
 
-        [TestMethod]
-        public void TestVAVisitStarSystems()
-        {
-            Dictionary<string, object> state = new Dictionary<string, object>();
-            Dictionary<string, short?> shortIntValues = new Dictionary<string, short?>();
-            Dictionary<string, string> textValues = new Dictionary<string, string>();
-            Dictionary<string, int?> intValues = new Dictionary<string, int?>();
-            Dictionary<string, decimal?> decimalValues = new Dictionary<string, decimal?>();
-            Dictionary<string, bool?> booleanValues = new Dictionary<string, bool?>();
-            Dictionary<string, DateTime?> dateTimeValues = new Dictionary<string, DateTime?>();
-            Dictionary<string, object> extendedValues = new Dictionary<string, object>();
-            VoiceAttackPlugin.VA_Init1(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+        //    VoiceAttackPlugin.updateSystem("LFT 926");
+        //    VoiceAttackPlugin.VA_Invoke1("system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
 
-            VoiceAttackPlugin.updateSystem("LFT 926");
-            VoiceAttackPlugin.VA_Invoke1("system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+        //    VoiceAttackPlugin.updateSystem("Shinrarta Dezhra");
+        //    VoiceAttackPlugin.VA_Invoke1("system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
 
-            VoiceAttackPlugin.updateSystem("Shinrarta Dezhra");
-            VoiceAttackPlugin.VA_Invoke1("system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-
-            VoiceAttackPlugin.updateSystem("LFT 926");
-            VoiceAttackPlugin.VA_Invoke1("system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-        }
+        //    VoiceAttackPlugin.updateSystem("LFT 926");
+        //    VoiceAttackPlugin.VA_Invoke1("system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+        //}
 
         [TestMethod]
         public void TestOutfittingCosts()

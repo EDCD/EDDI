@@ -1,7 +1,7 @@
 ﻿using EliteDangerousDataDefinitions;
 using System;
 
-namespace EDDIVAPlugin
+namespace EDDI
 {
     /// <summary>
     /// A starsystem with additional data for EDDI

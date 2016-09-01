@@ -5,7 +5,7 @@ using System.Data.SQLite;
 using System.IO;
 using Utilities;
 
-namespace EDDIVAPlugin
+namespace EDDI
 {
     public class EDDIStarSystemSqLiteRepository : SqLiteBaseRepository, IEDDIStarSystemRepository
     {

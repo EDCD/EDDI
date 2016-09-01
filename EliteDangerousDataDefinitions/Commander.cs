@@ -47,36 +47,5 @@ namespace EliteDangerousDataDefinitions
         public long Credits { get; set; }
         /// <summary>The amount of debt the commander owes</summary>
         public long Debt { get; set; }
-
-        /// <summary>The name of the current starsystem</summary>
-        public string StarSystem { get; set; }
-
-        /// <summary>The X co-ordinate of the current starsystem</summary>
-        public decimal? StarSystemX { get; set; }
-
-        /// <summary>The Y co-ordinate of the current starsystem</summary>
-        public decimal? StarSystemY { get; set; }
-        
-        /// <summary>The Z co-ordinate of the current starsystem</summary>
-        public decimal? StarSystemZ { get; set; }
-
-        /// <summary>The commander's current ship</summary>
-        public Ship Ship { get; set; }
-
-        /// <summary>The commander's stored ships</summary>
-        public List<Ship> StoredShips { get; set; }
-
-        /// <summary>The name of the last station the commander docked at</summary>
-        public string LastStation { get; set; }
-
-        // The following shouldn't be in here but they come as part of the profile.  Move them somewhere a little more sane when we can access this data separately
-        /// <summary>The modules available at the station the commander last docked at</summary>
-        public List<Module> Outfitting;
-
-        public Commander()
-        {
-            StoredShips = new List<Ship>();
-            Outfitting = new List<Module>();
-        }
     }
 }
