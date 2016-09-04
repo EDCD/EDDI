@@ -38,16 +38,19 @@ namespace configuration
 
         private CompanionAppService companionAppService;
 
+        private EDDIConfiguration eddiConfiguration;
+
         public MainWindow()
         {
             InitializeComponent();
 
             // Configured the EDDI tab
-            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration = EDDIConfiguration.FromFile();
             eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;
             eddiInsuranceDecimal.Value = eddiConfiguration.Insurance;
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
+            eventScriptsData.ItemsSource = eddiConfiguration.EventScripts;
 
             Logging.Verbose = eddiConfiguration.Debug;
 
@@ -159,6 +162,7 @@ namespace configuration
             eddiConfiguration.HomeStation = String.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
             eddiConfiguration.Insurance = eddiInsuranceDecimal.Value == null ? 5 : (decimal)eddiInsuranceDecimal.Value;
             eddiConfiguration.Debug = eddiVerboseLogging.IsChecked.Value;
+            eddiConfiguration.EventScripts = this.eddiConfiguration.EventScripts;
             eddiConfiguration.ToFile();
         }
 
@@ -527,6 +531,30 @@ namespace configuration
                 }
                 starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
             }
+        }
+
+        private void eddiScriptsUpdated(object sender, RoutedEventArgs e)
+        {
+            updateEddiConfiguration();
+        }
+
+        private void eddiScriptsUpdated(object sender, DataTransferEventArgs e)
+        {
+            updateEddiConfiguration();
+        }
+
+        private void editScript(object sender, RoutedEventArgs e)
+        {
+            throw new Exception();
+            //eventScriptsData.Items.Refresh();
+        }
+
+        private void resetScript(object sender, RoutedEventArgs e)
+        {
+            EventScript script = (EventScript)((Button)e.Source).DataContext;
+            script.Value = null;
+            eddiScriptsUpdated(sender, e);
+            eventScriptsData.Items.Refresh();
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace EDDI
@@ -15,6 +16,8 @@ namespace EDDI
         public bool Debug { get; set; }
         [JsonProperty("insurance")]
         public decimal Insurance { get; set; }
+        [JsonProperty("eventscripts")]
+        public List<EventScript> EventScripts { get; set; }
 
         [JsonIgnore]
         private String dataPath;

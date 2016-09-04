@@ -132,7 +132,6 @@
                             <DataGridTextColumn IsReadOnly="True" Header="In Storage At" Binding="{Binding Path=StarSystem}"></DataGridTextColumn>
                             <DataGridComboBoxColumn x:Name ="Role" Header="Role" SelectedItemBinding="{Binding Path=Role,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource roleValues}}"></DataGridComboBoxColumn>
                             <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Path=Name,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
-                            <!--<DataGridTextColumn Header="Name (spoken)" Width="*" Binding="{Binding Path=PhoneticName,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty} }">-->
                              <DataGridTextColumn Header="Name (spoken)" Width="*">
                                 <DataGridTextColumn.Binding>
                                     <Binding Path="PhoneticName" NotifyOnTargetUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" TargetNullValue="{x:Static System:String.Empty}">
@@ -155,7 +154,7 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="Text-to-Speech">
-                <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,2,0,-2">
+                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <TextBlock x:Name="ttsText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="EDDI uses its own text-to-speech engine that processes the voice depending on feature such as ship damage and size of cockpit.  You can adjust the voice's parameters here." />
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -198,6 +197,38 @@
                         <Label x:Name="ttsTestShipLabel" Margin="10" Grid.Column="0" Grid.Row="8" Content="Ship for testing the voice:" />
                         <ComboBox x:Name="ttsTestShipDropDown" Margin="10" Grid.Column="1" Grid.Row="8"/>
                     </Grid>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Scripts">
+                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+                    <TextBlock x:Name="scriptText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="This allows you to customise EDDI's responses to events" VerticalAlignment="Top"/>
+                    <DataGrid AutoGenerateColumns="False" x:Name="eventScriptsData" CanUserAddRows="false" TargetUpdated="eddiScriptsUpdated">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding Path=Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Checked="eddiScriptsUpdated" Unchecked="eddiScriptsUpdated" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn IsReadOnly="True" Header="Event" Binding="{Binding Path=EventName}"></DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="True" Header="Script" Width="*" Binding="{Binding Path=Value}"></DataGridTextColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="editScript">Edit</Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="resetScript">Reset to default</Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </DockPanel>
             </TabItem>
         </TabControl>

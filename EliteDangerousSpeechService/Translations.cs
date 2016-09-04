@@ -168,6 +168,18 @@ namespace EliteDangerousSpeechService
         // Regular expression to locate generated star systems
         private static Regex SECTOR = new Regex("(.*) ([A-Za-z][A-Za-z]-[A-Za-z] .*)");
 
+        /// <summary>Fix up faction names</summary>
+        public static string Faction(string faction)
+        {
+            if (faction == null)
+            {
+                return null;
+            }
+
+            // TODO
+            return faction;
+        }
+
         /// <summary>Fix up star system names</summary>
         public static string StarSystem(string starSystem)
         {
