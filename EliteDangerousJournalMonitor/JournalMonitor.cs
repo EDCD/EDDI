@@ -14,11 +14,11 @@ namespace EliteDangerousJournalMonitor
     public class JournalMonitor : LogMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$");
-        public JournalMonitor(NetLogConfiguration configuration, Action<dynamic> callback) : base(configuration.path, @"journal", (result) => HandleJournalEntry(result, callback))
+        public JournalMonitor(NetLogConfiguration configuration, Action<JournalEntry> callback) : base(configuration.path, @"^journal\.log$", (result) => HandleJournalEntry(result, callback))
         {
         }
 
-        private static void HandleJournalEntry(string line, Action<dynamic> callback)
+        private static void HandleJournalEntry(string line, Action<JournalEntry> callback)
         {
             Match match = JsonRegex.Match(line);
             if (match.Success)
@@ -70,7 +70,7 @@ namespace EliteDangerousJournalMonitor
                         handled = true;
                         break;
                     case "SupercruiseExit":
-                        journalEntry.type = "Left supercruise";
+                        journalEntry.type = "Entered normal space";
                         journalEntry.refetchProfile = false;
                         handled = true;
                         break;

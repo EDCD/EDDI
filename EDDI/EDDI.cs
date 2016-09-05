@@ -76,7 +76,9 @@ namespace EDDI
         public StarSystem LastStarSystem { get; private set; }
 
         private Thread logWatcherThread;
-        //private BlockingCollection<dynamic> LogQueue = new BlockingCollection<dynamic>();
+
+        // Scripts
+        private Dictionary<String, EventScript> eventScripts;
 
         public static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         public static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
@@ -127,6 +129,16 @@ namespace EDDI
                 }
                 Logging.Verbose = eddiConfiguration.Debug;
                 Insurance = eddiConfiguration.Insurance;
+
+                // Event scripts are stored in a list; make them a dictionary for ease of lookup
+                eventScripts = new Dictionary<string, EventScript>();
+                if (eddiConfiguration.EventScripts != null)
+                {
+                    foreach (EventScript eventScript in eddiConfiguration.EventScripts)
+                    {
+                        eventScripts.Add(eventScript.EventName, eventScript);
+                    }
+                }
 
                 // Set up the app service
                 appService = new CompanionAppService();
@@ -191,6 +203,7 @@ namespace EDDI
                 }
 
                 Logging.Info("EDDI " + EDDI_VERSION + " initialised");
+                Start();
             }
             catch (Exception ex)
             {
@@ -202,14 +215,28 @@ namespace EDDI
         {
             if (configuration != null)
             {
-                //JournalMonitor monitor = new JournalMonitor(configuration, (result) => eventHandler(result));
-                NetLogMonitor monitor = new NetLogMonitor(configuration, (result) => eventHandler(result));
+                JournalMonitor monitor = new JournalMonitor(configuration, (result) => journalEntryHandler(result));
                 monitor.start();
             }
         }
 
         public void Start()
         {
+            EventHandler += new OnEventHandler(EventPosted);
+        }
+
+        private void EventPosted(String eventName)
+        {
+            EventScript script;
+            eventScripts.TryGetValue(eventName, out script);
+            if (script != null && script.Enabled)
+            {
+                ScriptResolver resolver = new ScriptResolver();
+                Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
+                dict["shipname"] = Ship.PhoneticName == null ? Ship.Name == null ? "Your ship" : Ship.Name : Ship.PhoneticName;
+                string result = resolver.resolve(script.Value, dict);
+                speechService.Say(null, null, result);
+            }
         }
 
         public void Stop()
@@ -227,23 +254,22 @@ namespace EDDI
             Logging.Info("EDDI " + EDDI_VERSION + " shutting down");
         }
 
-        //public int EventsOutstanding()
-        //{
-        //    return LogQueue.Count;
-        //}
-
-        //public JournalEntry GetNextEvent()
-        //{
-        //    return LogQueue.Take();
-        //}
-
-        void eventHandler(dynamic entry)
+        void journalEntryHandler(JournalEntry entry)
         {
             Logging.Debug("Handling event " + JsonConvert.SerializeObject(entry));
-            switch ((string)entry.type)
+            switch (entry.type)
             {
                 case "Location":
                     eventJumped(entry);
+                    break;
+                case "Entered supercruise":
+                    eventEnteredSupercruise(entry);
+                    break;
+                case "Entered normal space":
+                    eventEnteredNormalSpace(entry);
+                    break;
+                case "Fine incurred":
+                    eventFineIncurred(entry);
                     break;
                 default:
                     speechService.Say(Cmdr, Ship, "Unknown event " + entry.type);
@@ -259,6 +285,11 @@ namespace EDDI
         {
         }
 
+        void eventFineIncurred(JournalEntry entry)
+        {
+
+        }
+
         void eventJumped(JournalEntry entry)
         {
             if (CurrentStarSystem == null || CurrentStarSystem.Name != entry.stringData["System name"])
@@ -272,7 +303,7 @@ namespace EDDI
             }
         }
 
-        void eventEnteredSupercruise()
+        void eventEnteredSupercruise(JournalEntry entry)
         {
             if (Environment != ENVIRONMENT_SUPERCRUISE)
             {
@@ -281,7 +312,7 @@ namespace EDDI
             }
         }
 
-        void eventEnteredNormalSpace()
+        void eventEnteredNormalSpace(JournalEntry entry)
         {
             if (Environment != ENVIRONMENT_NORMAL_SPACE)
             {

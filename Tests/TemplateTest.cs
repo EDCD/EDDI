@@ -16,7 +16,7 @@ namespace Tests
     public class TemplateTest
     {
         [TestMethod]
-        public void TestSimpleTemplate()
+        public void TestTemplateSimple()
         {
             var document = new SimpleDocument(@"Hello {name}!");
             var store = new BuiltinStore();
@@ -26,7 +26,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestFunctionalTemplate()
+        public void TestTemplateFunctional()
         {
             var document = new SimpleDocument(@"You are entering the {System(system)} system.");
             var store = new BuiltinStore();
@@ -40,12 +40,12 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestConditionalTemplate()
+        public void TestTemplateConditional()
         {
         }
 
         [TestMethod]
-        public void TestOneOfTemplate()
+        public void TestTemplateOneOf()
         {
             Random random = new Random();
             var document = new SimpleDocument("The letter is {OneOf(\"a\", \"b\", \"c\", \"d\", null)}.");
@@ -74,11 +74,11 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestResolver1()
+        public void TestResolverSimple()
         {
             ScriptResolver resolver = new ScriptResolver();
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
-            dict.Add("name", "world");
+            dict["name"] = "world";
             string result = resolver.resolve("Hello {name}", dict);
             Assert.AreEqual("Hello world", result);
         }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace EliteDangerousNetLogMonitor
 {
@@ -36,6 +37,7 @@ namespace EliteDangerousNetLogMonitor
             FileInfo fileInfo = FindLatestFile(directory, filter);
             if (fileInfo != null)
             {
+                Logging.Debug("Checking file " + fileInfo.Name);
                 lastSize = fileInfo.Length;
             }
 

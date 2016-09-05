@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace EDDI
 {
@@ -22,6 +23,7 @@ namespace EDDI
         {
             var document = new SimpleDocument(script);
             var result = document.Render(buildStore(vars));
+            Logging.Debug("Turned script " + script + " in to speech " + result);
             //if (result.Contains("<phoneme"))
             //{
             //    // TODO obtain language of voice
@@ -68,6 +70,7 @@ namespace EDDI
             // Variables
             foreach (KeyValuePair<string, Cottle.Value> entry in vars)
             {
+                Logging.Debug("Setting " + entry.Key + " to " + entry.Value);
                 store[entry.Key] = entry.Value;
             }
             return store;

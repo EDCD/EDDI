@@ -9,7 +9,7 @@ namespace EliteDangerousNetLogMonitor
     /// <summary>A log monitor for the Elite: Dangerous netlog</summary>
     public class NetLogMonitor : LogMonitor
     {
-        public NetLogMonitor(NetLogConfiguration configuration, Action<dynamic> callback) : base(configuration.path, @"netLog", (result) => HandleNetLogLine(result, callback))
+        public NetLogMonitor(NetLogConfiguration configuration, Action<dynamic> callback) : base(configuration.path, @"^netLog\.[0-9\.]+\.log$", (result) => HandleNetLogLine(result, callback))
         {
         }
 
@@ -19,6 +19,7 @@ namespace EliteDangerousNetLogMonitor
 
         private static void HandleNetLogLine(string line, Action<dynamic> callback)
         {
+            Logging.Debug("Looking at line " + line);
             Match oldMatch = OldSystemRegex.Match(line);
             if (oldMatch.Success)
             {
@@ -35,10 +36,10 @@ namespace EliteDangerousNetLogMonitor
                     return;
                 }
 
-                dynamic result = new JObject();
-                result.type = "Location";
-                result.starsystem = oldMatch.Groups[3].Value;
-                result.environment = oldMatch.Groups[4].Value;
+                JObject result = new JObject();
+                result["type"] = "Location";
+                result["starsystem"] = oldMatch.Groups[3].Value;
+                result["environment"] = oldMatch.Groups[4].Value;
                 callback(result);
             }
 

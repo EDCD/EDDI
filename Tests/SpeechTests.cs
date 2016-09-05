@@ -154,7 +154,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void testSendAndReceive()
+        public void TestSendAndReceive()
         {
             SpeechService SpeechService = new SpeechService();
 
