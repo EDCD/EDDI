@@ -35,7 +35,7 @@ namespace EliteDangerousDataProviderService
             {
                 response = Net.DownloadString("http://api.eddp.co/systems/" + Uri.EscapeDataString(system));
             }
-            catch (WebException wex)
+            catch (WebException)
             {
                 response = null;
             }
@@ -69,27 +69,27 @@ namespace EliteDangerousDataProviderService
         public static StarSystem StarSystemFromEDDP(dynamic json, decimal? x, decimal? y, decimal? z)
         {
             StarSystem StarSystem = new StarSystem();
-            StarSystem.Name = (string)json["name"];
-            StarSystem.X = json["x"] == null ? x : (decimal?)json["x"];
-            StarSystem.Y = json["y"] == null ? y : (decimal?)json["y"];
-            StarSystem.Z = json["z"] == null ? y : (decimal?)json["z"];
+            StarSystem.name = (string)json["name"];
+            StarSystem.x = json["x"] == null ? x : (decimal?)json["x"];
+            StarSystem.y = json["y"] == null ? y : (decimal?)json["y"];
+            StarSystem.z = json["z"] == null ? y : (decimal?)json["z"];
 
             if (json["updated_at"] != null)
             {
                 // We have real data so populate the rest of the data
                 StarSystem.EDDBID = (long)json["id"];
-                StarSystem.Population = (long?)json["population"] == null ? 0 : (long?)json["population"];
-                StarSystem.Allegiance = (string)json["allegiance"];
-                StarSystem.Government = (string)json["government"];
-                StarSystem.Faction = (string)json["faction"];
-                StarSystem.PrimaryEconomy = (string)json["primary_economy"];
-                StarSystem.State = (string)json["state"] == "None" ? null : (string)json["state"];
-                StarSystem.Security = (string)json["security"];
-                StarSystem.Power = (string)json["power"] == "None" ? null : (string)json["power"];
-                StarSystem.PowerState = (string)json["power_state"];
+                StarSystem.population = (long?)json["population"] == null ? 0 : (long?)json["population"];
+                StarSystem.allegiance = (string)json["allegiance"];
+                StarSystem.government = (string)json["government"];
+                StarSystem.faction = (string)json["faction"];
+                StarSystem.primaryeconomy = (string)json["primary_economy"];
+                StarSystem.state = (string)json["state"] == "None" ? null : (string)json["state"];
+                StarSystem.security = (string)json["security"];
+                StarSystem.power = (string)json["power"] == "None" ? null : (string)json["power"];
+                StarSystem.powerState = (string)json["power_state"];
 
 
-                StarSystem.Stations = StationsFromEDDP(json);
+                StarSystem.stations = StationsFromEDDP(json);
             }
 
             return StarSystem;

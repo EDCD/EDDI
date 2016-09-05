@@ -900,21 +900,21 @@ namespace EDDIVAPlugin
         private static void setCommanderValues(Commander cmdr, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
             Logging.Debug("Setting commander information");
-            setString(ref textValues, "Name", cmdr == null ? null : cmdr.Name);
-            setInt(ref intValues, "Combat rating", cmdr == null ? (int?)null : cmdr.CombatRating);
-            setString(ref textValues, "Combat rank", cmdr == null ? null : cmdr.CombatRank);
-            setInt(ref intValues, "Trade rating", cmdr == null ? (int?)null : cmdr.TradeRating);
-            setString(ref textValues, "Trade rank", cmdr == null ? null : cmdr.TradeRank);
-            setInt(ref intValues, "Explore rating", cmdr == null ? (int?)null : cmdr.ExploreRating);
-            setString(ref textValues, "Explore rank", cmdr == null ? null : cmdr.ExploreRank);
-            setInt(ref intValues, "Empire rating", cmdr == null ? (int?)null : cmdr.EmpireRating);
-            setString(ref textValues, "Empire rank", cmdr == null ? null : cmdr.EmpireRank);
-            setInt(ref intValues, "Federation rating", cmdr == null ? (int?)null : cmdr.FederationRating);
-            setString(ref textValues, "Federation rank", cmdr == null ? null : cmdr.FederationRank);
-            setDecimal(ref decimalValues, "Credits", cmdr == null ? (decimal?)null : cmdr.Credits);
-            setString(ref textValues, "Credits (spoken)", cmdr == null ? null : humanize(cmdr.Credits));
-            setDecimal(ref decimalValues, "Debt", cmdr == null ? (decimal?)null : cmdr.Debt);
-            setString(ref textValues, "Debt (spoken)", cmdr == null ? null : humanize(cmdr.Debt));
+            setString(ref textValues, "Name", cmdr == null ? null : cmdr.name);
+            setInt(ref intValues, "Combat rating", cmdr == null ? (int?)null : cmdr.combatrating);
+            setString(ref textValues, "Combat rank", cmdr == null ? null : cmdr.combatrank);
+            setInt(ref intValues, "Trade rating", cmdr == null ? (int?)null : cmdr.traderating);
+            setString(ref textValues, "Trade rank", cmdr == null ? null : cmdr.traderank);
+            setInt(ref intValues, "Explore rating", cmdr == null ? (int?)null : cmdr.explorationrating);
+            setString(ref textValues, "Explore rank", cmdr == null ? null : cmdr.explorationrank);
+            setInt(ref intValues, "Empire rating", cmdr == null ? (int?)null : cmdr.empirerating);
+            setString(ref textValues, "Empire rank", cmdr == null ? null : cmdr.empirerank);
+            setInt(ref intValues, "Federation rating", cmdr == null ? (int?)null : cmdr.federationrating);
+            setString(ref textValues, "Federation rank", cmdr == null ? null : cmdr.federationrank);
+            setDecimal(ref decimalValues, "Credits", cmdr == null ? (decimal?)null : cmdr.credits);
+            setString(ref textValues, "Credits (spoken)", cmdr == null ? null : humanize(cmdr.credits));
+            setDecimal(ref decimalValues, "Debt", cmdr == null ? (decimal?)null : cmdr.debt);
+            setString(ref textValues, "Debt (spoken)", cmdr == null ? null : humanize(cmdr.debt));
             Logging.Debug("Set commander information");
         }
 
@@ -924,21 +924,21 @@ namespace EDDIVAPlugin
             //
             // Ship data
             //
-            setString(ref textValues, prefix + " model", ship == null ? null : ship.Model);
-            setString(ref textValues, prefix + " model (spoken)", ship == null ? null : Translations.ShipModel(ship.Model));
-            setString(ref textValues, prefix + " callsign", ship == null ? null : ship.CallSign);
-            setString(ref textValues, prefix + " callsign (spoken)", ship == null ? null : Translations.CallSign(ship.CallSign));
-            setString(ref textValues, prefix + " name", ship == null ? null : ship.Name);
-            setString(ref textValues, prefix + " role", ship == null ? null : ship.Role.ToString());
-            setString(ref textValues, prefix + " size", ship == null ? null : ship.Size.ToString());
-            setDecimal(ref decimalValues, prefix + " value", ship == null ? (decimal?)null : ship.Value);
-            setString(ref textValues, prefix + " value (spoken)", ship == null ? null : humanize(ship.Value));
+            setString(ref textValues, prefix + " model", ship == null ? null : ship.model);
+            setString(ref textValues, prefix + " model (spoken)", ship == null ? null : Translations.ShipModel(ship.model));
+            setString(ref textValues, prefix + " callsign", ship == null ? null : ship.callsign);
+            setString(ref textValues, prefix + " callsign (spoken)", ship == null ? null : Translations.CallSign(ship.callsign));
+            setString(ref textValues, prefix + " name", ship == null ? null : ship.name);
+            setString(ref textValues, prefix + " role", ship == null ? null : ship.role.ToString());
+            setString(ref textValues, prefix + " size", ship == null ? null : ship.size.ToString());
+            setDecimal(ref decimalValues, prefix + " value", ship == null ? (decimal?)null : ship.value);
+            setString(ref textValues, prefix + " value (spoken)", ship == null ? null : humanize(ship.value));
             setDecimal(ref decimalValues, prefix + " health", ship == null ? (decimal?)null : ship.Health);
-            setInt(ref intValues, prefix + " cargo capacity", ship == null ? (int?)null : ship.CargoCapacity);
-            setInt(ref intValues, prefix + " cargo carried", ship == null ? (int?)null : ship.CargoCarried);
+            setInt(ref intValues, prefix + " cargo capacity", ship == null ? (int?)null : ship.cargocapacity);
+            setInt(ref intValues, prefix + " cargo carried", ship == null ? (int?)null : ship.cargocarried);
             // Add number of limpets carried
             int limpets = 0;
-            foreach (Cargo cargo in ship.Cargo)
+            foreach (Cargo cargo in ship.cargo)
             {
                 if (cargo.Commodity.Name == "Limpet")
                 {
@@ -1030,14 +1030,14 @@ namespace EDDIVAPlugin
             }
 
             // Have to grab a local copy of our star system as CurrentStarSystem might not have been initialised yet
-            EDDIStarSystem ThisStarSystemData = eddi.starSystemRepository.GetEDDIStarSystem(eddi.CurrentStarSystem.Name);
+            EDDIStarSystem ThisStarSystemData = eddi.starSystemRepository.GetEDDIStarSystem(eddi.CurrentStarSystem.name);
 
             // Work out the distance to the system where the ship is stored if we can
-            if (ThisStarSystemData != null && ThisStarSystemData.StarSystem != null && ThisStarSystemData.StarSystem.X != null && StoredShipStarSystemData.StarSystem != null && StoredShipStarSystemData.StarSystem.X != null)
+            if (ThisStarSystemData != null && ThisStarSystemData.StarSystem != null && ThisStarSystemData.StarSystem.x != null && StoredShipStarSystemData.StarSystem != null && StoredShipStarSystemData.StarSystem.x != null)
             {
-                decimal distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(ThisStarSystemData.StarSystem.X - StoredShipStarSystemData.StarSystem.X), 2)
-                    + Math.Pow((double)(ThisStarSystemData.StarSystem.Y - StoredShipStarSystemData.StarSystem.Y), 2)
-                    + Math.Pow((double)(ThisStarSystemData.StarSystem.Z - StoredShipStarSystemData.StarSystem.Z), 2)), 2);
+                decimal distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(ThisStarSystemData.StarSystem.x - StoredShipStarSystemData.StarSystem.x), 2)
+                    + Math.Pow((double)(ThisStarSystemData.StarSystem.y - StoredShipStarSystemData.StarSystem.y), 2)
+                    + Math.Pow((double)(ThisStarSystemData.StarSystem.z - StoredShipStarSystemData.StarSystem.z), 2)), 2);
                 setDecimal(ref decimalValues, prefix + " distance", distance);
             }
             else
@@ -1053,55 +1053,55 @@ namespace EDDIVAPlugin
         private static void setStarSystemValues(Commander cmdr, StarSystem system, string prefix, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
             Logging.Debug("Setting system information (" + prefix + ")");
-            setString(ref textValues, prefix + " name", system == null ? null : system.Name);
-            setString(ref textValues, prefix + " name (spoken)", system == null ? null : Translations.StarSystem(system.Name));
-            setDecimal(ref decimalValues, prefix + " population", system == null ? null : (decimal?)system.Population);
-            setString(ref textValues, prefix + " population (spoken)", system == null ? null : humanize(system.Population));
-            setString(ref textValues, prefix + " allegiance", system == null ? null : system.Allegiance);
-            setString(ref textValues, prefix + " government", system == null ? null : system.Government);
-            setString(ref textValues, prefix + " faction", system == null ? null : system.Faction);
-            setString(ref textValues, prefix + " primary economy", system == null ? null : system.PrimaryEconomy);
-            setString(ref textValues, prefix + " state", system == null ? null : system.State);
-            setString(ref textValues, prefix + " security", system == null ? null : system.Security);
-            setString(ref textValues, prefix + " power", system == null ? null : system.Power);
-            setString(ref textValues, prefix + " power (spoken)", Translations.Power(eddi.CurrentStarSystem.Power));
-            setString(ref textValues, prefix + " power state", system == null ? null : system.PowerState);
-            setDecimal(ref decimalValues, prefix + " X", system == null ? null : system.X);
-            setDecimal(ref decimalValues, prefix + " Y", system == null ? null : system.Y);
-            setDecimal(ref decimalValues, prefix + " Z", system == null ? null : system.Z);
+            setString(ref textValues, prefix + " name", system == null ? null : system.name);
+            setString(ref textValues, prefix + " name (spoken)", system == null ? null : Translations.StarSystem(system.name));
+            setDecimal(ref decimalValues, prefix + " population", system == null ? null : (decimal?)system.population);
+            setString(ref textValues, prefix + " population (spoken)", system == null ? null : humanize(system.population));
+            setString(ref textValues, prefix + " allegiance", system == null ? null : system.allegiance);
+            setString(ref textValues, prefix + " government", system == null ? null : system.government);
+            setString(ref textValues, prefix + " faction", system == null ? null : system.faction);
+            setString(ref textValues, prefix + " primary economy", system == null ? null : system.primaryeconomy);
+            setString(ref textValues, prefix + " state", system == null ? null : system.state);
+            setString(ref textValues, prefix + " security", system == null ? null : system.security);
+            setString(ref textValues, prefix + " power", system == null ? null : system.power);
+            setString(ref textValues, prefix + " power (spoken)", Translations.Power(eddi.CurrentStarSystem.power));
+            setString(ref textValues, prefix + " power state", system == null ? null : system.powerState);
+            setDecimal(ref decimalValues, prefix + " X", system == null ? null : system.x);
+            setDecimal(ref decimalValues, prefix + " Y", system == null ? null : system.y);
+            setDecimal(ref decimalValues, prefix + " Z", system == null ? null : system.z);
 
-            if (eddi.HomeStarSystem != null && eddi.HomeStarSystem.X != null && system.X != null)
+            if (eddi.HomeStarSystem != null && eddi.HomeStarSystem.x != null && system.x != null)
             {
-                setDecimal(ref decimalValues, prefix + " distance from home", (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.X - eddi.HomeStarSystem.X), 2) + Math.Pow((double)(system.Y - eddi.HomeStarSystem.Y), 2) + Math.Pow((double)(system.Z - eddi.HomeStarSystem.Z), 2)), 2));
+                setDecimal(ref decimalValues, prefix + " distance from home", (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - eddi.HomeStarSystem.x), 2) + Math.Pow((double)(system.y - eddi.HomeStarSystem.y), 2) + Math.Pow((double)(system.z - eddi.HomeStarSystem.z), 2)), 2));
             }
 
             //
             if (system != null)
             {
-                foreach (Station Station in system.Stations)
+                foreach (Station Station in system.stations)
                 {
                     setString(ref textValues, prefix + " station name", Station.Name);
                 }
-                setInt(ref intValues, prefix + " stations", system.Stations.Count);
-                setInt(ref intValues, prefix + " orbital stations", system.Stations.Count(s => !s.IsPlanetary()));
-                setInt(ref intValues, prefix + " starports", system.Stations.Count(s => s.IsStarport()));
-                setInt(ref intValues, prefix + " outposts", system.Stations.Count(s => s.IsOutpost()));
-                setInt(ref intValues, prefix + " planetary stations", system.Stations.Count(s => s.IsPlanetary()));
-                setInt(ref intValues, prefix + " planetary outposts", system.Stations.Count(s => s.IsPlanetaryOutpost()));
-                setInt(ref intValues, prefix + " planetary ports", system.Stations.Count(s => s.IsPlanetaryPort()));
+                setInt(ref intValues, prefix + " stations", system.stations.Count);
+                setInt(ref intValues, prefix + " orbital stations", system.stations.Count(s => !s.IsPlanetary()));
+                setInt(ref intValues, prefix + " starports", system.stations.Count(s => s.IsStarport()));
+                setInt(ref intValues, prefix + " outposts", system.stations.Count(s => s.IsOutpost()));
+                setInt(ref intValues, prefix + " planetary stations", system.stations.Count(s => s.IsPlanetary()));
+                setInt(ref intValues, prefix + " planetary outposts", system.stations.Count(s => s.IsPlanetaryOutpost()));
+                setInt(ref intValues, prefix + " planetary ports", system.stations.Count(s => s.IsPlanetaryPort()));
             }
 
             // Allegiance-specific rank
             string systemRank = "Commander";
-            if (cmdr.Name != null) // using Name as a canary to see if the data is missing
+            if (cmdr.name != null) // using Name as a canary to see if the data is missing
             {
-                if (system.Allegiance == "Federation" && cmdr.FederationRating >= minFederationRatingForTitle)
+                if (system.allegiance == "Federation" && cmdr.federationrating >= minFederationRatingForTitle)
                 {
-                    systemRank = cmdr.FederationRank;
+                    systemRank = cmdr.federationrank;
                 }
-                else if (system.Allegiance == "Empire" && cmdr.EmpireRating >= minEmpireRatingForTitle)
+                else if (system.allegiance == "Empire" && cmdr.empirerating >= minEmpireRatingForTitle)
                 {
-                    systemRank = cmdr.EmpireRank;
+                    systemRank = cmdr.empirerank;
                 }
             }
             setString(ref textValues, prefix + " rank", systemRank);
@@ -1245,7 +1245,7 @@ namespace EDDIVAPlugin
 
                 if (eddi.Cmdr != null && eddi.starMapService != null)
                 {
-                    eddi.starMapService.sendStarMapDistance(eddi.CurrentStarSystem.Name, system, (decimal)distance);
+                    eddi.starMapService.sendStarMapDistance(eddi.CurrentStarSystem.name, system, (decimal)distance);
                 }
             }
             catch (Exception e)
@@ -1277,7 +1277,7 @@ namespace EDDIVAPlugin
                 if (eddi.Cmdr != null)
                 {
                     // Store locally
-                    EDDIStarSystem here = eddi.starSystemRepository.GetEDDIStarSystem(eddi.CurrentStarSystem.Name);
+                    EDDIStarSystem here = eddi.starSystemRepository.GetEDDIStarSystem(eddi.CurrentStarSystem.name);
                     if (here != null)
                     {
                         here.Comment = comment == "" ? null : comment;
@@ -1287,7 +1287,7 @@ namespace EDDIVAPlugin
                     if (eddi.starMapService != null)
                     {
                         // Store in EDSM
-                        eddi.starMapService.sendStarMapComment(eddi.CurrentStarSystem.Name, comment);
+                        eddi.starMapService.sendStarMapComment(eddi.CurrentStarSystem.name, comment);
                     }
                 }
             }

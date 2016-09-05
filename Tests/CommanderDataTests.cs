@@ -5503,9 +5503,9 @@ namespace Tests
             EliteDangerousCompanionAppService.CompanionAppService app = new EliteDangerousCompanionAppService.CompanionAppService();
             Profile profile = EliteDangerousCompanionAppService.CompanionAppService.ProfileFromJson(data);
 
-            Assert.AreEqual("Testy", profile.Cmdr.Name);
+            Assert.AreEqual("Testy", profile.Cmdr.name);
 
-            Assert.AreEqual("Python", profile.Ship.Model);
+            Assert.AreEqual("Python", profile.Ship.model);
 
             Assert.AreEqual(7, profile.Ship.PowerPlant.Class);
             Assert.AreEqual("C", profile.Ship.PowerPlant.Grade);
@@ -5526,24 +5526,24 @@ namespace Tests
             Assert.AreEqual(2, profile.Ship.Compartments[8].Size);
             Assert.AreEqual(null, profile.Ship.Compartments[8].Module);
 
-            Assert.AreEqual(10, profile.Ship.CargoCapacity);
-            Assert.AreEqual(6, profile.Ship.CargoCarried);
+            Assert.AreEqual(10, profile.Ship.cargocapacity);
+            Assert.AreEqual(6, profile.Ship.cargocarried);
 
             /// 7 stored ships
             Assert.AreEqual(7, profile.StoredShips.Count);
 
             // First stored ship is a Vulture at Snyder Enterprise
             Ship StoredShip1 = profile.StoredShips[0];
-            Assert.AreEqual("Vulture", StoredShip1.Model);
+            Assert.AreEqual("Vulture", StoredShip1.model);
             Assert.AreEqual("TZ Arietis", StoredShip1.StarSystem);
             Assert.AreEqual("Snyder Enterprise", StoredShip1.Station);
 
             // Two lots of cargo
-            Assert.AreEqual(2, profile.Ship.Cargo.Count);
+            Assert.AreEqual(2, profile.Ship.cargo.Count);
             // Ensure that we have some drones
             // Add number of limpets carried
             int limpets = 0;
-            foreach (Cargo cargo in profile.Ship.Cargo)
+            foreach (Cargo cargo in profile.Ship.cargo)
             {
                 if (cargo.Commodity.Name == "Limpet")
                 {
@@ -5583,7 +5583,7 @@ namespace Tests
             CompanionAppService app = new CompanionAppService();
             Profile profile = CompanionAppService.ProfileFromJson(data);
 
-            Assert.AreEqual(0, profile.Ship.Cargo.Count);
+            Assert.AreEqual(0, profile.Ship.cargo.Count);
         }
 
         [TestMethod]

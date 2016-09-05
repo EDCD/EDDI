@@ -175,8 +175,16 @@ namespace EliteDangerousSpeechService
             {
                 return null;
             }
+            // Faction names can contain system names; hunt them down and change them
+            foreach (var pronunciation in STAR_SYSTEM_PRONUNCIATIONS)
+            {
+                if (faction.Contains(pronunciation.Key))
+                {
+                    var replacement = replaceWithPronunciation(pronunciation.Key, pronunciation.Value);
+                    return faction.Replace(pronunciation.Key, replacement);
+                }
+            }
 
-            // TODO
             return faction;
         }
 
@@ -451,6 +459,97 @@ namespace EliteDangerousSpeechService
             }
 
             return elements.Aggregate((i, j) => i + " " + j);
+        }
+
+        public static string humanize(decimal? value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            if (value == 0)
+            {
+                return "zero";
+            }
+
+            int number;
+            int nextDigit;
+            string order;
+            int digits = (int)Math.Log10((double)value);
+            if (digits < 3)
+            {
+                // Units
+                number = (int)value;
+                order = "";
+                nextDigit = 0;
+            }
+            else if (digits < 6)
+            {
+                // Thousands
+                number = (int)(value / 1000);
+                order = "thousand";
+                nextDigit = (((int)value) - (number * 1000)) / 100;
+            }
+            else if (digits < 9)
+            {
+                // Millions
+                number = (int)(value / 1000000);
+                order = "million";
+                nextDigit = (((int)value) - (number * 1000000)) / 100000;
+            }
+            else
+            {
+                // Billions
+                number = (int)(value / 1000000000);
+                order = "billion";
+                nextDigit = (int)(((long)value) - ((long)number * 1000000000)) / 100000000;
+            }
+
+            if (order == "")
+            {
+                return "" + number;
+            }
+            else
+            {
+                if (number > 60)
+                {
+                    if (nextDigit < 6)
+                    {
+                        return "Over " + number + " " + order;
+                    }
+                    else
+                    {
+                        return "Nearly " + (number + 1) + " " + order;
+                    }
+                }
+                switch (nextDigit)
+                {
+                    case 0:
+                        return "just over " + number + " " + order;
+                    case 1:
+                        return "over " + number + " " + order;
+                    case 2:
+                        return "well over " + number + " " + order;
+                    case 3:
+                        return "on the way to " + number + " and a half " + order;
+                    case 4:
+                        return "nearly " + number + " and a half " + order;
+                    case 5:
+                        return "around " + number + " and a half " + order;
+                    case 6:
+                        return "just over " + number + " and a half " + order;
+                    case 7:
+                        return "well over " + number + " and a half " + order;
+                    case 8:
+                        return "on the way to " + (number + 1) + " " + order;
+                    case 9:
+                        return "nearly " + (number + 1) + " " + order;
+                    default:
+                        return "around " + number + " " + order;
+                }
+            }
+
         }
     }
 }

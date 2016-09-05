@@ -46,7 +46,7 @@ namespace EDDIVAPlugin
             string enableds = "";
             string priorities = "";
             string uri = "https://coriolis.io/outfit/";
-            uri += shipModels[ship.Model];
+            uri += shipModels[ship.model];
             uri += "/";
             uri += ShipBulkheads(ship.Bulkheads.Name);
             enableds += "1";
@@ -130,13 +130,13 @@ namespace EDDIVAPlugin
             uri += LZString.compressToBase64(priorities).Replace('/', '-');
 
             string bn;
-            if (ship.Name == null)
+            if (ship.name == null)
             {
-                bn = ship.CallSign;
+                bn = ship.callsign;
             }
             else
             {
-                bn = ship.Name + " (" + ship.CallSign + ")";
+                bn = ship.name + " (" + ship.callsign + ")";
             }
             uri += "?bn=" + Uri.EscapeDataString(bn);
 

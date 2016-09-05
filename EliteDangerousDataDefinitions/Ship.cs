@@ -16,40 +16,37 @@ namespace EliteDangerousDataDefinitions
         public int LocalId { get; set; }
         /// <summary>the model of the ship (Python, Anaconda, etc.)</summary>
         [JsonIgnore]
-        public string Model { get; set; }
+        public string model { get; set; }
         /// <summary>the size of this ship</summary>
         [JsonIgnore]
-        public ShipSize Size { get; set; }
+        public ShipSize size { get; set; }
         /// <summary>the value of the ship without cargo, in credits</summary>
         [JsonIgnore]
-        public long Value { get; set; }
+        public long value { get; set; }
         /// <summary>the total tonnage cargo capacity</summary>
         [JsonIgnore]
-        public int CargoCapacity { get; set; }
+        public int cargocapacity { get; set; }
         /// <summary>the current tonnage cargo carried</summary>
         [JsonIgnore]
-        public int CargoCarried { get; set; }
+        public int cargocarried { get; set; }
 
         /// <summary>the specific cargo carried</summary>
-        public List<Cargo> Cargo { get; set; }
+        public List<Cargo> cargo { get; set; }
 
         /// <summary>the callsign of this ship</summary>
-        [JsonProperty("callSign")]
-        public string CallSign { get; set;  }
+        public string callsign { get; set;  }
         /// <summary>the name of this ship</summary>
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        public string name { get; set; }
         [JsonIgnore]
-        private string phoneticName;
+        private string PhoneticName;
         /// <summary>the phonetic name of this ship</summary>
-        [JsonProperty("phoneticName")]
-        public string PhoneticName
+        public string phoneticname
         {
-            get { return this.phoneticName; }
+            get { return this.PhoneticName; }
             set {
                 if (value == null || value == "")
                 {
-                    this.phoneticName = null;
+                    this.PhoneticName = null;
                 }
                 else
                 {
@@ -57,18 +54,17 @@ namespace EliteDangerousDataDefinitions
                     {
                         // Invalid - drop silently
                         Logging.Debug("Invalid IPA " + value + "; discarding");
-                        this.phoneticName = null;
+                        this.PhoneticName = null;
                     }
                     else
                     {
-                        this.phoneticName = value;
+                        this.PhoneticName = value;
                     }
                 }
             }
         }
         /// <summary>the role of this ship</summary>
-        [JsonProperty("role")]
-        public ShipRole Role { get; set; }
+        public ShipRole role { get; set; }
 
         /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
         [JsonIgnore]
@@ -115,8 +111,8 @@ namespace EliteDangerousDataDefinitions
         public Ship(long EDID, string Model, ShipSize Size)
         {
             this.EDID = EDID;
-            this.Model = Model;
-            this.Size = Size;
+            this.model = Model;
+            this.size = Size;
             Hardpoints = new List<Hardpoint>();
             Compartments = new List<Compartment>();
         }

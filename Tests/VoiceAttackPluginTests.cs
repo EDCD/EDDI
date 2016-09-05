@@ -110,7 +110,7 @@ namespace Tests
             IEDDIStarSystemRepository starSystemRepository = new EDDIStarSystemSqLiteRepository();
             EDDIStarSystem DBData = starSystemRepository.GetEDDIStarSystem("Nangkano");
             Assert.IsNotNull(DBData);
-            Assert.AreEqual("Nangkano", DBData.StarSystem.Name);
+            Assert.AreEqual("Nangkano", DBData.StarSystem.name);
         }
 
         [TestMethod]

@@ -42,9 +42,9 @@ namespace EliteDangerousDataDefinitions
         };
 
 
-        public static List<String> ShipModels = ShipsByEliteID.Select(kp => kp.Value.Model).ToList();
+        public static List<String> ShipModels = ShipsByEliteID.Select(kp => kp.Value.model).ToList();
 
-        private static Dictionary<string, Ship> ShipsByModel = ShipsByEliteID.ToDictionary(kp => kp.Value.Model, kp => kp.Value);
+        private static Dictionary<string, Ship> ShipsByModel = ShipsByEliteID.ToDictionary(kp => kp.Value.model, kp => kp.Value);
 
         /// <summary>Obtain details of a ship given its Elite ID</summary>
         public static Ship ShipFromEliteID(long id)
@@ -54,8 +54,8 @@ namespace EliteDangerousDataDefinitions
             if (ShipsByEliteID.TryGetValue(id, out Template))
             {
                 Ship.EDID = Template.EDID;
-                Ship.Model = Template.Model;
-                Ship.Size = Template.Size;
+                Ship.model = Template.model;
+                Ship.size = Template.size;
             }
             // All ships default to 100% health
             Ship.Health = 100;
@@ -71,12 +71,12 @@ namespace EliteDangerousDataDefinitions
             if (ShipsByModel.TryGetValue(model, out Template))
             {
                 Ship.EDID = Template.EDID;
-                Ship.Model = Template.Model;
-                Ship.Size = Template.Size;
+                Ship.model = Template.model;
+                Ship.size = Template.size;
             }
             else
             {
-                Ship.Model = model;
+                Ship.model = model;
             }
             return Ship;
         }

@@ -14,38 +14,38 @@ namespace EliteDangerousDataDefinitions
         public static string[] federationRanks = new string[15] { "Unknown", "Recruit", "Cadet", "Midshipman", "Petty Officer", "Chief Petty Officer", "Warrant Officer", "Ensign", "Lieutenant", "Lieutenant Commander", "Post Commander", "Post Captain", "Rear Admiral", "Vice Admiral", "Admiral" };
 
         /// <summary>The commander's name</summary>
-        public string Name { get; set;  }
+        public string name { get; set;  }
         /// <summary>The commander's name as spoken</summary>
-        public string PhoneticName { get; set; }
+        public string phoneticname { get; set; }
 
         /// <summary>The numeric combat rating, 0 to 8</summary>
-        public int CombatRating { get; set; }
+        public int combatrating { get; set; }
         /// <summary>The name of the combat rating</summary>
-        public string CombatRank { get; set; }
+        public string combatrank { get; set; }
 
         /// <summary>The numeric trade rating, 0 to 8</summary>
-        public int TradeRating { get; set; }
+        public int traderating { get; set; }
         /// <summary>The name of the trade rating</summary>
-        public string TradeRank { get; set; }
+        public string traderank { get; set; }
 
         /// <summary>The numeric explorer rating, 0 to 8</summary>
-        public int ExploreRating { get; set; }
+        public int explorationrating { get; set; }
         /// <summary>The name of the explorer rating</summary>
-        public string ExploreRank { get; set; }
+        public string explorationrank { get; set; }
 
         /// <summary>The numeric empire rating, 0 to 14</summary>
-        public int EmpireRating { get; set; }
+        public int empirerating { get; set; }
         /// <summary>The name of the empire rating</summary>
-        public string EmpireRank { get; set; }
+        public string empirerank { get; set; }
 
         /// <summary>The numeric federation rating, 0 to 14</summary>
-        public int FederationRating { get; set; }
+        public int federationrating { get; set; }
         /// <summary>The name of the federation rating</summary>
-        public string FederationRank { get; set; }
+        public string federationrank { get; set; }
 
         /// <summary>The number of credits the commander holds</summary>
-        public long Credits { get; set; }
+        public long credits { get; set; }
         /// <summary>The amount of debt the commander owes</summary>
-        public long Debt { get; set; }
+        public long debt { get; set; }
     }
 }

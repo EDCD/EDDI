@@ -30,7 +30,14 @@ namespace EliteDangerousJournalMonitor
                 // Every event has a timestamp field
                 if (data.ContainsKey("timestamp"))
                 {
-                    journalEntry.timestamp = DateTime.Parse((string)data["timestamp"]);
+                    if (data["timestamp"] is DateTime)
+                    {
+                        journalEntry.timestamp = (DateTime)data["timestamp"];
+                    }
+                    else
+                    {
+                        journalEntry.timestamp = DateTime.Parse((string)data["timestamp"]);
+                    }
                 }
 
                 // Every event has an event field
@@ -76,6 +83,10 @@ namespace EliteDangerousJournalMonitor
                         break;
                     case "FSDJump":
                         journalEntry.type = "Jumped";
+                        journalEntry.data["starsystem"] = data["StarSystem"];
+                        journalEntry.data["x"] = 0;
+                        journalEntry.data["y"] = 0;
+                        journalEntry.data["z"] = 0;
                         journalEntry.stringData.Add("starsystem", (string)data["StarSystem"]);
                         // TODO add starsystem, x, y, z
                         journalEntry.refetchProfile = true;
@@ -119,7 +130,7 @@ namespace EliteDangerousJournalMonitor
                         if (data.ContainsKey("Combat"))
                         {
                             journalEntry.type = "Combat promotion";
-                            journalEntry.intData.Add("Rating", Int32.Parse((string)data["Comat"]));
+                            journalEntry.intData.Add("Rating", Int32.Parse((string)data["Combat"]));
                             journalEntry.refetchProfile = false;
                             handled = true;
                         }

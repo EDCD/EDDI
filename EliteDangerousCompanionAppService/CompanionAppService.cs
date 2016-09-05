@@ -417,24 +417,24 @@ namespace EliteDangerousCompanionAppService
             if (json["commander"] != null)
             {
                 Commander Commander = new Commander();
-                Commander.Name = (string)json["commander"]["name"];
+                Commander.name = (string)json["commander"]["name"];
 
-                Commander.CombatRating = (int)json["commander"]["rank"]["combat"];
-                Commander.CombatRank = Commander.combatRanks[Commander.CombatRating];
+                Commander.combatrating = (int)json["commander"]["rank"]["combat"];
+                Commander.combatrank = Commander.combatRanks[Commander.combatrating];
 
-                Commander.TradeRating = (int)json["commander"]["rank"]["trade"];
-                Commander.TradeRank = Commander.tradeRanks[Commander.TradeRating];
+                Commander.traderating = (int)json["commander"]["rank"]["trade"];
+                Commander.traderank = Commander.tradeRanks[Commander.traderating];
 
-                Commander.ExploreRating = (int)json["commander"]["rank"]["explore"];
-                Commander.ExploreRank = Commander.exploreRanks[Commander.ExploreRating];
+                Commander.explorationrating = (int)json["commander"]["rank"]["explore"];
+                Commander.explorationrank = Commander.exploreRanks[Commander.explorationrating];
 
-                Commander.EmpireRating = (int)json["commander"]["rank"]["empire"];
-                Commander.EmpireRank = Commander.empireRanks[(int)Commander.EmpireRating];
-                Commander.FederationRating = (int)json["commander"]["rank"]["federation"];
-                Commander.FederationRank = Commander.federationRanks[(int)Commander.FederationRating];
+                Commander.empirerating = (int)json["commander"]["rank"]["empire"];
+                Commander.empirerank = Commander.empireRanks[(int)Commander.empirerating];
+                Commander.federationrating = (int)json["commander"]["rank"]["federation"];
+                Commander.federationrank = Commander.federationRanks[(int)Commander.federationrating];
 
-                Commander.Credits = (long)json["commander"]["credits"];
-                Commander.Debt = (long)json["commander"]["debt"];
+                Commander.credits = (long)json["commander"]["credits"];
+                Commander.debt = (long)json["commander"]["debt"];
                 Profile.Cmdr = Commander;
 
                 string systemName = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
@@ -466,11 +466,11 @@ namespace EliteDangerousCompanionAppService
                 CommanderConfiguration cmdrConfiguration = CommanderConfiguration.FromFile();
                 if (cmdrConfiguration.PhoneticName == null || cmdrConfiguration.PhoneticName.Trim().Length == 0)
                 {
-                    cmdr.PhoneticName = null;
+                    cmdr.phoneticname = null;
                 }
                 else
                 {
-                    cmdr.PhoneticName = cmdrConfiguration.PhoneticName;
+                    cmdr.phoneticname = cmdrConfiguration.PhoneticName;
                 }
             }
             Logging.Debug("Leaving");
@@ -488,22 +488,22 @@ namespace EliteDangerousCompanionAppService
             {
                 // Already exists; grab the relevant information and supplement it
                 // Ship config name might be just whitespace, in which case we unset it
-                if (shipConfig.Name != null && shipConfig.Name.Trim().Length > 0)
+                if (shipConfig.name != null && shipConfig.name.Trim().Length > 0)
                 {
-                    ship.Name = shipConfig.Name.Trim();
+                    ship.name = shipConfig.name.Trim();
                 }
-                if (shipConfig.PhoneticName != null && shipConfig.PhoneticName.Trim().Length > 0)
+                if (shipConfig.phoneticname != null && shipConfig.phoneticname.Trim().Length > 0)
                 {
-                    ship.PhoneticName = shipConfig.PhoneticName.Trim();
+                    ship.phoneticname = shipConfig.phoneticname.Trim();
                 }
-                ship.CallSign = shipConfig.CallSign;
-                ship.Role = shipConfig.Role;
+                ship.callsign = shipConfig.callsign;
+                ship.role = shipConfig.role;
             }
             else
             {
                 // Doesn't already exist; add a callsign and default role
-                ship.CallSign = Ship.generateCallsign();
-                ship.Role = ShipRole.Multipurpose;
+                ship.callsign = Ship.generateCallsign();
+                ship.role = ShipRole.Multipurpose;
             }
 
             // Work through our shipyard
@@ -513,15 +513,15 @@ namespace EliteDangerousCompanionAppService
                 if (lookup.TryGetValue(storedShip.LocalId, out shipConfig))
                 {
                     // Already exists; grab the relevant information and supplement it
-                    storedShip.Name = shipConfig.Name;
-                    storedShip.CallSign = shipConfig.CallSign;
-                    storedShip.Role = shipConfig.Role;
+                    storedShip.name = shipConfig.name;
+                    storedShip.callsign = shipConfig.callsign;
+                    storedShip.role = shipConfig.role;
                 }
                 else
                 {
                     // Doesn't already exist; add a callsign and default role
-                    storedShip.CallSign = Ship.generateCallsign();
-                    storedShip.Role = ShipRole.Multipurpose;
+                    storedShip.callsign = Ship.generateCallsign();
+                    storedShip.role = ShipRole.Multipurpose;
                 }
             }
 
@@ -552,10 +552,10 @@ namespace EliteDangerousCompanionAppService
 
             Ship.LocalId = json["ship"]["id"];
 
-            Ship.Value = (long)json["ship"]["value"]["hull"] + (long)json["ship"]["value"]["modules"];
+            Ship.value = (long)json["ship"]["value"]["hull"] + (long)json["ship"]["value"]["modules"];
 
-            Ship.CargoCapacity = (int)json["ship"]["cargo"]["capacity"];
-            Ship.CargoCarried = (int)json["ship"]["cargo"]["qty"];
+            Ship.cargocapacity = (int)json["ship"]["cargo"]["capacity"];
+            Ship.cargocarried = (int)json["ship"]["cargo"]["qty"];
 
             // Be sensible with health - round it unless it's very low
             decimal Health = (decimal)json["ship"]["health"]["hull"] / 10000;
@@ -612,7 +612,7 @@ namespace EliteDangerousCompanionAppService
             }
 
             // Obtain the cargo
-            Ship.Cargo = new List<Cargo>();
+            Ship.cargo = new List<Cargo>();
             if (json["ship"]["cargo"] != null && json["ship"]["cargo"]["items"] != null)
             {
                 foreach (dynamic cargoJson in json["ship"]["cargo"]["items"])
@@ -630,7 +630,7 @@ namespace EliteDangerousCompanionAppService
                         }
                         cargo.Quantity = (int)cargoJson["qty"];
                         cargo.Cost = (long)cargoJson["value"];
-                        Ship.Cargo.Add(cargo);
+                        Ship.cargo.Add(cargo);
                     }
                 }
             }
@@ -701,10 +701,10 @@ namespace EliteDangerousCompanionAppService
                             {
                                 // If we have a starsystem it means that the ship is stored
                                 Ship.LocalId = ship["id"];
-                                Ship.Model = ship["name"];
-                                if (shipTranslations.ContainsKey(Ship.Model))
+                                Ship.model = ship["name"];
+                                if (shipTranslations.ContainsKey(Ship.model))
                                 {
-                                    Ship.Model = shipTranslations[Ship.Model];
+                                    Ship.model = shipTranslations[Ship.model];
                                 }
 
                                 Ship.StarSystem = ship["starsystem"]["name"];

@@ -24,15 +24,6 @@ namespace EDDI
             var document = new SimpleDocument(script);
             var result = document.Render(buildStore(vars));
             Logging.Debug("Turned script " + script + " in to speech " + result);
-            //if (result.Contains("<phoneme"))
-            //{
-            //    // TODO obtain language of voice
-            //    return "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + synth.Voice.Culture.Name + "\"><s>" + result + "</s></speak>";
-            //}
-            //else
-            //{
-            //    return result;
-            //}
             return result;
         }
 
@@ -40,10 +31,32 @@ namespace EDDI
         {
             BuiltinStore store = new BuiltinStore();
             // Translation functions
-            store["Faction"] = new NativeFunction((values) =>
+            store["P"] = new NativeFunction((values) =>
+            {
+                string val = values[0].AsString;
+                string translation = val;
+                if (translation == val)
                 {
-                    return Translations.Faction(values[0].AsString);
-                }, 1);
+                    translation = Translations.StarSystem(val);
+                }
+                if (translation == val)
+                {
+                    translation = Translations.Faction(val);
+                }
+                if (translation == val)
+                {
+                    translation = Translations.Power(val);
+                }
+                if (translation == val)
+                {
+                    translation = Translations.ShipModel(val);
+                }
+                return translation;
+            }, 1);
+            store["Faction"] = new NativeFunction((values) =>
+            {
+                return Translations.Faction(values[0].AsString);
+            }, 1);
             store["System"] = new NativeFunction((values) =>
             {
                 return Translations.StarSystem(values[0].AsString);
@@ -56,7 +69,7 @@ namespace EDDI
             {
                 return Translations.CallSign(values[0].AsString);
             }, 1);
-            store["Ship"] = new NativeFunction((values) =>
+            store["ShipModel"] = new NativeFunction((values) =>
             {
                 return Translations.ShipModel(values[0].AsString);
             }, 1);
@@ -67,10 +80,14 @@ namespace EDDI
                 return values[random.Next(values.Count)];
             });
 
+            store["Humanise"] = new NativeFunction((values) =>
+            {
+                return Translations.humanize(values[0].AsNumber);
+            }, 1);
+
             // Variables
             foreach (KeyValuePair<string, Cottle.Value> entry in vars)
             {
-                Logging.Debug("Setting " + entry.Key + " to " + entry.Value);
                 store[entry.Key] = entry.Value;
             }
             return store;

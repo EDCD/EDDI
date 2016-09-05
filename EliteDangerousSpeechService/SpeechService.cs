@@ -32,32 +32,32 @@ namespace EliteDangerousSpeechService
         public void Say(Commander commander, Ship ship, string script)
         {
             string shipScript;
-            if (ship == null || ship.Name == null || ship.Name.Trim().Length == 0)
+            if (ship == null || ship.name == null || ship.name.Trim().Length == 0)
             {
                 shipScript = "your ship";
             }
-            else if (ship.PhoneticName == null || ship.PhoneticName.Trim().Length == 0)
+            else if (ship.phoneticname == null || ship.phoneticname.Trim().Length == 0)
             {
-                shipScript = ship.Name;
+                shipScript = ship.name;
             }
             else
             {
-                shipScript = "<phoneme alphabet=\"ipa\" ph=\"" + ship.PhoneticName + "\">" + ship.Name + "</phoneme>";
+                shipScript = "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>";
             }
             script = script.Replace("$=", shipScript);
 
             string cmdrScript;
-            if (commander == null || commander.Name == null || commander.Name.Trim().Length == 0)
+            if (commander == null || commander.name == null || commander.name.Trim().Length == 0)
             {
                 cmdrScript = "commander";
             }
-            else if (commander.PhoneticName == null || commander.PhoneticName.Trim().Length == 0)
+            else if (commander.phoneticname == null || commander.phoneticname.Trim().Length == 0)
             {
-                cmdrScript = "commander " + commander.Name;
+                cmdrScript = "commander " + commander.name;
             }
             else
             {
-                cmdrScript = "commander <phoneme alphabet=\"ipa\" ph=\"" + commander.PhoneticName + "\">" + commander.Name + "</phoneme>";
+                cmdrScript = "commander <phoneme alphabet=\"ipa\" ph=\"" + commander.phoneticname + "\">" + commander.name + "</phoneme>";
             }
             script = script.Replace("$-", cmdrScript);
 
@@ -70,13 +70,13 @@ namespace EliteDangerousSpeechService
             {
                 script = script.Replace("$=", "Unidentified ship");
             }
-            else if (ship.CallSign == null)
+            else if (ship.callsign == null)
             {
-                script = script.Replace("$=", "Unidentified " + Translations.ShipModel(ship.Model));
+                script = script.Replace("$=", "Unidentified " + Translations.ShipModel(ship.model));
             }
             else
             {
-                script = script.Replace("$=", "" + ship.Model + " " + Translations.CallSign(ship.CallSign));
+                script = script.Replace("$=", "" + ship.model + " " + Translations.CallSign(ship.callsign));
             }
             Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true);
         }
@@ -87,13 +87,13 @@ namespace EliteDangerousSpeechService
             {
                 script = script.Replace("$=", "Unidentified ship");
             }
-            else if (ship.CallSign == null)
+            else if (ship.callsign == null)
             {
-                script = script.Replace("$=", "Unidentified " + Translations.ShipModel(ship.Model));
+                script = script.Replace("$=", "Unidentified " + Translations.ShipModel(ship.model));
             }
             else
             {
-                script = script.Replace("$=", "" + ship.Model + " " + Translations.CallSign(ship.CallSign));
+                script = script.Replace("$=", "" + ship.model + " " + Translations.CallSign(ship.callsign));
             }
             Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true);
         }
@@ -269,7 +269,7 @@ namespace EliteDangerousSpeechService
             int echoDelay = 50; // Default
             if (ship != null)
             {
-                switch (ship.Size)
+                switch (ship.size)
                 {
                     case ShipSize.Small:
                         echoDelay = 50;

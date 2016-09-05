@@ -42,6 +42,17 @@ namespace Tests
         [TestMethod]
         public void TestTemplateConditional()
         {
+            var document = new SimpleDocument("{if value = 1:foo|else:{if value = 2:bar|else:baz}}");
+            var store = new BuiltinStore();
+            store["value"] = 1;
+            var result = document.Render(store);
+            Assert.AreEqual("foo", result);
+            store["value"] = 2;
+            result = document.Render(store);
+            Assert.AreEqual("bar", result);
+            store["value"] = 3;
+            result = document.Render(store);
+            Assert.AreEqual("baz", result);
         }
 
         [TestMethod]

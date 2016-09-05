@@ -1,4 +1,5 @@
-﻿using EliteDangerousCompanionAppService;
+﻿using Cottle.Values;
+using EliteDangerousCompanionAppService;
 using EliteDangerousDataDefinitions;
 using EliteDangerousDataProviderService;
 using EliteDangerousJournalMonitor;
@@ -117,7 +118,7 @@ namespace EDDI
                     if (eddiConfiguration.HomeStation != null && eddiConfiguration.HomeStation.Trim().Length > 0)
                     {
                         string homeStationName = eddiConfiguration.HomeStation.Trim();
-                        foreach (Station station in HomeStarSystem.Stations)
+                        foreach (Station station in HomeStarSystem.stations)
                         {
                             if (station.Name == homeStationName)
                             {
@@ -147,7 +148,7 @@ namespace EDDI
                     // Carry out initial population of profile
                     refreshProfile();
                 }
-                if (Cmdr != null && Cmdr.Name != null)
+                if (Cmdr != null && Cmdr.name != null)
                 {
                     Logging.Info("EDDI access to the companion app is enabled");
                 }
@@ -167,9 +168,9 @@ namespace EDDI
                     {
                         commanderName = starMapCredentials.commanderName;
                     }
-                    else if (Cmdr.Name != null)
+                    else if (Cmdr.name != null)
                     {
-                        commanderName = Cmdr.Name;
+                        commanderName = Cmdr.name;
                     }
                     if (commanderName != null)
                     {
@@ -232,8 +233,7 @@ namespace EDDI
             if (script != null && script.Enabled)
             {
                 ScriptResolver resolver = new ScriptResolver();
-                Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
-                dict["shipname"] = Ship.PhoneticName == null ? Ship.Name == null ? "Your ship" : Ship.Name : Ship.PhoneticName;
+                Dictionary<string, Cottle.Value> dict = createVariables();
                 string result = resolver.resolve(script.Value, dict);
                 speechService.Say(null, null, result);
             }
@@ -259,7 +259,7 @@ namespace EDDI
             Logging.Debug("Handling event " + JsonConvert.SerializeObject(entry));
             switch (entry.type)
             {
-                case "Location":
+                case "Jumped":
                     eventJumped(entry);
                     break;
                 case "Entered supercruise":
@@ -292,13 +292,12 @@ namespace EDDI
 
         void eventJumped(JournalEntry entry)
         {
-            if (CurrentStarSystem == null || CurrentStarSystem.Name != entry.stringData["System name"])
+            if (CurrentStarSystem == null || CurrentStarSystem.name != entry.data["starsystem"])
             {
                 LastStarSystem = CurrentStarSystem;
-                CurrentStarSystem = DataProviderService.GetSystemData(entry.stringData["System name"], entry.decimalData["System x"], entry.decimalData["System y"], entry.decimalData["System z"]);
+                CurrentStarSystem = DataProviderService.GetSystemData(entry.data["starsystem"], entry.data["x"], entry.data["y"], entry.data["z"]);
                 // After jump we are always in supercruise
                 Environment = ENVIRONMENT_SUPERCRUISE;
-                speechService.Say(Cmdr, Ship, "Jumped to system " + Translations.StarSystem(entry.stringData["System name"]));
                 OnEvent("Jumped");
             }
         }
@@ -335,5 +334,34 @@ namespace EDDI
                 Outfitting = profile == null ? null : profile.Outfitting;
             }
         }
+
+
+        private Dictionary<string, Cottle.Value> createVariables()
+        {
+            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
+
+            // Start with commander variables
+            if (Cmdr != null)
+            {
+                dict["cmdr"] = new ReflectionValue(Cmdr);
+            }
+
+            if (Ship != null)
+            {
+                dict["ship"] = new ReflectionValue(Ship);
+            }
+
+            if (CurrentStarSystem != null)
+            {
+                dict["system"] = new ReflectionValue(CurrentStarSystem);
+            }
+
+            if (LastStarSystem != null)
+            {
+                dict["lastsystem"] = new ReflectionValue(LastStarSystem);
+            }
+            return dict;
+        }
+
     }
 }

@@ -18,6 +18,9 @@ namespace EliteDangerousJournalMonitor
         [JsonProperty("refetchprofile")]
         public bool refetchProfile { get; set; }
 
+        [JsonProperty("data")]
+        public Dictionary<string, dynamic> data { get; set;  }
+
         [JsonProperty("stringdata")]
         public Dictionary<string, string> stringData { get; set; }
 
@@ -35,6 +38,7 @@ namespace EliteDangerousJournalMonitor
 
         public JournalEntry()
         {
+            data = new Dictionary<string, dynamic>();
             stringData = new Dictionary<string, string>();
             intData = new Dictionary<string, int>();
             boolData = new Dictionary<string, bool>();

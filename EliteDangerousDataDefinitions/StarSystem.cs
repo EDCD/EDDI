@@ -10,34 +10,34 @@ namespace EliteDangerousDataDefinitions
     public class StarSystem
     {
         public long EDDBID { get; set; }
-        public string Name { get; set; }
-        public long? Population { get; set; }
-        public string Allegiance { get; set;  }
-        public string Government { get; set; }
-        public string Faction { get; set; }
-        public string PrimaryEconomy { get; set; }
-        public string State { get; set; }
-        public string Security { get; set; }
-        public string Power { get; set; }
-        public string PowerState { get; set; }
+        public string name { get; set; }
+        public long? population { get; set; }
+        public string allegiance { get; set;  }
+        public string government { get; set; }
+        public string faction { get; set; }
+        public string primaryeconomy { get; set; }
+        public string state { get; set; }
+        public string security { get; set; }
+        public string power { get; set; }
+        public string powerState { get; set; }
 
         /// <summary>X co-ordinate for this system</summary>
-        public decimal? X { get; set; }
+        public decimal? x { get; set; }
         /// <summary>Y co-ordinate for this system</summary>
-        public decimal? Y { get; set; }
+        public decimal? y { get; set; }
         /// <summary>Z co-ordinate for this system</summary>
-        public decimal? Z { get; set; }
+        public decimal? z { get; set; }
 
         /// <summary>Details of stations</summary>
-        public List<Station> Stations { get; set; }
+        public List<Station> stations { get; set; }
 
         /// <summary>Details of bodies (stars/planets)</summary>
-        public List<Body> Bodies { get; set; }
+        public List<Body> bodies { get; set; }
 
         public StarSystem()
         {
-            Stations = new List<Station>();
-            Bodies = new List<Body>();
+            stations = new List<Station>();
+            bodies = new List<Body>();
         }
     }
 }

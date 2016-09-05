@@ -62,9 +62,9 @@ namespace configuration
             try
             {
                 profile = companionAppService.Profile();
-                setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.Name);
+                setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_LOGIN)
                 {
@@ -193,7 +193,7 @@ namespace configuration
                         {
                             profile = companionAppService.Profile();
                         }
-                        setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.Name);
+                        setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
                         setShipyardFromConfiguration();
                     }
                 }
@@ -219,7 +219,7 @@ namespace configuration
                     companionAppService.Confirm(code);
                     // All done - see if it works
                     profile = companionAppService.Profile();
-                    setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.Name);
+                    setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
                     setShipyardFromConfiguration();
                 }
                 catch (EliteDangerousCompanionAppAuthenticationException ex)
@@ -390,13 +390,13 @@ namespace configuration
             ship.Health = 100;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             SpeechService speechService = new SpeechService(speechConfiguration);
-            if (String.IsNullOrEmpty(ship.PhoneticName))
+            if (String.IsNullOrEmpty(ship.phoneticname))
             {
-                speechService.Say(null, ship, ship.Name + " stands ready.");
+                speechService.Say(null, ship, ship.name + " stands ready.");
             }
             else
             {
-                speechService.Say(null, ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.PhoneticName + "\">" + ship.Name + "</phoneme>" + " stands ready.");
+                speechService.Say(null, ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>" + " stands ready.");
             }
         }
 
@@ -481,9 +481,9 @@ namespace configuration
                 // Fetch the commander name from the companion app
                 CompanionAppService companionAppService = new CompanionAppService();
                 Profile profile = companionAppService.Profile();
-                if (profile != null && profile.Cmdr != null && profile.Cmdr.Name != null)
+                if (profile != null && profile.Cmdr != null && profile.Cmdr.name != null)
                 {
-                    commanderName = profile.Cmdr.Name;
+                    commanderName = profile.Cmdr.name;
                 }
                 else
                 {
