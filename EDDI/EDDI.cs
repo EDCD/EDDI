@@ -64,7 +64,7 @@ namespace EDDI
         // Services made available from EDDI
         public StarMapService starMapService { get; private set; }
         public SpeechService speechService { get; private set;  }
-        public IEDDIStarSystemRepository starSystemRepository { get; private set; }
+        public StarSystemRepository starSystemRepository { get; private set; }
 
         // Information obtained from the configuration
         public StarSystem HomeStarSystem { get; private set; }
@@ -95,25 +95,13 @@ namespace EDDI
                 System.IO.Directory.CreateDirectory(dataDir);
 
                 // Set up our local star system repository
-                starSystemRepository = new EDDIStarSystemSqLiteRepository();
+                starSystemRepository = new StarSystemSqLiteRepository();
 
                 // Set up the EDDI configuration
                 EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
                 if (eddiConfiguration.HomeSystem != null && eddiConfiguration.HomeSystem.Trim().Length > 0)
                 {
-                    EDDIStarSystem HomeStarSystemData = starSystemRepository.GetEDDIStarSystem(eddiConfiguration.HomeSystem.Trim());
-                    if (HomeStarSystemData == null)
-                    {
-                        // We have no record of this system; set it up
-                        HomeStarSystemData = new EDDIStarSystem();
-                        HomeStarSystemData.Name = eddiConfiguration.HomeSystem.Trim();
-                        HomeStarSystemData.StarSystem = DataProviderService.GetSystemData(eddiConfiguration.HomeSystem.Trim(), null, null, null);
-                        HomeStarSystemData.LastVisit = DateTime.Now;
-                        HomeStarSystemData.StarSystemLastUpdated = HomeStarSystemData.LastVisit;
-                        HomeStarSystemData.TotalVisits = 1;
-                        starSystemRepository.SaveEDDIStarSystem(HomeStarSystemData);
-                    }
-                    HomeStarSystem = HomeStarSystemData.StarSystem;
+                    HomeStarSystem = starSystemRepository.GetOrCreateStarSystem(eddiConfiguration.HomeSystem.Trim());
 
                     if (eddiConfiguration.HomeStation != null && eddiConfiguration.HomeStation.Trim().Length > 0)
                     {
@@ -226,16 +214,21 @@ namespace EDDI
             EventHandler += new OnEventHandler(EventPosted);
         }
 
-        private void EventPosted(String eventName)
+        public void Say(string script)
+        {
+            ScriptResolver resolver = new ScriptResolver();
+            Dictionary<string, Cottle.Value> dict = createVariables();
+            string result = resolver.resolve(script, dict);
+            speechService.Say(null, null, result);
+        }
+
+        private void EventPosted(string eventName)
         {
             EventScript script;
             eventScripts.TryGetValue(eventName, out script);
             if (script != null && script.Enabled)
             {
-                ScriptResolver resolver = new ScriptResolver();
-                Dictionary<string, Cottle.Value> dict = createVariables();
-                string result = resolver.resolve(script.Value, dict);
-                speechService.Say(null, null, result);
+                Say(script.Value);
             }
         }
 
@@ -295,7 +288,9 @@ namespace EDDI
             if (CurrentStarSystem == null || CurrentStarSystem.name != entry.data["starsystem"])
             {
                 LastStarSystem = CurrentStarSystem;
-                CurrentStarSystem = DataProviderService.GetSystemData(entry.data["starsystem"], entry.data["x"], entry.data["y"], entry.data["z"]);
+                CurrentStarSystem = starSystemRepository.GetOrCreateStarSystem(entry.data["starsystem"]);
+                CurrentStarSystem.visits++;
+                CurrentStarSystem.lastvisit = DateTime.Now;
                 // After jump we are always in supercruise
                 Environment = ENVIRONMENT_SUPERCRUISE;
                 OnEvent("Jumped");
@@ -349,6 +344,11 @@ namespace EDDI
             if (Ship != null)
             {
                 dict["ship"] = new ReflectionValue(Ship);
+            }
+
+            if (HomeStarSystem != null)
+            {
+                dict["homesystem"] = new ReflectionValue(HomeStarSystem);
             }
 
             if (CurrentStarSystem != null)

@@ -440,7 +440,7 @@ namespace EliteDangerousCompanionAppService
                 string systemName = json["lastSystem"] == null ? null : (string)json["lastSystem"]["name"];
                 if (systemName != null)
                 {
-                    Profile.CurrentStarSystem = DataProviderService.GetSystemData(systemName, null, null, null);
+                    Profile.CurrentStarSystem = new StarSystemSqLiteRepository().GetOrCreateStarSystem(systemName);
                 }
 
                 Profile.Ship = ShipFromProfile(json);

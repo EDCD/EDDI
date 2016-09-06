@@ -5,51 +5,38 @@ using System.Data.SQLite;
 using System.IO;
 using Utilities;
 
-namespace EDDI
+namespace EliteDangerousDataProviderService
 {
-    public class EDDIStarSystemSqLiteRepository : SqLiteBaseRepository, IEDDIStarSystemRepository
+    public class StarSystemSqLiteRepository : SqLiteBaseRepository, StarSystemRepository
     {
         private static string CREATE_SQL = @"
                     CREATE TABLE IF NOT EXISTS starsystems(
-                      eliteid INT
-                     ,eddbid INT
-                     ,name TEXT NOT NULL
+                     name TEXT NOT NULL
                      ,totalvisits INT NOT NULL
                      ,lastvisit DATETIME NOT NULL
                      ,previousvisit DATETIME
                      ,starsystem TEXT NOT NULL
-                     ,starsystemlastupdated DATETIME NOT NULL
-                     ,comment TEXT)";
+                     ,starsystemlastupdated DATETIME NOT NULL)";
         private static string INSERT_SQL = @"
                     INSERT INTO starsystems(
-                      eliteid
-                     , eddbid
-                     , name
+                       name
                      , totalvisits
                      , lastvisit
                      , previousvisit
                      , starsystem
-                     , starsystemlastupdated
-                     ,comment)
-                    VALUES(@eliteid, @eddbid, @name, @totalvisits, @lastvisit, @previousvisit, @starsystem, @starsystemlastupdated, @comment)";
+                     , starsystemlastupdated)
+                    VALUES(@name, @totalvisits, @lastvisit, @previousvisit, @starsystem, @starsystemlastupdated)";
         private static string UPDATE_SQL = @"
                     UPDATE starsystems
-                    SET eliteid = @eliteid
-                       ,eddbid = @eddbid
-                       ,totalvisits = @totalvisits
+                    SET totalvisits = @totalvisits
                        ,lastvisit = @lastvisit
                        ,previousvisit = @previousvisit
                        ,starsystem = @starsystem
                        ,starsystemlastupdated = @starsystemlastupdated
-                       ,comment = @comment
                     WHERE name = @name";
         private static string SELECT_BY_NAME_SQL = @"
-                    SELECT eliteId,
-                           eddbid,
-                           name,
-                           totalvisits,
+                    SELECT totalvisits,
                            lastvisit,
-                           previousvisit,
                            starsystem,
                            starsystemlastupdated,
                            comment
@@ -58,16 +45,28 @@ namespace EDDI
         private static string TABLE_SQL = @"PRAGMA table_info(starsystems)";
         private static string ALTER_ADD_COMMENT_SQL = @"ALTER TABLE starsystems ADD COLUMN comment TEXT";
 
-        static EDDIStarSystemSqLiteRepository()
+        static StarSystemSqLiteRepository()
         {
             CreateDatabase();
         }
 
-        public EDDIStarSystem GetEDDIStarSystem(string name)
+        public StarSystem GetOrCreateStarSystem(string name)
+        {
+            StarSystem system = GetStarSystem(name);
+            if (system == null)
+            {
+                system = new StarSystem();
+                system.name = name;
+                system.visits = 0;
+            }
+            return system;
+        }
+
+        public StarSystem GetStarSystem(string name)
         {
             if (!File.Exists(DbFile)) return null;
 
-            EDDIStarSystem result = null;
+            StarSystem result = null;
             try
             {
                 using (var con = SimpleDbConnection())
@@ -82,16 +81,23 @@ namespace EDDI
                         {
                             if (rdr.Read())
                             {
-                                result = new EDDIStarSystem();
-                                if (!rdr.IsDBNull(0)) result.EliteID = rdr.GetInt32(0);
-                                if (!rdr.IsDBNull(1)) result.EDDBID = rdr.GetInt32(1);
-                                result.Name = rdr.GetString(2);
-                                result.TotalVisits = rdr.GetInt32(3);
-                                result.LastVisit = rdr.GetDateTime(4);
-                                if (!rdr.IsDBNull(5)) result.PreviousVisit = rdr.GetDateTime(5);
-                                result.StarSystem = JsonConvert.DeserializeObject<StarSystem>(rdr.GetString(6));
-                                result.StarSystemLastUpdated = rdr.GetDateTime(7);
-                                if (!rdr.IsDBNull(8)) result.Comment = rdr.GetString(8);
+                                result = JsonConvert.DeserializeObject<StarSystem>(rdr.GetString(2));
+                                Logging.Error("visits is " + result.visits);
+                                if (result.visits < 1)
+                                {
+                                    result.visits = rdr.GetInt32(0);
+                                    Logging.Error("visits is now " + result.visits);
+                                    result.lastvisit = rdr.GetDateTime(1);
+                                    Logging.Error("lastvisit is now " + result.lastvisit);
+                                }
+                                if (result.lastupdated == null)
+                                {
+                                    result.lastupdated = rdr.GetDateTime(4);
+                                }
+                                if (result.comment == null)
+                                {
+                                    if (!rdr.IsDBNull(4)) result.comment = rdr.GetString(4);
+                                }
                             }
                         }
                     }
@@ -102,30 +108,28 @@ namespace EDDI
             {
                 Logging.Warn("Problem obtaining data: " + ex);
             }
+
+            // TODO if star system data is out-of-date then refresh it
             return result;
         }
 
-        public void SaveEDDIStarSystem(EDDIStarSystem eddiStarSystem)
+        public void SaveStarSystem(StarSystem starSystem)
         {
             using (var con = SimpleDbConnection())
             {
                 con.Open();
 
-                if (GetEDDIStarSystem(eddiStarSystem.Name) == null)
+                if (GetStarSystem(starSystem.name) == null)
                 {
                     using (var cmd = new SQLiteCommand(con))
                     {
                         cmd.CommandText = INSERT_SQL;
                         cmd.Prepare();
-                        cmd.Parameters.AddWithValue("@eliteid", eddiStarSystem.EliteID);
-                        cmd.Parameters.AddWithValue("@eddbid", eddiStarSystem.EDDBID);
-                        cmd.Parameters.AddWithValue("@name",eddiStarSystem.Name);
-                        cmd.Parameters.AddWithValue("@totalvisits", eddiStarSystem.TotalVisits);
-                        cmd.Parameters.AddWithValue("@lastvisit", eddiStarSystem.LastVisit);
-                        cmd.Parameters.AddWithValue("@previousvisit", eddiStarSystem.PreviousVisit);
-                        cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(eddiStarSystem.StarSystem));
-                        cmd.Parameters.AddWithValue("@starsystemlastupdated", eddiStarSystem.StarSystemLastUpdated);
-                        cmd.Parameters.AddWithValue("@comment", eddiStarSystem.Comment);
+                        cmd.Parameters.AddWithValue("@name", starSystem.name);
+                        cmd.Parameters.AddWithValue("@totalvisits", starSystem.visits);
+                        cmd.Parameters.AddWithValue("@lastvisit", starSystem.lastvisit);
+                        cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(starSystem));
+                        cmd.Parameters.AddWithValue("@starsystemlastupdated", starSystem.lastupdated);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -135,15 +139,11 @@ namespace EDDI
                     {
                         cmd.CommandText = UPDATE_SQL;
                         cmd.Prepare();
-                        cmd.Parameters.AddWithValue("@eliteid", eddiStarSystem.EliteID);
-                        cmd.Parameters.AddWithValue("@eddbid", eddiStarSystem.EDDBID);
-                        cmd.Parameters.AddWithValue("@totalvisits", eddiStarSystem.TotalVisits);
-                        cmd.Parameters.AddWithValue("@lastvisit", eddiStarSystem.LastVisit);
-                        cmd.Parameters.AddWithValue("@previousvisit", eddiStarSystem.PreviousVisit);
-                        cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(eddiStarSystem.StarSystem));
-                        cmd.Parameters.AddWithValue("@starsystemlastupdated", eddiStarSystem.StarSystemLastUpdated);
-                        cmd.Parameters.AddWithValue("@name", eddiStarSystem.Name);
-                        cmd.Parameters.AddWithValue("@comment", eddiStarSystem.Comment);
+                        cmd.Parameters.AddWithValue("@totalvisits", starSystem.visits);
+                        cmd.Parameters.AddWithValue("@lastvisit", starSystem.lastvisit);
+                        cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(starSystem));
+                        cmd.Parameters.AddWithValue("@starsystemlastupdated", starSystem.lastupdated);
+                        cmd.Parameters.AddWithValue("@name", starSystem.name);
                         cmd.ExecuteNonQuery();
                     }
                 }

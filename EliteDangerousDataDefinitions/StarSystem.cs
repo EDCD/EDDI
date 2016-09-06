@@ -9,6 +9,9 @@ namespace EliteDangerousDataDefinitions
     /// <summary>Details for a star system</summary>
     public class StarSystem
     {
+        // The ID in Elite: Dangerous' database
+        public long EDID { get; set; }
+        // The ID in EDDB
         public long EDDBID { get; set; }
         public string name { get; set; }
         public long? population { get; set; }
@@ -33,6 +36,21 @@ namespace EliteDangerousDataDefinitions
 
         /// <summary>Details of bodies (stars/planets)</summary>
         public List<Body> bodies { get; set; }
+
+        /// <summary>Number of visits</summary>
+        public int visits;
+
+        /// <summary>Time of last visit</summary>
+        public DateTime? lastvisit;
+
+        /// <summary>Commander's rank in the system</summary>
+        public string rank;
+
+        /// <summary>comment on this starsystem</summary>
+        public string comment;
+
+        // Admin - the last time the data about this system was obtained from remote repository
+        public DateTime lastupdated;
 
         public StarSystem()
         {

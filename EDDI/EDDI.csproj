@@ -88,7 +88,6 @@
     </ApplicationDefinition>
     <Compile Include="EDDI.cs" />
     <Compile Include="EventScript.cs" />
-    <Compile Include="SqlLiteBaseRepository.cs" />
     <Compile Include="ScriptResolver.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -100,7 +99,6 @@
     </Compile>
     <Compile Include="EDDIConfiguration.cs" />
     <Compile Include="EDDIStarSystem.cs" />
-    <Compile Include="EDDIStarSystemSqLiteRepository.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -11,6 +11,8 @@ namespace EDDI
     {
         [JsonProperty("eventname")]
         public string EventName { get; private set; }
+        [JsonProperty("description")]
+        public string Description { get; private set; }
         [JsonProperty("enabled")]
         public bool Enabled { get; set; }
         [JsonProperty("defaultscript")]
@@ -24,15 +26,22 @@ namespace EDDI
             get { return customScript == null ? defaultScript : customScript; }
             set { if (value == null || value == defaultScript) { customScript = null; } else { customScript = value; } }
         }
- 
+
+        [JsonIgnore]
+        public string DefaultValue
+        {
+            get { return defaultScript; }
+        }
+
         public bool isDefault()
         {
             return customScript != null;
         }
 
-        public EventScript(string name, string script)
+        public EventScript(string name, string description, string script)
         {
             EventName = name;
+            Description = description;
             defaultScript = script;
             Enabled = true;
         }

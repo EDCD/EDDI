@@ -19,9 +19,4 @@ namespace EDDI
         public String Comment { get; set; }
     }
 
-    public interface IEDDIStarSystemRepository
-    {
-        EDDIStarSystem GetEDDIStarSystem(string name);
-        void SaveEDDIStarSystem(EDDIStarSystem starSystem);
-    }
 }

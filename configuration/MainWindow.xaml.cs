@@ -1,5 +1,4 @@
-﻿using EDDIVAPlugin;
-using EliteDangerousCompanionAppService;
+﻿using EliteDangerousCompanionAppService;
 using EliteDangerousDataDefinitions;
 using EliteDangerousNetLogMonitor;
 using EliteDangerousStarMapService;
@@ -472,7 +471,7 @@ namespace configuration
         /// </summary>
         private async void edsmObtainLogClicked(object sender, RoutedEventArgs e)
         {
-            IEDDIStarSystemRepository starSystemRepository = new EDDIStarSystemSqLiteRepository();
+            StarSystemRepository starSystemRepository = new StarSystemSqLiteRepository();
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
 
             string commanderName;
@@ -506,7 +505,7 @@ namespace configuration
             edsmFetchLogsButton.Content = "Obtained log";
         }
 
-        public static void obtainEdsmLogs(StarMapConfiguration starMapConfiguration, IEDDIStarSystemRepository starSystemRepository, string commanderName, IProgress<string> progress)
+        public static void obtainEdsmLogs(StarMapConfiguration starMapConfiguration, StarSystemRepository starSystemRepository, string commanderName, IProgress<string> progress)
         {
             StarMapService starMapService = new StarMapService(starMapConfiguration.apiKey, commanderName);
             Dictionary<string, StarMapLogInfo> systems = starMapService.getStarMapLog();
@@ -514,22 +513,14 @@ namespace configuration
             foreach (string system in systems.Keys)
             {
                 progress.Report(system);
-                EDDIStarSystem CurrentStarSystemData = starSystemRepository.GetEDDIStarSystem(system);
-                if (CurrentStarSystemData == null)
-                {
-                    // We have no record of this system; set it up
-                    CurrentStarSystemData = new EDDIStarSystem();
-                    CurrentStarSystemData.Name = system;
-                    // Due to the potential large number of systems being imported we don't pull individual system data at this time
-                }
-                CurrentStarSystemData.TotalVisits = systems[system].visits;
-                CurrentStarSystemData.LastVisit = systems[system].lastVisit;
-                CurrentStarSystemData.PreviousVisit = systems[system].previousVisit;
+                StarSystem CurrentStarSystem = starSystemRepository.GetOrCreateStarSystem(system);
+                CurrentStarSystem.visits = systems[system].visits;
+                CurrentStarSystem.lastvisit = systems[system].lastVisit;
                 if (comments.ContainsKey(system))
                 {
-                    CurrentStarSystemData.Comment = comments[system];
+                    CurrentStarSystem.comment = comments[system];
                 }
-                starSystemRepository.SaveEDDIStarSystem(CurrentStarSystemData);
+                starSystemRepository.SaveStarSystem(CurrentStarSystem);
             }
         }
 
@@ -545,8 +536,10 @@ namespace configuration
 
         private void editScript(object sender, RoutedEventArgs e)
         {
-            throw new Exception();
-            //eventScriptsData.Items.Refresh();
+            EventScript script = (EventScript)((Button)e.Source).DataContext;
+            EditScriptWindow editScriptWindow = new EditScriptWindow(script);
+            editScriptWindow.ShowDialog();
+            eventScriptsData.Items.Refresh();
         }
 
         private void resetScript(object sender, RoutedEventArgs e)

@@ -1,0 +1,20 @@
+﻿<Window x:Class="configuration.EditScriptWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:configuration"
+        mc:Ignorable="d"
+        Title="Edit Script" Height="600" Width="800">
+    <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+        <TextBlock DockPanel.Dock="Top" x:Name="descriptionText" Margin="20" TextWrapping="Wrap" VerticalAlignment="Top" Width="760"/>
+        <UniformGrid DockPanel.Dock="Bottom" Margin="20" Rows="1" Columns="5" Width="760" HorizontalAlignment="Center">
+            <Button x:Name="acceptButton" FontSize="18" Content="OK" HorizontalAlignment="Center" VerticalAlignment="Top" Click="acceptButtonClick" Margin="5"/>
+            <Button x:Name="testButton" FontSize="18" Content="Test" HorizontalAlignment="Center" VerticalAlignment="Top" Click="testButtonClick" Margin="5"/>
+            <Button x:Name="resetButton" FontSize="18" Content="Reset" HorizontalAlignment="Center" VerticalAlignment="Top" Click="resetButtonClick" Margin="5"/>
+            <Button x:Name="defaultButton" FontSize="18" Content="Default" HorizontalAlignment="Center" VerticalAlignment="Top" Click="defaultButtonClick" Margin="5"/>
+            <Button x:Name="cancelButton" FontSize="18" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Top" Click="cancelButtonClick" Margin="5"/>
+        </UniformGrid>
+        <TextBox x:Name="scriptText" Margin="20" TextWrapping="Wrap" Height="400" VerticalAlignment="Top" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+    </DockPanel>
+</Window>

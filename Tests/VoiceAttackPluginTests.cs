@@ -4,6 +4,8 @@ using EDDIVAPlugin;
 using System.Collections.Generic;
 using System;
 using EDDI;
+using EliteDangerousDataDefinitions;
+using EliteDangerousDataProviderService;
 
 namespace Tests
 {
@@ -107,17 +109,17 @@ namespace Tests
         [TestMethod]
         public void TestSqlRepositoryPresent()
         {
-            IEDDIStarSystemRepository starSystemRepository = new EDDIStarSystemSqLiteRepository();
-            EDDIStarSystem DBData = starSystemRepository.GetEDDIStarSystem("Nangkano");
+            StarSystemRepository starSystemRepository = new StarSystemSqLiteRepository();
+            StarSystem DBData = starSystemRepository.GetStarSystem("Nangkano");
             Assert.IsNotNull(DBData);
-            Assert.AreEqual("Nangkano", DBData.StarSystem.name);
+            Assert.AreEqual("Nangkano", DBData.name);
         }
 
         [TestMethod]
         public void TestSqlRepositoryMissing()
         {
-            IEDDIStarSystemRepository starSystemRepository = new EDDIStarSystemSqLiteRepository();
-            EDDIStarSystem DBData = starSystemRepository.GetEDDIStarSystem("Not here");
+            StarSystemRepository starSystemRepository = new StarSystemSqLiteRepository();
+            StarSystem DBData = starSystemRepository.GetStarSystem("Not here");
             Assert.IsNull(DBData);
         }
     }

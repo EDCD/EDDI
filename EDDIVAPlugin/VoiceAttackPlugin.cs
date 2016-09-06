@@ -1016,28 +1016,17 @@ namespace EDDIVAPlugin
 
 
             // Fetch the star system in which the ship is stored
-            EDDIStarSystem StoredShipStarSystemData = eddi.starSystemRepository.GetEDDIStarSystem(ship.StarSystem);
-            if (StoredShipStarSystemData == null)
-            {
-                // We have no record of this system; set it up
-                StoredShipStarSystemData = new EDDIStarSystem();
-                StoredShipStarSystemData.Name = ship.StarSystem;
-                StoredShipStarSystemData.StarSystem = DataProviderService.GetSystemData(ship.StarSystem, null, null, null);
-                StoredShipStarSystemData.LastVisit = DateTime.Now;
-                StoredShipStarSystemData.StarSystemLastUpdated = StoredShipStarSystemData.LastVisit;
-                StoredShipStarSystemData.TotalVisits = 1;
-                eddi.starSystemRepository.SaveEDDIStarSystem(StoredShipStarSystemData);
-            }
+            StarSystem StoredShipStarSystem = eddi.starSystemRepository.GetOrCreateStarSystem(ship.StarSystem);
 
             // Have to grab a local copy of our star system as CurrentStarSystem might not have been initialised yet
-            EDDIStarSystem ThisStarSystemData = eddi.starSystemRepository.GetEDDIStarSystem(eddi.CurrentStarSystem.name);
+            StarSystem ThisStarSystem = eddi.starSystemRepository.GetStarSystem(eddi.CurrentStarSystem.name);
 
             // Work out the distance to the system where the ship is stored if we can
-            if (ThisStarSystemData != null && ThisStarSystemData.StarSystem != null && ThisStarSystemData.StarSystem.x != null && StoredShipStarSystemData.StarSystem != null && StoredShipStarSystemData.StarSystem.x != null)
+            if (ThisStarSystem != null && ThisStarSystem.x != null && StoredShipStarSystem.x != null)
             {
-                decimal distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(ThisStarSystemData.StarSystem.x - StoredShipStarSystemData.StarSystem.x), 2)
-                    + Math.Pow((double)(ThisStarSystemData.StarSystem.y - StoredShipStarSystemData.StarSystem.y), 2)
-                    + Math.Pow((double)(ThisStarSystemData.StarSystem.z - StoredShipStarSystemData.StarSystem.z), 2)), 2);
+                decimal distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(ThisStarSystem.x - StoredShipStarSystem.x), 2)
+                    + Math.Pow((double)(ThisStarSystem.y - StoredShipStarSystem.y), 2)
+                    + Math.Pow((double)(ThisStarSystem.z - StoredShipStarSystem.z), 2)), 2);
                 setDecimal(ref decimalValues, prefix + " distance", distance);
             }
             else
@@ -1277,12 +1266,9 @@ namespace EDDIVAPlugin
                 if (eddi.Cmdr != null)
                 {
                     // Store locally
-                    EDDIStarSystem here = eddi.starSystemRepository.GetEDDIStarSystem(eddi.CurrentStarSystem.name);
-                    if (here != null)
-                    {
-                        here.Comment = comment == "" ? null : comment;
-                        eddi.starSystemRepository.SaveEDDIStarSystem(here);
-                    }
+                    StarSystem here = eddi.starSystemRepository.GetOrCreateStarSystem(eddi.CurrentStarSystem.name);
+                    here.comment = comment == "" ? null : comment;
+                    eddi.starSystemRepository.SaveStarSystem(here);
 
                     if (eddi.starMapService != null)
                     {
