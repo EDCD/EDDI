@@ -20,13 +20,16 @@ namespace configuration
     /// </summary>
     public partial class EditScriptWindow : Window
     {
-        private EventScript script;
+        private Dictionary<string, Script> scripts;
+        private Script script;
 
         private static readonly string DEFAULT_DESCRIPTION = "foo";
 
-        public EditScriptWindow(EventScript script)
+        public EditScriptWindow(Dictionary<string, Script> scripts, string name)
         {
-            this.script = script;
+            this.scripts = scripts;
+            script = this.scripts[name];
+
             InitializeComponent();
 
             descriptionText.Text = script.Description == null ? DEFAULT_DESCRIPTION : script.Description;
@@ -35,6 +38,8 @@ namespace configuration
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
+            script.Value = scriptText.Text;
+            this.Close();
         }
 
         private void cancelButtonClick(object sender, RoutedEventArgs e)
@@ -54,7 +59,14 @@ namespace configuration
 
         private void testButtonClick(object sender, RoutedEventArgs e)
         {
-            Eddi.Instance.Say(scriptText.Text);
+            // Splice the new script in to the existing scripts
+            Dictionary<string, Script> newScripts = new Dictionary<string, Script>(scripts);
+            Script testScript = new Script(script.Name, script.Description, scriptText.Text);
+            newScripts.Remove(script.Name);
+            newScripts.Add(script.Name, testScript);
+
+            ScriptResolver scriptResolver = new ScriptResolver(newScripts);
+            Eddi.Instance.Say(scriptResolver, script.Name);
         }
     }
 }

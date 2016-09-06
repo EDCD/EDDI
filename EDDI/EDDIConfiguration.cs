@@ -16,8 +16,8 @@ namespace EDDI
         public bool Debug { get; set; }
         [JsonProperty("insurance")]
         public decimal Insurance { get; set; }
-        [JsonProperty("eventscripts")]
-        public List<EventScript> EventScripts { get; set; }
+        [JsonProperty("scripts")]
+        public Dictionary<string, Script> Scripts { get; set; }
 
         [JsonIgnore]
         private String dataPath;

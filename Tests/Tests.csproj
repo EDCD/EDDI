@@ -97,7 +97,7 @@
     <Compile Include="CommanderDataTests.cs" />
     <Compile Include="CoriolisTests.cs" />
     <Compile Include="NetLogMonitorTests.cs" />
-    <Compile Include="TemplateTest.cs" />
+    <Compile Include="ScriptResolverTest.cs" />
     <Compile Include="VoiceAttackPluginTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

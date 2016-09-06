@@ -34,6 +34,17 @@ namespace EliteDangerousDataDefinitions
         /// <summary>Details of stations</summary>
         public List<Station> stations { get; set; }
 
+        /// <summary>Summary info for stations</summary>
+        public List<Station> planetarystations
+        {
+            get { return stations.FindAll(s => s.IsPlanetary()); }
+        }
+
+        public List<Station> orbitalstations
+        {
+            get { return stations.FindAll(s => !s.IsPlanetary()); }
+        }
+
         /// <summary>Details of bodies (stars/planets)</summary>
         public List<Body> bodies { get; set; }
 

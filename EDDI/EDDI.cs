@@ -78,8 +78,8 @@ namespace EDDI
 
         private Thread logWatcherThread;
 
-        // Scripts
-        private Dictionary<String, EventScript> eventScripts;
+        // Script resolver
+        private ScriptResolver scriptResolver;
 
         public static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         public static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
@@ -119,15 +119,8 @@ namespace EDDI
                 Logging.Verbose = eddiConfiguration.Debug;
                 Insurance = eddiConfiguration.Insurance;
 
-                // Event scripts are stored in a list; make them a dictionary for ease of lookup
-                eventScripts = new Dictionary<string, EventScript>();
-                if (eddiConfiguration.EventScripts != null)
-                {
-                    foreach (EventScript eventScript in eddiConfiguration.EventScripts)
-                    {
-                        eventScripts.Add(eventScript.EventName, eventScript);
-                    }
-                }
+                // Set up the script resolver
+                scriptResolver = new ScriptResolver(eddiConfiguration.Scripts);
 
                 // Set up the app service
                 appService = new CompanionAppService();
@@ -214,22 +207,23 @@ namespace EDDI
             EventHandler += new OnEventHandler(EventPosted);
         }
 
-        public void Say(string script)
+        // Say something with the default resolver
+        public void Say(string scriptName)
         {
-            ScriptResolver resolver = new ScriptResolver();
+            Say(scriptResolver, scriptName);
+        }
+
+        // Say something with a custom resolver
+        public void Say(ScriptResolver resolver, string scriptName)
+        {
             Dictionary<string, Cottle.Value> dict = createVariables();
-            string result = resolver.resolve(script, dict);
-            speechService.Say(null, null, result);
+            string result = resolver.resolve(scriptName, dict);
+            speechService.Say(Cmdr, Ship, result);
         }
 
         private void EventPosted(string eventName)
         {
-            EventScript script;
-            eventScripts.TryGetValue(eventName, out script);
-            if (script != null && script.Enabled)
-            {
-                Say(script.Value);
-            }
+            Say(eventName);
         }
 
         public void Stop()

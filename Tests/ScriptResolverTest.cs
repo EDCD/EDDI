@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Tests
 {
     [TestClass]
-    public class TemplateTest
+    public class ScriptResolverTest
     {
         [TestMethod]
         public void TestTemplateSimple()
@@ -87,11 +87,26 @@ namespace Tests
         [TestMethod]
         public void TestResolverSimple()
         {
-            ScriptResolver resolver = new ScriptResolver();
+            Dictionary<string, Script> scripts = new Dictionary<string, Script>();
+            scripts.Add("test", new Script("test", null, "Hello {name}"));
+            ScriptResolver resolver = new ScriptResolver(scripts);
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
             dict["name"] = "world";
-            string result = resolver.resolve("Hello {name}", dict);
+            string result = resolver.resolve("test", dict);
             Assert.AreEqual("Hello world", result);
+        }
+
+        [TestMethod]
+        public void TestResolverFunctions()
+        {
+            Dictionary<string, Script> scripts = new Dictionary<string, Script>();
+            scripts.Add("func", new Script("func", null, "Hello {name}"));
+            scripts.Add("test", new Script("test", null, "Well {F(\"func\")}"));
+            ScriptResolver resolver = new ScriptResolver(scripts);
+            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
+            dict["name"] = "world";
+            string result = resolver.resolve("test", dict);
+            Assert.AreEqual("Well Hello world", result);
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using Cottle.Documents;
+﻿using Cottle.Builtins;
+using Cottle.Documents;
 using Cottle.Functions;
+using Cottle.Settings;
 using Cottle.Stores;
 using EliteDangerousSpeechService;
 using System;
@@ -13,23 +15,60 @@ namespace EDDI
 {
     public class ScriptResolver
     {
+        private Dictionary<string, Script> scripts;
         private Random random;
-        public ScriptResolver()
+        private CustomSetting setting;
+
+        public ScriptResolver(Dictionary<string, Script> scripts)
         {
             random = new Random();
+            this.scripts = scripts;
+            setting = new CustomSetting();
+            setting.Trimmer = BuiltinTrimmers.CollapseBlankCharacters;
         }
 
-        public string resolve(string script, Dictionary<string, Cottle.Value> vars)
+        public string resolve(string name, Dictionary<string, Cottle.Value> vars)
         {
-            var document = new SimpleDocument(script);
-            var result = document.Render(buildStore(vars));
-            Logging.Debug("Turned script " + script + " in to speech " + result);
-            return result;
+            Logging.Debug("Resolving script " + name);
+            Script script;
+            scripts.TryGetValue(name, out script);
+            if (script == null)
+            {
+                Logging.Warn("Attempt to resolve unknown script " + name);
+                return null;
+            }
+            Logging.Debug("Found script");
+
+            return resolveScript(script.Value, vars);
+        }
+
+        public string resolveScript(string script, Dictionary<string, Cottle.Value> vars)
+        {
+            try
+            {
+                var document = new SimpleDocument(script, setting);
+                var result = document.Render(buildStore(vars));
+                Logging.Debug("Turned script " + script + " in to speech " + result);
+                return result;
+            }
+            catch (Exception e)
+            {
+                Logging.Warn("Failed to resolve script: " + e.Message);
+                return "There is a problem with the script: " + e.Message;
+            }
         }
 
         private BuiltinStore buildStore(Dictionary<string, Cottle.Value> vars)
         {
             BuiltinStore store = new BuiltinStore();
+
+            // Function to call another script
+            store["F"] = new NativeFunction((values) =>
+            {
+
+                return new ScriptResolver(scripts).resolve(values[0].AsString, vars);
+            }, 1);
+
             // Translation functions
             store["P"] = new NativeFunction((values) =>
             {

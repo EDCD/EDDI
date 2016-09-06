@@ -87,7 +87,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EDDI.cs" />
-    <Compile Include="EventScript.cs" />
+    <Compile Include="Script.cs" />
     <Compile Include="ScriptResolver.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

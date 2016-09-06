@@ -202,17 +202,17 @@
             <TabItem Header="Scripts">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <TextBlock x:Name="scriptText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="This allows you to customise EDDI's responses to events" VerticalAlignment="Top"/>
-                    <DataGrid AutoGenerateColumns="False" x:Name="eventScriptsData" CanUserAddRows="false" TargetUpdated="eddiScriptsUpdated">
+                    <DataGrid AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" TargetUpdated="eddiScriptsUpdated">
                         <DataGrid.Columns>
-                            <DataGridTextColumn IsReadOnly="True" Header="Event" Binding="{Binding Path=EventName}"></DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="True" Header="Name" Binding="{Binding Path=Value.Name}"></DataGridTextColumn>
                             <DataGridTemplateColumn Header="Enabled">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Checked="eddiScriptsUpdated" Unchecked="eddiScriptsUpdated" />
+                                        <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Checked="eddiScriptsUpdated" Unchecked="eddiScriptsUpdated" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn IsReadOnly="True" Header="Description" Width="*" Binding="{Binding Path=Description}"></DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="True" Header="Description" Width="*" Binding="{Binding Path=Value.Description}"></DataGridTextColumn>
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

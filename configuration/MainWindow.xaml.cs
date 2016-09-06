@@ -38,6 +38,7 @@ namespace configuration
         private CompanionAppService companionAppService;
 
         private EDDIConfiguration eddiConfiguration;
+        private List<Script> scripts;
 
         public MainWindow()
         {
@@ -49,7 +50,10 @@ namespace configuration
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;
             eddiInsuranceDecimal.Value = eddiConfiguration.Insurance;
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
-            eventScriptsData.ItemsSource = eddiConfiguration.EventScripts;
+            //// DataGrid requires a list as a backing store
+            //scripts = new List<Script>(eddiConfiguration.Scripts.Values);
+            //scriptsData.ItemsSource = scripts;
+            scriptsData.ItemsSource = eddiConfiguration.Scripts;
 
             Logging.Verbose = eddiConfiguration.Debug;
 
@@ -161,7 +165,7 @@ namespace configuration
             eddiConfiguration.HomeStation = String.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
             eddiConfiguration.Insurance = eddiInsuranceDecimal.Value == null ? 5 : (decimal)eddiInsuranceDecimal.Value;
             eddiConfiguration.Debug = eddiVerboseLogging.IsChecked.Value;
-            eddiConfiguration.EventScripts = this.eddiConfiguration.EventScripts;
+            eddiConfiguration.Scripts = this.eddiConfiguration.Scripts;
             eddiConfiguration.ToFile();
         }
 
@@ -536,18 +540,18 @@ namespace configuration
 
         private void editScript(object sender, RoutedEventArgs e)
         {
-            EventScript script = (EventScript)((Button)e.Source).DataContext;
-            EditScriptWindow editScriptWindow = new EditScriptWindow(script);
+            Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+            EditScriptWindow editScriptWindow = new EditScriptWindow(eddiConfiguration.Scripts, script.Name);
             editScriptWindow.ShowDialog();
-            eventScriptsData.Items.Refresh();
+            scriptsData.Items.Refresh();
         }
 
         private void resetScript(object sender, RoutedEventArgs e)
         {
-            EventScript script = (EventScript)((Button)e.Source).DataContext;
+            Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
             script.Value = null;
             eddiScriptsUpdated(sender, e);
-            eventScriptsData.Items.Refresh();
+            scriptsData.Items.Refresh();
         }
     }
 
