@@ -15,7 +15,7 @@ namespace Tests
         public void TestSolLog()
         {
             StarMapService service = new StarMapService("secret", "McDonald", "http://beta.edsm.net:8080/");
-            service.sendStarMapLog("Sol", null, null, null);
+            service.sendStarMapLog(DateTime.Now, "Sol", null, null, null);
 
             StarMapInfo info = service.getStarMapInfo("Sol");
             Assert.IsTrue(info.Visits >= 1);  // can be any number thanks to repeated testing
@@ -25,7 +25,7 @@ namespace Tests
         public void TestProximaCentauriComment()
         {
             StarMapService service = new StarMapService("secret", "McDonald", "http://beta.edsm.net:8080/");
-            service.sendStarMapLog("Proxima Centauri", null, null, null);
+            service.sendStarMapLog(DateTime.Now, "Proxima Centauri", null, null, null);
 
             service.sendStarMapComment("Proxima Centauri", "Not so far away");
 

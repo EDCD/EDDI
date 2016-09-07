@@ -65,8 +65,10 @@ namespace configuration
             newScripts.Remove(script.Name);
             newScripts.Add(script.Name, testScript);
 
+            SpeechResponder responder = new SpeechResponder();
+            responder.Start();
             ScriptResolver scriptResolver = new ScriptResolver(newScripts);
-            Eddi.Instance.Say(scriptResolver, script.Name);
+            responder.Say(scriptResolver, script.Name);
         }
     }
 }

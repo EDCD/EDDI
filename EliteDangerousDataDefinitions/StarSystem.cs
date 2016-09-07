@@ -15,7 +15,7 @@ namespace EliteDangerousDataDefinitions
         public long EDDBID { get; set; }
         public string name { get; set; }
         public long? population { get; set; }
-        public string allegiance { get; set;  }
+        public string allegiance { get; set; }
         public string government { get; set; }
         public string faction { get; set; }
         public string primaryeconomy { get; set; }
@@ -53,9 +53,6 @@ namespace EliteDangerousDataDefinitions
 
         /// <summary>Time of last visit</summary>
         public DateTime? lastvisit;
-
-        /// <summary>Commander's rank in the system</summary>
-        public string rank;
 
         /// <summary>comment on this starsystem</summary>
         public string comment;

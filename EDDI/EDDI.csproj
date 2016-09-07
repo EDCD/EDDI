@@ -87,8 +87,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EDDI.cs" />
+    <Compile Include="EDSMResponder.cs" />
+    <Compile Include="SpeechResponder.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="ScriptResolver.cs" />
+    <Compile Include="EDDIResponder.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -98,7 +101,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EDDIConfiguration.cs" />
-    <Compile Include="EDDIStarSystem.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -144,6 +146,10 @@
     <ProjectReference Include="..\EliteDangerousDataProviderService\EliteDangerousDataProviderService.csproj">
       <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
       <Name>EliteDangerousDataProviderService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousEvents\EliteDangerousEvents.csproj">
+      <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
+      <Name>EliteDangerousEvents</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteDangerousJournalMonitor\EliteDangerousJournalMonitor.csproj">
       <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>

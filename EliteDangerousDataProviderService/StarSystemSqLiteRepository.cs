@@ -14,7 +14,6 @@ namespace EliteDangerousDataProviderService
                      name TEXT NOT NULL
                      ,totalvisits INT NOT NULL
                      ,lastvisit DATETIME NOT NULL
-                     ,previousvisit DATETIME
                      ,starsystem TEXT NOT NULL
                      ,starsystemlastupdated DATETIME NOT NULL)";
         private static string INSERT_SQL = @"
@@ -22,15 +21,13 @@ namespace EliteDangerousDataProviderService
                        name
                      , totalvisits
                      , lastvisit
-                     , previousvisit
                      , starsystem
                      , starsystemlastupdated)
-                    VALUES(@name, @totalvisits, @lastvisit, @previousvisit, @starsystem, @starsystemlastupdated)";
+                    VALUES(@name, @totalvisits, @lastvisit, @starsystem, @starsystemlastupdated)";
         private static string UPDATE_SQL = @"
                     UPDATE starsystems
                     SET totalvisits = @totalvisits
                        ,lastvisit = @lastvisit
-                       ,previousvisit = @previousvisit
                        ,starsystem = @starsystem
                        ,starsystemlastupdated = @starsystemlastupdated
                     WHERE name = @name";
@@ -55,7 +52,7 @@ namespace EliteDangerousDataProviderService
             StarSystem system = GetStarSystem(name);
             if (system == null)
             {
-                system = new StarSystem();
+                system = DataProviderService.GetSystemData(name, null, null, null);
                 system.name = name;
                 system.visits = 0;
             }

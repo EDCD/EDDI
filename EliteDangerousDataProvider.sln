@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousJournalMonito
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDDI", "EDDI\EDDI.csproj", "{EC7BA042-A370-447F-8C3E-241358CEBCBB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousEvents", "EliteDangerousEvents\EliteDangerousEvents.csproj", "{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,10 @@ Global
 		{EC7BA042-A370-447F-8C3E-241358CEBCBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC7BA042-A370-447F-8C3E-241358CEBCBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC7BA042-A370-447F-8C3E-241358CEBCBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

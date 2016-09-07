@@ -22,7 +22,8 @@ namespace EliteDangerousSpeechService
 
         private SpeechServiceConfiguration configuration;
 
-        private HashSet<ISoundOut> activeSpeeches = new HashSet<ISoundOut>();
+        private static readonly object activeSpeechLock = new object();
+        private ISoundOut activeSpeech;
 
         public SpeechService(SpeechServiceConfiguration configuration = null)
         {
@@ -102,131 +103,131 @@ namespace EliteDangerousSpeechService
         {
             if (script == null) { return; }
 
-            try
+            StopCurrentSpeech();
+
+            new Thread(() =>
             {
-                using (SpeechSynthesizer synth = new SpeechSynthesizer())
-                using (MemoryStream stream = new MemoryStream())
+                try
                 {
-                    if (String.IsNullOrWhiteSpace(voice))
+                    using (SpeechSynthesizer synth = new SpeechSynthesizer())
+                    using (MemoryStream stream = new MemoryStream())
                     {
-                        voice = configuration.StandardVoice;
-                    }
-                    if (voice != null)
-                    {
-                        try
+                        if (string.IsNullOrWhiteSpace(voice))
                         {
-                            synth.SelectVoice(voice);
+                            voice = configuration.StandardVoice;
                         }
-                        catch { }
-                    }
-
-                    synth.Rate = configuration.Rate;
-                    synth.Volume = configuration.Volume;
-
-                    synth.SetOutputToWaveStream(stream);
-                    string speech = SpeechFromScript(script);
-                    if (speech.Contains("<phoneme"))
-                    {
-                        speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + synth.Voice.Culture.Name + "\"><s>" + speech + "</s></speak>";
-                        synth.SpeakSsml(speech);
-                    }
-                    else
-                    {
-                        synth.Speak(speech);
-                    }
-                    stream.Seek(0, SeekOrigin.Begin);
-
-                    Logging.Info("Turned script " + script + " in to speech " + speech);
-
-                    IWaveSource source = new WaveFileReader(stream);
-
-                    // We need to extend the duration of the wave source if we have any effects going on
-                    if (chorusLevel != 0 || reverbLevel != 0 || echoDelay != 0)
-                    {
-                        // Add a base of 500ms plus 10ms per effect level over 50
-                        source = source.AppendSource(x => new ExtendedDurationWaveSource(x, 500 + Math.Max(0, (configuration.EffectsLevel - 50) * 10)));
-                    }
-
-                    // Add various effects...
-
-                    // We always have chorus
-                    if (chorusLevel != 0)
-                    {
-                        source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = Math.Min(100, (int)(180 * ((decimal)configuration.EffectsLevel) / ((decimal)100))), Delay = 16, Frequency = (configuration.EffectsLevel / 10), Feedback = 25 });
-                    }
-
-                    // We only have reverb and echo if we're not transmitting or receiving
-                    if (!radio)
-                    {
-                        if (reverbLevel != 0)
+                        if (voice != null)
                         {
-                            // We tone down the reverb level with the distortion level, as the combination is nasty
-                            source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = (int)(1 + 999 * ((decimal)configuration.EffectsLevel) / ((decimal)100)), ReverbMix = Math.Max(-96, -96 + (96 * reverbLevel / 100) - distortionLevel) });
+                            try
+                            {
+                                synth.SelectVoice(voice);
+                            }
+                            catch { }
                         }
 
-                        if (echoDelay != 0)
+                        synth.Rate = configuration.Rate;
+                        synth.Volume = configuration.Volume;
+
+                        synth.SetOutputToWaveStream(stream);
+                        string speech = SpeechFromScript(script);
+                        if (speech.Contains("<phoneme"))
                         {
-                            // We tone down the echo level with the distortion level, as the combination is nasty
-                            source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = Math.Max(5, (int)(10 * ((decimal)configuration.EffectsLevel) / ((decimal)100)) - distortionLevel), Feedback = Math.Max(0, 10 - distortionLevel / 2) });
+                            speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + synth.Voice.Culture.Name + "\"><s>" + speech + "</s></speak>";
+                            Logging.Debug("Final speech: " + speech);
+                            synth.SpeakSsml(speech);
                         }
-                    }
-
-                    if (configuration.EffectsLevel > 0 && distortionLevel > 0)
-                    {
-                        source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = distortionLevel, Gain = -distortionLevel / 2, PostEQBandwidth = 4000, PostEQCenterFrequency = 4000 });
-                    }
-
-                    if (radio)
-                    {
-                        source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = 7, Gain = -distortionLevel / 2, PostEQBandwidth = 2000, PostEQCenterFrequency = 6000 });
-                        source = source.AppendSource(x => new DmoCompressorEffect(x) { Attack = 1, Ratio = 3, Threshold = -10 });
-                    }
-
-                    EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-                    var soundOut = new WasapiOut();
-                    soundOut.Initialize(source);
-                    soundOut.Stopped += (s, e) => waitHandle.Set();
-
-                    activeSpeeches.Add(soundOut);
-                    soundOut.Play();
-
-                    // Add a timeout, in case it doesn't come back with the signal
-                    waitHandle.WaitOne(source.GetTime(source.Length));
-
-                    // It's possible that this has been disposed of, so ensure that it's still there before we try to finish it
-                    lock (activeSpeeches)
-                    {
-                        if (activeSpeeches.Contains(soundOut))
+                        else
                         {
-                            activeSpeeches.Remove(soundOut);
-                            soundOut.Stop();
-                            soundOut.Dispose();
+                            synth.Speak(speech);
                         }
-                    }
+                        stream.Seek(0, SeekOrigin.Begin);
 
-                    source.Dispose();
+                        Logging.Debug("Turned script " + script + " in to speech " + speech);
+
+                        IWaveSource source = new WaveFileReader(stream);
+
+                        // We need to extend the duration of the wave source if we have any effects going on
+                        if (chorusLevel != 0 || reverbLevel != 0 || echoDelay != 0)
+                        {
+                            // Add a base of 500ms plus 10ms per effect level over 50
+                            source = source.AppendSource(x => new ExtendedDurationWaveSource(x, 500 + Math.Max(0, (configuration.EffectsLevel - 50) * 10)));
+                        }
+
+                        // Add various effects...
+
+                        // We always have chorus
+                        if (chorusLevel != 0)
+                        {
+                            source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = Math.Min(100, (int)(180 * ((decimal)configuration.EffectsLevel) / ((decimal)100))), Delay = 16, Frequency = (configuration.EffectsLevel / 10), Feedback = 25 });
+                        }
+
+                        // We only have reverb and echo if we're not transmitting or receiving
+                        if (!radio)
+                        {
+                            if (reverbLevel != 0)
+                            {
+                                // We tone down the reverb level with the distortion level, as the combination is nasty
+                                source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = (int)(1 + 999 * ((decimal)configuration.EffectsLevel) / ((decimal)100)), ReverbMix = Math.Max(-96, -96 + (96 * reverbLevel / 100) - distortionLevel) });
+                            }
+
+                            if (echoDelay != 0)
+                            {
+                                // We tone down the echo level with the distortion level, as the combination is nasty
+                                source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = Math.Max(5, (int)(10 * ((decimal)configuration.EffectsLevel) / ((decimal)100)) - distortionLevel), Feedback = Math.Max(0, 10 - distortionLevel / 2) });
+                            }
+                        }
+
+                        if (configuration.EffectsLevel > 0 && distortionLevel > 0)
+                        {
+                            source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = distortionLevel, Gain = -distortionLevel / 2, PostEQBandwidth = 4000, PostEQCenterFrequency = 4000 });
+                        }
+
+                        if (radio)
+                        {
+                            source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = 7, Gain = -distortionLevel / 2, PostEQBandwidth = 2000, PostEQCenterFrequency = 6000 });
+                            source = source.AppendSource(x => new DmoCompressorEffect(x) { Attack = 1, Ratio = 3, Threshold = -10 });
+                        }
+
+                        EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+                        var soundOut = new WasapiOut();
+                        soundOut.Initialize(source);
+                        soundOut.Stopped += (s, e) => waitHandle.Set();
+
+                        activeSpeech = soundOut;
+                        soundOut.Play();
+
+                        // Add a timeout, in case it doesn't come back with the signal
+                        waitHandle.WaitOne(source.GetTime(source.Length));
+
+                        StopCurrentSpeech();
+                        source.Dispose();
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                Logging.Error("Failed to speak: " + ex);
-            }
+                catch (Exception ex)
+                {
+                    Logging.Error("Failed to speak: " + ex);
+                }
+            }).Start();
         }
 
         // Called when the parent has exited
         public void ShutdownSpeech()
         {
-            lock(activeSpeeches)
-            {
-                foreach (ISoundOut speech in activeSpeeches)
-                {
-                    speech.Stop();
-                    speech.Dispose();
-                }
-                activeSpeeches.Clear();
-            }
+            StopCurrentSpeech();
         }
 
+        private void StopCurrentSpeech()
+        {
+            lock (activeSpeechLock)
+            {
+                if (activeSpeech != null)
+                {
+                    activeSpeech.Stop();
+                    activeSpeech.Dispose();
+                    activeSpeech = null;
+                }
+            }
+        }
         public string SpeechFromScript(string script)
         {
             if (script == null) { return null; }
@@ -291,7 +292,7 @@ namespace EliteDangerousSpeechService
         private int chorusLevelForShip(Ship ship)
         {
             // This is not affected by ship parameters
-            return (int)(60 * ((decimal)configuration.EffectsLevel)/((decimal)100));
+            return (int)(60 * ((decimal)configuration.EffectsLevel) / ((decimal)100));
         }
 
         private int reverbLevelForShip(Ship ship)

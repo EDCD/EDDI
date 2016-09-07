@@ -18,6 +18,9 @@ namespace EliteDangerousDataDefinitions
         /// <summary>The commander's name as spoken</summary>
         public string phoneticname { get; set; }
 
+        /// <summary> The commander's title.  This is dependent on the current system</summary>
+        public string title { get; set; }
+
         /// <summary>The numeric combat rating, 0 to 8</summary>
         public int combatrating { get; set; }
         /// <summary>The name of the combat rating</summary>

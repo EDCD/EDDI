@@ -32,16 +32,16 @@ namespace EliteDangerousStarMapService
             this.baseUrl = baseUrl;
         }
 
-        public void sendStarMapLog(string systemName, decimal? x, decimal? y, decimal? z)
+        public void sendStarMapLog(DateTime timestamp, string systemName, decimal? x, decimal? y, decimal? z)
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest("api-logs-v1/set-log");
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("systemName", systemName);
-            request.AddParameter("dateVisited", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
+            request.AddParameter("dateVisited", timestamp.ToString("yyyy-MM-dd HH:mm:ss"));
             request.AddParameter("fromSoftware", "EDDI");
-            request.AddParameter("fromSoftwareVersion", "1.4.0");
+            request.AddParameter("fromSoftwareVersion", "2.0.0b1");
             if (x.HasValue)
             {
                 request.AddParameter("x", ((decimal)x).ToString("0.000", EN_US_CULTURE));

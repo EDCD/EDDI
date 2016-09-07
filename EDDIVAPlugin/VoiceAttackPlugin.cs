@@ -22,9 +22,6 @@ namespace EDDIVAPlugin
     {
         private static Eddi eddi;
 
-        private static int minEmpireRatingForTitle = 3;
-        private static int minFederationRatingForTitle = 1;
-
         public static string VA_DisplayName()
         {
             return "EDDI " + Eddi.EDDI_VERSION;
@@ -40,15 +37,9 @@ namespace EDDIVAPlugin
             return new Guid("{4AD8E3A4-CEFA-4558-B503-1CC9B99A07C1}");
         }
 
-        private static void EventPosted(String eventName)
-        {
-            eddi.speechService.Say(null, null, "Event " + eventName + " was posted");
-        }
-
         public static void VA_Init1(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
             eddi = Eddi.Instance;
-            eddi.EventHandler += new OnEventHandler(EventPosted);
             if (eddi.HomeStarSystem != null)
             {
                 setStarSystemValues(eddi.Cmdr, eddi.HomeStarSystem, "Home system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
@@ -851,16 +842,6 @@ namespace EDDIVAPlugin
             //        Logging.Debug("CurrentStarSystem is now " + (eddi.CurrentStarSystem == null ? "<null>" : JsonConvert.SerializeObject(eddi.CurrentStarSystem)));
             //        Logging.Debug("LastStarSystem is now " + (eddi.LastStarSystem == null ? "<null>" : JsonConvert.SerializeObject(eddi.LastStarSystem)));
 
-            //        if (eddi != null && eddi.LastStarSystem != null && eddi.LastStarSystem.Name != eddi.CurrentStarSystem.Name)
-            //        {
-            //            // We have travelled; let EDSM know
-            //            if (eddi.starMapService != null)
-            //            {
-            //                // Take information directly from the commander structure as it hasn't been munged
-            //                eddi.starMapService.sendStarMapLog(Cmdr.StarSystem, Cmdr.StarSystemX, Cmdr.StarSystemY, Cmdr.StarSystemZ);
-            //            }
-            //        }
-
             //        setStarSystemValues(eddi.Cmdr, eddi.CurrentStarSystem, "System", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
 
             //        setInt(ref intValues, "System  visits", CurrentStarSystemData.TotalVisits);
@@ -1080,20 +1061,20 @@ namespace EDDIVAPlugin
                 setInt(ref intValues, prefix + " planetary ports", system.stations.Count(s => s.IsPlanetaryPort()));
             }
 
-            // Allegiance-specific rank
-            string systemRank = "Commander";
-            if (cmdr.name != null) // using Name as a canary to see if the data is missing
-            {
-                if (system.allegiance == "Federation" && cmdr.federationrating >= minFederationRatingForTitle)
-                {
-                    systemRank = cmdr.federationrank;
-                }
-                else if (system.allegiance == "Empire" && cmdr.empirerating >= minEmpireRatingForTitle)
-                {
-                    systemRank = cmdr.empirerank;
-                }
-            }
-            setString(ref textValues, prefix + " rank", systemRank);
+            //// Allegiance-specific rank
+            //string systemRank = "Commander";
+            //if (cmdr.name != null) // using Name as a canary to see if the data is missing
+            //{
+            //    if (system.allegiance == "Federation" && cmdr.federationrating >= minFederationRatingForTitle)
+            //    {
+            //        systemRank = cmdr.federationrank;
+            //    }
+            //    else if (system.allegiance == "Empire" && cmdr.empirerating >= minEmpireRatingForTitle)
+            //    {
+            //        systemRank = cmdr.empirerank;
+            //    }
+            //}
+            //setString(ref textValues, prefix + " rank", systemRank);
 
             Logging.Debug("Set system information (" + prefix + ")");
         }
@@ -1118,7 +1099,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                eddi.speechService.Say(eddi.Cmdr, eddi.Ship, script);
+                //eddi.speechService.Say(eddi.Cmdr, eddi.Ship, script);
             }
             catch (Exception e)
             {
@@ -1146,7 +1127,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                eddi.speechService.Transmit(eddi.Cmdr, eddi.Ship, script);
+                //eddi.speechService.Transmit(eddi.Cmdr, eddi.Ship, script);
             }
             catch (Exception e)
             {
@@ -1174,7 +1155,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                eddi.speechService.Receive(eddi.Cmdr, eddi.Ship, script);
+                //eddi.speechService.Receive(eddi.Cmdr, eddi.Ship, script);
             }
             catch (Exception e)
             {

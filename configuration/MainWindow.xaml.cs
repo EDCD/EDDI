@@ -38,7 +38,7 @@ namespace configuration
         private CompanionAppService companionAppService;
 
         private EDDIConfiguration eddiConfiguration;
-        private List<Script> scripts;
+        //private List<Script> scripts;
 
         public MainWindow()
         {

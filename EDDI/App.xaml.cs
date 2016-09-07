@@ -28,6 +28,7 @@ namespace EDDI
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             eddi = Eddi.Instance;
+            eddi.Start();
         }
     }
 }

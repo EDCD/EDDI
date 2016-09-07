@@ -1,10 +1,9 @@
-﻿using Cottle.Values;
-using EliteDangerousCompanionAppService;
+﻿using EliteDangerousCompanionAppService;
 using EliteDangerousDataDefinitions;
 using EliteDangerousDataProviderService;
+using EliteDangerousEvents;
 using EliteDangerousJournalMonitor;
 using EliteDangerousNetLogMonitor;
-using EliteDangerousSpeechService;
 using EliteDangerousStarMapService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -19,8 +18,12 @@ using Utilities;
 namespace EDDI
 {
     // Notifications delegate
-    public delegate void OnEventHandler(string eventName);
+    public delegate void OnEventHandler(Event theEvent);
 
+    /// <summary>
+    /// Eddi is the controller for all EDDI operations.  Its job is to retain the state of the objects such as the commander, the current system, etc.
+    /// and keep them up-to-date with changes that occur.  It also passes on messages to responders to handle as required.
+    /// </summary>
     public class Eddi
     {
         public static readonly string EDDI_VERSION = "2.0.0b1";
@@ -34,10 +37,12 @@ namespace EDDI
             {
                 if (instance == null)
                 {
+                    Logging.Info("No EDDI instance: creating one");
                     lock (instanceLock)
                     {
                         if (instance == null)
                         {
+                            Logging.Info("Definitely no EDDI instance: creating one");
                             instance = new Eddi();
                         }
                     }
@@ -47,10 +52,12 @@ namespace EDDI
         }
 
         public event OnEventHandler EventHandler;
-        protected virtual void OnEvent(string eventName)
+        protected virtual void OnEvent(Event theEvent)
         {
-            EventHandler?.Invoke(eventName);
+            EventHandler?.Invoke(theEvent);
         }
+
+        private List<EDDIResponder> responders = new List<EDDIResponder>();
 
         private CompanionAppService appService;
 
@@ -63,7 +70,6 @@ namespace EDDI
 
         // Services made available from EDDI
         public StarMapService starMapService { get; private set; }
-        public SpeechService speechService { get; private set;  }
         public StarSystemRepository starSystemRepository { get; private set; }
 
         // Information obtained from the configuration
@@ -78,8 +84,7 @@ namespace EDDI
 
         private Thread logWatcherThread;
 
-        // Script resolver
-        private ScriptResolver scriptResolver;
+        public EDDIConfiguration configuration { get; private set; }
 
         public static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         public static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
@@ -98,14 +103,14 @@ namespace EDDI
                 starSystemRepository = new StarSystemSqLiteRepository();
 
                 // Set up the EDDI configuration
-                EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-                if (eddiConfiguration.HomeSystem != null && eddiConfiguration.HomeSystem.Trim().Length > 0)
+                configuration = EDDIConfiguration.FromFile();
+                if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
                 {
-                    HomeStarSystem = starSystemRepository.GetOrCreateStarSystem(eddiConfiguration.HomeSystem.Trim());
+                    HomeStarSystem = starSystemRepository.GetOrCreateStarSystem(configuration.HomeSystem.Trim());
 
-                    if (eddiConfiguration.HomeStation != null && eddiConfiguration.HomeStation.Trim().Length > 0)
+                    if (configuration.HomeStation != null && configuration.HomeStation.Trim().Length > 0)
                     {
-                        string homeStationName = eddiConfiguration.HomeStation.Trim();
+                        string homeStationName = configuration.HomeStation.Trim();
                         foreach (Station station in HomeStarSystem.stations)
                         {
                             if (station.Name == homeStationName)
@@ -116,11 +121,8 @@ namespace EDDI
                         }
                     }
                 }
-                Logging.Verbose = eddiConfiguration.Debug;
-                Insurance = eddiConfiguration.Insurance;
-
-                // Set up the script resolver
-                scriptResolver = new ScriptResolver(eddiConfiguration.Scripts);
+                Logging.Verbose = configuration.Debug;
+                Insurance = configuration.Insurance;
 
                 // Set up the app service
                 appService = new CompanionAppService();
@@ -164,8 +166,6 @@ namespace EDDI
                     Logging.Info("EDDI access to EDSM is disabled");
                 }
 
-                speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
-
                 // We always start in normal space
                 Environment = ENVIRONMENT_NORMAL_SPACE;
 
@@ -185,7 +185,6 @@ namespace EDDI
                 }
 
                 Logging.Info("EDDI " + EDDI_VERSION + " initialised");
-                Start();
             }
             catch (Exception ex)
             {
@@ -204,111 +203,100 @@ namespace EDDI
 
         public void Start()
         {
-            EventHandler += new OnEventHandler(EventPosted);
-        }
+            responders.Add(new SpeechResponder());
+            responders.Add(new EDSMResponder());
 
-        // Say something with the default resolver
-        public void Say(string scriptName)
-        {
-            Say(scriptResolver, scriptName);
-        }
-
-        // Say something with a custom resolver
-        public void Say(ScriptResolver resolver, string scriptName)
-        {
-            Dictionary<string, Cottle.Value> dict = createVariables();
-            string result = resolver.resolve(scriptName, dict);
-            speechService.Say(Cmdr, Ship, result);
-        }
-
-        private void EventPosted(string eventName)
-        {
-            Say(eventName);
+            foreach (EDDIResponder responder in responders)
+            {
+                EventHandler += new OnEventHandler(responder.Handle);
+                responder.Start();
+            }
         }
 
         public void Stop()
         {
+            foreach (EDDIResponder responder in responders)
+            {
+                responder.Stop();
+            }
             if (logWatcherThread != null)
             {
                 logWatcherThread.Abort();
                 logWatcherThread = null;
             }
 
-            if (speechService != null)
-            {
-                speechService.ShutdownSpeech();
-            }
             Logging.Info("EDDI " + EDDI_VERSION + " shutting down");
         }
 
-        void journalEntryHandler(JournalEntry entry)
+        void journalEntryHandler(Event journalEvent)
         {
-            Logging.Debug("Handling event " + JsonConvert.SerializeObject(entry));
-            switch (entry.type)
+            Logging.Debug("Handling event " + JsonConvert.SerializeObject(journalEvent));
+            // We have some additional processing to do for a number of events
+            if (journalEvent is JumpedEvent)
             {
-                case "Jumped":
-                    eventJumped(entry);
-                    break;
-                case "Entered supercruise":
-                    eventEnteredSupercruise(entry);
-                    break;
-                case "Entered normal space":
-                    eventEnteredNormalSpace(entry);
-                    break;
-                case "Fine incurred":
-                    eventFineIncurred(entry);
-                    break;
-                default:
-                    speechService.Say(Cmdr, Ship, "Unknown event " + entry.type);
-                    break;
+                eventJumped((JumpedEvent)journalEvent);
             }
+            else if (journalEvent is DockedEvent)
+            {
+                eventDocked((DockedEvent)journalEvent);
+            }
+            else if (journalEvent is UndockedEvent)
+            {
+                eventUndocked((UndockedEvent)journalEvent);
+            }
+            else if (journalEvent is EnteredSupercruiseEvent)
+            {
+                eventEnteredSupercruise((EnteredSupercruiseEvent)journalEvent);
+            }
+            else if (journalEvent is EnteredNormalSpaceEvent)
+            {
+                eventEnteredNormalSpace((EnteredNormalSpaceEvent)journalEvent);
+            }
+            // Additional processing is over, send to the event responders
+            OnEvent(journalEvent);
         }
 
-        void eventDocked()
+        void eventDocked(DockedEvent theEvent)
         {
         }
 
-        void eventUndocked()
+        void eventUndocked(UndockedEvent theEvent)
         {
         }
 
-        void eventFineIncurred(JournalEntry entry)
+        void eventJumped(JumpedEvent theEvent)
         {
-
-        }
-
-        void eventJumped(JournalEntry entry)
-        {
-            if (CurrentStarSystem == null || CurrentStarSystem.name != entry.data["starsystem"])
+            if (CurrentStarSystem == null || CurrentStarSystem.name != theEvent.system)
             {
                 LastStarSystem = CurrentStarSystem;
-                CurrentStarSystem = starSystemRepository.GetOrCreateStarSystem(entry.data["starsystem"]);
+                CurrentStarSystem = starSystemRepository.GetOrCreateStarSystem(theEvent.system);
+                if (CurrentStarSystem.x == null)
+                {
+                    // Star system is missing co-ordinates to take them from the event
+                    CurrentStarSystem.x = theEvent.x;
+                    CurrentStarSystem.y = theEvent.y;
+                    CurrentStarSystem.z = theEvent.z;
+                }
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
+                starSystemRepository.SaveStarSystem(CurrentStarSystem);
                 // After jump we are always in supercruise
                 Environment = ENVIRONMENT_SUPERCRUISE;
-                OnEvent("Jumped");
+                setCommanderTitle();
             }
         }
 
-        void eventEnteredSupercruise(JournalEntry entry)
+        void eventEnteredSupercruise(EnteredSupercruiseEvent theEvent)
         {
-            if (Environment != ENVIRONMENT_SUPERCRUISE)
-            {
-                Environment = ENVIRONMENT_SUPERCRUISE;
-                OnEvent("Entered supercruise");
-            }
+            Environment = ENVIRONMENT_SUPERCRUISE;
         }
 
-        void eventEnteredNormalSpace(JournalEntry entry)
+        void eventEnteredNormalSpace(EnteredNormalSpaceEvent theEvent)
         {
-            if (Environment != ENVIRONMENT_NORMAL_SPACE)
-            {
-                Environment = ENVIRONMENT_NORMAL_SPACE;
-                OnEvent("Entered normal space");
-            }
+            Environment = ENVIRONMENT_SUPERCRUISE;
         }
 
+        /// <summary>Obtain information from the copmanion API and use it to refresh our own data</summary>
         private void refreshProfile()
         {
             if (appService != null)
@@ -318,44 +306,33 @@ namespace EDDI
                 Ship = profile == null ? null : profile.Ship;
                 StoredShips = profile == null ? null : profile.StoredShips;
                 CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
+                setCommanderTitle();
                 // TODO last station string to station
                 //LastStation = profile.LastStation;
                 Outfitting = profile == null ? null : profile.Outfitting;
             }
         }
 
-
-        private Dictionary<string, Cottle.Value> createVariables()
+        /// <summary>Work out the title for the commander in the current system</summary>
+        private static int minEmpireRatingForTitle = 3;
+        private static int minFederationRatingForTitle = 1;
+        private void setCommanderTitle()
         {
-            Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
-
-            // Start with commander variables
             if (Cmdr != null)
             {
-                dict["cmdr"] = new ReflectionValue(Cmdr);
+                Cmdr.title = "Commander";
+                if (CurrentStarSystem != null)
+                {
+                    if (CurrentStarSystem.allegiance == "Federation" && Cmdr.federationrating > minFederationRatingForTitle)
+                    {
+                        Cmdr.title = Cmdr.federationrank;
+                    }
+                    else if (CurrentStarSystem.allegiance == "Empire" && Cmdr.empirerating > minEmpireRatingForTitle)
+                    {
+                        Cmdr.title = Cmdr.empirerank;
+                    }
+                }
             }
-
-            if (Ship != null)
-            {
-                dict["ship"] = new ReflectionValue(Ship);
-            }
-
-            if (HomeStarSystem != null)
-            {
-                dict["homesystem"] = new ReflectionValue(HomeStarSystem);
-            }
-
-            if (CurrentStarSystem != null)
-            {
-                dict["system"] = new ReflectionValue(CurrentStarSystem);
-            }
-
-            if (LastStarSystem != null)
-            {
-                dict["lastsystem"] = new ReflectionValue(LastStarSystem);
-            }
-            return dict;
         }
-
     }
 }
