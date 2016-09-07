@@ -109,7 +109,7 @@ namespace Tests
         [TestMethod]
         public void TestSqlRepositoryPresent()
         {
-            StarSystemRepository starSystemRepository = new StarSystemSqLiteRepository();
+            StarSystemRepository starSystemRepository = StarSystemSqLiteRepository.Instance;
             StarSystem DBData = starSystemRepository.GetStarSystem("Nangkano");
             Assert.IsNotNull(DBData);
             Assert.AreEqual("Nangkano", DBData.name);
@@ -118,7 +118,7 @@ namespace Tests
         [TestMethod]
         public void TestSqlRepositoryMissing()
         {
-            StarSystemRepository starSystemRepository = new StarSystemSqLiteRepository();
+            StarSystemRepository starSystemRepository = StarSystemSqLiteRepository.Instance;
             StarSystem DBData = starSystemRepository.GetStarSystem("Not here");
             Assert.IsNull(DBData);
         }

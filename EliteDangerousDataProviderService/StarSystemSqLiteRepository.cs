@@ -42,9 +42,31 @@ namespace EliteDangerousDataProviderService
         private static string TABLE_SQL = @"PRAGMA table_info(starsystems)";
         private static string ALTER_ADD_COMMENT_SQL = @"ALTER TABLE starsystems ADD COLUMN comment TEXT";
 
-        static StarSystemSqLiteRepository()
+        private static StarSystemSqLiteRepository instance;
+
+        private StarSystemSqLiteRepository()
         {
             CreateDatabase();
+        }
+
+        private static readonly object instanceLock = new object();
+        public static StarSystemSqLiteRepository Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    lock (instanceLock)
+                    {
+                        if (instance == null)
+                        {
+                            Logging.Debug("No StarSystemSqLiteRepository instance: creating one");
+                            instance = new StarSystemSqLiteRepository();
+                        }
+                    }
+                }
+                return instance;
+            }
         }
 
         public StarSystem GetOrCreateStarSystem(string name)
@@ -53,8 +75,13 @@ namespace EliteDangerousDataProviderService
             if (system == null)
             {
                 system = DataProviderService.GetSystemData(name, null, null, null);
-                system.name = name;
-                system.visits = 0;
+                if (system == null)
+                {
+                    Logging.Warn("Failed to obtain information for system " + name);
+                    system = new StarSystem();
+                    system.name = name;
+                    system.visits = 0;
+                }
             }
             return system;
         }
@@ -66,6 +93,7 @@ namespace EliteDangerousDataProviderService
             StarSystem result = null;
             try
             {
+                bool needToUpdate = false;
                 using (var con = SimpleDbConnection())
                 {
                     con.Open();
@@ -79,13 +107,12 @@ namespace EliteDangerousDataProviderService
                             if (rdr.Read())
                             {
                                 result = JsonConvert.DeserializeObject<StarSystem>(rdr.GetString(2));
-                                Logging.Error("visits is " + result.visits);
                                 if (result.visits < 1)
                                 {
+                                    // Old-style system; need to update
                                     result.visits = rdr.GetInt32(0);
-                                    Logging.Error("visits is now " + result.visits);
                                     result.lastvisit = rdr.GetDateTime(1);
-                                    Logging.Error("lastvisit is now " + result.lastvisit);
+                                    needToUpdate = true;
                                 }
                                 if (result.lastupdated == null)
                                 {
@@ -100,6 +127,10 @@ namespace EliteDangerousDataProviderService
                     }
                     con.Close();
                 }
+                if (needToUpdate)
+                {
+                    updateStarSystem(result);
+                }
             }
             catch (Exception ex)
             {
@@ -112,37 +143,53 @@ namespace EliteDangerousDataProviderService
 
         public void SaveStarSystem(StarSystem starSystem)
         {
+            if (GetStarSystem(starSystem.name) == null)
+            {
+                insertStarSystem(starSystem);
+            }
+            else
+            {
+                updateStarSystem(starSystem);
+            }
+        }
+
+        private void insertStarSystem(StarSystem system)
+        {
             using (var con = SimpleDbConnection())
             {
                 con.Open();
 
-                if (GetStarSystem(starSystem.name) == null)
+                using (var cmd = new SQLiteCommand(con))
                 {
-                    using (var cmd = new SQLiteCommand(con))
-                    {
-                        cmd.CommandText = INSERT_SQL;
-                        cmd.Prepare();
-                        cmd.Parameters.AddWithValue("@name", starSystem.name);
-                        cmd.Parameters.AddWithValue("@totalvisits", starSystem.visits);
-                        cmd.Parameters.AddWithValue("@lastvisit", starSystem.lastvisit);
-                        cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(starSystem));
-                        cmd.Parameters.AddWithValue("@starsystemlastupdated", starSystem.lastupdated);
-                        cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandText = INSERT_SQL;
+                    cmd.Prepare();
+                    cmd.Parameters.AddWithValue("@name", system.name);
+                    cmd.Parameters.AddWithValue("@totalvisits", system.visits);
+                    cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit);
+                    cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
+                    cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
+                    cmd.ExecuteNonQuery();
                 }
-                else
+                con.Close();
+            }
+        }
+
+        private void updateStarSystem(StarSystem system)
+        {
+            using (var con = SimpleDbConnection())
+            {
+                con.Open();
+
+                using (var cmd = new SQLiteCommand(con))
                 {
-                    using (var cmd = new SQLiteCommand(con))
-                    {
-                        cmd.CommandText = UPDATE_SQL;
-                        cmd.Prepare();
-                        cmd.Parameters.AddWithValue("@totalvisits", starSystem.visits);
-                        cmd.Parameters.AddWithValue("@lastvisit", starSystem.lastvisit);
-                        cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(starSystem));
-                        cmd.Parameters.AddWithValue("@starsystemlastupdated", starSystem.lastupdated);
-                        cmd.Parameters.AddWithValue("@name", starSystem.name);
-                        cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandText = UPDATE_SQL;
+                    cmd.Prepare();
+                    cmd.Parameters.AddWithValue("@totalvisits", system.visits);
+                    cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit);
+                    cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
+                    cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
+                    cmd.Parameters.AddWithValue("@name", system.name);
+                    cmd.ExecuteNonQuery();
                 }
                 con.Close();
             }
@@ -185,6 +232,7 @@ namespace EliteDangerousDataProviderService
                 }
                 con.Close();
             }
+            Logging.Info("Created starsystem repository");
         }
     }
 }

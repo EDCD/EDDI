@@ -21,6 +21,7 @@ namespace EDDIVAPlugin
 
         public void Handle(Event theEvent)
         {
+            VoiceAttackPlugin.EventQueue.Add(theEvent);
         }
 
         public void Start()

@@ -37,12 +37,11 @@ namespace EDDI
             {
                 if (instance == null)
                 {
-                    Logging.Info("No EDDI instance: creating one");
                     lock (instanceLock)
                     {
                         if (instance == null)
                         {
-                            Logging.Info("Definitely no EDDI instance: creating one");
+                            Logging.Debug("No EDDI instance: creating one");
                             instance = new Eddi();
                         }
                     }
@@ -70,7 +69,6 @@ namespace EDDI
 
         // Services made available from EDDI
         public StarMapService starMapService { get; private set; }
-        public StarSystemRepository starSystemRepository { get; private set; }
 
         // Information obtained from the configuration
         public StarSystem HomeStarSystem { get; private set; }
@@ -99,29 +97,31 @@ namespace EDDI
                 String dataDir = System.Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 System.IO.Directory.CreateDirectory(dataDir);
 
-                // Set up our local star system repository
-                starSystemRepository = new StarSystemSqLiteRepository();
-
                 // Set up the EDDI configuration
                 configuration = EDDIConfiguration.FromFile();
+                Logging.Verbose = configuration.Debug;
                 if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
                 {
-                    HomeStarSystem = starSystemRepository.GetOrCreateStarSystem(configuration.HomeSystem.Trim());
-
-                    if (configuration.HomeStation != null && configuration.HomeStation.Trim().Length > 0)
+                    HomeStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.HomeSystem.Trim());
+                    if (HomeStarSystem != null)
                     {
-                        string homeStationName = configuration.HomeStation.Trim();
-                        foreach (Station station in HomeStarSystem.stations)
+                        Logging.Debug("Home star system is " + HomeStarSystem.name);
+                        if (configuration.HomeStation != null && configuration.HomeStation.Trim().Length > 0)
                         {
-                            if (station.Name == homeStationName)
+                            string homeStationName = configuration.HomeStation.Trim();
+                            foreach (Station station in HomeStarSystem.stations)
                             {
-                                HomeStation = station;
-                                break;
+                                if (station.Name == homeStationName)
+                                {
+                                    HomeStation = station;
+                                    Logging.Debug("Home station is " + HomeStation.Name);
+                                    break;
+
+                                }
                             }
                         }
                     }
                 }
-                Logging.Verbose = configuration.Debug;
                 Insurance = configuration.Insurance;
 
                 // Set up the app service
@@ -228,6 +228,17 @@ namespace EDDI
             Logging.Info("EDDI " + EDDI_VERSION + " shutting down");
         }
 
+        /// <summary>
+        /// Add a responder to the list of active responders.  This starts the responder.
+        /// </summary>
+        /// <param name="responder"></param>
+        public void AddResponder(EDDIResponder responder)
+        {
+            responders.Add(responder);
+            EventHandler += new OnEventHandler(responder.Handle);
+            responder.Start();
+        }
+
         void journalEntryHandler(Event journalEvent)
         {
             Logging.Debug("Handling event " + JsonConvert.SerializeObject(journalEvent));
@@ -269,7 +280,7 @@ namespace EDDI
             if (CurrentStarSystem == null || CurrentStarSystem.name != theEvent.system)
             {
                 LastStarSystem = CurrentStarSystem;
-                CurrentStarSystem = starSystemRepository.GetOrCreateStarSystem(theEvent.system);
+                CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(theEvent.system);
                 if (CurrentStarSystem.x == null)
                 {
                     // Star system is missing co-ordinates to take them from the event
@@ -279,7 +290,7 @@ namespace EDDI
                 }
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
-                starSystemRepository.SaveStarSystem(CurrentStarSystem);
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 // After jump we are always in supercruise
                 Environment = ENVIRONMENT_SUPERCRUISE;
                 setCommanderTitle();
@@ -297,7 +308,7 @@ namespace EDDI
         }
 
         /// <summary>Obtain information from the copmanion API and use it to refresh our own data</summary>
-        private void refreshProfile()
+        public void refreshProfile()
         {
             if (appService != null)
             {
