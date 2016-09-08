@@ -112,10 +112,10 @@ namespace EDDI
                             string homeStationName = configuration.HomeStation.Trim();
                             foreach (Station station in HomeStarSystem.stations)
                             {
-                                if (station.Name == homeStationName)
+                                if (station.name == homeStationName)
                                 {
                                     HomeStation = station;
-                                    Logging.Debug("Home station is " + HomeStation.Name);
+                                    Logging.Debug("Home station is " + HomeStation.name);
                                     break;
 
                                 }

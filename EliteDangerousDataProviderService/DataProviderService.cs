@@ -109,35 +109,35 @@ namespace EliteDangerousDataProviderService
                 {
                     Station Station = new Station();
                     Station.EDDBID = (long)station["id"];
-                    Station.Name = (string)station["name"];
+                    Station.name = (string)station["name"];
 
-                    Station.Economies = new List<String>();
+                    Station.economies = new List<String>();
                     if (station["economies"] != null)
                     {
                         foreach (dynamic economy in station["economies"])
                         {
-                            Station.Economies.Add((String)economy);
+                            Station.economies.Add((String)economy);
                         }
                     }
 
-                    Station.Allegiance = (string)station["allegiance"];
-                    Station.Government = (string)station["government"];
-                    Station.Faction = (string)station["faction"];
-                    Station.State = (string)station["state"] == "None" ? null : (string)station["state"];
-                    Station.DistanceFromStar = (long?)station["distance_to_star"];
-                    Station.HasRefuel = (bool?)station["has_refuel"];
-                    Station.HasRearm = (bool?)station["has_rearm"];
-                    Station.HasRepair = (bool?)station["has_repair"];
-                    Station.HasOutfitting = (bool?)station["has_outfitting"];
-                    Station.HasShipyard = (bool?)station["has_shipyard"];
-                    Station.HasMarket = (bool?)station["has_market"];
-                    Station.HasBlackMarket = (bool?)station["has_blackmarket"];
+                    Station.allegiance = (string)station["allegiance"];
+                    Station.government = (string)station["government"];
+                    Station.faction = (string)station["faction"];
+                    Station.state = (string)station["state"] == "None" ? null : (string)station["state"];
+                    Station.distancefromstar = (long?)station["distance_to_star"];
+                    Station.hasrefuel = (bool?)station["has_refuel"];
+                    Station.hasrearm = (bool?)station["has_rearm"];
+                    Station.hasrepair = (bool?)station["has_repair"];
+                    Station.hasoutfitting = (bool?)station["has_outfitting"];
+                    Station.hasshipyard = (bool?)station["has_shipyard"];
+                    Station.hasmarket = (bool?)station["has_market"];
+                    Station.hasblacmMarket = (bool?)station["has_blackmarket"];
 
                     if (((string)station["type"]) != null)
                     {
                         if (StationModels.ContainsKey((string)station["type"]))
                         {
-                            Station.Model = StationModels[(string)station["type"]];
+                            Station.model = StationModels[(string)station["type"]];
                         }
                         else
                         {
@@ -149,7 +149,7 @@ namespace EliteDangerousDataProviderService
                     {
                         if (LandingPads.ContainsKey((string)station["max_landing_pad_size"]))
                         {
-                            Station.LargestShip = LandingPads[(string)station["max_landing_pad_size"]];
+                            Station.largestpad = LandingPads[(string)station["max_landing_pad_size"]];
                         }
                         else
                         {
@@ -195,7 +195,7 @@ namespace EliteDangerousDataProviderService
         static DataProviderService()
         {
             // We need to not use an expect header as it causes problems when sending data to a REST service
-            var errorUri = new Uri("http://api.eddp.co/error");
+            var errorUri = new Uri(BASE + "error");
             var errorServicePoint = ServicePointManager.FindServicePoint(errorUri);
             errorServicePoint.Expect100Continue = false;
         }

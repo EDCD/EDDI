@@ -15,61 +15,61 @@ namespace EliteDangerousDataDefinitions
         public long EDDBID { get; set; }
 
         /// <summary>The name</summary>
-        public String Name { get; set;  }
+        public String name { get; set;  }
 
         /// <summary>The government</summary>
-        public String Government { get; set; }
+        public String government { get; set; }
 
         /// <summary>The faction</summary>
-        public String Faction { get; set; }
+        public String faction { get; set; }
 
         /// <summary>The allegiance</summary>
-        public String Allegiance { get; set; }
+        public String allegiance { get; set; }
 
         /// <summary>The state of the system</summary>
-        public String State { get; set; }
+        public String state { get; set; }
 
         /// <summary>The economies of the station</summary>
-        public List<String> Economies { get; set; }
+        public List<String> economies { get; set; }
 
         /// <summary>How far this is from the star</summary>
-        public long? DistanceFromStar { get; set; }
+        public long? distancefromstar { get; set; }
 
         /// <summary>Does this station have refuel facilities?</summary>
-        public bool? HasRefuel { get; set; }
+        public bool? hasrefuel { get; set; }
         /// <summary>Does this station have rearm facilities?</summary>
-        public bool? HasRearm { get; set; }
+        public bool? hasrearm { get; set; }
         /// <summary>Does this station have repair facilities?</summary>
-        public bool? HasRepair { get; set; }
+        public bool? hasrepair { get; set; }
         /// <summary>Does this station have outfitting?</summary>
-        public bool? HasOutfitting { get; set; }
+        public bool? hasoutfitting { get; set; }
         /// <summary>Does this station have a shipyard?</summary>
-        public bool? HasShipyard { get; set; }
+        public bool? hasshipyard { get; set; }
         /// <summary>Does this station have a market?</summary>
-        public bool? HasMarket { get; set; }
+        public bool? hasmarket { get; set; }
         /// <summary>Does this station have a black market?</summary>
-        public bool? HasBlackMarket { get; set; }
+        public bool? hasblacmMarket { get; set; }
 
         /// <summary>The model of the station</summary>
-        public StationModel Model { get; set; }
+        public StationModel model { get; set; }
 
         /// <summary>What is the largest ship that can land here?</summary>
-        public ShipSize LargestShip { get; set;  }
+        public ShipSize largestpad { get; set;  }
 
         /// <summary>Is this station a starport?</summary>
-        public bool IsStarport() { return Model == StationModel.CoriolisStarport || Model == StationModel.OcellusStarport || Model == StationModel.OrbisStarport || Model == StationModel.UnknownStarport; }
+        public bool IsStarport() { return model == StationModel.CoriolisStarport || model == StationModel.OcellusStarport || model == StationModel.OrbisStarport || model == StationModel.UnknownStarport; }
 
         /// <summary>Is this station an outpost?</summary>
-        public bool IsOutpost() { return Model == StationModel.CivilianOutpost|| Model == StationModel.CommercialOutpost || Model == StationModel.IndustrialOutpost || Model == StationModel.MilitaryOutpost || Model == StationModel.MiningOutpost || Model == StationModel.ScientificOutpost || Model == StationModel.UnsanctionedOutpost || Model == StationModel.UnknownOutpost; }
+        public bool IsOutpost() { return model == StationModel.CivilianOutpost|| model == StationModel.CommercialOutpost || model == StationModel.IndustrialOutpost || model == StationModel.MilitaryOutpost || model == StationModel.MiningOutpost || model == StationModel.ScientificOutpost || model == StationModel.UnsanctionedOutpost || model == StationModel.UnknownOutpost; }
 
         /// <summary>Is this station a planetary outpost?</summary>
-        public bool IsPlanetaryOutpost() { return Model == StationModel.PlanetaryOutpost; }
+        public bool IsPlanetaryOutpost() { return model == StationModel.PlanetaryOutpost; }
 
         /// <summary>Is this station a planetary  port?</summary>
-        public bool IsPlanetaryPort() { return Model == StationModel.PlanetaryPort; }
+        public bool IsPlanetaryPort() { return model == StationModel.PlanetaryPort; }
 
         /// <summary>Is this station planetary?</summary>
-        public bool IsPlanetary() { return Model == StationModel.PlanetaryOutpost || Model == StationModel.PlanetaryPort || Model == StationModel.UnknownPlanetary; }
+        public bool IsPlanetary() { return model == StationModel.PlanetaryOutpost || model == StationModel.PlanetaryPort || model == StationModel.UnknownPlanetary; }
     }
 
     public enum StationModel

@@ -44,22 +44,33 @@ namespace EDDIVAPlugin
 
         public static void VA_Init1(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            eddi = Eddi.Instance;
-            // Keep other responders off for now
-            //eddi.Start();
+            Logging.Info("Initialising EDDI VoiceAttack plugin");
 
-            eddi.AddResponder(new VoiceAttackResponder());
-
-            setValues(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-
-            if (eddi.Insurance != null)
+            try
             {
-                setDecimal(ref decimalValues, "Insurance", eddi.Insurance);
+                eddi = Eddi.Instance;
+                // Keep other responders off for now
+                //eddi.Start();
+
+                Logging.Debug("Adding VoiceAttack responder");
+                eddi.AddResponder(new VoiceAttackResponder());
+
+                setValues(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+
+                if (eddi.Insurance != null)
+                {
+                    setDecimal(ref decimalValues, "Insurance", eddi.Insurance);
+                }
+
+                setString(ref textValues, "Environment", eddi.Environment);
+
+                setString(ref textValues, "EDDI plugin profile status", "Enabled");
+                Logging.Info("Initialised EDDI VoiceAttack plugin");
             }
-
-            setString(ref textValues, "Environment", eddi.Environment);
-
-            setString(ref textValues, "EDDI plugin profile status", "Enabled");
+            catch (Exception e)
+            {
+                setPluginStatus(ref textValues, "Failed", "Failed to initialise", e);
+            }
         }
 
         public static void VA_Exit1(ref Dictionary<string, object> state)
@@ -69,48 +80,57 @@ namespace EDDIVAPlugin
 
         public static void VA_Invoke1(String context, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            switch (context)
+            try
             {
-                case "coriolis":
-                    InvokeCoriolis(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    return;
-                case "eddbsystem":
-                    InvokeEDDBSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    return;
-                case "eddbstation":
-                    InvokeEDDBStation(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    return;
-                case "profile":
-                    InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    return;
-                case "say":
-                    InvokeSay(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    return;
-                case "transmit":
-                    InvokeTransmit(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    return;
-                case "receive":
-                    InvokeReceive(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    return;
-                case "generate callsign":
-                    InvokeGenerateCallsign(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    return;
-                case "event queue":
-                    InvokeEventQueue(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    return;
-                case "system note":
-                    InvokeStarMapSystemComment(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    return;
-                default:
-                    //if (context.ToLower().StartsWith("event:"))
-                    //{
-                    //    // Inject an event
-                    //    string data = context.Replace("event: ", "");
-                    //    JObject eventData = JObject.Parse(data);
-                    //    //LogQueue.Add(eventData);
-                    //}
-                    return;
+                switch (context)
+                {
+                    case "coriolis":
+                        InvokeCoriolis(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        break;
+                    case "eddbsystem":
+                        InvokeEDDBSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        break;
+                    case "eddbstation":
+                        InvokeEDDBStation(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        break;
+                    case "profile":
+                        InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        break;
+                    case "say":
+                        InvokeSay(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        break;
+                    case "transmit":
+                        InvokeTransmit(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        break;
+                    case "receive":
+                        InvokeReceive(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        break;
+                    case "generate callsign":
+                        InvokeGenerateCallsign(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        break;
+                    case "event queue":
+                        InvokeEventQueue(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        break;
+                    case "system note":
+                        InvokeStarMapSystemComment(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        break;
+                    default:
+                        //if (context.ToLower().StartsWith("event:"))
+                        //{
+                        //    // Inject an event
+                        //    string data = context.Replace("event: ", "");
+                        //    JObject eventData = JObject.Parse(data);
+                        //    //LogQueue.Add(eventData);
+                        //}
+                        break;
+                 }
+                setPluginStatus(ref textValues, "Operational", null, null);
             }
+            catch (Exception e)
+            {
+                setPluginStatus(ref textValues, "Failed", "Failed to invoke action", e);
+            }
+            Logging.Debug("Leaving");
         }
 
         /// <summary>Force-update EDDI's information</summary>
@@ -182,7 +202,7 @@ namespace EDDIVAPlugin
                     Logging.Debug("No information on current station");
                     return;
                 }
-                Station thisStation = eddi.CurrentStarSystem.stations.SingleOrDefault(s => s.Name == eddi.LastStation.Name);
+                Station thisStation = eddi.CurrentStarSystem.stations.SingleOrDefault(s => s.name == eddi.LastStation.name);
                 if (thisStation == null)
                 {
                     // Missing current star system information
@@ -416,6 +436,7 @@ namespace EDDIVAPlugin
         /// <summary>Set all values</summary>
         private static void setValues(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
+            Logging.Debug("Setting values");
             setCommanderValues(eddi.Cmdr, ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
             setShipValues(eddi.Ship, "Ship", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
             int currentStoredShip = 1;
@@ -436,8 +457,9 @@ namespace EDDIVAPlugin
             }
             if (eddi.HomeStation != null)
             {
-                setString(ref textValues, "Home station", eddi.HomeStation.Name);
+                setString(ref textValues, "Home station", eddi.HomeStation.name);
             }
+            Logging.Debug("Set values");
         }
 
         /// <summary>Set values for a station</summary>
@@ -466,35 +488,35 @@ namespace EDDIVAPlugin
             }
             else
             {
-                setString(ref textValues, prefix + " name", station.Name);
-                setDecimal(ref decimalValues, prefix + " distance from star", station.DistanceFromStar);
-                setString(ref textValues, prefix + " government", station.Government);
-                setString(ref textValues, prefix + " allegiance", station.Allegiance);
-                setString(ref textValues, prefix + " faction", station.Faction);
-                setString(ref textValues, prefix + " state", station.State);
-                if (station.Economies != null)
+                setString(ref textValues, prefix + " name", station.name);
+                setDecimal(ref decimalValues, prefix + " distance from star", station.distancefromstar);
+                setString(ref textValues, prefix + " government", station.government);
+                setString(ref textValues, prefix + " allegiance", station.allegiance);
+                setString(ref textValues, prefix + " faction", station.faction);
+                setString(ref textValues, prefix + " state", station.state);
+                if (station.economies != null)
                 {
-                    if (station.Economies.Count > 0)
+                    if (station.economies.Count > 0)
                     {
-                        setString(ref textValues, prefix + " primary economy", station.Economies[0]);
+                        setString(ref textValues, prefix + " primary economy", station.economies[0]);
                     }
-                    if (station.Economies.Count > 1)
+                    if (station.economies.Count > 1)
                     {
-                        setString(ref textValues, prefix + " secondary economy", station.Economies[1]);
+                        setString(ref textValues, prefix + " secondary economy", station.economies[1]);
                     }
-                    if (station.Economies.Count > 2)
+                    if (station.economies.Count > 2)
                     {
-                        setString(ref textValues, prefix + " tertiary economy", station.Economies[2]);
+                        setString(ref textValues, prefix + " tertiary economy", station.economies[2]);
                     }
                 }
                 // Services
-                setBoolean(ref booleanValues, prefix + " has refuel", station.HasRefuel);
-                setBoolean(ref booleanValues, prefix + " has repair", station.HasRepair);
-                setBoolean(ref booleanValues, prefix + " has rearm", station.HasRearm);
-                setBoolean(ref booleanValues, prefix + " has market", station.HasMarket);
-                setBoolean(ref booleanValues, prefix + " has black market", station.HasBlackMarket);
-                setBoolean(ref booleanValues, prefix + " has outfitting", station.HasOutfitting);
-                setBoolean(ref booleanValues, prefix + " has shipyard", station.HasShipyard);
+                setBoolean(ref booleanValues, prefix + " has refuel", station.hasrefuel);
+                setBoolean(ref booleanValues, prefix + " has repair", station.hasrepair);
+                setBoolean(ref booleanValues, prefix + " has rearm", station.hasrearm);
+                setBoolean(ref booleanValues, prefix + " has market", station.hasmarket);
+                setBoolean(ref booleanValues, prefix + " has black market", station.hasblacmMarket);
+                setBoolean(ref booleanValues, prefix + " has outfitting", station.hasoutfitting);
+                setBoolean(ref booleanValues, prefix + " has shipyard", station.hasshipyard);
             }
 
             Logging.Debug("Set station information");
@@ -709,7 +731,7 @@ namespace EDDIVAPlugin
                 {
                     foreach (Station Station in system.stations)
                     {
-                        setString(ref textValues, prefix + " station name", Station.Name);
+                        setString(ref textValues, prefix + " station name", Station.name);
                     }
                     setInt(ref intValues, prefix + " stations", system.stations.Count);
                     setInt(ref intValues, prefix + " orbital stations", system.stations.Count(s => !s.IsPlanetary()));

@@ -38,13 +38,12 @@ namespace configuration
         private CompanionAppService companionAppService;
 
         private EDDIConfiguration eddiConfiguration;
-        //private List<Script> scripts;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            // Configured the EDDI tab
+            // Configure the EDDI tab
             eddiConfiguration = EDDIConfiguration.FromFile();
             eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;

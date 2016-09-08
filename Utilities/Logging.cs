@@ -13,7 +13,7 @@ namespace Utilities
     public class Logging
     {
         public static readonly string LogFile = Environment.GetEnvironmentVariable("AppData") + @"\EDDI\eddi.log";
-        public static Boolean Verbose { get; set; } = false;
+        public static bool Verbose { get; set; } = false;
 
         public static void Error(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
@@ -43,11 +43,12 @@ namespace Utilities
             }
         }
 
+        private static readonly object logLock = new object();
         private static void log(string path, string method, string level, string data)
         {
-            lock(LogFile)
+            lock(logLock)
             {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(LogFile, true))
+                using (StreamWriter file = new StreamWriter(LogFile, true))
                 {
                     file.WriteLine(DateTime.Now.ToString() + " " + Path.GetFileNameWithoutExtension(path) + ":" + method + " [" + level + "] " + data);
                 }
