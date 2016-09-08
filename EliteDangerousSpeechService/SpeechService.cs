@@ -105,8 +105,8 @@ namespace EliteDangerousSpeechService
 
             StopCurrentSpeech();
 
-            new Thread(() =>
-            {
+            //new Thread(() =>
+            //{
                 try
                 {
                     using (SpeechSynthesizer synth = new SpeechSynthesizer())
@@ -207,7 +207,7 @@ namespace EliteDangerousSpeechService
                 {
                     Logging.Error("Failed to speak: " + ex);
                 }
-            }).Start();
+            //}).Start();
         }
 
         // Called when the parent has exited

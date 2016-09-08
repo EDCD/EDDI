@@ -63,6 +63,10 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\EliteDangerousEvents\EliteDangerousEvents.csproj">
+      <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
+      <Name>EliteDangerousEvents</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{cd71dd2a-86ac-44a8-959b-e1c3069966bd}</Project>
       <Name>Utilities</Name>

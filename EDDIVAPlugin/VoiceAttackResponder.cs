@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EDDI;
 using Utilities;
 using EliteDangerousEvents;
+using Newtonsoft.Json;
 
 namespace EDDIVAPlugin
 {
@@ -21,6 +22,7 @@ namespace EDDIVAPlugin
 
         public void Handle(Event theEvent)
         {
+            Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
             VoiceAttackPlugin.EventQueue.Add(theEvent);
         }
 

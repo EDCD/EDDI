@@ -81,6 +81,7 @@ namespace EDDI
         public StarSystem LastStarSystem { get; private set; }
 
         private Thread logWatcherThread;
+        private Thread journalWatcherThread;
 
         public EDDIConfiguration configuration { get; private set; }
 
@@ -178,6 +179,12 @@ namespace EDDI
                     logWatcherThread.Name = "EDDI netlog watcher";
                     logWatcherThread.Start();
                     Logging.Info("EDDI netlog monitor is enabled for " + netLogConfiguration.path);
+
+                    journalWatcherThread = new Thread(() => StartJournalMonitor(netLogConfiguration));
+                    journalWatcherThread.IsBackground = true;
+                    journalWatcherThread.Name = "EDDI journal watcher";
+                    journalWatcherThread.Start();
+                    Logging.Info("EDDI journal monitor is enabled");
                 }
                 else
                 {
@@ -196,8 +203,17 @@ namespace EDDI
         {
             if (configuration != null)
             {
-                JournalMonitor monitor = new JournalMonitor(configuration, (result) => journalEntryHandler(result));
-                monitor.start();
+                NetLogMonitor netLogMonitor = new NetLogMonitor(configuration, (result) => eventHandler(result));
+                netLogMonitor.start();
+            }
+        }
+
+        private void StartJournalMonitor(NetLogConfiguration configuration)
+        {
+            if (configuration != null)
+            {
+                JournalMonitor journalMonitor = new JournalMonitor(configuration, (result) => eventHandler(result));
+                journalMonitor.start();
             }
         }
 
@@ -224,6 +240,11 @@ namespace EDDI
                 logWatcherThread.Abort();
                 logWatcherThread = null;
             }
+            if (journalWatcherThread != null)
+            {
+                journalWatcherThread.Abort();
+                journalWatcherThread = null;
+            }
 
             Logging.Info("EDDI " + EDDI_VERSION + " shutting down");
         }
@@ -239,7 +260,7 @@ namespace EDDI
             responder.Start();
         }
 
-        void journalEntryHandler(Event journalEvent)
+        void eventHandler(Event journalEvent)
         {
             Logging.Debug("Handling event " + JsonConvert.SerializeObject(journalEvent));
             // We have some additional processing to do for a number of events
@@ -277,10 +298,12 @@ namespace EDDI
 
         void eventJumped(JumpedEvent theEvent)
         {
+            Logging.Debug("Jumped to " + theEvent.system);
             if (CurrentStarSystem == null || CurrentStarSystem.name != theEvent.system)
             {
                 LastStarSystem = CurrentStarSystem;
                 CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(theEvent.system);
+                Logging.Error("***********************************************1 - " + CurrentStarSystem);
                 if (CurrentStarSystem.x == null)
                 {
                     // Star system is missing co-ordinates to take them from the event
@@ -289,8 +312,10 @@ namespace EDDI
                     CurrentStarSystem.z = theEvent.z;
                 }
                 CurrentStarSystem.visits++;
+                Logging.Error("***********************************************2 - " + CurrentStarSystem.visits);
                 CurrentStarSystem.lastvisit = DateTime.Now;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                Logging.Debug("Number of visits to this system is now " + CurrentStarSystem.visits);
                 // After jump we are always in supercruise
                 Environment = ENVIRONMENT_SUPERCRUISE;
                 setCommanderTitle();

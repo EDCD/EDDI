@@ -12,6 +12,8 @@ namespace EliteDangerousDataProviderService
     /// <summary>Access to EDDP data<summary>
     public class DataProviderService
     {
+        private const string BASE = "http://api.eddp.co:16161/";
+
         public static StarSystem GetSystemData(string system, decimal? x, decimal?y, decimal? z)
         {
             if (system == null) { return null; }
@@ -33,7 +35,7 @@ namespace EliteDangerousDataProviderService
             string response;
             try
             {
-                response = Net.DownloadString("http://api.eddp.co/systems/" + Uri.EscapeDataString(system));
+                response = Net.DownloadString(BASE + "systems/" + Uri.EscapeDataString(system));
             }
             catch (WebException)
             {
@@ -55,7 +57,8 @@ namespace EliteDangerousDataProviderService
                 {
                     response = response + @", ""z"":" + z;
                 }
-                response = response + @", ""stations"":[]}";
+                response = response + @", ""stations"":[]";
+                response = response + @", ""bodies"":[]}";
                 Logging.Info("Generating dummy response " + response);
             }
             return StarSystemFromEDDP(response, x, y, z);

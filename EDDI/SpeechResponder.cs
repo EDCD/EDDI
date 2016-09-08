@@ -42,6 +42,7 @@ namespace EDDI
         // Say something with the default resolver
         public void Handle(Event theEvent)
         {
+            Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
             Say(scriptResolver, theEvent.type);
         }
 

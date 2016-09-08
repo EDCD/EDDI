@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using EliteDangerousEvents;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -17,9 +18,19 @@ namespace EliteDangerousNetLogMonitor
         // {19:24:56} System:"Wolf 397" StarPos:(40.000,79.219,-10.406)ly Body:23 RelPos:(-2.01138,1.32957,1.7851)km NormalFlight
         private static Regex SystemRegex = new Regex(@"^{([0-9][0-9]:[0-9][0-9]:[0-9][0-9])} System:""([^""]+)"" StarPos:\((-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+)\)ly .*? ([A-Za-z]+)$");
 
+        private static string lastStarsystem = null;
+        private static string lastEnvironment = null;
+
         private static void HandleNetLogLine(string line, Action<dynamic> callback)
         {
             Logging.Debug("Looking at line " + line);
+
+            string starSystem = null;
+            string environment = null;
+            decimal x = 0;
+            decimal y = 0;
+            decimal z = 0;
+
             Match oldMatch = OldSystemRegex.Match(line);
             if (oldMatch.Success)
             {
@@ -36,38 +47,68 @@ namespace EliteDangerousNetLogMonitor
                     return;
                 }
 
-                JObject result = new JObject();
-                result["type"] = "Location";
-                result["starsystem"] = oldMatch.Groups[3].Value;
-                result["environment"] = oldMatch.Groups[4].Value;
-                callback(result);
+                starSystem = oldMatch.Groups[3].Value;
+                environment = oldMatch.Groups[3].Value;
+            }
+            else
+            {
+                Match match = SystemRegex.Match(line);
+                if (match.Success)
+                {
+                    Logging.Debug("Match against new regex");
+                    if (@"Training" == match.Groups[2].Value || @"Destination" == match.Groups[2].Value)
+                    {
+                        // We ignore training missions
+                        return;
+                    }
+
+                    if (@"ProvingGround" == match.Groups[6].Value)
+                    {
+                        // We ignore CQC
+                        return;
+                    }
+
+                    starSystem = match.Groups[2].Value;
+                    environment = match.Groups[6].Value;
+                    x = Math.Round(decimal.Parse(match.Groups[3].Value) * 32) / (decimal)32.0;
+                    y = Math.Round(decimal.Parse(match.Groups[4].Value) * 32) / (decimal)32.0;
+                    z = Math.Round(decimal.Parse(match.Groups[5].Value) * 32) / (decimal)32.0;
+                }
             }
 
-            Match match = SystemRegex.Match(line);
-            if (match.Success)
+            Event theEvent = null;
+            if (starSystem != null)
             {
-                Logging.Debug("Match against new regex");
-                if (@"Training" == match.Groups[2].Value || @"Destination" == match.Groups[2].Value)
+                if (starSystem != lastStarsystem)
                 {
-                    // We ignore training missions
-                    return;
+                    // Change of system
+                    theEvent = new JumpedEvent(DateTime.Now, starSystem, x, y, z);
+                    lastStarsystem = starSystem;
+                    lastEnvironment = environment;
                 }
-
-                if (@"ProvingGround" == match.Groups[6].Value)
+                else if (environment != lastEnvironment)
                 {
-                    // We ignore CQC
-                    return;
+                    // Change of environment
+                    if (environment == "Supercruise")
+                    {
+                        theEvent = new EnteredSupercruiseEvent(DateTime.Now);
+                        lastEnvironment = environment;
+                    }
+                    else if (environment == "NormalFlight")
+                    {
+                        theEvent = new EnteredNormalSpaceEvent(DateTime.Now, starSystem);
+                        lastEnvironment = environment;
+                    }
                 }
-
-                dynamic result = new JObject();
-                result.type = "Location";
-                result.starsystem = match.Groups[2].Value;
-                result.x = match.Groups[3].Value;
-                result.y = match.Groups[4].Value;
-                result.z = match.Groups[5].Value;
-                result.environment = match.Groups[6].Value;
-                Logging.Debug("Callback with " + result);
-                callback(result);
+            }
+            if (theEvent != null)
+            {
+                Logging.Debug("Returning event " + theEvent);
+                callback(theEvent);
+            }
+            else
+            {
+                Logging.Debug("Could not resolve event");
             }
         }
     }

@@ -25,6 +25,8 @@ namespace EDDIVAPlugin
 
         public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
 
+        private static SpeechService speechService = new SpeechService();
+
         public static string VA_DisplayName()
         {
             return "EDDI " + Eddi.EDDI_VERSION;
@@ -43,6 +45,8 @@ namespace EDDIVAPlugin
         public static void VA_Init1(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
             eddi = Eddi.Instance;
+            // Keep other responders off for now
+            //eddi.Start();
 
             eddi.AddResponder(new VoiceAttackResponder());
 
@@ -131,6 +135,7 @@ namespace EDDIVAPlugin
                         setString(ref textValues, "EDDI event body", ((EnteredNormalSpaceEvent)theEvent).body);
                     }
                     setPluginStatus(ref textValues, "Operational", null, null);
+                    somethingToReport = true;
                 }
                 catch (Exception e)
                 {
@@ -289,7 +294,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                //eddi.speechService.Say(eddi.Cmdr, eddi.Ship, script);
+                speechService.Say(eddi.Cmdr, eddi.Ship, script);
             }
             catch (Exception e)
             {
@@ -315,7 +320,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                //eddi.speechService.Transmit(eddi.Cmdr, eddi.Ship, script);
+                speechService.Transmit(eddi.Cmdr, eddi.Ship, script);
             }
             catch (Exception e)
             {
@@ -341,7 +346,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                //eddi.speechService.Receive(eddi.Cmdr, eddi.Ship, script);
+                speechService.Receive(eddi.Cmdr, eddi.Ship, script);
             }
             catch (Exception e)
             {
