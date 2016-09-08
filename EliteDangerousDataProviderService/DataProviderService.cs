@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -47,15 +48,15 @@ namespace EliteDangerousDataProviderService
                 response = @"{""name"":""" + system + @"""";
                 if (x.HasValue)
                 {
-                    response = response + @", ""x"":" + x;
+                    response = response + @", ""x"":" + ((decimal)x).ToString(CultureInfo.InvariantCulture);
                 }
                 if (y.HasValue)
                 {
-                    response = response + @", ""y"":" + y;
+                    response = response + @", ""y"":" + ((decimal)y).ToString(CultureInfo.InvariantCulture);
                 }
                 if (z.HasValue)
                 {
-                    response = response + @", ""z"":" + z;
+                    response = response + @", ""z"":" + ((decimal)z).ToString(CultureInfo.InvariantCulture);
                 }
                 response = response + @", ""stations"":[]";
                 response = response + @", ""bodies"":[]}";
