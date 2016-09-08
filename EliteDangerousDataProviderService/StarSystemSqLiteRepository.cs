@@ -71,10 +71,18 @@ namespace EliteDangerousDataProviderService
 
         public StarSystem GetOrCreateStarSystem(string name)
         {
+            return GetOrCreateStarSystem(name, true);
+        }
+
+        public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing)
+        {
             StarSystem system = GetStarSystem(name);
             if (system == null)
             {
-                system = DataProviderService.GetSystemData(name, null, null, null);
+                if (fetchIfMissing)
+                {
+                    system = DataProviderService.GetSystemData(name, null, null, null);
+                }
                 if (system == null)
                 {
                     Logging.Warn("Failed to obtain information for system " + name);

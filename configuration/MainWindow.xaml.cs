@@ -475,7 +475,6 @@ namespace configuration
         /// </summary>
         private async void edsmObtainLogClicked(object sender, RoutedEventArgs e)
         {
-            StarSystemRepository starSystemRepository = new StarSystemSqLiteRepository();
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
 
             string commanderName;
@@ -504,12 +503,12 @@ namespace configuration
             edsmFetchLogsButton.Content = "Obtaining log...";
 
             var progress = new Progress<string>(s => edsmFetchLogsButton.Content = "Obtaining log..." + s);
-            await Task.Factory.StartNew(() => obtainEdsmLogs(starMapConfiguration, starSystemRepository, commanderName, progress),
+            await Task.Factory.StartNew(() => obtainEdsmLogs(starMapConfiguration, commanderName, progress),
                                             TaskCreationOptions.LongRunning);
             edsmFetchLogsButton.Content = "Obtained log";
         }
 
-        public static void obtainEdsmLogs(StarMapConfiguration starMapConfiguration, StarSystemRepository starSystemRepository, string commanderName, IProgress<string> progress)
+        public static void obtainEdsmLogs(StarMapConfiguration starMapConfiguration, string commanderName, IProgress<string> progress)
         {
             StarMapService starMapService = new StarMapService(starMapConfiguration.apiKey, commanderName);
             Dictionary<string, StarMapLogInfo> systems = starMapService.getStarMapLog();
@@ -517,14 +516,14 @@ namespace configuration
             foreach (string system in systems.Keys)
             {
                 progress.Report(system);
-                StarSystem CurrentStarSystem = starSystemRepository.GetOrCreateStarSystem(system);
+                StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
                 CurrentStarSystem.visits = systems[system].visits;
                 CurrentStarSystem.lastvisit = systems[system].lastVisit;
                 if (comments.ContainsKey(system))
                 {
                     CurrentStarSystem.comment = comments[system];
                 }
-                starSystemRepository.SaveStarSystem(CurrentStarSystem);
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
         }
 

@@ -25,7 +25,7 @@ namespace EDDIVAPlugin
 
         public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
 
-        private static SpeechService speechService = new SpeechService();
+        private static SpeechService speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
 
         public static string VA_DisplayName()
         {
@@ -129,6 +129,8 @@ namespace EDDIVAPlugin
                 {
                     Event theEvent = EventQueue.Take();
                     setString(ref textValues, "EDDI event", theEvent.type);
+                    // Update all values
+                    setValues(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     // Event-specific information
                     if (theEvent is EnteredNormalSpaceEvent)
                     {
