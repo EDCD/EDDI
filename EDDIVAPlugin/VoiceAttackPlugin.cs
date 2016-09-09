@@ -46,20 +46,8 @@ namespace EDDIVAPlugin
 
             try
             {
-                // Keep other responders off for now
-                //Eddi.Instance.Start();
-
-                Logging.Debug("Adding VoiceAttack responder");
-                Eddi.Instance.AddResponder(new VoiceAttackResponder());
-
+                // Set the initial values from the main EDDI objects
                 setValues(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-
-                if (Eddi.Instance.Insurance != null)
-                {
-                    setDecimal(ref decimalValues, "Insurance", Eddi.Instance.Insurance);
-                }
-
-                setString(ref textValues, "Environment", Eddi.Instance.Environment);
 
                 setString(ref textValues, "EDDI plugin profile status", "Enabled");
                 Logging.Info("Initialised EDDI VoiceAttack plugin");
@@ -456,6 +444,14 @@ namespace EDDIVAPlugin
             {
                 setString(ref textValues, "Home station", Eddi.Instance.HomeStation.name);
             }
+
+            if (Eddi.Instance.Insurance != null)
+            {
+                setDecimal(ref decimalValues, "Insurance", Eddi.Instance.Insurance);
+            }
+
+            setString(ref textValues, "Environment", Eddi.Instance.Environment);
+
             Logging.Debug("Set values");
         }
 
@@ -511,7 +507,7 @@ namespace EDDIVAPlugin
                 setBoolean(ref booleanValues, prefix + " has repair", station.hasrepair);
                 setBoolean(ref booleanValues, prefix + " has rearm", station.hasrearm);
                 setBoolean(ref booleanValues, prefix + " has market", station.hasmarket);
-                setBoolean(ref booleanValues, prefix + " has black market", station.hasblacmMarket);
+                setBoolean(ref booleanValues, prefix + " has black market", station.hasblackmarket);
                 setBoolean(ref booleanValues, prefix + " has outfitting", station.hasoutfitting);
                 setBoolean(ref booleanValues, prefix + " has shipyard", station.hasshipyard);
             }

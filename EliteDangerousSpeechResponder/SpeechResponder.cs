@@ -1,34 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EliteDangerousJournalMonitor;
+﻿using System.Collections.Generic;
 using Cottle.Values;
 using EliteDangerousSpeechService;
 using Utilities;
 using Newtonsoft.Json;
 using EliteDangerousEvents;
+using EDDI;
 
-namespace EDDI
+namespace EliteDangerousSpeechResponder
 {
     /// <summary>
     /// A responder that responds to events with a speech
     /// </summary>
     public class SpeechResponder : EDDIResponder
     {
+        private Dictionary<string, Script> scripts;
+
         private ScriptResolver scriptResolver;
         private SpeechService speechService;
 
-        public SpeechResponder()
+        public string ResponderName()
         {
-            Logging.Info("Started speech responder");
+            return "Speech responder";
         }
 
-        public void Start()
+        public string ResponderVersion()
         {
-            scriptResolver = new ScriptResolver(Eddi.Instance.configuration.Scripts);
+            return "1.0.0";
+        }
+
+        public string ResponderDescription()
+        {
+            return "Plugin to respond to events with scripts.  Scripts can be individually enabled and customised";
+        }
+
+        public SpeechResponder()
+        {
+            ScriptsConfiguration configuration = ScriptsConfiguration.FromFile();
+            scripts = configuration.Scripts;
+            Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
+        }
+
+        public bool Start()
+        {
+            scriptResolver = new ScriptResolver(scripts);
             speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
+            return true;
         }
 
         public void Stop()

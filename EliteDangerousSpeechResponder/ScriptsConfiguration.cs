@@ -3,50 +3,42 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace EDDI
+namespace EliteDangerousSpeechResponder
 {
-    /// <summary>Configuration for EDDI</summary>
-    public class EDDIConfiguration
+    /// <summary>Scritps for the speech responder</summary>
+    public class ScriptsConfiguration
     {
-        [JsonProperty("homeSystem")]
-        public String HomeSystem { get; set; }
-        [JsonProperty("homeStation")]
-        public String HomeStation { get; set; }
-        [JsonProperty("debug")]
-        public bool Debug { get; set; }
-        [JsonProperty("insurance")]
-        public decimal Insurance { get; set; }
+        [JsonProperty("scripts")]
+        public Dictionary<string, Script> Scripts { get; set; }
 
         [JsonIgnore]
         private String dataPath;
 
-        public EDDIConfiguration()
+        public ScriptsConfiguration()
         {
-            Debug = false;
-            Insurance = 5;
         }
 
         /// <summary>
         /// Obtain configuration from a file.  If the file name is not supplied the the default
-        /// path of %APPDATA%\EDDI\eddi.json is used
+        /// path of %APPDATA%\EDDI\scripts.json is used
         /// </summary>
-        public static EDDIConfiguration FromFile(string filename=null)
+        public static ScriptsConfiguration FromFile(string filename=null)
         {
             if (filename == null)
             {
                 String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\eddi.json";
+                filename = dataDir + "\\scripts.json";
             }
 
-            EDDIConfiguration configuration;
+            ScriptsConfiguration configuration;
             try
             {
-                configuration = JsonConvert.DeserializeObject<EDDIConfiguration>(File.ReadAllText(filename));
+                configuration = JsonConvert.DeserializeObject<ScriptsConfiguration>(File.ReadAllText(filename));
             }
             catch
             {
-                configuration = new EDDIConfiguration();
+                configuration = new ScriptsConfiguration();
             }
             configuration.dataPath = filename;
 
@@ -56,7 +48,7 @@ namespace EDDI
         /// <summary>
         /// Write configuration to a file.  If the filename is not supplied then the path used
         /// when reading in the configuration will be used, or the default path of 
-        /// %APPDATA%\EDDI\eddi.json will be used
+        /// %APPDATA%\EDDI\scripts.json will be used
         /// </summary>
         public void ToFile(string filename=null)
         {
@@ -68,7 +60,7 @@ namespace EDDI
             {
                 String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\eddi.json";
+                filename = dataDir + "\\scripts.json";
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);

@@ -1,11 +1,4 @@
-﻿using EliteDangerousCompanionAppService;
-using EliteDangerousDataDefinitions;
-using EliteDangerousDataProviderService;
-using EliteDangerousJournalMonitor;
-using EliteDangerousNetLogMonitor;
-using EliteDangerousSpeechService;
-using EliteDangerousStarMapService;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;

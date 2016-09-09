@@ -49,10 +49,6 @@ namespace configuration
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;
             eddiInsuranceDecimal.Value = eddiConfiguration.Insurance;
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
-            //// DataGrid requires a list as a backing store
-            //scripts = new List<Script>(eddiConfiguration.Scripts.Values);
-            //scriptsData.ItemsSource = scripts;
-            scriptsData.ItemsSource = eddiConfiguration.Scripts;
 
             Logging.Verbose = eddiConfiguration.Debug;
 
@@ -96,7 +92,7 @@ namespace configuration
 
             // Configure the Text-to-speech tab
             SpeechServiceConfiguration speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
-            List<String> speechOptions = new List<String>();
+            List<string> speechOptions = new List<String>();
             speechOptions.Add("Windows TTS default");
             try
             {
@@ -164,7 +160,7 @@ namespace configuration
             eddiConfiguration.HomeStation = String.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
             eddiConfiguration.Insurance = eddiInsuranceDecimal.Value == null ? 5 : (decimal)eddiInsuranceDecimal.Value;
             eddiConfiguration.Debug = eddiVerboseLogging.IsChecked.Value;
-            eddiConfiguration.Scripts = this.eddiConfiguration.Scripts;
+            //eddiConfiguration.Scripts = this.eddiConfiguration.Scripts;
             eddiConfiguration.ToFile();
         }
 
@@ -538,18 +534,18 @@ namespace configuration
 
         private void editScript(object sender, RoutedEventArgs e)
         {
-            Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
-            EditScriptWindow editScriptWindow = new EditScriptWindow(eddiConfiguration.Scripts, script.Name);
-            editScriptWindow.ShowDialog();
-            scriptsData.Items.Refresh();
+            //Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+            //EditScriptWindow editScriptWindow = new EditScriptWindow(eddiConfiguration.Scripts, script.Name);
+            //editScriptWindow.ShowDialog();
+            //scriptsData.Items.Refresh();
         }
 
         private void resetScript(object sender, RoutedEventArgs e)
         {
-            Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
-            script.Value = null;
-            eddiScriptsUpdated(sender, e);
-            scriptsData.Items.Refresh();
+            //Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+            //script.Value = null;
+            //eddiScriptsUpdated(sender, e);
+            //scriptsData.Items.Refresh();
         }
     }
 

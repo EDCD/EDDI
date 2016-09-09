@@ -1,4 +1,5 @@
-﻿using EliteDangerousEvents;
+﻿using EDDI;
+using EliteDangerousEvents;
 using EliteDangerousStarMapService;
 using System;
 using System.Collections.Generic;
@@ -7,18 +8,33 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities;
 
-namespace EDDI
+namespace EliteDangerousEDSMResponder
 {
     public class EDSMResponder : EDDIResponder
     {
         private StarMapService starMapService;
 
-        public EDSMResponder()
+        public string ResponderName()
         {
-            Logging.Info("Started EDSM responder");
+            return "EDSM responder";
         }
 
-        public void Start()
+        public string ResponderVersion()
+        {
+            return "1.0.0";
+        }
+
+        public string ResponderDescription()
+        {
+            return "Plugin to respond to system jumps by sending the details to EDSM";
+        }
+
+        public EDSMResponder()
+        {
+            Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
+        }
+
+        public bool Start()
         {
             // Set up the star map service
             StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
@@ -37,13 +53,9 @@ namespace EDDI
                 if (commanderName != null)
                 {
                     starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
-                    Logging.Info("EDDI access to EDSM is enabled");
                 }
             }
-            if (starMapService == null)
-            {
-                Logging.Info("EDDI access to EDSM is disabled");
-            }
+            return starMapService != null;
         }
 
         public void Stop()
@@ -53,12 +65,12 @@ namespace EDDI
 
         public void Handle(Event theEvent)
         {
-            if (theEvent is JumpedEvent)
+            if (starMapService != null)
             {
-                JumpedEvent jumpedEvent = (JumpedEvent)theEvent;
-
-                if (starMapService != null)
+                if (theEvent is JumpedEvent)
                 {
+                    JumpedEvent jumpedEvent = (JumpedEvent)theEvent;
+
                     // Send jump information to EDSM
                     Logging.Error("Sending data to EDSM");
                     starMapService.sendStarMapLog(jumpedEvent.timestamp, jumpedEvent.system, jumpedEvent.x, jumpedEvent.y, jumpedEvent.z);

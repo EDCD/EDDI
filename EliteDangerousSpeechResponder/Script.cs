@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EDDI
+namespace EliteDangerousSpeechResponder
 {
     public class Script : INotifyPropertyChanged
     {

@@ -30,10 +30,14 @@ namespace EliteDangerousCompanionAppService
         /// <summary>The modules available at the station the commander last docked at</summary>
         public List<Module> Outfitting;
 
+        /// <summary>The commodities avaialable for sale at the station the commander last docked at</summary>
+        public List<Commodity> Commodities;
+
         public Profile()
         {
             StoredShips = new List<Ship>();
             Outfitting = new List<Module>();
+            Commodities= new List<Commodity>();
         }
     }
 }

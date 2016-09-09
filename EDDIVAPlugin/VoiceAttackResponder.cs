@@ -15,6 +15,21 @@ namespace EDDIVAPlugin
     /// </summary>
     class VoiceAttackResponder : EDDIResponder
     {
+        public string ResponderName()
+        {
+            return "VoiceAttack responder";
+        }
+
+        public string ResponderVersion()
+        {
+            return "1.0.0";
+        }
+
+        public string ResponderDescription()
+        {
+            return "Plugin to make events available to VoiceAttack";
+        }
+
         public VoiceAttackResponder()
         {
             Logging.Info("Started VoiceAttack responder");
@@ -26,8 +41,9 @@ namespace EDDIVAPlugin
             VoiceAttackPlugin.EventQueue.Add(theEvent);
         }
 
-        public void Start()
+        public bool Start()
         {
+            return true;
         }
 
         public void Stop()

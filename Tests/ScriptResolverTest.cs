@@ -2,6 +2,7 @@
 using Cottle.Functions;
 using Cottle.Stores;
 using EDDI;
+using EliteDangerousSpeechResponder;
 using EliteDangerousSpeechService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

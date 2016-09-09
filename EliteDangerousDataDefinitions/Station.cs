@@ -15,25 +15,28 @@ namespace EliteDangerousDataDefinitions
         public long EDDBID { get; set; }
 
         /// <summary>The name</summary>
-        public String name { get; set;  }
+        public string name { get; set;  }
 
         /// <summary>The government</summary>
-        public String government { get; set; }
+        public string government { get; set; }
 
         /// <summary>The faction</summary>
-        public String faction { get; set; }
+        public string faction { get; set; }
 
         /// <summary>The allegiance</summary>
-        public String allegiance { get; set; }
+        public string allegiance { get; set; }
 
         /// <summary>The state of the system</summary>
-        public String state { get; set; }
+        public string state { get; set; }
 
         /// <summary>The economies of the station</summary>
-        public List<String> economies { get; set; }
+        public List<string> economies { get; set; }
 
         /// <summary>How far this is from the star</summary>
         public long? distancefromstar { get; set; }
+
+        /// <summary>The system in which this station resides</summary>
+        public string systemname { get; set; }
 
         /// <summary>Does this station have refuel facilities?</summary>
         public bool? hasrefuel { get; set; }
@@ -48,13 +51,16 @@ namespace EliteDangerousDataDefinitions
         /// <summary>Does this station have a market?</summary>
         public bool? hasmarket { get; set; }
         /// <summary>Does this station have a black market?</summary>
-        public bool? hasblacmMarket { get; set; }
+        public bool? hasblackmarket { get; set; }
 
         /// <summary>The model of the station</summary>
         public StationModel model { get; set; }
 
         /// <summary>What is the largest ship that can land here?</summary>
         public ShipSize largestpad { get; set;  }
+
+        /// <summary>What commodities are bought/sold by the station</summary>
+        public List<Commodity> commodities { get; set; }
 
         /// <summary>Is this station a starport?</summary>
         public bool IsStarport() { return model == StationModel.CoriolisStarport || model == StationModel.OcellusStarport || model == StationModel.OrbisStarport || model == StationModel.UnknownStarport; }

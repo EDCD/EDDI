@@ -10,7 +10,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using Utilities;
@@ -26,6 +28,7 @@ namespace EDDI
     /// </summary>
     public class Eddi
     {
+        public static readonly string EDDI_NAME = "EDDI";
         public static readonly string EDDI_VERSION = "2.0.0b1";
 
         private static Eddi instance;
@@ -65,7 +68,7 @@ namespace EDDI
         public Ship Ship { get; private set; }
         public List<Ship> StoredShips { get; private set; }
         public Station LastStation { get; private set; }
-        public List<Module> Outfitting { get; private set; }
+        public List<EliteDangerousDataDefinitions.Module> Outfitting { get; private set; }
 
         // Services made available from EDDI
         public StarMapService starMapService { get; private set; }
@@ -191,6 +194,8 @@ namespace EDDI
                     Logging.Info("EDDI netlog monitor is disabled");
                 }
 
+                responders = loadResponders();
+
                 Logging.Info("EDDI " + EDDI_VERSION + " initialised");
             }
             catch (Exception ex)
@@ -219,13 +224,18 @@ namespace EDDI
 
         public void Start()
         {
-            responders.Add(new SpeechResponder());
-            responders.Add(new EDSMResponder());
-
             foreach (EDDIResponder responder in responders)
             {
-                EventHandler += new OnEventHandler(responder.Handle);
-                responder.Start();
+                bool responderStarted = responder.Start();
+                if (responderStarted)
+                {
+                    EventHandler += new OnEventHandler(responder.Handle);
+                    Logging.Info("Started " + responder.ResponderName());
+                }
+                else
+                {
+                    Logging.Warn("Failed to start " + responder.ResponderName());
+                }
             }
 
             // Post a started event to let the responders know we are up and running
@@ -252,18 +262,7 @@ namespace EDDI
             Logging.Info("EDDI " + EDDI_VERSION + " shutting down");
         }
 
-        /// <summary>
-        /// Add a responder to the list of active responders.  This starts the responder.
-        /// </summary>
-        /// <param name="responder"></param>
-        public void AddResponder(EDDIResponder responder)
-        {
-            responders.Add(responder);
-            EventHandler += new OnEventHandler(responder.Handle);
-            responder.Start();
-        }
-
-        void eventHandler(Event journalEvent)
+        private void eventHandler(Event journalEvent)
         {
             Logging.Debug("Handling event " + JsonConvert.SerializeObject(journalEvent));
             // We have some additional processing to do for a number of events
@@ -295,17 +294,17 @@ namespace EDDI
             }
         }
 
-        bool eventDocked(DockedEvent theEvent)
+        private bool eventDocked(DockedEvent theEvent)
         {
             return true;
         }
 
-        bool eventUndocked(UndockedEvent theEvent)
+        private bool eventUndocked(UndockedEvent theEvent)
         {
             return true;
         }
 
-        bool eventJumped(JumpedEvent theEvent)
+        private bool eventJumped(JumpedEvent theEvent)
         {
             bool passEvent;
             Logging.Debug("Jumped to " + theEvent.system);
@@ -321,27 +320,27 @@ namespace EDDI
             }
             else
             {
-                    passEvent = true;
-                    LastStarSystem = CurrentStarSystem;
-                    CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(theEvent.system);
-                    if (CurrentStarSystem.x == null)
-                    {
-                        // Star system is missing co-ordinates to take them from the event
-                        CurrentStarSystem.x = theEvent.x;
-                        CurrentStarSystem.y = theEvent.y;
-                        CurrentStarSystem.z = theEvent.z;
-                    }
-                    CurrentStarSystem.visits++;
-                    CurrentStarSystem.lastvisit = DateTime.Now;
-                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                    // After jump we are always in supercruise
-                    Environment = ENVIRONMENT_SUPERCRUISE;
-                    setCommanderTitle();
+                passEvent = true;
+                LastStarSystem = CurrentStarSystem;
+                CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(theEvent.system);
+                if (CurrentStarSystem.x == null)
+                {
+                    // Star system is missing co-ordinates to take them from the event
+                    CurrentStarSystem.x = theEvent.x;
+                    CurrentStarSystem.y = theEvent.y;
+                    CurrentStarSystem.z = theEvent.z;
+                }
+                CurrentStarSystem.visits++;
+                CurrentStarSystem.lastvisit = DateTime.Now;
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                // After jump we are always in supercruise
+                Environment = ENVIRONMENT_SUPERCRUISE;
+                setCommanderTitle();
             }
             return passEvent;
         }
 
-        bool eventEnteredSupercruise(EnteredSupercruiseEvent theEvent)
+        private bool eventEnteredSupercruise(EnteredSupercruiseEvent theEvent)
         {
             if (Environment == null || Environment != ENVIRONMENT_SUPERCRUISE)
             {
@@ -351,7 +350,7 @@ namespace EDDI
             return false;
         }
 
-        bool eventEnteredNormalSpace(EnteredNormalSpaceEvent theEvent)
+        private bool eventEnteredNormalSpace(EnteredNormalSpaceEvent theEvent)
         {
             if (Environment == null || Environment != ENVIRONMENT_NORMAL_SPACE)
             {
@@ -372,8 +371,15 @@ namespace EDDI
                 StoredShips = profile == null ? null : profile.StoredShips;
                 CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
                 setCommanderTitle();
-                // TODO last station string to station
-                //LastStation = profile.LastStation;
+                // We assume that the last station is in the current system.  This won't always be correct, but it's as good as we can do without a mapping
+                // from station to system, which wouldn't be unique anyway
+                Station LastStationGuess = CurrentStarSystem.stations.Find(s => s.name == profile.LastStation);
+                if (LastStationGuess != null)
+                {
+                    LastStation = LastStationGuess;
+                    LastStation.commodities = profile.Commodities;
+                }
+                // TODO add outfitting and shipyard to station
                 Outfitting = profile == null ? null : profile.Outfitting;
             }
         }
@@ -398,6 +404,66 @@ namespace EDDI
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Find all responders
+        /// </summary>
+        private List<EDDIResponder> loadResponders()
+        {
+            DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            List<EDDIResponder> responders = new List<EDDIResponder>();
+            Type pluginType = typeof(EDDIResponder);
+            foreach (FileInfo file in dir.GetFiles("*.dll", System.IO.SearchOption.AllDirectories))
+            {
+                Logging.Debug("Checking potential plugin at " + file.FullName);
+                try
+                {
+                    Assembly assembly = Assembly.LoadFrom(file.FullName);
+                    foreach (Type type in assembly.GetTypes())
+                    {
+                        if (type.IsInterface || type.IsAbstract)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            if (type.GetInterface(pluginType.FullName) != null)
+                            {
+                                Logging.Debug("Instantiating plugin at " + file.FullName);
+                                EDDIResponder responder = type.InvokeMember(null,
+                                                           BindingFlags.CreateInstance,
+                                                           null, null, null) as EDDIResponder;
+                                responders.Add(responder);
+                            }
+                        }
+                    }
+                }
+                catch (BadImageFormatException)
+                {
+                    // Ignore this; probably due to CPU architecure mismatch
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (Exception exSub in ex.LoaderExceptions)
+                    {
+                        sb.AppendLine(exSub.Message);
+                        FileNotFoundException exFileNotFound = exSub as FileNotFoundException;
+                        if (exFileNotFound != null)
+                        {
+                            if (!string.IsNullOrEmpty(exFileNotFound.FusionLog))
+                            {
+                                sb.AppendLine("Fusion Log:");
+                                sb.AppendLine(exFileNotFound.FusionLog);
+                            }
+                        }
+                        sb.AppendLine();
+                    }
+                    Logging.Warn("Failed to instantiate plugin at " + file.FullName + ":\n" + sb.ToString());
+                }
+            }
+            return responders;
         }
     }
 }

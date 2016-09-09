@@ -32,6 +32,10 @@ namespace EliteDangerousSpeechService
 
         public void Say(Commander commander, Ship ship, string script)
         {
+            if (script == null)
+            {
+                return;
+            }
             string shipScript;
             if (ship == null || ship.name == null || ship.name.Trim().Length == 0)
             {
@@ -67,6 +71,10 @@ namespace EliteDangerousSpeechService
 
         public void Transmit(Commander commander, Ship ship, string script)
         {
+            if (script == null)
+            {
+                return;
+            }
             if (ship == null)
             {
                 script = script.Replace("$=", "Unidentified ship");
@@ -84,6 +92,10 @@ namespace EliteDangerousSpeechService
 
         public void Receive(Commander commander, Ship ship, string script)
         {
+            if (script == null)
+            {
+                return;
+            }
             if (ship == null)
             {
                 script = script.Replace("$=", "Unidentified ship");

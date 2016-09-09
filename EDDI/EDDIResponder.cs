@@ -1,22 +1,44 @@
 ﻿using EliteDangerousEvents;
-using EliteDangerousJournalMonitor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.AddIn.Contract;
+using System.AddIn.Pipeline;
 
 namespace EDDI
 {
     /// <summary>
     /// The methods required for an EDDI responder.
     /// </summary>
+    [AddInContract]
     public interface EDDIResponder
     {
-        void Start();
+        /// <summary>
+        /// A short name for the responder
+        /// </summary>
+        string ResponderName();
 
+        /// <summary>
+        /// The version of the responder
+        /// </summary>
+        string ResponderVersion();
+
+        /// <summary>
+        /// A brief description of the responder
+        /// </summary>
+        string ResponderDescription();
+
+        /// <summary>
+        /// Called when this responder is started; time to carry out initialisation
+        /// </summary>
+        /// <returns>true if the responder has started successfully; otherwise false</returns>
+        bool Start();
+
+        /// <summary>
+        /// Called when this responder is stopped; time to shut down daemons and similar
+        /// </summary>
         void Stop();
 
+        /// <summary>
+        /// Called when an event is found
+        /// </summary>
         void Handle(Event theEvent);
     }
 }

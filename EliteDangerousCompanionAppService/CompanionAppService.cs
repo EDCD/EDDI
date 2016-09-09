@@ -451,6 +451,8 @@ namespace EliteDangerousCompanionAppService
 
                 Profile.Outfitting = OutfittingFromProfile(json);
 
+                Profile.Commodities = CommoditiesFromProfile(json);
+
                 Profile.LastStation = json["lastStarport"] == null ? null : (string)json["lastStarport"]["name"];
             }
 
@@ -769,6 +771,34 @@ namespace EliteDangerousCompanionAppService
             }
 
             return Modules;
+        }
+
+        // Obtain the list of commodities from the profile
+        public static List<Commodity> CommoditiesFromProfile(dynamic json)
+        {
+            List<Commodity> Commodities = new List<Commodity>();
+
+            //if (json["lastStarport"] != null && json["lastStarport"]["modules"] != null)
+            //{
+            //    foreach (dynamic moduleJson in json["lastStarport"]["modules"])
+            //    {
+            //        dynamic module = moduleJson.Value;
+            //        // Not interested in paintjobs, decals, ...
+            //        if (module["category"] == "weapon" || module["category"] == "module")
+            //        {
+            //            Commodity Commodity = CommodityDefinitions.CommodityFromEliteID((long)module["id"]);
+            //            if (Commodity.Name == null)
+            //            {
+            //                // Unknown module; log an error so that we can update the definitions
+            //                Logging.Error("No definition for outfitting module " + module.ToString());
+            //            }
+            //            //Commodity.Cost = module["cost"];
+            //            Commodities.Add(Commodity);
+            //        }
+            //    }
+            //}
+
+            return Commodities;
         }
 
         public static Module ModuleFromProfile(string name, dynamic json)

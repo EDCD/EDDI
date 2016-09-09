@@ -13,7 +13,7 @@ namespace EliteDangerousDataProviderService
     /// <summary>Access to EDDP data<summary>
     public class DataProviderService
     {
-        private const string BASE = "http://api.eddp.co:16161/";
+        private const string BASE = "http://api.eddp.co/";
 
         public static StarSystem GetSystemData(string system, decimal? x, decimal?y, decimal? z)
         {
@@ -93,13 +93,13 @@ namespace EliteDangerousDataProviderService
                 StarSystem.powerState = (string)json["power_state"];
 
 
-                StarSystem.stations = StationsFromEDDP(json);
+                StarSystem.stations = StationsFromEDDP(StarSystem.name, json);
             }
 
             return StarSystem;
         }
 
-        public static List<Station> StationsFromEDDP(dynamic json)
+        public static List<Station> StationsFromEDDP(string systemName, dynamic json)
         {
             List<Station> Stations = new List<Station>();
 
@@ -110,13 +110,14 @@ namespace EliteDangerousDataProviderService
                     Station Station = new Station();
                     Station.EDDBID = (long)station["id"];
                     Station.name = (string)station["name"];
+                    Station.systemname = systemName;
 
-                    Station.economies = new List<String>();
+                    Station.economies = new List<string>();
                     if (station["economies"] != null)
                     {
                         foreach (dynamic economy in station["economies"])
                         {
-                            Station.economies.Add((String)economy);
+                            Station.economies.Add((string)economy);
                         }
                     }
 
@@ -131,7 +132,7 @@ namespace EliteDangerousDataProviderService
                     Station.hasoutfitting = (bool?)station["has_outfitting"];
                     Station.hasshipyard = (bool?)station["has_shipyard"];
                     Station.hasmarket = (bool?)station["has_market"];
-                    Station.hasblacmMarket = (bool?)station["has_blackmarket"];
+                    Station.hasblackmarket = (bool?)station["has_blackmarket"];
 
                     if (((string)station["type"]) != null)
                     {

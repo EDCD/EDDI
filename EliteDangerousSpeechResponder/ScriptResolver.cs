@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities;
 
-namespace EDDI
+namespace EliteDangerousSpeechResponder
 {
     public class ScriptResolver
     {
@@ -34,7 +34,7 @@ namespace EDDI
             scripts.TryGetValue(name, out script);
             if (script == null)
             {
-                Logging.Warn("Attempt to resolve unknown script " + name);
+                Logging.Debug("No script; skipping");
                 return null;
             }
             Logging.Debug("Found script");
