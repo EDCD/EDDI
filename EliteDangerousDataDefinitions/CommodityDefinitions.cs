@@ -213,6 +213,7 @@ namespace EliteDangerousDataDefinitions
             if (CommoditiesByEliteID.TryGetValue(id, out Template))
             {
                 Commodity.EDDBID = Template.EDDBID;
+                Commodity.EDName = Template.EDName;
                 Commodity.Name = Template.Name;
                 Commodity.Category = Template.Category;
                 Commodity.Rare = Template.Rare;
@@ -240,6 +241,7 @@ namespace EliteDangerousDataDefinitions
             if (CommoditiesByCargoName.TryGetValue(cargoName, out Template))
             {
                 Commodity.EDDBID = Template.EDDBID;
+                Commodity.EDName = Template.EDName;
                 Commodity.Name = Template.Name;
                 Commodity.Category = Template.Category;
                 Commodity.Rare = Template.Rare;

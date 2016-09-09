@@ -449,11 +449,20 @@ namespace EliteDangerousCompanionAppService
 
                 AugmentShipInfo(Profile.Ship, Profile.StoredShips);
 
-                Profile.Outfitting = OutfittingFromProfile(json);
+                if (json["lastStarport"] != null)
+                {
+                    Profile.LastStation =  Profile.CurrentStarSystem.stations.Find(s => s.name == (string)json["lastStarport"]["name"]);
+                    if (Profile.LastStation == null)
+                    {
+                        // Don't have a station so make one up
+                        Profile.LastStation = new Station();
+                        Profile.LastStation.name = (string)json["lastStarport"]["name"];
+                    }
 
-                Profile.Commodities = CommoditiesFromProfile(json);
-
-                Profile.LastStation = json["lastStarport"] == null ? null : (string)json["lastStarport"]["name"];
+                    Profile.LastStation.systemname = Profile.CurrentStarSystem.name;
+                    Profile.LastStation.outfitting = OutfittingFromProfile(json);
+                    Profile.LastStation.commodities = CommoditiesFromProfile(json);
+                }
             }
 
             Logging.Debug("Leaving");
@@ -778,25 +787,34 @@ namespace EliteDangerousCompanionAppService
         {
             List<Commodity> Commodities = new List<Commodity>();
 
-            //if (json["lastStarport"] != null && json["lastStarport"]["modules"] != null)
-            //{
-            //    foreach (dynamic moduleJson in json["lastStarport"]["modules"])
-            //    {
-            //        dynamic module = moduleJson.Value;
-            //        // Not interested in paintjobs, decals, ...
-            //        if (module["category"] == "weapon" || module["category"] == "module")
-            //        {
-            //            Commodity Commodity = CommodityDefinitions.CommodityFromEliteID((long)module["id"]);
-            //            if (Commodity.Name == null)
-            //            {
-            //                // Unknown module; log an error so that we can update the definitions
-            //                Logging.Error("No definition for outfitting module " + module.ToString());
-            //            }
-            //            //Commodity.Cost = module["cost"];
-            //            Commodities.Add(Commodity);
-            //        }
-            //    }
-            //}
+            if (json["lastStarport"] != null && json["lastStarport"]["commodities"] != null)
+            {
+                foreach (dynamic commodity in json["lastStarport"]["commodities"])
+                {
+                    dynamic commodityJson = commodity.Value;
+                    Commodity Commodity = CommodityDefinitions.CommodityFromEliteID((long)commodity["id"]);
+                    if (Commodity == null || Commodity.Name == null)
+                    {
+                        Commodity = new Commodity();
+                        Commodity.EDName = (string)commodity["name"];
+                    }
+                    Commodity.AveragePrice = (int)commodity["meanPrice"];
+                    Commodity.BuyPrice = (int)commodity["buyPrice"];
+                    Commodity.Stock = (int)commodity["stock"];
+                    Commodity.StockBracket = (dynamic)commodity["stockBracket"];
+                    Commodity.SellPrice = (int)commodity["sellPrice"];
+                    Commodity.Demand = (int)commodity["demand"];
+                    Commodity.DemandBracket = (dynamic)commodity["demandBracket"];
+
+                    List<string> StatusFlags = new List<string>();
+                    foreach (dynamic statusFlag in commodity["statusFlags"])
+                    {
+                        StatusFlags.Add((string)statusFlag);
+                    }
+                    Commodity.StatusFlags = StatusFlags;
+                    Commodities.Add(Commodity);
+                }
+            }
 
             return Commodities;
         }

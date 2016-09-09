@@ -20,7 +20,7 @@ namespace EliteDangerousEDDNResponder
     {
         public string ResponderName()
         {
-            return "Speech responder";
+            return "EDDN responder";
         }
 
         public string ResponderVersion()
@@ -30,7 +30,7 @@ namespace EliteDangerousEDDNResponder
 
         public string ResponderDescription()
         {
-            return "Plugin to respond to events with scripts.  Scripts can be individually enabled and customised";
+            return "Plugin to send station market, outfitting and station information to EDDN";
         }
 
         public EDDNResponder()
@@ -85,7 +85,7 @@ namespace EliteDangerousEDDNResponder
             header.uploaderID = generateUploaderId();
 
             EDDNCommoditiesMessage message = new EDDNCommoditiesMessage();
-            message.timestamp = DateTime.Now;
+            message.timestamp = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
             message.systemName = Eddi.Instance.LastStation.systemname;
             message.stationName = Eddi.Instance.LastStation.name;
             List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
@@ -96,30 +96,35 @@ namespace EliteDangerousEDDNResponder
                 eddnCommodity.meanPrice = commodity.AveragePrice;
                 eddnCommodity.buyPrice = commodity.BuyPrice;
                 eddnCommodity.stock = commodity.Stock;
+                eddnCommodity.stockBracket = commodity.StockBracket;
                 eddnCommodity.sellPrice = commodity.SellPrice;
                 eddnCommodity.demand = commodity.Demand;
                 eddnCommodity.demandBracket = commodity.DemandBracket;
-                eddnCommodity.statusFlags = commodity.StatusFlags;
+                if (commodity.StatusFlags.Count > 0)
+                {
+                    eddnCommodity.statusFlags = commodity.StatusFlags;
+                }
                 eddnCommodities.Add(eddnCommodity);
             };
             message.commodities = eddnCommodities;
 
             EDDNBody body = new EDDNBody();
             body.header = header;
-            body.schemaRef = "http://schemas.elite-markets.net/eddn/commodity/3";
+            body.schemaRef = "http://schemas.elite-markets.net/eddn/commodity/3/test";
             body.message = message;
 
-            Logging.Info("Body is\n" + JsonConvert.SerializeObject(body));
             //var client = new RestClient("http://schemas.elite-markets.net/eddn/");
             //var request = new RestRequest("commodity/3/test", Method.POST);
-            //request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
+            var client = new RestClient("http://eddn-gateway.elite-markets.net:8080/");
+            var request = new RestRequest("upload/", Method.POST);
+            request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
 
-            //new Thread(() =>
-            //{
-            //    IRestResponse response = client.Execute(request);
-            //    var content = response.Content; // raw content as string
-            //    Logging.Info("Response content is " + content);
-            //}).Start();
+            new Thread(() =>
+            {
+                IRestResponse response = client.Execute(request);
+                var content = response.Content; // raw content as string
+                Logging.Info("Response content is " + content);
+            }).Start();
         }
 
         private void sendOutfittingInformation()

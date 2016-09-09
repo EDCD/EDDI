@@ -59,8 +59,11 @@ namespace EliteDangerousDataDefinitions
         /// <summary>What is the largest ship that can land here?</summary>
         public ShipSize largestpad { get; set;  }
 
-        /// <summary>What commodities are bought/sold by the station</summary>
+        /// <summary>Which commodities are bought/sold by the station</summary>
         public List<Commodity> commodities { get; set; }
+
+        /// <summary>Which modules are available for outfitting at the station</summary>
+        public List<Module> outfitting { get; set; }
 
         /// <summary>Is this station a starport?</summary>
         public bool IsStarport() { return model == StationModel.CoriolisStarport || model == StationModel.OcellusStarport || model == StationModel.OrbisStarport || model == StationModel.UnknownStarport; }

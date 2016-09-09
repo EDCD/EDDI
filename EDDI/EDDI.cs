@@ -240,6 +240,9 @@ namespace EDDI
 
             // Post a started event to let the responders know we are up and running
             eventHandler(new StartedEvent(DateTime.Now));
+
+            // TODO remove - this is just a test
+            eventHandler(new DockedEvent(DateTime.Now, LastStation.name));
         }
 
         public void Stop()
@@ -370,17 +373,8 @@ namespace EDDI
                 Ship = profile == null ? null : profile.Ship;
                 StoredShips = profile == null ? null : profile.StoredShips;
                 CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
+                LastStation = profile == null ? null : profile.LastStation;
                 setCommanderTitle();
-                // We assume that the last station is in the current system.  This won't always be correct, but it's as good as we can do without a mapping
-                // from station to system, which wouldn't be unique anyway
-                Station LastStationGuess = CurrentStarSystem.stations.Find(s => s.name == profile.LastStation);
-                if (LastStationGuess != null)
-                {
-                    LastStation = LastStationGuess;
-                    LastStation.commodities = profile.Commodities;
-                }
-                // TODO add outfitting and shipyard to station
-                Outfitting = profile == null ? null : profile.Outfitting;
             }
         }
 
@@ -414,7 +408,7 @@ namespace EDDI
             DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             List<EDDIResponder> responders = new List<EDDIResponder>();
             Type pluginType = typeof(EDDIResponder);
-            foreach (FileInfo file in dir.GetFiles("*.dll", System.IO.SearchOption.AllDirectories))
+            foreach (FileInfo file in dir.GetFiles("*Responder.dll", SearchOption.AllDirectories))
             {
                 Logging.Debug("Checking potential plugin at " + file.FullName);
                 try

@@ -34,7 +34,7 @@ namespace EliteDangerousSpeechResponder
             scripts.TryGetValue(name, out script);
             if (script == null)
             {
-                Logging.Debug("No script; skipping");
+                Logging.Debug("No script");
                 return null;
             }
             Logging.Debug("Found script");

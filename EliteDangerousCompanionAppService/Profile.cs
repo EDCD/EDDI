@@ -24,20 +24,12 @@ namespace EliteDangerousCompanionAppService
         /// <summary>The current starsystem</summary>
         public StarSystem CurrentStarSystem{ get; set; }
 
-        /// <summary>The name of the last station the commander docked at</summary>
-        public string LastStation { get; set; }
-
-        /// <summary>The modules available at the station the commander last docked at</summary>
-        public List<Module> Outfitting;
-
-        /// <summary>The commodities avaialable for sale at the station the commander last docked at</summary>
-        public List<Commodity> Commodities;
+        /// <summary>The last station the commander docked at</summary>
+        public Station LastStation { get; set; }
 
         public Profile()
         {
             StoredShips = new List<Ship>();
-            Outfitting = new List<Module>();
-            Commodities= new List<Commodity>();
         }
     }
 }
