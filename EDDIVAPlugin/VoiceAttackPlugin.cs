@@ -21,8 +21,6 @@ namespace EDDIVAPlugin
 {
     public class VoiceAttackPlugin
     {
-        private static Eddi eddi;
-
         public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
 
         private static SpeechService speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
@@ -48,21 +46,20 @@ namespace EDDIVAPlugin
 
             try
             {
-                eddi = Eddi.Instance;
                 // Keep other responders off for now
-                //eddi.Start();
+                //Eddi.Instance.Start();
 
                 Logging.Debug("Adding VoiceAttack responder");
-                eddi.AddResponder(new VoiceAttackResponder());
+                Eddi.Instance.AddResponder(new VoiceAttackResponder());
 
                 setValues(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
 
-                if (eddi.Insurance != null)
+                if (Eddi.Instance.Insurance != null)
                 {
-                    setDecimal(ref decimalValues, "Insurance", eddi.Insurance);
+                    setDecimal(ref decimalValues, "Insurance", Eddi.Instance.Insurance);
                 }
 
-                setString(ref textValues, "Environment", eddi.Environment);
+                setString(ref textValues, "Environment", Eddi.Instance.Environment);
 
                 setString(ref textValues, "EDDI plugin profile status", "Enabled");
                 Logging.Info("Initialised EDDI VoiceAttack plugin");
@@ -75,7 +72,7 @@ namespace EDDIVAPlugin
 
         public static void VA_Exit1(ref Dictionary<string, object> state)
         {
-            eddi.Stop();
+            Eddi.Instance.Stop();
         }
 
         public static void VA_Invoke1(String context, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
@@ -136,7 +133,7 @@ namespace EDDIVAPlugin
         /// <summary>Force-update EDDI's information</summary>
         private static void InvokeUpdateProfile(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            eddi.refreshProfile();
+            Eddi.Instance.refreshProfile();
             setValues(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
         }
 
@@ -172,12 +169,12 @@ namespace EDDIVAPlugin
             Logging.Debug("Entered");
             try
             {
-                if (eddi.CurrentStarSystem == null)
+                if (Eddi.Instance.CurrentStarSystem == null)
                 {
                     Logging.Debug("No information on current system");
                     return;
                 }
-                string systemUri = "https://eddb.io/system/" + eddi.CurrentStarSystem.EDDBID;
+                string systemUri = "https://eddb.io/system/" + Eddi.Instance.CurrentStarSystem.EDDBID;
 
                 Logging.Debug("Starting process with uri " + systemUri);
 
@@ -197,12 +194,12 @@ namespace EDDIVAPlugin
             Logging.Debug("Entered");
             try
             {
-                if (eddi.CurrentStarSystem == null)
+                if (Eddi.Instance.CurrentStarSystem == null)
                 {
                     Logging.Debug("No information on current station");
                     return;
                 }
-                Station thisStation = eddi.CurrentStarSystem.stations.SingleOrDefault(s => s.name == eddi.LastStation.name);
+                Station thisStation = Eddi.Instance.CurrentStarSystem.stations.SingleOrDefault(s => s.name == Eddi.Instance.LastStation.name);
                 if (thisStation == null)
                 {
                     // Missing current star system information
@@ -229,13 +226,13 @@ namespace EDDIVAPlugin
             Logging.Debug("Entered");
             try
             {
-                if (eddi.Ship == null)
+                if (Eddi.Instance.Ship == null)
                 {
                     Logging.Debug("No information on ship");
                     return;
                 }
 
-                string shipUri = Coriolis.ShipUri(eddi.Ship);
+                string shipUri = Coriolis.ShipUri(Eddi.Instance.Ship);
 
                 Logging.Debug("Starting process with uri " + shipUri);
 
@@ -285,7 +282,7 @@ namespace EDDIVAPlugin
                         {
                             // And it's cheaper
                             setDecimal(ref decimalValues, name + " station discount", existing.Cost - Module.Cost);
-                            setString(ref textValues, name + " station discount (spoken)", humanize(existing.Cost - Module.Cost));
+                            setString(ref textValues, name + " station discount (spoken)", Translations.Humanize(existing.Cost - Module.Cost));
                         }
                         return;
                     }
@@ -316,7 +313,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Say(eddi.Cmdr, eddi.Ship, script);
+                speechService.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script);
             }
             catch (Exception e)
             {
@@ -342,7 +339,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Transmit(eddi.Cmdr, eddi.Ship, script);
+                speechService.Transmit(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script);
             }
             catch (Exception e)
             {
@@ -368,7 +365,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Receive(eddi.Cmdr, eddi.Ship, script);
+                speechService.Receive(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script);
             }
             catch (Exception e)
             {
@@ -413,17 +410,17 @@ namespace EDDIVAPlugin
                     return;
                 }
 
-                if (eddi.Cmdr != null)
+                if (Eddi.Instance.Cmdr != null)
                 {
                     // Store locally
-                    StarSystem here = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(eddi.CurrentStarSystem.name);
+                    StarSystem here = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(Eddi.Instance.CurrentStarSystem.name);
                     here.comment = comment == "" ? null : comment;
                     StarSystemSqLiteRepository.Instance.SaveStarSystem(here);
 
-                    if (eddi.starMapService != null)
+                    if (Eddi.Instance.starMapService != null)
                     {
                         // Store in EDSM
-                        eddi.starMapService.sendStarMapComment(eddi.CurrentStarSystem.name, comment);
+                        Eddi.Instance.starMapService.sendStarMapComment(Eddi.Instance.CurrentStarSystem.name, comment);
                     }
                 }
             }
@@ -437,27 +434,27 @@ namespace EDDIVAPlugin
         private static void setValues(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
             Logging.Debug("Setting values");
-            setCommanderValues(eddi.Cmdr, ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-            setShipValues(eddi.Ship, "Ship", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            setCommanderValues(Eddi.Instance.Cmdr, ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            setShipValues(Eddi.Instance.Ship, "Ship", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
             int currentStoredShip = 1;
-            foreach (Ship StoredShip in eddi.StoredShips)
+            foreach (Ship StoredShip in Eddi.Instance.StoredShips)
             {
                 setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 currentStoredShip++;
             }
-            setStarSystemValues(eddi.CurrentStarSystem, "System", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-            setStarSystemValues(eddi.LastStarSystem, "Last system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-            setStarSystemValues(eddi.HomeStarSystem, "Home system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            setStarSystemValues(Eddi.Instance.CurrentStarSystem, "System", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            setStarSystemValues(Eddi.Instance.LastStarSystem, "Last system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            setStarSystemValues(Eddi.Instance.HomeStarSystem, "Home system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
 
             // Backwards-compatibility with 1.x
-            if (eddi.HomeStarSystem != null)
+            if (Eddi.Instance.HomeStarSystem != null)
             {
-                setString(ref textValues, "Home system", eddi.HomeStarSystem.name);
-                setString(ref textValues, "Home system (spoken)", Translations.StarSystem(eddi.HomeStarSystem.name));
+                setString(ref textValues, "Home system", Eddi.Instance.HomeStarSystem.name);
+                setString(ref textValues, "Home system (spoken)", Translations.StarSystem(Eddi.Instance.HomeStarSystem.name));
             }
-            if (eddi.HomeStation != null)
+            if (Eddi.Instance.HomeStation != null)
             {
-                setString(ref textValues, "Home station", eddi.HomeStation.name);
+                setString(ref textValues, "Home station", Eddi.Instance.HomeStation.name);
             }
             Logging.Debug("Set values");
         }
@@ -539,9 +536,9 @@ namespace EDDIVAPlugin
                 setInt(ref intValues, "Federation rating", cmdr == null ? (int?)null : cmdr.federationrating);
                 setString(ref textValues, "Federation rank", cmdr == null ? null : cmdr.federationrank);
                 setDecimal(ref decimalValues, "Credits", cmdr == null ? (decimal?)null : cmdr.credits);
-                setString(ref textValues, "Credits (spoken)", cmdr == null ? null : humanize(cmdr.credits));
+                setString(ref textValues, "Credits (spoken)", cmdr == null ? null : Translations.Humanize(cmdr.credits));
                 setDecimal(ref decimalValues, "Debt", cmdr == null ? (decimal?)null : cmdr.debt);
-                setString(ref textValues, "Debt (spoken)", cmdr == null ? null : humanize(cmdr.debt));
+                setString(ref textValues, "Debt (spoken)", cmdr == null ? null : Translations.Humanize(cmdr.debt));
 
                 setString(ref textValues, "Title", cmdr == null ? null : cmdr.title);
 
@@ -571,7 +568,7 @@ namespace EDDIVAPlugin
                 setString(ref textValues, prefix + " role", ship == null ? null : ship.role.ToString());
                 setString(ref textValues, prefix + " size", ship == null ? null : ship.size.ToString());
                 setDecimal(ref decimalValues, prefix + " value", ship == null ? (decimal?)null : ship.value);
-                setString(ref textValues, prefix + " value (spoken)", ship == null ? null : humanize(ship.value));
+                setString(ref textValues, prefix + " value (spoken)", ship == null ? null : Translations.Humanize(ship.value));
                 setDecimal(ref decimalValues, prefix + " health", ship == null ? (decimal?)null : ship.Health);
                 setInt(ref intValues, prefix + " cargo capacity", ship == null ? (int?)null : ship.cargocapacity);
                 setInt(ref intValues, prefix + " cargo carried", ship == null ? (int?)null : ship.cargocarried);
@@ -594,21 +591,21 @@ namespace EDDIVAPlugin
                 }
 
                 setShipModuleValues(ship == null ? null : ship.Bulkheads, prefix + " bulkheads", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.Bulkheads, eddi.Outfitting, prefix + " bulkheads", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.Bulkheads, Eddi.Instance.Outfitting, prefix + " bulkheads", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.PowerPlant, prefix + " power plant", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.PowerPlant, eddi.Outfitting, prefix + " power plant", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.PowerPlant, Eddi.Instance.Outfitting, prefix + " power plant", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.Thrusters, prefix + " thrusters", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.Thrusters, eddi.Outfitting, prefix + " thrusters", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.Thrusters, Eddi.Instance.Outfitting, prefix + " thrusters", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.FrameShiftDrive, prefix + " frame shift drive", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.FrameShiftDrive, eddi.Outfitting, prefix + " frame shift drive", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.FrameShiftDrive, Eddi.Instance.Outfitting, prefix + " frame shift drive", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.LifeSupport, prefix + " life support", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.LifeSupport, eddi.Outfitting, prefix + " life support", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.LifeSupport, Eddi.Instance.Outfitting, prefix + " life support", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.PowerDistributor, prefix + " power distributor", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.PowerDistributor, eddi.Outfitting, prefix + " power distributor", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.PowerDistributor, Eddi.Instance.Outfitting, prefix + " power distributor", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.Sensors, prefix + " sensors", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.Sensors, eddi.Outfitting, prefix + " sensors", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.Sensors, Eddi.Instance.Outfitting, prefix + " sensors", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.FuelTank, prefix + " fuel tank", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.FuelTank, eddi.Outfitting, prefix + " fuel tank", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.FuelTank, Eddi.Instance.Outfitting, prefix + " fuel tank", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
 
                 // Hardpoints
                 if (ship != null)
@@ -642,7 +639,7 @@ namespace EDDIVAPlugin
 
                         setBoolean(ref booleanValues, baseHardpointName + " occupied", Hardpoint.Module != null);
                         setShipModuleValues(Hardpoint.Module, baseHardpointName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.Module, eddi.Outfitting, baseHardpointName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.Module, Eddi.Instance.Outfitting, baseHardpointName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     }
 
                     setInt(ref intValues, prefix + " hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
@@ -655,7 +652,7 @@ namespace EDDIVAPlugin
                         setInt(ref intValues, baseCompartmentName + " size", Compartment.Size);
                         setBoolean(ref booleanValues, baseCompartmentName + " occupied", Compartment.Module != null);
                         setShipModuleValues(Compartment.Module, baseCompartmentName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                        setShipModuleOutfittingValues(ship == null ? null : Compartment.Module, eddi.Outfitting, baseCompartmentName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        setShipModuleOutfittingValues(ship == null ? null : Compartment.Module, Eddi.Instance.Outfitting, baseCompartmentName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     }
                     setInt(ref intValues, prefix + " compartments", curCompartment);
                 }
@@ -667,7 +664,7 @@ namespace EDDIVAPlugin
                     setString(ref textValues, prefix + " station", ship.Station);
                     StarSystem StoredShipStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(ship.StarSystem);
                     // Have to grab a local copy of our star system as CurrentStarSystem might not have been initialised yet
-                    StarSystem ThisStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(eddi.CurrentStarSystem.name);
+                    StarSystem ThisStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(Eddi.Instance.CurrentStarSystem.name);
 
                     // Work out the distance to the system where the ship is stored if we can
                     if (ThisStarSystem != null && ThisStarSystem.x != null && StoredShipStarSystem.x != null)
@@ -702,7 +699,7 @@ namespace EDDIVAPlugin
                 setString(ref textValues, prefix + " name", system == null ? null : system.name);
                 setString(ref textValues, prefix + " name (spoken)", system == null ? null : Translations.StarSystem(system.name));
                 setDecimal(ref decimalValues, prefix + " population", system == null ? null : (decimal?)system.population);
-                setString(ref textValues, prefix + " population (spoken)", system == null ? null : humanize(system.population));
+                setString(ref textValues, prefix + " population (spoken)", system == null ? null : Translations.Humanize(system.population));
                 setString(ref textValues, prefix + " allegiance", system == null ? null : system.allegiance);
                 setString(ref textValues, prefix + " government", system == null ? null : system.government);
                 setString(ref textValues, prefix + " faction", system == null ? null : system.faction);
@@ -710,7 +707,7 @@ namespace EDDIVAPlugin
                 setString(ref textValues, prefix + " state", system == null ? null : system.state);
                 setString(ref textValues, prefix + " security", system == null ? null : system.security);
                 setString(ref textValues, prefix + " power", system == null ? null : system.power);
-                setString(ref textValues, prefix + " power (spoken)", Translations.Power(eddi.CurrentStarSystem.power));
+                setString(ref textValues, prefix + " power (spoken)", Translations.Power(Eddi.Instance.CurrentStarSystem.power));
                 setString(ref textValues, prefix + " power state", system == null ? null : system.powerState);
                 setDecimal(ref decimalValues, prefix + " X", system == null ? null : system.x);
                 setDecimal(ref decimalValues, prefix + " Y", system == null ? null : system.y);
@@ -718,9 +715,9 @@ namespace EDDIVAPlugin
                 setInt(ref intValues, prefix + " visits", system == null ? (int?)null : system.visits);
                 setString(ref textValues, prefix + " comment", system == null ? null : system.comment);
 
-                if (system != null && eddi.HomeStarSystem != null && eddi.HomeStarSystem.x != null && system.x != null)
+                if (system != null && Eddi.Instance.HomeStarSystem != null && Eddi.Instance.HomeStarSystem.x != null && system.x != null)
                 {
-                    setDecimal(ref decimalValues, prefix + " distance from home", (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - eddi.HomeStarSystem.x), 2) + Math.Pow((double)(system.y - eddi.HomeStarSystem.y), 2) + Math.Pow((double)(system.z - eddi.HomeStarSystem.z), 2)), 2));
+                    setDecimal(ref decimalValues, prefix + " distance from home", (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - Eddi.Instance.HomeStarSystem.x), 2) + Math.Pow((double)(system.y - Eddi.Instance.HomeStarSystem.y), 2) + Math.Pow((double)(system.z - Eddi.Instance.HomeStarSystem.z), 2)), 2));
                 }
                 else
                 {
@@ -805,96 +802,6 @@ namespace EDDIVAPlugin
                 Logging.Warn("EDDI exception: " + (exception == null ? "<null>" : exception.ToString()));
                 setString(ref values, "EDDI error", error);
                 setString(ref values, "EDDI exception", exception == null ? null : exception.ToString());
-            }
-        }
-
-        public static string humanize(long? value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            if (value == 0)
-            {
-                return "zero";
-            }
-
-            int number;
-            int nextDigit;
-            string order;
-            int digits = (int)Math.Log10((double)value);
-            if (digits < 3)
-            {
-                // Units
-                number = (int)value;
-                order = "";
-                nextDigit = 0;
-            }
-            else if (digits < 6)
-            {
-                // Thousands
-                number = (int)(value / 1000);
-                order = "thousand";
-                nextDigit = (((int)value) - (number * 1000)) / 100;
-            }
-            else if (digits < 9)
-            {
-                // Millions
-                number = (int)(value / 1000000);
-                order = "million";
-                nextDigit = (((int)value) - (number * 1000000)) / 100000;
-            }
-            else
-            {
-                // Billions
-                number = (int)(value / 1000000000);
-                order = "billion";
-                nextDigit = (int)(((long)value) - ((long)number * 1000000000)) / 100000000;
-            }
-
-            if (order == "")
-            {
-                return "" + number;
-            }
-            else
-            {
-                if (number > 60)
-                {
-                    if (nextDigit < 6)
-                    {
-                        return "Over " + number + " " + order;
-                    }
-                    else
-                    {
-                        return "Nearly " + (number + 1) + " " + order;
-                    }
-                }
-                switch (nextDigit)
-                {
-                    case 0:
-                        return "just over " + number + " " + order;
-                    case 1:
-                        return "over " + number + " " + order;
-                    case 2:
-                        return "well over " + number + " " + order;
-                    case 3:
-                        return "on the way to " + number + " and a half " + order;
-                    case 4:
-                        return "nearly " + number + " and a half " + order;
-                    case 5:
-                        return "around " + number + " and a half " + order;
-                    case 6:
-                        return "just over " + number + " and a half " + order;
-                    case 7:
-                        return "well over " + number + " and a half " + order;
-                    case 8:
-                        return "on the way to " + (number + 1) + " " + order;
-                    case 9:
-                        return "nearly " + (number + 1) + " " + order;
-                    default:
-                        return "around " + number + " " + order;
-                }
             }
         }
     }

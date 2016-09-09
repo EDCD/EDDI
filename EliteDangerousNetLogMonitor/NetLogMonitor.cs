@@ -23,8 +23,6 @@ namespace EliteDangerousNetLogMonitor
 
         private static void HandleNetLogLine(string line, Action<dynamic> callback)
         {
-            Logging.Debug("Looking at line " + line);
-
             string starSystem = null;
             string environment = null;
             decimal x = 0;

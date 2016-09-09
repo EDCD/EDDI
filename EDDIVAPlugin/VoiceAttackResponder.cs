@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 namespace EDDIVAPlugin
 {
     /// <summary>
-    /// A responder for EDDI to provide information to VoiceAttack
+    /// A responder for EDDI to provide information to VoiceAttack.  This is very simple, just adding events to the VoiceAttack plugin's event queue
     /// </summary>
     class VoiceAttackResponder : EDDIResponder
     {

@@ -13,24 +13,6 @@ namespace Tests
     [DeploymentItem(@"x86\SQLite.Interop.dll", "x86")]
     public class VoiceAttackPluginTests
     {
-        [TestMethod]
-        public void TestVAPluginHumanize1()
-        {
-            Assert.AreEqual("on the way to 12 and a half thousand", VoiceAttackPlugin.humanize(12345));
-        }
-
-        [TestMethod]
-        public void TestVAPluginHumanize2()
-        {
-            Assert.AreEqual(null, VoiceAttackPlugin.humanize(null));
-        }
-
-        [TestMethod]
-        public void TestVAPluginHumanize3()
-        {
-            Assert.AreEqual("zero", VoiceAttackPlugin.humanize(0));
-        }
-
         //[TestMethod]
         //public void TestVAVisitStarSystems()
         //{

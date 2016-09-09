@@ -463,7 +463,7 @@ namespace EliteDangerousSpeechService
             return elements.Aggregate((i, j) => i + " " + j);
         }
 
-        public static string humanize(decimal? value)
+        public static string Humanize(decimal? value)
         {
             if (value == null)
             {

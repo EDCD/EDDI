@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="EnteredNormalSpaceEvent.cs" />
     <Compile Include="EnteredSupercruiseEvent.cs" />
+    <Compile Include="StartedEvent.cs" />
     <Compile Include="UndockedEvent.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="DockedEvent.cs" />

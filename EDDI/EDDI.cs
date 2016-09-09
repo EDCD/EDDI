@@ -227,6 +227,9 @@ namespace EDDI
                 EventHandler += new OnEventHandler(responder.Handle);
                 responder.Start();
             }
+
+            // Post a started event to let the responders know we are up and running
+            eventHandler(new StartedEvent(DateTime.Now));
         }
 
         public void Stop()
@@ -264,72 +267,98 @@ namespace EDDI
         {
             Logging.Debug("Handling event " + JsonConvert.SerializeObject(journalEvent));
             // We have some additional processing to do for a number of events
+            bool passEvent = true;
             if (journalEvent is JumpedEvent)
             {
-                eventJumped((JumpedEvent)journalEvent);
+                passEvent = eventJumped((JumpedEvent)journalEvent);
             }
             else if (journalEvent is DockedEvent)
             {
-                eventDocked((DockedEvent)journalEvent);
+                passEvent = eventDocked((DockedEvent)journalEvent);
             }
             else if (journalEvent is UndockedEvent)
             {
-                eventUndocked((UndockedEvent)journalEvent);
+                passEvent = eventUndocked((UndockedEvent)journalEvent);
             }
             else if (journalEvent is EnteredSupercruiseEvent)
             {
-                eventEnteredSupercruise((EnteredSupercruiseEvent)journalEvent);
+                passEvent = eventEnteredSupercruise((EnteredSupercruiseEvent)journalEvent);
             }
             else if (journalEvent is EnteredNormalSpaceEvent)
             {
-                eventEnteredNormalSpace((EnteredNormalSpaceEvent)journalEvent);
+                passEvent = eventEnteredNormalSpace((EnteredNormalSpaceEvent)journalEvent);
             }
-            // Additional processing is over, send to the event responders
-            OnEvent(journalEvent);
-        }
-
-        void eventDocked(DockedEvent theEvent)
-        {
-        }
-
-        void eventUndocked(UndockedEvent theEvent)
-        {
-        }
-
-        void eventJumped(JumpedEvent theEvent)
-        {
-            Logging.Debug("Jumped to " + theEvent.system);
-            if (CurrentStarSystem == null || CurrentStarSystem.name != theEvent.system)
+            // Additional processing is over, send to the event responders if required
+            if (passEvent)
             {
-                LastStarSystem = CurrentStarSystem;
-                CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(theEvent.system);
-                Logging.Error("***********************************************1 - " + CurrentStarSystem);
-                if (CurrentStarSystem.x == null)
-                {
-                    // Star system is missing co-ordinates to take them from the event
-                    CurrentStarSystem.x = theEvent.x;
-                    CurrentStarSystem.y = theEvent.y;
-                    CurrentStarSystem.z = theEvent.z;
-                }
-                CurrentStarSystem.visits++;
-                Logging.Error("***********************************************2 - " + CurrentStarSystem.visits);
-                CurrentStarSystem.lastvisit = DateTime.Now;
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                Logging.Debug("Number of visits to this system is now " + CurrentStarSystem.visits);
-                // After jump we are always in supercruise
-                Environment = ENVIRONMENT_SUPERCRUISE;
-                setCommanderTitle();
+                OnEvent(journalEvent);
             }
         }
 
-        void eventEnteredSupercruise(EnteredSupercruiseEvent theEvent)
+        bool eventDocked(DockedEvent theEvent)
         {
-            Environment = ENVIRONMENT_SUPERCRUISE;
+            return true;
         }
 
-        void eventEnteredNormalSpace(EnteredNormalSpaceEvent theEvent)
+        bool eventUndocked(UndockedEvent theEvent)
         {
-            Environment = ENVIRONMENT_SUPERCRUISE;
+            return true;
+        }
+
+        bool eventJumped(JumpedEvent theEvent)
+        {
+            bool passEvent;
+            Logging.Debug("Jumped to " + theEvent.system);
+            if (CurrentStarSystem == null)
+            {
+                // Initialisation; don't pass the event along
+                passEvent = false;
+            }
+            else if (CurrentStarSystem.name == theEvent.system)
+            {
+                // Restatement of current system
+                passEvent = false;
+            }
+            else
+            {
+                    passEvent = true;
+                    LastStarSystem = CurrentStarSystem;
+                    CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(theEvent.system);
+                    if (CurrentStarSystem.x == null)
+                    {
+                        // Star system is missing co-ordinates to take them from the event
+                        CurrentStarSystem.x = theEvent.x;
+                        CurrentStarSystem.y = theEvent.y;
+                        CurrentStarSystem.z = theEvent.z;
+                    }
+                    CurrentStarSystem.visits++;
+                    CurrentStarSystem.lastvisit = DateTime.Now;
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                    // After jump we are always in supercruise
+                    Environment = ENVIRONMENT_SUPERCRUISE;
+                    setCommanderTitle();
+            }
+            return passEvent;
+        }
+
+        bool eventEnteredSupercruise(EnteredSupercruiseEvent theEvent)
+        {
+            if (Environment == null || Environment != ENVIRONMENT_SUPERCRUISE)
+            {
+                Environment = ENVIRONMENT_SUPERCRUISE;
+                return true;
+            }
+            return false;
+        }
+
+        bool eventEnteredNormalSpace(EnteredNormalSpaceEvent theEvent)
+        {
+            if (Environment == null || Environment != ENVIRONMENT_NORMAL_SPACE)
+            {
+                Environment = ENVIRONMENT_NORMAL_SPACE;
+                return true;
+            }
+            return false;
         }
 
         /// <summary>Obtain information from the copmanion API and use it to refresh our own data</summary>

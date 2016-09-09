@@ -121,7 +121,7 @@ namespace EDDI
 
             store["Humanise"] = new NativeFunction((values) =>
             {
-                return Translations.humanize(values[0].AsNumber);
+                return Translations.Humanize(values[0].AsNumber);
             }, 1);
 
             // Variables

@@ -379,5 +379,24 @@ namespace Tests
             Assert.AreEqual("Swoiwns N Y dash B a95 dash 0", Translations.StarSystem("Swoiwns NY-B a95-0"));
             Assert.AreEqual("P P M 5 2 8 7", Translations.StarSystem("PPM 5287"));
         }
+
+        [TestMethod]
+        public void TestSpeechHumanize1()
+        {
+            Assert.AreEqual("on the way to 12 and a half thousand", Translations.Humanize(12345));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize2()
+        {
+            Assert.AreEqual(null, Translations.Humanize(null));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize3()
+        {
+            Assert.AreEqual("zero", Translations.Humanize(0));
+        }
+
     }
 }
