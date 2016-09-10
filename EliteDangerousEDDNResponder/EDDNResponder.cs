@@ -67,31 +67,32 @@ namespace EliteDangerousEDDNResponder
 
         private void sendShipyardInformation()
         {
-            EDDNShipyardMessage message = new EDDNShipyardMessage();
-            message.timestamp = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
-            message.systemName = Eddi.Instance.LastStation.systemname;
-            message.stationName = Eddi.Instance.LastStation.name;
             List<string> eddnShips = new List<string>();
             foreach (Ship ship in Eddi.Instance.LastStation.shipyard)
             {
                 eddnShips.Add(ship.EDName);
             }
-            message.ships = eddnShips;
 
-            EDDNBody body = new EDDNBody();
-            body.header = generateHeader();
-            body.schemaRef = "http://schemas.elite-markets.net/eddn/shipyard/2";
-            body.message = message;
+            // Only send the message if we have ships
+            if (eddnShips.Count > 0)
+            {
+                EDDNShipyardMessage message = new EDDNShipyardMessage();
+                message.timestamp = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
+                message.systemName = Eddi.Instance.LastStation.systemname;
+                message.stationName = Eddi.Instance.LastStation.name;
+                message.ships = eddnShips;
 
-            sendMessage(body);
+                EDDNBody body = new EDDNBody();
+                body.header = generateHeader();
+                body.schemaRef = "http://schemas.elite-markets.net/eddn/shipyard/2";
+                body.message = message;
+
+                sendMessage(body);
+            }
         }
 
         private void sendCommodityInformation()
         {
-            EDDNCommoditiesMessage message = new EDDNCommoditiesMessage();
-            message.timestamp = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
-            message.systemName = Eddi.Instance.LastStation.systemname;
-            message.stationName = Eddi.Instance.LastStation.name;
             List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
             foreach (Commodity commodity in Eddi.Instance.LastStation.commodities)
             {
@@ -114,35 +115,49 @@ namespace EliteDangerousEDDNResponder
                 }
                 eddnCommodities.Add(eddnCommodity);
             };
-            message.commodities = eddnCommodities;
 
-            EDDNBody body = new EDDNBody();
-            body.header = generateHeader();
-            body.schemaRef = "http://schemas.elite-markets.net/eddn/commodity/3";
-            body.message = message;
+            // Only send the message if we have commodities
+            if (eddnCommodities.Count > 0)
+            {
+                EDDNCommoditiesMessage message = new EDDNCommoditiesMessage();
+                message.timestamp = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
+                message.systemName = Eddi.Instance.LastStation.systemname;
+                message.stationName = Eddi.Instance.LastStation.name;
+                message.commodities = eddnCommodities;
 
-            sendMessage(body);
+                EDDNBody body = new EDDNBody();
+                body.header = generateHeader();
+                body.schemaRef = "http://schemas.elite-markets.net/eddn/commodity/3";
+                body.message = message;
+
+                sendMessage(body);
+            }
         }
 
         private void sendOutfittingInformation()
         {
-            EDDNOutfittingMessage message = new EDDNOutfittingMessage();
-            message.timestamp = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
-            message.systemName = Eddi.Instance.LastStation.systemname;
-            message.stationName = Eddi.Instance.LastStation.name;
             List<string> eddnModules = new List<string>();
             foreach (Module module in Eddi.Instance.LastStation.outfitting)
             {
                 eddnModules.Add(module.EDName);
             }
-            message.modules = eddnModules;
 
-            EDDNBody body = new EDDNBody();
-            body.header = generateHeader();
-            body.schemaRef = "http://schemas.elite-markets.net/eddn/outfitting/2";
-            body.message = message;
+            // Only send the message if we have modules
+            if (eddnModules.Count > 0)
+            {
+                EDDNOutfittingMessage message = new EDDNOutfittingMessage();
+                message.timestamp = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
+                message.systemName = Eddi.Instance.LastStation.systemname;
+                message.stationName = Eddi.Instance.LastStation.name;
+                message.modules = eddnModules;
 
-            sendMessage(body);
+                EDDNBody body = new EDDNBody();
+                body.header = generateHeader();
+                body.schemaRef = "http://schemas.elite-markets.net/eddn/outfitting/2";
+                body.message = message;
+
+                sendMessage(body);
+            }
         }
 
         private static string generateUploaderId()
