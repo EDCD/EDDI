@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
 using System.IO;
+using System.Threading;
+using System.Net;
 
 namespace Utilities
 {
@@ -23,6 +25,17 @@ namespace Utilities
         public static void Error(string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             log(filePath, memberName, "E", data);
+            new Thread(() =>
+            {
+                using (var client = new WebClient())
+                {
+                    try
+                    {
+                        client.UploadString(@"http://api.eddp.co/error", data);
+                    }
+                    catch { }
+                }
+            }).Start();
         }
 
         public static void Warn(string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -46,7 +59,7 @@ namespace Utilities
         private static readonly object logLock = new object();
         private static void log(string path, string method, string level, string data)
         {
-            lock(logLock)
+            lock (logLock)
             {
                 using (StreamWriter file = new StreamWriter(LogFile, true))
                 {
