@@ -1,6 +1,6 @@
 ﻿using EliteDangerousEvents;
-using System.AddIn.Contract;
 using System.AddIn.Pipeline;
+using System.Windows.Controls;
 
 namespace EDDI
 {
@@ -40,5 +40,7 @@ namespace EDDI
         /// Called when an event is found
         /// </summary>
         void Handle(Event theEvent);
+
+        UserControl ConfigurationTabItem();
     }
 }

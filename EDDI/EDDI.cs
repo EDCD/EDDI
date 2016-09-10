@@ -59,7 +59,7 @@ namespace EDDI
             EventHandler?.Invoke(theEvent);
         }
 
-        private List<EDDIResponder> responders = new List<EDDIResponder>();
+        public List<EDDIResponder> responders = new List<EDDIResponder>();
 
         private CompanionAppService appService;
 

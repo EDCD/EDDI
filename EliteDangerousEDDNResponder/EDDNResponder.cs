@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Utilities;
 
 namespace EliteDangerousEDDNResponder
@@ -195,6 +196,11 @@ namespace EliteDangerousEDDNResponder
             //    var content = response.Content; // raw content as string
             //    Logging.Info("Response content is " + content);
             //}).Start();
+        }
+
+        public UserControl ConfigurationTabItem()
+        {
+            return null;
         }
     }
 }

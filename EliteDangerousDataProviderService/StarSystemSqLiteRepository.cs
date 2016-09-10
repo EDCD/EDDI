@@ -115,20 +115,27 @@ namespace EliteDangerousDataProviderService
                             if (rdr.Read())
                             {
                                 result = JsonConvert.DeserializeObject<StarSystem>(rdr.GetString(2));
-                                if (result.visits < 1)
+                                if (result == null)
                                 {
-                                    // Old-style system; need to update
-                                    result.visits = rdr.GetInt32(0);
-                                    result.lastvisit = rdr.GetDateTime(1);
-                                    needToUpdate = true;
+                                    Logging.Info("Failed to obtain system for " + name);
                                 }
-                                if (result.lastupdated == null)
+                                if (result != null)
                                 {
-                                    result.lastupdated = rdr.GetDateTime(4);
-                                }
-                                if (result.comment == null)
-                                {
-                                    if (!rdr.IsDBNull(4)) result.comment = rdr.GetString(4);
+                                    if (result.visits < 1)
+                                    {
+                                        // Old-style system; need to update
+                                        result.visits = rdr.GetInt32(0);
+                                        result.lastvisit = rdr.GetDateTime(1);
+                                        needToUpdate = true;
+                                    }
+                                    if (result.lastupdated == null)
+                                    {
+                                        result.lastupdated = rdr.GetDateTime(4);
+                                    }
+                                    if (result.comment == null)
+                                    {
+                                        if (!rdr.IsDBNull(4)) result.comment = rdr.GetString(4);
+                                    }
                                 }
                             }
                         }

@@ -115,7 +115,7 @@ namespace configuration
             {
                 using (System.IO.StreamWriter errLog = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true))
                 {
-                   errLog.WriteLine("" + System.Threading.Thread.CurrentThread.ManagedThreadId + ": Caught exception " + e);
+                   errLog.WriteLine("" + Thread.CurrentThread.ManagedThreadId + ": Caught exception " + e);
                 }
             }
             ttsVolumeSlider.Value = speechServiceConfiguration.Volume;
@@ -125,6 +125,18 @@ namespace configuration
 
             ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels;
             ttsTestShipDropDown.Text = "Adder";
+
+            foreach (EDDIResponder responder in Eddi.Instance.responders)
+            {
+                UserControl responderConfiguration = responder.ConfigurationTabItem();
+                if (responderConfiguration != null)
+                {
+                    Logging.Debug("Adding configuration tab for " + responder.ResponderName());
+                    TabItem item = new TabItem { Header = responder.ResponderName() };
+                    item.Content = responder.ConfigurationTabItem();
+                    tabControl.Items.Add(item);
+                }
+            }
         }
 
         // Handle changes to the eddi tab
@@ -521,32 +533,6 @@ namespace configuration
                 }
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
-        }
-
-        private void eddiScriptsUpdated(object sender, RoutedEventArgs e)
-        {
-            updateEddiConfiguration();
-        }
-
-        private void eddiScriptsUpdated(object sender, DataTransferEventArgs e)
-        {
-            updateEddiConfiguration();
-        }
-
-        private void editScript(object sender, RoutedEventArgs e)
-        {
-            //Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
-            //EditScriptWindow editScriptWindow = new EditScriptWindow(eddiConfiguration.Scripts, script.Name);
-            //editScriptWindow.ShowDialog();
-            //scriptsData.Items.Refresh();
-        }
-
-        private void resetScript(object sender, RoutedEventArgs e)
-        {
-            //Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
-            //script.Value = null;
-            //eddiScriptsUpdated(sender, e);
-            //scriptsData.Items.Refresh();
         }
     }
 

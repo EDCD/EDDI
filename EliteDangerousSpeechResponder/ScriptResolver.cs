@@ -65,7 +65,6 @@ namespace EliteDangerousSpeechResponder
             // Function to call another script
             store["F"] = new NativeFunction((values) =>
             {
-
                 return new ScriptResolver(scripts).resolve(values[0].AsString, vars);
             }, 1);
 
@@ -116,7 +115,7 @@ namespace EliteDangerousSpeechResponder
             // Helper functions
             store["OneOf"] = new NativeFunction((values) =>
             {
-                return values[random.Next(values.Count)];
+                return new ScriptResolver(scripts).resolveScript(values[random.Next(values.Count)].AsString, vars);
             });
 
             store["Humanise"] = new NativeFunction((values) =>

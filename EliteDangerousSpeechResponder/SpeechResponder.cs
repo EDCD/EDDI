@@ -5,6 +5,7 @@ using Utilities;
 using Newtonsoft.Json;
 using EliteDangerousEvents;
 using EDDI;
+using System.Windows.Controls;
 
 namespace EliteDangerousSpeechResponder
 {
@@ -101,6 +102,11 @@ namespace EliteDangerousSpeechResponder
                 dict["lastsystem"] = new ReflectionValue(Eddi.Instance.LastStarSystem);
             }
             return dict;
+        }
+
+        public UserControl ConfigurationTabItem()
+        {
+            return new ConfigurationWindow();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Utilities;
 
 namespace EliteDangerousEDSMResponder
@@ -76,6 +77,11 @@ namespace EliteDangerousEDSMResponder
                     starMapService.sendStarMapLog(jumpedEvent.timestamp, jumpedEvent.system, jumpedEvent.x, jumpedEvent.y, jumpedEvent.z);
                 }
             }
+        }
+
+        public UserControl ConfigurationTabItem()
+        {
+            return null;
         }
     }
 }

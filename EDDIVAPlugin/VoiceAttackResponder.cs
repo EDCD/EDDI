@@ -7,6 +7,7 @@ using EDDI;
 using Utilities;
 using EliteDangerousEvents;
 using Newtonsoft.Json;
+using System.Windows.Controls;
 
 namespace EDDIVAPlugin
 {
@@ -48,6 +49,11 @@ namespace EDDIVAPlugin
 
         public void Stop()
         {
+        }
+
+        public UserControl ConfigurationTabItem()
+        {
+            return null;
         }
     }
 }

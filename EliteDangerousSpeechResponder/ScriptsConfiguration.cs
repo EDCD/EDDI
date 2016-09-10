@@ -12,7 +12,7 @@ namespace EliteDangerousSpeechResponder
         public Dictionary<string, Script> Scripts { get; set; }
 
         [JsonIgnore]
-        private String dataPath;
+        private string dataPath;
 
         public ScriptsConfiguration()
         {
@@ -26,7 +26,7 @@ namespace EliteDangerousSpeechResponder
         {
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\scripts.json";
             }
@@ -58,7 +58,7 @@ namespace EliteDangerousSpeechResponder
             }
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\scripts.json";
             }

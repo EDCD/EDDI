@@ -51,7 +51,7 @@
             </TabItem>
             <TabItem Header="Companion App">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="The companion app is Frontier's API in to their data.  If you configure this you can obtain information about your commander, your ship and your stored ships.  Please note that if you purchased Elite: Dangerous Horizons as a standalone product and not as an expansion to Elite: Dangerous the companion app will not work for you." VerticalAlignment="Top"/>
+                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="The companion app is Frontier's API in to their data.  You need to configure this to obtain information about your commander, your ships, and the stations at which you dock.  Please note that if you purchased Elite: Dangerous Horizons as a standalone product and not as an expansion to Elite: Dangerous the companion app will not work for you." VerticalAlignment="Top"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -197,31 +197,6 @@
                         <Label x:Name="ttsTestShipLabel" Margin="10" Grid.Column="0" Grid.Row="8" Content="Ship for testing the voice:" />
                         <ComboBox x:Name="ttsTestShipDropDown" Margin="10" Grid.Column="1" Grid.Row="8"/>
                     </Grid>
-                </DockPanel>
-            </TabItem>
-            <TabItem Header="Scripts">
-                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <TextBlock x:Name="scriptText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="This allows you to customise EDDI's responses to events" VerticalAlignment="Top"/>
-                    <DataGrid AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" TargetUpdated="eddiScriptsUpdated">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn IsReadOnly="True" Header="Name" Binding="{Binding Path=Value.Name}"></DataGridTextColumn>
-                            <DataGridTemplateColumn Header="Enabled">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Checked="eddiScriptsUpdated" Unchecked="eddiScriptsUpdated" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTextColumn IsReadOnly="True" Header="Description" Width="*" Binding="{Binding Path=Value.Description}"></DataGridTextColumn>
-                            <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Click="editScript">Edit</Button>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
                 </DockPanel>
             </TabItem>
         </TabControl>
