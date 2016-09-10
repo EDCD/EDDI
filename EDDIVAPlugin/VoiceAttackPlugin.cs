@@ -49,6 +49,8 @@ namespace EDDIVAPlugin
                 // Set the initial values from the main EDDI objects
                 setValues(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
 
+                Eddi.Instance.Start();
+
                 setString(ref textValues, "EDDI plugin profile status", "Enabled");
                 Logging.Info("Initialised EDDI VoiceAttack plugin");
             }
@@ -258,7 +260,7 @@ namespace EDDIVAPlugin
         /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
         private static void setShipModuleOutfittingValues(Module existing, List<Module> outfittingModules, string name, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            if (existing != null)
+            if (existing != null && outfittingModules != null)
             {
                 foreach (Module Module in outfittingModules)
                 {
@@ -587,21 +589,21 @@ namespace EDDIVAPlugin
                 }
 
                 setShipModuleValues(ship == null ? null : ship.Bulkheads, prefix + " bulkheads", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.Bulkheads, Eddi.Instance.Outfitting, prefix + " bulkheads", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.Bulkheads, Eddi.Instance.LastStation.outfitting, prefix + " bulkheads", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.PowerPlant, prefix + " power plant", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.PowerPlant, Eddi.Instance.Outfitting, prefix + " power plant", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.PowerPlant, Eddi.Instance.LastStation.outfitting, prefix + " power plant", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.Thrusters, prefix + " thrusters", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.Thrusters, Eddi.Instance.Outfitting, prefix + " thrusters", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.Thrusters, Eddi.Instance.LastStation.outfitting, prefix + " thrusters", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.FrameShiftDrive, prefix + " frame shift drive", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.FrameShiftDrive, Eddi.Instance.Outfitting, prefix + " frame shift drive", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.FrameShiftDrive, Eddi.Instance.LastStation.outfitting, prefix + " frame shift drive", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.LifeSupport, prefix + " life support", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.LifeSupport, Eddi.Instance.Outfitting, prefix + " life support", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.LifeSupport, Eddi.Instance.LastStation.outfitting, prefix + " life support", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.PowerDistributor, prefix + " power distributor", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.PowerDistributor, Eddi.Instance.Outfitting, prefix + " power distributor", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.PowerDistributor, Eddi.Instance.LastStation.outfitting, prefix + " power distributor", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.Sensors, prefix + " sensors", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.Sensors, Eddi.Instance.Outfitting, prefix + " sensors", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.Sensors, Eddi.Instance.LastStation.outfitting, prefix + " sensors", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                 setShipModuleValues(ship == null ? null : ship.FuelTank, prefix + " fuel tank", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.FuelTank, Eddi.Instance.Outfitting, prefix + " fuel tank", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleOutfittingValues(ship == null ? null : ship.FuelTank, Eddi.Instance.LastStation.outfitting, prefix + " fuel tank", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
 
                 // Hardpoints
                 if (ship != null)
@@ -635,7 +637,7 @@ namespace EDDIVAPlugin
 
                         setBoolean(ref booleanValues, baseHardpointName + " occupied", Hardpoint.Module != null);
                         setShipModuleValues(Hardpoint.Module, baseHardpointName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.Module, Eddi.Instance.Outfitting, baseHardpointName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.Module, Eddi.Instance.LastStation.outfitting, baseHardpointName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     }
 
                     setInt(ref intValues, prefix + " hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
@@ -648,7 +650,7 @@ namespace EDDIVAPlugin
                         setInt(ref intValues, baseCompartmentName + " size", Compartment.Size);
                         setBoolean(ref booleanValues, baseCompartmentName + " occupied", Compartment.Module != null);
                         setShipModuleValues(Compartment.Module, baseCompartmentName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                        setShipModuleOutfittingValues(ship == null ? null : Compartment.Module, Eddi.Instance.Outfitting, baseCompartmentName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        setShipModuleOutfittingValues(ship == null ? null : Compartment.Module, Eddi.Instance.LastStation.outfitting, baseCompartmentName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     }
                     setInt(ref intValues, prefix + " compartments", curCompartment);
                 }

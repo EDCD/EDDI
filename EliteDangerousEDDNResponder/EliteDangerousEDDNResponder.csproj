@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDDNBody.cs" />
+    <Compile Include="EDDNOutfittingMessage.cs" />
     <Compile Include="EDDNCommoditiesMessage.cs" />
     <Compile Include="EDDNCommodity.cs" />
     <Compile Include="EDDNHeader.cs" />

@@ -8,6 +8,11 @@ namespace EliteDangerousEDDNResponder
 {
     class EDDNShipyardMessage : EDDNMessage
     {
-        public string foo;
+        public List<string> ships;
+
+        public EDDNShipyardMessage()
+        {
+            ships = new List<string>();
+        }
     }
 }

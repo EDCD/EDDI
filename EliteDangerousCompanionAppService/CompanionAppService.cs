@@ -462,6 +462,7 @@ namespace EliteDangerousCompanionAppService
                     Profile.LastStation.systemname = Profile.CurrentStarSystem.name;
                     Profile.LastStation.outfitting = OutfittingFromProfile(json);
                     Profile.LastStation.commodities = CommoditiesFromProfile(json);
+                    Profile.LastStation.shipyard = ShipyardFromProfile(json);
                 }
             }
 
@@ -502,6 +503,10 @@ namespace EliteDangerousCompanionAppService
                 if (shipConfig.name != null && shipConfig.name.Trim().Length > 0)
                 {
                     ship.name = shipConfig.name.Trim();
+                }
+                else
+                {
+                    ship.name = "Your ship";
                 }
                 if (shipConfig.phoneticname != null && shipConfig.phoneticname.Trim().Length > 0)
                 {
@@ -817,6 +822,43 @@ namespace EliteDangerousCompanionAppService
             }
 
             return Commodities;
+        }
+
+        // Obtain the list of ships available at the station from the profile
+        public static List<Ship> ShipyardFromProfile(dynamic json)
+        {
+            List<Ship> Ships = new List<Ship>();
+
+            //if (json["lastStarport"] != null && json["lastStarport"]["commodities"] != null)
+            //{
+            //    foreach (dynamic commodity in json["lastStarport"]["commodities"])
+            //    {
+            //        dynamic commodityJson = commodity.Value;
+            //        Commodity Commodity = CommodityDefinitions.CommodityFromEliteID((long)commodity["id"]);
+            //        if (Commodity == null || Commodity.Name == null)
+            //        {
+            //            Commodity = new Commodity();
+            //            Commodity.EDName = (string)commodity["name"];
+            //        }
+            //        Commodity.AveragePrice = (int)commodity["meanPrice"];
+            //        Commodity.BuyPrice = (int)commodity["buyPrice"];
+            //        Commodity.Stock = (int)commodity["stock"];
+            //        Commodity.StockBracket = (dynamic)commodity["stockBracket"];
+            //        Commodity.SellPrice = (int)commodity["sellPrice"];
+            //        Commodity.Demand = (int)commodity["demand"];
+            //        Commodity.DemandBracket = (dynamic)commodity["demandBracket"];
+
+            //        List<string> StatusFlags = new List<string>();
+            //        foreach (dynamic statusFlag in commodity["statusFlags"])
+            //        {
+            //            StatusFlags.Add((string)statusFlag);
+            //        }
+            //        Commodity.StatusFlags = StatusFlags;
+            //        Commodities.Add(Commodity);
+            //    }
+            //}
+
+            return Ships;
         }
 
         public static Module ModuleFromProfile(string name, dynamic json)

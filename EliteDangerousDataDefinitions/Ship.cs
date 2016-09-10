@@ -101,6 +101,8 @@ namespace EliteDangerousDataDefinitions
         // Admin
         // The ID in Elite: Dangerous' database
         public long EDID { get; set; }
+        // The name in Elite: Dangerous' database
+        public string EDName { get; set; }
 
         public Ship()
         {
@@ -108,9 +110,10 @@ namespace EliteDangerousDataDefinitions
             Compartments = new List<Compartment>();
         }
 
-        public Ship(long EDID, string Model, ShipSize Size)
+        public Ship(long EDID, string EDName, string Model, ShipSize Size)
         {
             this.EDID = EDID;
+            this.EDName = EDName;
             this.model = Model;
             this.size = Size;
             Hardpoints = new List<Hardpoint>();

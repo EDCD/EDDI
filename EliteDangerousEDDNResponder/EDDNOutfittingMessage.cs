@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace EliteDangerousEDDNResponder
 {
-    class EDDNOutfittingMessage : EDDNMessage
+    class EDDNCommoditiesMessage : EDDNMessage
     {
-        public List<string> modules;
+        public List<EDDNCommodity> commodities;
 
-        public EDDNOutfittingMessage()
+        public EDDNCommoditiesMessage()
         {
-            modules = new List<string>();
+            commodities = new List<EDDNCommodity>();
         }
     }
 }

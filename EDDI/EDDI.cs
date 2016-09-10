@@ -68,7 +68,6 @@ namespace EDDI
         public Ship Ship { get; private set; }
         public List<Ship> StoredShips { get; private set; }
         public Station LastStation { get; private set; }
-        public List<EliteDangerousDataDefinitions.Module> Outfitting { get; private set; }
 
         // Services made available from EDDI
         public StarMapService starMapService { get; private set; }

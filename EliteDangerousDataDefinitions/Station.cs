@@ -65,6 +65,9 @@ namespace EliteDangerousDataDefinitions
         /// <summary>Which modules are available for outfitting at the station</summary>
         public List<Module> outfitting { get; set; }
 
+        /// <summary>Which ships are available for purchase at the station</summary>
+        public List<Ship> shipyard { get; set; }
+
         /// <summary>Is this station a starport?</summary>
         public bool IsStarport() { return model == StationModel.CoriolisStarport || model == StationModel.OcellusStarport || model == StationModel.OrbisStarport || model == StationModel.UnknownStarport; }
 

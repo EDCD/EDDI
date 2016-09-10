@@ -103,17 +103,13 @@ namespace EliteDangerousDataProviderService
         {
             List<Station> Stations = new List<Station>();
 
-            Logging.Info("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
             if (json["stations"] != null)
             {
-                Logging.Info("1");
                 foreach (dynamic station in json["stations"])
                 {
-                    Logging.Info("2");
                     Station Station = new Station();
                     Station.EDDBID = (long)station["id"];
                     Station.name = (string)station["name"];
-                    Logging.Info("3 - " + Station.name);
                     Station.systemname = systemName;
 
                     Station.economies = new List<string>();

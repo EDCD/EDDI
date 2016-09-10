@@ -65,25 +65,27 @@ namespace EliteDangerousEDDNResponder
         }
         private void sendShipyardInformation()
         {
-            //var client = new RestClient("http://schemas.elite-markets.net/eddn/");
-            //var request = new RestRequest("commodity/3/test", Method.POST);
-            //request.AddParameter("application/json", shipyardData, ParameterType.RequestBody);
+            EDDNShipyardMessage message = new EDDNShipyardMessage();
+            message.timestamp = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
+            message.systemName = Eddi.Instance.LastStation.systemname;
+            message.stationName = Eddi.Instance.LastStation.name;
+            List<string> eddnShips = new List<string>();
+            foreach (Ship ship in Eddi.Instance.LastStation.shipyard)
+            {
+                eddnShips.Add(ship.EDName);
+            }
+            message.ships = eddnShips;
 
-            //new Thread(() =>
-            //{
-            //    IRestResponse response = client.Execute(request);
-            //    var content = response.Content; // raw content as string
-            //    Logging.Info("Response content is " + content);
-            //}).Start();
+            EDDNBody body = new EDDNBody();
+            body.header = generateHeader();
+            body.schemaRef = "http://schemas.elite-markets.net/eddn/shipyard/2";
+            body.message = message;
+
+            sendMessage(body);
         }
 
         private void sendCommodityInformation()
         {
-            EDDNHeader header = new EDDNHeader();
-            header.softwareName = Eddi.EDDI_NAME;
-            header.softwareVersion = Eddi.EDDI_VERSION;
-            header.uploaderID = generateUploaderId();
-
             EDDNCommoditiesMessage message = new EDDNCommoditiesMessage();
             message.timestamp = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
             message.systemName = Eddi.Instance.LastStation.systemname;
@@ -109,26 +111,32 @@ namespace EliteDangerousEDDNResponder
             message.commodities = eddnCommodities;
 
             EDDNBody body = new EDDNBody();
-            body.header = header;
-            body.schemaRef = "http://schemas.elite-markets.net/eddn/commodity/3/test";
+            body.header = generateHeader();
+            body.schemaRef = "http://schemas.elite-markets.net/eddn/commodity/3";
             body.message = message;
 
-            //var client = new RestClient("http://schemas.elite-markets.net/eddn/");
-            //var request = new RestRequest("commodity/3/test", Method.POST);
-            var client = new RestClient("http://eddn-gateway.elite-markets.net:8080/");
-            var request = new RestRequest("upload/", Method.POST);
-            request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
-
-            new Thread(() =>
-            {
-                IRestResponse response = client.Execute(request);
-                var content = response.Content; // raw content as string
-                Logging.Info("Response content is " + content);
-            }).Start();
+            sendMessage(body);
         }
 
         private void sendOutfittingInformation()
         {
+            EDDNOutfittingMessage message = new EDDNOutfittingMessage();
+            message.timestamp = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
+            message.systemName = Eddi.Instance.LastStation.systemname;
+            message.stationName = Eddi.Instance.LastStation.name;
+            List<string> eddnModules = new List<string>();
+            foreach (Module module in Eddi.Instance.LastStation.outfitting)
+            {
+                eddnModules.Add(module.EDName);
+            }
+            message.modules = eddnModules;
+
+            EDDNBody body = new EDDNBody();
+            body.header = generateHeader();
+            body.schemaRef = "http://schemas.elite-markets.net/eddn/outfitting/2";
+            body.message = message;
+
+            sendMessage(body);
         }
 
         private static string generateUploaderId()
@@ -143,6 +151,29 @@ namespace EliteDangerousEDDNResponder
             }
             return hash.ToString();
         }
-    }
 
+        private static EDDNHeader generateHeader()
+        {
+            EDDNHeader header = new EDDNHeader();
+            header.softwareName = Eddi.EDDI_NAME;
+            header.softwareVersion = Eddi.EDDI_VERSION;
+            header.uploaderID = generateUploaderId();
+            return header;
+        }
+
+        private static void sendMessage(EDDNBody body)
+        {
+            Logging.Info(JsonConvert.SerializeObject(body));
+            //var client = new RestClient("http://eddn-gateway.elite-markets.net:8080/");
+            //var request = new RestRequest("upload/", Method.POST);
+            //request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
+
+            //new Thread(() =>
+            //{
+            //    IRestResponse response = client.Execute(request);
+            //    var content = response.Content; // raw content as string
+            //    Logging.Info("Response content is " + content);
+            //}).Start();
+        }
+    }
 }
