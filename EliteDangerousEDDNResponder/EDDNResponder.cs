@@ -58,11 +58,13 @@ namespace EliteDangerousEDDNResponder
 
         private void handleDockedEvent(DockedEvent theEvent)
         {
-            // When we dock we have access to commodity, outfitting and shipyard information
-            sendShipyardInformation();
+            // When we dock we have access to commodity and outfitting information
+            // Shipyard information is not available through the companion app API so can't send it
+            //sendShipyardInformation();
             sendCommodityInformation();
             sendOutfittingInformation();
         }
+
         private void sendShipyardInformation()
         {
             EDDNShipyardMessage message = new EDDNShipyardMessage();
@@ -93,6 +95,10 @@ namespace EliteDangerousEDDNResponder
             List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
             foreach (Commodity commodity in Eddi.Instance.LastStation.commodities)
             {
+                if (commodity.Category == "NonMarketable")
+                {
+                    continue;
+                }
                 EDDNCommodity eddnCommodity = new EDDNCommodity();
                 eddnCommodity.name = commodity.EDName;
                 eddnCommodity.meanPrice = commodity.AveragePrice;

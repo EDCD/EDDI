@@ -802,6 +802,7 @@ namespace EliteDangerousCompanionAppService
                     {
                         Commodity = new Commodity();
                         Commodity.EDName = (string)commodity["name"];
+                        Commodity.Category = (string)commodity["categoryName"];
                     }
                     Commodity.AveragePrice = (int)commodity["meanPrice"];
                     Commodity.BuyPrice = (int)commodity["buyPrice"];
@@ -829,34 +830,7 @@ namespace EliteDangerousCompanionAppService
         {
             List<Ship> Ships = new List<Ship>();
 
-            //if (json["lastStarport"] != null && json["lastStarport"]["commodities"] != null)
-            //{
-            //    foreach (dynamic commodity in json["lastStarport"]["commodities"])
-            //    {
-            //        dynamic commodityJson = commodity.Value;
-            //        Commodity Commodity = CommodityDefinitions.CommodityFromEliteID((long)commodity["id"]);
-            //        if (Commodity == null || Commodity.Name == null)
-            //        {
-            //            Commodity = new Commodity();
-            //            Commodity.EDName = (string)commodity["name"];
-            //        }
-            //        Commodity.AveragePrice = (int)commodity["meanPrice"];
-            //        Commodity.BuyPrice = (int)commodity["buyPrice"];
-            //        Commodity.Stock = (int)commodity["stock"];
-            //        Commodity.StockBracket = (dynamic)commodity["stockBracket"];
-            //        Commodity.SellPrice = (int)commodity["sellPrice"];
-            //        Commodity.Demand = (int)commodity["demand"];
-            //        Commodity.DemandBracket = (dynamic)commodity["demandBracket"];
-
-            //        List<string> StatusFlags = new List<string>();
-            //        foreach (dynamic statusFlag in commodity["statusFlags"])
-            //        {
-            //            StatusFlags.Add((string)statusFlag);
-            //        }
-            //        Commodity.StatusFlags = StatusFlags;
-            //        Commodities.Add(Commodity);
-            //    }
-            //}
+            // This information is not available at current from the companion app JSON so leave it empty
 
             return Ships;
         }

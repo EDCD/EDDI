@@ -131,7 +131,7 @@ namespace EliteDangerousDataDefinitions
             {128049235, new Commodity(80, "Reactive Armour", "Weapons", 2113, false) },
             {128049234, new Commodity(81, "Battle Weapons", "Weapons", 7259, false) },
             {128668550, new Commodity(83, "Painite", "Minerals", 40508, false) },
-            {128066403, new Commodity(84, "Drones", "Limpet", "Unknown", 101, false) },
+            {128066403, new Commodity(84, "Drones", "Limpet", "NonMarketable", 101, false) },
             {128668548, new Commodity(95, "Ai Relics", "Ai Relics", "Salvage", 138613, false) },
             {128668551, new Commodity(96, "Antiquities", "Salvage", 115511, false) },
             {128671118, new Commodity(97, "Osmium", "Metals", 7591, false) },
