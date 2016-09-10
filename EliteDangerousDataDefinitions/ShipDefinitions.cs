@@ -58,7 +58,7 @@ namespace EliteDangerousDataDefinitions
                 Ship.size = Template.size;
             }
             // All ships default to 100% health
-            Ship.Health = 100;
+            Ship.health = 100;
 
             return Ship;
         }

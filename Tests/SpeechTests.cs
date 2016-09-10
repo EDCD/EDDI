@@ -113,17 +113,17 @@ namespace Tests
         {
             SpeechService SpeechService = new SpeechService();
             Ship ship = ShipDefinitions.ShipFromEliteID(128049363);
-            ship.Health = 100;
+            ship.health = 100;
             SpeechService.Say(null, ship, "Systems fully operational.");
-            ship.Health = 80;
+            ship.health = 80;
             SpeechService.Say(null, ship, "Systems at 80%.");
-            ship.Health = 60;
+            ship.health = 60;
             SpeechService.Say(null, ship, "Systems at 60%.");
-            ship.Health = 40;
+            ship.health = 40;
             SpeechService.Say(null, ship, "Systems at 40%.");
-            ship.Health = 20;
+            ship.health = 20;
             SpeechService.Say(null, ship, "Systems at 20%.");
-            ship.Health = 0;
+            ship.health = 0;
             SpeechService.Say(null, ship, "Systems critical.");
         }
 

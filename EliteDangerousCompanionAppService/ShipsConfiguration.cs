@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Utilities;
 
 namespace EliteDangerousCompanionAppService
 {
@@ -13,7 +14,7 @@ namespace EliteDangerousCompanionAppService
         public List<Ship> Ships;
 
         [JsonIgnore]
-        private String dataPath;
+        private string dataPath;
 
         public ShipsConfiguration()
         {
@@ -28,7 +29,7 @@ namespace EliteDangerousCompanionAppService
         {
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\ships.json";
             }
@@ -66,7 +67,7 @@ namespace EliteDangerousCompanionAppService
             }
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\ships.json";
             }

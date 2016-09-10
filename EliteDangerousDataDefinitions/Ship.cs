@@ -31,6 +31,7 @@ namespace EliteDangerousDataDefinitions
         public int cargocarried { get; set; }
 
         /// <summary>the specific cargo carried</summary>
+        [JsonIgnore]
         public List<Cargo> cargo { get; set; }
 
         /// <summary>the callsign of this ship</summary>
@@ -68,46 +69,48 @@ namespace EliteDangerousDataDefinitions
 
         /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
         [JsonIgnore]
-        public string StarSystem { get; set; }
+        public string starsystem { get; set; }
         /// <summary>the name of the station in which this ship is stored; null if the commander is in this ship</summary>
         [JsonIgnore]
-        public string Station { get; set; }
+        public string station { get; set; }
 
         [JsonIgnore]
-        public decimal Health { get; set; }
+        public decimal health { get; set; }
         [JsonIgnore]
-        public Module Bulkheads { get; set; }
+        public Module bulkheads { get; set; }
         [JsonIgnore]
-        public Module PowerPlant { get; set; }
+        public Module powerplant { get; set; }
         [JsonIgnore]
-        public Module Thrusters { get; set; }
+        public Module thrusters { get; set; }
         [JsonIgnore]
-        public Module FrameShiftDrive { get; set; }
+        public Module frameshiftdrive { get; set; }
         [JsonIgnore]
-        public Module LifeSupport { get; set; }
+        public Module lifesupport { get; set; }
         [JsonIgnore]
-        public Module PowerDistributor { get; set; }
+        public Module powerdistributor { get; set; }
         [JsonIgnore]
-        public Module Sensors { get; set; }
+        public Module sensors { get; set; }
         [JsonIgnore]
-        public Module FuelTank { get; set; }
+        public Module fueltank { get; set; }
         [JsonIgnore]
-        public decimal FuelTankCapacity { get; set; }
+        public decimal fueltankcapacity { get; set; }
         [JsonIgnore]
-        public List<Hardpoint> Hardpoints { get; set; }
+        public List<Hardpoint> hardpoints { get; set; }
         [JsonIgnore]
-        public List<Compartment> Compartments { get; set; }
+        public List<Compartment> compartments { get; set; }
 
         // Admin
         // The ID in Elite: Dangerous' database
+        [JsonIgnore]
         public long EDID { get; set; }
         // The name in Elite: Dangerous' database
+        [JsonIgnore]
         public string EDName { get; set; }
 
         public Ship()
         {
-            Hardpoints = new List<Hardpoint>();
-            Compartments = new List<Compartment>();
+            hardpoints = new List<Hardpoint>();
+            compartments = new List<Compartment>();
         }
 
         public Ship(long EDID, string EDName, string Model, ShipSize Size)
@@ -116,8 +119,8 @@ namespace EliteDangerousDataDefinitions
             this.EDName = EDName;
             this.model = Model;
             this.size = Size;
-            Hardpoints = new List<Hardpoint>();
-            Compartments = new List<Compartment>();
+            hardpoints = new List<Hardpoint>();
+            compartments = new List<Compartment>();
         }
 
         private static Random random = new Random();

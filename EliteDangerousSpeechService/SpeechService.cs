@@ -320,7 +320,7 @@ namespace EliteDangerousSpeechService
             if (ship != null && configuration.DistortOnDamage)
             {
 
-                distortionLevel = Math.Min((100 - (int)ship.Health) / 2, 15);
+                distortionLevel = Math.Min((100 - (int)ship.health) / 2, 15);
             }
             return distortionLevel;
 

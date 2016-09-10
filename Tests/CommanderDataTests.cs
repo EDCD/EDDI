@@ -5507,11 +5507,11 @@ namespace Tests
 
             Assert.AreEqual("Python", profile.Ship.model);
 
-            Assert.AreEqual(7, profile.Ship.PowerPlant.Class);
-            Assert.AreEqual("C", profile.Ship.PowerPlant.Grade);
-            Assert.AreEqual(9, profile.Ship.Hardpoints.Count);
+            Assert.AreEqual(7, profile.Ship.powerplant.Class);
+            Assert.AreEqual("C", profile.Ship.powerplant.Grade);
+            Assert.AreEqual(9, profile.Ship.hardpoints.Count);
 
-            Hardpoint hardpoint1 = profile.Ship.Hardpoints[0];
+            Hardpoint hardpoint1 = profile.Ship.hardpoints[0];
             Assert.AreEqual(3, hardpoint1.Size);
 
             Assert.IsNotNull(hardpoint1.Module);
@@ -5521,10 +5521,10 @@ namespace Tests
             Assert.AreEqual(126540, hardpoint1.Module.Cost);
             Assert.AreEqual(140600, hardpoint1.Module.Value);
 
-            Assert.AreEqual("7C", profile.Ship.PowerPlant.Class + profile.Ship.PowerPlant.Grade);
-            Assert.AreEqual(9, profile.Ship.Compartments.Count);
-            Assert.AreEqual(2, profile.Ship.Compartments[8].Size);
-            Assert.AreEqual(null, profile.Ship.Compartments[8].Module);
+            Assert.AreEqual("7C", profile.Ship.powerplant.Class + profile.Ship.powerplant.Grade);
+            Assert.AreEqual(9, profile.Ship.compartments.Count);
+            Assert.AreEqual(2, profile.Ship.compartments[8].Size);
+            Assert.AreEqual(null, profile.Ship.compartments[8].Module);
 
             Assert.AreEqual(10, profile.Ship.cargocapacity);
             Assert.AreEqual(6, profile.Ship.cargocarried);
@@ -5535,8 +5535,8 @@ namespace Tests
             // First stored ship is a Vulture at Snyder Enterprise
             Ship StoredShip1 = profile.StoredShips[0];
             Assert.AreEqual("Vulture", StoredShip1.model);
-            Assert.AreEqual("TZ Arietis", StoredShip1.StarSystem);
-            Assert.AreEqual("Snyder Enterprise", StoredShip1.Station);
+            Assert.AreEqual("TZ Arietis", StoredShip1.starsystem);
+            Assert.AreEqual("Snyder Enterprise", StoredShip1.station);
 
             // Two lots of cargo
             Assert.AreEqual(2, profile.Ship.cargo.Count);

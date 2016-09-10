@@ -577,23 +577,23 @@ namespace EliteDangerousCompanionAppService
             decimal Health = (decimal)json["ship"]["health"]["hull"] / 10000;
             if (Health < 5)
             {
-                Ship.Health = Math.Round(Health, 1);
+                Ship.health = Math.Round(Health, 1);
             }
             else
             {
-                Ship.Health = Math.Round(Health);
+                Ship.health = Math.Round(Health);
             }
 
             // Obtain the internals
-            Ship.Bulkheads = ModuleFromProfile("Armour", json["ship"]["modules"]["Armour"]);
-            Ship.PowerPlant = ModuleFromProfile("PowerPlant", json["ship"]["modules"]["PowerPlant"]);
-            Ship.Thrusters = ModuleFromProfile("MainEngines", json["ship"]["modules"]["MainEngines"]);
-            Ship.FrameShiftDrive = ModuleFromProfile("FrameShiftDrive", json["ship"]["modules"]["FrameShiftDrive"]);
-            Ship.LifeSupport = ModuleFromProfile("LifeSupport", json["ship"]["modules"]["LifeSupport"]);
-            Ship.PowerDistributor = ModuleFromProfile("PowerDistributor", json["ship"]["modules"]["PowerDistributor"]);
-            Ship.Sensors = ModuleFromProfile("Radar", json["ship"]["modules"]["Radar"]);
-            Ship.FuelTank = ModuleFromProfile("FuelTank", json["ship"]["modules"]["FuelTank"]);
-            Ship.FuelTankCapacity = (decimal)json["ship"]["fuel"]["main"]["capacity"];
+            Ship.bulkheads = ModuleFromProfile("Armour", json["ship"]["modules"]["Armour"]);
+            Ship.powerplant = ModuleFromProfile("PowerPlant", json["ship"]["modules"]["PowerPlant"]);
+            Ship.thrusters = ModuleFromProfile("MainEngines", json["ship"]["modules"]["MainEngines"]);
+            Ship.frameshiftdrive = ModuleFromProfile("FrameShiftDrive", json["ship"]["modules"]["FrameShiftDrive"]);
+            Ship.lifesupport = ModuleFromProfile("LifeSupport", json["ship"]["modules"]["LifeSupport"]);
+            Ship.powerdistributor = ModuleFromProfile("PowerDistributor", json["ship"]["modules"]["PowerDistributor"]);
+            Ship.sensors = ModuleFromProfile("Radar", json["ship"]["modules"]["Radar"]);
+            Ship.fueltank = ModuleFromProfile("FuelTank", json["ship"]["modules"]["FuelTank"]);
+            Ship.fueltankcapacity = (decimal)json["ship"]["fuel"]["main"]["capacity"];
 
             // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
             Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
@@ -613,7 +613,7 @@ namespace EliteDangerousCompanionAppService
                     hardpoints.TryGetValue(size + "Hardpoint" + i, out hardpoint);
                     if (hardpoint != null)
                     {
-                        Ship.Hardpoints.Add(hardpoint);
+                        Ship.hardpoints.Add(hardpoint);
                     }
                 }
             }
@@ -623,7 +623,7 @@ namespace EliteDangerousCompanionAppService
             {
                 if (module.Name.Contains("Slot"))
                 {
-                    Ship.Compartments.Add(CompartmentFromProfile(module));
+                    Ship.compartments.Add(CompartmentFromProfile(module));
                 }
             }
 
@@ -723,8 +723,8 @@ namespace EliteDangerousCompanionAppService
                                     Ship.model = shipTranslations[Ship.model];
                                 }
 
-                                Ship.StarSystem = ship["starsystem"]["name"];
-                                Ship.Station = ship["station"]["name"];
+                                Ship.starsystem = ship["starsystem"]["name"];
+                                Ship.station = ship["station"]["name"];
 
                                 StoredShips.Add(Ship);
                             }

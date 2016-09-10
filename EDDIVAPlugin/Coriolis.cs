@@ -48,31 +48,31 @@ namespace EDDIVAPlugin
             string uri = "https://coriolis.io/outfit/";
             uri += shipModels[ship.model];
             uri += "/";
-            uri += ShipBulkheads(ship.Bulkheads.Name);
+            uri += ShipBulkheads(ship.bulkheads.Name);
             enableds += "1";
             priorities += "4";
-            uri += ship.PowerPlant.Class + ship.PowerPlant.Grade;
+            uri += ship.powerplant.Class + ship.powerplant.Grade;
             enableds += "1";
             priorities += "0";
-            uri += ship.Thrusters.Class + ship.Thrusters.Grade;
-            enableds += ship.Thrusters.Enabled ? "1" : "0";
-            priorities += ship.Thrusters.Priority;
-            uri += ship.FrameShiftDrive.Class + ship.FrameShiftDrive.Grade;
-            enableds += ship.FrameShiftDrive.Enabled ? "1" : "0";
-            priorities += ship.FrameShiftDrive.Priority;
-            uri += ship.LifeSupport.Class + ship.LifeSupport.Grade;
-            enableds += ship.LifeSupport.Enabled ? "1" : "0";
-            priorities += ship.LifeSupport.Priority;
-            uri += ship.PowerDistributor.Class + ship.PowerDistributor.Grade;
-            enableds += ship.PowerDistributor.Enabled ? "1" : "0";
-            priorities += ship.PowerDistributor.Priority;
-            uri += ship.Sensors.Class + ship.Sensors.Grade;
-            enableds += ship.Sensors.Enabled ? "1" : "0";
-            priorities += ship.Sensors.Priority;
-            uri += ship.FuelTank.Class + ship.FuelTank.Grade;
+            uri += ship.thrusters.Class + ship.thrusters.Grade;
+            enableds += ship.thrusters.Enabled ? "1" : "0";
+            priorities += ship.thrusters.Priority;
+            uri += ship.frameshiftdrive.Class + ship.frameshiftdrive.Grade;
+            enableds += ship.frameshiftdrive.Enabled ? "1" : "0";
+            priorities += ship.frameshiftdrive.Priority;
+            uri += ship.lifesupport.Class + ship.lifesupport.Grade;
+            enableds += ship.lifesupport.Enabled ? "1" : "0";
+            priorities += ship.lifesupport.Priority;
+            uri += ship.powerdistributor.Class + ship.powerdistributor.Grade;
+            enableds += ship.powerdistributor.Enabled ? "1" : "0";
+            priorities += ship.powerdistributor.Priority;
+            uri += ship.sensors.Class + ship.sensors.Grade;
+            enableds += ship.sensors.Enabled ? "1" : "0";
+            priorities += ship.sensors.Priority;
+            uri += ship.fueltank.Class + ship.fueltank.Grade;
             enableds += "1";
             priorities += "1";
-            foreach (Hardpoint Hardpoint in ship.Hardpoints)
+            foreach (Hardpoint Hardpoint in ship.hardpoints)
             {
                 if (Hardpoint.Module == null)
                 {
@@ -97,7 +97,7 @@ namespace EDDIVAPlugin
                     }
                 }
             }
-            foreach (Compartment Compartment in ship.Compartments)
+            foreach (Compartment Compartment in ship.compartments)
             {
                 if (Compartment.Module == null)
                 {

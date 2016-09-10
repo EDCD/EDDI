@@ -24,6 +24,7 @@ using System.Threading;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using EDDI;
+using Newtonsoft.Json;
 
 namespace configuration
 {
@@ -92,7 +93,7 @@ namespace configuration
 
             // Configure the Text-to-speech tab
             SpeechServiceConfiguration speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
-            List<string> speechOptions = new List<String>();
+            List<string> speechOptions = new List<string>();
             speechOptions.Add("Windows TTS default");
             try
             {
@@ -357,11 +358,11 @@ namespace configuration
         private void updateEdsmConfiguration()
         {
             StarMapConfiguration edsmConfiguration = new StarMapConfiguration();
-            if (!String.IsNullOrWhiteSpace(edsmApiKeyTextBox.Text))
+            if (!string.IsNullOrWhiteSpace(edsmApiKeyTextBox.Text))
             {
                 edsmConfiguration.apiKey = edsmApiKeyTextBox.Text.Trim();
             }
-            if (!String.IsNullOrWhiteSpace(edsmCommanderNameTextBox.Text))
+            if (!string.IsNullOrWhiteSpace(edsmCommanderNameTextBox.Text))
             {
                 edsmConfiguration.commanderName = edsmCommanderNameTextBox.Text.Trim();
             }
@@ -385,10 +386,10 @@ namespace configuration
         private void testShipName(object sender, RoutedEventArgs e)
         {
             Ship ship = (Ship)((Button)e.Source).DataContext;
-            ship.Health = 100;
+            ship.health = 100;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             SpeechService speechService = new SpeechService(speechConfiguration);
-            if (String.IsNullOrEmpty(ship.phoneticname))
+            if (string.IsNullOrEmpty(ship.phoneticname))
             {
                 speechService.Say(null, ship, ship.name + " stands ready.");
             }
@@ -436,7 +437,7 @@ namespace configuration
         private void ttsTestVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
             Ship testShip = ShipDefinitions.ShipFromModel((string)ttsTestShipDropDown.SelectedValue);
-            testShip.Health = 100;
+            testShip.health = 100;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             SpeechService speechService = new SpeechService(speechConfiguration);
             speechService.Say(null, testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
@@ -445,7 +446,7 @@ namespace configuration
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
             Ship testShip = ShipDefinitions.ShipFromModel((string)ttsTestShipDropDown.SelectedValue);
-            testShip.Health = 20;
+            testShip.health = 20;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             SpeechService speechService = new SpeechService(speechConfiguration);
             speechService.Say(null, testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
