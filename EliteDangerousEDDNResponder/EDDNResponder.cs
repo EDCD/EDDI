@@ -185,17 +185,17 @@ namespace EliteDangerousEDDNResponder
 
         private static void sendMessage(EDDNBody body)
         {
-            Logging.Info(JsonConvert.SerializeObject(body));
-            //var client = new RestClient("http://eddn-gateway.elite-markets.net:8080/");
-            //var request = new RestRequest("upload/", Method.POST);
-            //request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
+            //Logging.Info(JsonConvert.SerializeObject(body));
+            var client = new RestClient("http://eddn-gateway.elite-markets.net:8080/");
+            var request = new RestRequest("upload/", Method.POST);
+            request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
 
-            //new Thread(() =>
-            //{
-            //    IRestResponse response = client.Execute(request);
-            //    var content = response.Content; // raw content as string
-            //    Logging.Info("Response content is " + content);
-            //}).Start();
+            new Thread(() =>
+            {
+                IRestResponse response = client.Execute(request);
+                var content = response.Content; // raw content as string
+                Logging.Info("Response content is " + content);
+            }).Start();
         }
 
         public UserControl ConfigurationTabItem()
