@@ -81,7 +81,7 @@ namespace EliteDangerousEDSMResponder
 
         public UserControl ConfigurationTabItem()
         {
-            return null;
+            return new ConfigurationWindow();
         }
     }
 }

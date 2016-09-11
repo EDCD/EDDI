@@ -31,7 +31,7 @@ namespace EliteDangerousSpeechResponder
 
             scriptsData.ItemsSource = configuration.Scripts;
 
-            Logging.Info("Configuration is " + JsonConvert.SerializeObject(configuration));
+            Logging.Debug("Configuration is " + JsonConvert.SerializeObject(configuration));
         }
 
         private void eddiScriptsUpdated(object sender, RoutedEventArgs e)

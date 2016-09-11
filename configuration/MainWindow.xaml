@@ -96,33 +96,6 @@
                     </Grid>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="EDSM">
-                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <TextBlock x:Name="edsmText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="EDSM is a third-party tool that provides information on the locations of star systems and keeps a log of the star systems you have visited.  It uses the data provided to crowd-source a map of the galaxy." VerticalAlignment="Top"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="To connect to EDSM you need to have registered an account with them.  Once you have done this you can obtain your API key by clicking on your portrait in the top-right corner of the screen and selecting 'My API Key'" VerticalAlignment="Top"/>
-                        <Label Grid.Row="1" Grid.Column="0" Content="EDSM API key"/>
-                        <TextBox x:Name="edsmApiKeyTextBox" Grid.Row="1" Grid.Column="1" Margin="3" TextChanged="edsmApiKeyChanged"/>
-                        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="If you registered a different commander name to your actual one, or you have not enabled the companion app, please enter your commander name below" VerticalAlignment="Top"/>
-                        <Label Grid.Row="3" Grid.Column="0" Content="EDSM Commander name"/>
-                        <TextBox x:Name="edsmCommanderNameTextBox" Grid.Row="3" Grid.Column="1" Margin="3" TextChanged="edsmCommanderNameChanged"/>
-                        <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="20" Text="Once you have entered your data above you can pull your existing logs from EDSM so that EDDI knows how many times you have been to each system.  You only need to do this the first time you set up EDSM.  Note that this can take a while to run" VerticalAlignment="Top"/>
-                        <Button x:Name="edsmFetchLogsButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Obtain EDSM log" Margin="10" Click="edsmObtainLogClicked"/>
-                    </Grid>
-                </DockPanel>
-            </TabItem>
             <TabItem Header="Shipyard">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <TextBlock x:Name="shipyardText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="This allows you to set names and callsigns for your ships.  The information is made available in VoiceAttack for use by scripts.  If the name of your ship is hard for EDDI to pronounce then you can add a spoken version of the ship using IPA.  For example, if your ship was called 'Pride of Achenar' then your spoken name would be 'praɪdɒvˈakɜːnɑ' (note no spaces in the phonetic version).  Please note that for this feature to work the companion app needs to be configured" VerticalAlignment="Top"/>

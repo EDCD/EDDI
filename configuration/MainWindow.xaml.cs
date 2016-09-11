@@ -57,9 +57,9 @@ namespace configuration
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             companionAppEmailText.Text = companionAppCredentials.email;
             // See if the credentials work
-            companionAppService = new CompanionAppService();
             try
             {
+                companionAppService = new CompanionAppService();
                 profile = companionAppService.Profile();
                 setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
             }
@@ -85,11 +85,6 @@ namespace configuration
             // Configure the NetLog tab
             NetLogConfiguration netLogConfiguration = NetLogConfiguration.FromFile();
             netLogPathTextBox.Text = netLogConfiguration.path;
-
-            // Configure the EDSM tab
-            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
-            edsmApiKeyTextBox.Text = starMapConfiguration.apiKey;
-            edsmCommanderNameTextBox.Text = starMapConfiguration.commanderName;
 
             // Configure the Text-to-speech tab
             SpeechServiceConfiguration speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
@@ -356,31 +351,6 @@ namespace configuration
             }
         }
 
-        // Handle changes to EDSM tab
-        private void edsmCommanderNameChanged(object sender, TextChangedEventArgs e)
-        {
-            updateEdsmConfiguration();
-        }
-
-        private void edsmApiKeyChanged(object sender, TextChangedEventArgs e)
-        {
-            updateEdsmConfiguration();
-        }
-
-        private void updateEdsmConfiguration()
-        {
-            StarMapConfiguration edsmConfiguration = new StarMapConfiguration();
-            if (!string.IsNullOrWhiteSpace(edsmApiKeyTextBox.Text))
-            {
-                edsmConfiguration.apiKey = edsmApiKeyTextBox.Text.Trim();
-            }
-            if (!string.IsNullOrWhiteSpace(edsmCommanderNameTextBox.Text))
-            {
-                edsmConfiguration.commanderName = edsmCommanderNameTextBox.Text.Trim();
-            }
-            edsmConfiguration.ToFile();
-        }
-
         // Handle changes to the Shipyard tab
         private void setShipyardFromConfiguration()
         {
@@ -478,62 +448,6 @@ namespace configuration
             speechConfiguration.ToFile();
         }
 
-        /// <summary>
-        /// Obtain the EDSM log and sync it with the local datastore
-        /// </summary>
-        private async void edsmObtainLogClicked(object sender, RoutedEventArgs e)
-        {
-            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
-
-            string commanderName;
-            if (String.IsNullOrEmpty(starMapConfiguration.commanderName))
-            {
-                // Fetch the commander name from the companion app
-                CompanionAppService companionAppService = new CompanionAppService();
-                Profile profile = companionAppService.Profile();
-                if (profile != null && profile.Cmdr != null && profile.Cmdr.name != null)
-                {
-                    commanderName = profile.Cmdr.name;
-                }
-                else
-                {
-                    edsmFetchLogsButton.IsEnabled = false;
-                    edsmFetchLogsButton.Content = "Companion app not configured and no name supplied; cannot obtain logs";
-                    return;
-                }
-            }
-            else
-            {
-                commanderName = starMapConfiguration.commanderName;
-            }
-
-            edsmFetchLogsButton.IsEnabled = false;
-            edsmFetchLogsButton.Content = "Obtaining log...";
-
-            var progress = new Progress<string>(s => edsmFetchLogsButton.Content = "Obtaining log..." + s);
-            await Task.Factory.StartNew(() => obtainEdsmLogs(starMapConfiguration, commanderName, progress),
-                                            TaskCreationOptions.LongRunning);
-            edsmFetchLogsButton.Content = "Obtained log";
-        }
-
-        public static void obtainEdsmLogs(StarMapConfiguration starMapConfiguration, string commanderName, IProgress<string> progress)
-        {
-            StarMapService starMapService = new StarMapService(starMapConfiguration.apiKey, commanderName);
-            Dictionary<string, StarMapLogInfo> systems = starMapService.getStarMapLog();
-            Dictionary<string, string> comments = starMapService.getStarMapComments();
-            foreach (string system in systems.Keys)
-            {
-                progress.Report(system);
-                StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
-                CurrentStarSystem.visits = systems[system].visits;
-                CurrentStarSystem.lastvisit = systems[system].lastVisit;
-                if (comments.ContainsKey(system))
-                {
-                    CurrentStarSystem.comment = comments[system];
-                }
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-            }
-        }
     }
 
     public class ValidIPARule : ValidationRule
