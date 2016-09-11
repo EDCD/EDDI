@@ -1,16 +1,63 @@
 # EDDI: The Elite Dangerous Data Interface
 
-Current version: 1.4.0
+Current version: 2.0.0b1
 
-EDDI is a VoiceAttack plugin that provides over 200 values related to a commander's status, ship and system to VoiceAttack scripts, creating the basis for providing a rich VoiceAttack experience.  Although it provides a number of commands it is not in itself a complete VoiceAttack profile similar to those provided by HCS and numerous personal contributors, but does give the tools to build new or augment existing profiles.
+EDDI is a companion application for Elite: Dangerous, providing responses to events that occur in-game using data from the game as well as various third-party tools.
 
-##Installing
+EDDI responds to a wide range of events, and also provides a VoiceAttack plugin to allow for direct interaction with information made available by EDDI.
 
-Download the EDDI ZIP file from [http://www.mcdee.net/elite/EDDI.zip](http://www.mcdee.net/elite/EDDI.zip) or compile it from the sources at [https://github.com/cmdrmcdonald/EliteDangerousDataProvider](https://github.com/cmdrmcdonald/EliteDangerousDataProvider).  The files need to be installed in the 'Apps' directory within the VoiceAttack program directory (usually installed at c:\Program Files (x86)\VoiceAttack).  The resultant directory structure, assuming the standard directories, should be c:\Program Files (x86)\VoiceAttack\Apps\EDDI.
+##Installing EDDI
 
-You must use a suitable version of VoiceAttack for EDDI to operate correctly.  At current the minimum version 1.5.8.16, which is a beta release.  Please note that the current release version, 1.5.8, will *not* work.
+EDDI can be installed standalone or as a VoiceAttack plugin.
 
-##Upgrading
+Download the EDDI ZIP file from [http://www.mcdee.net/elite/EDDI.zip](http://www.mcdee.net/elite/EDDI.zip) or compile it from the sources at [https://github.com/cmdrmcdonald/EliteDangerousDataProvider](https://github.com/cmdrmcdonald/EliteDangerousDataProvider).
+
+###Installing EDDI standalone
+
+If you want to run EDDI standalone then you can unzip the files to the directory of your choice.
+
+###Installing EDDI as a VoiceAttack plugin
+
+If you want to run EDDI as a VoiceAttack plugin then you must unzip the files to the 'Apps' directory within the VoiceAttack program directory (usually installed at c:\Program Files (x86)\VoiceAttack).  The resultant directory structure, assuming the standard directories, should be c:\Program Files (x86)\VoiceAttack\Apps\EDDI.
+
+You must use a suitable version of VoiceAttack for EDDI to operate correctly.  At current the minimum version 1.5.12.  You need to carry out a number of steps to ensure that EDDI will run in VoiceAttack.  First, ensure that plugins are enabled in VoiceAttack.  To do so, first select the configuration button on the main VoiceAttack window:
+
+![](images/MainOptions.jpg)
+
+Then confirm that plugin support is enabled.
+
+![](images/OptionsPluginSupport.jpg)
+
+Next, you need to import the two EDDI profiles.  To do so click on the profile button and select 'Import Profile':
+
+![](images/ImportProfile.jpg)
+
+Navigate to the EDDI installation directory and select the "EDDI events" profile.  Click "OK" to load it.
+
+![](images/ImportProfileDialog.jpg)
+
+Repeat the above process for the "EDDI" profile.
+
+###Combining Your Existing Profile With EDDI
+
+If you already have a VoiceAttack profile then you will need to link it to EDDI to ensure that your existing commands are available.  To do so select the 'EDDI Events' profile and edit it:
+
+![](images/EditEddiEvents.jpg)
+
+Then edit the profile options
+
+![](images/EditEddiEventsProfile.jpg)
+
+And include your own profile.
+
+![](images/EditEddiEventsProfileInclude.jpg)
+
+##Configuring EDDI
+
+You must configure EDDI prior to running it for the first time.  To do so run the 'configuration.exe' file in the installation directory.
+
+
+##Upgrading EDDI
 
 If you are upgrading from an earlier version of EDDI it is recommended that you remove the existing EDDI directory from within VoiceAttack's Apps directory before installing the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
 
