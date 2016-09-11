@@ -15,14 +15,14 @@ namespace EliteDangerousSpeechResponder
 {
     public class ScriptResolver
     {
-        private Dictionary<string, Script> scripts;
+        private Dictionary<string, Script> scripts = new Dictionary<string, Script>();
         private Random random;
         private CustomSetting setting;
 
         public ScriptResolver(Dictionary<string, Script> scripts)
         {
             random = new Random();
-            this.scripts = scripts;
+            if (scripts != null) { this.scripts = scripts; }
             setting = new CustomSetting();
             setting.Trimmer = BuiltinTrimmers.CollapseBlankCharacters;
         }

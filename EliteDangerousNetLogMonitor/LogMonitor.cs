@@ -13,18 +13,20 @@ namespace EliteDangerousNetLogMonitor
     public class LogMonitor
     {
         // What we are monitoring and what to do with it
-        private string directory;
-        private Regex filter;
-        private Action<string> callback;
+        public string Directory;
+        public Regex Filter;
+        public Action<string> Callback;
 
         // Keep track of status
         private bool running;
 
+        public LogMonitor(string filter) { Filter = new Regex(filter); }
+
         public LogMonitor(string directory, string filter, Action<string> callback)
         {
-            this.directory = directory;
-            this.filter = new Regex(filter);
-            this.callback = callback;
+            Directory = directory;
+            Filter = new Regex(filter);
+            Callback = callback;
         }
 
         /// <summary>Monitor the netlog for changes, running a callback when the file changes</summary>
@@ -34,17 +36,16 @@ namespace EliteDangerousNetLogMonitor
 
             // Start off by moving to the end of the file
             long lastSize = 0;
-            FileInfo fileInfo = FindLatestFile(directory, filter);
+            FileInfo fileInfo = FindLatestFile(Directory, Filter);
             if (fileInfo != null)
             {
-                Logging.Debug("Checking file " + fileInfo.Name);
                 lastSize = fileInfo.Length;
             }
 
             // Main loop
             while (running)
             {
-                fileInfo = FindLatestFile(directory, filter);
+                fileInfo = FindLatestFile(Directory, Filter);
                 if (fileInfo == null)
                 {
                     lastSize = 0;
@@ -85,7 +86,7 @@ namespace EliteDangerousNetLogMonitor
                             string[] lines = Regex.Split(s, "\r?\n");
                             foreach (string line in lines)
                             {
-                                callback(line);
+                                Callback(line);
                             }
                         }
                     }

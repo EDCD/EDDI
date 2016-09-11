@@ -88,6 +88,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EDDI.cs" />
+    <Compile Include="EDDIMonitor.cs" />
     <Compile Include="EDDIResponder.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -147,14 +148,6 @@
     <ProjectReference Include="..\EliteDangerousEvents\EliteDangerousEvents.csproj">
       <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
       <Name>EliteDangerousEvents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousJournalMonitor\EliteDangerousJournalMonitor.csproj">
-      <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>
-      <Name>EliteDangerousJournalMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousNetLogMonitor\EliteDangerousNetLogMonitor.csproj">
-      <Project>{0928ade6-f260-4820-afbc-1661130c3474}</Project>
-      <Name>EliteDangerousNetLogMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteDangerousStarMapService\EliteDangerousStarMapService.csproj">
       <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>

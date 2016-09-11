@@ -1,18 +1,18 @@
-﻿using EliteDangerousEvents;
+﻿using EDDI;
+using EliteDangerousEvents;
 using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Windows.Controls;
 using Utilities;
 
 namespace EliteDangerousNetLogMonitor
 {
     /// <summary>A log monitor for the Elite: Dangerous netlog</summary>
-    public class NetLogMonitor : LogMonitor
+    public class NetLogMonitor : LogMonitor, EDDIMonitor
     {
-        public NetLogMonitor(NetLogConfiguration configuration, Action<dynamic> callback) : base(configuration.path, @"^netLog\.[0-9\.]+\.log$", (result) => HandleNetLogLine(result, callback))
-        {
-        }
+        public NetLogMonitor() : base(NetLogConfiguration.FromFile().path, @"^netLog\.[0-9\.]+\.log$", result => HandleNetLogLine(result, Eddi.Instance.eventHandler)) { }
 
         private static Regex OldSystemRegex = new Regex(@"^{([0-9][0-9]:[0-9][0-9]:[0-9][0-9])} System:([0-9]+)\(([^\)]+)\).* ([A-Za-z]+)$");
         // {19:24:56} System:"Wolf 397" StarPos:(40.000,79.219,-10.406)ly Body:23 RelPos:(-2.01138,1.32957,1.7851)km NormalFlight
@@ -21,7 +21,7 @@ namespace EliteDangerousNetLogMonitor
         private static string lastStarsystem = null;
         private static string lastEnvironment = null;
 
-        private static void HandleNetLogLine(string line, Action<dynamic> callback)
+        private static void HandleNetLogLine(string line, Action<Event> callback)
         {
             string starSystem = null;
             string environment = null;
@@ -108,6 +108,36 @@ namespace EliteDangerousNetLogMonitor
             {
                 Logging.Debug("Could not resolve event");
             }
+        }
+
+        public string MonitorName()
+        {
+            return "Netlog Monitor";
+        }
+
+        public string MonitorVersion()
+        {
+            return "1.0.0";
+        }
+
+        public string MonitorDescription()
+        {
+            return "Plugin to monitor the netlog and post relevant events";
+        }
+
+        public void Start()
+        {
+            start();
+        }
+
+        public void Stop()
+        {
+            stop();
+        }
+
+        public UserControl ConfigurationTabItem()
+        {
+            return new ConfigurationWindow();
         }
     }
 }

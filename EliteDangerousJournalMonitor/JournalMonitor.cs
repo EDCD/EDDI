@@ -1,4 +1,5 @@
-﻿using EliteDangerousEvents;
+﻿using EDDI;
+using EliteDangerousEvents;
 using EliteDangerousNetLogMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -8,16 +9,16 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using Utilities;
 
 namespace EliteDangerousJournalMonitor
 {
-    public class JournalMonitor : LogMonitor
+    public class JournalMonitor : LogMonitor, EDDIMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$");
-        public JournalMonitor(NetLogConfiguration configuration, Action<Event> callback) : base(configuration.path, @"^journal\.log$", (result) => HandleJournalEntry(result, callback))
-        {
-        }
+
+        public JournalMonitor() : base(NetLogConfiguration.FromFile().path, @"^journal\.log$", result => HandleJournalEntry(result, Eddi.Instance.eventHandler)) {}
 
         private static void HandleJournalEntry(string line, Action<Event> callback)
         {
@@ -380,8 +381,37 @@ namespace EliteDangerousJournalMonitor
                 if (value is JArray)
                     list[i] = DeserializeData(value as JArray);
             }
-
             return list;
+        }
+
+        public string MonitorName()
+        {
+            return "Journal Monitor";
+        }
+
+        public string MonitorVersion()
+        {
+            return "1.0.0";
+        }
+
+        public string MonitorDescription()
+        {
+            return "Plugin to monitor the journal and post relevant events";
+        }
+
+        public void Start()
+        {
+            start();
+        }
+
+        public void Stop()
+        {
+            stop();
+        }
+
+        public UserControl ConfigurationTabItem()
+        {
+            return null;
         }
     }
 }

@@ -82,10 +82,6 @@ namespace configuration
                 setShipyardFromConfiguration();
             }
 
-            // Configure the NetLog tab
-            NetLogConfiguration netLogConfiguration = NetLogConfiguration.FromFile();
-            netLogPathTextBox.Text = netLogConfiguration.path;
-
             // Configure the Text-to-speech tab
             SpeechServiceConfiguration speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
             List<string> speechOptions = new List<string>();
@@ -120,6 +116,18 @@ namespace configuration
 
             ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels;
             ttsTestShipDropDown.Text = "Adder";
+
+            foreach (EDDIMonitor monitor in Eddi.Instance.monitors)
+            {
+                UserControl monitorConfiguration = monitor.ConfigurationTabItem();
+                if (monitorConfiguration != null)
+                {
+                    Logging.Debug("Adding configuration tab for " + monitor.MonitorName());
+                    TabItem item = new TabItem { Header = monitor.MonitorName() };
+                    item.Content = monitor.ConfigurationTabItem();
+                    tabControl.Items.Add(item);
+                }
+            }
 
             foreach (EDDIResponder responder in Eddi.Instance.responders)
             {
@@ -307,48 +315,6 @@ namespace configuration
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
             companionAppNextButton.Visibility = Visibility.Hidden;
-        }
-
-        // Handle changes to NetLog tab
-        private void netLogPathChanged(object sender, TextChangedEventArgs e)
-        {
-            updateNetLogConfiguration();
-        }
-
-        private void updateNetLogConfiguration()
-        {
-            NetLogConfiguration netLogConfiguration = new NetLogConfiguration();
-            if (!String.IsNullOrWhiteSpace(netLogPathTextBox.Text))
-            {
-                netLogConfiguration.path = netLogPathTextBox.Text.Trim();
-            }
-            netLogConfiguration.ToFile();
-        }
-
-        private void netLogObtainClicked(object sender, RoutedEventArgs e)
-        {
-            List<string> processPaths = new Finder().GetPathFromProcess();
-            if (processPaths.Count != 0)
-            {
-                netLogPathTextBox.Text = processPaths[0] + @"\Logs";
-                updateNetLogConfiguration();
-            }
-            else
-            {
-                netLogText.Text = @"Unfortuantely we were unable to locate your product directory.  Please type in the location of the 'Logs' directory in your 'elite-dangerous-64' directory.  Possible locations include:";
-                List<string> paths = new Finder().FindInstallationPaths();
-                if (paths.Count == 0)
-                {
-                    paths.Add(Finder.DefProductsPath + @"\elite-dangerous-64");
-                    paths.Add(Finder.DefLauncherPath + @"\elite-dangerous-64");
-                    paths.Add(@"C:\Program Files (x86)\Steam\\SteamApps\common\Elite Dangerous\Products\elite-dangerous-64");
-                }
-                foreach (string path in paths)
-                {
-                    netLogText.Text += "\r\n\r\n" + path + @"\Logs";
-                }
-                netLogText.Text += "\r\n\r\nWhichever directory you select should contain a number of 'debugLog' files.";
-            }
         }
 
         // Handle changes to the Shipyard tab

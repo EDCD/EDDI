@@ -2,8 +2,6 @@
 using EliteDangerousDataDefinitions;
 using EliteDangerousDataProviderService;
 using EliteDangerousEvents;
-using EliteDangerousJournalMonitor;
-using EliteDangerousNetLogMonitor;
 using EliteDangerousStarMapService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -59,6 +57,10 @@ namespace EDDI
             EventHandler?.Invoke(theEvent);
         }
 
+        public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
+        // Each monitor runs in its own thread
+        public List<Thread> monitorThreads = new List<Thread>();
+
         public List<EDDIResponder> responders = new List<EDDIResponder>();
 
         private CompanionAppService appService;
@@ -82,9 +84,6 @@ namespace EDDI
         public StarSystem CurrentStarSystem { get; private set; }
         public StarSystem LastStarSystem { get; private set; }
 
-        private Thread logWatcherThread;
-        private Thread journalWatcherThread;
-
         public EDDIConfiguration configuration { get; private set; }
 
         public static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
@@ -97,8 +96,8 @@ namespace EDDI
                 Logging.Info("EDDI " + EDDI_VERSION + " starting");
 
                 // Set up and/or open our database
-                String dataDir = System.Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                System.IO.Directory.CreateDirectory(dataDir);
+                string dataDir = System.Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                Directory.CreateDirectory(dataDir);
 
                 // Set up the EDDI configuration
                 configuration = EDDIConfiguration.FromFile();
@@ -172,27 +171,8 @@ namespace EDDI
                 // We always start in normal space
                 Environment = ENVIRONMENT_NORMAL_SPACE;
 
-                // Set up log monitor
-                NetLogConfiguration netLogConfiguration = NetLogConfiguration.FromFile();
-                if (netLogConfiguration != null && netLogConfiguration.path != null)
-                {
-                    logWatcherThread = new Thread(() => StartLogMonitor(netLogConfiguration));
-                    logWatcherThread.IsBackground = true;
-                    logWatcherThread.Name = "EDDI netlog watcher";
-                    logWatcherThread.Start();
-                    Logging.Info("EDDI netlog monitor is enabled for " + netLogConfiguration.path);
-
-                    journalWatcherThread = new Thread(() => StartJournalMonitor(netLogConfiguration));
-                    journalWatcherThread.IsBackground = true;
-                    journalWatcherThread.Name = "EDDI journal watcher";
-                    journalWatcherThread.Start();
-                    Logging.Info("EDDI journal monitor is enabled");
-                }
-                else
-                {
-                    Logging.Info("EDDI netlog monitor is disabled");
-                }
-
+                // Set up monitors and responders
+                monitors = loadMonitors();
                 responders = loadResponders();
 
                 Logging.Info("EDDI " + EDDI_VERSION + " initialised");
@@ -203,26 +183,17 @@ namespace EDDI
             }
         }
 
-        private void StartLogMonitor(NetLogConfiguration configuration)
-        {
-            if (configuration != null)
-            {
-                NetLogMonitor netLogMonitor = new NetLogMonitor(configuration, (result) => eventHandler(result));
-                netLogMonitor.start();
-            }
-        }
-
-        private void StartJournalMonitor(NetLogConfiguration configuration)
-        {
-            if (configuration != null)
-            {
-                JournalMonitor journalMonitor = new JournalMonitor(configuration, (result) => eventHandler(result));
-                journalMonitor.start();
-            }
-        }
-
         public void Start()
         {
+            foreach (EDDIMonitor monitor in monitors)
+            {
+                Thread monitorThread = new Thread(() => monitor.Start());
+                monitorThread.IsBackground = true;
+                monitorThread.Name = monitor.MonitorName();
+                Logging.Info("Starting " + monitor.MonitorName());
+                monitorThread.Start();
+            }
+
             foreach (EDDIResponder responder in responders)
             {
                 bool responderStarted = responder.Start();
@@ -250,21 +221,15 @@ namespace EDDI
             {
                 responder.Stop();
             }
-            if (logWatcherThread != null)
+            foreach (EDDIMonitor monitor in monitors)
             {
-                logWatcherThread.Abort();
-                logWatcherThread = null;
-            }
-            if (journalWatcherThread != null)
-            {
-                journalWatcherThread.Abort();
-                journalWatcherThread = null;
+                monitor.Stop();
             }
 
             Logging.Info("EDDI " + EDDI_VERSION + " shutting down");
         }
 
-        private void eventHandler(Event journalEvent)
+        public void eventHandler(Event journalEvent)
         {
             Logging.Debug("Handling event " + JsonConvert.SerializeObject(journalEvent));
             // We have some additional processing to do for a number of events
@@ -397,6 +362,66 @@ namespace EDDI
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Find all monitors
+        /// </summary>
+        private List<EDDIMonitor> loadMonitors()
+        {
+            DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            List<EDDIMonitor> monitors = new List<EDDIMonitor>();
+            Type pluginType = typeof(EDDIMonitor);
+            foreach (FileInfo file in dir.GetFiles("*Monitor.dll", SearchOption.AllDirectories))
+            {
+                Logging.Debug("Checking potential plugin at " + file.FullName);
+                try
+                {
+                    Assembly assembly = Assembly.LoadFrom(file.FullName);
+                    foreach (Type type in assembly.GetTypes())
+                    {
+                        if (type.IsInterface || type.IsAbstract)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            if (type.GetInterface(pluginType.FullName) != null)
+                            {
+                                Logging.Debug("Instantiating plugin at " + file.FullName);
+                                EDDIMonitor monitor = type.InvokeMember(null,
+                                                           BindingFlags.CreateInstance,
+                                                           null, null, null) as EDDIMonitor;
+                                monitors.Add(monitor);
+                            }
+                        }
+                    }
+                }
+                catch (BadImageFormatException)
+                {
+                    // Ignore this; probably due to CPU architecure mismatch
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (Exception exSub in ex.LoaderExceptions)
+                    {
+                        sb.AppendLine(exSub.Message);
+                        FileNotFoundException exFileNotFound = exSub as FileNotFoundException;
+                        if (exFileNotFound != null)
+                        {
+                            if (!string.IsNullOrEmpty(exFileNotFound.FusionLog))
+                            {
+                                sb.AppendLine("Fusion Log:");
+                                sb.AppendLine(exFileNotFound.FusionLog);
+                            }
+                        }
+                        sb.AppendLine();
+                    }
+                    Logging.Warn("Failed to instantiate plugin at " + file.FullName + ":\n" + sb.ToString());
+                }
+            }
+            return monitors;
         }
 
         /// <summary>
