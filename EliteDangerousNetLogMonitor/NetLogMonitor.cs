@@ -104,10 +104,6 @@ namespace EliteDangerousNetLogMonitor
                 Logging.Debug("Returning event " + theEvent);
                 callback(theEvent);
             }
-            else
-            {
-                Logging.Debug("Could not resolve event");
-            }
         }
 
         public string MonitorName()

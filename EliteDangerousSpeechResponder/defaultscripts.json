@@ -1,0 +1,28 @@
+{
+  "scripts": {
+    "Entered supercruise": {
+      "enabled": true,
+      "defaultscript": "{OneOf(\"{ship.name} is\", \"\")} entering supercruise.",
+      "name": "Entered supercruise",
+      "description": "Triggered when you enter supercruise"
+    },
+    "Entered normal space": {
+      "enabled": true,
+      "defaultscript": "{OneOf(\"{ship.name} is\", \"\")} {OneOf(\"leaving supercruise\", \"{OneOf(\\\"entering\\\", \\\"returning to\\\", \\\"dropping to\\\")} normal space\")}.",
+      "name": "Entered normal space",
+      "description": "Triggered when you enter normal space"
+    },
+    "Jumped": {
+      "enabled": true,
+      "defaultscript": "{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ship.name} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home.\r\n|else:\r\n    {if lastsystem.allegiance && !system.allegiance:\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance:\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {cmdr.title}\r\n        }\r\n    }.\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report - detailed\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
+      "name": "Jumped",
+      "description": "Triggered when you jump to a different system"
+    },
+    "System report - detailed": {
+      "enabled": true,
+      "defaultscript": "{OneOf(\"This is\", \"This system is\", \"{P(system.name)} is\")}\r\n{if system.allegiance = \"Federation\":\r\n    a Federation\r\n|elif system.allegiance = \"Empire\":\r\n    an Empire\r\n|else:\r\n    an independent\r\n}\r\n{if system.government:\r\n    {system.government}\r\n|else:\r\n  system\r\n}\r\n{OneOf(\"of\", \"with a population of\", \"home to\", \"supporting\")} {Humanise(system.population)} {OneOf(\"people\", \"souls\")}\r\n{if system.power:\r\n    , {OneOf(\"aligned to\", \"allied with\", \"controlled by\")} {P(system.power)}\r\n}.\r\n\r\n{if system.faction:\r\n  {P(system.faction)} is the {OneOf(\"controlling\", \"local\", \"immediate\")} {OneOf(\"power\", \"faction\")}.\r\n}\r\n\r\n{if len(system.stations) = 0:\r\n  There are no stations\r\n|else:\r\n    {if len(system.orbitalstations) = 0:\r\n        {if len(system.planetarystations) = 1:\r\n            There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} planetary station\r\n        |else:\r\n            There are {len(system.planetarystations)} planetary stations\r\n        }\r\n    |elif len(system.orbitalstations) = 1:\r\n        There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} orbital station\r\n        {if len(system.planetarystations) = 1:\r\n            and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n        |elif len(system.planetarystations) > 1:\r\n            and {len(system.planetarystations)} planetary stations\r\n        }\r\n    |else:\r\n        There are {len(system.orbitalstations)} orbital stations\r\n        {if len(system.planetarystations) = 1:\r\n            and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n        |else:\r\n            and {len(system.planetarystations)} planetary stations\r\n        }\r\n    }\r\n}\r\n{OneOf(\"here\", \"in this system\")}.\r\n\r\n{_ TODO: system state}\r\n",
+      "name": "System report - detailed",
+      "description": "Provide a detailed report on a system"
+    }
+  }
+}

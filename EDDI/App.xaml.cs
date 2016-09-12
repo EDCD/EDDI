@@ -19,7 +19,7 @@ namespace EDDI
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Eddi.Instance.Start();
+            //Eddi.Instance.Start();
         }
     }
 }
