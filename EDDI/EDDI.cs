@@ -210,9 +210,6 @@ namespace EDDI
 
             // Post a started event to let the responders know we are up and running
             eventHandler(new StartedEvent(DateTime.Now));
-
-            // TODO remove - this is just a test
-            eventHandler(new DockedEvent(DateTime.Now, LastStation.name));
         }
 
         public void Stop()
