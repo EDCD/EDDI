@@ -712,15 +712,7 @@ namespace EDDIVAPlugin
                 setDecimal(ref decimalValues, prefix + " Z", system == null ? null : system.z);
                 setInt(ref intValues, prefix + " visits", system == null ? (int?)null : system.visits);
                 setString(ref textValues, prefix + " comment", system == null ? null : system.comment);
-
-                if (system != null && Eddi.Instance.HomeStarSystem != null && Eddi.Instance.HomeStarSystem.x != null && system.x != null)
-                {
-                    setDecimal(ref decimalValues, prefix + " distance from home", (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - Eddi.Instance.HomeStarSystem.x), 2) + Math.Pow((double)(system.y - Eddi.Instance.HomeStarSystem.y), 2) + Math.Pow((double)(system.z - Eddi.Instance.HomeStarSystem.z), 2)), 2));
-                }
-                else
-                {
-                    setDecimal(ref decimalValues, prefix + " distance from home", null);
-                }
+                setDecimal(ref decimalValues, prefix + " distance from home", system.distancefromhome == null ? null : system.distancefromhome);
 
                 if (system != null)
                 {

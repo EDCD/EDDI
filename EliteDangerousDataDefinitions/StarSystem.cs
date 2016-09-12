@@ -57,6 +57,9 @@ namespace EliteDangerousDataDefinitions
         /// <summary>comment on this starsystem</summary>
         public string comment;
 
+        /// <summary>distance from home</summary>
+        public decimal? distancefromhome;
+
         // Admin - the last time the data about this system was obtained from remote repository
         public DateTime lastupdated;
 

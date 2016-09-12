@@ -51,6 +51,10 @@ namespace EDDIVAPlugin
         {
         }
 
+        public void Reload()
+        {
+        }
+
         public UserControl ConfigurationTabItem()
         {
             return null;

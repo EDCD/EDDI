@@ -118,6 +118,19 @@ namespace EliteDangerousSpeechResponder
                 return new ScriptResolver(scripts).resolveScript(values[random.Next(values.Count)].AsString, vars);
             });
 
+            // Helper functions
+            store["Occasionally"] = new NativeFunction((values) =>
+            {
+                if (random.Next((int)values[0].AsNumber) == 0)
+                {
+                    return new ScriptResolver(scripts).resolveScript(values[1].AsString, vars);
+                }
+                else
+                {
+                    return "";
+                }
+            }, 2);
+
             store["Humanise"] = new NativeFunction((values) =>
             {
                 return Translations.Humanize(values[0].AsNumber);

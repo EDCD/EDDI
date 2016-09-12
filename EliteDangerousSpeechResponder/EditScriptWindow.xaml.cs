@@ -48,6 +48,14 @@ namespace EliteDangerousSpeechResponder
             this.Close();
         }
 
+        private void helpButtonClick(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void variablesButtonClick(object sender, RoutedEventArgs e)
+        {
+        }
+
         private void resetButtonClick(object sender, RoutedEventArgs e)
         {
             scriptText.Text = script.Value;

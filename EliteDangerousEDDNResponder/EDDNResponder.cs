@@ -57,10 +57,14 @@ namespace EliteDangerousEDDNResponder
         {
         }
 
+        public void Reload()
+        {
+        }
+
         private void handleDockedEvent(DockedEvent theEvent)
         {
             // When we dock we have access to commodity and outfitting information
-            // Shipyard information is not available through the companion app API so can't send it
+            // Shipyard information is not always available through the companion app API so can't send it
             //sendShipyardInformation();
             sendCommodityInformation();
             sendOutfittingInformation();

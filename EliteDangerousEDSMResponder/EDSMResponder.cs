@@ -37,6 +37,17 @@ namespace EliteDangerousEDSMResponder
 
         public bool Start()
         {
+            Reload();
+            return starMapService != null;
+        }
+
+        public void Stop()
+        {
+            starMapService = null;
+        }
+
+        public void Reload()
+        {
             // Set up the star map service
             StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
             if (starMapCredentials != null && starMapCredentials.apiKey != null)
@@ -47,7 +58,7 @@ namespace EliteDangerousEDSMResponder
                 {
                     commanderName = starMapCredentials.commanderName;
                 }
-                else if (Eddi.Instance.Cmdr.name != null)
+                else if (Eddi.Instance.Cmdr != null)
                 {
                     commanderName = Eddi.Instance.Cmdr.name;
                 }
@@ -56,12 +67,6 @@ namespace EliteDangerousEDSMResponder
                     starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
                 }
             }
-            return starMapService != null;
-        }
-
-        public void Stop()
-        {
-            starMapService = null;
         }
 
         public void Handle(Event theEvent)
@@ -72,8 +77,7 @@ namespace EliteDangerousEDSMResponder
                 {
                     JumpedEvent jumpedEvent = (JumpedEvent)theEvent;
 
-                    // Send jump information to EDSM
-                    Logging.Error("Sending data to EDSM");
+                    Logging.Debug("Sending jump data to EDSM");
                     starMapService.sendStarMapLog(jumpedEvent.timestamp, jumpedEvent.system, jumpedEvent.x, jumpedEvent.y, jumpedEvent.z);
                 }
             }

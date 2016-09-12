@@ -299,6 +299,7 @@ namespace EDDI
                 }
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
+                setSystemDistanceFromHome(CurrentStarSystem);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 // After jump we are always in supercruise
                 Environment = ENVIRONMENT_SUPERCRUISE;
@@ -337,8 +338,21 @@ namespace EDDI
                 Ship = profile == null ? null : profile.Ship;
                 StoredShips = profile == null ? null : profile.StoredShips;
                 CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
+                setSystemDistanceFromHome(CurrentStarSystem);
                 LastStation = profile == null ? null : profile.LastStation;
                 setCommanderTitle();
+            }
+        }
+
+        private void setSystemDistanceFromHome(StarSystem system)
+        {
+            Logging.Info("HomeStarSystem is " + HomeStarSystem == null ? null : HomeStarSystem.name);
+            if (HomeStarSystem != null)
+            {
+                system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - HomeStarSystem.x), 2)
+                                                                      + Math.Pow((double)(system.y - HomeStarSystem.y), 2)
+                                                                      + Math.Pow((double)(system.z - HomeStarSystem.z), 2)), 2);
+                Logging.Info("Distance from home is " + system.distancefromhome);
             }
         }
 

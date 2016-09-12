@@ -8,12 +8,14 @@
         Title="Edit Script" Height="600" Width="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
         <TextBlock DockPanel.Dock="Top" x:Name="descriptionText" Margin="20" TextWrapping="Wrap" VerticalAlignment="Top" Width="760"/>
-        <UniformGrid DockPanel.Dock="Bottom" Margin="20" Rows="1" Columns="5" Width="760" HorizontalAlignment="Center">
-            <Button x:Name="acceptButton" FontSize="18" Content="OK" HorizontalAlignment="Center" VerticalAlignment="Top" Click="acceptButtonClick" Margin="5"/>
-            <Button x:Name="testButton" FontSize="18" Content="Test" HorizontalAlignment="Center" VerticalAlignment="Top" Click="testButtonClick" Margin="5"/>
-            <Button x:Name="resetButton" FontSize="18" Content="Reset" HorizontalAlignment="Center" VerticalAlignment="Top" Click="resetButtonClick" Margin="5"/>
-            <Button x:Name="defaultButton" FontSize="18" Content="Default" HorizontalAlignment="Center" VerticalAlignment="Top" Click="defaultButtonClick" Margin="5"/>
-            <Button x:Name="cancelButton" FontSize="18" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Top" Click="cancelButtonClick" Margin="5"/>
+        <UniformGrid DockPanel.Dock="Bottom" Margin="20" Rows="1" Columns="7" Width="760" HorizontalAlignment="Center">
+            <Button x:Name="acceptButton" FontSize="18" Content="OK" VerticalAlignment="Top" Click="acceptButtonClick" Margin="10"/>
+            <Button x:Name="testButton" FontSize="18" Content="Test" VerticalAlignment="Top" Click="testButtonClick" Margin="10"/>
+            <Button x:Name="helpButton" FontSize="18" Content="Help" VerticalAlignment="Top" Click="helpButtonClick" Margin="10"/>
+            <Button x:Name="variablesButton" FontSize="18" Content="Variables" VerticalAlignment="Top" Click="variablesButtonClick" Margin="10"/>
+            <Button x:Name="resetButton" FontSize="18" Content="Reset" VerticalAlignment="Top" Click="resetButtonClick" Margin="10"/>
+            <Button x:Name="defaultButton" FontSize="18" Content="Default" VerticalAlignment="Top" Click="defaultButtonClick" Margin="10"/>
+            <Button x:Name="cancelButton" FontSize="18" Content="Cancel" VerticalAlignment="Top" Click="cancelButtonClick" Margin="10"/>
         </UniformGrid>
         <TextBox x:Name="scriptText" Margin="20" TextWrapping="Wrap" Height="400" VerticalAlignment="Top" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
     </DockPanel>

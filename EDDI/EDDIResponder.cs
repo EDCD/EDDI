@@ -37,6 +37,11 @@ namespace EDDI
         void Stop();
 
         /// <summary>
+        /// Called when this responder needs to reload its configuration
+        /// </summary>
+        void Reload();
+
+        /// <summary>
         /// Called when an event is found
         /// </summary>
         void Handle(Event theEvent);

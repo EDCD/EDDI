@@ -14,8 +14,6 @@ namespace EliteDangerousSpeechResponder
     /// </summary>
     public class SpeechResponder : EDDIResponder
     {
-        private Dictionary<string, Script> scripts;
-
         private ScriptResolver scriptResolver;
         private SpeechService speechService;
 
@@ -37,13 +35,13 @@ namespace EliteDangerousSpeechResponder
         public SpeechResponder()
         {
             ScriptsConfiguration configuration = ScriptsConfiguration.FromFile();
-            scripts = configuration.Scripts;
+            Dictionary<string, Script> scripts = configuration.Scripts;
+            scriptResolver = new ScriptResolver(scripts);
             Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
         }
 
         public bool Start()
         {
-            scriptResolver = new ScriptResolver(scripts);
             speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
             return true;
         }
@@ -54,6 +52,15 @@ namespace EliteDangerousSpeechResponder
             {
                 speechService.ShutdownSpeech();
             }
+        }
+
+        public void Reload()
+        {
+            ScriptsConfiguration configuration = ScriptsConfiguration.FromFile();
+            Dictionary<string, Script> scripts = configuration.Scripts;
+            scriptResolver = new ScriptResolver(scripts);
+            speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
+            Logging.Info("Reloaded " + ResponderName() + " " + ResponderVersion());
         }
 
         // Say something with the default resolver
