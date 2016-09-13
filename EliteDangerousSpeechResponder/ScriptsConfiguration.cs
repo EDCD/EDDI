@@ -7,11 +7,11 @@ using Utilities;
 
 namespace EliteDangerousSpeechResponder
 {
-    /// <summary>Scritps for the speech responder</summary>
+    /// <summary>Scripts for the speech responder</summary>
     public class ScriptsConfiguration
     {
         [JsonIgnore]
-        private static Dictionary<string, Script> defaultConfiguration;
+        private static Dictionary<string, Script> defaultScripts;
 
         [JsonProperty("scripts")]
         public Dictionary<string, Script> Scripts { get; set; }
@@ -25,13 +25,15 @@ namespace EliteDangerousSpeechResponder
             try
             {
                 DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                string filename = dir.Name + "\\defaultscripts.json";
-                defaultConfiguration = JsonConvert.DeserializeObject<Dictionary<string, Script>>(File.ReadAllText(filename));
+                string filename = dir.FullName + "\\defaultscripts.json";
+                defaultScripts = JsonConvert.DeserializeObject<Dictionary<string, Script>>(File.ReadAllText(filename));
+                Logging.Info("*******************************************************************************************");
+                Logging.Info("Default scripts are " + JsonConvert.SerializeObject(defaultScripts));
+                Logging.Info("*******************************************************************************************");
             }
             catch
             {
-                Logging.Warn("Failed to load default scripts");
-                defaultConfiguration = new Dictionary<string, Script>();
+                defaultScripts = new Dictionary<string, Script>();
             }
         }
 
@@ -52,24 +54,35 @@ namespace EliteDangerousSpeechResponder
                 filename = dataDir + "\\scripts.json";
             }
 
-            ScriptsConfiguration configuration;
+            ScriptsConfiguration configuration = null;
             try
             {
                 configuration = JsonConvert.DeserializeObject<ScriptsConfiguration>(File.ReadAllText(filename));
             }
             catch
             {
+            }
+            
+            if (configuration == null)
+            {
                 configuration = new ScriptsConfiguration();
             }
             configuration.dataPath = filename;
+            if (configuration.Scripts == null)
+            {
+                configuration.Scripts = new Dictionary<string, Script>();
+            }
 
             // Set default scripts appropriately
-            foreach (KeyValuePair<string, Script> defaultScript in defaultConfiguration)
+            foreach (KeyValuePair<string, Script> defaultScript in defaultScripts)
             {
+                Logging.Info("Looking for existing details for " + defaultScript.Key);
                 Script existingScript;
                 configuration.Scripts.TryGetValue(defaultScript.Key, out existingScript);
                 Script newScript = new Script(defaultScript.Value.Name, defaultScript.Value.Description, defaultScript.Value.Value);
 
+                Logging.Info("Existing script is " + (existingScript == null ? null : JsonConvert.SerializeObject(existingScript)));
+                Logging.Info("New script is " + (newScript == null ? null : JsonConvert.SerializeObject(newScript)));
                 if (existingScript != null)
                 {
                     newScript.Enabled = existingScript.Enabled;

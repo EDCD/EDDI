@@ -344,7 +344,7 @@ namespace EDDI
         private void setSystemDistanceFromHome(StarSystem system)
         {
             Logging.Info("HomeStarSystem is " + HomeStarSystem == null ? null : HomeStarSystem.name);
-            if (HomeStarSystem != null)
+            if (HomeStarSystem != null && HomeStarSystem.x != null && system.x != null)
             {
                 system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - HomeStarSystem.x), 2)
                                                                       + Math.Pow((double)(system.y - HomeStarSystem.y), 2)
