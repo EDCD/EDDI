@@ -132,6 +132,7 @@ namespace EliteDangerousSpeechService
             { "Arietis" , new string[] { "əˈraɪɪtɪs" } },
             { "Bei Dou" , new string[] { "beɪ", "ˈduː" } },
             { "Blanco" , new string[] { "blæŋkˌəʊ" } },
+            { "Bleae Thaa" , new string[] { "bliːiː", "θɑː" } },
             { "Bleae Thua" , new string[] { "bliːiː", "θuːə" } },
             { "Capricorni" , new string[] { "ˌkæprɪˈkɔːnaɪ" } },
             { "Cepheus" , new string[] { "ˈsiːfjuːs" } },
