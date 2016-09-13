@@ -70,7 +70,7 @@ namespace EliteDangerousSpeechResponder
         {
             // Splice the new script in to the existing scripts
             Dictionary<string, Script> newScripts = new Dictionary<string, Script>(scripts);
-            Script testScript = new Script(script.Name, script.Description, scriptText.Text);
+            Script testScript = new Script(script.Name, script.Description, script.Responder, scriptText.Text);
             newScripts.Remove(script.Name);
             newScripts.Add(script.Name, testScript);
 

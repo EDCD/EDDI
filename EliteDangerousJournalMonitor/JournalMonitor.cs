@@ -78,13 +78,25 @@ namespace EliteDangerousJournalMonitor
                         handled = true;
                         break;
                     case "Touchdown":
-                        //journalEntry.type = "Ship landed";
-                        //journalEntry.refetchProfile = false;
+                        {
+                            object val;
+                            data.TryGetValue("Latitude", out val);
+                            decimal latitude = (decimal)val;
+                            data.TryGetValue("Longitude", out val);
+                            decimal longitude = (decimal)val;
+                            journalEvent = new TouchdownEvent(timestamp, longitude, latitude);
+                        }
                         handled = true;
                         break;
                     case "Liftoff":
-                        //journalEntry.type = "Ship lifted off";
-                        //journalEntry.refetchProfile = false;
+                        {
+                            object val;
+                            data.TryGetValue("Latitude", out val);
+                            decimal latitude = (decimal)val;
+                            data.TryGetValue("Longitude", out val);
+                            decimal longitude = (decimal)val;
+                            journalEvent = new LiftoffEvent(timestamp, longitude, latitude);
+                        }
                         handled = true;
                         break;
                     case "SupercruiseEntry":
@@ -95,8 +107,8 @@ namespace EliteDangerousJournalMonitor
                         {
                             object val;
                             data.TryGetValue("Body", out val);
-                            string bodyName = (string)val;
-                            journalEvent = new EnteredNormalSpaceEvent(timestamp, bodyName);
+                            string body = (string)val;
+                            journalEvent = new EnteredNormalSpaceEvent(timestamp, body);
                         }
                         handled = true;
                         break;
@@ -121,71 +133,96 @@ namespace EliteDangerousJournalMonitor
                         }
                         handled = true;
                         break;
-                    case "Died":
-                        //journalEntry.type = "Died";
-                        //journalEntry.refetchProfile = false;
-                        handled = true;
-                        break;
                     case "Bounty":
-                        //journalEntry.type = "Bounty awarded";
-                        //journalEntry.refetchProfile = false;
+                        {
+                            object val;
+                            data.TryGetValue("Faction", out val);
+                            string awardingFaction = (string)val;
+                            data.TryGetValue("Target", out val);
+                            string target = (string)val;
+                            data.TryGetValue("Reward", out val);
+                            decimal reward = (decimal)val;
+                            data.TryGetValue("VictimFaction", out val);
+                            string victimFaction = (string)val;
+                            journalEvent = new BountyAwardedEvent(timestamp, awardingFaction, target, victimFaction, reward);
+                        }
                         handled = true;
                         break;
                     case "CapShipBond":
                     case "FactionKillBond":
-                        //journalEntry.type = "Bond awarded";
-                        //journalEntry.refetchProfile = false;
+                        {
+                            object val;
+                            data.TryGetValue("Faction", out val);
+                            string awardingFaction = (string)val;
+                            data.TryGetValue("Reward", out val);
+                            decimal reward = (decimal)val;
+                            data.TryGetValue("VictimFaction", out val);
+                            string victimFaction = (string)val;
+                            journalEvent = new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward);
+                        }
                         handled = true;
                         break;
                     case "CommitCrime":
-                        // Might be a fine or a bounty
-                        //if (data.ContainsKey("Fine"))
-                        //{
-                        //    journalEntry.type = "Fine incurred";
-                        //    journalEntry.decimalData.Add("amount", Decimal.Parse((string)data["Fine"]));
-                        //    journalEntry.refetchProfile = false;
-                        //    handled = true;
-                        //}
-                        //else
-                        //{
-                        //    journalEntry.type = "Bounty incurred";
-                        //    journalEntry.decimalData.Add("amount", Decimal.Parse((string)data["Bounty"]));
-                        //    journalEntry.refetchProfile = false;
-                        //    handled = true;
-                        //}
-                        //journalEntry.refetchProfile = false;
+                        {
+                            object val;
+                            data.TryGetValue("CrimeType", out val);
+                            string crimetype = (string)val;
+                            data.TryGetValue("Faction", out val);
+                            string faction = (string)val;
+                            data.TryGetValue("Victim", out val);
+                            string victim = (string)val;
+                            // Might be a fine or a bounty
+                            if (data.ContainsKey("Fine"))
+                            {
+                                data.TryGetValue("Fine", out val);
+                                decimal fine = (decimal)val;
+                                journalEvent = new FineIncurredEvent(timestamp, crimetype, faction, victim, fine);
+                            }
+                            else
+                            {
+                                data.TryGetValue("Bounty", out val);
+                                decimal bounty = (decimal)val;
+                                journalEvent = new BountyIncurredEvent(timestamp, crimetype, faction, victim, bounty);
+                            }
+                        }
+                        handled = true;
                         break;
                     case "Promotion":
-                        //if (data.ContainsKey("Combat"))
-                        //{
-                        //    journalEntry.type = "Combat promotion";
-                        //    journalEntry.intData.Add("Rating", Int32.Parse((string)data["Combat"]));
-                        //    journalEntry.refetchProfile = false;
-                        //    handled = true;
-                        //}
-                        //if (data.ContainsKey("Trade"))
-                        //{
-                        //    journalEntry.type = "Trade promotion";
-                        //    journalEntry.intData.Add("Rating", Int32.Parse((string)data["Trade"]));
-                        //    journalEntry.refetchProfile = false;
-                        //    handled = true;
-                        //}
-                        //if (data.ContainsKey("Explore"))
-                        //{
-                        //    journalEntry.type = "Exploration promotion";
-                        //    journalEntry.intData.Add("Rating", Int32.Parse((string)data["Explore"]));
-                        //    journalEntry.refetchProfile = false;
-                        //    handled = true;
-                        //}
-                        //if (data.ContainsKey("CQC"))
-                        //{
-                        //    journalEntry.type = "CQC promotion";
-                        //    journalEntry.intData.Add("Rating", Int32.Parse((string)data["CQC"]));
-                        //    journalEntry.refetchProfile = false;
-                        //    handled = true;
-                        //}
+                        {
+                            object val;
+                            if (data.ContainsKey("Combat"))
+                            {
+                                data.TryGetValue("Combat", out val);
+                                int rank = (int)val;
+                                journalEvent = new CombatPromotionEvent(timestamp, rank);
+                                handled = true;
+                            }
+                            else if (data.ContainsKey("Trade"))
+                            {
+                                data.TryGetValue("Trade", out val);
+                                int rank = (int)val;
+                                journalEvent = new TradePromotionEvent(timestamp, rank);
+                                handled = true;
+                            }
+                            else if (data.ContainsKey("Explore"))
+                            {
+                                data.TryGetValue("Explore", out val);
+                                int rank = (int)val;
+                                journalEvent = new ExplorationPromotionEvent(timestamp, rank);
+                                handled = true;
+                            }
+                        }
                         break;
                     case "CollectCargo":
+                        {
+                            object val;
+                            data.TryGetValue("Type", out val);
+                            string cargo = (string)val;
+                            data.TryGetValue("Stolen", out val);
+                            bool stolen = (bool)val;
+                            journalEvent = new CargoCollectedEvent(timestamp, cargo, stolen);
+                            handled = true;
+                        }
                         //if ((int)data["Stolen"] == 1)
                         //{
                         //    journalEntry.type = "Illegal cargo scooped";
@@ -196,10 +233,40 @@ namespace EliteDangerousJournalMonitor
                         handled = true;
                         break;
                     case "CockpitBreached":
-                        //journalEntry.type = "Cockpit breached";
-                        //handled = true;
+                        journalEvent = new CockpitBreachedEvent(timestamp);
+                        handled = true;
                         break;
                     case "Scan":
+                        {
+                            object val;
+                            // Common items
+                            data.TryGetValue("BodyName", out val);
+                            string name = (string)val;
+                            data.TryGetValue("DistanceFromArrivalLS", out val);
+                            decimal distanceFromArrivalLs = (decimal)val;
+                            if (data.ContainsKey("StarType"))
+                            {
+                                // Star
+                                data.TryGetValue("StarType", out val);
+                                string starType = (string)val;
+
+                                data.TryGetValue("StellarMass", out val);
+                                decimal stellarMass = (decimal)val;
+
+                                data.TryGetValue("Radius", out val);
+                                decimal radius = (decimal)val;
+
+                                data.TryGetValue("AbsoluteMagnitude", out val);
+                                decimal absoluteMagnitude = (decimal)val;
+
+                                journalEvent = new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude);
+                                handled = true;
+                            }
+                            else
+                            {
+                                // Body
+                            }
+                        }
                         //if (data.ContainsKey("StarType"))
                         //{
                         //    journalEntry.type = "Star scanned";
@@ -306,6 +373,11 @@ namespace EliteDangerousJournalMonitor
                         //{
                         //    journalEntry.type = "Shields down";
                         //}
+                        //journalEntry.refetchProfile = false;
+                        handled = true;
+                        break;
+                    case "Died":
+                        //journalEntry.type = "Died";
                         //journalEntry.refetchProfile = false;
                         handled = true;
                         break;

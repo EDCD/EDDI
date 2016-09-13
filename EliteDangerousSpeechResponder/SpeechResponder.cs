@@ -67,19 +67,19 @@ namespace EliteDangerousSpeechResponder
         public void Handle(Event theEvent)
         {
             Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
-            Say(scriptResolver, theEvent.type);
+            Say(scriptResolver, theEvent.type, theEvent);
         }
 
         // Say something with a custom resolver
-        public void Say(ScriptResolver resolver, string scriptName)
+        public void Say(ScriptResolver resolver, string scriptName, Event theEvent = null)
         {
-            Dictionary<string, Cottle.Value> dict = createVariables();
+            Dictionary<string, Cottle.Value> dict = createVariables(theEvent);
             string result = resolver.resolve(scriptName, dict);
             speechService.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, result);
         }
 
         // Create Cottle variables from the EDDI information
-        private Dictionary<string, Cottle.Value> createVariables()
+        private Dictionary<string, Cottle.Value> createVariables(Event theEvent = null)
         {
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
 
@@ -108,6 +108,12 @@ namespace EliteDangerousSpeechResponder
             {
                 dict["lastsystem"] = new ReflectionValue(Eddi.Instance.LastStarSystem);
             }
+
+            if (theEvent != null)
+            {
+                dict["event"] = new ReflectionValue(theEvent);
+            }
+
             return dict;
         }
 

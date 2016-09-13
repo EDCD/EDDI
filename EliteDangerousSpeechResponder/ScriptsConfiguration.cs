@@ -27,9 +27,6 @@ namespace EliteDangerousSpeechResponder
                 DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 string filename = dir.FullName + "\\defaultscripts.json";
                 defaultScripts = JsonConvert.DeserializeObject<Dictionary<string, Script>>(File.ReadAllText(filename));
-                Logging.Info("*******************************************************************************************");
-                Logging.Info("Default scripts are " + JsonConvert.SerializeObject(defaultScripts));
-                Logging.Info("*******************************************************************************************");
             }
             catch
             {
@@ -58,9 +55,11 @@ namespace EliteDangerousSpeechResponder
             try
             {
                 configuration = JsonConvert.DeserializeObject<ScriptsConfiguration>(File.ReadAllText(filename));
+                Logging.Info("Configuration is " + JsonConvert.SerializeObject(configuration));
             }
-            catch
+            catch (Exception e)
             {
+                Logging.Warn("Failed to access scripts configuration: " + e.Message);
             }
             
             if (configuration == null)
@@ -79,7 +78,7 @@ namespace EliteDangerousSpeechResponder
                 Logging.Info("Looking for existing details for " + defaultScript.Key);
                 Script existingScript;
                 configuration.Scripts.TryGetValue(defaultScript.Key, out existingScript);
-                Script newScript = new Script(defaultScript.Value.Name, defaultScript.Value.Description, defaultScript.Value.Value);
+                Script newScript = new Script(defaultScript.Value.Name, defaultScript.Value.Description, defaultScript.Value.Responder, defaultScript.Value.Value);
 
                 Logging.Info("Existing script is " + (existingScript == null ? null : JsonConvert.SerializeObject(existingScript)));
                 Logging.Info("New script is " + (newScript == null ? null : JsonConvert.SerializeObject(newScript)));
@@ -95,7 +94,6 @@ namespace EliteDangerousSpeechResponder
                 configuration.Scripts.Add(defaultScript.Key, newScript);
             }
 
-            Logging.Info("Scripts are " + JsonConvert.SerializeObject(configuration));
             return configuration;
         }
 

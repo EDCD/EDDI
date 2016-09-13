@@ -89,7 +89,7 @@ namespace Tests
         public void TestResolverSimple()
         {
             Dictionary<string, Script> scripts = new Dictionary<string, Script>();
-            scripts.Add("test", new Script("test", null, "Hello {name}"));
+            scripts.Add("test", new Script("test", null, false, "Hello {name}"));
             ScriptResolver resolver = new ScriptResolver(scripts);
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
             dict["name"] = "world";
@@ -101,8 +101,8 @@ namespace Tests
         public void TestResolverFunctions()
         {
             Dictionary<string, Script> scripts = new Dictionary<string, Script>();
-            scripts.Add("func", new Script("func", null, "Hello {name}"));
-            scripts.Add("test", new Script("test", null, "Well {F(\"func\")}"));
+            scripts.Add("func", new Script("func", null, false, "Hello {name}"));
+            scripts.Add("test", new Script("test", null, false, "Well {F(\"func\")}"));
             ScriptResolver resolver = new ScriptResolver(scripts);
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
             dict["name"] = "world";

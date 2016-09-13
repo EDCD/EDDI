@@ -44,9 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BondAwardedEvent.cs" />
+    <Compile Include="BountyIncurredEvent .cs" />
+    <Compile Include="StarScannedEvent.cs" />
+    <Compile Include="CockpitBreachedEvent.cs" />
+    <Compile Include="CargoCollectedEvent.cs" />
+    <Compile Include="ExplorationPromotionEvent.cs" />
+    <Compile Include="TradePromotionEvent.cs" />
+    <Compile Include="CombatPromotionEvent.cs" />
+    <Compile Include="FineIncurredEvent.cs" />
     <Compile Include="EnteredNormalSpaceEvent.cs" />
     <Compile Include="EnteredSupercruiseEvent.cs" />
+    <Compile Include="BountyAwardedEvent.cs" />
     <Compile Include="StartedEvent.cs" />
+    <Compile Include="LiftoffEvent.cs" />
+    <Compile Include="TouchdownEvent.cs" />
     <Compile Include="UndockedEvent.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="DockedEvent.cs" />
@@ -55,6 +67,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EliteDangerousDataDefinitions\EliteDangerousDataDefinitions.csproj">
+      <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
+      <Name>EliteDangerousDataDefinitions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
