@@ -1,4 +1,5 @@
 ﻿using EDDI;
+using EliteDangerousEvents;
 using EliteDangerousSpeechResponder;
 using System;
 using System.Collections.Generic;
@@ -74,10 +75,14 @@ namespace EliteDangerousSpeechResponder
             newScripts.Remove(script.Name);
             newScripts.Add(script.Name, testScript);
 
+            // Obtain the sample event
+            Event sampleEvent;
+            SampleEvents.SAMPLES.TryGetValue(script.Name, out sampleEvent);
+
             SpeechResponder responder = new SpeechResponder();
             responder.Start();
             ScriptResolver scriptResolver = new ScriptResolver(newScripts);
-            responder.Say(scriptResolver, script.Name);
+            responder.Say(scriptResolver, script.Name, sampleEvent);
         }
     }
 }

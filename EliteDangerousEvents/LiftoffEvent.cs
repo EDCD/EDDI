@@ -10,6 +10,7 @@ namespace EliteDangerousEvents
     public class LiftoffEvent : Event
     {
         public const string NAME = "Liftoff";
+        public static LiftoffEvent SAMPLE = new LiftoffEvent(DateTime.Now, -15.232M, 50.210M);
 
         [JsonProperty("longitude")]
         public decimal longitude { get; private set; }

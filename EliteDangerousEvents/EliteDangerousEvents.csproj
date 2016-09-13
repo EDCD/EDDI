@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="BondAwardedEvent.cs" />
     <Compile Include="BountyIncurredEvent .cs" />
+    <Compile Include="SampleEvents.cs" />
     <Compile Include="StarScannedEvent.cs" />
     <Compile Include="CockpitBreachedEvent.cs" />
     <Compile Include="CargoCollectedEvent.cs" />

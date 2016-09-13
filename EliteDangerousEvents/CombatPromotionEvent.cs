@@ -11,6 +11,7 @@ namespace EliteDangerousEvents
     public class CombatPromotionEvent : Event
     {
         public const string NAME = "Combat promotion";
+        public static CombatPromotionEvent SAMPLE = new CombatPromotionEvent(DateTime.Now, 5);
 
         [JsonProperty("rank")]
         public string rank { get; private set; }

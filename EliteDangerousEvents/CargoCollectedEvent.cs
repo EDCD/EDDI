@@ -10,6 +10,7 @@ namespace EliteDangerousEvents
     public class CargoCollectedEvent : Event
     {
         public const string NAME = "Cargo collected";
+        public static CargoCollectedEvent SAMPLE = new CargoCollectedEvent(DateTime.Now, "Biowaste", true);
 
         [JsonProperty("cargo")]
         public string cargo { get; private set; }

@@ -10,6 +10,7 @@ namespace EliteDangerousEvents
     public class BountyAwardedEvent : Event
     {
         public const string NAME = "Bounty awarded";
+        public static BountyAwardedEvent SAMPLE = new BountyAwardedEvent(DateTime.Now, "The Pilot's Federation", "cobramkiii", "The Dark Wheel", 1250M);
 
         [JsonProperty("awardingfaction")]
         public string awardingfaction { get; private set; }

@@ -11,6 +11,7 @@ namespace EliteDangerousEvents
     public class TradePromotionEvent : Event
     {
         public const string NAME = "Trade promotion";
+        public static TradePromotionEvent SAMPLE = new TradePromotionEvent(DateTime.Now, 5);
 
         [JsonProperty("rank")]
         public string rank { get; private set; }

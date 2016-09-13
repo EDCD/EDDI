@@ -10,6 +10,7 @@ namespace EliteDangerousEvents
     public class StartedEvent : Event
     {
         public const string NAME = "Started";
+        public static StartedEvent SAMPLE = new StartedEvent(DateTime.Now);
 
         public StartedEvent(DateTime timestamp) : base(timestamp, NAME)
         {

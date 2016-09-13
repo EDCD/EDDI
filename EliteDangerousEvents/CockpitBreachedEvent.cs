@@ -10,6 +10,7 @@ namespace EliteDangerousEvents
     public class CockpitBreachedEvent : Event
     {
         public const string NAME = "Cockpit breached";
+        public static CockpitBreachedEvent SAMPLE = new CockpitBreachedEvent(DateTime.Now);
 
         public CockpitBreachedEvent(DateTime timestamp) : base(timestamp, NAME)
         {

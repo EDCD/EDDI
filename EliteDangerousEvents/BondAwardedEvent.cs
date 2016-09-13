@@ -10,6 +10,7 @@ namespace EliteDangerousEvents
     public class BondAwardedEvent : Event
     {
         public const string NAME = "Bond awarded";
+        public static BondAwardedEvent SAMPLE = new BondAwardedEvent(DateTime.Now, "The Pilot's Federation", "The Dark Wheel", 1250M);
 
         [JsonProperty("awardingfaction")]
         public string awardingfaction { get; private set; }

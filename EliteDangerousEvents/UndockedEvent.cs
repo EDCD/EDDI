@@ -10,6 +10,7 @@ namespace EliteDangerousEvents
     public class UndockedEvent : Event
     {
         public const string NAME = "Undocked";
+        public static UndockedEvent SAMPLE = new UndockedEvent(DateTime.Now, "Jameson Memorial");
 
         [JsonProperty("station")]
         public string station { get; private set; }

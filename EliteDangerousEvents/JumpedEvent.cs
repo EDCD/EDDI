@@ -10,6 +10,7 @@ namespace EliteDangerousEvents
     public class JumpedEvent : Event
     {
         public const string NAME = "Jumped";
+        public static JumpedEvent SAMPLE = new JumpedEvent(DateTime.Now, "Shinrarta Dezhra", 55.71875M, 17.59375M, 27.15625M);
 
         [JsonProperty("system")]
         public string system { get; private set; }

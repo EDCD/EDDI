@@ -10,6 +10,7 @@ namespace EliteDangerousEvents
     public class DockedEvent : Event
     {
         public const string NAME = "Docked";
+        public static DockedEvent SAMPLE = new DockedEvent(DateTime.Now, "Jameson Memorial");
 
         [JsonProperty("station")]
         public string station { get; private set; }
