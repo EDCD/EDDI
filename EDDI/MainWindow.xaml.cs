@@ -54,18 +54,17 @@ namespace EDDI
             // See if the credentials work
             try
             {
-                companionAppService = new CompanionAppService();
-                profile = companionAppService.Profile();
+                profile = CompanionAppService.Instance.Profile();
                 setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
             }
             catch (Exception)
             {
-                if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_LOGIN)
+                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.NEEDS_LOGIN)
                 {
                     // Fall back to stage 1
                     setUpCompanionAppStage1();
                 }
-                else if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_CONFIRMATION)
+                else if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.NEEDS_CONFIRMATION)
                 {
                     // Fall back to stage 2
                     setUpCompanionAppStage2();
@@ -167,8 +166,8 @@ namespace EDDI
         private void updateEddiConfiguration()
         {
             EDDIConfiguration eddiConfiguration = new EDDIConfiguration();
-            eddiConfiguration.HomeSystem = String.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
-            eddiConfiguration.HomeStation = String.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
+            eddiConfiguration.HomeSystem = string.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
+            eddiConfiguration.HomeStation = string.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
             eddiConfiguration.Insurance = eddiInsuranceDecimal.Value == null ? 5 : (decimal)eddiInsuranceDecimal.Value;
             eddiConfiguration.Debug = eddiVerboseLogging.IsChecked.Value;
             //eddiConfiguration.Scripts = this.eddiConfiguration.Scripts;

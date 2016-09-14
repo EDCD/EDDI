@@ -412,7 +412,7 @@ namespace EliteDangerousJournalMonitor
 
         private static IDictionary<string, object> DeserializeData(JObject data)
         {
-            var dict = data.ToObject<Dictionary<String, Object>>();
+            var dict = data.ToObject<Dictionary<string, Object>>();
             if (dict != null)
             {
                 return DeserializeData(dict);

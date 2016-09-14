@@ -18,10 +18,8 @@ namespace EliteDangerousSpeechResponder
         private bool enabled;
         [JsonProperty("responder")]
         private bool responder;
-        [JsonProperty("defaultscript")]
-        private string defaultScript;
-        [JsonProperty("customscript")]
-        private string customScript;
+        [JsonProperty("script")]
+        private string script;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -42,19 +40,8 @@ namespace EliteDangerousSpeechResponder
         [JsonIgnore]
         public string Value
         {
-            get { return customScript == null ? defaultScript : customScript; }
-            set { if (value == null || value == defaultScript) { customScript = null; } else { customScript = value; } OnPropertyChanged("Value"); }
-        }
-
-        [JsonIgnore]
-        public string DefaultValue
-        {
-            get { return defaultScript; }
-        }
-
-        public bool isDefault()
-        {
-            return customScript != null;
+            get { return script; }
+            set { script = value; OnPropertyChanged("Value"); }
         }
 
         public Script(string name, string description, bool responder, string script)
@@ -62,7 +49,7 @@ namespace EliteDangerousSpeechResponder
             Name = name;
             Description = description;
             this.responder = responder;
-            defaultScript = script;
+            Value = script;
             Enabled = true;
         }
 

@@ -8,10 +8,10 @@ namespace EliteDangerousNetLogMonitor
     public class NetLogConfiguration
     {
         [JsonProperty("path")]
-        public String path { get; set; }
+        public string path { get; set; }
 
         [JsonIgnore]
-        private String dataPath;
+        private string dataPath;
 
         /// <summary>
         /// Obtain configuration from a file.  If the file name is not supplied the the default
@@ -21,7 +21,7 @@ namespace EliteDangerousNetLogMonitor
         {
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\netlog.json";
             }
@@ -29,7 +29,7 @@ namespace EliteDangerousNetLogMonitor
             NetLogConfiguration configuration;
             try
             {
-                String configurationData = File.ReadAllText(filename);
+                string configurationData = File.ReadAllText(filename);
                 configuration = JsonConvert.DeserializeObject<NetLogConfiguration>(configurationData);
                 configuration.dataPath = filename;
             }
@@ -38,7 +38,7 @@ namespace EliteDangerousNetLogMonitor
                 configuration = new NetLogConfiguration();
                 configuration.dataPath = filename;
                 // See if there was old information present
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 string oldFilename = dataDir + "\\productpath";
                 try
                 {
@@ -77,7 +77,7 @@ namespace EliteDangerousNetLogMonitor
             }
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\netlog.json";
             }

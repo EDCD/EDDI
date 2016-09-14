@@ -14,7 +14,7 @@ namespace EliteDangerousSpeechService
     public class SpeechServiceConfiguration
     {
         [JsonProperty("standardVoice")]
-        public String StandardVoice { get; set; }
+        public string StandardVoice { get; set; }
 
         [JsonProperty("volume")]
         public int Volume { get; set; } = 100;
@@ -29,7 +29,7 @@ namespace EliteDangerousSpeechService
         public int Rate{ get; set; } = 0;
 
         [JsonIgnore]
-        private String dataPath;
+        private string dataPath;
 
         /// <summary>
         /// Obtain speech config from a file. If  If the file name is not supplied the the default
@@ -40,7 +40,7 @@ namespace EliteDangerousSpeechService
         {
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\speech.json";
             }
@@ -48,7 +48,7 @@ namespace EliteDangerousSpeechService
             SpeechServiceConfiguration speech;
             try
             {
-                String configData = File.ReadAllText(filename);
+                string configData = File.ReadAllText(filename);
                 speech = JsonConvert.DeserializeObject<SpeechServiceConfiguration>(configData);
             }
             catch
@@ -79,7 +79,7 @@ namespace EliteDangerousSpeechService
             }
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\speech.json";
             }

@@ -8,12 +8,12 @@ namespace EliteDangerousCompanionAppService
     public class CompanionAppCredentials
     {
         [JsonProperty("email")]
-        public String email { get; set; }
+        public string email { get; set; }
         [JsonProperty("password")]
         private string encPassword;
 
         [JsonIgnore]
-        public String password {
+        public string password {
             get
             {
                 return encPassword == null ? null : rijndaelHelper.Decrypt(encPassword);
@@ -24,14 +24,14 @@ namespace EliteDangerousCompanionAppService
             }
         }
         [JsonProperty("CompanionApp")]
-        public String appId { get; set; }
+        public string appId { get; set; }
         [JsonProperty("mid")]
-        public String machineId { get; set; }
+        public string machineId { get; set; }
         [JsonProperty("mtk")]
-        public String machineToken { get; set; }
+        public string machineToken { get; set; }
 
         [JsonIgnore]
-        private String dataPath;
+        private string dataPath;
 
         private static byte[] key = { 251, 9, 67, 117, 237, 158, 138, 150, 255, 97, 103, 128, 183, 65, 76, 161, 7, 79, 244, 225, 146, 180, 51, 123, 118, 167, 45, 10, 184, 181, 202, 190 };
         private static byte[] vector = { 214, 11, 221, 108, 210, 71, 14, 15, 151, 57, 241, 174, 177, 142, 115, 137 };
@@ -45,7 +45,7 @@ namespace EliteDangerousCompanionAppService
         {
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\credentials.json";
             }
@@ -53,7 +53,7 @@ namespace EliteDangerousCompanionAppService
             CompanionAppCredentials credentials;
             try
             {
-                String credentialsData = File.ReadAllText(filename);
+                string credentialsData = File.ReadAllText(filename);
                 credentials = JsonConvert.DeserializeObject<CompanionAppCredentials>(credentialsData);
             }
             catch
@@ -88,7 +88,7 @@ namespace EliteDangerousCompanionAppService
             }
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\credentials.json";
             }

@@ -17,7 +17,7 @@ namespace EliteDangerousCompanionAppService
         public string PhoneticName { get; set; }
 
         [JsonIgnore]
-        private String dataPath;
+        private string dataPath;
 
         /// <summary>
         /// Obtain commander config from a file. If  If the file name is not supplied the the default
@@ -28,7 +28,7 @@ namespace EliteDangerousCompanionAppService
         {
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\commander.json";
             }
@@ -36,7 +36,7 @@ namespace EliteDangerousCompanionAppService
             CommanderConfiguration speech;
             try
             {
-                String configData = File.ReadAllText(filename);
+                string configData = File.ReadAllText(filename);
                 speech = JsonConvert.DeserializeObject<CommanderConfiguration>(configData);
             }
             catch
@@ -64,7 +64,7 @@ namespace EliteDangerousCompanionAppService
             }
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\commander.json";
             }

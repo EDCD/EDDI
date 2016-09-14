@@ -2,51 +2,46 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using Utilities;
 
-namespace EDDI
+namespace EliteDangerousSpeechResponder
 {
-    /// <summary>Configuration for EDDI</summary>
-    public class EDDIConfiguration
+    /// <summary>Configuration for the speech responder</summary>
+    public class SpeechResponderConfiguration
     {
-        [JsonProperty("homeSystem")]
-        public string HomeSystem { get; set; }
-        [JsonProperty("homeStation")]
-        public string HomeStation { get; set; }
-        [JsonProperty("debug")]
-        public bool Debug { get; set; }
-        [JsonProperty("insurance")]
-        public decimal Insurance { get; set; }
+        [JsonProperty("personality")]
+        public string Personality { get; private set; }
 
         [JsonIgnore]
         private string dataPath;
 
-        public EDDIConfiguration()
-        {
-            Debug = false;
-            Insurance = 5;
-        }
-
         /// <summary>
         /// Obtain configuration from a file.  If the file name is not supplied the the default
-        /// path of %APPDATA%\EDDI\eddi.json is used
+        /// path of %APPDATA%\EDDI\speechresponder.json is used
         /// </summary>
-        public static EDDIConfiguration FromFile(string filename=null)
+        public static SpeechResponderConfiguration FromFile(string filename = null)
         {
             if (filename == null)
             {
                 string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\eddi.json";
+                filename = dataDir + "\\speechresponder.json";
             }
 
-            EDDIConfiguration configuration;
+            SpeechResponderConfiguration configuration;
             try
             {
-                configuration = JsonConvert.DeserializeObject<EDDIConfiguration>(File.ReadAllText(filename));
+                configuration = JsonConvert.DeserializeObject<SpeechResponderConfiguration>(File.ReadAllText(filename));
             }
             catch
             {
-                configuration = new EDDIConfiguration();
+                configuration = new SpeechResponderConfiguration();
+            }
+            if (configuration.Personality == null)
+            {
+                configuration.Personality = "EDDI";
+                configuration.ToFile(filename);
             }
             configuration.dataPath = filename;
 
@@ -56,9 +51,9 @@ namespace EDDI
         /// <summary>
         /// Write configuration to a file.  If the filename is not supplied then the path used
         /// when reading in the configuration will be used, or the default path of 
-        /// %APPDATA%\EDDI\eddi.json will be used
+        /// %APPDATA%\EDDI\speechresponder.json will be used
         /// </summary>
-        public void ToFile(string filename=null)
+        public void ToFile(string filename = null)
         {
             if (filename == null)
             {
@@ -68,7 +63,7 @@ namespace EDDI
             {
                 string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\eddi.json";
+                filename = dataDir + "\\speechresponder.json";
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);

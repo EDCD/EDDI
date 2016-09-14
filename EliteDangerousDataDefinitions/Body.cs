@@ -15,6 +15,6 @@ namespace EliteDangerousDataDefinitions
         public long EDDBID { get; set; }
 
         /// <summary>The name</summary>
-        public String Name { get; set;  }
+        public string Name { get; set;  }
     }
 }

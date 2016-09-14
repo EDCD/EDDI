@@ -25,17 +25,7 @@ namespace Utilities
         public static void Error(string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             log(filePath, memberName, "E", data);
-            new Thread(() =>
-            {
-                using (var client = new WebClient())
-                {
-                    try
-                    {
-                        client.UploadString(@"http://api.eddp.co/error", data);
-                    }
-                    catch { }
-                }
-            }).Start();
+            Report(data, memberName, filePath);
         }
 
         public static void Warn(string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -66,6 +56,21 @@ namespace Utilities
                     file.WriteLine(DateTime.Now.ToString() + " " + Path.GetFileNameWithoutExtension(path) + ":" + method + " [" + level + "] " + data);
                 }
             }
+        }
+
+        public static void Report(string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        {
+            new Thread(() =>
+            {
+                using (var client = new WebClient())
+                {
+                    try
+                    {
+                        client.UploadString(@"http://api.eddp.co/error", data);
+                    }
+                    catch { }
+                }
+            }).Start();
         }
     }
 }

@@ -55,7 +55,8 @@
     <Compile Include="EditScriptWindow.xaml.cs">
       <DependentUpon>EditScriptWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ScriptsConfiguration.cs" />
+    <Compile Include="Personality.cs" />
+    <Compile Include="SpeechResponderConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="ScriptResolver.cs" />

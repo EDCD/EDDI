@@ -12,7 +12,7 @@ namespace Utilities
 {
     public class Net
     {
-        public static String DownloadString(string uri)
+        public static string DownloadString(string uri)
         {
             HttpWebRequest request = GetRequest(uri);
             using (HttpWebResponse response = GetResponse(request))

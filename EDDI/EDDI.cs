@@ -63,8 +63,6 @@ namespace EDDI
 
         public List<EDDIResponder> responders = new List<EDDIResponder>();
 
-        private CompanionAppService appService;
-
         // Information obtained from the companion app service
         public Commander Cmdr { get; private set; }
         public Ship Ship { get; private set; }
@@ -93,11 +91,11 @@ namespace EDDI
         {
             try
             {
-                Logging.Info("EDDI " + EDDI_VERSION + " starting");
-
-                // Set up and/or open our database
+                // Set up our app directory
                 string dataDir = System.Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
+
+                Logging.Info("EDDI " + EDDI_VERSION + " starting");
 
                 // Set up the EDDI configuration
                 configuration = EDDIConfiguration.FromFile();
@@ -127,8 +125,7 @@ namespace EDDI
                 Insurance = configuration.Insurance;
 
                 // Set up the app service
-                appService = new CompanionAppService();
-                if (appService.CurrentState == CompanionAppService.State.READY)
+                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
                 {
                     // Carry out initial population of profile
                     refreshProfile();
@@ -328,9 +325,9 @@ namespace EDDI
         /// <summary>Obtain information from the copmanion API and use it to refresh our own data</summary>
         public void refreshProfile()
         {
-            if (appService != null)
+            if (CompanionAppService.Instance != null)
             {
-                Profile profile = appService.Profile();
+                Profile profile = CompanionAppService.Instance.Profile();
                 Cmdr = profile == null ? null : profile.Cmdr;
                 Ship = profile == null ? null : profile.Ship;
                 StoredShips = profile == null ? null : profile.StoredShips;
@@ -343,7 +340,7 @@ namespace EDDI
 
         private void setSystemDistanceFromHome(StarSystem system)
         {
-            Logging.Info("HomeStarSystem is " + HomeStarSystem == null ? null : HomeStarSystem.name);
+            Logging.Info("HomeStarSystem is " + (HomeStarSystem == null ? null : HomeStarSystem.name));
             if (HomeStarSystem != null && HomeStarSystem.x != null && system.x != null)
             {
                 system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - HomeStarSystem.x), 2)

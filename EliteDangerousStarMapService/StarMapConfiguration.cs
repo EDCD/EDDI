@@ -8,12 +8,12 @@ namespace EliteDangerousStarMapService
     public class StarMapConfiguration
     {
         [JsonProperty("apiKey")]
-        public String apiKey { get; set; }
+        public string apiKey { get; set; }
         [JsonProperty("commanderName")]
-        public String commanderName { get; set; }
+        public string commanderName { get; set; }
 
         [JsonIgnore]
-        private String dataPath;
+        private string dataPath;
 
         /// <summary>
         /// Obtain credentials from a file.  If the file name is not supplied the the default
@@ -23,7 +23,7 @@ namespace EliteDangerousStarMapService
         {
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\edsm.json";
             }
@@ -31,7 +31,7 @@ namespace EliteDangerousStarMapService
             StarMapConfiguration credentials;
             try
             {
-                String credentialsData = File.ReadAllText(filename);
+                string credentialsData = File.ReadAllText(filename);
                 credentials = JsonConvert.DeserializeObject<StarMapConfiguration>(credentialsData);
             }
             catch
@@ -65,7 +65,7 @@ namespace EliteDangerousStarMapService
             }
             if (filename == null)
             {
-                String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
                 Directory.CreateDirectory(dataDir);
                 filename = dataDir + "\\edsm.json";
             }

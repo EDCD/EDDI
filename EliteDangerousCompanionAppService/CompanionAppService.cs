@@ -77,18 +77,39 @@ namespace EliteDangerousCompanionAppService
 
         public CompanionAppCredentials Credentials;
 
-        public CompanionAppService()
+        private static CompanionAppService instance;
+
+        private static readonly object instanceLock = new object();
+        public static CompanionAppService Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    lock (instanceLock)
+                    {
+                        if (instance == null)
+                        {
+                            Logging.Debug("No EDDI instance: creating one");
+                            instance = new CompanionAppService();
+                        }
+                    }
+                }
+                return instance;
+            }
+        }
+        private CompanionAppService()
         {
             Credentials = CompanionAppCredentials.FromFile();
 
             // Need to work out our current state.
 
             //If we're missing username and password then we need to log in again
-            if (String.IsNullOrEmpty(Credentials.email) || String.IsNullOrEmpty(Credentials.password))
+            if (string.IsNullOrEmpty(Credentials.email) || string.IsNullOrEmpty(Credentials.password))
             {
                 CurrentState = State.NEEDS_LOGIN;
             }
-            else if (String.IsNullOrEmpty(Credentials.machineId) || String.IsNullOrEmpty(Credentials.machineToken))
+            else if (string.IsNullOrEmpty(Credentials.machineId) || string.IsNullOrEmpty(Credentials.machineToken))
             {
                 CurrentState = State.NEEDS_LOGIN;
             }
@@ -861,7 +882,7 @@ namespace EliteDangerousCompanionAppService
 
             if (json["module"]["modifiers"] != null && firstRun)
             {
-                Logging.Error("Module with modification " + json["module"].ToString());
+                Logging.Report("Module with modification " + json["module"].ToString());
             }
             return module;
         }

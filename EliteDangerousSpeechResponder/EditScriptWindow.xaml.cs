@@ -64,7 +64,7 @@ namespace EliteDangerousSpeechResponder
 
         private void defaultButtonClick(object sender, RoutedEventArgs e)
         {
-            scriptText.Text = script.DefaultValue;
+            //scriptText.Text = script.DefaultValue;
         }
 
         private void testButtonClick(object sender, RoutedEventArgs e)

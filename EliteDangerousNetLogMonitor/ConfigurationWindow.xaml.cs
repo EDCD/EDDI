@@ -44,7 +44,7 @@ namespace EliteDangerousNetLogMonitor
         private void updateNetLogConfiguration()
         {
             NetLogConfiguration netLogConfiguration = new NetLogConfiguration();
-            if (!String.IsNullOrWhiteSpace(netLogPathTextBox.Text))
+            if (!string.IsNullOrWhiteSpace(netLogPathTextBox.Text))
             {
                 netLogConfiguration.path = netLogPathTextBox.Text.Trim();
             }

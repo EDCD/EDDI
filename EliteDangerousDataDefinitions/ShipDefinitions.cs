@@ -41,7 +41,7 @@ namespace EliteDangerousDataDefinitions
             { 128049309, new Ship(128049309, "Vulture", "Vulture", ShipSize.Small) },
         };
 
-        public static List<String> ShipModels = ShipsByEliteID.Select(kp => kp.Value.model).ToList();
+        public static List<string> ShipModels = ShipsByEliteID.Select(kp => kp.Value.model).ToList();
 
         private static Dictionary<string, Ship> ShipsByModel = ShipsByEliteID.ToDictionary(kp => kp.Value.model, kp => kp.Value);
 

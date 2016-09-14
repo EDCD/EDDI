@@ -7,18 +7,36 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-        <TextBlock x:Name="scriptText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="This allows you to customise EDDI's responses to events" VerticalAlignment="Top"/>
-        <DataGrid AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" TargetUpdated="eddiScriptsUpdated">
+        <TextBlock x:Name="scriptText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="" VerticalAlignment="Top">The speech responder allows EDDI to react to events with a scripted speech.  EDDI can have different personalities, and you can create your own personality to suit your style of play and desired speeches.</TextBlock>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="20">
+            <TextBlock Margin="10" Text="Active personality"></TextBlock>
+            <ComboBox Margin="10" x:Name="personalityComboBox" ItemsSource="{Binding Path=personalities}"
+                  DisplayMemberPath="Name"
+                  SelectedValuePath="Name"
+                  SelectedValue="{Binding Path=personality}" />
+            <Button Margin="10" HorizontalAlignment="Right">Copy</Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="20">
+            <Button Margin="10" HorizontalAlignment="Right">Create new script</Button>
+        </StackPanel>
+        <DataGrid  IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" TargetUpdated="eddiScriptsUpdated">
             <DataGrid.Columns>
-                <DataGridTextColumn IsReadOnly="True" Header="Name" Binding="{Binding Path=Value.Name}"></DataGridTextColumn>
-                <DataGridTemplateColumn Header="Enabled">
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Value.Name}"></DataGridTextColumn>
+                <DataGridTemplateColumn Header="For event">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Checked="eddiScriptsUpdated" Unchecked="eddiScriptsUpdated" />
+                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Responder, Mode=OneWay}" IsHitTestVisible="false"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn IsReadOnly="True" Header="Description" Width="*" Binding="{Binding Path=Value.Description}"></DataGridTextColumn>
+                <DataGridTemplateColumn Header="Enabled">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Checked="eddiScriptsUpdated" Unchecked="eddiScriptsUpdated" IsHitTestVisible="{Binding Path=Value.Responder}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Path=Value.Description}"></DataGridTextColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

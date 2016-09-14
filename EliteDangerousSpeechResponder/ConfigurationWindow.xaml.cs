@@ -22,14 +22,30 @@ namespace EliteDangerousSpeechResponder
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        ScriptsConfiguration configuration;
+        List<Personality> personalities;
+        Personality personality;
 
         public ConfigurationWindow()
         {
             InitializeComponent();
-            configuration = ScriptsConfiguration.FromFile();
+            personalities = Personality.AllFromDirectory();
+            foreach (Personality personality in personalities)
+            {
+                Logging.Info("Found personality " + personality.Name);
+            }
 
-            scriptsData.ItemsSource = configuration.Scripts;
+            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+
+            foreach (Personality personality in personalities)
+            {
+                if (personality.Name == configuration.Personality)
+                {
+                    this.personality = personality;
+                    scriptsData.ItemsSource = personality.Scripts;
+                }
+            }
+
+            personalityComboBox.ItemsSource = personalities;
 
             Logging.Debug("Configuration is " + JsonConvert.SerializeObject(configuration));
         }
@@ -47,7 +63,7 @@ namespace EliteDangerousSpeechResponder
         private void editScript(object sender, RoutedEventArgs e)
         {
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
-            EditScriptWindow editScriptWindow = new EditScriptWindow(configuration.Scripts, script.Name);
+            EditScriptWindow editScriptWindow = new EditScriptWindow(personality.Scripts, script.Name);
             editScriptWindow.ShowDialog();
             scriptsData.Items.Refresh();
         }
@@ -62,7 +78,7 @@ namespace EliteDangerousSpeechResponder
 
         private void updateScriptsConfiguration()
         {
-            configuration.ToFile();
+            personality.ToFile();
         }
     }
 }

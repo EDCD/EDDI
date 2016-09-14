@@ -118,7 +118,7 @@ namespace EliteDangerousStarMapService
 
             int visits = (logResponse != null && logResponse.logs != null) ? logResponse.logs.Count : 1;
             DateTime lastUpdate = (logResponse != null && logResponse.lastUpdate != null) ? (DateTime)logResponse.lastUpdate : new DateTime();
-            String comment = (commentResponse != null) ? commentResponse.comment : null;
+            string comment = (commentResponse != null) ? commentResponse.comment : null;
 
             return new StarMapInfo(visits, lastUpdate, comment);
         }
@@ -211,7 +211,7 @@ namespace EliteDangerousStarMapService
 
         public static string ObtainApiKey()
         {
-            String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+            string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
             Directory.CreateDirectory(dataDir);
             string filename = dataDir + "\\edsmapikey";
             try
@@ -226,7 +226,7 @@ namespace EliteDangerousStarMapService
 
         public static void WritePath(string path)
         {
-            String dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
+            string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
             Directory.CreateDirectory(dataDir);
             string filename = dataDir + "\\edsmapikey";
             File.WriteAllText(filename, path);

@@ -34,9 +34,9 @@ namespace EliteDangerousSpeechResponder
 
         public SpeechResponder()
         {
-            ScriptsConfiguration configuration = ScriptsConfiguration.FromFile();
-            Dictionary<string, Script> scripts = configuration.Scripts;
-            scriptResolver = new ScriptResolver(scripts);
+            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            Personality personality = Personality.FromName(configuration.Personality);
+            scriptResolver = new ScriptResolver(personality.Scripts);
             Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
         }
 
@@ -56,9 +56,9 @@ namespace EliteDangerousSpeechResponder
 
         public void Reload()
         {
-            ScriptsConfiguration configuration = ScriptsConfiguration.FromFile();
-            Dictionary<string, Script> scripts = configuration.Scripts;
-            scriptResolver = new ScriptResolver(scripts);
+            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            Personality personality = Personality.FromName(configuration.Personality);
+            scriptResolver = new ScriptResolver(personality.Scripts);
             speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
             Logging.Info("Reloaded " + ResponderName() + " " + ResponderVersion());
         }
