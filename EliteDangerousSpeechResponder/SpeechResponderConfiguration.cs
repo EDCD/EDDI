@@ -11,7 +11,7 @@ namespace EliteDangerousSpeechResponder
     public class SpeechResponderConfiguration
     {
         [JsonProperty("personality")]
-        public string Personality { get; private set; }
+        public string Personality { get; set; }
 
         [JsonIgnore]
         private string dataPath;

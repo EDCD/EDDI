@@ -36,6 +36,13 @@ namespace EliteDangerousSpeechResponder
         {
             SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
             Personality personality = Personality.FromName(configuration.Personality);
+            if (personality == null)
+            {
+                Logging.Warn("Failed to find named personality; falling back to default");
+                personality = Personality.Default();
+                configuration.Personality = personality.Name;
+                configuration.ToFile();
+            }
             scriptResolver = new ScriptResolver(personality.Scripts);
             Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
         }
@@ -58,6 +65,13 @@ namespace EliteDangerousSpeechResponder
         {
             SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
             Personality personality = Personality.FromName(configuration.Personality);
+            if (personality == null)
+            {
+                Logging.Warn("Failed to find named personality; falling back to default");
+                personality = Personality.Default();
+                configuration.Personality = personality.Name;
+                configuration.ToFile();
+            }
             scriptResolver = new ScriptResolver(personality.Scripts);
             speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
             Logging.Info("Reloaded " + ResponderName() + " " + ResponderVersion());

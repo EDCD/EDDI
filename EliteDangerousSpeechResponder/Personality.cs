@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Newtonsoft.Json;  
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
@@ -12,7 +13,7 @@ namespace EliteDangerousSpeechResponder
     /// <summary>
     /// A personality is a combination of scripts used to respond to specific events
     /// </summary>
-    class Personality
+    public class Personality
     {
         [JsonProperty("name")]
         public string Name { get; private set; }
@@ -23,6 +24,9 @@ namespace EliteDangerousSpeechResponder
         [JsonProperty("scripts")]
         public Dictionary<string, Script> Scripts { get; private set; }
 
+        [JsonProperty("readonly")]
+        public bool ReadOnly{ get; private set; }
+
         [JsonIgnore]
         private string dataPath;
 
@@ -31,6 +35,13 @@ namespace EliteDangerousSpeechResponder
             Name = name;
             Description = description;
             Scripts = scripts;
+        }
+
+        [JsonIgnore]
+        public bool IsEditable
+        {
+            get { return (!ReadOnly); }
+            set { }
         }
 
         /// <summary>
@@ -44,9 +55,9 @@ namespace EliteDangerousSpeechResponder
             {
                 directory = Environment.GetEnvironmentVariable("AppData") + "\\EDDI\\personalities";
             }
-            foreach (FileInfo file in new DirectoryInfo(directory).GetFiles())
+            foreach (FileInfo file in new DirectoryInfo(directory).GetFiles("*.json", SearchOption.AllDirectories))
             {
-                Personality personality = FromFile(file.FullName);
+                    Personality personality = FromFile(file.FullName);
                 if (personality != null)
                 {
                     personalities.Add(personality);
@@ -59,6 +70,15 @@ namespace EliteDangerousSpeechResponder
         public static Personality FromName(string name)
         {
             return FromFile(Environment.GetEnvironmentVariable("AppData") + "\\EDDI\\personalities\\" + name + ".json");
+        }
+
+        /// <summary>
+        /// Obtain the default personality
+        /// </summary>
+        public static Personality Default()
+        {
+            DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            return FromFile(dir.FullName + "\\personality.json");
         }
 
         /// <summary>
@@ -78,19 +98,10 @@ namespace EliteDangerousSpeechResponder
             try
             {
                 personality = JsonConvert.DeserializeObject<Personality>(File.ReadAllText(filename));
-                Logging.Debug("Personality is " + JsonConvert.SerializeObject(personality));
             }
             catch (Exception e)
             {
-                if (filename == null)
-                {
-                    Logging.Warn("Failed to access default personality: " + e.Message);
-                }
-                else
-                {
-                    Logging.Warn("Failed to access personality: " + e.Message);
-                    personality = FromFile(null);
-                }
+                Logging.Warn("Failed to access personality at " + filename + ": " + e.Message);
             }
 
             if (personality != null)
@@ -107,19 +118,22 @@ namespace EliteDangerousSpeechResponder
         /// </summary>
         public void ToFile(string filename = null)
         {
-            if (filename == null)
+            if (!ReadOnly)
             {
-                filename = dataPath;
-            }
-            if (filename == null)
-            {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI\\personalities";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\eddi.json";
-            }
+                if (filename == null)
+                {
+                    filename = dataPath;
+                }
+                if (filename == null)
+                {
+                    string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI\\personalities";
+                    Directory.CreateDirectory(dataDir);
+                    filename = dataDir + "\\eddi.json";
+                }
 
-            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(filename, json);
+                string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+                File.WriteAllText(filename, json);
+            }
         }
     }
 }

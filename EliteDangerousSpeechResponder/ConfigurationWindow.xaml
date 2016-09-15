@@ -10,16 +10,15 @@
         <TextBlock x:Name="scriptText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="20" Text="" VerticalAlignment="Top">The speech responder allows EDDI to react to events with a scripted speech.  EDDI can have different personalities, and you can create your own personality to suit your style of play and desired speeches.</TextBlock>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="20">
             <TextBlock Margin="10" Text="Active personality"></TextBlock>
-            <ComboBox Margin="10" x:Name="personalityComboBox" ItemsSource="{Binding Path=personalities}"
-                  DisplayMemberPath="Name"
-                  SelectedValuePath="Name"
-                  SelectedValue="{Binding Path=personality}" />
-            <Button Margin="10" HorizontalAlignment="Right">Copy</Button>
+            <ComboBox Margin="10" ItemsSource="{Binding Personalities}" SelectedValue="{Binding Personality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectionChanged="personalityChanged" />
         </StackPanel>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="20">
-            <Button Margin="10" HorizontalAlignment="Right">Create new script</Button>
-        </StackPanel>
-        <DataGrid  IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" TargetUpdated="eddiScriptsUpdated">
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="20">
+            <Button Margin="10" HorizontalAlignment="Center" Click="newScriptClicked" IsEnabled="{Binding Path=Personality.IsEditable}">Create new script</Button>
+            <Button Margin="10" HorizontalAlignment="Center" Click="copyPersonalityClicked" >Copy personality</Button>
+            <Button Margin="10" HorizontalAlignment="Center" Click="deletePersonalityClicked" IsEnabled="{Binding Path=Personality.IsEditable}">Delete personality</Button>
+        </UniformGrid>
+        <!--<DataGrid IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" TargetUpdated="eddiScriptsUpdated" ItemsSource="{Binding Source=Personality.Scripts, UpdateSourceTrigger=PropertyChanged}">-->
+        <DataGrid IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding Personality.Scripts}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Binding="{Binding Path=Value.Name}"></DataGridTextColumn>
                 <DataGridTemplateColumn Header="For event">
@@ -40,7 +39,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="editScript">Edit</Button>
+                            <Button IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Click="editScript">Edit</Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

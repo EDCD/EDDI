@@ -31,8 +31,6 @@ namespace EDDI
         private Profile profile;
         private ShipsConfiguration shipsConfiguration;
 
-        private CompanionAppService companionAppService;
-
         private EDDIConfiguration eddiConfiguration;
 
         public MainWindow()
@@ -181,25 +179,25 @@ namespace EDDI
             if (companionAppEmailText.Visibility == Visibility.Visible)
             {
                 // Stage 1 of authentication - login
-                companionAppService.Credentials.email = companionAppEmailText.Text.Trim();
-                companionAppService.Credentials.password = companionAppPasswordText.Password.Trim();
+                CompanionAppService.Instance.Credentials.email = companionAppEmailText.Text.Trim();
+                CompanionAppService.Instance.Credentials.password = companionAppPasswordText.Password.Trim();
                 try
                 {
                     // It is possible that we have valid cookies at this point so don't log in, but we did
                     // need the credentials
-                    if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_LOGIN)
+                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.NEEDS_LOGIN)
                     {
-                        companionAppService.Login();
+                        CompanionAppService.Instance.Login();
                     }
-                    if (companionAppService.CurrentState == CompanionAppService.State.NEEDS_CONFIRMATION)
+                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.NEEDS_CONFIRMATION)
                     {
                         setUpCompanionAppStage2();
                     }
-                    else if (companionAppService.CurrentState == CompanionAppService.State.READY)
+                    else if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
                     {
                         if (profile == null)
                         {
-                            profile = companionAppService.Profile();
+                            profile = CompanionAppService.Instance.Profile();
                         }
                         setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
                         setShipyardFromConfiguration();
@@ -224,9 +222,9 @@ namespace EDDI
                 string code = companionAppCodeText.Text.Trim();
                 try
                 {
-                    companionAppService.Confirm(code);
+                    CompanionAppService.Instance.Confirm(code);
                     // All done - see if it works
-                    profile = companionAppService.Profile();
+                    profile = CompanionAppService.Instance.Profile();
                     setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
                     setShipyardFromConfiguration();
                 }
@@ -258,10 +256,10 @@ namespace EDDI
 
             companionAppEmailLabel.Visibility = Visibility.Visible;
             companionAppEmailText.Visibility = Visibility.Visible;
-            companionAppEmailText.Text = companionAppService.Credentials.email;
+            companionAppEmailText.Text = CompanionAppService.Instance.Credentials.email;
             companionAppPasswordLabel.Visibility = Visibility.Visible;
             companionAppPasswordText.Visibility = Visibility.Visible;
-            companionAppPasswordText.Password = companionAppService.Credentials.password;
+            companionAppPasswordText.Password = CompanionAppService.Instance.Credentials.password;
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
