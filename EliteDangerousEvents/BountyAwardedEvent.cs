@@ -12,6 +12,14 @@ namespace EliteDangerousEvents
         public const string NAME = "Bounty awarded";
         public static BountyAwardedEvent SAMPLE = new BountyAwardedEvent(DateTime.Now, "The Pilot's Federation", "cobramkiii", "The Dark Wheel", 1250M);
 
+        static BountyAwardedEvent()
+        {
+            VARIABLES.Add("awardingfaction", "The name of the faction awarding the bounty");
+            VARIABLES.Add("target", "The name of the pilot you destroyed");
+            VARIABLES.Add("victimfaction", "The name of the faction whose ship you destroyed");
+            VARIABLES.Add("reward", "The number of credits received");
+        }
+
         [JsonProperty("awardingfaction")]
         public string awardingfaction { get; private set; }
 

@@ -12,6 +12,11 @@ namespace EliteDangerousEvents
         public const string NAME = "Entered normal space";
         public static EnteredNormalSpaceEvent SAMPLE = new EnteredNormalSpaceEvent(DateTime.Now, "Jameson Memorial");
 
+        static EnteredNormalSpaceEvent()
+        {
+            VARIABLES.Add("body", "The nearest body to the commander when entering normal space");
+        }
+
         [JsonProperty("body")]
         public string body{ get; private set; }
 

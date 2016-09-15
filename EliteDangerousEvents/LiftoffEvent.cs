@@ -12,6 +12,12 @@ namespace EliteDangerousEvents
         public const string NAME = "Liftoff";
         public static LiftoffEvent SAMPLE = new LiftoffEvent(DateTime.Now, -15.232M, 50.210M);
 
+        static LiftoffEvent()
+        {
+            VARIABLES.Add("longitude", "The longitude from where the commander has lifted off");
+            VARIABLES.Add("latitude", "The latitude from where the commander has lifted off");
+        }
+
         [JsonProperty("longitude")]
         public decimal longitude { get; private set; }
 

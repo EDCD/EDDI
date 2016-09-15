@@ -13,6 +13,12 @@ namespace EliteDangerousEvents
         public const string NAME = "Trade promotion";
         public static TradePromotionEvent SAMPLE = new TradePromotionEvent(DateTime.Now, 5);
 
+        static TradePromotionEvent()
+        {
+            VARIABLES.Add("rank", "The commander's new trade rank (Peniless, etc)");
+            VARIABLES.Add("rating", "The commander's new numerical trade rating (0-8)");
+        }
+
         [JsonProperty("rank")]
         public string rank { get; private set; }
         [JsonProperty("rating")]

@@ -13,6 +13,12 @@ namespace EliteDangerousEvents
         public const string NAME = "Exploration promotion";
         public static ExplorationPromotionEvent SAMPLE = new ExplorationPromotionEvent(DateTime.Now, 5);
 
+        static ExplorationPromotionEvent()
+        {
+            VARIABLES.Add("rank", "The commander's new exploration rank (Aimless, etc)");
+            VARIABLES.Add("rating", "The commander's new exploration combat rating (0-8)");
+        }
+
         [JsonProperty("rank")]
         public string rank { get; private set; }
         [JsonProperty("rating")]

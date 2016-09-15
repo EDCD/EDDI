@@ -12,6 +12,15 @@ namespace EliteDangerousEvents
         public const string NAME = "Star scanned";
         public static StarScannedEvent SAMPLE = new StarScannedEvent(DateTime.Now, "Sol", "G", 1M, 1M, 4.83M);
 
+        static StarScannedEvent()
+        {
+            VARIABLES.Add("name", "The name of the star that has been scanned");
+            VARIABLES.Add("stellarclass", "The stellar class of the star that has been scanned (O, G, etc)");
+            VARIABLES.Add("mass", "The mass of the star that has been scanned, relative to Sol's mass");
+            VARIABLES.Add("radius", "The radius of the star that has been scanned, in metres");
+            VARIABLES.Add("absolutemagnitude", "The absolute magnitude of the star that has been scanned");
+        }
+
         [JsonProperty("name")]
         public string name { get; private set; }
 

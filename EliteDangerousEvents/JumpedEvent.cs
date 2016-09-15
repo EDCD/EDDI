@@ -12,6 +12,14 @@ namespace EliteDangerousEvents
         public const string NAME = "Jumped";
         public static JumpedEvent SAMPLE = new JumpedEvent(DateTime.Now, "Shinrarta Dezhra", 55.71875M, 17.59375M, 27.15625M);
 
+        static JumpedEvent()
+        {
+            VARIABLES.Add("system", "The name of the system to which the commander has jumped");
+            VARIABLES.Add("x", "The X co-ordinate of the system to which the commander has jumped");
+            VARIABLES.Add("y", "The Y co-ordinate of the system to which the commander has jumped");
+            VARIABLES.Add("z", "The Z co-ordinate of the system to which the commander has jumped");
+        }
+
         [JsonProperty("system")]
         public string system { get; private set; }
 

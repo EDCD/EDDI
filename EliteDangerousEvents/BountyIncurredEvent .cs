@@ -12,6 +12,14 @@ namespace EliteDangerousEvents
         public const string NAME = "Bounty incurred";
         public static BountyIncurredEvent SAMPLE = new BountyIncurredEvent(DateTime.Now, "kill", "The Pilot's Federation", "Braben", 1000000M);
 
+        static BountyIncurredEvent()
+        {
+            VARIABLES.Add("crimetype", "The type of crime committed");
+            VARIABLES.Add("victim", "The name of the victim of the crime");
+            VARIABLES.Add("faction", "The name of the faction issuing the bounty");
+            VARIABLES.Add("bounty", "The number of credits issued as the bounty");
+        }
+
         [JsonProperty("crimetype")]
         public string crimetype { get; private set; }
 

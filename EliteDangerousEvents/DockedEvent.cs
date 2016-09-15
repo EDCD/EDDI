@@ -12,6 +12,11 @@ namespace EliteDangerousEvents
         public const string NAME = "Docked";
         public static DockedEvent SAMPLE = new DockedEvent(DateTime.Now, "Jameson Memorial");
 
+        static DockedEvent()
+        {
+            VARIABLES.Add("station", "The station at which the commander has docked");
+        }
+
         [JsonProperty("station")]
         public string station { get; private set; }
 

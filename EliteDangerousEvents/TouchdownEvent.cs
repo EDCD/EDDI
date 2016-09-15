@@ -12,6 +12,12 @@ namespace EliteDangerousEvents
         public const string NAME = "Touchdown";
         public static TouchdownEvent SAMPLE = new TouchdownEvent(DateTime.Now, -15.232M, 50.210M);
 
+        static TouchdownEvent()
+        {
+            VARIABLES.Add("longitude", "The longitude from where the commander has touched down");
+            VARIABLES.Add("latitude", "The latitude from where the commander has touched down");
+        }
+
         [JsonProperty("longitude")]
         public decimal longitude { get; private set; }
 

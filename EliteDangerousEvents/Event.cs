@@ -9,6 +9,9 @@ namespace EliteDangerousEvents
 {
     public class Event
     {
+        [JsonIgnore]
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
+
         [JsonProperty("timestamp")]
         public DateTime timestamp { get; private set; }
 

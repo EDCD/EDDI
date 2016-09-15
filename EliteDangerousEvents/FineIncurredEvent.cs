@@ -12,6 +12,14 @@ namespace EliteDangerousEvents
         public const string NAME = "Fine incurred";
         public static FineIncurredEvent SAMPLE = new FineIncurredEvent(DateTime.Now, "friendly fire", "The Pilot's Federation", "Braben", 1000000M);
 
+        static FineIncurredEvent()
+        {
+            VARIABLES.Add("crimetype", "The type of crime committed");
+            VARIABLES.Add("victim", "The name of the victim of the crime");
+            VARIABLES.Add("faction", "The name of the faction issuing the fine");
+            VARIABLES.Add("bounty", "The number of credits issued as the fine");
+        }
+
         [JsonProperty("crimetype")]
         public string crimetype { get; private set; }
 

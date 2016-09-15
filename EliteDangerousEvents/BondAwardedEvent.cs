@@ -12,6 +12,13 @@ namespace EliteDangerousEvents
         public const string NAME = "Bond awarded";
         public static BondAwardedEvent SAMPLE = new BondAwardedEvent(DateTime.Now, "The Pilot's Federation", "The Dark Wheel", 1250M);
 
+        static BondAwardedEvent()
+        {
+            VARIABLES.Add("awardingfaction", "The name of the faction awarding the bond");
+            VARIABLES.Add("victimfaction", "The name of the faction whose ship you destroyed");
+            VARIABLES.Add("reward", "The number of credits received");
+        }
+
         [JsonProperty("awardingfaction")]
         public string awardingfaction { get; private set; }
 

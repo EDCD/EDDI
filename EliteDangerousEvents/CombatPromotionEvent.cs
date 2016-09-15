@@ -13,6 +13,12 @@ namespace EliteDangerousEvents
         public const string NAME = "Combat promotion";
         public static CombatPromotionEvent SAMPLE = new CombatPromotionEvent(DateTime.Now, 5);
 
+        static CombatPromotionEvent()
+        {
+            VARIABLES.Add("rank", "The commander's new combat rank (Harmless, etc)");
+            VARIABLES.Add("rating", "The commander's new numerical combat rating (0-8)");
+        }
+
         [JsonProperty("rank")]
         public string rank { get; private set; }
         [JsonProperty("rating")]
