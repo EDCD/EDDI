@@ -92,6 +92,24 @@ namespace EliteDangerousSpeechResponder
             scriptsData.Items.Refresh();
         }
 
+        private void deleteScript(object sender, RoutedEventArgs e)
+        {
+            Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+            string messageBoxText = "Are you sure you want to delete the \"" + script.Name + "\" script?";
+            string caption = "Delete Script";
+            MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    // Remove the script from the list
+                    Personality.Scripts.Remove(script.Name);
+                    Personality.ToFile();
+                    // We updated a property of the personality but not the personality itself so need to manually update items
+                    scriptsData.Items.Refresh();
+                    break;
+            }
+        }
+
         private void resetScript(object sender, RoutedEventArgs e)
         {
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
@@ -120,6 +138,12 @@ namespace EliteDangerousSpeechResponder
 
         private void newScriptClicked(object sender, RoutedEventArgs e)
         {
+            Script script = new Script("foo", null, true, "Hello");
+            Personality.Scripts.Add(script.Name, script);
+            Personality.ToFile();
+            // We updated a property of the personality but not the personality itself so need to manually update items
+            scriptsData.Items.Refresh();
+
             //NewScriptWindow newScriptWindow = new NewScriptWindow(Personality.Scripts);
             //newScriptWindow.ShowDialog();
             //scriptsData.Items.Refresh();
@@ -127,12 +151,31 @@ namespace EliteDangerousSpeechResponder
 
         private void copyPersonalityClicked(object sender, RoutedEventArgs e)
         {
+            Personality newPersonality = Personality.Copy("Fred Bloggs");
+            Personalities.Add(newPersonality);
+            Personality = newPersonality;
+            //string messageBoxText = "Are you sure you want to delete the \"" + Personality.Name + "\" personality?";
+            //string caption = "Delete Personality";
+            //MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
             //CopyPersonalityWindow copyPersonalityWindow = new CopyPersonalityWindow(Personality.Name);
             //copyPersonalityWindow.ShowDialog();
         }
 
         private void deletePersonalityClicked(object sender, RoutedEventArgs e)
         {
+            string messageBoxText = "Are you sure you want to delete the \"" + Personality.Name + "\" personality?";
+            string caption = "Delete Personality";
+            MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    // Remove the personality from the list and the local filesystem
+                    Personality oldPersonality = Personality;
+                    Personalities.Remove(oldPersonality);
+                    Personality = Personalities[0];
+                    oldPersonality.RemoveFile();
+                    break;
+            }
         }
     }
 }

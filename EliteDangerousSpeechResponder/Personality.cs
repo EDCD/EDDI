@@ -135,5 +135,25 @@ namespace EliteDangerousSpeechResponder
                 File.WriteAllText(filename, json);
             }
         }
+
+        /// <summary>
+        /// Create a copy of this file, altering the datapath appropriately
+        /// </summary>
+        public Personality Copy(string name)
+        {
+            string iname = name.ToLowerInvariant();
+            FileInfo pathInfo = new FileInfo(dataPath);
+            string copyPath = dataPath.Replace(pathInfo.Name, iname + ".json");
+            ToFile(copyPath);
+            Personality newPersonality = FromFile(copyPath);
+            newPersonality.Name = name;
+            newPersonality.ToFile();
+            return newPersonality;
+        }
+
+        public void RemoveFile()
+        {
+            File.Delete(dataPath);
+        }
     }
 }
