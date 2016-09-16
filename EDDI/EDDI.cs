@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -26,9 +27,6 @@ namespace EDDI
     /// </summary>
     public class Eddi
     {
-        public static readonly string EDDI_NAME = "EDDI";
-        public static readonly string EDDI_VERSION = "2.0.0b1";
-
         private static Eddi instance;
 
         private static readonly object instanceLock = new object();
@@ -92,10 +90,14 @@ namespace EDDI
             try
             {
                 // Set up our app directory
-                string dataDir = System.Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
+                Directory.CreateDirectory(Constants.DATA_DIR);
 
-                Logging.Info("EDDI " + EDDI_VERSION + " starting");
+                // Use en-US as our default culture to ensure that we use . rather than , for our separator when writing out decimals
+                CultureInfo defaultCulture = new CultureInfo("en-US");
+                CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+                CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+
+                Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
 
                 // Set up the EDDI configuration
                 configuration = EDDIConfiguration.FromFile();
@@ -172,7 +174,7 @@ namespace EDDI
                 monitors = loadMonitors();
                 responders = loadResponders();
 
-                Logging.Info("EDDI " + EDDI_VERSION + " initialised");
+                Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
             }
             catch (Exception ex)
             {
@@ -220,7 +222,7 @@ namespace EDDI
                 monitor.Stop();
             }
 
-            Logging.Info("EDDI " + EDDI_VERSION + " shutting down");
+            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " shutting down");
         }
 
         public void eventHandler(Event journalEvent)

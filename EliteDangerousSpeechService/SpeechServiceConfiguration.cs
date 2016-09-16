@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Utilities;
 
 namespace EliteDangerousSpeechService
 {
@@ -40,9 +41,7 @@ namespace EliteDangerousSpeechService
         {
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\speech.json";
+                filename = Constants.DATA_DIR + @"\speech.json";
             }
 
             SpeechServiceConfiguration speech;
@@ -79,9 +78,7 @@ namespace EliteDangerousSpeechService
             }
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\speech.json";
+                filename = Constants.DATA_DIR + @"\speech.json";
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);

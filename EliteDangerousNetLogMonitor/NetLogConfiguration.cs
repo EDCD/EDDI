@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
+using Utilities;
 
 namespace EliteDangerousNetLogMonitor
 {
@@ -21,9 +22,7 @@ namespace EliteDangerousNetLogMonitor
         {
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\netlog.json";
+                filename = Constants.DATA_DIR + @"\netlog.json";
             }
 
             NetLogConfiguration configuration;
@@ -38,8 +37,7 @@ namespace EliteDangerousNetLogMonitor
                 configuration = new NetLogConfiguration();
                 configuration.dataPath = filename;
                 // See if there was old information present
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                string oldFilename = dataDir + "\\productpath";
+                string oldFilename = Constants.DATA_DIR + @"\productpath";
                 try
                 {
                     string path = File.ReadAllText(oldFilename);
@@ -77,9 +75,8 @@ namespace EliteDangerousNetLogMonitor
             }
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\netlog.json";
+                Directory.CreateDirectory(Constants.DATA_DIR);
+                filename = Constants.DATA_DIR + @"\netlog.json";
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);

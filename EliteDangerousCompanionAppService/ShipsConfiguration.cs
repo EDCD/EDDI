@@ -29,9 +29,7 @@ namespace EliteDangerousCompanionAppService
         {
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\ships.json";
+                filename = Constants.DATA_DIR + @"\ships.json";
             }
 
             ShipsConfiguration configuration;
@@ -67,9 +65,7 @@ namespace EliteDangerousCompanionAppService
             }
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\ships.json";
+                filename = Constants.DATA_DIR + @"\ships.json";
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);

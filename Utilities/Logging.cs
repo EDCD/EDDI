@@ -14,7 +14,7 @@ namespace Utilities
 
     public class Logging
     {
-        public static readonly string LogFile = Environment.GetEnvironmentVariable("AppData") + @"\EDDI\eddi.log";
+        public static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
         public static bool Verbose { get; set; } = false;
 
         public static void Error(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")

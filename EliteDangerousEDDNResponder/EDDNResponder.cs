@@ -181,8 +181,8 @@ namespace EliteDangerousEDDNResponder
         private static EDDNHeader generateHeader()
         {
             EDDNHeader header = new EDDNHeader();
-            header.softwareName = Eddi.EDDI_NAME;
-            header.softwareVersion = Eddi.EDDI_VERSION;
+            header.softwareName = Constants.EDDI_NAME;
+            header.softwareVersion = Constants.EDDI_VERSION;
             header.uploaderID = generateUploaderId();
             return header;
         }
@@ -198,7 +198,7 @@ namespace EliteDangerousEDDNResponder
             {
                 IRestResponse response = client.Execute(request);
                 var content = response.Content; // raw content as string
-                Logging.Info("Response content is " + content);
+                Logging.Debug("Response content is " + content);
             }).Start();
         }
 

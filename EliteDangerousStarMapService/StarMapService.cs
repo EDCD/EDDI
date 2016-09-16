@@ -40,8 +40,8 @@ namespace EliteDangerousStarMapService
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("systemName", systemName);
             request.AddParameter("dateVisited", timestamp.ToString("yyyy-MM-dd HH:mm:ss"));
-            request.AddParameter("fromSoftware", "EDDI");
-            request.AddParameter("fromSoftwareVersion", "2.0.0b1");
+            request.AddParameter("fromSoftware", Constants.EDDI_NAME);
+            request.AddParameter("fromSoftwareVersion", Constants.EDDI_VERSION);
             if (x.HasValue)
             {
                 request.AddParameter("x", ((decimal)x).ToString("0.000", EN_US_CULTURE));
@@ -208,29 +208,6 @@ namespace EliteDangerousStarMapService
             }
             return vals;
         }
-
-        public static string ObtainApiKey()
-        {
-            string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-            Directory.CreateDirectory(dataDir);
-            string filename = dataDir + "\\edsmapikey";
-            try
-            {
-                return File.ReadAllText(filename);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public static void WritePath(string path)
-        {
-            string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-            Directory.CreateDirectory(dataDir);
-            string filename = dataDir + "\\edsmapikey";
-            File.WriteAllText(filename, path);
-        }
     }
 
     // response from the Star Map distance API
@@ -334,8 +311,8 @@ namespace EliteDangerousStarMapService
         public StarMapData(string commanderName, string systemName, string remoteSystemName, decimal distance)
         {
             this.commander = commanderName;
-            this.fromSoftware = "EDDI";
-            this.fromSoftwareVersion = "1.4.0";
+            this.fromSoftware = Constants.EDDI_NAME;
+            this.fromSoftwareVersion = Constants.EDDI_VERSION;
             this.p0 = new StarMapDistance(systemName);
             this.refs = new List<StarMapDistance>();
             this.refs.Add(new StarMapDistance(remoteSystemName, distance));

@@ -26,7 +26,7 @@ namespace EliteDangerousSpeechResponder
         public Dictionary<string, Script> Scripts { get; private set; }
 
         [JsonProperty("readonly")]
-        public bool ReadOnly{ get; private set; }
+        public bool ReadOnly { get; private set; }
 
         [JsonIgnore]
         private string dataPath;
@@ -54,11 +54,11 @@ namespace EliteDangerousSpeechResponder
             List<Personality> personalities = new List<Personality>();
             if (directory == null)
             {
-                directory = Environment.GetEnvironmentVariable("AppData") + "\\EDDI\\personalities";
+                directory = Constants.DATA_DIR + @"\personalities";
             }
             foreach (FileInfo file in new DirectoryInfo(directory).GetFiles("*.json", SearchOption.AllDirectories))
             {
-                    Personality personality = FromFile(file.FullName);
+                Personality personality = FromFile(file.FullName);
                 if (personality != null)
                 {
                     personalities.Add(personality);
@@ -70,7 +70,7 @@ namespace EliteDangerousSpeechResponder
 
         public static Personality FromName(string name)
         {
-            return FromFile(Environment.GetEnvironmentVariable("AppData") + "\\EDDI\\personalities\\" + name + ".json");
+            return FromFile(Constants.DATA_DIR + @"\personalities\" + name + ".json");
         }
 
         /// <summary>
@@ -90,9 +90,7 @@ namespace EliteDangerousSpeechResponder
         {
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI\\personalities";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\eddi.json";
+                filename = Constants.DATA_DIR + @"\personalities\eddi.json";
             }
 
             Personality personality = null;
@@ -128,9 +126,7 @@ namespace EliteDangerousSpeechResponder
                 }
                 if (filename == null)
                 {
-                    string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI\\personalities";
-                    Directory.CreateDirectory(dataDir);
-                    filename = dataDir + "\\eddi.json";
+                    filename = Constants.DATA_DIR + @"\personalities\eddi.json";
                 }
 
                 string json = JsonConvert.SerializeObject(this, Formatting.Indented);

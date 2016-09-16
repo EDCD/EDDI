@@ -24,9 +24,7 @@ namespace EliteDangerousSpeechResponder
         {
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\speechresponder.json";
+                filename = Constants.DATA_DIR + @"\speechresponder.json";
             }
 
             SpeechResponderConfiguration configuration;
@@ -61,9 +59,7 @@ namespace EliteDangerousSpeechResponder
             }
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\speechresponder.json";
+                filename = Constants.DATA_DIR + @"\speechresponder.json";
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Utilities;
 
 namespace EliteDangerousCompanionAppService
 {
@@ -28,9 +29,7 @@ namespace EliteDangerousCompanionAppService
         {
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\commander.json";
+                filename = Constants.DATA_DIR + @"\commander.json";
             }
 
             CommanderConfiguration speech;
@@ -64,9 +63,7 @@ namespace EliteDangerousCompanionAppService
             }
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\commander.json";
+                filename = Constants.DATA_DIR + @"\commander.json";
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);

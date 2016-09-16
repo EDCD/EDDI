@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
+using Utilities;
 
 namespace EliteDangerousCompanionAppService
 {
@@ -45,9 +46,7 @@ namespace EliteDangerousCompanionAppService
         {
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\credentials.json";
+                filename = Constants.DATA_DIR + @"\credentials.json";
             }
 
             CompanionAppCredentials credentials;
@@ -88,9 +87,7 @@ namespace EliteDangerousCompanionAppService
             }
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\credentials.json";
+                filename = Constants.DATA_DIR + @"\credentials.json";
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);

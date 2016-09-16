@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
+using Utilities;
 
 namespace EliteDangerousStarMapService
 {
@@ -23,9 +24,7 @@ namespace EliteDangerousStarMapService
         {
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\edsm.json";
+                filename = Constants.DATA_DIR + @"\edsm.json";
             }
 
             StarMapConfiguration credentials;
@@ -65,9 +64,7 @@ namespace EliteDangerousStarMapService
             }
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\edsm.json";
+                filename = Constants.DATA_DIR + @"\edsm.json";
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);

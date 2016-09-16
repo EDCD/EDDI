@@ -96,10 +96,7 @@ namespace EDDI
             }
             catch (Exception e)
             {
-                using (System.IO.StreamWriter errLog = new System.IO.StreamWriter(Environment.GetEnvironmentVariable("AppData") + @"\EDDI\speech.log", true))
-                {
-                    errLog.WriteLine("" + Thread.CurrentThread.ManagedThreadId + ": Caught exception " + e);
-                }
+                Logging.Warn("" + Thread.CurrentThread.ManagedThreadId + ": Caught exception " + e);
             }
             ttsVolumeSlider.Value = speechServiceConfiguration.Volume;
             ttsRateSlider.Value = speechServiceConfiguration.Rate;

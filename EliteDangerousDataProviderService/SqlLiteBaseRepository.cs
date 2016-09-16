@@ -4,6 +4,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace EliteDangerousDataProviderService
 {
@@ -11,7 +12,7 @@ namespace EliteDangerousDataProviderService
     {
         public static string DbFile
         {
-            get { return Environment.GetEnvironmentVariable("AppData") + "\\EDDI" + "\\EDDI.sqlite"; }
+            get { return Constants.DATA_DIR + @"\EDDI.sqlite"; }
         }
 
         public static SQLiteConnection SimpleDbConnection()

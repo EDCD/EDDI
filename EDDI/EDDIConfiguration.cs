@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Utilities;
 
 namespace EDDI
 {
@@ -34,9 +35,7 @@ namespace EDDI
         {
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\eddi.json";
+                filename = Constants.DATA_DIR + @"\eddi.json";
             }
 
             EDDIConfiguration configuration;
@@ -66,9 +65,7 @@ namespace EDDI
             }
             if (filename == null)
             {
-                string dataDir = Environment.GetEnvironmentVariable("AppData") + "\\EDDI";
-                Directory.CreateDirectory(dataDir);
-                filename = dataDir + "\\eddi.json";
+                filename = Constants.DATA_DIR + @"\eddi.json";
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);

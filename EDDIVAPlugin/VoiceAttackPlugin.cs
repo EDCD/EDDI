@@ -27,12 +27,12 @@ namespace EDDIVAPlugin
 
         public static string VA_DisplayName()
         {
-            return "EDDI " + Eddi.EDDI_VERSION;
+            return Constants.EDDI_NAME + " " + Constants.EDDI_VERSION;
         }
 
         public static string VA_DisplayInfo()
         {
-            return "Elite: Dangerous Data Interface\r\nVersion " + Eddi.EDDI_VERSION;
+            return Constants.EDDI_NAME + "\r\nVersion " + Constants.EDDI_VERSION;
         }
 
         public static Guid VA_Id()
