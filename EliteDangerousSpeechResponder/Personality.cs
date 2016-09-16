@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;  
+﻿using EliteDangerousEvents;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -107,6 +108,7 @@ namespace EliteDangerousSpeechResponder
             if (personality != null)
             {
                 personality.dataPath = filename;
+                fixPersonalityInfo(personality);
             }
 
             return personality;
@@ -154,6 +156,40 @@ namespace EliteDangerousSpeechResponder
         public void RemoveFile()
         {
             File.Delete(dataPath);
+        }
+
+        /// <summary>
+        /// Fix up the personality information to ensure that it contains the correct event
+        /// </summary>
+        private static void fixPersonalityInfo(Personality personality)
+        {
+            Dictionary<string, Script> fixedScripts = new Dictionary<string, Script>();
+            // Ensure that every required event is present
+            foreach (KeyValuePair<string, string> defaultEvent in Events.DESCRIPTIONS)
+            {
+                Script script;
+                personality.Scripts.TryGetValue(defaultEvent.Key, out script);
+                if (script == null)
+                {
+                    // The personality doesn't have this event; create a default
+                    string defaultScript = Events.DefaultByName(defaultEvent.Key);
+                    script = new Script(defaultEvent.Key, defaultEvent.Value, true, defaultScript);
+                }
+                else if (script.Description != defaultEvent.Value)
+                {
+                    // The description has been updated
+                    script = new Script(defaultEvent.Key, defaultEvent.Value, true, script.Value);
+                }
+                fixedScripts.Add(defaultEvent.Key, script);
+            }
+            foreach (KeyValuePair<string, Script> kv in personality.Scripts)
+            {
+                if (!fixedScripts.ContainsKey(kv.Key))
+                {
+                    fixedScripts.Add(kv.Key, kv.Value);
+                }
+            }
+            personality.Scripts = fixedScripts;
         }
     }
 }

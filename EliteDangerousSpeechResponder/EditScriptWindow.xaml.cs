@@ -3,6 +3,7 @@ using EliteDangerousEvents;
 using EliteDangerousSpeechResponder;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,38 +15,91 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Utilities;
 
 namespace EliteDangerousSpeechResponder
 {
     /// <summary>
     /// Interaction logic for EditScriptWindow.xaml
     /// </summary>
-    public partial class EditScriptWindow : Window
+    public partial class EditScriptWindow : Window, INotifyPropertyChanged
     {
         private Dictionary<string, Script> scripts;
         private Script script;
 
-        private const string DEFAULT_DESCRIPTION = "foo";
+        private string scriptName;
+        public string ScriptName
+        {
+            get { return scriptName; }
+            set { scriptName = value;  OnPropertyChanged("ScriptName");  }
+        }
+        private string scriptDescription;
+        public string ScriptDescription
+        {
+            get { return scriptDescription; }
+            set { scriptDescription = value; OnPropertyChanged("ScriptDescription"); }
+        }
+        private string scriptValue;
+        public string ScriptValue
+        {
+            get { return scriptValue; }
+            set { scriptValue = value; OnPropertyChanged("ScriptValue"); }
+        }
+        private bool responder;
+        public bool Responder
+        {
+            get { return responder; }
+            set { responder = value; OnPropertyChanged("Responder"); }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
 
         public EditScriptWindow(Dictionary<string, Script> scripts, string name)
         {
-            this.scripts = scripts;
-            script = this.scripts[name];
-
             InitializeComponent();
+            DataContext = this;
 
-            descriptionText.Text = script.Description == null ? DEFAULT_DESCRIPTION : script.Description;
-            scriptText.Text = script.Value;
+            this.scripts = scripts;
+
+            scripts.TryGetValue(name, out script);
+            if (script == null)
+            {
+                // This is a new script
+                ScriptName = "New script";
+                ScriptDescription = null;
+                ScriptValue = null;
+                Responder = false;
+            }
+            else
+            {
+                // This is an existing script
+                ScriptName = script.Name;
+                ScriptDescription = script.Description;
+                ScriptValue = script.Value;
+                Responder = script.Responder;
+            }
         }
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
-            script.Value = scriptText.Text;
+            if (script != null)
+            {
+                // Updated an existing script so remove it from the list
+                scripts.Remove(script.Name);
+            }
+            script = new Script(scriptName, scriptDescription, script == null ? false : script.Responder, scriptValue);
+            scripts.Add(script.Name, script);
+
             this.Close();
         }
 
         private void cancelButtonClick(object sender, RoutedEventArgs e)
         {
+            // Nothing to do
             this.Close();
         }
 
@@ -59,29 +113,24 @@ namespace EliteDangerousSpeechResponder
 
         private void resetButtonClick(object sender, RoutedEventArgs e)
         {
-            scriptText.Text = script.Value;
-        }
-
-        private void defaultButtonClick(object sender, RoutedEventArgs e)
-        {
-            //scriptText.Text = script.DefaultValue;
+            ScriptValue = script.Value;
         }
 
         private void testButtonClick(object sender, RoutedEventArgs e)
         {
             // Splice the new script in to the existing scripts
             Dictionary<string, Script> newScripts = new Dictionary<string, Script>(scripts);
-            Script testScript = new Script(script.Name, script.Description, script.Responder, scriptText.Text);
-            newScripts.Remove(script.Name);
-            newScripts.Add(script.Name, testScript);
+            Script testScript = new Script(ScriptName, ScriptDescription, false, ScriptValue);
+            newScripts.Remove(ScriptName);
+            newScripts.Add(ScriptName, testScript);
 
             // Obtain the sample event
-            Event sampleEvent = Events.SampleByName(script.Name);
+            Event sampleEvent = Events.SampleByName(ScriptName);
 
             SpeechResponder responder = new SpeechResponder();
             responder.Start();
             ScriptResolver scriptResolver = new ScriptResolver(newScripts);
-            responder.Say(scriptResolver, script.Name, sampleEvent);
+            responder.Say(scriptResolver, ScriptName, sampleEvent);
         }
     }
 }

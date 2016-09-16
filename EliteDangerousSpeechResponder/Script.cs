@@ -38,10 +38,22 @@ namespace EliteDangerousSpeechResponder
         }
 
         [JsonIgnore]
+        public bool IsDeleteable
+        {
+            get { return !responder;  }
+        }
+
+        [JsonIgnore]
         public string Value
         {
             get { return script; }
             set { script = value; OnPropertyChanged("Value"); }
+        }
+
+        [JsonIgnore]
+        public bool HasValue
+        {
+            get { return script != null; }
         }
 
         public Script(string name, string description, bool responder, string script)

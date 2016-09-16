@@ -12,10 +12,10 @@ namespace EliteDangerousEvents
 {
     public class Events
     {
-        private static Dictionary<string, Type> TYPES = new Dictionary<string, Type>();
-        private static Dictionary<string, Event> SAMPLES = new Dictionary<string, Event>();
-        private static Dictionary<string, string> DEFAULTS = new Dictionary<string, string>();
-        private static Dictionary<string, string> DESCRIPTIONS = new Dictionary<string, string>();
+        public static Dictionary<string, Type> TYPES = new Dictionary<string, Type>();
+        public static Dictionary<string, Event> SAMPLES = new Dictionary<string, Event>();
+        public static Dictionary<string, string> DEFAULTS = new Dictionary<string, string>();
+        public static Dictionary<string, string> DESCRIPTIONS = new Dictionary<string, string>();
 
         static Events()
         {
