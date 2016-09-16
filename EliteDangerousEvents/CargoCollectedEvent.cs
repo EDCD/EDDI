@@ -10,7 +10,9 @@ namespace EliteDangerousEvents
     public class CargoCollectedEvent : Event
     {
         public const string NAME = "Cargo collected";
+        public const string DESCRIPTION = "Triggered when you pick up cargo in your ship or SRV";
         public static CargoCollectedEvent SAMPLE = new CargoCollectedEvent(DateTime.Now, "Biowaste", true);
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CargoCollectedEvent()
         {

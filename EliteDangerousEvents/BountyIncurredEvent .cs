@@ -10,7 +10,9 @@ namespace EliteDangerousEvents
     public class BountyIncurredEvent : Event
     {
         public const string NAME = "Bounty incurred";
+        public const string DESCRIPTION = "Triggered when you incur a bounty";
         public static BountyIncurredEvent SAMPLE = new BountyIncurredEvent(DateTime.Now, "kill", "The Pilot's Federation", "Braben", 1000000M);
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static BountyIncurredEvent()
         {

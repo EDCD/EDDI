@@ -10,7 +10,9 @@ namespace EliteDangerousEvents
     public class EnteredNormalSpaceEvent : Event
     {
         public const string NAME = "Entered normal space";
+        public const string DESCRIPTION = "Triggered when your ship enters normal space";
         public static EnteredNormalSpaceEvent SAMPLE = new EnteredNormalSpaceEvent(DateTime.Now, "Jameson Memorial");
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static EnteredNormalSpaceEvent()
         {

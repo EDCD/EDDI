@@ -10,7 +10,9 @@ namespace EliteDangerousEvents
     public class LiftoffEvent : Event
     {
         public const string NAME = "Liftoff";
+        public const string DESCRIPTION = "Triggered when your ship lifts off from a planet's surface";
         public static LiftoffEvent SAMPLE = new LiftoffEvent(DateTime.Now, -15.232M, 50.210M);
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static LiftoffEvent()
         {

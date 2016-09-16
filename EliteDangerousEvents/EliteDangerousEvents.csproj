@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="BondAwardedEvent.cs" />
     <Compile Include="BountyIncurredEvent .cs" />
-    <Compile Include="SampleEvents.cs" />
+    <Compile Include="Events.cs" />
     <Compile Include="StarScannedEvent.cs" />
     <Compile Include="CockpitBreachedEvent.cs" />
     <Compile Include="CargoCollectedEvent.cs" />
@@ -73,6 +73,10 @@
     <ProjectReference Include="..\EliteDangerousDataDefinitions\EliteDangerousDataDefinitions.csproj">
       <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
       <Name>EliteDangerousDataDefinitions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
+      <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

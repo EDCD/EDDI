@@ -76,8 +76,7 @@ namespace EliteDangerousSpeechResponder
             newScripts.Add(script.Name, testScript);
 
             // Obtain the sample event
-            Event sampleEvent;
-            SampleEvents.SAMPLES.TryGetValue(script.Name, out sampleEvent);
+            Event sampleEvent = Events.SampleByName(script.Name);
 
             SpeechResponder responder = new SpeechResponder();
             responder.Start();

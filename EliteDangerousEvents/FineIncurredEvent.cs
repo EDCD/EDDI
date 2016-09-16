@@ -10,7 +10,9 @@ namespace EliteDangerousEvents
     public class FineIncurredEvent : Event
     {
         public const string NAME = "Fine incurred";
+        public const string DESCRIPTION = "Triggered when your incur a fine";
         public static FineIncurredEvent SAMPLE = new FineIncurredEvent(DateTime.Now, "friendly fire", "The Pilot's Federation", "Braben", 1000000M);
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static FineIncurredEvent()
         {

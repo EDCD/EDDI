@@ -10,7 +10,9 @@ namespace EliteDangerousEvents
     public class StarScannedEvent : Event
     {
         public const string NAME = "Star scanned";
+        public const string DESCRIPTION = "Triggered when you complete a scan of a stellar body";
         public static StarScannedEvent SAMPLE = new StarScannedEvent(DateTime.Now, "Sol", "G", 1M, 1M, 4.83M);
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static StarScannedEvent()
         {

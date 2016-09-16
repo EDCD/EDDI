@@ -10,7 +10,9 @@ namespace EliteDangerousEvents
     public class DockedEvent : Event
     {
         public const string NAME = "Docked";
+        public const string DESCRIPTION = "Triggered when your ship docks at a station or outpost";
         public static DockedEvent SAMPLE = new DockedEvent(DateTime.Now, "Jameson Memorial");
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DockedEvent()
         {

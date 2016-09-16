@@ -11,7 +11,9 @@ namespace EliteDangerousEvents
     public class CombatPromotionEvent : Event
     {
         public const string NAME = "Combat promotion";
+        public const string DESCRIPTION = "Triggered when your combat rank increases";
         public static CombatPromotionEvent SAMPLE = new CombatPromotionEvent(DateTime.Now, 5);
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CombatPromotionEvent()
         {

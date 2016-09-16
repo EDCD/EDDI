@@ -10,7 +10,9 @@ namespace EliteDangerousEvents
     public class BountyAwardedEvent : Event
     {
         public const string NAME = "Bounty awarded";
+        public const string DESCRIPTION = "Triggered when you are awarded a bounty";
         public static BountyAwardedEvent SAMPLE = new BountyAwardedEvent(DateTime.Now, "The Pilot's Federation", "cobramkiii", "The Dark Wheel", 1250M);
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static BountyAwardedEvent()
         {

@@ -10,7 +10,9 @@ namespace EliteDangerousEvents
     public class TouchdownEvent : Event
     {
         public const string NAME = "Touchdown";
+        public const string DESCRIPTION = "Triggered when your ship touches down on a planet's surface";
         public static TouchdownEvent SAMPLE = new TouchdownEvent(DateTime.Now, -15.232M, 50.210M);
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static TouchdownEvent()
         {

@@ -10,7 +10,9 @@ namespace EliteDangerousEvents
     public class UndockedEvent : Event
     {
         public const string NAME = "Undocked";
+        public const string DESCRIPTION = "Triggered when your ship undocks from a station or outpost";
         public static UndockedEvent SAMPLE = new UndockedEvent(DateTime.Now, "Jameson Memorial");
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static UndockedEvent()
         {

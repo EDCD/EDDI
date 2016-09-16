@@ -11,7 +11,9 @@ namespace EliteDangerousEvents
     public class ExplorationPromotionEvent : Event
     {
         public const string NAME = "Exploration promotion";
+        public const string DESCRIPTION = "Triggered when your exploration rank increases";
         public static ExplorationPromotionEvent SAMPLE = new ExplorationPromotionEvent(DateTime.Now, 5);
+        public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ExplorationPromotionEvent()
         {
