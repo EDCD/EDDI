@@ -25,9 +25,6 @@ namespace EliteDangerousSpeechResponder
         [JsonProperty("scripts")]
         public Dictionary<string, Script> Scripts { get; private set; }
 
-        [JsonProperty("readonly")]
-        public bool ReadOnly { get; private set; }
-
         [JsonIgnore]
         private string dataPath;
 
@@ -41,7 +38,7 @@ namespace EliteDangerousSpeechResponder
         [JsonIgnore]
         public bool IsEditable
         {
-            get { return (!ReadOnly); }
+            get { return (Name != "EDDI"); }
             set { }
         }
 
@@ -118,20 +115,17 @@ namespace EliteDangerousSpeechResponder
         /// </summary>
         public void ToFile(string filename = null)
         {
-            if (!ReadOnly)
+            if (filename == null)
             {
-                if (filename == null)
-                {
-                    filename = dataPath;
-                }
-                if (filename == null)
-                {
-                    filename = Constants.DATA_DIR + @"\personalities\eddi.json";
-                }
-
-                string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-                File.WriteAllText(filename, json);
+                filename = dataPath;
             }
+            if (filename == null)
+            {
+                filename = Constants.DATA_DIR + @"\personalities\eddi.json";
+            }
+
+            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            File.WriteAllText(filename, json);
         }
 
         /// <summary>
@@ -139,13 +133,16 @@ namespace EliteDangerousSpeechResponder
         /// </summary>
         public Personality Copy(string name)
         {
+            // Save a copy of this personality
             string iname = name.ToLowerInvariant();
-            FileInfo pathInfo = new FileInfo(dataPath);
-            string copyPath = dataPath.Replace(pathInfo.Name, iname + ".json");
+            string copyPath = Constants.DATA_DIR + @"\personalities\" + iname + ".json";
             ToFile(copyPath);
+            // Load the personality back in
             Personality newPersonality = FromFile(copyPath);
+            // Change its name and save it back out again
             newPersonality.Name = name;
             newPersonality.ToFile();
+            // And finally return it
             return newPersonality;
         }
 
