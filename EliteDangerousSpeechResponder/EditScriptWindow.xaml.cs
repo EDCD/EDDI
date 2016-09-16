@@ -94,12 +94,13 @@ namespace EliteDangerousSpeechResponder
             script = new Script(scriptName, scriptDescription, script == null ? false : script.Responder, scriptValue);
             scripts.Add(script.Name, script);
 
+            DialogResult = true;
             this.Close();
         }
 
         private void cancelButtonClick(object sender, RoutedEventArgs e)
         {
-            // Nothing to do
+            DialogResult = false;
             this.Close();
         }
 

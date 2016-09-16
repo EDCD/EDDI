@@ -52,6 +52,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CopyPersonalityWindow.xaml.cs">
+      <DependentUpon>CopyPersonalityWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EditScriptWindow.xaml.cs">
       <DependentUpon>EditScriptWindow.xaml</DependentUpon>
     </Compile>
@@ -91,6 +94,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="CopyPersonalityWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="EditScriptWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

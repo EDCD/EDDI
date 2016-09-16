@@ -1,0 +1,31 @@
+﻿<Window x:Class="EliteDangerousSpeechResponder.CopyPersonalityWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EliteDangerousSpeechResponder"
+        mc:Ignorable="d"
+        Title="Copy Personality" Height="200" Width="300">
+    <DockPanel LastChildFill="True" Background="#FFE5E5E5">
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="Name"></TextBlock>
+            <TextBox Margin="10" Grid.Row="0" Grid.Column="1" Text="{Binding Path=PersonalityName, Mode=TwoWay}"/>
+            <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="Description"></TextBlock>
+            <TextBox Margin="10" Grid.Row="1" Grid.Column="1" Text="{Binding Path=PersonalityDescription, Mode=TwoWay}"/>
+            <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="20" Rows="1" Columns="2" Width="260" HorizontalAlignment="Center">
+                <Button x:Name="acceptButton" FontSize="18" Content="OK" VerticalAlignment="Top" Click="acceptButtonClick" Margin="10" IsEnabled="{Binding Path=AbleToAccept}"/>
+                <Button x:Name="cancelButton" FontSize="18" Content="Cancel" VerticalAlignment="Top" Click="cancelButtonClick" Margin="10"/>
+            </UniformGrid>
+        </Grid>
+    </DockPanel>
+</Window>

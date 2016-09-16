@@ -131,7 +131,7 @@ namespace EliteDangerousSpeechResponder
         /// <summary>
         /// Create a copy of this file, altering the datapath appropriately
         /// </summary>
-        public Personality Copy(string name)
+        public Personality Copy(string name, string description)
         {
             // Save a copy of this personality
             string iname = name.ToLowerInvariant();
@@ -139,8 +139,9 @@ namespace EliteDangerousSpeechResponder
             ToFile(copyPath);
             // Load the personality back in
             Personality newPersonality = FromFile(copyPath);
-            // Change its name and save it back out again
+            // Change its name and description and save it back out again
             newPersonality.Name = name;
+            newPersonality.Description = description;
             newPersonality.ToFile();
             // And finally return it
             return newPersonality;

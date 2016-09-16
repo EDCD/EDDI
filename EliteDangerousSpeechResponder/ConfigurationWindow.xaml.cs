@@ -102,6 +102,7 @@ namespace EliteDangerousSpeechResponder
             ScriptResolver scriptResolver = new ScriptResolver(Personality.Scripts);
             responder.Say(scriptResolver, script.Name, sampleEvent);
         }
+
         private void deleteScript(object sender, RoutedEventArgs e)
         {
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
@@ -148,27 +149,40 @@ namespace EliteDangerousSpeechResponder
 
         private void newScriptClicked(object sender, RoutedEventArgs e)
         {
-            Script script = new Script("foo", null, true, "Hello");
+            string baseName = "New function";
+            string scriptName = baseName;
+            int i = 2;
+            while (Personality.Scripts.ContainsKey(scriptName))
+            {
+                scriptName = baseName + " " + i++;
+            }
+            Script script = new Script(scriptName, null, false, null);
             Personality.Scripts.Add(script.Name, script);
-            Personality.ToFile();
-            // We updated a property of the personality but not the personality itself so need to manually update items
-            scriptsData.Items.Refresh();
 
-            //NewScriptWindow newScriptWindow = new NewScriptWindow(Personality.Scripts);
-            //newScriptWindow.ShowDialog();
-            //scriptsData.Items.Refresh();
+            // Now fire up an edit
+            EditScriptWindow editScriptWindow = new EditScriptWindow(Personality.Scripts, script.Name);
+            if (editScriptWindow.ShowDialog() == true)
+            {
+                Personality.ToFile();
+            }
+            else
+            {
+                Personality.Scripts.Remove(script.Name);
+            }
+            scriptsData.Items.Refresh();
         }
 
         private void copyPersonalityClicked(object sender, RoutedEventArgs e)
         {
-            Personality newPersonality = Personality.Copy("Fred Bloggs");
-            Personalities.Add(newPersonality);
-            Personality = newPersonality;
-            //string messageBoxText = "Are you sure you want to delete the \"" + Personality.Name + "\" personality?";
-            //string caption = "Delete Personality";
-            //MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            //CopyPersonalityWindow copyPersonalityWindow = new CopyPersonalityWindow(Personality.Name);
-            //copyPersonalityWindow.ShowDialog();
+            CopyPersonalityWindow window = new CopyPersonalityWindow(Personality);
+            if (window.ShowDialog() == true)
+            {
+                string PersonalityName = window.PersonalityName == null ? null : window.PersonalityName.Trim();
+                string PersonalityDescription = window.PersonalityDescription == null ? null : window.PersonalityDescription.Trim();
+                Personality newPersonality = Personality.Copy(PersonalityName, PersonalityDescription);
+                Personalities.Add(newPersonality);
+                Personality = newPersonality;
+            }
         }
 
         private void deletePersonalityClicked(object sender, RoutedEventArgs e)
