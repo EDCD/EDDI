@@ -80,7 +80,7 @@ namespace EliteDangerousNetLogMonitor
                 if (starSystem != lastStarsystem)
                 {
                     // Change of system
-                    theEvent = new JumpedEvent(DateTime.Now, starSystem, x, y, z);
+                    theEvent = new JumpedEvent(DateTime.Now, starSystem, x, y, z, null, null, null, null, null, null);
                     lastStarsystem = starSystem;
                     lastEnvironment = environment;
                 }

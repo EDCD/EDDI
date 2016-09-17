@@ -46,6 +46,11 @@
   <ItemGroup>
     <Compile Include="BondAwardedEvent.cs" />
     <Compile Include="BountyIncurredEvent .cs" />
+    <Compile Include="DockingTimedOutEvent.cs" />
+    <Compile Include="DockingDeniedEvent.cs" />
+    <Compile Include="DockingGrantedEvent.cs" />
+    <Compile Include="DockingCancelledEvent.cs" />
+    <Compile Include="DockingRequestedEvent.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="StarScannedEvent.cs" />
     <Compile Include="CockpitBreachedEvent.cs" />

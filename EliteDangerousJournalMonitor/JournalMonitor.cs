@@ -63,9 +63,23 @@ namespace EliteDangerousJournalMonitor
                     case "Docked":
                         {
                             object val;
+                            data.TryGetValue("StarSystem", out val);
+                            string systemName = (string)val;
                             data.TryGetValue("StationName", out val);
                             string stationName = (string)val;
-                            journalEvent = new DockedEvent(timestamp, stationName);
+                            data.TryGetValue("Allegiance", out val);
+                            string allegiance = (string)val;
+                            data.TryGetValue("Faction", out val);
+                            string faction = (string)val;
+                            data.TryGetValue("FactionState", out val);
+                            string factionState = (string)val;
+                            data.TryGetValue("Economy", out val);
+                            string economy = (string)val;
+                            data.TryGetValue("Government", out val);
+                            string government = (string)val;
+                            data.TryGetValue("Security", out val);
+                            string security = (string)val;
+                            journalEvent = new DockedEvent(timestamp, systemName, stationName, allegiance, faction, factionState, economy, government, security);
                         }
                         handled = true;
                         break;
@@ -130,7 +144,20 @@ namespace EliteDangerousJournalMonitor
                             decimal y = Math.Round(decimal.Parse(coordsMatch.Groups[2].Value) * 32) / (decimal)32.0;
                             decimal z = Math.Round(decimal.Parse(coordsMatch.Groups[3].Value) * 32) / (decimal)32.0;
 
-                            journalEvent = new JumpedEvent(timestamp, systemName, x, y, z);
+                            data.TryGetValue("Allegiance", out val);
+                            string allegiance = (string)val;
+                            data.TryGetValue("Faction", out val);
+                            string faction = (string)val;
+                            data.TryGetValue("FactionState", out val);
+                            string factionState = (string)val;
+                            data.TryGetValue("Economy", out val);
+                            string economy = (string)val;
+                            data.TryGetValue("Government", out val);
+                            string government = (string)val;
+                            data.TryGetValue("Security", out val);
+                            string security = (string)val;
+
+                            journalEvent = new JumpedEvent(timestamp, systemName, x, y, z, allegiance, faction, factionState, economy, government, security);
                         }
                         handled = true;
                         break;
@@ -324,35 +351,52 @@ namespace EliteDangerousJournalMonitor
                         handled = true;
                         break;
                     case "DockingRequested":
-                        //journalEntry.type = "Docking request sent";
-                        //journalEntry.stringData.Add("station", (string)data["stationname"]);
-                        //journalEntry.refetchProfile = false;
+                        {
+                            object val;
+                            data.TryGetValue("StationName", out val);
+                            string stationName = (string)val;
+                            journalEvent = new DockingRequestedEvent(timestamp, stationName);
+                        }
                         handled = true;
                         break;
                     case "DockingGranted":
-                        //journalEntry.type = "Docking request granted";
-                        //journalEntry.stringData.Add("station", (string)data["stationname"]);
-                        //journalEntry.intData.Add("pad", (int)data["landingpad"]);
-                        //journalEntry.refetchProfile = false;
+                        {
+                            object val;
+                            data.TryGetValue("StationName", out val);
+                            string stationName = (string)val;
+                            data.TryGetValue("LandingPad", out val);
+                            int landingPad = (int)val;
+                            journalEvent = new DockingGrantedEvent(timestamp, stationName, landingPad);
+                        }
                         handled = true;
                         break;
                     case "DockingDenied":
-                        //journalEntry.type = "Docking request denied";
-                        //journalEntry.stringData.Add("station", (string)data["stationname"]);
-                        //journalEntry.stringData.Add("reason", (string)data["reason"]);
-                        //journalEntry.refetchProfile = false;
+                        {
+                            object val;
+                            data.TryGetValue("StationName", out val);
+                            string stationName = (string)val;
+                            data.TryGetValue("Reason", out val);
+                            string reason = (string)val;
+                            journalEvent = new DockingDeniedEvent(timestamp, stationName, reason);
+                        }
                         handled = true;
                         break;
                     case "DockingCancelled":
-                        //journalEntry.type = "Docking request cancelled";
-                        //journalEntry.stringData.Add("station", (string)data["stationname"]);
-                        //journalEntry.refetchProfile = false;
+                        {
+                            object val;
+                            data.TryGetValue("StationName", out val);
+                            string stationName = (string)val;
+                            journalEvent = new DockingCancelledEvent(timestamp, stationName);
+                        }
                         handled = true;
                         break;
                     case "DockingTimeout":
-                        //journalEntry.type = "Docking request timed out";
-                        //journalEntry.stringData.Add("station", (string)data["stationname"]);
-                        //journalEntry.refetchProfile = false;
+                        {
+                            object val;
+                            data.TryGetValue("StationName", out val);
+                            string stationName = (string)val;
+                            journalEvent = new DockingTimedOutEvent(timestamp, stationName);
+                        }
                         handled = true;
                         break;
                     case "HeatWarning":
