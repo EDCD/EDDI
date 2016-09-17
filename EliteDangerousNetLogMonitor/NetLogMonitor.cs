@@ -94,7 +94,7 @@ namespace EliteDangerousNetLogMonitor
                     }
                     else if (environment == "NormalFlight")
                     {
-                        theEvent = new EnteredNormalSpaceEvent(DateTime.Now, starSystem);
+                        theEvent = new EnteredNormalSpaceEvent(DateTime.Now, starSystem, null);
                         lastEnvironment = environment;
                     }
                 }

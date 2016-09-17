@@ -17,6 +17,7 @@ namespace EliteDangerousEvents
 
         static ExplorationPromotionEvent()
         {
+            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Promotion\",\"Explore\":5}";
             VARIABLES.Add("rank", "The commander's new exploration rank (Aimless, etc)");
             VARIABLES.Add("rating", "The commander's new exploration combat rating (0-8)");
         }

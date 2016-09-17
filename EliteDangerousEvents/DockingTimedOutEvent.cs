@@ -16,6 +16,8 @@ namespace EliteDangerousEvents
 
         static DockingTimedOutEvent()
         {
+            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingCancelled\",\"StationName\":\"Jameson Memorial\"}";
+
             VARIABLES.Add("station", "The station at which the docking request has timed out");
         }
 

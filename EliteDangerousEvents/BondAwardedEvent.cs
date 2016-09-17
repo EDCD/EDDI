@@ -11,11 +11,13 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Bond awarded";
         public const string DESCRIPTION = "Triggered when you are awarded a combat bond";
-        public static BondAwardedEvent SAMPLE = new BondAwardedEvent(DateTime.Now, "The Pilot's Federation", "The Dark Wheel", 1250M);
+        public static BondAwardedEvent SAMPLE = new BondAwardedEvent(DateTime.Now, "Jarildekald Public Industry", "Lencali Freedom Party", 500M);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static BondAwardedEvent()
         {
+            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"FactionKillBond\",\"Reward\":500,\"AwardingFaction\":\"Jarildekald Public Industry\",\"VictimFaction\":\"Lencali Freedom Party\"}";
+
             VARIABLES.Add("awardingfaction", "The name of the faction awarding the bond");
             VARIABLES.Add("victimfaction", "The name of the faction whose ship you destroyed");
             VARIABLES.Add("reward", "The number of credits received");

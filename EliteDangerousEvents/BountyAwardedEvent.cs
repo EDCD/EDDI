@@ -11,11 +11,13 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Bounty awarded";
         public const string DESCRIPTION = "Triggered when you are awarded a bounty";
-        public static BountyAwardedEvent SAMPLE = new BountyAwardedEvent(DateTime.Now, "The Pilot's Federation", "cobramkiii", "The Dark Wheel", 1250M);
+        public static BountyAwardedEvent SAMPLE = new BountyAwardedEvent(DateTime.Now, "Federation", "Skimmer", "MMU", 1000M);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static BountyAwardedEvent()
         {
+            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Bounty\",\"Faction\":\"$faction_Federation;\",\"Target\":\"Skimmer\",\"Reward\":1000,\"VictimFaction\":\"MMU\"}";
+
             VARIABLES.Add("awardingfaction", "The name of the faction awarding the bounty");
             VARIABLES.Add("target", "The name of the pilot you destroyed");
             VARIABLES.Add("victimfaction", "The name of the faction whose ship you destroyed");

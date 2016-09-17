@@ -17,6 +17,8 @@ namespace EliteDangerousEvents
 
         static CombatPromotionEvent()
         {
+            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Promotion\",\"Combat\":5}";
+
             VARIABLES.Add("rank", "The commander's new combat rank (Harmless, etc)");
             VARIABLES.Add("rating", "The commander's new numerical combat rating (0-8)");
         }

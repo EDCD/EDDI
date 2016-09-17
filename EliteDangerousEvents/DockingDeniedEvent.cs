@@ -16,6 +16,8 @@ namespace EliteDangerousEvents
 
         static DockingDeniedEvent()
         {
+            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingDenied\",\"StationName\":\"Jameson Memorial\",\"Reason\":\"Distance\"}";
+
             VARIABLES.Add("station", "The station at which the commander has been denied docking");
             VARIABLES.Add("reason", "The station at which the commander has been denied docking");
         }

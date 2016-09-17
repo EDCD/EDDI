@@ -52,6 +52,8 @@
     <Compile Include="DockingCancelledEvent.cs" />
     <Compile Include="DockingRequestedEvent.cs" />
     <Compile Include="Events.cs" />
+    <Compile Include="HeatDamageEvent.cs" />
+    <Compile Include="HeatWarningEvent.cs" />
     <Compile Include="StarScannedEvent.cs" />
     <Compile Include="CockpitBreachedEvent.cs" />
     <Compile Include="CargoCollectedEvent.cs" />

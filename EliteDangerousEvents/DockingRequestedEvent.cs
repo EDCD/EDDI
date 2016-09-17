@@ -16,6 +16,8 @@ namespace EliteDangerousEvents
 
         static DockingRequestedEvent()
         {
+            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingRequested\",\"StationName\":\"Jameson Memorial\"}";
+
             VARIABLES.Add("station", "The station at which the commander has requested docking");
         }
 

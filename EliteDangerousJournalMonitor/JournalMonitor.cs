@@ -56,7 +56,6 @@ namespace EliteDangerousJournalMonitor
                 bool handled = false;
 
                 Event journalEvent = null;
-
                 string edType = (string)data["event"];
                 switch (edType)
                 {
@@ -121,9 +120,11 @@ namespace EliteDangerousJournalMonitor
                     case "SupercruiseExit":
                         {
                             object val;
+                            data.TryGetValue("StarSystem", out val);
+                            string system = (string)val;
                             data.TryGetValue("Body", out val);
                             string body = (string)val;
-                            journalEvent = new EnteredNormalSpaceEvent(timestamp, body);
+                            journalEvent = new EnteredNormalSpaceEvent(timestamp, system, body);
                         }
                         handled = true;
                         break;
@@ -251,13 +252,6 @@ namespace EliteDangerousJournalMonitor
                             journalEvent = new CargoCollectedEvent(timestamp, cargo, stolen);
                             handled = true;
                         }
-                        //if ((int)data["Stolen"] == 1)
-                        //{
-                        //    journalEntry.type = "Illegal cargo scooped";
-                        //    // TODO obtain and translate cargo type
-                        //    journalEntry.refetchProfile = false;
-                        //    handled = true;
-                        //}
                         handled = true;
                         break;
                     case "CockpitBreached":
@@ -400,8 +394,11 @@ namespace EliteDangerousJournalMonitor
                         handled = true;
                         break;
                     case "HeatWarning":
-                        //journalEntry.type = "Ship overheating";
-                        //journalEntry.refetchProfile = false;
+                        journalEvent = new HeatWarningEvent(timestamp);
+                        handled = true;
+                        break;
+                    case "HeatDamage":
+                        journalEvent = new HeatDamageEvent(timestamp);
                         handled = true;
                         break;
                     case "HullDamage":
@@ -426,6 +423,11 @@ namespace EliteDangerousJournalMonitor
                         //journalEntry.refetchProfile = false;
                         handled = true;
                         break;
+                }
+
+                if (journalEvent != null)
+                {
+                    journalEvent.raw = line;
                 }
 
                 if (handled)

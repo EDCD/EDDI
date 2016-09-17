@@ -11,11 +11,13 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Bounty incurred";
         public const string DESCRIPTION = "Triggered when you incur a bounty";
-        public static BountyIncurredEvent SAMPLE = new BountyIncurredEvent(DateTime.Now, "kill", "The Pilot's Federation", "Braben", 1000000M);
+        public static BountyIncurredEvent SAMPLE = new BountyIncurredEvent(DateTime.Now, "Assault", "The Pilot's Federation", "Potapinski", 210M);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static BountyIncurredEvent()
         {
+            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"CommitCrime\",\"CrimeType\":\"assault\",\"Faction\":\"The Pilots Federation\",\"Victim\":\"Potapinski\",\"Bounty\":210}";
+
             VARIABLES.Add("crimetype", "The type of crime committed");
             VARIABLES.Add("victim", "The name of the victim of the crime");
             VARIABLES.Add("faction", "The name of the faction issuing the bounty");

@@ -11,11 +11,13 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Star scanned";
         public const string DESCRIPTION = "Triggered when you complete a scan of a stellar body";
-        public static StarScannedEvent SAMPLE = new StarScannedEvent(DateTime.Now, "Sol", "G", 1M, 1M, 4.83M);
+        public static StarScannedEvent SAMPLE = new StarScannedEvent(DateTime.Now, "Alnitak", "O", 26.621094M, 2305180672M, -5.027969M);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static StarScannedEvent()
         {
+            SAMPLE.raw = "{\"timestamp\":\"2016-07-25T10:02:38Z\",\"event\":\"Scan\",\"BodyName\":\"Alnitak\",\"DistanceFromArrivalLS\":0.000000,\"StarType\":\"O\",\"StellarMass\":26.621094,\"Radius\":2305180672.000000,\"AbsoluteMagnitude\":-5.027969,\"OrbitalPeriod\":5755731.500000,\"RotationPeriod\":90114.937500}";
+
             VARIABLES.Add("name", "The name of the star that has been scanned");
             VARIABLES.Add("stellarclass", "The stellar class of the star that has been scanned (O, G, etc)");
             VARIABLES.Add("mass", "The mass of the star that has been scanned, relative to Sol's mass");

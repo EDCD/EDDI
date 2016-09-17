@@ -14,6 +14,11 @@ namespace EliteDangerousEvents
         public static CockpitBreachedEvent SAMPLE = new CockpitBreachedEvent(DateTime.Now);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
+        static CockpitBreachedEvent()
+        {
+            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"CockpitBreached\"}";
+        }
+
         public CockpitBreachedEvent(DateTime timestamp) : base(timestamp, NAME)
         {
         }

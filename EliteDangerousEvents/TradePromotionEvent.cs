@@ -17,6 +17,8 @@ namespace EliteDangerousEvents
 
         static TradePromotionEvent()
         {
+            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Promotion\",\"Trade\":5}";
+
             VARIABLES.Add("rank", "The commander's new trade rank (Peniless, etc)");
             VARIABLES.Add("rating", "The commander's new numerical trade rating (0-8)");
         }

@@ -11,11 +11,13 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Jumped";
         public const string DESCRIPTION = "Triggered when you jump from one system to another";
-        public static JumpedEvent SAMPLE = new JumpedEvent(DateTime.Now, "Shinrarta Dezhra", 55.71875M, 17.59375M, 27.15625M, "Federation", "The Pilot's Federation", "Boom", "High Technology", "Corporate", "High");
+        public static JumpedEvent SAMPLE = new JumpedEvent(DateTime.Now, "LP 98-132", -26.78125M, 37.03125M, -4.59375M, "Federation", "Brotherhood of LP 98-132", "Outbreak", "Extraction", "Anarchy", "High");
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static JumpedEvent()
         {
+            SAMPLE.raw = "{\"timestamp\":\"2016-07-21T13:16:49Z\",\"event\":\"FSDJump\",\"StarSystem\":\"LP 98-132\",\"StarPos\":[-26.781,37.031,-4.594],\"Economy\":\"$economy_Extraction;\",“Allegiance”:”Federation”,\"Government\":\"$government_Anarchy;\",\"Security\":”$SYSTEM_SECURITY_high_anarchy;”,\"JumpDist\":5.230,\"FuelUsed\":0.355614,\"FuelLevel\":12.079949,\"Faction\":\"Brotherhood of LP 98-132\",\"FactionState\":\"Outbreak\"}";
+
             VARIABLES.Add("system", "The name of the system to which the commander has jumped");
             VARIABLES.Add("x", "The X co-ordinate of the system to which the commander has jumped");
             VARIABLES.Add("y", "The Y co-ordinate of the system to which the commander has jumped");

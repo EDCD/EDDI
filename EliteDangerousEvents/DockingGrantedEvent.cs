@@ -16,6 +16,8 @@ namespace EliteDangerousEvents
 
         static DockingGrantedEvent()
         {
+            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingDenied\",\"StationName\":\"Jameson Memorial\",\"LandingPad\":2}";
+
             VARIABLES.Add("station", "The station at which the commander has been granted docking");
             VARIABLES.Add("landingpad", "The landing apd at which the commander has been granted docking");
         }

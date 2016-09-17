@@ -9,6 +9,12 @@ namespace EliteDangerousEvents
 {
     public abstract class Event
     {
+        /// <summary>
+        /// The raw event from which this event was obtained.  This is optional
+        /// </summary>
+        [JsonProperty("raw")]
+        public string raw { get; set; }
+
         [JsonProperty("timestamp")]
         public DateTime timestamp { get; private set; }
 
