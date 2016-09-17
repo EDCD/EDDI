@@ -162,6 +162,40 @@ namespace EliteDangerousJournalMonitor
                         }
                         handled = true;
                         break;
+                    case "Location":
+                        {
+                            object val;
+
+                            data.TryGetValue("StarSystem", out val);
+                            string systemName = (string)val;
+
+                            // The system co-ordinates are locked away in a StarPos field, which is the co-ordinates surrounded by square brackets
+                            data.TryGetValue("StarPos", out val);
+                            string starPos = (string)val;
+                            Regex coordsRegex = new Regex(@"^\[(-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+)\]$");
+                            Match coordsMatch = coordsRegex.Match(starPos);
+                            // Co-ordinates are only to 3dp so do a bit of math to calculate the correct values
+                            decimal x = Math.Round(decimal.Parse(coordsMatch.Groups[1].Value) * 32) / (decimal)32.0;
+                            decimal y = Math.Round(decimal.Parse(coordsMatch.Groups[2].Value) * 32) / (decimal)32.0;
+                            decimal z = Math.Round(decimal.Parse(coordsMatch.Groups[3].Value) * 32) / (decimal)32.0;
+
+                            data.TryGetValue("Allegiance", out val);
+                            string allegiance = (string)val;
+                            data.TryGetValue("Faction", out val);
+                            string faction = (string)val;
+                            data.TryGetValue("FactionState", out val);
+                            string factionState = (string)val;
+                            data.TryGetValue("Economy", out val);
+                            string economy = (string)val;
+                            data.TryGetValue("Government", out val);
+                            string government = (string)val;
+                            data.TryGetValue("Security", out val);
+                            string security = (string)val;
+
+                            journalEvent = new LocationEvent(timestamp, systemName, x, y, z, allegiance, faction, factionState, economy, government, security);
+                        }
+                        handled = true;
+                        break;
                     case "Bounty":
                         {
                             object val;
@@ -250,6 +284,20 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("Stolen", out val);
                             bool stolen = (bool)val;
                             journalEvent = new CargoCollectedEvent(timestamp, cargo, stolen);
+                            handled = true;
+                        }
+                        handled = true;
+                        break;
+                    case "EjectCargo":
+                        {
+                            object val;
+                            data.TryGetValue("Type", out val);
+                            string cargo = (string)val;
+                            data.TryGetValue("Amount", out val);
+                            int amount = (int)val;
+                            data.TryGetValue("Abandoned", out val);
+                            bool abandoned = (bool)val;
+                            journalEvent = new CargoEjectedEvent(timestamp, cargo, amount, abandoned);
                             handled = true;
                         }
                         handled = true;
@@ -407,22 +455,91 @@ namespace EliteDangerousJournalMonitor
                         handled = true;
                         break;
                     case "ShieldState":
-                        //if ((int)data["ShieldsUp"] == 1)
-                        //{
-                        //    journalEntry.type = "Shields up";
-                        //}
-                        //else
-                        //{
-                        //    journalEntry.type = "Shields down";
-                        //}
-                        //journalEntry.refetchProfile = false;
-                        handled = true;
-                        break;
+                        {
+                            object val;
+                            data.TryGetValue("ShieldsUp", out val);
+                            bool shieldsUp = (bool)val;
+                            if (shieldsUp == true)
+                            {
+                                journalEvent = new ShieldsUpEvent(timestamp);
+                            }
+                            else
+                            {
+                                journalEvent = new ShieldsDownEvent(timestamp);
+                            }
+                            handled = true;
+                            break;
+                        }
                     case "Died":
                         //journalEntry.type = "Died";
                         //journalEntry.refetchProfile = false;
                         handled = true;
                         break;
+                    case "MarketBuy":
+                        {
+                            object val;
+                            data.TryGetValue("Type", out val);
+                            string cargo = (string)val;
+                            data.TryGetValue("Count", out val);
+                            int amount = (int)val;
+                            data.TryGetValue("BuyPrice", out val);
+                            decimal price = (decimal)val;
+                            journalEvent = new BoughtFromMarketEvent(timestamp, cargo, amount, price);
+                            handled = true;
+                            break;
+                        }
+                    case "MarketSell":
+                        {
+                            object val;
+                            data.TryGetValue("Type", out val);
+                            string cargo = (string)val;
+                            data.TryGetValue("Count", out val);
+                            int amount = (int)val;
+                            data.TryGetValue("SellPrice", out val);
+                            decimal price = (decimal)val;
+                            data.TryGetValue("AvgPricePaid", out val);
+                            decimal buyPrice = (decimal)val;
+                            // We don't care about buy price, we care about profit per unit
+                            decimal profit = price - buyPrice;
+                            journalEvent = new SoldToMarketEvent(timestamp, cargo, amount, price, profit);
+                            handled = true;
+                            break;
+                        }
+                    case "CrewHire":
+                        {
+                            object val;
+                            data.TryGetValue("Name", out val);
+                            string name = (string)val;
+                            data.TryGetValue("Faction", out val);
+                            string faction = (string)val;
+                            data.TryGetValue("Cost", out val);
+                            decimal price = (decimal)val;
+                            data.TryGetValue("CombatRank", out val);
+                            int combatRank = (int)val;
+                            journalEvent = new CrewHiredEvent(timestamp, name, faction, price, combatRank);
+                            handled = true;
+                            break;
+                        }
+                    case "CrewFire":
+                        {
+                            object val;
+                            data.TryGetValue("Name", out val);
+                            string name = (string)val;
+                            journalEvent = new CrewFiredEvent(timestamp, name);
+                            handled = true;
+                            break;
+                        }
+                    case "CrewAssign":
+                        {
+                            object val;
+                            data.TryGetValue("Name", out val);
+                            string name = (string)val;
+                            data.TryGetValue("ole", out val);
+                            string role = (string)val;
+                            journalEvent = new CrewAssignedEvent(timestamp, name, role);
+                            handled = true;
+                            break;
+                        }
                 }
 
                 if (journalEvent != null)
