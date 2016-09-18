@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EliteDangerousDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Location";
         public const string DESCRIPTION = "Triggered when the commander's location is reported";
-        public static JumpedEvent SAMPLE = new JumpedEvent(DateTime.Now, "LP 98-132", -26.78125M, 37.03125M, -4.59375M, "Federation", "Brotherhood of LP 98-132", "Outbreak", "Extraction", "Anarchy", "High");
+        public static JumpedEvent SAMPLE = new JumpedEvent(DateTime.Now, "LP 98-132", -26.78125M, 37.03125M, -4.59375M, Superpower.Federation, "Brotherhood of LP 98-132", State.Outbreak, Economy.Extraction, Government.Anarchy, "High");
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static LocationEvent()
@@ -43,21 +44,24 @@ namespace EliteDangerousEvents
         public decimal z { get; private set; }
 
         [JsonProperty("allegiance")]
-        public string allegiance { get; private set; }
+        public Superpower allegiance { get; private set; }
 
         [JsonProperty("faction")]
         public string faction { get; private set; }
 
+        [JsonProperty("factionstate")]
+        public State factionstate { get; private set; }
+
         [JsonProperty("economy")]
-        public string economy { get; private set; }
+        public Economy economy { get; private set; }
 
         [JsonProperty("government")]
-        public string government { get; private set; }
+        public Government government { get; private set; }
 
         [JsonProperty("security")]
         public string security { get; private set; }
 
-        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, string allegiance, string faction, string factionstate, string economy, string government, string security) : base(timestamp, NAME)
+        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, string security) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
@@ -65,6 +69,7 @@ namespace EliteDangerousEvents
             this.z = z;
             this.allegiance = allegiance;
             this.faction = faction;
+            this.factionstate = factionstate;
             this.economy = economy;
             this.government = government;
             this.security = security;

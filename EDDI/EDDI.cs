@@ -206,9 +206,6 @@ namespace EDDI
                     Logging.Warn("Failed to start " + responder.ResponderName());
                 }
             }
-
-            // Post a started event to let the responders know we are up and running
-            eventHandler(new StartedEvent(DateTime.Now));
         }
 
         public void Stop()

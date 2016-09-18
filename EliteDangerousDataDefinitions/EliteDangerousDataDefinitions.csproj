@@ -48,6 +48,10 @@
     <Compile Include="Commander.cs" />
     <Compile Include="CommodityDefinitions.cs" />
     <Compile Include="Compartment.cs" />
+    <Compile Include="Economy.cs" />
+    <Compile Include="GameMode.cs" />
+    <Compile Include="SecurityLevel.cs" />
+    <Compile Include="Government.cs" />
     <Compile Include="Hardpoint.cs" />
     <Compile Include="Commodity.cs" />
     <Compile Include="Module.cs" />
@@ -57,6 +61,8 @@
     <Compile Include="ShipDefinitions.cs" />
     <Compile Include="StarSystem.cs" />
     <Compile Include="Body.cs" />
+    <Compile Include="Superpower.cs" />
+    <Compile Include="State.cs" />
     <Compile Include="Station.cs" />
   </ItemGroup>
   <ItemGroup>

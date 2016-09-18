@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EliteDangerousDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,12 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Jumped";
         public const string DESCRIPTION = "Triggered when you jump from one system to another";
-        public static JumpedEvent SAMPLE = new JumpedEvent(DateTime.Now, "LP 98-132", -26.78125M, 37.03125M, -4.59375M, "Federation", "Brotherhood of LP 98-132", "Outbreak", "Extraction", "Anarchy", "High");
+        public static JumpedEvent SAMPLE = new JumpedEvent(DateTime.Now, "LP 98-132", -26.78125M, 37.03125M, -4.59375M, Superpower.Federation, "Brotherhood of LP 98-132", State.Outbreak, Economy.Extraction, Government.Anarchy, "High");
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static JumpedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-07-21T13:16:49Z\",\"event\":\"FSDJump\",\"StarSystem\":\"LP 98-132\",\"StarPos\":[-26.781,37.031,-4.594],\"Economy\":\"$economy_Extraction;\",“Allegiance”:”Federation”,\"Government\":\"$government_Anarchy;\",\"Security\":”$SYSTEM_SECURITY_high_anarchy;”,\"JumpDist\":5.230,\"FuelUsed\":0.355614,\"FuelLevel\":12.079949,\"Faction\":\"Brotherhood of LP 98-132\",\"FactionState\":\"Outbreak\"}";
+            SAMPLE.raw = "{\"timestamp\":\"2016-07-21T13:16:49Z\",\"event\":\"FSDJump\",\"StarSystem\":\"LP 98-132\",\"StarPos\":[-26.781,37.031,-4.594],\"Economy\":\"$economy_Extraction;\",\"Allegiance\":\"Federation\",\"Government\":\"$government_Anarchy;\",\"Security\":”$SYSTEM_SECURITY_high_anarchy;”,\"JumpDist\":5.230,\"FuelUsed\":0.355614,\"FuelLevel\":12.079949,\"Faction\":\"Brotherhood of LP 98-132\",\"FactionState\":\"Outbreak\"}";
 
             VARIABLES.Add("system", "The name of the system to which the commander has jumped");
             VARIABLES.Add("x", "The X co-ordinate of the system to which the commander has jumped");
@@ -43,21 +44,24 @@ namespace EliteDangerousEvents
         public decimal z { get; private set; }
 
         [JsonProperty("allegiance")]
-        public string allegiance { get; private set; }
+        public Superpower allegiance { get; private set; }
 
         [JsonProperty("faction")]
         public string faction { get; private set; }
 
+        [JsonProperty("factionstate")]
+        public State factionstate { get; private set; }
+
         [JsonProperty("economy")]
-        public string economy { get; private set; }
+        public Economy economy { get; private set; }
 
         [JsonProperty("government")]
-        public string government { get; private set; }
+        public Government government { get; private set; }
 
         [JsonProperty("security")]
         public string security { get; private set; }
 
-        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, string allegiance, string faction, string factionstate, string economy, string government, string security) : base(timestamp, NAME)
+        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, string security) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
@@ -65,6 +69,7 @@ namespace EliteDangerousEvents
             this.z = z;
             this.allegiance = allegiance;
             this.faction = faction;
+            this.factionstate = factionstate;
             this.economy = economy;
             this.government = government;
             this.security = security;

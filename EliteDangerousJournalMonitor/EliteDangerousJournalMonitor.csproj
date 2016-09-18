@@ -53,6 +53,10 @@
       <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
       <Name>EDDI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousDataDefinitions\EliteDangerousDataDefinitions.csproj">
+      <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
+      <Name>EliteDangerousDataDefinitions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EliteDangerousEvents\EliteDangerousEvents.csproj">
       <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EliteDangerousEvents</Name>

@@ -1,4 +1,5 @@
 ﻿using EDDI;
+using EliteDangerousDataDefinitions;
 using EliteDangerousEvents;
 using EliteDangerousNetLogMonitor;
 using Newtonsoft.Json;
@@ -67,17 +68,17 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("StationName", out val);
                             string stationName = (string)val;
                             data.TryGetValue("Allegiance", out val);
-                            string allegiance = (string)val;
+                            Superpower allegiance = Superpower.FromEDName((string)val);
                             data.TryGetValue("Faction", out val);
                             string faction = (string)val;
                             data.TryGetValue("FactionState", out val);
-                            string factionState = (string)val;
+                            State factionState = State.FromEDName((string)val);
                             data.TryGetValue("Economy", out val);
-                            string economy = (string)val;
+                            Economy economy = Economy.FromEDName((string)val);
                             data.TryGetValue("Government", out val);
-                            string government = (string)val;
+                            Government government = Government.FromEDName((string)val);
                             data.TryGetValue("Security", out val);
-                            string security = (string)val;
+                            SecurityLevel security = security.FromEDName((string)val);
                             journalEvent = new DockedEvent(timestamp, systemName, stationName, allegiance, faction, factionState, economy, government, security);
                         }
                         handled = true;
@@ -141,15 +142,15 @@ namespace EliteDangerousJournalMonitor
                             decimal z = Math.Round((decimal)((double)starPos[2]) * 32) / (decimal)32.0;
 
                             data.TryGetValue("Allegiance", out val);
-                            string allegiance = (string)val;
+                            Superpower allegiance = Superpower.FromEDName((string)val);
                             data.TryGetValue("Faction", out val);
                             string faction = (string)val;
                             data.TryGetValue("FactionState", out val);
-                            string factionState = (string)val;
+                            State factionState = State.FromEDName((string)val);
                             data.TryGetValue("Economy", out val);
-                            string economy = (string)val;
+                            Economy economy = Economy.FromEDName((string)val);
                             data.TryGetValue("Government", out val);
-                            string government = (string)val;
+                            Government government = Government.FromEDName((string)val);
                             data.TryGetValue("Security", out val);
                             string security = (string)val;
 
@@ -175,15 +176,15 @@ namespace EliteDangerousJournalMonitor
                             decimal z = Math.Round(decimal.Parse(coordsMatch.Groups[3].Value) * 32) / (decimal)32.0;
 
                             data.TryGetValue("Allegiance", out val);
-                            string allegiance = (string)val;
+                            Superpower allegiance = Superpower.FromEDName((string)val);
                             data.TryGetValue("Faction", out val);
                             string faction = (string)val;
                             data.TryGetValue("FactionState", out val);
-                            string factionState = (string)val;
+                            State factionState = State.FromEDName((string)val);
                             data.TryGetValue("Economy", out val);
-                            string economy = (string)val;
+                            Economy economy = Economy.FromEDName((string)val);
                             data.TryGetValue("Government", out val);
-                            string government = (string)val;
+                            Government government = Government.FromEDName((string)val);
                             data.TryGetValue("Security", out val);
                             string security = (string)val;
 
@@ -552,6 +553,35 @@ namespace EliteDangerousJournalMonitor
                             // We don't care about buy price, we care about profit per unit
                             decimal profit = price - buyPrice;
                             journalEvent = new SoldToMarketEvent(timestamp, cargo, amount, price, profit);
+                            handled = true;
+                            break;
+                        }
+                    case "LoadGame":
+                        {
+                            object val;
+                            data.TryGetValue("Commander", out val);
+                            string commander = (string)val;
+                            data.TryGetValue("Ship", out val);
+                            Ship ship = ShipDefinitions.ShipFromEDModel((string)val);
+                            data.TryGetValue("GameMode", out val);
+                            GameMode mode = GameMode.Unknown;
+                            switch ((string)val)
+                            {
+                                case "Open":
+                                    mode = GameMode.Open;
+                                    break;
+                                case "Group":
+                                    mode = GameMode.Group;
+                                    break;
+                                case "Solo":
+                                    mode = GameMode.Solo;
+                                    break;
+                            }
+                            data.TryGetValue("Group", out val);
+                            string group = (string)val;
+                            data.TryGetValue("Credits", out val);
+                            decimal credits = (decimal)val;
+                            journalEvent = new StartedEvent(timestamp, commander, ship, mode, group, credits);
                             handled = true;
                             break;
                         }

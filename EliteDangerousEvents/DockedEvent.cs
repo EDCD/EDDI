@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EliteDangerousDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Docked";
         public const string DESCRIPTION = "Triggered when your ship docks at a station or outpost";
-        public static DockedEvent SAMPLE = new DockedEvent(DateTime.Now, "Wolf 289", "Kotov Refinery", "Federation", "Wolf 289 Gold Federal Industry", "Civil War", "Extraction", "Corporate", "High");
+        public static DockedEvent SAMPLE = new DockedEvent(DateTime.Now, "Wolf 289", "Kotov Refinery", Superpower.Federation, "Wolf 289 Gold Federal Industry", State.CivilWar, Economy.Extraction, Government.Corporate, "High");
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DockedEvent()
@@ -35,24 +36,24 @@ namespace EliteDangerousEvents
         public string station { get; private set; }
 
         [JsonProperty("allegiance")]
-        public string allegiance { get; private set; }
+        public Superpower allegiance { get; private set; }
 
         [JsonProperty("faction")]
         public string faction { get; private set; }
 
         [JsonProperty("factionstate")]
-        public string factionstate { get; private set; }
+        public State factionstate { get; private set; }
 
         [JsonProperty("economy")]
-        public string economy { get; private set; }
+        public Economy economy { get; private set; }
 
         [JsonProperty("government")]
-        public string government { get; private set; }
+        public Government government { get; private set; }
 
         [JsonProperty("security")]
         public string security { get; private set; }
 
-        public DockedEvent(DateTime timestamp, string system, string station, string allegiance, string faction, string factionstate, string economy, string government, string security) : base(timestamp, NAME)
+        public DockedEvent(DateTime timestamp, string system, string station, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, string security) : base(timestamp, NAME)
         {
             this.system = system;
             this.station = station;

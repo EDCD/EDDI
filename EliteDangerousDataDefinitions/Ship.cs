@@ -14,6 +14,9 @@ namespace EliteDangerousDataDefinitions
 
         /// <summary>the ID of this ship for this commander</summary>
         public int LocalId { get; set; }
+        /// <summary>the manufacturer of the ship (Lakon, CoreDynamics etc.)</summary>
+        [JsonIgnore]
+        public string manufacturer { get; set; }
         /// <summary>the model of the ship (Python, Anaconda, etc.)</summary>
         [JsonIgnore]
         public string model { get; set; }
@@ -113,10 +116,11 @@ namespace EliteDangerousDataDefinitions
             compartments = new List<Compartment>();
         }
 
-        public Ship(long EDID, string EDName, string Model, ShipSize Size)
+        public Ship(long EDID, string EDName, string Manufacturer, string Model, ShipSize Size)
         {
             this.EDID = EDID;
             this.EDName = EDName;
+            this.manufacturer = manufacturer;
             this.model = Model;
             this.size = Size;
             hardpoints = new List<Hardpoint>();
