@@ -12,7 +12,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Died";
         public const string DESCRIPTION = "Triggered when you have died";
-        public static DiedEvent SAMPLE = new DiedEvent(DateTime.Now, new List<string>{}, new List<Ship> { }, new List<int> { });
+        public static DiedEvent SAMPLE = new DiedEvent(DateTime.Now, new List<string>{}, new List<Ship> { }, new List<CombatRating> { });
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DiedEvent()
@@ -32,9 +32,9 @@ namespace EliteDangerousEvents
         public List<Ship> ships { get; private set; }
 
         [JsonProperty("ranks")]
-        public List<int> ranks { get; private set; }
+        public List<CombatRating> ranks { get; private set; }
 
-        public DiedEvent(DateTime timestamp, List<string> commanders, List<Ship> ships, List<int> ranks) : base(timestamp, NAME)
+        public DiedEvent(DateTime timestamp, List<string> commanders, List<Ship> ships, List<CombatRating> ranks) : base(timestamp, NAME)
         {
             this.commanders = commanders;
             this.ships = ships;

@@ -516,8 +516,7 @@ namespace EliteDangerousJournalMonitor
 
                             List<string> names = new List<string>();
                             List<Ship> ships = new List<Ship>();
-                            List<int> ranks = new List<int>();
-                            List<string> ratings = new List<string>();
+                            List<CombatRating> ratings = new List<CombatRating>();
 
                             if (data.ContainsKey("KillerName"))
                             {
@@ -526,8 +525,11 @@ namespace EliteDangerousJournalMonitor
                                 data.TryGetValue("KillerShip", out val);
                                 ships.Add(ShipDefinitions.ShipFromEDModel((string)val));
                             }
-                            //journalEntry.type = "Died";
-                            //journalEntry.refetchProfile = false;
+                            if (data.ContainsKey("Killers"))
+                            {
+                                // TODO
+                            }
+                            journalEvent = new DiedEvent(timestamp, names, ships, ratings);
                             handled = true;
                         }
                         break;
