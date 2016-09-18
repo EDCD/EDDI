@@ -12,7 +12,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Crew hired";
         public const string DESCRIPTION = "Triggered when you hire crew";
-        public static CrewHiredEvent SAMPLE = new CrewHiredEvent(DateTime.Now, "Margaret Parrish", "The Dark Wheel", 15000, 1);
+        public static CrewHiredEvent SAMPLE = new CrewHiredEvent(DateTime.Now, "Margaret Parrish", "The Dark Wheel", 15000, CombatRating.MostlyHarmless);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CrewHiredEvent()
@@ -22,7 +22,6 @@ namespace EliteDangerousEvents
             VARIABLES.Add("name", "The name of the crewmember being hired");
             VARIABLES.Add("faction", "The faction of the crewmember being hired");
             VARIABLES.Add("cost", "The cost of the crewmember being hired");
-            VARIABLES.Add("combatrank", "The combat rank of the crewmember being hired");
             VARIABLES.Add("combatrating", "The combat rating of the crewmember being hired");
         }
 
@@ -32,18 +31,15 @@ namespace EliteDangerousEvents
         public string faction { get; private set; }
         [JsonProperty("cost")]
         public decimal cost { get; private set; }
-        [JsonProperty("combatrank")]
-        public string combatrank { get; private set; }
         [JsonProperty("combatrating")]
-        public decimal combatrating { get; private set; }
+        public CombatRating combatrating { get; private set; }
 
-        public CrewHiredEvent(DateTime timestamp, string name, string factinon, decimal cost, int combatrating) : base(timestamp, NAME)
+        public CrewHiredEvent(DateTime timestamp, string name, string faction, decimal cost, CombatRating combatrating) : base(timestamp, NAME)
         {
             this.name = name;
             this.faction = faction;
             this.cost = cost;
             this.combatrating = combatrating;
-            this.combatrank = Commander.combatRanks[combatrating];
         }
     }
 }

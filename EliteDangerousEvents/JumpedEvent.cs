@@ -12,7 +12,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Jumped";
         public const string DESCRIPTION = "Triggered when you jump from one system to another";
-        public static JumpedEvent SAMPLE = new JumpedEvent(DateTime.Now, "LP 98-132", -26.78125M, 37.03125M, -4.59375M, Superpower.Federation, "Brotherhood of LP 98-132", State.Outbreak, Economy.Extraction, Government.Anarchy, "High");
+        public static JumpedEvent SAMPLE = new JumpedEvent(DateTime.Now, "LP 98-132", -26.78125M, 37.03125M, -4.59375M, Superpower.Federation, "Brotherhood of LP 98-132", State.Outbreak, Economy.Extraction, Government.Anarchy, SecurityLevel.High);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static JumpedEvent()
@@ -59,9 +59,9 @@ namespace EliteDangerousEvents
         public Government government { get; private set; }
 
         [JsonProperty("security")]
-        public string security { get; private set; }
+        public SecurityLevel security { get; private set; }
 
-        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, string security) : base(timestamp, NAME)
+        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;

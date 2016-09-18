@@ -1,5 +1,4 @@
-﻿using EliteDangerousCompanionAppService;
-using EliteDangerousDataDefinitions;
+﻿using EliteDangerousDataDefinitions;
 using System;
 using System.Collections.Generic;
 

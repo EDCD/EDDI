@@ -78,8 +78,8 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("Government", out val);
                             Government government = Government.FromEDName((string)val);
                             data.TryGetValue("Security", out val);
-                            SecurityLevel security = security.FromEDName((string)val);
-                            journalEvent = new DockedEvent(timestamp, systemName, stationName, allegiance, faction, factionState, economy, government, security);
+                            SecurityLevel securityLevel = SecurityLevel.FromEDName((string)val);
+                            journalEvent = new DockedEvent(timestamp, systemName, stationName, allegiance, faction, factionState, economy, government, securityLevel);
                         }
                         handled = true;
                         break;
@@ -152,7 +152,7 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("Government", out val);
                             Government government = Government.FromEDName((string)val);
                             data.TryGetValue("Security", out val);
-                            string security = (string)val;
+                            SecurityLevel security = SecurityLevel.FromEDName((string)val);
 
                             journalEvent = new JumpedEvent(timestamp, systemName, x, y, z, allegiance, faction, factionState, economy, government, security);
                         }
@@ -186,7 +186,7 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("Government", out val);
                             Government government = Government.FromEDName((string)val);
                             data.TryGetValue("Security", out val);
-                            string security = (string)val;
+                            SecurityLevel security = SecurityLevel.FromEDName((string)val);
 
                             journalEvent = new LocationEvent(timestamp, systemName, x, y, z, allegiance, faction, factionState, economy, government, security);
                         }
@@ -252,22 +252,22 @@ namespace EliteDangerousJournalMonitor
                             if (data.ContainsKey("Combat"))
                             {
                                 data.TryGetValue("Combat", out val);
-                                int rank = (int)val;
-                                journalEvent = new CombatPromotionEvent(timestamp, rank);
+                                CombatRating rating = CombatRating.FromRank((int)val);
+                                journalEvent = new CombatPromotionEvent(timestamp, rating);
                                 handled = true;
                             }
                             else if (data.ContainsKey("Trade"))
                             {
                                 data.TryGetValue("Trade", out val);
-                                int rank = (int)val;
-                                journalEvent = new TradePromotionEvent(timestamp, rank);
+                                TradeRating rating = TradeRating.FromRank((int)val);
+                                journalEvent = new TradePromotionEvent(timestamp, rating);
                                 handled = true;
                             }
                             else if (data.ContainsKey("Explore"))
                             {
                                 data.TryGetValue("Explore", out val);
-                                int rank = (int)val;
-                                journalEvent = new ExplorationPromotionEvent(timestamp, rank);
+                                ExplorationRating rating = ExplorationRating.FromRank((int)val);
+                                journalEvent = new ExplorationPromotionEvent(timestamp, rating);
                                 handled = true;
                             }
                         }
@@ -511,18 +511,34 @@ namespace EliteDangerousJournalMonitor
                         handled = true;
                         break;
                     case "Died":
-                        //journalEntry.type = "Died";
-                        //journalEntry.refetchProfile = false;
-                        handled = true;
+                        {
+                            object val;
+
+                            List<string> names = new List<string>();
+                            List<Ship> ships = new List<Ship>();
+                            List<int> ranks = new List<int>();
+                            List<string> ratings = new List<string>();
+
+                            if (data.ContainsKey("KillerName"))
+                            {
+                                data.TryGetValue("KillerName", out val);
+                                names.Add((string)val);
+                                data.TryGetValue("KillerShip", out val);
+                                ships.Add(ShipDefinitions.ShipFromEDModel((string)val));
+                            }
+                            //journalEntry.type = "Died";
+                            //journalEntry.refetchProfile = false;
+                            handled = true;
+                        }
                         break;
                     case "USSDrop":
                         {
                             object val;
                             data.TryGetValue("USSType", out val);
-                            string source = (string)val;
+                            SignalSource source = SignalSource.FromEDName((string)val);
                             data.TryGetValue("USSThreat", out val);
                             int threat = (int)val;
-                            journalEvent = new EnteredUSSEvent(timestamp, source, threat);
+                            journalEvent = new EnteredSignalSourceEvent(timestamp, source, threat);
                         }
                         handled = true;
                         break;
@@ -595,8 +611,8 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("Cost", out val);
                             decimal price = (decimal)val;
                             data.TryGetValue("CombatRank", out val);
-                            int combatRank = (int)val;
-                            journalEvent = new CrewHiredEvent(timestamp, name, faction, price, combatRank);
+                            CombatRating rating = CombatRating.FromRank((int)val);
+                            journalEvent = new CrewHiredEvent(timestamp, name, faction, price, rating);
                             handled = true;
                             break;
                         }

@@ -350,8 +350,8 @@ namespace EDDI
         }
 
         /// <summary>Work out the title for the commander in the current system</summary>
-        private static int minEmpireRatingForTitle = 3;
-        private static int minFederationRatingForTitle = 1;
+        private static int minEmpireRankForTitle = 3;
+        private static int minFederationRankForTitle = 1;
         private void setCommanderTitle()
         {
             if (Cmdr != null)
@@ -359,13 +359,13 @@ namespace EDDI
                 Cmdr.title = "Commander";
                 if (CurrentStarSystem != null)
                 {
-                    if (CurrentStarSystem.allegiance == "Federation" && Cmdr.federationrating > minFederationRatingForTitle)
+                    if (CurrentStarSystem.allegiance == "Federation" && Cmdr.federationrating.rank > minFederationRankForTitle)
                     {
-                        Cmdr.title = Cmdr.federationrank;
+                        Cmdr.title = Cmdr.federationrating.name;
                     }
-                    else if (CurrentStarSystem.allegiance == "Empire" && Cmdr.empirerating > minEmpireRatingForTitle)
+                    else if (CurrentStarSystem.allegiance == "Empire" && Cmdr.empirerating.rank > minEmpireRankForTitle)
                     {
-                        Cmdr.title = Cmdr.empirerank;
+                        Cmdr.title = Cmdr.empirerating.name;
                     }
                 }
             }

@@ -80,10 +80,6 @@
       <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
       <Name>EDDI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousCompanionAppService\EliteDangerousCompanionAppService.csproj">
-      <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
-      <Name>EliteDangerousCompanionAppService</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EliteDangerousDataDefinitions\EliteDangerousDataDefinitions.csproj">
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EliteDangerousDataDefinitions</Name>
@@ -93,16 +89,8 @@
       <Name>EliteDangerousDataProviderService</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteDangerousEvents\EliteDangerousEvents.csproj">
-      <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
+      <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EliteDangerousEvents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousJournalMonitor\EliteDangerousJournalMonitor.csproj">
-      <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>
-      <Name>EliteDangerousJournalMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousNetLogMonitor\EliteDangerousNetLogMonitor.csproj">
-      <Project>{0928ade6-f260-4820-afbc-1661130c3474}</Project>
-      <Name>EliteDangerousNetLogMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteDangerousSpeechService\EliteDangerousSpeechService.csproj">
       <Project>{19572a69-c13a-459d-ab72-2b0f034ac27f}</Project>
@@ -120,6 +108,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.102.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.102.0\build\net451\System.Data.SQLite.Core.targets')" />

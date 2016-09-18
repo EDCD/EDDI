@@ -49,7 +49,8 @@
     <Compile Include="CrewAssignedEvent.cs" />
     <Compile Include="CrewFiredEvent.cs" />
     <Compile Include="CrewHiredEvent.cs" />
-    <Compile Include="EnteredUSSEvent.cs" />
+    <Compile Include="DiedEvent.cs" />
+    <Compile Include="EnteredSignalSourceEvent.cs" />
     <Compile Include="MessageSentEvent.cs" />
     <Compile Include="MessageReceivedEvent.cs" />
     <Compile Include="RebootRepairEvent.cs" />

@@ -42,28 +42,22 @@ namespace EliteDangerousDataDefinitions
 
         public static State FromName(string from)
         {
-            foreach (State s in STATES)
+            State result = STATES.First(v => v.name == from);
+            if (result == null)
             {
-                if (from == s.name)
-                {
-                    return s;
-                }
+                Logging.Report("Unknown State name " + from);
             }
-            Logging.Report("Unknown state name " + from);
-            return null;
+            return result;
         }
 
         public static State FromEDName(string from)
         {
-            foreach (State s in STATES)
+            State result = STATES.First(v => v.edname == from);
+            if (result == null)
             {
-                if (from == s.edname)
-                {
-                    return s;
-                }
+                Logging.Report("Unknown State name " + from);
             }
-            Logging.Report("Unknown state ED name " + from);
-            return null;
+            return result;
         }
     }
 }

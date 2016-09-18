@@ -440,19 +440,11 @@ namespace EliteDangerousCompanionAppService
                 Commander Commander = new Commander();
                 Commander.name = (string)json["commander"]["name"];
 
-                Commander.combatrating = (int)json["commander"]["rank"]["combat"];
-                Commander.combatrank = Commander.combatRanks[Commander.combatrating];
-
-                Commander.traderating = (int)json["commander"]["rank"]["trade"];
-                Commander.traderank = Commander.tradeRanks[Commander.traderating];
-
-                Commander.explorationrating = (int)json["commander"]["rank"]["explore"];
-                Commander.explorationrank = Commander.exploreRanks[Commander.explorationrating];
-
-                Commander.empirerating = (int)json["commander"]["rank"]["empire"];
-                Commander.empirerank = Commander.empireRanks[(int)Commander.empirerating];
-                Commander.federationrating = (int)json["commander"]["rank"]["federation"];
-                Commander.federationrank = Commander.federationRanks[(int)Commander.federationrating];
+                Commander.combatrating = CombatRating.FromRank((int)json["commander"]["rank"]["combat"]);
+                Commander.traderating = TradeRating.FromRank((int)json["commander"]["rank"]["trade"]);
+                Commander.explorationrating = ExplorationRating.FromRank((int)json["commander"]["rank"]["explore"]);
+                Commander.empirerating = EmpireRating.FromRank((int)json["commander"]["rank"]["empire"]);
+                Commander.federationrating = FederationRating.FromRank((int)json["commander"]["rank"]["federation"]);
 
                 Commander.credits = (long)json["commander"]["credits"];
                 Commander.debt = (long)json["commander"]["debt"];

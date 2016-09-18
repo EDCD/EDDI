@@ -40,28 +40,22 @@ namespace EliteDangerousDataDefinitions
 
         public static Economy FromName(string from)
         {
-            foreach (Economy s in ECONOMIES)
+            Economy result = ECONOMIES.First(v => v.name == from);
+            if (result == null)
             {
-                if (from == s.name)
-                {
-                    return s;
-                }
+                Logging.Report("Unknown Economy name " + from);
             }
-            Logging.Report("Unknown economy name " + from);
-            return null;
+            return result;
         }
 
         public static Economy FromEDName(string from)
         {
-            foreach (Economy s in ECONOMIES)
+            Economy result = ECONOMIES.First(v => v.edname == from);
+            if (result == null)
             {
-                if (from == s.edname)
-                {
-                    return s;
-                }
+                Logging.Report("Unknown Economy ED name " + from);
             }
-            Logging.Report("Unknown economy ED name " + from);
-            return null;
+            return result;
         }
     }
 }

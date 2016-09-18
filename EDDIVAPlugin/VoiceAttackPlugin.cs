@@ -1,19 +1,15 @@
-﻿using EliteDangerousCompanionAppService;
-using EliteDangerousDataProviderService;
+﻿using EliteDangerousDataProviderService;
 using EliteDangerousDataDefinitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections.Concurrent;
-using EliteDangerousNetLogMonitor;
 using System.Threading;
 using System.Diagnostics;
-using EliteDangerousStarMapService;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using EliteDangerousSpeechService;
 using Utilities;
-using EliteDangerousJournalMonitor;
 using EDDI;
 using EliteDangerousEvents;
 
@@ -523,16 +519,16 @@ namespace EDDIVAPlugin
             try
             {
                 setString(ref textValues, "Name", cmdr == null ? null : cmdr.name);
-                setInt(ref intValues, "Combat rating", cmdr == null ? (int?)null : cmdr.combatrating);
-                setString(ref textValues, "Combat rank", cmdr == null ? null : cmdr.combatrank);
-                setInt(ref intValues, "Trade rating", cmdr == null ? (int?)null : cmdr.traderating);
-                setString(ref textValues, "Trade rank", cmdr == null ? null : cmdr.traderank);
-                setInt(ref intValues, "Explore rating", cmdr == null ? (int?)null : cmdr.explorationrating);
-                setString(ref textValues, "Explore rank", cmdr == null ? null : cmdr.explorationrank);
-                setInt(ref intValues, "Empire rating", cmdr == null ? (int?)null : cmdr.empirerating);
-                setString(ref textValues, "Empire rank", cmdr == null ? null : cmdr.empirerank);
-                setInt(ref intValues, "Federation rating", cmdr == null ? (int?)null : cmdr.federationrating);
-                setString(ref textValues, "Federation rank", cmdr == null ? null : cmdr.federationrank);
+                setInt(ref intValues, "Combat rating", cmdr == null ? (int?)null : cmdr.combatrating.rank);
+                setString(ref textValues, "Combat rank", cmdr == null ? null : cmdr.combatrating.name);
+                setInt(ref intValues, "Trade rating", cmdr == null ? (int?)null : cmdr.traderating.rank);
+                setString(ref textValues, "Trade rank", cmdr == null ? null : cmdr.traderating.name);
+                setInt(ref intValues, "Explore rating", cmdr == null ? (int?)null : cmdr.explorationrating.rank);
+                setString(ref textValues, "Explore rank", cmdr == null ? null : cmdr.explorationrating.name);
+                setInt(ref intValues, "Empire rating", cmdr == null ? (int?)null : cmdr.empirerating.rank);
+                setString(ref textValues, "Empire rank", cmdr == null ? null : cmdr.empirerating.name);
+                setInt(ref intValues, "Federation rating", cmdr == null ? (int?)null : cmdr.federationrating.rank);
+                setString(ref textValues, "Federation rank", cmdr == null ? null : cmdr.federationrating.name);
                 setDecimal(ref decimalValues, "Credits", cmdr == null ? (decimal?)null : cmdr.credits);
                 setString(ref textValues, "Credits (spoken)", cmdr == null ? null : Translations.Humanize(cmdr.credits));
                 setDecimal(ref decimalValues, "Debt", cmdr == null ? (decimal?)null : cmdr.debt);

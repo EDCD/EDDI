@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace EliteDangerousDataDefinitions
 {
@@ -33,26 +34,22 @@ namespace EliteDangerousDataDefinitions
 
         public static Superpower FromName(string from)
         {
-            foreach (Superpower s in SUPERPOWERS)
+            Superpower result = SUPERPOWERS.First(v => v.name == from);
+            if (result == null)
             {
-                if (from == s.name)
-                {
-                    return s;
-                }
+                Logging.Report("Unknown Superpower name " + from);
             }
-            return null;
+            return result;
         }
 
         public static Superpower FromEDName(string from)
         {
-            foreach (Superpower s in SUPERPOWERS)
+            Superpower result = SUPERPOWERS.First(v => v.edname == from);
+            if (result == null)
             {
-                if (from == s.edname)
-                {
-                    return s;
-                }
+                Logging.Report("Unknown Superpower ED name " + from);
             }
-            return null;
+            return result;
         }
     }
 }

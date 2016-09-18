@@ -33,28 +33,22 @@ namespace EliteDangerousDataDefinitions
 
         public static SecurityLevel FromName(string from)
         {
-            foreach (SecurityLevel s in SECURITYLEVELS)
+            SecurityLevel result = SECURITYLEVELS.First(v => v.name == from);
+            if (result == null)
             {
-                if (from == s.name)
-                {
-                    return s;
-                }
+                Logging.Report("Unknown Security Level name " + from);
             }
-            Logging.Report("Unknown security level name " + from);
-            return null;
+            return result;
         }
 
         public static SecurityLevel FromEDName(string from)
         {
-            foreach (SecurityLevel s in SECURITYLEVELS)
+            SecurityLevel result = SECURITYLEVELS.First(v => v.edname == from);
+            if (result == null)
             {
-                if (from == s.edname)
-                {
-                    return s;
-                }
+                Logging.Report("Unknown Security Level ED name " + from);
             }
-            Logging.Report("Unknown security level ED name " + from);
-            return null;
+            return result;
         }
     }
 }

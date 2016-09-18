@@ -12,25 +12,21 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Exploration promotion";
         public const string DESCRIPTION = "Triggered when your exploration rank increases";
-        public static ExplorationPromotionEvent SAMPLE = new ExplorationPromotionEvent(DateTime.Now, 5);
+        public static ExplorationPromotionEvent SAMPLE = new ExplorationPromotionEvent(DateTime.Now, ExplorationRating.FromRank(5));
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ExplorationPromotionEvent()
         {
             SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Promotion\",\"Explore\":5}";
-            VARIABLES.Add("rank", "The commander's new exploration rank (Aimless, etc)");
-            VARIABLES.Add("rating", "The commander's new exploration combat rating (0-8)");
+            VARIABLES.Add("rating", "The commander's new exploration rating");
         }
 
-        [JsonProperty("rank")]
-        public string rank { get; private set; }
         [JsonProperty("rating")]
-        public int rating{ get; private set; }
+        public ExplorationRating rating{ get; private set; }
 
-        public ExplorationPromotionEvent(DateTime timestamp, int rating) : base(timestamp, NAME)
+        public ExplorationPromotionEvent(DateTime timestamp, ExplorationRating rating) : base(timestamp, NAME)
         {
             this.rating = rating;
-            this.rank = Commander.exploreRanks[rating];
         }
     }
 }

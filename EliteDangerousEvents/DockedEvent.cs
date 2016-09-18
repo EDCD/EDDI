@@ -12,7 +12,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Docked";
         public const string DESCRIPTION = "Triggered when your ship docks at a station or outpost";
-        public static DockedEvent SAMPLE = new DockedEvent(DateTime.Now, "Wolf 289", "Kotov Refinery", Superpower.Federation, "Wolf 289 Gold Federal Industry", State.CivilWar, Economy.Extraction, Government.Corporate, "High");
+        public static DockedEvent SAMPLE = new DockedEvent(DateTime.Now, "Wolf 289", "Kotov Refinery", Superpower.Federation, "Wolf 289 Gold Federal Industry", State.CivilWar, Economy.Extraction, Government.Corporate, SecurityLevel.High);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DockedEvent()
@@ -51,9 +51,9 @@ namespace EliteDangerousEvents
         public Government government { get; private set; }
 
         [JsonProperty("security")]
-        public string security { get; private set; }
+        public SecurityLevel security { get; private set; }
 
-        public DockedEvent(DateTime timestamp, string system, string station, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, string security) : base(timestamp, NAME)
+        public DockedEvent(DateTime timestamp, string system, string station, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
         {
             this.system = system;
             this.station = station;

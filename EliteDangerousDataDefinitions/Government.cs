@@ -44,28 +44,22 @@ namespace EliteDangerousDataDefinitions
 
         public static Government FromName(string from)
         {
-            foreach (Government s in GOVERNMENTS)
+            Government result = GOVERNMENTS.First(v => v.name == from);
+            if (result == null)
             {
-                if (from == s.name)
-                {
-                    return s;
-                }
+                Logging.Report("Unknown Government name " + from);
             }
-            Logging.Report("Unknown government name " + from);
-            return null;
+            return result;
         }
 
         public static Government FromEDName(string from)
         {
-            foreach (Government s in GOVERNMENTS)
+            Government result = GOVERNMENTS.First(v => v.edname == from);
+            if (result == null)
             {
-                if (from == s.edname)
-                {
-                    return s;
-                }
+                Logging.Report("Unknown Government ED name " + from);
             }
-            Logging.Report("Unknown government ED name " + from);
-            return null;
+            return result;
         }
     }
 }
