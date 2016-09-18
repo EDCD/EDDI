@@ -45,9 +45,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BondAwardedEvent.cs" />
+    <Compile Include="ControllingShipEvent.cs" />
     <Compile Include="CrewAssignedEvent.cs" />
     <Compile Include="CrewFiredEvent.cs" />
     <Compile Include="CrewHiredEvent.cs" />
+    <Compile Include="EnteredUSSEvent.cs" />
+    <Compile Include="MessageSentEvent.cs" />
+    <Compile Include="MessageReceivedEvent.cs" />
+    <Compile Include="RebootRepairEvent.cs" />
+    <Compile Include="ControllingFighterEvent.cs" />
+    <Compile Include="SelfDestructEvent.cs" />
+    <Compile Include="SRVLaunchedEvent.cs" />
+    <Compile Include="SRVDockedEvent.cs" />
+    <Compile Include="FighterDockedEvent.cs" />
+    <Compile Include="FighterLaunchedEvent.cs" />
     <Compile Include="SoldToMarketEvent.cs" />
     <Compile Include="BountyIncurredEvent .cs" />
     <Compile Include="CargoEjectedEvent.cs" />

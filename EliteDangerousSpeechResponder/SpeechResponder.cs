@@ -89,7 +89,10 @@ namespace EliteDangerousSpeechResponder
         {
             Dictionary<string, Cottle.Value> dict = createVariables(theEvent);
             string result = resolver.resolve(scriptName, dict);
-            speechService.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, result);
+            if (result != null)
+            {
+                speechService.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, result);
+            }
         }
 
         // Create Cottle variables from the EDDI information

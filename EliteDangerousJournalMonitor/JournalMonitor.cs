@@ -19,7 +19,7 @@ namespace EliteDangerousJournalMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$");
 
-        public JournalMonitor() : base(GetSavedGamesDir(), @"^journal\.[0-9\.]\.+log$", result => HandleJournalEntry(result, Eddi.Instance.eventHandler)) {}
+        public JournalMonitor() : base(GetSavedGamesDir(), @"^journal\.[0-9\.]+\.log$", result => HandleJournalEntry(result, Eddi.Instance.eventHandler)) {}
 
         private static void HandleJournalEntry(string line, Action<Event> callback)
         {
@@ -134,16 +134,11 @@ namespace EliteDangerousJournalMonitor
 
                             data.TryGetValue("StarSystem", out val);
                             string systemName = (string)val;
-
-                            // The system co-ordinates are locked away in a StarPos field, which is the co-ordinates surrounded by square brackets
                             data.TryGetValue("StarPos", out val);
-                            string starPos = (string)val;
-                            Regex coordsRegex = new Regex(@"^\[(-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+)\]$");
-                            Match coordsMatch = coordsRegex.Match(starPos);
-                            // Co-ordinates are only to 3dp so do a bit of math to calculate the correct values
-                            decimal x = Math.Round(decimal.Parse(coordsMatch.Groups[1].Value) * 32) / (decimal)32.0;
-                            decimal y = Math.Round(decimal.Parse(coordsMatch.Groups[2].Value) * 32) / (decimal)32.0;
-                            decimal z = Math.Round(decimal.Parse(coordsMatch.Groups[3].Value) * 32) / (decimal)32.0;
+                            List<object> starPos = (List<object>)val;
+                            decimal x = Math.Round((decimal)((double)starPos[0]) * 32) / (decimal)32.0;
+                            decimal y = Math.Round((decimal)((double)starPos[1]) * 32) / (decimal)32.0;
+                            decimal z = Math.Round((decimal)((double)starPos[2]) * 32) / (decimal)32.0;
 
                             data.TryGetValue("Allegiance", out val);
                             string allegiance = (string)val;
@@ -366,30 +361,70 @@ namespace EliteDangerousJournalMonitor
                         handled = true;
                         break;
                     case "LaunchSRV":
-                        //journalEntry.type = "SRV deployed";
-                        //journalEntry.refetchProfile = false;
+                        {
+                            object val;
+                            data.TryGetValue("Loadout", out val);
+                            string loadout = (string)val;
+                            journalEvent = new SRVLaunchedEvent(timestamp, loadout);
+                        }
                         handled = true;
                         break;
                     case "DockSRV":
-                        //journalEntry.type = "SRV docked";
-                        //journalEntry.refetchProfile = false;
+                        journalEvent = new SRVDockedEvent(timestamp);
                         handled = true;
                         break;
                     case "LaunchFighter":
-                        //journalEntry.type = "Fighter deployed";
-                        //journalEntry.refetchProfile = false;
+                        {
+                            object val;
+                            data.TryGetValue("Loadout", out val);
+                            string loadout = (string)val;
+                            data.TryGetValue("PlayerControlled", out val);
+                            bool playerControlled = (bool)val;
+                            journalEvent = new FighterLaunchedEvent(timestamp, loadout, playerControlled);
+                        }
                         handled = true;
                         break;
                     case "DockFighter":
-                        //journalEntry.type = "Fighter docked";
-                        //journalEntry.refetchProfile = false;
+                        journalEvent = new FighterDockedEvent(timestamp);
                         handled = true;
                         break;
+                    case "VehicleSwitch":
+                        {
+                            object val;
+                            data.TryGetValue("To", out val);
+                            string to = (string)val;
+                            if (to == "Fighter")
+                            {
+                                journalEvent = new ControllingFighterEvent(timestamp);
+                                handled = true;
+                            }
+                            else if (to == "Mothership")
+                            {
+                                journalEvent = new ControllingShipEvent(timestamp);
+                                handled = true;
+                            }
+                        }
+                        break;
                     case "ReceiveText":
-                        //journalEntry.type = "Message received";
-                        //journalEntry.stringData.Add("from", (string)data["from"]);
-                        //journalEntry.stringData.Add("message", (string)data["message"]);
-                        //journalEntry.refetchProfile = false;
+                        {
+                            object val;
+                            data.TryGetValue("From", out val);
+                            string from = (string)val;
+                            data.TryGetValue("Message", out val);
+                            string message = (string)val;
+                            journalEvent = new MessageReceivedEvent(timestamp, from, message);
+                        }
+                        handled = true;
+                        break;
+                    case "SendText":
+                        {
+                            object val;
+                            data.TryGetValue("To", out val);
+                            string to = (string)val;
+                            data.TryGetValue("Message", out val);
+                            string message = (string)val;
+                            journalEvent = new MessageSentEvent(timestamp, to, message);
+                        }
                         handled = true;
                         break;
                     case "DockingRequested":
@@ -470,9 +505,24 @@ namespace EliteDangerousJournalMonitor
                             handled = true;
                             break;
                         }
+                    case "SelfDestruct":
+                        journalEvent = new SelfDestructEvent(timestamp);
+                        handled = true;
+                        break;
                     case "Died":
                         //journalEntry.type = "Died";
                         //journalEntry.refetchProfile = false;
+                        handled = true;
+                        break;
+                    case "USSDrop":
+                        {
+                            object val;
+                            data.TryGetValue("USSType", out val);
+                            string source = (string)val;
+                            data.TryGetValue("USSThreat", out val);
+                            int threat = (int)val;
+                            journalEvent = new EnteredUSSEvent(timestamp, source, threat);
+                        }
                         handled = true;
                         break;
                     case "MarketBuy":

@@ -129,6 +129,8 @@ namespace EDDI
                     tabControl.Items.Add(item);
                 }
             }
+
+            Eddi.Instance.Start();
         }
 
         // Handle changes to the eddi tab

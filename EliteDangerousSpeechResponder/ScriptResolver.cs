@@ -32,7 +32,7 @@ namespace EliteDangerousSpeechResponder
             Logging.Debug("Resolving script " + name);
             Script script;
             scripts.TryGetValue(name, out script);
-            if (script == null)
+            if (script == null || script.Value == null)
             {
                 Logging.Debug("No script");
                 return null;

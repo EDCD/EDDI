@@ -24,9 +24,6 @@ namespace EliteDangerousNetLogMonitor
 
         public LogMonitor(string directory, string filter, Action<string> callback)
         {
-            Logging.Info("******************************************************");
-            Logging.Info(directory);
-            Logging.Info("******************************************************");
             Directory = directory;
             Filter = new Regex(filter);
             Callback = callback;
