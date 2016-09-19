@@ -171,8 +171,8 @@ namespace EDDI
                 Environment = ENVIRONMENT_NORMAL_SPACE;
 
                 // Set up monitors and responders
-                monitors = loadMonitors();
-                responders = loadResponders();
+                monitors = findMonitors();
+                responders = findResponders();
 
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
             }
@@ -321,7 +321,7 @@ namespace EDDI
             return false;
         }
 
-        /// <summary>Obtain information from the copmanion API and use it to refresh our own data</summary>
+        /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
         public void refreshProfile()
         {
             if (CompanionAppService.Instance != null)
@@ -374,7 +374,7 @@ namespace EDDI
         /// <summary>
         /// Find all monitors
         /// </summary>
-        private List<EDDIMonitor> loadMonitors()
+        private List<EDDIMonitor> findMonitors()
         {
             DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             List<EDDIMonitor> monitors = new List<EDDIMonitor>();
@@ -395,7 +395,7 @@ namespace EDDI
                         {
                             if (type.GetInterface(pluginType.FullName) != null)
                             {
-                                Logging.Debug("Instantiating plugin at " + file.FullName);
+                                Logging.Debug("Instantiating monitor plugin at " + file.FullName);
                                 EDDIMonitor monitor = type.InvokeMember(null,
                                                            BindingFlags.CreateInstance,
                                                            null, null, null) as EDDIMonitor;
@@ -434,7 +434,7 @@ namespace EDDI
         /// <summary>
         /// Find all responders
         /// </summary>
-        private List<EDDIResponder> loadResponders()
+        private List<EDDIResponder> findResponders()
         {
             DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             List<EDDIResponder> responders = new List<EDDIResponder>();
@@ -455,7 +455,7 @@ namespace EDDI
                         {
                             if (type.GetInterface(pluginType.FullName) != null)
                             {
-                                Logging.Debug("Instantiating plugin at " + file.FullName);
+                                Logging.Debug("Instantiating responder plugin at " + file.FullName);
                                 EDDIResponder responder = type.InvokeMember(null,
                                                            BindingFlags.CreateInstance,
                                                            null, null, null) as EDDIResponder;
