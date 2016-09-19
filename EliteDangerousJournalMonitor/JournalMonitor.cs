@@ -486,8 +486,12 @@ namespace EliteDangerousJournalMonitor
                         handled = true;
                         break;
                     case "HullDamage":
-                        //journalEntry.type = "Ship hull damaged";
-                        //journalEntry.refetchProfile = true;
+                        {
+                            object val;
+                            data.TryGetValue("Health", out val);
+                            decimal health = sensibleHealth((decimal)val);
+                            journalEvent = new HullDamagedEvent(timestamp, health);
+                        }
                         handled = true;
                         break;
                     case "ShieldState":
@@ -516,18 +520,34 @@ namespace EliteDangerousJournalMonitor
 
                             List<string> names = new List<string>();
                             List<Ship> ships = new List<Ship>();
-                            List<int> ranks = new List<int>();
-                            List<string> ratings = new List<string>();
+                            List<CombatRating> ratings = new List<CombatRating>();
 
                             if (data.ContainsKey("KillerName"))
                             {
+                                // Single killer
                                 data.TryGetValue("KillerName", out val);
                                 names.Add((string)val);
                                 data.TryGetValue("KillerShip", out val);
                                 ships.Add(ShipDefinitions.ShipFromEDModel((string)val));
+                                data.TryGetValue("KillerRank", out val);
+                                ratings.Add(CombatRating.FromEDName((string)val));
                             }
-                            //journalEntry.type = "Died";
-                            //journalEntry.refetchProfile = false;
+                            if (data.ContainsKey("killers"))
+                            {
+                                // Multiple killers
+                                data.TryGetValue("Killers", out val);
+                                List<object> killers = (List<object>)val;
+                                foreach (IDictionary<string, object> killer in killers)
+                                {
+                                    killer.TryGetValue("Name", out val);
+                                    names.Add((string)val);
+                                    killer.TryGetValue("Ship", out val);
+                                    ships.Add(ShipDefinitions.ShipFromEDModel((string)val));
+                                    killer.TryGetValue("Rank", out val);
+                                    ratings.Add(CombatRating.FromEDName((string)val));
+                                }
+                            }
+                            journalEvent = new DiedEvent(timestamp, names, ships, ratings);
                             handled = true;
                         }
                         break;
@@ -672,7 +692,7 @@ namespace EliteDangerousJournalMonitor
 
         private static IDictionary<string, object> DeserializeData(JObject data)
         {
-            var dict = data.ToObject<Dictionary<string, Object>>();
+            var dict = data.ToObject<Dictionary<string, object>>();
             if (dict != null)
             {
                 return DeserializeData(dict);
@@ -699,9 +719,9 @@ namespace EliteDangerousJournalMonitor
             return data;
         }
 
-        private static IList<Object> DeserializeData(JArray data)
+        private static IList<object> DeserializeData(JArray data)
         {
-            var list = data.ToObject<List<Object>>();
+            var list = data.ToObject<List<object>>();
 
             for (int i = 0; i < list.Count; i++)
             {
@@ -714,6 +734,12 @@ namespace EliteDangerousJournalMonitor
                     list[i] = DeserializeData(value as JArray);
             }
             return list;
+        }
+
+        // Be sensible with health - round it unless it's very low
+        private static decimal sensibleHealth(decimal health)
+        {
+            return (health < 10 ? Math.Round(health, 1) : Math.Round(health));
         }
 
         public string MonitorName()

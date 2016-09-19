@@ -12,7 +12,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Died";
         public const string DESCRIPTION = "Triggered when you have died";
-        public static DiedEvent SAMPLE = new DiedEvent(DateTime.Now, new List<string>{}, new List<Ship> { }, new List<int> { });
+        public static DiedEvent SAMPLE = new DiedEvent(DateTime.Now, new List<string>{}, new List<Ship> { }, new List<CombatRating> { });
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DiedEvent()
@@ -21,7 +21,6 @@ namespace EliteDangerousEvents
 
             VARIABLES.Add("commanders", "The names of the commanders who killed you");
             VARIABLES.Add("ships", "The ships the commanders who killed you were flying");
-            VARIABLES.Add("ranks", "The ranks of the commanders who killed you");
             VARIABLES.Add("ratings", "The ratings of the commanders who killed you");
         }
 
@@ -31,14 +30,14 @@ namespace EliteDangerousEvents
         [JsonProperty("ships")]
         public List<Ship> ships { get; private set; }
 
-        [JsonProperty("ranks")]
-        public List<int> ranks { get; private set; }
+        [JsonProperty("ratings")]
+        public List<CombatRating> ratings { get; private set; }
 
-        public DiedEvent(DateTime timestamp, List<string> commanders, List<Ship> ships, List<int> ranks) : base(timestamp, NAME)
+        public DiedEvent(DateTime timestamp, List<string> commanders, List<Ship> ships, List<CombatRating> ratings) : base(timestamp, NAME)
         {
             this.commanders = commanders;
             this.ships = ships;
-            this.ranks = ranks;
+            this.ratings = ratings;
         }
     }
 }

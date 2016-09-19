@@ -50,6 +50,7 @@
     <Compile Include="CrewFiredEvent.cs" />
     <Compile Include="CrewHiredEvent.cs" />
     <Compile Include="DiedEvent.cs" />
+    <Compile Include="HullDamageEvent.cs" />
     <Compile Include="EnteredSignalSourceEvent.cs" />
     <Compile Include="MessageSentEvent.cs" />
     <Compile Include="MessageReceivedEvent.cs" />
