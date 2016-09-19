@@ -394,9 +394,25 @@ namespace EliteDangerousCompanionAppService
                 machineIdCookie.Value = credentials.machineId;
                 machineIdCookie.Secure = true;
                 // The expiry is embedded in the cookie value
-                DateTime expiryDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                expiryDateTime = expiryDateTime.AddSeconds(Convert.ToInt64(credentials.machineId.Substring(0, credentials.machineId.IndexOf("%7C"))));
-                machineIdCookie.Expires = expiryDateTime;
+                if (credentials.machineId.IndexOf("%7C") == -1)
+                {
+                    machineIdCookie.Expires = DateTime.Now.AddDays(7);
+                }
+                else
+                {
+                    string expiryseconds = credentials.machineId.Substring(0, credentials.machineId.IndexOf("%7C"));
+                    DateTime expiryDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                    try
+                    {
+                        expiryDateTime = expiryDateTime.AddSeconds(Convert.ToInt64(expiryseconds));
+                        machineIdCookie.Expires = expiryDateTime;
+                    }
+                    catch (Exception)
+                    {
+                        Logging.Warn("Failed to handle machine id expiry seconds " + expiryseconds);
+                        machineIdCookie.Expires = DateTime.Now.AddDays(7);
+                    }
+                }
                 cookies.Add(machineIdCookie);
             }
         }
@@ -412,9 +428,25 @@ namespace EliteDangerousCompanionAppService
                 machineTokenCookie.Value = credentials.machineToken;
                 machineTokenCookie.Secure = true;
                 // The expiry is embedded in the cookie value
-                DateTime expiryDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-                expiryDateTime = expiryDateTime.AddSeconds(Convert.ToInt64(credentials.machineToken.Substring(0, credentials.machineToken.IndexOf("%7C"))));
-                machineTokenCookie.Expires = expiryDateTime;
+                if (credentials.machineToken.IndexOf("%7C") == -1)
+                {
+                    machineTokenCookie.Expires = DateTime.Now.AddDays(7);
+                }
+                else
+                {
+                    string expiryseconds = credentials.machineToken.Substring(0, credentials.machineToken.IndexOf("%7C"));
+                    DateTime expiryDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                    try
+                    {
+                        expiryDateTime = expiryDateTime.AddSeconds(Convert.ToInt64(expiryseconds));
+                        machineTokenCookie.Expires = expiryDateTime;
+                    }
+                    catch (Exception)
+                    {
+                        Logging.Warn("Failed to handle machine token expiry seconds " + expiryseconds);
+                        machineTokenCookie.Expires = DateTime.Now.AddDays(7);
+                    }
+                }
                 cookies.Add(machineTokenCookie);
             }
         }
