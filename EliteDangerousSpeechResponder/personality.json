@@ -1,70 +1,188 @@
 {
   "name": "EDDI",
   "description": "A balanced, non-partisan personality",
-  "readonly": true,
   "scripts": {
-    "Entered supercruise": {
-      "enabled": true,
-      "responder": true,
-      "script": "{OneOf(\"{ship.name} is\", \"\")} entering supercruise.",
-      "name": "Entered supercruise",
-      "description": "Triggered when you enter supercruise"
-    },
-    "Entered normal space": {
-      "enabled": true,
-      "responder": true,
-      "script": "{OneOf(\"{ship.name} is\", \"\")} {OneOf(\"leaving supercruise\", \"{OneOf(\\\"entering\\\", \\\"returning to\\\", \\\"dropping to\\\")} normal space\")}.",
-      "name": "Entered normal space",
-      "description": "Triggered when you enter normal space"
-    },
-    "Jumped": {
-      "enabled": true,
-      "responder": true,
-      "script": "{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ship.name} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if lastsystem.allegiance && !system.allegiance:\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance:\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}\r\n        }\r\n    }.\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
-      "name": "Jumped",
-      "description": "Triggered when you jump to a different system"
-    },
-    "Docked": {
-      "enabled": true,
-      "responder": true,
-      "script": "{OneOf(\"Establishing uplink\", \"Initiating link to local networks\", \"Access to local networks obtained\")}.",
-      "name": "Docked",
-      "description": "Triggered when you dock at a station"
-    },
-    "Undocked": {
-      "enabled": true,
-      "responder": true,
-      "script": "{OneOf(\"Full control re-established\", \"Docking clamps free\", \"Disengaged from local networks\")}.\r\n",
-      "name": "Undocked",
-      "description": "Triggered when you undock from a station"
-    },
-    "Touchdown": {
-      "enabled": true,
-      "responder": true,
-      "script": "Touchdown.  Co-ordinates are {event.longitude} degrees longitude, {event.latitude} degrees latitude.",
-      "name": "Touchdown",
-      "description": "Triggered when you land on the surface"
-    },
-    "Liftoff": {
-      "enabled": true,
-      "responder": true,
-      "script": "Lift off.",
-      "name": "Liftoff",
-      "description": "Triggered when you lift off from the surface"
-    },
-    "Bounty awarded": {
-      "enabled": true,
-      "responder": true,
-      "script": "That's another {event.reward} credits in the bank.",
-      "name": "Bounty awarded",
-      "description": "Triggered when you are awarded a bounty"
-    },
     "Bond awarded": {
       "enabled": true,
       "responder": true,
       "script": "That's another {event.reward} credits in the bank.",
       "name": "Bond awarded",
       "description": "Triggered when you are awarded a combat bond"
+    },
+    "Commander ratings": {
+      "enabled": false,
+      "responder": true,
+      "script": null,
+      "name": "Commander ratings",
+      "description": "Triggered when your ratings are reported"
+    },
+    "Commander progress": {
+      "enabled": false,
+      "responder": true,
+      "script": null,
+      "name": "Commander progress",
+      "description": "Triggered when your progress is reported"
+    },
+    "Commander started": {
+      "enabled": true,
+      "responder": true,
+      "script": "Welcome, Commander.",
+      "name": "Commander started",
+      "description": "Triggered when you start a new game"
+    },
+    "Controlling ship": {
+      "enabled": true,
+      "responder": true,
+      "script": "{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {Occasionally(2, \"to fighter\")} {OneOf(\"terminated\", \"disengaged\")}.",
+      "name": "Controlling ship",
+      "description": "Triggered when you switch control from your fighter to your ship"
+    },
+    "Crew assigned": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Crew assigned",
+      "description": "Triggered when you assign crew"
+    },
+    "Crew fired": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Crew fired",
+      "description": "Triggered when you fire crew"
+    },
+    "Crew hired": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Crew hired",
+      "description": "Triggered when you hire crew"
+    },
+    "Died": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Died",
+      "description": "Triggered when you have died"
+    },
+    "Cleared save": {
+      "enabled": true,
+      "responder": true,
+      "script": "Goodbye {F(\"Honorific\")}.  It was a pleasure to serve you.",
+      "name": "Cleared save",
+      "description": "Triggered when you clear your save"
+    },
+    "Ship purchased": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Ship purchased",
+      "description": "Triggered when you purchase a ship"
+    },
+    "Ship transfer initiated": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Ship transfer initiated",
+      "description": "Triggered when you initiate a ship transfer"
+    },
+    "Ship swapped": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Ship swapped",
+      "description": "Triggered when you swap a ship"
+    },
+    "Ship sold": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Ship sold",
+      "description": "Triggered when you sell a ship"
+    },
+    "Hull damaged": {
+      "enabled": true,
+      "responder": true,
+      "script": "{if event.health < 40:\r\n    Danger:\r\n|elif event.health < 60:\r\n    Warning:\r\n|elif event.health < 80:\r\n    Caution:\r\n}\r\n{OneOf(\"Hull\", \"Hull integrity\", \"Structural integrity\")} is at {event.health}%.\r\n",
+      "name": "Hull damaged",
+      "description": "Triggered when your hull is damaged to a certain extent"
+    },
+    "Entered signal source": {
+      "enabled": true,
+      "responder": true,
+      "script": "{if event.threat < 2:\r\n  Entering signal source.\r\n|elif event.threat = 2:\r\n    Caution: entering medium-threat signal source.\r\n|elif event.threat = 3:\r\n    Warning: entering high-threat signal source.\r\n|else:\r\n    Danger: entering very high-threat signal source.\r\n}\r\n",
+      "name": "Entered signal source",
+      "description": "Triggered when your ship enters a signal source"
+    },
+    "Message sent": {
+      "enabled": true,
+      "responder": true,
+      "script": "{OneOf(\"Message away\", \"Message sent\", \"Sent\")}.",
+      "name": "Message sent",
+      "description": "Triggered when you send a message"
+    },
+    "Message received": {
+      "enabled": true,
+      "responder": true,
+      "script": "Message received from {event.from}.  Message reads: {event.message}.",
+      "name": "Message received",
+      "description": "Triggered when you receive a message"
+    },
+    "Reboot repair": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Reboot repair",
+      "description": "Triggered when you run reboot/repair on your ship"
+    },
+    "Controlling fighter": {
+      "enabled": true,
+      "responder": true,
+      "script": "{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {Occasionally(2, \"to fighter\")} {OneOf(\"initiated\", \"established\", \"engaged\")}.",
+      "name": "Controlling fighter",
+      "description": "Triggered when you switch control from your ship to your fighter"
+    },
+    "Self destruct": {
+      "enabled": true,
+      "responder": true,
+      "script": "Self-destruct sequence initiated.  Closing heat vents.",
+      "name": "Self destruct",
+      "description": "Triggered when you start the self destruct sequence"
+    },
+    "SRV launched": {
+      "enabled": true,
+      "responder": true,
+      "script": "{OneOf(\"Buggy\", \"SRV\")} {OneOf(\"launched\", \"away\")}.",
+      "name": "SRV launched",
+      "description": "Triggered when you launch an SRV from your ship"
+    },
+    "SRV docked": {
+      "enabled": true,
+      "responder": true,
+      "script": "{OneOf(\"Buggy\", \"SRV\")} docked.",
+      "name": "SRV docked",
+      "description": "Triggered when you dock an SRV with your ship"
+    },
+    "Fighter docked": {
+      "enabled": true,
+      "responder": true,
+      "script": "Fighter {OneOf(\"docked\", \"redocked\")} {Occasionally(2, \"with ship\")}.",
+      "name": "Fighter docked",
+      "description": "Triggered when you dock a fighter with your ship"
+    },
+    "Fighter launched": {
+      "enabled": true,
+      "responder": true,
+      "script": "Fighter launched {Occasionally(2, \"from ship\")}.",
+      "name": "Fighter launched",
+      "description": "Triggered when you launch a fighter from your ship"
+    },
+    "Sold to market": {
+      "enabled": true,
+      "responder": true,
+      "script": "You have just sold {event.amount} tonnes of {event.cargo} at {event.price} credits per tonne.  Total value is {event.amount * event.price} credits.",
+      "name": "Sold to market",
+      "description": "Triggered when you sell something to the markets"
     },
     "Bounty incurred": {
       "enabled": true,
@@ -73,54 +191,201 @@
       "name": "Bounty incurred",
       "description": "Triggered when you incur a bounty"
     },
-    "Fine incurred": {
+    "Cargo ejected": {
       "enabled": true,
       "responder": true,
-      "script": "You owe {P(event.faction)} {event.fine} credits for that.",
-      "name": "Fine incurred",
-      "description": "Triggered when you incur a fine"
+      "script": "{event.cargo} ejected.",
+      "name": "Cargo ejected",
+      "description": "Triggered when you eject cargo from your ship or SRV"
+    },
+    "Bought from market": {
+      "enabled": true,
+      "responder": true,
+      "script": "You have just purchased {event.amount} tonnes of {event.cargo} at {event.price} credits per tonne.  Total cost is {event.amount * event.price} credits.",
+      "name": "Bought from market",
+      "description": "Triggered when you buy something from the markets"
+    },
+    "Docking timed out": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Docking timed out",
+      "description": "Triggered when your docking request times out"
+    },
+    "Docking denied": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Docking denied",
+      "description": "Triggered when your ship is denied docking at a station or outpost"
+    },
+    "Docking granted": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Docking granted",
+      "description": "Triggered when your ship is granted docking permission at a station or outpost"
+    },
+    "Docking cancelled": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Docking cancelled",
+      "description": "Triggered when your ship cancels a docking request at a station or outpost"
+    },
+    "Docking requested": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Docking requested",
+      "description": "Triggered when your ship requests docking at a station or outpost"
+    },
+    "Heat damage": {
+      "enabled": true,
+      "responder": true,
+      "script": "{Occasionally(2, \"Danger:\")}\r\nHeat damage.",
+      "name": "Heat damage",
+      "description": "Triggered when your ship is taking damage from excessive heat"
+    },
+    "Heat warning": {
+      "enabled": true,
+      "responder": true,
+      "script": "{Occasionally(2, \"Warning:\")}\r\nHeat levels beyond operating tolerance.",
+      "name": "Heat warning",
+      "description": "Triggered when your ship's heat exceeds 100%"
+    },
+    "Location": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Location",
+      "description": "Triggered when the commander's location is reported"
+    },
+    "Shields down": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Shields down",
+      "description": "Triggered when your ship's shields go offline"
+    },
+    "Shields up": {
+      "enabled": true,
+      "responder": true,
+      "script": null,
+      "name": "Shields up",
+      "description": "Triggered when your ship's shields come online"
+    },
+    "Star scanned": {
+      "enabled": true,
+      "responder": true,
+      "script": "Scan of {event.stellarclass}-class star {P(event.name)} complete.\r\n\r\nThis is\r\n{if event.stellarclass = \"O\":\r\n    an incredibly rare main sequence star,\r\n    {if event.mass < 16:\r\n        notable for being significantly lighter than usual\r\n    |elif event.mass > 50:\r\n        notable for being significantly heavier than usual\r\n    }\r\n|elif event.stellarclass = \"B\":\r\n    a very rare main sequence star\r\n|elif event.stellarclass = \"A\":\r\n    a rare main sequence star\r\n|elif event.stellarclass = \"F\":\r\n    an uncommon main sequence star\r\n|elif event.stellarclass = \"G\":\r\n    a common main sequence star\r\n|elif event.stellarclass = \"K\":\r\n    a common main sequence star\r\n|elif event.stellarclass = \"M\":\r\n    a very common main sequence star\r\n}.",
+      "name": "Star scanned",
+      "description": "Triggered when you complete a scan of a stellar body"
     },
     "Cockpit breached": {
       "enabled": true,
       "responder": true,
       "script": "Is it me, or is it cold in here?",
       "name": "Cockpit breached",
-      "description": "Triggered when your cockpit is breached"
-    },
-    "Combat promotion": {
-      "enabled": true,
-      "responder": true,
-      "script": "You have been recognised for your combat skills, {F(\"Honorific\")}.",
-      "name": "Combat promotion",
-      "description": "Triggered when you are promoted to the next combat rank"
-    },
-    "Exploration promotion": {
-      "enabled": true,
-      "responder": true,
-      "script": "You have been recognised for your exploration skills, {F(\"Honorific\")}.",
-      "name": "Exploration promotion",
-      "description": "Triggered when you are promoted to the next exploration rank"
-    },
-    "Trade promotion": {
-      "enabled": true,
-      "responder": true,
-      "script": "You have been recognised for your trading ability, {F(\"Honorific\")}.",
-      "name": "Trade promotion",
-      "description": "Triggered when you are promoted to the next trade rank"
+      "description": "Triggered when your ship's cockpit is broken"
     },
     "Cargo collected": {
       "enabled": true,
       "responder": true,
       "script": "{event.cargo} now on board.",
       "name": "Cargo collected",
-      "description": "Triggered when you collect cargo in your ship or SRV"
+      "description": "Triggered when you pick up cargo in your ship or SRV"
     },
-    "Star scanned": {
+    "Exploration promotion": {
       "enabled": true,
       "responder": true,
-      "script": "Scan of {event.stellarclass}-class star {P(event.name)} complete.",
-      "name": "Star scanned",
-      "description": "Triggered when you scan a star"
+      "script": "You have been recognised for your exploration skills, {F(\"Honorific\")}.",
+      "name": "Exploration promotion",
+      "description": "Triggered when your exploration rank increases"
+    },
+    "Trade promotion": {
+      "enabled": true,
+      "responder": true,
+      "script": "You have been recognised for your trading ability, {F(\"Honorific\")}.",
+      "name": "Trade promotion",
+      "description": "Triggered when you trade rank increases"
+    },
+    "Combat promotion": {
+      "enabled": true,
+      "responder": true,
+      "script": "You have been recognised for your combat skills, {F(\"Honorific\")}.",
+      "name": "Combat promotion",
+      "description": "Triggered when your combat rank increases"
+    },
+    "Fine incurred": {
+      "enabled": true,
+      "responder": true,
+      "script": "You owe {P(event.faction)} {event.fine} credits for that.",
+      "name": "Fine incurred",
+      "description": "Triggered when your incur a fine"
+    },
+    "Entered normal space": {
+      "enabled": true,
+      "responder": true,
+      "script": "{OneOf(\"{ship.name} is\", \"\")} {OneOf(\"leaving supercruise\", \"{OneOf(\\\"entering\\\", \\\"returning to\\\", \\\"dropping to\\\")} normal space\")}.",
+      "name": "Entered normal space",
+      "description": "Triggered when your ship enters normal space"
+    },
+    "Entered supercruise": {
+      "enabled": true,
+      "responder": true,
+      "script": "{OneOf(\"{ship.name} is\", \"\")} entering supercruise.",
+      "name": "Entered supercruise",
+      "description": "Triggered when your ship enters supercruise"
+    },
+    "Bounty awarded": {
+      "enabled": true,
+      "responder": true,
+      "script": "That's another {event.reward} credits in the bank.",
+      "name": "Bounty awarded",
+      "description": "Triggered when you are awarded a bounty"
+    },
+    "Commander continued": {
+      "enabled": true,
+      "responder": true,
+      "script": "Welcome back {F(\"Honorific\")}.\r\n\r\nYou are playing in {event.mode.name}.",
+      "name": "Commander continued",
+      "description": "Triggered when you continue an existing game"
+    },
+    "Liftoff": {
+      "enabled": true,
+      "responder": true,
+      "script": "Lift off.",
+      "name": "Liftoff",
+      "description": "Triggered when your ship lifts off from a planet's surface"
+    },
+    "Touchdown": {
+      "enabled": true,
+      "responder": true,
+      "script": "Touchdown.  Co-ordinates are {event.longitude} degrees longitude, {event.latitude} degrees latitude.",
+      "name": "Touchdown",
+      "description": "Triggered when your ship touches down on a planet's surface"
+    },
+    "Undocked": {
+      "enabled": true,
+      "responder": true,
+      "script": "{OneOf(\"Full control re-established\", \"Docking clamps free\", \"Disengaged from local networks\")}.\r\n",
+      "name": "Undocked",
+      "description": "Triggered when your ship undocks from a station or outpost"
+    },
+    "Docked": {
+      "enabled": true,
+      "responder": true,
+      "script": "{OneOf(\"Establishing uplink\", \"Initiating link to local networks\", \"Access to local networks obtained\")}.",
+      "name": "Docked",
+      "description": "Triggered when your ship docks at a station or outpost"
+    },
+    "Jumped": {
+      "enabled": true,
+      "responder": true,
+      "script": "{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ship.name} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if lastsystem.allegiance && !system.allegiance:\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance:\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}\r\n        }\r\n    }.\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
+      "name": "Jumped",
+      "description": "Triggered when you jump from one system to another"
     },
     "Honorific": {
       "enabled": true,

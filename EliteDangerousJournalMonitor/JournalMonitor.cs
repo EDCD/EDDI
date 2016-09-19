@@ -785,19 +785,7 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("Ship", out val);
                             Ship ship = ShipDefinitions.ShipFromEDModel((string)val);
                             data.TryGetValue("GameMode", out val);
-                            GameMode mode = GameMode.Unknown;
-                            switch ((string)val)
-                            {
-                                case "Open":
-                                    mode = GameMode.Open;
-                                    break;
-                                case "Group":
-                                    mode = GameMode.Group;
-                                    break;
-                                case "Solo":
-                                    mode = GameMode.Solo;
-                                    break;
-                            }
+                            GameMode mode = GameMode.FromEDName((string)val);
                             data.TryGetValue("Group", out val);
                             string group = (string)val;
                             data.TryGetValue("Credits", out val);
