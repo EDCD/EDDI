@@ -54,7 +54,6 @@
     <Compile Include="CommodityDefinitions.cs" />
     <Compile Include="Compartment.cs" />
     <Compile Include="CombatRating.cs" />
-    <Compile Include="SignalSource.cs" />
     <Compile Include="Crime.cs" />
     <Compile Include="Economy.cs" />
     <Compile Include="GameMode.cs" />

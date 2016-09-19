@@ -740,7 +740,7 @@ namespace EliteDangerousJournalMonitor
                         {
                             object val;
                             data.TryGetValue("USSType", out val);
-                            SignalSource source = SignalSource.FromEDName((string)val);
+                            string source = (string)val;
                             data.TryGetValue("USSThreat", out val);
                             int threat = (int)val;
                             journalEvent = new EnteredSignalSourceEvent(timestamp, source, threat);

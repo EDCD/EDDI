@@ -12,7 +12,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Entered signal source";
         public const string DESCRIPTION = "Triggered when your ship enters a signal source";
-        public static EnteredSignalSourceEvent SAMPLE = new EnteredSignalSourceEvent(DateTime.Now, SignalSource.None, 0);
+        public static EnteredSignalSourceEvent SAMPLE = new EnteredSignalSourceEvent(DateTime.Now, "Disrupted wake echoes", 0);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static EnteredSignalSourceEvent()
@@ -24,12 +24,12 @@ namespace EliteDangerousEvents
         }
 
         [JsonProperty("source")]
-        public SignalSource source { get; private set; }
+        public string source { get; private set; }
 
         [JsonProperty("threat")]
         public int threat{ get; private set; }
 
-        public EnteredSignalSourceEvent(DateTime timestamp, SignalSource source, int threat) : base(timestamp, NAME)
+        public EnteredSignalSourceEvent(DateTime timestamp, string source, int threat) : base(timestamp, NAME)
         {
             this.source = source;
             this.threat = threat;
