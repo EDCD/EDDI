@@ -350,16 +350,201 @@ namespace EliteDangerousJournalMonitor
                         //}
                         break;
                     case "ShipyardBuy":
-                        //journalEntry.type = "Ship swapped";
-                        //journalEntry.boolData.Add("new", true);
-                        //journalEntry.refetchProfile = true;
+                        {
+                            object val;
+                            data.TryGetValue("ShipID", out val);
+                            int shipId = (int)val;
+                            // We should be able to provide our ship information given the ship ID
+                            Ship ship = Eddi.Instance.StoredShips.First(v => v.LocalId == shipId);
+                            if (ship == null)
+                            {
+                                Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
+                                // Failed to find the ship; provide a basic definition
+                                data.TryGetValue("ShipType", out val);
+                                ship = ShipDefinitions.ShipFromEDModel((string)val);
+                                ship.LocalId = shipId;
+                            }
+
+                            Ship storedShip = null;
+                            data.TryGetValue("StoreShipID", out val);
+                            if (val != null)
+                            {
+                                // We are storing a ship as part of the swap
+                                int storedShipId = (int)val;
+
+                                // We should be storing our own ship; confirm this using the ship ID
+                                if (storedShipId == Eddi.Instance.Ship.LocalId)
+                                {
+                                    storedShip = Eddi.Instance.Ship;
+                                }
+                                else
+                                {
+                                    // The ship might already be registered as stored; see if we can find it
+                                    storedShip = Eddi.Instance.StoredShips.First(v => v.LocalId == storedShipId);
+                                    if (storedShip == null)
+                                    {
+                                        // No luck finding the ship; provide a basic definition
+                                        data.TryGetValue("StoreOldShip", out val);
+                                        ship = ShipDefinitions.ShipFromEDModel((string)val);
+                                        ship.LocalId = storedShipId;
+                                    }
+                                }
+                            }
+
+                            Ship soldShip = null;
+                            data.TryGetValue("SellShipID", out val);
+                            if (val != null)
+                            {
+                                // We are selling a ship as part of the swap
+                                int soldShipId = (int)val;
+
+                                // We should be selling our current ship; confirm this using the ship ID
+                                if (soldShipId == Eddi.Instance.Ship.LocalId)
+                                {
+                                    soldShip = Eddi.Instance.Ship;
+                                }
+                                else
+                                {
+                                    // The ship might be registered as stored; see if we can find it
+                                    soldShip = Eddi.Instance.StoredShips.First(v => v.LocalId == soldShipId);
+                                    if (soldShip == null)
+                                    {
+                                        // No luck finding the ship; provide a basic definition
+                                        data.TryGetValue("SellOldShip", out val);
+                                        soldShip = ShipDefinitions.ShipFromEDModel((string)val);
+                                        soldShip.LocalId = soldShipId;
+                                    }
+                                }
+                            }
+
+                            data.TryGetValue("SellPrice", out val);
+                            decimal? soldPrice = (decimal?)val;
+                            journalEvent = new ShipPurchasedEvent(timestamp, ship, soldShip, soldPrice, storedShip);
+                        }
+                        handled = true;
+                        break;
+                    case "ShipyardSell":
+                        {
+                            object val;
+                            data.TryGetValue("SellShipId", out val);
+                            int shipId = (int)val;
+                            // We should be able to provide our ship information given the ship ID
+                            Ship ship = Eddi.Instance.StoredShips.First(v => v.LocalId == shipId);
+                            if (ship == null)
+                            {
+                                Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
+                                // Failed to find the ship; provide a basic definition
+                                data.TryGetValue("ShipType", out val);
+                                ship = ShipDefinitions.ShipFromEDModel((string)val);
+                                ship.LocalId = shipId;
+                            }
+                            data.TryGetValue("ShipPrice", out val);
+                            decimal price = (decimal)val;
+                            journalEvent = new ShipSoldEvent(timestamp, ship, price);
+                        }
                         handled = true;
                         break;
                     case "ShipyardSwap":
-                        //journalEntry.type = "Ship swapped";
-                        //journalEntry.boolData.Add("new", false);
-                        //journalEntry.refetchProfile = true;
+                        {
+                            object val;
+                            data.TryGetValue("ShipID", out val);
+                            int shipId = (int)val;
+                            // We should be able to provide our ship information given the ship ID
+                            Ship ship = Eddi.Instance.StoredShips.First(v => v.LocalId == shipId);
+                            if (ship == null)
+                            {
+                                Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
+                                // Failed to find the ship; provide a basic definition
+                                data.TryGetValue("ShipType", out val);
+                                ship = ShipDefinitions.ShipFromEDModel((string)val);
+                                ship.LocalId = shipId;
+                            }
+
+                            Ship storedShip = null;
+                            data.TryGetValue("StoreShipID", out val);
+                            if (val != null)
+                            {
+                                // We are storing a ship as part of the swap
+                                int storedShipId = (int)val;
+
+                                // We should be storing our own ship; confirm this using the ship ID
+                                if (storedShipId == Eddi.Instance.Ship.LocalId)
+                                {
+                                    storedShip = Eddi.Instance.Ship;
+                                }
+                                else
+                                {
+                                    // The ship might already be registered as stored; see if we can find it
+                                    storedShip = Eddi.Instance.StoredShips.First(v => v.LocalId == storedShipId);
+                                    if (storedShip == null)
+                                    {
+                                        // No luck finding the ship; provide a basic definition
+                                        data.TryGetValue("StoreOldShip", out val);
+                                        ship = ShipDefinitions.ShipFromEDModel((string)val);
+                                        ship.LocalId = storedShipId;
+                                    }
+                                }
+                            }
+
+                            Ship soldShip = null;
+                            data.TryGetValue("SellShipID", out val);
+                            if (val != null)
+                            {
+                                // We are selling a ship as part of the swap
+                                int soldShipId = (int)val;
+
+                                // We should be selling our current ship; confirm this using the ship ID
+                                if (soldShipId == Eddi.Instance.Ship.LocalId)
+                                {
+                                    soldShip = Eddi.Instance.Ship;
+                                }
+                                else
+                                {
+                                    // The ship might be registered as stored; see if we can find it
+                                    soldShip = Eddi.Instance.StoredShips.First(v => v.LocalId == soldShipId);
+                                    if (soldShip == null)
+                                    {
+                                        // No luck finding the ship; provide a basic definition
+                                        data.TryGetValue("SellOldShip", out val);
+                                        soldShip = ShipDefinitions.ShipFromEDModel((string)val);
+                                        soldShip.LocalId = soldShipId;
+                                    }
+                                }
+                            }
+
+                            journalEvent = new ShipSwappedEvent(timestamp, ship, soldShip, storedShip);
+                        }
                         handled = true;
+                        break;
+                    case "ShipyardTransfer":
+                        {
+                            object val;
+                            data.TryGetValue("ShipID", out val);
+                            int shipId = (int)val;
+                            // We should be able to provide our ship information given the ship ID
+                            Ship ship = Eddi.Instance.StoredShips.First(v => v.LocalId == shipId);
+                            if (ship == null)
+                            {
+                                Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
+                                // Failed to find the ship; provide a basic definition
+                                data.TryGetValue("ShipType", out val);
+                                ship = ShipDefinitions.ShipFromEDModel((string)val);
+                                ship.LocalId = shipId;
+                            }
+
+                            data.TryGetValue("System", out val);
+                            string system = (string)val;
+
+                            data.TryGetValue("Distance", out val);
+                            decimal distance = (decimal)val;
+
+                            data.TryGetValue("TransferPrice", out val);
+                            decimal cost = (decimal)val;
+
+                            journalEvent = new ShipTransferInitiatedEvent(timestamp, ship, system, distance, cost);
+
+                            handled = true;
+                        }
                         break;
                     case "LaunchSRV":
                         {
@@ -617,7 +802,7 @@ namespace EliteDangerousJournalMonitor
                             string group = (string)val;
                             data.TryGetValue("Credits", out val);
                             decimal credits = (decimal)val;
-                            journalEvent = new StartedEvent(timestamp, commander, ship, mode, group, credits);
+                            journalEvent = new CommanderContinuedEvent(timestamp, commander, ship, mode, group, credits);
                             handled = true;
                             break;
                         }
@@ -650,12 +835,73 @@ namespace EliteDangerousJournalMonitor
                             object val;
                             data.TryGetValue("Name", out val);
                             string name = (string)val;
-                            data.TryGetValue("ole", out val);
+                            data.TryGetValue("role", out val);
                             string role = (string)val;
                             journalEvent = new CrewAssignedEvent(timestamp, name, role);
                             handled = true;
                             break;
                         }
+                    case "ClearSavedGame":
+                        {
+                            object val;
+                            data.TryGetValue("Name", out val);
+                            string name = (string)val;
+                            journalEvent = new ClearedSaveEvent(timestamp, name);
+                            handled = true;
+                            break;
+                        }
+                    case "NewCommander":
+                        {
+                            object val;
+                            data.TryGetValue("Name", out val);
+                            string name = (string)val;
+                            data.TryGetValue("Package", out val);
+                            string package = (string)val;
+                            journalEvent = new CommanderStartedEvent(timestamp, name, package);
+                            handled = true;
+                            break;
+                        }
+                    case "Progress":
+                        {
+                            object val;
+                            data.TryGetValue("Combat", out val);
+                            decimal combat = (decimal)val;
+                            data.TryGetValue("Trade", out val);
+                            decimal trade = (decimal)val;
+                            data.TryGetValue("Explore", out val);
+                            decimal exploration = (decimal)val;
+                            data.TryGetValue("CQC", out val);
+                            decimal cqc = (decimal)val;
+                            data.TryGetValue("Empire", out val);
+                            decimal empire = (decimal)val;
+                            data.TryGetValue("Federation", out val);
+                            decimal federation = (decimal)val;
+
+                            journalEvent = new CommanderProgressEvent(timestamp, combat, trade, exploration, cqc, empire, federation);
+                            handled = true;
+                            break;
+                        }
+                    case "Rank":
+                        {
+                            object val;
+                            data.TryGetValue("Combat", out val);
+                            CombatRating combat = CombatRating.FromRank((int)val);
+                            data.TryGetValue("Trade", out val);
+                            TradeRating trade = TradeRating.FromRank((int)val);
+                            data.TryGetValue("Explore", out val);
+                            ExplorationRating exploration = ExplorationRating.FromRank((int)val);
+                            data.TryGetValue("CQC", out val);
+                            CQCRating cqc = CQCRating.FromRank((int)val);
+                            data.TryGetValue("Empire", out val);
+                            EmpireRating empire = EmpireRating.FromRank((int)val);
+                            data.TryGetValue("Federation", out val);
+                            FederationRating federation = FederationRating.FromRank((int)val);
+
+                            journalEvent = new CommanderRatingsEvent(timestamp, combat, trade, exploration, cqc, empire, federation);
+                            handled = true;
+                            break;
+                        }
+
                 }
 
                 if (journalEvent != null)

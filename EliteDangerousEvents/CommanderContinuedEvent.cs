@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace EliteDangerousEvents
 {
-    public class StartedEvent : Event
+    public class CommanderContinuedEvent : Event
     {
-        public const string NAME = "Started";
-        public const string DESCRIPTION = "Triggered when Elite: Dangerous starts";
-        public static StartedEvent SAMPLE = new StartedEvent(DateTime.Now, "HRC1", ShipDefinitions.ShipFromEDModel("CobraMkIII"), GameMode.Group, "Mobius", 600120M);
+        public const string NAME = "Commander continued";
+        public const string DESCRIPTION = "Triggered when you continue an existing game";
+        public static CommanderContinuedEvent SAMPLE = new CommanderContinuedEvent(DateTime.Now, "HRC1", ShipDefinitions.ShipFromEDModel("CobraMkIII"), GameMode.Group, "Mobius", 600120M);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static StartedEvent()
+        static CommanderContinuedEvent()
         {
             SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"LoadGame\",\"Commander\":\"HRC1\",\"Ship\":\"CobraMkIII\",\"ShipID\":1,\"GameMode\":\"Group\",\"Group\":\"Mobius\",\"Credits\":600120,\"Loan\":0}";
 
@@ -23,7 +23,7 @@ namespace EliteDangerousEvents
             VARIABLES.Add("ship", "The ship of the commander");
             VARIABLES.Add("mode", "The game mode");
             VARIABLES.Add("group", "The name of the group (only if mode == Group)");
-            VARIABLES.Add("credits", "The game mode");
+            VARIABLES.Add("credits", "the number of credits the commander has");
         }
 
         [JsonProperty("commander")]
@@ -41,7 +41,7 @@ namespace EliteDangerousEvents
         [JsonProperty("credits")]
         public decimal credits { get; private set; }
 
-        public StartedEvent(DateTime timestamp, string commander, Ship ship, GameMode mode, string group, decimal credits) : base(timestamp, NAME)
+        public CommanderContinuedEvent(DateTime timestamp, string commander, Ship ship, GameMode mode, string group, decimal credits) : base(timestamp, NAME)
         {
             this.commander = commander;
             this.ship = ship;

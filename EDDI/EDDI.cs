@@ -247,6 +247,18 @@ namespace EDDI
             {
                 passEvent = eventEnteredNormalSpace((EnteredNormalSpaceEvent)journalEvent);
             }
+            else if (journalEvent is ShipPurchasedEvent)
+            {
+                // TODO
+            }
+            else if (journalEvent is ShipSwappedEvent)
+            {
+                // TODO
+            }
+            else if (journalEvent is ShipSoldEvent)
+            {
+                // TODO
+            }
             // Additional processing is over, send to the event responders if required
             if (passEvent)
             {

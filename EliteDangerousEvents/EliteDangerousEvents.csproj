@@ -45,11 +45,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BondAwardedEvent.cs" />
+    <Compile Include="CommanderRanksEvent.cs" />
+    <Compile Include="CommanderProgressEvent.cs" />
+    <Compile Include="CommanderStartedEvent.cs" />
     <Compile Include="ControllingShipEvent.cs" />
     <Compile Include="CrewAssignedEvent.cs" />
     <Compile Include="CrewFiredEvent.cs" />
     <Compile Include="CrewHiredEvent.cs" />
     <Compile Include="DiedEvent.cs" />
+    <Compile Include="ClearSaveEvent.cs" />
+    <Compile Include="ShipPurchasedEvent.cs" />
+    <Compile Include="ShipTransferInitiatedEvent.cs" />
+    <Compile Include="ShipSwappedEvent.cs" />
+    <Compile Include="ShipSoldEvent.cs" />
     <Compile Include="HullDamageEvent.cs" />
     <Compile Include="EnteredSignalSourceEvent.cs" />
     <Compile Include="MessageSentEvent.cs" />
@@ -86,7 +94,7 @@
     <Compile Include="EnteredNormalSpaceEvent.cs" />
     <Compile Include="EnteredSupercruiseEvent.cs" />
     <Compile Include="BountyAwardedEvent.cs" />
-    <Compile Include="StartedEvent.cs" />
+    <Compile Include="CommanderContinuedEvent.cs" />
     <Compile Include="LiftoffEvent.cs" />
     <Compile Include="TouchdownEvent.cs" />
     <Compile Include="UndockedEvent.cs" />
