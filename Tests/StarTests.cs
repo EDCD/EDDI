@@ -13,7 +13,7 @@ namespace Tests
         [TestMethod]
         public void TestStarEravarenth()
         {
-            decimal temp = StarClass.temperature(6.885925M, 526252032M);
+            decimal temp = StarClass.temperature(StarClass.luminosity(6.885925M), 526252032M);
 
             Assert.AreEqual(4138, temp);
         }

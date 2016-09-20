@@ -662,7 +662,7 @@ namespace EliteDangerousJournalMonitor
                         {
                             object val;
                             data.TryGetValue("Health", out val);
-                            decimal health = sensibleHealth((decimal)(double)val);
+                            decimal health = sensibleHealth((decimal)(((double)val) * 100));
                             journalEvent = new HullDamagedEvent(timestamp, health);
                         }
                         handled = true;
