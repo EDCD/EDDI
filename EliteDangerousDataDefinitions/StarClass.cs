@@ -73,5 +73,13 @@ namespace EliteDangerousDataDefinitions
             }
             return result;
         }
+
+        public static decimal temperature(decimal absoluteMagnitude, decimal radius)
+        {
+            double solLuminosity = 3.828e26;
+            double stefanBoltzmannConstant = 5.670367e-8;
+            double luminosity = Math.Pow(Math.Pow(100, 0.2), (4.83 - (double)absoluteMagnitude));
+            return (decimal)Math.Pow((luminosity * solLuminosity) / (4 * Math.PI * Math.Pow((double)radius, 2) * stefanBoltzmannConstant), 0.25);
+        }
     }
 }
