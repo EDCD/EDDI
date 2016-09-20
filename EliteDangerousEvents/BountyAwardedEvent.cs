@@ -11,7 +11,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Bounty awarded";
         public const string DESCRIPTION = "Triggered when you are awarded a bounty";
-        public static BountyAwardedEvent SAMPLE = new BountyAwardedEvent(DateTime.Now, "Federation", "Skimmer", "MMU", 1000M);
+        public static BountyAwardedEvent SAMPLE = new BountyAwardedEvent(DateTime.Now, "Federation", "Skimmer", "MMU", 1000);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static BountyAwardedEvent()
@@ -34,9 +34,9 @@ namespace EliteDangerousEvents
         public string victimfaction { get; private set; }
 
         [JsonProperty("reward")]
-        public decimal reward { get; private set; }
+        public long reward { get; private set; }
 
-        public BountyAwardedEvent(DateTime timestamp, string awardingfaction, string target, string victimfaction, decimal reward) : base(timestamp, NAME)
+        public BountyAwardedEvent(DateTime timestamp, string awardingfaction, string target, string victimfaction, long reward) : base(timestamp, NAME)
         {
             this.awardingfaction = awardingfaction;
             this.target = target;

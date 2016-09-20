@@ -47,7 +47,7 @@ namespace EliteDangerousDataDefinitions
 
         public static FederationRating FromName(string from)
         {
-            FederationRating result = RATINGS.First(v => v.name == from);
+            FederationRating result = RATINGS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown Federation Rating name " + from);
@@ -57,7 +57,7 @@ namespace EliteDangerousDataDefinitions
 
         public static FederationRating FromEDName(string from)
         {
-            FederationRating result = RATINGS.First(v => v.edname == from);
+            FederationRating result = RATINGS.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown Federation Rating ED name " + from);
@@ -67,7 +67,7 @@ namespace EliteDangerousDataDefinitions
 
         public static FederationRating FromRank(int from)
         {
-            FederationRating result = RATINGS.First(v => v.rank == from);
+            FederationRating result = RATINGS.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Report("Unknown Federation Rating rank " + from);

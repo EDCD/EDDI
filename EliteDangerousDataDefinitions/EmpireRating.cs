@@ -47,7 +47,7 @@ namespace EliteDangerousDataDefinitions
 
         public static EmpireRating FromName(string from)
         {
-            EmpireRating result = RATINGS.First(v => v.name == from);
+            EmpireRating result = RATINGS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown Empire Rating name " + from);
@@ -57,7 +57,7 @@ namespace EliteDangerousDataDefinitions
 
         public static EmpireRating FromEDName(string from)
         {
-            EmpireRating result = RATINGS.First(v => v.edname == from);
+            EmpireRating result = RATINGS.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown Empire Rating ED name " + from);
@@ -67,7 +67,7 @@ namespace EliteDangerousDataDefinitions
 
         public static EmpireRating FromRank(int from)
         {
-            EmpireRating result = RATINGS.First(v => v.rank == from);
+            EmpireRating result = RATINGS.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Report("Unknown Empire Rating rank " + from);

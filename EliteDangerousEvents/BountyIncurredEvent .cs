@@ -11,7 +11,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Bounty incurred";
         public const string DESCRIPTION = "Triggered when you incur a bounty";
-        public static BountyIncurredEvent SAMPLE = new BountyIncurredEvent(DateTime.Now, "Assault", "The Pilot's Federation", "Potapinski", 210M);
+        public static BountyIncurredEvent SAMPLE = new BountyIncurredEvent(DateTime.Now, "Assault", "The Pilot's Federation", "Potapinski", 210);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static BountyIncurredEvent()
@@ -34,9 +34,9 @@ namespace EliteDangerousEvents
         public string faction { get; private set; }
 
         [JsonProperty("bounty")]
-        public decimal bounty { get; private set; }
+        public long bounty { get; private set; }
 
-        public BountyIncurredEvent(DateTime timestamp, string crimetype, string faction, string victim, decimal bounty) : base(timestamp, NAME)
+        public BountyIncurredEvent(DateTime timestamp, string crimetype, string faction, string victim, long bounty) : base(timestamp, NAME)
         {
             this.crimetype = crimetype;
             this.faction = faction;

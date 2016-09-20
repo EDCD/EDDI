@@ -41,7 +41,7 @@ namespace EliteDangerousDataDefinitions
 
         public static CombatRating FromName(string from)
         {
-            CombatRating result = RATINGS.First(v => v.name == from);
+            CombatRating result = RATINGS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown Combat Rating name " + from);
@@ -51,7 +51,7 @@ namespace EliteDangerousDataDefinitions
 
         public static CombatRating FromEDName(string from)
         {
-            CombatRating result = RATINGS.First(v => v.edname == from);
+            CombatRating result = RATINGS.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown Combat Rating ED name " + from);
@@ -61,7 +61,7 @@ namespace EliteDangerousDataDefinitions
 
         public static CombatRating FromRank(int from)
         {
-            CombatRating result = RATINGS.First(v => v.rank == from);
+            CombatRating result = RATINGS.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Report("Unknown Combat Rating rank " + from);

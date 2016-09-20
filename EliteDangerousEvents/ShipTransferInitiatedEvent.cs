@@ -12,7 +12,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Ship transfer initiated";
         public const string DESCRIPTION = "Triggered when you initiate a ship transfer";
-        public static ShipTransferInitiatedEvent SAMPLE = new ShipTransferInitiatedEvent(DateTime.Now, ShipDefinitions.ShipFromEDModel("Adder"), "Eranin", 85.639145M, 580M);
+        public static ShipTransferInitiatedEvent SAMPLE = new ShipTransferInitiatedEvent(DateTime.Now, ShipDefinitions.FromEDModel("Adder"), "Eranin", 85.639145M, 580M);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ShipTransferInitiatedEvent()

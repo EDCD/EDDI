@@ -42,7 +42,7 @@ namespace EliteDangerousDataDefinitions
 
         public static State FromName(string from)
         {
-            State result = STATES.First(v => v.name == from);
+            State result = STATES.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown State name " + from);
@@ -52,7 +52,7 @@ namespace EliteDangerousDataDefinitions
 
         public static State FromEDName(string from)
         {
-            State result = STATES.First(v => v.edname == from);
+            State result = STATES.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown State name " + from);

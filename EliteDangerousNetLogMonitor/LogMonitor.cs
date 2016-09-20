@@ -107,7 +107,7 @@ namespace EliteDangerousNetLogMonitor
             var directory = new DirectoryInfo(path);
             try
             {
-                return directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name)).OrderByDescending(f => f.LastWriteTime).First();
+                return directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name)).OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
             }
             catch
             {

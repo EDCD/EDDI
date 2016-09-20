@@ -11,7 +11,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Fine incurred";
         public const string DESCRIPTION = "Triggered when your incur a fine";
-        public static FineIncurredEvent SAMPLE = new FineIncurredEvent(DateTime.Now, "Assault", "The Pilot's Federation", "Potapinski", 210M);
+        public static FineIncurredEvent SAMPLE = new FineIncurredEvent(DateTime.Now, "Assault", "The Pilot's Federation", "Potapinski", 210);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static FineIncurredEvent()
@@ -33,9 +33,9 @@ namespace EliteDangerousEvents
         public string faction { get; private set; }
 
         [JsonProperty("fine")]
-        public decimal fine { get; private set; }
+        public long fine { get; private set; }
 
-        public FineIncurredEvent(DateTime timestamp, string crimetype, string faction, string victim, decimal fine) : base(timestamp, NAME)
+        public FineIncurredEvent(DateTime timestamp, string crimetype, string faction, string victim, long fine) : base(timestamp, NAME)
         {
             this.crimetype = crimetype;
             this.faction = faction;

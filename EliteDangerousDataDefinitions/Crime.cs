@@ -48,7 +48,7 @@ namespace EliteDangerousDataDefinitions
 
         public static Crime FromName(string from)
         {
-            Crime result = CRIMES.First(v => v.name == from);
+            Crime result = CRIMES.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown Crime name " + from);
@@ -58,7 +58,7 @@ namespace EliteDangerousDataDefinitions
 
         public static Crime FromEDName(string from)
         {
-            Crime result = CRIMES.First(v => v.edname == from);
+            Crime result = CRIMES.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown Crime ED name " + from);

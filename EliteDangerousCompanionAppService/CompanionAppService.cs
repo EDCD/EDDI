@@ -609,7 +609,7 @@ namespace EliteDangerousCompanionAppService
                 Model = shipTranslations[Model];
             }
 
-            Ship Ship = ShipDefinitions.ShipFromModel(Model);
+            Ship Ship = ShipDefinitions.FromModel(Model);
 
             Ship.LocalId = json["ship"]["id"];
 

@@ -708,7 +708,7 @@ namespace EDDIVAPlugin
                 setDecimal(ref decimalValues, prefix + " Z", system == null ? null : system.z);
                 setInt(ref intValues, prefix + " visits", system == null ? (int?)null : system.visits);
                 setString(ref textValues, prefix + " comment", system == null ? null : system.comment);
-                setDecimal(ref decimalValues, prefix + " distance from home", system.distancefromhome == null ? null : system.distancefromhome);
+                setDecimal(ref decimalValues, prefix + " distance from home", system == null ? null : system.distancefromhome);
 
                 if (system != null)
                 {

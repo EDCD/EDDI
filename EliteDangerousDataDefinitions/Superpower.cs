@@ -34,7 +34,7 @@ namespace EliteDangerousDataDefinitions
 
         public static Superpower FromName(string from)
         {
-            Superpower result = SUPERPOWERS.First(v => v.name == from);
+            Superpower result = SUPERPOWERS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown Superpower name " + from);
@@ -44,7 +44,7 @@ namespace EliteDangerousDataDefinitions
 
         public static Superpower FromEDName(string from)
         {
-            Superpower result = SUPERPOWERS.First(v => v.edname == from);
+            Superpower result = SUPERPOWERS.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown Superpower ED name " + from);

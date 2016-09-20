@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathNet.Numerics.Distributions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,26 +19,44 @@ namespace EliteDangerousDataDefinitions
 
         public string name { get; private set; }
 
-        public decimal commonality { get; private set; }
+        public decimal percentage { get; private set; }
 
-        private StarClass(string edname, string name, decimal commonality)
+        public IDistribution massdistribution { get; private set; }
+
+        public IDistribution radiusdistribution { get; private set; }
+
+        public IDistribution luminositydistribution { get; private set; }
+
+        private StarClass(string edname, string name, decimal percentage, IDistribution massdistribution, IDistribution radiusdistribution, IDistribution luminositydistribution)
         {
             this.edname = edname;
             this.name = name;
-            this.commonality = commonality;
+            this.percentage = percentage;
+            this.massdistribution = massdistribution;
+            this.radiusdistribution = radiusdistribution;
+            this.luminositydistribution = luminositydistribution;
         }
 
-        public static readonly StarClass O = new StarClass("O", "O", 0.000003M);
-        public static readonly StarClass B = new StarClass("B", "B", 0.13M);
-        public static readonly StarClass A = new StarClass("A", "A", 0.6M);
-        public static readonly StarClass F = new StarClass("F", "F", 3M);
-        public static readonly StarClass G = new StarClass("G", "G", 7.6M);
-        public static readonly StarClass K = new StarClass("K", "K", 12.1M);
-        public static readonly StarClass M = new StarClass("M", "M", 76.45M);
+        // Percentages are obtained from a combination of https://en.wikipedia.org/wiki/Stellar_classification#Harvard_spectral_classification
+        // and http://physics.stackexchange.com/questions/153150/what-does-this-stellar-mass-distribution-mean
+
+        // Mass distributions
+
+        // Radius distributions
+
+        // Luminosity distributions
+
+        public static readonly StarClass O = new StarClass("O", "O", 0.0000009M, new Normal(10, 10), new Normal(10, 10), new Normal(10, 10));
+        public static readonly StarClass B = new StarClass("B", "B", 0.039M, new Normal(10, 10), new Normal(10, 10), new Normal(10, 10));
+        public static readonly StarClass A = new StarClass("A", "A", 0.18M, new Normal(10, 10), new Normal(10, 10), new Normal(10, 10));
+        public static readonly StarClass F = new StarClass("F", "F", 0.9M, new Normal(10, 10), new Normal(10, 10), new Normal(10, 10));
+        public static readonly StarClass G = new StarClass("G", "G", 2.28M, new Normal(10, 10), new Normal(10, 10), new Normal(10, 10));
+        public static readonly StarClass K = new StarClass("K", "K", 3.63M, new Normal(10, 10), new Normal(10, 10), new Normal(10, 10));
+        public static readonly StarClass M = new StarClass("M", "M", 22.935M, new Normal(10, 10), new Normal(10, 10), new Normal(10, 10));
 
         public static StarClass FromName(string from)
         {
-            StarClass result = STARS.First(v => v.name == from);
+            StarClass result = STARS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown star name " + from);
@@ -47,7 +66,7 @@ namespace EliteDangerousDataDefinitions
 
         public static StarClass FromEDName(string from)
         {
-            StarClass result = STARS.First(v => v.edname == from);
+            StarClass result = STARS.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown star ED name " + from);

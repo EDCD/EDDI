@@ -11,7 +11,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Bond awarded";
         public const string DESCRIPTION = "Triggered when you are awarded a combat bond";
-        public static BondAwardedEvent SAMPLE = new BondAwardedEvent(DateTime.Now, "Jarildekald Public Industry", "Lencali Freedom Party", 500M);
+        public static BondAwardedEvent SAMPLE = new BondAwardedEvent(DateTime.Now, "Jarildekald Public Industry", "Lencali Freedom Party", 500);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static BondAwardedEvent()
@@ -30,9 +30,9 @@ namespace EliteDangerousEvents
         public string victimfaction { get; private set; }
 
         [JsonProperty("reward")]
-        public decimal reward { get; private set; }
+        public long reward { get; private set; }
 
-        public BondAwardedEvent(DateTime timestamp, string awardingfaction, string victimfaction, decimal reward) : base(timestamp, NAME)
+        public BondAwardedEvent(DateTime timestamp, string awardingfaction, string victimfaction, long reward) : base(timestamp, NAME)
         {
             this.awardingfaction = awardingfaction;
             this.victimfaction = victimfaction;

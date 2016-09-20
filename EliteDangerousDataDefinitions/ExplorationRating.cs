@@ -41,7 +41,7 @@ namespace EliteDangerousDataDefinitions
 
         public static ExplorationRating FromName(string from)
         {
-            ExplorationRating result = RATINGS.First(v => v.name == from);
+            ExplorationRating result = RATINGS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown Exploration Rating name " + from);
@@ -51,7 +51,7 @@ namespace EliteDangerousDataDefinitions
 
         public static ExplorationRating FromEDName(string from)
         {
-            ExplorationRating result = RATINGS.First(v => v.edname == from);
+            ExplorationRating result = RATINGS.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown Exploration Rating ED name " + from);
@@ -61,7 +61,7 @@ namespace EliteDangerousDataDefinitions
 
         public static ExplorationRating FromRank(int from)
         {
-            ExplorationRating result = RATINGS.First(v => v.rank == from);
+            ExplorationRating result = RATINGS.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Report("Unknown Exploration Rating rank " + from);

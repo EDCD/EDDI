@@ -32,7 +32,7 @@ namespace EliteDangerousDataDefinitions
 
         public static GameMode FromName(string from)
         {
-            GameMode result = MODES.First(v => v.name == from);
+            GameMode result = MODES.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown game mode name " + from);
@@ -42,7 +42,7 @@ namespace EliteDangerousDataDefinitions
 
         public static GameMode FromEDName(string from)
         {
-            GameMode result = MODES.First(v => v.edname == from);
+            GameMode result = MODES.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown game mode ED name " + from);

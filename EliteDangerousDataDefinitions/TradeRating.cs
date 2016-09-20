@@ -41,7 +41,7 @@ namespace EliteDangerousDataDefinitions
 
         public static TradeRating FromName(string from)
         {
-            TradeRating result = RATINGS.First(v => v.name == from);
+            TradeRating result = RATINGS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown Trade Rating name " + from);
@@ -51,7 +51,7 @@ namespace EliteDangerousDataDefinitions
 
         public static TradeRating FromEDName(string from)
         {
-            TradeRating result = RATINGS.First(v => v.edname == from);
+            TradeRating result = RATINGS.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown Trade Rating ED name " + from);
@@ -61,7 +61,7 @@ namespace EliteDangerousDataDefinitions
 
         public static TradeRating FromRank(int from)
         {
-            TradeRating result = RATINGS.First(v => v.rank == from);
+            TradeRating result = RATINGS.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Report("Unknown Trade Rating rank " + from);

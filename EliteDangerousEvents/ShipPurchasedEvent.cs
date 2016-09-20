@@ -12,7 +12,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Ship purchased";
         public const string DESCRIPTION = "Triggered when you purchase a ship";
-        public static ShipPurchasedEvent SAMPLE = new ShipPurchasedEvent(DateTime.Now, ShipDefinitions.ShipFromEDModel("Adder"), null, null, ShipDefinitions.ShipFromEDModel("Anaconda"));
+        public static ShipPurchasedEvent SAMPLE = new ShipPurchasedEvent(DateTime.Now, ShipDefinitions.FromEDModel("Adder"), null, null, ShipDefinitions.FromEDModel("Anaconda"));
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ShipPurchasedEvent()

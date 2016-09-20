@@ -41,7 +41,7 @@ namespace EliteDangerousDataDefinitions
 
         public static CQCRating FromName(string from)
         {
-            CQCRating result = RATINGS.First(v => v.name == from);
+            CQCRating result = RATINGS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown CQC Rating name " + from);
@@ -51,7 +51,7 @@ namespace EliteDangerousDataDefinitions
 
         public static CQCRating FromEDName(string from)
         {
-            CQCRating result = RATINGS.First(v => v.edname == from);
+            CQCRating result = RATINGS.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown CQC Rating ED name " + from);
@@ -61,7 +61,7 @@ namespace EliteDangerousDataDefinitions
 
         public static CQCRating FromRank(int from)
         {
-            CQCRating result = RATINGS.First(v => v.rank == from);
+            CQCRating result = RATINGS.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Report("Unknown CQC Rating rank " + from);

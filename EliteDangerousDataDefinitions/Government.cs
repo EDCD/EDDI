@@ -44,7 +44,7 @@ namespace EliteDangerousDataDefinitions
 
         public static Government FromName(string from)
         {
-            Government result = GOVERNMENTS.First(v => v.name == from);
+            Government result = GOVERNMENTS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown Government name " + from);
@@ -54,7 +54,7 @@ namespace EliteDangerousDataDefinitions
 
         public static Government FromEDName(string from)
         {
-            Government result = GOVERNMENTS.First(v => v.edname == from);
+            Government result = GOVERNMENTS.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown Government ED name " + from);

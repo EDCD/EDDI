@@ -40,7 +40,7 @@ namespace EliteDangerousDataDefinitions
 
         public static Economy FromName(string from)
         {
-            Economy result = ECONOMIES.First(v => v.name == from);
+            Economy result = ECONOMIES.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown Economy name " + from);
@@ -50,7 +50,7 @@ namespace EliteDangerousDataDefinitions
 
         public static Economy FromEDName(string from)
         {
-            Economy result = ECONOMIES.First(v => v.edname == from);
+            Economy result = ECONOMIES.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown Economy ED name " + from);

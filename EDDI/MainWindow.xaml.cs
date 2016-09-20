@@ -375,7 +375,7 @@ namespace EDDI
 
         private void ttsTestVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
-            Ship testShip = ShipDefinitions.ShipFromModel((string)ttsTestShipDropDown.SelectedValue);
+            Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 100;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             SpeechService speechService = new SpeechService(speechConfiguration);
@@ -384,7 +384,7 @@ namespace EDDI
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
-            Ship testShip = ShipDefinitions.ShipFromModel((string)ttsTestShipDropDown.SelectedValue);
+            Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 20;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             SpeechService speechService = new SpeechService(speechConfiguration);

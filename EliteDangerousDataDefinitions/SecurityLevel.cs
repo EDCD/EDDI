@@ -33,7 +33,7 @@ namespace EliteDangerousDataDefinitions
 
         public static SecurityLevel FromName(string from)
         {
-            SecurityLevel result = SECURITYLEVELS.First(v => v.name == from);
+            SecurityLevel result = SECURITYLEVELS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown Security Level name " + from);
@@ -43,7 +43,7 @@ namespace EliteDangerousDataDefinitions
 
         public static SecurityLevel FromEDName(string from)
         {
-            SecurityLevel result = SECURITYLEVELS.First(v => v.edname == from);
+            SecurityLevel result = SECURITYLEVELS.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown Security Level ED name " + from);

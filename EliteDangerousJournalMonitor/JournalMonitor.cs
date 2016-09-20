@@ -20,7 +20,7 @@ namespace EliteDangerousJournalMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$");
 
-        public JournalMonitor() : base(GetSavedGamesDir(), @"^journal\.[0-9\.]+\.log$", result => HandleJournalEntry(result, Eddi.Instance.eventHandler)) {}
+        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal\.[0-9\.]+\.log$", result => HandleJournalEntry(result, Eddi.Instance.eventHandler)) {}
 
         private static void HandleJournalEntry(string line, Action<Event> callback)
         {
@@ -96,9 +96,9 @@ namespace EliteDangerousJournalMonitor
                         {
                             object val;
                             data.TryGetValue("Latitude", out val);
-                            decimal latitude = (decimal)val;
+                            decimal latitude = (decimal)(double)val;
                             data.TryGetValue("Longitude", out val);
-                            decimal longitude = (decimal)val;
+                            decimal longitude = (decimal)(double)val;
                             journalEvent = new TouchdownEvent(timestamp, longitude, latitude);
                         }
                         handled = true;
@@ -107,9 +107,9 @@ namespace EliteDangerousJournalMonitor
                         {
                             object val;
                             data.TryGetValue("Latitude", out val);
-                            decimal latitude = (decimal)val;
+                            decimal latitude = (decimal)(double)val;
                             data.TryGetValue("Longitude", out val);
-                            decimal longitude = (decimal)val;
+                            decimal longitude = (decimal)(double)val;
                             journalEvent = new LiftoffEvent(timestamp, longitude, latitude);
                         }
                         handled = true;
@@ -165,15 +165,11 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("StarSystem", out val);
                             string systemName = (string)val;
 
-                            // The system co-ordinates are locked away in a StarPos field, which is the co-ordinates surrounded by square brackets
                             data.TryGetValue("StarPos", out val);
-                            string starPos = (string)val;
-                            Regex coordsRegex = new Regex(@"^\[(-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+)\]$");
-                            Match coordsMatch = coordsRegex.Match(starPos);
-                            // Co-ordinates are only to 3dp so do a bit of math to calculate the correct values
-                            decimal x = Math.Round(decimal.Parse(coordsMatch.Groups[1].Value) * 32) / (decimal)32.0;
-                            decimal y = Math.Round(decimal.Parse(coordsMatch.Groups[2].Value) * 32) / (decimal)32.0;
-                            decimal z = Math.Round(decimal.Parse(coordsMatch.Groups[3].Value) * 32) / (decimal)32.0;
+                            List<object> starPos = (List<object>)val;
+                            decimal x = Math.Round((decimal)((double)starPos[0]) * 32) / (decimal)32.0;
+                            decimal y = Math.Round((decimal)((double)starPos[1]) * 32) / (decimal)32.0;
+                            decimal z = Math.Round((decimal)((double)starPos[2]) * 32) / (decimal)32.0;
 
                             data.TryGetValue("Allegiance", out val);
                             Superpower allegiance = Superpower.FromEDName((string)val);
@@ -200,7 +196,7 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("Target", out val);
                             string target = (string)val;
                             data.TryGetValue("Reward", out val);
-                            decimal reward = (decimal)val;
+                            long reward = (long)val;
                             data.TryGetValue("VictimFaction", out val);
                             string victimFaction = (string)val;
                             journalEvent = new BountyAwardedEvent(timestamp, awardingFaction, target, victimFaction, reward);
@@ -214,7 +210,7 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("Faction", out val);
                             string awardingFaction = (string)val;
                             data.TryGetValue("Reward", out val);
-                            decimal reward = (decimal)val;
+                            long reward = (long)val;
                             data.TryGetValue("VictimFaction", out val);
                             string victimFaction = (string)val;
                             journalEvent = new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward);
@@ -234,13 +230,13 @@ namespace EliteDangerousJournalMonitor
                             if (data.ContainsKey("Fine"))
                             {
                                 data.TryGetValue("Fine", out val);
-                                decimal fine = (decimal)val;
+                                long fine = (long)val;
                                 journalEvent = new FineIncurredEvent(timestamp, crimetype, faction, victim, fine);
                             }
                             else
                             {
                                 data.TryGetValue("Bounty", out val);
-                                decimal bounty = (decimal)val;
+                                long bounty = (long)val;
                                 journalEvent = new BountyIncurredEvent(timestamp, crimetype, faction, victim, bounty);
                             }
                         }
@@ -252,21 +248,21 @@ namespace EliteDangerousJournalMonitor
                             if (data.ContainsKey("Combat"))
                             {
                                 data.TryGetValue("Combat", out val);
-                                CombatRating rating = CombatRating.FromRank((int)val);
+                                CombatRating rating = CombatRating.FromRank((int)(long)val);
                                 journalEvent = new CombatPromotionEvent(timestamp, rating);
                                 handled = true;
                             }
                             else if (data.ContainsKey("Trade"))
                             {
                                 data.TryGetValue("Trade", out val);
-                                TradeRating rating = TradeRating.FromRank((int)val);
+                                TradeRating rating = TradeRating.FromRank((int)(long)val);
                                 journalEvent = new TradePromotionEvent(timestamp, rating);
                                 handled = true;
                             }
                             else if (data.ContainsKey("Explore"))
                             {
                                 data.TryGetValue("Explore", out val);
-                                ExplorationRating rating = ExplorationRating.FromRank((int)val);
+                                ExplorationRating rating = ExplorationRating.FromRank((int)(long)val);
                                 journalEvent = new ExplorationPromotionEvent(timestamp, rating);
                                 handled = true;
                             }
@@ -289,8 +285,8 @@ namespace EliteDangerousJournalMonitor
                             object val;
                             data.TryGetValue("Type", out val);
                             string cargo = (string)val;
-                            data.TryGetValue("Amount", out val);
-                            int amount = (int)val;
+                            data.TryGetValue("Count", out val);
+                            int amount = (int)(long)val;
                             data.TryGetValue("Abandoned", out val);
                             bool abandoned = (bool)val;
                             journalEvent = new CargoEjectedEvent(timestamp, cargo, amount, abandoned);
@@ -309,7 +305,7 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("BodyName", out val);
                             string name = (string)val;
                             data.TryGetValue("DistanceFromArrivalLS", out val);
-                            decimal distanceFromArrivalLs = (decimal)val;
+                            decimal distanceFromArrivalLs = (decimal)(double)val;
                             if (data.ContainsKey("StarType"))
                             {
                                 // Star
@@ -317,13 +313,13 @@ namespace EliteDangerousJournalMonitor
                                 string starType = (string)val;
 
                                 data.TryGetValue("StellarMass", out val);
-                                decimal stellarMass = (decimal)val;
+                                decimal stellarMass = (decimal)(double)val;
 
                                 data.TryGetValue("Radius", out val);
-                                decimal radius = (decimal)val;
+                                decimal radius = (decimal)(double)val;
 
                                 data.TryGetValue("AbsoluteMagnitude", out val);
-                                decimal absoluteMagnitude = (decimal)val;
+                                decimal absoluteMagnitude = (decimal)(double)val;
 
                                 journalEvent = new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude);
                                 handled = true;
@@ -352,25 +348,16 @@ namespace EliteDangerousJournalMonitor
                     case "ShipyardBuy":
                         {
                             object val;
-                            data.TryGetValue("ShipID", out val);
-                            int shipId = (int)val;
-                            // We should be able to provide our ship information given the ship ID
-                            Ship ship = Eddi.Instance.StoredShips.First(v => v.LocalId == shipId);
-                            if (ship == null)
-                            {
-                                Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
-                                // Failed to find the ship; provide a basic definition
-                                data.TryGetValue("ShipType", out val);
-                                ship = ShipDefinitions.ShipFromEDModel((string)val);
-                                ship.LocalId = shipId;
-                            }
+                            // We don't have a ship ID at this point so use the ship type
+                            data.TryGetValue("ShipType", out val);
+                            Ship ship = ShipDefinitions.FromEDModel((string)val);
 
                             Ship storedShip = null;
                             data.TryGetValue("StoreShipID", out val);
                             if (val != null)
                             {
                                 // We are storing a ship as part of the swap
-                                int storedShipId = (int)val;
+                                int storedShipId = (int)(long)val;
 
                                 // We should be storing our own ship; confirm this using the ship ID
                                 if (storedShipId == Eddi.Instance.Ship.LocalId)
@@ -380,12 +367,12 @@ namespace EliteDangerousJournalMonitor
                                 else
                                 {
                                     // The ship might already be registered as stored; see if we can find it
-                                    storedShip = Eddi.Instance.StoredShips.First(v => v.LocalId == storedShipId);
+                                    storedShip = Eddi.Instance.StoredShips.FirstOrDefault(v => v.LocalId == storedShipId);
                                     if (storedShip == null)
                                     {
                                         // No luck finding the ship; provide a basic definition
                                         data.TryGetValue("StoreOldShip", out val);
-                                        ship = ShipDefinitions.ShipFromEDModel((string)val);
+                                        ship = ShipDefinitions.FromEDModel((string)val);
                                         ship.LocalId = storedShipId;
                                     }
                                 }
@@ -396,7 +383,7 @@ namespace EliteDangerousJournalMonitor
                             if (val != null)
                             {
                                 // We are selling a ship as part of the swap
-                                int soldShipId = (int)val;
+                                int soldShipId = (int)(long)val;
 
                                 // We should be selling our current ship; confirm this using the ship ID
                                 if (soldShipId == Eddi.Instance.Ship.LocalId)
@@ -406,19 +393,19 @@ namespace EliteDangerousJournalMonitor
                                 else
                                 {
                                     // The ship might be registered as stored; see if we can find it
-                                    soldShip = Eddi.Instance.StoredShips.First(v => v.LocalId == soldShipId);
+                                    soldShip = Eddi.Instance.StoredShips.FirstOrDefault(v => v.LocalId == soldShipId);
                                     if (soldShip == null)
                                     {
                                         // No luck finding the ship; provide a basic definition
                                         data.TryGetValue("SellOldShip", out val);
-                                        soldShip = ShipDefinitions.ShipFromEDModel((string)val);
+                                        soldShip = ShipDefinitions.FromEDModel((string)val);
                                         soldShip.LocalId = soldShipId;
                                     }
                                 }
                             }
 
                             data.TryGetValue("SellPrice", out val);
-                            decimal? soldPrice = (decimal?)val;
+                            decimal? soldPrice = (long?)val;
                             journalEvent = new ShipPurchasedEvent(timestamp, ship, soldShip, soldPrice, storedShip);
                         }
                         handled = true;
@@ -426,20 +413,20 @@ namespace EliteDangerousJournalMonitor
                     case "ShipyardSell":
                         {
                             object val;
-                            data.TryGetValue("SellShipId", out val);
-                            int shipId = (int)val;
+                            data.TryGetValue("SellShipID", out val);
+                            int shipId = (int)(long)val;
                             // We should be able to provide our ship information given the ship ID
-                            Ship ship = Eddi.Instance.StoredShips.First(v => v.LocalId == shipId);
+                            Ship ship = Eddi.Instance.StoredShips.FirstOrDefault(v => v.LocalId == shipId);
                             if (ship == null)
                             {
                                 Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
                                 // Failed to find the ship; provide a basic definition
                                 data.TryGetValue("ShipType", out val);
-                                ship = ShipDefinitions.ShipFromEDModel((string)val);
+                                ship = ShipDefinitions.FromEDModel((string)val);
                                 ship.LocalId = shipId;
                             }
                             data.TryGetValue("ShipPrice", out val);
-                            decimal price = (decimal)val;
+                            decimal price = (long)val;
                             journalEvent = new ShipSoldEvent(timestamp, ship, price);
                         }
                         handled = true;
@@ -448,15 +435,15 @@ namespace EliteDangerousJournalMonitor
                         {
                             object val;
                             data.TryGetValue("ShipID", out val);
-                            int shipId = (int)val;
+                            int shipId = (int)(long)val;
                             // We should be able to provide our ship information given the ship ID
-                            Ship ship = Eddi.Instance.StoredShips.First(v => v.LocalId == shipId);
+                            Ship ship = Eddi.Instance.StoredShips.FirstOrDefault(v => v.LocalId == shipId);
                             if (ship == null)
                             {
                                 Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
                                 // Failed to find the ship; provide a basic definition
                                 data.TryGetValue("ShipType", out val);
-                                ship = ShipDefinitions.ShipFromEDModel((string)val);
+                                ship = ShipDefinitions.FromEDModel((string)val);
                                 ship.LocalId = shipId;
                             }
 
@@ -465,7 +452,7 @@ namespace EliteDangerousJournalMonitor
                             if (val != null)
                             {
                                 // We are storing a ship as part of the swap
-                                int storedShipId = (int)val;
+                                int storedShipId = (int)(long)val;
 
                                 // We should be storing our own ship; confirm this using the ship ID
                                 if (storedShipId == Eddi.Instance.Ship.LocalId)
@@ -475,12 +462,12 @@ namespace EliteDangerousJournalMonitor
                                 else
                                 {
                                     // The ship might already be registered as stored; see if we can find it
-                                    storedShip = Eddi.Instance.StoredShips.First(v => v.LocalId == storedShipId);
+                                    storedShip = Eddi.Instance.StoredShips.FirstOrDefault(v => v.LocalId == storedShipId);
                                     if (storedShip == null)
                                     {
                                         // No luck finding the ship; provide a basic definition
                                         data.TryGetValue("StoreOldShip", out val);
-                                        ship = ShipDefinitions.ShipFromEDModel((string)val);
+                                        ship = ShipDefinitions.FromEDModel((string)val);
                                         ship.LocalId = storedShipId;
                                     }
                                 }
@@ -491,7 +478,7 @@ namespace EliteDangerousJournalMonitor
                             if (val != null)
                             {
                                 // We are selling a ship as part of the swap
-                                int soldShipId = (int)val;
+                                int soldShipId = (int)(long)val;
 
                                 // We should be selling our current ship; confirm this using the ship ID
                                 if (soldShipId == Eddi.Instance.Ship.LocalId)
@@ -501,12 +488,12 @@ namespace EliteDangerousJournalMonitor
                                 else
                                 {
                                     // The ship might be registered as stored; see if we can find it
-                                    soldShip = Eddi.Instance.StoredShips.First(v => v.LocalId == soldShipId);
+                                    soldShip = Eddi.Instance.StoredShips.FirstOrDefault(v => v.LocalId == soldShipId);
                                     if (soldShip == null)
                                     {
                                         // No luck finding the ship; provide a basic definition
                                         data.TryGetValue("SellOldShip", out val);
-                                        soldShip = ShipDefinitions.ShipFromEDModel((string)val);
+                                        soldShip = ShipDefinitions.FromEDModel((string)val);
                                         soldShip.LocalId = soldShipId;
                                     }
                                 }
@@ -520,15 +507,15 @@ namespace EliteDangerousJournalMonitor
                         {
                             object val;
                             data.TryGetValue("ShipID", out val);
-                            int shipId = (int)val;
+                            int shipId = (int)(long)val;
                             // We should be able to provide our ship information given the ship ID
-                            Ship ship = Eddi.Instance.StoredShips.First(v => v.LocalId == shipId);
+                            Ship ship = Eddi.Instance.StoredShips.FirstOrDefault(v => v.LocalId == shipId);
                             if (ship == null)
                             {
                                 Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
                                 // Failed to find the ship; provide a basic definition
                                 data.TryGetValue("ShipType", out val);
-                                ship = ShipDefinitions.ShipFromEDModel((string)val);
+                                ship = ShipDefinitions.FromEDModel((string)val);
                                 ship.LocalId = shipId;
                             }
 
@@ -536,10 +523,10 @@ namespace EliteDangerousJournalMonitor
                             string system = (string)val;
 
                             data.TryGetValue("Distance", out val);
-                            decimal distance = (decimal)val;
+                            decimal distance = (decimal)(double)val;
 
                             data.TryGetValue("TransferPrice", out val);
-                            decimal cost = (decimal)val;
+                            decimal cost = (long)val;
 
                             journalEvent = new ShipTransferInitiatedEvent(timestamp, ship, system, distance, cost);
 
@@ -596,6 +583,7 @@ namespace EliteDangerousJournalMonitor
                             object val;
                             data.TryGetValue("From", out val);
                             string from = (string)val;
+                            from = from.Replace("$cmdr_decorate:#name=", "Commander ");
                             data.TryGetValue("Message", out val);
                             string message = (string)val;
                             journalEvent = new MessageReceivedEvent(timestamp, from, message);
@@ -628,7 +616,7 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("StationName", out val);
                             string stationName = (string)val;
                             data.TryGetValue("LandingPad", out val);
-                            int landingPad = (int)val;
+                            int landingPad = (int)(long)val;
                             journalEvent = new DockingGrantedEvent(timestamp, stationName, landingPad);
                         }
                         handled = true;
@@ -674,7 +662,7 @@ namespace EliteDangerousJournalMonitor
                         {
                             object val;
                             data.TryGetValue("Health", out val);
-                            decimal health = sensibleHealth((decimal)val);
+                            decimal health = sensibleHealth((decimal)(double)val);
                             journalEvent = new HullDamagedEvent(timestamp, health);
                         }
                         handled = true;
@@ -713,7 +701,7 @@ namespace EliteDangerousJournalMonitor
                                 data.TryGetValue("KillerName", out val);
                                 names.Add((string)val);
                                 data.TryGetValue("KillerShip", out val);
-                                ships.Add(ShipDefinitions.ShipFromEDModel((string)val));
+                                ships.Add(ShipDefinitions.FromEDModel((string)val));
                                 data.TryGetValue("KillerRank", out val);
                                 ratings.Add(CombatRating.FromEDName((string)val));
                             }
@@ -727,7 +715,7 @@ namespace EliteDangerousJournalMonitor
                                     killer.TryGetValue("Name", out val);
                                     names.Add((string)val);
                                     killer.TryGetValue("Ship", out val);
-                                    ships.Add(ShipDefinitions.ShipFromEDModel((string)val));
+                                    ships.Add(ShipDefinitions.FromEDModel((string)val));
                                     killer.TryGetValue("Rank", out val);
                                     ratings.Add(CombatRating.FromEDName((string)val));
                                 }
@@ -742,7 +730,7 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("USSType", out val);
                             string source = (string)val;
                             data.TryGetValue("USSThreat", out val);
-                            int threat = (int)val;
+                            int threat = (int)(long)val;
                             journalEvent = new EnteredSignalSourceEvent(timestamp, source, threat);
                         }
                         handled = true;
@@ -753,9 +741,9 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("Type", out val);
                             string cargo = (string)val;
                             data.TryGetValue("Count", out val);
-                            int amount = (int)val;
+                            int amount = (int)(long)val;
                             data.TryGetValue("BuyPrice", out val);
-                            decimal price = (decimal)val;
+                            decimal price = (long)val;
                             journalEvent = new BoughtFromMarketEvent(timestamp, cargo, amount, price);
                             handled = true;
                             break;
@@ -766,11 +754,11 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("Type", out val);
                             string cargo = (string)val;
                             data.TryGetValue("Count", out val);
-                            int amount = (int)val;
+                            int amount = (int)(long)val;
                             data.TryGetValue("SellPrice", out val);
-                            decimal price = (decimal)val;
+                            decimal price = (long)val;
                             data.TryGetValue("AvgPricePaid", out val);
-                            decimal buyPrice = (decimal)val;
+                            decimal buyPrice = (long)val;
                             // We don't care about buy price, we care about profit per unit
                             decimal profit = price - buyPrice;
                             journalEvent = new SoldToMarketEvent(timestamp, cargo, amount, price, profit);
@@ -783,13 +771,13 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("Commander", out val);
                             string commander = (string)val;
                             data.TryGetValue("Ship", out val);
-                            Ship ship = ShipDefinitions.ShipFromEDModel((string)val);
+                            Ship ship = ShipDefinitions.FromEDModel((string)val);
                             data.TryGetValue("GameMode", out val);
                             GameMode mode = GameMode.FromEDName((string)val);
                             data.TryGetValue("Group", out val);
                             string group = (string)val;
                             data.TryGetValue("Credits", out val);
-                            decimal credits = (decimal)val;
+                            decimal credits = (long)val;
                             journalEvent = new CommanderContinuedEvent(timestamp, commander, ship, mode, group, credits);
                             handled = true;
                             break;
@@ -802,9 +790,9 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("Faction", out val);
                             string faction = (string)val;
                             data.TryGetValue("Cost", out val);
-                            decimal price = (decimal)val;
+                            decimal price = (long)val;
                             data.TryGetValue("CombatRank", out val);
-                            CombatRating rating = CombatRating.FromRank((int)val);
+                            CombatRating rating = CombatRating.FromRank((int)(long)val);
                             journalEvent = new CrewHiredEvent(timestamp, name, faction, price, rating);
                             handled = true;
                             break;
@@ -853,17 +841,17 @@ namespace EliteDangerousJournalMonitor
                         {
                             object val;
                             data.TryGetValue("Combat", out val);
-                            decimal combat = (decimal)val;
+                            decimal combat = (long)val;
                             data.TryGetValue("Trade", out val);
-                            decimal trade = (decimal)val;
+                            decimal trade = (long)val;
                             data.TryGetValue("Explore", out val);
-                            decimal exploration = (decimal)val;
+                            decimal exploration = (long)val;
                             data.TryGetValue("CQC", out val);
-                            decimal cqc = (decimal)val;
+                            decimal cqc = (long)val;
                             data.TryGetValue("Empire", out val);
-                            decimal empire = (decimal)val;
+                            decimal empire = (long)val;
                             data.TryGetValue("Federation", out val);
-                            decimal federation = (decimal)val;
+                            decimal federation = (long)val;
 
                             journalEvent = new CommanderProgressEvent(timestamp, combat, trade, exploration, cqc, empire, federation);
                             handled = true;
@@ -873,17 +861,17 @@ namespace EliteDangerousJournalMonitor
                         {
                             object val;
                             data.TryGetValue("Combat", out val);
-                            CombatRating combat = CombatRating.FromRank((int)val);
+                            CombatRating combat = CombatRating.FromRank((int)((long)val));
                             data.TryGetValue("Trade", out val);
-                            TradeRating trade = TradeRating.FromRank((int)val);
+                            TradeRating trade = TradeRating.FromRank((int)((long)val));
                             data.TryGetValue("Explore", out val);
-                            ExplorationRating exploration = ExplorationRating.FromRank((int)val);
+                            ExplorationRating exploration = ExplorationRating.FromRank((int)((long)val));
                             data.TryGetValue("CQC", out val);
-                            CQCRating cqc = CQCRating.FromRank((int)val);
+                            CQCRating cqc = CQCRating.FromRank((int)((long)val));
                             data.TryGetValue("Empire", out val);
-                            EmpireRating empire = EmpireRating.FromRank((int)val);
+                            EmpireRating empire = EmpireRating.FromRank((int)((long)val));
                             data.TryGetValue("Federation", out val);
-                            FederationRating federation = FederationRating.FromRank((int)val);
+                            FederationRating federation = FederationRating.FromRank((int)((long)val));
 
                             journalEvent = new CommanderRatingsEvent(timestamp, combat, trade, exploration, cqc, empire, federation);
                             handled = true;

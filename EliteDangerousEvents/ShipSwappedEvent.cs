@@ -12,7 +12,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Ship swapped";
         public const string DESCRIPTION = "Triggered when you swap a ship";
-        public static ShipSwappedEvent SAMPLE = new ShipSwappedEvent(DateTime.Now, ShipDefinitions.ShipFromEDModel("Adder"), null, ShipDefinitions.ShipFromEDModel("Anaconda"));
+        public static ShipSwappedEvent SAMPLE = new ShipSwappedEvent(DateTime.Now, ShipDefinitions.FromEDModel("Adder"), null, ShipDefinitions.FromEDModel("Anaconda"));
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ShipSwappedEvent()

@@ -12,7 +12,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Commander continued";
         public const string DESCRIPTION = "Triggered when you continue an existing game";
-        public static CommanderContinuedEvent SAMPLE = new CommanderContinuedEvent(DateTime.Now, "HRC1", ShipDefinitions.ShipFromEDModel("CobraMkIII"), GameMode.FromEDName("Group"), "Mobius", 600120M);
+        public static CommanderContinuedEvent SAMPLE = new CommanderContinuedEvent(DateTime.Now, "HRC1", ShipDefinitions.FromEDModel("CobraMkIII"), GameMode.FromEDName("Group"), "Mobius", 600120M);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CommanderContinuedEvent()
