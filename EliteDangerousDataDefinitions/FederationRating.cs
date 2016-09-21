@@ -57,7 +57,7 @@ namespace EliteDangerousDataDefinitions
 
         public static FederationRating FromEDName(string from)
         {
-            FederationRating result = RATINGS.FirstOrDefault(v => v.edname == from);
+            FederationRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.ToLowerInvariant());
             if (result == null)
             {
                 Logging.Report("Unknown Federation Rating ED name " + from);

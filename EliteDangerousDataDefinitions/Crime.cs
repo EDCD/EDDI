@@ -58,7 +58,7 @@ namespace EliteDangerousDataDefinitions
 
         public static Crime FromEDName(string from)
         {
-            Crime result = CRIMES.FirstOrDefault(v => v.edname == from);
+            Crime result = CRIMES.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.ToLowerInvariant());
             if (result == null)
             {
                 Logging.Report("Unknown Crime ED name " + from);

@@ -51,7 +51,7 @@ namespace EliteDangerousDataDefinitions
 
         public static ExplorationRating FromEDName(string from)
         {
-            ExplorationRating result = RATINGS.FirstOrDefault(v => v.edname == from);
+            ExplorationRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.ToLowerInvariant());
             if (result == null)
             {
                 Logging.Report("Unknown Exploration Rating ED name " + from);

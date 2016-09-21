@@ -52,7 +52,7 @@ namespace EliteDangerousDataDefinitions
 
         public static State FromEDName(string from)
         {
-            State result = STATES.FirstOrDefault(v => v.edname == from);
+            State result = STATES.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.ToLowerInvariant());
             if (result == null)
             {
                 Logging.Report("Unknown State name " + from);

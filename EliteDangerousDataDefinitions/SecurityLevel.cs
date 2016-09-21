@@ -26,10 +26,10 @@ namespace EliteDangerousDataDefinitions
             SECURITYLEVELS.Add(this);
         }
 
-        public static readonly SecurityLevel None = new SecurityLevel("None", "None");
-        public static readonly SecurityLevel Low = new SecurityLevel("Low", "Low");
+        public static readonly SecurityLevel None = new SecurityLevel("$SYSTEM_SECURITY_none", "None");
+        public static readonly SecurityLevel Low = new SecurityLevel("$SYSTEM_SECURITY_low", "Low");
         public static readonly SecurityLevel Medium = new SecurityLevel("$SYSTEM_SECURITY_medium", "Medium");
-        public static readonly SecurityLevel High = new SecurityLevel("High", "High");
+        public static readonly SecurityLevel High = new SecurityLevel("$SYSTEM_SECURITY_high", "High");
 
         public static SecurityLevel FromName(string from)
         {
@@ -43,7 +43,7 @@ namespace EliteDangerousDataDefinitions
 
         public static SecurityLevel FromEDName(string from)
         {
-            SecurityLevel result = SECURITYLEVELS.FirstOrDefault(v => v.edname == from);
+            SecurityLevel result = SECURITYLEVELS.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.ToLowerInvariant());
             if (result == null)
             {
                 Logging.Report("Unknown Security Level ED name " + from);
