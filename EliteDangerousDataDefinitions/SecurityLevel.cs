@@ -43,7 +43,7 @@ namespace EliteDangerousDataDefinitions
 
         public static SecurityLevel FromEDName(string from)
         {
-            SecurityLevel result = SECURITYLEVELS.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.ToLowerInvariant());
+            SecurityLevel result = SECURITYLEVELS.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.Replace(";", "").ToLowerInvariant());
             if (result == null)
             {
                 Logging.Report("Unknown Security Level ED name " + from);
