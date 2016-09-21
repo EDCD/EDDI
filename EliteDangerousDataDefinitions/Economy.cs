@@ -50,7 +50,8 @@ namespace EliteDangerousDataDefinitions
 
         public static Economy FromEDName(string from)
         {
-            Economy result = ECONOMIES.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.Replace(";", "").ToLowerInvariant());
+            string tidiedFrom = from == null ? null : from.Replace(";", "").ToLowerInvariant();
+            Economy result = ECONOMIES.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {
                 Logging.Report("Unknown Economy ED name " + from);

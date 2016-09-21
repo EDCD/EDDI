@@ -42,7 +42,8 @@ namespace EliteDangerousDataDefinitions
 
         public static GameMode FromEDName(string from)
         {
-            GameMode result = MODES.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.ToLowerInvariant());
+            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            GameMode result = MODES.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {
                 Logging.Report("Unknown game mode ED name " + from);

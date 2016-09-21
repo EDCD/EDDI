@@ -44,7 +44,8 @@ namespace EliteDangerousDataDefinitions
 
         public static Superpower FromEDName(string from)
         {
-            Superpower result = SUPERPOWERS.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.ToLowerInvariant());
+            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            Superpower result = SUPERPOWERS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {
                 Logging.Report("Unknown Superpower ED name " + from);

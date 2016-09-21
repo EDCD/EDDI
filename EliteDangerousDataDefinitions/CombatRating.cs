@@ -51,7 +51,8 @@ namespace EliteDangerousDataDefinitions
 
         public static CombatRating FromEDName(string from)
         {
-            CombatRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.ToLowerInvariant());
+            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            CombatRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {
                 Logging.Report("Unknown Combat Rating ED name " + from);

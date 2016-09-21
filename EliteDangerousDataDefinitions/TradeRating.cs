@@ -51,7 +51,8 @@ namespace EliteDangerousDataDefinitions
 
         public static TradeRating FromEDName(string from)
         {
-            TradeRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.ToLowerInvariant());
+            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            TradeRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {
                 Logging.Report("Unknown Trade Rating ED name " + from);

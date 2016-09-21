@@ -54,7 +54,8 @@ namespace EliteDangerousDataDefinitions
 
         public static Government FromEDName(string from)
         {
-            Government result = GOVERNMENTS.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.Replace(";","").ToLowerInvariant());
+            string tidiedFrom = from == null ? null : from.Replace(";", "").ToLowerInvariant();
+            Government result = GOVERNMENTS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {
                 Logging.Report("Unknown Government ED name " + from);

@@ -57,7 +57,8 @@ namespace EliteDangerousDataDefinitions
 
         public static EmpireRating FromEDName(string from)
         {
-            EmpireRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.ToLowerInvariant());
+            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            EmpireRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {
                 Logging.Report("Unknown Empire Rating ED name " + from);

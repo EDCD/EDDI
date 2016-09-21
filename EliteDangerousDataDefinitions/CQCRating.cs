@@ -51,7 +51,8 @@ namespace EliteDangerousDataDefinitions
 
         public static CQCRating FromEDName(string from)
         {
-            CQCRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == from.ToLowerInvariant());
+            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            CQCRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {
                 Logging.Report("Unknown CQC Rating ED name " + from);
