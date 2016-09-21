@@ -30,21 +30,21 @@ namespace EliteDangerousDataDefinitions
         public static readonly Crime Assault = new Crime("assault", "Assault");
         public static readonly Crime Murder = new Crime("murder", "Murder");
         public static readonly Crime Piracy = new Crime("piracy", "Piracy");
-        public static readonly Crime Interdiction = new Crime("interdiction", "Interdiction");
-        public static readonly Crime IllegalCargo = new Crime("illegalCargo", "Illegal cargo");
-        public static readonly Crime DisobeyPolice = new Crime("disobeyPolice", "Disobey police");
-        public static readonly Crime FireInNoFireZone = new Crime("fireInNoFireZone", "Fire in no-fire zone");
-        public static readonly Crime FireInStation = new Crime("fireInStation", "Fire in station");
+        public static readonly Crime Interdiction = new Crime("interdiction", "Interdicting");
+        public static readonly Crime IllegalCargo = new Crime("illegalCargo", "Carrying illegal cargo");
+        public static readonly Crime DisobeyPolice = new Crime("disobeyPolice", "Disobeying police");
+        public static readonly Crime FireInNoFireZone = new Crime("fireInNoFireZone", "Firing in a no-fire zone");
+        public static readonly Crime FireInStation = new Crime("fireInStation", "Firing in a station");
         public static readonly Crime DumpingDangerous = new Crime("dumpingDangerous", "Dumping dangerous cargo");
         public static readonly Crime DumpingNearStation = new Crime("dumpingNearStation", "Dumping cargo near a station");
-        public static readonly Crime BlockingAirlockMinor = new Crime("dockingMinor_BlockingAirlock", "Blocking an airlock (minor)");
-        public static readonly Crime BlockingAirlockMajor = new Crime("dockingMajor_BlockingAirlock", "Blocking an airlock (major)");
-        public static readonly Crime BlockingLandingPadMinor = new Crime("dockingMinor_BlockingLandingPad", "Blocking a landing pad (minor)");
-        public static readonly Crime BlockingLandingPadMajor = new Crime("dockingMajor_BlockingLandingPad", "Blocking a landing pad (major)");
-        public static readonly Crime TrespassMinor = new Crime("dockingMinor_Trespass", "Trespass (minor)");
-        public static readonly Crime TrespassMajor = new Crime("dockingMajor_Trespass", "Trespass (major)");
-        public static readonly Crime Collided = new Crime("collidedAtSpeedInNoFireZone", "Collided");
-        public static readonly Crime CollidedWithDamage = new Crime("collidedAtSpeedInNoFireZone_HullDamage", "Collided with damage");
+        public static readonly Crime BlockingAirlockMinor = new Crime("dockingMinonBlockingAirlock", "Blocking an airlock");
+        public static readonly Crime BlockingAirlockMajor = new Crime("dockingMajorBlockingAirlock", "Blocking an airlock");
+        public static readonly Crime BlockingLandingPadMinor = new Crime("dockingMinorBlockingLandingPad", "Blocking a landing pad");
+        public static readonly Crime BlockingLandingPadMajor = new Crime("dockingMajorBlockingLandingPad", "Blocking a landing pad");
+        public static readonly Crime TrespassMinor = new Crime("dockingMinorTrespass", "Trespass");
+        public static readonly Crime TrespassMajor = new Crime("dockingMajorTrespass", "Trespass");
+        public static readonly Crime Collided = new Crime("collidedAtSpeedInNoFireZone", "Collision");
+        public static readonly Crime CollidedWithDamage = new Crime("collidedAtSpeedInNoFireZone_HullDamage", "Collision resulting in damage");
 
         public static Crime FromName(string from)
         {
