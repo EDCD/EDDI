@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System;
 using EDDIVAPlugin;
 using MathNet.Numerics.Distributions;
+using EliteDangerousEvents;
 
 namespace Tests
 {
@@ -22,9 +23,26 @@ namespace Tests
         [TestMethod]
         public void TestStarUniformDistribution()
         {
-            IContinuousDistribution distribution = new ContinuousUniform(0.08, 0.6);
-            double cdf = distribution.CumulativeDistribution(0.8);
-            Assert.AreEqual(1, cdf);
+            IContinuousDistribution distribution = new Gamma(9, 1/5000.0);
+            Console.WriteLine(distribution.CumulativeDistribution(30000));
+            //IContinuousDistribution distribution = new Gamma(3, 0.05);
+            for (double d = 0; d < 50000; d = d + 1000)
+            {
+                //Console.WriteLine(Gamma.PDF(3, 0.05, d));
+                //Console.WriteLine(Gamma.CDF(3, 0.05, d));
+                Console.WriteLine("" + d + ": " + distribution.CumulativeDistribution(d));
+            }
+        }
+
+        [TestMethod]
+        public void TestStarSol()
+        {
+            StarScannedEvent scan = new StarScannedEvent(DateTime.Now, "Sol", "G", 1, 1, 4.83M, 5400000000, 300);
+            decimal solLuminosity = StarClass.luminosity(scan.absolutemagnitude);
+            StarClass starClass = StarClass.FromName(scan.stellarclass);
+            decimal massChance = starClass.stellarMassCP(scan.stellarmass);
+            decimal radiusChance = starClass.stellarRadiusCP(scan.radius);
+            decimal luminosityChance = starClass.luminosityCP(solLuminosity);
         }
     }
 }

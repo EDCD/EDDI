@@ -92,5 +92,22 @@ namespace Tests
             Console.Out.WriteLine(match.Groups[6].Value);
             Assert.AreEqual("Supercruise", match.Groups[6].Value);
         }
+
+        [TestMethod]
+        public void TestRegex4()
+        {
+            string line = @"{14:57:17} System:""Crucis Sector DL-Y d123"" StarPos:(95.188,10.344,58.469)ly Body:2 RelPos:(8.46813e+06,1.03054e+07,8.72342e+06)km Supercruise";
+            Regex SystemRegex = new Regex(@"^{([0-9][0-9]:[0-9][0-9]:[0-9][0-9])} System:""([^""]+)"" StarPos:\((-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+)\)ly .*? ([A-Za-z]+)$");
+            Match match = SystemRegex.Match(line);
+            Assert.IsTrue(match.Success);
+            Console.Out.WriteLine(match.Groups[0].Value);
+            Console.Out.WriteLine(match.Groups[1].Value);
+            Console.Out.WriteLine(match.Groups[2].Value);
+            Console.Out.WriteLine(match.Groups[3].Value);
+            Console.Out.WriteLine(match.Groups[4].Value);
+            Console.Out.WriteLine(match.Groups[5].Value);
+            Console.Out.WriteLine(match.Groups[6].Value);
+            Assert.AreEqual("Supercruise", match.Groups[6].Value);
+        }
     }
 }

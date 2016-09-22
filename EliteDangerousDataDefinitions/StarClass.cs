@@ -13,7 +13,7 @@ namespace EliteDangerousDataDefinitions
     /// </summary>
     public class StarClass
     {
-        private static readonly List<StarClass> STARS = new List<StarClass>();
+        private static readonly List<StarClass> CLASSES = new List<StarClass>();
 
         public string edname { get; private set; }
 
@@ -38,33 +38,48 @@ namespace EliteDangerousDataDefinitions
             this.massdistribution = massdistribution;
             this.radiusdistribution = radiusdistribution;
             this.luminositydistribution = luminositydistribution;
+
+            CLASSES.Add(this);
         }
 
         // Percentages are obtained from a combination of https://en.wikipedia.org/wiki/Stellar_classification#Harvard_spectral_classification
         // and http://physics.stackexchange.com/questions/153150/what-does-this-stellar-mass-distribution-mean
 
-        // Mass distributions
-
-        // Radius distributions
-
-        // Luminosity distributions
-
-        public static readonly StarClass O = new StarClass("O", "O", "blue", 0.0000009M, new Gamma(3, 11), new Gamma(3, 20), new Gamma(12, 5000));
+        public static readonly StarClass O = new StarClass("O", "O", "blue", 0.0000009M, new Gamma(3, 1/11.0), new Gamma(3, 1/20.0), new Gamma(9, 1/5000.0));
         public static readonly StarClass B = new StarClass("B", "B", "blue-white", 0.039M, new Normal(9.05, 2.32), new Normal(4.2, 0.8), new Normal(15012, 4995));
         public static readonly StarClass A = new StarClass("A", "A", "blue-white", 0.18M, new Normal(1.75, 0.12), new Normal(1.6, 0.667), new Normal(15, 3.333));
         public static readonly StarClass F = new StarClass("F", "F", "white", 0.9M, new Normal(1.22, 0.06), new Normal(1.275, 0.042), new Normal(3.25, 0.583));
         public static readonly StarClass G = new StarClass("G", "G", "yellow-white", 2.28M, new Normal(0.92, 0.04), new Normal(1.055, 0.032), new Normal(1.05, 0.15));
         public static readonly StarClass K = new StarClass("K", "K", "yellow-orange", 3.63M, new Normal(0.625, 0.06), new Normal(0.83, 0.043), new Normal(0.34, 0.087));
-        public static readonly StarClass M = new StarClass("M", "M", "orange-red", 22.935M, new Normal(0.265, 0.06), new Gamma(1, 0.25), new Gamma(1, 0.04));
+        public static readonly StarClass M = new StarClass("M", "M", "orange-red", 22.935M, new Normal(0.265, 0.06), new Gamma(1, 1/0.25), new Gamma(1, 1/0.04));
 
-        public double luminosityLikelihood(double l)
+        /// <summary>
+        /// Provide the cumulative probability that a star of this class will have a luminosity equal to or lower than that supplied
+        /// </summary>
+        public decimal luminosityCP(decimal l)
         {
-            return luminositydistribution.CumulativeDistribution(l);
+            return (decimal)luminositydistribution.CumulativeDistribution((double)l);
+        }
+
+        /// <summary>
+        /// Provide the cumulative probability that a star of this class will have a stellar radius equal to or lower than that supplied
+        /// </summary>
+        public decimal stellarRadiusCP(decimal l)
+        {
+            return (decimal)radiusdistribution.CumulativeDistribution((double)l);
+        }
+
+        /// <summary>
+        /// Provide the cumulative probability that a star of this class will have a stellar mass equal to or lower than that supplied
+        /// </summary>
+        public decimal stellarMassCP(decimal l)
+        {
+            return (decimal)radiusdistribution.CumulativeDistribution((double)l);
         }
 
         public static StarClass FromName(string from)
         {
-            StarClass result = STARS.FirstOrDefault(v => v.name == from);
+            StarClass result = CLASSES.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
                 Logging.Report("Unknown star name " + from);
@@ -74,7 +89,11 @@ namespace EliteDangerousDataDefinitions
 
         public static StarClass FromEDName(string from)
         {
-            StarClass result = STARS.FirstOrDefault(v => v.edname == from);
+            if (from == null)
+            {
+                return null;
+            }
+            StarClass result = CLASSES.FirstOrDefault(v => v.edname == from);
             if (result == null)
             {
                 Logging.Report("Unknown star ED name " + from);

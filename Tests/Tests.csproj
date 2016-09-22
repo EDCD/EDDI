@@ -127,6 +127,10 @@
       <Project>{e98b76a0-b7bc-4f59-8e4f-bd16b22a5ac6}</Project>
       <Name>EDDIVAPlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousEvents\EliteDangerousEvents.csproj">
+      <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
+      <Name>EliteDangerousEvents</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EliteDangerousJournalMonitor\EliteDangerousJournalMonitor.csproj">
       <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>
       <Name>EliteDangerousJournalMonitor</Name>

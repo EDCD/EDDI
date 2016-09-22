@@ -321,7 +321,15 @@ namespace EliteDangerousJournalMonitor
                                 data.TryGetValue("AbsoluteMagnitude", out val);
                                 decimal absoluteMagnitude = (decimal)(double)val;
 
-                                journalEvent = new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude);
+                                //data.TryGetValue("Age", out val);
+                                //long age = (long)val;
+                                long age = 800000000;
+
+                                //data.TryGetValue("Temperature", out val);
+                                //decimal temperature = (decimal)(double)val;
+                                decimal temperature = 3000;
+
+                                journalEvent = new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, age, temperature);
                                 handled = true;
                             }
                             else
