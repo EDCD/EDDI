@@ -22,7 +22,7 @@ namespace EliteDangerousJournalMonitor
 
         public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal\.[0-9\.]+\.log$", result => HandleJournalEntry(result, Eddi.Instance.eventHandler)) {}
 
-        private static void HandleJournalEntry(string line, Action<Event> callback)
+        public static void HandleJournalEntry(string line, Action<Event> callback)
         {
             Match match = JsonRegex.Match(line);
             if (match.Success)
@@ -304,8 +304,13 @@ namespace EliteDangerousJournalMonitor
                             // Common items
                             data.TryGetValue("BodyName", out val);
                             string name = (string)val;
+
                             data.TryGetValue("DistanceFromArrivalLS", out val);
-                            decimal distanceFromArrivalLs = (decimal)(double)val;
+                            decimal distanceFromMainStar = (decimal)(double)val;
+
+                            data.TryGetValue("Radius", out val);
+                            decimal radius = (decimal)(double)val;
+
                             if (data.ContainsKey("StarType"))
                             {
                                 // Star
@@ -314,9 +319,6 @@ namespace EliteDangerousJournalMonitor
 
                                 data.TryGetValue("StellarMass", out val);
                                 decimal stellarMass = (decimal)(double)val;
-
-                                data.TryGetValue("Radius", out val);
-                                decimal radius = (decimal)(double)val;
 
                                 data.TryGetValue("AbsoluteMagnitude", out val);
                                 decimal absoluteMagnitude = (decimal)(double)val;
@@ -335,6 +337,42 @@ namespace EliteDangerousJournalMonitor
                             else
                             {
                                 // Body
+                                data.TryGetValue("TidalLock", out val);
+                                bool tidallyLocked = (bool)val;
+
+                                data.TryGetValue("PlanetClass", out val);
+                                string bodyClass = (string)val;
+
+                                data.TryGetValue("SurfaceGravity", out val);
+                                decimal gravity = (decimal)(double)val;
+
+                                data.TryGetValue("SurfaceTemperature", out val);
+                                decimal temperature = (decimal)(double)val;
+
+                                data.TryGetValue("SurfacePressure", out val);
+                                decimal pressure = (decimal)(double)val;
+
+                                data.TryGetValue("Landable", out val);
+                                bool landable = (bool)val;
+
+                                data.TryGetValue("Materials", out val);
+                                IDictionary<string, object> materialsData = (IDictionary<string, object>)val;
+                                List<MaterialPresence> materials = new List<MaterialPresence>();
+                                foreach (KeyValuePair<string, object> kv in materialsData)
+                                {
+                                    MaterialDefinition material = MaterialDefinition.FromEDName(kv.Key);
+                                    if (material != null)
+                                    {
+                                        materials.Add(new MaterialPresence(material, (decimal)(double)kv.Value));
+                                    }
+                                }
+
+                                // Atmosphere
+
+                                // Volcanism
+
+                                journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, materials);
+                                handled = true;
                             }
                         }
                         //if (data.ContainsKey("StarType"))

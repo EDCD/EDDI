@@ -13,7 +13,8 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Star scanned";
         public const string DESCRIPTION = "Triggered when you complete a scan of a stellar body";
-        public static StarScannedEvent SAMPLE = new StarScannedEvent(DateTime.Now, "Alnitak", "O", 26.621094M, 2305180672M, -5.027969M, 80000000, 30725);
+        //public static StarScannedEvent SAMPLE = new StarScannedEvent(DateTime.Now, "Alnitak", "O", 26.621094M, 2305180672M, -5.027969M, 80000000, 30725);
+        public static StarScannedEvent SAMPLE = new StarScannedEvent(DateTime.Now, "Col 285 Sector ZK-E c12-8", "K", 0.867188M, 687434496, 5.697311M, 8868000000, 4760);
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static StarScannedEvent()
@@ -23,10 +24,10 @@ namespace EliteDangerousEvents
             VARIABLES.Add("name", "The name of the star that has been scanned");
             VARIABLES.Add("chromaticity", "The apparent colour of the star that has been scanned");
             VARIABLES.Add("stellarclass", "The stellar class of the star that has been scanned (O, G, etc)");
-            VARIABLES.Add("stellarmass", "The mass of the star that has been scanned, relative to Sol's mass");
+            VARIABLES.Add("solarmass", "The mass of the star that has been scanned, relative to Sol's mass");
             VARIABLES.Add("massprobability", "The probablility of finding a star of this class and at least this mass");
             VARIABLES.Add("radius", "The radius of the star that has been scanned, in metres");
-            VARIABLES.Add("stellarradius", "The radius of the star that has been scanned, compared to Sol");
+            VARIABLES.Add("solarradius", "The radius of the star that has been scanned, compared to Sol");
             VARIABLES.Add("radiusprobability", "The probablility of finding a star of this class and at least this radius");
             VARIABLES.Add("absolutemagnitude", "The absolute magnitude of the star that has been scanned");
             VARIABLES.Add("luminosity", "The luminosity of the star that has been scanned");
@@ -39,13 +40,13 @@ namespace EliteDangerousEvents
 
         public string stellarclass { get; private set; }
 
-        public decimal stellarmass{ get; private set; }
+        public decimal solarmass{ get; private set; }
 
         public decimal massprobability { get; private set; }
 
         public decimal radius { get; private set; }
 
-        public decimal stellarradius { get; private set; }
+        public decimal solarradius { get; private set; }
 
         public decimal radiusprobability { get; private set; }
 
@@ -61,11 +62,11 @@ namespace EliteDangerousEvents
 
         public string chromaticity { get; private set; }
 
-        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal stellarmass, decimal radius, decimal absolutemagnitude, long age, decimal temperature) : base(timestamp, NAME)
+        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, long age, decimal temperature) : base(timestamp, NAME)
         {
             this.name = name;
             this.stellarclass = stellarclass;
-            this.stellarmass = stellarmass;
+            this.solarmass = solarmass;
             this.radius = radius;
             this.absolutemagnitude = absolutemagnitude;
             this.age = age;
@@ -73,9 +74,9 @@ namespace EliteDangerousEvents
             StarClass starClass = StarClass.FromName(this.stellarclass);
             if (starClass != null)
             {
-                this.massprobability = sanitiseCP(starClass.stellarMassCP(stellarmass));
-                this.stellarradius = StarClass.stellarradius(radius);
-                this.radiusprobability = sanitiseCP(starClass.stellarRadiusCP(this.stellarradius));
+                this.massprobability = sanitiseCP(starClass.stellarMassCP(solarmass));
+                this.solarradius = StarClass.solarradius(radius);
+                this.radiusprobability = sanitiseCP(starClass.stellarRadiusCP(this.solarradius));
                 this.luminosity = StarClass.luminosity(absolutemagnitude);
                 Logging.Info("*******************************************************************************");
                 Logging.Info("Luminosity is " + this.luminosity);

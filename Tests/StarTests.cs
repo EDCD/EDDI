@@ -40,7 +40,7 @@ namespace Tests
             StarScannedEvent scan = new StarScannedEvent(DateTime.Now, "Sol", "G", 1, 1, 4.83M, 5400000000, 300);
             decimal solLuminosity = StarClass.luminosity(scan.absolutemagnitude);
             StarClass starClass = StarClass.FromName(scan.stellarclass);
-            decimal massChance = starClass.stellarMassCP(scan.stellarmass);
+            decimal massChance = starClass.stellarMassCP(scan.solarmass);
             decimal radiusChance = starClass.stellarRadiusCP(scan.radius);
             decimal luminosityChance = starClass.luminosityCP(solLuminosity);
         }

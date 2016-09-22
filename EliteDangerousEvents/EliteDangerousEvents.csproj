@@ -84,6 +84,7 @@
     <Compile Include="LocationEvent.cs" />
     <Compile Include="ShieldsDownEvent.cs" />
     <Compile Include="ShieldsUpEvent.cs" />
+    <Compile Include="BodyScannedEvent.cs" />
     <Compile Include="StarScannedEvent.cs" />
     <Compile Include="CockpitBreachedEvent.cs" />
     <Compile Include="CargoCollectedEvent.cs" />

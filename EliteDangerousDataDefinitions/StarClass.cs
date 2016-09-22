@@ -104,7 +104,7 @@ namespace EliteDangerousDataDefinitions
         /// <summary>
         /// Convert radius in m in to stellar radius
         /// </summary>
-        public static decimal stellarradius(decimal radius)
+        public static decimal solarradius(decimal radius)
         {
             return radius / 695500000;
         }

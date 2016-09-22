@@ -50,8 +50,9 @@
   <ItemGroup>
     <Compile Include="Cargo.cs" />
     <Compile Include="CQCRating.cs" />
+    <Compile Include="MaterialPresence.cs" />
     <Compile Include="Rarity.cs" />
-    <Compile Include="Material.cs" />
+    <Compile Include="MaterialDefinition.cs" />
     <Compile Include="FederationRating.cs" />
     <Compile Include="EmpireRating.cs" />
     <Compile Include="ExplorationRating.cs" />

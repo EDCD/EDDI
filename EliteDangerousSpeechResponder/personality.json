@@ -40,21 +40,21 @@
     "Crew assigned": {
       "enabled": true,
       "responder": true,
-      "script": null,
+      "script": "if {event.role = \"Active\":\r\n    {event.name} is now on active duty.\r\n|else\r\n    {event.name} standing down from active duty.\r\n}",
       "name": "Crew assigned",
       "description": "Triggered when you assign crew"
     },
     "Crew fired": {
       "enabled": true,
       "responder": true,
-      "script": null,
+      "script": "{event.name} is no longer a member of the crew.",
       "name": "Crew fired",
       "description": "Triggered when you fire crew"
     },
     "Crew hired": {
       "enabled": true,
       "responder": true,
-      "script": null,
+      "script": "{event.name} has joined the crew.",
       "name": "Crew hired",
       "description": "Triggered when you hire crew"
     },
@@ -208,14 +208,14 @@
     "Docking timed out": {
       "enabled": true,
       "responder": true,
-      "script": null,
+      "script": "No response to our docking request.",
       "name": "Docking timed out",
       "description": "Triggered when your docking request times out"
     },
     "Docking denied": {
       "enabled": true,
       "responder": true,
-      "script": null,
+      "script": "We have been denied docking.",
       "name": "Docking denied",
       "description": "Triggered when your ship is denied docking at a station or outpost"
     },
@@ -229,7 +229,7 @@
     "Docking cancelled": {
       "enabled": true,
       "responder": true,
-      "script": null,
+      "script": "Docking request cancelled.",
       "name": "Docking cancelled",
       "description": "Triggered when your ship cancels a docking request at a station or outpost"
     },
@@ -275,10 +275,17 @@
       "name": "Shields up",
       "description": "Triggered when your ship's shields come online"
     },
+    "Body scanned": {
+      "enabled": true,
+      "responder": true,
+      "script": "Scan of {P(event.name)} complete.\r\n\r\nThis is a\r\n{if event.gravity < 0.5:\r\n    low-gravity\r\n|elif event.gravity <2:\r\n    medium-gravity\r\n|else:\r\n    high-gravity\r\n}\r\n\r\n{if event.tidallylocked = true:\r\n    tidally-locked\r\n}\r\n\r\n{event.bodyclass}  that is\r\n\r\n{if landable = true:\r\n    suitable\r\n|else:\r\n    not suitable\r\n}\r\nfor landing.\r\n\r\nThis planet has {len(event.materials)} materials in harvestable quantities,\r\n\r\n{set goodmaterials to []}\r\n{set greatmaterials to []}\r\n\r\n{for material in event.materials:\r\n    {if material.percentage > material.definition.greatpctbody:\r\n        {set greatmaterials to cat(greatmaterials, [material])}\r\n    |elif material.percentage > material.definition.goodpctbody:\r\n        {set goodmaterials to cat(goodmaterials, [material])}\r\n    }\r\n}\r\n\r\n{if len(greatmaterials) = 0 && len(goodmaterials) = 0:\r\n    although none in exceptional quantities\r\n}\r\n{if len(greatmaterials) > 0:\r\n    including very high levels of\r\n    {if len(greatmaterials) = 1:\r\n        {greatmaterialnames[0].name}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(greatmaterials):\r\n            {if cur = 0:\r\n                {greatmaterials[cur].name}\r\n            |elif cur < len(greatmaterials) - 1:\r\n                , {greatmaterials[cur].name}\r\n            |else:\r\n                ,and {greatmaterials[cur].name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n}\r\n{if len(goodmaterials) > 0:\r\n    {if len(greatmaterials) > 0:\r\n        and\r\n    |else:\r\n        including\r\n    }\r\n    high levels of\r\n    {if len(goodmaterials) = 1:\r\n        {goodmaterials[0].name}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(goodmaterials):\r\n            {if cur = 0:\r\n                {goodmaterials[cur].name}\r\n            |elif cur < len(goodmaterials) - 1:\r\n                , {goodmaterials[cur].name}\r\n            |else:\r\n                ,and {goodmaterials[cur].name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n}.",
+      "name": "Body scanned",
+      "description": "Triggered when you complete a scan of a planetary body"
+    },
     "Star scanned": {
       "enabled": true,
       "responder": true,
-      "script": "Scan of {event.stellarclass}-class star {P(event.name)} complete.\r\n\r\nThis is\r\n{if event.stellarclass = \"O\":\r\n    an incredibly rare main sequence star,\r\n    {if event.mass < 16:\r\n        notable for being significantly lighter than usual\r\n    |elif event.mass > 50:\r\n        notable for being significantly heavier than usual\r\n    }\r\n|elif event.stellarclass = \"B\":\r\n    a very rare main sequence star\r\n|elif event.stellarclass = \"A\":\r\n    a rare main sequence star\r\n|elif event.stellarclass = \"F\":\r\n    an uncommon main sequence star\r\n|elif event.stellarclass = \"G\":\r\n    a common main sequence star\r\n|elif event.stellarclass = \"K\":\r\n    a common main sequence star\r\n|elif event.stellarclass = \"M\":\r\n    a very common main sequence star\r\n}.",
+      "script": "Scan of {event.stellarclass}-class star {P(event.name)} complete.\r\n\r\nThis is\r\n{if event.stellarclass = \"O\":\r\n    an incredibly rare main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"B\":\r\n    a very rare main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"A\":\r\n    a rare main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"F\":\r\n    an uncommon main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"G\":\r\n    a common main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"K\":\r\n    a common main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"M\":\r\n    a very common main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"M\":\r\n    a very common main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"L\":\r\n    \r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"T\":\r\n    \r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"TTS\":\r\n    \r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"Y\":\r\n    \r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"H\":\r\n    a black hole\r\n    {set mainsequence to false}\r\n}\r\n\r\n{OneOf(\"that has been burning for {Humanise(event.age)} years\",\r\n             \"that has been around for {Humanise(event.age)} years\",\r\n             \"that is {Humanise(event.age)} years old\",\r\n             \"of {Humanise(event.age)} years\",\r\n)}\r\n{if event.age < 1000000:\r\n    making it one of the youngest stars in the galaxy\r\n|elif event.age >14000000000:\r\n    making it one of the oldest stars in the galaxy\r\n}.\r\n\r\n{if mainsequence = true:\r\n\r\n    {Occasionally(2,\"As you can see, it emits a {event.chromaticity} light.\")}\r\n\r\n    {set notables to []}\r\n\r\n    {if event.massprobability < 0.01:\r\n        {set notables to cat(notables, [cat(\"an incredibly low solar mass of \", Humanise(event.solarmass))])}\r\n    |elif event.massprobability <0.1:\r\n        {set notables to cat(notables, [cat(\"an extremely low solar mass of \", Humanise(event.solarmass))])}\r\n    |elif event.massprobability <1:\r\n        {set notables to cat(notables, [\"an unusually low mass\"])}\r\n    |elif event.massprobability <10:\r\n        {set notables to cat(notables, [\"lower than average mass\"])}\r\n    |elif event.massprobability > 99.99:\r\n        {set notables to cat(notables, [cat(\"an incredibly high solar mass of \", Humanise(event.solarmass))])}\r\n    |elif event.massprobability > 99.9:\r\n        {set notables to cat(notables, [cat(\"an extremely high solar mass of \", Humanise(event.solarmass))])}\r\n    |elif event.massprobability > 99:\r\n        {set notables to cat(notables, [\"an unusually high mass\"])}\r\n    |elif event.massprobability > 90:\r\n        {set notables to cat(notables, [\"higher than average mass\"])}\r\n    }\r\n\r\n    {if event.radiusprobability < 0.01:\r\n        {set notables to cat(notables, [cat(\"an incredibly low solar radius of \", Humanise(event.solarradius))])}\r\n    |elif event.radiusprobability <0.1:\r\n        {set notables to cat(notables, [cat(\"an extremely low solar radius of \", Humanise(event.solarradius))])}\r\n    |elif event.radiusprobability <1:\r\n        {set notables to cat(notables, [\"an unusually low radius\"])}\r\n    |elif event.radiusprobability <10:\r\n        {set notables to cat(notables, [\"lower than average radius\"])}\r\n    |elif event.radiusprobability > 99.99:\r\n        {set notables to cat(notables, [cat(\"an extremely high solar radius of \", Humanise(event.solarradius))])}\r\n    |elif event.radiusprobability > 99.9:\r\n        {set notables to cat(notables, [cat(\"an incredibly high solar radius of \", Humanise(event.solarradius))])}\r\n    |elif event.radiusprobability > 99:\r\n        {set notables to cat(notables, [\"an unusually high radius\"])}\r\n    |elif event.radiusprobability > 90:\r\n        {set notables to cat(notables, [\"higer than average radius\"])}\r\n    }\r\n\r\n    {_ Use luminosity probability but report temperature}\r\n    {if event.luminosityprobability < 0.01:\r\n        {set notables to cat(notables, [cat(\"an incredibly low temperature of \", Humanise(event.temperature), \" kelvin\")])}\r\n    |elif event.luminosityprobability <0.1:\r\n        {set notables to cat(notables, [cat(\"an extremely low temperature of \", Humanise(event.temperature), \" kelvin\")])}\r\n    |elif event.luminosityprobability <1:\r\n        {set notables to cat(notables, [\"an unusually low temperature\"])}\r\n    |elif event.luminosityprobability <10:\r\n        {set notables to cat(notables, [\"lower than average temperature\"])}\r\n    |elif event.luminosityprobability > 99.99:\r\n        {set notables to cat(notables, [cat(\"an extremely high temperature of \", Humanise(event.temperature), \" kelvin\")])}\r\n    |elif event.luminosityprobability > 99.9:\r\n        {set notables to cat(notables, [cat(\"an incredibly high temperature of \", Humanise(event.temperature), \" kelvin\")])}\r\n    |elif event.luminosityprobability > 99:\r\n        {set notables to cat(notables, [\"an unusually high temperature\"])}\r\n    |elif event.luminosityprobability > 90:\r\n        {set notables to cat(notables, [\"higer than average temperature\"])}\r\n    }\r\n\r\n    {if len(notables) = 0:\r\n        {OneOf(\"\", \"This is a typical example of this class of star.\", \"There is nothing particularly notable about this star.\", \"It is an average example for such a star.\")}\r\n    |elif len(notables) = 1:\r\n        Compared to other stars in its class, this star is notable for having {notables[0]}.\r\n    |elif len(notables) = 2:\r\n        Compared to other stars in its class, this star is interesting, with {notables[0]} and {notables[1]}.\r\n    |elif len(notables) = 3:\r\n        Comparde to other stars in its class, this star is exceptional, with {notables[0]}, {notables[1]} and {notables[2]}.\r\n    }\r\n|else:\r\n    {_ Non-main sequence stars}\r\n\r\n    {if event.stellarclass = \"H\":\r\n        \r\n    |elif event.stellarclass = \"H\":\r\n    |else:\r\n\r\n    }\r\n}\r\n",
       "name": "Star scanned",
       "description": "Triggered when you complete a scan of a stellar body"
     },
@@ -383,7 +390,7 @@
     "Jumped": {
       "enabled": true,
       "responder": true,
-      "script": "{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ship.name} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if lastsystem.allegiance && !system.allegiance:\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance:\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}\r\n        }\r\n    }.\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
+      "script": "{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ship.name} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if lastsystem.allegiance && !system.allegiance:\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance != \"None\":\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}\r\n        }\r\n    }.\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
       "name": "Jumped",
       "description": "Triggered when you jump from one system to another"
     },

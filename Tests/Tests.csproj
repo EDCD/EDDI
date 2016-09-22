@@ -94,6 +94,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="JournalMonitorTests.cs" />
     <Compile Include="StarTests.cs" />
     <Compile Include="DataProviderTests.cs" />
     <Compile Include="SpeechTests.cs" />
