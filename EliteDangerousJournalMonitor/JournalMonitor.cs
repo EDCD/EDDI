@@ -777,7 +777,7 @@ namespace EliteDangerousJournalMonitor
                             object val;
 
                             List<string> names = new List<string>();
-                            List<Ship> ships = new List<Ship>();
+                            List<string> ships = new List<string>();
                             List<CombatRating> ratings = new List<CombatRating>();
 
                             if (data.ContainsKey("KillerName"))
@@ -786,7 +786,7 @@ namespace EliteDangerousJournalMonitor
                                 data.TryGetValue("KillerName", out val);
                                 names.Add((string)val);
                                 data.TryGetValue("KillerShip", out val);
-                                ships.Add(ShipDefinitions.FromEDModel((string)val));
+                                ships.Add((string)val);
                                 data.TryGetValue("KillerRank", out val);
                                 ratings.Add(CombatRating.FromEDName((string)val));
                             }
@@ -800,7 +800,7 @@ namespace EliteDangerousJournalMonitor
                                     killer.TryGetValue("Name", out val);
                                     names.Add((string)val);
                                     killer.TryGetValue("Ship", out val);
-                                    ships.Add(ShipDefinitions.FromEDModel((string)val));
+                                    ships.Add((string)val);
                                     killer.TryGetValue("Rank", out val);
                                     ratings.Add(CombatRating.FromEDName((string)val));
                                 }

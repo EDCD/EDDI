@@ -45,3 +45,72 @@ Common usage of this is to provide additional text that is said now and again bu
 
 Note that Occasionally() works on random numbers rather than counters, so in the above example the additional text will not show up every 7th time you boost but will show up on average 1/7 of the times that you boost.
 
+### ShipDetails
+
+This function will provide full information for a ship given its name.
+
+ShipDetails() takes a single argument of the model of the ship for which you want more information.
+
+Common usage of this is to provide further information about a ship, for example:
+
+    The Vulture is made by {ShipDetails("Vulture").manufacturer}.
+
+### CombatRatingDetails
+
+This function will provide full information for a combat rating given its name.
+
+CombatRatingDetails() takes a single argument of the combat rating for which you want more information.
+
+Common usage of this is to provide further information about your rating, for example:
+
+    You have been promoted {CombatRatingDetails("Expert").rank} times.
+
+### TradeRatingDetails
+
+This function will provide full information for a trade rating given its name.
+
+TradeRatingDetails() takes a single argument of the trade rating for which you want more information.
+
+Common usage of this is to provide further information about your rating, for example:
+
+    You have been promoted {TradeRatingDetails("Peddler").rank} times.
+
+### ExplorationRatingDetails
+
+This function will provide full information for an exploration rating given its name.
+
+ExplorationRatingDetails() takes a single argument of the exploration rating for which you want more information.
+
+Common usage of this is to provide further information about your rating, for example:
+
+    You have been promoted {ExplorationRatingDetails("Surveyor").rank} times.
+
+### EmpireRatingDetails
+
+This function will provide full information for an empire rating given its name.
+
+EmpireRatingDetails() takes a single argument of the empire rating for which you want more information.
+
+Common usage of this is to provide further information about your rating, for example:
+
+    You have been promoted {EmpireRatingDetails("Lord").rank} times.
+
+### FederationRatingDetails
+
+This function will provide full information for an federation rating given its name.
+
+FederationRatingDetails() takes a single argument of the Federation rating for which you want more information.
+
+Common usage of this is to provide further information about your rating, for example:
+
+    You have been promoted {FederationRatingDetails("Post Commander").rank} times.
+
+### SystemDetails
+
+This function will provide full information for a star system given its name.
+
+SystemDetails() takes a single argument of the star system for which you want more information.
+
+Common usage of this is to provide further information about a star system, for example:
+
+    Sol has {len(SystemDetails("Sol").bodies)} bodies.

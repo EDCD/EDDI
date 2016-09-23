@@ -3,7 +3,11 @@ using Cottle.Documents;
 using Cottle.Functions;
 using Cottle.Settings;
 using Cottle.Stores;
+using Cottle.Values;
+using EliteDangerousDataDefinitions;
+using EliteDangerousDataProviderService;
 using EliteDangerousSpeechService;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,7 +79,7 @@ namespace EliteDangerousSpeechResponder
                 string translation = val;
                 if (translation == val)
                 {
-                    translation = Translations.StarSystem(val);
+                    translation = Translations.ShipModel(val);
                 }
                 if (translation == val)
                 {
@@ -87,29 +91,9 @@ namespace EliteDangerousSpeechResponder
                 }
                 if (translation == val)
                 {
-                    translation = Translations.ShipModel(val);
+                    translation = Translations.StarSystem(val);
                 }
                 return translation;
-            }, 1);
-            store["Faction"] = new NativeFunction((values) =>
-            {
-                return Translations.Faction(values[0].AsString);
-            }, 1);
-            store["System"] = new NativeFunction((values) =>
-            {
-                return Translations.StarSystem(values[0].AsString);
-            }, 1);
-            store["Power"] = new NativeFunction((values) =>
-            {
-                return Translations.Power(values[0].AsString);
-            }, 1);
-            store["Callsign"] = new NativeFunction((values) =>
-            {
-                return Translations.CallSign(values[0].AsString);
-            }, 1);
-            store["ShipModel"] = new NativeFunction((values) =>
-            {
-                return Translations.ShipModel(values[0].AsString);
             }, 1);
 
             // Helper functions
@@ -136,11 +120,84 @@ namespace EliteDangerousSpeechResponder
                 return Translations.Humanize(values[0].AsNumber);
             }, 1);
 
+
+            //
+            // Obtain definition objects for various items
+            //
+
+            store["ShipDetails"] = new NativeFunction((values) =>
+            {
+                Ship result = ShipDefinitions.FromModel(values[0].AsString);
+                if (result == null)
+                {
+                    result = ShipDefinitions.FromEDModel(values[0].AsString);
+                }
+                return new ReflectionValue(result);
+            }, 1);
+
+            store["CombatRatingDetails"] = new NativeFunction((values) =>
+            {
+                CombatRating result = CombatRating.FromName(values[0].AsString);
+                if (result == null)
+                {
+                    result = CombatRating.FromEDName(values[0].AsString);
+                }
+                return new ReflectionValue(result);
+            }, 1);
+
+            store["TradeRatingDetails"] = new NativeFunction((values) =>
+            {
+                TradeRating result = TradeRating.FromName(values[0].AsString);
+                if (result == null)
+                {
+                    result = TradeRating.FromEDName(values[0].AsString);
+                }
+                return new ReflectionValue(result);
+            }, 1);
+
+            store["ExplorationRatingDetails"] = new NativeFunction((values) =>
+            {
+                ExplorationRating result = ExplorationRating.FromName(values[0].AsString);
+                if (result == null)
+                {
+                    result = ExplorationRating.FromEDName(values[0].AsString);
+                }
+                return new ReflectionValue(result);
+            }, 1);
+
+            store["EmpireRatingDetails"] = new NativeFunction((values) =>
+            {
+                EmpireRating result = EmpireRating.FromName(values[0].AsString);
+                if (result == null)
+                {
+                    result = EmpireRating.FromEDName(values[0].AsString);
+                }
+                return new ReflectionValue(result);
+            }, 1);
+
+            store["FederationRatingDetails"] = new NativeFunction((values) =>
+            {
+                FederationRating result = FederationRating.FromName(values[0].AsString);
+                if (result == null)
+                {
+                    result = FederationRating.FromEDName(values[0].AsString);
+                }
+                return new ReflectionValue(result);
+            }, 1);
+
+            store["SystemDetails"] = new NativeFunction((values) =>
+            {
+                StarSystem result = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[0].AsString, true);
+                return new ReflectionValue(result);
+            }, 1);
+
             // Variables
             foreach (KeyValuePair<string, Cottle.Value> entry in vars)
             {
                 store[entry.Key] = entry.Value;
             }
+
+
             return store;
         }
     }

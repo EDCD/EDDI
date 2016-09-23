@@ -15,7 +15,7 @@ namespace EliteDangerousDataDefinitions
         /// <summary>the ID of this ship for this commander</summary>
         public int LocalId { get; set; }
         /// <summary>the manufacturer of the ship (Lakon, CoreDynamics etc.)</summary>
-        [JsonIgnore]
+        //[JsonIgnore]
         public string manufacturer { get; set; }
         /// <summary>the model of the ship (Python, Anaconda, etc.)</summary>
         [JsonIgnore]
@@ -120,7 +120,7 @@ namespace EliteDangerousDataDefinitions
         {
             this.EDID = EDID;
             this.EDName = EDName;
-            this.manufacturer = manufacturer;
+            this.manufacturer = Manufacturer;
             this.model = Model;
             this.size = Size;
             hardpoints = new List<Hardpoint>();
