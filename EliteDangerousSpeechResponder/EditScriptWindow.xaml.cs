@@ -107,10 +107,14 @@ namespace EliteDangerousSpeechResponder
 
         private void helpButtonClick(object sender, RoutedEventArgs e)
         {
+            HelpWindow helpWindow = new HelpWindow();
+            helpWindow.Show();
         }
 
         private void variablesButtonClick(object sender, RoutedEventArgs e)
         {
+            VariablesWindow variablesWindow = new VariablesWindow();
+            variablesWindow.Show();
         }
 
         private void resetButtonClick(object sender, RoutedEventArgs e)
