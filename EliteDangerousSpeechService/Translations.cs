@@ -92,6 +92,7 @@ namespace EliteDangerousSpeechService
             { "Eravate" , new string[] { "ɛrəˈvɑːtˌeɪ" } },
             { "Eranin" , new string[] { "ˈɛrənin" } },
             { "Frigaha", new string[] { "frɪɡˈɑːhɑːr" } },
+            { "Grandmort" , new string[] { "ˈɡʀɒdˌmɔʀ" } },
             { "Hecate" , new string[] { "ˈhɛkətɪ" } },
             { "Hotas" , new string[] { "həʊtæs" } },
             { "Isleta" , new string[] { "aɪlˈetə" } },
@@ -117,6 +118,7 @@ namespace EliteDangerousSpeechService
             { "Reorte", new string[] { "ˌriːˈɔːt" } },
             { "Shinrarta Dezhra", new string[] { "ʃɪnˈrɑːrtə", "ˈdezɦrə" } },
             { "Taygeta", new string[] { "teɪˈɪdʒᵻtə" } },
+            { "Tse", new string[] { "ʃjɛ" } },
             { "Xihe", new string[] { "ʃiː.hər" } },
             { "Xinca", new string[] { "ˈʃɛnkə" } },
             { "Yakabugai", new string[] { "ˈjækəbuːɡaɪ" } },
@@ -476,6 +478,20 @@ namespace EliteDangerousSpeechService
             if (value == 0)
             {
                 return "zero";
+            }
+
+            if (value < 1)
+            {
+                // Work out how many 0s to begin with
+                int numzeros = -1;
+                decimal testval = (decimal)value;
+                while (value < 1)
+                {
+                    value *= 10;
+                    numzeros++;
+                }
+                // Now round it to 2sf
+                return (Math.Round((double)value * 10) / (Math.Pow(10, numzeros + 2))).ToString();
             }
 
             int number;

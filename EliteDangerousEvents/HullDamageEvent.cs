@@ -11,13 +11,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Hull damaged";
         public const string DESCRIPTION = "Triggered when your hull is damaged to a certain extent";
-        public static HullDamagedEvent SAMPLE = new HullDamagedEvent(DateTime.Now, 80M);
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"HullDamage\",\"Health\":0.805}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static HullDamagedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"HullDamage\",\"Health\":0.805}";
-
             VARIABLES.Add("health", "The percentage health of the hull");
         }
 

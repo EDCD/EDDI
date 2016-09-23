@@ -50,13 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDDNBody.cs" />
-    <Compile Include="EDDNOutfittingMessage.cs" />
-    <Compile Include="EDDNCommoditiesMessage.cs" />
     <Compile Include="EDDNCommodity.cs" />
     <Compile Include="EDDNHeader.cs" />
     <Compile Include="EDDNMessage.cs" />
     <Compile Include="EDDNResponder.cs" />
-    <Compile Include="EDDNShipyardMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

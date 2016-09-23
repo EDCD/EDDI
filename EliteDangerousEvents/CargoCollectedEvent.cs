@@ -11,13 +11,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Cargo collected";
         public const string DESCRIPTION = "Triggered when you pick up cargo in your ship or SRV";
-        public static CargoCollectedEvent SAMPLE = new CargoCollectedEvent(DateTime.Now, "Agricultural medicines", true);
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"CollectCargo\",\"Type\":\"agriculturalmedicines\",\"Stolen\":true}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CargoCollectedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"CollectCargo\",\"Type\":\"agriculturalmedicines\",\"Stolen\":true}";
-
             VARIABLES.Add("cargo", "The type of cargo collected");
             VARIABLES.Add("stolen", "If the cargo is stolen");
         }

@@ -9,7 +9,5 @@ namespace EliteDangerousEDDNResponder
     abstract class EDDNMessage
     {
         public string timestamp; // Timestamp in YYYY-MM-DDTHH:mm:SSZ format
-        public string systemName;
-        public string stationName;
     }
 }

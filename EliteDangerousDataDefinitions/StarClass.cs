@@ -49,7 +49,7 @@ namespace EliteDangerousDataDefinitions
         public static readonly StarClass B = new StarClass("B", "B", "blue-white", 0.039M, new Normal(9.05, 2.32), new Normal(4.2, 0.8), new Normal(15012, 4995));
         public static readonly StarClass A = new StarClass("A", "A", "blue-white", 0.18M, new Normal(1.75, 0.12), new Normal(1.6, 0.667), new Normal(15, 3.333));
         public static readonly StarClass F = new StarClass("F", "F", "white", 0.9M, new Normal(1.22, 0.06), new Normal(1.275, 0.042), new Normal(3.25, 0.583));
-        public static readonly StarClass G = new StarClass("G", "G", "yellow-white", 2.28M, new Normal(0.92, 0.04), new Normal(1.055, 0.032), new Normal(1.05, 0.15));
+        public static readonly StarClass G = new StarClass("G", "G", "yellow-white", 2.28M, new Normal(0.92, 0.04), new Normal(1.055, 0.05), new Normal(1.05, 0.15));
         public static readonly StarClass K = new StarClass("K", "K", "yellow-orange", 3.63M, new Normal(0.625, 0.06), new Normal(0.83, 0.043), new Normal(0.34, 0.087));
         public static readonly StarClass M = new StarClass("M", "M", "orange-red", 22.935M, new Normal(0.265, 0.06), new Gamma(1, 1/0.25), new Gamma(1, 1/0.04));
 
@@ -74,7 +74,7 @@ namespace EliteDangerousDataDefinitions
         /// </summary>
         public decimal stellarMassCP(decimal l)
         {
-            return (decimal)radiusdistribution.CumulativeDistribution((double)l);
+            return (decimal)massdistribution.CumulativeDistribution((double)l);
         }
 
         public static StarClass FromName(string from)

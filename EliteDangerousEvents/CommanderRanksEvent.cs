@@ -12,13 +12,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Commander ratings";
         public const string DESCRIPTION = "Triggered when your ratings are reported";
-        public static CommanderRatingsEvent SAMPLE = new CommanderRatingsEvent(DateTime.Now, CombatRating.Novice, TradeRating.Peddler, ExplorationRating.Pathfinder, CQCRating.Helpless, EmpireRating.Outsider, FederationRating.Midshipman);
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Ranks\",\"Combat\":2,\"Trade\":2,\"Explore\":5,\"Empire\":1,\"Federation\":3,\"CQC\":0}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CommanderRatingsEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Ranks\",\"Combat\":2,\"Trade\":2,\"Explore\":5,\"Empire\":1,\"Federation\":3,\"CQC\":0}";
-
             VARIABLES.Add("combat", "The commander's combat rating");
             VARIABLES.Add("trading", "The commander's trading rating");
             VARIABLES.Add("exploration", "The commander's exploration rating");

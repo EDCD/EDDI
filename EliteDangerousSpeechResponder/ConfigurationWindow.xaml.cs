@@ -1,4 +1,5 @@
 ﻿using EliteDangerousEvents;
+using EliteDangerousJournalMonitor;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -98,7 +99,7 @@ namespace EliteDangerousSpeechResponder
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
             SpeechResponder responder = new SpeechResponder();
             responder.Start();
-            Event sampleEvent = Events.SampleByName(script.Name);
+            Event sampleEvent = JournalMonitor.ParseJournalEntry(Events.SampleByName(script.Name));
             ScriptResolver scriptResolver = new ScriptResolver(Personality.Scripts);
             responder.Say(scriptResolver, script.Name, sampleEvent);
         }

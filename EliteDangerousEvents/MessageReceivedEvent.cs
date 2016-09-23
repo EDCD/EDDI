@@ -11,13 +11,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Message received";
         public const string DESCRIPTION = "Triggered when you receive a message";
-        public static MessageReceivedEvent SAMPLE = new MessageReceivedEvent(DateTime.Now, "HRC1", "Hello");
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ReceiveText\",\"From\":\"HRC1\",\"Message\":\"Hello\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static MessageReceivedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ReceiveText\",\"From\":\"HRC1\",\"Message\":\"Hello\"}";
-
             VARIABLES.Add("from", "The name of the player who sent the message");
             VARIABLES.Add("message", "The message");
         }

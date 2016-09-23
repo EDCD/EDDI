@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="Deserializtion.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Net.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

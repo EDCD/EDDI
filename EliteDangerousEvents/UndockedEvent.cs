@@ -11,13 +11,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Undocked";
         public const string DESCRIPTION = "Triggered when your ship undocks from a station or outpost";
-        public static UndockedEvent SAMPLE = new UndockedEvent(DateTime.Now, "Long Sight Base");
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Undocked\",\"StationName\":\"Long Sight Base\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static UndockedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Undocked\",\"StationName\":\"Long Sight Base\"}";
-
             VARIABLES.Add("station", "The station from which the commander has undocked");
         }
 

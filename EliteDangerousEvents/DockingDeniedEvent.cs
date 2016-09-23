@@ -11,13 +11,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Docking denied";
         public const string DESCRIPTION = "Triggered when your ship is denied docking at a station or outpost";
-        public static DockingDeniedEvent SAMPLE = new DockingDeniedEvent(DateTime.Now, "Jameson Memorial", "Distance");
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingDenied\",\"StationName\":\"Jameson Memorial\",\"Reason\":\"Distance\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DockingDeniedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingDenied\",\"StationName\":\"Jameson Memorial\",\"Reason\":\"Distance\"}";
-
             VARIABLES.Add("station", "The station at which the commander has been denied docking");
             VARIABLES.Add("reason", "The station at which the commander has been denied docking");
         }

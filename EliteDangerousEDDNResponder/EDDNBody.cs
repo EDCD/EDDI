@@ -15,6 +15,6 @@ namespace EliteDangerousEDDNResponder
         public EDDNHeader header;
         [JsonProperty("$schemaRef")]
         public string schemaRef;
-        public EDDNMessage message;
+        public IDictionary<string, object> message;
     }
 }

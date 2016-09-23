@@ -26,11 +26,11 @@ namespace EliteDangerousDataDefinitions
             SUPERPOWERS.Add(this);
         }
 
-        public static readonly Superpower None = new Superpower("None", "None");
-        public static readonly Superpower Federation = new Superpower("Federation", "Federation");
-        public static readonly Superpower Alliance = new Superpower("Alliance", "Alliance");
-        public static readonly Superpower Empire = new Superpower("Empire", "Empire");
-        public static readonly Superpower Independent = new Superpower("Independent", "Independent");
+        public static readonly Superpower None = new Superpower("$faction_None;", "None");
+        public static readonly Superpower Federation = new Superpower("$faction_Federation;", "Federation");
+        public static readonly Superpower Alliance = new Superpower("$faction_Alliance;", "Alliance");
+        public static readonly Superpower Empire = new Superpower("$faction_Empire;", "Empire");
+        public static readonly Superpower Independent = new Superpower("$faction_Independent;", "Independent");
 
         public static Superpower FromName(string from)
         {

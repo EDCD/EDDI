@@ -11,13 +11,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Message sent";
         public const string DESCRIPTION = "Triggered when you send a message";
-        public static MessageSentEvent SAMPLE = new MessageSentEvent(DateTime.Now, "HRC1", "Hello");
+        public static string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"SendText\",\"To\":\"HRC1\",\"Message\":\"Hello\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static MessageSentEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"SendText\",\"To\":\"HRC1\",\"Message\":\"Hello\"}";
-
             VARIABLES.Add("to", "The name of the player to which the message was sent");
             VARIABLES.Add("message", "The message");
         }

@@ -11,13 +11,12 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Entered normal space";
         public const string DESCRIPTION = "Triggered when your ship enters normal space";
-        public static EnteredNormalSpaceEvent SAMPLE = new EnteredNormalSpaceEvent(DateTime.Now, "Yuetu", "Yuetu B");
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"SupercruiseExit\",\"StarSystem\":\"Yuetu\",\"Body\":\"Yuetu B\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static EnteredNormalSpaceEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"SupercruiseExit\",\"StarSystem\":\"Yuetu\",\"Body\":\"Yuetu B\"}";
-
+            VARIABLES.Add("system", "The system at which the commander has entered normal space");
             VARIABLES.Add("body", "The nearest body to the commander when entering normal space");
         }
 

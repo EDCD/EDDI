@@ -11,13 +11,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "SRV launched";
         public const string DESCRIPTION = "Triggered when you launch an SRV from your ship";
-        public static SRVLaunchedEvent SAMPLE = new SRVLaunchedEvent(DateTime.Now, "starter");
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"LaunchSRV\",\"Loadout\":\"starter\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static SRVLaunchedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"LaunchSRV\",\"Loadout\":\"starter\"}";
-
             VARIABLES.Add("loadout", "The SRV's loadout");
         }
 

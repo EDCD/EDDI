@@ -12,13 +12,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Ship transfer initiated";
         public const string DESCRIPTION = "Triggered when you initiate a ship transfer";
-        public static ShipTransferInitiatedEvent SAMPLE = new ShipTransferInitiatedEvent(DateTime.Now, ShipDefinitions.FromEDModel("Adder"), "Eranin", 85.639145M, 580M);
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ShipyardTransfer\",\"ShipType\":\"Adder\",\"ShipID\":1,\"System\":\"Eranin\",\"Distance\":85.639145,\"TransferPrice\":580}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ShipTransferInitiatedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ShipyardTransfer\",\"ShipType\":\"Adder\",\"ShipID\":1,\"System\":\"Eranin\",\"Distance\":85.639145,\"TransferPrice\":580}";
-
             VARIABLES.Add("ship", "The ship that is being transferred");
             VARIABLES.Add("system", "The system from which the ship is being transferred");
             VARIABLES.Add("distance", "The distance that the transferred ship needs to travel");

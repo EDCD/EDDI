@@ -52,6 +52,7 @@ namespace EliteDangerousSpeechResponder
             if (directory == null)
             {
                 directory = Constants.DATA_DIR + @"\personalities";
+                Directory.CreateDirectory(directory);
             }
             foreach (FileInfo file in new DirectoryInfo(directory).GetFiles("*.json", SearchOption.AllDirectories))
             {

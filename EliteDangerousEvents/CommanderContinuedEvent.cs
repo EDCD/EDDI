@@ -12,13 +12,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Commander continued";
         public const string DESCRIPTION = "Triggered when you continue an existing game";
-        public static CommanderContinuedEvent SAMPLE = new CommanderContinuedEvent(DateTime.Now, "HRC1", ShipDefinitions.FromEDModel("CobraMkIII"), GameMode.FromEDName("Group"), "Mobius", 600120M);
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"LoadGame\",\"Commander\":\"HRC1\",\"Ship\":\"CobraMkIII\",\"ShipID\":1,\"GameMode\":\"Group\",\"Group\":\"Mobius\",\"Credits\":600120,\"Loan\":0}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CommanderContinuedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"LoadGame\",\"Commander\":\"HRC1\",\"Ship\":\"CobraMkIII\",\"ShipID\":1,\"GameMode\":\"Group\",\"Group\":\"Mobius\",\"Credits\":600120,\"Loan\":0}";
-
             VARIABLES.Add("commander", "The name of the commander");
             VARIABLES.Add("ship", "The ship of the commander");
             VARIABLES.Add("mode", "The game mode");

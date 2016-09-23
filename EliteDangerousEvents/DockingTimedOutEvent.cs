@@ -11,13 +11,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Docking timed out";
         public const string DESCRIPTION = "Triggered when your docking request times out";
-        public static DockingTimedOutEvent SAMPLE = new DockingTimedOutEvent(DateTime.Now, "Jameson Memorial");
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingCancelled\",\"StationName\":\"Jameson Memorial\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DockingTimedOutEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingCancelled\",\"StationName\":\"Jameson Memorial\"}";
-
             VARIABLES.Add("station", "The station at which the docking request has timed out");
         }
 

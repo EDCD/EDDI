@@ -11,13 +11,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Reboot repair";
         public const string DESCRIPTION = "Triggered when you run reboot/repair on your ship";
-        public static RebootRepairEvent SAMPLE = new RebootRepairEvent(DateTime.Now, new List<String>{"MainEngines","TinyHardpoint1"});
+        public static string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"RebootRepair\",\"Modules\":[\"MainEngines\",\"TinyHardpoint1\"]}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static RebootRepairEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"RebootRepair\",\"Modules\":[\"MainEngines\",\"TinyHardpoint1\"]}";
-
             VARIABLES.Add("modules", "The modules that have been repaired");
         }
 

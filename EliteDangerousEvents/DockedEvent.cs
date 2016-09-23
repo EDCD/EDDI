@@ -12,13 +12,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Docked";
         public const string DESCRIPTION = "Triggered when your ship docks at a station or outpost";
-        public static DockedEvent SAMPLE = new DockedEvent(DateTime.Now, "Wolf 289", "Kotov Refinery", Superpower.Federation, "Wolf 289 Gold Federal Industry", State.CivilWar, Economy.Extraction, Government.Corporate, SecurityLevel.High);
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Docked\",\"StationName\":\"Kotov Refinery\",\"StationType\":\"Outpost\",\"StarSystem\":\"Wolf 289\",\"Faction\":\"Wolf 289 Gold Federal Industry\",\"FactionState\":\"CivilWar\",\"Allegiance\":\"Federation\",\"Economy\":\"$economy_Extraction\",\"Government\":\"$government_Corporate\",\"Security\":\"$SYSTEM_SECURITY_high_anarchy;\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DockedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Docked\",\"StationName\":\"Kotov Refinery\",\"StationType\":\"Outpost\",\"StarSystem\":\"Wolf 289\",\"Faction\":\"Wolf 289 Gold Federal Industry\",\"FactionState\":\"CivilWar\",\"Allegiance\":\"Federation\",\"Economy\":\"$economy_Extraction\",\"Government\":\"$government_Corporate\",\"Security\":\"$SYSTEM_SECURITY_high_anarchy;\"}";
-
             VARIABLES.Add("station", "The station at which the commander has docked");
             VARIABLES.Add("system", "The system at which the commander has docked");
             VARIABLES.Add("allegiance", "The allegiance of the station at which the commander has docked");

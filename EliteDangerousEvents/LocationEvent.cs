@@ -12,13 +12,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Location";
         public const string DESCRIPTION = "Triggered when the commander's location is reported";
-        public static JumpedEvent SAMPLE = new JumpedEvent(DateTime.Now, "LP 98-132", -26.78125M, 37.03125M, -4.59375M, Superpower.Federation, "Brotherhood of LP 98-132", State.Outbreak, Economy.Extraction, Government.Anarchy, SecurityLevel.High);
+        public const string SAMPLE = "{\"timestamp\":\"2016-07-21T13:16:49Z\",\"event\":\"FSDJump\",\"StarSystem\":\"LP 98-132\",\"StarPos\":[-26.781,37.031,-4.594],\"Economy\":\"$economy_Extraction;\",“Allegiance”:”Federation”,\"Government\":\"$government_Anarchy;\",\"Security\":”$SYSTEM_SECURITY_high_anarchy;”,\"JumpDist\":5.230,\"FuelUsed\":0.355614,\"FuelLevel\":12.079949,\"Faction\":\"Brotherhood of LP 98-132\",\"FactionState\":\"Outbreak\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static LocationEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-07-21T13:16:49Z\",\"event\":\"FSDJump\",\"StarSystem\":\"LP 98-132\",\"StarPos\":[-26.781,37.031,-4.594],\"Economy\":\"$economy_Extraction;\",“Allegiance”:”Federation”,\"Government\":\"$government_Anarchy;\",\"Security\":”$SYSTEM_SECURITY_high_anarchy;”,\"JumpDist\":5.230,\"FuelUsed\":0.355614,\"FuelLevel\":12.079949,\"Faction\":\"Brotherhood of LP 98-132\",\"FactionState\":\"Outbreak\"}";
-
             VARIABLES.Add("system", "The name of the system in which the commander resides");
             VARIABLES.Add("x", "The X co-ordinate of the system in which the commander resides");
             VARIABLES.Add("y", "The Y co-ordinate of the system in which the commander resides");

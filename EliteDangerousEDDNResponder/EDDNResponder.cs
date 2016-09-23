@@ -46,6 +46,11 @@ namespace EliteDangerousEDDNResponder
             {
                 handleDockedEvent((DockedEvent)theEvent);
             }
+
+            if (theEvent is JumpedEvent || theEvent is DockedEvent || theEvent is BodyScannedEvent || theEvent is StarScannedEvent)
+            {
+                handleRawEvent(theEvent);
+            }
         }
 
         public bool Start()
@@ -59,6 +64,35 @@ namespace EliteDangerousEDDNResponder
 
         public void Reload()
         {
+        }
+
+        private void handleRawEvent(Event theEvent)
+        {
+            IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
+            // Need to strip a number of entries
+            data.Remove("CockpitBreach");
+            data.Remove("BoostUsed");
+            data.Remove("FuelLevel");
+            data.Remove("FuelUsed");
+            data.Remove("JumpDist");
+
+            // Need to remove any keys ending with _Localised
+            data = data.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
+
+            // Need to add StarSystem to scan events
+            if (theEvent is StarScannedEvent || theEvent is BodyScannedEvent)
+            {
+                data.Add("StarSystem", Eddi.Instance.CurrentStarSystem.name);
+            }
+            //data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+
+            EDDNBody body = new EDDNBody();
+            body.header = generateHeader();
+            body.schemaRef = "http://schemas.elite-markets.net/eddn/journal/1/test";
+            body.message = data;
+
+            sendMessage(body);
+
         }
 
         private void handleDockedEvent(DockedEvent theEvent)
@@ -81,16 +115,16 @@ namespace EliteDangerousEDDNResponder
             // Only send the message if we have ships
             if (eddnShips.Count > 0)
             {
-                EDDNShipyardMessage message = new EDDNShipyardMessage();
-                message.timestamp = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
-                message.systemName = Eddi.Instance.LastStation.systemname;
-                message.stationName = Eddi.Instance.LastStation.name;
-                message.ships = eddnShips;
+                IDictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                data.Add("systemName", Eddi.Instance.LastStation.systemname);
+                data.Add("stationName", Eddi.Instance.LastStation.name);
+                data.Add("ships", eddnShips);
 
                 EDDNBody body = new EDDNBody();
                 body.header = generateHeader();
                 body.schemaRef = "http://schemas.elite-markets.net/eddn/shipyard/2/test";
-                body.message = message;
+                body.message = data;
 
                 sendMessage(body);
             }
@@ -124,16 +158,16 @@ namespace EliteDangerousEDDNResponder
             // Only send the message if we have commodities
             if (eddnCommodities.Count > 0)
             {
-                EDDNCommoditiesMessage message = new EDDNCommoditiesMessage();
-                message.timestamp = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
-                message.systemName = Eddi.Instance.LastStation.systemname;
-                message.stationName = Eddi.Instance.LastStation.name;
-                message.commodities = eddnCommodities;
+                IDictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                data.Add("systemName", Eddi.Instance.LastStation.systemname);
+                data.Add("stationName", Eddi.Instance.LastStation.name);
+                data.Add("commodities", eddnCommodities);
 
                 EDDNBody body = new EDDNBody();
                 body.header = generateHeader();
                 body.schemaRef = "http://schemas.elite-markets.net/eddn/commodity/3/test";
-                body.message = message;
+                body.message = data;
 
                 sendMessage(body);
             }
@@ -150,16 +184,16 @@ namespace EliteDangerousEDDNResponder
             // Only send the message if we have modules
             if (eddnModules.Count > 0)
             {
-                EDDNOutfittingMessage message = new EDDNOutfittingMessage();
-                message.timestamp = DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
-                message.systemName = Eddi.Instance.LastStation.systemname;
-                message.stationName = Eddi.Instance.LastStation.name;
-                message.modules = eddnModules;
+                IDictionary<string, object> data = new Dictionary<string, object>();
+                data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                data.Add("systemName", Eddi.Instance.LastStation.systemname);
+                data.Add("stationName", Eddi.Instance.LastStation.name);
+                data.Add("modules", eddnModules);
 
                 EDDNBody body = new EDDNBody();
                 body.header = generateHeader();
                 body.schemaRef = "http://schemas.elite-markets.net/eddn/outfitting/2/test";
-                body.message = message;
+                body.message = data;
 
                 sendMessage(body);
             }
@@ -193,6 +227,8 @@ namespace EliteDangerousEDDNResponder
             var client = new RestClient("http://eddn-gateway.elite-markets.net:8080/");
             var request = new RestRequest("upload/", Method.POST);
             request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
+
+            Logging.Debug("Sending " + JsonConvert.SerializeObject(body));
 
             new Thread(() =>
             {

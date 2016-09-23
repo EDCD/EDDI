@@ -13,14 +13,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Star scanned";
         public const string DESCRIPTION = "Triggered when you complete a scan of a stellar body";
-        //public static StarScannedEvent SAMPLE = new StarScannedEvent(DateTime.Now, "Alnitak", "O", 26.621094M, 2305180672M, -5.027969M, 80000000, 30725);
-        public static StarScannedEvent SAMPLE = new StarScannedEvent(DateTime.Now, "Col 285 Sector ZK-E c12-8", "K", 0.867188M, 687434496, 5.697311M, 8868000000, 4760);
+        public static string SAMPLE = "{\"timestamp\":\"2016-09-23T11:13:18Z\",\"event\":\"Scan\",\"BodyName\":\"Tse A\",\"DistanceFromArrivalLS\":0.000000,\"StarType\":\"G\",\"StellarMass\":0.894531,\"Radius\":640697088.000000,\"AbsoluteMagnitude\":5.077271,\"OrbitalPeriod\":40846036992.000000,\"RotationPeriod\":267191.406250}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static StarScannedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-07-25T10:02:38Z\",\"event\":\"Scan\",\"BodyName\":\"Alnitak\",\"DistanceFromArrivalLS\":0.000000,\"StarType\":\"O\",\"StellarMass\":26.621094,\"Radius\":2305180672.000000,\"AbsoluteMagnitude\":-5.027969,\"OrbitalPeriod\":5755731.500000,\"RotationPeriod\":90114.937500,\"Age\":800000000,\"Temperature\":26000}";
-
             VARIABLES.Add("name", "The name of the star that has been scanned");
             VARIABLES.Add("chromaticity", "The apparent colour of the star that has been scanned");
             VARIABLES.Add("stellarclass", "The stellar class of the star that has been scanned (O, G, etc)");
@@ -78,11 +75,7 @@ namespace EliteDangerousEvents
                 this.solarradius = StarClass.solarradius(radius);
                 this.radiusprobability = sanitiseCP(starClass.stellarRadiusCP(this.solarradius));
                 this.luminosity = StarClass.luminosity(absolutemagnitude);
-                Logging.Info("*******************************************************************************");
-                Logging.Info("Luminosity is " + this.luminosity);
                 this.luminosityprobability = sanitiseCP(starClass.luminosityCP(this.luminosity));
-                Logging.Info("Luminosity probability is " + this.luminosityprobability);
-                Logging.Info("Temperature is " + StarClass.temperature(luminosity, this.radius));
                 // TODO remove when temperature is in journal
                 this.temperature = StarClass.temperature(luminosity, this.radius);
                 this.chromaticity = starClass.chromaticity;

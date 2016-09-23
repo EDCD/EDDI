@@ -12,13 +12,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Died";
         public const string DESCRIPTION = "Triggered when you have died";
-        public static DiedEvent SAMPLE = new DiedEvent(DateTime.Now, new List<string>{}, new List<Ship> { }, new List<CombatRating> { });
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Died\",\"KillerName\":\"Cmdr HRC1\",\"Ship\":\"Vulture\",\"Rank\":\"Competent\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DiedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Died\",\"KillerName\":\"Cmdr HRC1\",\"Ship\":\"Vulture\",\"Rank\":\"Competent\"}";
-
             VARIABLES.Add("commanders", "The names of the commanders who killed you");
             VARIABLES.Add("ships", "The ships the commanders who killed you were flying");
             VARIABLES.Add("ratings", "The ratings of the commanders who killed you");

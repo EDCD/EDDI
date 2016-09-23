@@ -12,13 +12,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Combat promotion";
         public const string DESCRIPTION = "Triggered when your combat rank increases";
-        public static CombatPromotionEvent SAMPLE = new CombatPromotionEvent(DateTime.Now, CombatRating.FromRank(5));
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Promotion\",\"Combat\":5}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CombatPromotionEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Promotion\",\"Combat\":5}";
-
             VARIABLES.Add("rating", "The commander's new combat rating");
         }
 

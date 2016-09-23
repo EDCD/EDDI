@@ -268,12 +268,41 @@ namespace EDDI
 
         private bool eventDocked(DockedEvent theEvent)
         {
+            updateCurrentSystem(theEvent.system);
             return true;
         }
 
         private bool eventUndocked(UndockedEvent theEvent)
         {
             return true;
+        }
+
+        private bool eventLocation(LocationEvent theEvent)
+        {
+            updateCurrentSystem(theEvent.system);
+            if (CurrentStarSystem.x == null)
+            {
+                // Star system is missing co-ordinates to take them from the event
+                CurrentStarSystem.x = theEvent.x;
+                CurrentStarSystem.y = theEvent.y;
+                CurrentStarSystem.z = theEvent.z;
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+            }
+            return true;
+        }
+
+        private void updateCurrentSystem(string name)
+        {
+            if (name == null)
+            {
+                return;
+            }
+            if (CurrentStarSystem == null || CurrentStarSystem.name != name)
+            {
+                LastStarSystem = CurrentStarSystem;
+                CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
+                setSystemDistanceFromHome(CurrentStarSystem);
+            }
         }
 
         private bool eventJumped(JumpedEvent theEvent)
@@ -293,8 +322,7 @@ namespace EDDI
             else
             {
                 passEvent = true;
-                LastStarSystem = CurrentStarSystem;
-                CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(theEvent.system);
+                updateCurrentSystem(theEvent.system);
                 if (CurrentStarSystem.x == null)
                 {
                     // Star system is missing co-ordinates to take them from the event
@@ -304,7 +332,6 @@ namespace EDDI
                 }
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
-                setSystemDistanceFromHome(CurrentStarSystem);
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 // After jump we are always in supercruise
                 Environment = ENVIRONMENT_SUPERCRUISE;
@@ -318,6 +345,7 @@ namespace EDDI
             if (Environment == null || Environment != ENVIRONMENT_SUPERCRUISE)
             {
                 Environment = ENVIRONMENT_SUPERCRUISE;
+                updateCurrentSystem(theEvent.system);
                 return true;
             }
             return false;
@@ -328,6 +356,7 @@ namespace EDDI
             if (Environment == null || Environment != ENVIRONMENT_NORMAL_SPACE)
             {
                 Environment = ENVIRONMENT_NORMAL_SPACE;
+                updateCurrentSystem(theEvent.system);
                 return true;
             }
             return false;
@@ -342,8 +371,12 @@ namespace EDDI
                 Cmdr = profile == null ? null : profile.Cmdr;
                 Ship = profile == null ? null : profile.Ship;
                 StoredShips = profile == null ? null : profile.StoredShips;
-                CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
-                setSystemDistanceFromHome(CurrentStarSystem);
+                // We only set the current star system if it is not present, otherwise we leave it to events
+                if (CurrentStarSystem == null)
+                {
+                    CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
+                    setSystemDistanceFromHome(CurrentStarSystem);
+                }
                 LastStation = profile == null ? null : profile.LastStation;
                 setCommanderTitle();
             }

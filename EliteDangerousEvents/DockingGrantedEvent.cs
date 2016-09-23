@@ -11,13 +11,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Docking granted";
         public const string DESCRIPTION = "Triggered when your ship is granted docking permission at a station or outpost";
-        public static DockingGrantedEvent SAMPLE = new DockingGrantedEvent(DateTime.Now, "Jameson Memorial", 2);
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingDenied\",\"StationName\":\"Jameson Memorial\",\"LandingPad\":2}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DockingGrantedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingDenied\",\"StationName\":\"Jameson Memorial\",\"LandingPad\":2}";
-
             VARIABLES.Add("station", "The station at which the commander has been granted docking");
             VARIABLES.Add("landingpad", "The landing apd at which the commander has been granted docking");
         }

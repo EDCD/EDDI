@@ -12,13 +12,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Commander progress";
         public const string DESCRIPTION = "Triggered when your progress is reported";
-        public static CommanderProgressEvent SAMPLE = new CommanderProgressEvent(DateTime.Now, 77M, 9M, 93M, 0M, 0M, 0M);
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Progress\",\"Combat\":77,\"Trade\":9,\"Explore\":93,\"Empire\":0,\"Federation\":0,\"CQC\":0}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CommanderProgressEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Progress\",\"Combat\":77,\"Trade\":9,\"Explore\":93,\"Empire\":0,\"Federation\":0,\"CQC\":0}";
-
             VARIABLES.Add("combat", "The percentage progress of the commander's combat rating");
             VARIABLES.Add("trading", "The percentage progress of the commander's trading rating");
             VARIABLES.Add("exploration", "The percentage progress of the commander's exploration rating");

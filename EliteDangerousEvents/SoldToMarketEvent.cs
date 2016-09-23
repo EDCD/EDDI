@@ -12,13 +12,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Sold to market";
         public const string DESCRIPTION = "Triggered when you sell something to the markets";
-        public static SoldToMarketEvent SAMPLE = new SoldToMarketEvent(DateTime.Now, "Argricultural medicines", 10, 420M, 30M);
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"MarketSell\",\"Type\":\"agriculturalmedicines\",\"Count\":10,\"SellPrice\":42,\"TotalSale\":420,\"AvgPricePaid\":39}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static SoldToMarketEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"MarketSell\",\"Type\":\"agriculturalmedicines\",\"Count\":10,\"SellPrice\":42,\"TotalSale\":420,\"AvgPricePaid\":39}";
-
             VARIABLES.Add("cargo", "The name of the cargo sold");
             VARIABLES.Add("amount", "The amount of the cargo sold");
             VARIABLES.Add("price", "The price obtained per unit of the cargo sold");

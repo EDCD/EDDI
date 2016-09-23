@@ -1,5 +1,6 @@
 ﻿using EDDI;
 using EliteDangerousEvents;
+using EliteDangerousJournalMonitor;
 using EliteDangerousSpeechResponder;
 using System;
 using System.Collections.Generic;
@@ -126,7 +127,7 @@ namespace EliteDangerousSpeechResponder
             newScripts.Add(ScriptName, testScript);
 
             // Obtain the sample event
-            Event sampleEvent = Events.SampleByName(ScriptName);
+            Event sampleEvent = JournalMonitor.ParseJournalEntry(Events.SampleByName(ScriptName));
 
             SpeechResponder responder = new SpeechResponder();
             responder.Start();

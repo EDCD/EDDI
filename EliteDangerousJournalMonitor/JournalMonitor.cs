@@ -20,14 +20,23 @@ namespace EliteDangerousJournalMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$");
 
-        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal\.[0-9\.]+\.log$", result => HandleJournalEntry(result, Eddi.Instance.eventHandler)) {}
+        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal\.[0-9\.]+\.log$", result => ForwardJournalEntry(result, Eddi.Instance.eventHandler)) {}
 
-        public static void HandleJournalEntry(string line, Action<Event> callback)
+        public static void ForwardJournalEntry(string line, Action<Event> callback)
+        {
+            Event theEvent = ParseJournalEntry(line);
+            if (theEvent != null)
+            {
+                callback(theEvent);
+            }
+        }
+
+        public static Event ParseJournalEntry(string line)
         {
             Match match = JsonRegex.Match(line);
             if (match.Success)
             {
-                IDictionary<string, object> data = DeserializeData(line);
+                IDictionary<string, object> data = Deserializtion.DeserializeData(line);
 
                 // Every event has a timestamp field
                 DateTime timestamp = DateTime.Now;
@@ -51,7 +60,7 @@ namespace EliteDangerousJournalMonitor
                 if (!data.ContainsKey("event"))
                 {
                     Logging.Warn("Event without event field!");
-                    return;
+                    return null;
                 }
 
                 bool handled = false;
@@ -71,6 +80,9 @@ namespace EliteDangerousJournalMonitor
                             Superpower allegiance = Superpower.FromEDName((string)val);
                             data.TryGetValue("Faction", out val);
                             string faction = (string)val;
+                            // Might be a superpower...
+                            Superpower superpowerFaction = Superpower.FromEDName(faction);
+                            faction = superpowerFaction != null ? superpowerFaction.name : faction;
                             data.TryGetValue("FactionState", out val);
                             State factionState = State.FromEDName((string)val);
                             data.TryGetValue("Economy", out val);
@@ -115,7 +127,12 @@ namespace EliteDangerousJournalMonitor
                         handled = true;
                         break;
                     case "SupercruiseEntry":
-                        journalEvent = new EnteredSupercruiseEvent(timestamp);
+                        {
+                            object val;
+                            data.TryGetValue("StarSystem", out val);
+                            string system = (string)val;
+                            journalEvent = new EnteredSupercruiseEvent(timestamp, system);
+                        }
                         handled = true;
                         break;
                     case "SupercruiseExit":
@@ -145,6 +162,9 @@ namespace EliteDangerousJournalMonitor
                             Superpower allegiance = Superpower.FromEDName((string)val);
                             data.TryGetValue("Faction", out val);
                             string faction = (string)val;
+                            // Might be a superpower...
+                            Superpower superpowerFaction = Superpower.FromEDName(faction);
+                            faction = superpowerFaction != null ? superpowerFaction.name : faction;
                             data.TryGetValue("FactionState", out val);
                             State factionState = State.FromEDName((string)val);
                             data.TryGetValue("Economy", out val);
@@ -175,6 +195,9 @@ namespace EliteDangerousJournalMonitor
                             Superpower allegiance = Superpower.FromEDName((string)val);
                             data.TryGetValue("Faction", out val);
                             string faction = (string)val;
+                            // Might be a superpower...
+                            Superpower superpowerFaction = Superpower.FromEDName(faction);
+                            faction = superpowerFaction != null ? superpowerFaction.name : faction;
                             data.TryGetValue("FactionState", out val);
                             State factionState = State.FromEDName((string)val);
                             data.TryGetValue("Economy", out val);
@@ -193,12 +216,19 @@ namespace EliteDangerousJournalMonitor
                             object val;
                             data.TryGetValue("Faction", out val);
                             string awardingFaction = (string)val;
+                            // Might be a superpower...
+                            Superpower superpowerFaction = Superpower.FromEDName(awardingFaction);
+                            awardingFaction = superpowerFaction != null ? superpowerFaction.name : awardingFaction;
                             data.TryGetValue("Target", out val);
                             string target = (string)val;
                             data.TryGetValue("Reward", out val);
                             long reward = (long)val;
                             data.TryGetValue("VictimFaction", out val);
                             string victimFaction = (string)val;
+                            // Might be a superpower...
+                            superpowerFaction = Superpower.FromEDName(victimFaction);
+                            victimFaction = superpowerFaction != null ? superpowerFaction.name : victimFaction;
+
                             journalEvent = new BountyAwardedEvent(timestamp, awardingFaction, target, victimFaction, reward);
                         }
                         handled = true;
@@ -209,6 +239,9 @@ namespace EliteDangerousJournalMonitor
                             object val;
                             data.TryGetValue("Faction", out val);
                             string awardingFaction = (string)val;
+                            // Might be a superpower...
+                            Superpower superpowerFaction = Superpower.FromEDName(awardingFaction);
+                            awardingFaction = superpowerFaction != null ? superpowerFaction.name : awardingFaction;
                             data.TryGetValue("Reward", out val);
                             long reward = (long)val;
                             data.TryGetValue("VictimFaction", out val);
@@ -224,6 +257,9 @@ namespace EliteDangerousJournalMonitor
                             string crimetype = (string)val;
                             data.TryGetValue("Faction", out val);
                             string faction = (string)val;
+                            // Might be a superpower...
+                            Superpower superpowerFaction = Superpower.FromEDName(faction);
+                            faction = superpowerFaction != null ? superpowerFaction.name : faction;
                             data.TryGetValue("Victim", out val);
                             string victim = (string)val;
                             // Might be a fine or a bounty
@@ -358,12 +394,15 @@ namespace EliteDangerousJournalMonitor
                                 data.TryGetValue("Materials", out val);
                                 IDictionary<string, object> materialsData = (IDictionary<string, object>)val;
                                 List<MaterialPresence> materials = new List<MaterialPresence>();
-                                foreach (KeyValuePair<string, object> kv in materialsData)
+                                if (materialsData != null)
                                 {
-                                    MaterialDefinition material = MaterialDefinition.FromEDName(kv.Key);
-                                    if (material != null)
+                                    foreach (KeyValuePair<string, object> kv in materialsData)
                                     {
-                                        materials.Add(new MaterialPresence(material, (decimal)(double)kv.Value));
+                                        MaterialDefinition material = MaterialDefinition.FromEDName(kv.Key);
+                                        if (material != null)
+                                        {
+                                            materials.Add(new MaterialPresence(material, (decimal)(double)kv.Value));
+                                        }
                                     }
                                 }
 
@@ -835,6 +874,9 @@ namespace EliteDangerousJournalMonitor
                             string name = (string)val;
                             data.TryGetValue("Faction", out val);
                             string faction = (string)val;
+                            // Might be a superpower...
+                            Superpower superpowerFaction = Superpower.FromEDName(faction);
+                            faction = superpowerFaction != null ? superpowerFaction.name : faction;
                             data.TryGetValue("Cost", out val);
                             decimal price = (long)val;
                             data.TryGetValue("CombatRank", out val);
@@ -940,68 +982,15 @@ namespace EliteDangerousJournalMonitor
                     else
                     {
                         Logging.Debug("Handled event: " + JsonConvert.SerializeObject(journalEvent));
-                        callback(journalEvent);
                     }
                 }
                 else
                 {
                     Logging.Debug("Unhandled event: " + data);
                 }
+                return journalEvent;
             }
-        }
-
-        private static IDictionary<string, object> DeserializeData(string data)
-        {
-            Logging.Debug("Deserializing " + data);
-            var values = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
-
-            return DeserializeData(values);
-        }
-
-        private static IDictionary<string, object> DeserializeData(JObject data)
-        {
-            var dict = data.ToObject<Dictionary<string, object>>();
-            if (dict != null)
-            {
-                return DeserializeData(dict);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        private static IDictionary<string, object> DeserializeData(IDictionary<string, object> data)
-        {
-            foreach (var key in data.Keys.ToArray())
-            {
-                var value = data[key];
-
-                if (value is JObject)
-                    data[key] = DeserializeData(value as JObject);
-
-                if (value is JArray)
-                    data[key] = DeserializeData(value as JArray);
-            }
-
-            return data;
-        }
-
-        private static IList<object> DeserializeData(JArray data)
-        {
-            var list = data.ToObject<List<object>>();
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                var value = list[i];
-
-                if (value is JObject)
-                    list[i] = DeserializeData(value as JObject);
-
-                if (value is JArray)
-                    list[i] = DeserializeData(value as JArray);
-            }
-            return list;
+            return null;
         }
 
         // Be sensible with health - round it unless it's very low

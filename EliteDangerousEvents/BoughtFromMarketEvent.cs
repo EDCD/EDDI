@@ -12,13 +12,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Bought from market";
         public const string DESCRIPTION = "Triggered when you buy something from the markets";
-        public static BoughtFromMarketEvent SAMPLE = new BoughtFromMarketEvent(DateTime.Now, "Argricultural medicines", 10, 390M);
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"MarketBuy\",\"Type\":\"agriculturalmedicines\",\"Count\":10,\"BuyPrice\":39,\"TotalCost\":390}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static BoughtFromMarketEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"MarketBuy\",\"Type\":\"agriculturalmedicines\",\"Count\":10,\"BuyPrice\":39,\"TotalCost\":390}";
-
             VARIABLES.Add("cargo", "The name of the cargo bought");
             VARIABLES.Add("amount", "The amount of the cargo bought");
             VARIABLES.Add("price", "The price paid per unit of the cargo bought");

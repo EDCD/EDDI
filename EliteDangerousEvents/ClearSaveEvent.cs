@@ -11,13 +11,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Cleared save";
         public const string DESCRIPTION = "Triggered when you clear your save";
-        public static ClearedSaveEvent SAMPLE = new ClearedSaveEvent(DateTime.Now, "HRC1");
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ClearSaveGame\",\"Name\":\"HRC1\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ClearedSaveEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ClearSaveGame\",\"Name\":\"HRC1\"}";
-
             VARIABLES.Add("name", "The name of the player whose save has been cleared");
         }
 

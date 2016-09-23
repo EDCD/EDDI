@@ -12,12 +12,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Exploration promotion";
         public const string DESCRIPTION = "Triggered when your exploration rank increases";
-        public static ExplorationPromotionEvent SAMPLE = new ExplorationPromotionEvent(DateTime.Now, ExplorationRating.FromRank(5));
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Promotion\",\"Explore\":5}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ExplorationPromotionEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Promotion\",\"Explore\":5}";
             VARIABLES.Add("rating", "The commander's new exploration rating");
         }
 

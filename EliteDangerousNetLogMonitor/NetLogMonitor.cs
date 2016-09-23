@@ -89,7 +89,7 @@ namespace EliteDangerousNetLogMonitor
                     // Change of environment
                     if (environment == "Supercruise")
                     {
-                        theEvent = new EnteredSupercruiseEvent(DateTime.Now);
+                        theEvent = new EnteredSupercruiseEvent(DateTime.Now, Eddi.Instance.CurrentStarSystem.name);
                         lastEnvironment = environment;
                     }
                     else if (environment == "NormalFlight")

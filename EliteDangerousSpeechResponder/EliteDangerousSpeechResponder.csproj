@@ -81,6 +81,14 @@
       <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
       <Name>EliteDangerousEvents</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousJournalMonitor\EliteDangerousJournalMonitor.csproj">
+      <Project>{72B6F41D-0107-4D3A-8603-C3EDDA1C5243}</Project>
+      <Name>EliteDangerousJournalMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousNetLogMonitor\EliteDangerousNetLogMonitor.csproj">
+      <Project>{0928ADE6-F260-4820-AFBC-1661130C3474}</Project>
+      <Name>EliteDangerousNetLogMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EliteDangerousSpeechService\EliteDangerousSpeechService.csproj">
       <Project>{19572A69-C13A-459D-AB72-2B0F034AC27F}</Project>
       <Name>EliteDangerousSpeechService</Name>

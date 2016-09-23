@@ -13,7 +13,7 @@ namespace EliteDangerousEvents
     public class Events
     {
         public static Dictionary<string, Type> TYPES = new Dictionary<string, Type>();
-        public static Dictionary<string, Event> SAMPLES = new Dictionary<string, Event>();
+        public static Dictionary<string, string> SAMPLES = new Dictionary<string, string>();
         public static Dictionary<string, string> DEFAULTS = new Dictionary<string, string>();
         public static Dictionary<string, string> DESCRIPTIONS = new Dictionary<string, string>();
 
@@ -70,10 +70,17 @@ namespace EliteDangerousEvents
 
                                         if (type.GetField("SAMPLE") != null)
                                         {
-                                            Event eventSample = (Event)type.GetField("SAMPLE").GetValue(null);
-                                            if (eventSample != null)
+                                            try
                                             {
-                                                SAMPLES.Add(eventName, eventSample);
+                                                string eventSample = (string)type.GetField("SAMPLE").GetValue(null);
+                                                if (eventSample != null)
+                                                {
+                                                    SAMPLES.Add(eventName, eventSample);
+                                                }
+                                            }
+                                            catch
+                                            {
+                                                Logging.Warn("Sample event for " + type.Name + " is in incorrect format");
                                             }
                                         }
                                     }
@@ -96,9 +103,9 @@ namespace EliteDangerousEvents
             return value;
         }
 
-        public static Event SampleByName(string name)
+        public static string SampleByName(string name)
         {
-            Event value;
+            string value;
             SAMPLES.TryGetValue(name, out value);
             return value;
         }

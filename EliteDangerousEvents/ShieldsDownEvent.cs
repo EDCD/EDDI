@@ -11,12 +11,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Shields down";
         public const string DESCRIPTION = "Triggered when your ship's shields go offline";
-        public static ShieldsDownEvent SAMPLE = new ShieldsDownEvent(DateTime.Now);
+        public const string SAMPLE = "{\"timestamp\":\"2016-07-22T10:53:19Z\",\"event\":\"ShieldState\",\"ShieldsUp\":false}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ShieldsDownEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-07-22T10:53:19Z\",\"event\":\"ShieldState\",\"ShieldsUp\":false}";
         }
 
         public ShieldsDownEvent(DateTime timestamp) : base(timestamp, NAME)

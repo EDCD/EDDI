@@ -12,13 +12,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Crew hired";
         public const string DESCRIPTION = "Triggered when you hire crew";
-        public static CrewHiredEvent SAMPLE = new CrewHiredEvent(DateTime.Now, "Margaret Parrish", "The Dark Wheel", 15000, CombatRating.MostlyHarmless);
+        public const string SAMPLE = "{\"timestamp\":\"2016-08-09T08: 46:29Z\",\"event\":\"CrewHire\",\"Name\":\"Margaret Parrish\",\"Faction\":\"The Dark Wheel\",\"Cost\":15000,\"CombatRank\":1}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CrewHiredEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-08-09T08: 46:29Z\",\"event\":\"CrewHire\",\"Name\":\"Margaret Parrish\",\"Faction\":\"The Dark Wheel\",\"Cost\":15000,\"CombatRank\":1}";
-
             VARIABLES.Add("name", "The name of the crewmember being hired");
             VARIABLES.Add("faction", "The faction of the crewmember being hired");
             VARIABLES.Add("cost", "The cost of the crewmember being hired");

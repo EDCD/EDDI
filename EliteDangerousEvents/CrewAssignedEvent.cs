@@ -12,13 +12,11 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Crew assigned";
         public const string DESCRIPTION = "Triggered when you assign crew";
-        public static CrewAssignedEvent SAMPLE = new CrewAssignedEvent(DateTime.Now, "Margaret Parrish", "Active");
+        public const string SAMPLE = "{\"timestamp\":\"2016-08-09T08: 46:29Z\",\"event\":\"CrewAssgign\",\"Name\":\"Margaret Parrish\",\"Role\":\"Active\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CrewAssignedEvent()
         {
-            SAMPLE.raw = "{\"timestamp\":\"2016-08-09T08: 46:29Z\",\"event\":\"CrewAssgign\",\"Name\":\"Margaret Parrish\",\"Role\":\"Active\"}";
-
             VARIABLES.Add("name", "The name of the crewmember being assigned");
             VARIABLES.Add("role", "The role to which the crewmember is being assigned");
         }
