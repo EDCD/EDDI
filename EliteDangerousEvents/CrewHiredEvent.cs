@@ -30,14 +30,14 @@ namespace EliteDangerousEvents
         [JsonProperty("cost")]
         public decimal cost { get; private set; }
         [JsonProperty("combatrating")]
-        public CombatRating combatrating { get; private set; }
+        public string combatrating { get; private set; }
 
         public CrewHiredEvent(DateTime timestamp, string name, string faction, decimal cost, CombatRating combatrating) : base(timestamp, NAME)
         {
             this.name = name;
             this.faction = faction;
             this.cost = cost;
-            this.combatrating = combatrating;
+            this.combatrating = combatrating.name;
         }
     }
 }

@@ -21,11 +21,11 @@ namespace EliteDangerousEvents
         }
 
         [JsonProperty("rating")]
-        public ExplorationRating rating{ get; private set; }
+        public string rating{ get; private set; }
 
         public ExplorationPromotionEvent(DateTime timestamp, ExplorationRating rating) : base(timestamp, NAME)
         {
-            this.rating = rating;
+            this.rating = rating.name;
         }
     }
 }

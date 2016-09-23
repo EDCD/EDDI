@@ -29,13 +29,13 @@ namespace EliteDangerousEvents
         public List<string> ships { get; private set; }
 
         [JsonProperty("ratings")]
-        public List<CombatRating> ratings { get; private set; }
+        public List<string> ratings { get; private set; }
 
         public DiedEvent(DateTime timestamp, List<string> commanders, List<string> ships, List<CombatRating> ratings) : base(timestamp, NAME)
         {
             this.commanders = commanders;
             this.ships = ships;
-            this.ratings = ratings;
+            this.ratings = ratings.ConvertAll(x => x.name);
         }
     }
 }

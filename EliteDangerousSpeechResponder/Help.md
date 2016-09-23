@@ -45,6 +45,16 @@ Common usage of this is to provide additional text that is said now and again bu
 
 Note that Occasionally() works on random numbers rather than counters, so in the above example the additional text will not show up every 7th time you boost but will show up on average 1/7 of the times that you boost.
 
+### Humanise()
+
+This function will turn its argument into a more human number, for example turning 31245 in to "just over thirty thousand".
+
+Humanise() takes one argument: the number to humanise.
+
+Common usage of this is to provide human-sounding numbers when speacking rather than saying every digit, for example:
+
+   You have {Humanise(cmdr.credits)} credits.
+
 ### ShipDetails
 
 This function will provide full information for a ship given its name.
@@ -114,3 +124,53 @@ SystemDetails() takes a single argument of the star system for which you want mo
 Common usage of this is to provide further information about a star system, for example:
 
     Sol has {len(SystemDetails("Sol").bodies)} bodies.
+
+### StationDetails
+
+This function will provide full information for a station given its name.
+
+StationDetails() takes two arguments of the station ane the starsystem of the station.
+
+Common usage of this is to provide further information about a station's capabilities, for example:
+
+    Jameson Memorial is {StationDetails("Jameson Memorial", "Shinrarta Dezhra").distancefromstar} light seconds from the main star.
+
+### SuperpowerDetails
+
+This function will provide full information for a superpower given its name.
+
+SuperpowerDetails() takes a single argument of the superpower for which you want more information.
+
+At current this does not have a lot of use as the superpower object only contains its name, but expect it to be expanded in future.
+
+### StateDetails
+
+This function will provide full information for a state given its name.
+
+StateDetails() takes a single argument of the state for which you want more information.
+
+At current this does not have a lot of use as the state object only contains its name, but expect it to be expanded in future.
+
+### EconomyDetails
+
+This function will provide full information for an economy given its name.
+
+EconomyDetails() takes a single argument of the economy for which you want more information.
+
+At current this does not have a lot of use as the economy object only contains its name, but expect it to be expanded in future.
+
+### GovernmentDetails
+
+This function will provide full information for a government given its name.
+
+GovernmentDetails() takes a single argument of the government for which you want more information.
+
+At current this does not have a lot of use as the government object only contains its name, but expect it to be expanded in future.
+
+### SecurityLevelDetails
+
+This function will provide full information for a security level given its name.
+
+SecurityLevelDetails() takes a single argument of the security level for which you want more information.
+
+At current this does not have a lot of use as the security level object only contains its name, but expect it to be expanded in future.

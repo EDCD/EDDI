@@ -190,6 +190,56 @@ namespace EliteDangerousSpeechResponder
                 StarSystem result = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[0].AsString, true);
                 return new ReflectionValue(result);
             }, 1);
+        
+            store["SuperpowerDetails"] = new NativeFunction((values) =>
+            {
+                Superpower result = Superpower.FromName(values[0].AsString);
+                if (result == null)
+                {
+                    result = Superpower.FromEDName(values[0].AsString);
+                }
+                return new ReflectionValue(result);
+            }, 1);
+
+            store["StateDetails"] = new NativeFunction((values) =>
+            {
+                State result = State.FromName(values[0].AsString);
+                if (result == null)
+                {
+                    result = State.FromEDName(values[0].AsString);
+                }
+                return new ReflectionValue(result);
+            }, 1);
+
+            store["EconomyDetails"] = new NativeFunction((values) =>
+            {
+                Economy result = Economy.FromName(values[0].AsString);
+                if (result == null)
+                {
+                    result = Economy.FromEDName(values[0].AsString);
+                }
+                return new ReflectionValue(result);
+            }, 1);
+
+            store["GovernmentDetails"] = new NativeFunction((values) =>
+            {
+                Government result = Government.FromName(values[0].AsString);
+                if (result == null)
+                {
+                    result = Government.FromEDName(values[0].AsString);
+                }
+                return new ReflectionValue(result);
+            }, 1);
+
+            store["SecurityLevelDetails"] = new NativeFunction((values) =>
+            {
+                SecurityLevel result = SecurityLevel.FromName(values[0].AsString);
+                if (result == null)
+                {
+                    result = SecurityLevel.FromEDName(values[0].AsString);
+                }
+                return new ReflectionValue(result);
+            }, 1);
 
             // Variables
             foreach (KeyValuePair<string, Cottle.Value> entry in vars)

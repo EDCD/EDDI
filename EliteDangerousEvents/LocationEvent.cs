@@ -48,16 +48,16 @@ namespace EliteDangerousEvents
         public string faction { get; private set; }
 
         [JsonProperty("factionstate")]
-        public State factionstate { get; private set; }
+        public string factionstate { get; private set; }
 
         [JsonProperty("economy")]
-        public Economy economy { get; private set; }
+        public string economy { get; private set; }
 
         [JsonProperty("government")]
-        public Government government { get; private set; }
+        public string government { get; private set; }
 
         [JsonProperty("security")]
-        public SecurityLevel security { get; private set; }
+        public string security { get; private set; }
 
         public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
         {
@@ -67,10 +67,10 @@ namespace EliteDangerousEvents
             this.z = z;
             this.allegiance = allegiance;
             this.faction = faction;
-            this.factionstate = factionstate;
-            this.economy = economy;
-            this.government = government;
-            this.security = security;
+            this.factionstate = factionstate.name;
+            this.economy = economy.name;
+            this.government = government.name;
+            this.security = security.name;
         }
     }
 }
