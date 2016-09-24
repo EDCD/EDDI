@@ -55,12 +55,12 @@ namespace EliteDangerousEvents
         {
             this.system = system;
             this.station = station;
-            this.allegiance = allegiance.name;
+            this.allegiance = (allegiance == null ? Superpower.None.name : allegiance.name);
             this.faction = faction;
-            this.factionstate = factionstate.name;
-            this.economy = economy.name;
-            this.government = government.name;
-            this.security = security.name;
+            this.factionstate = (factionstate == null ? State.None.name : factionstate.name);
+            this.economy = (economy == null ? Economy.None.name : economy.name);
+            this.government = (government == null ? Government.None.name : government.name);
+            this.security = (security == null ? SecurityLevel.Low.name : security.name);
         }
     }
 }

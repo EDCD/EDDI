@@ -42,7 +42,7 @@ namespace EliteDangerousEvents
         public decimal z { get; private set; }
 
         [JsonProperty("allegiance")]
-        public Superpower allegiance { get; private set; }
+        public string allegiance { get; private set; }
 
         [JsonProperty("faction")]
         public string faction { get; private set; }
@@ -65,12 +65,12 @@ namespace EliteDangerousEvents
             this.x = x;
             this.y = y;
             this.z = z;
-            this.allegiance = allegiance;
+            this.allegiance = (allegiance == null ? Superpower.None.name : allegiance.name);
             this.faction = faction;
-            this.factionstate = factionstate.name;
-            this.economy = economy.name;
-            this.government = government.name;
-            this.security = security.name;
+            this.factionstate = (factionstate == null ? State.None.name : factionstate.name);
+            this.economy = (economy == null ? Economy.None.name : economy.name);
+            this.government = (government == null ? Government.None.name : government.name);
+            this.security = (security == null ? SecurityLevel.Low.name : security.name);
         }
     }
 }
