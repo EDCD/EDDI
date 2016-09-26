@@ -90,7 +90,7 @@ namespace EliteDangerousDataProviderService
                 StarSystem.state = (string)json["state"] == "None" ? null : (string)json["state"];
                 StarSystem.security = (string)json["security"];
                 StarSystem.power = (string)json["power"] == "None" ? null : (string)json["power"];
-                StarSystem.powerState = (string)json["power_state"];
+                StarSystem.powerstate = (string)json["power_state"];
 
 
                 StarSystem.stations = StationsFromEDDP(StarSystem.name, json);

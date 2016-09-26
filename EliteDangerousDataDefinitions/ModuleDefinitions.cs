@@ -830,14 +830,14 @@ namespace EliteDangerousDataDefinitions
             {
                 Module.EDName = Template.EDName;
                 Module.EDDBID = Template.EDDBID;
-                Module.Name = Template.Name;
-                Module.Class = Template.Class;
-                Module.Grade = Template.Grade;
-                Module.Value = Template.Value;
+                Module.name = Template.name;
+                Module.@class = Template.@class;
+                Module.grade = Template.grade;
+                Module.value = Template.value;
                 Module.ShipId = Template.ShipId;
-                Module.Mount = Template.Mount;
-                Module.AmmoClipCapacity = Template.AmmoClipCapacity;
-                Module.AmmoHopperCapacity = Template.AmmoHopperCapacity;
+                Module.mount = Template.mount;
+                Module.clipcapacity = Template.clipcapacity;
+                Module.hoppercapacity = Template.hoppercapacity;
             }
             return Module;
         }

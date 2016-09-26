@@ -22,7 +22,7 @@ namespace EliteDangerousDataDefinitions
         public string state { get; set; }
         public string security { get; set; }
         public string power { get; set; }
-        public string powerState { get; set; }
+        public string powerstate { get; set; }
 
         /// <summary>X co-ordinate for this system</summary>
         public decimal? x { get; set; }

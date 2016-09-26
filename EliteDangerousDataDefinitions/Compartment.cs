@@ -4,8 +4,8 @@
     public class Compartment
     {
         /// <summary>The size of the compartment</summary>
-        public int Size { get; set; }
+        public int size { get; set; }
         /// <summary>The module residing in the compartment (can be null)</summary>
-        public Module Module { get; set; }
+        public Module module { get; set; }
     }
 }

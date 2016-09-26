@@ -3,21 +3,21 @@
     public class Module
     {
         // Definition of the module
-        public string Name { get; set; }
-        public int Class { get; set; }
-        public string Grade { get; set; }
-        public long Value { get; set; } // The undiscounted value
+        public string name { get; set; }
+        public int @class { get; set; }
+        public string grade { get; set; }
+        public long value { get; set; } // The undiscounted value
         // Additional definition for some items
         public int? ShipId { get; set; } // Only for bulkheads
-        public ModuleMount? Mount { get; set; } // Only for weapons
-        public int? AmmoClipCapacity { get; set; } // Only for weapons
-        public int? AmmoHopperCapacity { get; set; } // Only for weapons
+        public ModuleMount? mount { get; set; } // Only for weapons
+        public int? clipcapacity { get; set; } // Only for weapons
+        public int? hoppercapacity { get; set; } // Only for weapons
 
         // State of the module
-        public long Cost { get; set; } // How much we actually paid for it
-        public bool Enabled { get; set; }
-        public int Priority { get; set; }
-        public decimal Health { get; set; }
+        public long cost { get; set; } // How much we actually paid for it
+        public bool enabled { get; set; }
+        public int priority { get; set; }
+        public decimal health { get; set; }
 
         // Admin
         // The ID in Elite: Dangerous' database
@@ -32,14 +32,14 @@
         public Module(Module Module)
         {
             this.EDName = Module.EDName;
-            this.Name = Module.Name;
-            this.Class = Module.Class;
-            this.Grade = Module.Grade;
-            this.Value = Module.Value;
+            this.name = Module.name;
+            this.@class = Module.@class;
+            this.grade = Module.grade;
+            this.value = Module.value;
             this.ShipId = Module.ShipId;
-            this.Mount = Module.Mount;
-            this.AmmoClipCapacity = Module.AmmoClipCapacity;
-            this.AmmoHopperCapacity = Module.AmmoHopperCapacity;
+            this.mount = Module.mount;
+            this.clipcapacity = Module.clipcapacity;
+            this.hoppercapacity = Module.hoppercapacity;
             this.EDID = Module.EDID;
             this.EDDBID = Module.EDDBID;
         }
@@ -49,10 +49,10 @@
             this.EDID = EDID;
             this.EDName = EDName;
             this.EDDBID = EDDBID;
-            this.Name = Name;
-            this.Class = Class;
-            this.Grade = Grade;
-            this.Value = Value;
+            this.name = Name;
+            this.@class = Class;
+            this.grade = Grade;
+            this.value = Value;
         }
 
         // Module definition for a bulkhead - requires ship ID
@@ -61,10 +61,10 @@
             this.EDID = EDID;
             this.EDName = EDName;
             this.EDDBID = EDDBID;
-            this.Name = Name;
-            this.Class = Class;
-            this.Grade = Grade;
-            this.Value = Value;
+            this.name = Name;
+            this.@class = Class;
+            this.grade = Grade;
+            this.value = Value;
             this.ShipId = ShipId;
         }
 
@@ -74,13 +74,13 @@
             this.EDID = EDID;
             this.EDName = EDName;
             this.EDDBID = EDDBID;
-            this.Name = Name;
-            this.Class = Class;
-            this.Grade = Grade;
-            this.Value = Value;
-            this.Mount = Mount;
-            this.AmmoClipCapacity = AmmoClipCapacity;
-            this.AmmoHopperCapacity = AmmoHopperCapacity;
+            this.name = Name;
+            this.@class = Class;
+            this.grade = Grade;
+            this.value = Value;
+            this.mount = Mount;
+            this.clipcapacity = AmmoClipCapacity;
+            this.hoppercapacity = AmmoHopperCapacity;
         }
 
         /// <summary>The mount of a weapons module</summary>

@@ -47,33 +47,33 @@ namespace EDDIVAPlugin
             string uri = "https://coriolis.io/outfit/";
             uri += shipModels[ship.model];
             uri += "/";
-            uri += ShipBulkheads(ship.bulkheads.Name);
+            uri += ShipBulkheads(ship.bulkheads.name);
             enableds += "1";
             priorities += "4";
-            uri += ship.powerplant.Class + ship.powerplant.Grade;
+            uri += ship.powerplant.@class + ship.powerplant.grade;
             enableds += "1";
             priorities += "0";
-            uri += ship.thrusters.Class + ship.thrusters.Grade;
-            enableds += ship.thrusters.Enabled ? "1" : "0";
-            priorities += ship.thrusters.Priority;
-            uri += ship.frameshiftdrive.Class + ship.frameshiftdrive.Grade;
-            enableds += ship.frameshiftdrive.Enabled ? "1" : "0";
-            priorities += ship.frameshiftdrive.Priority;
-            uri += ship.lifesupport.Class + ship.lifesupport.Grade;
-            enableds += ship.lifesupport.Enabled ? "1" : "0";
-            priorities += ship.lifesupport.Priority;
-            uri += ship.powerdistributor.Class + ship.powerdistributor.Grade;
-            enableds += ship.powerdistributor.Enabled ? "1" : "0";
-            priorities += ship.powerdistributor.Priority;
-            uri += ship.sensors.Class + ship.sensors.Grade;
-            enableds += ship.sensors.Enabled ? "1" : "0";
-            priorities += ship.sensors.Priority;
-            uri += ship.fueltank.Class + ship.fueltank.Grade;
+            uri += ship.thrusters.@class + ship.thrusters.grade;
+            enableds += ship.thrusters.enabled ? "1" : "0";
+            priorities += ship.thrusters.priority;
+            uri += ship.frameshiftdrive.@class + ship.frameshiftdrive.grade;
+            enableds += ship.frameshiftdrive.enabled ? "1" : "0";
+            priorities += ship.frameshiftdrive.priority;
+            uri += ship.lifesupport.@class + ship.lifesupport.grade;
+            enableds += ship.lifesupport.enabled ? "1" : "0";
+            priorities += ship.lifesupport.priority;
+            uri += ship.powerdistributor.@class + ship.powerdistributor.grade;
+            enableds += ship.powerdistributor.enabled ? "1" : "0";
+            priorities += ship.powerdistributor.priority;
+            uri += ship.sensors.@class + ship.sensors.grade;
+            enableds += ship.sensors.enabled ? "1" : "0";
+            priorities += ship.sensors.priority;
+            uri += ship.fueltank.@class + ship.fueltank.grade;
             enableds += "1";
             priorities += "1";
             foreach (Hardpoint Hardpoint in ship.hardpoints)
             {
-                if (Hardpoint.Module == null)
+                if (Hardpoint.module == null)
                 {
                     uri += "-";
                     enableds += "1";
@@ -81,7 +81,7 @@ namespace EDDIVAPlugin
                 }
                 else
                 {
-                    string id = CoriolisIDDefinitions.FromEDDBID(Hardpoint.Module.EDDBID);
+                    string id = CoriolisIDDefinitions.FromEDDBID(Hardpoint.module.EDDBID);
                     if (id == null)
                     {
                         uri += "-";
@@ -91,14 +91,14 @@ namespace EDDIVAPlugin
                     else
                     {
                         uri += id;
-                        enableds += Hardpoint.Module.Enabled ? "1" : "0";
-                        priorities += Hardpoint.Module.Priority;
+                        enableds += Hardpoint.module.enabled ? "1" : "0";
+                        priorities += Hardpoint.module.priority;
                     }
                 }
             }
             foreach (Compartment Compartment in ship.compartments)
             {
-                if (Compartment.Module == null)
+                if (Compartment.module == null)
                 {
                     uri += "-";
                     enableds += "1";
@@ -106,7 +106,7 @@ namespace EDDIVAPlugin
                 }
                 else
                 {
-                    string id = CoriolisIDDefinitions.FromEDDBID(Compartment.Module.EDDBID);
+                    string id = CoriolisIDDefinitions.FromEDDBID(Compartment.module.EDDBID);
                     if (id == null)
                     {
                         uri += "-";
@@ -116,8 +116,8 @@ namespace EDDIVAPlugin
                     else
                     {
                         uri += id;
-                        enableds += Compartment.Module.Enabled ? "1" : "0";
-                        priorities += Compartment.Module.Priority;
+                        enableds += Compartment.module.enabled ? "1" : "0";
+                        priorities += Compartment.module.priority;
                     }
                 }
 

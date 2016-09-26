@@ -707,23 +707,23 @@ namespace EliteDangerousCompanionAppService
             string name = json.Name;
             if (name.StartsWith("Huge"))
             {
-                Hardpoint.Size = 4;
+                Hardpoint.size = 4;
             }
             else if (name.StartsWith("Large"))
             {
-                Hardpoint.Size = 3;
+                Hardpoint.size = 3;
             }
             else if (name.StartsWith("Medium"))
             {
-                Hardpoint.Size = 2;
+                Hardpoint.size = 2;
             }
             else if (name.StartsWith("Small"))
             {
-                Hardpoint.Size = 1;
+                Hardpoint.size = 1;
             }
             else if (name.StartsWith("Tiny"))
             {
-                Hardpoint.Size = 0;
+                Hardpoint.size = 0;
             }
 
             if (json.Value is JObject)
@@ -731,7 +731,7 @@ namespace EliteDangerousCompanionAppService
                 JToken value;
                 if (json.Value.TryGetValue("module", out value))
                 {
-                    Hardpoint.Module = ModuleFromProfile(name, json.Value);
+                    Hardpoint.module = ModuleFromProfile(name, json.Value);
                 }
             }
 
@@ -790,14 +790,14 @@ namespace EliteDangerousCompanionAppService
             Match matches = Regex.Match((string)json.Name, @"Size([0-9]+)");
             if (matches.Success)
             {
-                Compartment.Size = Int32.Parse(matches.Groups[1].Value);
+                Compartment.size = Int32.Parse(matches.Groups[1].Value);
 
                 if (json.Value is JObject)
                 {
                     JToken value;
                     if (json.Value.TryGetValue("module", out value))
                     {
-                        Compartment.Module = ModuleFromProfile((string)json.Name, json.Value);
+                        Compartment.module = ModuleFromProfile((string)json.Name, json.Value);
                     }
                 }
             }
@@ -818,12 +818,12 @@ namespace EliteDangerousCompanionAppService
                     if (module["category"] == "weapon" || module["category"] == "module")
                     {
                         Module Module = ModuleDefinitions.ModuleFromEliteID((long)module["id"]);
-                        if (Module.Name == null)
+                        if (Module.name == null)
                         {
                             // Unknown module; log an error so that we can update the definitions
                             Logging.Error("No definition for outfitting module " + module.ToString());
                         }
-                        Module.Cost = module["cost"];
+                        Module.cost = module["cost"];
                         Modules.Add(Module);
                     }
                 }
@@ -884,24 +884,24 @@ namespace EliteDangerousCompanionAppService
         {
             long id = (long)json["module"]["id"];
             Module module = ModuleDefinitions.ModuleFromEliteID(id);
-            if (module.Name == null)
+            if (module.name == null)
             {
                 // Unknown module; log an error so that we can update the definitions
                 Logging.Error("No definition for ship module " + json["module"].ToString());
             }
 
-            module.Cost = (long)json["module"]["value"];
-            module.Enabled = (bool)json["module"]["on"];
-            module.Priority = (int)json["module"]["priority"];
+            module.cost = (long)json["module"]["value"];
+            module.enabled = (bool)json["module"]["on"];
+            module.priority = (int)json["module"]["priority"];
             // Be sensible with health - round it unless it's very low
             decimal Health = (decimal)json["module"]["health"] / 10000;
             if (Health < 5)
             {
-                module.Health = Math.Round(Health, 1);
+                module.health = Math.Round(Health, 1);
             }
             else
             {
-                module.Health = Math.Round(Health);
+                module.health = Math.Round(Health);
             }
 
             if (json["module"]["modifiers"] != null && firstRun)

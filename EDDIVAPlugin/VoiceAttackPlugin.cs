@@ -279,15 +279,15 @@ namespace EDDIVAPlugin
         /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
         private static void setShipModuleValues(Module module, string name, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
-            setString(ref textValues, name, module == null ? null : module.Name);
-            setInt(ref intValues, name + " class", module == null ? (int?)null : module.Class);
-            setString(ref textValues, name + " grade", module == null ? null : module.Grade);
-            setDecimal(ref decimalValues, name + " health", module == null ? (decimal?)null : module.Health);
-            setDecimal(ref decimalValues, name + " cost", module == null ? (decimal?)null : (decimal)module.Cost);
-            setDecimal(ref decimalValues, name + " value", module == null ? (decimal?)null : (decimal)module.Value);
-            if (module != null && module.Cost < module.Value)
+            setString(ref textValues, name, module == null ? null : module.name);
+            setInt(ref intValues, name + " class", module == null ? (int?)null : module.@class);
+            setString(ref textValues, name + " grade", module == null ? null : module.grade);
+            setDecimal(ref decimalValues, name + " health", module == null ? (decimal?)null : module.health);
+            setDecimal(ref decimalValues, name + " cost", module == null ? (decimal?)null : (decimal)module.cost);
+            setDecimal(ref decimalValues, name + " value", module == null ? (decimal?)null : (decimal)module.value);
+            if (module != null && module.cost < module.value)
             {
-                decimal discount = Math.Round((1 - (((decimal)module.Cost) / ((decimal)module.Value))) * 100, 1);
+                decimal discount = Math.Round((1 - (((decimal)module.cost) / ((decimal)module.value))) * 100, 1);
                 setDecimal(ref decimalValues, name + " discount", discount > 0.01M ? discount : (decimal?)null);
             }
             else
@@ -306,12 +306,12 @@ namespace EDDIVAPlugin
                     if (existing.EDDBID == Module.EDDBID)
                     {
                         // Found it
-                        setDecimal(ref decimalValues, name + " station cost", (decimal?)Module.Cost);
-                        if (Module.Cost < existing.Cost)
+                        setDecimal(ref decimalValues, name + " station cost", (decimal?)Module.cost);
+                        if (Module.cost < existing.cost)
                         {
                             // And it's cheaper
-                            setDecimal(ref decimalValues, name + " station discount", existing.Cost - Module.Cost);
-                            setString(ref textValues, name + " station discount (spoken)", Translations.Humanize(existing.Cost - Module.Cost));
+                            setDecimal(ref decimalValues, name + " station discount", existing.cost - Module.cost);
+                            setString(ref textValues, name + " station discount (spoken)", Translations.Humanize(existing.cost - Module.cost));
                         }
                         return;
                     }
@@ -655,7 +655,7 @@ namespace EDDIVAPlugin
                     foreach (Hardpoint Hardpoint in ship.hardpoints)
                     {
                         string baseHardpointName = prefix;
-                        switch (Hardpoint.Size)
+                        switch (Hardpoint.size)
                         {
                             case 0:
                                 baseHardpointName = prefix + " tiny hardpoint " + ++numTinyHardpoints;
@@ -674,9 +674,9 @@ namespace EDDIVAPlugin
                                 break;
                         }
 
-                        setBoolean(ref booleanValues, baseHardpointName + " occupied", Hardpoint.Module != null);
-                        setShipModuleValues(Hardpoint.Module, baseHardpointName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.Module, Eddi.Instance.LastStation.outfitting, baseHardpointName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        setBoolean(ref booleanValues, baseHardpointName + " occupied", Hardpoint.module != null);
+                        setShipModuleValues(Hardpoint.module, baseHardpointName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.module, Eddi.Instance.LastStation.outfitting, baseHardpointName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     }
 
                     setInt(ref intValues, prefix + " hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
@@ -686,10 +686,10 @@ namespace EDDIVAPlugin
                     foreach (Compartment Compartment in ship.compartments)
                     {
                         string baseCompartmentName = prefix + " compartment " + ++curCompartment;
-                        setInt(ref intValues, baseCompartmentName + " size", Compartment.Size);
-                        setBoolean(ref booleanValues, baseCompartmentName + " occupied", Compartment.Module != null);
-                        setShipModuleValues(Compartment.Module, baseCompartmentName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                        setShipModuleOutfittingValues(ship == null ? null : Compartment.Module, Eddi.Instance.LastStation.outfitting, baseCompartmentName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        setInt(ref intValues, baseCompartmentName + " size", Compartment.size);
+                        setBoolean(ref booleanValues, baseCompartmentName + " occupied", Compartment.module != null);
+                        setShipModuleValues(Compartment.module, baseCompartmentName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        setShipModuleOutfittingValues(ship == null ? null : Compartment.module, Eddi.Instance.LastStation.outfitting, baseCompartmentName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
                     }
                     setInt(ref intValues, prefix + " compartments", curCompartment);
                 }
@@ -745,7 +745,7 @@ namespace EDDIVAPlugin
                 setString(ref textValues, prefix + " security", system == null ? null : system.security);
                 setString(ref textValues, prefix + " power", system == null ? null : system.power);
                 setString(ref textValues, prefix + " power (spoken)", Translations.Power(Eddi.Instance.CurrentStarSystem.power));
-                setString(ref textValues, prefix + " power state", system == null ? null : system.powerState);
+                setString(ref textValues, prefix + " power state", system == null ? null : system.powerstate);
                 setDecimal(ref decimalValues, prefix + " X", system == null ? null : system.x);
                 setDecimal(ref decimalValues, prefix + " Y", system == null ? null : system.y);
                 setDecimal(ref decimalValues, prefix + " Z", system == null ? null : system.z);

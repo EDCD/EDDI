@@ -5506,24 +5506,24 @@ namespace Tests
 
             Assert.AreEqual("Python", profile.Ship.model);
 
-            Assert.AreEqual(7, profile.Ship.powerplant.Class);
-            Assert.AreEqual("C", profile.Ship.powerplant.Grade);
+            Assert.AreEqual(7, profile.Ship.powerplant.@class);
+            Assert.AreEqual("C", profile.Ship.powerplant.grade);
             Assert.AreEqual(9, profile.Ship.hardpoints.Count);
 
             Hardpoint hardpoint1 = profile.Ship.hardpoints[0];
-            Assert.AreEqual(3, hardpoint1.Size);
+            Assert.AreEqual(3, hardpoint1.size);
 
-            Assert.IsNotNull(hardpoint1.Module);
-            Assert.AreEqual(3, hardpoint1.Size);
-            Assert.AreEqual(3, hardpoint1.Module.Class);
-            Assert.AreEqual("E", hardpoint1.Module.Grade);
-            Assert.AreEqual(126540, hardpoint1.Module.Cost);
-            Assert.AreEqual(140600, hardpoint1.Module.Value);
+            Assert.IsNotNull(hardpoint1.module);
+            Assert.AreEqual(3, hardpoint1.size);
+            Assert.AreEqual(3, hardpoint1.module.@class);
+            Assert.AreEqual("E", hardpoint1.module.grade);
+            Assert.AreEqual(126540, hardpoint1.module.cost);
+            Assert.AreEqual(140600, hardpoint1.module.value);
 
-            Assert.AreEqual("7C", profile.Ship.powerplant.Class + profile.Ship.powerplant.Grade);
+            Assert.AreEqual("7C", profile.Ship.powerplant.@class + profile.Ship.powerplant.grade);
             Assert.AreEqual(9, profile.Ship.compartments.Count);
-            Assert.AreEqual(2, profile.Ship.compartments[8].Size);
-            Assert.AreEqual(null, profile.Ship.compartments[8].Module);
+            Assert.AreEqual(2, profile.Ship.compartments[8].size);
+            Assert.AreEqual(null, profile.Ship.compartments[8].module);
 
             Assert.AreEqual(10, profile.Ship.cargocapacity);
             Assert.AreEqual(6, profile.Ship.cargocarried);
