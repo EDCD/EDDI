@@ -17,10 +17,6 @@ namespace EDDIVAPlugin
 {
     public class VoiceAttackPlugin
     {
-        public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
-
-        private static SpeechService speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
-
         public static string VA_DisplayName()
         {
             return Constants.EDDI_NAME + " " + Constants.EDDI_VERSION;
@@ -35,6 +31,10 @@ namespace EDDIVAPlugin
         {
             return new Guid("{4AD8E3A4-CEFA-4558-B503-1CC9B99A07C1}");
         }
+
+        public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
+
+        private static SpeechService speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
 
         public static void VA_Init1(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
@@ -56,10 +56,53 @@ namespace EDDIVAPlugin
             }
         }
 
+        //public static void VA_Init1(dynamic vaProxy)
+        //{
+        //    Logging.Info("*******************************************************************Initialising");
+        //    vaProxy.SetInt("val", (int)0);
+        //new Thread(() =>
+        //{
+        //    int val = 1;
+        //    while (true)
+        //    {
+        //        Logging.Info("Tick");
+        //        Thread.Sleep(1000);
+        //        vaProxy.SetInt("val", val++);
+        //    }
+        //}).Start();
+        //    Logging.Info("*******************************************************************Done");
+        //}
+
         public static void VA_Exit1(ref Dictionary<string, object> state)
         {
             Eddi.Instance.Stop();
         }
+
+        //public static void VA_Invoke1(dynamic vaProxy)
+        //{
+        //    Logging.Info("**********************************************************Invoked " + vaProxy.Context);
+        //}
+
+        //public static void VA_Invoke1(dynamic vaProxy)
+        //{
+        //if (vaProxy.Context == "add it up")
+        //{
+        //    if (vaProxy.SessionState.ContainsKey("someValue"))
+        //    {
+        //        int iVal = vaProxy.SessionState["someValue"];
+        //        vaProxy.SessionState["someValue"] = ++iVal;
+        //    }
+        //    else
+        //        vaProxy.SessionState.Add("someValue", 1);
+
+        //    vaProxy.SetInt("myInt", (int)vaProxy.SessionState["someValue"]);
+        //    vaProxy.ExecuteCommand("show the total", true);
+        //}
+        //else
+        //{
+        //    vaProxy.SetProfile("test shortcuts");
+        //}
+        //}
 
         public static void VA_Invoke1(string context, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
@@ -106,7 +149,7 @@ namespace EDDIVAPlugin
                         //    //LogQueue.Add(eventData);
                         //}
                         break;
-                 }
+                }
                 setPluginStatus(ref textValues, "Operational", null, null);
             }
             catch (Exception e)
