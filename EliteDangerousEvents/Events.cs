@@ -12,10 +12,11 @@ namespace EliteDangerousEvents
 {
     public class Events
     {
-        public static Dictionary<string, Type> TYPES = new Dictionary<string, Type>();
-        public static Dictionary<string, string> SAMPLES = new Dictionary<string, string>();
-        public static Dictionary<string, string> DEFAULTS = new Dictionary<string, string>();
-        public static Dictionary<string, string> DESCRIPTIONS = new Dictionary<string, string>();
+        public static IDictionary<string, Type> TYPES = new Dictionary<string, Type>();
+        public static IDictionary<string, string> SAMPLES = new Dictionary<string, string>();
+        public static IDictionary<string, string> DEFAULTS = new Dictionary<string, string>();
+        public static IDictionary<string, string> DESCRIPTIONS = new Dictionary<string, string>();
+        public static IDictionary<string, IDictionary<string, string>> VARIABLES = new Dictionary<string, IDictionary<string, string>>();
 
         static Events()
         {
@@ -55,7 +56,15 @@ namespace EliteDangerousEvents
                                             if (eventDescription != null)
                                             {
                                                 DESCRIPTIONS.Add(eventName, eventDescription);
+                                            }
+                                        }
 
+                                        if (type.GetField("VARIABLES") != null)
+                                        {
+                                            Dictionary<string, string> eventVariables = (Dictionary<string, string>)type.GetField("VARIABLES").GetValue(null);
+                                            if (eventVariables != null)
+                                            {
+                                                VARIABLES.Add(eventName, eventVariables);
                                             }
                                         }
 

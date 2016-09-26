@@ -44,7 +44,7 @@ namespace EliteDangerousSpeechResponder
         public string ScriptValue
         {
             get { return scriptValue; }
-            set { scriptValue = value; OnPropertyChanged("ScriptValue"); }
+            set { if (value == null || value.Trim() == "") scriptValue = null; else scriptValue = value; OnPropertyChanged("ScriptValue"); }
         }
         private bool responder;
         public bool Responder
@@ -113,7 +113,7 @@ namespace EliteDangerousSpeechResponder
 
         private void variablesButtonClick(object sender, RoutedEventArgs e)
         {
-            VariablesWindow variablesWindow = new VariablesWindow();
+            VariablesWindow variablesWindow = new VariablesWindow(ScriptName);
             variablesWindow.Show();
         }
 

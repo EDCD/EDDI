@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EliteDangerousEvents;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,12 +22,35 @@ namespace EliteDangerousSpeechResponder
     /// </summary>
     public partial class VariablesWindow : Window
     {
-        public VariablesWindow()
+        public VariablesWindow(string scriptName)
         {
             InitializeComponent();
 
             // Read Markdown and convert it to HTML
             string markdown = File.ReadAllText("Variables.md");
+
+            string description;
+            if (Events.DESCRIPTIONS.TryGetValue(scriptName, out description))
+            {
+                // The user is editing an event, add event-specific information
+                markdown += "## Event\n\n" + description + ".\n\n";
+                IDictionary<string, string> variables;
+                if (Events.VARIABLES.TryGetValue(scriptName, out variables))
+                {
+                    if (variables.Count == 0)
+                    {
+                        markdown += "This event has no variables.";
+                    }
+                    else
+                    {
+                        foreach (KeyValuePair<string, string> variable in Events.VARIABLES[scriptName])
+                        {
+                            markdown += "    - " + variable.Key + " " + variable.Value + "\n";
+                        }
+                    }
+                }
+            }
+
             string html = CommonMark.CommonMarkConverter.Convert(markdown);
 
             // Insert the HTML
