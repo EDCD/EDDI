@@ -14,7 +14,7 @@ namespace EliteDangerousDataDefinitions
         /// <summary>The ID of this body in EDDB</summary>
         public long EDDBID { get; set; }
 
-        /// <summary>The name</summary>
-        public string Name { get; set;  }
+        /// <summary>The name of the body</summary>
+        public string name { get; set;  }
     }
 }

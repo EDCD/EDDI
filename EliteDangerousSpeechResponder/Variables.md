@@ -1,10 +1,14 @@
 ﻿# EDDI Variables
 
-EDDI provides many variables that can be used to help provide immersive scripts and more interesting.  Most variables are held as objects that are exposed from EDDI.  Details of the objects available are as follows:
+EDDI provides many variables that can be used to help provide immersive scripts and more interesting.  Most variables are held as objects that are exposed from EDDI.  Access to the property of the object is using a period, for example `cmdr.name` would obtain the `name` value from the `cmdr` object.
+
+EDDI can also have event-specific variables in the `event` object.  These usually come from external sources and so are not part of the standard objects, although they might reference them.
+
+Details of the objects available are as follows:
 
 ## Commander
 
-Commander information is available under the 'cmdr' object.  
+Commander information is available under the `cmdr` object.  
 
 Any values might be missing, depending on EDDI's configuration.
 
@@ -20,7 +24,7 @@ Any values might be missing, depending on EDDI's configuration.
 
 ## Ship
 
-Information about your current ship is available under the 'ship' object.
+Information about your current ship is available under the `ship` object.
 
 Any values might be missing, depending on EDDI's configuration.
 
@@ -48,7 +52,7 @@ Any values might be missing, depending on EDDI's configuration.
 
 ## Current starsystem
 
-Information about your current starsystem is avaialble under the 'system' object.
+Information about your current starsystem is avaialble under the `system` object.
 
 Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
 
@@ -70,7 +74,7 @@ Any values might be missing, depending on EDDI's configuration and the informati
 
 ## Last starsystem
 
-Information about your current starsystem is avaialble under the 'lastsystem' object.
+Information about your current starsystem is avaialble under the `lastsystem` object.
 
 Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
 
@@ -78,7 +82,7 @@ Values are the same as for the current starsystem.
 
 ## Home starsystem
 
-Information about your home starsystem is available under the 'homesystem' object.
+Information about your home starsystem is available under the `homesystem` object.
 
 Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
 
@@ -127,5 +131,28 @@ A compartment, which may or may not contain a module.
 
 ## Station
 
+An orbital or planetary station.
+
+    - name the name of the station
+    - systemname the name of the starsystem in which this station is situated
+    - model the model of the station (this is a StationModel object)
+    - largestpad the size of the largest pad on this station (this is a ShipSize object)
+    - distancefromstar the distance in LS from the star to this station
+    - economies the economies of the station (this is an array)
+    - government the controlling government of the station (Anarchy, Democracy, etc)
+    - faction the controlling faction of the station
+    - allegiance the superpower allegiance of the station's controlling faction (Federation, Empire etc)
+    - state the state of the station's controlling faction (Boom, Lockdown etc)
+    - hasrefuel true if the station has refueling capabilities
+    - hasrearm true if the station has rearming capabilities
+    - hasrepair true if the station has repair capabilities
+    - hasoutfitting true if the station has outfitting
+    - hasshipyard true if the station has a shipyard
+    - hasmarket true if the station has a commodities market
+    - hasblackmarket true if the station has a blackmarket
+    - commodities the commodities that are bought and sold by this station (array of Commodity objects)
+    - outfitting the modules that are available for outfitting at this station (array of Module objects)
+
 ## Body
 
+A star or planetary body.
