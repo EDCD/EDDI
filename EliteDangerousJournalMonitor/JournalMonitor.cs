@@ -668,7 +668,7 @@ namespace EliteDangerousJournalMonitor
                             object val;
                             data.TryGetValue("From", out val);
                             string from = (string)val;
-                            from = from.Replace("$cmdr_decorate:#name=", "Commander ");
+                            from = from.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "");
                             data.TryGetValue("Message", out val);
                             string message = (string)val;
                             journalEvent = new MessageReceivedEvent(timestamp, from, message);
@@ -680,6 +680,7 @@ namespace EliteDangerousJournalMonitor
                             object val;
                             data.TryGetValue("To", out val);
                             string to = (string)val;
+                            to= to.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "");
                             data.TryGetValue("Message", out val);
                             string message = (string)val;
                             journalEvent = new MessageSentEvent(timestamp, to, message);
@@ -899,7 +900,7 @@ namespace EliteDangerousJournalMonitor
                             object val;
                             data.TryGetValue("Name", out val);
                             string name = (string)val;
-                            data.TryGetValue("role", out val);
+                            data.TryGetValue("Role", out val);
                             string role = (string)val;
                             journalEvent = new CrewAssignedEvent(timestamp, name, role);
                             handled = true;

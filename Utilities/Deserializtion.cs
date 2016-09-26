@@ -12,6 +12,11 @@ namespace Utilities
     {
         public static IDictionary<string, object> DeserializeData(string data)
         {
+            if (data == null)
+            {
+                return new Dictionary<string, object>();
+            }
+
             Logging.Debug("Deserializing " + data);
             var values = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
 
