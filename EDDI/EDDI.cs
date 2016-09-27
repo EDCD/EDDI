@@ -191,26 +191,56 @@ namespace EDDI
 
         public void Start()
         {
+            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+
             foreach (EDDIMonitor monitor in monitors)
             {
-                Thread monitorThread = new Thread(() => monitor.Start());
-                monitorThread.IsBackground = true;
-                monitorThread.Name = monitor.MonitorName();
-                Logging.Info("Starting " + monitor.MonitorName());
-                monitorThread.Start();
+                bool enabled;
+                if (!configuration.Plugins.TryGetValue(monitor.MonitorName(), out enabled))
+                {
+                    // No information; default to enabled
+                    enabled = true;
+                }
+
+                if (!enabled)
+                {
+                    Logging.Debug(monitor.MonitorName() + " is disabled; not starting");
+                }
+                else
+                {
+                    Thread monitorThread = new Thread(() => monitor.Start());
+                    monitorThread.IsBackground = true;
+                    monitorThread.Name = monitor.MonitorName();
+                    Logging.Info("Starting " + monitor.MonitorName());
+                    monitorThread.Start();
+                }
             }
 
             foreach (EDDIResponder responder in responders)
             {
-                bool responderStarted = responder.Start();
-                if (responderStarted)
+                bool enabled;
+                if (!configuration.Plugins.TryGetValue(responder.ResponderName(), out enabled))
                 {
-                    EventHandler += new OnEventHandler(responder.Handle);
-                    Logging.Info("Started " + responder.ResponderName());
+                    // No information; default to enabled
+                    enabled = true;
+                }
+
+                if (!enabled)
+                {
+                    Logging.Debug(responder.ResponderName() + " is disabled; not starting");
                 }
                 else
                 {
-                    Logging.Warn("Failed to start " + responder.ResponderName());
+                    bool responderStarted = responder.Start();
+                    if (responderStarted)
+                    {
+                        EventHandler += new OnEventHandler(responder.Handle);
+                        Logging.Info("Started " + responder.ResponderName());
+                    }
+                    else
+                    {
+                        Logging.Warn("Failed to start " + responder.ResponderName());
+                    }
                 }
             }
         }
