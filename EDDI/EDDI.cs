@@ -130,7 +130,14 @@ namespace EDDI
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
                 {
                     // Carry out initial population of profile
-                    refreshProfile();
+                    try
+                    {
+                        refreshProfile();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Debug("Failed to obtain profile: " + ex);
+                    }
                 }
                 if (Cmdr != null && Cmdr.name != null)
                 {
@@ -152,7 +159,7 @@ namespace EDDI
                     {
                         commanderName = starMapCredentials.commanderName;
                     }
-                    else if (Cmdr.name != null)
+                    else if (Cmdr != null && Cmdr.name != null)
                     {
                         commanderName = Cmdr.name;
                     }

@@ -31,14 +31,12 @@ namespace EDDI
         private Profile profile;
         private ShipsConfiguration shipsConfiguration;
 
-        private EDDIConfiguration eddiConfiguration;
-
         public MainWindow()
         {
             InitializeComponent();
 
             // Configure the EDDI tab
-            eddiConfiguration = EDDIConfiguration.FromFile();
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;
             eddiInsuranceDecimal.Value = eddiConfiguration.Insurance;
@@ -112,8 +110,25 @@ namespace EDDI
                 if (monitorConfiguration != null)
                 {
                     Logging.Debug("Adding configuration tab for " + monitor.MonitorName());
+
+                    PluginSkeleton skeleton = new PluginSkeleton(monitor.MonitorName());
+                    monitorConfiguration.Margin = new Thickness(10);
+                    skeleton.panel.Children.Add(monitorConfiguration);
+
+                    bool enabled;
+                    if (eddiConfiguration.Plugins.TryGetValue(monitor.MonitorName(), out enabled))
+                    {
+                        skeleton.pluginenabled.IsChecked = enabled;
+                    }
+                    else
+                    {
+                        // Default to enabled
+                        skeleton.pluginenabled.IsChecked = true;
+                        eddiConfiguration.ToFile();
+                    }
+
                     TabItem item = new TabItem { Header = monitor.MonitorName() };
-                    item.Content = monitor.ConfigurationTabItem();
+                    item.Content = skeleton;
                     tabControl.Items.Add(item);
                 }
             }
@@ -124,8 +139,25 @@ namespace EDDI
                 if (responderConfiguration != null)
                 {
                     Logging.Debug("Adding configuration tab for " + responder.ResponderName());
+
+                    PluginSkeleton skeleton = new PluginSkeleton(responder.ResponderName());
+                    responderConfiguration.Margin = new Thickness(10);
+                    skeleton.panel.Children.Add(responderConfiguration);
+
+                    bool enabled;
+                    if (eddiConfiguration.Plugins.TryGetValue(responder.ResponderName(), out enabled))
+                    {
+                        skeleton.pluginenabled.IsChecked = enabled;
+                    }
+                    else
+                    {
+                        // Default to enabled
+                        skeleton.pluginenabled.IsChecked = true;
+                        eddiConfiguration.ToFile();
+                    }
+
                     TabItem item = new TabItem { Header = responder.ResponderName() };
-                    item.Content = responder.ConfigurationTabItem();
+                    item.Content = skeleton;
                     tabControl.Items.Add(item);
                 }
             }
@@ -136,38 +168,37 @@ namespace EDDI
         // Handle changes to the eddi tab
         private void homeSystemChanged(object sender, TextChangedEventArgs e)
         {
-            updateEddiConfiguration();
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.HomeSystem = string.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
+            eddiConfiguration.ToFile();
         }
 
         private void homeStationChanged(object sender, TextChangedEventArgs e)
         {
-            updateEddiConfiguration();
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.HomeStation = string.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
+            eddiConfiguration.ToFile();
         }
 
 
         private void insuranceChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            updateEddiConfiguration();
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.Insurance = eddiInsuranceDecimal.Value == null ? 5 : (decimal)eddiInsuranceDecimal.Value;
+            eddiConfiguration.ToFile();
         }
 
         private void verboseLoggingEnabled(object sender, RoutedEventArgs e)
         {
-            updateEddiConfiguration();
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.Debug = eddiVerboseLogging.IsChecked.Value;
+            eddiConfiguration.ToFile();
         }
 
         private void verboseLoggingDisabled(object sender, RoutedEventArgs e)
         {
-            updateEddiConfiguration();
-        }
-
-        private void updateEddiConfiguration()
-        {
-            EDDIConfiguration eddiConfiguration = new EDDIConfiguration();
-            eddiConfiguration.HomeSystem = string.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
-            eddiConfiguration.HomeStation = string.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
-            eddiConfiguration.Insurance = eddiInsuranceDecimal.Value == null ? 5 : (decimal)eddiInsuranceDecimal.Value;
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiConfiguration.Debug = eddiVerboseLogging.IsChecked.Value;
-            //eddiConfiguration.Scripts = this.eddiConfiguration.Scripts;
             eddiConfiguration.ToFile();
         }
 
