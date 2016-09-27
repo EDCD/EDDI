@@ -45,6 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BondAwardedEvent.cs" />
+    <Compile Include="KilledEvent.cs" />
+    <Compile Include="ShipInterdiction.cs" />
+    <Compile Include="ShipInterdicted.cs" />
     <Compile Include="CommanderRanksEvent.cs" />
     <Compile Include="CommanderProgressEvent.cs" />
     <Compile Include="CommanderStartedEvent.cs" />

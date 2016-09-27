@@ -663,6 +663,70 @@ namespace EliteDangerousJournalMonitor
                             }
                         }
                         break;
+                    case "Interdicted":
+                        {
+                            object val;
+                            data.TryGetValue("Submitted", out val);
+                            bool submitted = (bool)val;
+                            data.TryGetValue("Interdictor", out val);
+                            string interdictor = (string)val;
+                            data.TryGetValue("IsPlayer", out val);
+                            bool iscommander = (bool)val;
+                            data.TryGetValue("CombatRank", out val);
+                            CombatRating rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
+                            data.TryGetValue("Faction", out val);
+                            string faction = (string)val;
+                            data.TryGetValue("Power", out val);
+                            string power = (string)val;
+
+                            journalEvent = new ShipInterdictedEvent(timestamp, true, submitted, iscommander, interdictor, rating, faction, power);
+                            handled = true;
+                        }
+                        break;
+                    case "EscapeInterdiction":
+                        {
+                            object val;
+                            data.TryGetValue("Interdictor", out val);
+                            string interdictor = (string)val;
+                            data.TryGetValue("IsPlayer", out val);
+                            bool iscommander = (bool)val;
+
+                            journalEvent = new ShipInterdictedEvent(timestamp, false, false, iscommander, interdictor, null, null, null);
+                            handled = true;
+                        }
+                        break;
+                    case "Interdiction":
+                        {
+                            object val;
+                            data.TryGetValue("Success", out val);
+                            bool success = (bool)val;
+                            data.TryGetValue("Interdicted", out val);
+                            string interdictee = (string)val;
+                            data.TryGetValue("IsPlayer", out val);
+                            bool iscommander = (bool)val;
+                            data.TryGetValue("CombatRank", out val);
+                            CombatRating rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
+                            data.TryGetValue("Faction", out val);
+                            string faction = (string)val;
+                            data.TryGetValue("Power", out val);
+                            string power = (string)val;
+
+                            journalEvent = new ShipInterdictionEvent(timestamp, success, iscommander, interdictee, rating, faction, power);
+                            handled = true;
+                        }
+                        break;
+                    case "PVPKill":
+                        {
+                            object val;
+                            data.TryGetValue("Victim", out val);
+                            string victim = (string)val;
+                            data.TryGetValue("CombatRank", out val);
+                            CombatRating rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
+
+                            journalEvent = new KilledEvent(timestamp, victim, rating);
+                            handled = true;
+                        }
+                        break;
                     case "ReceiveText":
                         {
                             object val;
