@@ -30,7 +30,7 @@ namespace EliteDangerousSpeechService
             this.configuration = configuration == null ? new SpeechServiceConfiguration() : configuration;
         }
 
-        public void Say(Commander commander, Ship ship, string script)
+        public void Say(Commander commander, Ship ship, string script, bool parse)
         {
             if (script == null)
             {
@@ -66,10 +66,10 @@ namespace EliteDangerousSpeechService
             }
             script = script.Replace("$-", cmdrScript);
 
-            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, false);
+            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, false, parse);
         }
 
-        public void Transmit(Commander commander, Ship ship, string script)
+        public void Transmit(Commander commander, Ship ship, string script, bool parse)
         {
             if (script == null)
             {
@@ -87,10 +87,10 @@ namespace EliteDangerousSpeechService
             {
                 script = script.Replace("$=", "" + ship.model + " " + Translations.CallSign(ship.callsign));
             }
-            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true);
+            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, parse);
         }
 
-        public void Receive(Commander commander, Ship ship, string script)
+        public void Receive(Commander commander, Ship ship, string script, bool parse)
         {
             if (script == null)
             {
@@ -108,10 +108,10 @@ namespace EliteDangerousSpeechService
             {
                 script = script.Replace("$=", "" + ship.model + " " + Translations.CallSign(ship.callsign));
             }
-            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true);
+            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, parse);
         }
 
-        public void Speak(string script, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio)
+        public void Speak(string script, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio, bool parse)
         {
             if (script == null) { return; }
 
@@ -141,7 +141,7 @@ namespace EliteDangerousSpeechService
                         synth.Volume = configuration.Volume;
 
                         synth.SetOutputToWaveStream(stream);
-                        string speech = SpeechFromScript(script);
+                        string speech = (parse ? SpeechFromScript(script) : script);
                         if (speech.Contains("<phoneme"))
                         {
                             speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + synth.Voice.Culture.Name + "\"><s>" + speech + "</s></speak>";

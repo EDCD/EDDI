@@ -342,7 +342,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script);
+                speechService.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script, true);
             }
             catch (Exception e)
             {
@@ -368,7 +368,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Transmit(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script);
+                speechService.Transmit(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script, true);
             }
             catch (Exception e)
             {
@@ -394,7 +394,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Receive(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script);
+                speechService.Receive(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script, true);
             }
             catch (Exception e)
             {

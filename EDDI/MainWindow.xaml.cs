@@ -330,11 +330,11 @@ namespace EDDI
             SpeechService speechService = new SpeechService(speechConfiguration);
             if (string.IsNullOrEmpty(ship.phoneticname))
             {
-                speechService.Say(null, ship, ship.name + " stands ready.");
+                speechService.Say(null, ship, ship.name + " stands ready.", false);
             }
             else
             {
-                speechService.Say(null, ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>" + " stands ready.");
+                speechService.Say(null, ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>" + " stands ready.", false);
             }
         }
 
@@ -379,7 +379,7 @@ namespace EDDI
             testShip.health = 100;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             SpeechService speechService = new SpeechService(speechConfiguration);
-            speechService.Say(null, testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
+            speechService.Say(null, testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false);
         }
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
@@ -388,7 +388,7 @@ namespace EDDI
             testShip.health = 20;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             SpeechService speechService = new SpeechService(speechConfiguration);
-            speechService.Say(null, testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".");
+            speechService.Say(null, testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false);
         }
 
         /// <summary>

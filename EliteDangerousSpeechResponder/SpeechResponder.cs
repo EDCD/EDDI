@@ -91,7 +91,7 @@ namespace EliteDangerousSpeechResponder
             string result = resolver.resolve(scriptName, dict);
             if (result != null)
             {
-                speechService.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, result);
+                speechService.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, result, false);
             }
         }
 
