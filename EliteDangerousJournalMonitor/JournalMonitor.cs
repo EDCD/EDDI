@@ -398,7 +398,7 @@ namespace EliteDangerousJournalMonitor
                                 {
                                     foreach (KeyValuePair<string, object> kv in materialsData)
                                     {
-                                        MaterialDefinition material = MaterialDefinition.FromEDName(kv.Key);
+                                        Material material = Material.FromEDName(kv.Key);
                                         if (material != null)
                                         {
                                             materials.Add(new MaterialPresence(material, (decimal)(double)kv.Value));
@@ -724,6 +724,26 @@ namespace EliteDangerousJournalMonitor
                             CombatRating rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
 
                             journalEvent = new KilledEvent(timestamp, victim, rating);
+                            handled = true;
+                        }
+                        break;
+                    case "MaterialCollected":
+                        {
+                            object val;
+                            data.TryGetValue("Name", out val);
+                            Material material = Material.FromEDName((string)val);
+                            journalEvent = new MaterialCollectedEvent(timestamp, material, 1);
+                            handled = true;
+                        }
+                        break;
+                    case "MaterialDiscarded":
+                        {
+                            object val;
+                            data.TryGetValue("Name", out val);
+                            Material material = Material.FromEDName((string)val);
+                            data.TryGetValue("Count", out val);
+                            int amount =(int)(long)val;
+                            journalEvent = new MaterialDiscardedEvent(timestamp, material, amount);
                             handled = true;
                         }
                         break;

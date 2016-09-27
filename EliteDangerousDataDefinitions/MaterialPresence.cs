@@ -12,7 +12,7 @@ namespace EliteDangerousDataDefinitions
     /// </summary>
     public class MaterialPresence
     {
-        public MaterialDefinition definition { get; private set; }
+        public Material definition { get; private set; }
 
         public string name { get; private set; }
 
@@ -20,7 +20,7 @@ namespace EliteDangerousDataDefinitions
 
         public decimal percentage { get; private set; }
 
-        public MaterialPresence(MaterialDefinition definition, decimal presence)
+        public MaterialPresence(Material definition, decimal presence)
         {
             this.definition = definition;
             this.name = definition.name;

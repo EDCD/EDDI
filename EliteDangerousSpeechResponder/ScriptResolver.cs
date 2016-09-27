@@ -241,6 +241,16 @@ namespace EliteDangerousSpeechResponder
                 return new ReflectionValue(result);
             }, 1);
 
+            store["MaterialDetails"] = new NativeFunction((values) =>
+            {
+                Material result = Material.FromName(values[0].AsString);
+                if (result == null)
+                {
+                    result = Material.FromEDName(values[0].AsString);
+                }
+                return new ReflectionValue(result);
+            }, 1);
+
             // Variables
             foreach (KeyValuePair<string, Cottle.Value> entry in vars)
             {

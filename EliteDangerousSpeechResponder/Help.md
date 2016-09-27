@@ -129,11 +129,21 @@ Common usage of this is to provide further information about a star system, for 
 
 This function will provide full information for a station given its name.
 
-StationDetails() takes two arguments of the station ane the starsystem of the station.
+StationDetails() takes two arguments of the station and the starsystem of the station.
 
 Common usage of this is to provide further information about a station's capabilities, for example:
 
     Jameson Memorial is {StationDetails("Jameson Memorial", "Shinrarta Dezhra").distancefromstar} light seconds from the main star.
+
+### MaterialDetails()
+
+This function will provide full information for a material given its name.
+
+MaterialDetails() takes a single argument of the material for which you want more information.
+
+Common usage of this is to provide further information about a material, for example:
+
+    Iron is a {MaterialDetails("Iron").rarity.name} material.
 
 ### SuperpowerDetails()
 
