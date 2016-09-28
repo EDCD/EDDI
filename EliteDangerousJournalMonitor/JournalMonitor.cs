@@ -1139,6 +1139,18 @@ namespace EliteDangerousJournalMonitor
                             handled = true;
                             break;
                         }
+                    case "BuyTradeData":
+                        {
+                            object val;
+                            data.TryGetValue("System", out val);
+                            string system = (string)val;
+                            data.TryGetValue("Cost", out val);
+                            decimal cost = (long)val;
+
+                            journalEvent = new TradeDataPurchasedEvent(timestamp, system, cost);
+                            handled = true;
+                            break;
+                        }
                 }
 
                 if (journalEvent != null)

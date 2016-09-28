@@ -63,6 +63,7 @@
     <Compile Include="DiedEvent.cs" />
     <Compile Include="ClearSaveEvent.cs" />
     <Compile Include="ShipPurchasedEvent.cs" />
+    <Compile Include="TradeDataPurchasedEvent.cs" />
     <Compile Include="ShipTransferInitiatedEvent.cs" />
     <Compile Include="ShipSwappedEvent.cs" />
     <Compile Include="ShipSoldEvent.cs" />
