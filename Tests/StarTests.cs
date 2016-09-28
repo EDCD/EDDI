@@ -37,7 +37,7 @@ namespace Tests
         [TestMethod]
         public void TestStarSol()
         {
-            StarScannedEvent scan = new StarScannedEvent(DateTime.Now, "Sol", "G", 1, 1, 4.83M, 5400000000, 300);
+            StarScannedEvent scan = new StarScannedEvent(DateTime.Now, "Sol", "G", 1, 1, 4.83M, 5400000000, 300, 0, 10, 10, null);
             decimal solLuminosity = StarClass.luminosity(scan.absolutemagnitude);
             StarClass starClass = StarClass.FromName(scan.stellarclass);
             decimal massChance = starClass.stellarMassCP(scan.solarmass);

@@ -45,8 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BondAwardedEvent.cs" />
-    <Compile Include="MaterialDiscarded.cs" />
-    <Compile Include="MaterialCollected.cs" />
+    <Compile Include="ExplorationDataSoldEvent.cs" />
+    <Compile Include="ExplorationDataPurchasedEvent.cs" />
+    <Compile Include="MaterialDiscardedEvent.cs" />
+    <Compile Include="MaterialCollectedEvent.cs" />
     <Compile Include="KilledEvent.cs" />
     <Compile Include="ShipInterdiction.cs" />
     <Compile Include="ShipInterdicted.cs" />
@@ -74,10 +76,10 @@
     <Compile Include="SRVDockedEvent.cs" />
     <Compile Include="FighterDockedEvent.cs" />
     <Compile Include="FighterLaunchedEvent.cs" />
-    <Compile Include="SoldToMarketEvent.cs" />
+    <Compile Include="CommoditySoldEvent.cs" />
     <Compile Include="BountyIncurredEvent .cs" />
     <Compile Include="CargoEjectedEvent.cs" />
-    <Compile Include="BoughtFromMarketEvent.cs" />
+    <Compile Include="CommodityPurchasedEvent.cs" />
     <Compile Include="DockingTimedOutEvent.cs" />
     <Compile Include="DockingDeniedEvent.cs" />
     <Compile Include="DockingGrantedEvent.cs" />

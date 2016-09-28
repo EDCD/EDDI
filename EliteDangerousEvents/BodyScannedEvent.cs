@@ -26,6 +26,8 @@ namespace EliteDangerousEvents
             VARIABLES.Add("pressure", "The surface pressure of the body that has been scanned");
             VARIABLES.Add("tidallylocked", "True if the body is tidally locked");
             VARIABLES.Add("landable", "True if the body is landable");
+            VARIABLES.Add("atmosphere", "The atmosphere of the body that has been scanned");
+            VARIABLES.Add("volcanism", "The volcanism of the body that has been scanned");
             VARIABLES.Add("materials", "A list of materials present on the body that has been scanned");
         }
 
@@ -43,9 +45,13 @@ namespace EliteDangerousEvents
 
         public bool landable { get; private set; }
 
+        public string atmosphere { get; private set; }
+
+        public string volcanism{ get; private set; }
+
         public List<MaterialPresence> materials { get; private set; }
 
-        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal gravity, decimal temperature, decimal pressure, bool tidallylocked, bool landable, List<MaterialPresence> materials) : base(timestamp, NAME)
+        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal gravity, decimal temperature, decimal pressure, bool tidallylocked, bool landable, string atmosphere, string volcanism, List<MaterialPresence> materials) : base(timestamp, NAME)
         {
             this.name = name;
             this.bodyclass = bodyclass;
@@ -54,6 +60,8 @@ namespace EliteDangerousEvents
             this.pressure = pressure;
             this.tidallylocked = tidallylocked;
             this.landable = landable;
+            this.atmosphere = atmosphere;
+            this.volcanism = volcanism;
             this.materials = materials;
         }
 

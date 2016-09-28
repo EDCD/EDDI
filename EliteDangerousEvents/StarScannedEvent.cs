@@ -13,7 +13,8 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Star scanned";
         public const string DESCRIPTION = "Triggered when you complete a scan of a stellar body";
-        public static string SAMPLE = "{\"timestamp\":\"2016-09-23T11:13:18Z\",\"event\":\"Scan\",\"BodyName\":\"Tse A\",\"DistanceFromArrivalLS\":0.000000,\"StarType\":\"G\",\"StellarMass\":0.894531,\"Radius\":640697088.000000,\"AbsoluteMagnitude\":5.077271,\"OrbitalPeriod\":40846036992.000000,\"RotationPeriod\":267191.406250}";
+        public static string SAMPLE = "{\"timestamp\":\"2016-09-22T20:39:26Z\",\"event\":\"Scan\",\"BodyName\":\"Col 285 Sector ZK-E c12-8\",\"DistanceFromArrivalLS\":0.000000,\"StarType\":\"K\",\"StellarMass\":0.867188,\"Radius\":687434496.000000,\"AbsoluteMagnitude\":5.697311,\"OrbitalPeriod\":0.000000, \"RotationPeriod\":406112.093750, \"Rings\":[ {\"Name\":\"Col 285 Sector ZK-E c12-8 A Belt\",\"RingClass\":\"eRingClass_MetalRich\", \"MassMT\":1.18e+14, \"InnerRad\":1.24e+09, \"OuterRad\":2.3e+09 }, { \"Name\":\"Col 285 Sector ZK-E c12-8 B Belt\", \"RingClass\":\"eRingClass_MetalRich\", \"MassMT\":4.45e+15, \"InnerRad\":1.25e+10, \"OuterRad\":5.04e+11 } ] }";
+
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static StarScannedEvent()
@@ -31,6 +32,10 @@ namespace EliteDangerousEvents
             VARIABLES.Add("luminosityprobability", "The probablility of finding a star of this class and at least this luminosity");
             VARIABLES.Add("age", "The age of the star that has been scanned, in years");
             VARIABLES.Add("temperature", "The temperature of the star that has been scanned");
+            VARIABLES.Add("distancefromarrival", "The distance in LS from the main star");
+            VARIABLES.Add("orbitalperiod", "The number of seconds taken for a full orbit of the main star");
+            VARIABLES.Add("rotationperiod", "The number of seconds taken for a full rotation");
+            VARIABLES.Add("rings", "The star's rings");
         }
 
         public string name { get; private set; }
@@ -59,7 +64,15 @@ namespace EliteDangerousEvents
 
         public string chromaticity { get; private set; }
 
-        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, long age, decimal temperature) : base(timestamp, NAME)
+        public decimal distancefromarrival { get; private set; }
+
+        public decimal orbitalperiod { get; private set; }
+
+        public decimal rotationperiod { get; private set; }
+
+        public List<Ring> rings { get; private set; }
+
+        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, long age, decimal temperature, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, List<Ring> rings) : base(timestamp, NAME)
         {
             this.name = name;
             this.stellarclass = stellarclass;
@@ -68,6 +81,10 @@ namespace EliteDangerousEvents
             this.absolutemagnitude = absolutemagnitude;
             this.age = age;
             this.temperature = temperature;
+            this.distancefromarrival = distancefromarrival;
+            this.orbitalperiod = orbitalperiod;
+            this.rotationperiod = rotationperiod;
+            this.rings = rings;
             StarClass starClass = StarClass.FromName(this.stellarclass);
             if (starClass != null)
             {

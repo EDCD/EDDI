@@ -191,6 +191,10 @@ namespace EliteDangerousJournalMonitor
                             decimal y = Math.Round((decimal)((double)starPos[1]) * 32) / (decimal)32.0;
                             decimal z = Math.Round((decimal)((double)starPos[2]) * 32) / (decimal)32.0;
 
+                            data.TryGetValue("Body", out val);
+                            string body = (string)val;
+                            data.TryGetValue("Docked", out val);
+                            bool docked = (bool)val;
                             data.TryGetValue("Allegiance", out val);
                             Superpower allegiance = Superpower.FromEDName((string)val);
                             data.TryGetValue("Faction", out val);
@@ -207,7 +211,8 @@ namespace EliteDangerousJournalMonitor
                             data.TryGetValue("Security", out val);
                             SecurityLevel security = SecurityLevel.FromEDName((string)val);
 
-                            journalEvent = new LocationEvent(timestamp, systemName, x, y, z, allegiance, faction, factionState, economy, government, security);
+
+                            journalEvent = new LocationEvent(timestamp, systemName, x, y, z, body, docked, allegiance, faction, factionState, economy, government, security);
                         }
                         handled = true;
                         break;
@@ -342,10 +347,43 @@ namespace EliteDangerousJournalMonitor
                             string name = (string)val;
 
                             data.TryGetValue("DistanceFromArrivalLS", out val);
-                            decimal distanceFromMainStar = (decimal)(double)val;
+                            decimal distancefromarrival = (decimal)(double)val;
 
                             data.TryGetValue("Radius", out val);
                             decimal radius = (decimal)(double)val;
+
+                            data.TryGetValue("OrbitalPeriod", out val);
+                            decimal orbitalperiod = (decimal)(double)val;
+
+                            data.TryGetValue("RotationPeriod", out val);
+                            decimal rotationperiod = (decimal)(double)val;
+
+                            data.TryGetValue("Rings", out val);
+                            List<object> ringsData = (List<object>)val;
+                            List<Ring> rings = new List<Ring>();
+                            if (ringsData != null)
+                            {
+                                foreach(Dictionary<string, object> ringData in ringsData)
+                                {
+                                    ringData.TryGetValue("Name", out val);
+                                    string ringName = (string)val;
+
+                                    ringData.TryGetValue("RingClass", out val);
+                                    Composition ringComposition = Composition.FromEDName((string)val);
+
+                                    ringData.TryGetValue("MassMT", out val);
+                                    decimal ringMass = (decimal)(double)val;
+
+                                    ringData.TryGetValue("InnerRad", out val);
+                                    decimal ringInnerRadius = (decimal)(double)val;
+
+                                    ringData.TryGetValue("OuterRad", out val);
+                                    decimal ringOuterRadius = (decimal)(double)val;
+
+                                    rings.Add(new Ring(ringName, ringComposition, ringMass, ringInnerRadius, ringOuterRadius));
+                                }
+                            }
+
 
                             if (data.ContainsKey("StarType"))
                             {
@@ -367,7 +405,7 @@ namespace EliteDangerousJournalMonitor
                                 //decimal temperature = (decimal)(double)val;
                                 decimal temperature = 3000;
 
-                                journalEvent = new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, age, temperature);
+                                journalEvent = new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, age, temperature, distancefromarrival, orbitalperiod, rotationperiod, rings);
                                 handled = true;
                             }
                             else
@@ -406,29 +444,21 @@ namespace EliteDangerousJournalMonitor
                                     }
                                 }
 
+                                data.TryGetValue("TerraformState", out val);
+                                string terraformState = (string)val;
+
                                 // Atmosphere
+                                data.TryGetValue("Atmosphere", out val);
+                                string atmosphere = (string)val;
 
                                 // Volcanism
+                                data.TryGetValue("Volcanism", out val);
+                                string volcanism = (string)val;
 
-                                journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, materials);
+                                journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, materials);
                                 handled = true;
                             }
                         }
-                        //if (data.ContainsKey("StarType"))
-                        //{
-                        //    journalEntry.type = "Star scanned";
-                        //    journalEntry.stringData.Add("type", (string)data["StarType"]);
-                        //    journalEntry.refetchProfile = false;
-                        //    handled = true;
-                        //}
-                        //if (data.ContainsKey("Landable"))
-                        //{
-                        //    journalEntry.type = "Body scanned";
-                        //    journalEntry.boolData.Add("landable", Int32.Parse("Landable") == 1);
-                        //    // TODO add materials
-                        //    journalEntry.refetchProfile = false;
-                        //    handled = true;
-                        //}
                         break;
                     case "ShipyardBuy":
                         {
@@ -894,6 +924,32 @@ namespace EliteDangerousJournalMonitor
                             handled = true;
                         }
                         break;
+                    case "BuyExplorationData":
+                        {
+                            object val;
+                            data.TryGetValue("System", out val);
+                            string system = (string)val;
+                            data.TryGetValue("Cost", out val);
+                            decimal cost = (long)val;
+                            journalEvent = new ExplorationDataPurchasedEvent(timestamp, system, cost);
+                            handled = true;
+                            break;
+                        }
+                    case "SellExplorationData":
+                        {
+                            object val;
+                            data.TryGetValue("Systems", out val);
+                            List<string> systems = ((List<object>)val).Cast<string>().ToList();
+                            data.TryGetValue("Discovered", out val);
+                            List<string> firsts = ((List<object>)val).Cast<string>().ToList();
+                            data.TryGetValue("BaseValue", out val);
+                            decimal reward = (long)val;
+                            data.TryGetValue("Bonus", out val);
+                            decimal bonus = (long)val;
+                            journalEvent = new ExplorationDataSoldEvent(timestamp, systems, firsts, reward, bonus);
+                            handled = true;
+                            break;
+                        }
                     case "USSDrop":
                         {
                             object val;
@@ -914,7 +970,7 @@ namespace EliteDangerousJournalMonitor
                             int amount = (int)(long)val;
                             data.TryGetValue("BuyPrice", out val);
                             decimal price = (long)val;
-                            journalEvent = new BoughtFromMarketEvent(timestamp, cargo, amount, price);
+                            journalEvent = new CommodityPurchasedEvent(timestamp, cargo, amount, price);
                             handled = true;
                             break;
                         }
@@ -931,7 +987,13 @@ namespace EliteDangerousJournalMonitor
                             decimal buyPrice = (long)val;
                             // We don't care about buy price, we care about profit per unit
                             decimal profit = price - buyPrice;
-                            journalEvent = new SoldToMarketEvent(timestamp, cargo, amount, price, profit);
+                            data.TryGetValue("IllegalGoods", out val);
+                            bool illegal = (val == null ? false : (bool)val);
+                            data.TryGetValue("StolenGoods", out val);
+                            bool stolen = (val == null ? false : (bool)val);
+                            data.TryGetValue("BlackMarket", out val);
+                            bool blackmarket = (val == null ? false : (bool)val);
+                            journalEvent = new CommoditySoldEvent(timestamp, cargo, amount, price, profit, illegal, stolen, blackmarket);
                             handled = true;
                             break;
                         }

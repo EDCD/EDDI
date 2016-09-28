@@ -44,7 +44,7 @@ namespace EliteDangerousDataDefinitions
         public static readonly Crime TrespassMinor = new Crime("dockingMinorTrespass", "Trespass");
         public static readonly Crime TrespassMajor = new Crime("dockingMajorTrespass", "Trespass");
         public static readonly Crime Collided = new Crime("collidedAtSpeedInNoFireZone", "Collision");
-        public static readonly Crime CollidedWithDamage = new Crime("collidedAtSpeedInNoFireZoneHullDamage", "Collision resulting in damage");
+        public static readonly Crime CollidedWithDamage = new Crime("collidedAtSpeedInNoFireZone_hulldamage", "Collision resulting in damage");
 
         public static Crime FromName(string from)
         {

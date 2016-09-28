@@ -12,7 +12,7 @@ namespace EliteDangerousEvents
     {
         public const string NAME = "Location";
         public const string DESCRIPTION = "Triggered when the commander's location is reported";
-        public const string SAMPLE = "{\"timestamp\":\"2016-07-21T13:16:49Z\",\"event\":\"FSDJump\",\"StarSystem\":\"LP 98-132\",\"StarPos\":[-26.781,37.031,-4.594],\"Economy\":\"$economy_Extraction;\",“Allegiance”:”Federation”,\"Government\":\"$government_Anarchy;\",\"Security\":”$SYSTEM_SECURITY_high_anarchy;”,\"JumpDist\":5.230,\"FuelUsed\":0.355614,\"FuelLevel\":12.079949,\"Faction\":\"Brotherhood of LP 98-132\",\"FactionState\":\"Outbreak\"}";
+        public const string SAMPLE = "{ \"timestamp\":\"2016-09-28T10:54:07Z\", \"event\":\"Location\", \"Docked\":true, \"StationName\":\"Jameson Memorial\", \"StationType\":\"Orbis\", \"StarSystem\":\"Shinrarta Dezhra\", \"StarPos\":[55.719,17.594,27.156], \"Allegiance\":\"Independent\", \"Economy\":\"$economy_HighTech;\", \"Economy_Localised\":\"High tech\", \"Government\":\"$government_Democracy;\", \"Government_Localised\":\"Democracy\", \"Security\":\"$SYSTEM_SECURITY_high;\", \"Security_Localised\":\"High Security\", \"Body\":\"Jameson Memorial\", \"Faction\":\"The Pilots Federation\", \"FactionState\":\"Boom\" }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static LocationEvent()
@@ -21,6 +21,8 @@ namespace EliteDangerousEvents
             VARIABLES.Add("x", "The X co-ordinate of the system in which the commander resides");
             VARIABLES.Add("y", "The Y co-ordinate of the system in which the commander resides");
             VARIABLES.Add("z", "The Z co-ordinate of the system in which the commander resides");
+            VARIABLES.Add("body", "The nearest body to the commander");
+            VARIABLES.Add("docked", "True if the commander is docked");
             VARIABLES.Add("allegiance", "The allegiance of the system in which the commander resides");
             VARIABLES.Add("faction", "The faction controlling the system in which the commander resides");
             VARIABLES.Add("factionstate", "The state of the faction controlling the system in which the commander resides");
@@ -41,6 +43,12 @@ namespace EliteDangerousEvents
         [JsonProperty("z")]
         public decimal z { get; private set; }
 
+        [JsonProperty("body")]
+        public string body { get; private set; }
+
+        [JsonProperty("docked")]
+        public bool docked { get; private set; }
+
         [JsonProperty("allegiance")]
         public string allegiance { get; private set; }
 
@@ -59,12 +67,14 @@ namespace EliteDangerousEvents
         [JsonProperty("security")]
         public string security { get; private set; }
 
-        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
+        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, string body, bool docked, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
             this.y = y;
             this.z = z;
+            this.body = body;
+            this.docked = docked;
             this.allegiance = (allegiance == null ? Superpower.None.name : allegiance.name);
             this.faction = faction;
             this.factionstate = (factionstate == null ? State.None.name : factionstate.name);

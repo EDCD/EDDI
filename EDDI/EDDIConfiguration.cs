@@ -27,6 +27,7 @@ namespace EDDI
         {
             Debug = false;
             Insurance = 5;
+            Plugins = new Dictionary<string, bool>();
         }
 
         /// <summary>
@@ -50,6 +51,10 @@ namespace EDDI
                 configuration = new EDDIConfiguration();
             }
             configuration.dataPath = filename;
+            if (configuration.Plugins == null)
+            {
+                configuration.Plugins = new Dictionary<string, bool>();
+            }
 
             return configuration;
         }

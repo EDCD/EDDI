@@ -46,12 +46,12 @@ namespace EliteDangerousDataDefinitions
         // and http://physics.stackexchange.com/questions/153150/what-does-this-stellar-mass-distribution-mean
 
         public static readonly StarClass O = new StarClass("O", "O", "blue", 0.0000009M, new Gamma(3, 1/11.0), new Gamma(3, 1/20.0), new Gamma(9, 1/5000.0));
-        public static readonly StarClass B = new StarClass("B", "B", "blue-white", 0.039M, new Normal(9.05, 2.32), new Normal(4.2, 0.8), new Normal(15012, 4995));
-        public static readonly StarClass A = new StarClass("A", "A", "blue-white", 0.18M, new Normal(1.75, 0.12), new Normal(1.6, 0.667), new Normal(15, 3.333));
-        public static readonly StarClass F = new StarClass("F", "F", "white", 0.9M, new Normal(1.22, 0.06), new Normal(1.275, 0.042), new Normal(3.25, 0.583));
-        public static readonly StarClass G = new StarClass("G", "G", "yellow-white", 2.28M, new Normal(0.92, 0.04), new Normal(1.055, 0.05), new Normal(1.05, 0.15));
-        public static readonly StarClass K = new StarClass("K", "K", "yellow-orange", 3.63M, new Normal(0.625, 0.06), new Normal(0.83, 0.043), new Normal(0.34, 0.087));
-        public static readonly StarClass M = new StarClass("M", "M", "orange-red", 22.935M, new Normal(0.265, 0.06), new Gamma(1, 1/0.25), new Gamma(1, 1/0.04));
+        public static readonly StarClass B = new StarClass("B", "B", "blue-white", 0.039M, new Normal(9.05, 6.96), new Normal(4.2, 2.4), new Normal(15012, 4995));
+        public static readonly StarClass A = new StarClass("A", "A", "blue-white", 0.18M, new Normal(1.75, 0.36), new Normal(1.6, 2), new Normal(15, 19));
+        public static readonly StarClass F = new StarClass("F", "F", "white", 0.9M, new Normal(1.22, 0.18), new Normal(1.275, 0.126), new Normal(3.25, 1.749));
+        public static readonly StarClass G = new StarClass("G", "G", "yellow-white", 2.28M, new Normal(0.92, 0.12), new Normal(1.055, 0.15), new Normal(1.05, 0.45));
+        public static readonly StarClass K = new StarClass("K", "K", "yellow-orange", 3.63M, new Normal(0.625, 0.18), new Normal(0.83, 0.129), new Normal(0.34, 0.261));
+        public static readonly StarClass M = new StarClass("M", "M", "orange-red", 22.935M, new Normal(0.265, 0.18), new Gamma(1, 1/0.25), new Gamma(1, 1/0.04));
 
         /// <summary>
         /// Provide the cumulative probability that a star of this class will have a luminosity equal to or lower than that supplied
