@@ -25,12 +25,35 @@ namespace EliteDangerousSpeechService
         private static readonly object activeSpeechLock = new object();
         private ISoundOut activeSpeech;
 
-        public SpeechService(SpeechServiceConfiguration configuration = null)
+        private static SpeechService instance;
+
+        private static readonly object instanceLock = new object();
+        public static SpeechService Instance
         {
-            this.configuration = configuration == null ? new SpeechServiceConfiguration() : configuration;
+            get
+            {
+                if (instance == null)
+                {
+                    lock (instanceLock)
+                    {
+                        if (instance == null)
+                        {
+                            Logging.Debug("No Speech service instance: creating one");
+                            instance = new SpeechService();
+                        }
+                    }
+                }
+                return instance;
+            }
         }
 
-        public void Say(Commander commander, Ship ship, string script, bool parse)
+
+        private SpeechService()
+        {
+            configuration = SpeechServiceConfiguration.FromFile();
+        }
+
+        public void Say(Commander commander, Ship ship, string script, bool parse, bool wait)
         {
             if (script == null)
             {
@@ -66,10 +89,10 @@ namespace EliteDangerousSpeechService
             }
             script = script.Replace("$-", cmdrScript);
 
-            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, false, parse);
+            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, false, parse, wait);
         }
 
-        public void Transmit(Commander commander, Ship ship, string script, bool parse)
+        public void Transmit(Commander commander, Ship ship, string script, bool parse, bool wait)
         {
             if (script == null)
             {
@@ -87,10 +110,10 @@ namespace EliteDangerousSpeechService
             {
                 script = script.Replace("$=", "" + ship.model + " " + Translations.CallSign(ship.callsign));
             }
-            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, parse);
+            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, parse, wait);
         }
 
-        public void Receive(Commander commander, Ship ship, string script, bool parse)
+        public void Receive(Commander commander, Ship ship, string script, bool parse, bool wait)
         {
             if (script == null)
             {
@@ -108,17 +131,17 @@ namespace EliteDangerousSpeechService
             {
                 script = script.Replace("$=", "" + ship.model + " " + Translations.CallSign(ship.callsign));
             }
-            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, parse);
+            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, parse, wait);
         }
 
-        public void Speak(string script, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio, bool parse)
+        public void Speak(string script, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio, bool parse, bool wait)
         {
             if (script == null) { return; }
 
             StopCurrentSpeech();
 
-            //new Thread(() =>
-            //{
+            Thread speechThread = new Thread(() =>
+            {
                 try
                 {
                     using (SpeechSynthesizer synth = new SpeechSynthesizer())
@@ -219,7 +242,12 @@ namespace EliteDangerousSpeechService
                 {
                     Logging.Error("Failed to speak: " + ex);
                 }
-            //}).Start();
+            });
+            speechThread.Start();
+            if (wait)
+            {
+                speechThread.Join();
+            }
         }
 
         // Called when the parent has exited
@@ -230,16 +258,20 @@ namespace EliteDangerousSpeechService
 
         private void StopCurrentSpeech()
         {
+            Logging.Info("Stopping current speech");
             lock (activeSpeechLock)
             {
                 if (activeSpeech != null)
                 {
+                    Logging.Info("Found current speech");
                     activeSpeech.Stop();
                     activeSpeech.Dispose();
                     activeSpeech = null;
+                    Logging.Info("Stopped current speech");
                 }
             }
         }
+
         public string SpeechFromScript(string script)
         {
             if (script == null) { return null; }

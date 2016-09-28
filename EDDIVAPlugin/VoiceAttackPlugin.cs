@@ -34,8 +34,6 @@ namespace EDDIVAPlugin
 
         public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
 
-        private static SpeechService speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
-
         public static void VA_Init1(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
         {
             Logging.Info("Initialising EDDI VoiceAttack plugin");
@@ -342,7 +340,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script, true);
+                SpeechService.Instance.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script, true, true);
             }
             catch (Exception e)
             {
@@ -368,7 +366,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Transmit(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script, true);
+                SpeechService.Instance.Transmit(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script, true, true);
             }
             catch (Exception e)
             {
@@ -394,7 +392,7 @@ namespace EDDIVAPlugin
                 {
                     return;
                 }
-                speechService.Receive(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script, true);
+                SpeechService.Instance.Receive(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script, true, true);
             }
             catch (Exception e)
             {

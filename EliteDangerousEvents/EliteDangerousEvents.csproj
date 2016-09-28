@@ -47,6 +47,7 @@
     <Compile Include="BondAwardedEvent.cs" />
     <Compile Include="ExplorationDataSoldEvent.cs" />
     <Compile Include="ExplorationDataPurchasedEvent.cs" />
+    <Compile Include="MaterialDiscoveredEvent.cs" />
     <Compile Include="MaterialDiscardedEvent.cs" />
     <Compile Include="MaterialCollectedEvent.cs" />
     <Compile Include="KilledEvent.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="CockpitBreachedEvent.cs" />
     <Compile Include="CargoCollectedEvent.cs" />
     <Compile Include="ExplorationPromotionEvent.cs" />
+    <Compile Include="ScreenshotEvent.cs" />
     <Compile Include="TradePromotionEvent.cs" />
     <Compile Include="CombatPromotionEvent.cs" />
     <Compile Include="FineIncurredEvent.cs" />

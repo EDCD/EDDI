@@ -358,14 +358,13 @@ namespace EDDI
             Ship ship = (Ship)((Button)e.Source).DataContext;
             ship.health = 100;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
-            SpeechService speechService = new SpeechService(speechConfiguration);
             if (string.IsNullOrEmpty(ship.phoneticname))
             {
-                speechService.Say(null, ship, ship.name + " stands ready.", false);
+                SpeechService.Instance.Say(null, ship, ship.name + " stands ready.", false, false);
             }
             else
             {
-                speechService.Say(null, ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>" + " stands ready.", false);
+                SpeechService.Instance.Say(null, ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>" + " stands ready.", false, false);
             }
         }
 
@@ -409,8 +408,7 @@ namespace EDDI
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 100;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
-            SpeechService speechService = new SpeechService(speechConfiguration);
-            speechService.Say(null, testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false);
+            SpeechService.Instance.Say(null, testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false, false);
         }
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
@@ -418,8 +416,7 @@ namespace EDDI
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 20;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
-            SpeechService speechService = new SpeechService(speechConfiguration);
-            speechService.Say(null, testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false);
+            SpeechService.Instance.Say(null, testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false, false);
         }
 
         /// <summary>

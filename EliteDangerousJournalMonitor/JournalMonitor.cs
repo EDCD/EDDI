@@ -777,6 +777,15 @@ namespace EliteDangerousJournalMonitor
                             handled = true;
                         }
                         break;
+                    case "MaterialDiscovered":
+                        {
+                            object val;
+                            data.TryGetValue("Name", out val);
+                            Material material = Material.FromEDName((string)val);
+                            journalEvent = new MaterialDiscoveredEvent(timestamp, material);
+                            handled = true;
+                        }
+                        break;
                     case "ReceiveText":
                         {
                             object val;
@@ -1112,7 +1121,24 @@ namespace EliteDangerousJournalMonitor
                             handled = true;
                             break;
                         }
+                    case "Screenshot":
+                        {
+                            object val;
+                            data.TryGetValue("Filename", out val);
+                            string filename = (string)val;
+                            data.TryGetValue("Width", out val);
+                            int width = (int)(long)val;
+                            data.TryGetValue("Height", out val);
+                            int height = (int)(long)val;
+                            data.TryGetValue("System", out val);
+                            string system = (string)val;
+                            data.TryGetValue("Body", out val);
+                            string body = (string)val;
 
+                            journalEvent = new ScreenshotEvent(timestamp, filename, width, height, system, body);
+                            handled = true;
+                            break;
+                        }
                 }
 
                 if (journalEvent != null)

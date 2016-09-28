@@ -15,7 +15,6 @@ namespace EliteDangerousSpeechResponder
     public class SpeechResponder : EDDIResponder
     {
         private ScriptResolver scriptResolver;
-        private SpeechService speechService;
 
         public string ResponderName()
         {
@@ -49,16 +48,11 @@ namespace EliteDangerousSpeechResponder
 
         public bool Start()
         {
-            speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
             return true;
         }
 
         public void Stop()
         {
-            if (speechService != null)
-            {
-                speechService.ShutdownSpeech();
-            }
         }
 
         public void Reload()
@@ -73,7 +67,6 @@ namespace EliteDangerousSpeechResponder
                 configuration.ToFile();
             }
             scriptResolver = new ScriptResolver(personality.Scripts);
-            speechService = new SpeechService(SpeechServiceConfiguration.FromFile());
             Logging.Info("Reloaded " + ResponderName() + " " + ResponderVersion());
         }
 
@@ -91,7 +84,7 @@ namespace EliteDangerousSpeechResponder
             string result = resolver.resolve(scriptName, dict);
             if (result != null)
             {
-                speechService.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, result, false);
+                SpeechService.Instance.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, result, false, false);
             }
         }
 
