@@ -77,7 +77,7 @@ namespace EliteDangerousSpeechResponder
         public static Personality Default()
         {
             DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            return FromFile(dir.FullName + "\\personality.json");
+            return FromFile(dir.FullName + "\\eddi.json");
         }
 
         /// <summary>
