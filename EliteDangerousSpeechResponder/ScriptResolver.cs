@@ -33,6 +33,11 @@ namespace EliteDangerousSpeechResponder
 
         public string resolve(string name, Dictionary<string, Cottle.Value> vars)
         {
+            return resolve(name, buildStore(vars));
+        }
+
+        public string resolve(string name, BuiltinStore store)
+        {
             Logging.Debug("Resolving script " + name);
             Script script;
             scripts.TryGetValue(name, out script);
@@ -43,25 +48,31 @@ namespace EliteDangerousSpeechResponder
             }
             Logging.Debug("Found script");
 
-            return resolveScript(script.Value, vars);
+            return resolveScript(script.Value, store);
         }
 
-        public string resolveScript(string script, Dictionary<string, Cottle.Value> vars)
+        /// <summary>
+        /// Resolve a script with an existing store
+        /// </summary>
+        public string resolveScript(string script, BuiltinStore store)
         {
             try
             {
                 var document = new SimpleDocument(script, setting);
-                var result = document.Render(buildStore(vars));
+                var result = document.Render(store);
                 Logging.Debug("Turned script " + script + " in to speech " + result);
                 return result;
             }
             catch (Exception e)
             {
                 Logging.Warn("Failed to resolve script: " + e.Message);
-                return "There is a problem with the script: " + e.Message;
+                return "There is a problem with the script: " + e.Message.Replace("'", "");
             }
         }
 
+        /// <summary>
+        /// Build a store from a list of variables
+        /// </summary>
         private BuiltinStore buildStore(Dictionary<string, Cottle.Value> vars)
         {
             BuiltinStore store = new BuiltinStore();
@@ -69,7 +80,7 @@ namespace EliteDangerousSpeechResponder
             // Function to call another script
             store["F"] = new NativeFunction((values) =>
             {
-                return new ScriptResolver(scripts).resolve(values[0].AsString, vars);
+                return new ScriptResolver(scripts).resolve(values[0].AsString, store);
             }, 1);
 
             // Translation functions
@@ -99,7 +110,7 @@ namespace EliteDangerousSpeechResponder
             // Helper functions
             store["OneOf"] = new NativeFunction((values) =>
             {
-                return new ScriptResolver(scripts).resolveScript(values[random.Next(values.Count)].AsString, vars);
+                return new ScriptResolver(scripts).resolveScript(values[random.Next(values.Count)].AsString, store);
             });
 
             // Helper functions
@@ -107,7 +118,7 @@ namespace EliteDangerousSpeechResponder
             {
                 if (random.Next((int)values[0].AsNumber) == 0)
                 {
-                    return new ScriptResolver(scripts).resolveScript(values[1].AsString, vars);
+                    return new ScriptResolver(scripts).resolveScript(values[1].AsString, store);
                 }
                 else
                 {
@@ -256,7 +267,6 @@ namespace EliteDangerousSpeechResponder
             {
                 store[entry.Key] = entry.Value;
             }
-
 
             return store;
         }
