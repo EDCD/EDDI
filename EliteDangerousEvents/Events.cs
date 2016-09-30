@@ -25,7 +25,7 @@ namespace EliteDangerousEvents
                 DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 List<Type> events = new List<Type>();
                 Type eventType = typeof(Event);
-                foreach (FileInfo file in dir.GetFiles("EliteDangerousEvents.dll", SearchOption.AllDirectories))
+                foreach (FileInfo file in dir.GetFiles("*.dll", SearchOption.AllDirectories))
                 {
                     try
                     {

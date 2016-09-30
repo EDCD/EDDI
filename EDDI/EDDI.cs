@@ -488,7 +488,7 @@ namespace EDDI
                 }
                 catch (BadImageFormatException)
                 {
-                    // Ignore this; probably due to CPU architecure mismatch
+                    // Ignore this; probably due to CPU architecture mismatch
                 }
                 catch (ReflectionTypeLoadException ex)
                 {

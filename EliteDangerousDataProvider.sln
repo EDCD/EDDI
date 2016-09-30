@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousCompanionAppService", "EliteDangerousCompanionAppService\EliteDangerousCompanionAppService.csproj", "{462ED721-1C9C-43FA-8A3F-4C1644363A5A}"
 EndProject
@@ -56,6 +56,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousEDSMResponder", "EliteDangerousEDSMResponder\EliteDangerousEDSMResponder.csproj", "{2C2F3380-781D-45DE-B387-AEF26B834F29}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousSpeechResponder", "EliteDangerousSpeechResponder\EliteDangerousSpeechResponder.csproj", "{B164BAEC-9D66-4846-B152-2F8914406B89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousGalnetMonitor", "EliteDangerousGalnetMonitor\EliteDangerousGalnetMonitor.csproj", "{93B946C8-3F78-465A-8CC4-C0FC4127B762}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -123,6 +125,10 @@ Global
 		{B164BAEC-9D66-4846-B152-2F8914406B89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B164BAEC-9D66-4846-B152-2F8914406B89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B164BAEC-9D66-4846-B152-2F8914406B89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93B946C8-3F78-465A-8CC4-C0FC4127B762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93B946C8-3F78-465A-8CC4-C0FC4127B762}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93B946C8-3F78-465A-8CC4-C0FC4127B762}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93B946C8-3F78-465A-8CC4-C0FC4127B762}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
