@@ -31,7 +31,7 @@ namespace Tests
             {
                 synth.SetOutputToWaveStream(stream);
 
-                synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>Faulcon DeLacy <phoneme alphabet =\"ipa\" ph=\"maɪk\">mike</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈtʃɑːli\">charlie</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdɛltə\">delta</phoneme> requesting docking.</s></speak>");
+                synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><s>You are  docked at Jameson Memorial  in the <phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> system.</s></speak>");
 
                 //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈdɛltə\">delta</phoneme> system.</s></speak>");
                 //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"bliːiː\">Bleae</phoneme> <phoneme alphabet=\"ipa\" ph=\"θuːə\">Thua</phoneme> system.</s></speak>");
@@ -350,6 +350,11 @@ namespace Tests
             SpeechService.Instance.Speak("Testing drop-off.", null, 50, 1, 30, 40, 0, false, true, true, true);
         }
 
+        [TestMethod]
+        public void TestSpeechServicePhonemes()
+        {
+            SpeechService.Instance.Speak("You are  docked at Jameson Memorial  in the <phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> system.", null, 50, 1, 30, 40, 0, false, true, true, true);
+        }
         [TestMethod]
         public void TestSectorTranslations()
         {

@@ -5,6 +5,7 @@ using CSCore.Streams.Effects;
 using EliteDangerousDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Speech.Synthesis;
@@ -180,17 +181,23 @@ namespace EliteDangerousSpeechService
                         string speech = (parse ? SpeechFromScript(script) : script);
                         if (speech.Contains("<phoneme"))
                         {
-                            speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + synth.Voice.Culture.Name + "\"><s>" + speech + "</s></speak>";
-                            Logging.Debug("Final speech: " + speech);
-                            synth.SpeakSsml(speech);
+                            string finalSpeech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\"><s>" + speech + "</s></speak>";
+                            Logging.Debug("Final speech: " + finalSpeech);
+                            try
+                            {
+                                synth.SpeakSsml(finalSpeech);
+                            }
+                            catch
+                            {
+                                Logging.Error("Best guess culture of " + bestGuessCulture(synth) + " for voice " + synth.Voice.Name + " was incorrect");
+                                synth.SpeakSsml(finalSpeech);
+                            }
                         }
                         else
                         {
                             synth.Speak(speech);
                         }
                         stream.Seek(0, SeekOrigin.Begin);
-
-                        Logging.Debug("Turned script " + script + " in to speech " + speech);
 
                         IWaveSource source = new WaveFileReader(stream);
 
@@ -264,6 +271,28 @@ namespace EliteDangerousSpeechService
             }
         }
 
+        private string bestGuessCulture(SpeechSynthesizer synth)
+        {
+            string guess = "en-US";
+            if (synth.Voice.Name.Contains("CereVoice"))
+            {
+                // Cereproc voices don't have the correct local so we need to set it manually
+                if (synth.Voice.Name.Contains("Scotland") ||
+                    synth.Voice.Name.Contains("England") ||
+                    synth.Voice.Name.Contains("Ireland") ||
+                    synth.Voice.Name.Contains("Wales"))
+                {
+                    guess = "en-GB";
+                }
+            }
+            else
+            {
+                // Trust the voice's information
+                guess = synth.Voice.Culture.Name;
+            }
+            return guess;
+        }
+
         // Called when the parent has exited
         public void ShutdownSpeech()
         {
@@ -272,26 +301,28 @@ namespace EliteDangerousSpeechService
 
         private void StopCurrentSpeech()
         {
-            Logging.Info("Stopping current speech");
+            Logging.Debug("Stopping current speech");
             lock (activeSpeechLock)
             {
                 if (activeSpeech != null)
                 {
-                    Logging.Info("Found current speech");
+                    Logging.Debug("Found current speech");
                     activeSpeech.Stop();
                     activeSpeech.Dispose();
                     activeSpeech = null;
-                    Logging.Info("Stopped current speech");
+                    Logging.Debug("Stopped current speech");
                 }
             }
         }
 
         private void WaitForCurrentSpeech()
         {
+            Logging.Debug("Waiting for current speech to end");
             while (activeSpeech != null)
             {
                 Thread.Sleep(10);
             }
+            Logging.Debug("Current speech ended");
         }
 
         public string SpeechFromScript(string script)

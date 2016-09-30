@@ -103,70 +103,76 @@ namespace EliteDangerousEDDNResponder
 
         private void sendCommodityInformation()
         {
-            List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
-            foreach (Commodity commodity in Eddi.Instance.LastStation.commodities)
+            if (Eddi.Instance.LastStation != null && Eddi.Instance.LastStation.commodities != null)
             {
-                if (commodity.Category == "NonMarketable")
+                List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
+                foreach (Commodity commodity in Eddi.Instance.LastStation.commodities)
                 {
-                    continue;
-                }
-                EDDNCommodity eddnCommodity = new EDDNCommodity();
-                eddnCommodity.name = commodity.EDName;
-                eddnCommodity.meanPrice = commodity.AveragePrice;
-                eddnCommodity.buyPrice = commodity.BuyPrice;
-                eddnCommodity.stock = commodity.Stock;
-                eddnCommodity.stockBracket = commodity.StockBracket;
-                eddnCommodity.sellPrice = commodity.SellPrice;
-                eddnCommodity.demand = commodity.Demand;
-                eddnCommodity.demandBracket = commodity.DemandBracket;
-                if (commodity.StatusFlags.Count > 0)
+                    if (commodity.Category == "NonMarketable")
+                    {
+                        continue;
+                    }
+                    EDDNCommodity eddnCommodity = new EDDNCommodity();
+                    eddnCommodity.name = commodity.EDName;
+                    eddnCommodity.meanPrice = commodity.AveragePrice;
+                    eddnCommodity.buyPrice = commodity.BuyPrice;
+                    eddnCommodity.stock = commodity.Stock;
+                    eddnCommodity.stockBracket = commodity.StockBracket;
+                    eddnCommodity.sellPrice = commodity.SellPrice;
+                    eddnCommodity.demand = commodity.Demand;
+                    eddnCommodity.demandBracket = commodity.DemandBracket;
+                    if (commodity.StatusFlags.Count > 0)
+                    {
+                        eddnCommodity.statusFlags = commodity.StatusFlags;
+                    }
+                    eddnCommodities.Add(eddnCommodity);
+                };
+
+                // Only send the message if we have commodities
+                if (eddnCommodities.Count > 0)
                 {
-                    eddnCommodity.statusFlags = commodity.StatusFlags;
+                    IDictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                    data.Add("systemName", Eddi.Instance.LastStation.systemname);
+                    data.Add("stationName", Eddi.Instance.LastStation.name);
+                    data.Add("commodities", eddnCommodities);
+
+                    EDDNBody body = new EDDNBody();
+                    body.header = generateHeader();
+                    body.schemaRef = "http://schemas.elite-markets.net/eddn/commodity/3/test";
+                    body.message = data;
+
+                    sendMessage(body);
                 }
-                eddnCommodities.Add(eddnCommodity);
-            };
-
-            // Only send the message if we have commodities
-            if (eddnCommodities.Count > 0)
-            {
-                IDictionary<string, object> data = new Dictionary<string, object>();
-                data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
-                data.Add("systemName", Eddi.Instance.LastStation.systemname);
-                data.Add("stationName", Eddi.Instance.LastStation.name);
-                data.Add("commodities", eddnCommodities);
-
-                EDDNBody body = new EDDNBody();
-                body.header = generateHeader();
-                body.schemaRef = "http://schemas.elite-markets.net/eddn/commodity/3/test";
-                body.message = data;
-
-                sendMessage(body);
             }
         }
 
         private void sendOutfittingInformation()
         {
-            List<string> eddnModules = new List<string>();
-            foreach (Module module in Eddi.Instance.LastStation.outfitting)
+            if (Eddi.Instance.LastStation != null && Eddi.Instance.LastStation.outfitting != null)
             {
-                eddnModules.Add(module.EDName);
-            }
+                List<string> eddnModules = new List<string>();
+                foreach (Module module in Eddi.Instance.LastStation.outfitting)
+                {
+                    eddnModules.Add(module.EDName);
+                }
 
-            // Only send the message if we have modules
-            if (eddnModules.Count > 0)
-            {
-                IDictionary<string, object> data = new Dictionary<string, object>();
-                data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
-                data.Add("systemName", Eddi.Instance.LastStation.systemname);
-                data.Add("stationName", Eddi.Instance.LastStation.name);
-                data.Add("modules", eddnModules);
+                // Only send the message if we have modules
+                if (eddnModules.Count > 0)
+                {
+                    IDictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                    data.Add("systemName", Eddi.Instance.LastStation.systemname);
+                    data.Add("stationName", Eddi.Instance.LastStation.name);
+                    data.Add("modules", eddnModules);
 
-                EDDNBody body = new EDDNBody();
-                body.header = generateHeader();
-                body.schemaRef = "http://schemas.elite-markets.net/eddn/outfitting/2/test";
-                body.message = data;
+                    EDDNBody body = new EDDNBody();
+                    body.header = generateHeader();
+                    body.schemaRef = "http://schemas.elite-markets.net/eddn/outfitting/2/test";
+                    body.message = data;
 
-                sendMessage(body);
+                    sendMessage(body);
+                }
             }
         }
 
@@ -175,7 +181,8 @@ namespace EliteDangerousEDDNResponder
             // Uploader ID is a hash of the commander's name
             System.Security.Cryptography.SHA256Managed crypt = new System.Security.Cryptography.SHA256Managed();
             StringBuilder hash = new StringBuilder();
-            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(Eddi.Instance.Cmdr.name), 0, Encoding.UTF8.GetByteCount(Eddi.Instance.Cmdr.name));
+            string uploader = (Eddi.Instance.Cmdr == null ? "commander" : Eddi.Instance.Cmdr.name);
+            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(uploader), 0, Encoding.UTF8.GetByteCount(uploader));
             foreach (byte theByte in crypto)
             {
                 hash.Append(theByte.ToString("x2"));
@@ -194,7 +201,7 @@ namespace EliteDangerousEDDNResponder
 
         private static void sendMessage(EDDNBody body)
         {
-            //Logging.Info(JsonConvert.SerializeObject(body));
+            Logging.Debug(JsonConvert.SerializeObject(body));
             var client = new RestClient("http://eddn-gateway.elite-markets.net:8080/");
             var request = new RestRequest("upload/", Method.POST);
             request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);

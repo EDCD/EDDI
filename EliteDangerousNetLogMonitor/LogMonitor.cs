@@ -32,6 +32,11 @@ namespace EliteDangerousNetLogMonitor
         /// <summary>Monitor the netlog for changes, running a callback when the file changes</summary>
         public void start()
         {
+            if (Directory == null)
+            {
+                return;
+            }
+
             running = true;
 
             // Start off by moving to the end of the file

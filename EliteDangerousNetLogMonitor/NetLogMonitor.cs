@@ -108,7 +108,7 @@ namespace EliteDangerousNetLogMonitor
 
         public string MonitorName()
         {
-            return "Netlog Monitor";
+            return "Netlog monitor";
         }
 
         public string MonitorVersion()
@@ -123,7 +123,14 @@ namespace EliteDangerousNetLogMonitor
 
         public void Start()
         {
-            start();
+            if (NetLogConfiguration.FromFile().path == null)
+            {
+                Logging.Info("Cannot start netlog monitor - path missing");
+            }
+            else
+            {
+                start();
+            }
         }
 
         public void Stop()

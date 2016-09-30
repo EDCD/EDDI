@@ -4,6 +4,7 @@ using EliteDangerousSpeechService;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Text;
@@ -34,6 +35,9 @@ namespace EDDI
         public MainWindow()
         {
             InitializeComponent();
+
+            // Set up our app directory
+            Directory.CreateDirectory(Constants.DATA_DIR);
 
             // Configure the EDDI tab
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
@@ -413,7 +417,6 @@ namespace EDDI
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 100;
-            SpeechService.Instance.ReloadConfiguration();
             SpeechService.Instance.Say(null, testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false, false, true);
         }
 
@@ -421,7 +424,6 @@ namespace EDDI
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 20;
-            SpeechService.Instance.ReloadConfiguration();
             SpeechService.Instance.Say(null, testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false, false, true);
         }
 
@@ -437,6 +439,7 @@ namespace EDDI
             speechConfiguration.EffectsLevel = (int)ttsEffectsLevelSlider.Value;
             speechConfiguration.DistortOnDamage = ttsDistortCheckbox.IsChecked.Value;
             speechConfiguration.ToFile();
+            SpeechService.Instance.ReloadConfiguration();
         }
 
         protected override void OnClosed(EventArgs e)

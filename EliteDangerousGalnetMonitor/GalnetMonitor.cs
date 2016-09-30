@@ -29,7 +29,7 @@ namespace EliteDangerousGalnetMonitor
         /// </summary>
         public string MonitorName()
         {
-            return "Galnet Monitor";
+            return "Galnet monitor";
         }
 
         /// <summary>
@@ -90,42 +90,53 @@ namespace EliteDangerousGalnetMonitor
 
         private void monitor()
         {
-            DateTime latestDate;
+            string lastUid;
             try
             {
-                latestDate = new DateTime(Convert.ToInt64(File.ReadAllText(Constants.DATA_DIR + @"\galnet")));
+                lastUid = File.ReadAllText(Constants.DATA_DIR + @"\galnet");
             }
             catch
             {
-                latestDate = DateTime.Now;
-                File.WriteAllText(Constants.DATA_DIR + @"\galnet", latestDate.Ticks.ToString());
+                lastUid = null;
             }
+
             while (true)
             {
                 List<News> newsItems = new List<News>();
-                DateTime latestNewDate = latestDate;
+                string firstUid = null;
                 foreach (FeedItem item in new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(SOURCE))
                 {
-                    if (item.PublishDate > latestDate)
+                    if (firstUid == null)
                     {
-                        News newsItem = new News(item.PublishDate.DateTime, item.Title, item.GetContent());
-                        newsItems.Add(newsItem);
-                        if (item.PublishDate > latestNewDate)
+                        // Obtain the ID of the first item that we read
+                        firstUid = item.Id;
+                        if (lastUid == null)
                         {
-                            latestNewDate = item.PublishDate.DateTime;
+                            // We don't have any ID yet; use this as the marker
+                            break;
                         }
                     }
+
+                    if (item.Id == lastUid)
+                    {
+                        // Reached the first item we have already seen - go no further
+                        break;
+                    }
+
+                    News newsItem = new News(item.PublishDate.DateTime, item.Title, item.GetContent());
+                    newsItems.Add(newsItem);
                 }
 
                 if (newsItems.Count > 0)
                 {
                     Eddi.Instance.eventHandler(new GalnetNewsPublishedEvent(DateTime.Now, newsItems));
                 }
-                if (latestNewDate > latestDate)
+
+                if (firstUid != lastUid)
                 {
-                    latestDate = latestNewDate;
-                    Logging.Debug("Updated latest date to " + latestDate.ToString());
-                    File.WriteAllText(Constants.DATA_DIR + @"\galnet", latestDate.Ticks.ToString());
+                    Logging.Debug("Updated latest UID to " + firstUid);
+                    File.WriteAllText(Constants.DATA_DIR + @"\galnet", firstUid);
+                    lastUid = firstUid;
                 }
                 Thread.Sleep(120000);
             }
