@@ -4,6 +4,7 @@ using Cottle.Functions;
 using Cottle.Settings;
 using Cottle.Stores;
 using Cottle.Values;
+using EDDI;
 using EliteDangerousDataDefinitions;
 using EliteDangerousDataProviderService;
 using EliteDangerousSpeechService;
@@ -138,6 +139,36 @@ namespace EliteDangerousSpeechResponder
                 return Translations.Humanize(values[0].AsNumber);
             }, 1);
 
+
+            //
+            // Commander-specific functions
+            //
+            store["ShipName"] = new NativeFunction((values) =>
+            {
+                string result = "your ship";
+                if (Eddi.Instance.Ship != null)
+                {
+                    if (Eddi.Instance.Ship.phoneticname != null)
+                    {
+                        result = "<phoneme alphabet=\"ipa\" ph=\"" + Eddi.Instance.Ship.phoneticname + "\">" + Eddi.Instance.Ship.name + "</phoneme>";
+                    }
+                    else  if (Eddi.Instance.Ship.name != null)
+                    {
+                        result = Eddi.Instance.Ship.name;
+                    }
+                }
+                return result;
+            }, 0);
+
+            store["ShipCallsign"] = new NativeFunction((values) =>
+            {
+                string result = "";
+                if (Eddi.Instance.Ship != null && Eddi.Instance.Cmdr != null)
+                {
+                    result = Eddi.Instance.Ship.manufacturer + " " + Translations.CallSign(Eddi.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant());
+                }
+                return result;
+            }, 0);
 
             //
             // Obtain definition objects for various items

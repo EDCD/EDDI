@@ -364,7 +364,7 @@ namespace EliteDangerousSpeechService
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtʃɑːli\">charlie</phoneme>");
                         break;
                     case 'D':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈdeltɑ\">delta</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈdɛltə\">delta</phoneme>");
                         break;
                     case 'E':
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈeko\">echo</phoneme>");

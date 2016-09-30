@@ -7,7 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-        <TextBlock x:Name="netlogText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="The netlog monitor reads a file written by Elite and uses information in it to provide system information." VerticalAlignment="Top"/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -22,7 +21,7 @@
             <TextBlock x:Name="netLogText" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="To configure netlog monitoring you need to provide the path to your Elite: Dangerous product log.  This is commonly in C:\Program Files (x86)\Elite\Products\elite-dangerous-64\Logs but might be in a different location if you have installed Elite through Steam or in a non-standard location" VerticalAlignment="Top"/>
             <Label Grid.Row="1" Grid.Column="0" Margin="10" Content="Product Logs directory"/>
             <TextBox x:Name="netLogPathTextBox" Grid.Row="1" Grid.Column="1" Margin="10" TextChanged="netLogPathChanged" />
-            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="If you are unsure of where the directory is you can start Elite: Dangerous then come back to this window and hit the 'Obtain' button below" VerticalAlignment="Top" />
+            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="If you are unsure of where the directory is you can start Elite: Dangerous then come back to this window and hit the 'Obtain' button below.  Please note that for this to work you need to be a local administrator" VerticalAlignment="Top" />
             <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" x:Name="obtainButton" Content="Obtain" Margin="10" Click="netLogObtainClicked"/>
         </Grid>
     </DockPanel>

@@ -48,8 +48,12 @@ namespace EliteDangerousSpeechService
             }
         }
 
-
         private SpeechService()
+        {
+            configuration = SpeechServiceConfiguration.FromFile();
+        }
+
+        public void ReloadConfiguration()
         {
             configuration = SpeechServiceConfiguration.FromFile();
         }
@@ -373,7 +377,6 @@ namespace EliteDangerousSpeechService
                 distortionLevel = Math.Min((100 - (int)ship.health) / 2, 15);
             }
             return distortionLevel;
-
         }
     }
 }

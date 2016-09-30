@@ -130,11 +130,32 @@ namespace EliteDangerousSpeechResponder
             newScripts.Remove(ScriptName);
             newScripts.Add(ScriptName, testScript);
 
-            // Obtain the sample event
-            Event sampleEvent = JournalMonitor.ParseJournalEntry(Events.SampleByName(ScriptName));
-
             SpeechResponder responder = new SpeechResponder();
             responder.Start();
+
+            // See if we have a sample
+            Event sampleEvent;
+            object sample = Events.SampleByName(script.Name);
+            if (sample == null)
+            {
+                sampleEvent = null;
+            }
+            else if (sample.GetType() == typeof(string))
+            {
+                // It's as tring so a journal entry.  Parse it
+                sampleEvent = JournalMonitor.ParseJournalEntry((string)sample);
+            }
+            else if (sample.GetType() == typeof(Event))
+            {
+                // It's a direct event
+                sampleEvent = (Event)sample;
+            }
+            else
+            {
+                Logging.Warn("Unknown sample type " + sample.GetType());
+                sampleEvent = null;
+            }
+
             ScriptResolver scriptResolver = new ScriptResolver(newScripts);
             responder.Say(scriptResolver, ScriptName, sampleEvent);
         }

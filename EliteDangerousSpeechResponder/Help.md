@@ -55,6 +55,20 @@ Common usage of this is to provide human-sounding numbers when speacking rather 
 
    You have {Humanise(cmdr.credits)} credits.
 
+### ShipName()
+
+This function will provide the name of your ship.
+
+If you have set up a phonetic name for your ship it will return that, otherwise if you have set up a name for your ship it will return that.
+
+If you have not set up a name for your ship it will just return "your ship".
+
+### ShipCallsign()
+
+This function will provide your ship's callsign in the same way that Elite provides it (i.e. manufacturer followed by first three letters of your commander name).
+
+This will only work if EDDI is connected to the Frontier API.
+
 ### ShipDetails()
 
 This function will provide full information for a ship given its name.

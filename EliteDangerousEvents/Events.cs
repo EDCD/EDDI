@@ -13,7 +13,7 @@ namespace EliteDangerousEvents
     public class Events
     {
         public static IDictionary<string, Type> TYPES = new Dictionary<string, Type>();
-        public static IDictionary<string, string> SAMPLES = new Dictionary<string, string>();
+        public static IDictionary<string, object> SAMPLES = new Dictionary<string, object>();
         public static IDictionary<string, string> DEFAULTS = new Dictionary<string, string>();
         public static IDictionary<string, string> DESCRIPTIONS = new Dictionary<string, string>();
         public static IDictionary<string, IDictionary<string, string>> VARIABLES = new Dictionary<string, IDictionary<string, string>>();
@@ -112,9 +112,9 @@ namespace EliteDangerousEvents
             return value;
         }
 
-        public static string SampleByName(string name)
+        public static object SampleByName(string name)
         {
-            string value;
+            object value;
             SAMPLES.TryGetValue(name, out value);
             return value;
         }

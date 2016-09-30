@@ -99,7 +99,29 @@ namespace EliteDangerousSpeechResponder
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
             SpeechResponder responder = new SpeechResponder();
             responder.Start();
-            Event sampleEvent = JournalMonitor.ParseJournalEntry(Events.SampleByName(script.Name));
+            // See if we have a sample
+            Event sampleEvent;
+            object sample = Events.SampleByName(script.Name);
+            if (sample == null)
+            {
+                sampleEvent = null;
+            }
+            else if (sample.GetType() == typeof(string))
+            {
+                // It's as tring so a journal entry.  Parse it
+                sampleEvent = JournalMonitor.ParseJournalEntry((string)sample);
+            }
+            else if (sample.GetType() == typeof(Event))
+            {
+                // It's a direct event
+                sampleEvent = (Event)sample;
+            }
+            else
+            {
+                Logging.Warn("Unknown sample type " + sample.GetType());
+                sampleEvent = null;
+            }
+
             ScriptResolver scriptResolver = new ScriptResolver(Personality.Scripts);
             responder.Say(scriptResolver, script.Name, sampleEvent);
         }

@@ -413,7 +413,7 @@ namespace EDDI
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 100;
-            SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
+            SpeechService.Instance.ReloadConfiguration();
             SpeechService.Instance.Say(null, testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false, false, true);
         }
 
@@ -421,7 +421,7 @@ namespace EDDI
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 20;
-            SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
+            SpeechService.Instance.ReloadConfiguration();
             SpeechService.Instance.Say(null, testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false, false, true);
         }
 
