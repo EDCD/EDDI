@@ -217,7 +217,7 @@ namespace EliteDangerousDataProviderService
                 con.Open();
                 using (var cmd = new SQLiteCommand(CREATE_SQL, con))
                 {
-                    Logging.Info("Creating starsystem repository");
+                    Logging.Debug("Creating starsystem repository");
                     cmd.ExecuteNonQuery();
                 }
 
@@ -247,7 +247,7 @@ namespace EliteDangerousDataProviderService
                 }
                 con.Close();
             }
-            Logging.Info("Created starsystem repository");
+            Logging.Debug("Created starsystem repository");
         }
     }
 }

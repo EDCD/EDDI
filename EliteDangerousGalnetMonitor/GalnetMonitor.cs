@@ -106,11 +106,14 @@ namespace EliteDangerousGalnetMonitor
                 DateTime latestNewDate = latestDate;
                 foreach (FeedItem item in new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(SOURCE))
                 {
-                    News newsItem = new News(item.PublishDate.DateTime, item.Title, item.GetContent());
-                    newsItems.Add(newsItem);
-                    if (item.PublishDate > latestNewDate)
+                    if (item.PublishDate > latestDate)
                     {
-                        latestNewDate = item.PublishDate.DateTime;
+                        News newsItem = new News(item.PublishDate.DateTime, item.Title, item.GetContent());
+                        newsItems.Add(newsItem);
+                        if (item.PublishDate > latestNewDate)
+                        {
+                            latestNewDate = item.PublishDate.DateTime;
+                        }
                     }
                 }
 
