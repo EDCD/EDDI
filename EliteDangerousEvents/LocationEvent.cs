@@ -22,6 +22,7 @@ namespace EliteDangerousEvents
             VARIABLES.Add("y", "The Y co-ordinate of the system in which the commander resides");
             VARIABLES.Add("z", "The Z co-ordinate of the system in which the commander resides");
             VARIABLES.Add("body", "The nearest body to the commander");
+            VARIABLES.Add("bodytype", "The type of the nearest body to the commander");
             VARIABLES.Add("docked", "True if the commander is docked");
             VARIABLES.Add("allegiance", "The allegiance of the system in which the commander resides");
             VARIABLES.Add("faction", "The faction controlling the system in which the commander resides");
@@ -46,6 +47,9 @@ namespace EliteDangerousEvents
         [JsonProperty("body")]
         public string body { get; private set; }
 
+        [JsonProperty("bodytype")]
+        public string bodytype { get; private set; }
+
         [JsonProperty("docked")]
         public bool docked { get; private set; }
 
@@ -67,13 +71,14 @@ namespace EliteDangerousEvents
         [JsonProperty("security")]
         public string security { get; private set; }
 
-        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, string body, bool docked, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
+        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, string body, string bodytype, bool docked, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
             this.y = y;
             this.z = z;
             this.body = body;
+            this.bodytype = bodytype;
             this.docked = docked;
             this.allegiance = (allegiance == null ? Superpower.None.name : allegiance.name);
             this.faction = faction;

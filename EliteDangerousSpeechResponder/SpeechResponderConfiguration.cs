@@ -39,7 +39,7 @@ namespace EliteDangerousSpeechResponder
             if (configuration.Personality == null)
             {
                 configuration.Personality = "EDDI";
-                configuration.ToFile(filename);
+                configuration.ToFile();
             }
             configuration.dataPath = filename;
 

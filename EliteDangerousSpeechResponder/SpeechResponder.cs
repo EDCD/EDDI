@@ -28,19 +28,22 @@ namespace EliteDangerousSpeechResponder
 
         public string ResponderDescription()
         {
-            return "Plugin to respond to events with scripts.  Scripts can be individually enabled and customised";
+            return "Respond to events with pre-scripted responses using the information available.  Scripts can be individually enabled and customised";
         }
 
         public SpeechResponder()
         {
             SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
-            Personality personality = Personality.FromName(configuration.Personality);
-            if (personality == null)
+            Personality personality = null;
+            if (configuration != null && configuration.Personality != null)
             {
-                Logging.Warn("Failed to find named personality; falling back to default");
+                personality = Personality.FromName(configuration.Personality);
+            }
+            if (personality == null)
+            { 
                 personality = Personality.Default();
-                configuration.Personality = personality.Name;
-                configuration.ToFile();
+                //configuration.Personality = personality.Name;
+                //configuration.ToFile();
             }
             scriptResolver = new ScriptResolver(personality.Scripts);
             Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
@@ -53,6 +56,7 @@ namespace EliteDangerousSpeechResponder
 
         public void Stop()
         {
+            SpeechService.Instance.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, "Goodbye.", false, true, false);
         }
 
         public void Reload()
@@ -84,7 +88,7 @@ namespace EliteDangerousSpeechResponder
             string result = resolver.resolve(scriptName, dict);
             if (result != null)
             {
-                SpeechService.Instance.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, result, false, false);
+                SpeechService.Instance.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, result, false, false, resolver.isInterruptable(scriptName));
             }
         }
 

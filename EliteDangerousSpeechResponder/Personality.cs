@@ -28,6 +28,8 @@ namespace EliteDangerousSpeechResponder
         [JsonIgnore]
         private string dataPath;
 
+        private static readonly string DEFAULT_PATH = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)).FullName + @"\eddi.json";
+
         public Personality(string name, string description, Dictionary<string, Script> scripts)
         {
             Name = name;
@@ -68,7 +70,7 @@ namespace EliteDangerousSpeechResponder
 
         public static Personality FromName(string name)
         {
-            return FromFile(Constants.DATA_DIR + @"\personalities\" + name + ".json");
+            return FromFile(Constants.DATA_DIR + @"\personalities\" + name.ToLowerInvariant() + ".json");
         }
 
         /// <summary>
@@ -76,8 +78,7 @@ namespace EliteDangerousSpeechResponder
         /// </summary>
         public static Personality Default()
         {
-            DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-            return FromFile(dir.FullName + "\\eddi.json");
+            return FromFile(DEFAULT_PATH);
         }
 
         /// <summary>
@@ -125,8 +126,11 @@ namespace EliteDangerousSpeechResponder
                 filename = Constants.DATA_DIR + @"\personalities\eddi.json";
             }
 
-            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(filename, json);
+            if (filename != DEFAULT_PATH)
+            {
+                string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+                File.WriteAllText(filename, json);
+            }
         }
 
         /// <summary>
@@ -173,7 +177,7 @@ namespace EliteDangerousSpeechResponder
                 else if (script.Description != defaultEvent.Value)
                 {
                     // The description has been updated
-                    script = new Script(defaultEvent.Key, defaultEvent.Value, true, script.Value);
+                    script = new Script(defaultEvent.Key, defaultEvent.Value, true, script.Value, script.Interruptable);
                 }
                 fixedScripts.Add(defaultEvent.Key, script);
             }

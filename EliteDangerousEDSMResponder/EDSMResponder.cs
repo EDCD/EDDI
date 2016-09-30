@@ -27,7 +27,7 @@ namespace EliteDangerousEDSMResponder
 
         public string ResponderDescription()
         {
-            return "Plugin to respond to system jumps by sending the details to EDSM";
+            return "Send details of your travels to EDSM.  EDSM is a third-party tool that provides information on the locations of star systems and keeps a log of the star systems you have visited.  It uses the data provided to crowd-source a map of the galaxy";
         }
 
         public EDSMResponder()

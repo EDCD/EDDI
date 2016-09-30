@@ -36,6 +36,13 @@ namespace EliteDangerousSpeechResponder
             return resolve(name, buildStore(vars));
         }
 
+        public bool isInterruptable(string name)
+        {
+            Script script;
+            scripts.TryGetValue(name, out script);
+            return (script == null ? true : script.Interruptable);
+        }
+
         public string resolve(string name, BuiltinStore store)
         {
             Logging.Debug("Resolving script " + name);

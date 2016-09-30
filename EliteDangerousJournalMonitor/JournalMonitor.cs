@@ -142,7 +142,9 @@ namespace EliteDangerousJournalMonitor
                             string system = (string)val;
                             data.TryGetValue("Body", out val);
                             string body = (string)val;
-                            journalEvent = new EnteredNormalSpaceEvent(timestamp, system, body);
+                            data.TryGetValue("BodyType", out val);
+                            string bodyType = (string)val;
+                            journalEvent = new EnteredNormalSpaceEvent(timestamp, system, body, bodyType);
                         }
                         handled = true;
                         break;
@@ -193,6 +195,8 @@ namespace EliteDangerousJournalMonitor
 
                             data.TryGetValue("Body", out val);
                             string body = (string)val;
+                            data.TryGetValue("BodyType", out val);
+                            string bodyType = (string)val;
                             data.TryGetValue("Docked", out val);
                             bool docked = (bool)val;
                             data.TryGetValue("Allegiance", out val);
@@ -212,7 +216,7 @@ namespace EliteDangerousJournalMonitor
                             SecurityLevel security = SecurityLevel.FromEDName((string)val);
 
 
-                            journalEvent = new LocationEvent(timestamp, systemName, x, y, z, body, docked, allegiance, faction, factionState, economy, government, security);
+                            journalEvent = new LocationEvent(timestamp, systemName, x, y, z, body, bodyType, docked, allegiance, faction, factionState, economy, government, security);
                         }
                         handled = true;
                         break;
@@ -397,13 +401,12 @@ namespace EliteDangerousJournalMonitor
                                 data.TryGetValue("AbsoluteMagnitude", out val);
                                 decimal absoluteMagnitude = (decimal)(double)val;
 
-                                //data.TryGetValue("Age", out val);
-                                //long age = (long)val;
-                                long age = 800000000;
+                                data.TryGetValue("Age", out val);
+                                // TODO remove the conditional here and elsewhere when the new version of the journal arrives
+                                long age = (val == null ? 8000000 : (long)val);
 
-                                //data.TryGetValue("Temperature", out val);
-                                //decimal temperature = (decimal)(double)val;
-                                decimal temperature = 3000;
+                                data.TryGetValue("Temperature", out val);
+                                decimal temperature = (val == null ? 3000 : (decimal)(double)val);
 
                                 journalEvent = new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, age, temperature, distancefromarrival, orbitalperiod, rotationperiod, rings);
                                 handled = true;
@@ -762,7 +765,9 @@ namespace EliteDangerousJournalMonitor
                             object val;
                             data.TryGetValue("Name", out val);
                             Material material = Material.FromEDName((string)val);
-                            journalEvent = new MaterialCollectedEvent(timestamp, material, 1);
+                            data.TryGetValue("Count", out val);
+                            int amount = (val == null ? 1 : (int)(long)val);
+                            journalEvent = new MaterialCollectedEvent(timestamp, material, amount);
                             handled = true;
                         }
                         break;
@@ -1196,7 +1201,7 @@ namespace EliteDangerousJournalMonitor
 
         public string MonitorDescription()
         {
-            return "Plugin to monitor the journal and post relevant events";
+            return "Monitor Elite: Dangerous' journal.log for many common events.  This should not be disabled unless you are sure you know what you are doing, as it will result in many functions inside EDDI no longer working";
         }
 
         public void Start()

@@ -106,60 +106,66 @@ namespace EDDI
 
             foreach (EDDIMonitor monitor in Eddi.Instance.monitors)
             {
+                Logging.Debug("Adding configuration tab for " + monitor.MonitorName());
+
+                PluginSkeleton skeleton = new PluginSkeleton(monitor.MonitorName());
+                skeleton.plugindescription.Text = monitor.MonitorDescription();
+
+                bool enabled;
+                if (eddiConfiguration.Plugins.TryGetValue(monitor.MonitorName(), out enabled))
+                {
+                    skeleton.pluginenabled.IsChecked = enabled;
+                }
+                else
+                {
+                    // Default to enabled
+                    skeleton.pluginenabled.IsChecked = true;
+                    eddiConfiguration.ToFile();
+                }
+
+                // Add monitor-specific configuration items
                 UserControl monitorConfiguration = monitor.ConfigurationTabItem();
                 if (monitorConfiguration != null)
                 {
-                    Logging.Debug("Adding configuration tab for " + monitor.MonitorName());
-
-                    PluginSkeleton skeleton = new PluginSkeleton(monitor.MonitorName());
                     monitorConfiguration.Margin = new Thickness(10);
                     skeleton.panel.Children.Add(monitorConfiguration);
-
-                    bool enabled;
-                    if (eddiConfiguration.Plugins.TryGetValue(monitor.MonitorName(), out enabled))
-                    {
-                        skeleton.pluginenabled.IsChecked = enabled;
-                    }
-                    else
-                    {
-                        // Default to enabled
-                        skeleton.pluginenabled.IsChecked = true;
-                        eddiConfiguration.ToFile();
-                    }
-
-                    TabItem item = new TabItem { Header = monitor.MonitorName() };
-                    item.Content = skeleton;
-                    tabControl.Items.Add(item);
                 }
+
+                TabItem item = new TabItem { Header = monitor.MonitorName() };
+                item.Content = skeleton;
+                tabControl.Items.Add(item);
             }
 
             foreach (EDDIResponder responder in Eddi.Instance.responders)
             {
-                UserControl responderConfiguration = responder.ConfigurationTabItem();
-                if (responderConfiguration != null)
+                Logging.Debug("Adding configuration tab for " + responder.ResponderName());
+
+                PluginSkeleton skeleton = new PluginSkeleton(responder.ResponderName());
+                skeleton.plugindescription.Text = responder.ResponderDescription();
+
+                bool enabled;
+                if (eddiConfiguration.Plugins.TryGetValue(responder.ResponderName(), out enabled))
                 {
-                    Logging.Debug("Adding configuration tab for " + responder.ResponderName());
-
-                    PluginSkeleton skeleton = new PluginSkeleton(responder.ResponderName());
-                    responderConfiguration.Margin = new Thickness(10);
-                    skeleton.panel.Children.Add(responderConfiguration);
-
-                    bool enabled;
-                    if (eddiConfiguration.Plugins.TryGetValue(responder.ResponderName(), out enabled))
-                    {
-                        skeleton.pluginenabled.IsChecked = enabled;
-                    }
-                    else
-                    {
-                        // Default to enabled
-                        skeleton.pluginenabled.IsChecked = true;
-                        eddiConfiguration.ToFile();
-                    }
-
-                    TabItem item = new TabItem { Header = responder.ResponderName() };
-                    item.Content = skeleton;
-                    tabControl.Items.Add(item);
+                    skeleton.pluginenabled.IsChecked = enabled;
                 }
+                else
+                {
+                    // Default to enabled
+                    skeleton.pluginenabled.IsChecked = true;
+                    eddiConfiguration.ToFile();
+                }
+
+                // Add responder-specific configuration items
+                UserControl monitorConfiguration = responder.ConfigurationTabItem();
+                if (monitorConfiguration != null)
+                {
+                    monitorConfiguration.Margin = new Thickness(10);
+                    skeleton.panel.Children.Add(monitorConfiguration);
+                }
+
+                TabItem item = new TabItem { Header = responder.ResponderName() };
+                item.Content = skeleton;
+                tabControl.Items.Add(item);
             }
 
             Eddi.Instance.Start();
@@ -360,11 +366,11 @@ namespace EDDI
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             if (string.IsNullOrEmpty(ship.phoneticname))
             {
-                SpeechService.Instance.Say(null, ship, ship.name + " stands ready.", false, false);
+                SpeechService.Instance.Say(null, ship, ship.name + " stands ready.", false, false, true);
             }
             else
             {
-                SpeechService.Instance.Say(null, ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>" + " stands ready.", false, false);
+                SpeechService.Instance.Say(null, ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>" + " stands ready.", false, false, true);
             }
         }
 
@@ -408,7 +414,7 @@ namespace EDDI
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 100;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
-            SpeechService.Instance.Say(null, testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false, false);
+            SpeechService.Instance.Say(null, testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false, false, true);
         }
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
@@ -416,7 +422,7 @@ namespace EDDI
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 20;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
-            SpeechService.Instance.Say(null, testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false, false);
+            SpeechService.Instance.Say(null, testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false, false, true);
         }
 
         /// <summary>
@@ -433,6 +439,13 @@ namespace EDDI
             speechConfiguration.ToFile();
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            Eddi.Instance.Stop();
+            Application.Current.Shutdown();
+        }
     }
 
     public class ValidIPARule : ValidationRule

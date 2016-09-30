@@ -52,6 +52,7 @@
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="JumpingEvent.cs" />
     <Compile Include="NetLogConfiguration.cs" />
     <Compile Include="Finder.cs" />
     <Compile Include="LogMonitor.cs" />

@@ -14,6 +14,9 @@ using Utilities;
 
 namespace EliteDangerousGalnetMonitor
 {
+    /// <summary>
+    /// A sample EDDI monitor to watch The Elite: Dangerous RSS feed and generate an event for new items
+    /// </summary>
     public class GalnetMonitor : EDDIMonitor
     {
         private readonly string SOURCE = "https://community.elitedangerous.com/galnet-rss";
@@ -21,21 +24,33 @@ namespace EliteDangerousGalnetMonitor
         private static readonly object monitorLock = new object();
         private Thread monitorThread;
 
+        /// <summary>
+        /// The name of the monitor; shows up in EDDI's configuration window
+        /// </summary>
         public string MonitorName()
         {
             return "Galnet Monitor";
         }
 
+        /// <summary>
+        /// The version of the monitor; shows up in EDDI's logs
+        /// </summary>
         public string MonitorVersion()
         {
             return "1.0.0";
         }
 
+        /// <summary>
+        /// The description of the monitor; shows up in EDDI's configuration window
+        /// </summary>
         public string MonitorDescription()
         {
-            return "Monitor Galnet for new news items and generate suitable events when new items are posted";
+            return @"Monitor Galnet for new news items and generate a ""Galnet news published"" event when new items are posted";
         }
 
+        /// <summary>
+        /// This method is run when the monitor is requested to start
+        /// </summary>
         public void Start()
         {
             lock (monitorLock)
@@ -50,8 +65,11 @@ namespace EliteDangerousGalnetMonitor
         }
 
         public void Stop()
+        /// <summary>
+        /// This method is run when the monitor is requested to stop
+        /// </summary>
         {
-            lock(monitorLock)
+            lock (monitorLock)
             {
                 if (monitorThread != null)
                 {
@@ -61,6 +79,10 @@ namespace EliteDangerousGalnetMonitor
             }
         }
 
+        /// <summary>
+        /// This method returns a user control with configuration controls.
+        /// It is attached the the monitor's configuration tab in EDDI.
+        /// </summary>
         public System.Windows.Controls.UserControl ConfigurationTabItem()
         {
             return null;
@@ -100,7 +122,7 @@ namespace EliteDangerousGalnetMonitor
                 {
                     latestDate = latestNewDate;
                     Logging.Debug("Updated latest date to " + latestDate.ToString());
-                    //File.WriteAllText(Constants.DATA_DIR + @"\galnet", latestDate.Ticks.ToString());
+                    File.WriteAllText(Constants.DATA_DIR + @"\galnet", latestDate.Ticks.ToString());
                 }
                 Thread.Sleep(120000);
             }

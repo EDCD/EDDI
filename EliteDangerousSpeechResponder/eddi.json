@@ -5,6 +5,7 @@
     "Bond awarded": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "That's another {event.reward} credits in the bank.",
       "name": "Bond awarded",
       "description": "Triggered when you are awarded a combat bond"
@@ -12,6 +13,7 @@
     "Exploration data sold": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Exploration data for {len(event.systems)} systems sold for {Humanise(event.reward)} credits\r\n\r\n{if len(event.firsts) > 0:\r\n    , with an additional bonus of {Humanise(event.bonus)} credits for\r\n    {if len(event.firsts) = 1:\r\n        one first discovery\r\n    |else:\r\n        {len(event.firsts)} first discoveries\r\n    }\r\n}\r\n.",
       "name": "Exploration data sold",
       "description": "Triggered when you sell exploration data"
@@ -19,6 +21,7 @@
     "Exploration data purchased": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{OneOf(\"Purchased {OneOf('system', 'exploration')} data for {P(event.system)}\",\r\n            \"{OneOf('system', 'exploration')} data for {P(event.system)} now available\",\r\n            \"Received {OneOf('system', 'exploration')} data for {P(event.system)} from station services\",\r\n            \"Receipt of {P(event.system)} {OneOf('system', 'exploration')} data confirmed\")}.",
       "name": "Exploration data purchased",
       "description": "Triggered when you purchase exploration data"
@@ -26,6 +29,7 @@
     "Material discovered": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Material discovered",
       "description": "Triggered when you discover a material"
@@ -33,6 +37,7 @@
     "Material discarded": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Material discarded",
       "description": "Triggered when you discard a material"
@@ -40,6 +45,7 @@
     "Material collected": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Material collected",
       "description": "Triggered when you collect a material"
@@ -47,6 +53,7 @@
     "Killed": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Killed",
       "description": "Triggered when you kill another player"
@@ -54,6 +61,7 @@
     "Ship Interdiction": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Ship Interdiction",
       "description": "Triggered when you interdict another ship"
@@ -61,6 +69,7 @@
     "Ship interdicted": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Ship interdicted",
       "description": "Triggered when your ship is interdicted by another ship"
@@ -68,6 +77,7 @@
     "Commander ratings": {
       "enabled": false,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Commander ratings",
       "description": "Triggered when your ratings are reported"
@@ -75,6 +85,7 @@
     "Commander progress": {
       "enabled": false,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Commander progress",
       "description": "Triggered when your progress is reported"
@@ -82,6 +93,7 @@
     "Commander started": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Welcome, Commander.",
       "name": "Commander started",
       "description": "Triggered when you start a new game"
@@ -89,6 +101,7 @@
     "Controlling ship": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {Occasionally(2, \"to fighter\")} {OneOf(\"terminated\", \"disengaged\")}.",
       "name": "Controlling ship",
       "description": "Triggered when you switch control from your fighter to your ship"
@@ -96,6 +109,7 @@
     "Crew assigned": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{if event.role = \"Active\":\r\n    {event.name} is now on active duty.\r\n|else:\r\n    {event.name} standing down from active duty.\r\n}",
       "name": "Crew assigned",
       "description": "Triggered when you assign crew"
@@ -103,6 +117,7 @@
     "Crew fired": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{event.name} is no longer a member of the crew.",
       "name": "Crew fired",
       "description": "Triggered when you fire crew"
@@ -110,6 +125,7 @@
     "Crew hired": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{event.name} has joined the crew.",
       "name": "Crew hired",
       "description": "Triggered when you hire crew"
@@ -117,6 +133,7 @@
     "Died": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Died",
       "description": "Triggered when you have died"
@@ -124,6 +141,7 @@
     "Cleared save": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Goodbye {F(\"Honorific\")}.  It was a pleasure to serve you.",
       "name": "Cleared save",
       "description": "Triggered when you clear your save"
@@ -131,6 +149,7 @@
     "Ship purchased": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Ship purchased",
       "description": "Triggered when you purchase a ship"
@@ -138,6 +157,7 @@
     "Trade data purchased": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{OneOf(\"Purchased trade data for {P(event.system)}\",\r\n            \"Trade data for {P(event.system)} now available\",\r\n            \"Received trade data for {P(event.system)} from station services\",\r\n            \"Receipt of {P(event.system)} trade data confirmed\")}.",
       "name": "Trade data purchased",
       "description": "Triggered when you purchase trade data"
@@ -145,6 +165,7 @@
     "Ship transfer initiated": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Ship transfer initiated",
       "description": "Triggered when you initiate a ship transfer"
@@ -152,6 +173,7 @@
     "Ship swapped": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Ship swapped",
       "description": "Triggered when you swap a ship"
@@ -159,6 +181,7 @@
     "Ship sold": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Ship sold",
       "description": "Triggered when you sell a ship"
@@ -166,6 +189,7 @@
     "Hull damaged": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{if event.health < 40:\r\n    Danger:\r\n|elif event.health < 60:\r\n    Warning:\r\n|elif event.health < 80:\r\n    Caution:\r\n}\r\n{OneOf(\"Hull\", \"Hull integrity\", \"Structural integrity\")} is at {event.health}%.\r\n",
       "name": "Hull damaged",
       "description": "Triggered when your hull is damaged to a certain extent"
@@ -173,6 +197,7 @@
     "Entered signal source": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{if event.threat < 2:\r\n  Entering signal source.\r\n|elif event.threat = 2:\r\n    Caution: entering medium-threat signal source.\r\n|elif event.threat = 3:\r\n    Warning: entering high-threat signal source.\r\n|else:\r\n    Danger: entering very high-threat signal source.\r\n}\r\n",
       "name": "Entered signal source",
       "description": "Triggered when your ship enters a signal source"
@@ -180,6 +205,7 @@
     "Message sent": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{OneOf(\"Message away\", \"Message sent\", \"Sent\")}.",
       "name": "Message sent",
       "description": "Triggered when you send a message"
@@ -187,6 +213,7 @@
     "Message received": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Message received from {event.from}.  Message reads: {event.message}.",
       "name": "Message received",
       "description": "Triggered when you receive a message"
@@ -194,6 +221,7 @@
     "Reboot repair": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Reboot repair",
       "description": "Triggered when you run reboot/repair on your ship"
@@ -201,6 +229,7 @@
     "Controlling fighter": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {Occasionally(2, \"to fighter\")} {OneOf(\"initiated\", \"established\", \"engaged\")}.",
       "name": "Controlling fighter",
       "description": "Triggered when you switch control from your ship to your fighter"
@@ -208,6 +237,7 @@
     "Self destruct": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Self-destruct sequence initiated.  Closing heat vents.",
       "name": "Self destruct",
       "description": "Triggered when you start the self destruct sequence"
@@ -215,6 +245,7 @@
     "SRV launched": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{OneOf(\"Buggy\", \"SRV\")} {OneOf(\"launched\", \"away\")}.",
       "name": "SRV launched",
       "description": "Triggered when you launch an SRV from your ship"
@@ -222,6 +253,7 @@
     "SRV docked": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{OneOf(\"Buggy\", \"SRV\")} docked.",
       "name": "SRV docked",
       "description": "Triggered when you dock an SRV with your ship"
@@ -229,6 +261,7 @@
     "Fighter docked": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Fighter {OneOf(\"docked\", \"redocked\")} {Occasionally(2, \"with ship\")}.",
       "name": "Fighter docked",
       "description": "Triggered when you dock a fighter with your ship"
@@ -236,6 +269,7 @@
     "Fighter launched": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Fighter launched {Occasionally(2, \"from ship\")}.",
       "name": "Fighter launched",
       "description": "Triggered when you launch a fighter from your ship"
@@ -243,6 +277,7 @@
     "Commodity sold": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "You have just sold {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total value is {event.amount * event.price} credits.",
       "name": "Commodity sold",
       "description": "Triggered when you sell a commodity to the markets"
@@ -250,6 +285,7 @@
     "Bounty incurred": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{P(event.faction)} just put a bounty of {event.bounty} credits on your head.",
       "name": "Bounty incurred",
       "description": "Triggered when you incur a bounty"
@@ -257,6 +293,7 @@
     "Cargo ejected": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{event.cargo} ejected.",
       "name": "Cargo ejected",
       "description": "Triggered when you eject cargo from your ship or SRV"
@@ -264,6 +301,7 @@
     "Commodity purchased": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Commodity purchased",
       "description": "Triggered when you buy a commodity from the markets"
@@ -271,6 +309,7 @@
     "Docking timed out": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "No response to our docking request.",
       "name": "Docking timed out",
       "description": "Triggered when your docking request times out"
@@ -278,6 +317,7 @@
     "Docking denied": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "We have been denied docking.",
       "name": "Docking denied",
       "description": "Triggered when your ship is denied docking at a station or outpost"
@@ -285,6 +325,7 @@
     "Docking granted": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Docking granted",
       "description": "Triggered when your ship is granted docking permission at a station or outpost"
@@ -292,6 +333,7 @@
     "Docking cancelled": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Docking request cancelled.",
       "name": "Docking cancelled",
       "description": "Triggered when your ship cancels a docking request at a station or outpost"
@@ -299,6 +341,7 @@
     "Docking requested": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Docking requested",
       "description": "Triggered when your ship requests docking at a station or outpost"
@@ -306,6 +349,7 @@
     "Heat damage": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{Occasionally(2, \"Danger:\")}\r\nHeat damage.",
       "name": "Heat damage",
       "description": "Triggered when your ship is taking damage from excessive heat"
@@ -313,6 +357,7 @@
     "Heat warning": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{Occasionally(2, \"Warning:\")}\r\nHeat levels beyond operating tolerance.",
       "name": "Heat warning",
       "description": "Triggered when your ship's heat exceeds 100%"
@@ -320,6 +365,7 @@
     "Location": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "You are\r\n{if event.docked:\r\n    docked at {P(event.body)}\r\n|else if event.body:\r\n    near {P(event.body)}\r\n}\r\nin the {P(event.system)} system.",
       "name": "Location",
       "description": "Triggered when the commander's location is reported"
@@ -327,6 +373,7 @@
     "Shields down": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Shields down",
       "description": "Triggered when your ship's shields go offline"
@@ -334,6 +381,7 @@
     "Shields up": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Shields up",
       "description": "Triggered when your ship's shields come online"
@@ -341,6 +389,7 @@
     "Body scanned": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Scan of {P(event.name)} complete.\r\n\r\nThis is a\r\n{if event.gravity < 0.5:\r\n    low-gravity\r\n|elif event.gravity <2:\r\n    medium-gravity\r\n|elif event.gravity <4:\r\n    high-gravity\r\n|else:\r\n    extremely high-gravity\r\n}\r\n\r\n{if event.tidallylocked:\r\n    tidally-locked\r\n}\r\n\r\n{if event.terraformstate = \"Terraformable\":\r\n    terraformable\r\n|elif event.terraformstate = \"Terraformed\":\r\n    terraformed\r\n}\r\n\r\n{event.bodyclass}\r\n\r\n{if event.terraformstate = \"Terraforming\":\r\n  in the process of being terraformed\r\n}\r\n\r\nthat is\r\n\r\n{if event.landable:\r\n    suitable\r\n|else:\r\n    not suitable\r\n}\r\nfor landing.\r\n\r\n{_Atmosphere }\r\n\r\n{_ Volcanism}\r\n\r\n{if event.landable :\r\n    {set goodmaterials to []}\r\n    {set greatmaterials to []}\r\n    {for material in event.materials:\r\n        {if material.percentage > material.definition.greatpctbody:\r\n            {set greatmaterials to cat(greatmaterials, [material])}\r\n        |elif material.percentage > material.definition.goodpctbody:\r\n            {set goodmaterials to cat(goodmaterials, [material])}\r\n        }\r\n    }\r\n\r\n    {if len(greatmaterials) > 0:\r\n        This body contains very high levels of\r\n        {if len(greatmaterials) = 1:\r\n            {greatmaterials[0].name}\r\n        |elif len(greatmaterials) = 2:\r\n            {greatmaterials[0].name} and {greatmaterials[1].name}\r\n        |else:\r\n            {set cur to 0}\r\n            {while cur < len(greatmaterials):\r\n                {if cur = 0:\r\n                    {greatmaterials[cur].name}\r\n                |elif cur < len(greatmaterials) - 1:\r\n                    , {greatmaterials[cur].name}\r\n                |else:\r\n                    ,and {greatmaterials[cur].name}\r\n                }\r\n                {set cur to cur + 1}\r\n            }\r\n        }\r\n    }\r\n    {if len(goodmaterials) > 0:\r\n        {if len(greatmaterials) > 0:\r\n            and high levels of\r\n        |else:\r\n            This body contains high levels of\r\n        }\r\n        {if len(goodmaterials) = 1:\r\n            {goodmaterials[0].name}\r\n        |elif len(goodmaterials) = 2:\r\n            {goodmaterials[0].name} and {goodmaterials[1].name}\r\n        |else:\r\n            {set cur to 0}\r\n            {while cur < len(goodmaterials):\r\n                {if cur = 0:\r\n                    {goodmaterials[cur].name}\r\n                |elif cur < len(goodmaterials) - 1:\r\n                    , {goodmaterials[cur].name}\r\n                |else:\r\n                    ,and {goodmaterials[cur].name}\r\n                }\r\n                {set cur to cur + 1}\r\n            }\r\n        }\r\n    }.\r\n}",
       "name": "Body scanned",
       "description": "Triggered when you complete a scan of a planetary body"
@@ -348,6 +397,7 @@
     "Star scanned": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Scan of {event.stellarclass}-class star {P(event.name)} complete.\r\n\r\nThis is\r\n{if event.stellarclass = \"O\":\r\n    an incredibly rare main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"B\":\r\n    a very rare main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"A\":\r\n    a rare main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"F\":\r\n    an uncommon main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"G\":\r\n    a common main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"K\":\r\n    a common main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"M\":\r\n    a very common main sequence star\r\n    {set mainsequence to true}\r\n|elif event.stellarclass = \"L\":\r\n    a brown dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"T\":\r\n    a brown dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"Y\":\r\n    a brown dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"TTS\":\r\n    a T tauri star that is in the process of gravitational contraction\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"AeBe\":\r\n    a very young proto-star yet to enter main sequence {Occasionally(4, \"but on the way to becoming an A or B class star\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"W\":\r\n    an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"WN\":\r\n    an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"WNC\":\r\n    an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"WC\":\r\n    an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"WO\":\r\n    an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"CS\":\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"C\":\r\n    a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(4, \"with an atmosphere dominated by carbon\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"CN\":\r\n    a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(4, \"with an atmosphere dominated by carbon\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"CJ\":\r\n    a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(2, \"with high levels of carbon 13 in its atmosphere\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"CH\":\r\n    a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(4, \"with an atmosphere dominated by carbon\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"CHd\":\r\n    a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(4, \"with an atmosphere dominated by carbon\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"MS\":\r\n    a late sequence star {Occasionally(4, \"that was once an M class star and is on the way to becoming a carbon star\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"S\":\r\n    a late sequence star {Occasionally(4, \"that was once an M class star and is becoming a carbon star\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"D\":\r\n    a white dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DA\":\r\n    a white dwarf {Occasionally(4, \"with a hydrogen-rich atmosphere\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DAB\":\r\n    a white dwarf {Occasionally(4, \"with an atmosphere rich in hydrogen and helium\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DAO\":\r\n    a white dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DAZ\":\r\n    a white dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DAV\":\r\n    a white dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DB\":\r\n    a white dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DBZ\":\r\n    a white dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DBV\":\r\n    a white dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DO\":\r\n    a white dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DOV\":\r\n    a white dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DQ\":\r\n    a white dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DC\":\r\n    a white dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DCV\":\r\n    a white dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"DX\":\r\n    a white dwarf\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"N\":\r\n    a neuutron star {Occasionally(4, \"that has a dangerously high-density core\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"H\":\r\n    a black hole\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"X\":\r\n    an exotic stellar entity\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"SuperMassiveBlackHole\":\r\n     a supermassive black hole\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"A_BlueWhiteSuperGiant\":\r\n    a blue-white supergiant {Occasionally(4, \"that is expanding towards being a red supergiant\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"F_WhiteSuperGiant\":\r\n    a yellow-white supergiant {Occasionally(4, \"that is expanding towards being a red supergiant\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"M_RedSuperGiant\":\r\n    a red supergiant {Occasionally(4, \"in its helium burning phase\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"M_RedGiant\":\r\n    a red giant {Occasionally(4, \"that is expanding towards being a red supergiant\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"K_OrangeGiant\":\r\n    an orange giant {Occasionally(4, \"that is expanding as it heads towards the end of its life\")}\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"RoguePlanet\":\r\n    a rogue planet\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"Nebula\":\r\n    a nebula\r\n    {set mainsequence to false}\r\n|elif event.stellarclass = \"StellarRemnantNebula\":\r\n    a nebula remnant\r\n    {set mainsequence to false}\r\n}\r\n\r\n{OneOf(\"that has been around for {Humanise(event.age)} years\",\r\n             \"that is {Humanise(event.age)} years old\",\r\n             \"of {Humanise(event.age)} years\",\r\n)}\r\n{if event.age < 1000000:\r\n    making it one of the youngest stars in the galaxy\r\n|elif event.age >14000000000:\r\n    making it one of the oldest stars in the galaxy\r\n}.\r\n\r\n{if mainsequence = true:\r\n    {Occasionally(2,\"As you can see, it emits a {event.chromaticity} light.\")}\r\n\r\n    {set notables to []}\r\n\r\n    {if event.massprobability < 0.01:\r\n        {set notables to cat(notables, [cat(\"an incredibly low solar mass of \", Humanise(event.solarmass))])}\r\n    |elif event.massprobability <0.1:\r\n        {set notables to cat(notables, [cat(\"an extremely low solar mass of \", Humanise(event.solarmass))])}\r\n    |elif event.massprobability <1:\r\n        {set notables to cat(notables, [\"an unusually low mass\"])}\r\n    |elif event.massprobability <10:\r\n        {set notables to cat(notables, [\"lower than average mass\"])}\r\n    |elif event.massprobability > 99.99:\r\n        {set notables to cat(notables, [cat(\"an incredibly high solar mass of \", Humanise(event.solarmass))])}\r\n    |elif event.massprobability > 99.9:\r\n        {set notables to cat(notables, [cat(\"an extremely high solar mass of \", Humanise(event.solarmass))])}\r\n    |elif event.massprobability > 99:\r\n        {set notables to cat(notables, [\"an unusually high mass\"])}\r\n    |elif event.massprobability > 90:\r\n        {set notables to cat(notables, [\"higher than average mass\"])}\r\n    }\r\n\r\n    {if event.radiusprobability < 0.01:\r\n        {set notables to cat(notables, [cat(\"an incredibly low solar radius of \", Humanise(event.solarradius))])}\r\n    |elif event.radiusprobability <0.1:\r\n        {set notables to cat(notables, [cat(\"an extremely low solar radius of \", Humanise(event.solarradius))])}\r\n    |elif event.radiusprobability <1:\r\n        {set notables to cat(notables, [\"an unusually low radius\"])}\r\n    |elif event.radiusprobability <10:\r\n        {set notables to cat(notables, [\"lower than average radius\"])}\r\n    |elif event.radiusprobability > 99.99:\r\n        {set notables to cat(notables, [cat(\"an extremely high solar radius of \", Humanise(event.solarradius))])}\r\n    |elif event.radiusprobability > 99.9:\r\n        {set notables to cat(notables, [cat(\"an incredibly high solar radius of \", Humanise(event.solarradius))])}\r\n    |elif event.radiusprobability > 99:\r\n        {set notables to cat(notables, [\"an unusually high radius\"])}\r\n    |elif event.radiusprobability > 90:\r\n        {set notables to cat(notables, [\"higer than average radius\"])}\r\n    }\r\n\r\n    {_ Use luminosity probability but report temperature}\r\n    {if event.luminosityprobability < 0.01:\r\n        {set notables to cat(notables, [cat(\"an incredibly low temperature of \", Humanise(event.temperature), \" kelvin\")])}\r\n    |elif event.luminosityprobability <0.1:\r\n        {set notables to cat(notables, [cat(\"an extremely low temperature of \", Humanise(event.temperature), \" kelvin\")])}\r\n    |elif event.luminosityprobability <1:\r\n        {set notables to cat(notables, [\"an unusually low temperature\"])}\r\n    |elif event.luminosityprobability <10:\r\n        {set notables to cat(notables, [\"lower than average temperature\"])}\r\n    |elif event.luminosityprobability > 99.99:\r\n        {set notables to cat(notables, [cat(\"an extremely high temperature of \", Humanise(event.temperature), \" kelvin\")])}\r\n    |elif event.luminosityprobability > 99.9:\r\n        {set notables to cat(notables, [cat(\"an incredibly high temperature of \", Humanise(event.temperature), \" kelvin\")])}\r\n    |elif event.luminosityprobability > 99:\r\n        {set notables to cat(notables, [\"an unusually high temperature\"])}\r\n    |elif event.luminosityprobability > 90:\r\n        {set notables to cat(notables, [\"higer than average temperature\"])}\r\n    }\r\n\r\n    {if len(notables) = 0:\r\n        {OneOf(\"\", \"This is a typical example of this class of star.\", \"There is nothing particularly notable about this star.\", \"It is an average example for such a star.\")}\r\n    |elif len(notables) = 1:\r\n        Compared to other stars in its class, this star is notable for having {notables[0]}.\r\n    |elif len(notables) = 2:\r\n        Compared to other stars in its class, this star is interesting, with {notables[0]} and {notables[1]}.\r\n    |elif len(notables) = 3:\r\n        Compared to other stars in its class, this star is exceptional, with {notables[0]}, {notables[1]} and {notables[2]}.\r\n    }\r\n|else:\r\n    {_ Non-main sequence stars}\r\n\r\n    {if event.stellarclass = \"H\":\r\n        \r\n    |elif event.stellarclass = \"H\":\r\n    |else:\r\n\r\n    }\r\n}\r\n",
       "name": "Star scanned",
       "description": "Triggered when you complete a scan of a stellar body"
@@ -355,6 +405,7 @@
     "Cockpit breached": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Is it me, or is it cold in here?",
       "name": "Cockpit breached",
       "description": "Triggered when your ship's cockpit is broken"
@@ -362,6 +413,7 @@
     "Cargo collected": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{event.cargo} now on board.",
       "name": "Cargo collected",
       "description": "Triggered when you pick up cargo in your ship or SRV"
@@ -369,6 +421,7 @@
     "Exploration promotion": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "You have been recognised for your exploration skills, {F(\"Honorific\")}.",
       "name": "Exploration promotion",
       "description": "Triggered when your exploration rank increases"
@@ -376,6 +429,7 @@
     "Screenshot": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": null,
       "name": "Screenshot",
       "description": "Triggered when you take a screenshot"
@@ -383,6 +437,7 @@
     "Trade promotion": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "You have been recognised for your trading ability, {F(\"Honorific\")}.",
       "name": "Trade promotion",
       "description": "Triggered when you trade rank increases"
@@ -390,6 +445,7 @@
     "Combat promotion": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "You have been recognised for your combat skills, {F(\"Honorific\")}.",
       "name": "Combat promotion",
       "description": "Triggered when your combat rank increases"
@@ -397,6 +453,7 @@
     "Fine incurred": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "You owe {P(event.faction)} {event.fine} credits for that.",
       "name": "Fine incurred",
       "description": "Triggered when your incur a fine"
@@ -404,6 +461,7 @@
     "Entered normal space": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{OneOf(\"{ship.name} is\", \"\")} {OneOf(\"leaving supercruise\", \"{OneOf(\\\"entering\\\", \\\"returning to\\\", \\\"dropping to\\\")} normal space\")}.",
       "name": "Entered normal space",
       "description": "Triggered when your ship enters normal space"
@@ -411,6 +469,7 @@
     "Entered supercruise": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{OneOf(\"{ship.name} is\", \"\")} entering supercruise.",
       "name": "Entered supercruise",
       "description": "Triggered when your ship enters supercruise"
@@ -418,6 +477,7 @@
     "Bounty awarded": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{if event.reward > 0:\r\n    Bounty voucher of {event.reward} credits received from {P(event.faction)}.\r\n}",
       "name": "Bounty awarded",
       "description": "Triggered when you are awarded a bounty"
@@ -425,6 +485,7 @@
     "Commander continued": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Welcome back {F(\"Honorific\")}.",
       "name": "Commander continued",
       "description": "Triggered when you continue an existing game"
@@ -432,6 +493,7 @@
     "Liftoff": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Lift off.",
       "name": "Liftoff",
       "description": "Triggered when your ship lifts off from a planet's surface"
@@ -439,6 +501,7 @@
     "Touchdown": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "Touchdown.  Co-ordinates are {event.longitude} degrees longitude, {event.latitude} degrees latitude.",
       "name": "Touchdown",
       "description": "Triggered when your ship touches down on a planet's surface"
@@ -446,6 +509,7 @@
     "Undocked": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{OneOf(\"Full control re-established\", \"Docking clamps free\", \"Disengaged from local networks\")}.\r\n",
       "name": "Undocked",
       "description": "Triggered when your ship undocks from a station or outpost"
@@ -453,6 +517,7 @@
     "Docked": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{OneOf(\"Establishing uplink\", \"Initiating link to local networks\", \"Access to local networks obtained\")}.",
       "name": "Docked",
       "description": "Triggered when your ship docks at a station or outpost"
@@ -460,6 +525,7 @@
     "Jumped": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ship.name} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if lastsystem.allegiance && !system.allegiance:\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance != \"None\":\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}\r\n        }\r\n    }.\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
       "name": "Jumped",
       "description": "Triggered when you jump from one system to another"
@@ -467,6 +533,7 @@
     "CommodityPurchased": {
       "enabled": true,
       "responder": true,
+      "interruptable": true,
       "script": "You have just purchased {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total cost is {event.amount * event.price} credits.",
       "name": "Commodity purchased",
       "description": "Triggered when you buy something from the markets"
@@ -474,6 +541,7 @@
     "Honorific": {
       "enabled": true,
       "responder": false,
+      "interruptable": true,
       "script": "{if system.allegiance = \"Empire\":\r\n    {if cmdr.empirerating <= 4:\r\n       commander\r\n    |elif cmdr.empirerating = 5:\r\n        sir\r\n    |elif cmdr.empirerating <= 11:\r\n        my lord\r\n    |elif cmdr.empirerating = 12:\r\n        your grace\r\n    |elif cmdr.empirerating = 13:\r\n        your royal highness\r\n    |elif cmdr.empirerating = 14:\r\n        your majesty\r\n    }\r\n|elif system.allegiance = \"Federation\":\r\n    {if cmdr.federationrating= 0:\r\n        commander\r\n    |else:\r\n        {cmdr.federationrating.name}\r\n    }\r\n|else:\r\n    commander\r\n}\r\n",
       "name": "Honorific",
       "description": "Function to provide a suitable honorific for your commander"
@@ -481,6 +549,7 @@
     "Station report": {
       "enabled": true,
       "responder": false,
+      "interruptable": true,
       "script": "Nothing of interest here.",
       "name": "Station report",
       "description": "Function to report on the details of the current station"
@@ -488,6 +557,7 @@
     "System report": {
       "enabled": true,
       "responder": false,
+      "interruptable": true,
       "script": "{OneOf(\"This is\", \"This system is\", \"{P(system.name)} is\")}\r\n{if system.allegiance = \"Federation\":\r\n    a Federation\r\n|elif system.allegiance = \"Empire\":\r\n    an Empire\r\n|else:\r\n    an independent\r\n}\r\n{if system.government:\r\n    {system.government}\r\n|else:\r\n  system\r\n}\r\n{OneOf(\"of\", \"with a population of\", \"home to\", \"supporting\")} {Humanise(system.population)} {OneOf(\"people\", \"souls\")}\r\n{if system.power:\r\n    , {OneOf(\"aligned to\", \"allied with\", \"controlled by\")} {P(system.power)}\r\n}.\r\n\r\n{if system.faction:\r\n  {P(system.faction)} is the {OneOf(\"controlling\", \"local\", \"immediate\")} {OneOf(\"power\", \"faction\")}.\r\n}\r\n\r\n{if len(system.stations) = 0:\r\n  There are no stations\r\n|else:\r\n    {if len(system.orbitalstations) = 0:\r\n        {if len(system.planetarystations) = 1:\r\n            There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} planetary station\r\n        |else:\r\n            There are {len(system.planetarystations)} planetary stations\r\n        }\r\n    |elif len(system.orbitalstations) = 1:\r\n        There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} orbital station\r\n        {if len(system.planetarystations) = 1:\r\n            and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n        |elif len(system.planetarystations) > 1:\r\n            and {len(system.planetarystations)} planetary stations\r\n        }\r\n    |else:\r\n        There are {len(system.orbitalstations)} orbital stations\r\n        {if len(system.planetarystations) = 1:\r\n            and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n        |else:\r\n            and {len(system.planetarystations)} planetary stations\r\n        }\r\n    }\r\n}\r\n{OneOf(\"here\", \"in this system\")}.\r\n\r\n{_ TODO: system state}\r\n",
       "name": "System report",
       "description": "Function to report on the details of the current star system"

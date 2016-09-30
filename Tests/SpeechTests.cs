@@ -54,14 +54,14 @@ namespace Tests
         [TestMethod]
         public void TestCallsign()
         {
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049309), Translations.CallSign("GAB-1655"), true, true);
+            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049309), Translations.CallSign("GAB-1655"), true, true, true);
         }
 
 
         [TestMethod]
         public void TestSsml()
         {
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049363), "You are travelling to the " + Translations.StarSystem("Hotas") + " system.", true, true);
+            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049363), "You are travelling to the " + Translations.StarSystem("Hotas") + " system.", true, true, true);
         }
 
         [TestMethod]
@@ -76,7 +76,7 @@ namespace Tests
             //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Pranav Antal") + ".");
             //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Zachary Hudson") + ".");
             //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Zemina Torval") + ".");
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049363), Translations.Power("Li Yong-Rui") + ".", true, true);
+            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049363), Translations.Power("Li Yong-Rui") + ".", true, true, true);
         }
 
         [TestMethod]
@@ -110,47 +110,47 @@ namespace Tests
         {
             Ship ship = ShipDefinitions.FromEliteID(128049363);
             ship.health = 100;
-            SpeechService.Instance.Say(null, ship, "Systems fully operational.", true, true);
+            SpeechService.Instance.Say(null, ship, "Systems fully operational.", true, true, true);
             ship.health = 80;
-            SpeechService.Instance.Say(null, ship, "Systems at 80%.", true, true);
+            SpeechService.Instance.Say(null, ship, "Systems at 80%.", true, true, true);
             ship.health = 60;
-            SpeechService.Instance.Say(null, ship, "Systems at 60%.", true, true);
+            SpeechService.Instance.Say(null, ship, "Systems at 60%.", true, true, true);
             ship.health = 40;
-            SpeechService.Instance.Say(null, ship, "Systems at 40%.", true, true);
+            SpeechService.Instance.Say(null, ship, "Systems at 40%.", true, true, true);
             ship.health = 20;
-            SpeechService.Instance.Say(null, ship, "Systems at 20%.", true, true);
+            SpeechService.Instance.Say(null, ship, "Systems at 20%.", true, true, true);
             ship.health = 0;
-            SpeechService.Instance.Say(null, ship, "Systems critical.", true, true);
+            SpeechService.Instance.Say(null, ship, "Systems critical.", true, true, true);
         }
 
         [TestMethod]
         public void TestVariants()
         {
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049309), "Welcome to your Vulture.  Weapons online.", true, true);
-            SpeechService.Instance.Transmit(null, ShipDefinitions.FromEliteID(128049309), "Vulture x-ray whiskey tango seven one seven six requesting docking.", true, true);
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049339), "Welcome to your Python.  Scanning at full range.", true, true);
-            SpeechService.Instance.Transmit(null, ShipDefinitions.FromEliteID(128049339), "Python victor oscar Pappa fife tree fawer niner requesting docking.", true, true);
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049363), "Welcome to your Anaconda.  All systems operational.", true, true);
-            SpeechService.Instance.Transmit(null, ShipDefinitions.FromEliteID(128049363), "Anaconda charlie november delta one niner eight fawer requesting docking.", true, true);
+            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049309), "Welcome to your Vulture.  Weapons online.", true, true, true);
+            SpeechService.Instance.Transmit(null, ShipDefinitions.FromEliteID(128049309), "Vulture x-ray whiskey tango seven one seven six requesting docking.", true, true, true);
+            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049339), "Welcome to your Python.  Scanning at full range.", true, true, true);
+            SpeechService.Instance.Transmit(null, ShipDefinitions.FromEliteID(128049339), "Python victor oscar Pappa fife tree fawer niner requesting docking.", true, true, true);
+            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049363), "Welcome to your Anaconda.  All systems operational.", true, true, true);
+            SpeechService.Instance.Transmit(null, ShipDefinitions.FromEliteID(128049363), "Anaconda charlie november delta one niner eight fawer requesting docking.", true, true, true);
         }
 
         [TestMethod]
         public void TestChorus()
         {
-            SpeechService.Instance.Speak("Chorus level 0", null, 0, 0, 0, 0, 0, true, true, true);
-            SpeechService.Instance.Speak("Chorus level 20", null, 0, 0, 20, 0, 0, true, true, true);
-            SpeechService.Instance.Speak("Chorus level 40", null, 0, 0, 40, 0, 0, true, true, true);
-            SpeechService.Instance.Speak("Chorus level 60", null, 0, 0, 60, 0, 0, true, true, true);
-            SpeechService.Instance.Speak("Chorus level 80", null, 0, 0, 80, 0, 0, true, true, true);
-            SpeechService.Instance.Speak("Chorus level 100", null, 0, 0, 100, 0, 0, true, true, true);
+            SpeechService.Instance.Speak("Chorus level 0", null, 0, 0, 0, 0, 0, true, true, true, true);
+            SpeechService.Instance.Speak("Chorus level 20", null, 0, 0, 20, 0, 0, true, true, true, true);
+            SpeechService.Instance.Speak("Chorus level 40", null, 0, 0, 40, 0, 0, true, true, true, true);
+            SpeechService.Instance.Speak("Chorus level 60", null, 0, 0, 60, 0, 0, true, true, true, true);
+            SpeechService.Instance.Speak("Chorus level 80", null, 0, 0, 80, 0, 0, true, true, true, true);
+            SpeechService.Instance.Speak("Chorus level 100", null, 0, 0, 100, 0, 0, true, true, true, true);
         }
 
         [TestMethod]
         public void TestSendAndReceive()
         {
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049339), "Issuing docking request.  Please stand by.", true, true);
-            SpeechService.Instance.Transmit(null, ShipDefinitions.FromEliteID(128049339), "Anaconda golf foxtrot lima one niner six eight requesting docking.", true, true);
-            SpeechService.Instance.Receive(null, ShipDefinitions.FromEliteID(128049339), "Roger golf foxtrot lima one niner six eight docking request received", true, true);
+            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049339), "Issuing docking request.  Please stand by.", true, true, true);
+            SpeechService.Instance.Transmit(null, ShipDefinitions.FromEliteID(128049339), "Anaconda golf foxtrot lima one niner six eight requesting docking.", true, true, true);
+            SpeechService.Instance.Receive(null, ShipDefinitions.FromEliteID(128049339), "Roger golf foxtrot lima one niner six eight docking request received", true, true, true);
         }
 
         [TestMethod]
@@ -345,7 +345,7 @@ namespace Tests
                 soundOut.Dispose();
                 source.Dispose();
             }
-            SpeechService.Instance.Speak("Testing drop-off.", null, 50, 1, 30, 40, 0, false, true, true);
+            SpeechService.Instance.Speak("Testing drop-off.", null, 50, 1, 30, 40, 0, false, true, true, true);
         }
 
         [TestMethod]

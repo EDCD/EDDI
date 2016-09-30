@@ -18,6 +18,7 @@ namespace EliteDangerousEvents
         {
             VARIABLES.Add("system", "The system at which the commander has entered normal space");
             VARIABLES.Add("body", "The nearest body to the commander when entering normal space");
+            VARIABLES.Add("bodytype", "The type of the nearest body to the commander when entering normal space");
         }
 
         [JsonProperty("system")]
@@ -26,10 +27,13 @@ namespace EliteDangerousEvents
         [JsonProperty("body")]
         public string body{ get; private set; }
 
-        public EnteredNormalSpaceEvent(DateTime timestamp, string system, string body) : base(timestamp, NAME)
+        [JsonProperty("bodytype")]
+        public string bodytype { get; private set; }
+
+        public EnteredNormalSpaceEvent(DateTime timestamp, string system, string body, string bodytype) : base(timestamp, NAME)
         {
             this.system = system;
-            this.body = body;
+            this.bodytype = bodytype;
         }
     }
 }

@@ -24,6 +24,7 @@ namespace EliteDangerousSpeechService
 
         private static readonly object activeSpeechLock = new object();
         private ISoundOut activeSpeech;
+        private bool activeSpeechInterruptable;
 
         private static SpeechService instance;
 
@@ -53,7 +54,7 @@ namespace EliteDangerousSpeechService
             configuration = SpeechServiceConfiguration.FromFile();
         }
 
-        public void Say(Commander commander, Ship ship, string script, bool parse, bool wait)
+        public void Say(Commander commander, Ship ship, string script, bool parse, bool wait, bool interruptable)
         {
             if (script == null)
             {
@@ -89,10 +90,10 @@ namespace EliteDangerousSpeechService
             }
             script = script.Replace("$-", cmdrScript);
 
-            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, false, parse, wait);
+            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, false, parse, wait, interruptable);
         }
 
-        public void Transmit(Commander commander, Ship ship, string script, bool parse, bool wait)
+        public void Transmit(Commander commander, Ship ship, string script, bool parse, bool wait, bool interruptable)
         {
             if (script == null)
             {
@@ -110,10 +111,10 @@ namespace EliteDangerousSpeechService
             {
                 script = script.Replace("$=", "" + ship.model + " " + Translations.CallSign(ship.callsign));
             }
-            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, parse, wait);
+            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, parse, wait, interruptable);
         }
 
-        public void Receive(Commander commander, Ship ship, string script, bool parse, bool wait)
+        public void Receive(Commander commander, Ship ship, string script, bool parse, bool wait, bool interruptable)
         {
             if (script == null)
             {
@@ -131,14 +132,22 @@ namespace EliteDangerousSpeechService
             {
                 script = script.Replace("$=", "" + ship.model + " " + Translations.CallSign(ship.callsign));
             }
-            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, parse, wait);
+            Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, parse, wait, interruptable);
         }
 
-        public void Speak(string script, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio, bool parse, bool wait)
+        public void Speak(string script, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool radio, bool parse, bool wait, bool interruptable)
         {
             if (script == null) { return; }
 
-            StopCurrentSpeech();
+            if (activeSpeechInterruptable == true)
+            {
+                StopCurrentSpeech();
+            }
+            else
+            {
+                WaitForCurrentSpeech();
+            }
+            activeSpeechInterruptable = interruptable;
 
             Thread speechThread = new Thread(() =>
             {
@@ -243,6 +252,7 @@ namespace EliteDangerousSpeechService
                     Logging.Error("Failed to speak: " + ex);
                 }
             });
+            speechThread.IsBackground = true;
             speechThread.Start();
             if (wait)
             {
@@ -269,6 +279,14 @@ namespace EliteDangerousSpeechService
                     activeSpeech = null;
                     Logging.Info("Stopped current speech");
                 }
+            }
+        }
+
+        private void WaitForCurrentSpeech()
+        {
+            while (activeSpeech != null)
+            {
+                Thread.Sleep(10);
             }
         }
 

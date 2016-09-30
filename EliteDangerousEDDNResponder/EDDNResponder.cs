@@ -31,7 +31,7 @@ namespace EliteDangerousEDDNResponder
 
         public string ResponderDescription()
         {
-            return "Plugin to send station market, outfitting and station information to EDDN";
+            return "Send station, jump, and scan information to EDDN.  EDDN is a third-party tool that gathers information on systems and markets, and provides data for most trading tools as well as starsystem information tools such as EDDB";
         }
 
         public EDDNResponder()
@@ -84,7 +84,6 @@ namespace EliteDangerousEDDNResponder
             {
                 data.Add("StarSystem", Eddi.Instance.CurrentStarSystem.name);
             }
-            //data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
 
             EDDNBody body = new EDDNBody();
             body.header = generateHeader();
@@ -98,36 +97,8 @@ namespace EliteDangerousEDDNResponder
         private void handleDockedEvent(DockedEvent theEvent)
         {
             // When we dock we have access to commodity and outfitting information
-            // Shipyard information is not always available through the companion app API so can't send it
-            //sendShipyardInformation();
             sendCommodityInformation();
             sendOutfittingInformation();
-        }
-
-        private void sendShipyardInformation()
-        {
-            List<string> eddnShips = new List<string>();
-            foreach (Ship ship in Eddi.Instance.LastStation.shipyard)
-            {
-                eddnShips.Add(ship.EDName);
-            }
-
-            // Only send the message if we have ships
-            if (eddnShips.Count > 0)
-            {
-                IDictionary<string, object> data = new Dictionary<string, object>();
-                data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
-                data.Add("systemName", Eddi.Instance.LastStation.systemname);
-                data.Add("stationName", Eddi.Instance.LastStation.name);
-                data.Add("ships", eddnShips);
-
-                EDDNBody body = new EDDNBody();
-                body.header = generateHeader();
-                body.schemaRef = "http://schemas.elite-markets.net/eddn/shipyard/2/test";
-                body.message = data;
-
-                sendMessage(body);
-            }
         }
 
         private void sendCommodityInformation()

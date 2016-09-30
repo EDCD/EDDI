@@ -80,7 +80,7 @@ namespace EliteDangerousNetLogMonitor
                 if (starSystem != lastStarsystem)
                 {
                     // Change of system
-                    theEvent = new JumpedEvent(DateTime.Now, starSystem, x, y, z, null, null, null, null, null, null);
+                    theEvent = new JumpingEvent(DateTime.Now, starSystem, x, y, z);
                     lastStarsystem = starSystem;
                     lastEnvironment = environment;
                 }
@@ -89,12 +89,12 @@ namespace EliteDangerousNetLogMonitor
                     // Change of environment
                     if (environment == "Supercruise")
                     {
-                        theEvent = new EnteredSupercruiseEvent(DateTime.Now, Eddi.Instance.CurrentStarSystem.name);
+                        //theEvent = new EnteredSupercruiseEvent(DateTime.Now, Eddi.Instance.CurrentStarSystem.name);
                         lastEnvironment = environment;
                     }
                     else if (environment == "NormalFlight")
                     {
-                        theEvent = new EnteredNormalSpaceEvent(DateTime.Now, starSystem, null);
+                        //theEvent = new EnteredNormalSpaceEvent(DateTime.Now, starSystem, null);
                         lastEnvironment = environment;
                     }
                 }
@@ -118,7 +118,7 @@ namespace EliteDangerousNetLogMonitor
 
         public string MonitorDescription()
         {
-            return "Plugin to monitor the netlog and post relevant events";
+            return @"Monitor Elite: Dangerous' netlog.log for jumping to remote systems.  This provides the ""Jumping"" event";
         }
 
         public void Start()
