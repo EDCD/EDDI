@@ -264,7 +264,11 @@ namespace EDDI
             Logging.Debug("Handling event " + JsonConvert.SerializeObject(journalEvent));
             // We have some additional processing to do for a number of events
             bool passEvent = true;
-            if (journalEvent is JumpedEvent)
+            if (journalEvent is JumpingEvent)
+            {
+                passEvent = eventJumping((JumpingEvent)journalEvent);
+            }
+            else if (journalEvent is JumpedEvent)
             {
                 passEvent = eventJumped((JumpedEvent)journalEvent);
             }
@@ -340,6 +344,41 @@ namespace EDDI
                 CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
                 setSystemDistanceFromHome(CurrentStarSystem);
             }
+        }
+
+        private bool eventJumping(JumpingEvent theEvent)
+        {
+            bool passEvent;
+            Logging.Debug("Jumping to " + theEvent.system);
+            if (CurrentStarSystem == null)
+            {
+                // Initialisation; don't pass the event along
+                passEvent = false;
+            }
+            else if (CurrentStarSystem.name == theEvent.system)
+            {
+                // Restatement of current system
+                passEvent = false;
+            }
+            else
+            {
+                passEvent = true;
+                updateCurrentSystem(theEvent.system);
+                if (CurrentStarSystem.x == null)
+                {
+                    // Star system is missing co-ordinates to take them from the event
+                    CurrentStarSystem.x = theEvent.x;
+                    CurrentStarSystem.y = theEvent.y;
+                    CurrentStarSystem.z = theEvent.z;
+                }
+                CurrentStarSystem.visits++;
+                CurrentStarSystem.lastvisit = DateTime.Now;
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                // After jump we are always in supercruise
+                Environment = ENVIRONMENT_SUPERCRUISE;
+                setCommanderTitle();
+            }
+            return passEvent;
         }
 
         private bool eventJumped(JumpedEvent theEvent)
