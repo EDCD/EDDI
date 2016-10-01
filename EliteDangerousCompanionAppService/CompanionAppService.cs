@@ -682,7 +682,7 @@ namespace EliteDangerousCompanionAppService
                     {
                         string name = (string)cargoJson["commodity"];
                         Cargo cargo = new Cargo();
-                        cargo.Commodity = CommodityDefinitions.CommodityFromCargoName(name);
+                        cargo.Commodity = CommodityDefinitions.FromName(name);
                         if (cargo.Commodity.Name == null)
                         {
                             // Unknown commodity; log an error so that we can update the definitions

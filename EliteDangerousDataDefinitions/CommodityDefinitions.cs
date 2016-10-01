@@ -14,38 +14,29 @@ namespace EliteDangerousDataDefinitions
         // Mapping from Elite internal names to common names
         private static Dictionary<string, string> nameMapping = new Dictionary<string, string>
         {
-            {"Agricultural Medicines", "Agri-Medicines"},
-            { "Ai Relics", "AI Relics"},
-            { "Atmospheric Extractors", "Atmospheric Processors"},
-            {"Auto Fabricators", "Auto-Fabricators"},
-            { "Basic Narcotics", "Narcotics"},
-            {"Bio Reducing Lichen", "Bioreducing Lichen"},
-            { "C M M Composite", "CMM Composite"},
-            { "Drones", "Limpet"},
-            { "H N Shock Mount", "HN Shock Mount"},
-            {"Hafnium178", "Hafnium 178"},
-            {"Hazardous Environment Suits", "H.E. Suits"},
-            {"Heliostatic Furnaces", "Microbial Furnaces"},
-            {"Marine Supplies", "Marine Equipment"},
-            {"Meta Alloys", "Meta-Alloys"},
-            {"Mu Tom Imager", "Muon Imager"},
-            {"Non Lethal Weapons", "Non-Lethal Weapons"},
-            {"S A P8 Core Container", "SAP 8 Core Container"},
-            {"Skimer Components", "Skimmer Components"},
-            {"Terrain Enrichment Systems", "Land Enrichment Systems"},
-            {"Trinkets Of Fortune", "Trinkets Of Hidden Fortune"},
-            {"Unknown Artifact", "Unknown Artefact"},
-            {"U S S Cargo Ancient Artefact", "Ancient Artefact"},
-            {"U S S Cargo Experimental Chemicals", "Experimental Chemicals"},
-            {"U S S Cargo Military Plans", "Military Plans"},
-            {"U S S Cargo Prototype Tech", "Prototype Tech"},
-            {"U S S Cargo Rebel Transmissions", "Rebel Transmissions"},
-            {"U S S Cargo Technical Blueprints", "Technical Blueprints"},
-            {"U S S Cargo Trade Data", "Trade Data"},
+            {"agriculturalmedicines", "agrimedicines"},
+            {"atmosphericextractors", "atmosphericprocessors"},
+            {"basicnarcotics", "narcotics"},
+            {"drones", "limpet"},
+            {"hazardousenvironmentsuits", "hesuits"},
+            {"heliostaticfurnaces", "microbialfurnaces"},
+            {"marinesupplies", "marineequipment"},
+            {"mutomimager", "muonimager"},
+            {"skimercomponents", "skimmercomponents"},
+            {"terrainenrichmentsystems", "landenrichmentsystems"},
+            {"trinketsoffortune", "trinketsofhiddenfortune"},
+            {"unknownartifact", "unknownartefact"},
+            {"usscargoancientartefact", "ancientartefact"},
+            {"usscargoexperimentalchemicals", "experimentalchemicals"},
+            {"usscargomilitaryplans", "militaryplans"},
+            {"usscargoprototypetech", "prototypetech"},
+            {"usscargorebeltransmissions", "rebeltransmissions"},
+            {"usscargotechnicalblueprints", "technicalnlueprints"},
+            {"usscargotradedata", "tradedata"},
 
-            { "Comercial Samples", "Commercial Samples"},
-            { "Encripted Data Storage", "Encrypted Data Storage"},
-            {"Wreckage Components", "Salvageable Wreckage"},
+            {"comercialsamples", "commercialsamples"},
+            {"encripteddatastorage", "encrypteddatastorage"},
+            {"wreckagecomponents", "salvageablewreckage"},
         };
 
         private static Dictionary<long, Commodity> CommoditiesByEliteID = new Dictionary<long, Commodity>
@@ -203,7 +194,8 @@ namespace EliteDangerousDataDefinitions
             {128682047, new Commodity(306, "Medical Diagnostic Equipment", "Technology", 2848, false) },
             {128682048, new Commodity(307, "Survival Equipment", "Consumer Items", 485, false) },
         };
-        private static Dictionary<string, Commodity> CommoditiesByCargoName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.Name.ToLower().Replace(" ", ""), kp => kp.Value);
+
+        private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.Name.ToLower().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
 
         public static Commodity CommodityFromEliteID(long id)
         {
@@ -222,7 +214,7 @@ namespace EliteDangerousDataDefinitions
             return Commodity;
         }
 
-        public static Commodity CommodityFromCargoName(string name)
+        public static Commodity FromName(string name)
         {
             if (name == null)
             {
@@ -231,14 +223,30 @@ namespace EliteDangerousDataDefinitions
 
             Commodity Commodity = new Commodity();
 
+            string cleanedName = name
+                .Replace("$", "") // Header for types from mining refined events
+                .Replace("_name;", "") // Trailer for types from mining refined events
+                ;
+
             // First try to map from cargo name to the commodity name
             string cargoName;
-            cargoNamesMapping.TryGetValue(name, out cargoName);
-            if (cargoName == null) { cargoName = name; }
+            cargoNamesMapping.TryGetValue(cleanedName, out cargoName);
+            if (cargoName == null) { cargoName = cleanedName; }
 
             // Now try to fetch the commodity by name
             Commodity Template;
-            if (CommoditiesByCargoName.TryGetValue(cargoName, out Template))
+            bool found = CommoditiesByName.TryGetValue(cargoName, out Template);
+            if (!found)
+            {
+                // Failed to find it; try again using the external name
+                string edName;
+                nameMapping.TryGetValue(cargoName, out edName);
+                if (edName != null)
+                {
+                    found = CommoditiesByName.TryGetValue(edName, out Template);
+                }
+            }
+            if (found)
             {
                 Commodity.EDDBID = Template.EDDBID;
                 Commodity.EDName = Template.EDName;

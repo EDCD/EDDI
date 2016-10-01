@@ -51,6 +51,7 @@
     <Compile Include="MaterialDiscardedEvent.cs" />
     <Compile Include="MaterialCollectedEvent.cs" />
     <Compile Include="KilledEvent.cs" />
+    <Compile Include="CommodityRefinedEvent.cs" />
     <Compile Include="ShipInterdiction.cs" />
     <Compile Include="ShipInterdicted.cs" />
     <Compile Include="CommanderRanksEvent.cs" />
@@ -80,7 +81,7 @@
     <Compile Include="FighterLaunchedEvent.cs" />
     <Compile Include="CommoditySoldEvent.cs" />
     <Compile Include="BountyIncurredEvent .cs" />
-    <Compile Include="CargoEjectedEvent.cs" />
+    <Compile Include="CommodityEjectedEvent.cs" />
     <Compile Include="CommodityPurchasedEvent.cs" />
     <Compile Include="DockingTimedOutEvent.cs" />
     <Compile Include="DockingDeniedEvent.cs" />
@@ -96,7 +97,7 @@
     <Compile Include="BodyScannedEvent.cs" />
     <Compile Include="StarScannedEvent.cs" />
     <Compile Include="CockpitBreachedEvent.cs" />
-    <Compile Include="CargoCollectedEvent.cs" />
+    <Compile Include="CommodityCollectedEvent.cs" />
     <Compile Include="ExplorationPromotionEvent.cs" />
     <Compile Include="ScreenshotEvent.cs" />
     <Compile Include="TradePromotionEvent.cs" />

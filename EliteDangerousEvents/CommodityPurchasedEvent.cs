@@ -26,9 +26,9 @@ namespace EliteDangerousEvents
         public int amount { get; private set; }
         public decimal price { get; private set; }
 
-        public CommodityPurchasedEvent(DateTime timestamp, string commodity, int amount, decimal price) : base(timestamp, NAME)
+        public CommodityPurchasedEvent(DateTime timestamp, Commodity commodity, int amount, decimal price) : base(timestamp, NAME)
         {
-            this.commodity = commodity;
+            this.commodity = (commodity == null ? "unknown commodity" : commodity.Name);
             this.amount = amount;
             this.price = price;
         }

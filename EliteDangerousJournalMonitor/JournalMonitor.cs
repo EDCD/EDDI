@@ -319,10 +319,15 @@ namespace EliteDangerousJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Type", out val);
-                                string cargo = (string)val;
+                                string commodityName = (string)val;
+                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
+                                if (commodity == null)
+                                {
+                                    Logging.Error("Failed to map collectcargo type " + commodityName + " to commodity");
+                                }
                                 data.TryGetValue("Stolen", out val);
                                 bool stolen = (bool)val;
-                                journalEvent = new CargoCollectedEvent(timestamp, cargo, stolen);
+                                journalEvent = new CommodityCollectedEvent(timestamp, commodity, stolen);
                                 handled = true;
                             }
                             handled = true;
@@ -331,12 +336,18 @@ namespace EliteDangerousJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Type", out val);
+                                string commodityName = (string)val;
+                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
+                                if (commodity == null)
+                                {
+                                    Logging.Error("Failed to map ejectcargo type " + commodityName + " to commodity");
+                                }
                                 string cargo = (string)val;
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("Abandoned", out val);
                                 bool abandoned = (bool)val;
-                                journalEvent = new CargoEjectedEvent(timestamp, cargo, amount, abandoned);
+                                journalEvent = new CommodityEjectedEvent(timestamp, commodity, amount, abandoned);
                                 handled = true;
                             }
                             handled = true;
@@ -866,6 +877,21 @@ namespace EliteDangerousJournalMonitor
                             }
                             handled = true;
                             break;
+                        case "MiningRefined":
+                            {
+                                object val;
+                                data.TryGetValue("Type", out val);
+                                string commodityName = (string)val;
+
+                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
+                                if (commodity == null)
+                                {
+                                    Logging.Error("Failed to map commodityrefined type " + commodityName + " to commodity");
+                                }
+                                journalEvent = new CommodityRefinedEvent(timestamp, commodity);
+                            }
+                            handled = true;
+                            break;
                         case "HeatWarning":
                             journalEvent = new HeatWarningEvent(timestamp);
                             handled = true;
@@ -981,12 +1007,17 @@ namespace EliteDangerousJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Type", out val);
-                                string cargo = (string)val;
+                                string commodityName = (string)val;
+                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
+                                if (commodity == null)
+                                {
+                                    Logging.Error("Failed to map marketbuy type " + commodityName + " to commodity");
+                                }
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("BuyPrice", out val);
                                 decimal price = (long)val;
-                                journalEvent = new CommodityPurchasedEvent(timestamp, cargo, amount, price);
+                                journalEvent = new CommodityPurchasedEvent(timestamp, commodity, amount, price);
                                 handled = true;
                                 break;
                             }
@@ -994,7 +1025,12 @@ namespace EliteDangerousJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Type", out val);
-                                string cargo = (string)val;
+                                string commodityName = (string)val;
+                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
+                                if (commodity == null)
+                                {
+                                    Logging.Error("Failed to map marketsell type " + commodityName + " to commodity");
+                                }
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("SellPrice", out val);
@@ -1009,7 +1045,7 @@ namespace EliteDangerousJournalMonitor
                                 bool stolen = (val == null ? false : (bool)val);
                                 data.TryGetValue("BlackMarket", out val);
                                 bool blackmarket = (val == null ? false : (bool)val);
-                                journalEvent = new CommoditySoldEvent(timestamp, cargo, amount, price, profit, illegal, stolen, blackmarket);
+                                journalEvent = new CommoditySoldEvent(timestamp, commodity, amount, price, profit, illegal, stolen, blackmarket);
                                 handled = true;
                                 break;
                             }

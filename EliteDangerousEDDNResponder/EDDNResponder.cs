@@ -154,7 +154,7 @@ namespace EliteDangerousEDDNResponder
                 List<string> eddnModules = new List<string>();
                 foreach (Module module in Eddi.Instance.LastStation.outfitting)
                 {
-                    if ((!module.IsPP()) && (module.EDName.StartsWith("Int_") || module.EDName.StartsWith("Hpt_") || module.EDName.Contains("_Armour_")))
+                    if ((!ModuleDefinitions.IsPP(module)) && (module.EDName.StartsWith("Int_") || module.EDName.StartsWith("Hpt_") || module.EDName.Contains("_Armour_")))
                     {
                         eddnModules.Add(module.EDName);
                     }

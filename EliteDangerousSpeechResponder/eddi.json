@@ -290,13 +290,13 @@
       "name": "Bounty incurred",
       "description": "Triggered when you incur a bounty"
     },
-    "Cargo ejected": {
+    "Commodity ejected": {
       "enabled": true,
       "interruptable": true,
       "responder": true,
-      "script": "{event.cargo} ejected.",
-      "name": "Cargo ejected",
-      "description": "Triggered when you eject cargo from your ship or SRV"
+      "script": "{event.commodity} ejected.",
+      "name": "Commodity ejected",
+      "description": "Triggered when you eject a commodity from your ship or SRV"
     },
     "Commodity purchased": {
       "enabled": true,
@@ -410,13 +410,13 @@
       "name": "Cockpit breached",
       "description": "Triggered when your ship's cockpit is broken"
     },
-    "Cargo collected": {
+    "Commodity collected": {
       "enabled": true,
       "interruptable": true,
       "responder": true,
-      "script": "{event.cargo} now on board.",
-      "name": "Cargo collected",
-      "description": "Triggered when you pick up cargo in your ship or SRV"
+      "script": "{event.commodity} now on board.",
+      "name": "Commodity collected",
+      "description": "Triggered when you pick up a commodity in your ship or SRV"
     },
     "Exploration promotion": {
       "enabled": true,
