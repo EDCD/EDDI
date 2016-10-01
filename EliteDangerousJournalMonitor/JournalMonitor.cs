@@ -483,6 +483,9 @@ namespace EliteDangerousJournalMonitor
                                 data.TryGetValue("ShipType", out val);
                                 Ship ship = ShipDefinitions.FromEDModel((string)val);
 
+                                data.TryGetValue("ShipPrice", out val);
+                                decimal price = (long)val;
+
                                 Ship storedShip = null;
                                 data.TryGetValue("StoreShipID", out val);
                                 if (val != null)
@@ -537,7 +540,7 @@ namespace EliteDangerousJournalMonitor
 
                                 data.TryGetValue("SellPrice", out val);
                                 decimal? soldPrice = (long?)val;
-                                journalEvent = new ShipPurchasedEvent(timestamp, ship, soldShip, soldPrice, storedShip);
+                                journalEvent = new ShipPurchasedEvent(timestamp, ship, price, soldShip, soldPrice, storedShip);
                             }
                             handled = true;
                             break;
