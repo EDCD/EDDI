@@ -17,17 +17,17 @@ namespace EliteDangerousEvents
         static ExplorationDataPurchasedEvent()
         {
             VARIABLES.Add("system", "The system for which the exploration data was purchased");
-            VARIABLES.Add("cost", "The cost of the purchase");
+            VARIABLES.Add("price", "The price of the purchase");
         }
 
         public string system { get; private set; }
 
-        public decimal cost { get; private set; }
+        public decimal price { get; private set; }
 
-        public ExplorationDataPurchasedEvent(DateTime timestamp, string system, decimal cost) : base(timestamp, NAME)
+        public ExplorationDataPurchasedEvent(DateTime timestamp, string system, decimal price) : base(timestamp, NAME)
         {
             this.system = system;
-            this.cost = cost;
+            this.price = price;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace EliteDangerousEvents
             VARIABLES.Add("ship", "The ship that is being transferred");
             VARIABLES.Add("system", "The system from which the ship is being transferred");
             VARIABLES.Add("distance", "The distance that the transferred ship needs to travel");
-            VARIABLES.Add("cost", "The cost of transferring the ship");
+            VARIABLES.Add("price", "The price of transferring the ship");
         }
 
         [JsonProperty("ship")]
@@ -32,15 +32,15 @@ namespace EliteDangerousEvents
         [JsonProperty("distance")]
         public decimal distance { get; private set; }
 
-        [JsonProperty("cost")]
-        public decimal cost { get; private set; }
+        [JsonProperty("price")]
+        public decimal price { get; private set; }
 
-        public ShipTransferInitiatedEvent(DateTime timestamp, Ship ship, string system, decimal distance, decimal cost) : base(timestamp, NAME)
+        public ShipTransferInitiatedEvent(DateTime timestamp, Ship ship, string system, decimal distance, decimal price) : base(timestamp, NAME)
         {
             this.ship = ship;
             this.system = system;
             this.distance = distance;
-            this.cost = cost;
+            this.price = price;
         }
     }
 }

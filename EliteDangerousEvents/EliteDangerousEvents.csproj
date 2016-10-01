@@ -45,6 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BondAwardedEvent.cs" />
+    <Compile Include="AmmunitionPurchasedEvent.cs" />
+    <Compile Include="LimpetSoldEvent.cs" />
+    <Compile Include="LimpetPurchasedEvent.cs" />
     <Compile Include="ExplorationDataSoldEvent.cs" />
     <Compile Include="ExplorationDataPurchasedEvent.cs" />
     <Compile Include="MaterialDiscoveredEvent.cs" />

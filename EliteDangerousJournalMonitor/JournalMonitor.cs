@@ -657,9 +657,9 @@ namespace EliteDangerousJournalMonitor
                                 decimal distance = (decimal)(double)val;
 
                                 data.TryGetValue("TransferPrice", out val);
-                                decimal cost = (long)val;
+                                decimal price = (long)val;
 
-                                journalEvent = new ShipTransferInitiatedEvent(timestamp, ship, system, distance, cost);
+                                journalEvent = new ShipTransferInitiatedEvent(timestamp, ship, system, distance, price);
 
                                 handled = true;
                             }
@@ -972,8 +972,8 @@ namespace EliteDangerousJournalMonitor
                                 data.TryGetValue("System", out val);
                                 string system = (string)val;
                                 data.TryGetValue("Cost", out val);
-                                decimal cost = (long)val;
-                                journalEvent = new ExplorationDataPurchasedEvent(timestamp, system, cost);
+                                decimal price = (long)val;
+                                journalEvent = new ExplorationDataPurchasedEvent(timestamp, system, price);
                                 handled = true;
                                 break;
                             }
@@ -1104,6 +1104,37 @@ namespace EliteDangerousJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "BuyAmmo":
+                            {
+                                object val;
+                                data.TryGetValue("Price", out val);
+                                decimal price = (long)val;
+                                journalEvent = new AmmunitionPurchasedEvent(timestamp, price);
+                                handled = true;
+                                break;
+                            }
+                        case "BuyDrones":
+                            {
+                                object val;
+                                data.TryGetValue("Count", out val);
+                                int amount = (int)(long)val;
+                                data.TryGetValue("BuyPrice", out val);
+                                decimal price = (long)val;
+                                journalEvent = new LimpetPurchasedEvent(timestamp, amount, price);
+                                handled = true;
+                                break;
+                            }
+                        case "SellDrones":
+                            {
+                                object val;
+                                data.TryGetValue("Count", out val);
+                                int amount = (int)(long)val;
+                                data.TryGetValue("SellPrice", out val);
+                                decimal price = (long)val;
+                                journalEvent = new LimpetSoldEvent(timestamp, amount, price);
+                                handled = true;
+                                break;
+                            }
                         case "ClearSavedGame":
                             {
                                 object val;
@@ -1188,9 +1219,9 @@ namespace EliteDangerousJournalMonitor
                                 data.TryGetValue("System", out val);
                                 string system = (string)val;
                                 data.TryGetValue("Cost", out val);
-                                decimal cost = (long)val;
+                                decimal price = (long)val;
 
-                                journalEvent = new TradeDataPurchasedEvent(timestamp, system, cost);
+                                journalEvent = new TradeDataPurchasedEvent(timestamp, system, price);
                                 handled = true;
                                 break;
                             }
