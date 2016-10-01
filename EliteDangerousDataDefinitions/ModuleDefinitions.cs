@@ -820,6 +820,27 @@ namespace EliteDangerousDataDefinitions
                 {128681992, new Module(128681992, "Int_CorrosionProofCargoRack_Size1_Class2", 9999, "Corrosion Resistant Cargo Rack", 1, "F", 12249) },
         };
 
+        /// <summary>
+        /// State if a given module is a PowerPlay module
+        /// </summary>
+        public static bool IsPP(Module module)
+        {
+            return (module.EDName == "Int_ShieldGenerator_Size1_Class5_Strong"
+                 || module.EDName == "Int_ShieldGenerator_Size2_Class5_Strong"
+                 || module.EDName == "Int_ShieldGenerator_Size3_Class5_Strong"
+                 || module.EDName == "Int_ShieldGenerator_Size4_Class5_Strong"
+                 || module.EDName == "Int_ShieldGenerator_Size5_Class5_Strong"
+                 || module.EDName == "Int_ShieldGenerator_Size6_Class5_Strong"
+                 || module.EDName == "Int_ShieldGenerator_Size7_Class5_Strong"
+                 || module.EDName == "Int_ShieldGenerator_Size8_Class5_Strong"
+                 || module.EDName == "Hpt_PulseLaserBurst_Fixed_Small_Scatter"
+                 || module.EDName == "Hpt_Slugshot_Fixed_Large_Range"
+                 || module.EDName == "Hpt_DrunkMissileRack_Fixed_Medium"
+                 || module.EDName == "Hpt_PlasmaAccelerator_Fixed_Large_Advanced"
+                 || module.EDName == "Hpt_Railgun_Fixed_Medium_Burst"
+                 );
+        }
+
         /// <summary>Obtain details of a module given its Elite ID</summary>
         public static Module ModuleFromEliteID(long id)
         {

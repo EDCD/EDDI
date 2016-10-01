@@ -166,6 +166,7 @@ namespace EliteDangerousDataProviderService
 
         private static Dictionary<string, ShipSize> LandingPads = new Dictionary<string, ShipSize>()
         {
+            { "None", ShipSize.None },
             { "S", ShipSize.Small },
             { "M", ShipSize.Medium },
             { "L", ShipSize.Large },

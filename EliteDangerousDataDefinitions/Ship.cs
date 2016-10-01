@@ -159,6 +159,7 @@ namespace EliteDangerousDataDefinitions
     /// <summary>The size of a ship</summary>
     public enum ShipSize
     {
+        None,
         Small,
         Medium,
         Large,
