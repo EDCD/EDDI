@@ -45,6 +45,16 @@ Common usage of this is to provide additional text that is said now and again bu
 
 Note that Occasionally() works on random numbers rather than counters, so in the above example the additional text will not show up every 7th time you boost but will show up on average 1/7 of the times that you boost.
 
+### Pause()
+
+This function will pause the speech for a given amount of time.
+
+Pause() takes one argument: the number of milliseconds to pause.
+
+Common usage of this is to allow speech to sync up with in-game sounds, for example to wait for a known response to a phrase before continuing, for example:
+
+    Hello.  {Pause(2000)} Yes.
+
 ### Humanise()
 
 This function will turn its argument into a more human number, for example turning 31245 in to "just over thirty thousand".
