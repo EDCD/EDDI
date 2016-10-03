@@ -285,11 +285,13 @@ namespace EliteDangerousCompanionAppService
                     string data = reader.ReadToEnd();
                     Logging.Debug("Data is " + data);
                     cachedProfile = ProfileFromJson(data);
-                    cachedProfileExpires = DateTime.Now.AddSeconds(30);
-                    Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
-
-                    // We have obtained a profile so have finished our run
-                    firstRun = false;
+                    if (cachedProfile != null)
+                    {
+                        cachedProfileExpires = DateTime.Now.AddSeconds(30);
+                        Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
+                        // We have obtained a profile so have finished our run
+                        firstRun = false;
+                    }
 
                     Logging.Debug("Leaving");
                     return cachedProfile;
@@ -455,7 +457,11 @@ namespace EliteDangerousCompanionAppService
         public static Profile ProfileFromJson(string data)
         {
             Logging.Debug("Entered");
-            Profile profile = ProfileFromJson(JObject.Parse(data));
+            Profile profile = null;
+            if (data != null && data != "")
+            {
+                profile = ProfileFromJson(JObject.Parse(data));
+            }
             AugmentCmdrInfo(profile.Cmdr);
             Logging.Debug("Leaving");
             return profile;
@@ -557,13 +563,11 @@ namespace EliteDangerousCompanionAppService
                 {
                     ship.phoneticname = shipConfig.phoneticname.Trim();
                 }
-                ship.callsign = shipConfig.callsign;
                 ship.role = shipConfig.role;
             }
             else
             {
-                // Doesn't already exist; add a callsign and default role
-                ship.callsign = Ship.generateCallsign();
+                // Doesn't already exist; add a default role
                 ship.role = ShipRole.Multipurpose;
             }
 
@@ -575,13 +579,11 @@ namespace EliteDangerousCompanionAppService
                 {
                     // Already exists; grab the relevant information and supplement it
                     storedShip.name = shipConfig.name;
-                    storedShip.callsign = shipConfig.callsign;
                     storedShip.role = shipConfig.role;
                 }
                 else
                 {
-                    // Doesn't already exist; add a callsign and default role
-                    storedShip.callsign = Ship.generateCallsign();
+                    // Doesn't already exist; add a default role
                     storedShip.role = ShipRole.Multipurpose;
                 }
             }
@@ -682,15 +684,15 @@ namespace EliteDangerousCompanionAppService
                     {
                         string name = (string)cargoJson["commodity"];
                         Cargo cargo = new Cargo();
-                        cargo.Commodity = CommodityDefinitions.FromName(name);
-                        if (cargo.Commodity.Name == null)
+                        cargo.commodity = CommodityDefinitions.FromName(name);
+                        if (cargo.commodity.name == null)
                         {
                             // Unknown commodity; log an error so that we can update the definitions
                             Logging.Error("No commodity definition for cargo " + cargoJson.ToString());
-                            cargo.Commodity.Name = name;
+                            cargo.commodity.name = name;
                         }
-                        cargo.Quantity = (int)cargoJson["qty"];
-                        cargo.Cost = (long)cargoJson["value"];
+                        cargo.amount = (int)cargoJson["qty"];
+                        cargo.price = (long)cargoJson["value"] / cargo.amount;
                         Ship.cargo.Add(cargo);
                     }
                 }
@@ -823,7 +825,7 @@ namespace EliteDangerousCompanionAppService
                             // Unknown module; log an error so that we can update the definitions
                             Logging.Error("No definition for outfitting module " + module.ToString());
                         }
-                        Module.cost = module["cost"];
+                        Module.price = module["cost"];
                         Modules.Add(Module);
                     }
                 }
@@ -843,19 +845,19 @@ namespace EliteDangerousCompanionAppService
                 {
                     dynamic commodityJson = commodity.Value;
                     Commodity Commodity = CommodityDefinitions.CommodityFromEliteID((long)commodity["id"]);
-                    if (Commodity == null || Commodity.Name == null)
+                    if (Commodity == null || Commodity.name == null)
                     {
                         Commodity = new Commodity();
                         Commodity.EDName = (string)commodity["name"];
-                        Commodity.Category = (string)commodity["categoryName"];
+                        Commodity.category = (string)commodity["categoryName"];
                     }
-                    Commodity.AveragePrice = (int)commodity["meanPrice"];
-                    Commodity.BuyPrice = (int)commodity["buyPrice"];
-                    Commodity.Stock = (int)commodity["stock"];
-                    Commodity.StockBracket = (dynamic)commodity["stockBracket"];
-                    Commodity.SellPrice = (int)commodity["sellPrice"];
-                    Commodity.Demand = (int)commodity["demand"];
-                    Commodity.DemandBracket = (dynamic)commodity["demandBracket"];
+                    Commodity.avgprice = (int)commodity["meanPrice"];
+                    Commodity.buyprice = (int)commodity["buyPrice"];
+                    Commodity.stock = (int)commodity["stock"];
+                    Commodity.stockbracket = (dynamic)commodity["stockBracket"];
+                    Commodity.sellprice = (int)commodity["sellPrice"];
+                    Commodity.demand = (int)commodity["demand"];
+                    Commodity.demandbracket = (dynamic)commodity["demandBracket"];
 
                     List<string> StatusFlags = new List<string>();
                     foreach (dynamic statusFlag in commodity["statusFlags"])
@@ -890,7 +892,7 @@ namespace EliteDangerousCompanionAppService
                 Logging.Error("No definition for ship module " + json["module"].ToString());
             }
 
-            module.cost = (long)json["module"]["value"];
+            module.price = (long)json["module"]["value"];
             module.enabled = (bool)json["module"]["on"];
             module.priority = (int)json["module"]["priority"];
             // Be sensible with health - round it unless it's very low

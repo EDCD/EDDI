@@ -16,8 +16,8 @@ namespace EliteDangerousSpeechResponder
         public string Description { get; private set; }
         [JsonProperty("enabled")]
         private bool enabled;
-        [JsonProperty("interruptable")]
-        private bool interruptable = true;
+        [JsonProperty("priority")]
+        private int priority = 3;
         [JsonProperty("responder")]
         private bool responder;
         [JsonProperty("script")]
@@ -33,10 +33,10 @@ namespace EliteDangerousSpeechResponder
         }
 
         [JsonIgnore]
-        public bool Interruptable
+        public int Priority
         {
-            get { return interruptable; }
-            set { interruptable = value; OnPropertyChanged("Interruptable"); }
+            get { return priority; }
+            set { priority = value; OnPropertyChanged("Priority"); }
         }
 
         [JsonIgnore]
@@ -65,13 +65,13 @@ namespace EliteDangerousSpeechResponder
             get { return script != null; }
         }
 
-        public Script(string name, string description, bool responder, string script, bool interruptable = true)
+        public Script(string name, string description, bool responder, string script, int priority = 3)
         {
             Name = name;
             Description = description;
             this.responder = responder;
             Value = script;
-            Interruptable = interruptable;
+            Priority = priority;
             Enabled = true;
         }
 

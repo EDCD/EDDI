@@ -11,8 +11,8 @@ namespace EliteDangerousDataDefinitions
     /// </summary>
     public class Cargo
     {
-        public Commodity Commodity { get; set; } // The commodity
-        public int Quantity; // The number of items
-        public long Cost { get; set; } // How much we actually paid for it (per unit)
+        public Commodity commodity { get; set; } // The commodity
+        public int amount; // The number of items
+        public long price { get; set; } // How much we actually paid for it (per unit)
     }
 }

@@ -2,6 +2,7 @@
 using EliteDangerousDataDefinitions;
 using EliteDangerousDataProviderService;
 using EliteDangerousEvents;
+using EliteDangerousSpeechService;
 using EliteDangerousStarMapService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -73,7 +75,6 @@ namespace EDDI
         // Information obtained from the configuration
         public StarSystem HomeStarSystem { get; private set; }
         public Station HomeStation { get; private set; }
-        public decimal? Insurance { get; private set; }
 
         // Information obtained from the log watcher
         public string Environment { get; private set; }
@@ -124,7 +125,6 @@ namespace EDDI
                         }
                     }
                 }
-                Insurance = configuration.Insurance;
 
                 // Set up the app service
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
@@ -139,7 +139,8 @@ namespace EDDI
                         Logging.Debug("Failed to obtain profile: " + ex);
                     }
                 }
-                if (Cmdr != null && Cmdr.name != null)
+                Cmdr.insurance = configuration.Insurance;
+                if (Cmdr.name != null)
                 {
                     Logging.Info("EDDI access to the companion app is enabled");
                 }
@@ -180,6 +181,21 @@ namespace EDDI
                 // Set up monitors and responders
                 monitors = findMonitors();
                 responders = findResponders();
+
+                // Check for an update
+                string response;
+                try
+                {
+                    response = Net.DownloadString("http://api.eddp.co/eddi/version");
+                    if (response != Constants.EDDI_VERSION)
+                    {
+                        SpeechService.Instance.Say(null, "EDDI version " + response.Replace(".", " point ") + " is now available.", false);
+                    }
+                }
+                catch
+                {
+                    SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may not work fully", false);
+                }
 
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
             }
@@ -444,7 +460,7 @@ namespace EDDI
             if (CompanionAppService.Instance != null)
             {
                 Profile profile = CompanionAppService.Instance.Profile();
-                Cmdr = profile == null ? null : profile.Cmdr;
+                Cmdr = profile == null ? new Commander() : profile.Cmdr;
                 Ship = profile == null ? null : profile.Ship;
                 StoredShips = profile == null ? null : profile.StoredShips;
                 // We only set the current star system if it is not present, otherwise we leave it to events

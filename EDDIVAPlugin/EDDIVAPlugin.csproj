@@ -92,6 +92,10 @@
       <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
       <Name>EliteDangerousEvents</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EliteDangerousSpeechResponder\EliteDangerousSpeechResponder.csproj">
+      <Project>{B164BAEC-9D66-4846-B152-2F8914406B89}</Project>
+      <Name>EliteDangerousSpeechResponder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EliteDangerousSpeechService\EliteDangerousSpeechService.csproj">
       <Project>{19572a69-c13a-459d-ab72-2b0f034ac27f}</Project>
       <Name>EliteDangerousSpeechService</Name>

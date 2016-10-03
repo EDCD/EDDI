@@ -5517,7 +5517,7 @@ namespace Tests
             Assert.AreEqual(3, hardpoint1.size);
             Assert.AreEqual(3, hardpoint1.module.@class);
             Assert.AreEqual("E", hardpoint1.module.grade);
-            Assert.AreEqual(126540, hardpoint1.module.cost);
+            Assert.AreEqual(126540, hardpoint1.module.price);
             Assert.AreEqual(140600, hardpoint1.module.value);
 
             Assert.AreEqual("7C", profile.Ship.powerplant.@class + profile.Ship.powerplant.grade);
@@ -5544,9 +5544,9 @@ namespace Tests
             int limpets = 0;
             foreach (Cargo cargo in profile.Ship.cargo)
             {
-                if (cargo.Commodity.Name == "Limpet")
+                if (cargo.commodity.name == "Limpet")
                 {
-                    limpets += cargo.Quantity;
+                    limpets += cargo.amount;
                 }
             }
             Assert.AreEqual(4, limpets);

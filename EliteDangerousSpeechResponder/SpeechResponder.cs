@@ -42,8 +42,6 @@ namespace EliteDangerousSpeechResponder
             if (personality == null)
             { 
                 personality = Personality.Default();
-                //configuration.Personality = personality.Name;
-                //configuration.ToFile();
             }
             scriptResolver = new ScriptResolver(personality.Scripts);
             Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
@@ -56,7 +54,7 @@ namespace EliteDangerousSpeechResponder
 
         public void Stop()
         {
-            SpeechService.Instance.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, "Goodbye.", false, true, false);
+            SpeechService.Instance.Say(Eddi.Instance.Ship, "Goodbye.", true, 1);
         }
 
         public void Reload()
@@ -74,21 +72,26 @@ namespace EliteDangerousSpeechResponder
             Logging.Info("Reloaded " + ResponderName() + " " + ResponderVersion());
         }
 
-        // Say something with the default resolver
         public void Handle(Event theEvent)
         {
             Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
             Say(scriptResolver, theEvent.type, theEvent);
         }
 
+        // Say something with the default resolver
+        public void Say(string scriptName, Event theEvent = null, int? priority = null, bool? wait = null)
+        {
+            Say(scriptResolver, scriptName, theEvent, priority);
+        }
+
         // Say something with a custom resolver
-        public void Say(ScriptResolver resolver, string scriptName, Event theEvent = null)
+        public void Say(ScriptResolver resolver, string scriptName, Event theEvent = null, int? priority = null, bool? wait = null)
         {
             Dictionary<string, Cottle.Value> dict = createVariables(theEvent);
-            string result = resolver.resolve(scriptName, dict);
-            if (result != null)
+            string script = resolver.resolve(scriptName, dict);
+            if (script != null)
             {
-                SpeechService.Instance.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, result, false, false, resolver.isInterruptable(scriptName));
+                SpeechService.Instance.Say(Eddi.Instance.Ship, script, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority));
             }
         }
 
@@ -97,7 +100,6 @@ namespace EliteDangerousSpeechResponder
         {
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
 
-            // Start with commander variables
             if (Eddi.Instance.Cmdr != null)
             {
                 dict["cmdr"] = new ReflectionValue(Eddi.Instance.Cmdr);
@@ -121,6 +123,11 @@ namespace EliteDangerousSpeechResponder
             if (Eddi.Instance.LastStarSystem != null)
             {
                 dict["lastsystem"] = new ReflectionValue(Eddi.Instance.LastStarSystem);
+            }
+
+            if (Eddi.Instance.LastStation != null)
+            {
+                dict["station"] = new ReflectionValue(Eddi.Instance.LastStation);
             }
 
             if (theEvent != null)

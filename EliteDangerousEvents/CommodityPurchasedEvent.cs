@@ -28,7 +28,7 @@ namespace EliteDangerousEvents
 
         public CommodityPurchasedEvent(DateTime timestamp, Commodity commodity, int amount, decimal price) : base(timestamp, NAME)
         {
-            this.commodity = (commodity == null ? "unknown commodity" : commodity.Name);
+            this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
             this.amount = amount;
             this.price = price;
         }

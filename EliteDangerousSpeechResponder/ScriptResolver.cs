@@ -8,12 +8,8 @@ using EDDI;
 using EliteDangerousDataDefinitions;
 using EliteDangerousDataProviderService;
 using EliteDangerousSpeechService;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace EliteDangerousSpeechResponder
@@ -23,6 +19,8 @@ namespace EliteDangerousSpeechResponder
         private Dictionary<string, Script> scripts = new Dictionary<string, Script>();
         private Random random;
         private CustomSetting setting;
+
+        public static object Instance { get; set; }
 
         public ScriptResolver(Dictionary<string, Script> scripts)
         {
@@ -37,11 +35,11 @@ namespace EliteDangerousSpeechResponder
             return resolve(name, buildStore(vars));
         }
 
-        public bool isInterruptable(string name)
+        public int priority(string name)
         {
             Script script;
             scripts.TryGetValue(name, out script);
-            return (script == null ? true : script.Interruptable);
+            return (script == null ? 5 : script.Priority);
         }
 
         public string resolve(string name, BuiltinStore store)
@@ -69,11 +67,11 @@ namespace EliteDangerousSpeechResponder
                 var document = new SimpleDocument(script, setting);
                 var result = document.Render(store);
                 Logging.Debug("Turned script " + script + " in to speech " + result);
-                return result;
+                return result.Trim() == "" ? null : result.Trim();
             }
             catch (Exception e)
             {
-                Logging.Warn("Failed to resolve script: " + e.Message);
+                Logging.Warn("Failed to resolve script: " + e.ToString());
                 return "There is a problem with the script: " + e.Message.Replace("'", "");
             }
         }
@@ -165,7 +163,7 @@ namespace EliteDangerousSpeechResponder
                 string result = "";
                 if (Eddi.Instance.Ship != null && Eddi.Instance.Cmdr != null)
                 {
-                    result = Eddi.Instance.Ship.manufacturer + " " + Translations.CallSign(Eddi.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant());
+                    result = Translations.Manufacturer(Eddi.Instance.Ship.manufacturer) + " " + Translations.CallSign(Eddi.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant());
                 }
                 return result;
             }, 0);

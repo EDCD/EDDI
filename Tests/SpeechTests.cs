@@ -31,7 +31,7 @@ namespace Tests
             {
                 synth.SetOutputToWaveStream(stream);
 
-                synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><s>You are  docked at Jameson Memorial  in the <phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> system.</s></speak>");
+                synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s><phoneme alphabet=\"ipa\" ph=\"guːtəˈmaɪə\">Gutamaya</phoneme>.</s></speak>");
 
                 //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈdɛltə\">delta</phoneme> system.</s></speak>");
                 //synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"bliːiː\">Bleae</phoneme> <phoneme alphabet=\"ipa\" ph=\"θuːə\">Thua</phoneme> system.</s></speak>");
@@ -56,14 +56,14 @@ namespace Tests
         [TestMethod]
         public void TestCallsign()
         {
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049309), Translations.CallSign("GAB-1655"), true, true, true);
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), Translations.CallSign("GAB-1655"), true);
         }
 
 
         [TestMethod]
         public void TestSsml()
         {
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049363), "You are travelling to the " + Translations.StarSystem("Hotas") + " system.", true, true, true);
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049363), "You are travelling to the " + Translations.StarSystem("Hotas") + " system.", true);
         }
 
         [TestMethod]
@@ -78,7 +78,7 @@ namespace Tests
             //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Pranav Antal") + ".");
             //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Zachary Hudson") + ".");
             //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Zemina Torval") + ".");
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049363), Translations.Power("Li Yong-Rui") + ".", true, true, true);
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049363), Translations.Power("Li Yong-Rui") + ".", true);
         }
 
         [TestMethod]
@@ -112,47 +112,47 @@ namespace Tests
         {
             Ship ship = ShipDefinitions.FromEliteID(128049363);
             ship.health = 100;
-            SpeechService.Instance.Say(null, ship, "Systems fully operational.", true, true, true);
+            SpeechService.Instance.Say(ship, "Systems fully operational.", true);
             ship.health = 80;
-            SpeechService.Instance.Say(null, ship, "Systems at 80%.", true, true, true);
+            SpeechService.Instance.Say(ship, "Systems at 80%.", true);
             ship.health = 60;
-            SpeechService.Instance.Say(null, ship, "Systems at 60%.", true, true, true);
+            SpeechService.Instance.Say(ship, "Systems at 60%.", true);
             ship.health = 40;
-            SpeechService.Instance.Say(null, ship, "Systems at 40%.", true, true, true);
+            SpeechService.Instance.Say(ship, "Systems at 40%.", true);
             ship.health = 20;
-            SpeechService.Instance.Say(null, ship, "Systems at 20%.", true, true, true);
+            SpeechService.Instance.Say(ship, "Systems at 20%.", true);
             ship.health = 0;
-            SpeechService.Instance.Say(null, ship, "Systems critical.", true, true, true);
+            SpeechService.Instance.Say(ship, "Systems critical.", true);
         }
 
         [TestMethod]
         public void TestVariants()
         {
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049309), "Welcome to your Vulture.  Weapons online.", true, true, true);
-            SpeechService.Instance.Transmit(null, ShipDefinitions.FromEliteID(128049309), "Vulture x-ray whiskey tango seven one seven six requesting docking.", true, true, true);
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049339), "Welcome to your Python.  Scanning at full range.", true, true, true);
-            SpeechService.Instance.Transmit(null, ShipDefinitions.FromEliteID(128049339), "Python victor oscar Pappa fife tree fawer niner requesting docking.", true, true, true);
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049363), "Welcome to your Anaconda.  All systems operational.", true, true, true);
-            SpeechService.Instance.Transmit(null, ShipDefinitions.FromEliteID(128049363), "Anaconda charlie november delta one niner eight fawer requesting docking.", true, true, true);
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), "Welcome to your Vulture.  Weapons online.", true);
+            //SpeechService.Instance.Transmit(ShipDefinitions.FromEliteID(128049309), "Vulture x-ray whiskey tango seven one seven six requesting docking.", true);
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049339), "Welcome to your Python.  Scanning at full range.", true);
+            //SpeechService.Instance.Transmit(ShipDefinitions.FromEliteID(128049339), "Python victor oscar Pappa fife tree fawer niner requesting docking.", true);
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049363), "Welcome to your Anaconda.  All systems operational.", true);
+            //SpeechService.Instance.Transmit(ShipDefinitions.FromEliteID(128049363), "Anaconda charlie november delta one niner eight fawer requesting docking.", true);
         }
 
         [TestMethod]
         public void TestChorus()
         {
-            SpeechService.Instance.Speak("Chorus level 0", null, 0, 0, 0, 0, 0, true, true, true, true);
-            SpeechService.Instance.Speak("Chorus level 20", null, 0, 0, 20, 0, 0, true, true, true, true);
-            SpeechService.Instance.Speak("Chorus level 40", null, 0, 0, 40, 0, 0, true, true, true, true);
-            SpeechService.Instance.Speak("Chorus level 60", null, 0, 0, 60, 0, 0, true, true, true, true);
-            SpeechService.Instance.Speak("Chorus level 80", null, 0, 0, 80, 0, 0, true, true, true, true);
-            SpeechService.Instance.Speak("Chorus level 100", null, 0, 0, 100, 0, 0, true, true, true, true);
+            SpeechService.Instance.Speak("Chorus level 0", null, 0, 0, 0, 0, 0, true);
+            SpeechService.Instance.Speak("Chorus level 20", null, 0, 0, 20, 0, 0, true);
+            SpeechService.Instance.Speak("Chorus level 40", null, 0, 0, 40, 0, 0, true);
+            SpeechService.Instance.Speak("Chorus level 60", null, 0, 0, 60, 0, 0, true);
+            SpeechService.Instance.Speak("Chorus level 80", null, 0, 0, 80, 0, 0, true);
+            SpeechService.Instance.Speak("Chorus level 100", null, 0, 0, 100, 0, 0, true);
         }
 
         [TestMethod]
         public void TestSendAndReceive()
         {
-            SpeechService.Instance.Say(null, ShipDefinitions.FromEliteID(128049339), "Issuing docking request.  Please stand by.", true, true, true);
-            SpeechService.Instance.Transmit(null, ShipDefinitions.FromEliteID(128049339), "Anaconda golf foxtrot lima one niner six eight requesting docking.", true, true, true);
-            SpeechService.Instance.Receive(null, ShipDefinitions.FromEliteID(128049339), "Roger golf foxtrot lima one niner six eight docking request received", true, true, true);
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049339), "Issuing docking request.  Please stand by.", true);
+            //SpeechService.Instance.Transmit(ShipDefinitions.FromEliteID(128049339), "Anaconda golf foxtrot lima one niner six eight requesting docking.", true, true);
+            //SpeechService.Instance.Receive(ShipDefinitions.FromEliteID(128049339), "Roger golf foxtrot lima one niner six eight docking request received", true, true);
         }
 
         [TestMethod]
@@ -167,7 +167,7 @@ namespace Tests
             HashSet<string> pathingResults = new HashSet<string>();
             for (int i = 0; i < 1000; i++)
             {
-                string pathedString = SpeechService.Instance.SpeechFromScript(pathingString);
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
@@ -187,7 +187,7 @@ namespace Tests
             HashSet<string> pathingResults = new HashSet<string>();
             for (int i = 0; i < 1000; i++)
             {
-                string pathedString = SpeechService.Instance.SpeechFromScript(pathingString);
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
@@ -215,7 +215,7 @@ namespace Tests
             HashSet<string> pathingResults = new HashSet<string>();
             for (int i = 0; i < 1000; i++)
             {
-                string pathedString = SpeechService.Instance.SpeechFromScript(pathingString);
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
@@ -234,7 +234,7 @@ namespace Tests
             int sevenCount = 0;
             for (int i = 0; i < 10000; i++)
             {
-                string pathedString = SpeechService.Instance.SpeechFromScript(pathingString);
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
                 if (pathedString == "Seven")
                 {
                     sevenCount++;
@@ -256,7 +256,7 @@ namespace Tests
             HashSet<string> pathingResults = new HashSet<string>();
             for (int i = 0; i < 1000; i++)
             {
-                string pathedString = SpeechService.Instance.SpeechFromScript(pathingString);
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
@@ -274,7 +274,7 @@ namespace Tests
             HashSet<string> pathingResults = new HashSet<string>();
             for (int i = 0; i < 1000; i++)
             {
-                string pathedString = SpeechService.Instance.SpeechFromScript(pathingString);
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
@@ -299,7 +299,7 @@ namespace Tests
             HashSet<string> pathingResults = new HashSet<string>();
             for (int i = 0; i < 1000; i++)
             {
-                string pathedString = SpeechService.Instance.SpeechFromScript(pathingString);
+                string pathedString = VoiceAttackPlugin.SpeechFromScript(pathingString);
                 pathingResults.Add(pathedString);
             }
 
@@ -347,13 +347,13 @@ namespace Tests
                 soundOut.Dispose();
                 source.Dispose();
             }
-            SpeechService.Instance.Speak("Testing drop-off.", null, 50, 1, 30, 40, 0, false, true, true, true);
+            SpeechService.Instance.Speak("Testing drop-off.", null, 50, 1, 30, 40, 0, true);
         }
 
         [TestMethod]
         public void TestSpeechServicePhonemes()
         {
-            SpeechService.Instance.Speak("You are  docked at Jameson Memorial  in the <phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> system.", null, 50, 1, 30, 40, 0, false, true, true, true);
+            SpeechService.Instance.Speak("You are  docked at Jameson Memorial  in the <phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> system.", null, 50, 1, 30, 40, 0, true);
         }
         [TestMethod]
         public void TestSectorTranslations()

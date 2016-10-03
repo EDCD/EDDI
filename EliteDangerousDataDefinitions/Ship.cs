@@ -37,8 +37,6 @@ namespace EliteDangerousDataDefinitions
         [JsonIgnore]
         public List<Cargo> cargo { get; set; }
 
-        /// <summary>the callsign of this ship</summary>
-        public string callsign { get; set;  }
         /// <summary>the name of this ship</summary>
         public string name { get; set; }
         [JsonIgnore]

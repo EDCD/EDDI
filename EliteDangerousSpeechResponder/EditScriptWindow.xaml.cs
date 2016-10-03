@@ -157,7 +157,7 @@ namespace EliteDangerousSpeechResponder
             }
 
             ScriptResolver scriptResolver = new ScriptResolver(newScripts);
-            responder.Say(scriptResolver, ScriptName, sampleEvent);
+            responder.Say(scriptResolver, ScriptName, sampleEvent, 3, false);
         }
     }
 }

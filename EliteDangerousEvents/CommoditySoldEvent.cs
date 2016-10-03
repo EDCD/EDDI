@@ -36,7 +36,7 @@ namespace EliteDangerousEvents
 
         public CommoditySoldEvent(DateTime timestamp, Commodity commodity, int amount, decimal price, decimal profit, bool illegal, bool stolen, bool blackmarket) : base(timestamp, NAME)
         {
-            this.commodity = (commodity == null ? "unknown commodity" : commodity.Name);
+            this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
             this.amount = amount;
             this.price = price;
             this.profit = profit;

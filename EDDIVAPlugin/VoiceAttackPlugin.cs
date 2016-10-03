@@ -6,12 +6,13 @@ using System.Linq;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Diagnostics;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using EliteDangerousSpeechService;
 using Utilities;
 using EDDI;
 using EliteDangerousEvents;
+using System.Text;
+using System.Text.RegularExpressions;
+using EliteDangerousSpeechResponder;
 
 namespace EDDIVAPlugin
 {
@@ -32,111 +33,94 @@ namespace EDDIVAPlugin
             return new Guid("{4AD8E3A4-CEFA-4558-B503-1CC9B99A07C1}");
         }
 
-        public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
+        private static readonly Random random = new Random();
 
-        public static void VA_Init1(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
+        public static Thread updaterThread = null;
+
+        private static SpeechResponder speechResponder = new SpeechResponder();
+
+        public static void VA_Init1(dynamic vaProxy)
         {
             Logging.Info("Initialising EDDI VoiceAttack plugin");
 
             try
             {
-                // Set the initial values from the main EDDI objects
-                setValues(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-
                 Eddi.Instance.Start();
 
-                setString(ref textValues, "EDDI plugin profile status", "Enabled");
-                Logging.Info("Initialised EDDI VoiceAttack plugin");
+                // Set the initial values from the main EDDI objects
+                setValues(ref vaProxy);
+
+                // Spin out a worker thread to keep the VoiceAttack events up-to-date and run event-specific commands
+                updaterThread = new Thread(() =>
+                {
+                    while (true)
+                    {
+                        Event theEvent = EventQueue.Take();
+                        vaProxy.SetText("EDDI event", theEvent.type);
+                        
+                        // Update all values
+                        setValues(ref vaProxy);
+
+                        // Event-specific information
+                        if (theEvent is EnteredNormalSpaceEvent)
+                        {
+                            vaProxy.SetText("EDDI event body", ((EnteredNormalSpaceEvent)theEvent).body);
+                        }
+
+                        // Fire local command if present
+                        string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
+                        if (vaProxy.CommandExists(commandName))
+                        {
+                            vaProxy.ExecuteCommand(commandName);
+                        }
+                    }
+                });
+                updaterThread.IsBackground = true;
+                updaterThread.Start();
+
+                setStatus(ref vaProxy, "Operational");
             }
             catch (Exception e)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to initialise", e);
+                Logging.Error("Failed to initialise VoiceAttack plugin: " + e.ToString());
+                vaProxy.WriteToLog("Failed to initialise EDDI.  Some functions might not work", "red");
             }
         }
 
-        //public static void VA_Init1(dynamic vaProxy)
-        //{
-        //    Logging.Info("*******************************************************************Initialising");
-        //    vaProxy.SetInt("val", (int)0);
-        //new Thread(() =>
-        //{
-        //    int val = 1;
-        //    while (true)
-        //    {
-        //        Logging.Info("Tick");
-        //        Thread.Sleep(1000);
-        //        vaProxy.SetInt("val", val++);
-        //    }
-        //}).Start();
-        //    Logging.Info("*******************************************************************Done");
-        //}
-
-        public static void VA_Exit1(ref Dictionary<string, object> state)
+        public static void VA_Exit1(dynamic vaProxy)
         {
+            Logging.Info("EDDI VoiceAttack plugin exiting");
+            updaterThread.Abort();
             Eddi.Instance.Stop();
         }
 
-        //public static void VA_Invoke1(dynamic vaProxy)
-        //{
-        //    Logging.Info("**********************************************************Invoked " + vaProxy.Context);
-        //}
-
-        //public static void VA_Invoke1(dynamic vaProxy)
-        //{
-        //if (vaProxy.Context == "add it up")
-        //{
-        //    if (vaProxy.SessionState.ContainsKey("someValue"))
-        //    {
-        //        int iVal = vaProxy.SessionState["someValue"];
-        //        vaProxy.SessionState["someValue"] = ++iVal;
-        //    }
-        //    else
-        //        vaProxy.SessionState.Add("someValue", 1);
-
-        //    vaProxy.SetInt("myInt", (int)vaProxy.SessionState["someValue"]);
-        //    vaProxy.ExecuteCommand("show the total", true);
-        //}
-        //else
-        //{
-        //    vaProxy.SetProfile("test shortcuts");
-        //}
-        //}
-
-        public static void VA_Invoke1(string context, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        public static void VA_Invoke1(dynamic vaProxy)
         {
             try
             {
-                switch (context)
+                switch ((string)vaProxy.Context)
                 {
                     case "coriolis":
-                        InvokeCoriolis(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        InvokeCoriolis(ref vaProxy);
                         break;
                     case "eddbsystem":
-                        InvokeEDDBSystem(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        InvokeEDDBSystem(ref vaProxy);
                         break;
                     case "eddbstation":
-                        InvokeEDDBStation(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        InvokeEDDBStation(ref vaProxy);
                         break;
                     case "profile":
-                        InvokeUpdateProfile(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        InvokeUpdateProfile(ref vaProxy);
                         break;
                     case "say":
-                        InvokeSay(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        InvokeSay(ref vaProxy);
                         break;
-                    case "transmit":
-                        InvokeTransmit(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                        break;
-                    case "receive":
-                        InvokeReceive(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                        break;
-                    case "generate callsign":
-                        InvokeGenerateCallsign(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                        break;
-                    case "event queue":
-                        InvokeEventQueue(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    case "speech":
+                        InvokeSpeech(ref vaProxy);
                         break;
                     case "system note":
-                        InvokeStarMapSystemComment(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        InvokeStarMapSystemComment(ref vaProxy);
                         break;
                     default:
                         //if (context.ToLower().StartsWith("event:"))
@@ -148,50 +132,26 @@ namespace EDDIVAPlugin
                         //}
                         break;
                 }
-                setPluginStatus(ref textValues, "Operational", null, null);
             }
             catch (Exception e)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to invoke action", e);
+                Logging.Error("Failed to invoke action " + vaProxy.Context + ": " + e.ToString());
+                vaProxy.WriteToLog("Failed to invoke action " + vaProxy.Context);
             }
-            Logging.Debug("Leaving");
+        }
+
+        public static void VA_StopCommand()
+        {
         }
 
         /// <summary>Force-update EDDI's information</summary>
-        private static void InvokeUpdateProfile(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        private static void InvokeUpdateProfile(ref dynamic vaProxy)
         {
             Eddi.Instance.refreshProfile();
-            setValues(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            setValues(vaProxy);
         }
 
-        public static void InvokeEventQueue(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
-        {
-            bool somethingToReport = false;
-            while (!somethingToReport)
-            {
-                try
-                {
-                    Event theEvent = EventQueue.Take();
-                    setString(ref textValues, "EDDI event", theEvent.type);
-                    // Update all values
-                    setValues(ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                    // Event-specific information
-                    if (theEvent is EnteredNormalSpaceEvent)
-                    {
-                        setString(ref textValues, "EDDI event body", ((EnteredNormalSpaceEvent)theEvent).body);
-                    }
-                    setPluginStatus(ref textValues, "Operational", null, null);
-                    somethingToReport = true;
-                }
-                catch (Exception e)
-                {
-                    setPluginStatus(ref textValues, "Failed", "Failed to send ship data to coriolis", e);
-                }
-                Logging.Debug("Leaving");
-            }
-        }
-
-        public static void InvokeEDDBSystem(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        public static void InvokeEDDBSystem(ref dynamic vaProxy)
         {
             Logging.Debug("Entered");
             try
@@ -205,18 +165,18 @@ namespace EDDIVAPlugin
 
                 Logging.Debug("Starting process with uri " + systemUri);
 
-                setPluginStatus(ref textValues, "Operational", null, null);
+                setStatus(ref vaProxy, "Operational");
 
                 Process.Start(systemUri);
             }
             catch (Exception e)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to send system data to EDDB", e);
+                setStatus(ref vaProxy, "Failed to send system data to EDDB", e);
             }
             Logging.Debug("Leaving");
         }
 
-        public static void InvokeEDDBStation(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        public static void InvokeEDDBStation(ref dynamic vaProxy)
         {
             Logging.Debug("Entered");
             try
@@ -239,16 +199,16 @@ namespace EDDIVAPlugin
 
                 Process.Start(stationUri);
 
-                setPluginStatus(ref textValues, "Operational", null, null);
+                setStatus(ref vaProxy, "Operational");
             }
             catch (Exception e)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to send station data to EDDB", e);
+                setStatus(ref vaProxy, "Failed to send station data to EDDB", e);
             }
             Logging.Debug("Leaving");
         }
 
-        public static void InvokeCoriolis(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        public static void InvokeCoriolis(ref dynamic vaProxy)
         {
             Logging.Debug("Entered");
             try
@@ -265,37 +225,37 @@ namespace EDDIVAPlugin
 
                 Process.Start(shipUri);
 
-                setPluginStatus(ref textValues, "Operational", null, null);
+                setStatus(ref vaProxy, "Operational");
             }
             catch (Exception e)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to send ship data to coriolis", e);
+                setStatus(ref vaProxy, "Failed to send ship data to coriolis", e);
             }
             Logging.Debug("Leaving");
         }
 
         /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
-        private static void setShipModuleValues(Module module, string name, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        private static void setShipModuleValues(Module module, string name, ref dynamic vaProxy)
         {
-            setString(ref textValues, name, module == null ? null : module.name);
-            setInt(ref intValues, name + " class", module == null ? (int?)null : module.@class);
-            setString(ref textValues, name + " grade", module == null ? null : module.grade);
-            setDecimal(ref decimalValues, name + " health", module == null ? (decimal?)null : module.health);
-            setDecimal(ref decimalValues, name + " cost", module == null ? (decimal?)null : (decimal)module.cost);
-            setDecimal(ref decimalValues, name + " value", module == null ? (decimal?)null : (decimal)module.value);
-            if (module != null && module.cost < module.value)
+            vaProxy.SetText(name, module == null ? null : module.name);
+            vaProxy.SetInt(name + " class", module == null ? (int?)null : module.@class);
+            vaProxy.SetText(name + " grade", module == null ? null : module.grade);
+            vaProxy.SetDecimal(name + " health", module == null ? (decimal?)null : module.health);
+            vaProxy.SetDecimal(name + " cost", module == null ? (decimal?)null : (decimal)module.price);
+            vaProxy.SetDecimal(name + " value", module == null ? (decimal?)null : (decimal)module.value);
+            if (module != null && module.price < module.value)
             {
-                decimal discount = Math.Round((1 - (((decimal)module.cost) / ((decimal)module.value))) * 100, 1);
-                setDecimal(ref decimalValues, name + " discount", discount > 0.01M ? discount : (decimal?)null);
+                decimal discount = Math.Round((1 - (((decimal)module.price) / ((decimal)module.value))) * 100, 1);
+                vaProxy.SetDecimal(name + " discount", discount > 0.01M ? discount : (decimal?)null);
             }
             else
             {
-                setDecimal(ref decimalValues, name + " discount", null);
+                vaProxy.SetDecimal(name + " discount", null);
             }
         }
 
         /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
-        private static void setShipModuleOutfittingValues(Module existing, List<Module> outfittingModules, string name, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        private static void setShipModuleOutfittingValues(Module existing, List<Module> outfittingModules, string name, ref dynamic vaProxy)
         {
             if (existing != null && outfittingModules != null)
             {
@@ -304,134 +264,148 @@ namespace EDDIVAPlugin
                     if (existing.EDDBID == Module.EDDBID)
                     {
                         // Found it
-                        setDecimal(ref decimalValues, name + " station cost", (decimal?)Module.cost);
-                        if (Module.cost < existing.cost)
+                        vaProxy.SetDecimal(name + " station cost", (decimal?)Module.price);
+                        if (Module.price < existing.price)
                         {
                             // And it's cheaper
-                            setDecimal(ref decimalValues, name + " station discount", existing.cost - Module.cost);
-                            setString(ref textValues, name + " station discount (spoken)", Translations.Humanize(existing.cost - Module.cost));
+                            vaProxy.SetDecimal(name + " station discount", existing.price - Module.price);
+                            vaProxy.SetText(name + " station discount (spoken)", Translations.Humanize(existing.price - Module.price));
                         }
                         return;
                     }
                 }
             }
             // Not found so remove any existing
-            setDecimal(ref decimalValues, "Ship " + name + " station cost", (decimal?)null);
-            setDecimal(ref decimalValues, "Ship " + name + " station discount", (decimal?)null);
-            setString(ref textValues, "Ship " + name + " station discount (spoken)", (string)null);
+            vaProxy.SetDecimal("Ship " + name + " station cost", (decimal?)null);
+            vaProxy.SetDecimal("Ship " + name + " station discount", (decimal?)null);
+            vaProxy.SetText("Ship " + name + " station discount (spoken)", (string)null);
         }
-
 
         /// <summary>Say something inside the cockpit with text-to-speech</summary>
-        public static void InvokeSay(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        public static void InvokeSay(ref dynamic vaProxy)
         {
             try
             {
-                string script = null;
-                foreach (string key in textValues.Keys)
-                {
-                    if (key.EndsWith(" script"))
-                    {
-                        script = textValues[key];
-                        break;
-                    }
-                }
+                string script = vaProxy.GetText("Script");
                 if (script == null)
                 {
                     return;
                 }
-                SpeechService.Instance.Say(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script, true, true, true);
+
+                int? priority = vaProxy.GetInt("Priority");
+                if (priority == null)
+                {
+                    priority = 3;
+                }
+
+                string speech = SpeechFromScript(script);
+
+                SpeechService.Instance.Say(Eddi.Instance.Ship, speech, true, (int)priority);
             }
             catch (Exception e)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to run internal speech system", e);
+                setStatus(ref vaProxy, "Failed to run internal speech system", e);
             }
         }
 
-        /// <summary>Transmit something on the radio with text-to-speech</summary>
-        public static void InvokeTransmit(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        /// <summary>Say something inside the cockpit with text-to-speech</summary>
+        public static void InvokeSpeech(ref dynamic vaProxy)
         {
             try
             {
-                string script = null;
-                foreach (string key in textValues.Keys)
-                {
-                    if (key.EndsWith(" script"))
-                    {
-                        script = textValues[key];
-                        break;
-                    }
-                }
+                string script = vaProxy.GetText("Script");
                 if (script == null)
                 {
                     return;
                 }
-                SpeechService.Instance.Transmit(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script, true, true, true);
+
+                int? priority = vaProxy.GetInt("Priority");
+
+                speechResponder.Say(script, null, priority);
             }
             catch (Exception e)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to run internal speech system", e);
+                setStatus(ref vaProxy, "Failed to run internal speech system", e);
             }
         }
 
-        /// <summary>Receive something on the radio with text-to-speech</summary>
-        public static void InvokeReceive(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        public static string SpeechFromScript(string script)
         {
-            try
-            {
-                string script = null;
-                foreach (string key in textValues.Keys)
-                {
-                    if (key.EndsWith(" script"))
-                    {
-                        script = textValues[key];
-                        break;
-                    }
-                }
-                if (script == null)
-                {
-                    return;
-                }
-                SpeechService.Instance.Receive(Eddi.Instance.Cmdr, Eddi.Instance.Ship, script, true, true, true);
-            }
-            catch (Exception e)
-            {
-                setPluginStatus(ref textValues, "Failed", "Failed to run internal speech system", e);
-            }
-        }
+            if (script == null) { return null; }
 
-        /// <summary>
-        /// Generate a callsign
-        /// </summary>
-        public static void InvokeGenerateCallsign(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
-        {
-            try
+            // Variable replacement
+            if (Eddi.Instance.Ship != null)
             {
-                string callsign = Ship.generateCallsign();
-                setString(ref textValues, "EDDI generated callsign", callsign);
-                setString(ref textValues, "EDDI generated callsign (spoken)", Translations.CallSign(callsign));
+                if (Eddi.Instance.Ship != null && Eddi.Instance.Ship.phoneticname != null)
+                {
+                    script = script.Replace("$=", Eddi.Instance.Ship.phoneticname);
+                }
+                else if (Eddi.Instance.Ship != null && Eddi.Instance.Ship.name != null)
+                {
+                    script = script.Replace("$=", Eddi.Instance.Ship.name);
+                }
+                else
+                {
+                    script = script.Replace("$=", "your ship");
+                }
             }
-            catch (Exception e)
+
+            string cmdrScript;
+            if (Eddi.Instance.Cmdr == null || Eddi.Instance.Cmdr.name == null || Eddi.Instance.Cmdr.name.Trim().Length == 0)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to generate callsign", e);
+                cmdrScript = "Eddi.Instance.Cmdr";
             }
+            else if (Eddi.Instance.Cmdr.phoneticname == null || Eddi.Instance.Cmdr.phoneticname.Trim().Length == 0)
+            {
+                cmdrScript = "Eddi.Instance.Cmdr " + Eddi.Instance.Cmdr.name;
+            }
+            else
+            {
+                cmdrScript = "Eddi.Instance.Cmdr <phoneme alphabet=\"ipa\" ph=\"" + Eddi.Instance.Cmdr.phoneticname + "\">" + Eddi.Instance.Cmdr.name + "</phoneme>";
+            }
+            script = script.Replace("$-", cmdrScript);
+
+            // Multiple choice selection
+            StringBuilder sb = new StringBuilder();
+
+            // Step 1 - resolve any options in square brackets
+            Match matchResult = Regex.Match(script, @"\[[^\]]*\]|[^\[\]]+");
+            while (matchResult.Success)
+            {
+                if (matchResult.Value.StartsWith("["))
+                {
+                    // Remove the brackets and pick one of the options
+                    string result = matchResult.Value.Substring(1, matchResult.Value.Length - 2);
+                    string[] options = result.Split(';');
+                    sb.Append(options[random.Next(0, options.Length)]);
+                }
+                else
+                {
+                    // Pass it right along
+                    sb.Append(matchResult.Groups[0].Value);
+                }
+                matchResult = matchResult.NextMatch();
+            }
+            string res = sb.ToString();
+
+            // Step 2 - resolve phrases separated by semicolons
+            if (res.Contains(";"))
+            {
+                // Pick one of the options
+                string[] options = res.Split(';');
+                res = options[random.Next(0, options.Length)];
+            }
+            return res;
         }
 
         /// <summary>
         /// Send a comment to the starmap service and store locally
         /// </summary>
-        public static void InvokeStarMapSystemComment(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        public static void InvokeStarMapSystemComment(ref dynamic vaProxy)
         {
             try
             {
-                string comment = null;
-                foreach (string key in textValues.Keys)
-                {
-                    if (key == "EDDI system comment")
-                    {
-                        comment = textValues[key];
-                    }
-                }
+                string comment = vaProxy.GetText("EDDI system comment");
                 if (comment == null)
                 {
                     return;
@@ -453,197 +427,198 @@ namespace EDDIVAPlugin
             }
             catch (Exception e)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to store system comment", e);
+                setStatus(ref vaProxy, "Failed to store system comment", e);
             }
         }
 
         /// <summary>Set all values</summary>
-        private static void setValues(ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        private static void setValues(ref dynamic vaProxy)
         {
             Logging.Debug("Setting values");
-            setCommanderValues(Eddi.Instance.Cmdr, ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-            setShipValues(Eddi.Instance.Ship, "Ship", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            setCommanderValues(Eddi.Instance.Cmdr, ref vaProxy);
+            setShipValues(Eddi.Instance.Ship, "Ship", ref vaProxy);
             int currentStoredShip = 1;
             if (Eddi.Instance.StoredShips != null)
             {
                 foreach (Ship StoredShip in Eddi.Instance.StoredShips)
                 {
-                    setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                    setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref vaProxy);
                     currentStoredShip++;
                 }
             }
-            setStarSystemValues(Eddi.Instance.CurrentStarSystem, "System", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-            setStarSystemValues(Eddi.Instance.LastStarSystem, "Last system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-            setStarSystemValues(Eddi.Instance.HomeStarSystem, "Home system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+            setStarSystemValues(Eddi.Instance.CurrentStarSystem, "System", ref vaProxy);
+            setStarSystemValues(Eddi.Instance.LastStarSystem, "Last system", ref vaProxy);
+            setStarSystemValues(Eddi.Instance.HomeStarSystem, "Home system", ref vaProxy);
 
             // Backwards-compatibility with 1.x
             if (Eddi.Instance.HomeStarSystem != null)
             {
-                setString(ref textValues, "Home system", Eddi.Instance.HomeStarSystem.name);
-                setString(ref textValues, "Home system (spoken)", Translations.StarSystem(Eddi.Instance.HomeStarSystem.name));
+                vaProxy.SetText("Home system", Eddi.Instance.HomeStarSystem.name);
+                vaProxy.SetText("Home system (spoken)", Translations.StarSystem(Eddi.Instance.HomeStarSystem.name));
             }
             if (Eddi.Instance.HomeStation != null)
             {
-                setString(ref textValues, "Home station", Eddi.Instance.HomeStation.name);
+                vaProxy.SetText("Home station", Eddi.Instance.HomeStation.name);
             }
 
-            if (Eddi.Instance.Insurance != null)
-            {
-                setDecimal(ref decimalValues, "Insurance", Eddi.Instance.Insurance);
-            }
-
-            setString(ref textValues, "Environment", Eddi.Instance.Environment);
+            vaProxy.SetText("Environment", Eddi.Instance.Environment);
 
             Logging.Debug("Set values");
         }
 
         /// <summary>Set values for a station</summary>
-        private static void setStationValues(Station station, string prefix, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        private static void setStationValues(Station station, string prefix, ref dynamic vaProxy)
         {
             Logging.Debug("Setting station information");
 
             if (station == null)
             {
                 // We don't have any data so remove any info that we might have in history
-                setDecimal(ref decimalValues, prefix + " distance from star", null);
-                setString(ref textValues, prefix + " government", null);
-                setString(ref textValues, prefix + " allegiance", null);
-                setString(ref textValues, prefix + " faction", null);
-                setString(ref textValues, prefix + " state", null);
-                setString(ref textValues, prefix + " primary economy", null);
-                setString(ref textValues, prefix + " secondary economy", null);
-                setString(ref textValues, prefix + " tertiary economy", null);
-                setBoolean(ref booleanValues, prefix + " has refuel", null);
-                setBoolean(ref booleanValues, prefix + " has repair", null);
-                setBoolean(ref booleanValues, prefix + " has rearm", null);
-                setBoolean(ref booleanValues, prefix + " has market", null);
-                setBoolean(ref booleanValues, prefix + " has black market", null);
-                setBoolean(ref booleanValues, prefix + " has outfitting", null);
-                setBoolean(ref booleanValues, prefix + " has shipyard", null);
+                vaProxy.SetDecimal(prefix + " distance from star", null);
+                vaProxy.SetText(prefix + " government", null);
+                vaProxy.SetText(prefix + " allegiance", null);
+                vaProxy.SetText(prefix + " faction", null);
+                vaProxy.SetText(prefix + " state", null);
+                vaProxy.SetText(prefix + " primary economy", null);
+                vaProxy.SetText(prefix + " secondary economy", null);
+                vaProxy.SetText(prefix + " tertiary economy", null);
+                vaProxy.SetBoolean(prefix + " has refuel", null);
+                vaProxy.SetBoolean(prefix + " has repair", null);
+                vaProxy.SetBoolean(prefix + " has rearm", null);
+                vaProxy.SetBoolean(prefix + " has market", null);
+                vaProxy.SetBoolean(prefix + " has black market", null);
+                vaProxy.SetBoolean(prefix + " has outfitting", null);
+                vaProxy.SetBoolean(prefix + " has shipyard", null);
             }
             else
             {
-                setString(ref textValues, prefix + " name", station.name);
-                setDecimal(ref decimalValues, prefix + " distance from star", station.distancefromstar);
-                setString(ref textValues, prefix + " government", station.government);
-                setString(ref textValues, prefix + " allegiance", station.allegiance);
-                setString(ref textValues, prefix + " faction", station.faction);
-                setString(ref textValues, prefix + " state", station.state);
+                vaProxy.SetText(prefix + " name", station.name);
+                vaProxy.SetDecimal(prefix + " distance from star", station.distancefromstar);
+                vaProxy.SetText(prefix + " government", station.government);
+                vaProxy.SetText(prefix + " allegiance", station.allegiance);
+                vaProxy.SetText(prefix + " faction", station.faction);
+                vaProxy.SetText(prefix + " state", station.state);
                 if (station.economies != null)
                 {
                     if (station.economies.Count > 0)
                     {
-                        setString(ref textValues, prefix + " primary economy", station.economies[0]);
+                        vaProxy.SetText(prefix + " primary economy", station.economies[0]);
                     }
                     if (station.economies.Count > 1)
                     {
-                        setString(ref textValues, prefix + " secondary economy", station.economies[1]);
+                        vaProxy.SetText(prefix + " secondary economy", station.economies[1]);
                     }
                     if (station.economies.Count > 2)
                     {
-                        setString(ref textValues, prefix + " tertiary economy", station.economies[2]);
+                        vaProxy.SetText(prefix + " tertiary economy", station.economies[2]);
                     }
                 }
                 // Services
-                setBoolean(ref booleanValues, prefix + " has refuel", station.hasrefuel);
-                setBoolean(ref booleanValues, prefix + " has repair", station.hasrepair);
-                setBoolean(ref booleanValues, prefix + " has rearm", station.hasrearm);
-                setBoolean(ref booleanValues, prefix + " has market", station.hasmarket);
-                setBoolean(ref booleanValues, prefix + " has black market", station.hasblackmarket);
-                setBoolean(ref booleanValues, prefix + " has outfitting", station.hasoutfitting);
-                setBoolean(ref booleanValues, prefix + " has shipyard", station.hasshipyard);
+                vaProxy.SetBoolean(prefix + " has refuel", station.hasrefuel);
+                vaProxy.SetBoolean(prefix + " has repair", station.hasrepair);
+                vaProxy.SetBoolean(prefix + " has rearm", station.hasrearm);
+                vaProxy.SetBoolean(prefix + " has market", station.hasmarket);
+                vaProxy.SetBoolean(prefix + " has black market", station.hasblackmarket);
+                vaProxy.SetBoolean(prefix + " has outfitting", station.hasoutfitting);
+                vaProxy.SetBoolean(prefix + " has shipyard", station.hasshipyard);
             }
 
             Logging.Debug("Set station information");
         }
 
-        private static void setCommanderValues(Commander cmdr, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        private static void setCommanderValues(Commander cmdr, ref dynamic vaProxy)
         {
-            Logging.Debug("Setting commander information");
             try
             {
-                setString(ref textValues, "Name", cmdr == null ? null : cmdr.name);
-                setInt(ref intValues, "Combat rating", cmdr == null ? (int?)null : cmdr.combatrating.rank);
-                setString(ref textValues, "Combat rank", cmdr == null ? null : cmdr.combatrating.name);
-                setInt(ref intValues, "Trade rating", cmdr == null ? (int?)null : cmdr.traderating.rank);
-                setString(ref textValues, "Trade rank", cmdr == null ? null : cmdr.traderating.name);
-                setInt(ref intValues, "Explore rating", cmdr == null ? (int?)null : cmdr.explorationrating.rank);
-                setString(ref textValues, "Explore rank", cmdr == null ? null : cmdr.explorationrating.name);
-                setInt(ref intValues, "Empire rating", cmdr == null ? (int?)null : cmdr.empirerating.rank);
-                setString(ref textValues, "Empire rank", cmdr == null ? null : cmdr.empirerating.name);
-                setInt(ref intValues, "Federation rating", cmdr == null ? (int?)null : cmdr.federationrating.rank);
-                setString(ref textValues, "Federation rank", cmdr == null ? null : cmdr.federationrating.name);
-                setDecimal(ref decimalValues, "Credits", cmdr == null ? (decimal?)null : cmdr.credits);
-                setString(ref textValues, "Credits (spoken)", cmdr == null ? null : Translations.Humanize(cmdr.credits));
-                setDecimal(ref decimalValues, "Debt", cmdr == null ? (decimal?)null : cmdr.debt);
-                setString(ref textValues, "Debt (spoken)", cmdr == null ? null : Translations.Humanize(cmdr.debt));
+                vaProxy.SetText("Name", cmdr == null ? null : cmdr.name);
+                vaProxy.SetInt("Combat rating", cmdr == null ? (int?)null : cmdr.combatrating.rank);
+                vaProxy.SetText("Combat rank", cmdr == null ? null : cmdr.combatrating.name);
+                vaProxy.SetInt("Trade rating", cmdr == null ? (int?)null : cmdr.traderating.rank);
+                vaProxy.SetText("Trade rank", cmdr == null ? null : cmdr.traderating.name);
+                vaProxy.SetInt("Explore rating", cmdr == null ? (int?)null : cmdr.explorationrating.rank);
+                vaProxy.SetText("Explore rank", cmdr == null ? null : cmdr.explorationrating.name);
+                vaProxy.SetInt("Empire rating", cmdr == null ? (int?)null : cmdr.empirerating.rank);
+                vaProxy.SetText("Empire rank", cmdr == null ? null : cmdr.empirerating.name);
+                vaProxy.SetInt("Federation rating", cmdr == null ? (int?)null : cmdr.federationrating.rank);
+                vaProxy.SetText("Federation rank", cmdr == null ? null : cmdr.federationrating.name);
+                vaProxy.SetDecimal("Credits", cmdr == null ? (decimal?)null : cmdr.credits);
+                vaProxy.SetText("Credits (spoken)", cmdr == null ? null : Translations.Humanize(cmdr.credits));
+                vaProxy.SetDecimal("Debt", cmdr == null ? (decimal?)null : cmdr.debt);
+                vaProxy.SetText("Debt (spoken)", cmdr == null ? null : Translations.Humanize(cmdr.debt));
 
-                setString(ref textValues, "Title", cmdr == null ? null : cmdr.title);
+                vaProxy.SetText("Title", cmdr == null ? null : cmdr.title);
+
+                vaProxy.SetDecimal("Insurance", cmdr == null ? null : cmdr.insurance);
 
                 // Backwards-compatibility with 1.x
-                setString(ref textValues, "System rank", cmdr == null ? null : cmdr.title);
+                vaProxy.SetText("System rank", cmdr == null ? null : cmdr.title);
 
-                setPluginStatus(ref textValues, "Operational", null, null);
+                setStatus(ref vaProxy, "Operational");
             }
             catch (Exception e)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to set commander information", e);
+                setStatus(ref vaProxy, "Failed to set commander information", e);
             }
 
             Logging.Debug("Set commander information");
         }
 
-        private static void setShipValues(Ship ship, string prefix, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        private static void setShipValues(Ship ship, string prefix, ref dynamic vaProxy)
         {
             Logging.Debug("Setting ship information (" + prefix + ")");
             try
             {
-                setString(ref textValues, prefix + " model", ship == null ? null : ship.model);
-                setString(ref textValues, prefix + " model (spoken)", ship == null ? null : Translations.ShipModel(ship.model));
-                setString(ref textValues, prefix + " callsign", ship == null ? null : ship.callsign);
-                setString(ref textValues, prefix + " callsign (spoken)", ship == null ? null : Translations.CallSign(ship.callsign));
-                setString(ref textValues, prefix + " name", ship == null ? null : ship.name);
-                setString(ref textValues, prefix + " role", ship == null ? null : ship.role.ToString());
-                setString(ref textValues, prefix + " size", ship == null ? null : ship.size.ToString());
-                setDecimal(ref decimalValues, prefix + " value", ship == null ? (decimal?)null : ship.value);
-                setString(ref textValues, prefix + " value (spoken)", ship == null ? null : Translations.Humanize(ship.value));
-                setDecimal(ref decimalValues, prefix + " health", ship == null ? (decimal?)null : ship.health);
-                setInt(ref intValues, prefix + " cargo capacity", ship == null ? (int?)null : ship.cargocapacity);
-                setInt(ref intValues, prefix + " cargo carried", ship == null ? (int?)null : ship.cargocarried);
+                vaProxy.SetText(prefix + " model", ship == null ? null : ship.model);
+                vaProxy.SetText(prefix + " model (spoken)", ship == null ? null : Translations.ShipModel(ship.model));
+
+                if (Eddi.Instance.Ship != null && Eddi.Instance.Cmdr != null)
+                {
+                    vaProxy.SetText(prefix + " callsign", ship == null ? null : ship.manufacturer + " " + Eddi.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant());
+                    vaProxy.SetText(prefix + " callsign (spoken)", ship == null ? null : Translations.Manufacturer(ship.manufacturer) + " " + Translations.CallSign(Eddi.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant()));
+                }
+
+                vaProxy.SetText(prefix + " name", ship == null ? null : ship.name);
+                vaProxy.SetText(prefix + " role", ship == null ? null : ship.role.ToString());
+                vaProxy.SetText(prefix + " size", ship == null ? null : ship.size.ToString());
+                vaProxy.SetDecimal(prefix + " value", ship == null ? (decimal?)null : ship.value);
+                vaProxy.SetText(prefix + " value (spoken)", ship == null ? null : Translations.Humanize(ship.value));
+                vaProxy.SetDecimal(prefix + " health", ship == null ? (decimal?)null : ship.health);
+                vaProxy.SetInt(prefix + " cargo capacity", ship == null ? (int?)null : ship.cargocapacity);
+                vaProxy.SetInt(prefix + " cargo carried", ship == null ? (int?)null : ship.cargocarried);
                 // Add number of limpets carried
                 if (ship == null || ship.cargo == null)
                 {
-                    setInt(ref intValues, prefix + " limpets carried", null);
+                    vaProxy.SetInt(prefix + " limpets carried", null);
                 }
                 else
                 {
                     int limpets = 0;
                     foreach (Cargo cargo in ship.cargo)
                     {
-                        if (cargo.Commodity.Name == "Limpet")
+                        if (cargo.commodity.name == "Limpet")
                         {
-                            limpets += cargo.Quantity;
+                            limpets += cargo.amount;
                         }
                     }
-                    setInt(ref intValues, prefix + " limpets carried", limpets);
+                    vaProxy.SetInt(prefix + " limpets carried", limpets);
                 }
 
-                setShipModuleValues(ship == null ? null : ship.bulkheads, prefix + " bulkheads", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.bulkheads, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " bulkheads", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleValues(ship == null ? null : ship.powerplant, prefix + " power plant", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.powerplant, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " power plant", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleValues(ship == null ? null : ship.thrusters, prefix + " thrusters", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.thrusters, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " thrusters", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleValues(ship == null ? null : ship.frameshiftdrive, prefix + " frame shift drive", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.frameshiftdrive, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " frame shift drive", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleValues(ship == null ? null : ship.lifesupport, prefix + " life support", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.lifesupport, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " life support", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleValues(ship == null ? null : ship.powerdistributor, prefix + " power distributor", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.powerdistributor, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " power distributor", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleValues(ship == null ? null : ship.sensors, prefix + " sensors", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.sensors, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " sensors", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleValues(ship == null ? null : ship.fueltank, prefix + " fuel tank", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                setShipModuleOutfittingValues(ship == null ? null : ship.fueltank, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " fuel tank", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                setShipModuleValues(ship == null ? null : ship.bulkheads, prefix + " bulkheads", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.bulkheads, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " bulkheads", ref vaProxy);
+                setShipModuleValues(ship == null ? null : ship.powerplant, prefix + " power plant", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.powerplant, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " power plant", ref vaProxy);
+                setShipModuleValues(ship == null ? null : ship.thrusters, prefix + " thrusters", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.thrusters, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " thrusters", ref vaProxy);
+                setShipModuleValues(ship == null ? null : ship.frameshiftdrive, prefix + " frame shift drive", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.frameshiftdrive, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " frame shift drive", ref vaProxy);
+                setShipModuleValues(ship == null ? null : ship.lifesupport, prefix + " life support", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.lifesupport, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " life support", ref vaProxy);
+                setShipModuleValues(ship == null ? null : ship.powerdistributor, prefix + " power distributor", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.powerdistributor, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " power distributor", ref vaProxy);
+                setShipModuleValues(ship == null ? null : ship.sensors, prefix + " sensors", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.sensors, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " sensors", ref vaProxy);
+                setShipModuleValues(ship == null ? null : ship.fueltank, prefix + " fuel tank", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.fueltank, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, prefix + " fuel tank", ref vaProxy);
 
                 // Hardpoints
                 if (ship != null)
@@ -675,31 +650,31 @@ namespace EDDIVAPlugin
                                 break;
                         }
 
-                        setBoolean(ref booleanValues, baseHardpointName + " occupied", Hardpoint.module != null);
-                        setShipModuleValues(Hardpoint.module, baseHardpointName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.module, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, baseHardpointName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        vaProxy.SetBoolean(baseHardpointName + " occupied", Hardpoint.module != null);
+                        setShipModuleValues(Hardpoint.module, baseHardpointName + " module", ref vaProxy);
+                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.module, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, baseHardpointName + " module", ref vaProxy);
                     }
 
-                    setInt(ref intValues, prefix + " hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
-                    setInt(ref intValues, prefix + " utility slots", numTinyHardpoints);
+                    vaProxy.SetInt(prefix + " hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
+                    vaProxy.SetInt(prefix + " utility slots", numTinyHardpoints);
                     // Compartments
                     int curCompartment = 0;
                     foreach (Compartment Compartment in ship.compartments)
                     {
                         string baseCompartmentName = prefix + " compartment " + ++curCompartment;
-                        setInt(ref intValues, baseCompartmentName + " size", Compartment.size);
-                        setBoolean(ref booleanValues, baseCompartmentName + " occupied", Compartment.module != null);
-                        setShipModuleValues(Compartment.module, baseCompartmentName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
-                        setShipModuleOutfittingValues(ship == null ? null : Compartment.module, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, baseCompartmentName + " module", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
+                        vaProxy.SetInt(baseCompartmentName + " size", Compartment.size);
+                        vaProxy.SetBoolean(baseCompartmentName + " occupied", Compartment.module != null);
+                        setShipModuleValues(Compartment.module, baseCompartmentName + " module", ref vaProxy);
+                        setShipModuleOutfittingValues(ship == null ? null : Compartment.module, Eddi.Instance.LastStation == null ? null : Eddi.Instance.LastStation.outfitting, baseCompartmentName + " module", ref vaProxy);
                     }
-                    setInt(ref intValues, prefix + " compartments", curCompartment);
+                    vaProxy.SetInt(prefix + " compartments", curCompartment);
                 }
 
                 // Fetch the star system in which the ship is stored
                 if (ship != null && ship.starsystem != null)
                 {
-                    setString(ref textValues, prefix + " system", ship.starsystem);
-                    setString(ref textValues, prefix + " station", ship.station);
+                    vaProxy.SetText(prefix + " system", ship.starsystem);
+                    vaProxy.SetText(prefix + " station", ship.station);
                     StarSystem StoredShipStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(ship.starsystem);
                     // Have to grab a local copy of our star system as CurrentStarSystem might not have been initialised yet
                     StarSystem ThisStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(Eddi.Instance.CurrentStarSystem.name);
@@ -710,128 +685,84 @@ namespace EDDIVAPlugin
                         decimal distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(ThisStarSystem.x - StoredShipStarSystem.x), 2)
                             + Math.Pow((double)(ThisStarSystem.y - StoredShipStarSystem.y), 2)
                             + Math.Pow((double)(ThisStarSystem.z - StoredShipStarSystem.z), 2)), 2);
-                        setDecimal(ref decimalValues, prefix + " distance", distance);
+                        vaProxy.SetDecimal(prefix + " distance", distance);
                     }
                     else
                     {
                         // We don't know how far away the ship is
-                        setDecimal(ref decimalValues, prefix + " distance", null);
+                        vaProxy.SetDecimal(prefix + " distance", null);
                     }
                 }
 
-                setPluginStatus(ref textValues, "Operational", null, null);
+                setStatus(ref vaProxy, "Operational");
             }
             catch (Exception e)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to set ship information", e);
+                setStatus(ref vaProxy, "Failed to set ship information", e);
             }
 
             Logging.Debug("Set ship information");
         }
 
-        private static void setStarSystemValues(StarSystem system, string prefix, ref Dictionary<string, object> state, ref Dictionary<string, Int16?> shortIntValues, ref Dictionary<string, string> textValues, ref Dictionary<string, int?> intValues, ref Dictionary<string, decimal?> decimalValues, ref Dictionary<string, Boolean?> booleanValues, ref Dictionary<string, DateTime?> dateTimeValues, ref Dictionary<string, object> extendedValues)
+        private static void setStarSystemValues(StarSystem system, string prefix, ref dynamic vaProxy)
         {
             Logging.Debug("Setting system information (" + prefix + ")");
             try
             {
-                setString(ref textValues, prefix + " name", system == null ? null : system.name);
-                setString(ref textValues, prefix + " name (spoken)", system == null ? null : Translations.StarSystem(system.name));
-                setDecimal(ref decimalValues, prefix + " population", system == null ? null : (decimal?)system.population);
-                setString(ref textValues, prefix + " population (spoken)", system == null ? null : Translations.Humanize(system.population));
-                setString(ref textValues, prefix + " allegiance", system == null ? null : system.allegiance);
-                setString(ref textValues, prefix + " government", system == null ? null : system.government);
-                setString(ref textValues, prefix + " faction", system == null ? null : system.faction);
-                setString(ref textValues, prefix + " primary economy", system == null ? null : system.primaryeconomy);
-                setString(ref textValues, prefix + " state", system == null ? null : system.state);
-                setString(ref textValues, prefix + " security", system == null ? null : system.security);
-                setString(ref textValues, prefix + " power", system == null ? null : system.power);
-                setString(ref textValues, prefix + " power (spoken)", Eddi.Instance.CurrentStarSystem == null ? null : Translations.Power(Eddi.Instance.CurrentStarSystem.power));
-                setString(ref textValues, prefix + " power state", system == null ? null : system.powerstate);
-                setDecimal(ref decimalValues, prefix + " X", system == null ? null : system.x);
-                setDecimal(ref decimalValues, prefix + " Y", system == null ? null : system.y);
-                setDecimal(ref decimalValues, prefix + " Z", system == null ? null : system.z);
-                setInt(ref intValues, prefix + " visits", system == null ? (int?)null : system.visits);
-                setString(ref textValues, prefix + " comment", system == null ? null : system.comment);
-                setDecimal(ref decimalValues, prefix + " distance from home", system == null ? null : system.distancefromhome);
+                vaProxy.SetText(prefix + " name", system == null ? null : system.name);
+                vaProxy.SetText(prefix + " name (spoken)", system == null ? null : Translations.StarSystem(system.name));
+                vaProxy.SetDecimal(prefix + " population", system == null ? null : (decimal?)system.population);
+                vaProxy.SetText(prefix + " population (spoken)", system == null ? null : Translations.Humanize(system.population));
+                vaProxy.SetText(prefix + " allegiance", system == null ? null : system.allegiance);
+                vaProxy.SetText(prefix + " government", system == null ? null : system.government);
+                vaProxy.SetText(prefix + " faction", system == null ? null : system.faction);
+                vaProxy.SetText(prefix + " primary economy", system == null ? null : system.primaryeconomy);
+                vaProxy.SetText(prefix + " state", system == null ? null : system.state);
+                vaProxy.SetText(prefix + " security", system == null ? null : system.security);
+                vaProxy.SetText(prefix + " power", system == null ? null : system.power);
+                vaProxy.SetText(prefix + " power (spoken)", Eddi.Instance.CurrentStarSystem == null ? null : Translations.Power(Eddi.Instance.CurrentStarSystem.power));
+                vaProxy.SetText(prefix + " power state", system == null ? null : system.powerstate);
+                vaProxy.SetDecimal(prefix + " X", system == null ? null : system.x);
+                vaProxy.SetDecimal(prefix + " Y", system == null ? null : system.y);
+                vaProxy.SetDecimal(prefix + " Z", system == null ? null : system.z);
+                vaProxy.SetInt(prefix + " visits", system == null ? (int?)null : system.visits);
+                vaProxy.SetText(prefix + " comment", system == null ? null : system.comment);
+                vaProxy.SetDecimal(prefix + " distance from home", system == null ? null : system.distancefromhome);
 
                 if (system != null)
                 {
                     foreach (Station Station in system.stations)
                     {
-                        setString(ref textValues, prefix + " station name", Station.name);
+                        vaProxy.SetText(prefix + " station name", Station.name);
                     }
-                    setInt(ref intValues, prefix + " stations", system.stations.Count);
-                    setInt(ref intValues, prefix + " orbital stations", system.stations.Count(s => !s.IsPlanetary()));
-                    setInt(ref intValues, prefix + " starports", system.stations.Count(s => s.IsStarport()));
-                    setInt(ref intValues, prefix + " outposts", system.stations.Count(s => s.IsOutpost()));
-                    setInt(ref intValues, prefix + " planetary stations", system.stations.Count(s => s.IsPlanetary()));
-                    setInt(ref intValues, prefix + " planetary outposts", system.stations.Count(s => s.IsPlanetaryOutpost()));
-                    setInt(ref intValues, prefix + " planetary ports", system.stations.Count(s => s.IsPlanetaryPort()));
+                    vaProxy.SetInt(prefix + " stations", system.stations.Count);
+                    vaProxy.SetInt(prefix + " orbital stations", system.stations.Count(s => !s.IsPlanetary()));
+                    vaProxy.SetInt(prefix + " starports", system.stations.Count(s => s.IsStarport()));
+                    vaProxy.SetInt(prefix + " outposts", system.stations.Count(s => s.IsOutpost()));
+                    vaProxy.SetInt(prefix + " planetary stations", system.stations.Count(s => s.IsPlanetary()));
+                    vaProxy.SetInt(prefix + " planetary outposts", system.stations.Count(s => s.IsPlanetaryOutpost()));
+                    vaProxy.SetInt(prefix + " planetary ports", system.stations.Count(s => s.IsPlanetaryPort()));
                 }
-
-                setPluginStatus(ref textValues, "Operational", null, null);
+                setStatus(ref vaProxy, "Operational");
             }
             catch (Exception e)
             {
-                setPluginStatus(ref textValues, "Failed", "Failed to set system information", e);
+                setStatus(ref vaProxy, "Failed to set system information", e);
             }
             Logging.Debug("Set system information (" + prefix + ")");
         }
 
-        private static void setInt(ref Dictionary<string, int?> values, string key, int? value)
+        private static void setStatus(ref dynamic vaProxy, string status, Exception exception = null)
         {
-            if (values.ContainsKey(key))
-                values[key] = value;
-            else
-                values.Add(key, value);
-        }
-
-        private static void setDecimal(ref Dictionary<string, decimal?> values, string key, decimal? value)
-        {
-            if (values.ContainsKey(key))
-                values[key] = value;
-            else
-                values.Add(key, value);
-        }
-
-        private static void setBoolean(ref Dictionary<string, bool?> values, string key, bool? value)
-        {
-            if (values.ContainsKey(key))
-                values[key] = value;
-            else
-                values.Add(key, value);
-        }
-
-        private static void setString(ref Dictionary<string, string> values, string key, string value)
-        {
-            if (values.ContainsKey(key))
-                values[key] = value;
-            else
-                values.Add(key, value);
-        }
-
-        private static void setDateTime(ref Dictionary<string, DateTime?> values, string key, DateTime? value)
-        {
-            if (values.ContainsKey(key))
-                values[key] = value;
-            else
-                values.Add(key, value);
-        }
-
-        private static void setPluginStatus(ref Dictionary<string, string> values, string status, string error, Exception exception)
-        {
-            setString(ref values, "EDDI status", status);
+            vaProxy.SetText("EDDI status", status);
             if (status == "Operational")
             {
-                setString(ref values, "EDDI error", null);
-                setString(ref values, "EDDI exception", null);
+                vaProxy.SetText("EDDI exception", null);
             }
             else
             {
-                Logging.Warn("EDDI error: " + error);
                 Logging.Warn("EDDI exception: " + (exception == null ? "<null>" : exception.ToString()));
-                setString(ref values, "EDDI error", error);
-                setString(ref values, "EDDI exception", exception == null ? null : exception.ToString());
+                vaProxy.SetText("EDDI exception", exception == null ? null : exception.ToString());
             }
         }
     }

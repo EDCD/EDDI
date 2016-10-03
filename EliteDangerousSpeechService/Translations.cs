@@ -68,6 +68,23 @@ namespace EliteDangerousSpeechService
             }
         }
 
+        /// <summary>Fix up manufacturers</summary>
+        public static string Manufacturer(string manufacturer)
+        {
+            if (manufacturer == null)
+            {
+                return null;
+            }
+
+            switch (manufacturer)
+            {
+                case "Gutamaya":
+                    return "<phoneme alphabet=\"ipa\" ph=\"guːtəˈmaɪə\">Gutamaya</phoneme>";
+                default:
+                    return manufacturer;
+            }
+        }
+
         private static Dictionary<string, string[]> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
             { "Achenar", new string[] { "ˈakɜːnɑ" } },
@@ -473,6 +490,12 @@ namespace EliteDangerousSpeechService
             if (value == null)
             {
                 return null;
+            }
+
+            if (value < 0)
+            {
+                // We don't handle negatives at the moment
+                return "" + value;
             }
 
             if (value == 0)

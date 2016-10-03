@@ -34,5 +34,8 @@ namespace EliteDangerousDataDefinitions
         public long credits { get; set; }
         /// <summary>The amount of debt the commander owes</summary>
         public long debt { get; set; }
+
+        /// <summary>The insurance excess percentage the commander has to pay</summary>
+        public decimal? insurance { get; set;  }
     }
 }

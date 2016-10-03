@@ -5,20 +5,20 @@ namespace EliteDangerousDataDefinitions
     public class Commodity
     {
         // Definition of the commodity
-        public string Name { get; set; }
-        public string Category { get; set; }
-        public int AveragePrice { get; set; }
-        public bool Rare { get; set; }
+        public string name { get; set; }
+        public string category { get; set; }
+        public int avgprice { get; set; }
+        public bool rare { get; set; }
 
         // Per-station information
-        public int BuyPrice { get; set; }
-        public int Stock { get; set; }
+        public int buyprice { get; set; }
+        public int stock { get; set; }
         // StockBracket can contain the values 0, 1, 2, 3 or "" (yes, really) so needs to be dynamic
-        public dynamic StockBracket { get; set; }
-        public int SellPrice { get; set; }
-        public int Demand { get; set; }
+        public dynamic stockbracket { get; set; }
+        public int sellprice { get; set; }
+        public int demand { get; set; }
         // DemandBracket can contain the values 0, 1, 2, 3 or "" (yes, really) so needs to be dynamic
-        public dynamic DemandBracket { get; set; }
+        public dynamic demandbracket { get; set; }
         public List<string> StatusFlags { get; set; }
 
         // Admin
@@ -31,20 +31,20 @@ namespace EliteDangerousDataDefinitions
         {
             this.EDDBID = Commodity.EDDBID;
             this.EDName = Commodity.EDName;
-            this.Name = Commodity.Name;
-            this.Category = Commodity.Category;
-            this.AveragePrice = Commodity.AveragePrice;
-            this.Rare = Commodity.Rare;
+            this.name = Commodity.name;
+            this.category = Commodity.category;
+            this.avgprice = Commodity.avgprice;
+            this.rare = Commodity.rare;
         }
 
         public Commodity(long EDDBID, string EDName, string Name, string Category, int AveragePrice, bool Rare)
         {
             this.EDDBID = EDDBID;
             this.EDName = EDName;
-            this.Name = Name;
-            this.Category = Category;
-            this.AveragePrice = AveragePrice;
-            this.Rare = Rare;
+            this.name = Name;
+            this.category = Category;
+            this.avgprice = AveragePrice;
+            this.rare = Rare;
         }
 
         // Constructor when commodity's actual name matches its ED name

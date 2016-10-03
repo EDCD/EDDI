@@ -177,7 +177,7 @@ namespace EliteDangerousSpeechResponder
                 else if (script.Description != defaultEvent.Value)
                 {
                     // The description has been updated
-                    script = new Script(defaultEvent.Key, defaultEvent.Value, true, script.Value, script.Interruptable);
+                    script = new Script(defaultEvent.Key, defaultEvent.Value, true, script.Value, script.Priority);
                 }
                 fixedScripts.Add(defaultEvent.Key, script);
             }

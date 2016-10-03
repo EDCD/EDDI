@@ -370,11 +370,11 @@ namespace EDDI
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             if (string.IsNullOrEmpty(ship.phoneticname))
             {
-                SpeechService.Instance.Say(null, ship, ship.name + " stands ready.", false, false, true);
+                SpeechService.Instance.Say(ship, ship.name + " stands ready.", false);
             }
             else
             {
-                SpeechService.Instance.Say(null, ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>" + " stands ready.", false, false, true);
+                SpeechService.Instance.Say(ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>" + " stands ready.", false);
             }
         }
 
@@ -417,14 +417,14 @@ namespace EDDI
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 100;
-            SpeechService.Instance.Say(null, testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false, false, true);
+            SpeechService.Instance.Say(testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false);
         }
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 20;
-            SpeechService.Instance.Say(null, testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false, false, true);
+            SpeechService.Instance.Say(testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false);
         }
 
         /// <summary>

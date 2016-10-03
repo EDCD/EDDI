@@ -29,7 +29,7 @@ namespace EliteDangerousEvents
 
         public CommodityCollectedEvent(DateTime timestamp, Commodity commodity, bool stolen) : base(timestamp, NAME)
         {
-            this.commodity = (commodity == null ? "unknown commodity" : commodity.Name);
+            this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
             this.stolen = stolen;
         }
     }

@@ -131,11 +131,11 @@ namespace EDDIVAPlugin
             string bn;
             if (ship.name == null)
             {
-                bn = ship.callsign;
+                bn = ship.role + " " + ship.manufacturer;
             }
             else
             {
-                bn = ship.name + " (" + ship.callsign + ")";
+                bn = ship.name;
             }
             uri += "?bn=" + Uri.EscapeDataString(bn);
 

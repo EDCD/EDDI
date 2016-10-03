@@ -25,7 +25,7 @@ namespace EliteDangerousEvents
 
         public CommodityRefinedEvent(DateTime timestamp, Commodity commodity) : base(timestamp, NAME)
         {
-            this.commodity = (commodity == null ? "unknown commodity" : commodity.Name);
+            this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
         }
     }
 }

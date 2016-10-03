@@ -108,19 +108,19 @@ namespace EliteDangerousEDDNResponder
                 List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
                 foreach (Commodity commodity in Eddi.Instance.LastStation.commodities)
                 {
-                    if (commodity.Category == "NonMarketable")
+                    if (commodity.category == "NonMarketable")
                     {
                         continue;
                     }
                     EDDNCommodity eddnCommodity = new EDDNCommodity();
                     eddnCommodity.name = commodity.EDName;
-                    eddnCommodity.meanPrice = commodity.AveragePrice;
-                    eddnCommodity.buyPrice = commodity.BuyPrice;
-                    eddnCommodity.stock = commodity.Stock;
-                    eddnCommodity.stockBracket = commodity.StockBracket;
-                    eddnCommodity.sellPrice = commodity.SellPrice;
-                    eddnCommodity.demand = commodity.Demand;
-                    eddnCommodity.demandBracket = commodity.DemandBracket;
+                    eddnCommodity.meanPrice = commodity.avgprice;
+                    eddnCommodity.buyPrice = commodity.buyprice;
+                    eddnCommodity.stock = commodity.stock;
+                    eddnCommodity.stockBracket = commodity.stockbracket;
+                    eddnCommodity.sellPrice = commodity.sellprice;
+                    eddnCommodity.demand = commodity.demand;
+                    eddnCommodity.demandBracket = commodity.demandbracket;
                     if (commodity.StatusFlags.Count > 0)
                     {
                         eddnCommodity.statusFlags = commodity.StatusFlags;

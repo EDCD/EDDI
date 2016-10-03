@@ -195,7 +195,7 @@ namespace EliteDangerousDataDefinitions
             {128682048, new Commodity(307, "Survival Equipment", "Consumer Items", 485, false) },
         };
 
-        private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.Name.ToLower().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
+        private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.name.ToLower().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
 
         public static Commodity CommodityFromEliteID(long id)
         {
@@ -206,10 +206,10 @@ namespace EliteDangerousDataDefinitions
             {
                 Commodity.EDDBID = Template.EDDBID;
                 Commodity.EDName = Template.EDName;
-                Commodity.Name = Template.Name;
-                Commodity.Category = Template.Category;
-                Commodity.Rare = Template.Rare;
-                Commodity.AveragePrice = Template.AveragePrice;
+                Commodity.name = Template.name;
+                Commodity.category = Template.category;
+                Commodity.rare = Template.rare;
+                Commodity.avgprice = Template.avgprice;
             }
             return Commodity;
         }
@@ -250,10 +250,10 @@ namespace EliteDangerousDataDefinitions
             {
                 Commodity.EDDBID = Template.EDDBID;
                 Commodity.EDName = Template.EDName;
-                Commodity.Name = Template.Name;
-                Commodity.Category = Template.Category;
-                Commodity.Rare = Template.Rare;
-                Commodity.AveragePrice = Template.AveragePrice;
+                Commodity.name = Template.name;
+                Commodity.category = Template.category;
+                Commodity.rare = Template.rare;
+                Commodity.avgprice = Template.avgprice;
             }
             return Commodity;
         }

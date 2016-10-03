@@ -14,7 +14,7 @@
         public int? hoppercapacity { get; set; } // Only for weapons
 
         // State of the module
-        public long cost { get; set; } // How much we actually paid for it
+        public long price { get; set; } // How much we actually paid for it
         public bool enabled { get; set; }
         public int priority { get; set; }
         public decimal health { get; set; }
