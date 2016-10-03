@@ -119,7 +119,6 @@ namespace EliteDangerousSpeechResponder
                 return new ScriptResolver(scripts).resolveScript(values[random.Next(values.Count)].AsString, store);
             });
 
-            // Helper functions
             store["Occasionally"] = new NativeFunction((values) =>
             {
                 if (random.Next((int)values[0].AsNumber) == 0)
@@ -137,6 +136,10 @@ namespace EliteDangerousSpeechResponder
                 return Translations.Humanize(values[0].AsNumber);
             }, 1);
 
+            store["Pause"] = new NativeFunction((values) =>
+            {
+                return @"<break time =""" + values[0].AsNumber + @"ms"" />";
+            }, 1);
 
             //
             // Commander-specific functions

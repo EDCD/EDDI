@@ -122,7 +122,7 @@ namespace EliteDangerousSpeechService
                         synth.Volume = configuration.Volume;
 
                         synth.SetOutputToWaveStream(stream);
-                        if (speech.Contains("<phoneme"))
+                        if (speech.Contains("<phoneme") || speech.Contains("<break"))
                         {
                             string finalSpeech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\"><s>" + speech + "</s></speak>";
                             Logging.Debug("Final speech: " + finalSpeech);
