@@ -550,7 +550,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Full control re-established\", \"Docking clamps free\", \"Disengaged from local networks\")}.",
+      "script": "{OneOf(\"Full control re-established\", \"Docking clamps free\", \"Disengaged from local networks\")}.\r\n\r\n{F(\"Limpet check\")}\r\n",
       "name": "Undocked",
       "description": "Triggered when your ship undocks from a station or outpost"
     },
@@ -558,7 +558,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Establishing uplink\", \"Initiating link to local networks\", \"Access to local networks obtained\")}.\r\n\r\n{F(\"Commodity sale check\")}\r\n\r\n{F(\"Commodity purchase check\")}\r\n\r\n{F(\"Swapout check\")}\r\n\r\n{F(\"Limpet check\")}\r\n\r\n",
+      "script": "{OneOf(\"Establishing uplink\", \"Initiating link to local networks\", \"Access to local networks obtained\")}.\r\n\r\n{F(\"Commodity sale check\")}\r\n\r\n{F(\"Commodity purchase check\")}\r\n\r\n{F(\"Swapout check\")}\r\n\r\nF(\"Limpet check\")}\r\n\r\n",
       "name": "Docked",
       "description": "Triggered when your ship docks at a station or outpost"
     },
@@ -622,7 +622,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{set  controllers to 0}\r\n{for compartment in ship.compartments:\r\n    {if find(compartment.module.name, \"Controller\") != -1:\r\n        {set controllers to controllers + 1}\r\n    }\r\n}\r\n\r\n{set limpets to 0}\r\n{for cargo in ship.cargo:\r\n    {if cargo.commodity.name = \"Limpet\":\r\n        {set limpets to limpets + cargo.amount}\r\n    }\r\n}\r\n\r\n{if controllers > 0 && limpets = 0:\r\n    You have a limpet controller but no limpets.\r\n}\r\n\r\n{if controllers = 0 && limpets > 0:\r\n    You are carrying limpets but no limpet controller.\r\n}\r\n\r\n{set tenpercent to ship.cargocapacity / 10 - 1}\r\n{if controllers > 0 && limpets < tenpercent:\r\n    You only have {limpets} limpets on-board; you might want to consider re-stocking.\r\n}\r\n",
+      "script": "{set  controllers to 0}\r\n{for compartment in ship.compartments:\r\n    {if find(compartment.module.name, \"Controller\") != -1:\r\n        {set controllers to controllers + 1}\r\n    }\r\n}\r\n\r\n{set limpets to 0}\r\n{for cargo in ship.cargo:\r\n    {if cargo.commodity.name = \"Limpet\":\r\n        {set limpets to limpets + cargo.amount}\r\n    }\r\n}\r\n{set tenpercent to ship.cargocapacity / 10 - 1}\r\n{if controllers > 0 && limpets = 0:\r\n    Reminder: you have a limpet controller but are not carrying any limpets.\r\n|elif controllers = 0 && limpets > 0:\r\n    You are carrying limpets but no limpet controller.\r\n|elif controllers > 0 && limpets < tenpercent:\r\n    You only have {limpets} limpets on-board; you might want to consider re-stocking.\r\n}\r\n",
       "name": "Limpet check",
       "description": "Check for the presence/absence of limpets and limpet controllers"
     },

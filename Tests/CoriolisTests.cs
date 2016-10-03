@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EDDIVAPlugin;
+using EDDIVoiceAttackResponder;
 using EliteDangerousNetLogMonitor;
 using System.IO;
 using System;

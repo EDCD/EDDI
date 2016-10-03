@@ -1255,7 +1255,8 @@ namespace EliteDangerousJournalMonitor
             }
             catch (Exception ex)
             {
-                Logging.Error(@"Exception whilst parsing line """ + line + @""": " + ex.StackTrace);
+                Logging.Warn("Failed to parse line: " + ex.ToString());
+                Logging.Error("Exception whilst parsing line", line);
             }
             return null;
         }

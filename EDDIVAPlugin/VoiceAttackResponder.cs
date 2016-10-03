@@ -9,7 +9,7 @@ using EliteDangerousEvents;
 using Newtonsoft.Json;
 using System.Windows.Controls;
 
-namespace EDDIVAPlugin
+namespace EDDIVoiceAttackResponder
 {
     /// <summary>
     /// A responder for EDDI to provide information to VoiceAttack.  This is very simple, just adding events to the VoiceAttack plugin's event queue

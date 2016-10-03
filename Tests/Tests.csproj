@@ -126,9 +126,9 @@
       <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
       <Name>EliteDangerousDataProviderService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EDDIVAPlugin\EDDIVAPlugin.csproj">
+    <ProjectReference Include="..\EDDIVAPlugin\EDDIVoiceAttackResponder.csproj">
       <Project>{e98b76a0-b7bc-4f59-8e4f-bd16b22a5ac6}</Project>
-      <Name>EDDIVAPlugin</Name>
+      <Name>EDDIVoiceAttackResponder</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteDangerousEvents\EliteDangerousEvents.csproj">
       <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>

@@ -688,7 +688,7 @@ namespace EliteDangerousCompanionAppService
                         if (cargo.commodity.name == null)
                         {
                             // Unknown commodity; log an error so that we can update the definitions
-                            Logging.Error("No commodity definition for cargo " + cargoJson.ToString());
+                            Logging.Error("No commodity definition for cargo", cargoJson.ToString());
                             cargo.commodity.name = name;
                         }
                         cargo.amount = (int)cargoJson["qty"];
@@ -823,7 +823,7 @@ namespace EliteDangerousCompanionAppService
                         if (Module.name == null)
                         {
                             // Unknown module; log an error so that we can update the definitions
-                            Logging.Error("No definition for outfitting module " + module.ToString());
+                            Logging.Error("No definition for outfitting module", module.ToString());
                         }
                         Module.price = module["cost"];
                         Modules.Add(Module);
@@ -889,7 +889,7 @@ namespace EliteDangerousCompanionAppService
             if (module.name == null)
             {
                 // Unknown module; log an error so that we can update the definitions
-                Logging.Error("No definition for ship module " + json["module"].ToString());
+                Logging.Error("No definition for ship module", + json["module"].ToString());
             }
 
             module.price = (long)json["module"]["value"];
@@ -908,7 +908,7 @@ namespace EliteDangerousCompanionAppService
 
             if (json["module"]["modifiers"] != null && firstRun)
             {
-                Logging.Report("Module with modification " + json["module"].ToString());
+                Logging.Report("Module with modification", json["module"].ToString());
             }
             return module;
         }

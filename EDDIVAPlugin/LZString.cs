@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace EDDIVAPlugin
+namespace EDDIVoiceAttackResponder
 {
     public class LZString
     {

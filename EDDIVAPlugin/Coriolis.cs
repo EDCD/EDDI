@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace EDDIVAPlugin
+namespace EDDIVoiceAttackResponder
 {
     public class Coriolis
     {

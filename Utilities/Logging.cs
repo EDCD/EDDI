@@ -19,13 +19,13 @@ namespace Utilities
 
         public static void Error(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            Error(ex.ToString(), memberName, filePath);
+            Error(ex.ToString(), null, memberName, filePath);
         }
 
-        public static void Error(string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Error(string message, string data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             log(filePath, memberName, "E", data);
-            Report(data, memberName, filePath);
+            Report(message, data, memberName, filePath);
         }
 
         public static void Warn(string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -58,15 +58,16 @@ namespace Utilities
             }
         }
 
-        public static void Report(string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Report(string message, string data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
+            string body = @"{""message"":""" + message + @""", ""json"":{" + data + @"}";
             new Thread(() =>
             {
                 using (var client = new WebClient())
                 {
                     try
                     {
-                        client.UploadString(@"http://api.eddp.co/error", data);
+                        client.UploadString(@"http://api.eddp.co/error", body);
                     }
                     catch { }
                 }

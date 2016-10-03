@@ -42,15 +42,12 @@ namespace EliteDangerousDataDefinitions
             return result;
         }
 
+        // We don't report if the result wasn't found because this is used speculatively, and many factions
+        // are not superpowers
         public static Superpower FromEDName(string from)
         {
             string tidiedFrom = from == null ? null : from.ToLowerInvariant();
-            Superpower result = SUPERPOWERS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
-            if (result == null)
-            {
-                Logging.Report("Unknown Superpower ED name " + from);
-            }
-            return result;
+            return SUPERPOWERS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
         }
     }
 }

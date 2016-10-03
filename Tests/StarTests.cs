@@ -3,7 +3,7 @@ using EliteDangerousCompanionAppService;
 using EliteDangerousDataDefinitions;
 using System.Collections.Generic;
 using System;
-using EDDIVAPlugin;
+using EDDIVoiceAttackResponder;
 using MathNet.Numerics.Distributions;
 using EliteDangerousEvents;
 

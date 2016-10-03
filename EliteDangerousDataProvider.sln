@@ -4,7 +4,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousCompanionAppService", "EliteDangerousCompanionAppService\EliteDangerousCompanionAppService.csproj", "{462ED721-1C9C-43FA-8A3F-4C1644363A5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDDIVAPlugin", "EDDIVAPlugin\EDDIVAPlugin.csproj", "{E98B76A0-B7BC-4F59-8E4F-BD16B22A5AC6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDDIVoiceAttackResponder", "EDDIVAPlugin\EDDIVoiceAttackResponder.csproj", "{E98B76A0-B7BC-4F59-8E4F-BD16B22A5AC6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C5F48807-921B-456D-A9E4-A0282E5E8CF1} = {C5F48807-921B-456D-A9E4-A0282E5E8CF1}
 		{462ED721-1C9C-43FA-8A3F-4C1644363A5A} = {462ED721-1C9C-43FA-8A3F-4C1644363A5A}

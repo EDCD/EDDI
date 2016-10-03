@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EliteDangerousSpeechService;
-using EDDIVAPlugin;
+using EDDIVoiceAttackResponder;
 using System.Collections.Generic;
 using System;
 using EDDI;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EDDIVAPlugin;
+using EDDIVoiceAttackResponder;
 using System.Collections.Generic;
 using System;
 using System.Speech.Synthesis;

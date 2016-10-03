@@ -14,7 +14,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using EliteDangerousSpeechResponder;
 
-namespace EDDIVAPlugin
+namespace EDDIVoiceAttackResponder
 {
     public class VoiceAttackPlugin
     {
@@ -70,9 +70,12 @@ namespace EDDIVAPlugin
 
                         // Fire local command if present
                         string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
+                        Logging.Info("Searching for command " + commandName);
                         if (vaProxy.CommandExists(commandName))
                         {
+                            Logging.Info("Found command " + commandName);
                             vaProxy.ExecuteCommand(commandName);
+                            Logging.Info("Executed command " + commandName);
                         }
                     }
                 });
