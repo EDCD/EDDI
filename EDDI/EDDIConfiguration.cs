@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Utilities;
 
-namespace EDDI
+namespace Eddi
 {
     /// <summary>Configuration for EDDI</summary>
     public class EDDIConfiguration
@@ -32,7 +32,7 @@ namespace EDDI
 
         /// <summary>
         /// Obtain configuration from a file.  If the file name is not supplied the the default
-        /// path of %APPDATA%\EDDI\eddi.json is used
+        /// path of Constants.Data_DIR\eddi.json is used
         /// </summary>
         public static EDDIConfiguration FromFile(string filename=null)
         {
@@ -62,7 +62,7 @@ namespace EDDI
         /// <summary>
         /// Write configuration to a file.  If the filename is not supplied then the path used
         /// when reading in the configuration will be used, or the default path of 
-        /// %APPDATA%\EDDI\eddi.json will be used
+        /// Constants.Data_DIR\eddi.json will be used
         /// </summary>
         public void ToFile(string filename=null)
         {

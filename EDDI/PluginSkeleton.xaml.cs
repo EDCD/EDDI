@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EDDI
+namespace Eddi
 {
     /// <summary>
     /// Interaction logic for PluginSkeleton.xaml

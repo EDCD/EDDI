@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EDDIVoiceAttackResponder;
+using EddiVoiceAttackResponder;
 using System.Collections.Generic;
 using System;
 using System.Speech.Synthesis;
@@ -9,12 +9,12 @@ using System.Threading;
 using System.Globalization;
 using System.Collections.ObjectModel;
 using System.Linq;
-using EliteDangerousSpeechService;
+using EddiSpeechService;
 using CSCore;
 using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
 using CSCore.Streams.Effects;
-using EliteDangerousDataDefinitions;
+using EddiDataDefinitions;
 
 namespace Tests
 {

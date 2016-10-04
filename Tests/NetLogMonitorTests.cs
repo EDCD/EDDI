@@ -1,11 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EDDIVoiceAttackResponder;
-using EliteDangerousNetLogMonitor;
+using EddiVoiceAttackResponder;
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
-
+using EddiNetLogMonitor;
 
 namespace Tests
 {

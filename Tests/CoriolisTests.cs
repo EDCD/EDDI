@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EDDIVoiceAttackResponder;
-using EliteDangerousNetLogMonitor;
-using System.IO;
+using EddiVoiceAttackResponder;
 using System;
 
 namespace Tests

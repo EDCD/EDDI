@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using Utilities;
 
-namespace EDDI
+namespace Eddi
 {
-
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -19,7 +18,6 @@ namespace EDDI
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            //Eddi.Instance.Start();
         }
     }
 }

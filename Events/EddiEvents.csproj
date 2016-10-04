@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EddiEvents</RootNamespace>
+    <AssemblyName>EddiEvents</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BondAwardedEvent.cs" />
+    <Compile Include="AmmunitionPurchasedEvent.cs" />
+    <Compile Include="JumpingEvent.cs" />
+    <Compile Include="LimpetSoldEvent.cs" />
+    <Compile Include="LimpetPurchasedEvent.cs" />
+    <Compile Include="ExplorationDataSoldEvent.cs" />
+    <Compile Include="ExplorationDataPurchasedEvent.cs" />
+    <Compile Include="MaterialDiscoveredEvent.cs" />
+    <Compile Include="MaterialDiscardedEvent.cs" />
+    <Compile Include="MaterialCollectedEvent.cs" />
+    <Compile Include="KilledEvent.cs" />
+    <Compile Include="CommodityRefinedEvent.cs" />
+    <Compile Include="ShipInterdiction.cs" />
+    <Compile Include="ShipInterdicted.cs" />
+    <Compile Include="CommanderRanksEvent.cs" />
+    <Compile Include="CommanderProgressEvent.cs" />
+    <Compile Include="CommanderStartedEvent.cs" />
+    <Compile Include="ControllingShipEvent.cs" />
+    <Compile Include="CrewAssignedEvent.cs" />
+    <Compile Include="CrewFiredEvent.cs" />
+    <Compile Include="CrewHiredEvent.cs" />
+    <Compile Include="DiedEvent.cs" />
+    <Compile Include="ClearSaveEvent.cs" />
+    <Compile Include="ShipPurchasedEvent.cs" />
+    <Compile Include="TradeDataPurchasedEvent.cs" />
+    <Compile Include="ShipTransferInitiatedEvent.cs" />
+    <Compile Include="ShipSwappedEvent.cs" />
+    <Compile Include="ShipSoldEvent.cs" />
+    <Compile Include="HullDamageEvent.cs" />
+    <Compile Include="EnteredSignalSourceEvent.cs" />
+    <Compile Include="MessageSentEvent.cs" />
+    <Compile Include="MessageReceivedEvent.cs" />
+    <Compile Include="RebootRepairEvent.cs" />
+    <Compile Include="ControllingFighterEvent.cs" />
+    <Compile Include="SelfDestructEvent.cs" />
+    <Compile Include="SRVLaunchedEvent.cs" />
+    <Compile Include="SRVDockedEvent.cs" />
+    <Compile Include="FighterDockedEvent.cs" />
+    <Compile Include="FighterLaunchedEvent.cs" />
+    <Compile Include="CommoditySoldEvent.cs" />
+    <Compile Include="BountyIncurredEvent .cs" />
+    <Compile Include="CommodityEjectedEvent.cs" />
+    <Compile Include="CommodityPurchasedEvent.cs" />
+    <Compile Include="DockingTimedOutEvent.cs" />
+    <Compile Include="DockingDeniedEvent.cs" />
+    <Compile Include="DockingGrantedEvent.cs" />
+    <Compile Include="DockingCancelledEvent.cs" />
+    <Compile Include="DockingRequestedEvent.cs" />
+    <Compile Include="Events.cs" />
+    <Compile Include="HeatDamageEvent.cs" />
+    <Compile Include="HeatWarningEvent.cs" />
+    <Compile Include="LocationEvent.cs" />
+    <Compile Include="ShieldsDownEvent.cs" />
+    <Compile Include="ShieldsUpEvent.cs" />
+    <Compile Include="BodyScannedEvent.cs" />
+    <Compile Include="StarScannedEvent.cs" />
+    <Compile Include="CockpitBreachedEvent.cs" />
+    <Compile Include="CommodityCollectedEvent.cs" />
+    <Compile Include="ExplorationPromotionEvent.cs" />
+    <Compile Include="ScreenshotEvent.cs" />
+    <Compile Include="TradePromotionEvent.cs" />
+    <Compile Include="CombatPromotionEvent.cs" />
+    <Compile Include="FineIncurredEvent.cs" />
+    <Compile Include="EnteredNormalSpaceEvent.cs" />
+    <Compile Include="EnteredSupercruiseEvent.cs" />
+    <Compile Include="BountyAwardedEvent.cs" />
+    <Compile Include="CommanderContinuedEvent.cs" />
+    <Compile Include="LiftoffEvent.cs" />
+    <Compile Include="TouchdownEvent.cs" />
+    <Compile Include="UndockedEvent.cs" />
+    <Compile Include="Event.cs" />
+    <Compile Include="DockedEvent.cs" />
+    <Compile Include="JumpedEvent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
+      <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
+      <Name>EddiDataDefinitions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

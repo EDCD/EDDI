@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace EDDI
+namespace Eddi
 {
     /// <summary>
     /// The methods required for an EDDI monitor.

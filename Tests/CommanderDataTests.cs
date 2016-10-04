@@ -1,9 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EliteDangerousCompanionAppService;
-using EliteDangerousDataDefinitions;
-using System.Collections.Generic;
-using System;
-using EDDIVoiceAttackResponder;
+using EddiCompanionAppService;
+using EddiDataDefinitions;
+using EddiVoiceAttackResponder;
 
 namespace Tests
 {

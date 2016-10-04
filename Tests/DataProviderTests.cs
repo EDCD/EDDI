@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EliteDangerousCompanionAppService;
-using EliteDangerousDataDefinitions;
+using EddiCompanionAppService;
+using EddiDataDefinitions;
 using System.Collections.Generic;
-using EliteDangerousDataProviderService;
+using EddiDataProviderService;
 
 namespace Tests
 {

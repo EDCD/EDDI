@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EliteDangerousDataDefinitions;
-using EliteDangerousDataProviderService;
+using EddiDataDefinitions;
+using EddiDataProviderService;
 
 namespace Tests
 {

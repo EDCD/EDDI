@@ -1,9 +1,9 @@
-﻿using EliteDangerousCompanionAppService;
-using EliteDangerousDataDefinitions;
-using EliteDangerousDataProviderService;
-using EliteDangerousEvents;
-using EliteDangerousSpeechService;
-using EliteDangerousStarMapService;
+﻿using EddiCompanionAppService;
+using EddiDataDefinitions;
+using EddiDataProviderService;
+using EddiEvents;
+using EddiSpeechService;
+using EddiStarMapService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -18,7 +18,7 @@ using System.Text;
 using System.Threading;
 using Utilities;
 
-namespace EDDI
+namespace Eddi
 {
     // Notifications delegate
     public delegate void OnEventHandler(Event theEvent);
@@ -27,12 +27,12 @@ namespace EDDI
     /// Eddi is the controller for all EDDI operations.  Its job is to retain the state of the objects such as the commander, the current system, etc.
     /// and keep them up-to-date with changes that occur.  It also passes on messages to responders to handle as required.
     /// </summary>
-    public class Eddi
+    public class EDDI
     {
-        private static Eddi instance;
+        private static EDDI instance;
 
         private static readonly object instanceLock = new object();
-        public static Eddi Instance
+        public static EDDI Instance
         {
             get
             {
@@ -43,7 +43,7 @@ namespace EDDI
                         if (instance == null)
                         {
                             Logging.Debug("No EDDI instance: creating one");
-                            instance = new Eddi();
+                            instance = new EDDI();
                         }
                     }
                 }
@@ -86,7 +86,7 @@ namespace EDDI
         public static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         public static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
 
-        private Eddi()
+        private EDDI()
         {
             try
             {

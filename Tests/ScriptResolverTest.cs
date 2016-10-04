@@ -1,9 +1,9 @@
 ﻿using Cottle.Documents;
 using Cottle.Functions;
 using Cottle.Stores;
-using EDDI;
-using EliteDangerousSpeechResponder;
-using EliteDangerousSpeechService;
+using Eddi;
+using EddiSpeechResponder;
+using EddiSpeechService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

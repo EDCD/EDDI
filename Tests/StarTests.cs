@@ -1,11 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EliteDangerousCompanionAppService;
-using EliteDangerousDataDefinitions;
-using System.Collections.Generic;
+using EddiDataDefinitions;
 using System;
-using EDDIVoiceAttackResponder;
 using MathNet.Numerics.Distributions;
-using EliteDangerousEvents;
+using EddiEvents;
 
 namespace Tests
 {

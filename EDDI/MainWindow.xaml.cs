@@ -1,6 +1,6 @@
-﻿using EliteDangerousCompanionAppService;
-using EliteDangerousDataDefinitions;
-using EliteDangerousSpeechService;
+﻿using EddiCompanionAppService;
+using EddiDataDefinitions;
+using EddiSpeechService;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -22,7 +22,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Utilities;
 
-namespace EDDI
+namespace Eddi
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -108,7 +108,7 @@ namespace EDDI
             ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels;
             ttsTestShipDropDown.Text = "Adder";
 
-            foreach (EDDIMonitor monitor in Eddi.Instance.monitors)
+            foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
             {
                 Logging.Debug("Adding configuration tab for " + monitor.MonitorName());
 
@@ -140,7 +140,7 @@ namespace EDDI
                 tabControl.Items.Add(item);
             }
 
-            foreach (EDDIResponder responder in Eddi.Instance.responders)
+            foreach (EDDIResponder responder in EDDI.Instance.responders)
             {
                 Logging.Debug("Adding configuration tab for " + responder.ResponderName());
 
@@ -172,7 +172,7 @@ namespace EDDI
                 tabControl.Items.Add(item);
             }
 
-            Eddi.Instance.Start();
+            EDDI.Instance.Start();
         }
 
         // Handle changes to the eddi tab
@@ -452,11 +452,11 @@ namespace EDDI
         {
             base.OnClosed(e);
 
-            Eddi.Instance.Stop();
+            EDDI.Instance.Stop();
             Application.Current.Shutdown();
         }
 
-        private new void EnsureValidDecimal(object sender, TextCompositionEventArgs e)
+        private void EnsureValidDecimal(object sender, TextCompositionEventArgs e)
         {
             // Match valid characters
             Regex regex = new Regex(@"[0-9\.]");

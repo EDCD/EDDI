@@ -1,11 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EliteDangerousSpeechService;
-using EDDIVoiceAttackResponder;
+using EddiSpeechService;
+using EddiVoiceAttackResponder;
 using System.Collections.Generic;
 using System;
-using EDDI;
-using EliteDangerousDataDefinitions;
-using EliteDangerousDataProviderService;
+using Eddi;
+using EddiDataDefinitions;
+using EddiDataProviderService;
 
 namespace Tests
 {

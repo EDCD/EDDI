@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -7,8 +7,8 @@
     <ProjectGuid>{EC7BA042-A370-447F-8C3E-241358CEBCBB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EDDI</RootNamespace>
-    <AssemblyName>EDDI</AssemblyName>
+    <RootNamespace>Eddi</RootNamespace>
+    <AssemblyName>Eddi</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -40,6 +40,14 @@
     <ApplicationIcon>EDDI.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Expression.Controls, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -49,6 +57,18 @@
     <Reference Include="System.AddIn.Contract" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.103\lib\net451\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.103\lib\net451\System.Data.SQLite.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.103\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Speech" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -121,29 +141,29 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EliteDangerousCompanionAppService\EliteDangerousCompanionAppService.csproj">
-      <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
-      <Name>EliteDangerousCompanionAppService</Name>
+    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
+      <Project>{462ED721-1C9C-43FA-8A3F-4C1644363A5A}</Project>
+      <Name>EddiCompanionAppService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousDataDefinitions\EliteDangerousDataDefinitions.csproj">
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
-      <Name>EliteDangerousDataDefinitions</Name>
+      <Name>EddiDataDefinitions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousDataProviderService\EliteDangerousDataProviderService.csproj">
+    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
       <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
-      <Name>EliteDangerousDataProviderService</Name>
+      <Name>EddiDataProviderService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousEvents\EliteDangerousEvents.csproj">
+    <ProjectReference Include="..\Events\EddiEvents.csproj">
       <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
-      <Name>EliteDangerousEvents</Name>
+      <Name>EddiEvents</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousSpeechService\EliteDangerousSpeechService.csproj">
+    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
       <Project>{19572A69-C13A-459D-AB72-2B0F034AC27F}</Project>
-      <Name>EliteDangerousSpeechService</Name>
+      <Name>EddiSpeechService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousStarMapService\EliteDangerousStarMapService.csproj">
+    <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
       <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
-      <Name>EliteDangerousStarMapService</Name>
+      <Name>EddiStarMapService</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{cd71dd2a-86ac-44a8-959b-e1c3069966bd}</Project>
@@ -154,6 +174,13 @@
     <Resource Include="EDDI.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.103\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.103\build\net451\System.Data.SQLite.Core.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.103\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.103\build\net451\System.Data.SQLite.Core.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
