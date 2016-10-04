@@ -8,6 +8,7 @@ EDDI responds to a wide range of events, and also provides a VoiceAttack plugin 
 
 ##Installing EDDI
 
+
 EDDI can be installed standalone or as a VoiceAttack plugin.
 
 Download the EDDI ZIP file from [http://www.mcdee.net/elite/EDDI.zip](http://www.mcdee.net/elite/EDDI.zip) or compile it from the sources at [https://github.com/cmdrmcdonald/EliteDangerousDataProvider](https://github.com/cmdrmcdonald/EliteDangerousDataProvider).

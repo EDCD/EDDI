@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousSpeechRespond
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EliteDangerousGalnetMonitor", "EliteDangerousGalnetMonitor\EliteDangerousGalnetMonitor.csproj", "{93B946C8-3F78-465A-8CC4-C0FC4127B762}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Installer.vdproj", "{38F31746-29D7-47D5-BD25-F49DE42DE29A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,8 @@ Global
 		{93B946C8-3F78-465A-8CC4-C0FC4127B762}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93B946C8-3F78-465A-8CC4-C0FC4127B762}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93B946C8-3F78-465A-8CC4-C0FC4127B762}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38F31746-29D7-47D5-BD25-F49DE42DE29A}.Debug|Any CPU.ActiveCfg = Debug
+		{38F31746-29D7-47D5-BD25-F49DE42DE29A}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

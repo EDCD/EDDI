@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -32,14 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -48,18 +40,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.SQLite, Version=1.0.102.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Core.1.0.102.0\lib\net451\System.Data.SQLite.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Data.SQLite.EF6, Version=1.0.102.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.102.0\lib\net451\System.Data.SQLite.EF6.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.102.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.102.0\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -77,19 +57,19 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EDDI\EDDI.csproj">
-      <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
+      <Project>{EC7BA042-A370-447F-8C3E-241358CEBCBB}</Project>
       <Name>EDDI</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteDangerousDataDefinitions\EliteDangerousDataDefinitions.csproj">
-      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
+      <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
       <Name>EliteDangerousDataDefinitions</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteDangerousDataProviderService\EliteDangerousDataProviderService.csproj">
-      <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
+      <Project>{C5F48807-921B-456D-A9E4-A0282E5E8CF1}</Project>
       <Name>EliteDangerousDataProviderService</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteDangerousEvents\EliteDangerousEvents.csproj">
-      <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
+      <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
       <Name>EliteDangerousEvents</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteDangerousSpeechResponder\EliteDangerousSpeechResponder.csproj">
@@ -97,11 +77,11 @@
       <Name>EliteDangerousSpeechResponder</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteDangerousSpeechService\EliteDangerousSpeechService.csproj">
-      <Project>{19572a69-c13a-459d-ab72-2b0f034ac27f}</Project>
+      <Project>{19572A69-C13A-459D-AB72-2B0F034AC27F}</Project>
       <Name>EliteDangerousSpeechService</Name>
     </ProjectReference>
     <ProjectReference Include="..\EliteDangerousStarMapService\EliteDangerousStarMapService.csproj">
-      <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
+      <Project>{6614E6AD-65AE-49FC-850B-9DF79D1CC998}</Project>
       <Name>EliteDangerousStarMapService</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
@@ -117,13 +97,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\System.Data.SQLite.Core.1.0.102.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.102.0\build\net451\System.Data.SQLite.Core.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.102.0\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.102.0\build\net451\System.Data.SQLite.Core.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -43,7 +43,7 @@ namespace EDDI
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;
-            eddiInsuranceDecimal.Value = eddiConfiguration.Insurance;
+            eddiInsuranceDecimal.Text = eddiConfiguration.Insurance.ToString(CultureInfo.InvariantCulture);
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
 
             Logging.Verbose = eddiConfiguration.Debug;
@@ -190,12 +190,18 @@ namespace EDDI
             eddiConfiguration.ToFile();
         }
 
-
-        private void insuranceChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        private void insuranceChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            eddiConfiguration.Insurance = eddiInsuranceDecimal.Value == null ? 5 : (decimal)eddiInsuranceDecimal.Value;
-            eddiConfiguration.ToFile();
+            try
+            {
+                eddiConfiguration.Insurance = string.IsNullOrWhiteSpace(eddiInsuranceDecimal.Text) ? 5 : Convert.ToDecimal(eddiInsuranceDecimal.Text);
+                eddiConfiguration.ToFile();
+            }
+            catch
+            {
+                // Bad user input; ignore it
+            }
         }
 
         private void verboseLoggingEnabled(object sender, RoutedEventArgs e)
@@ -448,6 +454,14 @@ namespace EDDI
 
             Eddi.Instance.Stop();
             Application.Current.Shutdown();
+        }
+
+        private new void EnsureValidDecimal(object sender, TextCompositionEventArgs e)
+        {
+            // Match valid characters
+            Regex regex = new Regex(@"[0-9\.]");
+            // Swallow the character doesn't match the regex
+            e.Handled = !regex.IsMatch(e.Text);
         }
     }
 
