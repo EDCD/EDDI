@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace EliteDangerousDataDefinitions
+namespace EddiDataDefinitions
 {
     public class CommodityDefinitions
     {

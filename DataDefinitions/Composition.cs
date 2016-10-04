@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities;
 
-namespace EliteDangerousDataDefinitions
+namespace EddiDataDefinitions
 {
     /// <summary>
     /// Ring compositions

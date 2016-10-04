@@ -574,7 +574,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if len(event.items) = 0:\r\n    A new Galnet article has been published, entitled {event[0].title}\r\n|else:\r\n    {len(event.items)} new Galnet articles have been published.  Their titles are\r\n    {set item to 0}\r\n    {while item < len(event.items):\r\n        {if item = len(event.items) - 1:\r\n            and {event.items[item].title}\r\n        |else:\r\n            {event.items[item].title},\r\n        }\r\n        {set item to item + 1}\r\n    }\r\n}.\r\n",
+      "script": "{if len(event.items) = 1:\r\n    A new Galnet article has been published, entitled {event[0].title}\r\n|else:\r\n    {len(event.items)} new Galnet articles have been published.  Their titles are\r\n    {set item to 0}\r\n    {while item < len(event.items):\r\n        {if item = len(event.items) - 1:\r\n            and {event.items[item].title}\r\n        |else:\r\n            {event.items[item].title},\r\n        }\r\n        {set item to item + 1}\r\n    }\r\n}.\r\n",
       "name": "Galnet news published",
       "description": "Triggered when news is published on Galnet"
     },

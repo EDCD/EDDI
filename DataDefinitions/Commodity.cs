@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EliteDangerousDataDefinitions
+namespace EddiDataDefinitions
 {
     public class Commodity
     {

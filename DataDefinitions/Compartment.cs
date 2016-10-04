@@ -1,4 +1,4 @@
-﻿namespace EliteDangerousDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     ///<summary>A compartment is an internal slot within a ship</summary>
     public class Compartment

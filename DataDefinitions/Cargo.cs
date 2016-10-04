@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EliteDangerousDataDefinitions
+namespace EddiDataDefinitions
 {
     /// <summary>
     /// Cargo defines a number of commodities carried along with some additional data

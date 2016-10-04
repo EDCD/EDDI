@@ -182,15 +182,16 @@ namespace EDDNResponder
         private static string generateUploaderId()
         {
             // Uploader ID is a hash of the commander's name
-            System.Security.Cryptography.SHA256Managed crypt = new System.Security.Cryptography.SHA256Managed();
-            StringBuilder hash = new StringBuilder();
-            string uploader = (EDDI.Instance.Cmdr == null ? "commander" : EDDI.Instance.Cmdr.name);
-            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(uploader), 0, Encoding.UTF8.GetByteCount(uploader));
-            foreach (byte theByte in crypto)
-            {
-                hash.Append(theByte.ToString("x2"));
-            }
-            return hash.ToString();
+            //System.Security.Cryptography.SHA256Managed crypt = new System.Security.Cryptography.SHA256Managed();
+            //StringBuilder hash = new StringBuilder();
+            //string uploader = (EDDI.Instance.Cmdr == null ? "commander" : EDDI.Instance.Cmdr.name);
+            //byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(uploader), 0, Encoding.UTF8.GetByteCount(uploader));
+            //foreach (byte theByte in crypto)
+            //{
+            //    hash.Append(theByte.ToString("x2"));
+            //}
+            //return hash.ToString();
+            return EDDI.Instance.Cmdr == null ? "Unknown commander" : EDDI.Instance.Cmdr.name;
         }
 
         private static EDDNHeader generateHeader()
