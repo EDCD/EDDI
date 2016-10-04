@@ -122,7 +122,7 @@ namespace EddiVoiceAttackResponder
                     case "speech":
                         InvokeSpeech(ref vaProxy);
                         break;
-                    case "system note":
+                    case "system comment":
                         InvokeStarMapSystemComment(ref vaProxy);
                         break;
                     default:
