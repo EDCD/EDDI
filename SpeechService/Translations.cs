@@ -63,6 +63,8 @@ namespace EddiSpeechService
                     return "<phoneme alphabet=\"ipa\" ph=\"zəˈmiːnə\">Zemina</phoneme> <phoneme alphabet=\"ipa\" ph=\"tɔːˈvæl\">Torval</phoneme>";
                 case "Li Yong-Rui":
                     return "<phoneme alphabet=\"ipa\" ph=\"liː\">Li</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈjɒŋ\">Yong</phoneme> <phoneme alphabet=\"ipa\" ph=\"reɪ\">Rui</phoneme>";
+                case "Yuri Grom":
+                    return "<phoneme alphabet=\"ipa\" ph=\"jʊəˈriː\">Yuri</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈɡrɒm\">Grom</phoneme>";
                 default:
                     return power;
             }
@@ -98,6 +100,7 @@ namespace EddiSpeechService
             { "Asterope", new string[] { "əˈstɛroʊpiː" } },
             { "Atlas", new string[] {  "ˈætləs" } },
             { "Aulin", new string[] { "ˈɔːlɪn" } },
+            { "Cayutorme", new string[] { "ˈkaɪətɔːm" }  },
             { "Celaeno", new string[] {  "sᵻˈliːnoʊ" }  },
             { "Ceos", new string[] { "ˈkeɪɒs" }  },
             { "Cygnus", new string[] { "ˈsɪɡnəs" }  },
