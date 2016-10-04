@@ -89,7 +89,7 @@ namespace EddiCompanionAppService
                     {
                         if (instance == null)
                         {
-                            Logging.Debug("No EDDI instance: creating one");
+                            Logging.Debug("No companion API instance: creating one");
                             instance = new CompanionAppService();
                         }
                     }

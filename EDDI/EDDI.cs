@@ -31,6 +31,17 @@ namespace Eddi
     {
         private static EDDI instance;
 
+        static EDDI()
+        {
+            // Set up our app directory
+            Directory.CreateDirectory(Constants.DATA_DIR);
+
+            // Use invariant culture to ensure that we use . rather than , for our separator when writing out decimals
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+        }
+
+
         private static readonly object instanceLock = new object();
         public static EDDI Instance
         {
@@ -90,14 +101,6 @@ namespace Eddi
         {
             try
             {
-                // Set up our app directory
-                Directory.CreateDirectory(Constants.DATA_DIR);
-
-                // Use en-US as our default culture to ensure that we use . rather than , for our separator when writing out decimals
-                CultureInfo defaultCulture = new CultureInfo("en-US");
-                CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
-                CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
-
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
 
                 // Set up the EDDI configuration
@@ -138,6 +141,11 @@ namespace Eddi
                     {
                         Logging.Debug("Failed to obtain profile: " + ex);
                     }
+                }
+                else
+                {
+                    // We don't have the companion API available, create dummy entries for the commander
+                    Cmdr = new Commander();
                 }
                 Cmdr.insurance = configuration.Insurance;
                 if (Cmdr.name != null)
@@ -201,7 +209,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to initialise: " + ex);
+                Logging.Error("Failed to initialise: " + ex.ToString());
             }
         }
 

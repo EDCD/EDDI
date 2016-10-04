@@ -53,7 +53,7 @@ namespace Utilities
             {
                 using (StreamWriter file = new StreamWriter(LogFile, true))
                 {
-                    file.WriteLine(DateTime.Now.ToString() + " " + Path.GetFileNameWithoutExtension(path) + ":" + method + " [" + level + "] " + data);
+                    file.WriteLine(DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture) + " " + Path.GetFileNameWithoutExtension(path) + ":" + method + " [" + level + "] " + data);
                 }
             }
         }
