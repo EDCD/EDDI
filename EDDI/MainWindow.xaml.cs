@@ -3,6 +3,7 @@ using EddiDataDefinitions;
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -40,6 +41,8 @@ namespace Eddi
             Directory.CreateDirectory(Constants.DATA_DIR);
 
             // Configure the EDDI tab
+            versionText.Text = Constants.EDDI_VERSION;
+
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;
@@ -462,6 +465,11 @@ namespace Eddi
             Regex regex = new Regex(@"[0-9\.]");
             // Swallow the character doesn't match the regex
             e.Handled = !regex.IsMatch(e.Text);
+        }
+
+        private void ipaClicked(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://en.wikipedia.org/wiki/International_Phonetic_Alphabet");
         }
     }
 
