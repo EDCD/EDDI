@@ -16,19 +16,29 @@ namespace EddiEvents
 
         static MessageReceivedEvent()
         {
-            VARIABLES.Add("from", "The name of the player who sent the message");
+            VARIABLES.Add("from", "The name of the pilot who sent the message");
+            VARIABLES.Add("player", "True if the sender is a player");
+            VARIABLES.Add("channel", "The channel in which the message came (direct, local, wing)");
             VARIABLES.Add("message", "The message");
         }
 
         [JsonProperty("from")]
         public string from { get; private set; }
 
+        [JsonProperty("player")]
+        public bool player { get; private set; }
+
+        [JsonProperty("channel")]
+        public string channel { get; private set; }
+
         [JsonProperty("message")]
         public string message { get; private set; }
 
-        public MessageReceivedEvent(DateTime timestamp, string from, string message) : base(timestamp, NAME)
+        public MessageReceivedEvent(DateTime timestamp, string from, bool player, string channel, string message) : base(timestamp, NAME)
         {
             this.from = from;
+            this.player = player;
+            this.channel = channel;
             this.message = message;
         }
     }

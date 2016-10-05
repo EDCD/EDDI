@@ -138,6 +138,11 @@ namespace EddiNetLogMonitor
             stop();
         }
 
+        public void Reload()
+        {
+            Directory = NetLogConfiguration.FromFile().path;
+        }
+
         public UserControl ConfigurationTabItem()
         {
             return new ConfigurationWindow();

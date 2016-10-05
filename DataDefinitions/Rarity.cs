@@ -29,6 +29,7 @@ namespace EddiDataDefinitions
             RARITIES.Add(this);
         }
 
+        public static readonly Rarity Unknown = new Rarity("unknown", 0, "Unknown");
         public static readonly Rarity VeryCommon= new Rarity("verycommon", 1, "Very common");
         public static readonly Rarity Common = new Rarity("common", 2, "Common");
         public static readonly Rarity Standard = new Rarity("standard", 3, "Standard");

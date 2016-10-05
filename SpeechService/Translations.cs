@@ -545,12 +545,26 @@ namespace EddiSpeechService
                 order = "million";
                 nextDigit = (((int)value) - (number * 1000000)) / 100000;
             }
-            else
+            else if (digits < 12)
             {
                 // Billions
                 number = (int)(value / 1000000000);
                 order = "billion";
                 nextDigit = (int)(((long)value) - ((long)number * 1000000000)) / 100000000;
+            }
+            else if (digits < 15)
+            {
+                // Trillions
+                number = (int)(value / 1000000000000);
+                order = "trillion";
+                nextDigit = (int)(((long)value) - (int)((number * 1000000000000)) / 100000000000);
+            }
+            else
+            {
+                // Quadrillions
+                number = (int)(value / 1000000000000000);
+                order = "quadrillion";
+                nextDigit = (int)(((long)value) - (int)((number * 1000000000000000)) / 100000000000000);
             }
 
             if (order == "")
@@ -569,6 +583,11 @@ namespace EddiSpeechService
                     {
                         return "Nearly " + (number + 1) + " " + order;
                     }
+                }
+                // See if we have an exact match
+                if (((long)(((decimal)value) / (decimal)Math.Pow(10, digits - 1))) * (decimal)(Math.Pow(10, digits - 1)) == value)
+                {
+                    return "" + number + " " + order;
                 }
                 switch (nextDigit)
                 {

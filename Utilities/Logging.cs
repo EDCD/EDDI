@@ -24,7 +24,7 @@ namespace Utilities
 
         public static void Error(string message, string data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            log(filePath, memberName, "E", data);
+            log(filePath, memberName, "E", message + data);
             Report(message, data, memberName, filePath);
         }
 

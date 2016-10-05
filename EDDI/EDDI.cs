@@ -31,6 +31,8 @@ namespace Eddi
     {
         private static EDDI instance;
 
+        private static bool started;
+
         static EDDI()
         {
             // Set up our app directory
@@ -40,7 +42,6 @@ namespace Eddi
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
         }
-
 
         private static readonly object instanceLock = new object();
         public static EDDI Instance
@@ -92,11 +93,6 @@ namespace Eddi
         public StarSystem CurrentStarSystem { get; private set; }
         public StarSystem LastStarSystem { get; private set; }
 
-        public EDDIConfiguration configuration { get; private set; }
-
-        public static readonly string ENVIRONMENT_SUPERCRUISE = "Supercruise";
-        public static readonly string ENVIRONMENT_NORMAL_SPACE = "Normal space";
-
         private EDDI()
         {
             try
@@ -104,7 +100,7 @@ namespace Eddi
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
 
                 // Set up the EDDI configuration
-                configuration = EDDIConfiguration.FromFile();
+                EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                 Logging.Verbose = configuration.Debug;
                 if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
                 {
@@ -184,7 +180,7 @@ namespace Eddi
                 }
 
                 // We always start in normal space
-                Environment = ENVIRONMENT_NORMAL_SPACE;
+                Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
 
                 // Set up monitors and responders
                 monitors = findMonitors();
@@ -215,72 +211,122 @@ namespace Eddi
 
         public void Start()
         {
-            EDDIConfiguration configuration = EDDIConfiguration.FromFile();
-
-            foreach (EDDIMonitor monitor in monitors)
+            if (!started)
             {
-                bool enabled;
-                if (!configuration.Plugins.TryGetValue(monitor.MonitorName(), out enabled))
-                {
-                    // No information; default to enabled
-                    enabled = true;
-                }
+                EDDIConfiguration configuration = EDDIConfiguration.FromFile();
 
-                if (!enabled)
+                foreach (EDDIMonitor monitor in monitors)
                 {
-                    Logging.Debug(monitor.MonitorName() + " is disabled; not starting");
-                }
-                else
-                {
-                    Thread monitorThread = new Thread(() => monitor.Start());
-                    monitorThread.IsBackground = true;
-                    monitorThread.Name = monitor.MonitorName();
-                    Logging.Info("Starting " + monitor.MonitorName());
-                    monitorThread.Start();
-                }
-            }
-
-            foreach (EDDIResponder responder in responders)
-            {
-                bool enabled;
-                if (!configuration.Plugins.TryGetValue(responder.ResponderName(), out enabled))
-                {
-                    // No information; default to enabled
-                    enabled = true;
-                }
-
-                if (!enabled)
-                {
-                    Logging.Debug(responder.ResponderName() + " is disabled; not starting");
-                }
-                else
-                {
-                    bool responderStarted = responder.Start();
-                    if (responderStarted)
+                    bool enabled;
+                    if (!configuration.Plugins.TryGetValue(monitor.MonitorName(), out enabled))
                     {
-                        EventHandler += new OnEventHandler(responder.Handle);
-                        Logging.Info("Started " + responder.ResponderName());
+                        // No information; default to enabled
+                        enabled = true;
+                    }
+
+                    if (!enabled)
+                    {
+                        Logging.Debug(monitor.MonitorName() + " is disabled; not starting");
                     }
                     else
                     {
-                        Logging.Warn("Failed to start " + responder.ResponderName());
+                        Thread monitorThread = new Thread(() => monitor.Start());
+                        monitorThread.IsBackground = true;
+                        monitorThread.Name = monitor.MonitorName();
+                        Logging.Info("Starting " + monitor.MonitorName());
+                        monitorThread.Start();
                     }
                 }
+
+                foreach (EDDIResponder responder in responders)
+                {
+                    bool enabled;
+                    if (!configuration.Plugins.TryGetValue(responder.ResponderName(), out enabled))
+                    {
+                        // No information; default to enabled
+                        enabled = true;
+                    }
+
+                    if (!enabled)
+                    {
+                        Logging.Debug(responder.ResponderName() + " is disabled; not starting");
+                    }
+                    else
+                    {
+                        bool responderStarted = responder.Start();
+                        if (responderStarted)
+                        {
+                            EventHandler += new OnEventHandler(responder.Handle);
+                            Logging.Info("Started " + responder.ResponderName());
+                        }
+                        else
+                        {
+                            Logging.Warn("Failed to start " + responder.ResponderName());
+                        }
+                    }
+                }
+                started = true;
             }
         }
 
         public void Stop()
         {
+            if (started)
+            {
+                foreach (EDDIResponder responder in responders)
+                {
+                    responder.Stop();
+                }
+                foreach (EDDIMonitor monitor in monitors)
+                {
+                    monitor.Stop();
+                }
+            }
+
+            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
+
+            started = false;
+        }
+
+        /// <summary>
+        /// Reload all monitors and responders
+        /// </summary>
+        public void Reload()
+        {
             foreach (EDDIResponder responder in responders)
             {
-                responder.Stop();
+                responder.Reload();
             }
             foreach (EDDIMonitor monitor in monitors)
             {
-                monitor.Stop();
+                monitor.Reload();
             }
 
-            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " shutting down");
+            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
+        }
+
+        /// <summary>
+        /// Reload a specific monitor or responder
+        /// </summary>
+        public void Reload(string name)
+        {
+            foreach (EDDIResponder responder in responders)
+            {
+                if (responder.ResponderName() == name)
+                {
+                    responder.Reload();
+                    return;
+                }
+            }
+            foreach (EDDIMonitor monitor in monitors)
+            {
+                if (monitor.MonitorName() == name)
+                {
+                    monitor.Reload();
+                }
+            }
+
+            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
         }
 
         public void eventHandler(Event journalEvent)
@@ -399,7 +445,7 @@ namespace Eddi
                 CurrentStarSystem.lastvisit = DateTime.Now;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 // After jump we are always in supercruise
-                Environment = ENVIRONMENT_SUPERCRUISE;
+                Environment = Constants.ENVIRONMENT_SUPERCRUISE;
                 setCommanderTitle();
             }
             return passEvent;
@@ -423,18 +469,22 @@ namespace Eddi
             {
                 passEvent = true;
                 updateCurrentSystem(theEvent.system);
-                if (CurrentStarSystem.x == null)
-                {
-                    // Star system is missing co-ordinates to take them from the event
-                    CurrentStarSystem.x = theEvent.x;
-                    CurrentStarSystem.y = theEvent.y;
-                    CurrentStarSystem.z = theEvent.z;
-                }
+
+                // The information in the event is more up-to-date than the information we obtain from external sources, so update it here
+                CurrentStarSystem.x = theEvent.x;
+                CurrentStarSystem.y = theEvent.y;
+                CurrentStarSystem.z = theEvent.z;
+                CurrentStarSystem.allegiance = theEvent.allegiance;
+                CurrentStarSystem.faction = theEvent.faction;
+                CurrentStarSystem.primaryeconomy = theEvent.economy;
+                CurrentStarSystem.government = theEvent.government;
+                CurrentStarSystem.security = theEvent.security;
+
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 // After jump we are always in supercruise
-                Environment = ENVIRONMENT_SUPERCRUISE;
+                Environment = Constants.ENVIRONMENT_SUPERCRUISE;
                 setCommanderTitle();
             }
             return passEvent;
@@ -442,9 +492,9 @@ namespace Eddi
 
         private bool eventEnteredSupercruise(EnteredSupercruiseEvent theEvent)
         {
-            if (Environment == null || Environment != ENVIRONMENT_SUPERCRUISE)
+            if (Environment == null || Environment != Constants.ENVIRONMENT_SUPERCRUISE)
             {
-                Environment = ENVIRONMENT_SUPERCRUISE;
+                Environment = Constants.ENVIRONMENT_SUPERCRUISE;
                 updateCurrentSystem(theEvent.system);
                 return true;
             }
@@ -453,9 +503,9 @@ namespace Eddi
 
         private bool eventEnteredNormalSpace(EnteredNormalSpaceEvent theEvent)
         {
-            if (Environment == null || Environment != ENVIRONMENT_NORMAL_SPACE)
+            if (Environment == null || Environment != Constants.ENVIRONMENT_NORMAL_SPACE)
             {
-                Environment = ENVIRONMENT_NORMAL_SPACE;
+                Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
                 updateCurrentSystem(theEvent.system);
                 return true;
             }

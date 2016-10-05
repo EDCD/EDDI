@@ -4,7 +4,7 @@
 #define MyAppName "EDDI"
 #define MyAppVersion "2.0.0b2"
 #define MyAppPublisher "Cmdr McDonald"
-#define MyAppURL "http://www.eddp.co/"
+#define MyAppURL "https://github.com/cmdrmcdonald/EliteDangerousDataProvider/"
 #define MyAppExeName "EDDI.exe"
 
 [Setup]
@@ -21,9 +21,11 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName=C:\Program Files (x86)\VoiceAttack\Apps\{#MyAppName}
 DefaultGroupName={#MyAppName}
-OutputBaseFilename=EDDI
+OutputBaseFilename={#MyAppName}-{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
+WizardImageFile={#SourcePath}\graphics\logo.bmp
+WizardSmallImageFile={#SourcePath}\graphics\logo.bmp
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -82,3 +84,6 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 
 [ThirdParty]
 UseRelativePaths=True
+
+[Messages]
+SelectDirBrowseLabel=To continue, click Next.  If you have a custom VoiceAttack installation location, or would like to put the EDDI files in a different location, click Browse.

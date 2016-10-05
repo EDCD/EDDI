@@ -33,12 +33,17 @@ namespace Eddi
         private Profile profile;
         private ShipsConfiguration shipsConfiguration;
 
+        public bool Primary { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
 
-            // Set up our app directory
-            Directory.CreateDirectory(Constants.DATA_DIR);
+            // Default to being primary
+            Primary = true;
+
+            // Start the EDDI instance
+            EDDI.Instance.Start();
 
             // Configure the EDDI tab
             versionText.Text = Constants.EDDI_VERSION;
@@ -58,7 +63,14 @@ namespace Eddi
             try
             {
                 profile = CompanionAppService.Instance.Profile();
-                setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
+                if (profile == null)
+                {
+                    setUpCompanionAppComplete("Your connection to the companion app is good but experiencing temporary issues.  Your information should be available soon");
+                }
+                else
+                {
+                    setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
+                }
             }
             catch (Exception)
             {
@@ -248,8 +260,15 @@ namespace Eddi
                         {
                             profile = CompanionAppService.Instance.Profile();
                         }
-                        setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
-                        setShipyardFromConfiguration();
+                        if (profile == null)
+                        {
+                            setUpCompanionAppComplete("Your connection to the companion app is good but experiencing temporary issues.  Your information should be available soon");
+                        }
+                        else
+                        {
+                            setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
+                            setShipyardFromConfiguration();
+                        }
                     }
                 }
                 catch (EliteDangerousCompanionAppAuthenticationException ex)
@@ -274,8 +293,11 @@ namespace Eddi
                     CompanionAppService.Instance.Confirm(code);
                     // All done - see if it works
                     profile = CompanionAppService.Instance.Profile();
-                    setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
-                    setShipyardFromConfiguration();
+                    if (profile != null)
+                    {
+                        setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
+                        setShipyardFromConfiguration();
+                    }
                 }
                 catch (EliteDangerousCompanionAppAuthenticationException ex)
                 {
@@ -455,8 +477,11 @@ namespace Eddi
         {
             base.OnClosed(e);
 
-            EDDI.Instance.Stop();
-            Application.Current.Shutdown();
+            if (Primary)
+            {
+                EDDI.Instance.Stop();
+                Application.Current.Shutdown();
+            }
         }
 
         private void EnsureValidDecimal(object sender, TextCompositionEventArgs e)

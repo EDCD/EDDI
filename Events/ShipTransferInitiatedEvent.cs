@@ -19,7 +19,7 @@ namespace EddiEvents
         {
             VARIABLES.Add("ship", "The ship that is being transferred");
             VARIABLES.Add("system", "The system from which the ship is being transferred");
-            VARIABLES.Add("distance", "The distance that the transferred ship needs to travel");
+            VARIABLES.Add("distance", "The distance that the transferred ship needs to travel, in light years");
             VARIABLES.Add("price", "The price of transferring the ship");
         }
 

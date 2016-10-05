@@ -13,7 +13,7 @@ namespace EddiEvents
     {
         public const string NAME = "Star scanned";
         public const string DESCRIPTION = "Triggered when you complete a scan of a stellar body";
-        public static string SAMPLE = "{\"timestamp\":\"2016-09-22T20:39:26Z\",\"event\":\"Scan\",\"BodyName\":\"Col 285 Sector ZK-E c12-8\",\"DistanceFromArrivalLS\":0.000000,\"StarType\":\"K\",\"StellarMass\":0.867188,\"Radius\":687434496.000000,\"AbsoluteMagnitude\":5.697311,\"OrbitalPeriod\":0.000000, \"RotationPeriod\":406112.093750, \"Rings\":[ {\"Name\":\"Col 285 Sector ZK-E c12-8 A Belt\",\"RingClass\":\"eRingClass_MetalRich\", \"MassMT\":1.18e+14, \"InnerRad\":1.24e+09, \"OuterRad\":2.3e+09 }, { \"Name\":\"Col 285 Sector ZK-E c12-8 B Belt\", \"RingClass\":\"eRingClass_MetalRich\", \"MassMT\":4.45e+15, \"InnerRad\":1.25e+10, \"OuterRad\":5.04e+11 } ] }";
+        public static string SAMPLE = "{ \"timestamp\":\"2016-10-05T10:13:55Z\", \"event\":\"Scan\", \"BodyName\":\"Col 285 Sector RS-K c8-5 A\", \"DistanceFromArrivalLS\":0.000000, \"StarType\":\"TTS\", \"StellarMass\":0.449219, \"Radius\":458926400.000000, \"AbsoluteMagnitude\":8.287720, \"Age_MY\":51, \"SurfaceTemperature\":3209.000000, \"SemiMajorAxis\":352032544.000000, \"Eccentricity\":0.027010, \"OrbitalInclination\":74.195038, \"Periapsis\":330.750244, \"OrbitalPeriod\":36441.519531, \"RotationPeriod\":203102.843750 }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
@@ -30,11 +30,15 @@ namespace EddiEvents
             VARIABLES.Add("absolutemagnitude", "The absolute magnitude of the star that has been scanned");
             VARIABLES.Add("luminosity", "The luminosity of the star that has been scanned");
             VARIABLES.Add("luminosityprobability", "The probablility of finding a star of this class and at least this luminosity");
-            VARIABLES.Add("age", "The age of the star that has been scanned, in years");
+            VARIABLES.Add("age", "The age of the star that has been scanned, in years (rounded to millions of years)");
             VARIABLES.Add("temperature", "The temperature of the star that has been scanned");
             VARIABLES.Add("distancefromarrival", "The distance in LS from the main star");
             VARIABLES.Add("orbitalperiod", "The number of seconds taken for a full orbit of the main star");
             VARIABLES.Add("rotationperiod", "The number of seconds taken for a full rotation");
+            VARIABLES.Add("semimajoraxis", "");
+            VARIABLES.Add("eccentricity", "");
+            VARIABLES.Add("orbitalinclination", "");
+            VARIABLES.Add("periapsis", "");
             VARIABLES.Add("rings", "The star's rings");
         }
 
@@ -70,9 +74,17 @@ namespace EddiEvents
 
         public decimal rotationperiod { get; private set; }
 
+        public decimal semimajoraxis { get; private set; }
+
+        public decimal eccentricity { get; private set; }
+
+        public decimal orbitalinclination { get; private set; }
+
+        public decimal periapsis { get; private set; }
+
         public List<Ring> rings { get; private set; }
 
-        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, long age, decimal temperature, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, List<Ring> rings) : base(timestamp, NAME)
+        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, long age, decimal temperature, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal semimajoraxis, decimal eccentricity, decimal orbitalinclination, decimal periapsis, List<Ring> rings) : base(timestamp, NAME)
         {
             this.name = name;
             this.stellarclass = stellarclass;
@@ -84,6 +96,10 @@ namespace EddiEvents
             this.distancefromarrival = distancefromarrival;
             this.orbitalperiod = orbitalperiod;
             this.rotationperiod = rotationperiod;
+            this.semimajoraxis = semimajoraxis;
+            this.eccentricity = eccentricity;
+            this.orbitalinclination = orbitalinclination;
+            this.periapsis = periapsis;
             this.rings = rings;
             StarClass starClass = StarClass.FromName(this.stellarclass);
             if (starClass != null)

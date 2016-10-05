@@ -32,6 +32,11 @@ namespace Eddi
         /// </summary>
         void Stop();
 
+        /// <summary>
+        /// Called when this monitor needs to reload its configuration
+        /// </summary>
+        void Reload();
+
         UserControl ConfigurationTabItem();
     }
 }

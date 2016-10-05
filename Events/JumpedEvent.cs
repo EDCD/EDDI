@@ -70,7 +70,7 @@ namespace EddiEvents
             this.factionstate = (factionstate == null ? State.None.name : factionstate.name);
             this.economy = (economy == null ? Economy.None.name : economy.name);
             this.government = (government == null ? Government.None.name : government.name);
-            this.security = (security == null ? SecurityLevel.Low.name : security.name);
+            this.security = (security == null ? SecurityLevel.None.name : security.name);
         }
     }
 }

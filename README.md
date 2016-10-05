@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface
 
-Current version: 2.0.0b1
+Current version: 2.0.0b2
 
 EDDI is a companion application for Elite: Dangerous, providing responses to events that occur in-game using data from the game as well as various third-party tools.
 
@@ -8,10 +8,11 @@ EDDI responds to a wide range of events, and also provides a VoiceAttack plugin 
 
 ##Installing EDDI
 
-
 EDDI can be installed standalone or as a VoiceAttack plugin.
 
-Download the EDDI ZIP file from [http://www.mcdee.net/elite/EDDI.zip](http://www.mcdee.net/elite/EDDI.zip) or compile it from the sources at [https://github.com/cmdrmcdonald/EliteDangerousDataProvider](https://github.com/cmdrmcdonald/EliteDangerousDataProvider).
+Download the EDDI installer from [http://www.mcdee.net/elite/EDDI-2.0.0b2.exe](http://www.mcdee.net/elite/EDDI-2.0.0b2.exe.exe).  By default it will install in C:\Progra Files (x86)\VoiceAttack\Apps\EDDI, which is fine regardless of if you have VoiceAttack or not, but of course you can change it if you wish (although note that if the installation is not in a subdirectory of your VoiceAttack's Apps directory then it will not be able to be used as a VoiceAttack plugin).
+
+Alternatively you can compile EDDI from the sources at [https://github.com/cmdrmcdonald/EliteDangerousDataProvider](https://github.com/cmdrmcdonald/EliteDangerousDataProvider).
 
 ###Installing EDDI standalone
 

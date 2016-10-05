@@ -79,6 +79,8 @@ namespace GalnetMonitor
             }
         }
 
+        public void Reload() {}
+
         /// <summary>
         /// This method returns a user control with configuration controls.
         /// It is attached the the monitor's configuration tab in EDDI.

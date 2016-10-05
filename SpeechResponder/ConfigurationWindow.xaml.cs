@@ -1,4 +1,5 @@
-﻿using EddiEvents;
+﻿using Eddi;
+using EddiEvents;
 using EddiJournalMonitor;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -127,6 +128,7 @@ namespace EddiSpeechResponder
                     // Remove the script from the list
                     Personality.Scripts.Remove(script.Name);
                     Personality.ToFile();
+                    EDDI.Instance.Reload("Speech responder");
                     // We updated a property of the personality but not the personality itself so need to manually update items
                     scriptsData.Items.Refresh();
                     break;
@@ -146,6 +148,7 @@ namespace EddiSpeechResponder
             if (Personality != null)
             {
                 Personality.ToFile();
+                EDDI.Instance.Reload("Speech responder");
             }
         }
 
@@ -156,6 +159,7 @@ namespace EddiSpeechResponder
                 SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
                 configuration.Personality = Personality.Name;
                 configuration.ToFile();
+                EDDI.Instance.Reload("Speech responder");
             }
         }
 
@@ -176,6 +180,7 @@ namespace EddiSpeechResponder
             if (editScriptWindow.ShowDialog() == true)
             {
                 Personality.ToFile();
+                EDDI.Instance.Reload("Speech responder");
             }
             else
             {

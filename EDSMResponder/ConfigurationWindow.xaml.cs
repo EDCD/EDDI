@@ -59,6 +59,7 @@ namespace EddiEdsmResponder
                 edsmConfiguration.commanderName = edsmCommanderNameTextBox.Text.Trim();
             }
             edsmConfiguration.ToFile();
+            EDDI.Instance.Reload("EDSM responder");
         }
 
         /// <summary>

@@ -46,7 +46,6 @@ namespace EddiEvents
                                 {
                                     if (type.IsSubclassOf(eventType))
                                     {
-
                                         // Ensure that the static constructor of the class has been run
                                         System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 
@@ -85,17 +84,10 @@ namespace EddiEvents
 
                                             if (type.GetField("SAMPLE") != null)
                                             {
-                                                try
+                                                object eventSample = (string)type.GetField("SAMPLE").GetValue(null);
+                                                if (eventSample != null)
                                                 {
-                                                    string eventSample = (string)type.GetField("SAMPLE").GetValue(null);
-                                                    if (eventSample != null)
-                                                    {
-                                                        SAMPLES.Add(eventName, eventSample);
-                                                    }
-                                                }
-                                                catch
-                                                {
-                                                    Logging.Warn("Sample event for " + type.Name + " is in incorrect format");
+                                                    SAMPLES.Add(eventName, eventSample);
                                                 }
                                             }
                                         }

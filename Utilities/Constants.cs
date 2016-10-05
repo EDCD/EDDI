@@ -14,5 +14,8 @@ namespace Utilities
         public const string EDDI_NAME = "EDDI";
         public const string EDDI_VERSION = "2.0.0b2";
         public static readonly string DATA_DIR = Environment.GetEnvironmentVariable("AppData") + "\\" + EDDI_NAME;
+
+        public const string ENVIRONMENT_SUPERCRUISE = "Supercruise";
+        public const string ENVIRONMENT_NORMAL_SPACE = "Normal space";
     }
 }

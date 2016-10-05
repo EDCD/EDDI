@@ -12,7 +12,8 @@ namespace EddiEvents
     {
         public const string NAME = "Material collected";
         public const string DESCRIPTION = "Triggered when you collect a material";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"MaterialCollected\",\"Category\":\"Encoded\",\"Name\":\"shieldcyclerecordings\"}";
+        public const string SAMPLE = "{ \"timestamp\":\"2016-10-05T11:32:57Z\", \"event\":\"MaterialCollected\", \"Category\":\"Encoded\", \"Name\":\"shieldpatternanalysis\", \"Count\":3 }";
+
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static MaterialCollectedEvent()

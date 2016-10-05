@@ -13,7 +13,7 @@ namespace EddiEvents
     {
         public const string NAME = "Body scanned";
         public const string DESCRIPTION = "Triggered when you complete a scan of a planetary body";
-        public const string SAMPLE = "{\"timestamp\":\"2016-09-23T13:48:46Z\",\"event\":\"Scan\",\"BodyName\":\"HIP 60024 1 a\",\"DistanceFromArrivalLS\":1044.451538,\"TidalLock\":true,\"TerraformState\":\"\",\"PlanetClass\":\"Rocky body\",\"Atmosphere\":\"\",\"Volcanism\":\"\",\"MassEM\":0.000522,\"Radius\":567386.000000,\"SurfaceGravity\":0.646235,\"SurfaceTemperature\":179.129990,\"SurfacePressure\":0.000000,\"Landable\":true,\"Materials\":{\"iron\":19.5,\"sulphur\":19.1,\"carbon\":16.1,\"nickel\":14.8,\"phosphorus\":10.3,\"chromium\":8.8,\"zinc\":5.3,\"arsenic\":2.5,\"cadmium\":1.5,\"antimony\":1.2,\"mercury\":0.9},\"OrbitalPeriod\":245536.875000,\"RotationPeriod\":239640.718750}";
+        public const string SAMPLE = "{ \"timestamp\":\"2016-10-05T10:28:04Z\", \"event\":\"Scan\", \"BodyName\":\"Dagutii ABC 1 b\", \"DistanceFromArrivalLS\":644.074463, \"TidalLock\":true, \"TerraformState\":\"\", \"PlanetClass\":\"Icy body\", \"Atmosphere\":\"\", \"Volcanism\":\"carbon dioxide geysers volcanism\", \"MassEM\":0.001305, \"Radius\":964000.375000, \"SurfaceGravity\":0.559799, \"SurfaceTemperature\":89.839241, \"SurfacePressure\":0.000000, \"Landable\":true, \"Materials\":{ \"sulphur\":26.8, \"carbon\":22.5, \"phosphorus\":14.4, \"iron\":12.1, \"nickel\":9.2, \"chromium\":5.4, \"selenium\":4.2, \"vanadium\":3.0, \"niobium\":0.8, \"molybdenum\":0.8, \"ruthenium\":0.7 }, \"SemiMajorAxis\":739982912.000000, \"Eccentricity\":0.000102, \"OrbitalInclination\":-0.614765, \"Periapsis\":233.420425, \"OrbitalPeriod\":242733.156250, \"RotationPeriod\":242735.265625 }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
@@ -28,6 +28,14 @@ namespace EddiEvents
             VARIABLES.Add("landable", "True if the body is landable");
             VARIABLES.Add("atmosphere", "The atmosphere of the body that has been scanned");
             VARIABLES.Add("volcanism", "The volcanism of the body that has been scanned");
+            VARIABLES.Add("distancefromarrival", "The distance in LS from the main star");
+            VARIABLES.Add("orbitalperiod", "The number of seconds taken for a full orbit of the main star");
+            VARIABLES.Add("rotationperiod", "The number of seconds taken for a full rotation");
+            VARIABLES.Add("semimajoraxis", "");
+            VARIABLES.Add("eccentricity", "");
+            VARIABLES.Add("orbitalinclination", "");
+            VARIABLES.Add("periapsis", "");
+            VARIABLES.Add("rings", "The star's rings");
             VARIABLES.Add("materials", "A list of materials present on the body that has been scanned");
         }
 
@@ -49,9 +57,25 @@ namespace EddiEvents
 
         public string volcanism{ get; private set; }
 
+        public decimal distancefromarrival { get; private set; }
+
+        public decimal orbitalperiod { get; private set; }
+
+        public decimal rotationperiod { get; private set; }
+
+        public decimal semimajoraxis { get; private set; }
+
+        public decimal eccentricity { get; private set; }
+
+        public decimal orbitalinclination { get; private set; }
+
+        public decimal periapsis { get; private set; }
+
+        public List<Ring> rings { get; private set; }
+
         public List<MaterialPresence> materials { get; private set; }
 
-        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal gravity, decimal temperature, decimal pressure, bool tidallylocked, bool landable, string atmosphere, string volcanism, List<MaterialPresence> materials) : base(timestamp, NAME)
+        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal gravity, decimal temperature, decimal pressure, bool tidallylocked, bool landable, string atmosphere, string volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal semimajoraxis, decimal eccentricity, decimal orbitalinclination, decimal periapsis, List<Ring> rings, List<MaterialPresence> materials) : base(timestamp, NAME)
         {
             this.name = name;
             this.bodyclass = bodyclass;
@@ -62,6 +86,13 @@ namespace EddiEvents
             this.landable = landable;
             this.atmosphere = atmosphere;
             this.volcanism = volcanism;
+            this.orbitalperiod = orbitalperiod;
+            this.rotationperiod = rotationperiod;
+            this.semimajoraxis = semimajoraxis;
+            this.eccentricity = eccentricity;
+            this.orbitalinclination = orbitalinclination;
+            this.periapsis = periapsis;
+            this.rings = rings;
             this.materials = materials;
         }
 

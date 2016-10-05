@@ -282,6 +282,11 @@ namespace EddiCompanionAppService
                 {
                     var reader = new StreamReader(stream, encoding);
                     string data = reader.ReadToEnd();
+                    if (data == null || data.Trim() == "")
+                    {
+                        Logging.Warn("No data returned, returning null profile");
+                        return null;
+                    }
                     Logging.Debug("Data is " + data);
                     cachedProfile = ProfileFromJson(data);
                     if (cachedProfile != null)

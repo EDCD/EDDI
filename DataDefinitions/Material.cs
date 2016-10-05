@@ -90,6 +90,7 @@ namespace EddiDataDefinitions
             if (result == null)
             {
                 Logging.Report("Unknown material ED name " + from);
+                result = new Material(from, "Unknown", "Unknown", Rarity.Unknown);
             }
             return result;
         }

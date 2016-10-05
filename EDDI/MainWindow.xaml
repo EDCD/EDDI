@@ -31,6 +31,7 @@
                     <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="The second group obtain event information.  These are the tabs that end in 'monitor'.  They obtain events from different places, and require minimal configuration but need to be completed before they will work." VerticalAlignment="Top"/>
                     <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="The third group respond to events.  These are the tabs that end in 'responder'.  These come with varying degrees of configuration, but will work out of the box." VerticalAlignment="Top"/>
                     <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="Monitors and responders can be enabled individually, although it is recommended that to begin with you leave them all enabled.  Once you are comfortable with how EDDI works you can start to alter its behaviour." VerticalAlignment="Top"/>
+                    <TextBlock DockPanel.Dock="Bottom" TextWrapping="Wrap" Margin="10" FontSize="18" Text="Please note that if you are using EDDI with VoiceAttack then you should not have this window running at the same time as VoiceAttack.  Carry out your configuration work here, then shut this down and start VoiceAttack." VerticalAlignment="Center" TextAlignment="Center"/>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Commander Details">

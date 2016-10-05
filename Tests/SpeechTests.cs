@@ -397,5 +397,17 @@ namespace Tests
         {
             Assert.AreEqual("0.0016", Translations.Humanize(0.0015555555M));
         }
+
+        [TestMethod]
+        public void TestSpeechHumanize7()
+        {
+            Assert.AreEqual("51 million", Translations.Humanize(51000000));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize8()
+        {
+            Assert.AreEqual("just over 51 million", Translations.Humanize(51000001));
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace EddiStarMapService
     public class StarMapService
     {
         // Use en-US everywhere to ensure that we don't use , rather than . for our separator
-        private static CultureInfo EN_US_CULTURE = new System.Globalization.CultureInfo("en-US");
+        private static CultureInfo EN_US_CULTURE = new CultureInfo("en-US");
 
         private string commanderName;
         private string apiKey;
@@ -177,6 +177,8 @@ namespace EddiStarMapService
             }
             var starMapLogResponse = client.Execute<StarMapLogResponse>(request);
             StarMapLogResponse response = starMapLogResponse.Data;
+
+            Logging.Debug("Response for star map logs is " + JsonConvert.SerializeObject(response));
 
             Dictionary<string, StarMapLogInfo> vals = new Dictionary<string, StarMapLogInfo>();
             if (response != null && response.logs != null)

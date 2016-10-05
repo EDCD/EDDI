@@ -222,22 +222,41 @@ namespace EddiJournalMonitor
                         case "Bounty":
                             {
                                 object val;
-                                data.TryGetValue("Faction", out val);
-                                string awardingFaction = (string)val;
-                                // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.FromEDName(awardingFaction);
-                                awardingFaction = superpowerFaction != null ? superpowerFaction.name : awardingFaction;
+
                                 data.TryGetValue("Target", out val);
                                 string target = (string)val;
-                                data.TryGetValue("Reward", out val);
-                                long reward = (long)val;
+
                                 data.TryGetValue("VictimFaction", out val);
                                 string victimFaction = (string)val;
                                 // Might be a superpower...
-                                superpowerFaction = Superpower.FromEDName(victimFaction);
+                                Superpower superpowerFaction = Superpower.FromEDName(victimFaction);
                                 victimFaction = superpowerFaction != null ? superpowerFaction.name : victimFaction;
 
-                                journalEvent = new BountyAwardedEvent(timestamp, awardingFaction, target, victimFaction, reward);
+                                data.TryGetValue("TotalReward", out val);
+                                long reward = (long)val;
+
+                                // Obtain list of rewards
+                                data.TryGetValue("Rewards", out val);
+                                List<object> rewardsData = (List<object>)val;
+                                List<Reward> rewards = new List<Reward>();
+                                if (rewardsData != null)
+                                {
+                                    foreach (Dictionary<string, object> rewardData in rewardsData)
+                                    {
+                                        rewardData.TryGetValue("Faction", out val);
+                                        string factionName = (string)val;
+                                        // Might be a superpower...
+                                        superpowerFaction = Superpower.FromEDName(factionName);
+                                        factionName = superpowerFaction != null ? superpowerFaction.name : factionName;
+
+                                        rewardData.TryGetValue("Reward", out val);
+                                        long factionReward = (long)val;
+
+                                        rewards.Add(new Reward(factionName, factionReward));
+                                    }
+                                }
+
+                                journalEvent = new BountyAwardedEvent(timestamp, target, victimFaction, reward, rewards);
                             }
                             handled = true;
                             break;
@@ -372,6 +391,18 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("RotationPeriod", out val);
                                 decimal rotationperiod = (decimal)(double)val;
 
+                                data.TryGetValue("SemiMajorAxis", out val);
+                                decimal semimajoraxis = (decimal)(double)val;
+
+                                data.TryGetValue("Eccentricity", out val);
+                                decimal eccentricity = (decimal)(double)val;
+
+                                data.TryGetValue("OrbitalInclination", out val);
+                                decimal orbitalinclination = (decimal)(double)val;
+
+                                data.TryGetValue("Periapsis", out val);
+                                decimal periapsis = (decimal)(double)val;
+
                                 data.TryGetValue("Rings", out val);
                                 List<object> ringsData = (List<object>)val;
                                 List<Ring> rings = new List<Ring>();
@@ -411,14 +442,13 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("AbsoluteMagnitude", out val);
                                     decimal absoluteMagnitude = (decimal)(double)val;
 
-                                    data.TryGetValue("Age", out val);
-                                    // TODO remove the conditional here and elsewhere when the new version of the journal arrives
-                                    long age = (val == null ? 8000000 : (long)val);
+                                    data.TryGetValue("Age_MY", out val);
+                                    long age = (long)val * 1000000;
 
-                                    data.TryGetValue("Temperature", out val);
-                                    decimal temperature = (val == null ? 3000 : (decimal)(double)val);
+                                    data.TryGetValue("SurfaceTemperature", out val);
+                                    decimal temperature = (decimal)(double)val;
 
-                                    journalEvent = new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, age, temperature, distancefromarrival, orbitalperiod, rotationperiod, rings);
+                                    journalEvent = new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, age, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings);
                                     handled = true;
                                 }
                                 else
@@ -468,7 +498,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Volcanism", out val);
                                     string volcanism = (string)val;
 
-                                    journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, materials);
+                                    journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, materials);
                                     handled = true;
                                 }
                             }
@@ -779,7 +809,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Name", out val);
                                 Material material = Material.FromEDName((string)val);
                                 data.TryGetValue("Count", out val);
-                                int amount = (val == null ? 1 : (int)(long)val);
+                                int amount = (int)(long)val;
                                 journalEvent = new MaterialCollectedEvent(timestamp, material, amount);
                                 handled = true;
                             }
@@ -809,10 +839,22 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("From", out val);
                                 string from = (string)val;
-                                from = from.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "");
-                                data.TryGetValue("Message", out val);
-                                string message = (string)val;
-                                journalEvent = new MessageReceivedEvent(timestamp, from, message);
+
+                                data.TryGetValue("Channel", out val);
+                                string channel = (string)val;
+
+                                if (!from.StartsWith("$cmdr"))
+                                {
+                                    // For now we log everything that isn't commander speech
+                                    Logging.Report("NPC speech", line);
+                                }
+                                else
+                                {
+                                    from = from.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "");
+                                    data.TryGetValue("Message", out val);
+                                    string message = (string)val;
+                                    journalEvent = new MessageReceivedEvent(timestamp, from, true, channel, message);
+                                }
                             }
                             handled = true;
                             break;
@@ -1288,6 +1330,8 @@ namespace EddiJournalMonitor
         {
             stop();
         }
+
+        public void Reload() {}
 
         public UserControl ConfigurationTabItem()
         {

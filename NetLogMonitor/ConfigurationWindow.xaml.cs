@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Eddi;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,6 +39,7 @@ namespace EddiNetLogMonitor
                 netLogConfiguration.path = netLogPathTextBox.Text.Trim();
             }
             netLogConfiguration.ToFile();
+            EDDI.Instance.Reload("Netlog monitor");
         }
 
         private void netLogObtainClicked(object sender, RoutedEventArgs e)

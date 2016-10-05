@@ -28,7 +28,7 @@ namespace EddiVoiceAttackResponder
 
         public string ResponderDescription()
         {
-            return "Plugin to make events available to VoiceAttack";
+            return "A responder that generates a large number of variables within VoiceAttack as well as triggering user-defined actions.";
         }
 
         public VoiceAttackResponder()
@@ -57,7 +57,7 @@ namespace EddiVoiceAttackResponder
 
         public UserControl ConfigurationTabItem()
         {
-            return null;
+            return new ConfigurationWindow();
         }
     }
 }

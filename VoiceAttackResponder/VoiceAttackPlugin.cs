@@ -13,6 +13,7 @@ using EddiEvents;
 using System.Text;
 using System.Text.RegularExpressions;
 using EddiSpeechResponder;
+using System.Windows;
 
 namespace EddiVoiceAttackResponder
 {
@@ -59,13 +60,45 @@ namespace EddiVoiceAttackResponder
                         Event theEvent = EventQueue.Take();
                         vaProxy.SetText("EDDI event", theEvent.type);
                         
-                        // Update all values
+                        // Update all standard values
                         setValues(ref vaProxy);
 
-                        // Event-specific information
-                        if (theEvent is EnteredNormalSpaceEvent)
+                        // Event-specific values
+                        foreach (string key in Events.VARIABLES[theEvent.type].Keys)
                         {
-                            vaProxy.SetText("EDDI event body", ((EnteredNormalSpaceEvent)theEvent).body);
+                            // Obtain the value by name.  Actually looking for a method get_<name>
+                            System.Reflection.MethodInfo method = theEvent.GetType().GetMethod("get_" + key);
+                            if (method != null)
+                            {
+                                if (method.ReturnType == typeof(string))
+                                {
+                                    vaProxy.SetText("EDDI " + theEvent.type.ToLowerInvariant() + " " + key, (string)method.Invoke(theEvent, null));
+                                }
+                                else if (method.ReturnType == typeof(int))
+                                {
+                                    vaProxy.SetInt("EDDI " + theEvent.type.ToLowerInvariant() + " " + key, (int)method.Invoke(theEvent, null));
+                                }
+                                else if (method.ReturnType == typeof(bool))
+                                {
+                                    vaProxy.SetBoolean("EDDI " + theEvent.type.ToLowerInvariant() + " " + key, (bool)method.Invoke(theEvent, null));
+                                }
+                                else if (method.ReturnType == typeof(decimal))
+                                {
+                                    vaProxy.SetDecimal("EDDI " + theEvent.type.ToLowerInvariant() + " " + key, (decimal)method.Invoke(theEvent, null));
+                                }
+                                else if (method.ReturnType == typeof(double))
+                                {
+                                    vaProxy.SetDecimal("EDDI " + theEvent.type.ToLowerInvariant() + " " + key, (decimal)(double)method.Invoke(theEvent, null));
+                                }
+                                else if (method.ReturnType == typeof(long))
+                                {
+                                    vaProxy.SetDecimal("EDDI " + theEvent.type.ToLowerInvariant() + " " + key, (decimal)(long)method.Invoke(theEvent, null));
+                                }
+                                else
+                                {
+                                    Logging.Debug("Not handling event field type " + method.ReturnType);
+                                }
+                            }
                         }
 
                         // Fire local command if present
@@ -125,6 +158,9 @@ namespace EddiVoiceAttackResponder
                     case "system comment":
                         InvokeStarMapSystemComment(ref vaProxy);
                         break;
+                    case "configuration":
+                        InvokeConfiguration(ref vaProxy);
+                        break;
                     default:
                         //if (context.ToLower().StartsWith("event:"))
                         //{
@@ -145,6 +181,16 @@ namespace EddiVoiceAttackResponder
 
         public static void VA_StopCommand()
         {
+        }
+
+        private static void InvokeConfiguration(ref dynamic vaProxy)
+        {
+            Application.Current.Dispatcher.Invoke((Action)delegate
+            {
+                MainWindow window = new MainWindow();
+                window.Primary = false;
+                window.Show();
+            });
         }
 
         /// <summary>Force-update EDDI's information</summary>
