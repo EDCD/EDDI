@@ -138,11 +138,13 @@ namespace Eddi
                         Logging.Debug("Failed to obtain profile: " + ex);
                     }
                 }
-                else
+
+                if (Cmdr == null)
                 {
                     // We don't have the companion API available, create dummy entries for the commander
                     Cmdr = new Commander();
                 }
+
                 Cmdr.insurance = configuration.Insurance;
                 if (Cmdr.name != null)
                 {

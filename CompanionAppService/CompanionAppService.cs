@@ -472,7 +472,7 @@ namespace EddiCompanionAppService
         }
 
         /// <summary>Create a profile given the results from a /profile call</summary>
-        public static Profile ProfileFromJson(dynamic json)
+        public static Profile ProfileFromJson(JObject json)
         {
             Logging.Debug("Entered");
             Profile Profile = new Profile();

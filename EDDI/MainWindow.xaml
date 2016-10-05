@@ -148,17 +148,17 @@
                         <Label x:Name="ttsVoiceLabel" Grid.Column="0" Grid.Row="0" Margin="10" Content="Voice:" />
                         <ComboBox x:Name="ttsVoiceDropDown" Grid.Column="1" Grid.Row="0" Margin="10" SelectionChanged="ttsVoiceDropDownUpdated"/>
                         <Label x:Name="ttsVolumeLabel" Grid.Column="0" Grid.Row="1" Margin="10" Content="Volume of speech:" />
-                        <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="1" Margin="10" >
+                        <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="1" Margin="10" VerticalAlignment="Center">
                             <TextBox x:Name="ttsVolumeText"  DockPanel.Dock="Right" Text="{Binding ElementName=ttsVolumeSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" Width="40"/>
                             <Slider x:Name="ttsVolumeSlider" Minimum="0" Maximum="100"  IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="ttsVolumeUpdated"/>
                         </DockPanel>
                         <Label x:Name="ttsRateLabel" Grid.Column="0" Grid.Row="2" Margin="10" Content="Speed of speech:" />
-                        <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="2" Margin="10">
+                        <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="2" Margin="10" VerticalAlignment="Center">
                             <TextBox x:Name="ttsRateText"  DockPanel.Dock="Right" Text="{Binding ElementName=ttsRateSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" Width="40"/>
                             <Slider x:Name="ttsRateSlider" Minimum="-10" Maximum="10"  IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="ttsRateUpdated"/>
                         </DockPanel>
                         <Label x:Name="ttsEffectsLevelLabel" Grid.Column="0" Grid.Row="3" Margin="10" Content="Level of voice processing:" />
-                        <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="3" Margin="10">
+                        <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="3" Margin="10" VerticalAlignment="Center">
                             <TextBox x:Name="ttsEffectsLevelText"  DockPanel.Dock="Right" Text="{Binding ElementName=ttsEffectsLevelSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" Width="40"/>
                             <Slider x:Name="ttsEffectsLevelSlider" Minimum="0" Maximum="100"  IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="ttsEffectsLevelUpdated"/>
                         </DockPanel>
