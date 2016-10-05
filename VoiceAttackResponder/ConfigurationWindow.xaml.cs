@@ -21,7 +21,7 @@ namespace EddiVoiceAttackResponder
 
         private void VAVariablesClicked(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://github.com/cmdrmcdonald/EliteDangerousDataProvider/");
+            Process.Start("https://github.com/cmdrmcdonald/EliteDangerousDataProvider/blob/feature/journal/VoiceAttack.md");
         }
     }
 }

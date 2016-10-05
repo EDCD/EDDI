@@ -267,14 +267,14 @@ There are a large number of events available.  The full list of them can be foun
 
 In addition to the events themselves EDDI populates VoiceAttack with additional variables for each event.  For example, for the `Docked` event EDDI populates the following additional variables:
 
-    - `EDDI docked station` The station at which the commander has docked
-    - `EDDI docked system` The system at which the commander has docked
-    - `EDDI docked allegiance` The allegiance of the station at which the commander has docked
-    - `EDDI docked faction` The faction controlling the station at which the commander has docked
-    - `EDDI docked factionstate` The state of the faction controlling the station at which the commander has docked
-    - `EDDI docked economy` The economy of the station at which the commander has docked
-    - `EDDI docked government` The government of the station at which the commander has docked
-    - `EDDI docked security` The security of the station at which the commander has docked
+    - EDDI docked station: The station at which the commander has docked
+    - EDDI docked system: The system at which the commander has docked
+    - EDDI docked allegiance: The allegiance of the station at which the commander has docked
+    - EDDI docked faction: The faction controlling the station at which the commander has docked
+    - EDDI docked factionstate: The state of the faction controlling the station at which the commander has docked
+    - EDDI docked economy: The economy of the station at which the commander has docked
+    - EDDI docked government: The government of the station at which the commander has docked
+    - EDDI docked security: The security of the station at which the commander has docked
 
 So to access the name of the station from within the ((EDDI docked)) script you would use {TXT:EDDI docked station}.  Note that all variables are TXT unless otherwise stated.
 
