@@ -60,7 +60,7 @@ namespace Utilities
 
         public static void Report(string message, string data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            string body = @"{""message"":""" + message + @""", ""json"":{" + data + @"}";
+            string body = @"{""message"":""" + message + @""", ""version"":""" + Constants.EDDI_VERSION + @""", ""json"":{" + data + @"}";
             new Thread(() =>
             {
                 using (var client = new WebClient())

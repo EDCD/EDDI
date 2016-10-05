@@ -912,7 +912,7 @@ namespace EddiCompanionAppService
 
             if (json["module"]["modifiers"] != null && firstRun)
             {
-                Logging.Report("Module with modification", json["module"].ToString());
+                Logging.Report("Module with modification", json["module"].ToString(Formatting.None));
             }
             return module;
         }
