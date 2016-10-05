@@ -191,7 +191,7 @@ namespace Eddi
                 try
                 {
                     response = Net.DownloadString("http://api.eddp.co/version");
-                    if (response != Constants.EDDI_VERSION)
+                    if (Versioning.Compare(response, Constants.EDDI_VERSION) == 1)
                     {
                         SpeechService.Instance.Say(null, "EDDI version " + response.Replace(".", " point ") + " is now available.", false);
                     }

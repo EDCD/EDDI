@@ -97,6 +97,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="JournalMonitorTests.cs" />
+    <Compile Include="VersioningTests.cs" />
     <Compile Include="StarTests.cs" />
     <Compile Include="DataProviderTests.cs" />
     <Compile Include="SpeechTests.cs" />
@@ -149,6 +150,10 @@
     <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
       <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
       <Name>EddiStarMapService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
+      <Name>Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\VoiceAttackResponder\EddiVoiceAttackResponder.csproj">
       <Project>{8cfe0309-d2cb-4ff3-9a30-6c52a1345d08}</Project>
