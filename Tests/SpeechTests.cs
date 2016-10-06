@@ -409,5 +409,21 @@ namespace Tests
         {
             Assert.AreEqual("just over 51 million", Translations.Humanize(51000001));
         }
+
+        [TestMethod]
+        public void TestSpeechServiceQueue()
+        {
+            Thread thread1 = new Thread(() => SpeechService.Instance.Say(null, "Hello.", true));
+            thread1.IsBackground = true;
+
+            Thread thread2 = new Thread(() => SpeechService.Instance.Say(null, "Goodbye.", true));
+            thread2.IsBackground = true;
+
+            thread1.Start();
+            thread2.Start();
+
+            thread1.Join();
+            thread2.Join();
+        }
     }
 }

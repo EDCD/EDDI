@@ -10,7 +10,7 @@ EDDI responds to a wide range of events, and also provides a VoiceAttack plugin 
 
 EDDI can be installed standalone or as a VoiceAttack plugin.
 
-Download the EDDI installer from [http://www.mcdee.net/elite/EDDI-2.0.0b2.exe](http://www.mcdee.net/elite/EDDI-2.0.0b2.exe.exe).  By default it will install in C:\Program Files (x86)\VoiceAttack\Apps\EDDI, which is fine regardless of if you have VoiceAttack or not, but of course you can change it if you wish (although note that if the installation is not in a subdirectory of your VoiceAttack's Apps directory then it will not be able to be used as a VoiceAttack plugin).
+Download the EDDI installer from [http://www.mcdee.net/elite/EDDI-2.0.0b2.exe](http://www.mcdee.net/elite/EDDI-2.0.0b2.exe).  By default it will install in C:\Program Files (x86)\VoiceAttack\Apps\EDDI, which is fine regardless of if you have VoiceAttack or not, but of course you can change it if you wish (although note that if the installation is not in a subdirectory of your VoiceAttack's Apps directory then it will not be able to be used as a VoiceAttack plugin).
 
 Alternatively you can compile EDDI from the sources at [https://github.com/cmdrmcdonald/EliteDangerousDataProvider](https://github.com/cmdrmcdonald/EliteDangerousDataProvider).
 

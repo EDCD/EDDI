@@ -87,11 +87,6 @@ namespace EddiSpeechService
         //    Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, wait, priority);
         //}
 
-        static void x(object sender, SpeakProgressEventArgs e)
-        {
-            Logging.Debug("Current word being spoken: " + (e == null ? null : e.Text));
-        }
-
         static void synth_StateChanged(object sender, StateChangedEventArgs e)
         {
             Logging.Debug("Current state of the synthesizer: " + e.State);
@@ -100,16 +95,6 @@ namespace EddiSpeechService
         public void Speak(string speech, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool wait = true, int priority = 3)
         {
             if (speech == null) { return; }
-
-            if (priority < activeSpeechPriority)
-            {
-                StopCurrentSpeech();
-            }
-            else
-            {
-                WaitForCurrentSpeech();
-            }
-            activeSpeechPriority = priority;
 
             Thread speechThread = new Thread(() =>
             {
@@ -134,7 +119,6 @@ namespace EddiSpeechService
                         synth.Rate = configuration.Rate;
                         synth.Volume = configuration.Volume;
 
-                        //synth.SpeakProgress += new EventHandler<SpeakProgressEventArgs>(x);
                         synth.StateChanged += new EventHandler<StateChangedEventArgs>(synth_StateChanged);
                         synth.SetOutputToWaveStream(stream);
                         if (speech.Contains("<phoneme") || speech.Contains("<break"))
@@ -206,6 +190,16 @@ namespace EddiSpeechService
                         var soundOut = new WasapiOut();
                         soundOut.Initialize(source);
                         soundOut.Stopped += (s, e) => waitHandle.Set();
+
+                        if (priority < activeSpeechPriority)
+                        {
+                            StopCurrentSpeech();
+                        }
+                        else
+                        {
+                            WaitForCurrentSpeech();
+                        }
+                        activeSpeechPriority = priority;
 
                         activeSpeech = soundOut;
                         Logging.Debug("Starting speech");
