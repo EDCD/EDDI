@@ -54,7 +54,7 @@ namespace EddiSpeechService
             configuration = SpeechServiceConfiguration.FromFile();
         }
 
-        public void Say(Ship ship, string speech, bool wait, int priority=3)
+        public void Say(Ship ship, string speech, bool wait, int priority = 3)
         {
             if (speech == null)
             {
@@ -62,6 +62,11 @@ namespace EddiSpeechService
             }
 
             Speak(speech, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, wait, priority);
+        }
+
+        public void ShutUp()
+        {
+            StopCurrentSpeech();
         }
 
         //public void Transmit(Ship ship, string script, bool wait, int priority=3)
@@ -82,11 +87,19 @@ namespace EddiSpeechService
         //    Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, wait, priority);
         //}
 
-        public void Speak(string speech, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool wait=true, int priority=3)
+        static void x(object sender, SpeakProgressEventArgs e)
+        {
+            Logging.Debug("Current word being spoken: " + (e == null ? null : e.Text));
+        }
+
+        static void synth_StateChanged(object sender, StateChangedEventArgs e)
+        {
+            Logging.Debug("Current state of the synthesizer: " + e.State);
+        }
+
+        public void Speak(string speech, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool wait = true, int priority = 3)
         {
             if (speech == null) { return; }
-
-            Logging.Debug("Speech is " + speech);
 
             if (priority < activeSpeechPriority)
             {
@@ -121,11 +134,13 @@ namespace EddiSpeechService
                         synth.Rate = configuration.Rate;
                         synth.Volume = configuration.Volume;
 
+                        //synth.SpeakProgress += new EventHandler<SpeakProgressEventArgs>(x);
+                        synth.StateChanged += new EventHandler<StateChangedEventArgs>(synth_StateChanged);
                         synth.SetOutputToWaveStream(stream);
                         if (speech.Contains("<phoneme") || speech.Contains("<break"))
                         {
                             string finalSpeech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\"><s>" + speech + "</s></speak>";
-                            Logging.Debug("Final speech: " + finalSpeech);
+                            Logging.Debug("SSML speech: " + finalSpeech);
                             try
                             {
                                 synth.SpeakSsml(finalSpeech);
@@ -138,6 +153,7 @@ namespace EddiSpeechService
                         }
                         else
                         {
+                            Logging.Debug("Speech: " + speech);
                             synth.Speak(speech);
                         }
                         stream.Seek(0, SeekOrigin.Begin);
@@ -162,17 +178,17 @@ namespace EddiSpeechService
                         // We only have reverb and echo if we're not transmitting or receiving
                         //if (!radio)
                         //{
-                            if (reverbLevel != 0)
-                            {
-                                // We tone down the reverb level with the distortion level, as the combination is nasty
-                                source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = (int)(1 + 999 * ((decimal)configuration.EffectsLevel) / ((decimal)100)), ReverbMix = Math.Max(-96, -96 + (96 * reverbLevel / 100) - distortionLevel) });
-                            }
+                        if (reverbLevel != 0)
+                        {
+                            // We tone down the reverb level with the distortion level, as the combination is nasty
+                            source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = (int)(1 + 999 * ((decimal)configuration.EffectsLevel) / ((decimal)100)), ReverbMix = Math.Max(-96, -96 + (96 * reverbLevel / 100) - distortionLevel) });
+                        }
 
-                            if (echoDelay != 0)
-                            {
-                                // We tone down the echo level with the distortion level, as the combination is nasty
-                                source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = Math.Max(5, (int)(10 * ((decimal)configuration.EffectsLevel) / ((decimal)100)) - distortionLevel), Feedback = Math.Max(0, 10 - distortionLevel / 2) });
-                            }
+                        if (echoDelay != 0)
+                        {
+                            // We tone down the echo level with the distortion level, as the combination is nasty
+                            source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = Math.Max(5, (int)(10 * ((decimal)configuration.EffectsLevel) / ((decimal)100)) - distortionLevel), Feedback = Math.Max(0, 10 - distortionLevel / 2) });
+                        }
                         //}
 
                         if (configuration.EffectsLevel > 0 && distortionLevel > 0)
@@ -192,6 +208,7 @@ namespace EddiSpeechService
                         soundOut.Stopped += (s, e) => waitHandle.Set();
 
                         activeSpeech = soundOut;
+                        Logging.Debug("Starting speech");
                         soundOut.Play();
 
                         // Add a timeout, in case it doesn't come back with the signal
@@ -236,20 +253,12 @@ namespace EddiSpeechService
             return guess;
         }
 
-        // Called when the parent has exited
-        public void ShutdownSpeech()
-        {
-            StopCurrentSpeech();
-        }
-
         private void StopCurrentSpeech()
         {
-            Logging.Debug("Stopping current speech");
             lock (activeSpeechLock)
             {
                 if (activeSpeech != null)
                 {
-                    Logging.Debug("Found current speech");
                     activeSpeech.Stop();
                     activeSpeech.Dispose();
                     activeSpeech = null;

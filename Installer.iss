@@ -26,6 +26,7 @@ Compression=lzma
 SolidCompression=yes
 WizardImageFile={#SourcePath}\graphics\logo.bmp
 WizardSmallImageFile={#SourcePath}\graphics\logo.bmp
+UninstallDisplayIcon={app}\EDDI\EDDI.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

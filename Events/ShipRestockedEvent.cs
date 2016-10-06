@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace EddiEvents
 {
-    public class AmmunitionPurchasedEvent : Event
+    public class ShipRestockedEvent : Event
     {
-        public const string NAME = "Ammunition purchased";
-        public const string DESCRIPTION = "Triggered when you buy ammunition from rearming";
+        public const string NAME = "Ship restocked";
+        public const string DESCRIPTION = "Triggered when you restock your ship's ammunition";
         public const string SAMPLE = "{ \"timestamp\":\"2016-09-20T11:13:00Z\", \"event\":\"BuyAmmo\", \"Cost\":36001 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static AmmunitionPurchasedEvent()
+        static ShipRestockedEvent()
         {
-            VARIABLES.Add("price", "The price of rearming");
+            VARIABLES.Add("price", "The price of restocking");
         }
 
         public decimal price { get; private set; }
 
-        public AmmunitionPurchasedEvent(DateTime timestamp, decimal price) : base(timestamp, NAME)
+        public ShipRestockedEvent(DateTime timestamp, decimal price) : base(timestamp, NAME)
         {
             this.price = price;
         }

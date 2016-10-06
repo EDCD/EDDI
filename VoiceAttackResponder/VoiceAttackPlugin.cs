@@ -70,29 +70,31 @@ namespace EddiVoiceAttackResponder
                             System.Reflection.MethodInfo method = theEvent.GetType().GetMethod("get_" + key);
                             if (method != null)
                             {
+                                string varname = "EDDI " + theEvent.type.ToLowerInvariant() + " " + key;
+
                                 if (method.ReturnType == typeof(string))
                                 {
-                                    vaProxy.SetText("EDDI " + theEvent.type.ToLowerInvariant() + " " + key, (string)method.Invoke(theEvent, null));
+                                    vaProxy.SetText(varname, (string)method.Invoke(theEvent, null));
                                 }
                                 else if (method.ReturnType == typeof(int))
                                 {
-                                    vaProxy.SetInt("EDDI " + theEvent.type.ToLowerInvariant() + " " + key, (int)method.Invoke(theEvent, null));
+                                    vaProxy.SetInt(varname, (int)method.Invoke(theEvent, null));
                                 }
                                 else if (method.ReturnType == typeof(bool))
                                 {
-                                    vaProxy.SetBoolean("EDDI " + theEvent.type.ToLowerInvariant() + " " + key, (bool)method.Invoke(theEvent, null));
+                                    vaProxy.SetBoolean(varname, (bool)method.Invoke(theEvent, null));
                                 }
                                 else if (method.ReturnType == typeof(decimal))
                                 {
-                                    vaProxy.SetDecimal("EDDI " + theEvent.type.ToLowerInvariant() + " " + key, (decimal)method.Invoke(theEvent, null));
+                                    vaProxy.SetDecimal(varname, (decimal)method.Invoke(theEvent, null));
                                 }
                                 else if (method.ReturnType == typeof(double))
                                 {
-                                    vaProxy.SetDecimal("EDDI " + theEvent.type.ToLowerInvariant() + " " + key, (decimal)(double)method.Invoke(theEvent, null));
+                                    vaProxy.SetDecimal(varname, (decimal)(double)method.Invoke(theEvent, null));
                                 }
                                 else if (method.ReturnType == typeof(long))
                                 {
-                                    vaProxy.SetDecimal("EDDI " + theEvent.type.ToLowerInvariant() + " " + key, (decimal)(long)method.Invoke(theEvent, null));
+                                    vaProxy.SetDecimal(varname, (decimal)(long)method.Invoke(theEvent, null));
                                 }
                                 else
                                 {
@@ -160,6 +162,9 @@ namespace EddiVoiceAttackResponder
                         break;
                     case "configuration":
                         InvokeConfiguration(ref vaProxy);
+                        break;
+                    case "shutup":
+                        InvokeShutUp(ref vaProxy);
                         break;
                     default:
                         //if (context.ToLower().StartsWith("event:"))
@@ -354,6 +359,21 @@ namespace EddiVoiceAttackResponder
             catch (Exception e)
             {
                 setStatus(ref vaProxy, "Failed to run internal speech system", e);
+            }
+        }
+
+        /// <summary>
+        /// Stop talking
+        /// </summary>
+        public static void InvokeShutUp(ref dynamic vaProxy)
+        {
+            try
+            {
+                SpeechService.Instance.ShutUp();
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to shut up", e);
             }
         }
 

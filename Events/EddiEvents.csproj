@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BondAwardedEvent.cs" />
-    <Compile Include="AmmunitionPurchasedEvent.cs" />
+    <Compile Include="ShipRestockedEvent.cs" />
     <Compile Include="JumpingEvent.cs" />
     <Compile Include="LimpetSoldEvent.cs" />
     <Compile Include="LimpetPurchasedEvent.cs" />
@@ -76,7 +76,7 @@
     <Compile Include="EnteredSignalSourceEvent.cs" />
     <Compile Include="MessageSentEvent.cs" />
     <Compile Include="MessageReceivedEvent.cs" />
-    <Compile Include="RebootRepairEvent.cs" />
+    <Compile Include="ShipRebootedEvent.cs" />
     <Compile Include="ControllingFighterEvent.cs" />
     <Compile Include="SelfDestructEvent.cs" />
     <Compile Include="SRVLaunchedEvent.cs" />

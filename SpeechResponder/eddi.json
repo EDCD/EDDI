@@ -2,14 +2,6 @@
   "name": "EDDI",
   "description": "A balanced, non-partisan personality",
   "scripts": {
-    "Ammunition purchased": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": null,
-      "name": "Ammunition purchased",
-      "description": "Triggered when you buy ammunition from rearming"
-    },
     "Bond awarded": {
       "enabled": true,
       "priority": 3,
@@ -17,6 +9,14 @@
       "script": "That's another {event.reward} credits in the bank.",
       "name": "Bond awarded",
       "description": "Triggered when you are awarded a combat bond"
+    },
+    "Ship restocked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Ship restocked",
+      "description": "Triggered when you restock your ship's ammunition"
     },
     "Jumping": {
       "enabled": true,
@@ -238,7 +238,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.threat < 2:\r\n  Entering signal source.\r\n|elif event.threat = 2:\r\n    Caution: entering medium-threat signal source.\r\n|elif event.threat = 3:\r\n    Warning: entering high-threat signal source.\r\n|else:\r\n    Danger: entering very high-threat signal source.\r\n}\r\n",
+      "script": "{Pause(2000)}\r\n\r\n{if event.threat < 2:\r\n  Entered signal source.\r\n|elif event.threat = 2:\r\n    Caution: medium-threat signal source.\r\n|elif event.threat = 3:\r\n    Warning: high-threat signal source.\r\n|else:\r\n    Danger: very high-threat signal source.\r\n}\r\n",
       "name": "Entered signal source",
       "description": "Triggered when your ship enters a signal source"
     },
@@ -258,12 +258,12 @@
       "name": "Message received",
       "description": "Triggered when you receive a message"
     },
-    "Reboot repair": {
+    "Ship rebooted": {
       "enabled": true,
       "priority": 3,
       "responder": true,
       "script": null,
-      "name": "Reboot repair",
+      "name": "Ship rebooted",
       "description": "Triggered when you run reboot/repair on your ship"
     },
     "Controlling fighter": {
@@ -318,7 +318,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "You have just sold {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total value is {event.amount * event.price} credits.",
+      "script": "{if event.amount = 1:\r\n   You have just sold one tonne of {event.commodity} for {event.price} credits\r\n|elif event.amount > 1:\r\n    You have just sold {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total value is {event.amount * event.price} credits\r\n}\r\n{if event.profit < 0:\r\n    with a loss of {event.profit * event.price} credits.\r\n|elif event.profit = 0:\r\n    and broke even on the trade.\r\n|else:\r\n    with a profit of {event.profit * event.price} credits.\r\n}",
       "name": "Commodity sold",
       "description": "Triggered when you sell a commodity to the markets"
     },
@@ -342,7 +342,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "You have just purchased {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total cost is {event.amount * event.price} credits.",
+      "script": "{if event.amount = 1:\r\n   You have just purchased one tonne of {event.commodity} for {event.price} credits.\r\n|elif event.amount > 1:\r\n    You have just purchased {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total cost is {event.amount * event.price} credits.\r\n}",
       "name": "Commodity purchased",
       "description": "Triggered when you buy a commodity from the markets"
     },
@@ -494,7 +494,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "You owe {P(event.faction)} {event.fine} credits for that.",
+      "script": "You owe {P(event.faction)} {Humanise(event.fine)} credits for that.",
       "name": "Fine incurred",
       "description": "Triggered when your incur a fine"
     },
@@ -502,7 +502,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"{ship.name} is\", \"\")} {OneOf(\"leaving supercruise\", \"{OneOf(\\\"entering\\\", \\\"returning to\\\", \\\"dropping to\\\")} normal space\")}.",
+      "script": "{Pause(1000)}\r\n\r\n{OneOf(\"{ship.name} has\", \"\")} {OneOf(\"left supercruise\", \"{OneOf(\\\"entered\\\", \\\"returned to\\\", \\\"dropped to\\\")} normal space\")}.",
       "name": "Entered normal space",
       "description": "Triggered when your ship enters normal space"
     },
@@ -510,7 +510,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"{ship.name} is\", \"\")} entering supercruise.",
+      "script": "{Pause(1000)}\r\n\r\n{OneOf(\"{ship.name} has\", \"\")} {OneOf(\"entered\", \"jumped to\")} supercruise.\r\n\r\n",
       "name": "Entered supercruise",
       "description": "Triggered when your ship enters supercruise"
     },
@@ -542,7 +542,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Touchdown.  Co-ordinates are {event.longitude} degrees longitude, {event.latitude} degrees latitude.",
+      "script": "Touchdown.\r\n\r\n{Pause(2000)}\r\n\r\nCo-ordinates are {event.longitude} degrees longitude, {event.latitude} degrees latitude.",
       "name": "Touchdown",
       "description": "Triggered when your ship touches down on a planet's surface"
     },

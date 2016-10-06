@@ -16,13 +16,11 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace Eddi
 {
-    // Notifications delegate
-    public delegate void OnEventHandler(Event theEvent);
-
     /// <summary>
     /// Eddi is the controller for all EDDI operations.  Its job is to retain the state of the objects such as the commander, the current system, etc.
     /// and keep them up-to-date with changes that occur.  It also passes on messages to responders to handle as required.
@@ -63,17 +61,12 @@ namespace Eddi
             }
         }
 
-        public event OnEventHandler EventHandler;
-        protected virtual void OnEvent(Event theEvent)
-        {
-            EventHandler?.Invoke(theEvent);
-        }
-
         public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
         // Each monitor runs in its own thread
-        public List<Thread> monitorThreads = new List<Thread>();
+        private List<Thread> monitorThreads = new List<Thread>();
 
         public List<EDDIResponder> responders = new List<EDDIResponder>();
+        private List<EDDIResponder> activeResponders = new List<EDDIResponder>();
 
         // Information obtained from the companion app service
         public Commander Cmdr { get; private set; }
@@ -192,7 +185,14 @@ namespace Eddi
                 string response;
                 try
                 {
-                    response = Net.DownloadString("http://api.eddp.co/version");
+                    if (Constants.EDDI_VERSION.Contains("b"))
+                    {
+                        response = Net.DownloadString("http://api.eddp.co/betaversion");
+                    }
+                    else
+                    {
+                        response = Net.DownloadString("http://api.eddp.co/version");
+                    }
                     if (Versioning.Compare(response, Constants.EDDI_VERSION) == 1)
                     {
                         SpeechService.Instance.Say(null, "EDDI version " + response.Replace(".", " point ") + " is now available.", false);
@@ -258,7 +258,8 @@ namespace Eddi
                         bool responderStarted = responder.Start();
                         if (responderStarted)
                         {
-                            EventHandler += new OnEventHandler(responder.Handle);
+                            activeResponders.Add(responder);
+                            //EventHandler += new OnEventHandler(responder.Handle);
                             Logging.Info("Started " + responder.ResponderName());
                         }
                         else
@@ -278,6 +279,7 @@ namespace Eddi
                 foreach (EDDIResponder responder in responders)
                 {
                     responder.Stop();
+                    activeResponders.Remove(responder);
                 }
                 foreach (EDDIMonitor monitor in monitors)
                 {
@@ -376,6 +378,16 @@ namespace Eddi
             if (passEvent)
             {
                 OnEvent(journalEvent);
+            }
+        }
+
+        private void OnEvent(Event @event)
+        {
+            foreach (EDDIResponder responder in activeResponders)
+            {
+                Thread responderThread = new Thread(() => responder.Handle(@event));
+                responderThread.IsBackground = true;
+                responderThread.Start();
             }
         }
 

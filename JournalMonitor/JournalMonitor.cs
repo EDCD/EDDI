@@ -1149,9 +1149,9 @@ namespace EddiJournalMonitor
                         case "BuyAmmo":
                             {
                                 object val;
-                                data.TryGetValue("Price", out val);
+                                data.TryGetValue("Cost", out val);
                                 decimal price = (long)val;
-                                journalEvent = new AmmunitionPurchasedEvent(timestamp, price);
+                                journalEvent = new ShipRestockedEvent(timestamp, price);
                                 handled = true;
                                 break;
                             }
