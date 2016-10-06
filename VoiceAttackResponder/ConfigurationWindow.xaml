@@ -18,8 +18,9 @@
         <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
             <FlowDocument Background="#FFE5E5E5">
                 <Paragraph>In addition to writing scripts that you trigger with voice or keyboard actions you can also write scripts that trigger on events that occur within Elite.  For example, if you wanted to trigger a script every time the 'Docked' event occurs then you would write a script called '((EDDI docked))' (note the double brackets around the name to avoid it being called accidentally, and the lower cased 'd' in docked).  A full list of events is also available
-                    <Hyperlink Click="VAVariablesClicked">on the main EDDI site</Hyperlink>, and you can also
-                    <Hyperlink Click="VAExampleClicked">watch a video setting up a command to trigger on an event</Hyperlink>.
+                    <Hyperlink Click="VAVariablesClicked">on the main EDDI site</Hyperlink>.
+                    <!--, and you can also
+                    <Hyperlink Click="VAExampleClicked">watch a video setting up a command to trigger on an event</Hyperlink>.-->
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
