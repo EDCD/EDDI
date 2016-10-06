@@ -90,7 +90,7 @@ namespace EddiDataDefinitions
             if (result == null)
             {
                 Logging.Report("Unknown material ED name " + from);
-                result = new Material(from, "Unknown", "Unknown", Rarity.Unknown);
+                result = new Material(from, "Unknown", tidiedFrom, Rarity.Unknown);
             }
             return result;
         }
@@ -100,7 +100,7 @@ namespace EddiDataDefinitions
             Material result = MATERIALS.FirstOrDefault(v => v.symbol == from);
             if (result == null)
             {
-                Logging.Report("Unknown material rank " + from);
+                Logging.Report("Unknown material symbol " + from);
             }
             return result;
         }

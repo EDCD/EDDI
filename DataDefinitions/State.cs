@@ -56,7 +56,8 @@ namespace EddiDataDefinitions
             State result = STATES.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {
-                Logging.Report("Unknown State name " + from);
+                Logging.Report("Unknown State ED name " + from);
+                result = new State(from, tidiedFrom);
             }
             return result;
         }

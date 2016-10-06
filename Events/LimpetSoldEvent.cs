@@ -22,9 +22,9 @@ namespace EddiEvents
         }
 
         public int amount { get; private set; }
-        public decimal price { get; private set; }
+        public long price { get; private set; }
 
-        public LimpetSoldEvent(DateTime timestamp, int amount, decimal price) : base(timestamp, NAME)
+        public LimpetSoldEvent(DateTime timestamp, int amount, long price) : base(timestamp, NAME)
         {
             this.amount = amount;
             this.price = price;

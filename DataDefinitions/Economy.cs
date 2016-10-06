@@ -55,6 +55,7 @@ namespace EddiDataDefinitions
             if (result == null)
             {
                 Logging.Report("Unknown Economy ED name " + from);
+                result = new Economy(from, tidiedFrom);
             }
             return result;
         }

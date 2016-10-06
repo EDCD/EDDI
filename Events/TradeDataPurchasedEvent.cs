@@ -23,9 +23,9 @@ namespace EddiEvents
 
         public string system { get; private set; }
 
-        public decimal price { get; private set; }
+        public long price { get; private set; }
 
-        public TradeDataPurchasedEvent(DateTime timestamp, string system, decimal price) : base(timestamp, NAME)
+        public TradeDataPurchasedEvent(DateTime timestamp, string system, long price) : base(timestamp, NAME)
         {
             this.system = system;
             this.price = price;

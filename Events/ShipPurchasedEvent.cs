@@ -30,7 +30,7 @@ namespace EddiEvents
         public string ship { get; private set; }
 
         [JsonProperty("price")]
-        public decimal price { get; private set; }
+        public long price { get; private set; }
 
         [JsonProperty("soldship")]
         public string  soldship { get; private set; }
@@ -39,7 +39,7 @@ namespace EddiEvents
         public string soldname { get; private set; }
 
         [JsonProperty("soldprice")]
-        public decimal? soldprice { get; private set; }
+        public long? soldprice { get; private set; }
 
         [JsonProperty("storedship")]
         public string storedship { get; private set; }
@@ -47,7 +47,7 @@ namespace EddiEvents
         [JsonProperty("storedname")]
         public string storedname { get; private set; }
 
-        public ShipPurchasedEvent(DateTime timestamp, Ship ship, decimal price, Ship soldShip, decimal? soldPrice, Ship storedShip) : base(timestamp, NAME)
+        public ShipPurchasedEvent(DateTime timestamp, Ship ship, long price, Ship soldShip, long? soldPrice, Ship storedShip) : base(timestamp, NAME)
         {
             this.ship = (ship == null ? null : ship.model);
             this.price = price;

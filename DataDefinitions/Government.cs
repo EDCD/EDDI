@@ -59,6 +59,7 @@ namespace EddiDataDefinitions
             if (result == null)
             {
                 Logging.Report("Unknown Government ED name " + from);
+                result = new Government(from, tidiedFrom);
             }
             return result;
         }

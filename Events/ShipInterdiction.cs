@@ -10,7 +10,7 @@ namespace EddiEvents
 {
     public class ShipInterdictionEvent : Event
     {
-        public const string NAME = "Ship Interdiction";
+        public const string NAME = "Ship interdiction";
         public const string DESCRIPTION = "Triggered when you interdict another ship";
         public const string SAMPLE = "{\"timestamp\":\"2016-09-21T07:00:17Z\",\"event\":\"Interdiction\",\"Interdicted\":\"Torval's Shield\",\"IsPlayer\":false,\"Faction\":\"Zemina Torval\",\"Power\":\"Empire\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();

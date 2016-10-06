@@ -255,6 +255,12 @@ namespace EddiDataDefinitions
                 Commodity.rare = Template.rare;
                 Commodity.avgprice = Template.avgprice;
             }
+            else
+            {
+                // Put some basic information in place
+                Commodity.EDName = name;
+                Commodity.name = cleanedName;
+            }
             return Commodity;
         }
     }

@@ -58,6 +58,7 @@
     <Compile Include="FederationRating.cs" />
     <Compile Include="EmpireRating.cs" />
     <Compile Include="ExplorationRating.cs" />
+    <Compile Include="Voucher.cs" />
     <Compile Include="StarClass.cs" />
     <Compile Include="TradeRating.cs" />
     <Compile Include="Commander.cs" />

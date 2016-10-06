@@ -28,13 +28,13 @@ namespace EddiEvents
 
         public string commodity { get; private set; }
         public int amount { get; private set; }
-        public decimal price { get; private set; }
-        public decimal profit { get; private set; }
+        public long price { get; private set; }
+        public long profit { get; private set; }
         public bool illegal { get; private set; }
         public bool stolen { get; private set; }
         public bool blackmarket { get; private set; }
 
-        public CommoditySoldEvent(DateTime timestamp, Commodity commodity, int amount, decimal price, decimal profit, bool illegal, bool stolen, bool blackmarket) : base(timestamp, NAME)
+        public CommoditySoldEvent(DateTime timestamp, Commodity commodity, int amount, long price, long profit, bool illegal, bool stolen, bool blackmarket) : base(timestamp, NAME)
         {
             this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
             this.amount = amount;

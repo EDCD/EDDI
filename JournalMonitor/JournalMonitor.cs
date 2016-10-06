@@ -511,7 +511,7 @@ namespace EddiJournalMonitor
                                 Ship ship = ShipDefinitions.FromEDModel((string)val);
 
                                 data.TryGetValue("ShipPrice", out val);
-                                decimal price = (long)val;
+                                long price = (long)val;
 
                                 Ship storedShip = null;
                                 data.TryGetValue("StoreShipID", out val);
@@ -566,8 +566,28 @@ namespace EddiJournalMonitor
                                 }
 
                                 data.TryGetValue("SellPrice", out val);
-                                decimal? soldPrice = (long?)val;
+                                long? soldPrice = (long?)val;
                                 journalEvent = new ShipPurchasedEvent(timestamp, ship, price, soldShip, soldPrice, storedShip);
+                            }
+                            handled = true;
+                            break;
+                        case "ShipyardNew":
+                            {
+                                object val;
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+
+                                // We should be able to provide our ship information given the ship ID
+                                Ship ship = EDDI.Instance.StoredShips.FirstOrDefault(v => v.LocalId == shipId);
+                                if (ship == null)
+                                {
+                                    Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
+                                    // Failed to find the ship; provide a basic definition
+                                    data.TryGetValue("ShipType", out val);
+                                    ship = ShipDefinitions.FromEDModel((string)val);
+                                    ship.LocalId = shipId;
+                                }
+                                journalEvent = new ShipDeliveredEvent(timestamp, ship);
                             }
                             handled = true;
                             break;
@@ -587,7 +607,7 @@ namespace EddiJournalMonitor
                                     ship.LocalId = shipId;
                                 }
                                 data.TryGetValue("ShipPrice", out val);
-                                decimal price = (long)val;
+                                long price = (long)val;
                                 journalEvent = new ShipSoldEvent(timestamp, ship, price);
                             }
                             handled = true;
@@ -687,7 +707,7 @@ namespace EddiJournalMonitor
                                 decimal distance = (decimal)(double)val;
 
                                 data.TryGetValue("TransferPrice", out val);
-                                decimal price = (long)val;
+                                long price = (long)val;
 
                                 journalEvent = new ShipTransferInitiatedEvent(timestamp, ship, system, distance, price);
 
@@ -1014,7 +1034,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("System", out val);
                                 string system = (string)val;
                                 data.TryGetValue("Cost", out val);
-                                decimal price = (long)val;
+                                long price = (long)val;
                                 journalEvent = new ExplorationDataPurchasedEvent(timestamp, system, price);
                                 handled = true;
                                 break;
@@ -1058,7 +1078,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("BuyPrice", out val);
-                                decimal price = (long)val;
+                                long price = (long)val;
                                 journalEvent = new CommodityPurchasedEvent(timestamp, commodity, amount, price);
                                 handled = true;
                                 break;
@@ -1076,11 +1096,11 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("SellPrice", out val);
-                                decimal price = (long)val;
+                                long price = (long)val;
                                 data.TryGetValue("AvgPricePaid", out val);
-                                decimal buyPrice = (long)val;
+                                long buyPrice = (long)val;
                                 // We don't care about buy price, we care about profit per unit
-                                decimal profit = price - buyPrice;
+                                long profit = price - buyPrice;
                                 data.TryGetValue("IllegalGoods", out val);
                                 bool illegal = (val == null ? false : (bool)val);
                                 data.TryGetValue("StolenGoods", out val);
@@ -1119,7 +1139,7 @@ namespace EddiJournalMonitor
                                 Superpower superpowerFaction = Superpower.FromEDName(faction);
                                 faction = superpowerFaction != null ? superpowerFaction.name : faction;
                                 data.TryGetValue("Cost", out val);
-                                decimal price = (long)val;
+                                long price = (long)val;
                                 data.TryGetValue("CombatRank", out val);
                                 CombatRating rating = CombatRating.FromRank((int)(long)val);
                                 journalEvent = new CrewHiredEvent(timestamp, name, faction, price, rating);
@@ -1150,7 +1170,7 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Cost", out val);
-                                decimal price = (long)val;
+                                long price = (long)val;
                                 journalEvent = new ShipRestockedEvent(timestamp, price);
                                 handled = true;
                                 break;
@@ -1161,7 +1181,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("BuyPrice", out val);
-                                decimal price = (long)val;
+                                long price = (long)val;
                                 journalEvent = new LimpetPurchasedEvent(timestamp, amount, price);
                                 handled = true;
                                 break;
@@ -1172,7 +1192,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("SellPrice", out val);
-                                decimal price = (long)val;
+                                long price = (long)val;
                                 journalEvent = new LimpetSoldEvent(timestamp, amount, price);
                                 handled = true;
                                 break;
@@ -1261,9 +1281,158 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("System", out val);
                                 string system = (string)val;
                                 data.TryGetValue("Cost", out val);
-                                decimal price = (long)val;
+                                long price = (long)val;
 
                                 journalEvent = new TradeDataPurchasedEvent(timestamp, system, price);
+                                handled = true;
+                                break;
+                            }
+                        case "PayFines":
+                            {
+                                object val;
+                                data.TryGetValue("Amount", out val);
+                                long amount = (long)val;
+
+                                journalEvent = new FinePaidEvent(timestamp, amount, false);
+                                handled = true;
+                                break;
+                            }
+                        case "PayLegacyFines":
+                            {
+                                object val;
+                                data.TryGetValue("Amount", out val);
+                                long amount = (long)val;
+
+                                journalEvent = new FinePaidEvent(timestamp, amount, true);
+                                handled = true;
+                                break;
+                            }
+                        case "RefuelPartial":
+                            {
+                                object val;
+                                data.TryGetValue("Amount", out val);
+                                decimal amount = (decimal)(double)val;
+                                data.TryGetValue("Cost", out val);
+                                long price = (long)val;
+
+                                journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
+                                handled = true;
+                                break;
+                            }
+                        case "RefuelAll":
+                            {
+                                object val;
+                                data.TryGetValue("Amount", out val);
+                                decimal amount = (decimal)(double)val;
+                                data.TryGetValue("Cost", out val);
+                                long price = (long)val;
+
+                                journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
+                                handled = true;
+                                break;
+                            }
+                        case "RedeemVoucher":
+                            {
+                                object val;
+                                data.TryGetValue("Amount", out val);
+                                decimal amount = (decimal)(double)val;
+                                data.TryGetValue("Cost", out val);
+                                long price = (long)val;
+
+                                journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
+                                handled = true;
+                                break;
+                            }
+                        case "CommunityGoalJoin":
+                            {
+                                object val;
+                                data.TryGetValue("Name", out val);
+                                string name = (string)val;
+                                data.TryGetValue("System", out val);
+                                string system = (string)val;
+
+                                journalEvent = new MissionAcceptedEvent(timestamp, null, name, system, null, true, null);
+                                handled = true;
+                                break;
+                            }
+                        case "CommunityGoalReward":
+                            {
+                                object val;
+                                data.TryGetValue("Name", out val);
+                                string name = (string)val;
+                                data.TryGetValue("System", out val);
+                                string system = (string)val;
+                                data.TryGetValue("Reward", out val);
+                                long reward = (val == null ? 0 : (long)val);
+
+                                journalEvent = new MissionCompletedEvent(timestamp, null, name, system, true, reward, 0);
+                                handled = true;
+                                break;
+                            }
+                        case "MissionAccepted":
+                            {
+                                object val;
+                                data.TryGetValue("MissionID", out val);
+                                long missionid = (long)val;
+                                data.TryGetValue("Name", out val);
+                                string name = (string)val;
+                                data.TryGetValue("Faction", out val);
+                                string faction = (string)val;
+                                // Could be a superpower...
+                                Superpower superpowerFaction = Superpower.FromEDName(faction);
+                                faction = superpowerFaction != null ? superpowerFaction.name : faction;
+
+                                data.TryGetValue("Expiry", out val);
+                                DateTime? expiry = (val == null ? (DateTime?)null : (DateTime)val);
+
+                                journalEvent = new MissionAcceptedEvent(timestamp, missionid, name, null, faction, false, expiry);
+                                handled = true;
+                                break;
+                            }
+                        case "MissionCompleted":
+                            {
+                                object val;
+                                data.TryGetValue("MissionID", out val);
+                                long missionid = (long)val;
+                                data.TryGetValue("Name", out val);
+                                string name = (string)val;
+                                data.TryGetValue("Reward", out val);
+                                long reward = (val == null ? 0 : (long)val);
+                                data.TryGetValue("Donation", out val);
+                                long donation = (val == null ? 0 : (long)val);
+
+                                journalEvent = new MissionCompletedEvent(timestamp, missionid, name, null, false, reward, donation);
+                                handled = true;
+                                break;
+                            }
+                        case "MissionAbandoned":
+                            {
+                                object val;
+                                data.TryGetValue("MissionID", out val);
+                                long missionid = (long)val;
+                                data.TryGetValue("Name", out val);
+                                string name = (string)val;
+                                journalEvent = new MissionAbandonedEvent(timestamp, missionid, name);
+                                handled = true;
+                                break;
+                            }
+                        case "Repair":
+                            {
+                                object val;
+                                data.TryGetValue("Item", out val);
+                                string item = (string)val;
+                                data.TryGetValue("Cost", out val);
+                                long price = (long)val;
+                                journalEvent = new ShipRepairedEvent(timestamp, item, price);
+                                handled = true;
+                                break;
+                            }
+                        case "RepairAll":
+                            {
+                                object val;
+                                data.TryGetValue("Cost", out val);
+                                long price = (long)val;
+                                journalEvent = new ShipRepairedEvent(timestamp, null, price);
                                 handled = true;
                                 break;
                             }

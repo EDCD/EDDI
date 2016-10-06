@@ -47,6 +47,7 @@ namespace EddiDataDefinitions
             if (result == null)
             {
                 Logging.Report("Unknown game mode ED name " + from);
+                result = new GameMode(from, tidiedFrom);
             }
             return result;
         }

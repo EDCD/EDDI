@@ -17,19 +17,24 @@ namespace EddiEvents
 
         static ShipSoldEvent()
         {
+            VARIABLES.Add("shipid", "The ID of the ship that was sold");
             VARIABLES.Add("ship", "The ship that was sold");
             VARIABLES.Add("price", "The price for which the ship was sold");
         }
 
+        [JsonProperty("shipid")]
+        public int? shipid { get; private set; }
+
         [JsonProperty("ship")]
-        public Ship ship { get; private set; }
+        public string ship { get; private set; }
 
         [JsonProperty("price")]
-        public decimal price { get; private set; }
+        public long price { get; private set; }
 
-        public ShipSoldEvent(DateTime timestamp, Ship ship, decimal price) : base(timestamp, NAME)
+        public ShipSoldEvent(DateTime timestamp, Ship ship, long price) : base(timestamp, NAME)
         {
-            this.ship = ship;
+            this.ship = (ship == null ? null : ship.model);
+            this.shipid = (ship == null ? (int?)null : ship.LocalId);
             this.price = price;
         }
     }

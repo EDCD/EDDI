@@ -19,7 +19,7 @@ namespace EddiEvents
         {
             VARIABLES.Add("name", "The name of the crewmember being hired");
             VARIABLES.Add("faction", "The faction of the crewmember being hired");
-            VARIABLES.Add("cost", "The cost of the crewmember being hired");
+            VARIABLES.Add("price", "The price of the crewmember being hired");
             VARIABLES.Add("combatrating", "The combat rating of the crewmember being hired");
         }
 
@@ -27,16 +27,16 @@ namespace EddiEvents
         public string name { get; private set; }
         [JsonProperty("faction")]
         public string faction { get; private set; }
-        [JsonProperty("cost")]
-        public decimal cost { get; private set; }
+        [JsonProperty("price")]
+        public long price { get; private set; }
         [JsonProperty("combatrating")]
         public string combatrating { get; private set; }
 
-        public CrewHiredEvent(DateTime timestamp, string name, string faction, decimal cost, CombatRating combatrating) : base(timestamp, NAME)
+        public CrewHiredEvent(DateTime timestamp, string name, string faction, long price, CombatRating combatrating) : base(timestamp, NAME)
         {
             this.name = name;
             this.faction = faction;
-            this.cost = cost;
+            this.price = price;
             this.combatrating = combatrating.name;
         }
     }

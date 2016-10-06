@@ -63,6 +63,7 @@ namespace EddiDataDefinitions
             if (result == null)
             {
                 Logging.Report("Unknown Crime ED name " + from);
+                result = new Crime(from, tidiedFrom);
             }
             return result;
         }

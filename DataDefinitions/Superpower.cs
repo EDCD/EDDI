@@ -31,6 +31,7 @@ namespace EddiDataDefinitions
         public static readonly Superpower Alliance = new Superpower("$faction_Alliance;", "Alliance");
         public static readonly Superpower Empire = new Superpower("$faction_Empire;", "Empire");
         public static readonly Superpower Independent = new Superpower("$faction_Independent;", "Independent");
+        public static readonly Superpower Pirate = new Superpower("$faction_Pirate;", "Pirate");
 
         public static Superpower FromName(string from)
         {

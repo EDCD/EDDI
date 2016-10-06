@@ -45,6 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BondAwardedEvent.cs" />
+    <Compile Include="FindPaidEvent.cs" />
+    <Compile Include="MissionAbandonedEvent.cs" />
+    <Compile Include="MissionCompletedEvent.cs" />
+    <Compile Include="MissionAcceptedEvent.cs" />
+    <Compile Include="ShipDeliveredEvent.cs" />
+    <Compile Include="ShipRepairedEvent.cs" />
+    <Compile Include="ShipRefuelledEvent.cs" />
     <Compile Include="ShipRestockedEvent.cs" />
     <Compile Include="JumpingEvent.cs" />
     <Compile Include="LimpetSoldEvent.cs" />

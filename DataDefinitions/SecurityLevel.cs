@@ -48,6 +48,7 @@ namespace EddiDataDefinitions
             if (result == null)
             {
                 Logging.Report("Unknown Security Level ED name " + from);
+                result = new SecurityLevel(from, tidiedFrom);
             }
             return result;
         }

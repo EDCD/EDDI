@@ -48,6 +48,7 @@ namespace EddiDataDefinitions
             if (result == null)
             {
                 Logging.Report("Unknown composition ED name " + from);
+                result = new EddiDataDefinitions.Composition(from, tidiedFrom);
             }
             return result;
         }

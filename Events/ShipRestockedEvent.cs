@@ -20,9 +20,9 @@ namespace EddiEvents
             VARIABLES.Add("price", "The price of restocking");
         }
 
-        public decimal price { get; private set; }
+        public long price { get; private set; }
 
-        public ShipRestockedEvent(DateTime timestamp, decimal price) : base(timestamp, NAME)
+        public ShipRestockedEvent(DateTime timestamp, long price) : base(timestamp, NAME)
         {
             this.price = price;
         }

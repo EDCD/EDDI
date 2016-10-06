@@ -24,9 +24,9 @@ namespace EddiEvents
 
         public string commodity { get; private set; }
         public int amount { get; private set; }
-        public decimal price { get; private set; }
+        public long price { get; private set; }
 
-        public CommodityPurchasedEvent(DateTime timestamp, Commodity commodity, int amount, decimal price) : base(timestamp, NAME)
+        public CommodityPurchasedEvent(DateTime timestamp, Commodity commodity, int amount, long price) : base(timestamp, NAME)
         {
             this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
             this.amount = amount;
