@@ -17,7 +17,7 @@ namespace EddiEvents
 
         static ShipSwappedEvent()
         {
-            VARIABLES.Add("shipid", "The ID of the ship that was swaooed");
+            VARIABLES.Add("shipid", "The ID of the ship that was swapped");
             VARIABLES.Add("ship", "The ship that was swapped");
             VARIABLES.Add("soldshipid", "The ID of the ship that was sold as part of the swap");
             VARIABLES.Add("soldship", "The ship that was sold as part of the swap");

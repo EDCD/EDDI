@@ -388,7 +388,7 @@ namespace Eddi
             if (profile != null)
             {
                 ships.Add(profile.Ship);
-                ships.AddRange(profile.StoredShips);
+                ships.AddRange(profile.Shipyard);
             }
             shipsConfiguration.Ships = ships;
             shipyardData.ItemsSource = ships;

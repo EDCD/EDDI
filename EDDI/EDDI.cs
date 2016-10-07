@@ -71,7 +71,7 @@ namespace Eddi
         // Information obtained from the companion app service
         public Commander Cmdr { get; private set; }
         public Ship Ship { get; private set; }
-        public List<Ship> StoredShips { get; private set; }
+        public List<Ship> Shipyard { get; private set; }
         public Station LastStation { get; private set; }
 
         // Services made available from EDDI
@@ -91,6 +91,12 @@ namespace Eddi
             try
             {
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
+
+                // Start by ensuring that our primary data structures have something in them.  This allows them to be updated
+                // from any source
+                Cmdr = new Commander();
+                Ship = new Ship();
+                Shipyard = new List<Ship>();
 
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
@@ -130,12 +136,6 @@ namespace Eddi
                     {
                         Logging.Debug("Failed to obtain profile: " + ex);
                     }
-                }
-
-                if (Cmdr == null)
-                {
-                    // We don't have the companion API available, create dummy entries for the commander
-                    Cmdr = new Commander();
                 }
 
                 Cmdr.insurance = configuration.Insurance;
@@ -362,10 +362,6 @@ namespace Eddi
             {
                 passEvent = eventEnteredNormalSpace((EnteredNormalSpaceEvent)journalEvent);
             }
-            else if (journalEvent is ShipPurchasedEvent)
-            {
-                passEvent = eventShipPurchasedEvent((ShipPurchasedEvent)journalEvent);
-            }
             else if (journalEvent is ShipDeliveredEvent)
             {
                 passEvent = eventShipDeliveredEvent((ShipDeliveredEvent)journalEvent);
@@ -377,6 +373,10 @@ namespace Eddi
             else if (journalEvent is ShipSoldEvent)
             {
                 passEvent = eventShipSoldEvent((ShipSoldEvent)journalEvent);
+            }
+            else if (journalEvent is CommanderContinuedEvent)
+            {
+                passEvent = eventCommanderContinuedEvent((CommanderContinuedEvent)journalEvent);
             }
             // Additional processing is over, send to the event responders if required
             if (passEvent)
@@ -530,23 +530,44 @@ namespace Eddi
             return false;
         }
 
-        private bool eventShipPurchasedEvent(ShipPurchasedEvent theEvent)
-        {
-            return true;
-        }
-
         private bool eventShipDeliveredEvent(ShipDeliveredEvent theEvent)
         {
+            refreshProfile();
+            if (theEvent.shipid != null)
+            {
+                SetShip(Shipyard.FirstOrDefault(v => v.LocalId == theEvent.shipid));
+            }
             return true;
         }
 
         private bool eventShipSwappedEvent(ShipSwappedEvent theEvent)
         {
+            if (theEvent.shipid != null)
+            {
+                SetShip(Shipyard.FirstOrDefault(v => v.LocalId == theEvent.shipid));
+            }
             return true;
         }
 
         private bool eventShipSoldEvent(ShipSoldEvent theEvent)
         {
+            // Need to update shipyard
+            refreshProfile();
+            return true;
+        }
+
+        private bool eventCommanderContinuedEvent(CommanderContinuedEvent theEvent)
+        {
+            if (theEvent.shipid != null)
+            {
+                SetShip(Shipyard.FirstOrDefault(v => v.LocalId == theEvent.shipid));
+            }
+
+            if (Cmdr.name == null)
+            {
+                Cmdr.name = theEvent.commander;
+            }
+
             return true;
         }
 
@@ -556,18 +577,36 @@ namespace Eddi
             if (CompanionAppService.Instance != null)
             {
                 Profile profile = CompanionAppService.Instance.Profile();
-                Cmdr = profile == null ? new Commander() : profile.Cmdr;
-                Ship = profile == null ? null : profile.Ship;
-                StoredShips = profile == null ? null : profile.StoredShips;
-                // We only set the current star system if it is not present, otherwise we leave it to events
-                if (CurrentStarSystem == null)
+                if (profile != null)
                 {
-                    CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
-                    setSystemDistanceFromHome(CurrentStarSystem);
+                    // Use the profile as primary information for our commander and shipyard
+                    Cmdr = profile.Cmdr;
+                    Logging.Warn("Shipyard is " + JsonConvert.SerializeObject(profile.Shipyard));
+                    Shipyard = profile.Shipyard;
+
+                    // Only use the ship information if we agree that this is the correct ship to use
+                    if (Ship.LocalId == 0 || profile.Ship.LocalId == Ship.LocalId)
+                    {
+                        SetShip(profile.Ship);
+                    }
+
+                    // Only set the current star system if it is not present, otherwise we leave it to events
+                    if (CurrentStarSystem == null)
+                    {
+                        CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
+                        setSystemDistanceFromHome(CurrentStarSystem);
+                    }
+                    LastStation = profile == null ? null : profile.LastStation;
+                    setCommanderTitle();
                 }
-                LastStation = profile == null ? null : profile.LastStation;
-                setCommanderTitle();
             }
+        }
+
+        private void SetShip(Ship ship)
+        {
+            Logging.Warn("Setting ship to " + (ship == null ? "<null>" : ship.LocalId.ToString() + "(" + ship.model + ")"));
+            Logging.Warn("Ship is " + (ship == null ? "<null>" : JsonConvert.SerializeObject(ship)));
+            Ship = ship;
         }
 
         private void setSystemDistanceFromHome(StarSystem system)

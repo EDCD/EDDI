@@ -19,7 +19,7 @@ namespace EddiCompanionAppService
         public Ship Ship { get; set; }
 
         /// <summary>The commander's stored ships</summary>
-        public List<Ship> StoredShips { get; set; }
+        public List<Ship> Shipyard { get; set; }
 
         /// <summary>The current starsystem</summary>
         public StarSystem CurrentStarSystem{ get; set; }
@@ -29,7 +29,7 @@ namespace EddiCompanionAppService
 
         public Profile()
         {
-            StoredShips = new List<Ship>();
+            Shipyard = new List<Ship>();
         }
     }
 }

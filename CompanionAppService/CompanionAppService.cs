@@ -500,9 +500,9 @@ namespace EddiCompanionAppService
 
                 Profile.Ship = ShipFromProfile(json);
 
-                Profile.StoredShips = StoredShipsFromProfile(json, ref Profile);
+                Profile.Shipyard = ShipyardFromProfile(json, ref Profile);
 
-                AugmentShipInfo(Profile.Ship, Profile.StoredShips);
+                AugmentShipInfo(Profile.Ship, Profile.Shipyard);
 
                 if (json["lastStarport"] != null)
                 {
@@ -578,7 +578,6 @@ namespace EddiCompanionAppService
             // Work through our shipyard
             foreach (Ship storedShip in storedShips)
             {
-
                 if (lookup.TryGetValue(storedShip.LocalId, out shipConfig))
                 {
                     // Already exists; grab the relevant information and supplement it
@@ -609,13 +608,7 @@ namespace EddiCompanionAppService
                 return null;
             }
 
-            string Model = json["ship"]["name"];
-            if (shipTranslations.ContainsKey(Model))
-            {
-                Model = shipTranslations[Model];
-            }
-
-            Ship Ship = ShipDefinitions.FromModel(Model);
+            Ship Ship = ShipDefinitions.FromEDModel((string)json["ship"]["name"]);
 
             Ship.LocalId = json["ship"]["id"];
 
@@ -744,7 +737,7 @@ namespace EddiCompanionAppService
             return Hardpoint;
         }
 
-        public static List<Ship> StoredShipsFromProfile(dynamic json, ref Profile profile)
+        public static List<Ship> ShipyardFromProfile(dynamic json, ref Profile profile)
         {
             Logging.Debug("Entered");
 
@@ -757,25 +750,20 @@ namespace EddiCompanionAppService
                 if (shipJson != null)
                 {
                     // Take underlying value if present
-                    dynamic ship = shipJson.Value == null ? shipJson : shipJson.Value;
+                    JObject ship = shipJson.Value == null ? shipJson : shipJson.Value;
                     if (ship != null)
                     {
                         if ((int)ship["id"] != currentShip.LocalId)
                         {
-                            Ship Ship = new Ship();
+                            Ship Ship = ShipDefinitions.FromEDModel((string)ship["name"]);
 
                             if (ship["starsystem"] != null)
                             {
                                 // If we have a starsystem it means that the ship is stored
-                                Ship.LocalId = ship["id"];
-                                Ship.model = ship["name"];
-                                if (shipTranslations.ContainsKey(Ship.model))
-                                {
-                                    Ship.model = shipTranslations[Ship.model];
-                                }
+                                Ship.LocalId = (int)(long)ship["id"];
 
-                                Ship.starsystem = ship["starsystem"]["name"];
-                                Ship.station = ship["station"]["name"];
+                                Ship.starsystem = (string)ship["starsystem"]["name"];
+                                Ship.station = (string)ship["station"]["name"];
 
                                 StoredShips.Add(Ship);
                             }

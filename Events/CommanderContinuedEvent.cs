@@ -17,8 +17,9 @@ namespace EddiEvents
 
         static CommanderContinuedEvent()
         {
-            VARIABLES.Add("commander", "The name of the commander");
-            VARIABLES.Add("ship", "The ship of the commander");
+            VARIABLES.Add("commander", "The commander's name");
+            VARIABLES.Add("ship", "The commander's ship");
+            VARIABLES.Add("shipid", "The ID of the commander's ship");
             VARIABLES.Add("mode", "The game mode");
             VARIABLES.Add("group", "The name of the group (only if mode == Group)");
             VARIABLES.Add("credits", "the number of credits the commander has");
@@ -28,7 +29,10 @@ namespace EddiEvents
         public string commander { get; private set; }
 
         [JsonProperty("ship")]
-        public Ship ship { get; private set; }
+        public string ship { get; private set; }
+
+        [JsonProperty("shipid")]
+        public int? shipid { get; private set; }
 
         [JsonProperty("mode")]
         public GameMode mode { get; private set; }
@@ -42,7 +46,8 @@ namespace EddiEvents
         public CommanderContinuedEvent(DateTime timestamp, string commander, Ship ship, GameMode mode, string group, decimal credits) : base(timestamp, NAME)
         {
             this.commander = commander;
-            this.ship = ship;
+            this.ship = (ship == null ? null : ship.model);
+            this.shipid = (ship == null ? (int?)null : ship.LocalId);
             this.mode = mode;
             this.group = group;
             this.credits = credits;

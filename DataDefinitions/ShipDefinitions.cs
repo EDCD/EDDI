@@ -46,7 +46,7 @@ namespace EddiDataDefinitions
         public static List<string> ShipModels = ShipsByEliteID.Select(kp => kp.Value.model).ToList();
 
         private static Dictionary<string, Ship> ShipsByModel = ShipsByEliteID.ToDictionary(kp => kp.Value.model.ToLowerInvariant(), kp => kp.Value);
-        private static Dictionary<string, Ship> ShipsByEDModel = ShipsByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant(), kp => kp.Value);
+        private static Dictionary<string, Ship> ShipsByEDModel = ShipsByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("_", ""), kp => kp.Value);
 
         /// <summary>Obtain details of a ship given its Elite ID</summary>
         public static Ship FromEliteID(long id)
@@ -101,7 +101,7 @@ namespace EddiDataDefinitions
             }
             Ship Ship = new Ship();
             Ship Template;
-            if (ShipsByEDModel.TryGetValue(model.ToLowerInvariant(), out Template))
+            if (ShipsByEDModel.TryGetValue(model.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("_", ""), out Template))
             {
                 Ship.EDID = Template.EDID;
                 Ship.EDName = Template.EDName;

@@ -528,7 +528,7 @@ namespace EddiJournalMonitor
                                     else
                                     {
                                         // The ship might already be registered as stored; see if we can find it
-                                        storedShip = EDDI.Instance.StoredShips.FirstOrDefault(v => v.LocalId == storedShipId);
+                                        storedShip = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == storedShipId);
                                         if (storedShip == null)
                                         {
                                             // No luck finding the ship; provide a basic definition
@@ -554,7 +554,7 @@ namespace EddiJournalMonitor
                                     else
                                     {
                                         // The ship might be registered as stored; see if we can find it
-                                        soldShip = EDDI.Instance.StoredShips.FirstOrDefault(v => v.LocalId == soldShipId);
+                                        soldShip = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == soldShipId);
                                         if (soldShip == null)
                                         {
                                             // No luck finding the ship; provide a basic definition
@@ -578,7 +578,7 @@ namespace EddiJournalMonitor
                                 int shipId = (int)(long)val;
 
                                 // We should be able to provide our ship information given the ship ID
-                                Ship ship = EDDI.Instance.StoredShips.FirstOrDefault(v => v.LocalId == shipId);
+                                Ship ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
                                 if (ship == null)
                                 {
                                     Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
@@ -597,7 +597,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("SellShipID", out val);
                                 int shipId = (int)(long)val;
                                 // We should be able to provide our ship information given the ship ID
-                                Ship ship = EDDI.Instance.StoredShips.FirstOrDefault(v => v.LocalId == shipId);
+                                Ship ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
                                 if (ship == null)
                                 {
                                     Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
@@ -618,7 +618,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 // We should be able to provide our ship information given the ship ID
-                                Ship ship = EDDI.Instance.StoredShips.FirstOrDefault(v => v.LocalId == shipId);
+                                Ship ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
                                 if (ship == null)
                                 {
                                     Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
@@ -636,20 +636,20 @@ namespace EddiJournalMonitor
                                     int storedShipId = (int)(long)val;
 
                                     // We should be storing our own ship; confirm this using the ship ID
-                                    if (storedShipId == EDDI.Instance.Ship.LocalId)
+                                    if (EDDI.Instance.Ship != null && storedShipId == EDDI.Instance.Ship.LocalId)
                                     {
                                         storedShip = EDDI.Instance.Ship;
                                     }
                                     else
                                     {
                                         // The ship might already be registered as stored; see if we can find it
-                                        storedShip = EDDI.Instance.StoredShips.FirstOrDefault(v => v.LocalId == storedShipId);
+                                        storedShip = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == storedShipId);
                                         if (storedShip == null)
                                         {
                                             // No luck finding the ship; provide a basic definition
                                             data.TryGetValue("StoreOldShip", out val);
-                                            ship = ShipDefinitions.FromEDModel((string)val);
-                                            ship.LocalId = storedShipId;
+                                            storedShip = ShipDefinitions.FromEDModel((string)val);
+                                            storedShip.LocalId = storedShipId;
                                         }
                                     }
                                 }
@@ -669,7 +669,7 @@ namespace EddiJournalMonitor
                                     else
                                     {
                                         // The ship might be registered as stored; see if we can find it
-                                        soldShip = EDDI.Instance.StoredShips.FirstOrDefault(v => v.LocalId == soldShipId);
+                                        soldShip = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == soldShipId);
                                         if (soldShip == null)
                                         {
                                             // No luck finding the ship; provide a basic definition
@@ -690,7 +690,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 // We should be able to provide our ship information given the ship ID
-                                Ship ship = EDDI.Instance.StoredShips.FirstOrDefault(v => v.LocalId == shipId);
+                                Ship ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
                                 if (ship == null)
                                 {
                                     Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
@@ -1116,8 +1116,17 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Commander", out val);
                                 string commander = (string)val;
-                                data.TryGetValue("Ship", out val);
-                                Ship ship = ShipDefinitions.FromEDModel((string)val);
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                // Try to obtain our ship given the ship ID
+                                Ship ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
+                                if (ship == null)
+                                {
+                                    // We didn't find this ship.  Create a basic definition given our ship model
+                                    data.TryGetValue("Ship", out val);
+                                    ship = ShipDefinitions.FromEDModel((string)val);
+                                }
+
                                 data.TryGetValue("GameMode", out val);
                                 GameMode mode = GameMode.FromEDName((string)val);
                                 data.TryGetValue("Group", out val);

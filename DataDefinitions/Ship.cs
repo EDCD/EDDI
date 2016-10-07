@@ -15,7 +15,7 @@ namespace EddiDataDefinitions
         /// <summary>the ID of this ship for this commander</summary>
         public int LocalId { get; set; }
         /// <summary>the manufacturer of the ship (Lakon, CoreDynamics etc.)</summary>
-        //[JsonIgnore]
+        [JsonIgnore]
         public string manufacturer { get; set; }
         /// <summary>the model of the ship (Python, Anaconda, etc.)</summary>
         [JsonIgnore]

@@ -14,6 +14,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using EddiSpeechResponder;
 using System.Windows;
+using Newtonsoft.Json;
 
 namespace EddiVoiceAttackResponder
 {
@@ -507,9 +508,9 @@ namespace EddiVoiceAttackResponder
             setCommanderValues(EDDI.Instance.Cmdr, ref vaProxy);
             setShipValues(EDDI.Instance.Ship, "Ship", ref vaProxy);
             int currentStoredShip = 1;
-            if (EDDI.Instance.StoredShips != null)
+            if (EDDI.Instance.Shipyard != null)
             {
-                foreach (Ship StoredShip in EDDI.Instance.StoredShips)
+                foreach (Ship StoredShip in EDDI.Instance.Shipyard)
                 {
                     setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref vaProxy);
                     currentStoredShip++;
@@ -635,9 +636,13 @@ namespace EddiVoiceAttackResponder
         private static void setShipValues(Ship ship, string prefix, ref dynamic vaProxy)
         {
             Logging.Debug("Setting ship information (" + prefix + ")");
+            Logging.Warn("Ship is " + (ship == null ? "<null>" : JsonConvert.SerializeObject(ship)));
             try
             {
+                vaProxy.SetText(prefix + " manufacturer", ship == null ? null : ship.manufacturer);
                 vaProxy.SetText(prefix + " model", ship == null ? null : ship.model);
+                Logging.Warn("Set " + prefix + " model to " + ship.model);
+                Logging.Warn("VA value is " + vaProxy.GetText(prefix + " model"));
                 vaProxy.SetText(prefix + " model (spoken)", ship == null ? null : Translations.ShipModel(ship.model));
 
                 if (EDDI.Instance.Ship != null && EDDI.Instance.Cmdr != null)

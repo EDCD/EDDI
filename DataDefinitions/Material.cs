@@ -52,7 +52,7 @@ namespace EddiDataDefinitions
         public static readonly Material Germanium = new Material("germanium", "Element", "Germanium", Rarity.Common, "Ge", 5, 6);
         public static readonly Material Manganese = new Material("manganese", "Element", "Manganese", Rarity.Common, "Mn", 10, 15);
         public static readonly Material Vanadium = new Material("vanadium", "Element", "Vanadium", Rarity.Common, "V", 5, 9);
-        public static readonly Material Zinc = new Material("zinc", "Z", "Zinc", Rarity.Common, "Element", 5, 9);
+        public static readonly Material Zinc = new Material("zinc", "Element", "Zinc", Rarity.Common, "Zn", 5, 9);
 
         public static readonly Material Arsenic = new Material("arsenic", "Element", "Arsenic", Rarity.Standard, "As", 1.8M, 2.4M);
         public static readonly Material Niobium = new Material("niobium", "Element", "Niobium", Rarity.Standard, "Nb", 1, 2);
@@ -151,18 +151,17 @@ namespace EddiDataDefinitions
         public static readonly Material RefinedFocusCrystals = new Material("refinedfocuscrystals", "Manufactured", "Refined Focus Crystals", Rarity.Rare);
         public static readonly Material ThermicAlloys = new Material("thermicalloys", "Manufactured", "Thermic Alloys", Rarity.Rare);
 
-        public static readonly Material BiotechConductors = new Material("", "Manufactured", "Biotech Conductors", Rarity.VeryRare);
+        public static readonly Material BiotechConductors = new Material("biotechconductors", "Manufactured", "Biotech Conductors", Rarity.VeryRare);
         public static readonly Material CoreDynamicsComposites = new Material("fedcorecomposites", "Manufactured", "Core Dynamics Composites", Rarity.VeryRare);
         public static readonly Material ExquisiteFocusCrystals = new Material("exquisitefocuscrystals", "Manufactured", "Exquisite Focus Crystals", Rarity.VeryRare);
-        public static readonly Material ImperialShielding = new Material("", "Manufactured", "Imperial Shielding", Rarity.VeryRare);
+        public static readonly Material ImperialShielding = new Material("imperialshielding", "Manufactured", "Imperial Shielding", Rarity.VeryRare);
         public static readonly Material ImprovisedComponents = new Material("improvisedcomponents", "Manufactured", "Improvised Components", Rarity.VeryRare);
         public static readonly Material MilitaryGradeAlloys = new Material("militarygradealloys", "Manufactured", "Military Grade Alloys", Rarity.VeryRare);
-        public static readonly Material MilitarySupercapacitors = new Material("", "Manufactured", "Military Supercapacitors", Rarity.VeryRare);
+        public static readonly Material MilitarySupercapacitors = new Material("militarysupercapacitors", "Manufactured", "Military Supercapacitors", Rarity.VeryRare);
         public static readonly Material PharmaceuticalIsolators = new Material("pharmaceuticalisolators", "Manufactured", "Pharmaceutical Isolators", Rarity.VeryRare);
         public static readonly Material ProtoHeatRadiators = new Material("protoheatradiators", "Manufactured", "Proto Heat Radiators", Rarity.VeryRare);
         public static readonly Material ProtoRadiolicAlloys = new Material("protoradiolicalloys", "Manufactured", "Proto Radiolic Alloys", Rarity.VeryRare);
-        public static readonly Material UnknownFragment = new Material("", "Manufactured", "Unknown Fragment", Rarity.VeryRare);
-
+        public static readonly Material UnknownFragment = new Material("unknownenergysource", "Manufactured", "Unknown Fragment", Rarity.VeryRare);
 
         public static Material FromName(string from)
         {
