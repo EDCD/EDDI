@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Tests
@@ -108,6 +109,12 @@ namespace Tests
             dict["name"] = "world";
             string result = resolver.resolve("test", dict);
             Assert.AreEqual("Well Hello world", result);
+        }
+
+        [TestMethod]
+        public void TestResolverCallsign()
+        {
+            Assert.AreEqual(new Regex("[^a-zA-Z0-9]").Replace("a-b. c", "").ToUpperInvariant().Substring(0, 3), "ABC");
         }
     }
 }

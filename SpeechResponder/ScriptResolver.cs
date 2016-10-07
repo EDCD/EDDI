@@ -10,6 +10,7 @@ using EddiDataProviderService;
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -163,10 +164,23 @@ namespace EddiSpeechResponder
 
             store["ShipCallsign"] = new NativeFunction((values) =>
             {
-                string result = "";
-                if (EDDI.Instance.Ship != null && EDDI.Instance.Cmdr != null)
+                string result;
+                if (EDDI.Instance.Ship != null)
                 {
-                    result = Translations.Manufacturer(EDDI.Instance.Ship.manufacturer) + " " + Translations.CallSign(EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant());
+                    if (EDDI.Instance.Cmdr != null)
+                    {
+                        // Obtain the first three characters
+                        string chars = new Regex("[^a-zA-Z0-9]").Replace(EDDI.Instance.Cmdr.name, "").ToUpperInvariant().Substring(0, 3);
+                        result = Translations.Manufacturer(EDDI.Instance.Ship.manufacturer) + " " + Translations.CallSign(chars);
+                    }
+                    else
+                    {
+                        result = "unidentified " + Translations.Manufacturer(EDDI.Instance.Ship.manufacturer) + " ship";
+                    }
+                }
+                else
+                {
+                    result = "unidentified ship";
                 }
                 return result;
             }, 0);

@@ -364,15 +364,19 @@ namespace Eddi
             }
             else if (journalEvent is ShipPurchasedEvent)
             {
-                // TODO
+                passEvent = eventShipPurchasedEvent((ShipPurchasedEvent)journalEvent);
+            }
+            else if (journalEvent is ShipDeliveredEvent)
+            {
+                passEvent = eventShipDeliveredEvent((ShipDeliveredEvent)journalEvent);
             }
             else if (journalEvent is ShipSwappedEvent)
             {
-                // TODO
+                passEvent = eventShipSwappedEvent((ShipSwappedEvent)journalEvent);
             }
             else if (journalEvent is ShipSoldEvent)
             {
-                // TODO
+                passEvent = eventShipSoldEvent((ShipSoldEvent)journalEvent);
             }
             // Additional processing is over, send to the event responders if required
             if (passEvent)
@@ -524,6 +528,26 @@ namespace Eddi
                 return true;
             }
             return false;
+        }
+
+        private bool eventShipPurchasedEvent(ShipPurchasedEvent theEvent)
+        {
+            return true;
+        }
+
+        private bool eventShipDeliveredEvent(ShipDeliveredEvent theEvent)
+        {
+            return true;
+        }
+
+        private bool eventShipSwappedEvent(ShipSwappedEvent theEvent)
+        {
+            return true;
+        }
+
+        private bool eventShipSoldEvent(ShipSoldEvent theEvent)
+        {
+            return true;
         }
 
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>

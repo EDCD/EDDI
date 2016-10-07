@@ -124,21 +124,6 @@ namespace EddiDataDefinitions
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
         }
-
-        private static Random random = new Random();
-        /// <summary>
-        /// A callsign is a set of three letters followed by a dash and then four numbers
-        /// </summary>
-        public static string generateCallsign()
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            const string numerics = "0123456789";
-            return new string(Enumerable.Repeat(chars, 3)
-              .Select(s => s[random.Next(s.Length)]).ToArray())
-              + "-"
-              + new string(Enumerable.Repeat(numerics, 4)
-              .Select(s => s[random.Next(s.Length)]).ToArray());
-        }
     }
 
     /// <summary>The role of a ship</summary>
