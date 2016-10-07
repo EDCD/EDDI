@@ -42,7 +42,15 @@ namespace EddiDataDefinitions
 
         public static State FromName(string from)
         {
-            State result = STATES.FirstOrDefault(v => v.name == from);
+            State result;
+            if (from == null || from == "")
+            {
+                result = None;
+            }
+            else
+            {
+                result = STATES.FirstOrDefault(v => v.name == from);
+            }
             if (result == null)
             {
                 Logging.Report("Unknown State name " + from);
@@ -53,7 +61,16 @@ namespace EddiDataDefinitions
         public static State FromEDName(string from)
         {
             string tidiedFrom = from == null ? null : from.ToLowerInvariant();
-            State result = STATES.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
+
+            State result;
+            if (from == null || from == "")
+            {
+                result = None;
+            }
+            else
+            {
+                result = STATES.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
+            }
             if (result == null)
             {
                 Logging.Report("Unknown State ED name " + from);

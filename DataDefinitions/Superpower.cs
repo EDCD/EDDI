@@ -26,7 +26,7 @@ namespace EddiDataDefinitions
             SUPERPOWERS.Add(this);
         }
 
-        public static readonly Superpower None = new Superpower("$faction_None;", "None");
+        public static readonly Superpower None = new Superpower("$faction_none;", "None");
         public static readonly Superpower Federation = new Superpower("$faction_Federation;", "Federation");
         public static readonly Superpower Alliance = new Superpower("$faction_Alliance;", "Alliance");
         public static readonly Superpower Empire = new Superpower("$faction_Empire;", "Empire");

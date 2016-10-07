@@ -26,10 +26,13 @@ namespace EddiDataDefinitions
             SECURITYLEVELS.Add(this);
         }
 
-        public static readonly SecurityLevel None = new SecurityLevel("$SYSTEM_SECURITY_none", "None");
-        public static readonly SecurityLevel Low = new SecurityLevel("$SYSTEM_SECURITY_low", "Low");
-        public static readonly SecurityLevel Medium = new SecurityLevel("$SYSTEM_SECURITY_medium", "Medium");
-        public static readonly SecurityLevel High = new SecurityLevel("$SYSTEM_SECURITY_high", "High");
+        public static readonly SecurityLevel Anarchy = new SecurityLevel("$GAlAXY_MAP_INFO_state_anarchy;", "None");
+        public static readonly SecurityLevel Lawless = new SecurityLevel("$GALAXY_MAP_INFO_state_lawless;", "None");
+        public static readonly SecurityLevel None = new SecurityLevel("$SYSTEM_SECURITY_none;", "None");
+        public static readonly SecurityLevel Low = new SecurityLevel("$SYSTEM_SECURITY_low;", "Low");
+        public static readonly SecurityLevel Medium = new SecurityLevel("$SYSTEM_SECURITY_medium;", "Medium");
+        public static readonly SecurityLevel High = new SecurityLevel("$SYSTEM_SECURITY_high;", "High");
+        public static readonly SecurityLevel High_Anarchy = new SecurityLevel("$SYSTEM_SECURITY_high_anarchy;", "High");
 
         public static SecurityLevel FromName(string from)
         {
