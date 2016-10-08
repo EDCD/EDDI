@@ -198,7 +198,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{ship.model}.\r\n{ship.manufacturer}.\r\n{ship.role}.\r\n{ship.size}.\r\n\r\n{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {Occasionally(2, \"to fighter\")} {OneOf(\"terminated\", \"disengaged\")}.",
+      "script": "{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {Occasionally(2, \"to fighter\")} {OneOf(\"terminated\", \"disengaged\")}.",
       "name": "Controlling ship",
       "description": "Triggered when you switch control from your fighter to your ship"
     },
