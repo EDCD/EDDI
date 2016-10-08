@@ -10,11 +10,67 @@
       "name": "Bond awarded",
       "description": "Triggered when you are awarded a combat bond"
     },
-    "Ship restocked": {
+    "Fine paid": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Paid fine of {Humanise(event.amount)} credits.",
+      "name": "Fine paid",
+      "description": "Triggered when you pay a fine"
+    },
+    "Mission abandoned": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Mission abandoned.",
+      "name": "Mission abandoned",
+      "description": "Triggered when you abandon a mission"
+    },
+    "Mission completed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Mission completed.",
+      "name": "Mission completed",
+      "description": "Triggered when you complete a mission"
+    },
+    "Mission accepted": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.communal:\r\n    Community goal accepted.\r\n|else:\r\n    Mission for {P(event.faction)} accepted.\r\n}",
+      "name": "Mission accepted",
+      "description": "Triggered when you accept a mission"
+    },
+    "Ship delivered": {
       "enabled": true,
       "priority": 3,
       "responder": true,
       "script": null,
+      "name": "Ship delivered",
+      "description": "Triggered when your newly-purchased ship is delivered to you"
+    },
+    "Ship repaired": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{ShipName()} repaired.",
+      "name": "Ship repaired",
+      "description": "Triggered when you repair your ship"
+    },
+    "Ship refuelled": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{ShipName()} refuelled.",
+      "name": "Ship refuelled",
+      "description": "Triggered when you refuel your ship"
+    },
+    "Ship restocked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{ShipName()} {OneOf(\"restocked\",\"rearmed\")}.",
       "name": "Ship restocked",
       "description": "Triggered when you restock your ship's ammunition"
     },
@@ -54,7 +110,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Purchased {OneOf('system', 'exploration')} data for {P(event.system)}\",\r\n            \"{OneOf('system', 'exploration')} data for {P(event.system)} now available\",\r\n            \"Received {OneOf('system', 'exploration')} data for {P(event.system)} from station services\",\r\n            \"Receipt of {P(event.system)} {OneOf('system', 'exploration')} data confirmed\")}.",
+      "script": "{OneOf(\"Purchased {OneOf('system', 'exploration')} data for {P(event.system)}\",\r\n            \"{OneOf('system', 'exploration')} data for {P(event.system)} now available\",\r\n            \"{Occasionally(3, '{ShipName()} has')} Received {OneOf('system', 'exploration')} data for {P(event.system)} from station services\",\r\n            \"Receipt of {P(event.system)} {OneOf('system', 'exploration')} data confirmed\")}.",
       "name": "Exploration data purchased",
       "description": "Triggered when you purchase exploration data"
     },
@@ -98,12 +154,12 @@
       "name": "Commodity refined",
       "description": "Triggered when you refine a commodity from the refinery"
     },
-    "Ship Interdiction": {
+    "Ship interdiction": {
       "enabled": true,
       "priority": 3,
       "responder": true,
       "script": null,
-      "name": "Ship Interdiction",
+      "name": "Ship interdiction",
       "description": "Triggered when you interdict another ship"
     },
     "Ship interdicted": {
@@ -142,7 +198,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {Occasionally(2, \"to fighter\")} {OneOf(\"terminated\", \"disengaged\")}.",
+      "script": "{ship.model}.\r\n{ship.manufacturer}.\r\n{ship.role}.\r\n{ship.size}.\r\n\r\n{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {Occasionally(2, \"to fighter\")} {OneOf(\"terminated\", \"disengaged\")}.",
       "name": "Controlling ship",
       "description": "Triggered when you switch control from your fighter to your ship"
     },
@@ -190,7 +246,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{P(event.ship)} purchased.",
       "name": "Ship purchased",
       "description": "Triggered when you purchase a ship"
     },
@@ -206,7 +262,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{ShipName(event.shipid)} on its way to {P(event.system)}.",
       "name": "Ship transfer initiated",
       "description": "Triggered when you initiate a ship transfer"
     },
@@ -214,7 +270,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{if event.storedship:\r\n    {OneOf(\"Storing\", \"Mothballing\")} {ShipName(event.storedshipid)} and\r\n|elif event.soldship:\r\n    Selling {ShipName(event.soldshipid)} and\r\n}\r\n\r\n{OneOf(\"swapping\",\"moving\",\"transferring\")} to {ShipName(event.shipid)}.",
       "name": "Ship swapped",
       "description": "Triggered when you swap a ship"
     },
@@ -222,7 +278,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "Retiring {ShipName(event.shipid)} from active duty.",
       "name": "Ship sold",
       "description": "Triggered when you sell a ship"
     },
@@ -230,7 +286,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.health < 40:\r\n    Danger:\r\n|elif event.health < 60:\r\n    Warning:\r\n|elif event.health < 80:\r\n    Caution:\r\n}\r\n{OneOf(\"Hull\", \"Hull integrity\", \"Structural integrity\")} is at {event.health}%.\r\n",
+      "script": "{if event.health < 40:\r\n    Danger:\r\n|elif event.health < 60:\r\n    Warning:\r\n|elif event.health < 80:\r\n    Caution:\r\n}\r\n{OneOf(\"Hull\", \"Hull integrity\", \"Integrity\", \"Structural integrity\")} {Occasionally(3, \"is\")} at {event.health}%.\r\n",
       "name": "Hull damaged",
       "description": "Triggered when your hull is damaged to a certain extent"
     },
@@ -254,7 +310,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Message received from {event.from}.  Message reads: {event.message}.",
+      "script": "{if event.message = \"o7\":\r\n    {event.from} salutes\r\n    {if event.channel = \"player\":\r\n        you\r\n    }.\r\n|else:\r\n    Message received from {event.from}.  Message reads: {event.message}.\r\n}\r\n",
       "name": "Message received",
       "description": "Triggered when you receive a message"
     },
@@ -318,7 +374,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.amount = 1:\r\n   You have just sold one tonne of {event.commodity} for {event.price} credits\r\n|elif event.amount > 1:\r\n    You have just sold {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total value is {event.amount * event.price} credits\r\n}\r\n{if event.profit < 0:\r\n    with a loss of {event.profit * event.price} credits.\r\n|elif event.profit = 0:\r\n    and broke even on the trade.\r\n|else:\r\n    with a profit of {event.profit * event.price} credits.\r\n}",
+      "script": "{if event.amount = 1:\r\n   You have just sold one tonne of {event.commodity} for {event.price} credits\r\n|elif event.amount > 1:\r\n    You have just sold {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total value is {event.amount * event.price} credits\r\n}\r\n{if event.profit < 0:\r\n    with a loss of {-1 * event.profit * event.amount} credits.\r\n|elif event.profit = 0:\r\n    and broke even on the trade.\r\n|else:\r\n    with a profit of {event.profit * event.amount} credits.\r\n}",
       "name": "Commodity sold",
       "description": "Triggered when you sell a commodity to the markets"
     },
@@ -558,7 +614,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(2000)}\r\n\r\n{OneOf(\"Establishing uplink\", \"Initiating link to local networks\", \"Accessing local networks\")}.\r\n\r\n{Pause(5000)}\r\n\r\n{OneOf(\"Uplink\", \"Link\", \"Access\")} {OneOf(\"established\", \"initiated\", \"obtained\")}.\r\n\r\n{F(\"Commodity sale check\")}\r\n\r\n{F(\"Commodity purchase check\")}\r\n\r\n{F(\"Swapout check\")}\r\n\r\n{F(\"Limpet check\")}",
+      "script": "{Pause(2000)}\r\n\r\n{OneOf(\"Establishing uplink with\",\r\n             \"Initiating link to\",\r\n             \"Connecting to \",\r\n             \"Accessing\")}\r\n{OneOf(\"local\", \"station\", \"{event.station}'s\")}\r\n{OneOf(\"datanet\", \"network\", \"networks\", \"computers\", \"services\")}.\r\n\r\n{Pause(5000)}\r\n\r\n{OneOf(\"Uplink\", \"Link\", \"Access\", \"Connection\")} {OneOf(\"established\", \"confirmed\", \"obtained\", \"authorised\")}.\r\n\r\n{F(\"Commodity sale check\")}\r\n\r\n{if ship.role = \"Multi-purpose\" || ship.role = \"Trading\":\r\n    {F(\"Commodity purchase check\")}\r\n}\r\n\r\n{F(\"Swapout check\")}\r\n\r\n{F(\"Limpet check\")}",
       "name": "Docked",
       "description": "Triggered when your ship docks at a station or outpost"
     },
@@ -574,7 +630,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if len(event.items) = 1:\r\n    A new Galnet article has been published, entitled {event[0].title}\r\n|else:\r\n    {len(event.items)} new Galnet articles have been published.  Their titles are\r\n    {set item to 0}\r\n    {while item < len(event.items):\r\n        {if item = len(event.items) - 1:\r\n            and {event.items[item].title}\r\n        |else:\r\n            {event.items[item].title},\r\n        }\r\n        {set item to item + 1}\r\n    }\r\n}.\r\n",
+      "script": "{if len(event.items) = 1:\r\n    A new Galnet article has been published, entitled {event.items[0].title}.\r\n|elif len(event.items) > 1:\r\n    {len(event.items)} new Galnet articles have been published.  Their titles are\r\n    {set item to 0}\r\n    {while item < len(event.items):\r\n        {if item = len(event.items) - 1:\r\n            and {event.items[item].title}\r\n        |else:\r\n            {event.items[item].title},\r\n        }\r\n        {set item to item + 1}\r\n    }.\r\n}\r\n",
       "name": "Galnet news published",
       "description": "Triggered when news is published on Galnet"
     },
