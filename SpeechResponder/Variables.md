@@ -39,16 +39,16 @@ Any values might be missing, depending on EDDI's configuration.
 	- name the name of the ship
     - role the role of the ship 
 	- health the current health of the hull, from 0 to 100
-	- bulkheads - details of the ship's bulkheads (this is a Module object)
-	- powerplant - details of the ship's powerplant (this is a Module object)
-	- thrusters - details of the ship's thrusters (this is a Module object)
-	- frameshiftdrive - details of the ship's FSD (this is a Module object)
-	- lifesupport - details of the ship's life support (this is a Module object)
-	- powerdistributor - details of the ship's power distributor (this is a Module object)
-	- sensors - details of the ship's sensors (this is a Module object)
-	- fueltank - details of the ship's fuel tank (this is a Module object)
-	- hardpoints - the ship's hardpoints (this is an array of HardPoint objects)
-	- compartments - the ship's internal compartments (this is an array of Compartment objects)
+	- bulkheads details of the ship's bulkheads (this is a Module object)
+	- powerplant details of the ship's powerplant (this is a Module object)
+	- thrusters details of the ship's thrusters (this is a Module object)
+	- frameshiftdrive details of the ship's FSD (this is a Module object)
+	- lifesupport details of the ship's life support (this is a Module object)
+	- powerdistributor details of the ship's power distributor (this is a Module object)
+	- sensors details of the ship's sensors (this is a Module object)
+	- fueltank details of the ship's fuel tank (this is a Module object)
+	- hardpoints the ship's hardpoints (this is an array of HardPoint objects)
+	- compartments the ship's internal compartments (this is an array of Compartment objects)
 
 ## Current starsystem
 

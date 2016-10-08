@@ -398,6 +398,23 @@ namespace Eddi
         private bool eventDocked(DockedEvent theEvent)
         {
             updateCurrentSystem(theEvent.system);
+
+            // Update the station
+            Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
+            if (station == null)
+            {
+                // This station is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder
+                station = new Station();
+                station.name = theEvent.station;
+                station.systemname = theEvent.system;
+            }
+
+            // Information from the event might be more current than that from EDDB so use it in preference
+            station.state = theEvent.factionstate;
+            station.faction = theEvent.faction;
+            station.government = theEvent.government;
+            station.allegiance = theEvent.allegiance;
+
             return true;
         }
 
@@ -596,7 +613,25 @@ namespace Eddi
                         CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
                         setSystemDistanceFromHome(CurrentStarSystem);
                     }
-                    LastStation = profile == null ? null : profile.LastStation;
+
+                    // Last station's name should be set from the journal, so we confirm that this is correct
+                    // before we update the commodity and outfitting information
+                    if (LastStation == null || LastStation.systemname == CurrentStarSystem.name)
+                    {
+                        if (LastStation == null)
+                        {
+                            // No current info so use profile data directly
+                            LastStation = profile.LastStation;
+                        }
+                        else
+                        {
+                            // Current info so just provide the additional data from the profile
+                            LastStation.outfitting = profile.LastStation.outfitting;
+                            LastStation.commodities = profile.LastStation.commodities;
+                            LastStation.shipyard = profile.LastStation.shipyard;
+                        }
+                    }
+
                     setCommanderTitle();
                 }
             }
