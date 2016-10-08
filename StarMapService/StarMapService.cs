@@ -55,14 +55,16 @@ namespace EddiStarMapService
                 request.AddParameter("z", ((decimal)z).ToString("0.000", EN_US_CULTURE));
             }
 
-            new Thread(() =>
+            Thread thread = new Thread(() =>
             {
                 Logging.Debug("Sending data to EDSM: " + request);
                 var clientResponse = client.Execute<StarMapLogResponse>(request);
                 StarMapLogResponse response = clientResponse.Data;
                 Logging.Debug("Data sent to EDSM");
                 // TODO check response
-            }).Start();
+            });
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         public void sendStarMapComment(string systemName, string comment)
@@ -74,12 +76,14 @@ namespace EddiStarMapService
             request.AddParameter("systemName", systemName);
             request.AddParameter("comment", comment);
 
-            new Thread(() =>
+            Thread thread = new Thread(() =>
             {
                 var clientResponse = client.Execute<StarMapLogResponse>(request);
                 StarMapLogResponse response = clientResponse.Data;
                 // TODO check response
-            }).Start();
+            });
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         public string getStarMapComment(string systemName)

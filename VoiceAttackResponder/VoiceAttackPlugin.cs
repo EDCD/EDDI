@@ -643,7 +643,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " model", ship == null ? null : ship.model);
                 Logging.Warn("Set " + prefix + " model to " + ship.model);
                 Logging.Warn("VA value is " + vaProxy.GetText(prefix + " model"));
-                vaProxy.SetText(prefix + " model (spoken)", ship == null ? null : Translations.ShipModel(ship.model));
+                vaProxy.SetText(prefix + " model (spoken)", ship == null ? null : ship.SpokenModel());
 
                 if (EDDI.Instance.Ship != null && EDDI.Instance.Cmdr != null)
                 {

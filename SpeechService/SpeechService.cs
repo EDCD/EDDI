@@ -186,22 +186,18 @@ namespace EddiSpeechService
                         //    source = source.AppendSource(x => new DmoCompressorEffect(x) { Attack = 1, Ratio = 3, Threshold = -10 });
                         //}
 
+                        if (priority < activeSpeechPriority)
+                        {
+                            StopCurrentSpeech();
+                        }
+
                         EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
                         var soundOut = new WasapiOut();
                         soundOut.Initialize(source);
                         soundOut.Stopped += (s, e) => waitHandle.Set();
 
-                        if (priority < activeSpeechPriority)
-                        {
-                            StopCurrentSpeech();
-                        }
-                        else
-                        {
-                            WaitForCurrentSpeech();
-                        }
-                        activeSpeechPriority = priority;
+                        StartSpeech(soundOut, priority);
 
-                        activeSpeech = soundOut;
                         Logging.Debug("Starting speech");
                         soundOut.Play();
 
@@ -247,6 +243,27 @@ namespace EddiSpeechService
             return guess;
         }
 
+        private void StartSpeech(ISoundOut soundout, int priority)
+        {
+            bool started = false;
+            while (!started)
+            {
+                if (activeSpeech == null)
+                {
+                    lock (activeSpeechLock)
+                    {
+                        if (activeSpeech == null)
+                        {
+                            activeSpeech = soundout;
+                            activeSpeechPriority = priority;
+                            started = true;
+                        }
+                    }
+                }
+                Thread.Sleep(10);
+            }
+        }
+
         private void StopCurrentSpeech()
         {
             lock (activeSpeechLock)
@@ -277,20 +294,21 @@ namespace EddiSpeechService
             int echoDelay = 50; // Default
             if (ship != null)
             {
-                switch (ship.size)
+                if (ship.size == Size.Small)
                 {
-                    case ShipSize.Small:
-                        echoDelay = 50;
-                        break;
-                    case ShipSize.Medium:
-                        echoDelay = 100;
-                        break;
-                    case ShipSize.Large:
-                        echoDelay = 200;
-                        break;
-                    case ShipSize.Huge:
-                        echoDelay = 400;
-                        break;
+                    echoDelay = 50;
+                }
+                else if (ship.size == Size.Medium)
+                {
+                    echoDelay = 100;
+                }
+                else if (ship.size == Size.Large)
+                {
+                    echoDelay = 200;
+                }
+                else if (ship.size == Size.Huge)
+                {
+                    echoDelay = 400;
                 }
             }
             return echoDelay;

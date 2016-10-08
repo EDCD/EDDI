@@ -415,6 +415,8 @@ namespace Eddi
             station.government = theEvent.government;
             station.allegiance = theEvent.allegiance;
 
+            LastStation = station;
+
             return true;
         }
 

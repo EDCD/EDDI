@@ -57,7 +57,7 @@ namespace EddiDataDefinitions
         public StationModel model { get; set; }
 
         /// <summary>What is the largest ship that can land here?</summary>
-        public ShipSize largestpad { get; set;  }
+        public Size largestpad { get; set;  }
 
         /// <summary>Which commodities are bought/sold by the station</summary>
         public List<Commodity> commodities { get; set; }

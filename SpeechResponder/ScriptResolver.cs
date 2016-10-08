@@ -10,6 +10,7 @@ using EddiDataProviderService;
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Utilities;
 
@@ -97,10 +98,6 @@ namespace EddiSpeechResponder
                 string translation = val;
                 if (translation == val)
                 {
-                    translation = Translations.ShipModel(val);
-                }
-                if (translation == val)
-                {
                     translation = Translations.Faction(val);
                 }
                 if (translation == val)
@@ -147,20 +144,20 @@ namespace EddiSpeechResponder
             //
             store["ShipName"] = new NativeFunction((values) =>
             {
-                string result = "your ship";
-                if (EDDI.Instance.Ship != null)
+                Ship ship = null;
+                string result;
+                if (values.Count == 0)
                 {
-                    if (EDDI.Instance.Ship.phoneticname != null)
-                    {
-                        result = "<phoneme alphabet=\"ipa\" ph=\"" + EDDI.Instance.Ship.phoneticname + "\">" + EDDI.Instance.Ship.name + "</phoneme>";
-                    }
-                    else  if (EDDI.Instance.Ship.name != null)
-                    {
-                        result = EDDI.Instance.Ship.name;
-                    }
+                    ship = EDDI.Instance.Ship;
                 }
+                else if (values.Count == 1)
+                {
+                    int shipId = (int)values[0].AsNumber;
+                    ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
+                }
+                result = (ship == null ? "your ship" : ship.SpokenName());
                 return result;
-            }, 0);
+            });
 
             store["ShipCallsign"] = new NativeFunction((values) =>
             {
@@ -254,7 +251,7 @@ namespace EddiSpeechResponder
                 StarSystem result = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[0].AsString, true);
                 return new ReflectionValue(result);
             }, 1);
-        
+
             store["SuperpowerDetails"] = new NativeFunction((values) =>
             {
                 Superpower result = Superpower.FromName(values[0].AsString);

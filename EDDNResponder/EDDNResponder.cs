@@ -212,12 +212,14 @@ namespace EDDNResponder
 
             Logging.Debug("Sending " + JsonConvert.SerializeObject(body));
 
-            new Thread(() =>
+            Thread thread = new Thread(() =>
             {
                 IRestResponse response = client.Execute(request);
                 var content = response.Content; // raw content as string
                 Logging.Debug("Response content is " + content);
-            }).Start();
+            });
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         public UserControl ConfigurationTabItem()

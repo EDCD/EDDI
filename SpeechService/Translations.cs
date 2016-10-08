@@ -10,29 +10,6 @@ namespace EddiSpeechService
     /// <summary>Translations for Elite items for text-to-speech</summary>
     public class Translations
     {
-        /// <summary>Fix up ship models</summary>
-        public static string ShipModel(string model)
-        {
-            if (model == null)
-            {
-                return null;
-            }
-
-            switch (model)
-            {
-                case "Cobra Mk. III":
-                    return "Cobra Mark 3";
-                case "Cobra Mk. IV":
-                    return "Cobra Mark 4";
-                case "Viper Mk. III":
-                    return "Viper Mark 3";
-                case "Viper Mk. IV":
-                    return "Viper Mark 4";
-                default:
-                    return model;
-            }
-        }
-
         /// <summary>Fix up power names</summary>
         public static string Power(string power)
         {

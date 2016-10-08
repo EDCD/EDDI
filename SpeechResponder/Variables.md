@@ -136,7 +136,7 @@ An orbital or planetary station.
     - name the name of the station
     - systemname the name of the starsystem in which this station is situated
     - model the model of the station (this is a StationModel object)
-    - largestpad the size of the largest pad on this station (this is a ShipSize object)
+    - largestpad the size of the largest pad on this station (this is a Size object)
     - distancefromstar the distance in LS from the star to this station
     - economies the economies of the station (this is an array)
     - government the controlling government of the station (Anarchy, Democracy, etc)

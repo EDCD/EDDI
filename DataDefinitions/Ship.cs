@@ -20,9 +20,12 @@ namespace EddiDataDefinitions
         /// <summary>the model of the ship (Python, Anaconda, etc.)</summary>
         [JsonIgnore]
         public string model { get; set; }
+        /// <summary>the spoken model of the ship (Python, Anaconda, etc.)</summary>
+        [JsonIgnore]
+        public List<Translation> phoneticmodel { get; set; }
         /// <summary>the size of this ship</summary>
         [JsonIgnore]
-        public ShipSize size { get; set; }
+        public Size size { get; set; }
         /// <summary>the value of the ship without cargo, in credits</summary>
         [JsonIgnore]
         public long value { get; set; }
@@ -45,7 +48,8 @@ namespace EddiDataDefinitions
         public string phoneticname
         {
             get { return this.PhoneticName; }
-            set {
+            set
+            {
                 if (value == null || value == "")
                 {
                     this.PhoneticName = null;
@@ -66,7 +70,23 @@ namespace EddiDataDefinitions
             }
         }
         /// <summary>the role of this ship</summary>
-        public ShipRole role { get; set; }
+        private string Role;
+        public string role
+        { get { return Role; }
+            set
+            {
+                // Map old roles
+                if (value == "0") Role = EddiDataDefinitions.Role.MultiPurpose;
+                else if (value == "1") Role = EddiDataDefinitions.Role.Exploration;
+                else if (value == "2") Role = EddiDataDefinitions.Role.Trading;
+                else if (value == "3") Role = EddiDataDefinitions.Role.Mining;
+                else if (value == "4") Role = EddiDataDefinitions.Role.Smuggling;
+                else if (value == "5") Role = EddiDataDefinitions.Role.Piracy;
+                else if (value == "6") Role = EddiDataDefinitions.Role.BountyHunting;
+                else if (value == "7") Role = EddiDataDefinitions.Role.Combat;
+                else Role = value;
+            }
+        }
 
         /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
         [JsonIgnore]
@@ -114,38 +134,48 @@ namespace EddiDataDefinitions
             compartments = new List<Compartment>();
         }
 
-        public Ship(long EDID, string EDName, string Manufacturer, string Model, ShipSize Size)
+        public Ship(long EDID, string EDName, string Manufacturer, string Model, List<Translation> PhoneticModel, Size Size)
         {
             this.EDID = EDID;
             this.EDName = EDName;
             this.manufacturer = Manufacturer;
             this.model = Model;
+            this.phoneticmodel = PhoneticModel;
             this.size = Size;
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
         }
-    }
 
-    /// <summary>The role of a ship</summary>
-    public enum ShipRole
-    {
-        Multipurpose,
-        Exploring,
-        Trading,
-        Mining,
-        Smuggling,
-        Piracy,
-        BountyHunting,
-        Combat
-    }
+        public string SpokenName(string defaultname = null)
+        {
+            string result = (defaultname == null ? "your " + SpokenModel() :defaultname);
+            if (phoneticname != null)
+            {
+                result = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticname + "\">" + name + "</phoneme>";
+            }
+            else if (name != null)
+            {
+                result = name;
+            }
+            return result;
+        }
 
-    /// <summary>The size of a ship</summary>
-    public enum ShipSize
-    {
-        None,
-        Small,
-        Medium,
-        Large,
-        Huge
+        public string SpokenModel()
+        {
+            string result;
+            if (phoneticmodel == null)
+            {
+                result = model;
+            }
+            else
+            {
+                result = "";
+                foreach (Translation item in phoneticmodel)
+                {
+                    result += "<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> ";
+                }
+            }
+            return result;
+        }
     }
 }

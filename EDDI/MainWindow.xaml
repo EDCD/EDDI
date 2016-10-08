@@ -9,13 +9,6 @@
         xmlns:local="clr-namespace:Eddi"
         mc:Ignorable="d"
         Title="EDDI" Height="600"  Width="800">
-    <Window.Resources>
-        <ObjectDataProvider x:Key="roleValues" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="j:ShipRole"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-    </Window.Resources>
     <DockPanel LastChildFill="True">
         <TabControl x:Name="tabControl" DockPanel.Dock="Top">
             <TabItem Header="EDDI">
@@ -102,9 +95,15 @@
                     <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="Please note that for this feature to work the companion app tab must be configured." VerticalAlignment="Top"/>
                     <DataGrid AutoGenerateColumns="False" x:Name="shipyardData" CanUserAddRows="false" TargetUpdated="shipYardUpdated">
                         <DataGrid.Columns>
-                            <DataGridTextColumn IsReadOnly="True" Header="model" Binding="{Binding Path=model}"></DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="True" Header="Model" Binding="{Binding Path=model}"></DataGridTextColumn>
+                            <DataGridComboBoxColumn Header="Role" SelectedItemBinding="{Binding Path=role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static j:Role.ROLES}}">
+                                <DataGridComboBoxColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type ComboBox}">
+                                        <EventSetter Event="SelectionChanged" Handler="ShipRoleChanged" />
+                                    </Style>
+                                </DataGridComboBoxColumn.EditingElementStyle>
+                            </DataGridComboBoxColumn>
                             <DataGridTextColumn IsReadOnly="True" Header="In Storage At" Binding="{Binding Path=starsystem}"></DataGridTextColumn>
-                            <DataGridComboBoxColumn x:Name ="Role" Header="Role" SelectedItemBinding="{Binding Path=role,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource roleValues}}"></DataGridComboBoxColumn>
                             <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Path=name,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
                             <DataGridTextColumn Header="Name (spoken)" Width="*">
                                 <DataGridTextColumn.Binding>

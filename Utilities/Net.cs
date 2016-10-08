@@ -78,7 +78,7 @@ namespace Utilities
         // Async send a string
         public static void UploadString(string uri, string data)
         {
-            new Thread(() =>
+            Thread thread = new Thread(() =>
             {
                 using (var client = new WebClient())
                 {
@@ -91,7 +91,9 @@ namespace Utilities
                         Logging.Warn("Upload of data failed: " + ex);
                     }
                 }
-            }).Start();
+            });
+            thread.IsBackground = true;
+            thread.Start();
         }
     }
 }

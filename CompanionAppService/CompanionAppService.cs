@@ -572,7 +572,7 @@ namespace EddiCompanionAppService
             else
             {
                 // Doesn't already exist; add a default role
-                ship.role = ShipRole.Multipurpose;
+                ship.role = Role.MultiPurpose;
             }
 
             // Work through our shipyard
@@ -587,7 +587,7 @@ namespace EddiCompanionAppService
                 else
                 {
                     // Doesn't already exist; add a default role
-                    storedShip.role = ShipRole.Multipurpose;
+                    storedShip.role = Role.MultiPurpose;
                 }
             }
 

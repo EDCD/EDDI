@@ -148,9 +148,10 @@ namespace EddiDataProviderService
 
                     if (((string)station["max_landing_pad_size"]) != null && ((string)station["max_landing_pad_size"]) != "None")
                     {
-                        if (LandingPads.ContainsKey((string)station["max_landing_pad_size"]))
+                        Size size = Size.FromEDName((string)station["max_landing_pad_size"]);
+                        if (size != null)
                         {
-                            Station.largestpad = LandingPads[(string)station["max_landing_pad_size"]];
+                            Station.largestpad = size;
                         }
                         else
                         {
@@ -163,15 +164,6 @@ namespace EddiDataProviderService
             }
             return Stations;
         }
-
-        private static Dictionary<string, ShipSize> LandingPads = new Dictionary<string, ShipSize>()
-        {
-            { "None", ShipSize.None },
-            { "S", ShipSize.Small },
-            { "M", ShipSize.Medium },
-            { "L", ShipSize.Large },
-            { "H", ShipSize.Huge },
-        };
 
         private static Dictionary<string, StationModel> StationModels = new Dictionary<string, StationModel>()
         {

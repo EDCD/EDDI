@@ -409,6 +409,14 @@ namespace Eddi
             }
         }
 
+        private void ShipRoleChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (shipsConfiguration != null)
+            {
+                shipsConfiguration.ToFile();
+            }
+        }
+
         private void shipYardUpdated(object sender, DataTransferEventArgs e)
         {
             if (shipsConfiguration != null)
@@ -448,14 +456,14 @@ namespace Eddi
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 100;
-            SpeechService.Instance.Say(testShip, "This is how I will sound in your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false);
+            SpeechService.Instance.Say(testShip, "This is how I will sound in your " + ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() + ".", false);
         }
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 20;
-            SpeechService.Instance.Say(testShip, "Severe damage to your " + Translations.ShipModel((string)ttsTestShipDropDown.SelectedValue) + ".", false);
+            SpeechService.Instance.Say(testShip, "Severe damage to your " + ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() + ".", false);
         }
 
         /// <summary>
