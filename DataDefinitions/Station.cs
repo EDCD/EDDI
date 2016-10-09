@@ -54,7 +54,7 @@ namespace EddiDataDefinitions
         public bool? hasblackmarket { get; set; }
 
         /// <summary>The model of the station</summary>
-        public StationModel model { get; set; }
+        public string model { get; set; }
 
         /// <summary>What is the largest ship that can land here?</summary>
         public Size largestpad { get; set;  }
@@ -69,39 +69,18 @@ namespace EddiDataDefinitions
         public List<Ship> shipyard { get; set; }
 
         /// <summary>Is this station a starport?</summary>
-        public bool IsStarport() { return model == StationModel.CoriolisStarport || model == StationModel.OcellusStarport || model == StationModel.OrbisStarport || model == StationModel.UnknownStarport; }
+        public bool IsStarport() { return model.EndsWith("Starport"); }
 
         /// <summary>Is this station an outpost?</summary>
-        public bool IsOutpost() { return model == StationModel.CivilianOutpost|| model == StationModel.CommercialOutpost || model == StationModel.IndustrialOutpost || model == StationModel.MilitaryOutpost || model == StationModel.MiningOutpost || model == StationModel.ScientificOutpost || model == StationModel.UnsanctionedOutpost || model == StationModel.UnknownOutpost; }
+        public bool IsOutpost() { return model.EndsWith("Outpost"); }
 
         /// <summary>Is this station a planetary outpost?</summary>
-        public bool IsPlanetaryOutpost() { return model == StationModel.PlanetaryOutpost; }
+        public bool IsPlanetaryOutpost() { return model == "Planetary Outpost"; }
 
         /// <summary>Is this station a planetary  port?</summary>
-        public bool IsPlanetaryPort() { return model == StationModel.PlanetaryPort; }
+        public bool IsPlanetaryPort() { return model == "Planetary Port" || model == "Planetary Engineer Base"; }
 
         /// <summary>Is this station planetary?</summary>
-        public bool IsPlanetary() { return model == StationModel.PlanetaryOutpost || model == StationModel.PlanetaryPort || model == StationModel.UnknownPlanetary; }
-    }
-
-    public enum StationModel
-    {
-        CoriolisStarport,
-        OcellusStarport,
-        OrbisStarport,
-        CivilianOutpost,
-        CommercialOutpost,
-        IndustrialOutpost,
-        MilitaryOutpost,
-        MiningOutpost,
-        ScientificOutpost,
-        UnsanctionedOutpost,
-        PlanetaryOutpost,
-        PlanetaryPort,
-        PlanetarySettlement,
-        UnknownStarport,
-        UnknownOutpost,
-        UnknownPlanetary,
-        PlanetaryEngineerBase
+        public bool IsPlanetary() { return model.Contains("Planetary"); }
     }
 }

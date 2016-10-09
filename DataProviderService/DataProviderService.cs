@@ -136,13 +136,10 @@ namespace EddiDataProviderService
 
                     if (((string)station["type"]) != null)
                     {
-                        if (StationModels.ContainsKey((string)station["type"]))
+                        Station.model = ((string)station["type"]);
+                        if (!stationModels.Contains((string)station["type"]))
                         {
-                            Station.model = StationModels[(string)station["type"]];
-                        }
-                        else
-                        {
-                            Logging.Error("Unknown station model " + ((string)station["type"]));
+                            Logging.Report("Unknown station model " + ((string)station["type"]));
                         }
                     }
 
@@ -165,25 +162,25 @@ namespace EddiDataProviderService
             return Stations;
         }
 
-        private static Dictionary<string, StationModel> StationModels = new Dictionary<string, StationModel>()
+        private static List<string> stationModels = new List<string>()
         {
-            { "Civilian Outpost", StationModel.CivilianOutpost },
-            { "Commercial Outpost", StationModel.CommercialOutpost },
-            { "Coriolis Starport", StationModel.CoriolisStarport },
-            { "Industrial Outpost", StationModel.IndustrialOutpost },
-            { "Military Outpost", StationModel.MilitaryOutpost },
-            { "Mining Outpost", StationModel.MiningOutpost },
-            { "Ocellus Starport", StationModel.OcellusStarport },
-            { "Orbis Starport", StationModel.OrbisStarport },
-            { "Planetary Engineer Base", StationModel.PlanetaryEngineerBase },
-            { "Planetary Outpost", StationModel.PlanetaryOutpost },
-            { "Planetary Port", StationModel.PlanetaryPort },
-            { "Planetary Settlement", StationModel.PlanetarySettlement },
-            { "Scientific Outpost", StationModel.ScientificOutpost},
-            { "Unknown Outpost", StationModel.UnknownOutpost},
-            { "Unknown Planetary", StationModel.UnknownPlanetary},
-            { "Unknown Starport", StationModel.UnknownStarport},
-            { "Unsanctioned Outpost", StationModel.UnsanctionedOutpost},
+            "Civilian Outpost",
+            "Commercial Outpost",
+            "Coriolis Starport",
+            "Industrial Outpost",
+            "Military Outpost",
+            "Mining Outpost",
+            "Ocellus Starport",
+            "Orbis Starport",
+            "Planetary Engineer Base",
+            "Planetary Outpost",
+            "Planetary Port",
+            "Planetary Settlement",
+            "Scientific Outpost",
+            "Unknown Outpost",
+            "Unknown Planetary",
+            "Unknown Starport",
+            "Unsanctioned Outpost"
         };
 
         static DataProviderService()

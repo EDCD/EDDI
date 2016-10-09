@@ -11,7 +11,7 @@ namespace EddiEvents
     {
         public const string NAME = "Docking granted";
         public const string DESCRIPTION = "Triggered when your ship is granted docking permission at a station or outpost";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingDenied\",\"StationName\":\"Jameson Memorial\",\"LandingPad\":2}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"DockingGranted\",\"StationName\":\"Jameson Memorial\",\"LandingPad\":2}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DockingGrantedEvent()
