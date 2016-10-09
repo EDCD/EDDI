@@ -33,19 +33,19 @@ namespace Tests
                             {
                                 if (method.ReturnType == typeof(string))
                                 {
-                                    Console.WriteLine("    * {TXT:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "} " + variable.Value);
+                                    Console.WriteLine("  * {TXT:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "} " + variable.Value);
                                 }
                                 else if (method.ReturnType == typeof(int))
                                 {
-                                    Console.WriteLine("    * {INT:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "} " + variable.Value);
+                                    Console.WriteLine("  * {INT:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "} " + variable.Value);
                                 }
                                 else if (method.ReturnType == typeof(bool))
                                 {
-                                    Console.WriteLine("    * {BOOL:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "} " + variable.Value);
+                                    Console.WriteLine("  * {BOOL:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "} " + variable.Value);
                                 }
                                 else if (method.ReturnType == typeof(decimal) || method.ReturnType == typeof(double) || method.ReturnType == typeof(long))
                                 {
-                                    Console.WriteLine("    * {DEC:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "} " + variable.Value);
+                                    Console.WriteLine("  * {DEC:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "} " + variable.Value);
                                 }
                             }
                         }
