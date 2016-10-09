@@ -43,6 +43,7 @@ namespace EddiSpeechResponder
                     }
                     else
                     {
+                        markdown += "Information about this event is available under the `event` object.\n\n";
                         foreach (KeyValuePair<string, string> variable in Events.VARIABLES[scriptName])
                         {
                             markdown += "    - " + variable.Key + " " + variable.Value + "\n";

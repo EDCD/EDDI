@@ -145,7 +145,6 @@ namespace EddiSpeechResponder
             store["ShipName"] = new NativeFunction((values) =>
             {
                 Ship ship = null;
-                string result;
                 if (values.Count == 0)
                 {
                     ship = EDDI.Instance.Ship;
@@ -155,24 +154,35 @@ namespace EddiSpeechResponder
                     int shipId = (int)values[0].AsNumber;
                     ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
                 }
-                result = (ship == null ? "your ship" : ship.SpokenName());
+                string result = (ship == null ? "your ship" : ship.SpokenName());
                 return result;
-            });
+            }, 0, 1);
 
             store["ShipCallsign"] = new NativeFunction((values) =>
             {
+                Ship ship = null;
+                if (values.Count == 0)
+                {
+                    ship = EDDI.Instance.Ship;
+                }
+                else if (values.Count == 1)
+                {
+                    int shipId = (int)values[0].AsNumber;
+                    ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
+                }
+
                 string result;
-                if (EDDI.Instance.Ship != null)
+                if (ship != null)
                 {
                     if (EDDI.Instance.Cmdr != null)
                     {
                         // Obtain the first three characters
                         string chars = new Regex("[^a-zA-Z0-9]").Replace(EDDI.Instance.Cmdr.name, "").ToUpperInvariant().Substring(0, 3);
-                        result = Translations.Manufacturer(EDDI.Instance.Ship.manufacturer) + " " + Translations.CallSign(chars);
+                        result = Translations.Manufacturer(ship.manufacturer) + " " + Translations.CallSign(chars);
                     }
                     else
                     {
-                        result = "unidentified " + Translations.Manufacturer(EDDI.Instance.Ship.manufacturer) + " ship";
+                        result = "unidentified " + Translations.Manufacturer(ship.manufacturer) + " ship";
                     }
                 }
                 else
@@ -180,7 +190,7 @@ namespace EddiSpeechResponder
                     result = "unidentified ship";
                 }
                 return result;
-            }, 0);
+            }, 0, 1);
 
             //
             // Obtain definition objects for various items

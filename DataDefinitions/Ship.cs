@@ -47,12 +47,12 @@ namespace EddiDataDefinitions
         /// <summary>the phonetic name of this ship</summary>
         public string phoneticname
         {
-            get { return this.PhoneticName; }
+            get { return PhoneticName; }
             set
             {
                 if (value == null || value == "")
                 {
-                    this.PhoneticName = null;
+                    PhoneticName = null;
                 }
                 else
                 {
@@ -60,11 +60,11 @@ namespace EddiDataDefinitions
                     {
                         // Invalid - drop silently
                         Logging.Debug("Invalid IPA " + value + "; discarding");
-                        this.PhoneticName = null;
+                        PhoneticName = null;
                     }
                     else
                     {
-                        this.PhoneticName = value;
+                        PhoneticName = value;
                     }
                 }
             }
@@ -138,10 +138,10 @@ namespace EddiDataDefinitions
         {
             this.EDID = EDID;
             this.EDName = EDName;
-            this.manufacturer = Manufacturer;
-            this.model = Model;
-            this.phoneticmodel = PhoneticModel;
-            this.size = Size;
+            manufacturer = Manufacturer;
+            model = Model;
+            phoneticmodel = PhoneticModel;
+            size = Size;
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
         }

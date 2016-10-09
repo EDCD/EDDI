@@ -71,11 +71,15 @@ This function will provide the name of your ship.
 
 If you have set up a phonetic name for your ship it will return that, otherwise if you have set up a name for your ship it will return that.
 
+ShipName() takes an optional ship ID for which to provide the name. If no argument is supplied then it provides the name for your current ship.
+
 If you have not set up a name for your ship it will just return "your ship".
 
 ### ShipCallsign()
 
 This function will provide your ship's callsign in the same way that Elite provides it (i.e. manufacturer followed by first three letters of your commander name).
+
+ShipCallsign() takes an optional ship ID for which to provide the callsign. If no argument is supplied then it provides the callsign for your current ship.
 
 This will only work if EDDI is connected to the Frontier API.
 
