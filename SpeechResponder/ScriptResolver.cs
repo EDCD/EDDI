@@ -193,7 +193,7 @@ namespace EddiSpeechResponder
                 {
                     result = ShipDefinitions.FromEDModel(values[0].AsString);
                 }
-                return new ReflectionValue(result);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
             store["CombatRatingDetails"] = new NativeFunction((values) =>
@@ -203,7 +203,7 @@ namespace EddiSpeechResponder
                 {
                     result = CombatRating.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
             store["TradeRatingDetails"] = new NativeFunction((values) =>
@@ -213,7 +213,7 @@ namespace EddiSpeechResponder
                 {
                     result = TradeRating.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
             store["ExplorationRatingDetails"] = new NativeFunction((values) =>
@@ -223,7 +223,7 @@ namespace EddiSpeechResponder
                 {
                     result = ExplorationRating.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
             store["EmpireRatingDetails"] = new NativeFunction((values) =>
@@ -233,7 +233,7 @@ namespace EddiSpeechResponder
                 {
                     result = EmpireRating.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
             store["FederationRatingDetails"] = new NativeFunction((values) =>
@@ -243,14 +243,34 @@ namespace EddiSpeechResponder
                 {
                     result = FederationRating.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
             store["SystemDetails"] = new NativeFunction((values) =>
             {
                 StarSystem result = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[0].AsString, true);
-                return new ReflectionValue(result);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
+
+            store["StationDetails"] = new NativeFunction((values) =>
+            {
+                if (values.Count == 0)
+                {
+                    return null;
+                }
+                StarSystem system;
+                if (values.Count == 1)
+                {
+                    // Current system
+                    system = EDDI.Instance.CurrentStarSystem;
+                }
+                else
+                {
+                    system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
+                }
+                Station result = system.stations.FirstOrDefault(v => v.name == values[0].AsString);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1, 2);
 
             store["SuperpowerDetails"] = new NativeFunction((values) =>
             {
@@ -259,7 +279,7 @@ namespace EddiSpeechResponder
                 {
                     result = Superpower.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
             store["StateDetails"] = new NativeFunction((values) =>
@@ -269,7 +289,7 @@ namespace EddiSpeechResponder
                 {
                     result = State.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
             store["EconomyDetails"] = new NativeFunction((values) =>
@@ -279,7 +299,7 @@ namespace EddiSpeechResponder
                 {
                     result = Economy.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
             store["GovernmentDetails"] = new NativeFunction((values) =>
@@ -289,7 +309,7 @@ namespace EddiSpeechResponder
                 {
                     result = Government.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
             store["SecurityLevelDetails"] = new NativeFunction((values) =>
@@ -299,7 +319,7 @@ namespace EddiSpeechResponder
                 {
                     result = SecurityLevel.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
             store["MaterialDetails"] = new NativeFunction((values) =>
@@ -309,7 +329,7 @@ namespace EddiSpeechResponder
                 {
                     result = Material.FromEDName(values[0].AsString);
                 }
-                return new ReflectionValue(result);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
             // Variables

@@ -89,6 +89,17 @@ Common usage of this is to provide further information about a ship, for example
 
     The Vulture is made by {ShipDetails("Vulture").manufacturer}.
 
+### StationDetails()
+
+This function will provide full information for a station given its name and optional system.
+
+StationDetails() takes a single mandatory argument of the name of the station for which you want more information.  If the station is not in the current system then it can be provided with a second parameter of the name of the system.
+
+Common usage of this is to provide further information about a station, for example:
+
+    {set station to StationDetails("Jameson Memorial", "Shinrarta Dezhra")}
+    Jameson Memorial is {station.distancefromstar} light years from the system's main star.
+
 ### CombatRatingDetails()
 
 This function will provide full information for a combat rating given its name.
