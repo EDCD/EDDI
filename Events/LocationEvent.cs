@@ -11,7 +11,7 @@ namespace EddiEvents
     public class LocationEvent : Event
     {
         public const string NAME = "Location";
-        public const string DESCRIPTION = "Triggered when the commander's location is reported";
+        public const string DESCRIPTION = "Triggered when the commander's location is reported, usually when they reload their game.";
         public const string SAMPLE = "{ \"timestamp\":\"2016-09-28T10:54:07Z\", \"event\":\"Location\", \"Docked\":true, \"StationName\":\"Jameson Memorial\", \"StationType\":\"Orbis\", \"StarSystem\":\"Shinrarta Dezhra\", \"StarPos\":[55.719,17.594,27.156], \"Allegiance\":\"Independent\", \"Economy\":\"$economy_HighTech;\", \"Economy_Localised\":\"High tech\", \"Government\":\"$government_Democracy;\", \"Government_Localised\":\"Democracy\", \"Security\":\"$SYSTEM_SECURITY_high;\", \"Security_Localised\":\"High Security\", \"Body\":\"Jameson Memorial\", \"Faction\":\"The Pilots Federation\", \"FactionState\":\"Boom\" }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
