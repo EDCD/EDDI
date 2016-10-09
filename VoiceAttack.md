@@ -271,22 +271,22 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI body scanned atmosphere} The atmosphere of the body that has been scanned
-{TXT:EDDI body scanned bodyclass} The class of the body that has been scanned (High metal content body etc)
-{DEC:EDDI body scanned distancefromarrival} The distance in LS from the main star
-{DEC:EDDI body scanned eccentricity} 
-{DEC:EDDI body scanned gravity} The surface gravity of the body that has been scanned, relative to Earth's gravity
-{BOOL:EDDI body scanned landable} True if the body is landable
-{TXT:EDDI body scanned name} The name of the body that has been scanned
-{DEC:EDDI body scanned orbitalinclination} 
-{DEC:EDDI body scanned orbitalperiod} The number of seconds taken for a full orbit of the main star
-{DEC:EDDI body scanned periapsis} 
-{DEC:EDDI body scanned pressure} The surface pressure of the body that has been scanned
-{DEC:EDDI body scanned rotationperiod} The number of seconds taken for a full rotation
-{DEC:EDDI body scanned semimajoraxis} 
-{DEC:EDDI body scanned temperature} The surface temperature of the body that has been scanned
-{BOOL:EDDI body scanned tidallylocked} True if the body is tidally locked
-{TXT:EDDI body scanned volcanism} The volcanism of the body that has been scanned
+    * {TXT:EDDI body scanned atmosphere} The atmosphere of the body that has been scanned
+    * {TXT:EDDI body scanned bodyclass} The class of the body that has been scanned (High metal content body etc)
+    * {DEC:EDDI body scanned distancefromarrival} The distance in LS from the main star
+    * {DEC:EDDI body scanned eccentricity} 
+    * {DEC:EDDI body scanned gravity} The surface gravity of the body that has been scanned, relative to Earth's gravity
+    * {BOOL:EDDI body scanned landable} True if the body is landable
+    * {TXT:EDDI body scanned name} The name of the body that has been scanned
+    * {DEC:EDDI body scanned orbitalinclination} 
+    * {DEC:EDDI body scanned orbitalperiod} The number of seconds taken for a full orbit of the main star
+    * {DEC:EDDI body scanned periapsis} 
+    * {DEC:EDDI body scanned pressure} The surface pressure of the body that has been scanned
+    * {DEC:EDDI body scanned rotationperiod} The number of seconds taken for a full rotation
+    * {DEC:EDDI body scanned semimajoraxis} 
+    * {DEC:EDDI body scanned temperature} The surface temperature of the body that has been scanned
+    * {BOOL:EDDI body scanned tidallylocked} True if the body is tidally locked
+    * {TXT:EDDI body scanned volcanism} The volcanism of the body that has been scanned
 
 ### Bond awarded
 Triggered when you are awarded a combat bond.
@@ -294,9 +294,9 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI bond awarded awardingfaction} The name of the faction awarding the bond
-{DEC:EDDI bond awarded reward} The number of credits received
-{TXT:EDDI bond awarded victimfaction} The name of the faction whose ship you destroyed
+    * {TXT:EDDI bond awarded awardingfaction} The name of the faction awarding the bond
+    * {DEC:EDDI bond awarded reward} The number of credits received
+    * {TXT:EDDI bond awarded victimfaction} The name of the faction whose ship you destroyed
 
 ### Bounty awarded
 Triggered when you are awarded a bounty.
@@ -304,9 +304,9 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI bounty awarded faction} The name of the faction whose ship you destroyed
-{DEC:EDDI bounty awarded reward} The total number of credits obtained for destroying the ship
-{TXT:EDDI bounty awarded target} The name of the pilot you destroyed
+    * {TXT:EDDI bounty awarded faction} The name of the faction whose ship you destroyed
+    * {DEC:EDDI bounty awarded reward} The total number of credits obtained for destroying the ship
+    * {TXT:EDDI bounty awarded target} The name of the pilot you destroyed
 
 ### Bounty incurred
 Triggered when you incur a bounty.
@@ -314,10 +314,10 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI bounty incurred bounty} The number of credits issued as the bounty
-{TXT:EDDI bounty incurred crimetype} The type of crime committed
-{TXT:EDDI bounty incurred faction} The name of the faction issuing the bounty
-{TXT:EDDI bounty incurred victim} The name of the victim of the crime
+    * {DEC:EDDI bounty incurred bounty} The number of credits issued as the bounty
+    * {TXT:EDDI bounty incurred crimetype} The type of crime committed
+    * {TXT:EDDI bounty incurred faction} The name of the faction issuing the bounty
+    * {TXT:EDDI bounty incurred victim} The name of the victim of the crime
 
 ### Cleared save
 Triggered when you clear your save.
@@ -325,7 +325,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI cleared save name} The name of the player whose save has been cleared
+    * {TXT:EDDI cleared save name} The name of the player whose save has been cleared
 
 ### Cockpit breached
 Triggered when your ship's cockpit is broken.
@@ -337,7 +337,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI combat promotion rating} The commander's new combat rating
+    * {TXT:EDDI combat promotion rating} The commander's new combat rating
 
 ### Commander continued
 Triggered when you continue an existing game.
@@ -345,10 +345,10 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI commander continued commander} The commander's name
-{DEC:EDDI commander continued credits} the number of credits the commander has
-{TXT:EDDI commander continued group} The name of the group (only if mode == Group)
-{TXT:EDDI commander continued ship} The commander's ship
+    * {TXT:EDDI commander continued commander} The commander's name
+    * {DEC:EDDI commander continued credits} the number of credits the commander has
+    * {TXT:EDDI commander continued group} The name of the group (only if mode == Group)
+    * {TXT:EDDI commander continued ship} The commander's ship
 
 ### Commander progress
 Triggered when your progress is reported.
@@ -356,11 +356,11 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI commander progress combat} The percentage progress of the commander's combat rating
-{DEC:EDDI commander progress cqc} The percentage progress of the commander's CQC rating
-{DEC:EDDI commander progress empire} The percentage progress of the commander's empire rating
-{DEC:EDDI commander progress exploration} The percentage progress of the commander's exploration rating
-{DEC:EDDI commander progress federation} The percentage progress of the commander's federation rating
+    * {DEC:EDDI commander progress combat} The percentage progress of the commander's combat rating
+    * {DEC:EDDI commander progress cqc} The percentage progress of the commander's CQC rating
+    * {DEC:EDDI commander progress empire} The percentage progress of the commander's empire rating
+    * {DEC:EDDI commander progress exploration} The percentage progress of the commander's exploration rating
+    * {DEC:EDDI commander progress federation} The percentage progress of the commander's federation rating
 
 ### Commander ratings
 Triggered when your ratings are reported.
@@ -375,8 +375,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI commander started name} The name of the new commander
-{TXT:EDDI commander started package} The starting package of the new commander
+    * {TXT:EDDI commander started name} The name of the new commander
+    * {TXT:EDDI commander started package} The starting package of the new commander
 
 ### Commodity collected
 Triggered when you pick up a commodity in your ship or SRV.
@@ -384,8 +384,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI commodity collected commodity} The name of the commodity collected
-{BOOL:EDDI commodity collected stolen} If the cargo is stolen
+    * {TXT:EDDI commodity collected commodity} The name of the commodity collected
+    * {BOOL:EDDI commodity collected stolen} If the cargo is stolen
 
 ### Commodity ejected
 Triggered when you eject a commodity from your ship or SRV.
@@ -393,9 +393,9 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{BOOL:EDDI commodity ejected abandoned} If the cargo has been abandoned
-{INT:EDDI commodity ejected amount} The amount of cargo ejected
-{TXT:EDDI commodity ejected commodity} The name of the commodity ejected
+    * {BOOL:EDDI commodity ejected abandoned} If the cargo has been abandoned
+    * {INT:EDDI commodity ejected amount} The amount of cargo ejected
+    * {TXT:EDDI commodity ejected commodity} The name of the commodity ejected
 
 ### Commodity purchased
 Triggered when you buy a commodity from the markets.
@@ -403,9 +403,9 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{INT:EDDI commodity purchased amount} The amount of the purchased commodity
-{TXT:EDDI commodity purchased commodity} The name of the purchased commodity
-{DEC:EDDI commodity purchased price} The price paid per unit of the purchased commodity
+    * {INT:EDDI commodity purchased amount} The amount of the purchased commodity
+    * {TXT:EDDI commodity purchased commodity} The name of the purchased commodity
+    * {DEC:EDDI commodity purchased price} The price paid per unit of the purchased commodity
 
 ### Commodity refined
 Triggered when you refine a commodity from the refinery.
@@ -413,7 +413,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI commodity refined commodity} The name of the commodity refined
+    * {TXT:EDDI commodity refined commodity} The name of the commodity refined
 
 ### Commodity sold
 Triggered when you sell a commodity to the markets.
@@ -421,13 +421,13 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{INT:EDDI commodity sold amount} The amount of the commodity sold
-{BOOL:EDDI commodity sold blackmarket} True if the commodity was sold to a black market
-{TXT:EDDI commodity sold commodity} The name of the commodity sold
-{BOOL:EDDI commodity sold illegal} True if the commodity is illegal at the place of sale
-{DEC:EDDI commodity sold price} The price obtained per unit of the commodity sold
-{DEC:EDDI commodity sold profit} The number of credits profit per unit of the commodity sold
-{BOOL:EDDI commodity sold stolen} True if the commodity was stolen
+    * {INT:EDDI commodity sold amount} The amount of the commodity sold
+    * {BOOL:EDDI commodity sold blackmarket} True if the commodity was sold to a black market
+    * {TXT:EDDI commodity sold commodity} The name of the commodity sold
+    * {BOOL:EDDI commodity sold illegal} True if the commodity is illegal at the place of sale
+    * {DEC:EDDI commodity sold price} The price obtained per unit of the commodity sold
+    * {DEC:EDDI commodity sold profit} The number of credits profit per unit of the commodity sold
+    * {BOOL:EDDI commodity sold stolen} True if the commodity was stolen
 
 ### Controlling fighter
 Triggered when you switch control from your ship to your fighter.
@@ -443,8 +443,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI crew assigned name} The name of the crewmember being assigned
-{TXT:EDDI crew assigned role} The role to which the crewmember is being assigned
+    * {TXT:EDDI crew assigned name} The name of the crewmember being assigned
+    * {TXT:EDDI crew assigned role} The role to which the crewmember is being assigned
 
 ### Crew fired
 Triggered when you fire crew.
@@ -452,7 +452,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI crew fired name} The name of the crewmember being fired
+    * {TXT:EDDI crew fired name} The name of the crewmember being fired
 
 ### Crew hired
 Triggered when you hire crew.
@@ -460,10 +460,10 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI crew hired combatrating} The combat rating of the crewmember being hired
-{TXT:EDDI crew hired faction} The faction of the crewmember being hired
-{TXT:EDDI crew hired name} The name of the crewmember being hired
-{DEC:EDDI crew hired price} The price of the crewmember being hired
+    * {TXT:EDDI crew hired combatrating} The combat rating of the crewmember being hired
+    * {TXT:EDDI crew hired faction} The faction of the crewmember being hired
+    * {TXT:EDDI crew hired name} The name of the crewmember being hired
+    * {DEC:EDDI crew hired price} The price of the crewmember being hired
 
 ### Died
 Triggered when you have died.
@@ -478,14 +478,14 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI docked allegiance} The allegiance of the station at which the commander has docked
-{TXT:EDDI docked economy} The economy of the station at which the commander has docked
-{TXT:EDDI docked faction} The faction controlling the station at which the commander has docked
-{TXT:EDDI docked factionstate} The state of the faction controlling the station at which the commander has docked
-{TXT:EDDI docked government} The government of the station at which the commander has docked
-{TXT:EDDI docked security} The security of the station at which the commander has docked
-{TXT:EDDI docked station} The station at which the commander has docked
-{TXT:EDDI docked system} The system at which the commander has docked
+    * {TXT:EDDI docked allegiance} The allegiance of the station at which the commander has docked
+    * {TXT:EDDI docked economy} The economy of the station at which the commander has docked
+    * {TXT:EDDI docked faction} The faction controlling the station at which the commander has docked
+    * {TXT:EDDI docked factionstate} The state of the faction controlling the station at which the commander has docked
+    * {TXT:EDDI docked government} The government of the station at which the commander has docked
+    * {TXT:EDDI docked security} The security of the station at which the commander has docked
+    * {TXT:EDDI docked station} The station at which the commander has docked
+    * {TXT:EDDI docked system} The system at which the commander has docked
 
 ### Docking cancelled
 Triggered when your ship cancels a docking request at a station or outpost.
@@ -493,7 +493,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI docking cancelled station} The station at which the commander has cancelled docking
+    * {TXT:EDDI docking cancelled station} The station at which the commander has cancelled docking
 
 ### Docking denied
 Triggered when your ship is denied docking at a station or outpost.
@@ -501,8 +501,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI docking denied reason} The station at which the commander has been denied docking
-{TXT:EDDI docking denied station} The station at which the commander has been denied docking
+    * {TXT:EDDI docking denied reason} The station at which the commander has been denied docking
+    * {TXT:EDDI docking denied station} The station at which the commander has been denied docking
 
 ### Docking granted
 Triggered when your ship is granted docking permission at a station or outpost.
@@ -510,8 +510,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{INT:EDDI docking granted landingpad} The landing apd at which the commander has been granted docking
-{TXT:EDDI docking granted station} The station at which the commander has been granted docking
+    * {INT:EDDI docking granted landingpad} The landing apd at which the commander has been granted docking
+    * {TXT:EDDI docking granted station} The station at which the commander has been granted docking
 
 ### Docking requested
 Triggered when your ship requests docking at a station or outpost.
@@ -519,7 +519,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI docking requested station} The station at which the commander has requested docking
+    * {TXT:EDDI docking requested station} The station at which the commander has requested docking
 
 ### Docking timed out
 Triggered when your docking request times out.
@@ -527,7 +527,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI docking timed out station} The station at which the docking request has timed out
+    * {TXT:EDDI docking timed out station} The station at which the docking request has timed out
 
 ### Entered normal space
 Triggered when your ship enters normal space.
@@ -535,9 +535,9 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI entered normal space body} The nearest body to the commander when entering normal space
-{TXT:EDDI entered normal space bodytype} The type of the nearest body to the commander when entering normal space
-{TXT:EDDI entered normal space system} The system at which the commander has entered normal space
+    * {TXT:EDDI entered normal space body} The nearest body to the commander when entering normal space
+    * {TXT:EDDI entered normal space bodytype} The type of the nearest body to the commander when entering normal space
+    * {TXT:EDDI entered normal space system} The system at which the commander has entered normal space
 
 ### Entered signal source
 Triggered when your ship enters a signal source.
@@ -545,8 +545,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI entered signal source source} The type of the signal source
-{INT:EDDI entered signal source threat} The threat level of the signal source (0-4)
+    * {TXT:EDDI entered signal source source} The type of the signal source
+    * {INT:EDDI entered signal source threat} The threat level of the signal source (0-4)
 
 ### Entered supercruise
 Triggered when your ship enters supercruise.
@@ -554,7 +554,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI entered supercruise system} The system at which the commander has entered supercruise
+    * {TXT:EDDI entered supercruise system} The system at which the commander has entered supercruise
 
 ### Exploration data purchased
 Triggered when you purchase exploration data.
@@ -562,8 +562,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI exploration data purchased price} The price of the purchase
-{TXT:EDDI exploration data purchased system} The system for which the exploration data was purchased
+    * {DEC:EDDI exploration data purchased price} The price of the purchase
+    * {TXT:EDDI exploration data purchased system} The system for which the exploration data was purchased
 
 ### Exploration data sold
 Triggered when you sell exploration data.
@@ -571,8 +571,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI exploration data sold bonus} The bonus for first discovereds
-{DEC:EDDI exploration data sold reward} The reward for selling the exploration data
+    * {DEC:EDDI exploration data sold bonus} The bonus for first discovereds
+    * {DEC:EDDI exploration data sold reward} The reward for selling the exploration data
 
 ### Exploration promotion
 Triggered when your exploration rank increases.
@@ -580,7 +580,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI exploration promotion rating} The commander's new exploration rating
+    * {TXT:EDDI exploration promotion rating} The commander's new exploration rating
 
 ### Fighter docked
 Triggered when you dock a fighter with your ship.
@@ -592,8 +592,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI fighter launched loadout} The fighter's loadout
-{BOOL:EDDI fighter launched playercontrolled} True if the fighter is controlled by the player
+    * {TXT:EDDI fighter launched loadout} The fighter's loadout
+    * {BOOL:EDDI fighter launched playercontrolled} True if the fighter is controlled by the player
 
 ### Fine incurred
 Triggered when your incur a fine.
@@ -601,9 +601,9 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI fine incurred crimetype} The type of crime committed
-{TXT:EDDI fine incurred faction} The name of the faction issuing the fine
-{TXT:EDDI fine incurred victim} The name of the victim of the crime
+    * {TXT:EDDI fine incurred crimetype} The type of crime committed
+    * {TXT:EDDI fine incurred faction} The name of the faction issuing the fine
+    * {TXT:EDDI fine incurred victim} The name of the victim of the crime
 
 ### Fine paid
 Triggered when you pay a fine.
@@ -611,8 +611,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI fine paid amount} The amount of the fine paid
-{BOOL:EDDI fine paid legacy} True if the payment is for a legacy fine
+    * {DEC:EDDI fine paid amount} The amount of the fine paid
+    * {BOOL:EDDI fine paid legacy} True if the payment is for a legacy fine
 
 ### Heat damage
 Triggered when your ship is taking damage from excessive heat.
@@ -628,7 +628,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI hull damaged health} The percentage health of the hull
+    * {DEC:EDDI hull damaged health} The percentage health of the hull
 
 ### Jumped
 Triggered when you complete a jump to another system.
@@ -636,16 +636,16 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI jumped allegiance} The allegiance of the system to which the commander has jumped
-{TXT:EDDI jumped economy} The economy of the system to which the commander has jumped
-{TXT:EDDI jumped faction} The faction controlling the system to which the commander has jumped
-{TXT:EDDI jumped factionstate} The state of the faction controlling the system to which the commander has jumped
-{TXT:EDDI jumped government} The government of the system to which the commander has jumped
-{TXT:EDDI jumped security} The security of the system to which the commander has jumped
-{TXT:EDDI jumped system} The name of the system to which the commander has jumped
-{DEC:EDDI jumped x} The X co-ordinate of the system to which the commander has jumped
-{DEC:EDDI jumped y} The Y co-ordinate of the system to which the commander has jumped
-{DEC:EDDI jumped z} The Z co-ordinate of the system to which the commander has jumped
+    * {TXT:EDDI jumped allegiance} The allegiance of the system to which the commander has jumped
+    * {TXT:EDDI jumped economy} The economy of the system to which the commander has jumped
+    * {TXT:EDDI jumped faction} The faction controlling the system to which the commander has jumped
+    * {TXT:EDDI jumped factionstate} The state of the faction controlling the system to which the commander has jumped
+    * {TXT:EDDI jumped government} The government of the system to which the commander has jumped
+    * {TXT:EDDI jumped security} The security of the system to which the commander has jumped
+    * {TXT:EDDI jumped system} The name of the system to which the commander has jumped
+    * {DEC:EDDI jumped x} The X co-ordinate of the system to which the commander has jumped
+    * {DEC:EDDI jumped y} The Y co-ordinate of the system to which the commander has jumped
+    * {DEC:EDDI jumped z} The Z co-ordinate of the system to which the commander has jumped
 
 ### Jumping
 Triggered when you start a jump to another system.
@@ -653,10 +653,10 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI jumping system} The name of the system to which the commander is jumping
-{DEC:EDDI jumping x} The X co-ordinate of the system to which the commander is jumping
-{DEC:EDDI jumping y} The Y co-ordinate of the system to which the commander is jumping
-{DEC:EDDI jumping z} The Z co-ordinate of the system to which the commander is jumping
+    * {TXT:EDDI jumping system} The name of the system to which the commander is jumping
+    * {DEC:EDDI jumping x} The X co-ordinate of the system to which the commander is jumping
+    * {DEC:EDDI jumping y} The Y co-ordinate of the system to which the commander is jumping
+    * {DEC:EDDI jumping z} The Z co-ordinate of the system to which the commander is jumping
 
 ### Killed
 Triggered when you kill another player.
@@ -664,8 +664,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI killed rating} The combat rating of the player killed
-{TXT:EDDI killed victim} The name of the player killed
+    * {TXT:EDDI killed rating} The combat rating of the player killed
+    * {TXT:EDDI killed victim} The name of the player killed
 
 ### Liftoff
 Triggered when your ship lifts off from a planet's surface.
@@ -673,8 +673,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI liftoff latitude} The latitude from where the commander has lifted off
-{DEC:EDDI liftoff longitude} The longitude from where the commander has lifted off
+    * {DEC:EDDI liftoff latitude} The latitude from where the commander has lifted off
+    * {DEC:EDDI liftoff longitude} The longitude from where the commander has lifted off
 
 ### Limpet purchased
 Triggered when you buy limpets from a station.
@@ -682,8 +682,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{INT:EDDI limpet purchased amount} The amount of limpets purchased
-{DEC:EDDI limpet purchased price} The price paid per limpet
+    * {INT:EDDI limpet purchased amount} The amount of limpets purchased
+    * {DEC:EDDI limpet purchased price} The price paid per limpet
 
 ### Limpet sold
 Triggered when you sell limpets to a station.
@@ -691,8 +691,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{INT:EDDI limpet sold amount} The amount of limpets sold
-{DEC:EDDI limpet sold price} The price obtained per limpet
+    * {INT:EDDI limpet sold amount} The amount of limpets sold
+    * {DEC:EDDI limpet sold price} The price obtained per limpet
 
 ### Location
 Triggered when the commander's location is reported, usually when they reload their game..
@@ -700,19 +700,19 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI location allegiance} The allegiance of the system in which the commander resides
-{TXT:EDDI location body} The nearest body to the commander
-{TXT:EDDI location bodytype} The type of the nearest body to the commander
-{BOOL:EDDI location docked} True if the commander is docked
-{TXT:EDDI location economy} The economy of the system in which the commander resides
-{TXT:EDDI location faction} The faction controlling the system in which the commander resides
-{TXT:EDDI location factionstate} The state of the faction controlling the system in which the commander resides
-{TXT:EDDI location government} The government of the system in which the commander resides
-{TXT:EDDI location security} The security of the system in which the commander resides
-{TXT:EDDI location system} The name of the system in which the commander resides
-{DEC:EDDI location x} The X co-ordinate of the system in which the commander resides
-{DEC:EDDI location y} The Y co-ordinate of the system in which the commander resides
-{DEC:EDDI location z} The Z co-ordinate of the system in which the commander resides
+    * {TXT:EDDI location allegiance} The allegiance of the system in which the commander resides
+    * {TXT:EDDI location body} The nearest body to the commander
+    * {TXT:EDDI location bodytype} The type of the nearest body to the commander
+    * {BOOL:EDDI location docked} True if the commander is docked
+    * {TXT:EDDI location economy} The economy of the system in which the commander resides
+    * {TXT:EDDI location faction} The faction controlling the system in which the commander resides
+    * {TXT:EDDI location factionstate} The state of the faction controlling the system in which the commander resides
+    * {TXT:EDDI location government} The government of the system in which the commander resides
+    * {TXT:EDDI location security} The security of the system in which the commander resides
+    * {TXT:EDDI location system} The name of the system in which the commander resides
+    * {DEC:EDDI location x} The X co-ordinate of the system in which the commander resides
+    * {DEC:EDDI location y} The Y co-ordinate of the system in which the commander resides
+    * {DEC:EDDI location z} The Z co-ordinate of the system in which the commander resides
 
 ### Material collected
 Triggered when you collect a material.
@@ -720,8 +720,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{INT:EDDI material collected amount} The amount of the collected material
-{TXT:EDDI material collected name} The name of the collected material
+    * {INT:EDDI material collected amount} The amount of the collected material
+    * {TXT:EDDI material collected name} The name of the collected material
 
 ### Material discarded
 Triggered when you discard a material.
@@ -729,8 +729,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{INT:EDDI material discarded amount} The amount of the discarded material
-{TXT:EDDI material discarded name} The name of the discarded material
+    * {INT:EDDI material discarded amount} The amount of the discarded material
+    * {TXT:EDDI material discarded name} The name of the discarded material
 
 ### Material discovered
 Triggered when you discover a material.
@@ -738,7 +738,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI material discovered name} The name of the discovered material
+    * {TXT:EDDI material discovered name} The name of the discovered material
 
 ### Message received
 Triggered when you receive a message.
@@ -746,10 +746,10 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI message received channel} The channel in which the message came (direct, local, wing)
-{TXT:EDDI message received from} The name of the pilot who sent the message
-{TXT:EDDI message received message} The message
-{BOOL:EDDI message received player} True if the sender is a player
+    * {TXT:EDDI message received channel} The channel in which the message came (direct, local, wing)
+    * {TXT:EDDI message received from} The name of the pilot who sent the message
+    * {TXT:EDDI message received message} The message
+    * {BOOL:EDDI message received player} True if the sender is a player
 
 ### Message sent
 Triggered when you send a message.
@@ -757,8 +757,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI message sent message} The message
-{TXT:EDDI message sent to} The name of the player to which the message was sent
+    * {TXT:EDDI message sent message} The message
+    * {TXT:EDDI message sent to} The name of the player to which the message was sent
 
 ### Mission abandoned
 Triggered when you abandon a mission.
@@ -766,8 +766,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI mission abandoned missionid} The ID of the mission
-{TXT:EDDI mission abandoned name} The name of the mission
+    * {DEC:EDDI mission abandoned missionid} The ID of the mission
+    * {TXT:EDDI mission abandoned name} The name of the mission
 
 ### Mission accepted
 Triggered when you accept a mission.
@@ -775,10 +775,10 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{BOOL:EDDI mission accepted communal} True if the mission is a community goal
-{TXT:EDDI mission accepted faction} The faction issuing the mission
-{TXT:EDDI mission accepted name} The name of the mission
-{TXT:EDDI mission accepted system} The system in which the mission was obtained
+    * {BOOL:EDDI mission accepted communal} True if the mission is a community goal
+    * {TXT:EDDI mission accepted faction} The faction issuing the mission
+    * {TXT:EDDI mission accepted name} The name of the mission
+    * {TXT:EDDI mission accepted system} The system in which the mission was obtained
 
 ### Mission completed
 Triggered when you complete a mission.
@@ -786,11 +786,11 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{BOOL:EDDI mission completed communal} True if the mission is a community goal
-{DEC:EDDI mission completed donation} The monetary donatin when completing the mission
-{TXT:EDDI mission completed name} The name of the mission
-{DEC:EDDI mission completed reward} The monetary reward for completing the mission
-{TXT:EDDI mission completed system} The system in which the mission was obtained
+    * {BOOL:EDDI mission completed communal} True if the mission is a community goal
+    * {DEC:EDDI mission completed donation} The monetary donatin when completing the mission
+    * {TXT:EDDI mission completed name} The name of the mission
+    * {DEC:EDDI mission completed reward} The monetary reward for completing the mission
+    * {TXT:EDDI mission completed system} The system in which the mission was obtained
 
 ### Screenshot
 Triggered when you take a screenshot.
@@ -798,11 +798,11 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI screenshot body} The name of the nearest body to where the screenshot was taken
-{TXT:EDDI screenshot filename} The name of the file where the screenshot has been saved
-{INT:EDDI screenshot height} The height in pixels of the screenshot
-{TXT:EDDI screenshot system} The name of the system where the screenshot was taken
-{INT:EDDI screenshot width} The width in pixels of the screenshot
+    * {TXT:EDDI screenshot body} The name of the nearest body to where the screenshot was taken
+    * {TXT:EDDI screenshot filename} The name of the file where the screenshot has been saved
+    * {INT:EDDI screenshot height} The height in pixels of the screenshot
+    * {TXT:EDDI screenshot system} The name of the system where the screenshot was taken
+    * {INT:EDDI screenshot width} The width in pixels of the screenshot
 
 ### Self destruct
 Triggered when you start the self destruct sequence.
@@ -822,7 +822,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI ship delivered ship} The ship that was delivered
+    * {TXT:EDDI ship delivered ship} The ship that was delivered
 
 ### Ship interdicted
 Triggered when your ship is interdicted by another ship.
@@ -830,13 +830,13 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI ship interdicted faction} The faction of the commander carrying out the interdiction
-{TXT:EDDI ship interdicted interdictor} The name of the commander carrying out the interdiction
-{BOOL:EDDI ship interdicted iscommander} If the player carrying out the interdiction is a commander (as opposed to an NPC)
-{TXT:EDDI ship interdicted power} The power of the commander carrying out the interdiction
-{TXT:EDDI ship interdicted rating} The combat rating of the commander carrying out the interdiction
-{BOOL:EDDI ship interdicted submitted} If the commander submitted to the interdiction
-{BOOL:EDDI ship interdicted succeeded} If the interdiction attempt was successful
+    * {TXT:EDDI ship interdicted faction} The faction of the commander carrying out the interdiction
+    * {TXT:EDDI ship interdicted interdictor} The name of the commander carrying out the interdiction
+    * {BOOL:EDDI ship interdicted iscommander} If the player carrying out the interdiction is a commander (as opposed to an NPC)
+    * {TXT:EDDI ship interdicted power} The power of the commander carrying out the interdiction
+    * {TXT:EDDI ship interdicted rating} The combat rating of the commander carrying out the interdiction
+    * {BOOL:EDDI ship interdicted submitted} If the commander submitted to the interdiction
+    * {BOOL:EDDI ship interdicted succeeded} If the interdiction attempt was successful
 
 ### Ship interdiction
 Triggered when you interdict another ship.
@@ -844,12 +844,12 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI ship interdiction faction} The faction of the commander being interdicted
-{TXT:EDDI ship interdiction interdictee} The name of the commander being interdicted
-{BOOL:EDDI ship interdiction iscommander} If the player being interdicted is a commander (as opposed to an NPC)
-{TXT:EDDI ship interdiction power} The power of the commander being interdicted
-{TXT:EDDI ship interdiction rating} The combat rating of the commander being interdicted
-{BOOL:EDDI ship interdiction succeeded} If the interdiction attempt was successful
+    * {TXT:EDDI ship interdiction faction} The faction of the commander being interdicted
+    * {TXT:EDDI ship interdiction interdictee} The name of the commander being interdicted
+    * {BOOL:EDDI ship interdiction iscommander} If the player being interdicted is a commander (as opposed to an NPC)
+    * {TXT:EDDI ship interdiction power} The power of the commander being interdicted
+    * {TXT:EDDI ship interdiction rating} The combat rating of the commander being interdicted
+    * {BOOL:EDDI ship interdiction succeeded} If the interdiction attempt was successful
 
 ### Ship purchased
 Triggered when you purchase a ship.
@@ -857,12 +857,12 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI ship purchased price} The price of the ship that was purchased
-{TXT:EDDI ship purchased ship} The ship that was purchased
-{TXT:EDDI ship purchased soldname} The name of the ship that was sold as part of the purchase
-{TXT:EDDI ship purchased soldship} The ship that was sold as part of the purchase
-{TXT:EDDI ship purchased storedname} The name of the ship that was stored as part of the purchase
-{TXT:EDDI ship purchased storedship} The ship that was stored as part of the purchase
+    * {DEC:EDDI ship purchased price} The price of the ship that was purchased
+    * {TXT:EDDI ship purchased ship} The ship that was purchased
+    * {TXT:EDDI ship purchased soldname} The name of the ship that was sold as part of the purchase
+    * {TXT:EDDI ship purchased soldship} The ship that was sold as part of the purchase
+    * {TXT:EDDI ship purchased storedname} The name of the ship that was stored as part of the purchase
+    * {TXT:EDDI ship purchased storedship} The ship that was stored as part of the purchase
 
 ### Ship rebooted
 Triggered when you run reboot/repair on your ship.
@@ -877,8 +877,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI ship refuelled amount} The amount of fuel supplied
-{DEC:EDDI ship refuelled price} The price of refuelling
+    * {DEC:EDDI ship refuelled amount} The amount of fuel supplied
+    * {DEC:EDDI ship refuelled price} The price of refuelling
 
 ### Ship repaired
 Triggered when you repair your ship.
@@ -886,8 +886,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI ship repaired item} The item repaired, if repairing a specific item
-{DEC:EDDI ship repaired price} The price of refuelling
+    * {TXT:EDDI ship repaired item} The item repaired, if repairing a specific item
+    * {DEC:EDDI ship repaired price} The price of refuelling
 
 ### Ship restocked
 Triggered when you restock your ship's ammunition.
@@ -895,7 +895,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI ship restocked price} The price of restocking
+    * {DEC:EDDI ship restocked price} The price of restocking
 
 ### Ship sold
 Triggered when you sell a ship.
@@ -903,8 +903,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI ship sold price} The price for which the ship was sold
-{TXT:EDDI ship sold ship} The ship that was sold
+    * {DEC:EDDI ship sold price} The price for which the ship was sold
+    * {TXT:EDDI ship sold ship} The ship that was sold
 
 ### Ship swapped
 Triggered when you swap a ship.
@@ -912,9 +912,9 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI ship swapped ship} The ship that was swapped
-{TXT:EDDI ship swapped soldship} The ship that was sold as part of the swap
-{TXT:EDDI ship swapped storedship} The ship that was stored as part of the swap
+    * {TXT:EDDI ship swapped ship} The ship that was swapped
+    * {TXT:EDDI ship swapped soldship} The ship that was sold as part of the swap
+    * {TXT:EDDI ship swapped storedship} The ship that was stored as part of the swap
 
 ### Ship transfer initiated
 Triggered when you initiate a ship transfer.
@@ -922,10 +922,10 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI ship transfer initiated distance} The distance that the transferred ship needs to travel, in light years
-{DEC:EDDI ship transfer initiated price} The price of transferring the ship
-{TXT:EDDI ship transfer initiated ship} The ship that is being transferred
-{TXT:EDDI ship transfer initiated system} The system from which the ship is being transferred
+    * {DEC:EDDI ship transfer initiated distance} The distance that the transferred ship needs to travel, in light years
+    * {DEC:EDDI ship transfer initiated price} The price of transferring the ship
+    * {TXT:EDDI ship transfer initiated ship} The ship that is being transferred
+    * {TXT:EDDI ship transfer initiated system} The system from which the ship is being transferred
 
 ### SRV docked
 Triggered when you dock an SRV with your ship.
@@ -937,7 +937,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI srv launched loadout} The SRV's loadout
+    * {TXT:EDDI srv launched loadout} The SRV's loadout
 
 ### Star scanned
 Triggered when you complete a scan of a stellar body.
@@ -945,26 +945,26 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI star scanned absolutemagnitude} The absolute magnitude of the star that has been scanned
-{DEC:EDDI star scanned age} The age of the star that has been scanned, in years (rounded to millions of years)
-{TXT:EDDI star scanned chromaticity} The apparent colour of the star that has been scanned
-{DEC:EDDI star scanned distancefromarrival} The distance in LS from the main star
-{DEC:EDDI star scanned eccentricity} 
-{DEC:EDDI star scanned luminosity} The luminosity of the star that has been scanned
-{DEC:EDDI star scanned luminosityprobability} The probablility of finding a star of this class and at least this luminosity
-{DEC:EDDI star scanned massprobability} The probablility of finding a star of this class and at least this mass
-{TXT:EDDI star scanned name} The name of the star that has been scanned
-{DEC:EDDI star scanned orbitalinclination} 
-{DEC:EDDI star scanned orbitalperiod} The number of seconds taken for a full orbit of the main star
-{DEC:EDDI star scanned periapsis} 
-{DEC:EDDI star scanned radius} The radius of the star that has been scanned, in metres
-{DEC:EDDI star scanned radiusprobability} The probablility of finding a star of this class and at least this radius
-{DEC:EDDI star scanned rotationperiod} The number of seconds taken for a full rotation
-{DEC:EDDI star scanned semimajoraxis} 
-{DEC:EDDI star scanned solarmass} The mass of the star that has been scanned, relative to Sol's mass
-{DEC:EDDI star scanned solarradius} The radius of the star that has been scanned, compared to Sol
-{TXT:EDDI star scanned stellarclass} The stellar class of the star that has been scanned (O, G, etc)
-{DEC:EDDI star scanned temperature} The temperature of the star that has been scanned
+    * {DEC:EDDI star scanned absolutemagnitude} The absolute magnitude of the star that has been scanned
+    * {DEC:EDDI star scanned age} The age of the star that has been scanned, in years (rounded to millions of years)
+    * {TXT:EDDI star scanned chromaticity} The apparent colour of the star that has been scanned
+    * {DEC:EDDI star scanned distancefromarrival} The distance in LS from the main star
+    * {DEC:EDDI star scanned eccentricity} 
+    * {DEC:EDDI star scanned luminosity} The luminosity of the star that has been scanned
+    * {DEC:EDDI star scanned luminosityprobability} The probablility of finding a star of this class and at least this luminosity
+    * {DEC:EDDI star scanned massprobability} The probablility of finding a star of this class and at least this mass
+    * {TXT:EDDI star scanned name} The name of the star that has been scanned
+    * {DEC:EDDI star scanned orbitalinclination} 
+    * {DEC:EDDI star scanned orbitalperiod} The number of seconds taken for a full orbit of the main star
+    * {DEC:EDDI star scanned periapsis} 
+    * {DEC:EDDI star scanned radius} The radius of the star that has been scanned, in metres
+    * {DEC:EDDI star scanned radiusprobability} The probablility of finding a star of this class and at least this radius
+    * {DEC:EDDI star scanned rotationperiod} The number of seconds taken for a full rotation
+    * {DEC:EDDI star scanned semimajoraxis} 
+    * {DEC:EDDI star scanned solarmass} The mass of the star that has been scanned, relative to Sol's mass
+    * {DEC:EDDI star scanned solarradius} The radius of the star that has been scanned, compared to Sol
+    * {TXT:EDDI star scanned stellarclass} The stellar class of the star that has been scanned (O, G, etc)
+    * {DEC:EDDI star scanned temperature} The temperature of the star that has been scanned
 
 ### Touchdown
 Triggered when your ship touches down on a planet's surface.
@@ -972,8 +972,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI touchdown latitude} The latitude from where the commander has touched down
-{DEC:EDDI touchdown longitude} The longitude from where the commander has touched down
+    * {DEC:EDDI touchdown latitude} The latitude from where the commander has touched down
+    * {DEC:EDDI touchdown longitude} The longitude from where the commander has touched down
 
 ### Trade data purchased
 Triggered when you purchase trade data.
@@ -981,8 +981,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{DEC:EDDI trade data purchased price} The price of the purchase
-{TXT:EDDI trade data purchased system} The system for which trade data was purchased
+    * {DEC:EDDI trade data purchased price} The price of the purchase
+    * {TXT:EDDI trade data purchased system} The system for which trade data was purchased
 
 ### Trade promotion
 Triggered when you trade rank increases.
@@ -990,7 +990,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI trade promotion rating} The commander's new trade rating
+    * {TXT:EDDI trade promotion rating} The commander's new trade rating
 
 ### Undocked
 Triggered when your ship undocks from a station or outpost.
@@ -998,5 +998,4 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-{TXT:EDDI undocked station} The station from which the commander has undocked
-
+    * {TXT:EDDI undocked station} The station from which the commander has undocked
