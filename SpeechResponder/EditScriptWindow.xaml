@@ -17,19 +17,23 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="Name"></TextBlock>
             <TextBox Margin="10" Grid.Row="0" Grid.Column="1" Text="{Binding Path=ScriptName, Mode=TwoWay}" IsReadOnly="{Binding Path=Responder}"/>
             <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="Description"></TextBlock>
             <TextBox Margin="10" Grid.Row="1" Grid.Column="1" Text="{Binding Path=ScriptDescription, Mode=TwoWay}" IsReadOnly="{Binding Path=Responder}"/>
             <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" TextWrapping="Wrap" VerticalAlignment="Stretch" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding Path=ScriptValue, Mode=TwoWay}"/>
-            <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="20" Rows="1" Columns="6" Width="760" HorizontalAlignment="Center">
-                <Button x:Name="acceptButton" FontSize="18" Content="OK" VerticalAlignment="Top" Click="acceptButtonClick" Margin="10"/>
-                <Button x:Name="testButton" FontSize="18" Content="Test" VerticalAlignment="Top" Click="testButtonClick" Margin="10"/>
-                <Button x:Name="helpButton" FontSize="18" Content="Help" VerticalAlignment="Top" Click="helpButtonClick" Margin="10"/>
-                <Button x:Name="variablesButton" FontSize="18" Content="Variables" VerticalAlignment="Top" Click="variablesButtonClick" Margin="10"/>
-                <Button x:Name="resetButton" FontSize="18" Content="Reset" VerticalAlignment="Top" Click="resetButtonClick" Margin="10"/>
-                <Button x:Name="cancelButton" FontSize="18" Content="Cancel" VerticalAlignment="Top" Click="cancelButtonClick" Margin="10"/>
+            <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="3" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
+                <Button x:Name="testButton" FontSize="18" Content="Test script" VerticalAlignment="Top" Click="testButtonClick" Margin="0,0,5,0"/>
+                <Button x:Name="resetToDefaultButton" FontSize="18" Content="Rest to default" VerticalAlignment="Top" Click="resetButtonClick" Margin="5,0,5,0"/>
+                <Button x:Name="showDefaultButton" FontSize="18" Content="Show default" VerticalAlignment="Top" Click="showDefaultButtonClick" Margin="5,0,0,0"/>
+            </UniformGrid>
+            <UniformGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="4" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
+                <Button x:Name="acceptButton" FontSize="18" Content="OK" VerticalAlignment="Top" Click="acceptButtonClick" Margin="0,0,5,0"/>
+                <Button x:Name="helpButton" FontSize="18" Content="Help" VerticalAlignment="Top" Click="helpButtonClick" Margin="5,0,5,0"/>
+                <Button x:Name="variablesButton" FontSize="18" Content="Variables" VerticalAlignment="Top" Click="variablesButtonClick" Margin="5,0,5,0"/>
+                <Button x:Name="cancelButton" FontSize="18" Content="Cancel" VerticalAlignment="Top" Click="cancelButtonClick" Margin="5,0,0,0"/>
             </UniformGrid>
         </Grid>
     </DockPanel>

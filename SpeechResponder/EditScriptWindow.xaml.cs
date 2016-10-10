@@ -70,6 +70,17 @@ namespace EddiSpeechResponder
                 ScriptValue = script.Value;
                 Responder = script.Responder;
             }
+
+            // See if there is a default for this script
+            Personality defaultPersonality = Personality.Default();
+            Script defaultScript;
+            defaultPersonality.Scripts.TryGetValue(scriptName, out defaultScript);
+            if (defaultScript == null)
+            {
+                // No default; disable reset and show
+                showDefaultButton.IsEnabled = false;
+                resetToDefaultButton.IsEnabled = false;
+            }
         }
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
@@ -149,6 +160,18 @@ namespace EddiSpeechResponder
 
             ScriptResolver scriptResolver = new ScriptResolver(newScripts);
             responder.Say(scriptResolver, ScriptName, sampleEvent, 3, false);
+        }
+
+        private void showDefaultButtonClick(object sender, RoutedEventArgs e)
+        {
+            Personality defaultPersonality = Personality.Default();
+            Script defaultScript;
+            defaultPersonality.Scripts.TryGetValue(scriptName, out defaultScript);
+
+            if (defaultScript != null)
+            {
+                new ShowScriptWindow(defaultScript.Value).Show();
+            }
         }
     }
 }
