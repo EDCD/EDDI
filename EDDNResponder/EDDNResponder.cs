@@ -154,7 +154,9 @@ namespace EDDNResponder
                 List<string> eddnModules = new List<string>();
                 foreach (Module module in EDDI.Instance.LastStation.outfitting)
                 {
-                    if ((!ModuleDefinitions.IsPP(module)) && (module.EDName.StartsWith("Int_") || module.EDName.StartsWith("Hpt_") || module.EDName.Contains("_Armour_")))
+                    if ((!ModuleDefinitions.IsPP(module))
+                        && (module.EDName.StartsWith("Int_") || module.EDName.StartsWith("Hpt_") || module.EDName.Contains("_Armour_"))
+                        && (!(module.EDName == "Int_PlanetApproachSuite")))
                     {
                         eddnModules.Add(module.EDName);
                     }
