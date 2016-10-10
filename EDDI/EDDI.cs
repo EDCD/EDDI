@@ -233,8 +233,8 @@ namespace Eddi
                     else
                     {
                         Thread monitorThread = new Thread(() => monitor.Start());
-                        monitorThread.IsBackground = true;
                         monitorThread.Name = monitor.MonitorName();
+                        monitorThread.IsBackground = true;
                         Logging.Info("Starting " + monitor.MonitorName());
                         monitorThread.Start();
                     }
@@ -390,6 +390,7 @@ namespace Eddi
             foreach (EDDIResponder responder in activeResponders)
             {
                 Thread responderThread = new Thread(() => responder.Handle(@event));
+                responderThread.Name = responder.ResponderName();
                 responderThread.IsBackground = true;
                 responderThread.Start();
             }
@@ -600,7 +601,6 @@ namespace Eddi
                 {
                     // Use the profile as primary information for our commander and shipyard
                     Cmdr = profile.Cmdr;
-                    Logging.Warn("Shipyard is " + JsonConvert.SerializeObject(profile.Shipyard));
                     Shipyard = profile.Shipyard;
 
                     // Only use the ship information if we agree that this is the correct ship to use
@@ -641,8 +641,6 @@ namespace Eddi
 
         private void SetShip(Ship ship)
         {
-            Logging.Warn("Setting ship to " + (ship == null ? "<null>" : ship.LocalId.ToString() + "(" + ship.model + ")"));
-            Logging.Warn("Ship is " + (ship == null ? "<null>" : JsonConvert.SerializeObject(ship)));
             Ship = ship;
         }
 

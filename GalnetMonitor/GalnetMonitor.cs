@@ -21,8 +21,7 @@ namespace GalnetMonitor
     {
         private readonly string SOURCE = "https://community.elitedangerous.com/galnet-rss";
 
-        private static readonly object monitorLock = new object();
-        private Thread monitorThread;
+        private bool running = false;
 
         /// <summary>
         /// The name of the monitor; shows up in EDDI's configuration window
@@ -53,15 +52,8 @@ namespace GalnetMonitor
         /// </summary>
         public void Start()
         {
-            lock (monitorLock)
-            {
-                if (monitorThread == null)
-                {
-                    monitorThread = new Thread(() => { monitor(); });
-                    monitorThread.IsBackground = true;
-                    monitorThread.Start();
-                }
-            }
+            running = true;
+            monitor();
         }
 
         public void Stop()
@@ -69,14 +61,7 @@ namespace GalnetMonitor
         /// This method is run when the monitor is requested to stop
         /// </summary>
         {
-            lock (monitorLock)
-            {
-                if (monitorThread != null)
-                {
-                    monitorThread.Abort();
-                    monitorThread = null;
-                }
-            }
+            running = false;
         }
 
         public void Reload() {}
@@ -102,7 +87,7 @@ namespace GalnetMonitor
                 lastUid = null;
             }
 
-            while (true)
+            while (running)
             {
                 List<News> newsItems = new List<News>();
                 string firstUid = null;

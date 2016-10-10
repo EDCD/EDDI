@@ -213,6 +213,7 @@ namespace EddiSpeechService
                     Logging.Error("Failed to speak: " + ex);
                 }
             });
+            speechThread.Name = "Speech service speak";
             speechThread.IsBackground = true;
             speechThread.Start();
             if (wait)
@@ -294,19 +295,19 @@ namespace EddiSpeechService
             int echoDelay = 50; // Default
             if (ship != null)
             {
-                if (ship.size == Size.Small)
+                if (ship.size == "Small")
                 {
                     echoDelay = 50;
                 }
-                else if (ship.size == Size.Medium)
+                else if (ship.size == "Medium")
                 {
                     echoDelay = 100;
                 }
-                else if (ship.size == Size.Large)
+                else if (ship.size == "Large")
                 {
                     echoDelay = 200;
                 }
-                else if (ship.size == Size.Huge)
+                else if (ship.size == "Huge")
                 {
                     echoDelay = 400;
                 }

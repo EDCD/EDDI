@@ -816,8 +816,8 @@ namespace EddiDataDefinitions
                 {128049403, new Module(128049403, "Hpt_PulseLaserBurst_Fixed_Huge", 1549, "Burst Laser", 4, "E", 0, Module.ModuleMount.Fixed) },
                 {128727920, new Module(128727920, "Hpt_PulseLaserBurst_Gimbal_Huge", 1550, "Burst Laser", 4, "E", 0, Module.ModuleMount.Gimballed) },
                 {128064262, new Module(128064262, "Int_ShieldGenerator_Size1_Class5", 1551, "Shield Generator", 1, "A", 0) },
-                {128681641, new Module(128681641, "Int_CorrosionProofCargoRack_Size1_Class1", 9999, "Corrosion Resistant Cargo Rack", 1, "E", 6094) },
-                {128681992, new Module(128681992, "Int_CorrosionProofCargoRack_Size1_Class2", 9999, "Corrosion Resistant Cargo Rack", 1, "F", 12249) },
+                {128681992, new Module(128681992, "Int_CorrosionProofCargoRack_Size1_Class2", 1552, "Corrosion Resistant Cargo Rack", 1, "F", 12249) },
+                {128681641, new Module(128681641, "Int_CorrosionProofCargoRack_Size1_Class1", 1553, "Corrosion Resistant Cargo Rack", 1, "E", 6094) },
         };
 
         /// <summary>

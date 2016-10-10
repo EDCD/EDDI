@@ -9,8 +9,8 @@ namespace EddiDataProviderService
 {
     public interface StarSystemRepository
     {
-        StarSystem GetStarSystem(string name);
-        StarSystem GetOrCreateStarSystem(string name);
+        StarSystem GetStarSystem(string name, bool refreshIfOutdated = true);
+        StarSystem GetOrCreateStarSystem(string name, bool refreshIfOutdated = true);
         void SaveStarSystem(StarSystem starSystem);
     }
 }

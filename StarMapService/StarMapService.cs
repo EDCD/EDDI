@@ -64,6 +64,7 @@ namespace EddiStarMapService
                 // TODO check response
             });
             thread.IsBackground = true;
+            thread.Name = "StarMapService send starmap log";
             thread.Start();
         }
 
@@ -83,6 +84,7 @@ namespace EddiStarMapService
                 // TODO check response
             });
             thread.IsBackground = true;
+            thread.Name = "StarMapService send starmap comment";
             thread.Start();
         }
 

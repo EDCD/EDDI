@@ -44,7 +44,7 @@ namespace EddiVoiceAttackResponder
         {
             string enableds = "";
             string priorities = "";
-            string uri = "https://coriolis.io/outfit/";
+            string uri = "https://coriolis.edcd.io/outfit/";
             uri += shipModels[ship.model];
             uri += "/";
             uri += ShipBulkheads(ship.bulkheads.name);

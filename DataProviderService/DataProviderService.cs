@@ -96,6 +96,8 @@ namespace EddiDataProviderService
                 StarSystem.stations = StationsFromEDDP(StarSystem.name, json);
             }
 
+            StarSystem.lastupdated = DateTime.Now;
+
             return StarSystem;
         }
 
@@ -143,18 +145,11 @@ namespace EddiDataProviderService
                         }
                     }
 
-                    if (((string)station["max_landing_pad_size"]) != null && ((string)station["max_landing_pad_size"]) != "None")
-                    {
-                        Size size = Size.FromEDName((string)station["max_landing_pad_size"]);
-                        if (size != null)
-                        {
-                            Station.largestpad = size;
-                        }
-                        else
-                        {
-                            Logging.Error("Unknown landing pad size " + ((string)station["max_landing_pad_size"]));
-                        }
-                    }
+                    string largestpad = (string)station["max_landing_pad_size"];
+                    if (largestpad == "S") { largestpad = "Small"; }
+                    if (largestpad == "M") { largestpad = "Medium"; }
+                    if (largestpad == "L") { largestpad = "Large"; }
+                    Station.largestpad = largestpad;
 
                     Stations.Add(Station);
                 }

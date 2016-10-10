@@ -636,13 +636,10 @@ namespace EddiVoiceAttackResponder
         private static void setShipValues(Ship ship, string prefix, ref dynamic vaProxy)
         {
             Logging.Debug("Setting ship information (" + prefix + ")");
-            Logging.Warn("Ship is " + (ship == null ? "<null>" : JsonConvert.SerializeObject(ship)));
             try
             {
                 vaProxy.SetText(prefix + " manufacturer", ship == null ? null : ship.manufacturer);
                 vaProxy.SetText(prefix + " model", ship == null ? null : ship.model);
-                Logging.Warn("Set " + prefix + " model to " + ship.model);
-                Logging.Warn("VA value is " + vaProxy.GetText(prefix + " model"));
                 vaProxy.SetText(prefix + " model (spoken)", ship == null ? null : ship.SpokenModel());
 
                 if (EDDI.Instance.Ship != null && EDDI.Instance.Cmdr != null)

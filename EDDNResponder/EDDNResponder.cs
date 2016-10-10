@@ -218,6 +218,7 @@ namespace EDDNResponder
                 var content = response.Content; // raw content as string
                 Logging.Debug("Response content is " + content);
             });
+            thread.Name = "EDDN message";
             thread.IsBackground = true;
             thread.Start();
         }

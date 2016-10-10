@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,11 +36,13 @@ namespace EddiDataDefinitions
         public List<Station> stations { get; set; }
 
         /// <summary>Summary info for stations</summary>
+        [JsonIgnore]
         public List<Station> planetarystations
         {
             get { return stations.FindAll(s => s.IsPlanetary()); }
         }
 
+        [JsonIgnore]
         public List<Station> orbitalstations
         {
             get { return stations.FindAll(s => !s.IsPlanetary()); }

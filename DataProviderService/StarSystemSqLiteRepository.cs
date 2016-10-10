@@ -69,14 +69,9 @@ namespace EddiDataProviderService
             }
         }
 
-        public StarSystem GetOrCreateStarSystem(string name)
+        public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true)
         {
-            return GetOrCreateStarSystem(name, true);
-        }
-
-        public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing)
-        {
-            StarSystem system = GetStarSystem(name);
+            StarSystem system = GetStarSystem(name, fetchIfMissing);
             if (system == null)
             {
                 if (fetchIfMissing)
@@ -85,7 +80,6 @@ namespace EddiDataProviderService
                 }
                 if (system == null)
                 {
-                    Logging.Warn("Failed to obtain information for system " + name);
                     system = new StarSystem();
                     system.name = name;
                     system.visits = 0;
@@ -94,7 +88,7 @@ namespace EddiDataProviderService
             return system;
         }
 
-        public StarSystem GetStarSystem(string name)
+        public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
         {
             if (!File.Exists(DbFile)) return null;
 
@@ -135,6 +129,16 @@ namespace EddiDataProviderService
                                     if (result.comment == null)
                                     {
                                         if (!rdr.IsDBNull(4)) result.comment = rdr.GetString(4);
+                                    }
+                                    if (refreshIfOutdated && result.lastupdated < DateTime.Now.AddDays(-7))
+                                    {
+                                        // Data is stale
+                                        StarSystem updatedResult = DataProviderService.GetSystemData(name, null, null, null);
+                                        updatedResult.visits = result.visits;
+                                        updatedResult.lastvisit = result.lastvisit;
+                                        updatedResult.lastupdated = DateTime.Now;
+                                        result = updatedResult;
+                                        needToUpdate = true;
                                     }
                                 }
                             }

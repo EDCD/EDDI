@@ -46,7 +46,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{ShipCallsign()}",
       "name": "Ship delivered",
       "description": "Triggered when your newly-purchased ship is delivered to you"
     },
@@ -198,7 +198,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {Occasionally(2, \"to fighter\")} {OneOf(\"terminated\", \"disengaged\")}.",
+      "script": "{ship.model}.\r\n{ship.manufacturer}.\r\n{ship.role}.\r\n{ship.size}.\r\n\r\n{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {Occasionally(2, \"to fighter\")} {OneOf(\"terminated\", \"disengaged\")}.",
       "name": "Controlling ship",
       "description": "Triggered when you switch control from your fighter to your ship"
     },
@@ -422,7 +422,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{set station to StationDetails(event.station, \"Shinrarta Dezhra\")}\r\n{if station.model = \"Coriolis Starport\" || station.model = \"Orbis Starport\" || station.model = \"Ocellus Starport\":\r\n    {Pause(8000)}\r\n    Landing pad {event.landingpad} is at\r\n    {if event.landingpad = 1:\r\n        six o'clock near\r\n    |elif event.landingpad = 2:\r\n        six o'clock near\r\n    |elif event.landingpad = 3:\r\n        six o'clock far\r\n    |elif event.landingpad = 4:\r\n        six o'clock far\r\n    |elif event.landingpad = 5:\r\n        seven o'clock near\r\n    |elif event.landingpad = 6:\r\n        seven o'clock near\r\n    |elif event.landingpad = 7:\r\n        seven o'clock\r\n    |elif event.landingpad = 8:\r\n        seven o'clock far\r\n    |elif event.landingpad = 9:\r\n        eight o'clock near\r\n    |elif event.landingpad = 10:\r\n        eight o'clock far\r\n    |elif event.landingpad = 11:\r\n        nine o'clock near\r\n    |elif event.landingpad = 12:\r\n        nine o'clock near\r\n    |elif event.landingpad = 13:\r\n        nine o'clock\r\n    |elif event.landingpad = 14:\r\n        nine o'clock far\r\n    |elif event.landingpad = 15:\r\n        nine o'clock far\r\n    |elif event.landingpad = 16:\r\n        ten o'clock near\r\n    |elif event.landingpad = 17:\r\n        ten o'clock near\r\n    |elif event.landingpad = 18:\r\n        ten o'clock far\r\n    |elif event.landingpad = 19:\r\n        ten o'clock far\r\n    |elif event.landingpad = 20:\r\n        eleven o'clock near\r\n    |elif event.landingpad = 21:\r\n        eleven o'clock near\r\n    |elif event.landingpad = 22:\r\n        eleven o'clock\r\n    |elif event.landingpad = 23:\r\n        eleven o'clock far\r\n    |elif event.landingpad = 24:\r\n        twelve o'clock near\r\n    |elif event.landingpad = 25:\r\n        twelve o'clock far\r\n    |elif event.landingpad = 26:\r\n        one o'clock near\r\n    |elif event.landingpad = 27:\r\n        one o'clock near\r\n    |elif event.landingpad = 28:\r\n        one o'clock\r\n    |elif event.landingpad = 29:\r\n        one o'clock far\r\n    |elif event.landingpad = 30:\r\n        one o'clock far\r\n    |elif event.landingpad = 31:\r\n        two o'clock near\r\n    |elif event.landingpad = 32:\r\n        two o'clock near\r\n    |elif event.landingpad = 33:\r\n        two o'clock far\r\n    |elif event.landingpad = 34:\r\n        two o'clock far\r\n    |elif event.landingpad = 35:\r\n        three o'clock near\r\n    |elif event.landingpad = 36:\r\n        three o'clock near\r\n    |elif event.landingpad = 37:\r\n        three o'clock\r\n    |elif event.landingpad = 38:\r\n        three o'clock near\r\n    |elif event.landingpad = 39:\r\n        four o'clock near\r\n    |elif event.landingpad = 40:\r\n        four o'clock far\r\n    |elif event.landingpad = 41:\r\n        five o'clock near\r\n    |elif event.landingpad = 42:\r\n        five o'clock near\r\n    |elif event.landingpad = 43:\r\n        five o'clock\r\n    |elif event.landingpad = 44:\r\n        five o'clock far\r\n    |elif event.landingpad = 45:\r\n        five o'clock far\r\n    }\r\n    , as you enter with the green lights on your right.\r\n}\r\n",
       "name": "Docking granted",
       "description": "Triggered when your ship is granted docking permission at a station or outpost"
     },
@@ -438,7 +438,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{ShipCallsign()} requesting docking.",
+      "script": null,
       "name": "Docking requested",
       "description": "Triggered when your ship requests docking at a station or outpost"
     },
@@ -464,7 +464,7 @@
       "responder": true,
       "script": "You are\r\n{if event.docked:\r\n    docked at {P(event.body)}\r\n|elif event.body:\r\n    near {P(event.body)}\r\n}\r\nin the {P(event.system)} system.",
       "name": "Location",
-      "description": "Triggered when the commander's location is reported"
+      "description": "Triggered when the commander's location is reported, usually when they reload their game."
     },
     "Shields down": {
       "enabled": true,
@@ -558,7 +558,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(1000)}\r\n\r\n{OneOf(\"{ship.name} has\", \"\")} {OneOf(\"left supercruise\", \"{OneOf(\\\"entered\\\", \\\"returned to\\\", \\\"dropped to\\\")} normal space\")}.",
+      "script": "{Pause(5000)}\r\n\r\n{OneOf(\"{ShipName()} has\", \"\")} {OneOf(\"left supercruise\", \"{OneOf(\\\"entered\\\", \\\"returned to\\\", \\\"dropped to\\\")} normal space\")}\r\n\r\n{if event.bodytype = 'Planet':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} planet {P(event.body)}\r\n|elif event.bodytype = 'Star':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} star {P(event.body)}\r\n}.\r\n\r\n{if event.bodytype = 'Station':\r\n    {Pause(10000)}\r\n    {ShipCallsign()} message confirmed.\r\n}",
       "name": "Entered normal space",
       "description": "Triggered when your ship enters normal space"
     },
@@ -566,7 +566,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(1000)}\r\n\r\n{OneOf(\"{ship.name} has\", \"\")} {OneOf(\"entered\", \"jumped to\")} supercruise.\r\n\r\n",
+      "script": "{Pause(1000)}\r\n\r\n{OneOf(\"{ShipName()} has\", \"\")} {OneOf(\"entered\", \"jumped to\")} supercruise.\r\n\r\n",
       "name": "Entered supercruise",
       "description": "Triggered when your ship enters supercruise"
     },
@@ -614,7 +614,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(2000)}\r\n\r\n{OneOf(\"Establishing uplink with\",\r\n             \"Initiating link to\",\r\n             \"Connecting to \",\r\n             \"Accessing\")}\r\n{OneOf(\"local\", \"station\", \"{event.station}'s\")}\r\n{OneOf(\"datanet\", \"network\", \"networks\", \"computers\", \"services\")}.\r\n\r\n{Pause(5000)}\r\n\r\n{OneOf(\"Uplink\", \"Link\", \"Access\", \"Connection\")} {OneOf(\"established\", \"confirmed\", \"obtained\", \"authorised\")}.\r\n\r\n{F(\"Commodity sale check\")}\r\n\r\n{if ship.role = \"Multi-purpose\" || ship.role = \"Trading\":\r\n    {F(\"Commodity purchase check\")}\r\n}\r\n\r\n{F(\"Swapout check\")}\r\n\r\n{F(\"Limpet check\")}",
+      "script": "{Pause(2000)}\r\n\r\n{OneOf(\"Establishing uplink with\",\r\n             \"Initiating link to\",\r\n             \"Connecting to \",\r\n             \"Accessing\")}\r\n{OneOf(\"local\", \"station\", \"{event.station}'s\")}\r\n{OneOf(\"datanet\", \"network\", \"networks\", \"computers\", \"services\")}.\r\n\r\n{Pause(10000)}\r\n\r\n{OneOf(\"Uplink\", \"Link\", \"Access\", \"Connection\")} {OneOf(\"established\", \"confirmed\", \"obtained\", \"authorised\")}.\r\n\r\n{F(\"Commodity sale check\")}\r\n\r\n{if ship.role = \"Multi-purpose\" || ship.role = \"Trading\":\r\n    {F(\"Commodity purchase check\")}\r\n}\r\n\r\n{F(\"Swapout check\")}\r\n\r\n{F(\"Limpet check\")}",
       "name": "Docked",
       "description": "Triggered when your ship docks at a station or outpost"
     },

@@ -14,246 +14,267 @@ If EDDI is installed in the correct location and plugin support is enabled you s
 
 ## EDDI Variables
 
-
-EDDI makes a large number of values available to augment your existing scripts.  The values are shown below, along with the type of the value listed in brackets and a brief description of what the value holds.
+EDDI makes a large number of values available to augment your existing scripts.  The values are shown below, along with a brief description of what the value holds.
 
 If a value is not available it will be not set rather than empty.
 
 ### Commander Variables
 
-  * Name (text): the name of the commander
-  * Home system (text): the name of the home system of the commander, set from EDDI configuration
-  * Home system (spoken) (text): the name of the home system of the commander, set from EDDI configuration as would be spoken
-  * Home station (text): the name of the home station of the commander in the home system, set from EDDI configuration
-  * Combat rating (int): the combat rating of the commander, with 0 being Harmless and 9 being Elite
-  * Combat rank (text): the combat rank of the commander, from Harmless to Elite
-  * Trade rating (int): the trade rating of the commander, with 0 being Penniless and 9 being Elite
-  * Trade rank (text): the trade rank of the commander, from Penniless to Elite
-  * Explore rating (int): the exploration rating of the commander, with 0 being Aimless and 9 being Elite
-  * Explore rank (text): the exploration rank of the commander, from Aimless to Elite
-  * Empire rating (int): the empire rating of the commander, with 0 being None and 14 being King
-  * Empire rank (text): the empire rating of the commander, from None to King
-  * Federation rating (int): the federation rating of the commander, with 0 being None and 14 being Admiral
-  * Federation rank (text): the federation rating of the commander, from None to Admiral
-  * Credits (decimal): the number of credits owned by the commander
-  * Credits (text): the number of credits owned by the commander as would be spoken (e.g. "just over 2 million")
-  * Debt (decimal): the number of credits owed by the commander
-  * Debt (text): the number of credits owed by the commander as would be spoken (e.g. "a little under 100 thousand")
-  * Insurance (decimal): the percentage insurance excess for the commander (usually 5, 3.75 or 2.5)
+  * {TXT:Name}: the name of the commander
+  * {TXT:Home system}: the name of the home system of the commander, set from EDDI configuration
+  * {TXT:Home system (spoken)}: the name of the home system of the commander, set from EDDI configuration as would be spoken
+  * {TXT:Home station}: the name of the home station of the commander in the home system, set from EDDI configuration
+  * {INT:Combat rating}: the combat rating of the commander, with 0 being Harmless and 9 being Elite
+  * {TXT:Combat rank}: the combat rank of the commander, from Harmless to Elite
+  * {INT:Trade rating}: the trade rating of the commander, with 0 being Penniless and 9 being Elite
+  * {TXT:Trade rank}: the trade rank of the commander, from Penniless to Elite
+  * {INT:Explore rating}: the exploration rating of the commander, with 0 being Aimless and 9 being Elite
+  * {TXT:Explore rank}: the exploration rank of the commander, from Aimless to Elite
+  * {INT:Empire rating}: the empire rating of the commander, with 0 being None and 14 being King
+  * {TXT:Empire rank}: the empire rating of the commander, from None to King
+  * {INT:Federation rating}: the federation rating of the commander, with 0 being None and 14 being Admiral
+  * {TXT:Federation rank}: the federation rating of the commander, from None to Admiral
+  * {DEC:Credits}: the number of credits owned by the commander
+  * {TXT:Credits}: the number of credits owned by the commander as would be spoken (e.g. "just over 2 million")
+  * {DEC:Debt}: the number of credits owed by the commander
+  * {TXT:Debt}: the number of credits owed by the commander as would be spoken (e.g. "a little under 100 thousand")
+  * {DEC:Insurance}: the percentage insurance excess for the commander (usually 5, 3.75 or 2.5)
 
 ### Ship Variables
 
-  * Ship model (text): the model of the ship (e.g. "Cobra Mk", "Fer-de-Lance")
-  * Ship model (spoken) (text): the model of the ship as would be spoken (e.g. "Cobra Mark 4")
-  * Ship name (text): the name of the ship as set in EDDI configuration
-  * Ship callsign (text): the callsign of the ship as shown in EDDI configuration (e.g. "GEF-1020")
-  * Ship callsign (spoken) (text): the callsign of the ship as shown in EDDI configuration as would be spoken
-  * Ship role (text): the role of the ship as set in EDDI configuration (Multipurpose, Combat, Exploration, Trading, Mining, Smuggling)
-  * Ship size (text): the size of the ship (Small, Medium, or Large)
-  * Ship value (decimal): the replacement cost of the ship plus modules
-  * Ship value (text): the replacement cost of the ship plus modules as would be spoken
-  * Ship cargo capacity (int): the maximum cargo capacity of the ship as currently configured
-  * Ship cargo carried (int): the cargo currently being carried by the ship
-  * Ship limpets carried (int): the number of limpets currently being carried by the ship
-  * Ship health (decimal): the percentage health of the ship's hull
-  * Ship bulkheads (text): the type of bulkheads fitted to the ship (e.g. "Military Grade Composite")
-  * Ship bulkheads class (text): the class of bulkheads fitted to the ship (e.g. 3)
-  * Ship bulkheads grade (text): the grade of bulkheads fitted to the ship (e.g. "A")
-  * Ship bulkheads health (decimal): the percentage health of the bulkheads fitted to the ship
-  * Ship bulkheads cost (decimal): the purchase cost of the bulkheads
-  * Ship bulkheads value (decimal): the undiscounted cost of the bulkheads
-  * Ship bulkheads discount (decimal): the percentage discount of the purchased bulkheads against the undiscounted cost
-  * Ship power plant (text): the name of power plant fitted to the ship
-  * Ship power plant class (text): the class of bulkheads fitted to the ship (e.g. 3)
-  * Ship power plant grade (text): the grade of bulkheads fitted to the ship (e.g. "A")
-  * Ship power plant health (decimal): the percentage health of the power plant fitted to the ship
-  * Ship power plant cost (decimal): the purchase cost of the power plant
-  * Ship power plant value (decimal): the undiscounted cost of the power plant
-  * Ship power plant discount (decimal): the percentage discount of the purchased power plant against the undiscounted cost
-  * Ship thrusters (text): the name of thrusters fitted to the ship
-  * Ship thrusters class (text): the class of thrusters fitted to the ship (e.g. 3)
-  * Ship thrusters grade (text): the grade of thrusters fitted to the ship (e.g. "A")
-  * Ship thrusters health (decimal): the percentage health of the thrusters fitted to the ship
-  * Ship thrusters cost (decimal): the purchase cost of the thrusters
-  * Ship thrusters value (decimal): the undiscounted cost of the thrusters
-  * Ship thrusters discount (decimal): the percentage discount of the purchased thrusters against the undiscounted cost
-  * Ship frame shift drive (text): the name of frame shift drive fitted to the ship
-  * Ship frame shift drive class (text): the class of frame shift drive fitted to the ship (e.g. 3)
-  * Ship frame shift drive grade (text): the grade of frame shift drive fitted to the ship (e.g. "A")
-  * Ship frame shift drive health (decimal): the percentage health of the frame shift drive fitted to the ship
-  * Ship frame shift drive cost (decimal): the purchase cost of the frame shift drive
-  * Ship frame shift drive value (decimal): the undiscounted cost of the frame shift drive
-  * Ship frame shift drive discount (decimal): the percentage discount of the purchased frame shift drive against the undiscounted cost
-  * Ship life support (text): the name of life support fitted to the ship (e.g. "6D")
-  * Ship life support class (text): the class of life support fitted to the ship (e.g. 3)
-  * Ship life support drive grade (text): the grade of life support fitted to the ship (e.g. "A")
-  * Ship life support health (decimal): the percentage health of the life support fitted to the ship
-  * Ship life support cost (decimal): the purchase cost of the life support
-  * Ship life support value (decimal): the undiscounted cost of the life support
-  * Ship life support discount (decimal): the percentage discount of the purchased life support against the undiscounted cost
-  * Ship power distributor (text): the name of power distributor fitted to the ship
-  * Ship power distributor class (text): the class of power distributor fitted to the ship (e.g. 3)
-  * Ship power distributor drive grade (text): the grade of power distributor fitted to the ship (e.g. "A")
-  * Ship power distributor health (decimal): the percentage health of the power distributor fitted to the ship
-  * Ship power distributor cost (decimal): the purchase cost of the power distributor
-  * Ship power distributor value (decimal): the undiscounted cost of the power distributor
-  * Ship power distributor discount (decimal): the percentage discount of the purchased power distributor against the undiscounted cost
-  * Ship sensors (text): the name of sensors fitted to the ship
-  * Ship sensors class (text): the class of sensors fitted to the ship (e.g. 3)
-  * Ship sensors drive grade (text): the grade of sensors fitted to the ship (e.g. "A")
-  * Ship sensors health (decimal): the percentage health of the sensors fitted to the ship
-  * Ship sensors cost (decimal): the purchase cost of the sensors
-  * Ship sensors value (decimal): the undiscounted cost of the sensors
-  * Ship sensors discount (decimal): the percentage discount of the purchased sensors against the undiscounted cost
-  * Ship fuel tank (text): the name of fuel tank fitted to the ship
-  * Ship fuel tank class (text): the class of fuel tank fitted to the ship (e.g. 3)
-  * Ship fuel tank drive grade (text): the grade of fuel tank fitted to the ship (e.g. "A")
-  * Ship fuel tank cost (decimal): the purchase cost of the fuel tank
-  * Ship fuel tank value (decimal): the undiscounted cost of the fuel tank
-  * Ship fuel tank discount (decimal): the percentage discount of the purchased fuel tank against the undiscounted cost
-  * Ship fuel tank capacity (decimal): the capacity of the fuel tank
-  * Ship tiny/small/medium/large/huge hardpoint *n* occupied (boolean): true if there is a module in this slot, otherwise false
-  * Ship tiny/small/medium/large/huge hardpoint *n* module (string): the name of the module in this slot
-  * Ship tiny/small/medium/large/huge hardpoint *n* module class (int): the class of the module in this slot
-  * Ship tiny/small/medium/large/huge hardpoint *n* module grade(grade): the grade of the module in this slot
-  * Ship tiny/small/medium/large/huge hardpoint *n* module health (decimal): the percentage health of the module in this slot
-  * Ship tiny/small/medium/large/huge hardpoint *n* module cost (decimal): the purchase cost of the module in this slot
-  * Ship tiny/small/medium/large/huge hardpoint *n* module value (decimal): the undiscounted cost of the module in this slot
-  * Ship tiny/small/medium/large/huge hardpoint *n* module discount (decimal): the percentage discount of the purchased module against the undiscounted cost
-  * Ship Compartment *n* size: the size of this slot
-  * Ship Compartment *n* occupied (boolean): true if there is a module in this slot, otherwise false
-  * Ship compartment *n* module (string): the name of the module in this slot
-  * Ship compartment *n* module class (int): the class of the module in this slot
-  * Ship compartment *n* module grade (string): the grade of the module in this slot
-  * Ship compartment *n* module health (decimal): the percentage health of the module in this slot
-  * Ship compartment *n* module cost (decimal): the purchase cost of the module in this slot
-  * Ship compartment *n* module value (decimal): the undiscounted cost of the module in this slot
-  * Ship compartment *n* module station cost (decimal): the purchase cost of the module at this station
+  * {TXT:Ship model}: the model of the ship (e.g. "Cobra Mk", "Fer-de-Lance")
+  * {TXT:Ship model (spoken)}: the model of the ship as would be spoken (e.g. "Cobra Mark 4")
+  * {TXT:Ship name}: the name of the ship as set in EDDI configuration
+  * {TXT:Ship callsign}: the callsign of the ship as shown in EDDI configuration (e.g. "GEF-1020")
+  * {TXT:Ship callsign (spoken)}: the callsign of the ship as shown in EDDI configuration as would be spoken
+  * {TXT:Ship role}: the role of the ship as set in EDDI configuration (Multipurpose, Combat, Exploration, Trading, Mining, Smuggling)
+  * {TXT:Ship size}: the size of the ship (Small, Medium, or Large)
+  * {DEC:Ship value}: the replacement cost of the ship plus modules
+  * {TXT:Ship value}: the replacement cost of the ship plus modules as would be spoken
+  * {INT:Ship cargo capacity}: the maximum cargo capacity of the ship as currently configured
+  * {INT:Ship cargo carried}: the cargo currently being carried by the ship
+  * {INT:Ship limpets carried}: the number of limpets currently being carried by the ship
+  * {DEC:Ship health}: the percentage health of the ship's hull
+  * {TXT:Ship bulkheads}: the type of bulkheads fitted to the ship (e.g. "Military Grade Composite")
+  * {TXT:Ship bulkheads class}: the class of bulkheads fitted to the ship (e.g. 3)
+  * {TXT:Ship bulkheads grade}: the grade of bulkheads fitted to the ship (e.g. "A")
+  * {DEC:Ship bulkheads health}: the percentage health of the bulkheads fitted to the ship
+  * {DEC:Ship bulkheads cost}: the purchase cost of the bulkheads
+  * {DEC:Ship bulkheads value}: the undiscounted cost of the bulkheads
+  * {DEC:Ship bulkheads discount}: the percentage discount of the purchased bulkheads against the undiscounted cost
+  * {TXT:Ship power plant}: the name of power plant fitted to the ship
+  * {TXT:Ship power plant class}: the class of bulkheads fitted to the ship (e.g. 3)
+  * {TXT:Ship power plant grade}: the grade of bulkheads fitted to the ship (e.g. "A")
+  * {DEC:Ship power plant health}: the percentage health of the power plant fitted to the ship
+  * {DEC:Ship power plant cost}: the purchase cost of the power plant
+  * {DEC:Ship power plant value}: the undiscounted cost of the power plant
+  * {DEC:Ship power plant discount}: the percentage discount of the purchased power plant against the undiscounted cost
+  * {TXT:Ship thrusters}: the name of thrusters fitted to the ship
+  * {TXT:Ship thrusters class}: the class of thrusters fitted to the ship (e.g. 3)
+  * {TXT:Ship thrusters grade}: the grade of thrusters fitted to the ship (e.g. "A")
+  * {DEC:Ship thrusters health}: the percentage health of the thrusters fitted to the ship
+  * {DEC:Ship thrusters cost}: the purchase cost of the thrusters
+  * {DEC:Ship thrusters value}: the undiscounted cost of the thrusters
+  * {DEC:Ship thrusters discount}: the percentage discount of the purchased thrusters against the undiscounted cost
+  * {TXT:Ship frame shift drive}: the name of frame shift drive fitted to the ship
+  * {TXT:Ship frame shift drive class}: the class of frame shift drive fitted to the ship (e.g. 3)
+  * {TXT:Ship frame shift drive grade}: the grade of frame shift drive fitted to the ship (e.g. "A")
+  * {DEC:Ship frame shift drive health}: the percentage health of the frame shift drive fitted to the ship
+  * {DEC:Ship frame shift drive cost}: the purchase cost of the frame shift drive
+  * {DEC:Ship frame shift drive value}: the undiscounted cost of the frame shift drive
+  * {DEC:Ship frame shift drive discount}: the percentage discount of the purchased frame shift drive against the undiscounted cost
+  * {TXT:Ship life support}: the name of life support fitted to the ship (e.g. "6D")
+  * {TXT:Ship life support class}: the class of life support fitted to the ship (e.g. 3)
+  * {TXT:Ship life support drive grade}: the grade of life support fitted to the ship (e.g. "A")
+  * {DEC:Ship life support health}: the percentage health of the life support fitted to the ship
+  * {DEC:Ship life support cost}: the purchase cost of the life support
+  * {DEC:Ship life support value}: the undiscounted cost of the life support
+  * {DEC:Ship life support discount}: the percentage discount of the purchased life support against the undiscounted cost
+  * {TXT:Ship power distributor}: the name of power distributor fitted to the ship
+  * {TXT:Ship power distributor class}: the class of power distributor fitted to the ship (e.g. 3)
+  * {TXT:Ship power distributor drive grade}: the grade of power distributor fitted to the ship (e.g. "A")
+  * {DEC:Ship power distributor health}: the percentage health of the power distributor fitted to the ship
+  * {DEC:Ship power distributor cost}: the purchase cost of the power distributor
+  * {DEC:Ship power distributor value}: the undiscounted cost of the power distributor
+  * {DEC:Ship power distributor discount}: the percentage discount of the purchased power distributor against the undiscounted cost
+  * {TXT:Ship sensors}: the name of sensors fitted to the ship
+  * {TXT:Ship sensors class}: the class of sensors fitted to the ship (e.g. 3)
+  * {TXT:Ship sensors drive grade}: the grade of sensors fitted to the ship (e.g. "A")
+  * {DEC:Ship sensors health}: the percentage health of the sensors fitted to the ship
+  * {DEC:Ship sensors cost}: the purchase cost of the sensors
+  * {DEC:Ship sensors value}: the undiscounted cost of the sensors
+  * {DEC:Ship sensors discount}: the percentage discount of the purchased sensors against the undiscounted cost
+  * {TXT:Ship fuel tank}: the name of fuel tank fitted to the ship
+  * {TXT:Ship fuel tank class}: the class of fuel tank fitted to the ship (e.g. 3)
+  * {TXT:Ship fuel tank drive grade}: the grade of fuel tank fitted to the ship (e.g. "A")
+  * {DEC:Ship fuel tank cost}: the purchase cost of the fuel tank
+  * {DEC:Ship fuel tank value}: the undiscounted cost of the fuel tank
+  * {DEC:Ship fuel tank discount}: the percentage discount of the purchased fuel tank against the undiscounted cost
+  * {DEC:Ship fuel tank capacity}: the capacity of the fuel tank
+  * {BOOL:Ship tiny/small/medium/large/huge hardpoint *n* occupied}: true if there is a module in this slot, otherwise false
+  * {TXT:Ship tiny/small/medium/large/huge hardpoint *n* module}: the name of the module in this slot
+  * {INT:Ship tiny/small/medium/large/huge hardpoint *n* module class}: the class of the module in this slot
+  * {TXT:Ship tiny/small/medium/large/huge hardpoint *n* module grade}: the grade of the module in this slot
+  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module health}: the percentage health of the module in this slot
+  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module cost}: the purchase cost of the module in this slot
+  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module value}: the undiscounted cost of the module in this slot
+  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module discount}: the percentage discount of the purchased module against the undiscounted cost
+  * {INT:Ship Compartment *n* size}: the size of this slot
+  * {BOOL:Ship Compartment *n* occupied}: true if there is a module in this slot, otherwise false
+  * {TXT:Ship compartment *n* module}: the name of the module in this slot
+  * {INT:Ship compartment *n* module class}: the class of the module in this slot
+  * {TXT:Ship compartment *n* module grade}: the grade of the module in this slot
+  * {DEC:Ship compartment *n* module health}: the percentage health of the module in this slot
+  * {DEC:Ship compartment *n* module cost}: the purchase cost of the module in this slot
+  * {DEC:Ship compartment *n* module value}: the undiscounted cost of the module in this slot
+  * {DEC:Ship compartment *n* module station cost}: the purchase cost of the module at this station
 
 ### Current System Variables
 
-  * System name (text): the name of the system
-  * System name (spoken) (text): the name of the system as would be spoken
-  * System distance from home (decimal): the number of lights years between this system and the your home system, to two decimal places
-  * System visits (int): the number of times the commander has visited the system (whilst the plugin has been active)
-  * System previous visit (datetime): the last time the commander visited the system (empty if this is their first visit)
-  * System minutes since previous visit (int): the number of minutes since the commander's last visit to the system
-  * System population (decimal): the population of the system
-  * System population (text): the population of the system as would be spoken (e.g. "nearly 12 and a half billion")
-  * System allegiance (text): the allegiance of the system ("Federation", "Empire", "Alliance", "Independant" or empty)
-  * System government (text): the government of the system (e.g. "Democracy")
-  * System faction (text): the primary faction of the system (e.g. "The Pilots' Federation")
-  * System primary economy (text): the primary economy of the system (e.g. "Industrial")
-  * System state (text): the overall state of the system (e.g. "Boom")
-  * System security (text): the security level in the system ("High", "Medium", "Low", "None" or empty)
-  * System power (text): the name of the power that controls the system (e.g. "Aisling Duval")
-  * System power (spoken) (text): the name of the power that controls the system as would be spoken (e.g. "Ashling Du-val")
-  * System power state (text): the state of the power in the system (e.g. "Expansion")
-  * System rank (text): the rank of the Commander in the system (e.g. "Duke" if an Empire system, "Admiral" if a Federation system)
-  * System X (decimal) the EDDB X co-ordinate of the system
-  * System Y (decimal) the EDDB X co-ordinate of the system
-  * System Z (decimal) the EDDB X co-ordinate of the system
-  * System stations (int): the total number of stations, both in orbit and on planets, in the system
-  * System orbital stations (int): the number of orbital stations in the system
-  * System starports (int): the total number of orbital starports in the system
-  * System outposts (int): the total number of orbital outposts in the system
-  * System planetary stations (int): the total number of planetary stations (outposts and ports) in the system
-  * System planetary outposts (int): the total number of planetary outposts in the system
-  * System planetary ports (int): the total number of planetary ports in the system
+  * {TXT:System name}: the name of the system
+  * {TXT:System name (spoken)}: the name of the system as would be spoken
+  * {DEC:System distance from home}: the number of lights years between this system and the your home system, to two decimal places
+  * {INT:System visits}: the number of times the commander has visited the system (whilst the plugin has been active)
+  * {DATETIME:System previous visit}: the last time the commander visited the system (empty if this is their first visit)
+  * {INT:System minutes since previous visit}: the number of minutes since the commander's last visit to the system
+  * {DEC:System population}: the population of the system
+  * {TXT:System population}: the population of the system as would be spoken (e.g. "nearly 12 and a half billion")
+  * {TXT:System allegiance}: the allegiance of the system ("Federation", "Empire", "Alliance", "Independant" or empty)
+  * {TXT:System government}: the government of the system (e.g. "Democracy")
+  * {TXT:System faction}: the primary faction of the system (e.g. "The Pilots' Federation")
+  * {TXT:System primary economy}: the primary economy of the system (e.g. "Industrial")
+  * {TXT:System state}: the overall state of the system (e.g. "Boom")
+  * {TXT:System security}: the security level in the system ("High", "Medium", "Low", "None" or empty)
+  * {TXT:System power}: the name of the power that controls the system (e.g. "Aisling Duval")
+  * {TXT:System power (spoken)}: the name of the power that controls the system as would be spoken (e.g. "Ashling Du-val")
+  * {TXT:System power state}: the state of the power in the system (e.g. "Expansion")
+  * {TXT:System rank}: the rank of the Commander in the system (e.g. "Duke" if an Empire system, "Admiral" if a Federation system)
+  * {DEC:System X} the EDDB X co-ordinate of the system
+  * {DEC:System Y} the EDDB X co-ordinate of the system
+  * {DEC:System Z} the EDDB X co-ordinate of the system
+  * {INT:System stations}: the total number of stations, both in orbit and on planets, in the system
+  * {INT:System orbital stations}: the number of orbital stations in the system
+  * {INT:System starports}: the total number of orbital starports in the system
+  * {INT:System outposts}: the total number of orbital outposts in the system
+  * {INT:System planetary stations}: the total number of planetary stations (outposts and ports) in the system
+  * {INT:System planetary outposts}: the total number of planetary outposts in the system
+  * {INT:System planetary ports}: the total number of planetary ports in the system
 
 ### Last System Variables
 
-  * Last system name (text): the name of the last system
-  * Last system name (spoken) (text): the name of the last system as would be spoken
-  * Last system visits (int): the number of times the commander has visited the last system (whilst the plugin has been active)
-  * Last system previous visit (datetime): the last time the commander visited the last system (empty if this is their first visit)
-  * Last system population (decimal): the population of the last system
-  * Last system population (text): the population of the last system as would be spoken (e.g. "nearly 12 and a half billion")
-  * Last system allegiance (text): the allegiance of the last system ("Federation", "Empire", "Alliance", "Independant" or empty)
-  * Last system government (text): the government of the last system (e.g. "Democracy")
-  * Last system faction (text): the primary faction of the last system (e.g. "The Pilots' Federation")
-  * Last system primary economy (text): the primary economy of the last system (e.g. "Industrial")
-  * Last system state (text): the overall state of the last system (e.g. "Boom")
-  * Last system security (text): the security level in the last system ("High", "Medium", "Low", "None" or empty)
-  * Last system power (text): the name of the power that controls the last system (e.g. "Felicia Winters")
-  * Last system power (spoken) (text): the name of the power that controls the last system as would be spoken
-  * Last system power state (text): the state of the power in the last system (e.g. "Expansion")
-  * Last system rank (text): the rank of the Commander in the last system (e.g. "Duke" if an Empire system, "Admiral" if a Federation system)
-  * Last system X (decimal) the EDDB X co-ordinate of the last system
-  * Last system Y (decimal) the EDDB X co-ordinate of the last system
-  * Last system Z (decimal) the EDDB X co-ordinate of the last system
+  * {TXT:Last system name}: the name of the last system
+  * {TXT:Last system name (spoken)}: the name of the last system as would be spoken
+  * {INT:Last system visits}: the number of times the commander has visited the last system (whilst the plugin has been active)
+  * {DATETIME:Last system previous visit}: the last time the commander visited the last system (empty if this is their first visit)
+  * {DEC:Last system population}: the population of the last system
+  * {TXT:Last system population}: the population of the last system as would be spoken (e.g. "nearly 12 and a half billion")
+  * {TXT:Last system allegiance}: the allegiance of the last system ("Federation", "Empire", "Alliance", "Independant" or empty)
+  * {TXT:Last system government}: the government of the last system (e.g. "Democracy")
+  * {TXT:Last system faction}: the primary faction of the last system (e.g. "The Pilots' Federation")
+  * {TXT:Last system primary economy}: the primary economy of the last system (e.g. "Industrial")
+  * {TXT:Last system state}: the overall state of the last system (e.g. "Boom")
+  * {TXT:Last system security}: the security level in the last system ("High", "Medium", "Low", "None" or empty)
+  * {TXT:Last system power}: the name of the power that controls the last system (e.g. "Felicia Winters")
+  * {TXT:Last system power (spoken)}: the name of the power that controls the last system as would be spoken
+  * {TXT:Last system power state}: the state of the power in the last system (e.g. "Expansion")
+  * {TXT:Last system rank}: the rank of the Commander in the last system (e.g. "Duke" if an Empire system, "Admiral" if a Federation system)
+  * {DEC:Last system X} the EDDB X co-ordinate of the last system
+  * {DEC:Last system Y} the EDDB X co-ordinate of the last system
+  * {DEC:Last system Z} the EDDB X co-ordinate of the last system
 
 ### Current Station Variables
 
-  * Ship bulkheads station cost (decimal): the purchase cost of the bulkheads at the station (not set if not for sale at the station)
-  * Ship bulkheads station discount (decimal): the number of credits discount of the bulkheads over those currently fitted (not set if no additional discount)
-  * Ship bulkheads station discount (spoken) (text): the number of credits discount of the bulkheads over those currently fitted as would be spoken (not set if no additional discount)
-  * Ship power plant station cost (decimal): the purchase cost of the power plant at the station (not set if not for sale at the station)
-  * Ship power plant station discount (decimal): the number of credits discount of the power plant over that currently fitted (not set if no additional discount)
-  * Ship power plant station discount (spoken) (text): the number of credits discount of the power plant over thothatse currently fitted as would be spoken (not set if no additional discount)
-  * Ship thrusters station cost (decimal): the purchase cost of the thrusters at the station (not set if not for sale at the station)
-  * Ship thrusters station discount (decimal): the number of credits discount of the thrusters over those currently fitted (not set if no additional discount)
-  * Ship thrusters station discount (spoken) (text): the number of credits discount of the thrusters over those currently fitted as would be spoken (not set if no additional discount)
-  * Ship frame shift drive station cost (decimal): the purchase cost of the frame shift drive at the station (not set if not for sale at the station)
-  * Ship frame shift drive station discount (decimal): the number of credits discount of the frame shift drive over those currently fitted (not set if no additional discount)
-  * Ship frame shift drive station discount (spoken) (text): the number of credits discount of the frame shift drive over those currently fitted as would be spoken (not set if no additional discount)
-  * Ship life support station cost (decimal): the purchase cost of the life support at the station (not set if not for sale at the station)
-  * Ship life support station discount (decimal): the number of credits discount of the life support over that currently fitted (not set if no additional discount)
-  * Ship life support station discount (spoken) (text): the number of credits discount of the life support over those currently fitted as would be spoken (not set if no additional discount)
-  * Ship power distributor station cost (decimal): the purchase cost of the power distributor at the station (not set if not for sale at the station)
-  * Ship power distributor station discount (decimal): the number of credits discount of the power distributor over those currently fitted (not set if no additional discount)
-  * Ship power distributor station discount (spoken) (text): the number of credits discount of the power distributor over those currently fitted as would be spoken (not set if no additional discount)
-  * Ship sensors station cost (decimal): the purchase cost of the sensors at the station (not set if not for sale at the station)
-  * Ship sensors station discount (decimal): the number of credits discount of the sensors over those currently fitted (not set if no additional discount)
-  * Ship sensors station discount (spoken) (text): the number of credits discount of the sensors over those currently fitted as would be spoken (not set if no additional discount)
-  * Ship tiny/small/medium/large/huge hardpoint *n* module station cost (decimal): the purchase cost of this module at this station (not set if not for sale at the station)
-  * Ship tiny/small/medium/large/huge hardpoint *n* module station discount (decimal): the number of credits discount of the module over that currently fitted (not set if no additional discount)
-  * Ship tiny/small/medium/large/huge hardpoint *n* module station discount (spoken) (text): the number of credits discount of the module over that currently fitted as would be spoken (not set if no additional discount)
-  * Ship compartment *n* module station cost (decimal): the purchase cost of this module at this station (not set if not for sale at the station)
-  * Ship compartment *n* module station discount (decimal): the number of credits discount of the module over that currently fitted (not set if no additional discount)
-  * Ship compartment *n* module station discount (spoken) (text): the number of credits discount of the module over that currently fitted as would be spoken (not set if no additional discount)
-  * Last station name (text): the name of the last station the commander docked at
-  * Last station faction (string): the name of the controlling faction of the last station
-  * Last station government (string): the name of the government of the last station
-  * Last station allegiance (string): the name of the allegiance of the last station (Federation, Empire, etc.)
-  * Last station state (string): the name of the state of the last station (boom, outbreak, etc.)
-  * Last station distance from star (decimal): the distance from the primary star to this station, in light seconds
-  * Last station primary economy (string): the primary economy of this station (extraction, prison colony, etc.)
-  * Last station secondary economy (string): the secondary economy of this station (extraction, prison colony, etc.)
-  * Last station tertiary economy (string): the tertiary economy of this station (extraction, prison colony, etc.)
-  * Last station has refuel (boolean): true if this station has refuel capability
-  * Last station has rearm (boolean): true if this station has rearm capability
-  * Last station has repair (boolean): true if this station has repair capability
-  * Last station has market (boolean): true if this station has a commodities market
-  * Last station has black market (boolean): true if this station has a black market
-  * Last station has outfitting (boolean): true if this station has outfitting
-  * Last station has shipyard (boolean): true if this station has a shipyard
+  * {DEC:Ship bulkheads station cost}: the purchase cost of the bulkheads at the station (not set if not for sale at the station)
+  * {DEC:Ship bulkheads station discount}: the number of credits discount of the bulkheads over those currently fitted (not set if no additional discount)
+  * {TXT:Ship bulkheads station discount (spoken)}: the number of credits discount of the bulkheads over those currently fitted as would be spoken (not set if no additional discount)
+  * {DEC:Ship power plant station cost}: the purchase cost of the power plant at the station (not set if not for sale at the station)
+  * {DEC:Ship power plant station discount}: the number of credits discount of the power plant over that currently fitted (not set if no additional discount)
+  * {TXT:Ship power plant station discount (spoken)}: the number of credits discount of the power plant over thothatse currently fitted as would be spoken (not set if no additional discount)
+  * {DEC:Ship thrusters station cost}: the purchase cost of the thrusters at the station (not set if not for sale at the station)
+  * {DEC:Ship thrusters station discount}: the number of credits discount of the thrusters over those currently fitted (not set if no additional discount)
+  * {TXT:Ship thrusters station discount (spoken)}: the number of credits discount of the thrusters over those currently fitted as would be spoken (not set if no additional discount)
+  * {DEC:Ship frame shift drive station cost}: the purchase cost of the frame shift drive at the station (not set if not for sale at the station)
+  * {DEC:Ship frame shift drive station discount}: the number of credits discount of the frame shift drive over those currently fitted (not set if no additional discount)
+  * {TXT:Ship frame shift drive station discount (spoken)}: the number of credits discount of the frame shift drive over those currently fitted as would be spoken (not set if no additional discount)
+  * {DEC:Ship life support station cost}: the purchase cost of the life support at the station (not set if not for sale at the station)
+  * {DEC:Ship life support station discount}: the number of credits discount of the life support over that currently fitted (not set if no additional discount)
+  * {TXT:Ship life support station discount (spoken)}: the number of credits discount of the life support over those currently fitted as would be spoken (not set if no additional discount)
+  * {DEC:Ship power distributor station cost}: the purchase cost of the power distributor at the station (not set if not for sale at the station)
+  * {DEC:Ship power distributor station discount}: the number of credits discount of the power distributor over those currently fitted (not set if no additional discount)
+  * {TXT:Ship power distributor station discount (spoken)}: the number of credits discount of the power distributor over those currently fitted as would be spoken (not set if no additional discount)
+  * {DEC:Ship sensors station cost}: the purchase cost of the sensors at the station (not set if not for sale at the station)
+  * {DEC:Ship sensors station discount}: the number of credits discount of the sensors over those currently fitted (not set if no additional discount)
+  * {TXT:Ship sensors station discount (spoken)}: the number of credits discount of the sensors over those currently fitted as would be spoken (not set if no additional discount)
+  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module station cost}: the purchase cost of this module at this station (not set if not for sale at the station)
+  * {DEC:Ship tiny/small/medium/large/huge hardpoint *n* module station discount}: the number of credits discount of the module over that currently fitted (not set if no additional discount)
+  * {TXT:Ship tiny/small/medium/large/huge hardpoint *n* module station discount (spoken)}: the number of credits discount of the module over that currently fitted as would be spoken (not set if no additional discount)
+  * {DEC:Ship compartment *n* module station cost}: the purchase cost of this module at this station (not set if not for sale at the station)
+  * {DEC:Ship compartment *n* module station discount}: the number of credits discount of the module over that currently fitted (not set if no additional discount)
+  * {TXT:Ship compartment *n* module station discount (spoken)}: the number of credits discount of the module over that currently fitted as would be spoken (not set if no additional discount)
+  * {TXT:Last station name}: the name of the last station the commander docked at
+  * {TXT:Last station faction}: the name of the controlling faction of the last station
+  * {TXT:Last station government}: the name of the government of the last station
+  * {TXT:Last station allegiance}: the name of the allegiance of the last station (Federation, Empire, etc.)
+  * {TXT:Last station state}: the name of the state of the last station (boom, outbreak, etc.)
+  * {DEC:Last station distance from star}: the distance from the primary star to this station, in light seconds
+  * {TXT:Last station primary economy}: the primary economy of this station (extraction, prison colony, etc.)
+  * {TXT:Last station secondary economy}: the secondary economy of this station (extraction, prison colony, etc.)
+  * {TXT:Last station tertiary economy}: the tertiary economy of this station (extraction, prison colony, etc.)
+  * {BOOL:Last station has refuel}: true if this station has refuel capability
+  * {BOOL:Last station has rearm}: true if this station has rearm capability
+  * {BOOL:Last station has repair}: true if this station has repair capability
+  * {BOOL:Last station has market}: true if this station has a commodities market
+  * {BOOL:Last station has black market}: true if this station has a black market
+  * {BOOL:Last station has outfitting}: true if this station has outfitting
+  * {BOOL:Last station has shipyard}: true if this station has a shipyard
 
 ### Shipyard Variables
 
-  * Stored ships (int): the number of ships in storage
-  * Stored ship *n* model (text): the model of the *n*th stored ship
-  * Stored ship *n* name (text): the name of the *n*th stored ship as set in EDDI configuration
-  * Stored ship *n* callsign (text): the callsign of the *n*th stored ship as shown in EDDI configuration (e.g. "GEF-1020")
-  * Stored ship *n* callsign (spoken) (text): the callsign of the *n*th stored ship as shown in EDDI configuration as would be spoken
-  * Stored ship *n* role (text): the role of the *n*th stored ship as set in EDDI configuration (Multipurpose, Combat, Trade, Exploration, Smuggling)
-  * Stored ship *n* station (text): the station in which the *n*th stored ship resides
-  * Stored ship *n* system (text): the system in which the *n*th stored ship resides
-  * Stored ship *n* distance (decimal): the number of light years between the current system and that where the *n*th ship resiedes, to two decimal places
+  * {INT: Stored ships}: the number of ships in storage
+  * {TXT:Stored ship *n* model}: the model of the *n*th stored ship
+  * {TXT:Stored ship *n* name}: the name of the *n*th stored ship as set in EDDI configuration
+  * {TXT:Stored ship *n* callsign}: the callsign of the *n*th stored ship as shown in EDDI configuration (e.g. "GEF-1020")
+  * {TXT:Stored ship *n* callsign (spoken)}: the callsign of the *n*th stored ship as shown in EDDI configuration as would be spoken
+  * {TXT:{TXT:Stored ship *n* role}: the role of the *n*th stored ship as set in EDDI configuration (Multipurpose, Combat, Trade, Exploration, Smuggling)
+  * {TXT:{TXT:Stored ship *n* station}: the station in which the *n*th stored ship resides
+  * {TXT:Stored ship *n* system}: the system in which the *n*th stored ship resides
+  * {DEC:Stored ship *n* distance}: the number of light years between the current system and that where the *n*th ship resiedes, to two decimal places
 
 ### Miscellaneous Variables
 
-  * Environment (text): the environment the ship is in (either "Normal space" or "Supercruise")
-  * Last jump (decimal): the number of lights years between this system and the last, to two decimal places
+  * {TXT:Environment}: the environment the ship is in (either "Normal space" or "Supercruise")
+  * {DEC:Last jump}: the number of lights years between this system and the last, to two decimal places
 
 EDDI also provides a number of pre-built commands to show off some of what it is capable of.  These include:
 
   * a voice command spoken by the pilot before they launch ("run pre flight checks") that carries out a check of areas such as insurance, repairs /etc./
-  * a voice command spoken by the pilot when they wish to see their ship in https://www.coriolis.io/ ("Display my ship in coriolis")
+  * a voice command spoken by the pilot when they wish to see their ship in https://coriolis.edcd.io/ ("Display my ship in coriolis")
   * a voice command spoken by the pilot when they wish to see their current system in https://www.eddb.io/ ("Show this system in EDDB")
   * a voice command spoken by the pilot when they wish to see their current station in https://www.eddb.io/ ("Show this station in EDDB")
 
 To access these commands, as well as to obtain a number of commands that display the values of the variables listed above, import the "EDDI" VoiceAttack from the EDDI directory in to VoiceAttack.  To access these commands edit your own profile and set "Include commands from another profile" to "EDDI".
+
+## Functions
+
+EDDI's VoiceAttack plugin allows you to access its features in your own profile.  Details of these functions are laid out below.
+
+### say
+
+This function uses EDDI's voice to read a script.  The script should be a text variable with the name 'Script'.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'say'.
+
+### speech
+
+This function uses EDDI's voice to read a Speech Responder script.  The name of the script should be a text variable with the name 'Script'.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'speech'.
+
+### shutup
+
+This function stops any active EDDI speech.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'shutup'.
 
 ## Events
 

@@ -59,7 +59,6 @@
     <Compile Include="EmpireRating.cs" />
     <Compile Include="ExplorationRating.cs" />
     <Compile Include="Role.cs" />
-    <Compile Include="Size.cs" />
     <Compile Include="Voucher.cs" />
     <Compile Include="StarClass.cs" />
     <Compile Include="TradeRating.cs" />

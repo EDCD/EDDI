@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -56,8 +57,21 @@ namespace EddiDataDefinitions
         /// <summary>The model of the station</summary>
         public string model { get; set; }
 
+        private string LargestPad;
         /// <summary>What is the largest ship that can land here?</summary>
-        public Size largestpad { get; set;  }
+        public string largestpad
+        {
+            get { return LargestPad; }
+            set
+            {
+                // Map old values from when we had an enum
+                if (value == "0") LargestPad = "None";
+                else if (value == "1") LargestPad = "Small";
+                else if (value == "2") LargestPad = "Medium";
+                else if (value == "3") LargestPad = "Large";
+                else LargestPad = value;
+            }
+        }
 
         /// <summary>Which commodities are bought/sold by the station</summary>
         public List<Commodity> commodities { get; set; }

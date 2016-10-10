@@ -72,6 +72,7 @@ namespace Utilities
                     catch { }
                 }
             });
+            thread.Name = "Reporter";
             thread.IsBackground = true;
             thread.Start();
         }

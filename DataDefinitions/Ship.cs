@@ -25,7 +25,7 @@ namespace EddiDataDefinitions
         public List<Translation> phoneticmodel { get; set; }
         /// <summary>the size of this ship</summary>
         [JsonIgnore]
-        public Size size { get; set; }
+        public string size { get; set; }
         /// <summary>the value of the ship without cargo, in credits</summary>
         [JsonIgnore]
         public long value { get; set; }
@@ -134,7 +134,7 @@ namespace EddiDataDefinitions
             compartments = new List<Compartment>();
         }
 
-        public Ship(long EDID, string EDName, string Manufacturer, string Model, List<Translation> PhoneticModel, Size Size)
+        public Ship(long EDID, string EDName, string Manufacturer, string Model, List<Translation> PhoneticModel, string Size)
         {
             this.EDID = EDID;
             this.EDName = EDName;
