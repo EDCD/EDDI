@@ -559,10 +559,6 @@ namespace EddiCompanionAppService
                 {
                     ship.name = shipConfig.name.Trim();
                 }
-                else
-                {
-                    ship.name = "Your ship";
-                }
                 if (shipConfig.phoneticname != null && shipConfig.phoneticname.Trim().Length > 0)
                 {
                     ship.phoneticname = shipConfig.phoneticname.Trim();

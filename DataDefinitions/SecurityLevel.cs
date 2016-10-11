@@ -46,7 +46,7 @@ namespace EddiDataDefinitions
 
         public static SecurityLevel FromEDName(string from)
         {
-            string tidiedFrom = from == null ? null : from.Replace(";", "").ToLowerInvariant();
+            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
             SecurityLevel result = SECURITYLEVELS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {

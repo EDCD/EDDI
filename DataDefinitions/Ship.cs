@@ -17,6 +17,9 @@ namespace EddiDataDefinitions
         /// <summary>the manufacturer of the ship (Lakon, CoreDynamics etc.)</summary>
         [JsonIgnore]
         public string manufacturer { get; set; }
+        /// <summary>the spoken manufacturer of the ship (Lakon, CoreDynamics etc.)</summary>
+        [JsonIgnore]
+        public List<Translation> phoneticmanufacturer { get; set; }
         /// <summary>the model of the ship (Python, Anaconda, etc.)</summary>
         [JsonIgnore]
         public string model { get; set; }
@@ -134,11 +137,12 @@ namespace EddiDataDefinitions
             compartments = new List<Compartment>();
         }
 
-        public Ship(long EDID, string EDName, string Manufacturer, string Model, List<Translation> PhoneticModel, string Size)
+        public Ship(long EDID, string EDName, string Manufacturer, List<Translation> PhoneticManufacturer, string Model, List<Translation> PhoneticModel, string Size)
         {
             this.EDID = EDID;
             this.EDName = EDName;
             manufacturer = Manufacturer;
+            phoneticmanufacturer = PhoneticManufacturer;
             model = Model;
             phoneticmodel = PhoneticModel;
             size = Size;
@@ -148,7 +152,7 @@ namespace EddiDataDefinitions
 
         public string SpokenName(string defaultname = null)
         {
-            string result = (defaultname == null ? "your " + SpokenModel() :defaultname);
+            string result = (defaultname == null ? "your " + SpokenModel() : defaultname);
             if (phoneticname != null)
             {
                 result = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticname + "\">" + name + "</phoneme>";
@@ -171,6 +175,24 @@ namespace EddiDataDefinitions
             {
                 result = "";
                 foreach (Translation item in phoneticmodel)
+                {
+                    result += "<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> ";
+                }
+            }
+            return result;
+        }
+
+        public string SpokenManufacturer()
+        {
+            string result;
+            if (phoneticmanufacturer == null)
+            {
+                result = manufacturer;
+            }
+            else
+            {
+                result = "";
+                foreach (Translation item in phoneticmanufacturer)
                 {
                     result += "<phoneme alphabet=\"ipa\" ph=\"" + item.to + "\">" + item.from + "</phoneme> ";
                 }

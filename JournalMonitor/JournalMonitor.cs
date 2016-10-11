@@ -508,62 +508,23 @@ namespace EddiJournalMonitor
                                 object val;
                                 // We don't have a ship ID at this point so use the ship type
                                 data.TryGetValue("ShipType", out val);
-                                Ship ship = ShipDefinitions.FromEDModel((string)val);
+                                string shipModel = (string)val;
+                                Ship ship = findShip(null, shipModel);
 
                                 data.TryGetValue("ShipPrice", out val);
                                 long price = (long)val;
 
-                                Ship storedShip = null;
                                 data.TryGetValue("StoreShipID", out val);
-                                if (val != null)
-                                {
-                                    // We are storing a ship as part of the swap
-                                    int storedShipId = (int)(long)val;
+                                int? storedShipId = (val == null ? (int?)null : (int)(long)val);
+                                data.TryGetValue("StoreOldShip", out val);
+                                string storedShipModel = (string)val;
+                                Ship storedShip = findShip(storedShipId, storedShipModel);
 
-                                    // We should be storing our own ship; confirm this using the ship ID
-                                    if (storedShipId == EDDI.Instance.Ship.LocalId)
-                                    {
-                                        storedShip = EDDI.Instance.Ship;
-                                    }
-                                    else
-                                    {
-                                        // The ship might already be registered as stored; see if we can find it
-                                        storedShip = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == storedShipId);
-                                        if (storedShip == null)
-                                        {
-                                            // No luck finding the ship; provide a basic definition
-                                            data.TryGetValue("StoreOldShip", out val);
-                                            ship = ShipDefinitions.FromEDModel((string)val);
-                                            ship.LocalId = storedShipId;
-                                        }
-                                    }
-                                }
-
-                                Ship soldShip = null;
                                 data.TryGetValue("SellShipID", out val);
-                                if (val != null)
-                                {
-                                    // We are selling a ship as part of the swap
-                                    int soldShipId = (int)(long)val;
-
-                                    // We should be selling our current ship; confirm this using the ship ID
-                                    if (soldShipId == EDDI.Instance.Ship.LocalId)
-                                    {
-                                        soldShip = EDDI.Instance.Ship;
-                                    }
-                                    else
-                                    {
-                                        // The ship might be registered as stored; see if we can find it
-                                        soldShip = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == soldShipId);
-                                        if (soldShip == null)
-                                        {
-                                            // No luck finding the ship; provide a basic definition
-                                            data.TryGetValue("SellOldShip", out val);
-                                            soldShip = ShipDefinitions.FromEDModel((string)val);
-                                            soldShip.LocalId = soldShipId;
-                                        }
-                                    }
-                                }
+                                int? soldShipId = (val == null ? (int?)null : (int)(long)val);
+                                data.TryGetValue("SellOldShip", out val);
+                                string soldShipModel = (string)val;
+                                Ship soldShip = findShip(soldShipId, soldShipModel);
 
                                 data.TryGetValue("SellPrice", out val);
                                 long? soldPrice = (long?)val;
@@ -576,17 +537,10 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
+                                data.TryGetValue("ShipType", out val);
+                                string shipModel = (string)val;
+                                Ship ship = findShip(shipId, shipModel);
 
-                                // We should be able to provide our ship information given the ship ID
-                                Ship ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
-                                if (ship == null)
-                                {
-                                    Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
-                                    // Failed to find the ship; provide a basic definition
-                                    data.TryGetValue("ShipType", out val);
-                                    ship = ShipDefinitions.FromEDModel((string)val);
-                                    ship.LocalId = shipId;
-                                }
                                 journalEvent = new ShipDeliveredEvent(timestamp, ship);
                             }
                             handled = true;
@@ -596,16 +550,9 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("SellShipID", out val);
                                 int shipId = (int)(long)val;
-                                // We should be able to provide our ship information given the ship ID
-                                Ship ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
-                                if (ship == null)
-                                {
-                                    Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
-                                    // Failed to find the ship; provide a basic definition
-                                    data.TryGetValue("ShipType", out val);
-                                    ship = ShipDefinitions.FromEDModel((string)val);
-                                    ship.LocalId = shipId;
-                                }
+                                data.TryGetValue("ShipType", out val);
+                                string shipModel = (string)val;
+                                Ship ship = findShip(shipId, shipModel);
                                 data.TryGetValue("ShipPrice", out val);
                                 long price = (long)val;
                                 journalEvent = new ShipSoldEvent(timestamp, ship, price);
@@ -615,70 +562,24 @@ namespace EddiJournalMonitor
                         case "ShipyardSwap":
                             {
                                 object val;
+
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
-                                // We should be able to provide our ship information given the ship ID
-                                Ship ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
-                                if (ship == null)
-                                {
-                                    Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
-                                    // Failed to find the ship; provide a basic definition
-                                    data.TryGetValue("ShipType", out val);
-                                    ship = ShipDefinitions.FromEDModel((string)val);
-                                    ship.LocalId = shipId;
-                                }
+                                data.TryGetValue("ShipType", out val);
+                                string shipModel = (string)val;
+                                Ship ship = findShip(shipId, shipModel);
 
-                                Ship storedShip = null;
                                 data.TryGetValue("StoreShipID", out val);
-                                if (val != null)
-                                {
-                                    // We are storing a ship as part of the swap
-                                    int storedShipId = (int)(long)val;
+                                int? storedShipId = (val == null ? (int?)null : (int)(long)val);
+                                data.TryGetValue("StoreOldShip", out val);
+                                string storedShipModel = (string)val;
+                                Ship storedShip = findShip(storedShipId, storedShipModel);
 
-                                    // We should be storing our own ship; confirm this using the ship ID
-                                    if (EDDI.Instance.Ship != null && storedShipId == EDDI.Instance.Ship.LocalId)
-                                    {
-                                        storedShip = EDDI.Instance.Ship;
-                                    }
-                                    else
-                                    {
-                                        // The ship might already be registered as stored; see if we can find it
-                                        storedShip = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == storedShipId);
-                                        if (storedShip == null)
-                                        {
-                                            // No luck finding the ship; provide a basic definition
-                                            data.TryGetValue("StoreOldShip", out val);
-                                            storedShip = ShipDefinitions.FromEDModel((string)val);
-                                            storedShip.LocalId = storedShipId;
-                                        }
-                                    }
-                                }
-
-                                Ship soldShip = null;
                                 data.TryGetValue("SellShipID", out val);
-                                if (val != null)
-                                {
-                                    // We are selling a ship as part of the swap
-                                    int soldShipId = (int)(long)val;
-
-                                    // We should be selling our current ship; confirm this using the ship ID
-                                    if (soldShipId == EDDI.Instance.Ship.LocalId)
-                                    {
-                                        soldShip = EDDI.Instance.Ship;
-                                    }
-                                    else
-                                    {
-                                        // The ship might be registered as stored; see if we can find it
-                                        soldShip = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == soldShipId);
-                                        if (soldShip == null)
-                                        {
-                                            // No luck finding the ship; provide a basic definition
-                                            data.TryGetValue("SellOldShip", out val);
-                                            soldShip = ShipDefinitions.FromEDModel((string)val);
-                                            soldShip.LocalId = soldShipId;
-                                        }
-                                    }
-                                }
+                                int? soldShipId = (val == null ? (int?)null : (int)(long)val);
+                                data.TryGetValue("SellOldShip", out val);
+                                string soldShipModel = (string)val;
+                                Ship soldShip = findShip(soldShipId, soldShipModel);
 
                                 journalEvent = new ShipSwappedEvent(timestamp, ship, soldShip, storedShip);
                             }
@@ -689,16 +590,9 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
-                                // We should be able to provide our ship information given the ship ID
-                                Ship ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
-                                if (ship == null)
-                                {
-                                    Logging.Debug("Failed to find ship for ID " + shipId + "; using template");
-                                    // Failed to find the ship; provide a basic definition
-                                    data.TryGetValue("ShipType", out val);
-                                    ship = ShipDefinitions.FromEDModel((string)val);
-                                    ship.LocalId = shipId;
-                                }
+                                data.TryGetValue("ShipType", out val);
+                                string shipModel = (string)val;
+                                Ship ship = findShip(shipId, shipModel);
 
                                 data.TryGetValue("System", out val);
                                 string system = (string)val;
@@ -1524,6 +1418,39 @@ namespace EddiJournalMonitor
                 Logging.Error("Exception whilst parsing line", line);
             }
             return null;
+        }
+
+        private static Ship findShip(int? localId, string model)
+        {
+            Ship ship = null;
+            if (localId == null)
+            {
+                // No local ID so take the current ship
+                ship = EDDI.Instance.Ship;
+            }
+            else
+            {
+                // Find the ship with the given local ID
+                if (EDDI.Instance.Ship != null && EDDI.Instance.Ship.LocalId == localId)
+                {
+                    ship = EDDI.Instance.Ship;
+                }
+                else
+                {
+                    ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == localId);
+                }
+            }
+
+            if (ship == null)
+            {
+                // Provide a basic ship based on the model template
+                ship = ShipDefinitions.FromModel(model);
+                if (ship == null)
+                {
+                    ship = ShipDefinitions.FromEDModel(model);
+                }
+            }
+            return ship;
         }
 
         // Be sensible with health - round it unless it's very low

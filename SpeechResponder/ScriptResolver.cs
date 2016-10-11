@@ -144,32 +144,16 @@ namespace EddiSpeechResponder
             //
             store["ShipName"] = new NativeFunction((values) =>
             {
-                Ship ship = null;
-                if (values.Count == 0)
-                {
-                    ship = EDDI.Instance.Ship;
-                }
-                else if (values.Count == 1)
-                {
-                    int shipId = (int)values[0].AsNumber;
-                    ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
-                }
+                int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);
+                Ship ship = findShip(localId, null);
                 string result = (ship == null ? "your ship" : ship.SpokenName());
                 return result;
             }, 0, 1);
 
             store["ShipCallsign"] = new NativeFunction((values) =>
             {
-                Ship ship = null;
-                if (values.Count == 0)
-                {
-                    ship = EDDI.Instance.Ship;
-                }
-                else if (values.Count == 1)
-                {
-                    int shipId = (int)values[0].AsNumber;
-                    ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == shipId);
-                }
+                int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);
+                Ship ship = findShip(localId, null);
 
                 string result;
                 if (ship != null)
@@ -178,11 +162,11 @@ namespace EddiSpeechResponder
                     {
                         // Obtain the first three characters
                         string chars = new Regex("[^a-zA-Z0-9]").Replace(EDDI.Instance.Cmdr.name, "").ToUpperInvariant().Substring(0, 3);
-                        result = Translations.Manufacturer(ship.manufacturer) + " " + Translations.CallSign(chars);
+                        result = ship.SpokenManufacturer() + " " + Translations.CallSign(chars);
                     }
                     else
                     {
-                        result = "unidentified " + Translations.Manufacturer(ship.manufacturer) + " ship";
+                        result = "unidentified " + ship.SpokenManufacturer() + " " + ship.SpokenModel();
                     }
                 }
                 else
@@ -198,13 +182,10 @@ namespace EddiSpeechResponder
 
             store["ShipDetails"] = new NativeFunction((values) =>
             {
-                Ship result = ShipDefinitions.FromModel(values[0].AsString);
-                if (result == null)
-                {
-                    result = ShipDefinitions.FromEDModel(values[0].AsString);
-                }
+                int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);
+                Ship result = findShip(localId, null);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
-            }, 1);
+            }, 0, 1);
 
             store["CombatRatingDetails"] = new NativeFunction((values) =>
             {
@@ -349,6 +330,39 @@ namespace EddiSpeechResponder
             }
 
             return store;
+        }
+
+        private static Ship findShip(int? localId, string model)
+        {
+            Ship ship = null;
+            if (localId == null)
+            {
+                // No local ID so take the current ship
+                ship = EDDI.Instance.Ship;
+            }
+            else
+            {
+                // Find the ship with the given local ID
+                if (EDDI.Instance.Ship != null && EDDI.Instance.Ship.LocalId == localId)
+                {
+                    ship = EDDI.Instance.Ship;
+                }
+                else
+                {
+                    ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == localId);
+                }
+            }
+
+            if (ship == null)
+            {
+                // Provide a basic ship based on the model template
+                ship = ShipDefinitions.FromModel(model);
+                if (ship == null)
+                {
+                    ship = ShipDefinitions.FromEDModel(model);
+                }
+            }
+            return ship;
         }
     }
 }
