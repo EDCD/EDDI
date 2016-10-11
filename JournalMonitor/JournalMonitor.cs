@@ -1445,6 +1445,43 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "RebootRepair":
+                            {
+                                object val;
+                                data.TryGetValue("Modules", out val);
+                                List<object> modulesJson = (List<object>)val;
+
+                                List<string> modules = new List<string>();
+                                foreach (string module in modulesJson)
+                                {
+                                    modules.Add(module);
+                                }
+                                journalEvent = new ShipRebootedEvent(timestamp, modules);
+                                handled = true;
+                                break;
+                            }
+                        case "Synthesis":
+                            {
+                                object val;
+                                data.TryGetValue("Name", out val);
+                                string synthesis = (string)val;
+
+                                data.TryGetValue("Materials", out val);
+                                Dictionary<string, object> materialsData = (Dictionary<string, object>)val;
+                                List<MaterialAmount> materials = new List<MaterialAmount>();
+                                if (materialsData != null)
+                                {
+                                    foreach (KeyValuePair<string, object> materialData in materialsData)
+                                    {
+                                        Material material = Material.FromEDName(materialData.Key);
+                                        materials.Add(new MaterialAmount(material, (int)(long)materialData.Value));
+                                    }
+                                }
+
+                                journalEvent = new SynthesisedEvent(timestamp, synthesis, materials);
+                                handled = true;
+                                break;
+                            }
                     }
 
                     if (journalEvent != null)

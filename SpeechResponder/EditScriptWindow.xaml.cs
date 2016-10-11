@@ -75,7 +75,7 @@ namespace EddiSpeechResponder
             Personality defaultPersonality = Personality.Default();
             Script defaultScript;
             defaultPersonality.Scripts.TryGetValue(scriptName, out defaultScript);
-            if (defaultScript == null)
+            if (defaultScript == null || defaultScript.Value == null)
             {
                 // No default; disable reset and show
                 showDefaultButton.IsEnabled = false;

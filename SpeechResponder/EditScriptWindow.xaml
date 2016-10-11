@@ -26,7 +26,7 @@
             <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" TextWrapping="Wrap" VerticalAlignment="Stretch" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding Path=ScriptValue, Mode=TwoWay}"/>
             <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="3" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
                 <Button x:Name="testButton" FontSize="18" Content="Test script" VerticalAlignment="Top" Click="testButtonClick" Margin="0,0,5,0"/>
-                <Button x:Name="resetToDefaultButton" FontSize="18" Content="Rest to default" VerticalAlignment="Top" Click="resetButtonClick" Margin="5,0,5,0"/>
+                <Button x:Name="resetToDefaultButton" FontSize="18" Content="Reset to default" VerticalAlignment="Top" Click="resetButtonClick" Margin="5,0,5,0"/>
                 <Button x:Name="showDefaultButton" FontSize="18" Content="Show default" VerticalAlignment="Top" Click="showDefaultButtonClick" Margin="5,0,0,0"/>
             </UniformGrid>
             <UniformGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="4" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
