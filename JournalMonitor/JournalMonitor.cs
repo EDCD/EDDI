@@ -1444,11 +1444,7 @@ namespace EddiJournalMonitor
             if (ship == null)
             {
                 // Provide a basic ship based on the model template
-                ship = ShipDefinitions.FromModel(model);
-                if (ship == null)
-                {
-                    ship = ShipDefinitions.FromEDModel(model);
-                }
+                ship = ShipDefinitions.FromEDModel(model);
             }
             return ship;
         }

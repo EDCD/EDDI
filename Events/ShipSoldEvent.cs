@@ -28,11 +28,15 @@ namespace EddiEvents
         [JsonProperty("ship")]
         public string ship { get; private set; }
 
+        [JsonIgnore]
+        public Ship Ship { get; private set; }
+
         [JsonProperty("price")]
         public long price { get; private set; }
 
         public ShipSoldEvent(DateTime timestamp, Ship ship, long price) : base(timestamp, NAME)
         {
+            this.Ship = ship;
             this.ship = (ship == null ? null : ship.model);
             this.shipid = (ship == null ? (int?)null : ship.LocalId);
             this.price = price;

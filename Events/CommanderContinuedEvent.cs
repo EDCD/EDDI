@@ -34,6 +34,9 @@ namespace EddiEvents
         [JsonProperty("shipid")]
         public int? shipid { get; private set; }
 
+        [JsonIgnore]
+        public Ship Ship { get; private set; }
+
         [JsonProperty("mode")]
         public GameMode mode { get; private set; }
 
@@ -46,6 +49,7 @@ namespace EddiEvents
         public CommanderContinuedEvent(DateTime timestamp, string commander, Ship ship, GameMode mode, string group, decimal credits) : base(timestamp, NAME)
         {
             this.commander = commander;
+            this.Ship = ship;
             this.ship = (ship == null ? null : ship.model);
             this.shipid = (ship == null ? (int?)null : ship.LocalId);
             this.mode = mode;

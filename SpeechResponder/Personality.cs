@@ -70,7 +70,14 @@ namespace EddiSpeechResponder
 
         public static Personality FromName(string name)
         {
-            return FromFile(Constants.DATA_DIR + @"\personalities\" + name.ToLowerInvariant() + ".json");
+            if (name == "EDDI")
+            {
+                return Default();
+            }
+            else
+            {
+                return FromFile(Constants.DATA_DIR + @"\personalities\" + name.ToLowerInvariant() + ".json");
+            }
         }
 
         /// <summary>

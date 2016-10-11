@@ -418,6 +418,9 @@ namespace Eddi
 
             LastStation = station;
 
+            // Now call refreshProfile() to obtain the outfitting and commodity information
+            refreshProfile();
+
             return true;
         }
 
@@ -553,19 +556,13 @@ namespace Eddi
         private bool eventShipDeliveredEvent(ShipDeliveredEvent theEvent)
         {
             refreshProfile();
-            if (theEvent.shipid != null)
-            {
-                SetShip(Shipyard.FirstOrDefault(v => v.LocalId == theEvent.shipid));
-            }
+            SetShip(theEvent.Ship);
             return true;
         }
 
         private bool eventShipSwappedEvent(ShipSwappedEvent theEvent)
         {
-            if (theEvent.shipid != null)
-            {
-                SetShip(Shipyard.FirstOrDefault(v => v.LocalId == theEvent.shipid));
-            }
+            SetShip(theEvent.Ship);
             return true;
         }
 
@@ -578,10 +575,7 @@ namespace Eddi
 
         private bool eventCommanderContinuedEvent(CommanderContinuedEvent theEvent)
         {
-            if (theEvent.shipid != null)
-            {
-                SetShip(Shipyard.FirstOrDefault(v => v.LocalId == theEvent.shipid));
-            }
+            SetShip(theEvent.Ship);
 
             if (Cmdr.name == null)
             {
@@ -604,7 +598,7 @@ namespace Eddi
                     Shipyard = profile.Shipyard;
 
                     // Only use the ship information if we agree that this is the correct ship to use
-                    if (Ship.LocalId == 0 || profile.Ship.LocalId == Ship.LocalId)
+                    if (Ship.model == null || profile.Ship.LocalId == Ship.LocalId)
                     {
                         SetShip(profile.Ship);
                     }
@@ -616,22 +610,30 @@ namespace Eddi
                         setSystemDistanceFromHome(CurrentStarSystem);
                     }
 
+                    if (LastStation == null)
+                    {
+                        Logging.Info("No last station; using the information available to us from the profile");
+                    }
+                    else
+                    {
+                        Logging.Info("Internal last station is " + LastStation.name + "@" + LastStation.systemname + ", profile last station is " + LastStation.name + "@" + LastStation.systemname);
+                    }
+
                     // Last station's name should be set from the journal, so we confirm that this is correct
                     // before we update the commodity and outfitting information
-                    if (LastStation == null || LastStation.systemname == CurrentStarSystem.name)
+                    if (LastStation == null)
                     {
-                        if (LastStation == null)
-                        {
-                            // No current info so use profile data directly
-                            LastStation = profile.LastStation;
-                        }
-                        else
-                        {
-                            // Current info so just provide the additional data from the profile
-                            LastStation.outfitting = profile.LastStation.outfitting;
-                            LastStation.commodities = profile.LastStation.commodities;
-                            LastStation.shipyard = profile.LastStation.shipyard;
-                        }
+                        // No current info so use profile data directly
+                        LastStation = profile.LastStation;
+                    }
+                    else if (LastStation.systemname == profile.LastStation.systemname && LastStation.name == profile.LastStation.name)
+                    {
+                        // Match for our expected station with the information returned from the profile
+
+                        // Update the outfitting, commodities and shipyard with the data obtained from the profile
+                        LastStation.outfitting = profile.LastStation.outfitting;
+                        LastStation.commodities = profile.LastStation.commodities;
+                        LastStation.shipyard = profile.LastStation.shipyard;
                     }
 
                     setCommanderTitle();
@@ -641,7 +643,15 @@ namespace Eddi
 
         private void SetShip(Ship ship)
         {
-            Ship = ship;
+            if (ship == null)
+            {
+                Logging.Warn("Refusing to set ship to null");
+            }
+            else
+            {
+                Logging.Debug("Set ship to " + JsonConvert.SerializeObject(ship));
+                Ship = ship;
+            }
         }
 
         private void setSystemDistanceFromHome(StarSystem system)

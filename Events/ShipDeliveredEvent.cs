@@ -27,8 +27,12 @@ namespace EddiEvents
         [JsonProperty("ship")]
         public string ship { get; private set; }
 
+        [JsonIgnore]
+        public Ship Ship { get; private set; }
+
         public ShipDeliveredEvent(DateTime timestamp, Ship ship) : base(timestamp, NAME)
         {
+            this.Ship = ship;
             this.ship = (ship == null ? null : ship.model);
             this.shipid = (ship == null ? (int?)null : ship.LocalId);
         }
