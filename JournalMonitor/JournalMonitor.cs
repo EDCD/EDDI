@@ -854,6 +854,17 @@ namespace EddiJournalMonitor
                                 handled = true;
                             }
                             break;
+                        case "ScientificResearch":
+                            {
+                                object val;
+                                data.TryGetValue("Name", out val);
+                                Material material = Material.FromEDName((string)val);
+                                data.TryGetValue("Count", out val);
+                                int amount = (int)(long)val;
+                                journalEvent = new MaterialDonatedEvent(timestamp, material, amount);
+                                handled = true;
+                            }
+                            break;
                         case "ReceiveText":
                             {
                                 object val;
