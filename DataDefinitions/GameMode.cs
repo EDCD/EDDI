@@ -27,7 +27,7 @@ namespace EddiDataDefinitions
         }
 
         public static readonly GameMode Open = new GameMode("Open", "Open");
-        public static readonly GameMode Group = new GameMode("Group", "Private group");
+        public static readonly GameMode Group = new GameMode("Group", "Group");
         public static readonly GameMode Solo = new GameMode("Solo", "Solo");
 
         public static GameMode FromName(string from)

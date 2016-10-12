@@ -20,7 +20,7 @@ namespace EddiEvents
             VARIABLES.Add("commander", "The commander's name");
             VARIABLES.Add("ship", "The commander's ship");
             VARIABLES.Add("shipid", "The ID of the commander's ship");
-            VARIABLES.Add("mode", "The game mode");
+            VARIABLES.Add("mode", "The game mode (Open, Group or Solo)");
             VARIABLES.Add("group", "The name of the group (only if mode == Group)");
             VARIABLES.Add("credits", "the number of credits the commander has");
         }
@@ -38,7 +38,7 @@ namespace EddiEvents
         public Ship Ship { get; private set; }
 
         [JsonProperty("mode")]
-        public GameMode mode { get; private set; }
+        public string mode { get; private set; }
 
         [JsonProperty("group")]
         public string group { get; private set; }
@@ -52,7 +52,7 @@ namespace EddiEvents
             this.Ship = ship;
             this.ship = (ship == null ? null : ship.model);
             this.shipid = (ship == null ? (int?)null : ship.LocalId);
-            this.mode = mode;
+            this.mode = (mode == null ? null : mode.name);
             this.group = group;
             this.credits = credits;
         }
