@@ -55,6 +55,11 @@ namespace EddiSpeechResponder
                 return null;
             }
             Logging.Debug("Found script");
+            if (script.Enabled == false)
+            {
+                Logging.Debug("Script disabled");
+                return null;
+            }
 
             return resolveScript(script.Value, store);
         }

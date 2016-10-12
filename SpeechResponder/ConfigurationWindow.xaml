@@ -24,7 +24,7 @@
                 <DataGridTemplateColumn Header="Enabled">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Checked="eddiScriptsUpdated" Unchecked="eddiScriptsUpdated" IsHitTestVisible="{Binding Path=Value.Responder}" />
+                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Checked="eddiScriptsUpdated" Unchecked="eddiScriptsUpdated" IsHitTestVisible="{Binding Path=Value.Responder}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
