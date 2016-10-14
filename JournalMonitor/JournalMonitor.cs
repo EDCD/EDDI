@@ -386,7 +386,7 @@ namespace EddiJournalMonitor
                                 decimal radius = (decimal)(double)val;
 
                                 data.TryGetValue("OrbitalPeriod", out val);
-                                decimal orbitalperiod = (decimal)(double)val;
+                                decimal? orbitalperiod = (decimal)(double)val;
 
                                 data.TryGetValue("RotationPeriod", out val);
                                 decimal rotationperiod = (decimal)(double)val;
@@ -498,7 +498,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Volcanism", out val);
                                     string volcanism = (string)val;
 
-                                    journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, materials);
+                                    journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, materials);
                                     handled = true;
                                 }
                             }

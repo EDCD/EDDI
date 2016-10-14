@@ -85,6 +85,21 @@ namespace EDDNResponder
                 data.Add("StarSystem", EDDI.Instance.CurrentStarSystem.name);
             }
 
+
+            // Need to add StarPos to all events that don't already have them
+            if (!data.ContainsKey("StarPos"))
+            {
+                if (EDDI.Instance.CurrentStarSystem == null || EDDI.Instance.CurrentStarSystem.x == null)
+                {
+                    Logging.Debug("Missing current starsystem information, cannot send message to EDDN");
+                }
+                IList<decimal> starpos = new List<decimal>();
+                starpos.Add((decimal)EDDI.Instance.CurrentStarSystem.x);
+                starpos.Add((decimal)EDDI.Instance.CurrentStarSystem.y);
+                starpos.Add((decimal)EDDI.Instance.CurrentStarSystem.z);
+                data.Add("StarPos", starpos);
+            }
+
             EDDNBody body = new EDDNBody();
             body.header = generateHeader();
             body.schemaRef = "http://schemas.elite-markets.net/eddn/journal/1/test";

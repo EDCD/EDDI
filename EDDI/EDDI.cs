@@ -432,14 +432,10 @@ namespace Eddi
         private bool eventLocation(LocationEvent theEvent)
         {
             updateCurrentSystem(theEvent.system);
-            if (CurrentStarSystem.x == null)
-            {
-                // Star system is missing co-ordinates to take them from the event
-                CurrentStarSystem.x = theEvent.x;
-                CurrentStarSystem.y = theEvent.y;
-                CurrentStarSystem.z = theEvent.z;
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-            }
+            // Always update the current system with the current co-ordinates, just in case things have changed
+            CurrentStarSystem.x = theEvent.x;
+            CurrentStarSystem.y = theEvent.y;
+            CurrentStarSystem.z = theEvent.z;
             return true;
         }
 
