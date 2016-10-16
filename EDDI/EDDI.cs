@@ -481,10 +481,12 @@ namespace Eddi
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                // After jump we are always in supercruise
-                Environment = Constants.ENVIRONMENT_SUPERCRUISE;
                 setCommanderTitle();
             }
+
+            // Whilst jumping we are in witch space
+            Environment = Constants.ENVIRONMENT_WITCH_SPACE;
+
             return passEvent;
         }
 
@@ -497,10 +499,25 @@ namespace Eddi
                 // Initialisation; don't pass the event along
                 passEvent = false;
             }
-            else if (CurrentStarSystem.name == theEvent.system)
+            else if (CurrentStarSystem.name == theEvent.system && Environment == Constants.ENVIRONMENT_SUPERCRUISE)
             {
                 // Restatement of current system
                 passEvent = false;
+            }
+            else if (CurrentStarSystem.name == theEvent.system && Environment == Constants.ENVIRONMENT_WITCH_SPACE)
+            {
+                passEvent = true;
+                
+                // Jumped event following a Jumping event, so most information is up-to-date but we should pass this anyway for
+                // plugin triggers
+
+                // The information in the event is more up-to-date than the information we obtain from external sources, so update it here
+                CurrentStarSystem.allegiance = theEvent.allegiance;
+                CurrentStarSystem.faction = theEvent.faction;
+                CurrentStarSystem.primaryeconomy = theEvent.economy;
+                CurrentStarSystem.government = theEvent.government;
+                CurrentStarSystem.security = theEvent.security;
+                setCommanderTitle();
             }
             else
             {
@@ -520,10 +537,12 @@ namespace Eddi
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                // After jump we are always in supercruise
-                Environment = Constants.ENVIRONMENT_SUPERCRUISE;
                 setCommanderTitle();
             }
+
+            // After jump has completed we are always in supercruise
+            Environment = Constants.ENVIRONMENT_SUPERCRUISE;
+
             return passEvent;
         }
 

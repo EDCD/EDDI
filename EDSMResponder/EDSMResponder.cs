@@ -14,6 +14,7 @@ namespace EddiEdsmResponder
     public class EDSMResponder : EDDIResponder
     {
         private StarMapService starMapService;
+        private string system;
 
         public string ResponderName()
         {
@@ -73,12 +74,29 @@ namespace EddiEdsmResponder
         {
             if (starMapService != null)
             {
-                if (theEvent is JumpedEvent)
+                // We could receive either or both of JumpingEvent and JumpedEvent.  Send EDSM update as soon as possible,
+                // but don't send it twice
+                if (theEvent is JumpingEvent)
+                {
+                    JumpingEvent jumpingEvent = (JumpingEvent)theEvent;
+
+                    if (jumpingEvent.system != system)
+                    {
+                        Logging.Debug("Sending jump data to EDSM (jumping)");
+                        starMapService.sendStarMapLog(jumpingEvent.timestamp, jumpingEvent.system, jumpingEvent.x, jumpingEvent.y, jumpingEvent.z);
+                        system = jumpingEvent.system;
+                    }
+                }
+                else if (theEvent is JumpedEvent)
                 {
                     JumpedEvent jumpedEvent = (JumpedEvent)theEvent;
 
-                    Logging.Debug("Sending jump data to EDSM");
-                    starMapService.sendStarMapLog(jumpedEvent.timestamp, jumpedEvent.system, jumpedEvent.x, jumpedEvent.y, jumpedEvent.z);
+                    if (jumpedEvent.system != system)
+                    {
+                        Logging.Debug("Sending jump data to EDSM (jumped)");
+                        starMapService.sendStarMapLog(jumpedEvent.timestamp, jumpedEvent.system, jumpedEvent.x, jumpedEvent.y, jumpedEvent.z);
+                        system = jumpedEvent.system;
+                    }
                 }
             }
         }
