@@ -254,6 +254,8 @@ EDDI also provides a number of pre-built commands to show off some of what it is
 
 To access these commands, as well as to obtain a number of commands that display the values of the variables listed above, import the "EDDI" VoiceAttack from the EDDI directory in to VoiceAttack.  To access these commands edit your own profile and set "Include commands from another profile" to "EDDI".
 
+Note that if you are running in VR, want to display your information on another tablet, or for some other reason do not want the functions listed above to open a web browser directly on your screen you can set the boolean value "EDDI use clipboard" and rather than (for example) showing your ship in Coriolis EDDI will construct a suitable URL and place it on the clipboard.
+
 ## Functions
 
 EDDI's VoiceAttack plugin allows you to access its features in your own profile.  Details of these functions are laid out below.

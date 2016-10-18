@@ -191,12 +191,13 @@ namespace EddiVoiceAttackResponder
 
         private static void InvokeConfiguration(ref dynamic vaProxy)
         {
-            Application.Current.Dispatcher.Invoke((Action)delegate
-            {
+            Thread thread = new Thread(() => {
                 MainWindow window = new MainWindow();
                 window.Primary = false;
                 window.Show();
             });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
         }
 
         /// <summary>Force-update EDDI's information</summary>
@@ -222,7 +223,7 @@ namespace EddiVoiceAttackResponder
 
                 setStatus(ref vaProxy, "Operational");
 
-                Process.Start(systemUri);
+                HandleUri(ref vaProxy, systemUri);
             }
             catch (Exception e)
             {
@@ -252,7 +253,7 @@ namespace EddiVoiceAttackResponder
 
                 Logging.Debug("Starting process with uri " + stationUri);
 
-                Process.Start(stationUri);
+                HandleUri(ref vaProxy, stationUri);
 
                 setStatus(ref vaProxy, "Operational");
             }
@@ -278,7 +279,7 @@ namespace EddiVoiceAttackResponder
 
                 Logging.Debug("Starting process with uri " + shipUri);
 
-                Process.Start(shipUri);
+                HandleUri(ref vaProxy, shipUri);
 
                 setStatus(ref vaProxy, "Operational");
             }
@@ -287,6 +288,25 @@ namespace EddiVoiceAttackResponder
                 setStatus(ref vaProxy, "Failed to send ship data to coriolis", e);
             }
             Logging.Debug("Leaving");
+        }
+
+        /// <summary>
+        /// Handle a URI, either sending it to the default web browser or putting it on the clipboard
+        /// </summary>
+        private static void HandleUri(ref dynamic vaProxy, string uri)
+        {
+            bool? useClipboard = vaProxy.GetBoolean("EDDI use clipboard");
+            if (useClipboard != null && useClipboard == true)
+            {
+                Thread thread = new Thread(() => Clipboard.SetText(uri));
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
+                thread.Join();
+            }
+            else
+            {
+                Process.Start(uri);
+            }
         }
 
         /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
