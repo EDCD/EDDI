@@ -78,7 +78,7 @@ namespace EddiDataProviderService
             StarSystem.y = json["y"] == null ? y : (decimal?)json["y"];
             StarSystem.z = json["z"] == null ? y : (decimal?)json["z"];
 
-            if (json["updated_at"] != null)
+            if (json["is_populated"] != null)
             {
                 // We have real data so populate the rest of the data
                 StarSystem.EDDBID = (long)json["id"];

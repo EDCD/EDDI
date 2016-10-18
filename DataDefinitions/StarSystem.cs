@@ -10,8 +10,6 @@ namespace EddiDataDefinitions
     /// <summary>Details for a star system</summary>
     public class StarSystem
     {
-        // The ID in Elite: Dangerous' database
-        public long EDID { get; set; }
         // The ID in EDDB
         public long EDDBID { get; set; }
         public string name { get; set; }
