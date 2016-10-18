@@ -36,7 +36,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
 
 [Files]
-Source: "{#SourcePath}\EDDI\bin\Debug\Eddi.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}\EDDI\bin\Debug\EDDI.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}\EDDI\bin\Debug\x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#SourcePath}\EDDI\bin\Debug\x86\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "{#SourcePath}\EDDI\bin\Debug\CommonMark.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -69,10 +69,14 @@ Source: "{#SourcePath}\EDDI\bin\Debug\System.Data.SQLite.EF6.dll"; DestDir: "{ap
 Source: "{#SourcePath}\EDDI\bin\Debug\System.Data.SQLite.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}\EDDI\bin\Debug\Utilities.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}\EDDI\bin\Debug\Variables.md"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}\EDDI\EDDI.ico"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}\VoiceAttackResponder\EDDI.vap"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}\VoiceAttackResponder\obj\Debug\EddiVoiceAttackResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+
+; Remove outdated files
+[InstallDelete]
+Type: files; Name: "{app}\Eddi.exe"
+Type: files; Name: "{app}\EDDI.ico"
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
