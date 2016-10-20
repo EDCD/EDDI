@@ -43,11 +43,11 @@ namespace EddiJournalMonitor
                     {
                         if (data["timestamp"] is DateTime)
                         {
-                            timestamp = (DateTime)data["timestamp"];
+                            timestamp = ((DateTime)data["timestamp"]).ToUniversalTime();
                         }
                         else
                         {
-                            timestamp = DateTime.Parse((string)data["timestamp"]);
+                            timestamp = DateTime.Parse((string)data["timestamp"]).ToUniversalTime();
                         }
                     }
                     else

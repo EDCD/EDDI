@@ -80,7 +80,7 @@ namespace EddiNetLogMonitor
                 if (starSystem != lastStarsystem)
                 {
                     // Change of system
-                    theEvent = new JumpingEvent(DateTime.Now, starSystem, x, y, z);
+                    theEvent = new JumpingEvent(DateTime.Now.ToUniversalTime(), starSystem, x, y, z);
                     lastStarsystem = starSystem;
                     lastEnvironment = environment;
                 }
@@ -89,12 +89,12 @@ namespace EddiNetLogMonitor
                     // Change of environment
                     if (environment == "Supercruise")
                     {
-                        theEvent = new EnteredSupercruiseEvent(DateTime.Now, EDDI.Instance.CurrentStarSystem.name);
+                        theEvent = new EnteredSupercruiseEvent(DateTime.Now.ToUniversalTime(), EDDI.Instance.CurrentStarSystem.name);
                         lastEnvironment = environment;
                     }
                     else if (environment == "NormalFlight")
                     {
-                        theEvent = new EnteredNormalSpaceEvent(DateTime.Now, EDDI.Instance.CurrentStarSystem.name, null, null);
+                        theEvent = new EnteredNormalSpaceEvent(DateTime.Now.ToUniversalTime(), EDDI.Instance.CurrentStarSystem.name, null, null);
                         lastEnvironment = environment;
                     }
                 }
