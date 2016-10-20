@@ -82,8 +82,12 @@ namespace EddiDataProviderService
                 {
                     system = new StarSystem();
                     system.name = name;
-                    system.visits = 0;
                 }
+                if (system.lastvisit == null)
+                {
+                    system.lastvisit = DateTime.Now;
+                }
+                insertStarSystem(system);
             }
             return system;
         }
