@@ -518,13 +518,13 @@ namespace EddiJournalMonitor
                                 int? storedShipId = (val == null ? (int?)null : (int)(long)val);
                                 data.TryGetValue("StoreOldShip", out val);
                                 string storedShipModel = (string)val;
-                                Ship storedShip = findShip(storedShipId, storedShipModel);
+                                Ship storedShip = storedShipId == null ? null : findShip(storedShipId, storedShipModel);
 
                                 data.TryGetValue("SellShipID", out val);
                                 int? soldShipId = (val == null ? (int?)null : (int)(long)val);
                                 data.TryGetValue("SellOldShip", out val);
                                 string soldShipModel = (string)val;
-                                Ship soldShip = findShip(soldShipId, soldShipModel);
+                                Ship soldShip = soldShipId == null ? null : findShip(soldShipId, soldShipModel);
 
                                 data.TryGetValue("SellPrice", out val);
                                 long? soldPrice = (long?)val;
@@ -573,13 +573,13 @@ namespace EddiJournalMonitor
                                 int? storedShipId = (val == null ? (int?)null : (int)(long)val);
                                 data.TryGetValue("StoreOldShip", out val);
                                 string storedShipModel = (string)val;
-                                Ship storedShip = findShip(storedShipId, storedShipModel);
+                                Ship storedShip = storedShipId == null ? null : findShip(storedShipId, storedShipModel);
 
                                 data.TryGetValue("SellShipID", out val);
                                 int? soldShipId = (val == null ? (int?)null : (int)(long)val);
                                 data.TryGetValue("SellOldShip", out val);
                                 string soldShipModel = (string)val;
-                                Ship soldShip = findShip(soldShipId, soldShipModel);
+                                Ship soldShip = soldShipId == null ? null : findShip(soldShipId, soldShipModel);
 
                                 journalEvent = new ShipSwappedEvent(timestamp, ship, soldShip, storedShip);
                             }
