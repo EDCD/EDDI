@@ -621,16 +621,16 @@ namespace EddiVoiceAttackResponder
             try
             {
                 vaProxy.SetText("Name", cmdr == null ? null : cmdr.name);
-                vaProxy.SetInt("Combat rating", cmdr == null ? (int?)null : cmdr.combatrating.rank);
-                vaProxy.SetText("Combat rank", cmdr == null ? null : cmdr.combatrating.name);
-                vaProxy.SetInt("Trade rating", cmdr == null ? (int?)null : cmdr.traderating.rank);
-                vaProxy.SetText("Trade rank", cmdr == null ? null : cmdr.traderating.name);
-                vaProxy.SetInt("Explore rating", cmdr == null ? (int?)null : cmdr.explorationrating.rank);
-                vaProxy.SetText("Explore rank", cmdr == null ? null : cmdr.explorationrating.name);
-                vaProxy.SetInt("Empire rating", cmdr == null ? (int?)null : cmdr.empirerating.rank);
-                vaProxy.SetText("Empire rank", cmdr == null ? null : cmdr.empirerating.name);
-                vaProxy.SetInt("Federation rating", cmdr == null ? (int?)null : cmdr.federationrating.rank);
-                vaProxy.SetText("Federation rank", cmdr == null ? null : cmdr.federationrating.name);
+                vaProxy.SetInt("Combat rating", cmdr == null || cmdr.combatrating == null ? (int?)null : cmdr.combatrating.rank);
+                vaProxy.SetText("Combat rank", cmdr == null || cmdr.combatrating == null ? null : cmdr.combatrating.name);
+                vaProxy.SetInt("Trade rating", cmdr == null || cmdr.traderating == null ? (int?)null : cmdr.traderating.rank);
+                vaProxy.SetText("Trade rank", cmdr == null || cmdr.traderating == null ? null : cmdr.traderating.name);
+                vaProxy.SetInt("Explore rating", cmdr == null || cmdr.explorationrating == null ? (int?)null : cmdr.explorationrating.rank);
+                vaProxy.SetText("Explore rank", cmdr == null || cmdr.explorationrating == null ? null : cmdr.explorationrating.name);
+                vaProxy.SetInt("Empire rating", cmdr == null || cmdr.empirerating == null ? (int?)null : cmdr.empirerating.rank);
+                vaProxy.SetText("Empire rank", cmdr == null || cmdr.empirerating == null ? null : cmdr.empirerating.name);
+                vaProxy.SetInt("Federation rating", cmdr == null || cmdr.federationrating == null ? (int?)null : cmdr.federationrating.rank);
+                vaProxy.SetText("Federation rank", cmdr == null || cmdr.federationrating == null ? null : cmdr.federationrating.name);
                 vaProxy.SetDecimal("Credits", cmdr == null ? (decimal?)null : cmdr.credits);
                 vaProxy.SetText("Credits (spoken)", cmdr == null ? null : Translations.Humanize(cmdr.credits));
                 vaProxy.SetDecimal("Debt", cmdr == null ? (decimal?)null : cmdr.debt);
@@ -662,15 +662,15 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " model", ship == null ? null : ship.model);
                 vaProxy.SetText(prefix + " model (spoken)", ship == null ? null : ship.SpokenModel());
 
-                if (EDDI.Instance.Ship != null && EDDI.Instance.Cmdr != null)
+                if (EDDI.Instance.Ship != null && EDDI.Instance.Cmdr != null && EDDI.Instance.Cmdr.name != null)
                 {
                     vaProxy.SetText(prefix + " callsign", ship == null ? null : ship.manufacturer + " " + EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant());
                     vaProxy.SetText(prefix + " callsign (spoken)", ship == null ? null : ship.SpokenManufacturer() + " " + Translations.CallSign(EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant()));
                 }
 
                 vaProxy.SetText(prefix + " name", ship == null ? null : ship.name);
-                vaProxy.SetText(prefix + " role", ship == null ? null : ship.role.ToString());
-                vaProxy.SetText(prefix + " size", ship == null ? null : ship.size.ToString());
+                vaProxy.SetText(prefix + " role", ship == null || ship.role == null ? null : ship.role.ToString());
+                vaProxy.SetText(prefix + " size", ship == null || ship.size == null ? null : ship.size.ToString());
                 vaProxy.SetDecimal(prefix + " value", ship == null ? (decimal?)null : ship.value);
                 vaProxy.SetText(prefix + " value (spoken)", ship == null ? null : Translations.Humanize(ship.value));
                 vaProxy.SetDecimal(prefix + " health", ship == null ? (decimal?)null : ship.health);
