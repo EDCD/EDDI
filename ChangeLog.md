@@ -1,4 +1,9 @@
-#1.x
+#2.0.0b1
+  * Complete rework of product and VoiceAttack integration
+  * EDDI no longer dependent on VoiceAttack for spoken responses to events
+  * Use Frontier journal in addition to netlog to provide more events
+  * Plugin architecture for monitors (that provide events) and responders (that act on events)
+  * Introduction of personalities - bundles of responses for the speech responder 
   * Fix issue with text-to-speech engines mispronouncing sector names with two-letter phrases such as DR and NY
 #1.4.0
   * Rework network communications to provide better debug information

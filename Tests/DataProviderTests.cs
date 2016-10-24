@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EliteDangerousCompanionAppService;
-using EliteDangerousDataDefinitions;
+using EddiCompanionAppService;
+using EddiDataDefinitions;
 using System.Collections.Generic;
-using EliteDangerousDataProviderService;
+using EddiDataProviderService;
 
 namespace Tests
 {
@@ -13,7 +13,7 @@ namespace Tests
         public void TestEmptySystem()
         {
             StarSystem starSystem = DataProviderService.GetSystemData("Lagoon Sector GW-V b2-6", null, null, null);
-            Assert.IsNotNull(starSystem.Stations);
+            Assert.IsNotNull(starSystem.stations);
         }
     }
 }
