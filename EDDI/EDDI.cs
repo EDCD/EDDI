@@ -507,7 +507,7 @@ namespace Eddi
             else if (CurrentStarSystem.name == theEvent.system && Environment == Constants.ENVIRONMENT_WITCH_SPACE)
             {
                 passEvent = true;
-                
+
                 // Jumped event following a Jumping event, so most information is up-to-date but we should pass this anyway for
                 // plugin triggers
 
@@ -603,55 +603,62 @@ namespace Eddi
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
         public void refreshProfile()
         {
-            if (CompanionAppService.Instance != null)
+            if (CompanionAppService.Instance != null && CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
             {
-                Profile profile = CompanionAppService.Instance.Profile();
-                if (profile != null)
+                try
                 {
-                    // Use the profile as primary information for our commander and shipyard
-                    Cmdr = profile.Cmdr;
-                    Shipyard = profile.Shipyard;
-
-                    // Only use the ship information if we agree that this is the correct ship to use
-                    if (Ship.model == null || profile.Ship.LocalId == Ship.LocalId)
+                    Profile profile = CompanionAppService.Instance.Profile();
+                    if (profile != null)
                     {
-                        SetShip(profile.Ship);
-                    }
+                        // Use the profile as primary information for our commander and shipyard
+                        Cmdr = profile.Cmdr;
+                        Shipyard = profile.Shipyard;
 
-                    // Only set the current star system if it is not present, otherwise we leave it to events
-                    if (CurrentStarSystem == null)
-                    {
-                        CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
-                        setSystemDistanceFromHome(CurrentStarSystem);
-                    }
+                        // Only use the ship information if we agree that this is the correct ship to use
+                        if (Ship.model == null || profile.Ship.LocalId == Ship.LocalId)
+                        {
+                            SetShip(profile.Ship);
+                        }
 
-                    if (LastStation == null)
-                    {
-                        Logging.Info("No last station; using the information available to us from the profile");
-                    }
-                    else
-                    {
-                        Logging.Info("Internal last station is " + LastStation.name + "@" + LastStation.systemname + ", profile last station is " + LastStation.name + "@" + LastStation.systemname);
-                    }
+                        // Only set the current star system if it is not present, otherwise we leave it to events
+                        if (CurrentStarSystem == null)
+                        {
+                            CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
+                            setSystemDistanceFromHome(CurrentStarSystem);
+                        }
 
-                    // Last station's name should be set from the journal, so we confirm that this is correct
-                    // before we update the commodity and outfitting information
-                    if (LastStation == null)
-                    {
-                        // No current info so use profile data directly
-                        LastStation = profile.LastStation;
-                    }
-                    else if (LastStation.systemname == profile.LastStation.systemname && LastStation.name == profile.LastStation.name)
-                    {
-                        // Match for our expected station with the information returned from the profile
+                        if (LastStation == null)
+                        {
+                            Logging.Info("No last station; using the information available to us from the profile");
+                        }
+                        else
+                        {
+                            Logging.Info("Internal last station is " + LastStation.name + "@" + LastStation.systemname + ", profile last station is " + LastStation.name + "@" + LastStation.systemname);
+                        }
 
-                        // Update the outfitting, commodities and shipyard with the data obtained from the profile
-                        LastStation.outfitting = profile.LastStation.outfitting;
-                        LastStation.commodities = profile.LastStation.commodities;
-                        LastStation.shipyard = profile.LastStation.shipyard;
-                    }
+                        // Last station's name should be set from the journal, so we confirm that this is correct
+                        // before we update the commodity and outfitting information
+                        if (LastStation == null)
+                        {
+                            // No current info so use profile data directly
+                            LastStation = profile.LastStation;
+                        }
+                        else if (LastStation.systemname == profile.LastStation.systemname && LastStation.name == profile.LastStation.name)
+                        {
+                            // Match for our expected station with the information returned from the profile
 
-                    setCommanderTitle();
+                            // Update the outfitting, commodities and shipyard with the data obtained from the profile
+                            LastStation.outfitting = profile.LastStation.outfitting;
+                            LastStation.commodities = profile.LastStation.commodities;
+                            LastStation.shipyard = profile.LastStation.shipyard;
+                        }
+
+                        setCommanderTitle();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Exception obtaining profile: " + ex.ToString());
                 }
             }
         }

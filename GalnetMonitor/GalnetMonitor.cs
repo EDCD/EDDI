@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading;
@@ -91,27 +92,34 @@ namespace GalnetMonitor
             {
                 List<News> newsItems = new List<News>();
                 string firstUid = null;
-                foreach (FeedItem item in new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(SOURCE))
+                try
                 {
-                    if (firstUid == null)
+                    foreach (FeedItem item in new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(SOURCE))
                     {
-                        // Obtain the ID of the first item that we read
-                        firstUid = item.Id;
-                        if (lastUid == null)
+                        if (firstUid == null)
                         {
-                            // We don't have any ID yet; use this as the marker
+                            // Obtain the ID of the first item that we read
+                            firstUid = item.Id;
+                            if (lastUid == null)
+                            {
+                                // We don't have any ID yet; use this as the marker
+                                break;
+                            }
+                        }
+
+                        if (item.Id == lastUid)
+                        {
+                            // Reached the first item we have already seen - go no further
                             break;
                         }
-                    }
 
-                    if (item.Id == lastUid)
-                    {
-                        // Reached the first item we have already seen - go no further
-                        break;
+                        News newsItem = new News(item.PublishDate.DateTime, item.Title, item.GetContent());
+                        newsItems.Add(newsItem);
                     }
-
-                    News newsItem = new News(item.PublishDate.DateTime, item.Title, item.GetContent());
-                    newsItems.Add(newsItem);
+                }
+                catch (WebException wex)
+                {
+                    Logging.Error("Exception attempting to obtain galnet feed: " + wex.ToString());
                 }
 
                 if (newsItems.Count > 0)
