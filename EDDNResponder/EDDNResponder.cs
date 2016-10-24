@@ -102,7 +102,7 @@ namespace EDDNResponder
 
             EDDNBody body = new EDDNBody();
             body.header = generateHeader();
-            body.schemaRef = "http://schemas.elite-markets.net/eddn/journal/1/test";
+            body.schemaRef = "http://schemas.elite-markets.net/eddn/journal/1";
             body.message = data;
 
             sendMessage(body);
@@ -154,7 +154,7 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
-                    body.schemaRef = "http://schemas.elite-markets.net/eddn/commodity/3/test";
+                    body.schemaRef = "http://schemas.elite-markets.net/eddn/commodity/3";
                     body.message = data;
 
                     sendMessage(body);
@@ -188,7 +188,7 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
-                    body.schemaRef = "http://schemas.elite-markets.net/eddn/outfitting/2/test";
+                    body.schemaRef = "http://schemas.elite-markets.net/eddn/outfitting/2";
                     body.message = data;
 
                     sendMessage(body);
