@@ -150,10 +150,11 @@ namespace EddiSpeechResponder
             store["ShipName"] = new NativeFunction((values) =>
             {
                 int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);
-                Ship ship = findShip(localId, null);
+                string model = (values.Count == 2 ? values[1].AsString : null);
+                Ship ship = findShip(localId, model);
                 string result = (ship == null ? "your ship" : ship.SpokenName());
                 return result;
-            }, 0, 1);
+            }, 0, 2);
 
             store["ShipCallsign"] = new NativeFunction((values) =>
             {
@@ -163,7 +164,7 @@ namespace EddiSpeechResponder
                 string result;
                 if (ship != null)
                 {
-                    if (EDDI.Instance.Cmdr != null)
+                    if (EDDI.Instance.Cmdr != null && EDDI.Instance.Cmdr.name != null)
                     {
                         // Obtain the first three characters
                         string chars = new Regex("[^a-zA-Z0-9]").Replace(EDDI.Instance.Cmdr.name, "").ToUpperInvariant().Substring(0, 3);
@@ -171,7 +172,14 @@ namespace EddiSpeechResponder
                     }
                     else
                     {
-                        result = "unidentified " + ship.SpokenManufacturer() + " " + ship.SpokenModel();
+                        if (ship.SpokenManufacturer() == null)
+                        {
+                            result = "unidentified ship";
+                        }
+                        else
+                        {
+                            result = "unidentified " + ship.SpokenManufacturer() + " " + ship.SpokenModel();
+                        }
                     }
                 }
                 else
@@ -264,7 +272,7 @@ namespace EddiSpeechResponder
                 {
                     system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
                 }
-                Station result = system.stations.FirstOrDefault(v => v.name == values[0].AsString);
+                Station result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name == values[0].AsString) : null;
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1, 2);
 

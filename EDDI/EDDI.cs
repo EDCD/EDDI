@@ -698,11 +698,11 @@ namespace Eddi
                 Cmdr.title = "Commander";
                 if (CurrentStarSystem != null)
                 {
-                    if (CurrentStarSystem.allegiance == "Federation" && Cmdr.federationrating.rank > minFederationRankForTitle)
+                    if (CurrentStarSystem.allegiance == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
                     {
                         Cmdr.title = Cmdr.federationrating.name;
                     }
-                    else if (CurrentStarSystem.allegiance == "Empire" && Cmdr.empirerating.rank > minEmpireRankForTitle)
+                    else if (CurrentStarSystem.allegiance == "Empire" && Cmdr.empirerating != null && Cmdr.empirerating.rank > minEmpireRankForTitle)
                     {
                         Cmdr.title = Cmdr.empirerating.name;
                     }
