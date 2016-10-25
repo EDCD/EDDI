@@ -1445,9 +1445,9 @@ namespace EddiJournalMonitor
         private static Ship findShip(int? localId, string model)
         {
             Ship ship = null;
-            if (localId == null)
+            if (localId == null && model == null)
             {
-                // No local ID so take the current ship
+                // Default to the current ship
                 ship = EDDI.Instance.Ship;
             }
             else
@@ -1467,6 +1467,7 @@ namespace EddiJournalMonitor
             {
                 // Provide a basic ship based on the model template
                 ship = ShipDefinitions.FromEDModel(model);
+                ship.LocalId = localId == null ? 0 : (int)localId;
             }
             return ship;
         }

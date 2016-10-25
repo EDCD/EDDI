@@ -84,20 +84,20 @@ namespace EddiNetLogMonitor
                     lastStarsystem = starSystem;
                     lastEnvironment = environment;
                 }
-                else if (environment != lastEnvironment)
-                {
-                    // Change of environment
-                    if (environment == "Supercruise")
-                    {
-                        theEvent = new EnteredSupercruiseEvent(DateTime.Now.ToUniversalTime(), EDDI.Instance.CurrentStarSystem.name);
-                        lastEnvironment = environment;
-                    }
-                    else if (environment == "NormalFlight")
-                    {
-                        theEvent = new EnteredNormalSpaceEvent(DateTime.Now.ToUniversalTime(), EDDI.Instance.CurrentStarSystem.name, null, null);
-                        lastEnvironment = environment;
-                    }
-                }
+                //else if (environment != lastEnvironment)
+                //{
+                //    // Change of environment
+                //    if (environment == "Supercruise")
+                //    {
+                //        theEvent = new EnteredSupercruiseEvent(DateTime.Now.ToUniversalTime(), starSystem);
+                //        lastEnvironment = environment;
+                //    }
+                //    else if (environment == "NormalFlight")
+                //    {
+                //        theEvent = new EnteredNormalSpaceEvent(DateTime.Now.ToUniversalTime(), starSystem, null, null);
+                //        lastEnvironment = environment;
+                //    }
+                //}
             }
             if (theEvent != null)
             {
