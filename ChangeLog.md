@@ -1,3 +1,50 @@
+#2.0.0b1
+  * Complete rework of product and VoiceAttack integration
+  * EDDI no longer dependent on VoiceAttack for spoken responses to events
+  * Use Frontier journal in addition to netlog to provide more events
+  * Plugin architecture for monitors (that provide events) and responders (that act on events)
+  * Introduction of personalities - bundles of responses for the speech responder 
+  * Fix issue with text-to-speech engines mispronouncing sector names with two-letter phrases such as DR and NY
+#1.4.0
+  * Rework network communications to provide better debug information
+  * Unify logging to a single file
+  * Always use the selected voice's default language when using phonemes
+  * Validate spoken ship names for valid IPA
+  * Provide more details when obtaining EDSM logs from configuration UI
+  * Use local store as primary for star system data and update EDSM asynchronously
+  * Silently drop existing phonetic ship names with invalid IPA
+
+#1.3.5
+  * Tweaks to increase volume of processed voice
+  * Fix issue with last utility slots on large ships being missed
+  * Add verbose logging option to configuration UI
+  * Add definition for huge burst lasers (fixed, gimballed)
+  * Avoid hang when sending to EDSM
+  * Avoid hang when sending to EDDP
+  * Provide local co-ordinates when systems are not available in EDSM
+  * Never write credentials to log file
+
+#1.3.1
+  * Add station variables.  Note that these are all prefixed 'Last station' because there is no way of knowing if a ship is currently docked at a station or has already left it from the information provided in the API
+      * Last station name (string): the name of the last station
+      * Last station faction (string): the name of the controlling faction of the last station
+      * Last station government (string): the name of the government of the last station
+      * Last station allegiance (string): the name of the allegiance of the last station (Federation, Empire, etc.)
+      * Last station state (string): the name of the state of the last station (boom, outbreak, etc.)
+      * Last station distance from star (decimal): the distance from the primary star to this station, in light seconds
+      * Last station primary economy (string): the primary economy of this station (extraction, prison colony, etc.)
+      * Last station secondary economy (string): the secondary economy of this station (extraction, prison colony, etc.)
+      * Last station tertiary economy (string): the tertiary economy of this station (extraction, prison colony, etc.)
+      * Last station has refuel (boolean): true if this station has refuel capability
+      * Last station has rearm (boolean): true if this station has rearm capability
+      * Last station has repair (boolean): true if this station has repair capability
+      * Last station has market (boolean): true if this station has a commodities market
+      * Last station has black market (boolean): true if this station has a black market
+      * Last station has outfitting (boolean): true if this station has outfitting
+      * Last station has shipyard (boolean): true if this station has a shipyard
+  * Add more system translations
+  * Fix issue with 0-cargo ships causing profile problems
+
 #1.3.0
   * Fix issue where unknown systems provided an incorrect JSON result
   * Add command to show the current system in EDDB

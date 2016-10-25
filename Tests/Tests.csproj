@@ -37,8 +37,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CSCore, Version=1.1.5860.21642, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
-      <HintPath>..\packages\CSCore.1.1-beta2\lib\net35-client\CSCore.dll</HintPath>
+    <Reference Include="Cottle, Version=1.3.2.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cottle.1.3.2.2\lib\net35\Cottle.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CSCore, Version=1.1.5992.18249, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
+      <HintPath>..\packages\CSCore.1.1.0\lib\net35-client\CSCore.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -49,22 +53,30 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="MathNet.Numerics, Version=3.13.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.3.13.1\lib\net40\MathNet.Numerics.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Razor.1.0.0\lib\net451\Microsoft.AspNetCore.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Data.SQLite, Version=1.0.99.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Core.1.0.99.0\lib\net451\System.Data.SQLite.dll</HintPath>
+    <Reference Include="System.Data.SQLite, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.103\lib\net451\System.Data.SQLite.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Data.SQLite.EF6, Version=1.0.99.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.99.0\lib\net451\System.Data.SQLite.EF6.dll</HintPath>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.103\lib\net451\System.Data.SQLite.EF6.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.99.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.99.0\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.103\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Speech" />
@@ -77,11 +89,17 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="GeneratorTests.cs" />
+    <Compile Include="JournalMonitorTests.cs" />
+    <Compile Include="VersioningTests.cs" />
+    <Compile Include="StarTests.cs" />
     <Compile Include="DataProviderTests.cs" />
     <Compile Include="SpeechTests.cs" />
     <Compile Include="StarMapServiceTests.cs" />
@@ -89,37 +107,58 @@
     <Compile Include="CommanderDataTests.cs" />
     <Compile Include="CoriolisTests.cs" />
     <Compile Include="NetLogMonitorTests.cs" />
+    <Compile Include="ScriptResolverTest.cs" />
     <Compile Include="VoiceAttackPluginTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EliteDangerousCompanionAppService\EliteDangerousCompanionAppService.csproj">
+    <ProjectReference Include="..\EDDI\Eddi.csproj">
+      <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
+      <Name>Eddi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
       <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
-      <Name>EliteDangerousCompanionAppService</Name>
+      <Name>EddiCompanionAppService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousDataDefinitions\EliteDangerousDataDefinitions.csproj">
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
-      <Name>EliteDangerousDataDefinitions</Name>
+      <Name>EddiDataDefinitions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousDataProviderService\EliteDangerousDataProviderService.csproj">
+    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
       <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
-      <Name>EliteDangerousDataProviderService</Name>
+      <Name>EddiDataProviderService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EDDIVAPlugin\EDDIVAPlugin.csproj">
-      <Project>{e98b76a0-b7bc-4f59-8e4f-bd16b22a5ac6}</Project>
-      <Name>EDDIVAPlugin</Name>
+    <ProjectReference Include="..\Events\EddiEvents.csproj">
+      <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
+      <Name>EddiEvents</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousNetLogMonitor\EliteDangerousNetLogMonitor.csproj">
+    <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj">
+      <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>
+      <Name>EddiJournalMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetLogMonitor\EddiNetLogMonitor.csproj">
       <Project>{0928ade6-f260-4820-afbc-1661130c3474}</Project>
-      <Name>EliteDangerousNetLogMonitor</Name>
+      <Name>EddiNetLogMonitor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousSpeechService\EliteDangerousSpeechService.csproj">
+    <ProjectReference Include="..\SpeechResponder\EddiSpeechResponder.csproj">
+      <Project>{b164baec-9d66-4846-b152-2f8914406b89}</Project>
+      <Name>EddiSpeechResponder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
       <Project>{19572a69-c13a-459d-ab72-2b0f034ac27f}</Project>
-      <Name>EliteDangerousSpeechService</Name>
+      <Name>EddiSpeechService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EliteDangerousStarMapService\EliteDangerousStarMapService.csproj">
+    <ProjectReference Include="..\StarMapService\EddiStarMapService.csproj">
       <Project>{6614e6ad-65ae-49fc-850b-9df79d1cc998}</Project>
-      <Name>EliteDangerousStarMapService</Name>
+      <Name>EddiStarMapService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VoiceAttackResponder\EddiVoiceAttackResponder.csproj">
+      <Project>{8cfe0309-d2cb-4ff3-9a30-6c52a1345d08}</Project>
+      <Name>EddiVoiceAttackResponder</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -149,12 +188,12 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\System.Data.SQLite.Core.1.0.99.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.99.0\build\net451\System.Data.SQLite.Core.targets')" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.103\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.103\build\net451\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.99.0\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.99.0\build\net451\System.Data.SQLite.Core.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.103\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.103\build\net451\System.Data.SQLite.Core.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
