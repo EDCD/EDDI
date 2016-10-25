@@ -1,7 +1,11 @@
+#2.0.3
+   * Fix issue where jumps are not announced if the companion API is unavailable
+
 #2.0.2
   * Fix crash when companion API does not return correct information
   * Fix crash when starting EDDI after Elite has started
   * Attempt to patch around missing information when companion API does not provide it
+
 #2.0.1
   * Complete rework of product and VoiceAttack integration
   * EDDI no longer dependent on VoiceAttack for spoken responses to events
