@@ -457,31 +457,24 @@ namespace Eddi
         {
             bool passEvent;
             Logging.Debug("Jumping to " + theEvent.system);
-            if (CurrentStarSystem == null)
+            if (CurrentStarSystem == null || CurrentStarSystem.name != theEvent.system)
             {
-                // Initialisation; don't pass the event along
-                passEvent = false;
-            }
-            else if (CurrentStarSystem.name == theEvent.system)
-            {
-                // Restatement of current system
-                passEvent = false;
-            }
-            else
-            {
+                // New system
                 passEvent = true;
                 updateCurrentSystem(theEvent.system);
-                if (CurrentStarSystem.x == null)
-                {
-                    // Star system is missing co-ordinates to take them from the event
-                    CurrentStarSystem.x = theEvent.x;
-                    CurrentStarSystem.y = theEvent.y;
-                    CurrentStarSystem.z = theEvent.z;
-                }
+                // The information in the event is more up-to-date than the information we obtain from external sources, so update it here
+                CurrentStarSystem.x = theEvent.x;
+                CurrentStarSystem.y = theEvent.y;
+                CurrentStarSystem.z = theEvent.z;
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 setCommanderTitle();
+            }
+            else
+            {
+                // Restatement of current system
+                passEvent = false;
             }
 
             // Whilst jumping we are in witch space
@@ -494,10 +487,25 @@ namespace Eddi
         {
             bool passEvent;
             Logging.Debug("Jumped to " + theEvent.system);
-            if (CurrentStarSystem == null)
+            if (CurrentStarSystem == null || CurrentStarSystem.name != theEvent.system)
             {
-                // Initialisation; don't pass the event along
-                passEvent = false;
+                // New system
+                passEvent = true;
+                updateCurrentSystem(theEvent.system);
+                // The information in the event is more up-to-date than the information we obtain from external sources, so update it here
+                CurrentStarSystem.x = theEvent.x;
+                CurrentStarSystem.y = theEvent.y;
+                CurrentStarSystem.z = theEvent.z;
+                CurrentStarSystem.allegiance = theEvent.allegiance;
+                CurrentStarSystem.faction = theEvent.faction;
+                CurrentStarSystem.primaryeconomy = theEvent.economy;
+                CurrentStarSystem.government = theEvent.government;
+                CurrentStarSystem.security = theEvent.security;
+
+                CurrentStarSystem.visits++;
+                CurrentStarSystem.lastvisit = DateTime.Now;
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                setCommanderTitle();
             }
             else if (CurrentStarSystem.name == theEvent.system && Environment == Constants.ENVIRONMENT_SUPERCRUISE)
             {
