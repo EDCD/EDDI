@@ -11,7 +11,6 @@ using System.Net;
 
 namespace Utilities
 {
-
     public class Logging
     {
         public static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";

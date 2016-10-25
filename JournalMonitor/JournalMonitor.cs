@@ -232,27 +232,49 @@ namespace EddiJournalMonitor
                                 Superpower superpowerFaction = Superpower.FromEDName(victimFaction);
                                 victimFaction = superpowerFaction != null ? superpowerFaction.name : victimFaction;
 
-                                data.TryGetValue("TotalReward", out val);
-                                long reward = (long)val;
-
-                                // Obtain list of rewards
-                                data.TryGetValue("Rewards", out val);
-                                List<object> rewardsData = (List<object>)val;
+                                long reward;
                                 List<Reward> rewards = new List<Reward>();
-                                if (rewardsData != null)
+
+                                if (data.ContainsKey("Reward"))
                                 {
-                                    foreach (Dictionary<string, object> rewardData in rewardsData)
+                                    // Old-style
+                                    data.TryGetValue("Reward", out val);
+                                    reward = (long)val;
+                                    if (reward == 0)
                                     {
-                                        rewardData.TryGetValue("Faction", out val);
-                                        string factionName = (string)val;
-                                        // Might be a superpower...
-                                        superpowerFaction = Superpower.FromEDName(factionName);
-                                        factionName = superpowerFaction != null ? superpowerFaction.name : factionName;
+                                        // 0-credit reward; ignore
+                                        break;
+                                    }
+                                    data.TryGetValue("Faction", out val);
+                                    string factionName = (string)val;
+                                    // Might be a superpower...
+                                    superpowerFaction = Superpower.FromEDName(factionName);
+                                    factionName = superpowerFaction != null ? superpowerFaction.name : factionName;
+                                    rewards.Add(new Reward(factionName, reward));
+                                }
+                                else
+                                {
+                                    data.TryGetValue("TotalReward", out val);
+                                    reward = (long)val;
 
-                                        rewardData.TryGetValue("Reward", out val);
-                                        long factionReward = (long)val;
+                                    // Obtain list of rewards
+                                    data.TryGetValue("Rewards", out val);
+                                    List<object> rewardsData = (List<object>)val;
+                                    if (rewardsData != null)
+                                    {
+                                        foreach (Dictionary<string, object> rewardData in rewardsData)
+                                        {
+                                            rewardData.TryGetValue("Faction", out val);
+                                            string factionName = (string)val;
+                                            // Might be a superpower...
+                                            superpowerFaction = Superpower.FromEDName(factionName);
+                                            factionName = superpowerFaction != null ? superpowerFaction.name : factionName;
 
-                                        rewards.Add(new Reward(factionName, factionReward));
+                                            rewardData.TryGetValue("Reward", out val);
+                                            long factionReward = (long)val;
+
+                                            rewards.Add(new Reward(factionName, factionReward));
+                                        }
                                     }
                                 }
 
@@ -386,7 +408,7 @@ namespace EddiJournalMonitor
                                 decimal radius = (decimal)(double)val;
 
                                 data.TryGetValue("OrbitalPeriod", out val);
-                                decimal? orbitalperiod = (decimal)(double)val;
+                                decimal? orbitalperiod = (decimal?)(double?)val;
 
                                 data.TryGetValue("RotationPeriod", out val);
                                 decimal rotationperiod = (decimal)(double)val;
@@ -1245,18 +1267,18 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
-                        case "RedeemVoucher":
-                            {
-                                object val;
-                                data.TryGetValue("Amount", out val);
-                                decimal amount = (decimal)(double)val;
-                                data.TryGetValue("Cost", out val);
-                                long price = (long)val;
+                        //case "RedeemVoucher":
+                        //    {
+                        //        object val;
+                        //        data.TryGetValue("Amount", out val);
+                        //        decimal amount = (decimal)(double)val;
+                        //        data.TryGetValue("Cost", out val);
+                        //        long price = (long)val;
 
-                                journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
-                                handled = true;
-                                break;
-                            }
+                        //        journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
+                        //        handled = true;
+                        //        break;
+                        //    }
                         case "CommunityGoalJoin":
                             {
                                 object val;
