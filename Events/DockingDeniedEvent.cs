@@ -17,7 +17,7 @@ namespace EddiEvents
         static DockingDeniedEvent()
         {
             VARIABLES.Add("station", "The station at which the commander has been denied docking");
-            VARIABLES.Add("reason", "The station at which the commander has been denied docking");
+            VARIABLES.Add("reason", "The reason why commander has been denied docking (too far, fighter deployed etc)");
         }
 
         [JsonProperty("station")]

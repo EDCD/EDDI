@@ -4,7 +4,7 @@ EDDI interfaces with VoiceAttack in two ways.  Firstly, it generates a large num
 
 ## Installing EDDI for VoiceAttack
 
-N.B. EDDI requires at least version 1.8.12.22 of VoiceAttack to function correctly.
+N.B. EDDI requires at least version 1.5.12.22 of VoiceAttack to function correctly.
 
 For EDDI to work with VoiceAttack it must be installed as a VoiceAttack plugin.  To do this EDDI should be installed within the `Apps` directory of your VoiceAttack installation.
 
@@ -149,9 +149,9 @@ If a value is not available it will be not set rather than empty.
   * {TXT:System power (spoken)}: the name of the power that controls the system as would be spoken (e.g. "Ashling Du-val")
   * {TXT:System power state}: the state of the power in the system (e.g. "Expansion")
   * {TXT:System rank}: the rank of the Commander in the system (e.g. "Duke" if an Empire system, "Admiral" if a Federation system)
-  * {DEC:System X} the EDDB X co-ordinate of the system
-  * {DEC:System Y} the EDDB X co-ordinate of the system
-  * {DEC:System Z} the EDDB X co-ordinate of the system
+  * {DEC:System X} the X co-ordinate of the system
+  * {DEC:System Y} the Y co-ordinate of the system
+  * {DEC:System Z} the Z co-ordinate of the system
   * {INT:System stations}: the total number of stations, both in orbit and on planets, in the system
   * {INT:System orbital stations}: the number of orbital stations in the system
   * {INT:System starports}: the total number of orbital starports in the system
@@ -178,9 +178,9 @@ If a value is not available it will be not set rather than empty.
   * {TXT:Last system power (spoken)}: the name of the power that controls the last system as would be spoken
   * {TXT:Last system power state}: the state of the power in the last system (e.g. "Expansion")
   * {TXT:Last system rank}: the rank of the Commander in the last system (e.g. "Duke" if an Empire system, "Admiral" if a Federation system)
-  * {DEC:Last system X} the EDDB X co-ordinate of the last system
-  * {DEC:Last system Y} the EDDB X co-ordinate of the last system
-  * {DEC:Last system Z} the EDDB X co-ordinate of the last system
+  * {DEC:Last system X} the X co-ordinate of the last system
+  * {DEC:Last system Y} the Y co-ordinate of the last system
+  * {DEC:Last system Z} the Z co-ordinate of the last system
 
 ### Current Station Variables
 
@@ -524,7 +524,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-  * {TXT:EDDI docking denied reason} The station at which the commander has been denied docking
+  * {TXT:EDDI docking denied reason} The reason why commander has been denied docking (too far, fighter deployed etc)
   * {TXT:EDDI docking denied station} The station at which the commander has been denied docking
 
 ### Docking granted
