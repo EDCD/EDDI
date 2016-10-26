@@ -1,3 +1,8 @@
+#2.0.4
+   * Add FDev IDs for new ships and modules
+   * Add phonetic pronunciation for Lakon
+   * Fix issue where unknown IDs could cause a crash
+
 #2.0.3
    * Fix issue where jumps are not announced if the companion API is unavailable
 

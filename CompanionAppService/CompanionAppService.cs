@@ -681,7 +681,7 @@ namespace EddiCompanionAppService
                         if (cargo.commodity.name == null)
                         {
                             // Unknown commodity; log an error so that we can update the definitions
-                            Logging.Error("No commodity definition for cargo", cargoJson.ToString());
+                            Logging.Error("No commodity definition for cargo", cargoJson.ToString(Formatting.None));
                             cargo.commodity.name = name;
                         }
                         cargo.amount = (int)cargoJson["qty"];
@@ -811,7 +811,7 @@ namespace EddiCompanionAppService
                         if (Module.name == null)
                         {
                             // Unknown module; log an error so that we can update the definitions
-                            Logging.Error("No definition for outfitting module", module.ToString());
+                            Logging.Error("No definition for outfitting module", module.ToString(Formatting.None));
                         }
                         Module.price = module["cost"];
                         Modules.Add(Module);
@@ -877,7 +877,7 @@ namespace EddiCompanionAppService
             if (module.name == null)
             {
                 // Unknown module; log an error so that we can update the definitions
-                Logging.Error("No definition for ship module", + json["module"].ToString());
+                Logging.Error("No definition for ship module", json["module"].ToString(Formatting.None));
             }
 
             module.price = (long)json["module"]["value"];
