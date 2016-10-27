@@ -420,16 +420,16 @@ namespace EddiJournalMonitor
                                 decimal rotationperiod = (decimal)(double)val;
 
                                 data.TryGetValue("SemiMajorAxis", out val);
-                                decimal semimajoraxis = (decimal)(double)val;
+                                decimal? semimajoraxis = (decimal?)(double?)val;
 
                                 data.TryGetValue("Eccentricity", out val);
-                                decimal eccentricity = (decimal)(double)val;
+                                decimal? eccentricity = (decimal?)(double?)val;
 
                                 data.TryGetValue("OrbitalInclination", out val);
-                                decimal orbitalinclination = (decimal)(double)val;
+                                decimal? orbitalinclination = (decimal?)(double?)val;
 
                                 data.TryGetValue("Periapsis", out val);
-                                decimal periapsis = (decimal)(double)val;
+                                decimal? periapsis = (decimal?)(double?)val;
 
                                 data.TryGetValue("Rings", out val);
                                 List<object> ringsData = (List<object>)val;
@@ -563,7 +563,7 @@ namespace EddiJournalMonitor
                         case "ShipyardNew":
                             {
                                 object val;
-                                data.TryGetValue("ShipID", out val);
+                                data.TryGetValue("NewShipID", out val);
                                 int shipId = (int)(long)val;
                                 data.TryGetValue("ShipType", out val);
                                 string shipModel = (string)val;

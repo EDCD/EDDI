@@ -63,19 +63,19 @@ namespace EddiEvents
 
         public decimal rotationperiod { get; private set; }
 
-        public decimal semimajoraxis { get; private set; }
+        public decimal? semimajoraxis { get; private set; }
 
-        public decimal eccentricity { get; private set; }
+        public decimal? eccentricity { get; private set; }
 
-        public decimal orbitalinclination { get; private set; }
+        public decimal? orbitalinclination { get; private set; }
 
-        public decimal periapsis { get; private set; }
+        public decimal? periapsis { get; private set; }
 
         public List<Ring> rings { get; private set; }
 
         public List<MaterialPresence> materials { get; private set; }
 
-        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal gravity, decimal temperature, decimal pressure, bool tidallylocked, bool landable, string atmosphere, string volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal semimajoraxis, decimal eccentricity, decimal orbitalinclination, decimal periapsis, List<Ring> rings, List<MaterialPresence> materials) : base(timestamp, NAME)
+        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal gravity, decimal temperature, decimal pressure, bool tidallylocked, bool landable, string atmosphere, string volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, List<MaterialPresence> materials) : base(timestamp, NAME)
         {
             this.name = name;
             this.bodyclass = bodyclass;
