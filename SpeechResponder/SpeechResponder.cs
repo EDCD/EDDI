@@ -28,7 +28,7 @@ namespace EddiSpeechResponder
 
         public string ResponderDescription()
         {
-            return "Respond to events with pre-scripted responses using the information available.  Scripts can be individually enabled and customised";
+            return "Respond to events with pre-scripted responses using the information available.  The default personality can be copied, which allows individual scripts to be disabled or modified to suit the user's preferences";
         }
 
         public SpeechResponder()

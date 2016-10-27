@@ -16,5 +16,21 @@ namespace Tests
             Event theEvent = JournalMonitor.ParseJournalEntry(line);
             Console.WriteLine(JsonConvert.SerializeObject(theEvent));
         }
+
+        [TestMethod]
+        public void TestJournalStarScan1()
+        {
+            string line = @"{ ""timestamp"":""2016-10-27T08:51:23Z"", ""event"":""Scan"", ""BodyName"":""Vela Dark Region FG-Y d3"", ""DistanceFromArrivalLS"":0.000000, ""StarType"":""K"", ""StellarMass"":0.960938, ""Radius"":692146368.000000, ""AbsoluteMagnitude"":5.375961, ""Age_MY"":230, ""SurfaceTemperature"":5108.000000, ""RotationPeriod"":393121.093750, ""Rings"":[ { ""Name"":""Vela Dark Region FG-Y d3 A Belt"", ""RingClass"":""eRingClass_MetalRich"", ""MassMT"":1.2262e+10, ""InnerRad"":1.2288e+09, ""OuterRad"":2.3812e+09 } ] }";
+            Event theEvent = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsNotNull(theEvent);
+        }
+
+        [TestMethod]
+        public void TestJournalShipyardNew1()
+        {
+            string line = @"{ ""timestamp"":""2016-10-27T08:49:08Z"", ""event"":""ShipyardNew"", ""ShipType"":""belugaliner"", ""NewShipID"":56 }";
+            Event theEvent = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsNotNull(theEvent);
+        }
     }
 }

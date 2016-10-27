@@ -7,7 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-        <TextBlock x:Name="scriptText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="" VerticalAlignment="Top">The speech responder allows EDDI to react to events with a scripted speech.  EDDI can have different personalities, and you can create your own personality to suit your style of play and desired speeches.</TextBlock>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="10">
             <TextBlock Margin="10" Text="Active personality"></TextBlock>
             <ComboBox Margin="10" ItemsSource="{Binding Personalities}" SelectedValue="{Binding Personality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectionChanged="personalityChanged" />
