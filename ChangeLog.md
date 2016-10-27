@@ -1,3 +1,6 @@
+#2.0.5
+  * Added fuel used and fuel remaining to JumpedEvent
+
 #2.0.4
    * Add FDev IDs for new ships and modules
    * Add phonetic pronunciation for Lakon

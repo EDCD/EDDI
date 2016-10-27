@@ -21,6 +21,8 @@ namespace EddiEvents
             VARIABLES.Add("x", "The X co-ordinate of the system to which the commander has jumped");
             VARIABLES.Add("y", "The Y co-ordinate of the system to which the commander has jumped");
             VARIABLES.Add("z", "The Z co-ordinate of the system to which the commander has jumped");
+            VARIABLES.Add("fuelused", "The amount of fuel used in this jump");
+            VARIABLES.Add("fuelremaining", "The amount of fuel remaining after this jump");
             VARIABLES.Add("allegiance", "The allegiance of the system to which the commander has jumped");
             VARIABLES.Add("faction", "The faction controlling the system to which the commander has jumped");
             VARIABLES.Add("factionstate", "The state of the faction controlling the system to which the commander has jumped");
@@ -41,6 +43,12 @@ namespace EddiEvents
         [JsonProperty("z")]
         public decimal z { get; private set; }
 
+        [JsonProperty("fuelused")]
+        public decimal fuelused { get; private set; }
+
+        [JsonProperty("fuelremaining")]
+        public decimal fuelremaining { get; private set; }
+
         [JsonProperty("allegiance")]
         public string allegiance { get; private set; }
 
@@ -59,12 +67,14 @@ namespace EddiEvents
         [JsonProperty("security")]
         public string security { get; private set; }
 
-        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
+        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
             this.y = y;
             this.z = z;
+            this.fuelused = fuelused;
+            this.fuelremaining = fuelremaining;
             this.allegiance = (allegiance == null ? Superpower.None.name : allegiance.name) ;
             this.faction = faction;
             this.factionstate = (factionstate == null ? State.None.name : factionstate.name);

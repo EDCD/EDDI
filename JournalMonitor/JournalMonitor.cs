@@ -159,6 +159,12 @@ namespace EddiJournalMonitor
                                 decimal y = Math.Round((decimal)((double)starPos[1]) * 32) / (decimal)32.0;
                                 decimal z = Math.Round((decimal)((double)starPos[2]) * 32) / (decimal)32.0;
 
+                                data.TryGetValue("FuelUsed", out val);
+                                decimal fuelUsed = (decimal)(double)val;
+
+                                data.TryGetValue("FuelLevel", out val);
+                                decimal fuelRemaining = (decimal)(double)val;
+
                                 data.TryGetValue("Allegiance", out val);
                                 Superpower allegiance = Superpower.FromEDName((string)val);
                                 data.TryGetValue("Faction", out val);
@@ -175,7 +181,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Security", out val);
                                 SecurityLevel security = SecurityLevel.FromEDName((string)val);
 
-                                journalEvent = new JumpedEvent(timestamp, systemName, x, y, z, allegiance, faction, factionState, economy, government, security);
+                                journalEvent = new JumpedEvent(timestamp, systemName, x, y, z, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security);
                             }
                             handled = true;
                             break;

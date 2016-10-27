@@ -663,6 +663,8 @@ Variables set with this events are as follows:
   * {TXT:EDDI jumped economy} The economy of the system to which the commander has jumped
   * {TXT:EDDI jumped faction} The faction controlling the system to which the commander has jumped
   * {TXT:EDDI jumped factionstate} The state of the faction controlling the system to which the commander has jumped
+  * {DEC:EDDI jumped fuelused} The amount of fuel used in this jump
+  * {DEC:EDDI jumped fuelremaining} The amount of fuel remaining after this jump
   * {TXT:EDDI jumped government} The government of the system to which the commander has jumped
   * {TXT:EDDI jumped security} The security of the system to which the commander has jumped
   * {TXT:EDDI jumped system} The name of the system to which the commander has jumped
