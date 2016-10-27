@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface
 
-Current version: 2.0.4
+Current version: 2.0.5
 
 EDDI is a companion application for Elite: Dangerous, providing responses to events that occur in-game using data from the game as well as various third-party tools.
 
@@ -21,11 +21,19 @@ When you start EDDI it will bring up a window with a number of tabs.  Each tab e
 
 ## Upgrading EDDI
 
-If you are upgrading from an earlier version of EDDI it is recommended that you uninstall your existing version of EDDI prior to upgrading to the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
+If you are upgrading from EDDI 1 EDDI it is recommended that you uninstall your existing version of EDDI and remove your %APPDATA%\EDDI directory prior to upgrading to the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
+
+If you are upgrading from another version of EDDI 2 the installer will take care of changes so you just need to run it.
+
+## EDDI Voices
+
+EDDI uses the standard Windows TTS (text-to-speech) voices.  To be eligible for use in EDDI the voice needs to support phonetic speech.  Apart from Windows' default voices there are commercial voices available from IVONA and Cereproc, amongst others, that can be used.  The voice needs to be visible to Windows' TTS system to be made available to EDDI: this usually takes place when you install the voice.  If you cannot see a voice in EDDI then check the Windows TTS settings.
 
 ## How EDDI Works
 
-EDDI uses a number of monitors to obtain information about the Elite: Dangerous universe.  When these monitors have something to report they send the information to EDDI, which processes it and passes along events to responders.
+EDDI uses a number of monitors to obtain information about the Elite: Dangerous universe.  When these monitors have something to report they send the information to EDDI in the form of an event.
+
+When EDDI receives n event from a monitor it updates its internal data structures as required, for example if a jump has taken place it will obtain information about the system to which you are jumping.  Once EDDI is up-to-date it will pass on the event to all enabled responders.
 
 Each responder has a specific task.  Built-in responders generate speech, send data to external tools such as EDSM, update VoiceAttack, etc.
 

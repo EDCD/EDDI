@@ -74,17 +74,17 @@ namespace EddiEvents
 
         public decimal rotationperiod { get; private set; }
 
-        public decimal semimajoraxis { get; private set; }
+        public decimal? semimajoraxis { get; private set; }
 
-        public decimal eccentricity { get; private set; }
+        public decimal? eccentricity { get; private set; }
 
-        public decimal orbitalinclination { get; private set; }
+        public decimal? orbitalinclination { get; private set; }
 
-        public decimal periapsis { get; private set; }
+        public decimal? periapsis { get; private set; }
 
         public List<Ring> rings { get; private set; }
 
-        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal semimajoraxis, decimal eccentricity, decimal orbitalinclination, decimal periapsis, List<Ring> rings) : base(timestamp, NAME)
+        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings) : base(timestamp, NAME)
         {
             this.name = name;
             this.stellarclass = stellarclass;

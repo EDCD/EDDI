@@ -159,6 +159,12 @@ namespace EddiJournalMonitor
                                 decimal y = Math.Round((decimal)((double)starPos[1]) * 32) / (decimal)32.0;
                                 decimal z = Math.Round((decimal)((double)starPos[2]) * 32) / (decimal)32.0;
 
+                                data.TryGetValue("FuelUsed", out val);
+                                decimal fuelUsed = (decimal)(double)val;
+
+                                data.TryGetValue("FuelLevel", out val);
+                                decimal fuelRemaining = (decimal)(double)val;
+
                                 data.TryGetValue("Allegiance", out val);
                                 Superpower allegiance = Superpower.FromEDName((string)val);
                                 data.TryGetValue("Faction", out val);
@@ -175,7 +181,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Security", out val);
                                 SecurityLevel security = SecurityLevel.FromEDName((string)val);
 
-                                journalEvent = new JumpedEvent(timestamp, systemName, x, y, z, allegiance, faction, factionState, economy, government, security);
+                                journalEvent = new JumpedEvent(timestamp, systemName, x, y, z, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security);
                             }
                             handled = true;
                             break;
@@ -414,16 +420,16 @@ namespace EddiJournalMonitor
                                 decimal rotationperiod = (decimal)(double)val;
 
                                 data.TryGetValue("SemiMajorAxis", out val);
-                                decimal semimajoraxis = (decimal)(double)val;
+                                decimal? semimajoraxis = (decimal?)(double?)val;
 
                                 data.TryGetValue("Eccentricity", out val);
-                                decimal eccentricity = (decimal)(double)val;
+                                decimal? eccentricity = (decimal?)(double?)val;
 
                                 data.TryGetValue("OrbitalInclination", out val);
-                                decimal orbitalinclination = (decimal)(double)val;
+                                decimal? orbitalinclination = (decimal?)(double?)val;
 
                                 data.TryGetValue("Periapsis", out val);
-                                decimal periapsis = (decimal)(double)val;
+                                decimal? periapsis = (decimal?)(double?)val;
 
                                 data.TryGetValue("Rings", out val);
                                 List<object> ringsData = (List<object>)val;
@@ -557,7 +563,7 @@ namespace EddiJournalMonitor
                         case "ShipyardNew":
                             {
                                 object val;
-                                data.TryGetValue("ShipID", out val);
+                                data.TryGetValue("NewShipID", out val);
                                 int shipId = (int)(long)val;
                                 data.TryGetValue("ShipType", out val);
                                 string shipModel = (string)val;
