@@ -2,6 +2,8 @@
   * Added fuel used and fuel remaining to JumpedEvent
   * Handle missing data in body scans
   * Fix incorrect name of key in ShipyardNew
+  * Update text on speech responder tab to be more informative about copying personalities
+  * Fix oddity in jumping script where EDDI thought that 'None' was a real allegiance
 
 #2.0.4
    * Add FDev IDs for new ships and modules
