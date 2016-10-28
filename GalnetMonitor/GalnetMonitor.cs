@@ -119,7 +119,7 @@ namespace GalnetMonitor
                 }
                 catch (WebException wex)
                 {
-                    Logging.Error("Exception attempting to obtain galnet feed: " + wex.ToString());
+                    Logging.Error("Exception attempting to obtain galnet feed: ", wex);
                 }
 
                 if (newsItems.Count > 0)

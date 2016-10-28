@@ -101,7 +101,7 @@ namespace Eddi
                 {
                     foreach (InstalledVoice voice in synth.GetInstalledVoices())
                     {
-                        if (voice.Enabled)
+                        if (voice.Enabled && (!voice.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice")))
                         {
                             speechOptions.Add(voice.VoiceInfo.Name);
                         }

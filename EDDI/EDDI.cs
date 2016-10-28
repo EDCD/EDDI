@@ -209,7 +209,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to initialise: " + ex.ToString());
+                Logging.Error("Failed to initialise", ex);
             }
         }
 
@@ -714,7 +714,7 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Exception obtaining profile: " + ex.ToString());
+                    Logging.Error("Exception obtaining profile", ex);
                 }
             }
         }

@@ -122,7 +122,7 @@ namespace EddiVoiceAttackResponder
             }
             catch (Exception e)
             {
-                Logging.Error("Failed to initialise VoiceAttack plugin: " + e.ToString());
+                Logging.Error("Failed to initialise VoiceAttack plugin", e);
                 vaProxy.WriteToLog("Failed to initialise EDDI.  Some functions might not work", "red");
             }
         }
@@ -180,7 +180,7 @@ namespace EddiVoiceAttackResponder
             }
             catch (Exception e)
             {
-                Logging.Error("Failed to invoke action " + vaProxy.Context + ": " + e.ToString());
+                Logging.Error("Failed to invoke action " + vaProxy.Context, e);
                 vaProxy.WriteToLog("Failed to invoke action " + vaProxy.Context);
             }
         }

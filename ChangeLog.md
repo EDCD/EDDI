@@ -6,6 +6,7 @@
   * Added keepalive harness to monitor threads to catch errors and restart when appropriate
   * Strip SSML tags if SSML speech fails, then try again
   * Add material IDs for previously-known materials
+  * Attempt to avoid bad voices that could crash EDDI
 
 #2.0.5
   * Added fuel used and fuel remaining to JumpedEvent

@@ -62,8 +62,13 @@ namespace Utilities
             }
         }
 
-        public static void Report(string message, string data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Report(string message, string data = "{}", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
+            if (data == null)
+            {
+                data = "{}";
+            }
+
             string body = @"{""message"":""" + message + @""", ""version"":""" + Constants.EDDI_VERSION + @""", ""json"":" + data + @"}";
             Thread thread = new Thread(() =>
             {
