@@ -27,16 +27,13 @@ namespace EddiStarMapService
                 filename = Constants.DATA_DIR + @"\edsm.json";
             }
 
-            StarMapConfiguration credentials;
+            StarMapConfiguration credentials = new StarMapConfiguration();
             try
             {
                 string credentialsData = File.ReadAllText(filename);
                 credentials = JsonConvert.DeserializeObject<StarMapConfiguration>(credentialsData);
             }
-            catch
-            {
-                credentials = new StarMapConfiguration();
-            }
+            catch {}
 
             credentials.dataPath = filename;
             return credentials;

@@ -27,15 +27,13 @@ namespace EddiSpeechResponder
                 filename = Constants.DATA_DIR + @"\speechresponder.json";
             }
 
-            SpeechResponderConfiguration configuration;
+            SpeechResponderConfiguration configuration = new SpeechResponderConfiguration();
             try
             {
                 configuration = JsonConvert.DeserializeObject<SpeechResponderConfiguration>(File.ReadAllText(filename));
             }
-            catch
-            {
-                configuration = new SpeechResponderConfiguration();
-            }
+            catch { }
+
             if (configuration.Personality == null)
             {
                 configuration.Personality = "EDDI";

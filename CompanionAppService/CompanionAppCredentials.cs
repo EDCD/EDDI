@@ -49,16 +49,13 @@ namespace EddiCompanionAppService
                 filename = Constants.DATA_DIR + @"\credentials.json";
             }
 
-            CompanionAppCredentials credentials;
+            CompanionAppCredentials credentials = new CompanionAppCredentials();
             try
             {
                 string credentialsData = File.ReadAllText(filename);
                 credentials = JsonConvert.DeserializeObject<CompanionAppCredentials>(credentialsData);
             }
-            catch
-            {
-                credentials = new CompanionAppCredentials();
-            }
+            catch {}
 
             credentials.dataPath = filename;
             return credentials;

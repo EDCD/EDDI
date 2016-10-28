@@ -32,15 +32,12 @@ namespace EddiCompanionAppService
                 filename = Constants.DATA_DIR + @"\ships.json";
             }
 
-            ShipsConfiguration configuration;
+            ShipsConfiguration configuration = new ShipsConfiguration();
             try
             {
                 configuration = JsonConvert.DeserializeObject<ShipsConfiguration>(File.ReadAllText(filename));
             }
-            catch
-            {
-                configuration = new ShipsConfiguration();
-            }
+            catch {}
 
             configuration.dataPath = filename;
             return configuration;

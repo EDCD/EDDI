@@ -29,6 +29,9 @@ namespace EddiSpeechService
         [JsonProperty("rate")]
         public int Rate{ get; set; } = 0;
 
+        [JsonProperty("disablessml")]
+        public bool DisableSsml { get; set; } = false;
+
         [JsonIgnore]
         private string dataPath;
 
@@ -44,16 +47,13 @@ namespace EddiSpeechService
                 filename = Constants.DATA_DIR + @"\speech.json";
             }
 
-            SpeechServiceConfiguration speech;
+            SpeechServiceConfiguration speech = new SpeechServiceConfiguration();
             try
             {
                 string configData = File.ReadAllText(filename);
                 speech = JsonConvert.DeserializeObject<SpeechServiceConfiguration>(configData);
             }
-            catch
-            {
-                speech = new SpeechServiceConfiguration();
-            }
+            catch {}
 
             speech.dataPath = filename;
             return speech;
@@ -68,6 +68,7 @@ namespace EddiSpeechService
             Volume = 100;
             EffectsLevel = 50;
             DistortOnDamage = true;
+            DisableSsml = false;
         }
 
         public void ToFile(string filename = null)
