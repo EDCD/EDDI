@@ -119,6 +119,7 @@ namespace Eddi
             ttsRateSlider.Value = speechServiceConfiguration.Rate;
             ttsEffectsLevelSlider.Value = speechServiceConfiguration.EffectsLevel;
             ttsDistortCheckbox.IsChecked = speechServiceConfiguration.DistortOnDamage;
+            disableSsmlCheckbox.IsChecked = speechServiceConfiguration.DisableSsml;
 
             ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels;
             ttsTestShipDropDown.Text = "Adder";
