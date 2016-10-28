@@ -3,6 +3,7 @@
   * Retain ship information between relogs
   * Avoid potential crash when network request times out
   * Added keepalive harness to monitor threads to catch errors and restart when appropriate
+  * Strip SSML tags if SSML speech fails, then try again
 
 #2.0.5
   * Added fuel used and fuel remaining to JumpedEvent

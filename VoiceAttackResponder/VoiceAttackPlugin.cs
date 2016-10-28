@@ -204,7 +204,7 @@ namespace EddiVoiceAttackResponder
         private static void InvokeUpdateProfile(ref dynamic vaProxy)
         {
             EDDI.Instance.refreshProfile();
-            setValues(vaProxy);
+            setValues(ref vaProxy);
         }
 
         public static void InvokeEDDBSystem(ref dynamic vaProxy)
