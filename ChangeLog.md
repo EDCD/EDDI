@@ -2,6 +2,10 @@
   * Update ship information when undocking
   * Retain ship information between relogs
   * Attempt to avoid crashes when configuration files have been corrupted
+  * Avoid potential crash when network request times out
+  * Added keepalive harness to monitor threads to catch errors and restart when appropriate
+  * Strip SSML tags if SSML speech fails, then try again
+  * Add material IDs for previously-known materials
 
 #2.0.5
   * Added fuel used and fuel remaining to JumpedEvent

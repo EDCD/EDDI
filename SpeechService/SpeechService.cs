@@ -132,7 +132,9 @@ namespace EddiSpeechService
                             catch
                             {
                                 Logging.Error("Best guess culture of " + bestGuessCulture(synth) + " for voice " + synth.Voice.Name + " was incorrect");
-                                synth.SpeakSsml(finalSpeech);
+                                Logging.Info("SSML does not work for the chosen voice; falling back to normal speech");
+                                // Try again without Ssml
+                                synth.Speak(Regex.Replace(speech, "<.*?>", string.Empty));
                             }
                         }
                         else
@@ -215,10 +217,21 @@ namespace EddiSpeechService
             });
             speechThread.Name = "Speech service speak";
             speechThread.IsBackground = true;
-            speechThread.Start();
-            if (wait)
+            try
             {
-                speechThread.Join();
+                speechThread.Start();
+                if (wait)
+                {
+                    speechThread.Join();
+                }
+            }
+            catch (ThreadAbortException tax)
+            {
+                Logging.Error(speech, tax);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error(speech, ex);
             }
         }
 

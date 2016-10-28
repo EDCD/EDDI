@@ -16,9 +16,14 @@ namespace Utilities
         public static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
         public static bool Verbose { get; set; } = false;
 
+        public static void Error(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        {
+            Error(message, ex.ToString(), memberName, filePath);
+        }
+
         public static void Error(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            Error(ex.ToString(), null, memberName, filePath);
+            Error(ex.ToString(), memberName, filePath);
         }
 
         public static void Error(string message, string data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")

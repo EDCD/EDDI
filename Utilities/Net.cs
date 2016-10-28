@@ -60,14 +60,20 @@ namespace Utilities
             catch (WebException wex)
             {
                 HttpWebResponse errorResponse = wex.Response as HttpWebResponse;
-                if (errorResponse.StatusCode == HttpStatusCode.NotFound)
+                if (errorResponse == null)
+                {
+                    // No error response
+                    Logging.Warn("Failed to obtain response, error code " + wex.Status);
+                    return null;
+                }
+                else if (errorResponse.StatusCode == HttpStatusCode.NotFound)
                 {
                     // Not found is usual
                     return null;
                 }
                 else
                 {
-                    Logging.Warn("Failed to obtain response, error code " + wex.Status);
+                    Logging.Warn("Bad response, error code " + wex.Status);
                     throw wex;
                 }
             }

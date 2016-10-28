@@ -1050,7 +1050,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Commander", out val);
                                 string commander = (string)val;
                                 data.TryGetValue("ShipID", out val);
-                                int shipId = (int)(long)val;
+                                int? shipId = (int?)(long?)val;
                                 data.TryGetValue("Ship", out val);
                                 string shipModel = (string)val;
                                 Ship ship = findShip(shipId, shipModel);
