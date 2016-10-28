@@ -26,6 +26,15 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestJournalStarScan2()
+        {
+            string line = @"{ ""timestamp"":""2016-10-28T12:07:09Z"", ""event"":""Scan"", ""BodyName"":""Col 285 Sector CG-X d1-44"", ""DistanceFromArrivalLS"":0.000000, ""StarType"":""TTS"", ""StellarMass"":0.808594, ""Radius"":659162816.000000, ""AbsoluteMagnitude"":6.411560, ""Age_MY"":154, ""SurfaceTemperature"":4124.000000, ""RotationPeriod"":341417.281250, ""Rings"":[ { ""Name"":""Col 285 Sector CG-X d1-44 A Belt"", ""RingClass"":""eRingClass_Rocky"", ""MassMT"":1.1625e+13, ""InnerRad"":1.0876e+09, ""OuterRad"":2.4192e+09 } ] }";
+            StarScannedEvent theEvent = (StarScannedEvent)JournalMonitor.ParseJournalEntry(line);
+            Assert.IsNotNull(theEvent);
+            Assert.AreEqual(5, theEvent.solarradius);
+        }
+
+        [TestMethod]
         public void TestJournalShipyardNew1()
         {
             string line = @"{ ""timestamp"":""2016-10-27T08:49:08Z"", ""event"":""ShipyardNew"", ""ShipType"":""belugaliner"", ""NewShipID"":56 }";

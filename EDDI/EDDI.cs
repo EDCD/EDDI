@@ -31,6 +31,8 @@ namespace Eddi
 
         private static bool started;
 
+        private static bool running = true;
+
         static EDDI()
         {
             // Set up our app directory
@@ -207,7 +209,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to initialise: " + ex.ToString());
+                Logging.Error("Failed to initialise", ex);
             }
         }
 
@@ -232,10 +234,9 @@ namespace Eddi
                     }
                     else
                     {
-                        Thread monitorThread = new Thread(() => monitor.Start());
-                        monitorThread.Name = monitor.MonitorName();
+                        Thread monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start));
                         monitorThread.IsBackground = true;
-                        Logging.Info("Starting " + monitor.MonitorName());
+                        Logging.Info("Starting keepalive for " + monitor.MonitorName());
                         monitorThread.Start();
                     }
                 }
@@ -259,7 +260,6 @@ namespace Eddi
                         if (responderStarted)
                         {
                             activeResponders.Add(responder);
-                            //EventHandler += new OnEventHandler(responder.Handle);
                             Logging.Info("Started " + responder.ResponderName());
                         }
                         else
@@ -274,6 +274,7 @@ namespace Eddi
 
         public void Stop()
         {
+            running = false; // Otherwise keepalive restarts them
             if (started)
             {
                 foreach (EDDIResponder responder in responders)
@@ -333,6 +334,39 @@ namespace Eddi
             Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
         }
 
+        /// <summary>
+        /// Keep a thread alive, restarting it as required
+        /// </summary>
+        private void keepAlive(string name, Action start)
+        {
+            while (running)
+            {
+                try
+                {
+                    Thread monitorThread = new Thread(() => start());
+                    monitorThread.Name = name;
+                    monitorThread.IsBackground = true;
+                    Logging.Info("Starting " + name);
+                    monitorThread.Start();
+                    monitorThread.Join();
+                }
+                catch (ThreadAbortException tax)
+                {
+                    if (running)
+                    {
+                        Logging.Error("Restarting " + name + " after thread abort", tax);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (running)
+                    {
+                        Logging.Error("Restarting " + name + " after exception", ex);
+                    }
+                }
+            }
+        }
+
         public void eventHandler(Event journalEvent)
         {
             Logging.Debug("Handling event " + JsonConvert.SerializeObject(journalEvent));
@@ -389,10 +423,21 @@ namespace Eddi
         {
             foreach (EDDIResponder responder in activeResponders)
             {
-                Thread responderThread = new Thread(() => responder.Handle(@event));
-                responderThread.Name = responder.ResponderName();
-                responderThread.IsBackground = true;
-                responderThread.Start();
+                try
+                {
+                    Thread responderThread = new Thread(() => responder.Handle(@event));
+                    responderThread.Name = responder.ResponderName();
+                    responderThread.IsBackground = true;
+                    responderThread.Start();
+                }
+                catch (ThreadAbortException tax)
+                {
+                    Logging.Error(JsonConvert.SerializeObject(@event), tax);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                }
             }
         }
 
@@ -426,6 +471,9 @@ namespace Eddi
 
         private bool eventUndocked(UndockedEvent theEvent)
         {
+            // Call refreshProfile() to ensure that our ship is up-to-date
+            refreshProfile();
+
             return true;
         }
 
@@ -666,7 +714,7 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Exception obtaining profile: " + ex.ToString());
+                    Logging.Error("Exception obtaining profile", ex);
                 }
             }
         }

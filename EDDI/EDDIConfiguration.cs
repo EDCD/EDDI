@@ -41,15 +41,12 @@ namespace Eddi
                 filename = Constants.DATA_DIR + @"\eddi.json";
             }
 
-            EDDIConfiguration configuration;
+            EDDIConfiguration configuration = new EDDIConfiguration();
             try
             {
                 configuration = JsonConvert.DeserializeObject<EDDIConfiguration>(File.ReadAllText(filename));
             }
-            catch
-            {
-                configuration = new EDDIConfiguration();
-            }
+            catch {}
             configuration.dataPath = filename;
             if (configuration.Plugins == null)
             {

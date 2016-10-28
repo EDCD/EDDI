@@ -101,7 +101,7 @@ namespace Eddi
                 {
                     foreach (InstalledVoice voice in synth.GetInstalledVoices())
                     {
-                        if (voice.Enabled)
+                        if (voice.Enabled && (!voice.VoiceInfo.Name.Contains("Microsoft Server Speech Text to Speech Voice")))
                         {
                             speechOptions.Add(voice.VoiceInfo.Name);
                         }
@@ -119,6 +119,7 @@ namespace Eddi
             ttsRateSlider.Value = speechServiceConfiguration.Rate;
             ttsEffectsLevelSlider.Value = speechServiceConfiguration.EffectsLevel;
             ttsDistortCheckbox.IsChecked = speechServiceConfiguration.DistortOnDamage;
+            disableSsmlCheckbox.IsChecked = speechServiceConfiguration.DisableSsml;
 
             ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels;
             ttsTestShipDropDown.Text = "Adder";
@@ -466,6 +467,11 @@ namespace Eddi
             SpeechService.Instance.Say(testShip, "Severe damage to your " + ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() + ".", false);
         }
 
+        private void disableSsmlUpdated(object sender, RoutedEventArgs e)
+        {
+            ttsUpdated();
+        }
+
         /// <summary>
         /// fetch the Text-to-Speech Configuration and write it to File
         /// </summary>
@@ -477,6 +483,7 @@ namespace Eddi
             speechConfiguration.Rate = (int)ttsRateSlider.Value;
             speechConfiguration.EffectsLevel = (int)ttsEffectsLevelSlider.Value;
             speechConfiguration.DistortOnDamage = ttsDistortCheckbox.IsChecked.Value;
+            speechConfiguration.DisableSsml = disableSsmlCheckbox.IsChecked.Value;
             speechConfiguration.ToFile();
             SpeechService.Instance.ReloadConfiguration();
         }

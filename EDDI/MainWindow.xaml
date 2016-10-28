@@ -143,6 +143,7 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <Label x:Name="ttsVoiceLabel" Grid.Column="0" Grid.Row="0" Margin="10" Content="Voice:" />
                         <ComboBox x:Name="ttsVoiceDropDown" Grid.Column="1" Grid.Row="0" Margin="10" SelectionChanged="ttsVoiceDropDownUpdated"/>
@@ -166,8 +167,13 @@
                         <TextBlock Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Margin="10" TextWrapping="Wrap" Text="You can test how the voice will sound below.  Note that if the voice is incompatible it will use the default voice instead." />
                         <Label x:Name="ttsTestShipLabel" Grid.Column="0" Grid.Row="6" Margin="10" Content="Ship for testing the voice:" />
                         <ComboBox x:Name="ttsTestShipDropDown" Grid.Column="1" Grid.Row="6" Margin="10"/>
-                        <Button x:Name="ttsTestButton" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Margin="10" Content="Test voice" Click="ttsTestVoiceButtonClicked" />
-                        <Button x:Name="ttsTestDamagedButton" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Margin="10" Content="Test voice (severe damage)" Click="ttsTestDamagedVoiceButtonClicked" />
+                        <UniformGrid Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Margin="10" Columns="2">
+                            <Button x:Name="ttsTestButton" Margin="0,0,5,0" Content="Test voice" Click="ttsTestVoiceButtonClicked" />
+                            <Button x:Name="ttsTestDamagedButton" Margin="5,0,0,0" Content="Test voice (severe damage)" Click="ttsTestDamagedVoiceButtonClicked" />
+                        </UniformGrid>
+                        <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Margin="10" TextWrapping="Wrap" Text="EDDI uses phonetic speech to pronounce various hard-to-say words, and to put pauses between speech.  Some voices, often Microsoft ones, have a problem with phonetic speech and it causes EDDI to hang or crash.  If you experience this then try checking the option below" />
+                        <Label x:Name="disableSsmltLabel" Grid.Column="0" Grid.Row="9" Margin="10" Content="Disable phonetic speech:" />
+                        <CheckBox x:Name="disableSsmlCheckbox" Grid.Column="1" Grid.Row="9" Margin="10" VerticalAlignment="Center" Checked="disableSsmlUpdated" Unchecked="disableSsmlUpdated"/>
                     </Grid>
                 </DockPanel>
             </TabItem>

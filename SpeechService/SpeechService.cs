@@ -4,6 +4,7 @@ using CSCore.SoundOut;
 using CSCore.Streams.Effects;
 using EddiDataDefinitions;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Speech.Synthesis;
 using System.Text;
@@ -47,6 +48,8 @@ namespace EddiSpeechService
         private SpeechService()
         {
             configuration = SpeechServiceConfiguration.FromFile();
+            // Set the culture for this thread to the installed culture, to allow better selection of TTS voices
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(CultureInfo.InstalledUICulture.Name);
         }
 
         public void ReloadConfiguration()
@@ -98,6 +101,7 @@ namespace EddiSpeechService
 
             Thread speechThread = new Thread(() =>
             {
+                string finalSpeech = null;
                 try
                 {
                     using (SpeechSynthesizer synth = new SpeechSynthesizer())
@@ -107,13 +111,18 @@ namespace EddiSpeechService
                         {
                             voice = configuration.StandardVoice;
                         }
-                        if (voice != null)
+                        if (voice != null && !voice.Contains("Microsoft Server Speech Text to Speech Voice"))
                         {
                             try
                             {
+                                Logging.Debug("Selecting voice " + voice);
                                 synth.SelectVoice(voice);
+                                Logging.Debug("Selected voice " + synth.Voice.Name);
                             }
-                            catch { }
+                            catch (Exception ex)
+                            {
+                                Logging.Error("Failed to select voice " + voice, ex);
+                            }
                         }
 
                         synth.Rate = configuration.Rate;
@@ -123,22 +132,35 @@ namespace EddiSpeechService
                         synth.SetOutputToWaveStream(stream);
                         if (speech.Contains("<phoneme") || speech.Contains("<break"))
                         {
-                            string finalSpeech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\"><s>" + speech + "</s></speak>";
-                            Logging.Debug("SSML speech: " + finalSpeech);
-                            try
+                            if (configuration.DisableSsml)
                             {
-                                synth.SpeakSsml(finalSpeech);
+                                // User has disabled SSML so remove it
+                                finalSpeech = Regex.Replace(speech, "<.*?>", string.Empty);
+                                synth.Speak(finalSpeech);
                             }
-                            catch
+                            else
                             {
-                                Logging.Error("Best guess culture of " + bestGuessCulture(synth) + " for voice " + synth.Voice.Name + " was incorrect");
-                                synth.SpeakSsml(finalSpeech);
+                                finalSpeech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\"><s>" + speech + "</s></speak>";
+                                Logging.Debug("SSML speech: " + finalSpeech);
+                                try
+                                {
+                                    synth.SpeakSsml(finalSpeech);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logging.Error("Best guess culture of " + bestGuessCulture(synth) + " for voice " + synth.Voice.Name + " was incorrect", ex);
+                                    Logging.Info("SSML does not work for the chosen voice; falling back to normal speech");
+                                    // Try again without Ssml
+                                    finalSpeech = Regex.Replace(speech, "<.*?>", string.Empty);
+                                    synth.Speak(finalSpeech);
+                                }
                             }
                         }
                         else
                         {
                             Logging.Debug("Speech: " + speech);
-                            synth.Speak(speech);
+                            finalSpeech = speech;
+                            synth.Speak(finalSpeech);
                         }
                         stream.Seek(0, SeekOrigin.Begin);
 
@@ -210,15 +232,26 @@ namespace EddiSpeechService
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Failed to speak: " + ex);
+                    Logging.Error("Failed to speak \"" + finalSpeech + "\"", ex);
                 }
             });
             speechThread.Name = "Speech service speak";
             speechThread.IsBackground = true;
-            speechThread.Start();
-            if (wait)
+            try
             {
-                speechThread.Join();
+                speechThread.Start();
+                if (wait)
+                {
+                    speechThread.Join();
+                }
+            }
+            catch (ThreadAbortException tax)
+            {
+                Logging.Error(speech, tax);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error(speech, ex);
             }
         }
 

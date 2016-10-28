@@ -122,7 +122,7 @@ namespace EddiVoiceAttackResponder
             }
             catch (Exception e)
             {
-                Logging.Error("Failed to initialise VoiceAttack plugin: " + e.ToString());
+                Logging.Error("Failed to initialise VoiceAttack plugin", e);
                 vaProxy.WriteToLog("Failed to initialise EDDI.  Some functions might not work", "red");
             }
         }
@@ -180,7 +180,7 @@ namespace EddiVoiceAttackResponder
             }
             catch (Exception e)
             {
-                Logging.Error("Failed to invoke action " + vaProxy.Context + ": " + e.ToString());
+                Logging.Error("Failed to invoke action " + vaProxy.Context, e);
                 vaProxy.WriteToLog("Failed to invoke action " + vaProxy.Context);
             }
         }
@@ -204,7 +204,7 @@ namespace EddiVoiceAttackResponder
         private static void InvokeUpdateProfile(ref dynamic vaProxy)
         {
             EDDI.Instance.refreshProfile();
-            setValues(vaProxy);
+            setValues(ref vaProxy);
         }
 
         public static void InvokeEDDBSystem(ref dynamic vaProxy)
@@ -551,7 +551,11 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("Home station", EDDI.Instance.HomeStation.name);
             }
 
+            setStationValues(EDDI.Instance.LastStation, "Last station", ref vaProxy);
+
             vaProxy.SetText("Environment", EDDI.Instance.Environment);
+
+            vaProxy.SetText("EDDI version", Constants.EDDI_VERSION);
 
             Logging.Debug("Set values");
         }
