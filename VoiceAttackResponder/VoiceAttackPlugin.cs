@@ -551,7 +551,11 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("Home station", EDDI.Instance.HomeStation.name);
             }
 
+            setStationValues(EDDI.Instance.LastStation, "Last station", ref vaProxy);
+
             vaProxy.SetText("Environment", EDDI.Instance.Environment);
+
+            vaProxy.SetText("EDDI version", Constants.EDDI_VERSION);
 
             Logging.Debug("Set values");
         }

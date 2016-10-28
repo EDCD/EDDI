@@ -9,6 +9,8 @@
   * Attempt to avoid bad voices that could crash EDDI
   * Fall back to standard speech if SSML isn't working
   * Add configuration option to avoid SSML altogether
+  * Updated troubleshooting guide
+  * Updated VoiceAttack system variables
 
 #2.0.5
   * Added fuel used and fuel remaining to JumpedEvent
