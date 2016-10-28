@@ -1,6 +1,7 @@
 #2.0.6
   * Update ship information when undocking
   * Retain ship information between relogs
+  * Attempt to avoid crashes when configuration files have been corrupted
 
 #2.0.5
   * Added fuel used and fuel remaining to JumpedEvent

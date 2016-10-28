@@ -44,16 +44,13 @@ namespace EddiSpeechService
                 filename = Constants.DATA_DIR + @"\speech.json";
             }
 
-            SpeechServiceConfiguration speech;
+            SpeechServiceConfiguration speech = new SpeechServiceConfiguration();
             try
             {
                 string configData = File.ReadAllText(filename);
                 speech = JsonConvert.DeserializeObject<SpeechServiceConfiguration>(configData);
             }
-            catch
-            {
-                speech = new SpeechServiceConfiguration();
-            }
+            catch {}
 
             speech.dataPath = filename;
             return speech;

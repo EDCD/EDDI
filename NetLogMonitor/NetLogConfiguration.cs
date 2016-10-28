@@ -25,7 +25,7 @@ namespace EddiNetLogMonitor
                 filename = Constants.DATA_DIR + @"\netlog.json";
             }
 
-            NetLogConfiguration configuration;
+            NetLogConfiguration configuration = new NetLogConfiguration();
             try
             {
                 string configurationData = File.ReadAllText(filename);

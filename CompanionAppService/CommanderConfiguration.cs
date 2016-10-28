@@ -32,16 +32,13 @@ namespace EddiCompanionAppService
                 filename = Constants.DATA_DIR + @"\commander.json";
             }
 
-            CommanderConfiguration speech;
+            CommanderConfiguration speech = new CommanderConfiguration();
             try
             {
                 string configData = File.ReadAllText(filename);
                 speech = JsonConvert.DeserializeObject<CommanderConfiguration>(configData);
             }
-            catch
-            {
-                speech = new CommanderConfiguration();
-            }
+            catch {}
 
             speech.dataPath = filename;
             return speech;
