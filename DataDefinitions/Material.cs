@@ -110,7 +110,7 @@ namespace EddiDataDefinitions
         public static readonly Material BasicConductors = new Material("basicconductors", "Manufactured", "Basic Conductors", Rarity.VeryCommon);
         public static readonly Material ChemicalStorageUnits = new Material("", "Manufactured", "Chemical Storage Units", Rarity.VeryCommon);
         public static readonly Material CompactComposites = new Material("", "Manufactured", "Compact Composites", Rarity.VeryCommon);
-        public static readonly Material CrystalShards = new Material("", "Manufactured", "Crystal Shards", Rarity.VeryCommon);
+        public static readonly Material CrystalShards = new Material("crystalshards", "Manufactured", "Crystal Shards", Rarity.VeryCommon);
         public static readonly Material GridResistors = new Material("gridresistors", "Manufactured", "Grid Resistors", Rarity.VeryCommon);
         public static readonly Material HeatConductionWiring = new Material("heatconductionwiring", "Manufactured", "Heat Conduction Wiring", Rarity.VeryCommon);
         public static readonly Material MechanicalScrap = new Material("mechanicalscrap", "Manufactured", "Mechanical Scrap", Rarity.VeryCommon);
@@ -121,10 +121,10 @@ namespace EddiDataDefinitions
         public static readonly Material ChemicalProcessors = new Material("chemicalprocessors", "Manufactured", "Chemical Processors", Rarity.Common);
         public static readonly Material ConductiveComponents = new Material("conductivecomponents", "Manufactured", "Conductive Components", Rarity.Common);
         public static readonly Material FilamentComposites = new Material("", "Manufactured", "Filament Composites", Rarity.Common);
-        public static readonly Material FlawedFocusCrystals = new Material("", "Manufactured", "Flawed Focus Crystals", Rarity.Common);
+        public static readonly Material FlawedFocusCrystals = new Material("uncutfocuscrystals", "Manufactured", "Flawed Focus Crystals", Rarity.Common);
         public static readonly Material GalvanisingAlloys = new Material("galvanisingalloys", "Manufactured", "Galvanising Alloys", Rarity.Common);
         public static readonly Material HeatDispersionPlate = new Material("heatdispersionplate", "Manufactured", "Heat Dispersion Plate", Rarity.Common);
-        public static readonly Material HeatResistantCeramics = new Material("", "Manufactured", "Heat Resistant Ceramics", Rarity.Common);
+        public static readonly Material HeatResistantCeramics = new Material("heatresistantceramics", "Manufactured", "Heat Resistant Ceramics", Rarity.Common);
         public static readonly Material HybridCapacitors = new Material("hybridcapacitors", "Manufactured", "Hybrid Capacitors", Rarity.Common);
         public static readonly Material MechanicalEquipment = new Material("mechanicalequipment", "Manufactured", "Mechanical Equipment", Rarity.Common);
         public static readonly Material ShieldEmitters = new Material("shieldemitters", "Manufactured", "Shield Emitters", Rarity.Common);
@@ -137,11 +137,11 @@ namespace EddiDataDefinitions
         public static readonly Material HighDensityComposites = new Material("highdensitycomposites", "Manufactured", "High Density Composites", Rarity.Standard);
         public static readonly Material MechanicalComponents = new Material("mechanicalcomponents", "Manufactured", "Mechanical Components", Rarity.Standard);
         public static readonly Material PhaseAlloys = new Material("phasealloys", "Manufactured", "Phase Alloys", Rarity.Standard);
-        public static readonly Material PrecipitatedAlloys = new Material("precipitatedallloys", "Manufactured", "Precipitated Alloys", Rarity.Standard);
+        public static readonly Material PrecipitatedAlloys = new Material("precipitatedalloys", "Manufactured", "Precipitated Alloys", Rarity.Standard);
         public static readonly Material ShieldingSensors = new Material("shieldingsensors", "Manufactured", "Shielding Sensors", Rarity.Standard);
 
         public static readonly Material ChemicalManipulators = new Material("chemicalmanipulators", "Manufactured", "Chemical Manipulators", Rarity.Rare);
-        public static readonly Material CompoundShielding = new Material("compountshielding", "Manufactured", "Compound Shielding", Rarity.Rare);
+        public static readonly Material CompoundShielding = new Material("compoundshielding", "Manufactured", "Compound Shielding", Rarity.Rare);
         public static readonly Material ConductivePolymers = new Material("conductivepolymers", "Manufactured", "Conductive Polymers", Rarity.Rare);
         public static readonly Material ConfigurableComponents = new Material("configurablecomponents", "Manufactured", "Configurable Components", Rarity.Rare);
         public static readonly Material HeatVanes = new Material("heatvanes", "Manufactured", "Heat Vanes", Rarity.Rare);
