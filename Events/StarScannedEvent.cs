@@ -101,17 +101,15 @@ namespace EddiEvents
             this.orbitalinclination = orbitalinclination;
             this.periapsis = periapsis;
             this.rings = rings;
+            solarradius = StarClass.solarradius(radius);
+            luminosity = StarClass.luminosity(absolutemagnitude);
             StarClass starClass = StarClass.FromName(this.stellarclass);
             if (starClass != null)
             {
-                this.massprobability = sanitiseCP(starClass.stellarMassCP(solarmass));
-                this.solarradius = StarClass.solarradius(radius);
-                this.radiusprobability = sanitiseCP(starClass.stellarRadiusCP(this.solarradius));
-                this.luminosity = StarClass.luminosity(absolutemagnitude);
-                this.luminosityprobability = sanitiseCP(starClass.luminosityCP(this.luminosity));
-                // TODO remove when temperature is in journal
-                this.temperature = StarClass.temperature(luminosity, this.radius);
-                this.chromaticity = starClass.chromaticity;
+                massprobability = sanitiseCP(starClass.stellarMassCP(solarmass));
+                radiusprobability = sanitiseCP(starClass.stellarRadiusCP(this.solarradius));
+                luminosityprobability = sanitiseCP(starClass.luminosityCP(this.luminosity));
+                chromaticity = starClass.chromaticity;
             }
 
         }

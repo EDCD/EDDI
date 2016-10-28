@@ -466,6 +466,11 @@ namespace Eddi
             SpeechService.Instance.Say(testShip, "Severe damage to your " + ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() + ".", false);
         }
 
+        private void disableSsmlUpdated(object sender, RoutedEventArgs e)
+        {
+            ttsUpdated();
+        }
+
         /// <summary>
         /// fetch the Text-to-Speech Configuration and write it to File
         /// </summary>
@@ -477,6 +482,7 @@ namespace Eddi
             speechConfiguration.Rate = (int)ttsRateSlider.Value;
             speechConfiguration.EffectsLevel = (int)ttsEffectsLevelSlider.Value;
             speechConfiguration.DistortOnDamage = ttsDistortCheckbox.IsChecked.Value;
+            speechConfiguration.DisableSsml = disableSsmlCheckbox.IsChecked.Value;
             speechConfiguration.ToFile();
             SpeechService.Instance.ReloadConfiguration();
         }

@@ -7,6 +7,8 @@
   * Strip SSML tags if SSML speech fails, then try again
   * Add material IDs for previously-known materials
   * Attempt to avoid bad voices that could crash EDDI
+  * Fall back to standard speech if SSML isn't working
+  * Add configuration option to avoid SSML altogether
 
 #2.0.5
   * Added fuel used and fuel remaining to JumpedEvent

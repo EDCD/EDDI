@@ -132,19 +132,28 @@ namespace EddiSpeechService
                         synth.SetOutputToWaveStream(stream);
                         if (speech.Contains("<phoneme") || speech.Contains("<break"))
                         {
-                            finalSpeech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\"><s>" + speech + "</s></speak>";
-                            Logging.Debug("SSML speech: " + finalSpeech);
-                            try
+                            if (configuration.DisableSsml)
                             {
-                                synth.SpeakSsml(finalSpeech);
-                            }
-                            catch (Exception ex)
-                            {
-                                Logging.Error("Best guess culture of " + bestGuessCulture(synth) + " for voice " + synth.Voice.Name + " was incorrect", ex);
-                                Logging.Info("SSML does not work for the chosen voice; falling back to normal speech");
-                                // Try again without Ssml
+                                // User has disabled SSML so remove it
                                 finalSpeech = Regex.Replace(speech, "<.*?>", string.Empty);
                                 synth.Speak(finalSpeech);
+                            }
+                            else
+                            {
+                                finalSpeech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\"><s>" + speech + "</s></speak>";
+                                Logging.Debug("SSML speech: " + finalSpeech);
+                                try
+                                {
+                                    synth.SpeakSsml(finalSpeech);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logging.Error("Best guess culture of " + bestGuessCulture(synth) + " for voice " + synth.Voice.Name + " was incorrect", ex);
+                                    Logging.Info("SSML does not work for the chosen voice; falling back to normal speech");
+                                    // Try again without Ssml
+                                    finalSpeech = Regex.Replace(speech, "<.*?>", string.Empty);
+                                    synth.Speak(finalSpeech);
+                                }
                             }
                         }
                         else
