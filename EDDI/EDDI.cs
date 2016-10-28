@@ -426,6 +426,9 @@ namespace Eddi
 
         private bool eventUndocked(UndockedEvent theEvent)
         {
+            // Call refreshProfile() to ensure that our ship is up-to-date
+            refreshProfile();
+
             return true;
         }
 

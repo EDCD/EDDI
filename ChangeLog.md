@@ -1,3 +1,7 @@
+#2.0.6
+  * Update ship information when undocking
+  * Retain ship information between relogs
+
 #2.0.5
   * Added fuel used and fuel remaining to JumpedEvent
   * Handle missing data in body scans
