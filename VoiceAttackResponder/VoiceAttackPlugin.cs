@@ -715,6 +715,10 @@ namespace EddiVoiceAttackResponder
                 setShipModuleValues(ship == null ? null : ship.fueltank, prefix + " fuel tank", ref vaProxy);
                 setShipModuleOutfittingValues(ship == null ? null : ship.fueltank, EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.outfitting, prefix + " fuel tank", ref vaProxy);
 
+                // Special for fuel tank - capacity and total capacity
+                vaProxy.SetDecimal("Ship fuel tank capacity",  ship == null ? (decimal?)null : ship.fueltankcapacity);
+                vaProxy.SetDecimal("Ship total fuel tank capacity", ship == null ? (decimal?)null : ship.fueltanktotalcapacity);
+
                 // Hardpoints
                 if (ship != null)
                 {

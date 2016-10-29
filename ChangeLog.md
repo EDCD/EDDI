@@ -1,3 +1,6 @@
+#2.0.7
+  * Add ship's main and total fuel tank capacities
+
 #2.0.6
   * Update ship information when undocking
   * Retain ship information between relogs
