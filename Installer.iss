@@ -14,7 +14,7 @@
 AppId={{830C0324-30D8-423C-B5B4-D7EE8D007A79}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-;AppVerName={#MyAppName} {#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -27,6 +27,8 @@ SolidCompression=yes
 WizardImageFile={#SourcePath}\graphics\logo.bmp
 WizardSmallImageFile={#SourcePath}\graphics\logo.bmp
 UninstallDisplayIcon={app}\EDDI\EDDI.ico
+UsePreviousTasks=False
+DisableWelcomePage=False
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
