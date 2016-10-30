@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -510,6 +511,30 @@ namespace Eddi
         private void ipaClicked(object sender, RoutedEventArgs e)
         {
             Process.Start("https://en.wikipedia.org/wiki/International_Phonetic_Alphabet");
+        }
+
+        private async void sendLogsClicked(object sender, RoutedEventArgs e)
+        {
+            var progress = new Progress<string>(s => sendLogButton.Content = "Uploading log..." + s);
+            await Task.Factory.StartNew(() => uploadLog(progress), TaskCreationOptions.LongRunning);
+        }
+
+        public static void uploadLog(IProgress<string> progress)
+        {
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    progress.Report("");
+                    client.UploadFile("http://api.eddp.co/log", Constants.DATA_DIR + @"\\eddi.log");
+                    progress.Report("done");
+                }
+                catch (Exception ex)
+                {
+                    progress.Report("failed");
+                    Logging.Error("Failed to upload log", ex);
+                }
+            }
         }
     }
 
