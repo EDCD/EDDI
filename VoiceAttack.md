@@ -104,13 +104,14 @@ If a value is not available it will be not set rather than empty.
   * {DEC:Ship sensors cost}: the purchase cost of the sensors
   * {DEC:Ship sensors value}: the undiscounted cost of the sensors
   * {DEC:Ship sensors discount}: the percentage discount of the purchased sensors against the undiscounted cost
-  * {TXT:Ship fuel tank}: the name of fuel tank fitted to the ship
-  * {TXT:Ship fuel tank class}: the class of fuel tank fitted to the ship (e.g. 3)
-  * {TXT:Ship fuel tank drive grade}: the grade of fuel tank fitted to the ship (e.g. "A")
-  * {DEC:Ship fuel tank cost}: the purchase cost of the fuel tank
-  * {DEC:Ship fuel tank value}: the undiscounted cost of the fuel tank
-  * {DEC:Ship fuel tank discount}: the percentage discount of the purchased fuel tank against the undiscounted cost
-  * {DEC:Ship fuel tank capacity}: the capacity of the fuel tank
+  * {TXT:Ship fuel tank}: the name of the main fuel tank fitted to the ship
+  * {TXT:Ship fuel tank class}: the class of the main fuel tank fitted to the ship (e.g. 3)
+  * {TXT:Ship fuel tank drive grade}: the grade of the main fuel tank fitted to the ship (e.g. "A")
+  * {DEC:Ship fuel tank cost}: the purchase cost of the the main fuel tank
+  * {DEC:Ship fuel tank value}: the undiscounted cost of the the main fuel tank
+  * {DEC:Ship fuel tank discount}: the percentage discount of the purchased main fuel tank against the undiscounted cost
+  * {DEC:Ship fuel tank capacity}: the capacity of the main fuel tank
+  * {DEC:Ship total fuel tank capacity}: the capacity of the main fuel tank plus all additional fuel tanks
   * {BOOL:Ship tiny/small/medium/large/huge hardpoint *n* occupied}: true if there is a module in this slot, otherwise false
   * {TXT:Ship tiny/small/medium/large/huge hardpoint *n* module}: the name of the module in this slot
   * {INT:Ship tiny/small/medium/large/huge hardpoint *n* module class}: the class of the module in this slot

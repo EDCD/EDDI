@@ -2,6 +2,7 @@
   * Add ship's main and total fuel tank capacities
   * Add capability to upload logs to EDDI server
   * Add ability to access EDDI's confguration UI from VoiceAttack
+  * Update VoiceAttack profile with fuel tank variables
 
 #2.0.6
   * Update ship information when undocking
