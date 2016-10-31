@@ -57,7 +57,6 @@ namespace EddiNetLogMonitor
                 }
                 else
                 {
-                    fileInfo.Refresh();
                     long thisSize = fileInfo.Length;
                     long seekPos = 0;
                     int readLen = 0;
@@ -112,7 +111,10 @@ namespace EddiNetLogMonitor
             var directory = new DirectoryInfo(path);
             try
             {
-                return directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name)).OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
+                FileInfo info = directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name)).OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
+                // This info can be cached so force a refresh
+                info.Refresh();
+                return info;
             }
             catch
             {
