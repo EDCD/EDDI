@@ -34,20 +34,31 @@ namespace Eddi
         private Profile profile;
         private ShipsConfiguration shipsConfiguration;
 
-        public bool Primary { get; set; }
+        private bool fromVA;
 
-        public MainWindow()
+        public MainWindow() : this(false) { }
+
+        public MainWindow(bool fromVA = false)
         {
             InitializeComponent();
 
-            // Default to being primary
-            Primary = true;
+            this.fromVA = fromVA;
 
             // Start the EDDI instance
             EDDI.Instance.Start();
 
             // Configure the EDDI tab
             versionText.Text = Constants.EDDI_VERSION;
+
+            //// Need to set up the correct information in the hero text depending on from where we were started
+            if (fromVA)
+            {
+                heroText.Text = "Any changes made here will take effect automatically in VoiceAttack.  You can close this window when you have finished.";
+            }
+            else
+            {
+                heroText.Text = "If you are using VoiceAttack then please close this window before you start VoiceAttack for your changes to take effect.  You can access this window from VoiceAttack with the \"Configure EDDI\" command.";
+            }
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
@@ -493,7 +504,7 @@ namespace Eddi
         {
             base.OnClosed(e);
 
-            if (Primary)
+            if (!fromVA)
             {
                 EDDI.Instance.Stop();
                 Application.Current.Shutdown();

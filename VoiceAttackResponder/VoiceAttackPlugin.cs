@@ -192,9 +192,8 @@ namespace EddiVoiceAttackResponder
         private static void InvokeConfiguration(ref dynamic vaProxy)
         {
             Thread thread = new Thread(() => {
-                MainWindow window = new MainWindow();
-                window.Primary = false;
-                window.Show();
+                MainWindow window = new MainWindow(true);
+                window.ShowDialog();
             });
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();

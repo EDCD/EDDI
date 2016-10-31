@@ -14,8 +14,8 @@
             <TabItem Header="EDDI">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <DockPanel LastChildFill="True" Background="#FFE5E5E5" DockPanel.Dock="Bottom" Margin="10">
-                        <TextBlock DockPanel.Dock="Left" Text="Status: "/>
-                        <TextBlock x:Name="versionText" DockPanel.Dock="Right" Text="2.0.0"/>
+                        <TextBlock DockPanel.Dock="Left" Text="EDDI Status: "/>
+                        <TextBlock x:Name="versionText" DockPanel.Dock="Right"/>
                         <TextBlock DockPanel.Dock="Right" Text="Version: "/>
                         <TextBlock x:Name="statusText" DockPanel.Dock="Left" Text="Operational"/>
                     </DockPanel>
@@ -33,12 +33,12 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="10" TextWrapping="Wrap" Text="Enabling verbose logging creates a detailed log of operations in %APPDATA%\EDDI\eddi.log  This should only be enabled if you have been requested to do this by EDDI developers" VerticalAlignment="Top"/>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="10" TextWrapping="Wrap" Text="Enable verbose logging (only if you have been requested to do so by EDDI developers)" VerticalAlignment="Top"/>
                         <CheckBox x:Name="eddiVerboseLogging" Grid.Row="0" Grid.Column="1" Margin="10" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="10" TextWrapping="Wrap" Text="If you are requested to by the EDDI developers you can upload your log to the EDDI server to help track down bugs.  No personal information is sent in the log.  Please note that uploading the log can take a number of minutes, depending on the size of the log."/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="10" TextWrapping="Wrap" Text="Upload log files (only if you have been requested to do so by EDDI developers).  No personal information is sent in the log.  Please note that uploading the log can take a number of minutes to complete."/>
                         <Button  x:Name="sendLogButton" Grid.Row="1" Grid.Column="2" Content="Send EDDI log to developers" Margin="10" Click="sendLogsClicked"/>
                     </Grid>
-                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" FontSize="18" Text="Please note that if you are using EDDI with VoiceAttack then you should not have this window running at the same time as VoiceAttack.  Carry out your configuration work here, then shut this down and start VoiceAttack." VerticalAlignment="Center" TextAlignment="Center"/>
+                    <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center" TextAlignment="Center"/>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Commander Details">
