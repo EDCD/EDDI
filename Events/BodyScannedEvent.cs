@@ -37,6 +37,7 @@ namespace EddiEvents
             VARIABLES.Add("periapsis", "");
             VARIABLES.Add("rings", "The star's rings");
             VARIABLES.Add("materials", "A list of materials present on the body that has been scanned");
+            VARIABLES.Add("terraformstate", "Whether the body can be, is in the process of, or has been terraformed");
         }
 
         public string name { get; private set; }
@@ -75,9 +76,12 @@ namespace EddiEvents
 
         public List<MaterialPresence> materials { get; private set; }
 
-        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal gravity, decimal temperature, decimal pressure, bool tidallylocked, bool landable, string atmosphere, string volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, List<MaterialPresence> materials) : base(timestamp, NAME)
+        public string terraformstate { get; private set; }
+
+        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal gravity, decimal temperature, decimal pressure, bool tidallylocked, bool landable, string atmosphere, string volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, List<MaterialPresence> materials, string terraformState) : base(timestamp, NAME)
         {
             this.name = name;
+            this.distancefromarrival = distancefromarrival;
             this.bodyclass = bodyclass;
             this.gravity = gravity;
             this.temperature = temperature;
@@ -94,6 +98,7 @@ namespace EddiEvents
             this.periapsis = periapsis;
             this.rings = rings;
             this.materials = materials;
+            this.terraformstate = terraformState;
         }
 
         private decimal sanitiseCP(decimal cp)
