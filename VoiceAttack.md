@@ -279,6 +279,16 @@ This function stops any active EDDI speech.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'shutup'.
 
+### profile
+
+This function obtains the latest information from the Elite servers.  It will give you up-to-date information on your ship (including its loadout and cargo), the station you are docked at, and your credit balance and rankings.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'profile'.
+
+Please note that you should be careful when using this function.  EDDI internally restricts you to calling it once per minute, but even then this should not be used too frequently as it puts a load on Frontier's servers.
+
+Also note that the information returned by this function is not guaranteed to be totally up-to-date, because the remote server can take a few seconds to sync its information with the changes that have taken place.  If you do want to use this command then it is recommended that in your script you do something like say "Obtaining information", waiting for a couple of seconds, then calling the profile command.  This means that if you call this directly after carrying out an operation (for example purchasing cargo) you are more likely to have the full information available to you in the rest of the script.
+
 ## Events
 
 Whenever EDDI sees a particular event occur it will attempt to run a script.  The name of the script depends on the event, but follows the form:

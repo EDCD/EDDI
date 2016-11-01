@@ -4,6 +4,7 @@
   * Add ability to access EDDI's confguration UI from VoiceAttack
   * Update VoiceAttack profile with fuel tank variables
   * Provide better translation for VESPER-M4 when speaking that system's name
+  * Add information about the VoiceAttack 'profile' command
 
 #2.0.6
   * Update ship information when undocking
