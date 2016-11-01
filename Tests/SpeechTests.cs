@@ -67,6 +67,12 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestTranslationVesper()
+        {
+            Assert.AreEqual(Translations.StarSystem("VESPER-M4"), "Vesper M 4");
+        }
+
+        [TestMethod]
         public void TestPowerplay()
         {
             //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Aisling Duval") + ".");
