@@ -16,5 +16,14 @@ namespace EddiDataDefinitions
 
         /// <summary>The name of the body</summary>
         public string name { get; set;  }
+
+
+        /// <summary>
+        /// Convert gravity in m/s to g
+        /// </summary>
+        public static decimal ms2g(decimal gravity)
+        {
+            return gravity / (decimal)9.8;
+        }
     }
 }

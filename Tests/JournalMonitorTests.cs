@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Newtonsoft.Json;
+using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
 
@@ -35,7 +36,7 @@ namespace Tests
             Assert.AreEqual(ev.volcanism, "minor metallic magma volcanism");
             //Assert.IsTrue(ev.massEM == (decimal)2.171783)
             //Assert.IsTrue(ev.radius  == (decimal)7622170.500000);
-            Assert.AreEqual(ev.gravity, (decimal)14.899396);
+            Assert.AreEqual(ev.gravity, Body.ms2g((decimal)14.899396));
             Assert.AreEqual(ev.temperature, (decimal)836.165466);
             Assert.AreEqual(ev.pressure, (decimal)33000114.000000);
             Assert.IsFalse(ev.landable);
@@ -62,7 +63,8 @@ namespace Tests
             string line = @"{ ""timestamp"":""2016-10-28T12:07:09Z"", ""event"":""Scan"", ""BodyName"":""Col 285 Sector CG-X d1-44"", ""DistanceFromArrivalLS"":0.000000, ""StarType"":""TTS"", ""StellarMass"":0.808594, ""Radius"":659162816.000000, ""AbsoluteMagnitude"":6.411560, ""Age_MY"":154, ""SurfaceTemperature"":4124.000000, ""RotationPeriod"":341417.281250, ""Rings"":[ { ""Name"":""Col 285 Sector CG-X d1-44 A Belt"", ""RingClass"":""eRingClass_Rocky"", ""MassMT"":1.1625e+13, ""InnerRad"":1.0876e+09, ""OuterRad"":2.4192e+09 } ] }";
             StarScannedEvent theEvent = (StarScannedEvent)JournalMonitor.ParseJournalEntry(line);
             Assert.IsNotNull(theEvent);
-            Assert.AreEqual(5, theEvent.solarradius);
+            Assert.AreEqual(theEvent.radius, (decimal)659162816.0);
+            Assert.AreEqual(theEvent.solarradius, StarClass.solarradius((decimal)659162816.000000));
         }
 
         [TestMethod]
