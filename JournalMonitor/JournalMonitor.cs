@@ -488,8 +488,9 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("PlanetClass", out val);
                                     string bodyClass = (string)val;
 
+                                    // MKW: Gravity in the Journal is in m/s; must convert it to G
                                     data.TryGetValue("SurfaceGravity", out val);
-                                    decimal gravity = (decimal)(double)val;
+                                    decimal gravity = Body.ms2g((decimal)(double)val);
 
                                     data.TryGetValue("SurfaceTemperature", out val);
                                     decimal temperature = (decimal)(double)val;
