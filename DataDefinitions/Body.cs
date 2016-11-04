@@ -23,7 +23,7 @@ namespace EddiDataDefinitions
         /// </summary>
         public static decimal ms2g(decimal gravity)
         {
-            return gravity / (decimal)9.8;
+            return gravity / (decimal)9.80665;
         }
     }
 }
