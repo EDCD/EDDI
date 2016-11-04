@@ -12,6 +12,15 @@ VoiceAttack must be configured to use plugins.  To do so you must click on the S
 
 If EDDI is installed in the correct location and plugin support is enabled you should see a message when starting VoiceAttack along the lines of `Plugin EDDI 2.0.0 initialized`.
 
+## Upgrading from EDDI 1.x
+
+If you have version 1.x of EDDI installed then you should remove it entirely prior to installing EDDI.  To do so:
+
+  * If you hav a separate EDDI profile them remove it entirely
+  * If you have integrated EDDI in to your own profile then remove all commands with the categories 'EDDI' and 'EDDI debug'
+  * Shut down VoiceAttack
+  * Remove the EDDI directory from the `Apps` directory of your VoiceAttack installation (default C:\Program Files (x86)\VoiceAttack\Apps)
+
 ## EDDI Variables
 
 EDDI makes a large number of values available to augment your existing scripts.  The values are shown below, along with a brief description of what the value holds.

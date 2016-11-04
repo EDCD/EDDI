@@ -42,35 +42,35 @@ namespace EddiDataDefinitions
             MATERIALS.Add(this);
         }
 
-        public static readonly Material Carbon = new Material("carbon", "Element", "Carbon", Rarity.VeryCommon, "C", 17.5M, 22.5M);
-        public static readonly Material Iron = new Material("iron", "Element", "Iron", Rarity.VeryCommon, "Fe", 20, 35);
-        public static readonly Material Nickel = new Material("nickel", "Element", "Nickel", Rarity.VeryCommon, "Ni", 17.5M, 25);
-        public static readonly Material Phosphorus = new Material("phosphorus", "Element", "Phosphorus", Rarity.VeryCommon, "P", 12.5M, 15);
-        public static readonly Material Sulphur = new Material("sulphur", "Element", "Sulphur", Rarity.VeryCommon, "S", 22.5M, 27.5M);
+        public static readonly Material Carbon = new Material("carbon", "Element", "Carbon", Rarity.VeryCommon, "C", 20.4M, 24.5M);
+        public static readonly Material Iron = new Material("iron", "Element", "Iron", Rarity.VeryCommon, "Fe", 35.1M, 42.1M);
+        public static readonly Material Nickel = new Material("nickel", "Element", "Nickel", Rarity.VeryCommon, "Ni", 26.6M, 31.9M);
+        public static readonly Material Phosphorus = new Material("phosphorus", "Element", "Phosphorus", Rarity.VeryCommon, "P", 12.8M, 15.4M);
+        public static readonly Material Sulphur = new Material("sulphur", "Element", "Sulphur", Rarity.VeryCommon, "S", 23.8M, 28.5M);
 
-        public static readonly Material Chromium = new Material("chromium", "Element", "Chromium", Rarity.Common, "Cr", 10, 15);
-        public static readonly Material Germanium = new Material("germanium", "Element", "Germanium", Rarity.Common, "Ge", 5, 6);
-        public static readonly Material Manganese = new Material("manganese", "Element", "Manganese", Rarity.Common, "Mn", 10, 15);
-        public static readonly Material Vanadium = new Material("vanadium", "Element", "Vanadium", Rarity.Common, "V", 5, 9);
-        public static readonly Material Zinc = new Material("zinc", "Element", "Zinc", Rarity.Common, "Zn", 5, 9);
+        public static readonly Material Chromium = new Material("chromium", "Element", "Chromium", Rarity.Common, "Cr", 13.7M, 16.4M);
+        public static readonly Material Germanium = new Material("germanium", "Element", "Germanium", Rarity.Common, "Ge", 5.6M, 6.8M);
+        public static readonly Material Manganese = new Material("manganese", "Element", "Manganese", Rarity.Common, "Mn", 12.7M, 15.2M);
+        public static readonly Material Vanadium = new Material("vanadium", "Element", "Vanadium", Rarity.Common, "V", 8.2M, 9.8M);
+        public static readonly Material Zinc = new Material("zinc", "Element", "Zinc", Rarity.Common, "Zn", 13.1M, 15.7M);
 
-        public static readonly Material Arsenic = new Material("arsenic", "Element", "Arsenic", Rarity.Standard, "As", 1.8M, 2.4M);
-        public static readonly Material Niobium = new Material("niobium", "Element", "Niobium", Rarity.Standard, "Nb", 1, 2);
-        public static readonly Material Selenium = new Material("selenium", "Element", "Selenium", Rarity.Standard, "Se", 3.5M, 4.3M);
-        public static readonly Material Tungsten = new Material("tungsten", "Element", "Tungsten", Rarity.Standard, "W", 1, 1.8M);
-        public static readonly Material Zirconium = new Material("zirconium", "Element", "Zirconium", Rarity.Standard, "Zr", 2.5M, 4);
+        public static readonly Material Arsenic = new Material("arsenic", "Element", "Arsenic", Rarity.Standard, "As", 2.3M, 2.7M);
+        public static readonly Material Niobium = new Material("niobium", "Element", "Niobium", Rarity.Standard, "Nb", 2.3M, 2.8M);
+        public static readonly Material Selenium = new Material("selenium", "Element", "Selenium", Rarity.Standard, "Se", 3.7M, 4.4M);
+        public static readonly Material Tungsten = new Material("tungsten", "Element", "Tungsten", Rarity.Standard, "W", 1.8M, 2.2M);
+        public static readonly Material Zirconium = new Material("zirconium", "Element", "Zirconium", Rarity.Standard, "Zr", 4.1M, 4.9M);
 
-        public static readonly Material Cadmium = new Material("cadmium", "Element", "Cadmiun", Rarity.Rare, "Cd", 1.6M, 2);
-        public static readonly Material Mercury = new Material("mercury", "Element", "Mercury", Rarity.Rare, "Hg", 1, 1.5M);
-        public static readonly Material Molybdenum = new Material("molybdenum", "Element", "Molybdenum", Rarity.Rare, "Mo", 1.5M, 2);
-        public static readonly Material Tin = new Material("tin", "Element", "Tin", Rarity.Rare, "Sn", 1.3M, 2);
-        public static readonly Material Yttrium = new Material("yttrium", "Element", "Yttrium", Rarity.Rare, "Y", 1, 1.5M);
+        public static readonly Material Cadmium = new Material("cadmium", "Element", "Cadmiun", Rarity.Rare, "Cd", 2.6M, 3.2M);
+        public static readonly Material Mercury = new Material("mercury", "Element", "Mercury", Rarity.Rare, "Hg", 1.5M, 1.8M);
+        public static readonly Material Molybdenum = new Material("molybdenum", "Element", "Molybdenum", Rarity.Rare, "Mo", 2.3M, 2.8M);
+        public static readonly Material Tin = new Material("tin", "Element", "Tin", Rarity.Rare, "Sn", 2.3M, 2.8M);
+        public static readonly Material Yttrium = new Material("yttrium", "Element", "Yttrium", Rarity.Rare, "Y", 1.9M, 2.3M);
 
-        public static readonly Material Antimony = new Material("antimony", "Element", "Antimony", Rarity.VeryRare, "Sb", 1, 1.3M);
-        public static readonly Material Polonium = new Material("polonium", "Element", "Polonium", Rarity.VeryRare, "Po", 0.5M, 1);
-        public static readonly Material Ruthenium = new Material("ruthenium", "Element", "Ruthenium", Rarity.VeryRare, "Ru", 1.4M, 2);
-        public static readonly Material Technetium = new Material("technetium", "Element", "Technetium", Rarity.VeryRare, "Tc", 0.8M, 1);
-        public static readonly Material Tellurium = new Material("tellurium", "Element", "Tellurium", Rarity.VeryRare, "Te", 1, 1.4M);
+        public static readonly Material Antimony = new Material("antimony", "Element", "Antimony", Rarity.VeryRare, "Sb", 1.2M, 1.4M);
+        public static readonly Material Polonium = new Material("polonium", "Element", "Polonium", Rarity.VeryRare, "Po", 1.0M, 1.2M);
+        public static readonly Material Ruthenium = new Material("ruthenium", "Element", "Ruthenium", Rarity.VeryRare, "Ru", 2.2M, 2.6M);
+        public static readonly Material Technetium = new Material("technetium", "Element", "Technetium", Rarity.VeryRare, "Tc", 1.2M, 1.4M);
+        public static readonly Material Tellurium = new Material("tellurium", "Element", "Tellurium", Rarity.VeryRare, "Te", 1.3M, 1.5M);
 
         public static readonly Material AnomalousBulkScanData = new Material("bulkscandata", "Data", "Anomalous bulk scan data", Rarity.VeryCommon);
         public static readonly Material AtypicalDisruptedWakeEchoes = new Material("disruptedwakeechoes", "Data", "Atypical Disrupted Wake Echoes", Rarity.VeryCommon);
