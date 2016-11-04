@@ -192,9 +192,8 @@ namespace EddiVoiceAttackResponder
         private static void InvokeConfiguration(ref dynamic vaProxy)
         {
             Thread thread = new Thread(() => {
-                MainWindow window = new MainWindow();
-                window.Primary = false;
-                window.Show();
+                MainWindow window = new MainWindow(true);
+                window.ShowDialog();
             });
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
@@ -714,6 +713,10 @@ namespace EddiVoiceAttackResponder
                 setShipModuleOutfittingValues(ship == null ? null : ship.sensors, EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.outfitting, prefix + " sensors", ref vaProxy);
                 setShipModuleValues(ship == null ? null : ship.fueltank, prefix + " fuel tank", ref vaProxy);
                 setShipModuleOutfittingValues(ship == null ? null : ship.fueltank, EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.outfitting, prefix + " fuel tank", ref vaProxy);
+
+                // Special for fuel tank - capacity and total capacity
+                vaProxy.SetDecimal(prefix + " fuel tank capacity",  ship == null ? (decimal?)null : ship.fueltankcapacity);
+                vaProxy.SetDecimal(prefix + " total fuel tank capacity", ship == null ? (decimal?)null : ship.fueltanktotalcapacity);
 
                 // Hardpoints
                 if (ship != null)

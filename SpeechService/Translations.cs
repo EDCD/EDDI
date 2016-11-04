@@ -47,6 +47,12 @@ namespace EddiSpeechService
             }
         }
 
+        // Fixes to avoid issues with some of the more strangely-named systems
+        private static Dictionary<string, string> STAR_SYSTEM_FIXES = new Dictionary<string, string>()
+        {
+            { "VESPER-M4", "Vesper M 4" } // Stop Vesper being treated as a sector
+        };
+
         private static Dictionary<string, string[]> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
             { "Achenar", new string[] { "ˈakɜːnɑ" } },
@@ -185,6 +191,12 @@ namespace EddiSpeechService
             if (starSystem == null)
             {
                 return null;
+            }
+
+            // Specific fixing of names to avoid later confusion
+            if (STAR_SYSTEM_FIXES.ContainsKey(starSystem))
+            {
+                starSystem = STAR_SYSTEM_FIXES[starSystem];
             }
 
             // Specific translations

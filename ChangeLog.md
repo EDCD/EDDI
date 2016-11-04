@@ -1,3 +1,12 @@
+#2.0.7
+  * Add ship's main and total fuel tank capacities
+  * Add capability to upload logs to EDDI server
+  * Add ability to access EDDI's confguration UI from VoiceAttack
+  * Update VoiceAttack profile with fuel tank variables
+  * Provide better translation for VESPER-M4 when speaking that system's name
+  * Add information about the VoiceAttack 'profile' command
+  * Update good and great percentage values for materials (thanks to Baroness Galaxy)
+
 #2.0.6
   * Update ship information when undocking
   * Retain ship information between relogs

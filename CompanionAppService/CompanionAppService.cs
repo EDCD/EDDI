@@ -633,7 +633,8 @@ namespace EddiCompanionAppService
             Ship.powerdistributor = ModuleFromProfile("PowerDistributor", json["ship"]["modules"]["PowerDistributor"]);
             Ship.sensors = ModuleFromProfile("Radar", json["ship"]["modules"]["Radar"]);
             Ship.fueltank = ModuleFromProfile("FuelTank", json["ship"]["modules"]["FuelTank"]);
-            Ship.fueltankcapacity = (decimal)json["ship"]["fuel"]["main"]["capacity"];
+            Ship.fueltankcapacity = (decimal)Math.Pow(2, Ship.fueltank.@class);
+            Ship.fueltanktotalcapacity = (decimal)json["ship"]["fuel"]["main"]["capacity"];
 
             // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
             Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();

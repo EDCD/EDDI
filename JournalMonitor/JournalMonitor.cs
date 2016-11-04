@@ -796,14 +796,14 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Channel", out val);
                                 string channel = (string)val;
 
-                                if (!from.StartsWith("$cmdr"))
+                                if (!(from.StartsWith("$cmdr") || from.StartsWith("&")))
                                 {
                                     // For now we log everything that isn't commander speech
                                     Logging.Report("NPC speech", line);
                                 }
                                 else
                                 {
-                                    from = from.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "");
+                                    from = from.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
                                     data.TryGetValue("Message", out val);
                                     string message = (string)val;
                                     journalEvent = new MessageReceivedEvent(timestamp, from, true, channel, message);
@@ -816,7 +816,7 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("To", out val);
                                 string to = (string)val;
-                                to = to.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "");
+                                to = to.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
                                 data.TryGetValue("Message", out val);
                                 string message = (string)val;
                                 journalEvent = new MessageSentEvent(timestamp, to, message);

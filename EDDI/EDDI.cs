@@ -369,53 +369,63 @@ namespace Eddi
 
         public void eventHandler(Event journalEvent)
         {
-            Logging.Debug("Handling event " + JsonConvert.SerializeObject(journalEvent));
-            // We have some additional processing to do for a number of events
-            bool passEvent = true;
-            if (journalEvent is JumpingEvent)
+            if (journalEvent != null)
             {
-                passEvent = eventJumping((JumpingEvent)journalEvent);
-            }
-            else if (journalEvent is JumpedEvent)
-            {
-                passEvent = eventJumped((JumpedEvent)journalEvent);
-            }
-            else if (journalEvent is DockedEvent)
-            {
-                passEvent = eventDocked((DockedEvent)journalEvent);
-            }
-            else if (journalEvent is UndockedEvent)
-            {
-                passEvent = eventUndocked((UndockedEvent)journalEvent);
-            }
-            else if (journalEvent is EnteredSupercruiseEvent)
-            {
-                passEvent = eventEnteredSupercruise((EnteredSupercruiseEvent)journalEvent);
-            }
-            else if (journalEvent is EnteredNormalSpaceEvent)
-            {
-                passEvent = eventEnteredNormalSpace((EnteredNormalSpaceEvent)journalEvent);
-            }
-            else if (journalEvent is ShipDeliveredEvent)
-            {
-                passEvent = eventShipDeliveredEvent((ShipDeliveredEvent)journalEvent);
-            }
-            else if (journalEvent is ShipSwappedEvent)
-            {
-                passEvent = eventShipSwappedEvent((ShipSwappedEvent)journalEvent);
-            }
-            else if (journalEvent is ShipSoldEvent)
-            {
-                passEvent = eventShipSoldEvent((ShipSoldEvent)journalEvent);
-            }
-            else if (journalEvent is CommanderContinuedEvent)
-            {
-                passEvent = eventCommanderContinuedEvent((CommanderContinuedEvent)journalEvent);
-            }
-            // Additional processing is over, send to the event responders if required
-            if (passEvent)
-            {
-                OnEvent(journalEvent);
+                try
+                {
+                    Logging.Debug("Handling event " + JsonConvert.SerializeObject(journalEvent));
+                    // We have some additional processing to do for a number of events
+                    bool passEvent = true;
+                    if (journalEvent is JumpingEvent)
+                    {
+                        passEvent = eventJumping((JumpingEvent)journalEvent);
+                    }
+                    else if (journalEvent is JumpedEvent)
+                    {
+                        passEvent = eventJumped((JumpedEvent)journalEvent);
+                    }
+                    else if (journalEvent is DockedEvent)
+                    {
+                        passEvent = eventDocked((DockedEvent)journalEvent);
+                    }
+                    else if (journalEvent is UndockedEvent)
+                    {
+                        passEvent = eventUndocked((UndockedEvent)journalEvent);
+                    }
+                    else if (journalEvent is EnteredSupercruiseEvent)
+                    {
+                        passEvent = eventEnteredSupercruise((EnteredSupercruiseEvent)journalEvent);
+                    }
+                    else if (journalEvent is EnteredNormalSpaceEvent)
+                    {
+                        passEvent = eventEnteredNormalSpace((EnteredNormalSpaceEvent)journalEvent);
+                    }
+                    else if (journalEvent is ShipDeliveredEvent)
+                    {
+                        passEvent = eventShipDeliveredEvent((ShipDeliveredEvent)journalEvent);
+                    }
+                    else if (journalEvent is ShipSwappedEvent)
+                    {
+                        passEvent = eventShipSwappedEvent((ShipSwappedEvent)journalEvent);
+                    }
+                    else if (journalEvent is ShipSoldEvent)
+                    {
+                        passEvent = eventShipSoldEvent((ShipSoldEvent)journalEvent);
+                    }
+                    else if (journalEvent is CommanderContinuedEvent)
+                    {
+                        passEvent = eventCommanderContinuedEvent((CommanderContinuedEvent)journalEvent);
+                    }
+                    // Additional processing is over, send to the event responders if required
+                    if (passEvent)
+                    {
+                        OnEvent(journalEvent);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Failed to handle event " + JsonConvert.SerializeObject(journalEvent), ex);
+                }
             }
         }
 
