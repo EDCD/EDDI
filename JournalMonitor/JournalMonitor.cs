@@ -488,8 +488,9 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("PlanetClass", out val);
                                     string bodyClass = (string)val;
 
+                                    // MKW: Gravity in the Journal is in m/s; must convert it to G
                                     data.TryGetValue("SurfaceGravity", out val);
-                                    decimal gravity = (decimal)(double)val;
+                                    decimal gravity = Body.ms2g((decimal)(double)val);
 
                                     data.TryGetValue("SurfaceTemperature", out val);
                                     decimal temperature = (decimal)(double)val;
@@ -526,7 +527,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Volcanism", out val);
                                     string volcanism = (string)val;
 
-                                    journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, materials);
+                                    journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, materials, terraformState);
                                     handled = true;
                                 }
                             }
@@ -796,14 +797,14 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Channel", out val);
                                 string channel = (string)val;
 
-                                if (!from.StartsWith("$cmdr"))
+                                if (!(from.StartsWith("$cmdr") || from.StartsWith("&")))
                                 {
                                     // For now we log everything that isn't commander speech
                                     Logging.Report("NPC speech", line);
                                 }
                                 else
                                 {
-                                    from = from.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "");
+                                    from = from.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
                                     data.TryGetValue("Message", out val);
                                     string message = (string)val;
                                     journalEvent = new MessageReceivedEvent(timestamp, from, true, channel, message);
@@ -816,7 +817,7 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("To", out val);
                                 string to = (string)val;
-                                to = to.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "");
+                                to = to.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
                                 data.TryGetValue("Message", out val);
                                 string message = (string)val;
                                 journalEvent = new MessageSentEvent(timestamp, to, message);

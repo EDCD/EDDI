@@ -14,8 +14,8 @@
             <TabItem Header="EDDI">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <DockPanel LastChildFill="True" Background="#FFE5E5E5" DockPanel.Dock="Bottom" Margin="10">
-                        <TextBlock DockPanel.Dock="Left" Text="Status: "/>
-                        <TextBlock x:Name="versionText" DockPanel.Dock="Right" Text="2.0.0"/>
+                        <TextBlock DockPanel.Dock="Left" Text="EDDI Status: "/>
+                        <TextBlock x:Name="versionText" DockPanel.Dock="Right"/>
                         <TextBlock DockPanel.Dock="Right" Text="Version: "/>
                         <TextBlock x:Name="statusText" DockPanel.Dock="Left" Text="Operational"/>
                     </DockPanel>
@@ -24,7 +24,21 @@
                     <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="The second group obtain event information.  These are the tabs that end in 'monitor'.  They obtain events from different places, and require minimal configuration but need to be completed before they will work." VerticalAlignment="Top"/>
                     <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="The third group respond to events.  These are the tabs that end in 'responder'.  These come with varying degrees of configuration, but will work out of the box." VerticalAlignment="Top"/>
                     <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="Monitors and responders can be enabled individually, although it is recommended that to begin with you leave them all enabled.  Once you are comfortable with how EDDI works you can start to alter its behaviour." VerticalAlignment="Top"/>
-                    <TextBlock DockPanel.Dock="Bottom" TextWrapping="Wrap" Margin="10" FontSize="18" Text="Please note that if you are using EDDI with VoiceAttack then you should not have this window running at the same time as VoiceAttack.  Carry out your configuration work here, then shut this down and start VoiceAttack." VerticalAlignment="Center" TextAlignment="Center"/>
+                    <Grid DockPanel.Dock="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="10" TextWrapping="Wrap" Text="Enable verbose logging (only if you have been requested to do so by EDDI developers)" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="eddiVerboseLogging" Grid.Row="0" Grid.Column="1" Margin="10" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="10" TextWrapping="Wrap" Text="Upload log files (only if you have been requested to do so by EDDI developers).  No personal information is sent in the log.  Please note that uploading the log can take a number of minutes to complete."/>
+                        <Button  x:Name="sendLogButton" Grid.Row="1" Grid.Column="2" Content="Send EDDI log to developers" Margin="10" Click="sendLogsClicked"/>
+                    </Grid>
+                    <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center" TextAlignment="Center"/>
                 </DockPanel>
             </TabItem>
             <TabItem Header="Commander Details">
@@ -51,9 +65,6 @@
                         <TextBlock x:Name ="eddi3Text" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="Your insurance excess is the % of your ship's value you have to pay if your ship is destroyed.  This will usually be 5 but could be less if you are an early backer of Elite with alpha backers being 2.5 and beta backers being 3.75.  If you aren't sure then leave it at 5" VerticalAlignment="Top"/>
                         <Label x:Name ="eddiInsuranceLabel" Grid.Row="4" Grid.Column="0" Margin="10" Content="Insurance excess (%):"/>
                         <TextBox x:Name="eddiInsuranceDecimal" Grid.Row="4" Grid.Column="1" Margin="10" PreviewTextInput="EnsureValidDecimal" TextChanged="insuranceChanged" TextAlignment="Right"/>
-                        <TextBlock x:Name ="eddi4Text" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" TextWrapping="Wrap" Text="Enabling verbose logging creates a detailed log of operations in %APPDATA%\EDDI\eddi.log  This should only be enabled if you have been requested to do this by EDDI developers" VerticalAlignment="Top"/>
-                        <Label x:Name ="eddiVerboseLoggingLabel" Grid.Row="6" Grid.Column="0" Margin="10" Content="Verbose logging:"/>
-                        <CheckBox x:Name="eddiVerboseLogging" Grid.Row="6" Grid.Column="1" Margin="10" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
                     </Grid>
                 </DockPanel>
             </TabItem>
@@ -118,6 +129,13 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Click="testShipName">Hear it</Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="exportShip">Export to Coriolis</Button>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

@@ -57,7 +57,7 @@ namespace EddiStarMapService
 
             Thread thread = new Thread(() =>
             {
-                Logging.Debug("Sending data to EDSM: " + request);
+                Logging.Debug("Sending data to EDSM: " + request.ToString());
                 var clientResponse = client.Execute<StarMapLogResponse>(request);
                 StarMapLogResponse response = clientResponse.Data;
                 Logging.Debug("Data sent to EDSM");

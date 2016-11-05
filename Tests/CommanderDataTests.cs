@@ -2,6 +2,7 @@
 using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiVoiceAttackResponder;
+using Eddi;
 
 namespace Tests
 {
@@ -5568,7 +5569,7 @@ namespace Tests
             // Trim the query string as it changes each time
             string shipUri = Coriolis.ShipUri(profile.Ship);
             shipUri = shipUri.Substring(0, shipUri.IndexOf("?"));
-            Assert.AreEqual("https://coriolis.io/outfit/imperial_cutter/08A8A7A7D7A7D6C7n7l7l2k2k1c1c030403040404040207074f053c04042f24.Iw18ZZAA.CwBj4Rnacr4lIr==", shipUri);
+            Assert.AreEqual("https://coriolis.edcd.io/outfit/imperial_cutter/0putuFplxdusCf67n7l7l2k2k1c1c030403040404040207074f053c04042f24.Iw18ZZAA.CwBj4Rnacr4lIr==.H4sIAAAAAAAEAPsPAAAAAP8BAAAA", shipUri);
         }
 
         [TestMethod]
@@ -5589,7 +5590,7 @@ namespace Tests
             // Trim the query string as it changes each time
             string shipUri = Coriolis.ShipUri(profile.Ship);
             shipUri = shipUri.Substring(0, shipUri.IndexOf("?"));
-            Assert.AreEqual("https://coriolis.io/outfit/imperial_cutter/08A8A7A7D7A7D6C0x1f1f1c1c28280404040h010200000707p1053cCe2f2i24.Iw18ZZAA.CwBjYRg8fAmGUQTlFQA=", shipUri);
+            Assert.AreEqual("https://coriolis.edcd.io/outfit/imperial_cutter/0putuFplxdusCf60x1f1f1c1c28280404040h010200000707p1053cCe2f2i24.Iw18ZZAA.CwBjYRg8fAmGUQTlFQA=.H4sIAAAAAAAEAGPkv8LCwCDkzMDAwCH-HwiYhIBMBv5QdgYG5bo---+LRoFEmYW+MgFFn--7-19CFygvEsbIwPCfX0UIKMB9DiggeAlI-BeQeAwU5y4H6hAEESoggl8bZIKgxAKgCu4ZICaIUAER-Hkgqf8AMtG0nIUAAAA=", shipUri);
         }
     }
 }

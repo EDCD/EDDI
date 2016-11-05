@@ -15,6 +15,7 @@ namespace Utilities
         public static string DownloadString(string uri)
         {
             HttpWebRequest request = GetRequest(uri);
+            request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
             using (HttpWebResponse response = GetResponse(request))
             {
                 if (response == null) // Means that the system was not found

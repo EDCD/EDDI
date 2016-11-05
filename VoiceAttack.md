@@ -12,6 +12,15 @@ VoiceAttack must be configured to use plugins.  To do so you must click on the S
 
 If EDDI is installed in the correct location and plugin support is enabled you should see a message when starting VoiceAttack along the lines of `Plugin EDDI 2.0.0 initialized`.
 
+## Upgrading from EDDI 1.x
+
+If you have version 1.x of EDDI installed then you should remove it entirely prior to installing EDDI.  To do so:
+
+  * If you hav a separate EDDI profile them remove it entirely
+  * If you have integrated EDDI in to your own profile then remove all commands with the categories 'EDDI' and 'EDDI debug'
+  * Shut down VoiceAttack
+  * Remove the EDDI directory from the `Apps` directory of your VoiceAttack installation (default C:\Program Files (x86)\VoiceAttack\Apps)
+
 ## EDDI Variables
 
 EDDI makes a large number of values available to augment your existing scripts.  The values are shown below, along with a brief description of what the value holds.
@@ -104,13 +113,14 @@ If a value is not available it will be not set rather than empty.
   * {DEC:Ship sensors cost}: the purchase cost of the sensors
   * {DEC:Ship sensors value}: the undiscounted cost of the sensors
   * {DEC:Ship sensors discount}: the percentage discount of the purchased sensors against the undiscounted cost
-  * {TXT:Ship fuel tank}: the name of fuel tank fitted to the ship
-  * {TXT:Ship fuel tank class}: the class of fuel tank fitted to the ship (e.g. 3)
-  * {TXT:Ship fuel tank drive grade}: the grade of fuel tank fitted to the ship (e.g. "A")
-  * {DEC:Ship fuel tank cost}: the purchase cost of the fuel tank
-  * {DEC:Ship fuel tank value}: the undiscounted cost of the fuel tank
-  * {DEC:Ship fuel tank discount}: the percentage discount of the purchased fuel tank against the undiscounted cost
-  * {DEC:Ship fuel tank capacity}: the capacity of the fuel tank
+  * {TXT:Ship fuel tank}: the name of the main fuel tank fitted to the ship
+  * {TXT:Ship fuel tank class}: the class of the main fuel tank fitted to the ship (e.g. 3)
+  * {TXT:Ship fuel tank drive grade}: the grade of the main fuel tank fitted to the ship (e.g. "A")
+  * {DEC:Ship fuel tank cost}: the purchase cost of the the main fuel tank
+  * {DEC:Ship fuel tank value}: the undiscounted cost of the the main fuel tank
+  * {DEC:Ship fuel tank discount}: the percentage discount of the purchased main fuel tank against the undiscounted cost
+  * {DEC:Ship fuel tank capacity}: the capacity of the main fuel tank
+  * {DEC:Ship total fuel tank capacity}: the capacity of the main fuel tank plus all additional fuel tanks
   * {BOOL:Ship tiny/small/medium/large/huge hardpoint *n* occupied}: true if there is a module in this slot, otherwise false
   * {TXT:Ship tiny/small/medium/large/huge hardpoint *n* module}: the name of the module in this slot
   * {INT:Ship tiny/small/medium/large/huge hardpoint *n* module class}: the class of the module in this slot
@@ -277,6 +287,16 @@ To use this function in your own commands use the 'Execute an external plugin fu
 This function stops any active EDDI speech.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'shutup'.
+
+### profile
+
+This function obtains the latest information from the Elite servers.  It will give you up-to-date information on your ship (including its loadout and cargo), the station you are docked at, and your credit balance and rankings.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'profile'.
+
+Please note that you should be careful when using this function.  EDDI internally restricts you to calling it once per minute, but even then this should not be used too frequently as it puts a load on Frontier's servers.
+
+Also note that the information returned by this function is not guaranteed to be totally up-to-date, because the remote server can take a few seconds to sync its information with the changes that have taken place.  If you do want to use this command then it is recommended that in your script you do something like say "Obtaining information", waiting for a couple of seconds, then calling the profile command.  This means that if you call this directly after carrying out an operation (for example purchasing cargo) you are more likely to have the full information available to you in the rest of the script.
 
 ## Events
 

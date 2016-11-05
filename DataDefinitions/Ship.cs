@@ -117,7 +117,9 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public Module fueltank { get; set; }
         [JsonIgnore]
-        public decimal fueltankcapacity { get; set; }
+        public decimal fueltankcapacity { get; set; } // Core capacity
+        [JsonIgnore]
+        public decimal fueltanktotalcapacity { get; set; } // Capacity including additional tanks
         [JsonIgnore]
         public List<Hardpoint> hardpoints { get; set; }
         [JsonIgnore]

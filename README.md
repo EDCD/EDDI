@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface
 
-Current version: 2.0.6
+Current version: 2.0.7
 
 EDDI is a companion application for Elite: Dangerous, providing responses to events that occur in-game using data from the game as well as various third-party tools.
 

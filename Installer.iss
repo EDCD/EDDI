@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "EDDI"
-#define MyAppVersion "2.0.6"
+#define MyAppVersion "2.0.7"
 #define MyAppPublisher "Cmdr McDonald"
 #define MyAppURL "https://github.com/cmdrmcdonald/EliteDangerousDataProvider/"
 #define MyAppExeName "EDDI.exe"
@@ -14,7 +14,7 @@
 AppId={{830C0324-30D8-423C-B5B4-D7EE8D007A79}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
-;AppVerName={#MyAppName} {#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -27,6 +27,8 @@ SolidCompression=yes
 WizardImageFile={#SourcePath}\graphics\logo.bmp
 WizardSmallImageFile={#SourcePath}\graphics\logo.bmp
 UninstallDisplayIcon={app}\EDDI\EDDI.ico
+UsePreviousTasks=False
+DisableWelcomePage=False
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

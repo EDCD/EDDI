@@ -33,8 +33,6 @@ namespace EddiEdsmResponder
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
             edsmApiKeyTextBox.Text = starMapConfiguration.apiKey;
             edsmCommanderNameTextBox.Text = starMapConfiguration.commanderName;
-
-            Logging.Debug("Configuration is " + JsonConvert.SerializeObject(starMapConfiguration));
         }
 
         private void edsmCommanderNameChanged(object sender, TextChangedEventArgs e)
