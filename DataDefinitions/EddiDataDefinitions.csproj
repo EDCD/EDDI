@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Composition.cs" />
+    <Compile Include="Modification.cs" />
     <Compile Include="Ring.cs" />
     <Compile Include="Cargo.cs" />
     <Compile Include="CQCRating.cs" />

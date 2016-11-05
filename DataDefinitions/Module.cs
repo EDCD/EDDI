@@ -1,4 +1,6 @@
-﻿namespace EddiDataDefinitions
+﻿using System.Collections.Generic;
+
+namespace EddiDataDefinitions
 {
     public class Module
     {
@@ -18,6 +20,9 @@
         public bool enabled { get; set; }
         public int priority { get; set; }
         public decimal health { get; set; }
+
+        // Modifications
+        public List<Modification> modifications { get; set; }
 
         // Admin
         // The ID in Elite: Dangerous' database

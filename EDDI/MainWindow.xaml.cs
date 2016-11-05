@@ -422,6 +422,14 @@ namespace Eddi
             }
         }
 
+        private void exportShip(object sender, RoutedEventArgs e)
+        {
+            Ship ship = (Ship)((Button)e.Source).DataContext;
+            string uri = Coriolis.ShipUri(ship);
+            Logging.Info("URL is " + uri);
+            Process.Start(uri);
+        }
+
         private void ShipRoleChanged(object sender, SelectionChangedEventArgs e)
         {
             if (shipsConfiguration != null)

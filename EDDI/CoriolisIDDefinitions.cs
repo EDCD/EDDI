@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading;
 using Utilities;
 
-namespace EddiVoiceAttackResponder
+namespace Eddi
 {
     public class CoriolisIDDefinitions
     {
