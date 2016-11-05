@@ -2,6 +2,7 @@
 using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiVoiceAttackResponder;
+using Eddi;
 
 namespace Tests
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiVoiceAttackResponder;
 using System;
+using Eddi;
 
 namespace Tests
 {

@@ -15,9 +15,6 @@ namespace EddiCompanionAppService
 {
     public class CompanionAppService
     {
-        // We only send module modification data the first time we obtain a profile
-        private static bool firstRun = true;
-
         private static List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
 
         // Translations from the internal names used by Frontier to clean human-readable
@@ -293,8 +290,6 @@ namespace EddiCompanionAppService
                     {
                         cachedProfileExpires = DateTime.Now.AddSeconds(30);
                         Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
-                        // We have obtained a profile so have finished our run
-                        firstRun = false;
                     }
 
                     Logging.Debug("Leaving");
@@ -498,7 +493,7 @@ namespace EddiCompanionAppService
                     Profile.CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(systemName);
                 }
 
-                Profile.Ship = ShipFromProfile(json);
+                Profile.Ship = ShipFromProfile(json["ship"]);
 
                 Profile.Shipyard = ShipyardFromProfile(json, ref Profile);
 
@@ -578,6 +573,7 @@ namespace EddiCompanionAppService
                 {
                     // Already exists; grab the relevant information and supplement it
                     storedShip.name = shipConfig.name;
+                    storedShip.phoneticname = shipConfig.phoneticname;
                     storedShip.role = shipConfig.role;
                 }
                 else
@@ -598,23 +594,23 @@ namespace EddiCompanionAppService
         public static Ship ShipFromProfile(dynamic json)
         {
             Logging.Debug("Entered");
-            if (json["ship"] == null)
+            if (json == null)
             {
                 Logging.Debug("Leaving");
                 return null;
             }
 
-            Ship Ship = ShipDefinitions.FromEDModel((string)json["ship"]["name"]);
+            Ship Ship = ShipDefinitions.FromEDModel((string)json["name"]);
 
-            Ship.LocalId = json["ship"]["id"];
+            Ship.LocalId = json["id"];
 
-            Ship.value = (long)json["ship"]["value"]["hull"] + (long)json["ship"]["value"]["modules"];
+            Ship.value = (long)json["value"]["hull"] + (long)json["value"]["modules"];
 
-            Ship.cargocapacity = (int)json["ship"]["cargo"]["capacity"];
-            Ship.cargocarried = (int)json["ship"]["cargo"]["qty"];
+            Ship.cargocapacity = (int)json["cargo"]["capacity"];
+            Ship.cargocarried = (int)json["cargo"]["qty"];
 
             // Be sensible with health - round it unless it's very low
-            decimal Health = (decimal)json["ship"]["health"]["hull"] / 10000;
+            decimal Health = (decimal)json["health"]["hull"] / 10000;
             if (Health < 5)
             {
                 Ship.health = Math.Round(Health, 1);
@@ -625,19 +621,19 @@ namespace EddiCompanionAppService
             }
 
             // Obtain the internals
-            Ship.bulkheads = ModuleFromProfile("Armour", json["ship"]["modules"]["Armour"]);
-            Ship.powerplant = ModuleFromProfile("PowerPlant", json["ship"]["modules"]["PowerPlant"]);
-            Ship.thrusters = ModuleFromProfile("MainEngines", json["ship"]["modules"]["MainEngines"]);
-            Ship.frameshiftdrive = ModuleFromProfile("FrameShiftDrive", json["ship"]["modules"]["FrameShiftDrive"]);
-            Ship.lifesupport = ModuleFromProfile("LifeSupport", json["ship"]["modules"]["LifeSupport"]);
-            Ship.powerdistributor = ModuleFromProfile("PowerDistributor", json["ship"]["modules"]["PowerDistributor"]);
-            Ship.sensors = ModuleFromProfile("Radar", json["ship"]["modules"]["Radar"]);
-            Ship.fueltank = ModuleFromProfile("FuelTank", json["ship"]["modules"]["FuelTank"]);
-            Ship.fueltankcapacity = (decimal)json["ship"]["fuel"]["main"]["capacity"];
+            Ship.bulkheads = ModuleFromProfile("Armour", json["modules"]["Armour"]);
+            Ship.powerplant = ModuleFromProfile("PowerPlant", json["modules"]["PowerPlant"]);
+            Ship.thrusters = ModuleFromProfile("MainEngines", json["modules"]["MainEngines"]);
+            Ship.frameshiftdrive = ModuleFromProfile("FrameShiftDrive", json["modules"]["FrameShiftDrive"]);
+            Ship.lifesupport = ModuleFromProfile("LifeSupport", json["modules"]["LifeSupport"]);
+            Ship.powerdistributor = ModuleFromProfile("PowerDistributor", json["modules"]["PowerDistributor"]);
+            Ship.sensors = ModuleFromProfile("Radar", json["modules"]["Radar"]);
+            Ship.fueltank = ModuleFromProfile("FuelTank", json["modules"]["FuelTank"]);
+            Ship.fueltankcapacity = (decimal)json["fuel"]["main"]["capacity"];
 
             // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
             Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
-            foreach (dynamic module in json["ship"]["modules"])
+            foreach (JProperty module in json["modules"])
             {
                 if (module.Name.Contains("Hardpoint"))
                 {
@@ -659,7 +655,7 @@ namespace EddiCompanionAppService
             }
 
             // Obtain the compartments
-            foreach (dynamic module in json["ship"]["modules"])
+            foreach (dynamic module in json["modules"])
             {
                 if (module.Name.Contains("Slot"))
                 {
@@ -669,9 +665,9 @@ namespace EddiCompanionAppService
 
             // Obtain the cargo
             Ship.cargo = new List<Cargo>();
-            if (json["ship"]["cargo"] != null && json["ship"]["cargo"]["items"] != null)
+            if (json["cargo"] != null && json["cargo"]["items"] != null)
             {
-                foreach (dynamic cargoJson in json["ship"]["cargo"]["items"])
+                foreach (dynamic cargoJson in json["cargo"]["items"])
                 {
                     if (cargoJson != null && cargoJson["commodity"] != null)
                     {
@@ -746,22 +742,20 @@ namespace EddiCompanionAppService
                 if (shipJson != null)
                 {
                     // Take underlying value if present
-                    JObject ship = shipJson.Value == null ? shipJson : shipJson.Value;
-                    if (ship != null)
+                    JObject shipObj = shipJson.Value == null ? shipJson : shipJson.Value;
+                    if (shipObj != null)
                     {
-                        if ((int)ship["id"] != currentShip.LocalId)
+                        if ((int)shipObj["id"] != currentShip.LocalId)
                         {
-                            Ship Ship = ShipDefinitions.FromEDModel((string)ship["name"]);
+                            Ship ship = ShipFromProfile(shipObj);
 
-                            if (ship["starsystem"] != null)
+                            if (shipObj["starsystem"] != null)
                             {
                                 // If we have a starsystem it means that the ship is stored
-                                Ship.LocalId = (int)(long)ship["id"];
+                                ship.starsystem = (string)shipObj["starsystem"]["name"];
+                                ship.station = (string)shipObj["station"]["name"];
 
-                                Ship.starsystem = (string)ship["starsystem"]["name"];
-                                Ship.station = (string)ship["station"]["name"];
-
-                                StoredShips.Add(Ship);
+                                StoredShips.Add(ship);
                             }
                         }
                     }
@@ -870,7 +864,7 @@ namespace EddiCompanionAppService
             return Ships;
         }
 
-        public static Module ModuleFromProfile(string name, dynamic json)
+        public static Module ModuleFromProfile(string name, JObject json)
         {
             long id = (long)json["module"]["id"];
             Module module = ModuleDefinitions.ModuleFromEliteID(id);
@@ -894,9 +888,61 @@ namespace EddiCompanionAppService
                 module.health = Math.Round(Health);
             }
 
-            if (json["module"]["modifiers"] != null && firstRun)
+            if (json["module"]["modifiers"] != null)
             {
-                Logging.Report("Module with modification", json["module"].ToString(Formatting.None));
+                Dictionary<int, Modification> modifications = new Dictionary<int, Modification>();
+                foreach (dynamic modifier in json["module"]["modifiers"]["modifiers"])
+                {
+                    Modification.Modify((string)modifier["name"], (decimal)modifier["value"], ref modifications);
+                }
+
+                // Here we fix up the odd modifications.
+
+                if (module.EDName.StartsWith("Hpt_ShieldBooster_"))
+                {
+                    // Shield boosters are treated internally as straight modifiers, so rather than (for example)
+                    // being a 4% boost they are a 104% multiplier.  Unfortunately this means that our % modification
+                    // is incorrect so we fix it
+
+                    Modification sbModification;
+                    if (modifications.TryGetValue(Modification.SHIELDBOOST, out sbModification))
+                    {
+                        // We do have a boost modification
+                        decimal boost;
+                        if (module.grade == "E")
+                        {
+                            boost = 1.04M;
+                        }
+                        else if (module.grade == "D")
+                        {
+                            boost = 1.08M;
+                        }
+                        else if (module.grade == "C")
+                        {
+                            boost = 1.12M;
+                        }
+                        else if (module.grade == "B")
+                        {
+                            boost = 1.16M;
+                        }
+                        else
+                        {
+                            boost = 1.2M;
+                        }
+
+                        decimal alteredBoost = boost * (1 + sbModification.value) - boost;
+                        decimal alteredValue = alteredBoost / (boost - 1);
+                        sbModification = new Modification(Modification.SHIELDBOOST);
+                        sbModification.Modify(alteredValue);
+                        modifications.Remove(Modification.SHIELDBOOST);
+                        modifications.Add(Modification.SHIELDBOOST, sbModification);
+                    }
+
+
+                    // Another one for shield boosters: if they have the 
+                }
+
+                module.modifications = modifications.Values.ToList();
             }
             return module;
         }

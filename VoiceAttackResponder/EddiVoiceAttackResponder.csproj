@@ -54,9 +54,6 @@
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Coriolis.cs" />
-    <Compile Include="CoriolisIDDefinitions.cs" />
-    <Compile Include="LZString.cs" />
     <Compile Include="VoiceAttackPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VoiceAttackResponder.cs" />
