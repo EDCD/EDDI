@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using Utilities;
 
 namespace Eddi
@@ -67,58 +68,53 @@ namespace Eddi
             int modsSize = 0;
             string enableds = "";
             string priorities = "";
+
+            string uri = "https://coriolis.edcd.io/outfit/";
+
             using (MemoryStream stream = new MemoryStream())
-            using (BinaryWriter writer = new BinaryWriter(stream))
             {
-                string uri = "https://coriolis.edcd.io/outfit/";
-                uri += shipModels[ship.model];
-                uri += "/";
-
-                byte position = 0;
-                uri += ShipBulkheads(ship.bulkheads.name);
-                modsSize += addModifications(ship.bulkheads, position++, writer);
-                enableds += "1";
-                priorities += "4";
-                uri += CoriolisIDDefinitions.FromEDDBID(ship.powerplant.EDDBID);
-                modsSize += addModifications(ship.powerplant, position++, writer);
-                enableds += "1";
-                priorities += "0";
-                uri += CoriolisIDDefinitions.FromEDDBID(ship.thrusters.EDDBID);
-                modsSize += addModifications(ship.thrusters, position++, writer);
-                enableds += ship.thrusters.enabled ? "1" : "0";
-                priorities += ship.thrusters.priority;
-                uri += CoriolisIDDefinitions.FromEDDBID(ship.frameshiftdrive.EDDBID);
-                modsSize += addModifications(ship.frameshiftdrive, position++, writer);
-                enableds += ship.frameshiftdrive.enabled ? "1" : "0";
-                priorities += ship.frameshiftdrive.priority;
-                uri += CoriolisIDDefinitions.FromEDDBID(ship.lifesupport.EDDBID);
-                modsSize += addModifications(ship.lifesupport, position++, writer);
-                enableds += ship.lifesupport.enabled ? "1" : "0";
-                priorities += ship.lifesupport.priority;
-                uri += CoriolisIDDefinitions.FromEDDBID(ship.powerdistributor.EDDBID);
-                modsSize += addModifications(ship.powerdistributor, position++, writer);
-                enableds += ship.powerdistributor.enabled ? "1" : "0";
-                priorities += ship.powerdistributor.priority;
-                uri += CoriolisIDDefinitions.FromEDDBID(ship.sensors.EDDBID);
-                modsSize += addModifications(ship.sensors, position++, writer);
-                enableds += ship.sensors.enabled ? "1" : "0";
-                priorities += ship.sensors.priority;
-                uri += CoriolisIDDefinitions.FromEDDBID(ship.fueltank.EDDBID);
-                modsSize += addModifications(ship.fueltank, position++, writer);
-                enableds += "1";
-                priorities += "1";
-                foreach (Hardpoint Hardpoint in ship.hardpoints)
+                using (var compressionStream = new GZipStream(stream, CompressionLevel.Optimal, true))
+                using (BinaryWriter writer = new BinaryWriter(compressionStream))
                 {
-                    if (Hardpoint.module == null)
+                    uri += shipModels[ship.model];
+                    uri += "/";
+
+                    byte position = 0;
+                    uri += ShipBulkheads(ship.bulkheads.name);
+                    modsSize += addModifications(ship.bulkheads, position++, writer);
+                    enableds += "1";
+                    priorities += "4";
+                    uri += CoriolisIDDefinitions.FromEDDBID(ship.powerplant.EDDBID);
+                    modsSize += addModifications(ship.powerplant, position++, writer);
+                    enableds += "1";
+                    priorities += "0";
+                    uri += CoriolisIDDefinitions.FromEDDBID(ship.thrusters.EDDBID);
+                    modsSize += addModifications(ship.thrusters, position++, writer);
+                    enableds += ship.thrusters.enabled ? "1" : "0";
+                    priorities += ship.thrusters.priority;
+                    uri += CoriolisIDDefinitions.FromEDDBID(ship.frameshiftdrive.EDDBID);
+                    modsSize += addModifications(ship.frameshiftdrive, position++, writer);
+                    enableds += ship.frameshiftdrive.enabled ? "1" : "0";
+                    priorities += ship.frameshiftdrive.priority;
+                    uri += CoriolisIDDefinitions.FromEDDBID(ship.lifesupport.EDDBID);
+                    modsSize += addModifications(ship.lifesupport, position++, writer);
+                    enableds += ship.lifesupport.enabled ? "1" : "0";
+                    priorities += ship.lifesupport.priority;
+                    uri += CoriolisIDDefinitions.FromEDDBID(ship.powerdistributor.EDDBID);
+                    modsSize += addModifications(ship.powerdistributor, position++, writer);
+                    enableds += ship.powerdistributor.enabled ? "1" : "0";
+                    priorities += ship.powerdistributor.priority;
+                    uri += CoriolisIDDefinitions.FromEDDBID(ship.sensors.EDDBID);
+                    modsSize += addModifications(ship.sensors, position++, writer);
+                    enableds += ship.sensors.enabled ? "1" : "0";
+                    priorities += ship.sensors.priority;
+                    uri += CoriolisIDDefinitions.FromEDDBID(ship.fueltank.EDDBID);
+                    modsSize += addModifications(ship.fueltank, position++, writer);
+                    enableds += "1";
+                    priorities += "1";
+                    foreach (Hardpoint Hardpoint in ship.hardpoints)
                     {
-                        uri += "-";
-                        enableds += "1";
-                        priorities += "0";
-                    }
-                    else
-                    {
-                        string id = CoriolisIDDefinitions.FromEDDBID(Hardpoint.module.EDDBID);
-                        if (id == null)
+                        if (Hardpoint.module == null)
                         {
                             uri += "-";
                             enableds += "1";
@@ -126,26 +122,26 @@ namespace Eddi
                         }
                         else
                         {
-                            uri += id;
-                            enableds += Hardpoint.module.enabled ? "1" : "0";
-                            priorities += Hardpoint.module.priority;
-                            modsSize += addModifications(Hardpoint.module, position, writer);
+                            string id = CoriolisIDDefinitions.FromEDDBID(Hardpoint.module.EDDBID);
+                            if (id == null)
+                            {
+                                uri += "-";
+                                enableds += "1";
+                                priorities += "0";
+                            }
+                            else
+                            {
+                                uri += id;
+                                enableds += Hardpoint.module.enabled ? "1" : "0";
+                                priorities += Hardpoint.module.priority;
+                                modsSize += addModifications(Hardpoint.module, position, writer);
+                            }
                         }
+                        position++;
                     }
-                    position++;
-                }
-                foreach (Compartment Compartment in ship.compartments)
-                {
-                    if (Compartment.module == null)
+                    foreach (Compartment Compartment in ship.compartments)
                     {
-                        uri += "-";
-                        enableds += "1";
-                        priorities += "0";
-                    }
-                    else
-                    {
-                        string id = CoriolisIDDefinitions.FromEDDBID(Compartment.module.EDDBID);
-                        if (id == null)
+                        if (Compartment.module == null)
                         {
                             uri += "-";
                             enableds += "1";
@@ -153,27 +149,36 @@ namespace Eddi
                         }
                         else
                         {
-                            uri += id;
-                            enableds += Compartment.module.enabled ? "1" : "0";
-                            priorities += Compartment.module.priority;
-                            modsSize += addModifications(Compartment.module, position, writer);
+                            string id = CoriolisIDDefinitions.FromEDDBID(Compartment.module.EDDBID);
+                            if (id == null)
+                            {
+                                uri += "-";
+                                enableds += "1";
+                                priorities += "0";
+                            }
+                            else
+                            {
+                                uri += id;
+                                enableds += Compartment.module.enabled ? "1" : "0";
+                                priorities += Compartment.module.priority;
+                                modsSize += addModifications(Compartment.module, position, writer);
+                            }
                         }
+                        position++;
                     }
-                    position++;
+
+                    writer.Write((byte)0xff);
+                    modsSize++;
+
+                    uri += ".";
+                    uri += LZString.compressToBase64(enableds).Replace('/', '-');
+                    uri += ".";
+                    uri += LZString.compressToBase64(priorities).Replace('/', '-');
+                    uri += ".";
+
                 }
-
-                writer.Write((byte)0xff);
-                modsSize++;
-
-                uri += ".";
-                uri += LZString.compressToBase64(enableds).Replace('/', '-');
-                uri += ".";
-                uri += LZString.compressToBase64(priorities).Replace('/', '-');
-                uri += ".";
-
-                byte[] mods = new byte[modsSize];
-                stream.Read(mods, 0, modsSize);
                 uri += Convert.ToBase64String(stream.ToArray()).Replace('/', '-');
+                Logging.Debug("Sizes are " + modsSize + "/" + stream.Length + "/" + Convert.ToBase64String(stream.ToArray()).Length);
 
                 string bn;
                 if (ship.name == null)

@@ -414,6 +414,7 @@ namespace Eddi
         {
             Ship ship = (Ship)((Button)e.Source).DataContext;
             string uri = Coriolis.ShipUri(ship);
+            Logging.Info("URL is " + uri);
             Process.Start(uri);
         }
 
