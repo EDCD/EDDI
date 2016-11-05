@@ -128,39 +128,39 @@ namespace EddiSpeechService
                             }
                         }
 
-                        Logging.Warn("Post-selection");
-                        Logging.Warn("Configuration is " + configuration == null ? "<null>" : JsonConvert.SerializeObject(configuration));
+                        Logging.Debug("Post-selection");
+                        Logging.Debug("Configuration is " + configuration == null ? "<null>" : JsonConvert.SerializeObject(configuration));
                         synth.Rate = configuration.Rate;
-                        Logging.Warn("Rate is " + synth.Rate);
+                        Logging.Debug("Rate is " + synth.Rate);
                         synth.Volume = configuration.Volume;
-                        Logging.Warn("Volume is " + synth.Volume);
+                        Logging.Debug("Volume is " + synth.Volume);
 
                         synth.StateChanged += new EventHandler<StateChangedEventArgs>(synth_StateChanged);
-                        Logging.Warn("Tracking state changes");
+                        Logging.Debug("Tracking state changes");
                         synth.SetOutputToWaveStream(stream);
-                        Logging.Warn("Output set to stream");
+                        Logging.Debug("Output set to stream");
                         if (speech.Contains("<phoneme") || speech.Contains("<break"))
                         {
-                            Logging.Warn("Speech is SSML");
+                            Logging.Debug("Speech is SSML");
                             if (configuration.DisableSsml)
                             {
-                                Logging.Warn("Disabling SSML at user request");
+                                Logging.Debug("Disabling SSML at user request");
                                 // User has disabled SSML so remove it
                                 finalSpeech = Regex.Replace(speech, "<.*?>", string.Empty);
                                 synth.Speak(finalSpeech);
                             }
                             else
                             {
-                                Logging.Warn("Obtaining best guess culture");
+                                Logging.Debug("Obtaining best guess culture");
                                 string culture = bestGuessCulture(synth);
-                                Logging.Warn("Best guess culture is " + culture);
+                                Logging.Debug("Best guess culture is " + culture);
                                 finalSpeech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\"><s>" + speech + "</s></speak>";
                                 Logging.Debug("SSML speech: " + finalSpeech);
                                 try
                                 {
-                                    Logging.Warn("Speaking SSML");
+                                    Logging.Debug("Speaking SSML");
                                     synth.SpeakSsml(finalSpeech);
-                                    Logging.Warn("Finished speaking SSML");
+                                    Logging.Debug("Finished speaking SSML");
                                 }
                                 catch (Exception ex)
                                 {
@@ -174,24 +174,24 @@ namespace EddiSpeechService
                         }
                         else
                         {
-                            Logging.Warn("Speech does not contain SSML");
+                            Logging.Debug("Speech does not contain SSML");
                             Logging.Debug("Speech: " + speech);
                             finalSpeech = speech;
-                            Logging.Warn("Speaking normal speech");
+                            Logging.Debug("Speaking normal speech");
                             synth.Speak(finalSpeech);
-                            Logging.Warn("Finished speaking normal speech");
+                            Logging.Debug("Finished speaking normal speech");
                         }
-                        Logging.Warn("Seeking back to the beginning of the stream");
+                        Logging.Debug("Seeking back to the beginning of the stream");
                         stream.Seek(0, SeekOrigin.Begin);
 
-                        Logging.Warn("Setting up source from stream");
+                        Logging.Debug("Setting up source from stream");
                         IWaveSource source = new WaveFileReader(stream);
 
                         // We need to extend the duration of the wave source if we have any effects going on
                         if (chorusLevel != 0 || reverbLevel != 0 || echoDelay != 0)
                         {
                             // Add a base of 500ms plus 10ms per effect level over 50
-                            Logging.Warn("Extending duration by " + 500 + Math.Max(0, (configuration.EffectsLevel - 50) * 10) + "ms");
+                            Logging.Debug("Extending duration by " + 500 + Math.Max(0, (configuration.EffectsLevel - 50) * 10) + "ms");
                             source = source.AppendSource(x => new ExtendedDurationWaveSource(x, 500 + Math.Max(0, (configuration.EffectsLevel - 50) * 10)));
                         }
 
@@ -200,7 +200,7 @@ namespace EddiSpeechService
                         // We always have chorus
                         if (chorusLevel != 0)
                         {
-                            Logging.Warn("Adding chorus");
+                            Logging.Debug("Adding chorus");
                             source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = Math.Min(100, (int)(180 * ((decimal)configuration.EffectsLevel) / ((decimal)100))), Delay = 16, Frequency = (configuration.EffectsLevel / 10), Feedback = 25 });
                         }
 
@@ -209,14 +209,14 @@ namespace EddiSpeechService
                         //{
                         if (reverbLevel != 0)
                         {
-                            Logging.Warn("Adding reverb");
+                            Logging.Debug("Adding reverb");
                             // We tone down the reverb level with the distortion level, as the combination is nasty
                             source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = (int)(1 + 999 * ((decimal)configuration.EffectsLevel) / ((decimal)100)), ReverbMix = Math.Max(-96, -96 + (96 * reverbLevel / 100) - distortionLevel) });
                         }
 
                         if (echoDelay != 0)
                         {
-                            Logging.Warn("Adding echo");
+                            Logging.Debug("Adding echo");
                             // We tone down the echo level with the distortion level, as the combination is nasty
                             source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = Math.Max(5, (int)(10 * ((decimal)configuration.EffectsLevel) / ((decimal)100)) - distortionLevel), Feedback = Math.Max(0, 10 - distortionLevel / 2) });
                         }
@@ -224,7 +224,7 @@ namespace EddiSpeechService
 
                         if (configuration.EffectsLevel > 0 && distortionLevel > 0)
                         {
-                            Logging.Warn("Adding distortion");
+                            Logging.Debug("Adding distortion");
                             source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = distortionLevel, Gain = -distortionLevel / 2, PostEQBandwidth = 4000, PostEQCenterFrequency = 4000 });
                         }
 
@@ -236,31 +236,31 @@ namespace EddiSpeechService
 
                         if (priority < activeSpeechPriority)
                         {
-                            Logging.Warn("About to StopCurrentSpeech");
+                            Logging.Debug("About to StopCurrentSpeech");
                             StopCurrentSpeech();
-                            Logging.Warn("Finished StopCurrentSpeech");
+                            Logging.Debug("Finished StopCurrentSpeech");
                         }
 
-                        Logging.Warn("Creating waitHandle");
+                        Logging.Debug("Creating waitHandle");
                         EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-                        Logging.Warn("Setting up soundOut");
+                        Logging.Debug("Setting up soundOut");
                         var soundOut = new WasapiOut();
-                        Logging.Warn("Setting up soundOut");
+                        Logging.Debug("Setting up soundOut");
                         soundOut.Initialize(source);
-                        Logging.Warn("Configuring waitHandle");
+                        Logging.Debug("Configuring waitHandle");
                         soundOut.Stopped += (s, e) => waitHandle.Set();
 
-                        Logging.Warn("Starting speech");
+                        Logging.Debug("Starting speech");
                         StartSpeech(soundOut, priority);
 
-                        Logging.Warn("Waiting for speech");
+                        Logging.Debug("Waiting for speech");
                         // Add a timeout, in case it doesn't come back with the signal
                         waitHandle.WaitOne(source.GetTime(source.Length));
-                        Logging.Warn("Finished waiting for speech");
+                        Logging.Debug("Finished waiting for speech");
 
-                        Logging.Warn("Stopping speech (just to be sure)");
+                        Logging.Debug("Stopping speech (just to be sure)");
                         StopCurrentSpeech();
-                        Logging.Warn("Disposing of speech source");
+                        Logging.Debug("Disposing of speech source");
                         source.Dispose();
                     }
                 }
@@ -269,19 +269,19 @@ namespace EddiSpeechService
                     Logging.Error("Failed to speak \"" + finalSpeech + "\"", ex);
                 }
             });
-            Logging.Warn("Setting thread name");
+            Logging.Debug("Setting thread name");
             speechThread.Name = "Speech service speak";
-            Logging.Warn("Setting thread background");
+            Logging.Debug("Setting thread background");
             speechThread.IsBackground = true;
             try
             {
-                Logging.Warn("Starting speech thread");
+                Logging.Debug("Starting speech thread");
                 speechThread.Start();
                 if (wait)
                 {
-                    Logging.Warn("Waiting for speech thread");
+                    Logging.Debug("Waiting for speech thread");
                     speechThread.Join();
-                    Logging.Warn("Finished waiting for speech thread");
+                    Logging.Debug("Finished waiting for speech thread");
                 }
             }
             catch (ThreadAbortException tax)
@@ -331,14 +331,14 @@ namespace EddiSpeechService
                 {
                     lock (activeSpeechLock)
                     {
-                        Logging.Warn("Checking to see if we can start speech");
+                        Logging.Debug("Checking to see if we can start speech");
                         if (activeSpeech == null)
                         {
-                            Logging.Warn("We can - setting active speech");
+                            Logging.Debug("We can - setting active speech");
                             activeSpeech = soundout;
                             activeSpeechPriority = priority;
                             started = true;
-                            Logging.Warn("Playing sound buffer");
+                            Logging.Debug("Playing sound buffer");
                             soundout.Play();
                         }
                     }
@@ -353,9 +353,9 @@ namespace EddiSpeechService
             {
                 if (activeSpeech != null)
                 {
-                    Logging.Warn("Stopping active speech");
+                    Logging.Debug("Stopping active speech");
                     activeSpeech.Stop();
-                    Logging.Warn("Disposing of active speech");
+                    Logging.Debug("Disposing of active speech");
                     activeSpeech.Dispose();
                     activeSpeech = null;
                     Logging.Debug("Stopped current speech");
