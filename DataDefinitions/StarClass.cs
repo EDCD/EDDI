@@ -106,7 +106,7 @@ namespace EddiDataDefinitions
         /// </summary>
         public static decimal solarradius(decimal radius)
         {
-            return radius / 695500000;
+            return radius / 695700000;
         }
 
         /// <summary>
