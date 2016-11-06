@@ -1,6 +1,7 @@
 #2.0.8
   * Update coriolis export with additional properties for improved accuracy
   * Handle "Profile unavailable" response from companion API
+  * Provide ship model rather than manufacturer to Coriolis.
 
 #2.0.7
   * Add ship's main and total fuel tank capacities
