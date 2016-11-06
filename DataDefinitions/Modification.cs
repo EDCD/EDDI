@@ -225,7 +225,6 @@ namespace EddiDataDefinitions
                     modify(AMMO, value, modifications);
                     break;
                 case "mod_weapon_burst_interval":
-                    System.Console.WriteLine("Burst interval modifier is " + value);
                     modify(ROF, value, modifications);
                     break;
                 case "mod_weapon_burst_rof":
@@ -467,9 +466,7 @@ namespace EddiDataDefinitions
                 // Although Elite talks about rate of fire, it is internally modelled as burst interval
                 // i.e. the interval between bursts of fire.  We've been happily modifying ROF with interval modifiers
                 // until now, so flip it here to provide the right number
-                System.Console.WriteLine("Burst interval modifier starts at " + rofModification.value);
                 decimal value = (1.0M / (1 + rofModification.value)) - 1;
-                System.Console.WriteLine("Burst interval modifier ends at " + value);
                 rofModification = new Modification(ROF);
                 rofModification.Modify(value);
                 modifications.Remove(ROF);
