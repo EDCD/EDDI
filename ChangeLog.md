@@ -1,3 +1,7 @@
+#2.0.8
+  * Update coriolis export with additional properties for improved accuracy
+  * Handle "Profile unavailable" response from companion API
+
 #2.0.7
   * Add ship's main and total fuel tank capacities
   * Add capability to upload logs to EDDI server
