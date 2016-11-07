@@ -1,7 +1,9 @@
 #2.0.8
   * Update coriolis export with additional properties for improved accuracy
   * Handle "Profile unavailable" response from companion API
-  * Provide ship model rather than manufacturer to Coriolis.
+  * Provide ship model rather than manufacturer to Coriolis
+  * Update star class information with better probability distributions
+  * Add stellar age and temperature probabilities
 
 #2.0.7
   * Add ship's main and total fuel tank capacities

@@ -27,9 +27,11 @@ namespace EddiDataDefinitions
 
         public IUnivariateDistribution radiusdistribution { get; private set; }
 
-        public IUnivariateDistribution luminositydistribution { get; private set; }
+        public IUnivariateDistribution tempdistribution { get; private set; }
 
-        private StarClass(string edname, string name, string chromaticity, decimal percentage, IUnivariateDistribution massdistribution, IUnivariateDistribution radiusdistribution, IUnivariateDistribution luminositydistribution)
+        public IUnivariateDistribution agedistribution { get; private set; }
+
+        private StarClass(string edname, string name, string chromaticity, decimal percentage, IUnivariateDistribution massdistribution, IUnivariateDistribution radiusdistribution, IUnivariateDistribution tempdistribution, IUnivariateDistribution agedistribution)
         {
             this.edname = edname;
             this.name = name;
@@ -37,7 +39,8 @@ namespace EddiDataDefinitions
             this.percentage = percentage;
             this.massdistribution = massdistribution;
             this.radiusdistribution = radiusdistribution;
-            this.luminositydistribution = luminositydistribution;
+            this.tempdistribution = tempdistribution;
+            this.agedistribution = agedistribution;
 
             CLASSES.Add(this);
         }
@@ -45,20 +48,28 @@ namespace EddiDataDefinitions
         // Percentages are obtained from a combination of https://en.wikipedia.org/wiki/Stellar_classification#Harvard_spectral_classification
         // and http://physics.stackexchange.com/questions/153150/what-does-this-stellar-mass-distribution-mean
 
-        public static readonly StarClass O = new StarClass("O", "O", "blue", 0.0000009M, new Gamma(3, 1/11.0), new Gamma(3, 1/20.0), new Gamma(9, 1/5000.0));
-        public static readonly StarClass B = new StarClass("B", "B", "blue-white", 0.039M, new Normal(9.05, 6.96), new Normal(4.2, 2.4), new Normal(15012, 4995));
-        public static readonly StarClass A = new StarClass("A", "A", "blue-white", 0.18M, new Normal(1.75, 0.36), new Normal(1.6, 2), new Normal(15, 19));
-        public static readonly StarClass F = new StarClass("F", "F", "white", 0.9M, new Normal(1.22, 0.18), new Normal(1.275, 0.126), new Normal(3.25, 1.749));
-        public static readonly StarClass G = new StarClass("G", "G", "yellow-white", 2.28M, new Normal(0.92, 0.12), new Normal(1.055, 0.15), new Normal(1.05, 0.45));
-        public static readonly StarClass K = new StarClass("K", "K", "yellow-orange", 3.63M, new Normal(0.625, 0.18), new Normal(0.83, 0.129), new Normal(0.34, 0.261));
-        public static readonly StarClass M = new StarClass("M", "M", "orange-red", 22.935M, new Normal(0.265, 0.18), new Gamma(1, 1/0.25), new Gamma(1, 1/0.04));
+        public static readonly StarClass O = new StarClass("O", "O", "blue", 0.0000009M, new Normal(37.57, 27.50), new Normal(14.52, 29.67), new Normal(49698, 21338), new Normal(138, 262));
+        public static readonly StarClass B = new StarClass("B", "B", "blue-white", 0.039M, new Normal(5.81, 4.52), new Normal(3.36, 13.42), new Normal(16478, 6044), new Normal(237, 289));
+        public static readonly StarClass A = new StarClass("A", "A", "blue-white", 0.18M, new Normal(1.82, 2.78), new Normal(2.29, 16.63), new Normal(8208, 1179), new Normal(1809, 20152));
+        public static readonly StarClass F = new StarClass("F", "F", "white", 0.9M, new Normal(1.30, 0.20), new Normal(1.30, 3.86), new Normal(6743, 531), new Normal(2141, 1662));
+        public static readonly StarClass G = new StarClass("G", "G", "yellow-white", 2.28M, new Normal(0.94, 0.13), new Normal(1.01, 0.76), new Normal(5653, 7672), new Normal(4713, 3892));
+        public static readonly StarClass K = new StarClass("K", "K", "yellow-orange", 3.63M, new Normal(1.04, 45.55), new Normal(0.94, 2.11), new Normal(4452, 3284), new Normal(6291, 4144));
+        public static readonly StarClass M = new StarClass("M", "M", "orange-red", 22.935M, new Normal(0.66, 33.23), new Normal(1.58, 47.11), new Normal(2835, 481), new Normal(6609, 8645));
 
         /// <summary>
-        /// Provide the cumulative probability that a star of this class will have a luminosity equal to or lower than that supplied
+        /// Provide the cumulative probability that a star of this class will have a temp equal to or lower than that supplied
         /// </summary>
-        public decimal luminosityCP(decimal l)
+        public decimal tempCP(decimal l)
         {
-            return (decimal)luminositydistribution.CumulativeDistribution((double)l);
+            return (decimal)tempdistribution.CumulativeDistribution((double)l);
+        }
+
+        /// <summary>
+        /// Provide the cumulative probability that a star of this class will have a temp equal to or lower than that supplied
+        /// </summary>
+        public decimal ageCP(decimal l)
+        {
+            return (decimal)agedistribution.CumulativeDistribution((double)l);
         }
 
         /// <summary>

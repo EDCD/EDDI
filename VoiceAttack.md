@@ -992,24 +992,25 @@ Variables set with this events are as follows:
 
   * {DEC:EDDI star scanned absolutemagnitude} The absolute magnitude of the star that has been scanned
   * {DEC:EDDI star scanned age} The age of the star that has been scanned, in years (rounded to millions of years)
+  * {DEC:EDDI star scanned ageprobability} The probablility of finding a star of this class with this age
   * {TXT:EDDI star scanned chromaticity} The apparent colour of the star that has been scanned
   * {DEC:EDDI star scanned distancefromarrival} The distance in LS from the main star
   * {DEC:EDDI star scanned eccentricity} 
   * {DEC:EDDI star scanned luminosity} The luminosity of the star that has been scanned
-  * {DEC:EDDI star scanned luminosityprobability} The probablility of finding a star of this class and at least this luminosity
-  * {DEC:EDDI star scanned massprobability} The probablility of finding a star of this class and at least this mass
+  * {DEC:EDDI star scanned massprobability} The probablility of finding a star of this class with this mass
   * {TXT:EDDI star scanned name} The name of the star that has been scanned
   * {DEC:EDDI star scanned orbitalinclination} 
   * {DEC:EDDI star scanned orbitalperiod} The number of seconds taken for a full orbit of the main star
   * {DEC:EDDI star scanned periapsis} 
   * {DEC:EDDI star scanned radius} The radius of the star that has been scanned, in metres
-  * {DEC:EDDI star scanned radiusprobability} The probablility of finding a star of this class and at least this radius
+  * {DEC:EDDI star scanned radiusprobability} The probablility of finding a star of this class with this radius
   * {DEC:EDDI star scanned rotationperiod} The number of seconds taken for a full rotation
   * {DEC:EDDI star scanned semimajoraxis} 
   * {DEC:EDDI star scanned solarmass} The mass of the star that has been scanned, relative to Sol's mass
   * {DEC:EDDI star scanned solarradius} The radius of the star that has been scanned, compared to Sol
   * {TXT:EDDI star scanned stellarclass} The stellar class of the star that has been scanned (O, G, etc)
   * {DEC:EDDI star scanned temperature} The temperature of the star that has been scanned
+  * {DEC:EDDI star scanned temperatureprobability} The probablility of finding a star of this class with this temperature
 
 ### Touchdown
 Triggered when your ship touches down on a planet's surface.
