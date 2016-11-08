@@ -76,7 +76,8 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("StationName", out val);
                                 string stationName = (string)val;
                                 data.TryGetValue("Allegiance", out val);
-                                Superpower allegiance = Superpower.FromEDName((string)val);
+                                // FD sends "" rather than null; fix that here
+                                Superpower allegiance = (string)val == "" ? null : Superpower.FromEDName((string)val);
                                 data.TryGetValue("Faction", out val);
                                 string faction = (string)val;
                                 // Might be a superpower...
@@ -166,7 +167,8 @@ namespace EddiJournalMonitor
                                 decimal fuelRemaining = (decimal)(double)val;
 
                                 data.TryGetValue("Allegiance", out val);
-                                Superpower allegiance = Superpower.FromEDName((string)val);
+                                // FD sends "" rather than null; fix that here
+                                Superpower allegiance = (string)val == "" ? null : Superpower.FromEDName((string)val);
                                 data.TryGetValue("Faction", out val);
                                 string faction = (string)val;
                                 // Might be a superpower...
@@ -205,7 +207,8 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Docked", out val);
                                 bool docked = (bool)val;
                                 data.TryGetValue("Allegiance", out val);
-                                Superpower allegiance = Superpower.FromEDName((string)val);
+                                // FD sends "" rather than null; fix that here
+                                Superpower allegiance = (string)val == "" ? null : Superpower.FromEDName((string)val);
                                 data.TryGetValue("Faction", out val);
                                 string faction = (string)val;
                                 // Might be a superpower...
