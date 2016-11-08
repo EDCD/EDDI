@@ -12,6 +12,8 @@ VoiceAttack must be configured to use plugins.  To do so you must click on the S
 
 If EDDI is installed in the correct location and plugin support is enabled you should see a message when starting VoiceAttack along the lines of `Plugin EDDI 2.0.0 initialized`.
 
+If you have problems with your installation then your first port of call is the [Troubleshooting guide](https://github.com/cmdrmcdonald/EliteDangerousDataProvider/blob/master/TROUBLESHOOTING.md).  If after following the troubleshooting guide EDDI is still not working them please [report an issue](https://github.com/cmdrmcdonald/EliteDangerousDataProvider/issues).
+
 ## Upgrading from EDDI 1.x
 
 If you have version 1.x of EDDI installed then you should remove it entirely prior to installing EDDI.  To do so:
