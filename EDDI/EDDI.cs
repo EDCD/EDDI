@@ -340,33 +340,36 @@ namespace Eddi
         private void keepAlive(string name, Action start)
         {
             int failureCount = 0;
-            while (running)
+            while (running && failureCount < 5)
             {
                 try
                 {
                     Thread monitorThread = new Thread(() => start());
                     monitorThread.Name = name;
                     monitorThread.IsBackground = true;
-                    Logging.Info("Starting " + name);
+                    Logging.Info("Starting " + name + " (" + failureCount + ")");
                     monitorThread.Start();
                     monitorThread.Join();
                 }
                 catch (ThreadAbortException tax)
                 {
-                    failureCount++;
-                    if (running && failureCount < 5)
+                    if (running)
                     {
                         Logging.Error("Restarting " + name + " after thread abort", tax);
                     }
                 }
                 catch (Exception ex)
                 {
-                    failureCount++;
-                    if (running && failureCount < 5)
+                    if (running)
                     {
                         Logging.Error("Restarting " + name + " after exception", ex);
                     }
                 }
+                failureCount++;
+            }
+            if (running)
+            {
+                Logging.Warn(name + " stopping after too many failures");
             }
         }
 
