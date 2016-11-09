@@ -83,10 +83,10 @@ namespace EddiDataDefinitions
         public List<Ship> shipyard { get; set; }
 
         /// <summary>Is this station a starport?</summary>
-        public bool IsStarport() { return model.EndsWith("Starport"); }
+        public bool IsStarport() { return model == null ? false : model.EndsWith("Starport"); }
 
         /// <summary>Is this station an outpost?</summary>
-        public bool IsOutpost() { return model.EndsWith("Outpost"); }
+        public bool IsOutpost() { return model == null ? false : model.EndsWith("Outpost"); }
 
         /// <summary>Is this station a planetary outpost?</summary>
         public bool IsPlanetaryOutpost() { return model == "Planetary Outpost"; }
@@ -95,6 +95,6 @@ namespace EddiDataDefinitions
         public bool IsPlanetaryPort() { return model == "Planetary Port" || model == "Planetary Engineer Base"; }
 
         /// <summary>Is this station planetary?</summary>
-        public bool IsPlanetary() { return model.Contains("Planetary"); }
+        public bool IsPlanetary() { return model == null ? false : model.Contains("Planetary"); }
     }
 }

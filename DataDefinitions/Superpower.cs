@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,16 @@ namespace EddiDataDefinitions
         public static readonly Superpower Empire = new Superpower("$faction_Empire;", "Empire");
         public static readonly Superpower Independent = new Superpower("$faction_Independent;", "Independent");
         public static readonly Superpower Pirate = new Superpower("$faction_Pirate;", "Pirate");
+
+        public static Superpower From(string from)
+        {
+            Superpower result = FromName(from);
+            if (result == null)
+            {
+                result = FromEDName(from);
+            }
+            return result;
+        }
 
         public static Superpower FromName(string from)
         {

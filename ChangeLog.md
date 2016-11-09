@@ -1,3 +1,14 @@
+#2.0.8
+  * Update coriolis export with additional properties for improved accuracy
+  * Handle "Profile unavailable" response from companion API
+  * Provide ship model rather than manufacturer to Coriolis
+  * Update star class information with better probability distributions
+  * Add stellar age and temperature probabilities
+  * Catch bad allegiance data sent from companion API
+  * Avoid repetition of docking information when still docked at the same station
+  * Fix potential crash when station model is undefined
+  * Update default docking and swapout scripts to make them less chatty
+
 #2.0.7
   * Add ship's main and total fuel tank capacities
   * Add capability to upload logs to EDDI server
