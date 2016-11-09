@@ -226,6 +226,37 @@ namespace EddiCompanionAppService
                 return cachedProfile;
             }
 
+            string data = obtainProfile();
+
+            if (data == null || data == "Profile unavailable")
+            {
+                // Happens if there is a problem with the API.  Logging in again might clear this...
+                relogin();
+                data = obtainProfile();
+            }
+
+            try
+            {
+                cachedProfile = ProfileFromJson(data);
+            }
+            catch (JsonException ex)
+            {
+                Logging.Error("Failed to parse companion profile", ex);
+                cachedProfile = null;
+            }
+
+            if (cachedProfile != null)
+            {
+                cachedProfileExpires = DateTime.Now.AddSeconds(30);
+                Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
+            }
+
+            Logging.Debug("Leaving");
+            return cachedProfile;
+        }
+
+        private string obtainProfile()
+        {
             HttpWebRequest request = GetRequest(BASE_URL + PROFILE_URL);
             using (HttpWebResponse response = GetResponse(request))
             {
@@ -238,63 +269,52 @@ namespace EddiCompanionAppService
 
                 if (response.StatusCode == HttpStatusCode.Found && response.Headers["Location"] == LOGIN_URL)
                 {
-                    // Need to log in again.
-                    CurrentState = State.NEEDS_LOGIN;
-                    Login();
-                    if (CurrentState != State.READY)
-                    {
-                        Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
-                        Logging.Debug("Leaving");
-                        throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
-                    }
-                    // Rerun the profile request
-                    HttpWebRequest reRequest = GetRequest(BASE_URL + PROFILE_URL);
-                    using (HttpWebResponse reResponse = GetResponse(reRequest))
-                    {
-                        if (reResponse == null)
-                        {
-                            Logging.Debug("Failed to contact API server");
-                            Logging.Debug("Leaving");
-                            throw new EliteDangerousCompanionAppException("Failed to contact API server");
-                        }
-                        // Handle the situation where a login is still required
-                        if (reResponse.StatusCode == HttpStatusCode.Found && reResponse.Headers["Location"] == LOGIN_URL)
-                        {
-                            // Need to log in again but we have already tried to do so - revert
-                            CurrentState = State.NEEDS_LOGIN;
-                            Logging.Debug("Service not accepting profile requests");
-                            Logging.Debug("Leaving");
-                            throw new EliteDangerousCompanionAppIllegalStateException("Service not accepting profile requests");
-                        }
-                    }
+                    return null;
                 }
 
-                // Obtain and parse our response
-                var encoding = response.CharacterSet == ""
-                        ? Encoding.UTF8
-                        : Encoding.GetEncoding(response.CharacterSet);
+                return getResponseData(response);
+            }
+        }
 
-                Logging.Debug("Reading response");
-                using (var stream = response.GetResponseStream())
+        /**
+         * Try to relogin if there is some issue that requires it.
+         * Throws an exception if it failed to log in.
+         */
+        private void relogin()
+        {
+            // Need to log in again.
+            CurrentState = State.NEEDS_LOGIN;
+            Login();
+            if (CurrentState != State.READY)
+            {
+                Logging.Debug("Service in incorrect state to provide profile (" + CurrentState + ")");
+                Logging.Debug("Leaving");
+                throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
+            }
+        }
+
+        /**
+         * Obtain the response data from an HTTP web response
+         */
+        private string getResponseData(HttpWebResponse response)
+        {
+            // Obtain and parse our response
+            var encoding = response.CharacterSet == ""
+                    ? Encoding.UTF8
+                    : Encoding.GetEncoding(response.CharacterSet);
+
+            Logging.Debug("Reading response");
+            using (var stream = response.GetResponseStream())
+            {
+                var reader = new StreamReader(stream, encoding);
+                string data = reader.ReadToEnd();
+                if (data == null || data.Trim() == "")
                 {
-                    var reader = new StreamReader(stream, encoding);
-                    string data = reader.ReadToEnd();
-                    if (data == null || data.Trim() == "")
-                    {
-                        Logging.Warn("No data returned, returning null profile");
-                        return null;
-                    }
-                    Logging.Debug("Data is " + data);
-                    cachedProfile = ProfileFromJson(data);
-                    if (cachedProfile != null)
-                    {
-                        cachedProfileExpires = DateTime.Now.AddSeconds(30);
-                        Logging.Debug("Profile is " + JsonConvert.SerializeObject(cachedProfile));
-                    }
-
-                    Logging.Debug("Leaving");
-                    return cachedProfile;
+                    Logging.Warn("No data returned");
+                    return null;
                 }
+                Logging.Debug("Data is " + data);
+                return data;
             }
         }
 
@@ -900,52 +920,7 @@ namespace EddiCompanionAppService
                 {
                     Modification.Modify((string)modifier["name"], (decimal)modifier["value"], ref modifications);
                 }
-
-                // Here we fix up the odd modifications.
-
-                if (module.EDName.StartsWith("Hpt_ShieldBooster_"))
-                {
-                    // Shield boosters are treated internally as straight modifiers, so rather than (for example)
-                    // being a 4% boost they are a 104% multiplier.  Unfortunately this means that our % modification
-                    // is incorrect so we fix it
-
-                    Modification sbModification;
-                    if (modifications.TryGetValue(Modification.SHIELDBOOST, out sbModification))
-                    {
-                        // We do have a boost modification
-                        decimal boost;
-                        if (module.grade == "E")
-                        {
-                            boost = 1.04M;
-                        }
-                        else if (module.grade == "D")
-                        {
-                            boost = 1.08M;
-                        }
-                        else if (module.grade == "C")
-                        {
-                            boost = 1.12M;
-                        }
-                        else if (module.grade == "B")
-                        {
-                            boost = 1.16M;
-                        }
-                        else
-                        {
-                            boost = 1.2M;
-                        }
-
-                        decimal alteredBoost = boost * (1 + sbModification.value) - boost;
-                        decimal alteredValue = alteredBoost / (boost - 1);
-                        sbModification = new Modification(Modification.SHIELDBOOST);
-                        sbModification.Modify(alteredValue);
-                        modifications.Remove(Modification.SHIELDBOOST);
-                        modifications.Add(Modification.SHIELDBOOST, sbModification);
-                    }
-
-
-                    // Another one for shield boosters: if they have the 
-                }
+                Modification.FixUpModifications(module, modifications);
 
                 module.modifications = modifications.Values.ToList();
             }

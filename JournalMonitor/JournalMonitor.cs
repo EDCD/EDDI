@@ -76,11 +76,13 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("StationName", out val);
                                 string stationName = (string)val;
                                 data.TryGetValue("Allegiance", out val);
-                                Superpower allegiance = Superpower.FromEDName((string)val);
+                                // FD sends "" rather than null; fix that here
+                                if (((string)val) == "") { val = null; }
+                                Superpower allegiance = Superpower.From((string)val);
                                 data.TryGetValue("Faction", out val);
                                 string faction = (string)val;
                                 // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.FromEDName(faction);
+                                Superpower superpowerFaction = Superpower.From(faction);
                                 faction = superpowerFaction != null ? superpowerFaction.name : faction;
                                 data.TryGetValue("FactionState", out val);
                                 State factionState = State.FromEDName((string)val);
@@ -166,11 +168,13 @@ namespace EddiJournalMonitor
                                 decimal fuelRemaining = (decimal)(double)val;
 
                                 data.TryGetValue("Allegiance", out val);
-                                Superpower allegiance = Superpower.FromEDName((string)val);
+                                // FD sends "" rather than null; fix that here
+                                if (((string)val) == "") { val = null; }
+                                Superpower allegiance = Superpower.From((string)val);
                                 data.TryGetValue("Faction", out val);
                                 string faction = (string)val;
                                 // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.FromEDName(faction);
+                                Superpower superpowerFaction = Superpower.From(faction);
                                 faction = superpowerFaction != null ? superpowerFaction.name : faction;
                                 data.TryGetValue("FactionState", out val);
                                 State factionState = State.FromEDName((string)val);
@@ -205,11 +209,13 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Docked", out val);
                                 bool docked = (bool)val;
                                 data.TryGetValue("Allegiance", out val);
-                                Superpower allegiance = Superpower.FromEDName((string)val);
+                                // FD sends "" rather than null; fix that here
+                                if (((string)val) == "") { val = null; }
+                                Superpower allegiance = Superpower.From((string)val);
                                 data.TryGetValue("Faction", out val);
                                 string faction = (string)val;
                                 // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.FromEDName(faction);
+                                Superpower superpowerFaction = Superpower.From(faction);
                                 faction = superpowerFaction != null ? superpowerFaction.name : faction;
                                 data.TryGetValue("FactionState", out val);
                                 State factionState = State.FromEDName((string)val);
@@ -235,7 +241,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("VictimFaction", out val);
                                 string victimFaction = (string)val;
                                 // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.FromEDName(victimFaction);
+                                Superpower superpowerFaction = Superpower.From(victimFaction);
                                 victimFaction = superpowerFaction != null ? superpowerFaction.name : victimFaction;
 
                                 long reward;
@@ -254,7 +260,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Faction", out val);
                                     string factionName = (string)val;
                                     // Might be a superpower...
-                                    superpowerFaction = Superpower.FromEDName(factionName);
+                                    superpowerFaction = Superpower.From(factionName);
                                     factionName = superpowerFaction != null ? superpowerFaction.name : factionName;
                                     rewards.Add(new Reward(factionName, reward));
                                 }
@@ -273,7 +279,7 @@ namespace EddiJournalMonitor
                                             rewardData.TryGetValue("Faction", out val);
                                             string factionName = (string)val;
                                             // Might be a superpower...
-                                            superpowerFaction = Superpower.FromEDName(factionName);
+                                            superpowerFaction = Superpower.From(factionName);
                                             factionName = superpowerFaction != null ? superpowerFaction.name : factionName;
 
                                             rewardData.TryGetValue("Reward", out val);
@@ -295,7 +301,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Faction", out val);
                                 string awardingFaction = (string)val;
                                 // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.FromEDName(awardingFaction);
+                                Superpower superpowerFaction = Superpower.From(awardingFaction);
                                 awardingFaction = superpowerFaction != null ? superpowerFaction.name : awardingFaction;
                                 data.TryGetValue("Reward", out val);
                                 long reward = (long)val;
@@ -313,7 +319,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Faction", out val);
                                 string faction = (string)val;
                                 // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.FromEDName(faction);
+                                Superpower superpowerFaction = Superpower.From(faction);
                                 faction = superpowerFaction != null ? superpowerFaction.name : faction;
                                 data.TryGetValue("Victim", out val);
                                 string victim = (string)val;
@@ -1073,7 +1079,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Faction", out val);
                                 string faction = (string)val;
                                 // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.FromEDName(faction);
+                                Superpower superpowerFaction = Superpower.From(faction);
                                 faction = superpowerFaction != null ? superpowerFaction.name : faction;
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
@@ -1316,7 +1322,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Faction", out val);
                                 string faction = (string)val;
                                 // Could be a superpower...
-                                Superpower superpowerFaction = Superpower.FromEDName(faction);
+                                Superpower superpowerFaction = Superpower.From(faction);
                                 faction = superpowerFaction != null ? superpowerFaction.name : faction;
 
                                 data.TryGetValue("Expiry", out val);

@@ -225,10 +225,10 @@ namespace EddiDataDefinitions
                     modify(AMMO, value, modifications);
                     break;
                 case "mod_weapon_burst_interval":
-                    modify(ROF, (1 / (1 + value)) - 1, modifications);
+                    modify(ROF, value, modifications);
                     break;
                 case "mod_weapon_burst_rof":
-                    modify(ROF, value, modifications);
+                    // TODO
                     break;
                 case "mod_weapon_burst_size":
                     modify(BURST, value, modifications);
@@ -274,7 +274,8 @@ namespace EddiDataDefinitions
                     break;
                 case "special_incendiary_rounds":
                     modify(THERMLOAD, 2M, modifications);
-                    modify(ROF, 1M / 0.95M, modifications);
+                    modify(ROF, (1M / 0.95M) - 1, modifications);
+                    modify(DAMAGE, 0.5M, modifications);
                     break;
                 case "special_phasing_sequence":
                     // TODO
@@ -283,7 +284,7 @@ namespace EddiDataDefinitions
                     // TODO
                     break;
                 case "special_scramble_spectrum":
-                    modify(ROF, 1M / 0.9M, modifications);
+                    modify(ROF, (1M / 0.9M) - 1, modifications);
                     break;
                 case "special_thermal_cascade":
                     // TODO
@@ -295,7 +296,7 @@ namespace EddiDataDefinitions
                     modify(THERMLOAD, 0.25M, modifications);
                     break;
                 case "special_thermalshock":
-                    modify(DAMAGE, -0.2M, modifications);
+                    modify(DAMAGE, -0.25M, modifications);
                     break;
                 case "trade_cell_heat_cell_units":
                     // TODO
@@ -307,7 +308,10 @@ namespace EddiDataDefinitions
                     // TODO
                     break;
                 case "trade_distributor_global_charge_mass":
-                    // TODO
+                    modify(MASS, value, modifications);
+                    modify(SYSCAP, value * 0.75M, modifications);
+                    modify(ENGCAP, value * 0.75M, modifications);
+                    modify(WEPCAP, value * 0.75M, modifications);
                     break;
                 case "trade_engine_curve_mult_engine_heat":
                     modify(OPTMUL, value * 0.4M, modifications);
@@ -357,7 +361,7 @@ namespace EddiDataDefinitions
                     break;
                 case "trade_passive_power_weapon_active":
                     modify(POWER, value, modifications);
-                    modify(DISTDRAW, value * 0.61M, modifications);
+                    modify(DISTDRAW, value * -0.6M, modifications);
                     break;
                 case "trade_shield_curve_shield_curve_mult":
                     modify(OPTMASS, value * -1M, modifications);
@@ -374,8 +378,8 @@ namespace EddiDataDefinitions
                     modify(POWER, value, modifications);
                     break;
                 case "trade_weapon_damage_weapon_active_power":
-                    modify(DAMAGE, value * 0.6M, modifications);
-                    modify(DISTDRAW, value * 1.63M, modifications);
+                    modify(DAMAGE, value * 0.5M, modifications);
+                    modify(DISTDRAW, value, modifications);
                     break;
                 case "trade_weapon_hardness_weapon_heat":
                     modify(PIERCING, value * 0.4M, modifications);
@@ -397,5 +401,78 @@ namespace EddiDataDefinitions
             }
             modification.Modify(value);
         }
+
+        /// <summary>
+        /// There are a number of wrinkles with modifications that we need to fix up when all of the modification
+        /// information has been gathered.  See in-code comments for each case
+        /// </summary>
+        public static void FixUpModifications(Module module, Dictionary<int, Modification> modifications)
+        {
+            if (module.EDName.StartsWith("Hpt_ShieldBooster_"))
+            {
+                // Shield boosters are treated internally as straight modifiers, so rather than (for example)
+                // being a 4% boost they are a 104% multiplier.  Unfortunately this means that our % modification
+                // is incorrect so we fix it
+
+                Modification sbModification;
+                if (modifications.TryGetValue(SHIELDBOOST, out sbModification))
+                {
+                    // We do have a boost modification
+                    decimal boost;
+                    if (module.grade == "E")
+                    {
+                        boost = 1.04M;
+                    }
+                    else if (module.grade == "D")
+                    {
+                        boost = 1.08M;
+                    }
+                    else if (module.grade == "C")
+                    {
+                        boost = 1.12M;
+                    }
+                    else if (module.grade == "B")
+                    {
+                        boost = 1.16M;
+                    }
+                    else
+                    {
+                        boost = 1.2M;
+                    }
+
+                    decimal alteredBoost = boost * (1 + sbModification.value) - boost;
+                    decimal alteredValue = alteredBoost / (boost - 1);
+                    sbModification = new Modification(SHIELDBOOST);
+                    sbModification.Modify(alteredValue);
+                    modifications.Remove(SHIELDBOOST);
+                    modifications.Add(SHIELDBOOST, sbModification);
+                }
+            }
+
+            Modification jitterModification;
+            if (modifications.TryGetValue(JITTER, out jitterModification))
+            {
+                // Jitter is in degrees rather than being a percentage, so needs to be /100
+                decimal value = jitterModification.value / 100;
+                jitterModification = new Modification(JITTER);
+                jitterModification.Modify(value);
+                modifications.Remove(JITTER);
+                modifications.Add(JITTER, jitterModification);
+            }
+
+            Modification rofModification;
+            if (modifications.TryGetValue(ROF, out rofModification))
+            {
+                // Although Elite talks about rate of fire, it is internally modelled as burst interval
+                // i.e. the interval between bursts of fire.  We've been happily modifying ROF with interval modifiers
+                // until now, so flip it here to provide the right number
+                decimal value = (1.0M / (1 + rofModification.value)) - 1;
+                rofModification = new Modification(ROF);
+                rofModification.Modify(value);
+                modifications.Remove(ROF);
+                modifications.Add(ROF, rofModification);
+            }
+        }
+
     }
 }

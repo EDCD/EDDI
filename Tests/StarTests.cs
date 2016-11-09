@@ -30,16 +30,5 @@ namespace Tests
                 Console.WriteLine("" + d + ": " + distribution.CumulativeDistribution(d));
             }
         }
-
-        [TestMethod]
-        public void TestStarSol()
-        {
-            StarScannedEvent scan = new StarScannedEvent(DateTime.Now, "Sol", "G", 1, 1, 4.83M, 5400000000, 300, 0, 10, 10, 0, 0, 0, 0, null);
-            decimal solLuminosity = StarClass.luminosity(scan.absolutemagnitude);
-            StarClass starClass = StarClass.FromName(scan.stellarclass);
-            decimal massChance = starClass.stellarMassCP(scan.solarmass);
-            decimal radiusChance = starClass.stellarRadiusCP(scan.radius);
-            decimal luminosityChance = starClass.luminosityCP(solLuminosity);
-        }
     }
 }

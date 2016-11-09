@@ -108,6 +108,12 @@ namespace EddiNetLogMonitor
         /// <summary>Find the latest file in a given directory matching a given expression, or null if no such file exists</summary>
         private static FileInfo FindLatestFile(string path, Regex filter = null)
         {
+            if (path == null)
+            {
+                // Configuration can be changed underneath us so we do have to check each time...
+                return null;
+            }
+
             var directory = new DirectoryInfo(path);
             try
             {

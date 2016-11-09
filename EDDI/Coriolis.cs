@@ -183,7 +183,7 @@ namespace Eddi
                 string bn;
                 if (ship.name == null)
                 {
-                    bn = ship.role + " " + ship.manufacturer;
+                    bn = ship.role + " " + ship.model;
                 }
                 else
                 {

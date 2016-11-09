@@ -23,14 +23,15 @@ namespace EddiEvents
             VARIABLES.Add("chromaticity", "The apparent colour of the star that has been scanned");
             VARIABLES.Add("stellarclass", "The stellar class of the star that has been scanned (O, G, etc)");
             VARIABLES.Add("solarmass", "The mass of the star that has been scanned, relative to Sol's mass");
-            VARIABLES.Add("massprobability", "The probablility of finding a star of this class and at least this mass");
+            VARIABLES.Add("massprobability", "The probablility of finding a star of this class with this mass");
             VARIABLES.Add("radius", "The radius of the star that has been scanned, in metres");
             VARIABLES.Add("solarradius", "The radius of the star that has been scanned, compared to Sol");
-            VARIABLES.Add("radiusprobability", "The probablility of finding a star of this class and at least this radius");
+            VARIABLES.Add("radiusprobability", "The probablility of finding a star of this class with this radius");
             VARIABLES.Add("absolutemagnitude", "The absolute magnitude of the star that has been scanned");
             VARIABLES.Add("luminosity", "The luminosity of the star that has been scanned");
-            VARIABLES.Add("luminosityprobability", "The probablility of finding a star of this class and at least this luminosity");
+            VARIABLES.Add("tempprobability", "The probablility of finding a star of this class with this temperature");
             VARIABLES.Add("age", "The age of the star that has been scanned, in years (rounded to millions of years)");
+            VARIABLES.Add("ageprobability", "The probablility of finding a star of this class with this age");
             VARIABLES.Add("temperature", "The temperature of the star that has been scanned");
             VARIABLES.Add("distancefromarrival", "The distance in LS from the main star");
             VARIABLES.Add("orbitalperiod", "The number of seconds taken for a full orbit of the main star");
@@ -60,9 +61,11 @@ namespace EddiEvents
 
         public decimal luminosity { get; private set; }
 
-        public decimal luminosityprobability { get; private set; }
+        public decimal tempprobability { get; private set; }
 
         public long age { get; private set; }
+
+        public decimal ageprobability { get; private set; }
 
         public decimal temperature { get; private set; }
 
@@ -108,7 +111,8 @@ namespace EddiEvents
             {
                 massprobability = sanitiseCP(starClass.stellarMassCP(solarmass));
                 radiusprobability = sanitiseCP(starClass.stellarRadiusCP(this.solarradius));
-                luminosityprobability = sanitiseCP(starClass.luminosityCP(this.luminosity));
+                tempprobability = sanitiseCP(starClass.tempCP(this.temperature));
+                ageprobability = sanitiseCP(starClass.ageCP(this.age));
                 chromaticity = starClass.chromaticity;
             }
 

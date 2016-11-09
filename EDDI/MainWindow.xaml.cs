@@ -1,6 +1,7 @@
 ﻿using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiSpeechService;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -432,7 +433,7 @@ namespace Eddi
 
         private void ShipRoleChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (shipsConfiguration != null)
+            if (shipsConfiguration != null && CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
             {
                 shipsConfiguration.ToFile();
             }
@@ -440,7 +441,7 @@ namespace Eddi
 
         private void shipYardUpdated(object sender, DataTransferEventArgs e)
         {
-            if (shipsConfiguration != null)
+            if (shipsConfiguration != null && CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
             {
                 shipsConfiguration.ToFile();
             }
@@ -534,6 +535,9 @@ namespace Eddi
 
         private async void sendLogsClicked(object sender, RoutedEventArgs e)
         {
+            // Write out useful information to the log before procedding
+            Logging.Info("EDDI version: " + Constants.EDDI_VERSION);
+            Logging.Info("Commander name: " + (EDDI.Instance.Cmdr != null ? EDDI.Instance.Cmdr.name : "unknown"));
             var progress = new Progress<string>(s => sendLogButton.Content = "Uploading log..." + s);
             await Task.Factory.StartNew(() => uploadLog(progress), TaskCreationOptions.LongRunning);
         }
@@ -547,6 +551,14 @@ namespace Eddi
                     progress.Report("");
                     client.UploadFile("http://api.eddp.co/log", Constants.DATA_DIR + @"\\eddi.log");
                     progress.Report("done");
+                    try
+                    {
+                        File.Delete(Constants.DATA_DIR + @"\\eddi.log");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Error("Failed to delete file after upload", ex);
+                    }
                 }
                 catch (Exception ex)
                 {
