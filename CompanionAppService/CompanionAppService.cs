@@ -496,6 +496,7 @@ namespace EddiCompanionAppService
             {
                 Commander Commander = new Commander();
                 Commander.name = (string)json["commander"]["name"];
+                Logging.Info("Commander name is " + Commander.name);
 
                 Commander.combatrating = CombatRating.FromRank((int)json["commander"]["rank"]["combat"]);
                 Commander.traderating = TradeRating.FromRank((int)json["commander"]["rank"]["trade"]);

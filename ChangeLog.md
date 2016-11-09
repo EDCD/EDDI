@@ -5,6 +5,7 @@
   * Update star class information with better probability distributions
   * Add stellar age and temperature probabilities
   * Catch bad allegiance data sent from companion API
+  * Avoid repetition of docking information when still docked at the same station
 
 #2.0.7
   * Add ship's main and total fuel tank capacities

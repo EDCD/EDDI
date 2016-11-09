@@ -121,16 +121,14 @@ namespace EddiNetLogMonitor
             return @"Monitor Elite: Dangerous' netlog.log for jumping to remote systems.  This provides the ""Jumping"" event";
         }
 
+        public bool Configured()
+        {
+            return NetLogConfiguration.FromFile().path != null;
+        }
+
         public void Start()
         {
-            if (NetLogConfiguration.FromFile().path == null)
-            {
-                Logging.Info("Cannot start netlog monitor - path missing");
-            }
-            else
-            {
-                start();
-            }
+            start();
         }
 
         public void Stop()

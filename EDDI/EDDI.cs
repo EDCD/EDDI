@@ -339,6 +339,7 @@ namespace Eddi
         /// </summary>
         private void keepAlive(string name, Action start)
         {
+            int failureCount = 0;
             while (running)
             {
                 try
@@ -352,14 +353,16 @@ namespace Eddi
                 }
                 catch (ThreadAbortException tax)
                 {
-                    if (running)
+                    failureCount++;
+                    if (running && failureCount < 5)
                     {
                         Logging.Error("Restarting " + name + " after thread abort", tax);
                     }
                 }
                 catch (Exception ex)
                 {
-                    if (running)
+                    failureCount++;
+                    if (running && failureCount < 5)
                     {
                         Logging.Error("Restarting " + name + " after exception", ex);
                     }
@@ -455,6 +458,12 @@ namespace Eddi
         {
             updateCurrentSystem(theEvent.system);
 
+            if (LastStation != null && LastStation.name == theEvent.station)
+            {
+                // We are already at this station; nothing to do
+                return false;
+            }
+
             // Update the station
             Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
             if (station == null)
@@ -484,6 +493,9 @@ namespace Eddi
             // Call refreshProfile() to ensure that our ship is up-to-date
             refreshProfile();
 
+            // Remove information about the station
+            LastStation = null;
+
             return true;
         }
 
@@ -505,8 +517,12 @@ namespace Eddi
             }
             if (CurrentStarSystem == null || CurrentStarSystem.name != name)
             {
+                Logging.Warn("1Current star system is " + JsonConvert.SerializeObject(CurrentStarSystem));
+                Logging.Warn("1Last star system is " + JsonConvert.SerializeObject(LastStarSystem));
                 LastStarSystem = CurrentStarSystem;
                 CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
+                Logging.Warn("2Current star system is " + JsonConvert.SerializeObject(CurrentStarSystem));
+                Logging.Warn("2Last star system is " + JsonConvert.SerializeObject(LastStarSystem));
                 setSystemDistanceFromHome(CurrentStarSystem);
             }
         }
