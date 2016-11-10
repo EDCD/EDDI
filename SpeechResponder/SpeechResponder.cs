@@ -54,7 +54,6 @@ namespace EddiSpeechResponder
 
         public void Stop()
         {
-            SpeechService.Instance.Say(EDDI.Instance.Ship, "Goodbye.", true, 1);
         }
 
         public void Reload()
@@ -115,6 +114,11 @@ namespace EddiSpeechResponder
                 dict["homesystem"] = new ReflectionValue(EDDI.Instance.HomeStarSystem);
             }
 
+            if (EDDI.Instance.HomeStation != null)
+            {
+                dict["homestation"] = new ReflectionValue(EDDI.Instance.HomeStation);
+            }
+
             if (EDDI.Instance.CurrentStarSystem != null)
             {
                 dict["system"] = new ReflectionValue(EDDI.Instance.CurrentStarSystem);
@@ -125,9 +129,9 @@ namespace EddiSpeechResponder
                 dict["lastsystem"] = new ReflectionValue(EDDI.Instance.LastStarSystem);
             }
 
-            if (EDDI.Instance.LastStation != null)
+            if (EDDI.Instance.CurrentStation != null)
             {
-                dict["station"] = new ReflectionValue(EDDI.Instance.LastStation);
+                dict["station"] = new ReflectionValue(EDDI.Instance.CurrentStation);
             }
 
             if (theEvent != null)

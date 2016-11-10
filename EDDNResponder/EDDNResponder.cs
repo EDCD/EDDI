@@ -118,10 +118,10 @@ namespace EDDNResponder
 
         private void sendCommodityInformation()
         {
-            if (EDDI.Instance.LastStation != null && EDDI.Instance.LastStation.commodities != null)
+            if (EDDI.Instance.CurrentStation != null && EDDI.Instance.CurrentStation.commodities != null)
             {
                 List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
-                foreach (Commodity commodity in EDDI.Instance.LastStation.commodities)
+                foreach (Commodity commodity in EDDI.Instance.CurrentStation.commodities)
                 {
                     if (commodity.category == "NonMarketable")
                     {
@@ -148,8 +148,8 @@ namespace EDDNResponder
                 {
                     IDictionary<string, object> data = new Dictionary<string, object>();
                     data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
-                    data.Add("systemName", EDDI.Instance.LastStation.systemname);
-                    data.Add("stationName", EDDI.Instance.LastStation.name);
+                    data.Add("systemName", EDDI.Instance.CurrentStation.systemname);
+                    data.Add("stationName", EDDI.Instance.CurrentStation.name);
                     data.Add("commodities", eddnCommodities);
 
                     EDDNBody body = new EDDNBody();
@@ -164,10 +164,10 @@ namespace EDDNResponder
 
         private void sendOutfittingInformation()
         {
-            if (EDDI.Instance.LastStation != null && EDDI.Instance.LastStation.outfitting != null)
+            if (EDDI.Instance.CurrentStation != null && EDDI.Instance.CurrentStation.outfitting != null)
             {
                 List<string> eddnModules = new List<string>();
-                foreach (Module module in EDDI.Instance.LastStation.outfitting)
+                foreach (Module module in EDDI.Instance.CurrentStation.outfitting)
                 {
                     if ((!ModuleDefinitions.IsPP(module))
                         && (module.EDName.StartsWith("Int_") || module.EDName.StartsWith("Hpt_") || module.EDName.Contains("_Armour_"))
@@ -182,8 +182,8 @@ namespace EDDNResponder
                 {
                     IDictionary<string, object> data = new Dictionary<string, object>();
                     data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
-                    data.Add("systemName", EDDI.Instance.LastStation.systemname);
-                    data.Add("stationName", EDDI.Instance.LastStation.name);
+                    data.Add("systemName", EDDI.Instance.CurrentStation.systemname);
+                    data.Add("stationName", EDDI.Instance.CurrentStation.name);
                     data.Add("modules", eddnModules);
 
                     EDDNBody body = new EDDNBody();
