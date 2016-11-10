@@ -1,3 +1,6 @@
+#2.0.9
+  * Do not update ship configuration when data is not available from the companion API
+
 #2.0.8
   * Update coriolis export with additional properties for improved accuracy
   * Handle "Profile unavailable" response from companion API
