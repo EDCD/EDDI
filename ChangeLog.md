@@ -1,5 +1,6 @@
 #2.0.9
   * Do not update ship configuration when data is not available from the companion API
+  * Be a little harsher when shutting down speech threads on close
 
 #2.0.8
   * Update coriolis export with additional properties for improved accuracy

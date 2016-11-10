@@ -353,6 +353,7 @@ namespace Eddi
                 }
                 catch (ThreadAbortException tax)
                 {
+                    Thread.ResetAbort();
                     if (running)
                     {
                         Logging.Error("Restarting " + name + " after thread abort", tax);
@@ -448,6 +449,7 @@ namespace Eddi
                 }
                 catch (ThreadAbortException tax)
                 {
+                    Thread.ResetAbort();
                     Logging.Error(JsonConvert.SerializeObject(@event), tax);
                 }
                 catch (Exception ex)

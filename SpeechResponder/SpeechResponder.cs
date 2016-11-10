@@ -54,7 +54,6 @@ namespace EddiSpeechResponder
 
         public void Stop()
         {
-            SpeechService.Instance.Say(EDDI.Instance.Ship, "Goodbye.", true, 1);
         }
 
         public void Reload()
