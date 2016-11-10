@@ -74,7 +74,7 @@ namespace Eddi
         public Commander Cmdr { get; private set; }
         public Ship Ship { get; private set; }
         public List<Ship> Shipyard { get; private set; }
-        public Station LastStation { get; private set; }
+        public Station CurrentStation { get; private set; }
 
         // Services made available from EDDI
         public StarMapService starMapService { get; private set; }
@@ -463,7 +463,7 @@ namespace Eddi
         {
             updateCurrentSystem(theEvent.system);
 
-            if (LastStation != null && LastStation.name == theEvent.station)
+            if (CurrentStation != null && CurrentStation.name == theEvent.station)
             {
                 // We are already at this station; nothing to do
                 return false;
@@ -485,7 +485,7 @@ namespace Eddi
             station.government = theEvent.government;
             station.allegiance = theEvent.allegiance;
 
-            LastStation = station;
+            CurrentStation = station;
 
             // Now call refreshProfile() to obtain the outfitting and commodity information
             refreshProfile();
@@ -499,7 +499,7 @@ namespace Eddi
             refreshProfile();
 
             // Remove information about the station
-            LastStation = null;
+            CurrentStation = null;
 
             return true;
         }
@@ -714,30 +714,35 @@ namespace Eddi
                             setSystemDistanceFromHome(CurrentStarSystem);
                         }
 
-                        if (LastStation == null)
-                        {
-                            Logging.Info("No last station; using the information available to us from the profile");
-                        }
-                        else
-                        {
-                            Logging.Info("Internal last station is " + LastStation.name + "@" + LastStation.systemname + ", profile last station is " + LastStation.name + "@" + LastStation.systemname);
-                        }
+                        //if (LastStation == null)
+                        //{
+                        //    Logging.Info("No last station; using the information available to us from the profile");
+                        //}
+                        //else
+                        //{
+                        //    Logging.Info("Internal last station is " + LastStation.name + "@" + LastStation.systemname + ", profile last station is " + LastStation.name + "@" + LastStation.systemname);
+                        //}
 
                         // Last station's name should be set from the journal, so we confirm that this is correct
                         // before we update the commodity and outfitting information
-                        if (LastStation == null)
-                        {
-                            // No current info so use profile data directly
-                            LastStation = profile.LastStation;
-                        }
-                        else if (LastStation.systemname == profile.LastStation.systemname && LastStation.name == profile.LastStation.name)
+                        //if (LastStation == null)
+                        //{
+                        //    // No current info so use profile data directly
+                        //    LastStation = profile.LastStation;
+                        //}
+                        //else if (LastStation.systemname == profile.LastStation.systemname && LastStation.name == profile.LastStation.name)
+                        if (CurrentStation != null && CurrentStation.systemname == profile.LastStation.systemname && CurrentStation.name == profile.LastStation.name)
                         {
                             // Match for our expected station with the information returned from the profile
+                            Logging.Debug("Current station matches profile information; updating info");
 
                             // Update the outfitting, commodities and shipyard with the data obtained from the profile
-                            LastStation.outfitting = profile.LastStation.outfitting;
-                            LastStation.commodities = profile.LastStation.commodities;
-                            LastStation.shipyard = profile.LastStation.shipyard;
+                            CurrentStation.outfitting = profile.LastStation.outfitting;
+                            CurrentStation.commodities = profile.LastStation.commodities;
+                            CurrentStation.shipyard = profile.LastStation.shipyard;
+                        } else
+                        {
+                            Logging.Debug("Current station does not match profile information; ignoring");
                         }
 
                         setCommanderTitle();

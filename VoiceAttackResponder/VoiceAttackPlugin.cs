@@ -241,7 +241,7 @@ namespace EddiVoiceAttackResponder
                     Logging.Debug("No information on current station");
                     return;
                 }
-                Station thisStation = EDDI.Instance.CurrentStarSystem.stations.SingleOrDefault(s => s.name == (EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.name));
+                Station thisStation = EDDI.Instance.CurrentStarSystem.stations.SingleOrDefault(s => s.name == (EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.name));
                 if (thisStation == null)
                 {
                     // Missing current star system information
@@ -550,7 +550,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("Home station", EDDI.Instance.HomeStation.name);
             }
 
-            setStationValues(EDDI.Instance.LastStation, "Last station", ref vaProxy);
+            setStationValues(EDDI.Instance.CurrentStation, "Last station", ref vaProxy);
 
             vaProxy.SetText("Environment", EDDI.Instance.Environment);
 
@@ -698,21 +698,21 @@ namespace EddiVoiceAttackResponder
                 }
 
                 setShipModuleValues(ship == null ? null : ship.bulkheads, prefix + " bulkheads", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.bulkheads, EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.outfitting, prefix + " bulkheads", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.bulkheads, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " bulkheads", ref vaProxy);
                 setShipModuleValues(ship == null ? null : ship.powerplant, prefix + " power plant", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.powerplant, EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.outfitting, prefix + " power plant", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.powerplant, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " power plant", ref vaProxy);
                 setShipModuleValues(ship == null ? null : ship.thrusters, prefix + " thrusters", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.thrusters, EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.outfitting, prefix + " thrusters", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.thrusters, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " thrusters", ref vaProxy);
                 setShipModuleValues(ship == null ? null : ship.frameshiftdrive, prefix + " frame shift drive", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.frameshiftdrive, EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.outfitting, prefix + " frame shift drive", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.frameshiftdrive, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " frame shift drive", ref vaProxy);
                 setShipModuleValues(ship == null ? null : ship.lifesupport, prefix + " life support", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.lifesupport, EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.outfitting, prefix + " life support", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.lifesupport, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " life support", ref vaProxy);
                 setShipModuleValues(ship == null ? null : ship.powerdistributor, prefix + " power distributor", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.powerdistributor, EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.outfitting, prefix + " power distributor", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.powerdistributor, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " power distributor", ref vaProxy);
                 setShipModuleValues(ship == null ? null : ship.sensors, prefix + " sensors", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.sensors, EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.outfitting, prefix + " sensors", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.sensors, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " sensors", ref vaProxy);
                 setShipModuleValues(ship == null ? null : ship.fueltank, prefix + " fuel tank", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.fueltank, EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.outfitting, prefix + " fuel tank", ref vaProxy);
+                setShipModuleOutfittingValues(ship == null ? null : ship.fueltank, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " fuel tank", ref vaProxy);
 
                 // Special for fuel tank - capacity and total capacity
                 vaProxy.SetDecimal(prefix + " fuel tank capacity",  ship == null ? (decimal?)null : ship.fueltankcapacity);
@@ -750,7 +750,7 @@ namespace EddiVoiceAttackResponder
 
                         vaProxy.SetBoolean(baseHardpointName + " occupied", Hardpoint.module != null);
                         setShipModuleValues(Hardpoint.module, baseHardpointName + " module", ref vaProxy);
-                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.module, EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.outfitting, baseHardpointName + " module", ref vaProxy);
+                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.module, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, baseHardpointName + " module", ref vaProxy);
                     }
 
                     vaProxy.SetInt(prefix + " hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
@@ -763,7 +763,7 @@ namespace EddiVoiceAttackResponder
                         vaProxy.SetInt(baseCompartmentName + " size", Compartment.size);
                         vaProxy.SetBoolean(baseCompartmentName + " occupied", Compartment.module != null);
                         setShipModuleValues(Compartment.module, baseCompartmentName + " module", ref vaProxy);
-                        setShipModuleOutfittingValues(ship == null ? null : Compartment.module, EDDI.Instance.LastStation == null ? null : EDDI.Instance.LastStation.outfitting, baseCompartmentName + " module", ref vaProxy);
+                        setShipModuleOutfittingValues(ship == null ? null : Compartment.module, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, baseCompartmentName + " module", ref vaProxy);
                     }
                     vaProxy.SetInt(prefix + " compartments", curCompartment);
                 }
