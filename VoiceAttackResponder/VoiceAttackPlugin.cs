@@ -567,6 +567,7 @@ namespace EddiVoiceAttackResponder
             if (station == null)
             {
                 // We don't have any data so remove any info that we might have in history
+                vaProxy.SetText(prefix + " name", null);
                 vaProxy.SetDecimal(prefix + " distance from star", null);
                 vaProxy.SetText(prefix + " government", null);
                 vaProxy.SetText(prefix + " allegiance", null);
