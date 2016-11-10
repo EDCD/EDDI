@@ -433,7 +433,7 @@ namespace Eddi
 
         private void ShipRoleChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (shipsConfiguration != null && CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
+            if (shipsConfiguration != null && CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
             {
                 shipsConfiguration.ToFile();
             }
@@ -441,7 +441,7 @@ namespace Eddi
 
         private void shipYardUpdated(object sender, DataTransferEventArgs e)
         {
-            if (shipsConfiguration != null && CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
+            if (shipsConfiguration != null && CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
             {
                 shipsConfiguration.ToFile();
             }
