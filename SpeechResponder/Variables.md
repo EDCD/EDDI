@@ -87,6 +87,14 @@ Any values might be missing, depending on EDDI's configuration and the informati
 
 Values are the same as for the current starsystem.
 
+## Home station
+
+Information about your home starsystem is available under the `homestation` object.
+
+Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
+
+Values are below in the 'Station' object.
+
 ## Event
 
 The event that triggered the speech responder.  Information held in here is event-specific and can be found by clicking on the 'Variables' button when editing the script.
@@ -133,22 +141,22 @@ A compartment, which may or may not contain a module.
 An orbital or planetary station.
 
     - name the name of the station
-    - systemname the name of the starsystem in which this station is situated
-    - model the model of the station (this is a StationModel object)
-    - largestpad the size of the largest pad on this station (this is a Size object)
-    - distancefromstar the distance in LS from the star to this station
-    - economies the economies of the station (this is an array)
-    - government the controlling government of the station (Anarchy, Democracy, etc)
-    - faction the controlling faction of the station
-    - allegiance the superpower allegiance of the station's controlling faction (Federation, Empire etc)
-    - state the state of the station's controlling faction (Boom, Lockdown etc)
-    - hasrefuel true if the station has refueling capabilities
-    - hasrearm true if the station has rearming capabilities
-    - hasrepair true if the station has repair capabilities
-    - hasoutfitting true if the station has outfitting
-    - hasshipyard true if the station has a shipyard
-    - hasmarket true if the station has a commodities market
-    - hasblackmarket true if the station has a blackmarket
+    - systemname the name of the system in which this station resides
+    - model the model of the sation (Orbis, Coriolis, etc)
+    - government the type of government in this station (Democracy, Confederacy etc)
+    - faction the faction that controls this station
+	- allegiance the superpower allegiance of the faction that controls this station (Federation, Empire etc)
+	- state the state of the station (Boom, War, etc)
+    - economies an array of economies at this station
+    - distancefromstar the distance from the main star to this station (in light years)
+    - hasrefuel true if this station has refuelling
+    - hasrearm true if this station has rearming
+    - hasrepair true if this station has repairs
+    - hasoutfitting true if this station has outfitting
+    - hasshipyard true if this station has a shipyard
+    - hasmarket true if this station has a market
+    - hasblackmarket true if this station has a black market
+    - largestpad the largest pad available at this station (None, Small, Medium, Large)
     - commodities the commodities that are bought and sold by this station (array of Commodity objects)
     - outfitting the modules that are available for outfitting at this station (array of Module objects)
 

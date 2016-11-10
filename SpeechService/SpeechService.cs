@@ -1,4 +1,5 @@
 ﻿using CSCore;
+using CSCore.Codecs;
 using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
 using CSCore.Streams.Effects;
@@ -196,7 +197,7 @@ namespace EddiSpeechService
                         }
 
                         // Add various effects...
-
+                        Logging.Debug("Effects level is " + configuration.EffectsLevel + ", chorus level is " + chorusLevel + ", reverb level is " + reverbLevel + ", echo delay is " + echoDelay);
                         // We always have chorus
                         if (chorusLevel != 0)
                         {
@@ -244,7 +245,7 @@ namespace EddiSpeechService
                         Logging.Debug("Creating waitHandle");
                         EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
                         Logging.Debug("Setting up soundOut");
-                        var soundOut = new WasapiOut();
+                        var soundOut = GetSoundOut();
                         Logging.Debug("Setting up soundOut");
                         soundOut.Initialize(source);
                         Logging.Debug("Configuring waitHandle");
@@ -286,11 +287,13 @@ namespace EddiSpeechService
             }
             catch (ThreadAbortException tax)
             {
+                Thread.ResetAbort();
                 Logging.Error(speech, tax);
             }
             catch (Exception ex)
             {
                 Logging.Error(speech, ex);
+                speechThread.Abort();
             }
         }
 
@@ -421,6 +424,18 @@ namespace EddiSpeechService
                 distortionLevel = Math.Min((100 - (int)ship.health) / 2, 15);
             }
             return distortionLevel;
+        }
+
+        private ISoundOut GetSoundOut()
+        {
+            if (WasapiOut.IsSupportedOnCurrentPlatform)
+            {
+                return new WasapiOut();
+            }
+            else
+            {
+                return new DirectSoundOut();
+            }
         }
     }
 }

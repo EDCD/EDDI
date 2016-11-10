@@ -74,7 +74,7 @@ namespace Eddi
         public Commander Cmdr { get; private set; }
         public Ship Ship { get; private set; }
         public List<Ship> Shipyard { get; private set; }
-        public Station LastStation { get; private set; }
+        public Station CurrentStation { get; private set; }
 
         // Services made available from EDDI
         public StarMapService starMapService { get; private set; }
@@ -353,6 +353,7 @@ namespace Eddi
                 }
                 catch (ThreadAbortException tax)
                 {
+                    Thread.ResetAbort();
                     if (running)
                     {
                         Logging.Error("Restarting " + name + " after thread abort", tax);
@@ -397,6 +398,10 @@ namespace Eddi
                     else if (journalEvent is UndockedEvent)
                     {
                         passEvent = eventUndocked((UndockedEvent)journalEvent);
+                    }
+                    else if (journalEvent is LocationEvent)
+                    {
+                        passEvent = eventLocation((LocationEvent)journalEvent);
                     }
                     else if (journalEvent is EnteredSupercruiseEvent)
                     {
@@ -448,6 +453,7 @@ namespace Eddi
                 }
                 catch (ThreadAbortException tax)
                 {
+                    Thread.ResetAbort();
                     Logging.Error(JsonConvert.SerializeObject(@event), tax);
                 }
                 catch (Exception ex)
@@ -457,17 +463,63 @@ namespace Eddi
             }
         }
 
+        private bool eventLocation(LocationEvent theEvent)
+        {
+            updateCurrentSystem(theEvent.system);
+            // Always update the current system with the current co-ordinates, just in case things have changed
+            CurrentStarSystem.x = theEvent.x;
+            CurrentStarSystem.y = theEvent.y;
+            CurrentStarSystem.z = theEvent.z;
+
+            if (theEvent.docked == true)
+            {
+                // In this case body === station
+
+                if (CurrentStation != null && CurrentStation.name == theEvent.body)
+                {
+                    // We are already at this station; nothing to do
+                    Logging.Debug("Already at station " + theEvent.body);
+                    return false;
+                }
+                // Update the station
+                Logging.Debug("Now at station " + theEvent.body);
+                Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.body);
+                if (station == null)
+                {
+                    // This station is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder
+                    station = new Station();
+                    station.name = theEvent.body;
+                    station.systemname = theEvent.system;
+                }
+
+                // Information from the event might be more current than that from EDDB so use it in preference
+                station.state = theEvent.factionstate;
+                station.faction = theEvent.faction;
+                station.government = theEvent.government;
+                station.allegiance = theEvent.allegiance;
+
+                CurrentStation = station;
+
+                // Now call refreshProfile() to obtain the outfitting and commodity information
+                refreshProfile();
+            }
+
+            return true;
+        }
+
         private bool eventDocked(DockedEvent theEvent)
         {
             updateCurrentSystem(theEvent.system);
 
-            if (LastStation != null && LastStation.name == theEvent.station)
+            if (CurrentStation != null && CurrentStation.name == theEvent.station)
             {
                 // We are already at this station; nothing to do
+                Logging.Debug("Already at station " + theEvent.station);
                 return false;
             }
 
             // Update the station
+            Logging.Debug("Now at station " + theEvent.station);
             Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
             if (station == null)
             {
@@ -483,7 +535,7 @@ namespace Eddi
             station.government = theEvent.government;
             station.allegiance = theEvent.allegiance;
 
-            LastStation = station;
+            CurrentStation = station;
 
             // Now call refreshProfile() to obtain the outfitting and commodity information
             refreshProfile();
@@ -497,18 +549,8 @@ namespace Eddi
             refreshProfile();
 
             // Remove information about the station
-            LastStation = null;
+            CurrentStation = null;
 
-            return true;
-        }
-
-        private bool eventLocation(LocationEvent theEvent)
-        {
-            updateCurrentSystem(theEvent.system);
-            // Always update the current system with the current co-ordinates, just in case things have changed
-            CurrentStarSystem.x = theEvent.x;
-            CurrentStarSystem.y = theEvent.y;
-            CurrentStarSystem.z = theEvent.z;
             return true;
         }
 
@@ -520,12 +562,8 @@ namespace Eddi
             }
             if (CurrentStarSystem == null || CurrentStarSystem.name != name)
             {
-                Logging.Warn("1Current star system is " + JsonConvert.SerializeObject(CurrentStarSystem));
-                Logging.Warn("1Last star system is " + JsonConvert.SerializeObject(LastStarSystem));
                 LastStarSystem = CurrentStarSystem;
                 CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
-                Logging.Warn("2Current star system is " + JsonConvert.SerializeObject(CurrentStarSystem));
-                Logging.Warn("2Last star system is " + JsonConvert.SerializeObject(LastStarSystem));
                 setSystemDistanceFromHome(CurrentStarSystem);
             }
         }
@@ -712,30 +750,36 @@ namespace Eddi
                             setSystemDistanceFromHome(CurrentStarSystem);
                         }
 
-                        if (LastStation == null)
-                        {
-                            Logging.Info("No last station; using the information available to us from the profile");
-                        }
-                        else
-                        {
-                            Logging.Info("Internal last station is " + LastStation.name + "@" + LastStation.systemname + ", profile last station is " + LastStation.name + "@" + LastStation.systemname);
-                        }
+                        //if (LastStation == null)
+                        //{
+                        //    Logging.Info("No last station; using the information available to us from the profile");
+                        //}
+                        //else
+                        //{
+                        //    Logging.Info("Internal last station is " + LastStation.name + "@" + LastStation.systemname + ", profile last station is " + LastStation.name + "@" + LastStation.systemname);
+                        //}
 
                         // Last station's name should be set from the journal, so we confirm that this is correct
                         // before we update the commodity and outfitting information
-                        if (LastStation == null)
-                        {
-                            // No current info so use profile data directly
-                            LastStation = profile.LastStation;
-                        }
-                        else if (LastStation.systemname == profile.LastStation.systemname && LastStation.name == profile.LastStation.name)
+                        //if (LastStation == null)
+                        //{
+                        //    // No current info so use profile data directly
+                        //    LastStation = profile.LastStation;
+                        //}
+                        //else if (LastStation.systemname == profile.LastStation.systemname && LastStation.name == profile.LastStation.name)
+                        if (CurrentStation != null && CurrentStation.systemname == profile.LastStation.systemname && CurrentStation.name == profile.LastStation.name)
                         {
                             // Match for our expected station with the information returned from the profile
+                            Logging.Debug("Current station matches profile information; updating info");
 
                             // Update the outfitting, commodities and shipyard with the data obtained from the profile
-                            LastStation.outfitting = profile.LastStation.outfitting;
-                            LastStation.commodities = profile.LastStation.commodities;
-                            LastStation.shipyard = profile.LastStation.shipyard;
+                            CurrentStation.outfitting = profile.LastStation.outfitting;
+                            CurrentStation.commodities = profile.LastStation.commodities;
+                            CurrentStation.shipyard = profile.LastStation.shipyard;
+                        }
+                        else
+                        {
+                            Logging.Debug("Current station does not match profile information; ignoring");
                         }
 
                         setCommanderTitle();

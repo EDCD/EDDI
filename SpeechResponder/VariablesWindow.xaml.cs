@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Utilities;
 
 namespace EddiSpeechResponder
 {
@@ -27,7 +29,17 @@ namespace EddiSpeechResponder
             InitializeComponent();
 
             // Read Markdown and convert it to HTML
-            string markdown = File.ReadAllText("Variables.md");
+            string markdown;
+            try
+            {
+                DirectoryInfo dir = new DirectoryInfo(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                markdown = File.ReadAllText(dir.FullName + @"\Variables.md");
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to find variables.md", ex);
+                markdown = "";
+            }
 
             string description;
             if (Events.DESCRIPTIONS.TryGetValue(scriptName, out description))
