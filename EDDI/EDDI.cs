@@ -399,6 +399,10 @@ namespace Eddi
                     {
                         passEvent = eventUndocked((UndockedEvent)journalEvent);
                     }
+                    else if (journalEvent is LocationEvent)
+                    {
+                        passEvent = eventLocation((LocationEvent)journalEvent);
+                    }
                     else if (journalEvent is EnteredSupercruiseEvent)
                     {
                         passEvent = eventEnteredSupercruise((EnteredSupercruiseEvent)journalEvent);
@@ -459,6 +463,50 @@ namespace Eddi
             }
         }
 
+        private bool eventLocation(LocationEvent theEvent)
+        {
+            updateCurrentSystem(theEvent.system);
+            // Always update the current system with the current co-ordinates, just in case things have changed
+            CurrentStarSystem.x = theEvent.x;
+            CurrentStarSystem.y = theEvent.y;
+            CurrentStarSystem.z = theEvent.z;
+
+            if (theEvent.docked == true)
+            {
+                // In this case body === station
+
+                if (CurrentStation != null && CurrentStation.name == theEvent.body)
+                {
+                    // We are already at this station; nothing to do
+                    Logging.Debug("Already at station " + theEvent.body);
+                    return false;
+                }
+                // Update the station
+                Logging.Debug("Now at station " + theEvent.body);
+                Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.body);
+                if (station == null)
+                {
+                    // This station is unknown to us, might not be in EDDB or we might not have connectivity.  Use a placeholder
+                    station = new Station();
+                    station.name = theEvent.body;
+                    station.systemname = theEvent.system;
+                }
+
+                // Information from the event might be more current than that from EDDB so use it in preference
+                station.state = theEvent.factionstate;
+                station.faction = theEvent.faction;
+                station.government = theEvent.government;
+                station.allegiance = theEvent.allegiance;
+
+                CurrentStation = station;
+
+                // Now call refreshProfile() to obtain the outfitting and commodity information
+                refreshProfile();
+            }
+
+            return true;
+        }
+
         private bool eventDocked(DockedEvent theEvent)
         {
             updateCurrentSystem(theEvent.system);
@@ -466,10 +514,12 @@ namespace Eddi
             if (CurrentStation != null && CurrentStation.name == theEvent.station)
             {
                 // We are already at this station; nothing to do
+                Logging.Debug("Already at station " + theEvent.station);
                 return false;
             }
 
             // Update the station
+            Logging.Debug("Now at station " + theEvent.station);
             Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.station);
             if (station == null)
             {
@@ -504,16 +554,6 @@ namespace Eddi
             return true;
         }
 
-        private bool eventLocation(LocationEvent theEvent)
-        {
-            updateCurrentSystem(theEvent.system);
-            // Always update the current system with the current co-ordinates, just in case things have changed
-            CurrentStarSystem.x = theEvent.x;
-            CurrentStarSystem.y = theEvent.y;
-            CurrentStarSystem.z = theEvent.z;
-            return true;
-        }
-
         private void updateCurrentSystem(string name)
         {
             if (name == null)
@@ -522,12 +562,8 @@ namespace Eddi
             }
             if (CurrentStarSystem == null || CurrentStarSystem.name != name)
             {
-                Logging.Warn("1Current star system is " + JsonConvert.SerializeObject(CurrentStarSystem));
-                Logging.Warn("1Last star system is " + JsonConvert.SerializeObject(LastStarSystem));
                 LastStarSystem = CurrentStarSystem;
                 CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
-                Logging.Warn("2Current star system is " + JsonConvert.SerializeObject(CurrentStarSystem));
-                Logging.Warn("2Last star system is " + JsonConvert.SerializeObject(LastStarSystem));
                 setSystemDistanceFromHome(CurrentStarSystem);
             }
         }
@@ -740,7 +776,8 @@ namespace Eddi
                             CurrentStation.outfitting = profile.LastStation.outfitting;
                             CurrentStation.commodities = profile.LastStation.commodities;
                             CurrentStation.shipyard = profile.LastStation.shipyard;
-                        } else
+                        }
+                        else
                         {
                             Logging.Debug("Current station does not match profile information; ignoring");
                         }
