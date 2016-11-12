@@ -34,7 +34,7 @@ namespace EddiDataDefinitions
         public static readonly Rarity Common = new Rarity("common", 2, "Common");
         public static readonly Rarity Standard = new Rarity("standard", 3, "Standard");
         public static readonly Rarity Rare = new Rarity("rare", 4, "Rare");
-        public static readonly Rarity VeryRare = new Rarity("veryrare", 5, "VeryRare");
+        public static readonly Rarity VeryRare = new Rarity("veryrare", 5, "Very rare");
 
         public static Rarity FromName(string from)
         {

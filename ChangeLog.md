@@ -1,3 +1,6 @@
+#2.0.10
+  * Update documentation for material and rarity information
+
 #2.0.9
   * Do not update ship configuration when data is not available from the companion API
   * Be a little harsher when shutting down speech threads on close

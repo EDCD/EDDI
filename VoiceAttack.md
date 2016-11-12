@@ -96,7 +96,7 @@ If a value is not available it will be not set rather than empty.
   * {DEC:Ship frame shift drive discount}: the percentage discount of the purchased frame shift drive against the undiscounted cost
   * {TXT:Ship life support}: the name of life support fitted to the ship (e.g. "6D")
   * {TXT:Ship life support class}: the class of life support fitted to the ship (e.g. 3)
-  * {TXT:Ship life support drive grade}: the grade of life support fitted to the ship (e.g. "A")
+  * {TXT:Ship life support grade}: the grade of life support fitted to the ship (e.g. "A")
   * {DEC:Ship life support health}: the percentage health of the life support fitted to the ship
   * {DEC:Ship life support cost}: the purchase cost of the life support
   * {DEC:Ship life support value}: the undiscounted cost of the life support

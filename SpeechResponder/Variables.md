@@ -136,6 +136,21 @@ A compartment, which may or may not contain a module.
     - size the numeric size of the compartment, from 1 to 8
     - module the module in the compartment
 
+## Material
+
+A material.
+
+    - name the name of the material (e.g. Iron)
+    - category the category of the material (Element, Data or Manufactured)
+    - rarity the rarity of the material
+
+## Rarity
+
+A rarity rating.
+
+    - name the name of the rarity (e.g. Very common)
+    - level the level of the rarity (0 == Very common, 5 == Very rare)
+
 ## Station
 
 An orbital or planetary station.
