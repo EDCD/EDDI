@@ -16,6 +16,7 @@ namespace Eddi
             { "Anaconda", "anaconda" },
             { "Asp Explorer", "asp" },
             { "Asp Scout", "asp_scout" },
+            { "Beluga Liner", "beluga" },
             { "Cobra Mk. III", "cobra_mk_iii" },
             { "Cobra Mk. IV", "cobra_mk_iv" },
             { "Imperial Cutter", "imperial_cutter" },
