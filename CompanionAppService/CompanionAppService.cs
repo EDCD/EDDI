@@ -623,6 +623,8 @@ namespace EddiCompanionAppService
 
             Ship Ship = ShipDefinitions.FromEDModel((string)json["name"]);
 
+            Ship.json = json.ToString();
+
             Ship.LocalId = json["id"];
 
             // Some ship information is just skeleton data of the ship's ID.  Use value as our canary to see if there is more data
@@ -914,17 +916,6 @@ namespace EddiCompanionAppService
                 module.health = Math.Round(Health);
             }
 
-            if (json["module"]["modifiers"] != null)
-            {
-                Dictionary<int, Modification> modifications = new Dictionary<int, Modification>();
-                foreach (dynamic modifier in json["module"]["modifiers"]["modifiers"])
-                {
-                    Modification.Modify((string)modifier["name"], (decimal)modifier["value"], ref modifications);
-                }
-                Modification.FixUpModifications(module, modifications);
-
-                module.modifications = modifications.Values.ToList();
-            }
             return module;
         }
     }

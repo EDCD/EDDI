@@ -304,7 +304,9 @@ namespace EddiVoiceAttackResponder
             }
             else
             {
-                Process.Start(uri);
+                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), "\"" + uri + "\"");
+                proc.UseShellExecute = false;
+                Process.Start(proc);
             }
         }
 
