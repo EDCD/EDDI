@@ -1,6 +1,7 @@
 #2.0.10
   * Update documentation for material and rarity information
   * Update coriolis export for Beluga Liner
+  * Help large star system databases by adding an index
 
 #2.0.9
   * Do not update ship configuration when data is not available from the companion API

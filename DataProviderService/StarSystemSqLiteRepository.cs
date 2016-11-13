@@ -16,6 +16,9 @@ namespace EddiDataProviderService
                      ,lastvisit DATETIME NOT NULL
                      ,starsystem TEXT NOT NULL
                      ,starsystemlastupdated DATETIME NOT NULL)";
+        private static string CREATE_INDEX_SQL = @"
+                    CREATE INDEX IF NOT EXISTS starsystems_idx_1
+                    ON starsystems(name)";
         private static string INSERT_SQL = @"
                     INSERT INTO starsystems(
                        name
@@ -223,9 +226,17 @@ namespace EddiDataProviderService
             using (var con = SimpleDbConnection())
             {
                 con.Open();
+
                 using (var cmd = new SQLiteCommand(CREATE_SQL, con))
                 {
                     Logging.Debug("Creating starsystem repository");
+                    cmd.ExecuteNonQuery();
+                }
+
+                // Add an index
+                using (var cmd = new SQLiteCommand(CREATE_INDEX_SQL, con))
+                {
+                    Logging.Debug("Creating starsystem index");
                     cmd.ExecuteNonQuery();
                 }
 
@@ -253,6 +264,7 @@ namespace EddiDataProviderService
                         cmd.ExecuteNonQuery();
                     }
                 }
+
                 con.Close();
             }
             Logging.Debug("Created starsystem repository");
