@@ -926,7 +926,9 @@ To run a command when this event occurs you should create the command with the n
 Variables set with this events are as follows:
 
   * {DEC:EDDI ship refuelled amount} The amount of fuel supplied
-  * {DEC:EDDI ship refuelled price} The price of refuelling
+  * {DEC:EDDI ship refuelled price} The price of refuelling (only available if the source is Market)
+  * {TXT:EDDI ship refuelled source} The source of the fuel (Market or Scoop)
+  * {DEC:EDDI ship refuelled total} The new fuel level (only available if the source is Scoop) 
 
 ### Ship repaired
 Triggered when you repair your ship.

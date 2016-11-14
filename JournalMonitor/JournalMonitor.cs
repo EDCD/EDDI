@@ -1270,7 +1270,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
 
-                                journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
+                                journalEvent = new ShipRefuelledEvent(timestamp, "Market", price, amount, null);
                                 handled = true;
                                 break;
                             }
@@ -1282,7 +1282,19 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
 
-                                journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
+                                journalEvent = new ShipRefuelledEvent(timestamp, "Market", price, amount, null);
+                                handled = true;
+                                break;
+                            }
+                        case "FuelScoop":
+                            {
+                                object val;
+                                data.TryGetValue("Scooped", out val);
+                                decimal amount = (decimal)(double)val;
+                                data.TryGetValue("Total", out val);
+                                decimal total = (decimal)(double)val;
+
+                                journalEvent = new ShipRefuelledEvent(timestamp, "Scoop", null, amount, total);
                                 handled = true;
                                 break;
                             }
