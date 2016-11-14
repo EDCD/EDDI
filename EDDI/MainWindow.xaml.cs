@@ -432,7 +432,6 @@ namespace Eddi
             // URI can be very long so we can't use a simple Process.Start(), as that fails
             try
             {
-                //ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), "\"" + uri + "\"");
                 ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), uri);
                 proc.UseShellExecute = false;
                 Process.Start(proc);
