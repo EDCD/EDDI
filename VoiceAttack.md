@@ -351,6 +351,7 @@ Variables set with this events are as follows:
 
   * {TXT:EDDI bounty awarded faction} The name of the faction whose ship you destroyed
   * {DEC:EDDI bounty awarded reward} The total number of credits obtained for destroying the ship
+  * {BOOL:EDDI bounty awarded Shared} True if the rewards have been shared with wing-mates
   * {TXT:EDDI bounty awarded target} The name of the pilot you destroyed
 
 ### Bounty incurred

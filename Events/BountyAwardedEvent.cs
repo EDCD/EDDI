@@ -11,7 +11,7 @@ namespace EddiEvents
     {
         public const string NAME = "Bounty awarded";
         public const string DESCRIPTION = "Triggered when you are awarded a bounty";
-        public const string SAMPLE = "{ \"timestamp\":\"2016-10-05T11:28:53Z\", \"event\":\"Bounty\", \"Rewards\":[ { \"Faction\":\"The Dark Wheel\", \"Reward\":9840 }, { \"Faction\":\"The Pilots Federation\", \"Reward\":21255 } ], \"TotalReward\":31095, \"VictimFaction\":\"Future of Arro Naga\" }";
+        public const string SAMPLE = "{ \"timestamp\":\"2016-10-05T11:28:53Z\", \"event\":\"Bounty\", \"Rewards\":[ { \"Faction\":\"The Dark Wheel\", \"Reward\":9840 }, { \"Faction\":\"The Pilots Federation\", \"Reward\":21255 } ], \"TotalReward\":31095, \"VictimFaction\":\"Future of Arro Naga\", \"SharedWithOthers\": 1 }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
@@ -21,6 +21,7 @@ namespace EddiEvents
             VARIABLES.Add("faction", "The name of the faction whose ship you destroyed");
             VARIABLES.Add("reward", "The total number of credits obtained for destroying the ship");
             VARIABLES.Add("rewards", "The rewards obtained for destroying the ship");
+            VARIABLES.Add("shared", "True if the rewards have been shared with wing-mates");
         }
 
         [JsonProperty("target")]
@@ -35,12 +36,16 @@ namespace EddiEvents
         [JsonProperty("rewards")]
         public List<Reward> rewards { get; private set; }
 
-        public BountyAwardedEvent(DateTime timestamp, string target, string faction, long reward, List<Reward> rewards) : base(timestamp, NAME)
+        [JsonProperty("shared")]
+        public bool shared { get; private set; }
+
+        public BountyAwardedEvent(DateTime timestamp, string target, string faction, long reward, List<Reward> rewards, bool shared) : base(timestamp, NAME)
         {
             this.target = target;
             this.faction = faction;
             this.reward = reward;
             this.rewards = rewards;
+            this.shared = shared;
         }
     }
 

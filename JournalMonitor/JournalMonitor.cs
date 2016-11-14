@@ -244,6 +244,13 @@ namespace EddiJournalMonitor
                                 Superpower superpowerFaction = Superpower.From(victimFaction);
                                 victimFaction = superpowerFaction != null ? superpowerFaction.name : victimFaction;
 
+                                data.TryGetValue("SharedWithOthers", out val);
+                                bool shared = false;
+                                if (val != null && (long)val == 1)
+                                {
+                                    shared = true;
+                                }
+
                                 long reward;
                                 List<Reward> rewards = new List<Reward>();
 
@@ -268,7 +275,11 @@ namespace EddiJournalMonitor
                                 {
                                     data.TryGetValue("TotalReward", out val);
                                     reward = (long)val;
-
+                                    if (reward == 0)
+                                    {
+                                        // 0-credit reward; ignore
+                                        break;
+                                    }
                                     // Obtain list of rewards
                                     data.TryGetValue("Rewards", out val);
                                     List<object> rewardsData = (List<object>)val;
@@ -290,7 +301,7 @@ namespace EddiJournalMonitor
                                     }
                                 }
 
-                                journalEvent = new BountyAwardedEvent(timestamp, target, victimFaction, reward, rewards);
+                                journalEvent = new BountyAwardedEvent(timestamp, target, victimFaction, reward, rewards, shared);
                             }
                             handled = true;
                             break;
@@ -307,6 +318,7 @@ namespace EddiJournalMonitor
                                 long reward = (long)val;
                                 data.TryGetValue("VictimFaction", out val);
                                 string victimFaction = (string)val;
+
                                 journalEvent = new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward);
                             }
                             handled = true;
