@@ -818,7 +818,8 @@ namespace EddiJournalMonitor
                                 if (!(from.StartsWith("$cmdr") || from.StartsWith("&")))
                                 {
                                     // For now we log everything that isn't commander speech
-                                    Logging.Report("NPC speech", line);
+                                    // Stop this for now; we have lots of data already
+                                    // Logging.Report("NPC speech", line);
                                 }
                                 else
                                 {
