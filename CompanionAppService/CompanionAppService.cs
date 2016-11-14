@@ -623,7 +623,7 @@ namespace EddiCompanionAppService
 
             Ship Ship = ShipDefinitions.FromEDModel((string)json["name"]);
 
-            Ship.json = json.ToString();
+            Ship.json = json.ToString(Formatting.None);
 
             Ship.LocalId = json["id"];
 

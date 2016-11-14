@@ -427,16 +427,19 @@ namespace Eddi
         {
             Ship ship = (Ship)((Button)e.Source).DataContext;
             string uri = Coriolis.ShipUri(ship);
+            Logging.Debug("URI is " + uri);
 
             // URI can be very long so we can't use a simple Process.Start(), as that fails
             try
             {
-                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), "\"" + uri + "\"");
+                //ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), "\"" + uri + "\"");
+                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), uri);
                 proc.UseShellExecute = false;
                 Process.Start(proc);
             }
-            catch
+            catch (Exception ex)
             {
+                Logging.Error("Failed: ", ex);
                 try
                 {
                     // Last-gasp attempt if we have a shorter URL
