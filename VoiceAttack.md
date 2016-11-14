@@ -351,6 +351,7 @@ Variables set with this events are as follows:
 
   * {TXT:EDDI bounty awarded faction} The name of the faction whose ship you destroyed
   * {DEC:EDDI bounty awarded reward} The total number of credits obtained for destroying the ship
+  * {BOOL:EDDI bounty awarded Shared} True if the rewards have been shared with wing-mates
   * {TXT:EDDI bounty awarded target} The name of the pilot you destroyed
 
 ### Bounty incurred
@@ -925,7 +926,9 @@ To run a command when this event occurs you should create the command with the n
 Variables set with this events are as follows:
 
   * {DEC:EDDI ship refuelled amount} The amount of fuel supplied
-  * {DEC:EDDI ship refuelled price} The price of refuelling
+  * {DEC:EDDI ship refuelled price} The price of refuelling (only available if the source is Market)
+  * {TXT:EDDI ship refuelled source} The source of the fuel (Market or Scoop)
+  * {DEC:EDDI ship refuelled total} The new fuel level (only available if the source is Scoop) 
 
 ### Ship repaired
 Triggered when you repair your ship.

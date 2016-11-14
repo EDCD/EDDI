@@ -244,6 +244,13 @@ namespace EddiJournalMonitor
                                 Superpower superpowerFaction = Superpower.From(victimFaction);
                                 victimFaction = superpowerFaction != null ? superpowerFaction.name : victimFaction;
 
+                                data.TryGetValue("SharedWithOthers", out val);
+                                bool shared = false;
+                                if (val != null && (long)val == 1)
+                                {
+                                    shared = true;
+                                }
+
                                 long reward;
                                 List<Reward> rewards = new List<Reward>();
 
@@ -268,7 +275,11 @@ namespace EddiJournalMonitor
                                 {
                                     data.TryGetValue("TotalReward", out val);
                                     reward = (long)val;
-
+                                    if (reward == 0)
+                                    {
+                                        // 0-credit reward; ignore
+                                        break;
+                                    }
                                     // Obtain list of rewards
                                     data.TryGetValue("Rewards", out val);
                                     List<object> rewardsData = (List<object>)val;
@@ -290,7 +301,7 @@ namespace EddiJournalMonitor
                                     }
                                 }
 
-                                journalEvent = new BountyAwardedEvent(timestamp, target, victimFaction, reward, rewards);
+                                journalEvent = new BountyAwardedEvent(timestamp, target, victimFaction, reward, rewards, shared);
                             }
                             handled = true;
                             break;
@@ -307,6 +318,7 @@ namespace EddiJournalMonitor
                                 long reward = (long)val;
                                 data.TryGetValue("VictimFaction", out val);
                                 string victimFaction = (string)val;
+
                                 journalEvent = new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward);
                             }
                             handled = true;
@@ -806,7 +818,8 @@ namespace EddiJournalMonitor
                                 if (!(from.StartsWith("$cmdr") || from.StartsWith("&")))
                                 {
                                     // For now we log everything that isn't commander speech
-                                    Logging.Report("NPC speech", line);
+                                    // Stop this for now; we have lots of data already
+                                    // Logging.Report("NPC speech", line);
                                 }
                                 else
                                 {
@@ -1258,7 +1271,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
 
-                                journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
+                                journalEvent = new ShipRefuelledEvent(timestamp, "Market", price, amount, null);
                                 handled = true;
                                 break;
                             }
@@ -1270,22 +1283,25 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
 
-                                journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
+                                journalEvent = new ShipRefuelledEvent(timestamp, "Market", price, amount, null);
                                 handled = true;
                                 break;
                             }
-                        //case "RedeemVoucher":
-                        //    {
-                        //        object val;
-                        //        data.TryGetValue("Amount", out val);
-                        //        decimal amount = (decimal)(double)val;
-                        //        data.TryGetValue("Cost", out val);
-                        //        long price = (long)val;
+                        case "FuelScoop":
+                            {
+                                object val;
+                                data.TryGetValue("Scooped", out val);
+                                decimal amount = (decimal)(double)val;
+                                data.TryGetValue("Total", out val);
+                                decimal total = (decimal)(double)val;
 
-                        //        journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
-                        //        handled = true;
-                        //        break;
-                        //    }
+                                journalEvent = new ShipRefuelledEvent(timestamp, "Scoop", null, amount, total);
+                                handled = true;
+                                break;
+                            }
+                        case "RedeemVoucher":
+                            Logging.Report("Redeem voucher", line);
+                            break;
                         case "CommunityGoalJoin":
                             {
                                 object val;
