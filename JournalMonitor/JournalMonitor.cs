@@ -1298,18 +1298,9 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
-                        //case "RedeemVoucher":
-                        //    {
-                        //        object val;
-                        //        data.TryGetValue("Amount", out val);
-                        //        decimal amount = (decimal)(double)val;
-                        //        data.TryGetValue("Cost", out val);
-                        //        long price = (long)val;
-
-                        //        journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
-                        //        handled = true;
-                        //        break;
-                        //    }
+                        case "RedeemVoucher":
+                            Logging.Report("Redeem voucher", line);
+                            break;
                         case "CommunityGoalJoin":
                             {
                                 object val;
