@@ -167,22 +167,22 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("FuelLevel", out val);
                                 decimal fuelRemaining = (decimal)(double)val;
 
-                                data.TryGetValue("Allegiance", out val);
+                                data.TryGetValue("SystemAllegiance", out val);
                                 // FD sends "" rather than null; fix that here
                                 if (((string)val) == "") { val = null; }
                                 Superpower allegiance = Superpower.From((string)val);
-                                data.TryGetValue("Faction", out val);
+                                data.TryGetValue("SystemFaction", out val);
                                 string faction = (string)val;
                                 // Might be a superpower...
                                 Superpower superpowerFaction = Superpower.From(faction);
                                 faction = superpowerFaction != null ? superpowerFaction.name : faction;
                                 data.TryGetValue("FactionState", out val);
                                 State factionState = State.FromEDName((string)val);
-                                data.TryGetValue("Economy", out val);
+                                data.TryGetValue("SystemEconomy", out val);
                                 Economy economy = Economy.FromEDName((string)val);
-                                data.TryGetValue("Government", out val);
+                                data.TryGetValue("SystemGovernment", out val);
                                 Government government = Government.FromEDName((string)val);
-                                data.TryGetValue("Security", out val);
+                                data.TryGetValue("SystemSecurity", out val);
                                 SecurityLevel security = SecurityLevel.FromEDName((string)val);
 
                                 journalEvent = new JumpedEvent(timestamp, systemName, x, y, z, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security);
@@ -1061,6 +1061,56 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("BlackMarket", out val);
                                 bool blackmarket = (val == null ? false : (bool)val);
                                 journalEvent = new CommoditySoldEvent(timestamp, commodity, amount, price, profit, illegal, stolen, blackmarket);
+                                handled = true;
+                                break;
+                            }
+                        case "EngineerCraft":
+                            {
+                                object val;
+                                data.TryGetValue("Engineer", out val);
+                                string engineer = (string)val;
+                                data.TryGetValue("Blueprint", out val);
+                                string blueprint = (string)val;
+                                data.TryGetValue("Level", out val);
+                                int level = (int)(long)val;
+
+                                List<MaterialAmount> materials = new List<MaterialAmount>();
+                                if (data.TryGetValue("Ingredients", out val))
+                                {
+                                    Dictionary<string, object> materialsData = (Dictionary<string, object>)val;
+                                    foreach (KeyValuePair<string, object> materialData in materialsData)
+                                    {
+                                        Material material = Material.FromEDName(materialData.Key);
+                                        materials.Add(new MaterialAmount(material, (int)(long)materialData.Value));
+                                    }
+                                }
+                                journalEvent = new ModificationCraftedEvent(timestamp, engineer, blueprint, level, materials);
+                                handled = true;
+                                break;
+                            }
+                        case "EngineerApply":
+                            {
+                                object val;
+                                data.TryGetValue("Engineer", out val);
+                                string engineer = (string)val;
+                                data.TryGetValue("Blueprint", out val);
+                                string blueprint = (string)val;
+                                data.TryGetValue("Level", out val);
+                                int level = (int)(long)val;
+
+                                journalEvent = new ModificationAppliedEvent(timestamp, engineer, blueprint, level);
+                                handled = true;
+                                break;
+                            }
+                        case "EngineerProgress":
+                            {
+                                object val;
+                                data.TryGetValue("Engineer", out val);
+                                string engineer = (string)val;
+                                data.TryGetValue("Rank", out val);
+                                int rank = (int)(long)val;
+
+                                journalEvent = new EngineerProgressedEvent(timestamp, engineer, rank);
                                 handled = true;
                                 break;
                             }

@@ -18,6 +18,30 @@
       "name": "Fine paid",
       "description": "Triggered when you pay a fine"
     },
+    "Engineer progressed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.engineer} has given you access to grade {event.rank} blueprints.",
+      "name": "Engineer progressed",
+      "description": "Triggered when you progress to a new level of relationship with an engineer"
+    },
+    "Modification applied": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Modification applied",
+      "description": "Triggered when you apply a modification to a module"
+    },
+    "Modification crafted": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Modification crafted",
+      "description": "Triggered when you craft a modification"
+    },
     "Material donated": {
       "enabled": true,
       "priority": 3,

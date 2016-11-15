@@ -200,9 +200,10 @@ namespace Eddi
                         SpeechService.Instance.Say(null, "EDDI version " + response.Replace(".", " point ") + " is now available.", false);
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may not work fully", false);
+                    Logging.Error("Failed to access api.eddp.co", ex);
                 }
 
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
@@ -894,6 +895,12 @@ namespace Eddi
                         sb.AppendLine();
                     }
                     Logging.Warn("Failed to instantiate plugin at " + file.FullName + ":\n" + sb.ToString());
+                }
+                catch (FileLoadException flex)
+                {
+                    string msg = "Failed to load monitor.  Please ensure that " + dir.FullName + " is not on a network share, or itself shared";
+                    Logging.Error(msg, flex);
+                    SpeechService.Instance.Say(null, msg, false);
                 }
             }
             return monitors;

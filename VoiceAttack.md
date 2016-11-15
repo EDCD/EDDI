@@ -575,6 +575,15 @@ Variables set with this events are as follows:
 
   * {TXT:EDDI docking timed out station} The station at which the docking request has timed out
 
+### Engineer progressed
+Triggered when you reach a new rank with an engineer.
+To run a command when this event occurs you should create the command with the name ((EDDI engineer progressed))
+
+Variables set with this events are as follows:
+
+  * {TXT:EDDI engineer progressed engineer} The name of the engineer with whom you have progressed
+  * {INT:EDDI engineer progressed rank} The rank of your relationship with the engineer
+
 ### Entered normal space
 Triggered when your ship enters normal space.
 To run a command when this event occurs you should create the command with the name ((EDDI entered normal space))
@@ -839,6 +848,26 @@ Variables set with this events are as follows:
   * {TXT:EDDI mission completed name} The name of the mission
   * {DEC:EDDI mission completed reward} The monetary reward for completing the mission
   * {TXT:EDDI mission completed system} The system in which the mission was obtained
+
+### Modification applied
+Triggered when you apply a modification to a module.
+To run a command when this event occurs you should create the command with the name ((EDDI modification applied))
+
+Variables set with this events are as follows:
+
+  * {TXT:EDDI modification applied engineer} The name of the engineer applying the modification
+  * {TXT:EDDI modification applied blueprint} The name of the modification being applied
+  * {INT:EDDI modification applied level} The level of the modification being applied
+
+### Modification crafted
+Triggered when you craft a modification to a module.
+To run a command when this event occurs you should create the command with the name ((EDDI modification crafted))
+
+Variables set with this events are as follows:
+
+  * {TXT:EDDI modification applied engineer} The name of the engineer crafting the modification
+  * {TXT:EDDI modification applied blueprint} The blueprint being crafted
+  * {INT:EDDI modification applied level} The level of the blueprint being crafted
 
 ### Screenshot
 Triggered when you take a screenshot.
