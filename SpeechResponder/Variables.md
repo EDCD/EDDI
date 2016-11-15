@@ -46,6 +46,8 @@ Any values might be missing, depending on EDDI's configuration.
     - powerdistributor details of the ship's power distributor (this is a Module object)
     - sensors details of the ship's sensors (this is a Module object)
     - fueltank details of the ship's fuel tank (this is a Module object)
+    - fueltankcapacity the capacity of the main fuel tank
+    - fueltanktotalcapacity the capacity of the main fuel tank plus all secondary fuel tanks
     - hardpoints the ship's hardpoints (this is an array of HardPoint objects)
     - compartments the ship's internal compartments (this is an array of Compartment objects)
 
