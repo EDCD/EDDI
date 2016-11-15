@@ -18,6 +18,30 @@
       "name": "Fine paid",
       "description": "Triggered when you pay a fine"
     },
+    "Engineer progressed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.engineer} has given you access to grade {event.rank} blueprints.",
+      "name": "Engineer progressed",
+      "description": "Triggered when you progress to a new level of relationship with an engineer"
+    },
+    "Modification applied": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Modification applied",
+      "description": "Triggered when you apply a modification to a module"
+    },
+    "Modification crafted": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Modification crafted",
+      "description": "Triggered when you craft a modification"
+    },
     "Material donated": {
       "enabled": true,
       "priority": 3,
@@ -590,7 +614,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(500)}\r\n{if len(event.rewards) = 1:\r\n    Bounty voucher of {Humanise(event.reward)} credits received from {P(event.rewards[0].faction)}.\r\n|elif len(event.rewards) > 1:\r\n    {len(event.rewards)} bounty vouchers received for a total of {Humanise(event.reward)} credits.\r\n}\r\n",
+      "script": "{Pause(500)}\r\n{if len(event.rewards) = 1:\r\n    Bounty voucher of {Humanise(event.reward)} credits received from {P(event.rewards[0].faction)}\r\n|elif len(event.rewards) > 1:\r\n    {len(event.rewards)} bounty vouchers received for a total of {Humanise(event.reward)} credits\r\n}\r\n{if event.shared:\r\n    to share between yourself and your wing-mates\r\n}.\r\n",
       "name": "Bounty awarded",
       "description": "Triggered when you are awarded a bounty"
     },

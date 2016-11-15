@@ -46,6 +46,9 @@
   <ItemGroup>
     <Compile Include="BondAwardedEvent.cs" />
     <Compile Include="FindPaidEvent.cs" />
+    <Compile Include="EngineerProgressedEvent.cs" />
+    <Compile Include="ModificationAppliedEvent.cs" />
+    <Compile Include="ModificationCraftedEvent.cs" />
     <Compile Include="MaterialDonatedEvent.cs" />
     <Compile Include="SynthesisedEvent.cs" />
     <Compile Include="MissionAbandonedEvent.cs" />

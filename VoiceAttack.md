@@ -96,7 +96,7 @@ If a value is not available it will be not set rather than empty.
   * {DEC:Ship frame shift drive discount}: the percentage discount of the purchased frame shift drive against the undiscounted cost
   * {TXT:Ship life support}: the name of life support fitted to the ship (e.g. "6D")
   * {TXT:Ship life support class}: the class of life support fitted to the ship (e.g. 3)
-  * {TXT:Ship life support drive grade}: the grade of life support fitted to the ship (e.g. "A")
+  * {TXT:Ship life support grade}: the grade of life support fitted to the ship (e.g. "A")
   * {DEC:Ship life support health}: the percentage health of the life support fitted to the ship
   * {DEC:Ship life support cost}: the purchase cost of the life support
   * {DEC:Ship life support value}: the undiscounted cost of the life support
@@ -351,6 +351,7 @@ Variables set with this events are as follows:
 
   * {TXT:EDDI bounty awarded faction} The name of the faction whose ship you destroyed
   * {DEC:EDDI bounty awarded reward} The total number of credits obtained for destroying the ship
+  * {BOOL:EDDI bounty awarded Shared} True if the rewards have been shared with wing-mates
   * {TXT:EDDI bounty awarded target} The name of the pilot you destroyed
 
 ### Bounty incurred
@@ -573,6 +574,15 @@ To run a command when this event occurs you should create the command with the n
 Variables set with this events are as follows:
 
   * {TXT:EDDI docking timed out station} The station at which the docking request has timed out
+
+### Engineer progressed
+Triggered when you reach a new rank with an engineer.
+To run a command when this event occurs you should create the command with the name ((EDDI engineer progressed))
+
+Variables set with this events are as follows:
+
+  * {TXT:EDDI engineer progressed engineer} The name of the engineer with whom you have progressed
+  * {INT:EDDI engineer progressed rank} The rank of your relationship with the engineer
 
 ### Entered normal space
 Triggered when your ship enters normal space.
@@ -839,6 +849,26 @@ Variables set with this events are as follows:
   * {DEC:EDDI mission completed reward} The monetary reward for completing the mission
   * {TXT:EDDI mission completed system} The system in which the mission was obtained
 
+### Modification applied
+Triggered when you apply a modification to a module.
+To run a command when this event occurs you should create the command with the name ((EDDI modification applied))
+
+Variables set with this events are as follows:
+
+  * {TXT:EDDI modification applied engineer} The name of the engineer applying the modification
+  * {TXT:EDDI modification applied blueprint} The name of the modification being applied
+  * {INT:EDDI modification applied level} The level of the modification being applied
+
+### Modification crafted
+Triggered when you craft a modification to a module.
+To run a command when this event occurs you should create the command with the name ((EDDI modification crafted))
+
+Variables set with this events are as follows:
+
+  * {TXT:EDDI modification applied engineer} The name of the engineer crafting the modification
+  * {TXT:EDDI modification applied blueprint} The blueprint being crafted
+  * {INT:EDDI modification applied level} The level of the blueprint being crafted
+
 ### Screenshot
 Triggered when you take a screenshot.
 To run a command when this event occurs you should create the command with the name ((EDDI screenshot))
@@ -925,7 +955,9 @@ To run a command when this event occurs you should create the command with the n
 Variables set with this events are as follows:
 
   * {DEC:EDDI ship refuelled amount} The amount of fuel supplied
-  * {DEC:EDDI ship refuelled price} The price of refuelling
+  * {DEC:EDDI ship refuelled price} The price of refuelling (only available if the source is Market)
+  * {TXT:EDDI ship refuelled source} The source of the fuel (Market or Scoop)
+  * {DEC:EDDI ship refuelled total} The new fuel level (only available if the source is Scoop) 
 
 ### Ship repaired
 Triggered when you repair your ship.

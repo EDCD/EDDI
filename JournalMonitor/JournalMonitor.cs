@@ -167,22 +167,22 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("FuelLevel", out val);
                                 decimal fuelRemaining = (decimal)(double)val;
 
-                                data.TryGetValue("Allegiance", out val);
+                                data.TryGetValue("SystemAllegiance", out val);
                                 // FD sends "" rather than null; fix that here
                                 if (((string)val) == "") { val = null; }
                                 Superpower allegiance = Superpower.From((string)val);
-                                data.TryGetValue("Faction", out val);
+                                data.TryGetValue("SystemFaction", out val);
                                 string faction = (string)val;
                                 // Might be a superpower...
                                 Superpower superpowerFaction = Superpower.From(faction);
                                 faction = superpowerFaction != null ? superpowerFaction.name : faction;
                                 data.TryGetValue("FactionState", out val);
                                 State factionState = State.FromEDName((string)val);
-                                data.TryGetValue("Economy", out val);
+                                data.TryGetValue("SystemEconomy", out val);
                                 Economy economy = Economy.FromEDName((string)val);
-                                data.TryGetValue("Government", out val);
+                                data.TryGetValue("SystemGovernment", out val);
                                 Government government = Government.FromEDName((string)val);
-                                data.TryGetValue("Security", out val);
+                                data.TryGetValue("SystemSecurity", out val);
                                 SecurityLevel security = SecurityLevel.FromEDName((string)val);
 
                                 journalEvent = new JumpedEvent(timestamp, systemName, x, y, z, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security);
@@ -244,6 +244,13 @@ namespace EddiJournalMonitor
                                 Superpower superpowerFaction = Superpower.From(victimFaction);
                                 victimFaction = superpowerFaction != null ? superpowerFaction.name : victimFaction;
 
+                                data.TryGetValue("SharedWithOthers", out val);
+                                bool shared = false;
+                                if (val != null && (long)val == 1)
+                                {
+                                    shared = true;
+                                }
+
                                 long reward;
                                 List<Reward> rewards = new List<Reward>();
 
@@ -268,7 +275,11 @@ namespace EddiJournalMonitor
                                 {
                                     data.TryGetValue("TotalReward", out val);
                                     reward = (long)val;
-
+                                    if (reward == 0)
+                                    {
+                                        // 0-credit reward; ignore
+                                        break;
+                                    }
                                     // Obtain list of rewards
                                     data.TryGetValue("Rewards", out val);
                                     List<object> rewardsData = (List<object>)val;
@@ -290,7 +301,7 @@ namespace EddiJournalMonitor
                                     }
                                 }
 
-                                journalEvent = new BountyAwardedEvent(timestamp, target, victimFaction, reward, rewards);
+                                journalEvent = new BountyAwardedEvent(timestamp, target, victimFaction, reward, rewards, shared);
                             }
                             handled = true;
                             break;
@@ -307,6 +318,7 @@ namespace EddiJournalMonitor
                                 long reward = (long)val;
                                 data.TryGetValue("VictimFaction", out val);
                                 string victimFaction = (string)val;
+
                                 journalEvent = new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward);
                             }
                             handled = true;
@@ -806,7 +818,8 @@ namespace EddiJournalMonitor
                                 if (!(from.StartsWith("$cmdr") || from.StartsWith("&")))
                                 {
                                     // For now we log everything that isn't commander speech
-                                    Logging.Report("NPC speech", line);
+                                    // Stop this for now; we have lots of data already
+                                    // Logging.Report("NPC speech", line);
                                 }
                                 else
                                 {
@@ -1051,6 +1064,56 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "EngineerCraft":
+                            {
+                                object val;
+                                data.TryGetValue("Engineer", out val);
+                                string engineer = (string)val;
+                                data.TryGetValue("Blueprint", out val);
+                                string blueprint = (string)val;
+                                data.TryGetValue("Level", out val);
+                                int level = (int)(long)val;
+
+                                List<MaterialAmount> materials = new List<MaterialAmount>();
+                                if (data.TryGetValue("Ingredients", out val))
+                                {
+                                    Dictionary<string, object> materialsData = (Dictionary<string, object>)val;
+                                    foreach (KeyValuePair<string, object> materialData in materialsData)
+                                    {
+                                        Material material = Material.FromEDName(materialData.Key);
+                                        materials.Add(new MaterialAmount(material, (int)(long)materialData.Value));
+                                    }
+                                }
+                                journalEvent = new ModificationCraftedEvent(timestamp, engineer, blueprint, level, materials);
+                                handled = true;
+                                break;
+                            }
+                        case "EngineerApply":
+                            {
+                                object val;
+                                data.TryGetValue("Engineer", out val);
+                                string engineer = (string)val;
+                                data.TryGetValue("Blueprint", out val);
+                                string blueprint = (string)val;
+                                data.TryGetValue("Level", out val);
+                                int level = (int)(long)val;
+
+                                journalEvent = new ModificationAppliedEvent(timestamp, engineer, blueprint, level);
+                                handled = true;
+                                break;
+                            }
+                        case "EngineerProgress":
+                            {
+                                object val;
+                                data.TryGetValue("Engineer", out val);
+                                string engineer = (string)val;
+                                data.TryGetValue("Rank", out val);
+                                int rank = (int)(long)val;
+
+                                journalEvent = new EngineerProgressedEvent(timestamp, engineer, rank);
+                                handled = true;
+                                break;
+                            }
                         case "LoadGame":
                             {
                                 object val;
@@ -1258,7 +1321,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
 
-                                journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
+                                journalEvent = new ShipRefuelledEvent(timestamp, "Market", price, amount, null);
                                 handled = true;
                                 break;
                             }
@@ -1270,22 +1333,25 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
 
-                                journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
+                                journalEvent = new ShipRefuelledEvent(timestamp, "Market", price, amount, null);
                                 handled = true;
                                 break;
                             }
-                        //case "RedeemVoucher":
-                        //    {
-                        //        object val;
-                        //        data.TryGetValue("Amount", out val);
-                        //        decimal amount = (decimal)(double)val;
-                        //        data.TryGetValue("Cost", out val);
-                        //        long price = (long)val;
+                        case "FuelScoop":
+                            {
+                                object val;
+                                data.TryGetValue("Scooped", out val);
+                                decimal amount = (decimal)(double)val;
+                                data.TryGetValue("Total", out val);
+                                decimal total = (decimal)(double)val;
 
-                        //        journalEvent = new ShipRefuelledEvent(timestamp, price, amount);
-                        //        handled = true;
-                        //        break;
-                        //    }
+                                journalEvent = new ShipRefuelledEvent(timestamp, "Scoop", null, amount, total);
+                                handled = true;
+                                break;
+                            }
+                        case "RedeemVoucher":
+                            Logging.Report("Redeem voucher", line);
+                            break;
                         case "CommunityGoalJoin":
                             {
                                 object val;
