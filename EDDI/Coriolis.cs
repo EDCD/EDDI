@@ -77,7 +77,14 @@ namespace Eddi
                 using (var compressionStream = new GZipStream(stream, CompressionLevel.Optimal, true))
                 using (BinaryWriter writer = new BinaryWriter(compressionStream))
                 {
-                    uri += shipModels[ship.model];
+                    string model;
+                    if (!shipModels.TryGetValue(ship.model, out model))
+                    {
+                        // This can happen if the model supplied is invalid, for example if the user is in an SRV at the time
+                        return null;
+                    }
+
+                    uri += model;
                     uri += "/";
 
                     byte position = 0;

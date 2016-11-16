@@ -209,6 +209,21 @@ namespace EddiCompanionAppService
             }
         }
 
+        /// <summary>
+        /// Log out of the companion API and remove local credentials
+        /// </summary>
+        public void Logout()
+        {
+            // Remove everything other than the local email address
+            Credentials = CompanionAppCredentials.FromFile();
+            Credentials.machineToken = null;
+            Credentials.machineId = null;
+            Credentials.appId = null;
+            Credentials.password = null;
+            Credentials.ToFile();
+            CurrentState = State.NEEDS_LOGIN;
+        }
+
         public Profile Profile()
         {
             Logging.Debug("Entered");
@@ -234,6 +249,11 @@ namespace EddiCompanionAppService
                 // Happens if there is a problem with the API.  Logging in again might clear this...
                 relogin();
                 data = obtainProfile();
+                if (data == null || data == "Profile unavailable")
+                {
+                    // No luck with a relogin; give up
+                    throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
+                }
             }
 
             try

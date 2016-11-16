@@ -60,7 +60,7 @@ namespace EddiVoiceAttackResponder
                     {
                         Event theEvent = EventQueue.Take();
                         vaProxy.SetText("EDDI event", theEvent.type);
-                        
+
                         // Update all standard values
                         setValues(ref vaProxy);
 
@@ -71,31 +71,37 @@ namespace EddiVoiceAttackResponder
                             System.Reflection.MethodInfo method = theEvent.GetType().GetMethod("get_" + key);
                             if (method != null)
                             {
+                                Type returnType = method.ReturnType;
+                                if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                                {
+                                    returnType = Nullable.GetUnderlyingType(returnType);
+                                }
+
                                 string varname = "EDDI " + theEvent.type.ToLowerInvariant() + " " + key;
 
-                                if (method.ReturnType == typeof(string))
+                                if (returnType == typeof(string))
                                 {
                                     vaProxy.SetText(varname, (string)method.Invoke(theEvent, null));
                                 }
-                                else if (method.ReturnType == typeof(int))
+                                else if (returnType == typeof(int))
                                 {
-                                    vaProxy.SetInt(varname, (int)method.Invoke(theEvent, null));
+                                    vaProxy.SetInt(varname, (int?)method.Invoke(theEvent, null));
                                 }
-                                else if (method.ReturnType == typeof(bool))
+                                else if (returnType == typeof(bool))
                                 {
-                                    vaProxy.SetBoolean(varname, (bool)method.Invoke(theEvent, null));
+                                    vaProxy.SetBoolean(varname, (bool?)method.Invoke(theEvent, null));
                                 }
-                                else if (method.ReturnType == typeof(decimal))
+                                else if (returnType == typeof(decimal))
                                 {
-                                    vaProxy.SetDecimal(varname, (decimal)method.Invoke(theEvent, null));
+                                    vaProxy.SetDecimal(varname, (decimal?)method.Invoke(theEvent, null));
                                 }
-                                else if (method.ReturnType == typeof(double))
+                                else if (returnType == typeof(double))
                                 {
-                                    vaProxy.SetDecimal(varname, (decimal)(double)method.Invoke(theEvent, null));
+                                    vaProxy.SetDecimal(varname, (decimal?)(double?)method.Invoke(theEvent, null));
                                 }
-                                else if (method.ReturnType == typeof(long))
+                                else if (returnType == typeof(long))
                                 {
-                                    vaProxy.SetDecimal(varname, (decimal)(long)method.Invoke(theEvent, null));
+                                    vaProxy.SetDecimal(varname, (decimal?)(long?)method.Invoke(theEvent, null));
                                 }
                                 else
                                 {
@@ -191,7 +197,8 @@ namespace EddiVoiceAttackResponder
 
         private static void InvokeConfiguration(ref dynamic vaProxy)
         {
-            Thread thread = new Thread(() => {
+            Thread thread = new Thread(() =>
+            {
                 MainWindow window = new MainWindow(true);
                 window.ShowDialog();
             });
@@ -716,7 +723,7 @@ namespace EddiVoiceAttackResponder
                 setShipModuleOutfittingValues(ship == null ? null : ship.fueltank, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " fuel tank", ref vaProxy);
 
                 // Special for fuel tank - capacity and total capacity
-                vaProxy.SetDecimal(prefix + " fuel tank capacity",  ship == null ? (decimal?)null : ship.fueltankcapacity);
+                vaProxy.SetDecimal(prefix + " fuel tank capacity", ship == null ? (decimal?)null : ship.fueltankcapacity);
                 vaProxy.SetDecimal(prefix + " total fuel tank capacity", ship == null ? (decimal?)null : ship.fueltanktotalcapacity);
 
                 // Hardpoints

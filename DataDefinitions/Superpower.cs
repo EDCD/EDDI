@@ -47,10 +47,6 @@ namespace EddiDataDefinitions
         public static Superpower FromName(string from)
         {
             Superpower result = SUPERPOWERS.FirstOrDefault(v => v.name == from);
-            if (result == null)
-            {
-                Logging.Report("Unknown Superpower name " + from);
-            }
             return result;
         }
 
@@ -59,7 +55,16 @@ namespace EddiDataDefinitions
         public static Superpower FromEDName(string from)
         {
             string tidiedFrom = from == null ? null : from.ToLowerInvariant();
-            return SUPERPOWERS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
+            Superpower result;
+            if (tidiedFrom == null || tidiedFrom == "")
+            {
+                result = null;
+            }
+            else
+            {
+                result = SUPERPOWERS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
+            }
+            return result;
         }
     }
 }

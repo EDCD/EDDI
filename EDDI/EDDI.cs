@@ -494,7 +494,6 @@ namespace Eddi
                 }
 
                 // Information from the event might be more current than that from EDDB so use it in preference
-                station.state = theEvent.factionstate;
                 station.faction = theEvent.faction;
                 station.government = theEvent.government;
                 station.allegiance = theEvent.allegiance;
@@ -534,7 +533,6 @@ namespace Eddi
             station.state = theEvent.factionstate;
             station.faction = theEvent.faction;
             station.government = theEvent.government;
-            station.allegiance = theEvent.allegiance;
 
             CurrentStation = station;
 
