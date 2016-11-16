@@ -330,6 +330,7 @@ Variables set with this events are as follows:
   * {DEC:EDDI body scanned rotationperiod} The number of seconds taken for a full rotation
   * {DEC:EDDI body scanned semimajoraxis} 
   * {DEC:EDDI body scanned temperature} The surface temperature of the body that has been scanned
+  * {TXT:EDDI body scanned terraformstate} Whether the body can be, is in the process of, or has been terraformed
   * {BOOL:EDDI body scanned tidallylocked} True if the body is tidally locked
   * {TXT:EDDI body scanned volcanism} The volcanism of the body that has been scanned
 
@@ -351,7 +352,7 @@ Variables set with this events are as follows:
 
   * {TXT:EDDI bounty awarded faction} The name of the faction whose ship you destroyed
   * {DEC:EDDI bounty awarded reward} The total number of credits obtained for destroying the ship
-  * {BOOL:EDDI bounty awarded Shared} True if the rewards have been shared with wing-mates
+  * {BOOL:EDDI bounty awarded shared} True if the rewards have been shared with wing-mates
   * {TXT:EDDI bounty awarded target} The name of the pilot you destroyed
 
 ### Bounty incurred
@@ -394,7 +395,9 @@ Variables set with this events are as follows:
   * {TXT:EDDI commander continued commander} The commander's name
   * {DEC:EDDI commander continued credits} the number of credits the commander has
   * {TXT:EDDI commander continued group} The name of the group (only if mode == Group)
+  * {TXT:EDDI commander continued mode} The game mode (Open, Group or Solo)
   * {TXT:EDDI commander continued ship} The commander's ship
+  * {INT:EDDI commander continued shipid} The ID of the commander's ship
 
 ### Commander progress
 Triggered when your progress is reported.
@@ -524,12 +527,11 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-  * {TXT:EDDI docked allegiance} The allegiance of the station at which the commander has docked
   * {TXT:EDDI docked economy} The economy of the station at which the commander has docked
   * {TXT:EDDI docked faction} The faction controlling the station at which the commander has docked
   * {TXT:EDDI docked factionstate} The state of the faction controlling the station at which the commander has docked
   * {TXT:EDDI docked government} The government of the station at which the commander has docked
-  * {TXT:EDDI docked security} The security of the station at which the commander has docked
+  * {TXT:EDDI docked model} The model of the station at which the commander has docked (Orbis, Coriolis, etc)
   * {TXT:EDDI docked station} The station at which the commander has docked
   * {TXT:EDDI docked system} The system at which the commander has docked
 
@@ -695,8 +697,8 @@ Variables set with this events are as follows:
   * {TXT:EDDI jumped economy} The economy of the system to which the commander has jumped
   * {TXT:EDDI jumped faction} The faction controlling the system to which the commander has jumped
   * {TXT:EDDI jumped factionstate} The state of the faction controlling the system to which the commander has jumped
-  * {DEC:EDDI jumped fuelused} The amount of fuel used in this jump
   * {DEC:EDDI jumped fuelremaining} The amount of fuel remaining after this jump
+  * {DEC:EDDI jumped fuelused} The amount of fuel used in this jump
   * {TXT:EDDI jumped government} The government of the system to which the commander has jumped
   * {TXT:EDDI jumped security} The security of the system to which the commander has jumped
   * {TXT:EDDI jumped system} The name of the system to which the commander has jumped
@@ -763,7 +765,6 @@ Variables set with this events are as follows:
   * {BOOL:EDDI location docked} True if the commander is docked
   * {TXT:EDDI location economy} The economy of the system in which the commander resides
   * {TXT:EDDI location faction} The faction controlling the system in which the commander resides
-  * {TXT:EDDI location factionstate} The state of the faction controlling the system in which the commander resides
   * {TXT:EDDI location government} The government of the system in which the commander resides
   * {TXT:EDDI location security} The security of the system in which the commander resides
   * {TXT:EDDI location system} The name of the system in which the commander resides
@@ -796,6 +797,15 @@ To run a command when this event occurs you should create the command with the n
 Variables set with this events are as follows:
 
   * {TXT:EDDI material discovered name} The name of the discovered material
+
+### Material donated
+Triggered when you donate a material.
+To run a command when this event occurs you should create the command with the name ((EDDI material donated))
+
+Variables set with this events are as follows:
+
+  * {INT:EDDI material donated amount} The amount of the donated material
+  * {TXT:EDDI material donated name} The name of the donated material
 
 ### Message received
 Triggered when you receive a message.
@@ -834,6 +844,7 @@ Variables set with this events are as follows:
 
   * {BOOL:EDDI mission accepted communal} True if the mission is a community goal
   * {TXT:EDDI mission accepted faction} The faction issuing the mission
+  * {DEC:EDDI mission accepted missionid} The ID of the mission
   * {TXT:EDDI mission accepted name} The name of the mission
   * {TXT:EDDI mission accepted system} The system in which the mission was obtained
 
@@ -845,6 +856,7 @@ Variables set with this events are as follows:
 
   * {BOOL:EDDI mission completed communal} True if the mission is a community goal
   * {DEC:EDDI mission completed donation} The monetary donatin when completing the mission
+  * {DEC:EDDI mission completed missionid} The ID of the mission
   * {TXT:EDDI mission completed name} The name of the mission
   * {DEC:EDDI mission completed reward} The monetary reward for completing the mission
   * {TXT:EDDI mission completed system} The system in which the mission was obtained
@@ -855,8 +867,8 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
+  * {TXT:EDDI modification applied blueprint} The blueprint of the modification being applied
   * {TXT:EDDI modification applied engineer} The name of the engineer applying the modification
-  * {TXT:EDDI modification applied blueprint} The name of the modification being applied
   * {INT:EDDI modification applied level} The level of the modification being applied
 
 ### Modification crafted
@@ -865,9 +877,9 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-  * {TXT:EDDI modification applied engineer} The name of the engineer crafting the modification
-  * {TXT:EDDI modification applied blueprint} The blueprint being crafted
-  * {INT:EDDI modification applied level} The level of the blueprint being crafted
+  * {TXT:EDDI modification crafted blueprint} The blueprint being crafted
+  * {TXT:EDDI modification crafted engineer} The name of the engineer crafting the modification
+  * {INT:EDDI modification crafted level} The level of the blueprint being crafted
 
 ### Screenshot
 Triggered when you take a screenshot.
@@ -900,6 +912,7 @@ To run a command when this event occurs you should create the command with the n
 Variables set with this events are as follows:
 
   * {TXT:EDDI ship delivered ship} The ship that was delivered
+  * {INT:EDDI ship delivered shipid} The ID of the ship that was delivered
 
 ### Ship interdicted
 Triggered when your ship is interdicted by another ship.
@@ -937,6 +950,7 @@ Variables set with this events are as follows:
   * {DEC:EDDI ship purchased price} The price of the ship that was purchased
   * {TXT:EDDI ship purchased ship} The ship that was purchased
   * {TXT:EDDI ship purchased soldname} The name of the ship that was sold as part of the purchase
+  * {DEC:EDDI ship purchased soldprice} The credits obtained by selling the ship
   * {TXT:EDDI ship purchased soldship} The ship that was sold as part of the purchase
   * {TXT:EDDI ship purchased storedname} The name of the ship that was stored as part of the purchase
   * {TXT:EDDI ship purchased storedship} The ship that was stored as part of the purchase
@@ -954,10 +968,10 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this events are as follows:
 
-  * {DEC:EDDI ship refuelled amount} The amount of fuel supplied
+  * {DEC:EDDI ship refuelled amount} The amount of fuel obtained
   * {DEC:EDDI ship refuelled price} The price of refuelling (only available if the source is Market)
   * {TXT:EDDI ship refuelled source} The source of the fuel (Market or Scoop)
-  * {DEC:EDDI ship refuelled total} The new fuel level (only available if the source is Scoop) 
+  * {DEC:EDDI ship refuelled total} The new fuel level (only available if the source is Scoop)
 
 ### Ship repaired
 Triggered when you repair your ship.
@@ -984,6 +998,7 @@ Variables set with this events are as follows:
 
   * {DEC:EDDI ship sold price} The price for which the ship was sold
   * {TXT:EDDI ship sold ship} The ship that was sold
+  * {INT:EDDI ship sold shipid} The ID of the ship that was sold
 
 ### Ship swapped
 Triggered when you swap a ship.
@@ -992,8 +1007,11 @@ To run a command when this event occurs you should create the command with the n
 Variables set with this events are as follows:
 
   * {TXT:EDDI ship swapped ship} The ship that was swapped
+  * {INT:EDDI ship swapped shipid} The ID of the ship that was swapped
   * {TXT:EDDI ship swapped soldship} The ship that was sold as part of the swap
+  * {INT:EDDI ship swapped soldshipid} The ID of the ship that was sold as part of the swap
   * {TXT:EDDI ship swapped storedship} The ship that was stored as part of the swap
+  * {INT:EDDI ship swapped storedshipid} The ID of the ship that was stored as part of the swap
 
 ### Ship transfer initiated
 Triggered when you initiate a ship transfer.
@@ -1004,6 +1022,7 @@ Variables set with this events are as follows:
   * {DEC:EDDI ship transfer initiated distance} The distance that the transferred ship needs to travel, in light years
   * {DEC:EDDI ship transfer initiated price} The price of transferring the ship
   * {TXT:EDDI ship transfer initiated ship} The ship that is being transferred
+  * {INT:EDDI ship transfer initiated shipid} The ID of the ship that is being transferred
   * {TXT:EDDI ship transfer initiated system} The system from which the ship is being transferred
 
 ### SRV docked
@@ -1044,7 +1063,15 @@ Variables set with this events are as follows:
   * {DEC:EDDI star scanned solarradius} The radius of the star that has been scanned, compared to Sol
   * {TXT:EDDI star scanned stellarclass} The stellar class of the star that has been scanned (O, G, etc)
   * {DEC:EDDI star scanned temperature} The temperature of the star that has been scanned
-  * {DEC:EDDI star scanned temperatureprobability} The probablility of finding a star of this class with this temperature
+  * {DEC:EDDI star scanned tempprobability} The probablility of finding a star of this class with this temperature
+
+### Synthesised
+Triggered when you synthesise something from materials.
+To run a command when this event occurs you should create the command with the name ((EDDI synthesised))
+
+Variables set with this events are as follows:
+
+  * {TXT:EDDI synthesised synthesis} The thing that has been synthesised
 
 ### Touchdown
 Triggered when your ship touches down on a planet's surface.

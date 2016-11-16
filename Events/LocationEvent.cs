@@ -59,9 +59,6 @@ namespace EddiEvents
         [JsonProperty("faction")]
         public string faction { get; private set; }
 
-        [JsonProperty("factionstate")]
-        public string factionstate { get; private set; }
-
         [JsonProperty("economy")]
         public string economy { get; private set; }
 
@@ -71,7 +68,7 @@ namespace EddiEvents
         [JsonProperty("security")]
         public string security { get; private set; }
 
-        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, string body, string bodytype, bool docked, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
+        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, string body, string bodytype, bool docked, Superpower allegiance, string faction, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
@@ -82,7 +79,6 @@ namespace EddiEvents
             this.docked = docked;
             this.allegiance = (allegiance == null ? Superpower.None.name : allegiance.name);
             this.faction = faction;
-            this.factionstate = (factionstate == null ? State.None.name : factionstate.name);
             this.economy = (economy == null ? Economy.None.name : economy.name);
             this.government = (government == null ? Government.None.name : government.name);
             this.security = (security == null ? SecurityLevel.Low.name : security.name);

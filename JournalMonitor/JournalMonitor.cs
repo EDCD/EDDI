@@ -75,24 +75,26 @@ namespace EddiJournalMonitor
                                 string systemName = (string)val;
                                 data.TryGetValue("StationName", out val);
                                 string stationName = (string)val;
-                                data.TryGetValue("Allegiance", out val);
+                                data.TryGetValue("StationType", out val);
+                                string stationModel = (string)val;
+                                data.TryGetValue("StationAllegiance", out val);
                                 // FD sends "" rather than null; fix that here
                                 if (((string)val) == "") { val = null; }
                                 Superpower allegiance = Superpower.From((string)val);
-                                data.TryGetValue("Faction", out val);
+                                data.TryGetValue("StationFaction", out val);
                                 string faction = (string)val;
                                 // Might be a superpower...
                                 Superpower superpowerFaction = Superpower.From(faction);
                                 faction = superpowerFaction != null ? superpowerFaction.name : faction;
                                 data.TryGetValue("FactionState", out val);
                                 State factionState = State.FromEDName((string)val);
-                                data.TryGetValue("Economy", out val);
+                                data.TryGetValue("StationEconomy", out val);
                                 Economy economy = Economy.FromEDName((string)val);
-                                data.TryGetValue("Government", out val);
+                                data.TryGetValue("StationGovernment", out val);
                                 Government government = Government.FromEDName((string)val);
-                                data.TryGetValue("Security", out val);
-                                SecurityLevel securityLevel = SecurityLevel.FromEDName((string)val);
-                                journalEvent = new DockedEvent(timestamp, systemName, stationName, allegiance, faction, factionState, economy, government, securityLevel);
+                                //data.TryGetValue("Security", out val);
+                                //SecurityLevel securityLevel = SecurityLevel.FromEDName((string)val);
+                                journalEvent = new DockedEvent(timestamp, systemName, stationName, stationModel, faction, factionState, economy, government);
                             }
                             handled = true;
                             break;
@@ -196,6 +198,12 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("StarSystem", out val);
                                 string systemName = (string)val;
 
+                                if (systemName == "Training")
+                                {
+                                    // Training system; ignore
+                                    break;
+                                }
+
                                 data.TryGetValue("StarPos", out val);
                                 List<object> starPos = (List<object>)val;
                                 decimal x = Math.Round((decimal)((double)starPos[0]) * 32) / (decimal)32.0;
@@ -208,26 +216,24 @@ namespace EddiJournalMonitor
                                 string bodyType = (string)val;
                                 data.TryGetValue("Docked", out val);
                                 bool docked = (bool)val;
-                                data.TryGetValue("Allegiance", out val);
+                                data.TryGetValue("SystemAllegiance", out val);
                                 // FD sends "" rather than null; fix that here
                                 if (((string)val) == "") { val = null; }
                                 Superpower allegiance = Superpower.From((string)val);
-                                data.TryGetValue("Faction", out val);
+                                data.TryGetValue("SystemFaction", out val);
                                 string faction = (string)val;
                                 // Might be a superpower...
                                 Superpower superpowerFaction = Superpower.From(faction);
                                 faction = superpowerFaction != null ? superpowerFaction.name : faction;
-                                data.TryGetValue("FactionState", out val);
-                                State factionState = State.FromEDName((string)val);
-                                data.TryGetValue("Economy", out val);
+                                data.TryGetValue("SystemEconomy", out val);
                                 Economy economy = Economy.FromEDName((string)val);
-                                data.TryGetValue("Government", out val);
+                                data.TryGetValue("SystemGovernment", out val);
                                 Government government = Government.FromEDName((string)val);
-                                data.TryGetValue("Security", out val);
+                                data.TryGetValue("SystemSecurity", out val);
                                 SecurityLevel security = SecurityLevel.FromEDName((string)val);
 
 
-                                journalEvent = new LocationEvent(timestamp, systemName, x, y, z, body, bodyType, docked, allegiance, faction, factionState, economy, government, security);
+                                journalEvent = new LocationEvent(timestamp, systemName, x, y, z, body, bodyType, docked, allegiance, faction, economy, government, security);
                             }
                             handled = true;
                             break;

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "EDDI"
-#define MyAppVersion "2.0.10"
+#define MyAppVersion "2.0.11"
 #define MyAppPublisher "Cmdr McDonald"
 #define MyAppURL "https://github.com/cmdrmcdonald/EliteDangerousDataProvider/"
 #define MyAppExeName "EDDI.exe"
@@ -79,6 +79,10 @@ Source: "{#SourcePath}\VoiceAttackResponder\obj\Debug\EddiVoiceAttackResponder.d
 [InstallDelete]
 Type: files; Name: "{app}\Eddi.exe"
 Type: files; Name: "{app}\EDDI.ico"
+
+; Remove sensitive data on uninstall
+[UninstallDelete]
+Type: files; Name: "{userappdata}\EDDI\credentials.json"
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

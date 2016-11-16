@@ -90,6 +90,7 @@
                         <Button  x:Name="companionAppNextButton" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Next" Margin="10" Click="companionAppNextClicked"/>
                         <Label x:Name ="companionAppCodeLabel" Visibility="Hidden" Grid.Row="1" Grid.Column="0" Margin="10" Content="Code:"/>
                         <TextBox x:Name ="companionAppCodeText" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Margin="10" />
+                        <TextBlock x:Name ="companionAppLogoutText" Visibility="Hidden" Grid.Row="1" Grid.Column="0" Margin="10" Grid.ColumnSpan="2" Text="If you are experiencing problems with your connection you can log out and log back in again, which resets the connection"/>
                     </Grid>
                 </DockPanel>
             </TabItem>

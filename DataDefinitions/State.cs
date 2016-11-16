@@ -63,7 +63,7 @@ namespace EddiDataDefinitions
             string tidiedFrom = from == null ? null : from.ToLowerInvariant();
 
             State result;
-            if (from == null || from == "")
+            if (tidiedFrom == null || tidiedFrom == "")
             {
                 result = None;
             }
