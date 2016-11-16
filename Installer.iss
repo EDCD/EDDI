@@ -80,6 +80,10 @@ Source: "{#SourcePath}\VoiceAttackResponder\obj\Debug\EddiVoiceAttackResponder.d
 Type: files; Name: "{app}\Eddi.exe"
 Type: files; Name: "{app}\EDDI.ico"
 
+; Remove sensitive data on uninstall
+[UninstallDelete]
+Type: files; Name: "{userappdata}\EDDI\credentials.json"
+
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"

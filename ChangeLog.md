@@ -3,6 +3,7 @@
   * Add "log out" option for companion API tab in UI
   * Provide internal Nullable values in VoiceAttack
   * Update VoiceAttack documentation with new variables
+  * Credentials are removed on EDDI uninstall
 
 #2.0.10
   * Update documentation for material and rarity information
