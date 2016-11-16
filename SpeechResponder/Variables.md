@@ -29,25 +29,27 @@ Information about your current ship is available under the `ship` object.
 Any values might be missing, depending on EDDI's configuration.
 
     - manufacturer the manufacturer of the ship (Lakon, Core Dynamics etc)
-	- model the model of the ship (Cobra Mk III, Fer-de-Lance etc)
-	- size the size of the ship (small/medium/large)
-	- value the value of the ship without cargo, in credits
-	- cargocapacity the total tonnage cargo capacity
-	- cargocarried the current tonnage cargo carried
-	- cargo specific details on the cargo being carried
-	- name the name of the ship
+    - model the model of the ship (Cobra Mk III, Fer-de-Lance etc)
+    - size the size of the ship (small/medium/large)
+    - value the value of the ship without cargo, in credits
+    - cargocapacity the total tonnage cargo capacity
+    - cargocarried the current tonnage cargo carried
+    - cargo specific details on the cargo being carried
+    - name the name of the ship
     - role the role of the ship 
-	- health the current health of the hull, from 0 to 100
-	- bulkheads details of the ship's bulkheads (this is a Module object)
-	- powerplant details of the ship's powerplant (this is a Module object)
-	- thrusters details of the ship's thrusters (this is a Module object)
-	- frameshiftdrive details of the ship's FSD (this is a Module object)
-	- lifesupport details of the ship's life support (this is a Module object)
-	- powerdistributor details of the ship's power distributor (this is a Module object)
-	- sensors details of the ship's sensors (this is a Module object)
-	- fueltank details of the ship's fuel tank (this is a Module object)
-	- hardpoints the ship's hardpoints (this is an array of HardPoint objects)
-	- compartments the ship's internal compartments (this is an array of Compartment objects)
+    - health the current health of the hull, from 0 to 100
+    - bulkheads details of the ship's bulkheads (this is a Module object)
+    - powerplant details of the ship's powerplant (this is a Module object)
+    - thrusters details of the ship's thrusters (this is a Module object)
+    - frameshiftdrive details of the ship's FSD (this is a Module object)
+    - lifesupport details of the ship's life support (this is a Module object)
+    - powerdistributor details of the ship's power distributor (this is a Module object)
+    - sensors details of the ship's sensors (this is a Module object)
+    - fueltank details of the ship's fuel tank (this is a Module object)
+    - fueltankcapacity the capacity of the main fuel tank
+    - fueltanktotalcapacity the capacity of the main fuel tank plus all secondary fuel tanks
+    - hardpoints the ship's hardpoints (this is an array of HardPoint objects)
+    - compartments the ship's internal compartments (this is an array of Compartment objects)
 
 ## Current starsystem
 
@@ -56,20 +58,20 @@ Information about your current starsystem is avaialble under the `system` object
 Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
 
     - name the name of the starsystem
-	- population the population of the starsystem
-	- allegiance the superpower allegiance of this starsystem (Federation, Empire etc)
-	- government the type of government in this starsystem (Democracy, Confederacy etc)
-	- faction the dominant faction in this starsystem
-	- primaryeconomy the primary economy in this starsystem (High Technology, Agriculture, etc)
-	- state the state of the starsystem (Boom, War, etc)
-	- security the level of security in the starsystem (Low, Medium, High)
-	- power the power who is controlling the starsystem (Edmund Mahon, Zachary Hudson etc)
-	- powerstate the state of the system for the power (controlled, contested etc)
+    - population the population of the starsystem
+    - allegiance the superpower allegiance of this starsystem (Federation, Empire etc)
+    - government the type of government in this starsystem (Democracy, Confederacy etc)
+    - faction the dominant faction in this starsystem
+    - primaryeconomy the primary economy in this starsystem (High Technology, Agriculture, etc)
+    - state the state of the starsystem (Boom, War, etc)
+    - security the level of security in the starsystem (Low, Medium, High)
+    - power the power who is controlling the starsystem (Edmund Mahon, Zachary Hudson etc)
+    - powerstate the state of the system for the power (controlled, contested etc)
     - stations the starsystem's stations (array of Station objects)
-	- bodies the starsystem's bodies (array of Body objects)
-	- visits the number of visits that the commander has made to this starsystem
-	- distancefromhome the distance in LY from the commander's home starsystem
-	- comment any comment the commander has made on the starsystem
+    - bodies the starsystem's bodies (array of Body objects)
+    - visits the number of visits that the commander has made to this starsystem
+    - distancefromhome the distance in LY from the commander's home starsystem
+    - comment any comment the commander has made on the starsystem
 
 ## Last starsystem
 
@@ -160,8 +162,8 @@ An orbital or planetary station.
     - model the model of the sation (Orbis, Coriolis, etc)
     - government the type of government in this station (Democracy, Confederacy etc)
     - faction the faction that controls this station
-	- allegiance the superpower allegiance of the faction that controls this station (Federation, Empire etc)
-	- state the state of the station (Boom, War, etc)
+    - allegiance the superpower allegiance of the faction that controls this station (Federation, Empire etc)
+    - state the state of the station (Boom, War, etc)
     - economies an array of economies at this station
     - distancefromstar the distance from the main star to this station (in light years)
     - hasrefuel true if this station has refuelling
