@@ -12,14 +12,14 @@ namespace EddiEvents
     {
         public const string NAME = "Docked";
         public const string DESCRIPTION = "Triggered when your ship docks at a station or outpost";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"Docked\",\"StationName\":\"Kotov Refinery\",\"StationType\":\"Outpost\",\"StarSystem\":\"Wolf 289\",\"Faction\":\"Wolf 289 Gold Federal Industry\",\"FactionState\":\"CivilWar\",\"Allegiance\":\"Federation\",\"Economy\":\"$economy_Extraction\",\"Government\":\"$government_Corporate\",\"Security\":\"$SYSTEM_SECURITY_high_anarchy;\"}";
+        public const string SAMPLE = @"{ ""timestamp"":""2016-11-16T09:28:19Z"", ""event"":""Docked"", ""StationName"":""Jameson Memorial"", ""StationType"":""Orbis"", ""StarSystem"":""Shinrarta Dezhra"", ""StationFaction"":""The Pilots Federation"", ""FactionState"":""Retreat"", ""StationGovernment"":""$government_Democracy;"", ""StationGovernment_Localised"":""Democracy"", ""StationEconomy"":""$economy_HighTech;"", ""StationEconomy_Localised"":""High tech"" }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DockedEvent()
         {
             VARIABLES.Add("station", "The station at which the commander has docked");
             VARIABLES.Add("system", "The system at which the commander has docked");
-            VARIABLES.Add("allegiance", "The allegiance of the station at which the commander has docked");
+            VARIABLES.Add("model", "The model of the station at which the commander has docked (Orbis, Coriolis, etc)");
             VARIABLES.Add("faction", "The faction controlling the station at which the commander has docked");
             VARIABLES.Add("factionstate", "The state of the faction controlling the station at which the commander has docked");
             VARIABLES.Add("economy", "The economy of the station at which the commander has docked");
@@ -33,8 +33,8 @@ namespace EddiEvents
         [JsonProperty("station")]
         public string station { get; private set; }
 
-        [JsonProperty("allegiance")]
-        public string allegiance { get; private set; }
+        [JsonProperty("model")]
+        public string model { get; private set; }
 
         [JsonProperty("faction")]
         public string faction { get; private set; }
@@ -48,19 +48,15 @@ namespace EddiEvents
         [JsonProperty("government")]
         public string government { get; private set; }
 
-        [JsonProperty("security")]
-        public string security { get; private set; }
-
-        public DockedEvent(DateTime timestamp, string system, string station, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
+        public DockedEvent(DateTime timestamp, string system, string station, string model, string faction, State factionstate, Economy economy, Government government) : base(timestamp, NAME)
         {
             this.system = system;
             this.station = station;
-            this.allegiance = (allegiance == null ? Superpower.None.name : allegiance.name);
+            this.model = model;
             this.faction = faction;
             this.factionstate = (factionstate == null ? State.None.name : factionstate.name);
             this.economy = (economy == null ? Economy.None.name : economy.name);
             this.government = (government == null ? Government.None.name : government.name);
-            this.security = (security == null ? SecurityLevel.Low.name : security.name);
         }
     }
 }

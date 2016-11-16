@@ -51,7 +51,16 @@ namespace EddiDataDefinitions
         public static Economy FromEDName(string from)
         {
             string tidiedFrom = from == null ? null : from.Replace(";", "").ToLowerInvariant();
-            Economy result = ECONOMIES.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
+
+            Economy result;
+            if (tidiedFrom == null || tidiedFrom == "")
+            {
+                result = null;
+            }
+            else
+            {
+                result = ECONOMIES.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
+            }
             if (result == null)
             {
                 Logging.Report("Unknown Economy ED name " + from);

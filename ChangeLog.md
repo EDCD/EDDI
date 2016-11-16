@@ -1,3 +1,10 @@
+#2.0.11
+  * Further fixes for renamed and missing fields in 2.2.02
+  * Add "log out" option for companion API tab in UI
+  * Provide internal Nullable values in VoiceAttack
+  * Update VoiceAttack documentation with new variables
+  * Credentials are removed on EDDI uninstall
+
 #2.0.10
   * Update documentation for material and rarity information
   * Update coriolis export for Beluga Liner
@@ -5,7 +12,7 @@
   * Add "shared" flag for bounty events
   * Add "source" for ship refuelled
   * Ship refuelled event now triggered when finishing scooping fuel
-  * Handle renamed fields for system information in FSD jumps in 2.2.0.2
+  * Handle renamed fields for system information in FSD jumps in 2.2.02
   * Add "Modification crafted" event
   * Add "Modification applied" event
   * Add "Engineer progressed" event
