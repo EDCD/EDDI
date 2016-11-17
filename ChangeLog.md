@@ -1,3 +1,7 @@
+#2.0.12
+  * Avoid bug in journal where superpower promotions are logged as combat promotions
+  * Update shield resistances with booster stats when exporting ship
+
 #2.0.11
   * Further fixes for renamed and missing fields in 2.2.02
   * Add "log out" option for companion API tab in UI

@@ -137,6 +137,7 @@ namespace EddiVoiceAttackResponder
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
             updaterThread.Abort();
+            SpeechService.Instance.ShutUp();
             EDDI.Instance.Stop();
         }
 

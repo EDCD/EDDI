@@ -440,12 +440,72 @@ namespace EddiDataDefinitions
                         boost = 1.2M;
                     }
 
-                    decimal alteredBoost = boost * (1 + sbModification.value) - boost;
+                    decimal alteredBoost = boost * (sbModification.value);
                     decimal alteredValue = alteredBoost / (boost - 1);
                     sbModification = new Modification(SHIELDBOOST);
                     sbModification.Modify(alteredValue);
                     modifications.Remove(SHIELDBOOST);
                     modifications.Add(SHIELDBOOST, sbModification);
+                }
+            }
+
+            // Shield booster resistance is actually a damage modifier, so needs to be inverted
+            if (module.EDName.StartsWith("Hpt_ShieldBooster_"))
+            {
+                Modification explResModification;
+                if (modifications.TryGetValue(EXPLRES, out explResModification))
+                {
+                    Modification newExplResModification = new Modification(EXPLRES);
+                    newExplResModification.Modify(explResModification.value * -1);
+                    modifications.Remove(EXPLRES);
+                    modifications.Add(EXPLRES, newExplResModification);
+                }
+                Modification kinResModification;
+                if (modifications.TryGetValue(KINRES, out kinResModification))
+                {
+                    Modification newKinResModification = new Modification(KINRES);
+                    newKinResModification.Modify(kinResModification.value * -1);
+                    modifications.Remove(KINRES);
+                    modifications.Add(KINRES, newKinResModification);
+                }
+                Modification thermResModification;
+                if (modifications.TryGetValue(THERMRES, out thermResModification))
+                {
+                    Modification newThermResModification = new Modification(THERMRES);
+                    newThermResModification.Modify(thermResModification.value * -1);
+                    modifications.Remove(THERMRES);
+                    modifications.Add(THERMRES, newThermResModification);
+                }
+            }
+
+
+            // Shield generator resistance is actually a damage modifier, so needs to be inverted
+            // In addition, the modification is based off the inherent resistance of the module
+            if (module.EDName.StartsWith("Int_ShieldGenerator_"))
+            {
+                Modification explResModification;
+                if (modifications.TryGetValue(EXPLRES, out explResModification))
+                {
+                    Modification newExplResModification = new Modification(EXPLRES);
+                    newExplResModification.Modify((1 - 0.5M * (1 + explResModification.value) - 0.5M));
+                    modifications.Remove(EXPLRES);
+                    modifications.Add(EXPLRES, newExplResModification);
+                }
+                Modification kinResModification;
+                if (modifications.TryGetValue(KINRES, out kinResModification))
+                {
+                    Modification newKinResModification = new Modification(KINRES);
+                    newKinResModification.Modify((1 - 0.6M * (1 + kinResModification.value) - 0.6M));
+                    modifications.Remove(KINRES);
+                    modifications.Add(KINRES, newKinResModification);
+                }
+                Modification thermResModification;
+                if (modifications.TryGetValue(THERMRES, out thermResModification))
+                {
+                    Modification newThermResModification = new Modification(THERMRES);
+                    newThermResModification.Modify((1 - 1.2M * (1 + thermResModification.value) + 0.2M));
+                    modifications.Remove(THERMRES);
+                    modifications.Add(THERMRES, newThermResModification);
                 }
             }
 

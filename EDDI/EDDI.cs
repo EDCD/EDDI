@@ -428,6 +428,10 @@ namespace Eddi
                     {
                         passEvent = eventCommanderContinuedEvent((CommanderContinuedEvent)journalEvent);
                     }
+                    else if (journalEvent is CombatPromotionEvent)
+                    {
+                        passEvent = eventCombatPromotionEvent((CombatPromotionEvent)journalEvent);
+                    }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -720,6 +724,14 @@ namespace Eddi
             }
 
             return true;
+        }
+
+        private bool eventCombatPromotionEvent(CombatPromotionEvent theEvent)
+        {
+            // There is a bug with the journal where it reports superpower increases in rank as combat increases
+            // Hence we check to see if this is a real event by comparing our known combat rating to the promoted rating
+
+            return theEvent.rating != Cmdr.combatrating.name;
         }
 
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
