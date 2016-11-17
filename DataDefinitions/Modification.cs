@@ -76,7 +76,9 @@ namespace EddiDataDefinitions
                     modify(EXPLRES, value, modifications);
                     break;
                 case "mod_defencemodifier_global_hull_mult":
-                    modify(HULLBOOST, value, modifications);
+                    modify(EXPLRES, value, modifications);
+                    modify(KINRES, value, modifications);
+                    modify(THERMRES, value, modifications);
                     break;
                 case "mod_defencemodifier_global_shield_mult":
                     modify(EXPLRES, value, modifications);
@@ -243,7 +245,7 @@ namespace EddiDataDefinitions
                     modify(PIERCING, value, modifications);
                     break;
                 case "mod_weapon_jitter_radius":
-                    modify(JITTER, value, modifications); // TODO this is in degrees not %
+                    modify(JITTER, value, modifications);
                     break;
                 case "mod_weapon_range":
                     modify(RANGE, value, modifications);
@@ -257,6 +259,9 @@ namespace EddiDataDefinitions
                 case "special_corrosive_shell":
                     modify(AMMO, -0.2M, modifications);
                     break;
+                case "special_dispertial_field":
+                    modify(DAMAGE, -0.1M, modifications);
+                    break;
                 case "special_distortion_field":
                     // TODO
                     break;
@@ -264,7 +269,7 @@ namespace EddiDataDefinitions
                     // TODO
                     break;
                 case "special_emissive_munitions":
-                    // TODO
+                    modify(THERMLOAD, 1M, modifications);
                     break;
                 case "special_feedback_cascade":
                     // TODO
@@ -275,10 +280,12 @@ namespace EddiDataDefinitions
                 case "special_incendiary_rounds":
                     modify(THERMLOAD, 2M, modifications);
                     modify(ROF, (1M / 0.95M) - 1, modifications);
-                    modify(DAMAGE, 0.5M, modifications);
                     break;
                 case "special_phasing_sequence":
                     // TODO
+                    break;
+                case "special_radiant_canister":
+                    modify(AMMO, -0.2M, modifications);
                     break;
                 case "special_regeneration_sequence":
                     // TODO
@@ -305,7 +312,8 @@ namespace EddiDataDefinitions
                     // TODO
                     break;
                 case "trade_distributor_engine_charge_system_charge":
-                    // TODO
+                    modify(ENGCAP, value, modifications);
+                    modify(SYSCAP, value * -1, modifications);
                     break;
                 case "trade_distributor_global_charge_mass":
                     modify(MASS, value, modifications);
@@ -325,7 +333,8 @@ namespace EddiDataDefinitions
                     // TODO
                     break;
                 case "trade_mass_defence_health_add":
-                    // TODO
+                    modify(HULLREINFORCEMENT, value * -0.75M, modifications);
+                    modify(MASS, value * -1, modifications);
                     break;
                 case "trade_mass_health":
                     modify(MASS, value * 0.4M, modifications);
@@ -351,13 +360,14 @@ namespace EddiDataDefinitions
                     modify(WEPCAP, value * -1M, modifications);
                     break;
                 case "trade_passive_power_engine_curve":
-                    // TODO
+                    modify(OPTMASS, value * -0.66M, modifications);
+                    modify(POWER, value * -1M, modifications);
                     break;
                 case "trade_passive_power_shield_global_mult":
                     modify(POWER, value * -1M, modifications);
-                    modify(SYSCAP, value * 0.5M, modifications);
-                    modify(ENGCAP, value * 0.5M, modifications);
-                    modify(WEPCAP, value * 0.5M, modifications);
+                    modify(EXPLRES, value * 0.5M, modifications);
+                    modify(KINRES, value * 0.5M, modifications);
+                    modify(THERMRES, value * 0.5M, modifications);
                     break;
                 case "trade_passive_power_weapon_active":
                     modify(POWER, value, modifications);
@@ -368,10 +378,14 @@ namespace EddiDataDefinitions
                     modify(OPTMUL, value * -0.8M, modifications);
                     break;
                 case "trade_shield_global_mult_shield_broken_regen":
-                    // TODO
+                    modify(BROKENREGEN, value * -1M, modifications);
+                    modify(EXPLRES, value * -0.5M, modifications);
+                    modify(KINRES, value * -0.5M, modifications);
+                    modify(THERMRES, value * -0.5M, modifications);
                     break;
                 case "trade_shield_kinetic_shield_thermic":
-                    // TODO
+                    modify(KINRES, value, modifications);
+                    modify(THERMRES, value * -1, modifications);
                     break;
                 case "trade_weapon_active_passive_power":
                     modify(DISTDRAW, value * -0.67M, modifications);
@@ -478,7 +492,6 @@ namespace EddiDataDefinitions
                 }
             }
 
-
             // Shield generator resistance is actually a damage modifier, so needs to be inverted
             // In addition, the modification is based off the inherent resistance of the module
             if (module.EDName.StartsWith("Int_ShieldGenerator_"))
@@ -487,7 +500,7 @@ namespace EddiDataDefinitions
                 if (modifications.TryGetValue(EXPLRES, out explResModification))
                 {
                     Modification newExplResModification = new Modification(EXPLRES);
-                    newExplResModification.Modify((1 - 0.5M * (1 + explResModification.value) - 0.5M));
+                    newExplResModification.Modify(((1 - (1 - 0.5M) * ( 1+ explResModification.value / 10000)) - 0.5M) * 10000);
                     modifications.Remove(EXPLRES);
                     modifications.Add(EXPLRES, newExplResModification);
                 }
@@ -495,7 +508,7 @@ namespace EddiDataDefinitions
                 if (modifications.TryGetValue(KINRES, out kinResModification))
                 {
                     Modification newKinResModification = new Modification(KINRES);
-                    newKinResModification.Modify((1 - 0.6M * (1 + kinResModification.value) - 0.6M));
+                    newKinResModification.Modify(((1 - (1 - 0.4M) * (1 + kinResModification.value / 10000)) - 0.4M) * 10000);
                     modifications.Remove(KINRES);
                     modifications.Add(KINRES, newKinResModification);
                 }
@@ -503,7 +516,147 @@ namespace EddiDataDefinitions
                 if (modifications.TryGetValue(THERMRES, out thermResModification))
                 {
                     Modification newThermResModification = new Modification(THERMRES);
-                    newThermResModification.Modify((1 - 1.2M * (1 + thermResModification.value) + 0.2M));
+                    newThermResModification.Modify(((1 - (1 + 0.2M) * (1 + thermResModification.value / 10000)) + 0.2M) * 10000);
+                    modifications.Remove(THERMRES);
+                    modifications.Add(THERMRES, newThermResModification);
+                }
+            }
+
+            // Hull reinforcement package resistance is actually a damage modifier, so needs to be inverted
+            if (module.EDName.StartsWith("Int_HullReinforcement"))
+            {
+                Modification explResModification;
+                if (modifications.TryGetValue(EXPLRES, out explResModification))
+                {
+                    Modification newExplResModification = new Modification(EXPLRES);
+                    newExplResModification.Modify(explResModification.value * -1);
+                    modifications.Remove(EXPLRES);
+                    modifications.Add(EXPLRES, newExplResModification);
+                }
+                Modification kinResModification;
+                if (modifications.TryGetValue(KINRES, out kinResModification))
+                {
+                    Modification newKinResModification = new Modification(KINRES);
+                    newKinResModification.Modify(kinResModification.value * -1);
+                    modifications.Remove(KINRES);
+                    modifications.Add(KINRES, newKinResModification);
+                }
+                Modification thermResModification;
+                if (modifications.TryGetValue(THERMRES, out thermResModification))
+                {
+                    Modification newThermResModification = new Modification(THERMRES);
+                    newThermResModification.Modify(thermResModification.value * -1);
+                    modifications.Remove(THERMRES);
+                    modifications.Add(THERMRES, newThermResModification);
+                }
+            }
+
+            // Bulkhead resistance is actually a damage modifier, so needs to be inverted
+            // In addition, the modification is based off the inherent resistance of the module
+            if (module.EDName.Contains("_Armour_"))
+            {
+                Modification explResModification;
+                if (modifications.TryGetValue(EXPLRES, out explResModification))
+                {
+                    // TODO these should be part of the module definition
+                    decimal explRes;
+                    if (module.EDName.EndsWith("_Grade1"))
+                    {
+                        explRes = -0.4M;
+                    }
+                    else if (module.EDName.EndsWith("_Grade2"))
+                    {
+                        explRes = -0.4M;
+                    }
+                    else if (module.EDName.EndsWith("_Grade3"))
+                    {
+                        explRes = -0.4M;
+                    }
+                    else if (module.EDName.EndsWith("_Mirrored"))
+                    {
+                        explRes = -0.5M;
+                    }
+                    else if (module.EDName.EndsWith("_Reactive"))
+                    {
+                        explRes = 0.2M;
+                    }
+                    else
+                    {
+                        Logging.Warn("Unknown armour " + module.EDName);
+                        explRes = -0.4M;
+                    }
+                    Modification newExplResModification = new Modification(EXPLRES);
+                    newExplResModification.Modify(((1 - (1 - explRes) * (1 + explResModification.value / 10000)) - explRes) * 10000);
+                    modifications.Remove(EXPLRES);
+                    modifications.Add(EXPLRES, newExplResModification);
+                }
+                Modification kinResModification;
+                if (modifications.TryGetValue(KINRES, out kinResModification))
+                {
+                    // TODO these should be part of the module definition
+                    decimal kinRes;
+                    if (module.EDName.EndsWith("_Grade1"))
+                    {
+                        kinRes = -0.2M;
+                    }
+                    else if (module.EDName.EndsWith("_Grade2"))
+                    {
+                        kinRes = -0.2M;
+                    }
+                    else if (module.EDName.EndsWith("_Grade3"))
+                    {
+                        kinRes = -0.2M;
+                    }
+                    else if (module.EDName.EndsWith("_Mirrored"))
+                    {
+                        kinRes = -0.75M;
+                    }
+                    else if (module.EDName.EndsWith("_Reactive"))
+                    {
+                        kinRes = 0.25M;
+                    }
+                    else
+                    {
+                        Logging.Warn("Unknown armour " + module.EDName);
+                        kinRes = -0.2M;
+                    }
+                    Modification newKinResModification = new Modification(KINRES);
+                    newKinResModification.Modify(((1 - (1 - kinRes) * (1 + kinResModification.value / 10000)) - kinRes) * 10000);
+                    modifications.Remove(KINRES);
+                    modifications.Add(KINRES, newKinResModification);
+                }
+                Modification thermResModification;
+                if (modifications.TryGetValue(THERMRES, out thermResModification))
+                {
+                    // TODO these should be part of the module definition
+                    decimal thermRes;
+                    if (module.EDName.EndsWith("_Grade1"))
+                    {
+                        thermRes = 0;
+                    }
+                    else if (module.EDName.EndsWith("_Grade2"))
+                    {
+                        thermRes = 0;
+                    }
+                    else if (module.EDName.EndsWith("_Grade3"))
+                    {
+                        thermRes = 0;
+                    }
+                    else if (module.EDName.EndsWith("_Mirrored"))
+                    {
+                        thermRes = 0.5M;
+                    }
+                    else if (module.EDName.EndsWith("_Reactive"))
+                    {
+                        thermRes = -0.4M;
+                    }
+                    else
+                    {
+                        Logging.Warn("Unknown armour " + module.EDName);
+                        thermRes = 0;
+                    }
+                    Modification newThermResModification = new Modification(THERMRES);
+                    newThermResModification.Modify(((1 - (1 - thermRes) * (1 + thermResModification.value / 10000)) - thermRes) * 10000);
                     modifications.Remove(THERMRES);
                     modifications.Add(THERMRES, newThermResModification);
                 }
@@ -526,6 +679,7 @@ namespace EddiDataDefinitions
                 // Although Elite talks about rate of fire, it is internally modelled as burst interval
                 // i.e. the interval between bursts of fire.  We've been happily modifying ROF with interval modifiers
                 // until now, so flip it here to provide the right number
+                decimal oldValue = rofModification.value;
                 decimal value = (1.0M / (1 + rofModification.value)) - 1;
                 rofModification = new Modification(ROF);
                 rofModification.Modify(value);
@@ -533,6 +687,5 @@ namespace EddiDataDefinitions
                 modifications.Add(ROF, rofModification);
             }
         }
-
     }
 }
