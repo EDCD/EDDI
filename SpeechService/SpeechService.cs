@@ -103,6 +103,10 @@ namespace EddiSpeechService
         {
             if (speech == null) { return; }
 
+            // For now we rudely set distortion to 0 regardless of what the calling function wanted.  Might enable this again one day
+            // if we can find a decent way of doing distortion that doesn't destroy speakers
+            distortionLevel = 0;
+
             Thread speechThread = new Thread(() =>
             {
                 string finalSpeech = null;

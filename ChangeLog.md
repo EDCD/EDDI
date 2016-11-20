@@ -4,6 +4,7 @@
   * Add body information to speech responder
   * Add system main star stellar class and age to VoiceAttack variables
   * Fix commander progress "trade" rating
+  * Disable "distort on damage" effect until we can find a better distortion process
 
 #2.0.11
   * Further fixes for renamed and missing fields in 2.2.02
