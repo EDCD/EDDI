@@ -1,6 +1,8 @@
 #2.0.12
   * Avoid bug in journal where superpower promotions are logged as combat promotions
   * Update shield resistances with booster stats when exporting ship
+  * Add body information to speech responder
+  * Add system main star stellar class and age to VoiceAttack variables
 
 #2.0.11
   * Further fixes for renamed and missing fields in 2.2.02

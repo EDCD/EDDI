@@ -171,6 +171,8 @@ If a value is not available it will be not set rather than empty.
   * {INT:System planetary stations}: the total number of planetary stations (outposts and ports) in the system
   * {INT:System planetary outposts}: the total number of planetary outposts in the system
   * {INT:System planetary ports}: the total number of planetary ports in the system
+  * {TXT:System main star stellar class}: the stellar class of the main star of the system (M, G etc)
+  * {INT:System main star age}: the age of the main star of the system, in millions of years
 
 ### Last System Variables
 
