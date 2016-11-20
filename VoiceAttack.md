@@ -412,6 +412,7 @@ Variables set with this events are as follows:
   * {DEC:EDDI commander progress empire} The percentage progress of the commander's empire rating
   * {DEC:EDDI commander progress exploration} The percentage progress of the commander's exploration rating
   * {DEC:EDDI commander progress federation} The percentage progress of the commander's federation rating
+  * {DEC:EDDI commander progress trade} The percentage progress of the commander's trade rating
 
 ### Commander ratings
 Triggered when your ratings are reported.

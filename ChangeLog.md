@@ -3,6 +3,7 @@
   * Update shield resistances with booster stats when exporting ship
   * Add body information to speech responder
   * Add system main star stellar class and age to VoiceAttack variables
+  * Fix commander progress "trade" rating
 
 #2.0.11
   * Further fixes for renamed and missing fields in 2.2.02
