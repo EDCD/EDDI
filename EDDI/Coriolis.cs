@@ -37,7 +37,7 @@ namespace Eddi
             { "Python", "python" },
             { "SideWinder", "sidewinder" },
             { "Type-6 Transporter", "type_6_transporter" },
-            { "Type-7 Transporter", "type-7_transporter" },
+            { "Type-7 Transporter", "type_7_transport" },
             { "Type-9 Heavy", "type_9_heavy" },
             { "Viper Mk. III", "viper" },
             { "Viper Mk. IV", "viper_mk_iv" },

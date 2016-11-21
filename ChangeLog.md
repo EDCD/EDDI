@@ -6,6 +6,7 @@
   * Fix commander progress "trade" rating
   * Disable "distort voice on damage" effect until we can find a better distortion process
   * Add separate exception logging system
+  * Fix incorrect name for Type-7 when exporting to Coriolis
 
 #2.0.11
   * Further fixes for renamed and missing fields in 2.2.02
