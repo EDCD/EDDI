@@ -14,7 +14,7 @@ namespace Eddi
         public static string ShipUri(Ship ship)
         {
             // Generate a Coriolis import URI to retain as much information as possible
-            string uri = "https://coriolis.edcd.io/import/";
+            string uri = "https://coriolis.edcd.io/import?";
 
             // Take the ship's JSON, gzip it, then turn it in to base64 and attach it to the base uri
 
@@ -26,8 +26,7 @@ namespace Eddi
                 {
                     streamIn.CopyTo(gzipStream);
                 }
-                // N.B. non-standard replacements used by Coriolis
-                uri += Convert.ToBase64String(streamOut.ToArray()).Replace("/", "-").Replace("+", "_");
+                uri += "data=" + Uri.EscapeDataString(Convert.ToBase64String(streamOut.ToArray()));
             }
 
             // Add the ship's name
@@ -40,7 +39,7 @@ namespace Eddi
             {
                 bn = ship.name;
             }
-            uri += "?bn=" + Uri.EscapeDataString(bn);
+            uri += "&bn=" + Uri.EscapeDataString(bn);
 
             return uri;
         }
