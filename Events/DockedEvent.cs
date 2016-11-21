@@ -12,7 +12,8 @@ namespace EddiEvents
     {
         public const string NAME = "Docked";
         public const string DESCRIPTION = "Triggered when your ship docks at a station or outpost";
-        public const string SAMPLE = @"{ ""timestamp"":""2016-11-16T09:28:19Z"", ""event"":""Docked"", ""StationName"":""Jameson Memorial"", ""StationType"":""Orbis"", ""StarSystem"":""Shinrarta Dezhra"", ""StationFaction"":""The Pilots Federation"", ""FactionState"":""Retreat"", ""StationGovernment"":""$government_Democracy;"", ""StationGovernment_Localised"":""Democracy"", ""StationEconomy"":""$economy_HighTech;"", ""StationEconomy_Localised"":""High tech"" }";
+        public const string SAMPLE = @"{ ""timestamp"":""2016-11-16T09:28:19Z"", ""event"":""Docked"", ""StationName"":""Jameson Memorial"", ""StationType"":""Orbis"", ""StarSystem"":""Shinrarta Dezhra"", ""StationFaction"":""The Pilots Federation"", ""FactionState"":""Retreat"", ""StationGovernment"":""$government_Democracy;"", ""StationGovernment_Localised"":""Democracy"", ""StationEconomy"":""$economy_HighTech;"", ""StationEconomy_Localised"":""High tech"" }";
+
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static DockedEvent()
