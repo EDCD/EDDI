@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -115,6 +116,13 @@ namespace EddiDataDefinitions
     {
         public string material { get; private set; }
         public decimal percentage { get; private set; }
+
+        [JsonConstructor]
+        public MaterialPercentage(string material, decimal percentage)
+        {
+            this.material = material;
+            this.percentage = percentage;
+        }
 
         public MaterialPercentage(Material material, decimal percentage)
         {
