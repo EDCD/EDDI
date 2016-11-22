@@ -1,4 +1,13 @@
 #2.0.12
+  * Avoid bug in journal where superpower promotions are logged as combat promotions
+  * Update shield resistances with booster stats when exporting ship
+  * Add body information to speech responder
+  * Add system main star stellar class and age to VoiceAttack variables
+  * Fix commander progress "trade" rating
+  * Disable "distort voice on damage" effect until we can find a better distortion process
+  * Add separate exception logging system
+  * Fix incorrect name for Type-7 when exporting to Coriolis
+  * Send raw ship data to Coriolis rather than attempt to parse it ourself
   * Send raw ship JSON directly to Coriolis for import rather than use local processing
 
 #2.0.11

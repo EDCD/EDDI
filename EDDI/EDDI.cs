@@ -4,6 +4,7 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiSpeechService;
 using EddiStarMapService;
+using Exceptionless;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -17,6 +18,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using Utilities;
 
 namespace Eddi
@@ -93,6 +95,10 @@ namespace Eddi
             try
             {
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
+
+                // Exception handling
+                ExceptionlessClient.Default.Startup("vJW9HtWB2NHiQb7AwVQsBQM6hjWN1sKzHf5PCpW1");
+                ExceptionlessClient.Default.Configuration.SetVersion(Constants.EDDI_VERSION);
 
                 // Start by ensuring that our primary data structures have something in them.  This allows them to be updated
                 // from any source
@@ -291,6 +297,8 @@ namespace Eddi
 
             Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
 
+            ExceptionlessClient.Default.Shutdown();
+
             started = false;
         }
 
@@ -427,6 +435,10 @@ namespace Eddi
                     else if (journalEvent is CommanderContinuedEvent)
                     {
                         passEvent = eventCommanderContinuedEvent((CommanderContinuedEvent)journalEvent);
+                    }
+                    else if (journalEvent is CombatPromotionEvent)
+                    {
+                        passEvent = eventCombatPromotionEvent((CombatPromotionEvent)journalEvent);
                     }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -720,6 +732,14 @@ namespace Eddi
             }
 
             return true;
+        }
+
+        private bool eventCombatPromotionEvent(CombatPromotionEvent theEvent)
+        {
+            // There is a bug with the journal where it reports superpower increases in rank as combat increases
+            // Hence we check to see if this is a real event by comparing our known combat rating to the promoted rating
+
+            return theEvent.rating != Cmdr.combatrating.name;
         }
 
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>

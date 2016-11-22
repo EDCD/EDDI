@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using Utilities;
@@ -94,6 +95,7 @@ namespace EddiDataProviderService
 
 
                 StarSystem.stations = StationsFromEDDP(StarSystem.name, json);
+                StarSystem.bodies = BodiesFromEDDP(StarSystem.name, json);
             }
 
             StarSystem.lastupdated = DateTime.Now;
@@ -155,6 +157,89 @@ namespace EddiDataProviderService
                 }
             }
             return Stations;
+        }
+
+        public static List<Body> BodiesFromEDDP(string systemName, dynamic json)
+        {
+            List<Body> Bodies = new List<Body>();
+
+            if (json["bodies"] != null)
+            {
+                foreach (dynamic body in json["bodies"])
+                {
+                    if (body["group_name"] == "Belt")
+                    {
+                        // Not interested in asteroid belts
+                        continue;
+                    }
+
+                    Body Body = new Body();
+
+                    // General items
+                    Body.EDDBID = (long)body["id"];
+                    Body.name = (string)body["name"];
+                    Body.systemname = systemName;
+                    Body.type = body["group_name"];
+                    Body.distance = (long?)body["distance_to_arrival"];
+                    Body.temperature = (long?)body["surface_temperature"];
+                    Body.tidallylocked = (bool?)body["is_rotational_period_tidally_locked"];
+
+                    if (Body.type == "Star")
+                    {
+                        // Star-specific items
+                        Body.stellarclass = (string)body["spectral_class"];
+                        Body.solarmass = (decimal?)(double?)body["solar_masses"];
+                        Body.solarradius = (decimal?)(double?)body["solar_radius"];
+                        Body.age = (long?)body["age"];
+
+                        Body.mainstar = (bool?)body["is_main_star"];
+
+                        Body.landable = false;
+                    }
+
+                    if (Body.type == "Planet")
+                    {
+                        // Planet-specific items
+                        Body.landable = (bool?)body["is_landable"];
+                        Body.periapsis = (decimal?)(double?)body["arg_of_periapsis"];
+                        Body.atmosphere = (string)body["atmosphere_type_name"];
+                        Body.tilt = (decimal?)(double?)body["axis_tilt"];
+                        Body.earthmass = (decimal?)(double?)body["earth_masses"];
+                        Body.gravity = (decimal?)(double?)body["gravity"];
+                        Body.eccentricity = (decimal?)(double?)body["orbital_eccentricity"];
+                        Body.inclination = (decimal?)(double?)body["orbital_inclination"];
+                        Body.orbitalperiod = (decimal?)(double?)body["orbital_period"];
+                        Body.radius = (long?)body["radius"];
+                        Body.rotationalperiod = (decimal?)(double?)body["rotational_period"];
+                        Body.semimajoraxis = (decimal?)(double?)body["semi_major_axis"];
+                        Body.pressure = (decimal?)(double?)body["surface_pressure"];
+                        Body.terraformstate = (string)body["terraforming_state_name"];
+                        Body.planettype = (string)body["type_name"];
+                        Body.volcanism = (string)body["volcanism_type_name"];
+                        if (body["materials"] != null)
+                        {
+                            List<MaterialPercentage> Materials = new List<MaterialPercentage>();
+                            foreach (dynamic materialJson in body["materials"])
+                            {
+                                Material material = Material.FromName((string)materialJson["material_name"]);
+                                decimal? amount = (decimal?)(double?)materialJson["share"];
+                                if (material != null && amount != null)
+                                {
+                                    Materials.Add(new MaterialPercentage(material, (decimal)amount));
+                                }
+                            }
+                            if (Materials.Count > 0)
+                            {
+                                Body.materials = Materials.OrderByDescending(o => o.percentage).ToList();
+                            }
+                        }
+                    }
+
+                    Bodies.Add(Body);
+                }
+            }
+            // Sort bodies by distance
+            return Bodies.OrderBy(o => o.distance).ToList();
         }
 
         private static List<string> stationModels = new List<string>()

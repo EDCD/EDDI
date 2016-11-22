@@ -137,6 +137,7 @@ namespace EddiVoiceAttackResponder
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
             updaterThread.Abort();
+            SpeechService.Instance.ShutUp();
             EDDI.Instance.Stop();
         }
 
@@ -850,6 +851,12 @@ namespace EddiVoiceAttackResponder
                     vaProxy.SetInt(prefix + " planetary stations", system.stations.Count(s => s.IsPlanetary()));
                     vaProxy.SetInt(prefix + " planetary outposts", system.stations.Count(s => s.IsPlanetaryOutpost()));
                     vaProxy.SetInt(prefix + " planetary ports", system.stations.Count(s => s.IsPlanetaryPort()));
+
+                    if (system.bodies != null && system.bodies.Count > 0)
+                    {
+                        Body primaryBody = (system.bodies[0].distance == 0 ? system.bodies[0] : null);
+                        setBodyValues(primaryBody, prefix + " main star", vaProxy);
+                    }
                 }
                 setStatus(ref vaProxy, "Operational");
             }
@@ -858,6 +865,14 @@ namespace EddiVoiceAttackResponder
                 setStatus(ref vaProxy, "Failed to set system information", e);
             }
             Logging.Debug("Set system information (" + prefix + ")");
+        }
+
+        private static void setBodyValues(Body body, string prefix, dynamic vaProxy)
+        {
+            Logging.Debug("Setting body information (" + prefix + ")");
+            vaProxy.SetString(prefix + " stellar class", body == null ? null : body.stellarclass);
+            vaProxy.SetInt(prefix + " age", body == null ? null : body.age);
+            Logging.Debug("Set body information (" + prefix + ")");
         }
 
         private static void setStatus(ref dynamic vaProxy, string status, Exception exception = null)

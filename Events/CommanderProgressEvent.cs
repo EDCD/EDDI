@@ -18,7 +18,7 @@ namespace EddiEvents
         static CommanderProgressEvent()
         {
             VARIABLES.Add("combat", "The percentage progress of the commander's combat rating");
-            VARIABLES.Add("trading", "The percentage progress of the commander's trading rating");
+            VARIABLES.Add("trade", "The percentage progress of the commander's trade rating");
             VARIABLES.Add("exploration", "The percentage progress of the commander's exploration rating");
             VARIABLES.Add("cqc", "The percentage progress of the commander's CQC rating");
             VARIABLES.Add("empire", "The percentage progress of the commander's empire rating");
