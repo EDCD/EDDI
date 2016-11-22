@@ -1,79 +1,28 @@
 ﻿using EddiDataDefinitions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Text;
 using Utilities;
 
 namespace Eddi
 {
     public class Coriolis
     {
-        // Translation from the names that we use to the names that coriolis uses
-        private static Dictionary<string, string> shipModels = new Dictionary<string, string>()
-        {
-            { "Adder" , "adder"},
-            { "Anaconda", "anaconda" },
-            { "Asp Explorer", "asp" },
-            { "Asp Scout", "asp_scout" },
-            { "Beluga Liner", "beluga" },
-            { "Cobra Mk. III", "cobra_mk_iii" },
-            { "Cobra Mk. IV", "cobra_mk_iv" },
-            { "Imperial Cutter", "imperial_cutter" },
-            { "Diamondback Explorer", "diamondback_explorer" },
-            { "Diamondback Scout", "diamondback" },
-            { "Eagle", "eagle" },
-            { "Imperial Courier", "imperial_courier" },
-            { "Imperial Eagle", "imperial_eagle" },
-            { "Imperial Clipper", "imperial_clipper" },
-            { "Federal Corvette", "federal_corvette" },
-            { "Federal Dropship", "federal_dropship" },
-            { "Federal Assault Ship", "federal_assault_ship" },
-            { "Federal Gunship", "federal_gunship" },
-            { "Fer-de-Lance", "fer_de_lance" },
-            { "Hauler", "hauler" },
-            { "Keelback", "keelback" },
-            { "Orca", "orca" },
-            { "Python", "python" },
-            { "SideWinder", "sidewinder" },
-            { "Type-6 Transporter", "type_6_transporter" },
-            { "Type-7 Transporter", "type-7_transporter" },
-            { "Type-9 Heavy", "type_9_heavy" },
-            { "Viper Mk. III", "viper" },
-            { "Viper Mk. IV", "viper_mk_iv" },
-            { "Vulture", "vulture" }
-        };
-
-        private static int addModifications(Module module, byte position, BinaryWriter writer)
-        {
-            int bytesWritten = 0;
-            if (module.modifications != null)
-            {
-                writer.Write(position);
-                bytesWritten++;
-                foreach (Modification modification in module.modifications)
-                {
-                    writer.Write((byte)modification.id);
-                    bytesWritten++;
-                    writer.Write((int)(modification.value * 10000));
-                    bytesWritten += 4;
-                }
-                writer.Write((byte)0xff);
-                bytesWritten++;
-            }
-            return bytesWritten;
-        }
-
         public static string ShipUri(Ship ship)
         {
-            int modsSize = 0;
-            string enableds = "";
-            string priorities = "";
+            // Generate a Coriolis import URI to retain as much information as possible
+            string uri = "https://coriolis.edcd.io/import?";
 
-            string uri = "https://coriolis.edcd.io/outfit/";
+            // Take the ship's JSON, gzip it, then turn it in to base64 and attach it to the base uri
 
-            using (MemoryStream stream = new MemoryStream())
+            var bytes = Encoding.UTF8.GetBytes(ship.json);
+            using (var streamIn = new MemoryStream(bytes))
+            using (var streamOut = new MemoryStream())
             {
+<<<<<<< HEAD
                 using (var compressionStream = new GZipStream(stream, CompressionLevel.Optimal, true))
                 using (BinaryWriter writer = new BinaryWriter(compressionStream))
                 {
@@ -194,32 +143,28 @@ namespace Eddi
                     bn = ship.role + " " + ship.model;
                 }
                 else
+=======
+                using (var gzipStream = new GZipStream(streamOut, CompressionLevel.Optimal, true))
+>>>>>>> feature/coriolis
                 {
-                    bn = ship.name;
+                    streamIn.CopyTo(gzipStream);
                 }
-                uri += "?bn=" + Uri.EscapeDataString(bn);
-
-                return uri;
+                uri += "data=" + Uri.EscapeDataString(Convert.ToBase64String(streamOut.ToArray()));
             }
-        }
 
-        public static string ShipBulkheads(string bulkheads)
-        {
-            switch (bulkheads)
+            // Add the ship's name
+            string bn;
+            if (ship.name == null)
             {
-                case "Lightweight Alloy":
-                    return "0";
-                case "Reinforced Alloy":
-                    return "1";
-                case "Military Grade Composite":
-                    return "2";
-                case "Mirrored Surface Composite":
-                    return "3";
-                case "Reactive Surface Composite":
-                    return "4";
-                default:
-                    return "0";
+                bn = ship.role + " " + ship.model;
             }
+            else
+            {
+                bn = ship.name;
+            }
+            uri += "&bn=" + Uri.EscapeDataString(bn);
+
+            return uri;
         }
     }
 }

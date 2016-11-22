@@ -21,9 +21,6 @@ namespace EddiDataDefinitions
         public int priority { get; set; }
         public decimal health { get; set; }
 
-        // Modifications
-        public List<Modification> modifications { get; set; }
-
         // Admin
         // The ID in Elite: Dangerous' database
         public long EDID { get; set; }

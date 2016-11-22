@@ -1,3 +1,6 @@
+#2.0.12
+  * Send raw ship JSON directly to Coriolis for import rather than use local processing
+
 #2.0.11
   * Further fixes for renamed and missing fields in 2.2.02
   * Add "log out" option for companion API tab in UI
