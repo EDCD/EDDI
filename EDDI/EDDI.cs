@@ -90,6 +90,9 @@ namespace Eddi
         public StarSystem CurrentStarSystem { get; private set; }
         public StarSystem LastStarSystem { get; private set; }
 
+        // Session state
+        public Dictionary<string, object> State = new Dictionary<string, object>();
+
         private EDDI()
         {
             try
