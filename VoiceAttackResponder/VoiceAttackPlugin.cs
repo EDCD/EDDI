@@ -181,6 +181,9 @@ namespace EddiVoiceAttackResponder
                     case "shutup":
                         InvokeShutUp(ref vaProxy);
                         break;
+                    case "setstate":
+                        InvokeSetState(ref vaProxy);
+                        break;
                     default:
                         //if (context.ToLower().StartsWith("event:"))
                         //{
@@ -442,6 +445,56 @@ namespace EddiVoiceAttackResponder
             }
         }
 
+        public static void InvokeSetState(ref dynamic vaProxy)
+        {
+            try
+            {
+                string name = vaProxy.GetText("State variable");
+                if (name == null)
+                {
+                    return;
+                }
+
+                // State variable names are lower-case
+                string stateVariableName = name.ToLowerInvariant().Replace(" ", "_");
+
+                string strValue = vaProxy.GetText(name);
+                if (strValue != null)
+                {
+                    EDDI.Instance.State[stateVariableName] = strValue;
+                    return;
+                }
+
+                int? intValue = vaProxy.GetInt(name);
+                if (intValue != null)
+                {
+                    EDDI.Instance.State[stateVariableName] = intValue;
+                    return;
+                }
+
+                bool? boolValue = vaProxy.GetBoolean(name);
+                if (boolValue != null)
+                {
+                    EDDI.Instance.State[stateVariableName] = boolValue;
+                    return;
+                }
+
+                decimal? decValue = vaProxy.GetDecimal(name);
+                if (decValue != null)
+                {
+                    EDDI.Instance.State[stateVariableName] = decValue;
+                    return;
+                }
+
+                // Nothing above, so remove the item
+                EDDI.Instance.State.Remove(stateVariableName);
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to set state", e);
+            }
+        }
+
         public static string SpeechFromScript(string script)
         {
             if (script == null) { return null; }
@@ -563,6 +616,8 @@ namespace EddiVoiceAttackResponder
             setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
             setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref vaProxy);
 
+            setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
+
             // Backwards-compatibility with 1.x
             if (EDDI.Instance.HomeStarSystem != null)
             {
@@ -581,6 +636,52 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetText("EDDI version", Constants.EDDI_VERSION);
 
             Logging.Debug("Set values");
+        }
+
+        // Set values from a dictionary
+        private static void setDictionaryValues(Dictionary<string, object> dict, string prefix, ref dynamic vaProxy)
+        {
+            foreach (string key in dict.Keys)
+            {
+                object value = dict[key];
+                Type valueType = value.GetType();
+                if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    valueType = Nullable.GetUnderlyingType(valueType);
+                }
+
+                string varname = "EDDI " + prefix + " " + key;
+
+                if (valueType == typeof(string))
+                {
+                    vaProxy.SetText(varname, (string)value);
+                }
+                else if (valueType == typeof(int))
+                {
+                    vaProxy.SetInt(varname, (int?)value);
+                }
+                else if (valueType == typeof(bool))
+                {
+                    vaProxy.SetBoolean(varname, (bool?)value);
+                }
+                else if (valueType == typeof(decimal))
+                {
+                    vaProxy.SetDecimal(varname, (decimal?)value);
+                }
+                else if (valueType == typeof(double))
+                {
+                    vaProxy.SetDecimal(varname, (decimal?)(double?)value);
+                }
+                else if (valueType == typeof(long))
+                {
+                    vaProxy.SetDecimal(varname, (decimal?)(long?)value);
+                }
+                else
+                {
+                    Logging.Debug("Not handling state value type " + valueType);
+                }
+            }
+
         }
 
         /// <summary>Set values for a station</summary>

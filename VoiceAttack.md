@@ -302,6 +302,19 @@ Please note that you should be careful when using this function.  EDDI internall
 
 Also note that the information returned by this function is not guaranteed to be totally up-to-date, because the remote server can take a few seconds to sync its information with the changes that have taken place.  If you do want to use this command then it is recommended that in your script you do something like say "Obtaining information", waiting for a couple of seconds, then calling the profile command.  This means that if you call this directly after carrying out an operation (for example purchasing cargo) you are more likely to have the full information available to you in the rest of the script.
 
+### setstate
+
+This function pushes a state variable to EDDI's internal session state, allowing it to be shared with other responders.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'setstate'.  This function will read the text variable "State variable" and store the VoiceAttack variable named in there as a state variable.  For example, if you wanted to store the VoiceAttack boolean variable "Verbose" as a state variable you would:
+
+    * set the text variable "State variable" to "Verbose"
+    * call EDDI with the context set to "setstate"
+
+This function only supports integers, booleans, decimals and strings as state values.  The name of the value will be altered if necessary to ensure that it is all lower-case, and that spaces are replace by underscores.  For example, if you attempt to store a state variable "My variable" it will be stored as "my_variable".
+
+Please note that state is transient, and is purposefully not persisted beyond the running instance of EDDI.  This means that every time you start VoiceAttack the state will be empty.
+
 ## Events
 
 Whenever EDDI sees a particular event occur it will attempt to run a script.  The name of the script depends on the event, but follows the form:
