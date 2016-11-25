@@ -7,8 +7,9 @@
   * Disable "distort voice on damage" effect until we can find a better distortion process
   * Add separate exception logging system
   * Fix incorrect name for Type-7 when exporting to Coriolis
-  * Send raw ship data to Coriolis rather than attempt to parse it ourself
   * Send raw ship JSON directly to Coriolis for import rather than use local processing
+  * Update 'Jumping' script: add warning if jumping to known white dwarf or neutron star
+  * Update 'Body scanned' script: fix typo where 'higher' was written 'higer'
 
 #2.0.11
   * Further fixes for renamed and missing fields in 2.2.02

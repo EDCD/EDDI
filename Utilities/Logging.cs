@@ -28,13 +28,28 @@ namespace Utilities
 
         public static void Error(string message, string data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            log(filePath, memberName, "E", message + data);
+            log(filePath, memberName, "E", message + " " + data);
             Report(message, data, memberName, filePath);
         }
 
-        public static void Warn(string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Warn(string message, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            log(filePath, memberName, "W", data);
+            Warn(message, (string)null, memberName, filePath);
+        }
+
+        public static void Warn(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        {
+            Warn(message, ex.ToString(), memberName, filePath);
+        }
+
+        public static void Warn(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        {
+            Warn(ex.ToString(), memberName, filePath);
+        }
+
+        public static void Warn(string message, string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        {
+            log(filePath, memberName, "W", message + " " + data);
         }
 
         public static void Info(string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -64,26 +79,33 @@ namespace Utilities
 
         public static void Report(string message, string data = "{}", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            if (data == null)
+            try
             {
-                data = "{}";
-            }
+                if (data == null)
+                {
+                    data = "{}";
+                }
 
-            string body = @"{""message"":""" + message + @""", ""version"":""" + Constants.EDDI_VERSION + @""", ""json"":" + data + @"}";
-            Thread thread = new Thread(() =>
-            {
-                using (var client = new WebClient())
+                string body = @"{""message"":""" + message + @""", ""version"":""" + Constants.EDDI_VERSION + @""", ""json"":" + data + @"}";
+                Thread thread = new Thread(() =>
                 {
                     try
                     {
-                        client.UploadString(@"http://api.eddp.co/error", body);
+                        using (var client = new WebClient())
+                        {
+                            client.UploadString(@"http://api.eddp.co/error", body);
+                        }
                     }
-                    catch { }
-                }
-            });
-            thread.Name = "Reporter";
-            thread.IsBackground = true;
-            thread.Start();
+                    catch (Exception ex)
+                    {
+                        Logging.Warn("Failed to send error to EDDP", ex);
+                    }
+                });
+                thread.Name = "Reporter";
+                thread.IsBackground = true;
+                thread.Start();
+            }
+            catch { }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiSpeechService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -252,6 +253,8 @@ namespace EddiCompanionAppService
                 if (data == null || data == "Profile unavailable")
                 {
                     // No luck with a relogin; give up
+                    SpeechService.Instance.Say(null, "Access to companion API data has been lost.  Please update the companion app information to re-establish the connection.", false);
+                    Logout();
                     throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
                 }
             }

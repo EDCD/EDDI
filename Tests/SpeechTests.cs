@@ -15,6 +15,7 @@ using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
 using CSCore.Streams.Effects;
 using EddiDataDefinitions;
+using Utilities;
 
 namespace Tests
 {
@@ -359,8 +360,10 @@ namespace Tests
         [TestMethod]
         public void TestSpeechServicePhonemes()
         {
+            Logging.Verbose = true;
             SpeechService.Instance.Speak("You are  docked at Jameson Memorial  in the <phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> system.", null, 50, 1, 30, 40, 0, true);
         }
+
         [TestMethod]
         public void TestSectorTranslations()
         {
@@ -430,6 +433,25 @@ namespace Tests
 
             thread1.Join();
             thread2.Join();
+        }
+
+        [TestMethod]
+        public void TestSpeechServiceStress()
+        {
+            Logging.Verbose = true;
+            for (int i = 0; i < 3; i++)
+            {
+                SpeechService.Instance.Say(null, "A two-second test.", false);
+            }
+
+            Thread.Sleep(5000);
+        }
+
+        [TestMethod]
+        public void TestSpeechServiceEscaping()
+        {
+            Logging.Verbose = true;
+            SpeechService.Instance.Say(null, "<phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> & Co's shop", true);
         }
     }
 }

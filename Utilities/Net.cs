@@ -88,16 +88,16 @@ namespace Utilities
         {
             Thread thread = new Thread(() =>
             {
-                using (var client = new WebClient())
+                try
                 {
-                    try
+                    using (var client = new WebClient())
                     {
                         client.UploadString(uri, data);
                     }
-                    catch (Exception ex)
-                    {
-                        Logging.Warn("Upload of data failed: " + ex);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to send string to " + uri, ex);
                 }
             });
             thread.IsBackground = true;

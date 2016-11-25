@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "EDDI"
-#define MyAppVersion "2.0.11"
+#define MyAppVersion "2.0.12"
 #define MyAppPublisher "Cmdr McDonald"
 #define MyAppURL "https://github.com/cmdrmcdonald/EliteDangerousDataProvider/"
 #define MyAppExeName "EDDI.exe"
@@ -59,6 +59,8 @@ Source: "{#SourcePath}\EDDI\bin\Debug\EddiSpeechService.dll"; DestDir: "{app}"; 
 Source: "{#SourcePath}\EDDI\bin\Debug\EddiStarMapService.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}\EDDI\bin\Debug\EntityFramework.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}\EDDI\bin\Debug\EntityFramework.SqlServer.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}\EDDI\bin\Debug\Exceptionless.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}\EDDI\bin\Debug\Exceptionless.Wpf.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}\EDDI\bin\Debug\Help.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}\EDDI\bin\Debug\MathNet.Numerics.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}\EDDI\bin\Debug\Microsoft.Expression.Controls.dll"; DestDir: "{app}"; Flags: ignoreversion
