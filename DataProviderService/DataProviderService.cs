@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -153,10 +154,26 @@ namespace EddiDataProviderService
                     if (largestpad == "L") { largestpad = "Large"; }
                     Station.largestpad = largestpad;
 
+                    Station.commodities = CommoditiesFromEDDP(station);
+
+                    Logging.Warn("Station is " + JsonConvert.SerializeObject(Station));
                     Stations.Add(Station);
                 }
             }
             return Stations;
+        }
+
+        public static List<Commodity> CommoditiesFromEDDP(dynamic json)
+        {
+            List<Commodity> commodities = new List<Commodity>();
+            if (json["commodities"] != null)
+            {
+                foreach (dynamic commodity in json["commodities"])
+                {
+                    commodities.Add(new Commodity((int)(long)commodity["id"], (string)commodity["name"], (int?)(long?)commodity["buy_price"], (int?)(long?)commodity["demand"], (int?)(long?)commodity["sell_price"], (int?)(long?)commodity["supply"]));
+                }
+            }
+            return commodities;
         }
 
         public static List<Body> BodiesFromEDDP(string systemName, dynamic json)
