@@ -93,7 +93,7 @@ Values are the same as for the current starsystem.
 
 Information about your home starsystem is available under the `homestation` object.
 
-Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
+Any values might be missing, depending on EDDI's configuration and the information available about the system.
 
 Values are below in the 'Station' object.
 
@@ -179,4 +179,41 @@ An orbital or planetary station.
 
 ## Body
 
-A star or planetary body.
+A star or planet.  Any values might be missing, depending on EDDI's configuration and the information available about the body.
+
+All bodies have the following data:
+
+    - type the type of the body (Star or Planet)
+    - systemname the name of the system in which this body resides
+    - name the name of the body
+    - distance the distance from the arrival point in the system, in light seconds
+    - tidallylocked true if the body is tidally locked to its parent
+    - temperature the surface temperature of the body
+
+In addition, stars have the following data:
+
+    - mainstar true if this is the main star of the syste
+    - stellarclass the stellar class of the star (M, G, etc)
+    - solarmass the solar mass of the star
+    - solarradius the solar radius of the star
+    - age the age of the star in millions of years
+
+Planets have the following data:
+
+    - periapsis the argument of periapsis of the planet
+    - atmosphere the atmosphere of the planet
+    - tilt the axial tilt of the planet
+    - earthmass the earth masses of the planet
+    - gravity the gravity of the planet
+    - eccentricity the orbital eccentricity of the planet
+    - inclination the orbital inclination of the planet
+    - orbitalperiod the orbital period of the planet, in days
+    - radius the radius of the planet, in km
+    - rotationalperiod the rotational period of the planet, in days
+    - semimajoraxis the semi-major axis of the planet, in km
+    - pressure the surface pressure on the planet
+    - terraformstate the terraforming state of the planet (Not terraformable, Terraformable, Terraforming, Terraformed)
+    - planettype the type of the planet (Metal-rich body, Earth-like world, etc.)
+    - volcanism (No volcanism, Silicate magma, etc)
+    - landable true if the planet can be landed upon
+    - materials list of materials and their percentage availability on the planet

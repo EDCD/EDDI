@@ -231,9 +231,16 @@ namespace EDDNResponder
 
             Thread thread = new Thread(() =>
             {
-                IRestResponse response = client.Execute(request);
-                var content = response.Content; // raw content as string
-                Logging.Debug("Response content is " + content);
+                try
+                {
+                    IRestResponse response = client.Execute(request);
+                    var content = response.Content; // raw content as string
+                    Logging.Debug("Response content is " + content);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to send error to EDDN", ex);
+                }
             });
             thread.Name = "EDDN message";
             thread.IsBackground = true;

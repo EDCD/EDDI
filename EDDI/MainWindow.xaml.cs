@@ -1,28 +1,20 @@
 ﻿using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiSpeechService;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Speech.Synthesis;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Utilities;
 
 namespace Eddi
@@ -436,8 +428,32 @@ namespace Eddi
         {
             Ship ship = (Ship)((Button)e.Source).DataContext;
             string uri = Coriolis.ShipUri(ship);
-            Logging.Info("URL is " + uri);
-            Process.Start(uri);
+            Logging.Debug("URI is " + uri);
+
+            // URI can be very long so we can't use a simple Process.Start(), as that fails
+            try
+            {
+                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), uri);
+                proc.UseShellExecute = false;
+                Process.Start(proc);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed: ", ex);
+                try
+                {
+                    // Last-gasp attempt if we have a shorter URL
+                    if (uri.Length < 2048)
+                    {
+                        Process.Start(uri);
+                    }
+                    else
+                    {
+                        Logging.Error("Failed to find a way of opening URL \"" + uri + "\"");
+                    }
+                }
+                catch { }
+            }
         }
 
         private void ShipRoleChanged(object sender, SelectionChangedEventArgs e)

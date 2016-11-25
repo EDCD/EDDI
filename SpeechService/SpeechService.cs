@@ -94,27 +94,212 @@ namespace EddiSpeechService
         //    Speak(script, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, true, wait, priority);
         //}
 
-        static void synth_StateChanged(object sender, StateChangedEventArgs e)
-        {
-            Logging.Debug("Current state of the synthesizer: " + e.State);
-        }
-
         public void Speak(string speech, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool wait = true, int priority = 3)
         {
             if (speech == null) { return; }
 
+            // For now we rudely set distortion to 0 regardless of what the calling function wanted.  Might enable this again one day
+            // if we can find a decent way of doing distortion that doesn't destroy speakers
+            distortionLevel = 0;
+
+
+            // Escape any ampersands
+            speech = Regex.Replace(speech, "&", "&amp;");
+
+            // If the user wants to disable SSML then we remove any tags here
+            if (configuration.DisableSsml && (speech.Contains("<")))
+            {
+                Logging.Debug("Removing SSML");
+                // User has disabled SSML so remove all tags
+                speech = Regex.Replace(speech, "<.*?>", string.Empty);
+                speech = Regex.Replace(speech, "&amp;", "&");
+            }
+
+            if (string.IsNullOrWhiteSpace(voice))
+            {
+                voice = configuration.StandardVoice;
+            }
+
+            // Put everything in a thread
             Thread speechThread = new Thread(() =>
             {
-                string finalSpeech = null;
+                try
+                {
+                    using (MemoryStream stream = getSpeechStream(voice, speech))
+                    {
+                        if (stream == null)
+                        {
+                            Logging.Debug("getSpeechStream() returned null; nothing to say");
+                            return;
+                        }
+                        if (stream.Length == 0)
+                        {
+                            Logging.Debug("getSpeechStream() returned empty stream; nothing to say");
+                            return;
+                        }
+                        Logging.Debug("Seeking back to the beginning of the stream");
+                        stream.Seek(0, SeekOrigin.Begin);
+
+                        Logging.Debug("Setting up source from stream");
+
+                        IWaveSource source = new WaveFileReader(stream);
+                        addEffectsToSource(ref source, chorusLevel, reverbLevel, echoDelay, distortionLevel);
+
+                        if (priority < activeSpeechPriority)
+                        {
+                            Logging.Debug("About to StopCurrentSpeech");
+                            StopCurrentSpeech();
+                            Logging.Debug("Finished StopCurrentSpeech");
+                        }
+
+                        play(ref source, priority);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("play failed: ", ex);
+                }
+            });
+
+            speechThread.IsBackground = true;
+
+            try
+            {
+                speechThread.Start();
+                if (wait)
+                {
+                    speechThread.Join();
+                }
+            }
+            catch (ThreadAbortException tax)
+            {
+                Logging.Error(tax);
+                Thread.ResetAbort();
+            }
+        }
+
+        private void addEffectsToSource(ref IWaveSource source, int chorusLevel, int reverbLevel, int echoDelay, int distortionLevel)
+        {
+            // Add various effects...
+            Logging.Debug("Effects level is " + configuration.EffectsLevel + ", chorus level is " + chorusLevel + ", reverb level is " + reverbLevel + ", echo delay is " + echoDelay);
+
+            // We need to extend the duration of the wave source if we have any effects going on
+            if (chorusLevel != 0 || reverbLevel != 0 || echoDelay != 0)
+            {
+                // Add a base of 500ms plus 10ms per effect level over 50
+                Logging.Debug("Extending duration by " + 500 + Math.Max(0, (configuration.EffectsLevel - 50) * 10) + "ms");
+                source = source.AppendSource(x => new ExtendedDurationWaveSource(x, 500 + Math.Max(0, (configuration.EffectsLevel - 50) * 10)));
+            }
+
+            // We always have chorus
+            if (chorusLevel != 0)
+            {
+                Logging.Debug("Adding chorus");
+                source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = Math.Min(100, (int)(180 * ((decimal)configuration.EffectsLevel) / ((decimal)100))), Delay = 16, Frequency = (configuration.EffectsLevel / 10), Feedback = 25 });
+            }
+
+            // We only have reverb and echo if we're not transmitting or receiving
+            //if (!radio)
+            //{
+            if (reverbLevel != 0)
+            {
+                Logging.Debug("Adding reverb");
+                // We tone down the reverb level with the distortion level, as the combination is nasty
+                source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = (int)(1 + 999 * ((decimal)configuration.EffectsLevel) / ((decimal)100)), ReverbMix = Math.Max(-96, -96 + (96 * reverbLevel / 100) - distortionLevel) });
+            }
+
+            if (echoDelay != 0)
+            {
+                Logging.Debug("Adding echo");
+                // We tone down the echo level with the distortion level, as the combination is nasty
+                source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = Math.Max(5, (int)(10 * ((decimal)configuration.EffectsLevel) / ((decimal)100)) - distortionLevel), Feedback = Math.Max(0, 10 - distortionLevel / 2) });
+            }
+            //}
+
+            if (configuration.EffectsLevel > 0 && distortionLevel > 0)
+            {
+                Logging.Debug("Adding distortion");
+                source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = distortionLevel, Gain = -distortionLevel / 2, PostEQBandwidth = 4000, PostEQCenterFrequency = 4000 });
+            }
+
+            //if (radio)
+            //{
+            //    source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = 7, Gain = -distortionLevel / 2, PostEQBandwidth = 2000, PostEQCenterFrequency = 6000 });
+            //    source = source.AppendSource(x => new DmoCompressorEffect(x) { Attack = 1, Ratio = 3, Threshold = -10 });
+            //}
+
+
+        }
+
+        // Play a source
+        private void play(ref IWaveSource source, int priority)
+        {
+            if (source == null)
+            {
+                Logging.Debug("Source is null; skipping");
+                return;
+            }
+            Logging.Debug("Creating waitHandle");
+            using (EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset))
+            {
+                ISoundOut soundOut = GetSoundOut();
+                try
+                {
+                    Logging.Debug("Setting up soundOut");
+                    soundOut.Initialize(source);
+                    Logging.Debug("Configuring waitHandle");
+                    soundOut.Stopped += (s, e) => waitHandle.Set();
+
+                    TimeSpan waitTime = source.GetTime(source.Length);
+
+                    Logging.Debug("Starting speech");
+                    StartSpeech(ref soundOut, priority);
+                    Logging.Debug("Waiting for speech - " + waitTime);
+                    // Wait for the appropriate amount of time before stopping the speech.  This is belt-and-braces approach,
+                    // as we should receive the stopped signal when the buffer runs out, but there is suspicion that the stopped
+                    // signal does not show up at time
+                    waitHandle.WaitOne(waitTime);
+                    Logging.Debug("Finished waiting for speech");
+                    StopCurrentSpeech();
+                }
+                finally
+                {
+                    if (soundOut != null) soundOut.Dispose();
+                }
+            }
+        }
+
+        // Obtain the speech memory stream
+        private MemoryStream getSpeechStream(string voice, string speech)
+        {
+            try
+            {
+                MemoryStream stream = new MemoryStream();
+                speak(stream, voice, speech);
+
+                if (stream.Length == 0)
+                {
+                    // Try again, with speech devoid of SSML
+                    speak(stream, voice, Regex.Replace(speech, "<.*?>", string.Empty));
+                }
+                return stream;
+            }
+            catch (Exception ex)
+            {
+                Logging.Warn("Speech failed", ex);
+            }
+            return null;
+        }
+
+        // Speak using the MS speech synthesizer
+        private void speak(MemoryStream stream, string voice, string speech)
+        {
+            var synthThread = new Thread(() =>
+            {
                 try
                 {
                     using (SpeechSynthesizer synth = new SpeechSynthesizer())
-                    using (MemoryStream stream = new MemoryStream())
                     {
-                        if (string.IsNullOrWhiteSpace(voice))
-                        {
-                            voice = configuration.StandardVoice;
-                        }
                         if (voice != null && !voice.Contains("Microsoft Server Speech Text to Speech Voice"))
                         {
                             try
@@ -125,176 +310,45 @@ namespace EddiSpeechService
                             }
                             catch (Exception ex)
                             {
-                                Logging.Error("Failed to select voice " + voice, ex);
+                                Logging.Warn("Failed to select voice " + voice, ex);
                             }
                         }
-
                         Logging.Debug("Post-selection");
+
                         Logging.Debug("Configuration is " + configuration == null ? "<null>" : JsonConvert.SerializeObject(configuration));
                         synth.Rate = configuration.Rate;
                         Logging.Debug("Rate is " + synth.Rate);
                         synth.Volume = configuration.Volume;
                         Logging.Debug("Volume is " + synth.Volume);
 
-                        synth.StateChanged += new EventHandler<StateChangedEventArgs>(synth_StateChanged);
-                        Logging.Debug("Tracking state changes");
                         synth.SetOutputToWaveStream(stream);
                         Logging.Debug("Output set to stream");
-                        if (speech.Contains("<phoneme") || speech.Contains("<break"))
+
+                        if (speech.Contains("<"))
                         {
-                            Logging.Debug("Speech is SSML");
-                            if (configuration.DisableSsml)
-                            {
-                                Logging.Debug("Disabling SSML at user request");
-                                // User has disabled SSML so remove it
-                                finalSpeech = Regex.Replace(speech, "<.*?>", string.Empty);
-                                synth.Speak(finalSpeech);
-                            }
-                            else
-                            {
-                                Logging.Debug("Obtaining best guess culture");
-                                string culture = bestGuessCulture(synth);
-                                Logging.Debug("Best guess culture is " + culture);
-                                finalSpeech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\"><s>" + speech + "</s></speak>";
-                                Logging.Debug("SSML speech: " + finalSpeech);
-                                try
-                                {
-                                    Logging.Debug("Speaking SSML");
-                                    synth.SpeakSsml(finalSpeech);
-                                    Logging.Debug("Finished speaking SSML");
-                                }
-                                catch (Exception ex)
-                                {
-                                    Logging.Error("Best guess culture of " + bestGuessCulture(synth) + " for voice " + synth.Voice.Name + " was incorrect", ex);
-                                    Logging.Info("SSML does not work for the chosen voice; falling back to normal speech");
-                                    // Try again without Ssml
-                                    finalSpeech = Regex.Replace(speech, "<.*?>", string.Empty);
-                                    synth.Speak(finalSpeech);
-                                }
-                            }
+                            Logging.Debug("Obtaining best guess culture");
+                            string culture = bestGuessCulture(synth);
+                            Logging.Debug("Best guess culture is " + culture);
+                            speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\"><s>" + speech + "</s></speak>";
+                            Logging.Debug("Feeding SSML to synthesizer: " + speech);
+                            synth.SpeakSsml(speech);
                         }
                         else
                         {
-                            Logging.Debug("Speech does not contain SSML");
-                            Logging.Debug("Speech: " + speech);
-                            finalSpeech = speech;
-                            Logging.Debug("Speaking normal speech");
-                            synth.Speak(finalSpeech);
-                            Logging.Debug("Finished speaking normal speech");
+                            Logging.Debug("Feeding normal text to synthesizer: " + speech);
+                            synth.Speak(speech);
                         }
-                        Logging.Debug("Seeking back to the beginning of the stream");
-                        stream.Seek(0, SeekOrigin.Begin);
-
-                        Logging.Debug("Setting up source from stream");
-                        IWaveSource source = new WaveFileReader(stream);
-
-                        // We need to extend the duration of the wave source if we have any effects going on
-                        if (chorusLevel != 0 || reverbLevel != 0 || echoDelay != 0)
-                        {
-                            // Add a base of 500ms plus 10ms per effect level over 50
-                            Logging.Debug("Extending duration by " + 500 + Math.Max(0, (configuration.EffectsLevel - 50) * 10) + "ms");
-                            source = source.AppendSource(x => new ExtendedDurationWaveSource(x, 500 + Math.Max(0, (configuration.EffectsLevel - 50) * 10)));
-                        }
-
-                        // Add various effects...
-                        Logging.Debug("Effects level is " + configuration.EffectsLevel + ", chorus level is " + chorusLevel + ", reverb level is " + reverbLevel + ", echo delay is " + echoDelay);
-                        // We always have chorus
-                        if (chorusLevel != 0)
-                        {
-                            Logging.Debug("Adding chorus");
-                            source = source.AppendSource(x => new DmoChorusEffect(x) { Depth = chorusLevel, WetDryMix = Math.Min(100, (int)(180 * ((decimal)configuration.EffectsLevel) / ((decimal)100))), Delay = 16, Frequency = (configuration.EffectsLevel / 10), Feedback = 25 });
-                        }
-
-                        // We only have reverb and echo if we're not transmitting or receiving
-                        //if (!radio)
-                        //{
-                        if (reverbLevel != 0)
-                        {
-                            Logging.Debug("Adding reverb");
-                            // We tone down the reverb level with the distortion level, as the combination is nasty
-                            source = source.AppendSource(x => new DmoWavesReverbEffect(x) { ReverbTime = (int)(1 + 999 * ((decimal)configuration.EffectsLevel) / ((decimal)100)), ReverbMix = Math.Max(-96, -96 + (96 * reverbLevel / 100) - distortionLevel) });
-                        }
-
-                        if (echoDelay != 0)
-                        {
-                            Logging.Debug("Adding echo");
-                            // We tone down the echo level with the distortion level, as the combination is nasty
-                            source = source.AppendSource(x => new DmoEchoEffect(x) { LeftDelay = echoDelay, RightDelay = echoDelay, WetDryMix = Math.Max(5, (int)(10 * ((decimal)configuration.EffectsLevel) / ((decimal)100)) - distortionLevel), Feedback = Math.Max(0, 10 - distortionLevel / 2) });
-                        }
-                        //}
-
-                        if (configuration.EffectsLevel > 0 && distortionLevel > 0)
-                        {
-                            Logging.Debug("Adding distortion");
-                            source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = distortionLevel, Gain = -distortionLevel / 2, PostEQBandwidth = 4000, PostEQCenterFrequency = 4000 });
-                        }
-
-                        //if (radio)
-                        //{
-                        //    source = source.AppendSource(x => new DmoDistortionEffect(x) { Edge = 7, Gain = -distortionLevel / 2, PostEQBandwidth = 2000, PostEQCenterFrequency = 6000 });
-                        //    source = source.AppendSource(x => new DmoCompressorEffect(x) { Attack = 1, Ratio = 3, Threshold = -10 });
-                        //}
-
-                        if (priority < activeSpeechPriority)
-                        {
-                            Logging.Debug("About to StopCurrentSpeech");
-                            StopCurrentSpeech();
-                            Logging.Debug("Finished StopCurrentSpeech");
-                        }
-
-                        Logging.Debug("Creating waitHandle");
-                        EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-                        Logging.Debug("Setting up soundOut");
-                        var soundOut = GetSoundOut();
-                        Logging.Debug("Setting up soundOut");
-                        soundOut.Initialize(source);
-                        Logging.Debug("Configuring waitHandle");
-                        soundOut.Stopped += (s, e) => waitHandle.Set();
-
-                        Logging.Debug("Starting speech");
-                        StartSpeech(soundOut, priority);
-
-                        Logging.Debug("Waiting for speech");
-                        // Add a timeout, in case it doesn't come back with the signal
-                        waitHandle.WaitOne(source.GetTime(source.Length));
-                        Logging.Debug("Finished waiting for speech");
-
-                        Logging.Debug("Stopping speech (just to be sure)");
-                        StopCurrentSpeech();
-                        Logging.Debug("Disposing of speech source");
-                        source.Dispose();
+                        stream.ToArray();
                     }
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Failed to speak \"" + finalSpeech + "\"", ex);
+                    Logging.Warn("speech failed: ", ex);
                 }
             });
-            Logging.Debug("Setting thread name");
-            speechThread.Name = "Speech service speak";
-            Logging.Debug("Setting thread background");
-            speechThread.IsBackground = true;
-            try
-            {
-                Logging.Debug("Starting speech thread");
-                speechThread.Start();
-                if (wait)
-                {
-                    Logging.Debug("Waiting for speech thread");
-                    speechThread.Join();
-                    Logging.Debug("Finished waiting for speech thread");
-                }
-            }
-            catch (ThreadAbortException tax)
-            {
-                Thread.ResetAbort();
-                Logging.Error(speech, tax);
-            }
-            catch (Exception ex)
-            {
-                Logging.Error(speech, ex);
-                speechThread.Abort();
-            }
+            synthThread.Start();
+            synthThread.Join();
+            stream.Position = 0;
         }
 
         private string bestGuessCulture(SpeechSynthesizer synth)
@@ -325,7 +379,7 @@ namespace EddiSpeechService
             return guess;
         }
 
-        private void StartSpeech(ISoundOut soundout, int priority)
+        private void StartSpeech(ref ISoundOut soundout, int priority)
         {
             bool started = false;
             while (!started)

@@ -1,5 +1,6 @@
 ﻿using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiSpeechService;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -252,6 +253,8 @@ namespace EddiCompanionAppService
                 if (data == null || data == "Profile unavailable")
                 {
                     // No luck with a relogin; give up
+                    SpeechService.Instance.Say(null, "Access to companion API data has been lost.  Please update the companion app information to re-establish the connection.", false);
+                    Logout();
                     throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
                 }
             }
@@ -643,6 +646,8 @@ namespace EddiCompanionAppService
 
             Ship Ship = ShipDefinitions.FromEDModel((string)json["name"]);
 
+            Ship.json = json.ToString(Formatting.None);
+
             Ship.LocalId = json["id"];
 
             // Some ship information is just skeleton data of the ship's ID.  Use value as our canary to see if there is more data
@@ -934,17 +939,6 @@ namespace EddiCompanionAppService
                 module.health = Math.Round(Health);
             }
 
-            if (json["module"]["modifiers"] != null)
-            {
-                Dictionary<int, Modification> modifications = new Dictionary<int, Modification>();
-                foreach (dynamic modifier in json["module"]["modifiers"]["modifiers"])
-                {
-                    Modification.Modify((string)modifier["name"], (decimal)modifier["value"], ref modifications);
-                }
-                Modification.FixUpModifications(module, modifications);
-
-                module.modifications = modifications.Values.ToList();
-            }
             return module;
         }
     }

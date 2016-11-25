@@ -56,68 +56,75 @@ namespace EddiVoiceAttackResponder
                 // Spin out a worker thread to keep the VoiceAttack events up-to-date and run event-specific commands
                 updaterThread = new Thread(() =>
                 {
-                    while (true)
-                    {
-                        Event theEvent = EventQueue.Take();
-                        vaProxy.SetText("EDDI event", theEvent.type);
-
-                        // Update all standard values
-                        setValues(ref vaProxy);
-
-                        // Event-specific values
-                        foreach (string key in Events.VARIABLES[theEvent.type].Keys)
+                        while (true)
                         {
-                            // Obtain the value by name.  Actually looking for a method get_<name>
-                            System.Reflection.MethodInfo method = theEvent.GetType().GetMethod("get_" + key);
-                            if (method != null)
+                        try
+                        {
+                            Event theEvent = EventQueue.Take();
+                            vaProxy.SetText("EDDI event", theEvent.type);
+
+                            // Update all standard values
+                            setValues(ref vaProxy);
+
+                            // Event-specific values
+                            foreach (string key in Events.VARIABLES[theEvent.type].Keys)
                             {
-                                Type returnType = method.ReturnType;
-                                if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                                // Obtain the value by name.  Actually looking for a method get_<name>
+                                System.Reflection.MethodInfo method = theEvent.GetType().GetMethod("get_" + key);
+                                if (method != null)
                                 {
-                                    returnType = Nullable.GetUnderlyingType(returnType);
-                                }
+                                    Type returnType = method.ReturnType;
+                                    if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                                    {
+                                        returnType = Nullable.GetUnderlyingType(returnType);
+                                    }
 
-                                string varname = "EDDI " + theEvent.type.ToLowerInvariant() + " " + key;
+                                    string varname = "EDDI " + theEvent.type.ToLowerInvariant() + " " + key;
 
-                                if (returnType == typeof(string))
-                                {
-                                    vaProxy.SetText(varname, (string)method.Invoke(theEvent, null));
-                                }
-                                else if (returnType == typeof(int))
-                                {
-                                    vaProxy.SetInt(varname, (int?)method.Invoke(theEvent, null));
-                                }
-                                else if (returnType == typeof(bool))
-                                {
-                                    vaProxy.SetBoolean(varname, (bool?)method.Invoke(theEvent, null));
-                                }
-                                else if (returnType == typeof(decimal))
-                                {
-                                    vaProxy.SetDecimal(varname, (decimal?)method.Invoke(theEvent, null));
-                                }
-                                else if (returnType == typeof(double))
-                                {
-                                    vaProxy.SetDecimal(varname, (decimal?)(double?)method.Invoke(theEvent, null));
-                                }
-                                else if (returnType == typeof(long))
-                                {
-                                    vaProxy.SetDecimal(varname, (decimal?)(long?)method.Invoke(theEvent, null));
-                                }
-                                else
-                                {
-                                    Logging.Debug("Not handling event field type " + method.ReturnType);
+                                    if (returnType == typeof(string))
+                                    {
+                                        vaProxy.SetText(varname, (string)method.Invoke(theEvent, null));
+                                    }
+                                    else if (returnType == typeof(int))
+                                    {
+                                        vaProxy.SetInt(varname, (int?)method.Invoke(theEvent, null));
+                                    }
+                                    else if (returnType == typeof(bool))
+                                    {
+                                        vaProxy.SetBoolean(varname, (bool?)method.Invoke(theEvent, null));
+                                    }
+                                    else if (returnType == typeof(decimal))
+                                    {
+                                        vaProxy.SetDecimal(varname, (decimal?)method.Invoke(theEvent, null));
+                                    }
+                                    else if (returnType == typeof(double))
+                                    {
+                                        vaProxy.SetDecimal(varname, (decimal?)(double?)method.Invoke(theEvent, null));
+                                    }
+                                    else if (returnType == typeof(long))
+                                    {
+                                        vaProxy.SetDecimal(varname, (decimal?)(long?)method.Invoke(theEvent, null));
+                                    }
+                                    else
+                                    {
+                                        Logging.Debug("Not handling event field type " + method.ReturnType);
+                                    }
                                 }
                             }
-                        }
 
-                        // Fire local command if present
-                        string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
-                        Logging.Info("Searching for command " + commandName);
-                        if (vaProxy.CommandExists(commandName))
+                            // Fire local command if present
+                            string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
+                            Logging.Info("Searching for command " + commandName);
+                            if (vaProxy.CommandExists(commandName))
+                            {
+                                Logging.Info("Found command " + commandName);
+                                vaProxy.ExecuteCommand(commandName);
+                                Logging.Info("Executed command " + commandName);
+                            }
+                        }
+                        catch (Exception ex)
                         {
-                            Logging.Info("Found command " + commandName);
-                            vaProxy.ExecuteCommand(commandName);
-                            Logging.Info("Executed command " + commandName);
+                            Logging.Warn("Failed to handle event", ex);
                         }
                     }
                 });
@@ -137,6 +144,7 @@ namespace EddiVoiceAttackResponder
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
             updaterThread.Abort();
+            SpeechService.Instance.ShutUp();
             EDDI.Instance.Stop();
         }
 
@@ -199,8 +207,15 @@ namespace EddiVoiceAttackResponder
         {
             Thread thread = new Thread(() =>
             {
-                MainWindow window = new MainWindow(true);
-                window.ShowDialog();
+                try
+                {
+                    MainWindow window = new MainWindow(true);
+                    window.ShowDialog();
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Show configuration window failed", ex);
+                }
             });
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
@@ -311,7 +326,9 @@ namespace EddiVoiceAttackResponder
             }
             else
             {
-                Process.Start(uri);
+                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), "\"" + uri + "\"");
+                proc.UseShellExecute = false;
+                Process.Start(proc);
             }
         }
 
@@ -848,6 +865,12 @@ namespace EddiVoiceAttackResponder
                     vaProxy.SetInt(prefix + " planetary stations", system.stations.Count(s => s.IsPlanetary()));
                     vaProxy.SetInt(prefix + " planetary outposts", system.stations.Count(s => s.IsPlanetaryOutpost()));
                     vaProxy.SetInt(prefix + " planetary ports", system.stations.Count(s => s.IsPlanetaryPort()));
+
+                    if (system.bodies != null && system.bodies.Count > 0)
+                    {
+                        Body primaryBody = (system.bodies[0].distance == 0 ? system.bodies[0] : null);
+                        setBodyValues(primaryBody, prefix + " main star", vaProxy);
+                    }
                 }
                 setStatus(ref vaProxy, "Operational");
             }
@@ -856,6 +879,14 @@ namespace EddiVoiceAttackResponder
                 setStatus(ref vaProxy, "Failed to set system information", e);
             }
             Logging.Debug("Set system information (" + prefix + ")");
+        }
+
+        private static void setBodyValues(Body body, string prefix, dynamic vaProxy)
+        {
+            Logging.Debug("Setting body information (" + prefix + ")");
+            vaProxy.SetString(prefix + " stellar class", body == null ? null : body.stellarclass);
+            vaProxy.SetInt(prefix + " age", body == null ? null : body.age);
+            Logging.Debug("Set body information (" + prefix + ")");
         }
 
         private static void setStatus(ref dynamic vaProxy, string status, Exception exception = null)
