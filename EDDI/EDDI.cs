@@ -348,38 +348,45 @@ namespace Eddi
         /// </summary>
         private void keepAlive(string name, Action start)
         {
-            int failureCount = 0;
-            while (running && failureCount < 5)
+            try
             {
-                try
+                int failureCount = 0;
+                while (running && failureCount < 5)
                 {
-                    Thread monitorThread = new Thread(() => start());
-                    monitorThread.Name = name;
-                    monitorThread.IsBackground = true;
-                    Logging.Info("Starting " + name + " (" + failureCount + ")");
-                    monitorThread.Start();
-                    monitorThread.Join();
-                }
-                catch (ThreadAbortException tax)
-                {
-                    Thread.ResetAbort();
-                    if (running)
+                    try
                     {
-                        Logging.Error("Restarting " + name + " after thread abort", tax);
+                        Thread monitorThread = new Thread(() => start());
+                        monitorThread.Name = name;
+                        monitorThread.IsBackground = true;
+                        Logging.Info("Starting " + name + " (" + failureCount + ")");
+                        monitorThread.Start();
+                        monitorThread.Join();
                     }
-                }
-                catch (Exception ex)
-                {
-                    if (running)
+                    catch (ThreadAbortException tax)
                     {
-                        Logging.Error("Restarting " + name + " after exception", ex);
+                        Thread.ResetAbort();
+                        if (running)
+                        {
+                            Logging.Error("Restarting " + name + " after thread abort", tax);
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        if (running)
+                        {
+                            Logging.Error("Restarting " + name + " after exception", ex);
+                        }
+                    }
+                    failureCount++;
                 }
-                failureCount++;
+                if (running)
+                {
+                    Logging.Warn(name + " stopping after too many failures");
+                }
             }
-            if (running)
+            catch (Exception ex)
             {
-                Logging.Warn(name + " stopping after too many failures");
+                Logging.Warn("keepAlive failed", ex);
             }
         }
 
@@ -459,7 +466,17 @@ namespace Eddi
             {
                 try
                 {
-                    Thread responderThread = new Thread(() => responder.Handle(@event));
+                    Thread responderThread = new Thread(() =>
+                    {
+                        try
+                        {
+                            responder.Handle(@event);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Warn("Responder failed", ex);
+                        }
+                    });
                     responderThread.Name = responder.ResponderName();
                     responderThread.IsBackground = true;
                     responderThread.Start();

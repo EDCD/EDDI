@@ -57,11 +57,18 @@ namespace EddiStarMapService
 
             Thread thread = new Thread(() =>
             {
-                Logging.Debug("Sending data to EDSM: " + request.ToString());
-                var clientResponse = client.Execute<StarMapLogResponse>(request);
-                StarMapLogResponse response = clientResponse.Data;
-                Logging.Debug("Data sent to EDSM");
-                // TODO check response
+                try
+                {
+                    Logging.Debug("Sending data to EDSM: " + request.ToString());
+                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    StarMapLogResponse response = clientResponse.Data;
+                    Logging.Debug("Data sent to EDSM");
+                    // TODO check response
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to send data to EDSM", ex);
+                }
             });
             thread.IsBackground = true;
             thread.Name = "StarMapService send starmap log";
@@ -79,9 +86,16 @@ namespace EddiStarMapService
 
             Thread thread = new Thread(() =>
             {
-                var clientResponse = client.Execute<StarMapLogResponse>(request);
-                StarMapLogResponse response = clientResponse.Data;
-                // TODO check response
+                try
+                {
+                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    StarMapLogResponse response = clientResponse.Data;
+                    // TODO check response
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to send comment to EDSM", ex);
+                }
             });
             thread.IsBackground = true;
             thread.Name = "StarMapService send starmap comment";
