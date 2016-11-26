@@ -1,3 +1,6 @@
+#2.0.13
+  * Fix issue where engineer rank journal message without rank would cause a crash
+
 #2.0.12
   * Avoid bug in journal where superpower promotions are logged as combat promotions
   * Update shield resistances with booster stats when exporting ship
