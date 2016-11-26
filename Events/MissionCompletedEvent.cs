@@ -22,7 +22,7 @@ namespace EddiEvents
             VARIABLES.Add("system", "The system in which the mission was obtained");
             VARIABLES.Add("communal", "True if the mission is a community goal");
             VARIABLES.Add("reward", "The monetary reward for completing the mission");
-            VARIABLES.Add("donation", "The monetary donatin when completing the mission");
+            VARIABLES.Add("donation", "The monetary donation when completing the mission");
         }
 
         [JsonProperty("missionid")]
