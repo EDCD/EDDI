@@ -122,6 +122,10 @@ namespace EddiVoiceAttackResponder
                                 Logging.Info("Executed command " + commandName);
                             }
                         }
+                        catch (ThreadAbortException)
+                        {
+                            Logging.Debug("Thread aborted");
+                        }
                         catch (Exception ex)
                         {
                             Logging.Warn("Failed to handle event", ex);
@@ -211,6 +215,10 @@ namespace EddiVoiceAttackResponder
                 {
                     MainWindow window = new MainWindow(true);
                     window.ShowDialog();
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
                 }
                 catch (Exception ex)
                 {
@@ -885,7 +893,7 @@ namespace EddiVoiceAttackResponder
         {
             Logging.Debug("Setting body information (" + prefix + ")");
             vaProxy.SetText(prefix + " stellar class", body == null ? null : body.stellarclass);
-            vaProxy.SetInt(prefix + " age", body == null ? null : body.age);
+            vaProxy.SetInt(prefix + " age", body == null ? null : (int?)body.age);
             Logging.Debug("Set body information (" + prefix + ")");
         }
 
