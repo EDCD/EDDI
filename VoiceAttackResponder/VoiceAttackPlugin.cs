@@ -874,11 +874,12 @@ namespace EddiVoiceAttackResponder
                     vaProxy.SetInt(prefix + " planetary outposts", system.stations.Count(s => s.IsPlanetaryOutpost()));
                     vaProxy.SetInt(prefix + " planetary ports", system.stations.Count(s => s.IsPlanetaryPort()));
 
+                    Body primaryBody = null;
                     if (system.bodies != null && system.bodies.Count > 0)
                     {
-                        Body primaryBody = (system.bodies[0].distance == 0 ? system.bodies[0] : null);
-                        setBodyValues(primaryBody, prefix + " main star", vaProxy);
+                        primaryBody = (system.bodies[0].distance == 0 ? system.bodies[0] : null);
                     }
+                    setBodyValues(primaryBody, prefix + " main star", vaProxy);
                 }
                 setStatus(ref vaProxy, "Operational");
             }
