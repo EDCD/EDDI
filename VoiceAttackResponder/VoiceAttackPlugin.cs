@@ -884,7 +884,7 @@ namespace EddiVoiceAttackResponder
         private static void setBodyValues(Body body, string prefix, dynamic vaProxy)
         {
             Logging.Debug("Setting body information (" + prefix + ")");
-            vaProxy.SetString(prefix + " stellar class", body == null ? null : body.stellarclass);
+            vaProxy.SetText(prefix + " stellar class", body == null ? null : body.stellarclass);
             vaProxy.SetInt(prefix + " age", body == null ? null : body.age);
             Logging.Debug("Set body information (" + prefix + ")");
         }
