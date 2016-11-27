@@ -82,6 +82,15 @@ namespace EddiDataDefinitions
         /// <summary>Which ships are available for purchase at the station</summary>
         public List<Ship> shipyard { get; set; }
 
+        // Admin - the last time the information present changed
+        public DateTime? updatedat;
+
+        // Admin - the last time the market information present changed
+        public DateTime? commoditiesupdatedat;
+
+        // Admin - the last time the outfitting information present changed
+        public DateTime? outfittingupdatedat;
+
         /// <summary>Is this station a starport?</summary>
         public bool IsStarport() { return model == null ? false : model.EndsWith("Starport"); }
 
