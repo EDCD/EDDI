@@ -47,6 +47,37 @@ namespace EddiSpeechResponder
             Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
         }
 
+        /// <summary>
+        /// Change the personality for the speech responder
+        /// </summary>
+        /// <returns>true if the speech responder is now using the new personality, otherwise false</returns>
+        public bool SetPersonality(string newPersonality)
+        {
+            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            if (newPersonality == configuration.Personality)
+            {
+                // Already set to this personality
+                return true;
+            }
+
+            // Ensure that this personality exists
+            Personality personality = Personality.FromName(newPersonality);
+            if (personality != null)
+            {
+                // Yes it does; use it
+                configuration.Personality = newPersonality;
+                configuration.ToFile();
+                scriptResolver = new ScriptResolver(personality.Scripts);
+                Logging.Debug("Changed personality to " + newPersonality);
+                return true;
+            }
+            else
+            {
+                // No it does not; ignore it
+                return false;
+            }
+        }
+
         public bool Start()
         {
             return true;
