@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MarketInformationUpdatedEvent.cs" />
     <Compile Include="BondAwardedEvent.cs" />
     <Compile Include="FindPaidEvent.cs" />
     <Compile Include="EngineerProgressedEvent.cs" />
