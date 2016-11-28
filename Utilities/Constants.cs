@@ -12,7 +12,7 @@ namespace Utilities
     public class Constants
     {
         public const string EDDI_NAME = "EDDI";
-        public const string EDDI_VERSION = "2.0.12";
+        public const string EDDI_VERSION = "2.0.13";
         public static readonly string DATA_DIR = Environment.GetEnvironmentVariable("AppData") + "\\" + EDDI_NAME;
 
         public const string ENVIRONMENT_WITCH_SPACE = "Witch space";
