@@ -96,6 +96,10 @@ namespace Utilities
                             client.UploadString(@"http://api.eddp.co/error", body);
                         }
                     }
+                    catch (ThreadAbortException)
+                    {
+                        Logging.Debug("Thread aborted");
+                    }
                     catch (Exception ex)
                     {
                         Logging.Warn("Failed to send error to EDDP", ex);

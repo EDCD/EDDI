@@ -1114,6 +1114,11 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Engineer", out val);
                                 string engineer = (string)val;
                                 data.TryGetValue("Rank", out val);
+                                if (val == null)
+                                {
+                                    // There are other non-rank events for engineers but we don't pay attention to them
+                                    break;
+                                }
                                 int rank = (int)(long)val;
 
                                 journalEvent = new EngineerProgressedEvent(timestamp, engineer, rank);

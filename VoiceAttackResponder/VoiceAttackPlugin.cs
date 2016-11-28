@@ -122,6 +122,10 @@ namespace EddiVoiceAttackResponder
                                 Logging.Info("Executed command " + commandName);
                             }
                         }
+                        catch (ThreadAbortException)
+                        {
+                            Logging.Debug("Thread aborted");
+                        }
                         catch (Exception ex)
                         {
                             Logging.Warn("Failed to handle event", ex);
@@ -211,6 +215,10 @@ namespace EddiVoiceAttackResponder
                 {
                     MainWindow window = new MainWindow(true);
                     window.ShowDialog();
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
                 }
                 catch (Exception ex)
                 {
@@ -866,11 +874,12 @@ namespace EddiVoiceAttackResponder
                     vaProxy.SetInt(prefix + " planetary outposts", system.stations.Count(s => s.IsPlanetaryOutpost()));
                     vaProxy.SetInt(prefix + " planetary ports", system.stations.Count(s => s.IsPlanetaryPort()));
 
+                    Body primaryBody = null;
                     if (system.bodies != null && system.bodies.Count > 0)
                     {
-                        Body primaryBody = (system.bodies[0].distance == 0 ? system.bodies[0] : null);
-                        setBodyValues(primaryBody, prefix + " main star", vaProxy);
+                        primaryBody = (system.bodies[0].distance == 0 ? system.bodies[0] : null);
                     }
+                    setBodyValues(primaryBody, prefix + " main star", vaProxy);
                 }
                 setStatus(ref vaProxy, "Operational");
             }
@@ -884,8 +893,8 @@ namespace EddiVoiceAttackResponder
         private static void setBodyValues(Body body, string prefix, dynamic vaProxy)
         {
             Logging.Debug("Setting body information (" + prefix + ")");
-            vaProxy.SetString(prefix + " stellar class", body == null ? null : body.stellarclass);
-            vaProxy.SetInt(prefix + " age", body == null ? null : body.age);
+            vaProxy.SetText(prefix + " stellar class", body == null ? null : body.stellarclass);
+            vaProxy.SetInt(prefix + " age", body == null ? null : (int?)body.age);
             Logging.Debug("Set body information (" + prefix + ")");
         }
 

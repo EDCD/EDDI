@@ -84,7 +84,7 @@ namespace EddiEvents
 
                                             if (type.GetField("SAMPLE") != null)
                                             {
-                                                object eventSample = (string)type.GetField("SAMPLE").GetValue(null);
+                                                object eventSample = type.GetField("SAMPLE").GetValue(null);
                                                 if (eventSample != null)
                                                 {
                                                     SAMPLES.Add(eventName, eventSample);

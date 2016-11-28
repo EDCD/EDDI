@@ -35,11 +35,11 @@ If a value is not available it will be not set rather than empty.
   * {TXT:Home system}: the name of the home system of the commander, set from EDDI configuration
   * {TXT:Home system (spoken)}: the name of the home system of the commander, set from EDDI configuration as would be spoken
   * {TXT:Home station}: the name of the home station of the commander in the home system, set from EDDI configuration
-  * {INT:Combat rating}: the combat rating of the commander, with 0 being Harmless and 9 being Elite
+  * {INT:Combat rating}: the combat rating of the commander, with 0 being Harmless and 8 being Elite
   * {TXT:Combat rank}: the combat rank of the commander, from Harmless to Elite
-  * {INT:Trade rating}: the trade rating of the commander, with 0 being Penniless and 9 being Elite
+  * {INT:Trade rating}: the trade rating of the commander, with 0 being Penniless and 8 being Elite
   * {TXT:Trade rank}: the trade rank of the commander, from Penniless to Elite
-  * {INT:Explore rating}: the exploration rating of the commander, with 0 being Aimless and 9 being Elite
+  * {INT:Explore rating}: the exploration rating of the commander, with 0 being Aimless and 8 being Elite
   * {TXT:Explore rank}: the exploration rank of the commander, from Aimless to Elite
   * {INT:Empire rating}: the empire rating of the commander, with 0 being None and 14 being King
   * {TXT:Empire rank}: the empire rating of the commander, from None to King
