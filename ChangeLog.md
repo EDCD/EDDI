@@ -1,3 +1,6 @@
+#2.x
+  * Fix material name for Cadmium
+
 #2.0.13
   * Fix issue where engineer rank journal message without rank would cause a crash
   * Allow non-string sample events for testing scripts
