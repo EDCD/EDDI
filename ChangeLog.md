@@ -1,3 +1,10 @@
+#2.0.13
+  * Fix issue where engineer rank journal message without rank would cause a crash
+  * Allow non-string sample events for testing scripts
+  * Add sample galnet news event for testing
+  * Do not throw spurious errors when shutting down
+  * Ensure that stellar class VoiceAttack variable is unset if the information available
+
 #2.0.12
   * Avoid bug in journal where superpower promotions are logged as combat promotions
   * Update shield resistances with booster stats when exporting ship

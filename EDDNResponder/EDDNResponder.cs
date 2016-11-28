@@ -237,6 +237,10 @@ namespace EDDNResponder
                     var content = response.Content; // raw content as string
                     Logging.Debug("Response content is " + content);
                 }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
                 catch (Exception ex)
                 {
                     Logging.Warn("Failed to send error to EDDN", ex);

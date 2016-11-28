@@ -65,6 +65,10 @@ namespace EddiStarMapService
                     Logging.Debug("Data sent to EDSM");
                     // TODO check response
                 }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
                 catch (Exception ex)
                 {
                     Logging.Warn("Failed to send data to EDSM", ex);
@@ -91,6 +95,10 @@ namespace EddiStarMapService
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
                     // TODO check response
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
                 }
                 catch (Exception ex)
                 {

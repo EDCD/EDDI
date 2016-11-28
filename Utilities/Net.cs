@@ -95,6 +95,10 @@ namespace Utilities
                         client.UploadString(uri, data);
                     }
                 }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
                 catch (Exception ex)
                 {
                     Logging.Warn("Failed to send string to " + uri, ex);

@@ -384,6 +384,10 @@ namespace Eddi
                     Logging.Warn(name + " stopping after too many failures");
                 }
             }
+            catch (ThreadAbortException)
+            {
+                Logging.Debug("Thread aborted");
+            }
             catch (Exception ex)
             {
                 Logging.Warn("keepAlive failed", ex);

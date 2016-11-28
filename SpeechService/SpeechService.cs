@@ -155,6 +155,10 @@ namespace EddiSpeechService
                         play(ref source, priority);
                     }
                 }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
                 catch (Exception ex)
                 {
                     Logging.Warn("play failed: ", ex);
@@ -340,6 +344,10 @@ namespace EddiSpeechService
                         }
                         stream.ToArray();
                     }
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
                 }
                 catch (Exception ex)
                 {
