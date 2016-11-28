@@ -60,7 +60,7 @@ namespace EddiDataDefinitions
         public static readonly Material Tungsten = new Material("tungsten", "Element", "Tungsten", Rarity.Standard, "W", 1.8M, 2.2M);
         public static readonly Material Zirconium = new Material("zirconium", "Element", "Zirconium", Rarity.Standard, "Zr", 4.1M, 4.9M);
 
-        public static readonly Material Cadmium = new Material("cadmium", "Element", "Cadmiun", Rarity.Rare, "Cd", 2.6M, 3.2M);
+        public static readonly Material Cadmium = new Material("cadmium", "Element", "Cadmium", Rarity.Rare, "Cd", 2.6M, 3.2M);
         public static readonly Material Mercury = new Material("mercury", "Element", "Mercury", Rarity.Rare, "Hg", 1.5M, 1.8M);
         public static readonly Material Molybdenum = new Material("molybdenum", "Element", "Molybdenum", Rarity.Rare, "Mo", 2.3M, 2.8M);
         public static readonly Material Tin = new Material("tin", "Element", "Tin", Rarity.Rare, "Sn", 2.3M, 2.8M);
