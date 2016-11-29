@@ -90,12 +90,7 @@ namespace EddiDataDefinitions
 
         public static StarClass FromName(string from)
         {
-            StarClass result = CLASSES.FirstOrDefault(v => v.name == from);
-            if (result == null)
-            {
-                Logging.Report("Unknown star name " + from);
-            }
-            return result;
+            return CLASSES.FirstOrDefault(v => v.name == from);
         }
 
         public static StarClass FromEDName(string from)
@@ -104,12 +99,7 @@ namespace EddiDataDefinitions
             {
                 return null;
             }
-            StarClass result = CLASSES.FirstOrDefault(v => v.edname == from);
-            if (result == null)
-            {
-                Logging.Report("Unknown star ED name " + from);
-            }
-            return result;
+            return CLASSES.FirstOrDefault(v => v.edname == from);
         }
 
         /// <summary>
