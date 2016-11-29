@@ -73,6 +73,8 @@ namespace EddiSpeechResponder
             {
                 var document = new SimpleDocument(script, setting);
                 var result = document.Render(store);
+                // Tidy up the output script
+                result = Regex.Replace(result, " +", " ").Replace(" ,", ",").Replace(" .", ".").Trim();
                 Logging.Debug("Turned script " + script + " in to speech " + result);
                 return result.Trim() == "" ? null : result.Trim();
             }

@@ -7,6 +7,8 @@ using EddiEvents;
 using Eddi;
 using System.Windows.Controls;
 using System;
+using System.Text.RegularExpressions;
+using System.IO;
 
 namespace EddiSpeechResponder
 {
@@ -15,7 +17,12 @@ namespace EddiSpeechResponder
     /// </summary>
     public class SpeechResponder : EDDIResponder
     {
+        // The file to log speech
+        public static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
+
         private ScriptResolver scriptResolver;
+
+        private bool subtitles;
 
         public string ResponderName()
         {
@@ -45,6 +52,7 @@ namespace EddiSpeechResponder
                 personality = Personality.Default();
             }
             scriptResolver = new ScriptResolver(personality.Scripts);
+            subtitles = configuration.Subtitles;
             Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
         }
 
@@ -100,6 +108,7 @@ namespace EddiSpeechResponder
                 configuration.ToFile();
             }
             scriptResolver = new ScriptResolver(personality.Scripts);
+            subtitles = configuration.Subtitles;
             Logging.Info("Reloaded " + ResponderName() + " " + ResponderVersion());
         }
 
@@ -119,10 +128,15 @@ namespace EddiSpeechResponder
         public void Say(ScriptResolver resolver, string scriptName, Event theEvent = null, int? priority = null, bool? wait = null)
         {
             Dictionary<string, Cottle.Value> dict = createVariables(theEvent);
-            string script = resolver.resolve(scriptName, dict);
-            if (script != null)
+            string speech = resolver.resolve(scriptName, dict);
+            if (speech != null)
             {
-                SpeechService.Instance.Say(EDDI.Instance.Ship, script, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority));
+                if (subtitles)
+                {
+                    // Log a tidied version of the speech
+                    log(Regex.Replace(speech, "<.*?>", string.Empty));
+                }
+                SpeechService.Instance.Say(EDDI.Instance.Ship, speech, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority));
             }
         }
 
@@ -204,6 +218,25 @@ namespace EddiSpeechResponder
         public UserControl ConfigurationTabItem()
         {
             return new ConfigurationWindow();
+        }
+
+        private static readonly object logLock = new object();
+        private static void log(string speech)
+        {
+            lock (logLock)
+            {
+                try
+                {
+                    using (StreamWriter file = new StreamWriter(LogFile, true))
+                    {
+                        file.WriteLine(speech);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to write speech", ex);
+                }
+            }
         }
     }
 }

@@ -55,6 +55,7 @@ namespace EddiSpeechResponder
             Personalities = personalities;
 
             SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            subtitlesCheckbox.IsChecked = configuration.Subtitles;
 
             foreach (Personality personality in Personalities)
             {
@@ -217,6 +218,22 @@ namespace EddiSpeechResponder
                     oldPersonality.RemoveFile();
                     break;
             }
+        }
+
+        private void subtitlesEnabled(object sender, RoutedEventArgs e)
+        {
+            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            configuration.Subtitles = true;
+            configuration.ToFile();
+            EDDI.Instance.Reload("Speech responder");
+        }
+
+        private void subtitlesDisabled(object sender, RoutedEventArgs e)
+        {
+            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            configuration.Subtitles = false;
+            configuration.ToFile();
+            EDDI.Instance.Reload("Speech responder");
         }
     }
 }
