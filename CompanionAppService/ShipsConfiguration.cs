@@ -37,7 +37,10 @@ namespace EddiCompanionAppService
             {
                 configuration = JsonConvert.DeserializeObject<ShipsConfiguration>(File.ReadAllText(filename));
             }
-            catch {}
+            catch (Exception ex)
+            {
+                Logging.Debug("Failed to read ships configuration", ex);
+            }
 
             configuration.dataPath = filename;
             return configuration;

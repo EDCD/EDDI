@@ -38,7 +38,10 @@ namespace EddiCompanionAppService
                 string configData = File.ReadAllText(filename);
                 speech = JsonConvert.DeserializeObject<CommanderConfiguration>(configData);
             }
-            catch {}
+            catch (Exception ex)
+            {
+                Logging.Debug("Failed to read commander configuration", ex);
+            }
 
             speech.dataPath = filename;
             return speech;

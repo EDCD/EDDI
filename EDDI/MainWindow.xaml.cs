@@ -452,7 +452,10 @@ namespace Eddi
                         Logging.Error("Failed to find a way of opening URL \"" + uri + "\"");
                     }
                 }
-                catch { }
+                catch (Exception)
+                {
+                    // Nothing to do
+                }
             }
         }
 
