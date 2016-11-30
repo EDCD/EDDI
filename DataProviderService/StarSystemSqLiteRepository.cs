@@ -169,7 +169,7 @@ namespace EddiDataProviderService
 
         public void SaveStarSystem(StarSystem starSystem)
         {
-            if (GetStarSystem(starSystem.name) == null)
+            if (GetStarSystem(starSystem.name, false) == null)
             {
                 insertStarSystem(starSystem);
             }

@@ -93,7 +93,7 @@ namespace EddiDataProviderService
                 StarSystem.security = (string)json["security"];
                 StarSystem.power = (string)json["power"] == "None" ? null : (string)json["power"];
                 StarSystem.powerstate = (string)json["power_state"];
-                StarSystem.updatedat = Dates.fromTimestamp((long)json["updated_at"]);
+                StarSystem.updatedat = (long?)json["updated_at"];
 
                 StarSystem.stations = StationsFromEDDP(StarSystem.name, json);
                 StarSystem.bodies = BodiesFromEDDP(StarSystem.name, json);
@@ -138,8 +138,8 @@ namespace EddiDataProviderService
                     Station.hasshipyard = (bool?)station["has_shipyard"];
                     Station.hasmarket = (bool?)station["has_market"];
                     Station.hasblackmarket = (bool?)station["has_blackmarket"];
-                    Station.updatedat = Dates.fromTimestamp((long?)station["updated_at"]);
-                    Station.outfittingupdatedat = Dates.fromTimestamp((long?)station["outfitting_updated_at"]);
+                    Station.updatedat = (long?)station["updated_at"];
+                    Station.outfittingupdatedat = (long?)station["outfitting_updated_at"];
 
                     if (((string)station["type"]) != null)
                     {
@@ -157,7 +157,7 @@ namespace EddiDataProviderService
                     Station.largestpad = largestpad;
 
                     Station.commodities = CommoditiesFromEDDP(station);
-                    Station.commoditiesupdatedat = Dates.fromTimestamp((long?)station["market_updated_at"]);
+                    Station.commoditiesupdatedat = (long?)station["market_updated_at"];
 
                     Logging.Warn("Station is " + JsonConvert.SerializeObject(Station));
                     Stations.Add(Station);

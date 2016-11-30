@@ -93,6 +93,16 @@ Common usage of this is to provide further information about a ship, for example
 
     The Vulture is made by {ShipDetails("Vulture").manufacturer}.
 
+### SecondsSince()
+
+This function will provide the number of seconds since a given timestamp.
+
+SecondsSince() takes a single argument of a UNIX timestamp.
+
+Common usage of this is to check how long it has been since a given time, for example:
+
+    Station data is {SecondsSince(station.updatedat) / 3600} hours old.
+
 ### StationDetails()
 
 This function will provide full information for a station given its name and optional system.

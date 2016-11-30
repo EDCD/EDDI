@@ -243,7 +243,7 @@ namespace Eddi
             catch (Exception ex)
             {
                 SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
-                Logging.Error("Failed to access api.eddp.co", ex);
+                Logging.Warn("Failed to access api.eddp.co", ex);
             }
         }
 
