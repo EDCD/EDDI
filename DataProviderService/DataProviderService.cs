@@ -138,8 +138,8 @@ namespace EddiDataProviderService
                     Station.hasshipyard = (bool?)station["has_shipyard"];
                     Station.hasmarket = (bool?)station["has_market"];
                     Station.hasblackmarket = (bool?)station["has_blackmarket"];
-                    Station.updatedat = Dates.fromTimestamp((long?)json["updated_at"]);
-                    Station.outfittingupdatedat = Dates.fromTimestamp((long?)json["outfitting_updated_at"]);
+                    Station.updatedat = Dates.fromTimestamp((long?)station["updated_at"]);
+                    Station.outfittingupdatedat = Dates.fromTimestamp((long?)station["outfitting_updated_at"]);
 
                     if (((string)station["type"]) != null)
                     {
@@ -157,7 +157,7 @@ namespace EddiDataProviderService
                     Station.largestpad = largestpad;
 
                     Station.commodities = CommoditiesFromEDDP(station);
-                    Station.commoditiesupdatedat = Dates.fromTimestamp((long?)json["market_updated_at"]);
+                    Station.commoditiesupdatedat = Dates.fromTimestamp((long?)station["market_updated_at"]);
 
                     Logging.Warn("Station is " + JsonConvert.SerializeObject(Station));
                     Stations.Add(Station);

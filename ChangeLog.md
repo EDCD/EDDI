@@ -3,6 +3,7 @@
   * Add ability to set state variables from VoiceAttack.  Details on how to use this are in the VoiceAttack documentation
   * Add option to write speech responder output to a file.  This is an option that can be checked in the speech responder tab, and writes all speech to %APPDATA%\EDDI\speechresponder.out
   * Add module definitions for SRV, fighter and training loadouts
+  * Provide new API for EDDI versioning.  This allows EDDI to provide more information about updates to users
 
 #2.0.13
   * Fix issue where engineer rank journal message without rank would cause a crash
