@@ -1,4 +1,4 @@
-#2.x
+#2.1.0-b1
   * Fix material name for Cadmium
   * Add ability to set state variables from VoiceAttack.  Details on how to use this are in the VoiceAttack documentation
   * Add option to write speech responder output to a file.  This is an option that can be checked in the speech responder tab, and writes all speech to %APPDATA%\EDDI\speechresponder.out

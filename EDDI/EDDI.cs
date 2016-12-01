@@ -796,7 +796,7 @@ namespace Eddi
                         if (CurrentStation != null && CurrentStation.systemname == profile.LastStation.systemname && CurrentStation.name == profile.LastStation.name)
                         {
                             // Match for our expected station with the information returned from the profile
-                            Logging.Debug("Current station matches profile information; updating info");
+                            Logging.Warn("Current station matches profile information; updating info");
 
                             // Update the outfitting, commodities and shipyard with the data obtained from the profile
                             CurrentStation.outfitting = profile.LastStation.outfitting;
@@ -805,7 +805,7 @@ namespace Eddi
                         }
                         else
                         {
-                            Logging.Debug("Current station does not match profile information; ignoring");
+                            Logging.Warn("Current station does not match profile information; ignoring");
                         }
 
                         setCommanderTitle();
