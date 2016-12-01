@@ -62,7 +62,7 @@ namespace EddiDataDefinitions
         public decimal? distancefromhome;
 
         // Admin - the last time the information present changed
-        public DateTime? updatedat;
+        public long? updatedat;
 
         // Admin - the last time the data about this system was obtained from remote repository
         public DateTime lastupdated;

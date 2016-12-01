@@ -72,6 +72,7 @@ Any values might be missing, depending on EDDI's configuration and the informati
     - visits the number of visits that the commander has made to this starsystem
     - distancefromhome the distance in LY from the commander's home starsystem
     - comment any comment the commander has made on the starsystem
+    - updatedat the timestamp at which the system information was last updated
 
 ## Last starsystem
 
@@ -176,6 +177,8 @@ An orbital or planetary station.
     - largestpad the largest pad available at this station (None, Small, Medium, Large)
     - commodities the commodities that are bought and sold by this station (array of Commodity objects)
     - outfitting the modules that are available for outfitting at this station (array of Module objects)
+    - updatedat the timestamp at which the station information was last updated
+    - commoditiesupdatedat the timestamp at which the station commodities information was last updated
 
 ## Body
 

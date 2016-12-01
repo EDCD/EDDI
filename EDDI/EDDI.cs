@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -103,8 +104,10 @@ namespace Eddi
                 ExceptionlessClient.Default.Startup("vJW9HtWB2NHiQb7AwVQsBQM6hjWN1sKzHf5PCpW1");
                 ExceptionlessClient.Default.Configuration.SetVersion(Constants.EDDI_VERSION);
 
-                // Start by ensuring that our primary data structures have something in them.  This allows them to be updated
-                // from any source
+                // Start by fetching information from the update server, and handling appropriately
+                UpdateServer();
+
+                // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
                 Cmdr = new Commander();
                 Ship = new Ship();
                 Shipyard = new List<Ship>();
@@ -192,34 +195,55 @@ namespace Eddi
                 monitors = findMonitors();
                 responders = findResponders();
 
-                // Check for an update
-                string response;
-                try
-                {
-                    if (Constants.EDDI_VERSION.Contains("b"))
-                    {
-                        response = Net.DownloadString("http://api.eddp.co/betaversion");
-                    }
-                    else
-                    {
-                        response = Net.DownloadString("http://api.eddp.co/version");
-                    }
-                    if (Versioning.Compare(response, Constants.EDDI_VERSION) == 1)
-                    {
-                        SpeechService.Instance.Say(null, "EDDI version " + response.Replace(".", " point ") + " is now available.", false);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may not work fully", false);
-                    Logging.Error("Failed to access api.eddp.co", ex);
-                }
-
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
             }
             catch (Exception ex)
             {
                 Logging.Error("Failed to initialise", ex);
+            }
+        }
+
+        /// <summary>
+        /// Obtain and check the information from the update server
+        /// </summary>
+        private static void UpdateServer()
+        {
+            try
+            {
+                UpdateServerInfo updateServerInfo = UpdateServerInfo.FromServer("http://api.eddp.co/");
+                if (updateServerInfo == null)
+                {
+                    Logging.Warn("Failed to contact update server");
+                }
+                else
+                {
+                    string minVersion = updateServerInfo.minversion;
+                    if (Versioning.Compare(minVersion, Constants.EDDI_VERSION) == -1)
+                    {
+                        // We are too old to run
+                        Logging.Info("EDDI requires an update.  Please download the latest version at " + updateServerInfo.produrl);
+                        SpeechService.Instance.Say(null, "EDDI requires an update.", true);
+                        System.Environment.Exit(1);
+                    }
+
+                    string remoteVersion = Constants.EDDI_VERSION.Contains("b") ? updateServerInfo.betaversion : updateServerInfo.prodversion;
+                    if (Versioning.Compare(remoteVersion, Constants.EDDI_VERSION) == 1)
+                    {
+                        // There is an update available
+                        SpeechService.Instance.Say(null, "EDDI version " + remoteVersion.Replace(".", " point ") + " is now available.", false);
+                    }
+
+                    if (updateServerInfo.motd != null)
+                    {
+                        // There is a message
+                        SpeechService.Instance.Say(null, updateServerInfo.motd, false);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
+                Logging.Warn("Failed to access api.eddp.co", ex);
             }
         }
 
@@ -539,6 +563,11 @@ namespace Eddi
                 // Now call refreshProfile() to obtain the outfitting and commodity information
                 refreshProfile();
             }
+            else
+            {
+                // If we are not docked then our station information is invalid
+                CurrentStation = null;
+            }
 
             return true;
         }
@@ -651,6 +680,7 @@ namespace Eddi
                 CurrentStarSystem.primaryeconomy = theEvent.economy;
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
+                CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
@@ -675,6 +705,8 @@ namespace Eddi
                 CurrentStarSystem.primaryeconomy = theEvent.economy;
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
+                CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 setCommanderTitle();
             }
             else
@@ -694,6 +726,7 @@ namespace Eddi
 
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
+                CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 setCommanderTitle();
             }
@@ -773,6 +806,7 @@ namespace Eddi
             {
                 try
                 {
+                    long profileTime = (long)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                     Profile profile = CompanionAppService.Instance.Profile();
                     if (profile != null)
                     {
@@ -786,29 +820,51 @@ namespace Eddi
                             SetShip(profile.Ship);
                         }
 
+                        bool updatedCurrentStarSystem = false;
+
                         // Only set the current star system if it is not present, otherwise we leave it to events
                         if (CurrentStarSystem == null)
                         {
                             CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
                             setSystemDistanceFromHome(CurrentStarSystem);
-                        }
 
-                        if (CurrentStation != null && CurrentStation.systemname == profile.LastStation.systemname && CurrentStation.name == profile.LastStation.name)
-                        {
-                            // Match for our expected station with the information returned from the profile
-                            Logging.Warn("Current station matches profile information; updating info");
-
-                            // Update the outfitting, commodities and shipyard with the data obtained from the profile
-                            CurrentStation.outfitting = profile.LastStation.outfitting;
-                            CurrentStation.commodities = profile.LastStation.commodities;
-                            CurrentStation.shipyard = profile.LastStation.shipyard;
+                            // We don't know if we are docked or not at this point.  Fill in the data if we can, and
+                            // let later systems worry about removing it if it's decided that we aren't docked
+                            if (profile.LastStation.systemname == CurrentStarSystem.name)
+                            {
+                                CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStation.name);
+                                CurrentStation.updatedat = profileTime;
+                                updatedCurrentStarSystem = true;
+                            }
                         }
                         else
                         {
-                            Logging.Warn("Current station does not match profile information; ignoring");
+                            if (CurrentStation != null && CurrentStation.systemname == profile.LastStation.systemname && CurrentStation.name == profile.LastStation.name)
+                            {
+                                // Match for our expected station with the information returned from the profile
+                                Logging.Debug("Current station matches profile information; updating info");
+
+                                // Update the outfitting, commodities and shipyard with the data obtained from the profile
+                                CurrentStation.outfitting = profile.LastStation.outfitting;
+                                CurrentStation.updatedat = profileTime;
+                                CurrentStation.commodities = profile.LastStation.commodities;
+                                CurrentStation.commoditiesupdatedat = profileTime;
+                                CurrentStation.shipyard = profile.LastStation.shipyard;
+                                updatedCurrentStarSystem = true;
+                            }
+                            else
+                            {
+                                Logging.Debug("Current station does not match profile information; ignoring");
+                            }
                         }
 
                         setCommanderTitle();
+
+                        if (updatedCurrentStarSystem)
+                        {
+                            Logging.Debug("Star system information updated from remote server; updating local copy");
+                            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                        }
                     }
                 }
                 catch (Exception ex)

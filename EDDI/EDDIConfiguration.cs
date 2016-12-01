@@ -46,7 +46,10 @@ namespace Eddi
             {
                 configuration = JsonConvert.DeserializeObject<EDDIConfiguration>(File.ReadAllText(filename));
             }
-            catch {}
+            catch (Exception ex)
+            {
+                Logging.Debug("Failed to read EDDI configuration", ex);
+            }
             configuration.dataPath = filename;
             if (configuration.Plugins == null)
             {

@@ -48,7 +48,10 @@ namespace EddiNetLogMonitor
                         File.Delete(oldFilename);
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Logging.Debug("Failed to read netlog configuration", ex);
+                }
             }
 
             return configuration;

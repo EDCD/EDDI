@@ -26,35 +26,58 @@ namespace Utilities
             {
                 return -1;
             }
-            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"([\d]+)");
-            System.Text.RegularExpressions.MatchCollection m1 = regex.Matches(Version1);
-            System.Text.RegularExpressions.MatchCollection m2 = regex.Matches(Version2);
-            int min = Math.Min(m1.Count, m2.Count);
-            for (int i = 0; i < min; i++)
+            System.Text.RegularExpressions.Regex versionRegex = new System.Text.RegularExpressions.Regex(@"^([\d]+)\.([\d]+)\.([\d]+)-?([a-b])?([\d]+)?");
+            System.Text.RegularExpressions.MatchCollection m1 = versionRegex.Matches(Version1);
+            System.Text.RegularExpressions.MatchCollection m2 = versionRegex.Matches(Version2);
+
+            // Handle simple version number differences
+            for (int i = 1; i < 4; i++)
             {
-                if (Convert.ToInt32(m1[i].Value) > Convert.ToInt32(m2[i].Value))
+                if (Convert.ToInt32(m1[0].Groups[i].Value) > Convert.ToInt32(m2[0].Groups[i].Value))
                 {
                     return 1;
                 }
-                if (Convert.ToInt32(m1[i].Value) < Convert.ToInt32(m2[i].Value))
+                if (Convert.ToInt32(m1[0].Groups[i].Value) < Convert.ToInt32(m2[0].Groups[i].Value))
                 {
                     return -1;
                 }
             }
-            int max = Math.Max(m1.Count, m2.Count);
-            for (int i = min; i < max; i++)
+
+            // Handle situation where one is pre-release and the other is not
+            if (!m1[0].Groups[4].Success && m2[0].Groups[4].Success)
             {
-                int v1 = (m1.Count < i ? Convert.ToInt32(m1[i].Value) : 0);
-                int v2 = (m2.Count < i ? Convert.ToInt32(m2[i].Value) : 0);
-                if (v1 > v2)
-                {
-                    return 1;
-                }
-                if (v1 < v2)
-                {
-                    return -1;
-                }
+                return 1;
             }
+            if (m1[0].Groups[4].Success && !m2[0].Groups[4].Success)
+            {
+                return -1;
+            }
+            if (!m1[0].Groups[4].Success && !m2[0].Groups[4].Success)
+            {
+                // No pre-release so done
+                return 0;
+            }
+
+            // Handle situation where one is alpha and the other beta
+            if (m1[0].Groups[4].Value[0] > m2[0].Groups[4].Value[0])
+            {
+                return 1;
+            }
+            if (m1[0].Groups[4].Value[0] < m2[0].Groups[4].Value[0])
+            {
+                return -1;
+            }
+
+            // Handle situation with different prerelease numbers
+            if (Convert.ToInt32(m1[0].Groups[5].Value) > Convert.ToInt32(m2[0].Groups[5].Value))
+            {
+                return 1;
+            }
+            if (Convert.ToInt32(m1[0].Groups[5].Value) < Convert.ToInt32(m2[0].Groups[5].Value))
+            {
+                return -1;
+            }
+
             return 0;
         }
     }

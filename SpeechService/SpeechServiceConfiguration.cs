@@ -53,7 +53,10 @@ namespace EddiSpeechService
                 string configData = File.ReadAllText(filename);
                 speech = JsonConvert.DeserializeObject<SpeechServiceConfiguration>(configData);
             }
-            catch {}
+            catch (Exception ex)
+            {
+                Logging.Debug("Failed to read speech service configuration", ex);
+            }
 
             speech.dataPath = filename;
             return speech;

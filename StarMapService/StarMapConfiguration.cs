@@ -33,7 +33,10 @@ namespace EddiStarMapService
                 string credentialsData = File.ReadAllText(filename);
                 credentials = JsonConvert.DeserializeObject<StarMapConfiguration>(credentialsData);
             }
-            catch {}
+            catch (Exception ex)
+            {
+                Logging.Debug("Failed to read starmap configuration", ex);
+            }
 
             credentials.dataPath = filename;
             return credentials;
