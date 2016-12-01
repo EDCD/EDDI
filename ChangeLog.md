@@ -6,6 +6,7 @@
   * Provide new API for EDDI versioning.  This allows EDDI to provide more information about updates to users, and is a precursor for automatic updates
   * Update local system database with details from the journal and companion API.  This ensures that this data is always as up-to-date as possible
   * ModificationCraftedEvent now has details of commodities used in crafting as well as materials
+  * Provide update and MOTD information in VoiceAttack window if applicable
 
 #2.0.13
   * Fix issue where engineer rank journal message without rank would cause a crash

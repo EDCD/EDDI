@@ -91,6 +91,9 @@ namespace Eddi
         public StarSystem CurrentStarSystem { get; private set; }
         public StarSystem LastStarSystem { get; private set; }
 
+        // Information from the remote server
+        public InstanceInfo Server { get; private set; }
+
         // Session state
         public Dictionary<string, object> State = new Dictionary<string, object>();
 
@@ -105,7 +108,7 @@ namespace Eddi
                 ExceptionlessClient.Default.Configuration.SetVersion(Constants.EDDI_VERSION);
 
                 // Start by fetching information from the update server, and handling appropriately
-                UpdateServer();
+                Server = UpdateServer();
 
                 // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
                 Cmdr = new Commander();
@@ -206,7 +209,7 @@ namespace Eddi
         /// <summary>
         /// Obtain and check the information from the update server
         /// </summary>
-        private static void UpdateServer()
+        private static InstanceInfo UpdateServer()
         {
             try
             {
@@ -237,6 +240,7 @@ namespace Eddi
                         // There is a message
                         SpeechService.Instance.Say(null, info.motd, false);
                     }
+                    return info;
                 }
             }
             catch (Exception ex)
@@ -244,6 +248,7 @@ namespace Eddi
                 SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
                 Logging.Warn("Failed to access api.eddp.co", ex);
             }
+            return null;
         }
 
         public void Start()
