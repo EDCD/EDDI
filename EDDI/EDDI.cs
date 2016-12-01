@@ -680,6 +680,7 @@ namespace Eddi
                 CurrentStarSystem.primaryeconomy = theEvent.economy;
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
+                CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
@@ -704,6 +705,8 @@ namespace Eddi
                 CurrentStarSystem.primaryeconomy = theEvent.economy;
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
+                CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 setCommanderTitle();
             }
             else
@@ -723,6 +726,7 @@ namespace Eddi
 
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
+                CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 setCommanderTitle();
             }
@@ -802,6 +806,7 @@ namespace Eddi
             {
                 try
                 {
+                    long profileTime = (long)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                     Profile profile = CompanionAppService.Instance.Profile();
                     if (profile != null)
                     {
@@ -815,6 +820,8 @@ namespace Eddi
                             SetShip(profile.Ship);
                         }
 
+                        bool updatedCurrentStarSystem = false;
+
                         // Only set the current star system if it is not present, otherwise we leave it to events
                         if (CurrentStarSystem == null)
                         {
@@ -826,6 +833,8 @@ namespace Eddi
                             if (profile.LastStation.systemname == CurrentStarSystem.name)
                             {
                                 CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStation.name);
+                                CurrentStation.updatedat = profileTime;
+                                updatedCurrentStarSystem = true;
                             }
                         }
                         else
@@ -837,8 +846,11 @@ namespace Eddi
 
                                 // Update the outfitting, commodities and shipyard with the data obtained from the profile
                                 CurrentStation.outfitting = profile.LastStation.outfitting;
+                                CurrentStation.updatedat = profileTime;
                                 CurrentStation.commodities = profile.LastStation.commodities;
+                                CurrentStation.commoditiesupdatedat = profileTime;
                                 CurrentStation.shipyard = profile.LastStation.shipyard;
+                                updatedCurrentStarSystem = true;
                             }
                             else
                             {
@@ -847,6 +859,12 @@ namespace Eddi
                         }
 
                         setCommanderTitle();
+
+                        if (updatedCurrentStarSystem)
+                        {
+                            Logging.Debug("Star system information updated from remote server; updating local copy");
+                            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                        }
                     }
                 }
                 catch (Exception ex)
