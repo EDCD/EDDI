@@ -50,8 +50,9 @@
     <Compile Include="Logging.cs" />
     <Compile Include="Net.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="InstanceInfo.cs" />
     <Compile Include="Translation.cs" />
-    <Compile Include="UpdateServerInfo.cs" />
+    <Compile Include="ServerInfo.cs" />
     <Compile Include="Versioning.cs" />
   </ItemGroup>
   <ItemGroup>

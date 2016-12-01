@@ -210,33 +210,32 @@ namespace Eddi
         {
             try
             {
-                UpdateServerInfo updateServerInfo = UpdateServerInfo.FromServer("http://api.eddp.co/");
+                ServerInfo updateServerInfo = ServerInfo.FromServer("http://api.eddp.co/");
                 if (updateServerInfo == null)
                 {
                     Logging.Warn("Failed to contact update server");
                 }
                 else
                 {
-                    string minVersion = updateServerInfo.minversion;
-                    if (Versioning.Compare(minVersion, Constants.EDDI_VERSION) == -1)
+                    InstanceInfo info = Constants.EDDI_VERSION.Contains("b") ? updateServerInfo.beta : updateServerInfo.production;
+                    if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == -1)
                     {
                         // We are too old to run
-                        Logging.Info("EDDI requires an update.  Please download the latest version at " + updateServerInfo.produrl);
+                        Logging.Info("EDDI requires an update.  Please download the latest version at " + info.url);
                         SpeechService.Instance.Say(null, "EDDI requires an update.", true);
                         System.Environment.Exit(1);
                     }
 
-                    string remoteVersion = Constants.EDDI_VERSION.Contains("b") ? updateServerInfo.betaversion : updateServerInfo.prodversion;
-                    if (Versioning.Compare(remoteVersion, Constants.EDDI_VERSION) == 1)
+                    if (Versioning.Compare(info.version, Constants.EDDI_VERSION) == 1)
                     {
                         // There is an update available
-                        SpeechService.Instance.Say(null, "EDDI version " + remoteVersion.Replace(".", " point ") + " is now available.", false);
+                        SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", false);
                     }
 
-                    if (updateServerInfo.motd != null)
+                    if (info.motd != null)
                     {
                         // There is a message
-                        SpeechService.Instance.Say(null, updateServerInfo.motd, false);
+                        SpeechService.Instance.Say(null, info.motd, false);
                     }
                 }
             }
