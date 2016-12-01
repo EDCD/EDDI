@@ -21,26 +21,38 @@ namespace EddiEvents
             VARIABLES.Add("blueprint", "The blueprint being crafted");
             VARIABLES.Add("level", "The level of the blueprint being crafted");
             VARIABLES.Add("materials", "The materials and quantities used in the crafting (MaterialAmount object)");
+            VARIABLES.Add("commodities", "The commodities and quantities used in the crafting (CommodityAmount object)");
         }
 
-        [JsonProperty("engineer")]
         public string engineer { get; private set; }
 
-        [JsonProperty("blueprint")]
         public string blueprint{ get; private set; }
 
-        [JsonProperty("level")]
         public int level { get; private set; }
 
-        [JsonProperty("materials")]
         public List<MaterialAmount> materials { get; private set; }
 
-        public ModificationCraftedEvent(DateTime timestamp, string engineer, string blueprint, int level, List<MaterialAmount> materials) : base(timestamp, NAME)
+        public List<CommodityAmount> commodities { get; private set; }
+
+        public ModificationCraftedEvent(DateTime timestamp, string engineer, string blueprint, int level, List<MaterialAmount> materials, List<CommodityAmount> commodities) : base(timestamp, NAME)
         {
             this.engineer = engineer;
             this.blueprint = blueprint;
             this.level = level;
             this.materials = materials;
+            this.commodities = commodities;
+        }
+    }
+
+    public class CommodityAmount
+    {
+        public string commodity { get; private set; }
+        public int amount { get; private set; }
+
+        public CommodityAmount(Commodity commodity, int amount)
+        {
+            this.commodity = commodity.name;
+            this.amount = amount;
         }
     }
 }

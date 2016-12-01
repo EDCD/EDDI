@@ -1080,17 +1080,29 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Level", out val);
                                 int level = (int)(long)val;
 
+                                List<CommodityAmount> commodities = new List<CommodityAmount>();
                                 List<MaterialAmount> materials = new List<MaterialAmount>();
                                 if (data.TryGetValue("Ingredients", out val))
                                 {
-                                    Dictionary<string, object> materialsData = (Dictionary<string, object>)val;
-                                    foreach (KeyValuePair<string, object> materialData in materialsData)
+                                    Dictionary<string, object> usedData = (Dictionary<string, object>)val;
+                                    foreach (KeyValuePair<string, object> used in usedData)
                                     {
-                                        Material material = Material.FromEDName(materialData.Key);
-                                        materials.Add(new MaterialAmount(material, (int)(long)materialData.Value));
+                                        // Used could be a material or a commodity
+                                        Commodity commodity = CommodityDefinitions.FromName(used.Key);
+                                        if (commodity.category != null)
+                                        {
+                                            // This is a real commodity
+                                            commodities.Add(new CommodityAmount(commodity, (int)(long)used.Value));
+                                        }
+                                        else
+                                        {
+                                            // Probably a material then
+                                            Material material = Material.FromEDName(used.Key);
+                                            materials.Add(new MaterialAmount(material, (int)(long)used.Value));
+                                        }
                                     }
                                 }
-                                journalEvent = new ModificationCraftedEvent(timestamp, engineer, blueprint, level, materials);
+                                journalEvent = new ModificationCraftedEvent(timestamp, engineer, blueprint, level, materials, commodities);
                                 handled = true;
                                 break;
                             }
