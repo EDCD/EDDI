@@ -7,6 +7,8 @@
   * Update local system database with details from the journal and companion API.  This ensures that this data is always as up-to-date as possible
   * ModificationCraftedEvent now has details of commodities used in crafting as well as materials
   * Provide update and MOTD information in VoiceAttack window if applicable
+  * Update mission accepted and completed events to contain more fields.  Details on the new fields are in the relevant documentation
+  * Update location event with details of station name and type where available
 
 #2.0.13
   * Fix issue where engineer rank journal message without rank would cause a crash

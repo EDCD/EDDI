@@ -232,8 +232,12 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("SystemSecurity", out val);
                                 SecurityLevel security = SecurityLevel.FromEDName((string)val);
 
+                                data.TryGetValue("StationName", out val);
+                                string station = (string)val;
+                                data.TryGetValue("StationType", out val);
+                                string stationtype = (string)val;
 
-                                journalEvent = new LocationEvent(timestamp, systemName, x, y, z, body, bodyType, docked, allegiance, faction, economy, government, security);
+                                journalEvent = new LocationEvent(timestamp, systemName, x, y, z, body, bodyType, docked, station, stationtype, allegiance, faction, economy, government, security);
                             }
                             handled = true;
                             break;
@@ -1383,7 +1387,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("System", out val);
                                 string system = (string)val;
 
-                                journalEvent = new MissionAcceptedEvent(timestamp, null, name, system, null, true, null);
+                                journalEvent = new MissionAcceptedEvent(timestamp, null, name, system, null, null, null, null, null, null, null, null, null, true, null);
                                 handled = true;
                                 break;
                             }
@@ -1397,7 +1401,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Reward", out val);
                                 long reward = (val == null ? 0 : (long)val);
 
-                                journalEvent = new MissionCompletedEvent(timestamp, null, name, system, true, reward, 0);
+                                journalEvent = new MissionCompletedEvent(timestamp, null, name, null, null, null, true, reward, null, 0);
                                 handled = true;
                                 break;
                             }
@@ -1406,6 +1410,8 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("MissionID", out val);
                                 long missionid = (long)val;
+                                data.TryGetValue("Expiry", out val);
+                                DateTime? expiry = (val == null ? (DateTime?)null : (DateTime)val);
                                 data.TryGetValue("Name", out val);
                                 string name = (string)val;
                                 data.TryGetValue("Faction", out val);
@@ -1414,10 +1420,41 @@ namespace EddiJournalMonitor
                                 Superpower superpowerFaction = Superpower.From(faction);
                                 faction = superpowerFaction != null ? superpowerFaction.name : faction;
 
-                                data.TryGetValue("Expiry", out val);
-                                DateTime? expiry = (val == null ? (DateTime?)null : (DateTime)val);
+                                // Missions with destinations
+                                data.TryGetValue("DestinationSystem", out val);
+                                string destinationsystem = (string)val;
+                                data.TryGetValue("DestinationStation", out val);
+                                string destinationstation = (string)val;
 
-                                journalEvent = new MissionAcceptedEvent(timestamp, missionid, name, null, faction, false, expiry);
+                                // Missions with commodities
+                                data.TryGetValue("Commodity", out val);
+                                Commodity commodity = CommodityDefinitions.FromName((string)val);
+                                data.TryGetValue("Count", out val);
+                                int? amount = (int?)(long?)val;
+
+                                // Missions with targets
+                                data.TryGetValue("Target", out val);
+                                string target = (string)val;
+                                data.TryGetValue("TargetType", out val);
+                                string targettype = (string)val;
+                                data.TryGetValue("TargetFaction", out val);
+                                string targetfaction = (string)val;
+                                // Could be a superpower...
+                                Superpower superpowerTargetFaction = Superpower.From(targetfaction);
+                                targetfaction = superpowerTargetFaction != null ? superpowerTargetFaction.name : targetfaction;
+
+                                // Missions with passengers
+                                data.TryGetValue("PassengerType", out val);
+                                string passengertype = (string)val;
+                                data.TryGetValue("PassengersWanted", out val);
+                                bool? passengerswanted = (bool?)val;
+                                data.TryGetValue("PassengerCount", out val);
+                                if (val != null)
+                                {
+                                    amount = (int?)(long?)val;
+                                }
+
+                                journalEvent = new MissionAcceptedEvent(timestamp, missionid, name, faction, destinationsystem, destinationstation, commodity, amount, passengertype, passengerswanted, target, targettype, targetfaction, false, expiry);
                                 handled = true;
                                 break;
                             }
@@ -1432,8 +1469,34 @@ namespace EddiJournalMonitor
                                 long reward = (val == null ? 0 : (long)val);
                                 data.TryGetValue("Donation", out val);
                                 long donation = (val == null ? 0 : (long)val);
+                                data.TryGetValue("Faction", out val);
+                                string faction = (string)val;
+                                // Could be a superpower...
+                                Superpower superpowerFaction = Superpower.From(faction);
+                                faction = superpowerFaction != null ? superpowerFaction.name : faction;
 
-                                journalEvent = new MissionCompletedEvent(timestamp, missionid, name, null, false, reward, donation);
+                                // Missions with commodities
+                                data.TryGetValue("Commodity", out val);
+                                Commodity commodity = CommodityDefinitions.FromName((string)val);
+                                data.TryGetValue("Count", out val);
+                                int? amount = (int?)(long?)val;
+
+                                List<CommodityAmount> commodityrewards = new List<CommodityAmount>();
+                                data.TryGetValue("CommodityReward", out val);
+                                List<object> commodityRewardsData = (List<object>)val;
+                                if (commodityRewardsData != null)
+                                {
+                                    foreach (Dictionary<string, object> commodityRewardData in commodityRewardsData)
+                                    {
+                                        commodityRewardData.TryGetValue("Name", out val);
+                                        Commodity rewardCommodity = CommodityDefinitions.FromName((string)val);
+                                        commodityRewardData.TryGetValue("Count", out val);
+                                        int count = (int)(long)val;
+                                        commodityrewards.Add(new CommodityAmount(rewardCommodity, count));
+                                    }
+                                }
+
+                                journalEvent = new MissionCompletedEvent(timestamp, missionid, name, faction, commodity, amount, false, reward, commodityrewards, donation);
                                 handled = true;
                                 break;
                             }
