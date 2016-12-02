@@ -195,6 +195,18 @@ namespace EddiSpeechResponder
             // Obtain definition objects for various items
             //
 
+            store["SecondsSince"] = new NativeFunction((values) =>
+            {
+                long? date = (long?)values[0].AsNumber;
+                if (date == null)
+                {
+                    return null;
+                }
+                long now = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+
+                return now - date;
+            }, 1);
+
             store["ShipDetails"] = new NativeFunction((values) =>
             {
                 int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);

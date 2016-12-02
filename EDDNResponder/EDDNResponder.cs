@@ -118,7 +118,10 @@ namespace EDDNResponder
 
         private void sendCommodityInformation()
         {
-            if (EDDI.Instance.CurrentStation != null && EDDI.Instance.CurrentStation.commodities != null)
+            // It's possible that the commodity data, if it is here, has already come from EDDB.  We use the average price
+            // as a marker: this isn't visible in EDDB, so if we have average price we know that this is data from the companion
+            // API and should be reported
+            if (EDDI.Instance.CurrentStation != null && EDDI.Instance.CurrentStation.commodities != null && EDDI.Instance.CurrentStation.commodities.Count > 0 && EDDI.Instance.CurrentStation.commodities[0].avgprice != null)
             {
                 List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
                 foreach (Commodity commodity in EDDI.Instance.CurrentStation.commodities)
@@ -129,12 +132,12 @@ namespace EDDNResponder
                     }
                     EDDNCommodity eddnCommodity = new EDDNCommodity();
                     eddnCommodity.name = commodity.EDName;
-                    eddnCommodity.meanPrice = commodity.avgprice;
-                    eddnCommodity.buyPrice = commodity.buyprice;
-                    eddnCommodity.stock = commodity.stock;
+                    eddnCommodity.meanPrice = (int)commodity.avgprice;
+                    eddnCommodity.buyPrice = (int)commodity.buyprice;
+                    eddnCommodity.stock = (int)commodity.stock;
                     eddnCommodity.stockBracket = commodity.stockbracket;
-                    eddnCommodity.sellPrice = commodity.sellprice;
-                    eddnCommodity.demand = commodity.demand;
+                    eddnCommodity.sellPrice = (int)commodity.sellprice;
+                    eddnCommodity.demand = (int)commodity.demand;
                     eddnCommodity.demandBracket = commodity.demandbracket;
                     if (commodity.StatusFlags.Count > 0)
                     {

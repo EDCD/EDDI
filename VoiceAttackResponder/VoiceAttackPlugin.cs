@@ -50,6 +50,18 @@ namespace EddiVoiceAttackResponder
             {
                 EDDI.Instance.Start();
 
+                // Display instance information if available
+                if (EDDI.Instance.Server != null)
+                {
+                    if (Versioning.Compare(EDDI.Instance.Server.version, Constants.EDDI_VERSION) == 1)
+                    {
+                        vaProxy.WriteToLog("EDDI version " + EDDI.Instance.Server.version + " is now available", "red");
+                    }
+                    if (EDDI.Instance.Server.motd != null)
+                    {
+                        vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Server.motd, "black");
+                    }
+                }
                 // Set the initial values from the main EDDI objects
                 setValues(ref vaProxy);
 
