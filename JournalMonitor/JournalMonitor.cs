@@ -1583,6 +1583,116 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "PowerplayJoin":
+                            {
+                                object val;
+                                data.TryGetValue("Power", out val);
+                                string power = (string)val;
+
+                                journalEvent = new PowerJoinedEvent(timestamp, power);
+                                handled = true;
+                                break;
+                            }
+                        case "PowerplayLeave":
+                            {
+                                object val;
+                                data.TryGetValue("Power", out val);
+                                string power = (string)val;
+
+                                journalEvent = new PowerLeftEvent(timestamp, power);
+                                handled = true;
+                                break;
+                            }
+                        case "PowerplayDefect":
+                            {
+                                object val;
+                                data.TryGetValue("FromPower", out val);
+                                string frompower = (string)val;
+                                data.TryGetValue("ToPower", out val);
+                                string topower = (string)val;
+
+                                journalEvent = new PowerDefectedEvent(timestamp, frompower, topower);
+                                handled = true;
+                                break;
+                            }
+                        case "PowerplayVoteCast":
+                            {
+                                object val;
+                                data.TryGetValue("Power", out val);
+                                string power = (string)val;
+                                data.TryGetValue("System", out val);
+                                string system = (string)val;
+                                data.TryGetValue("Votes", out val);
+                                int amount= (int)val;
+
+                                journalEvent = new PowerExpansionVoteCastEvent(timestamp, power, system, amount);
+                                handled = true;
+                                break;
+                            }
+                        case "PowerplaySalary":
+                            {
+                                object val;
+                                data.TryGetValue("Power", out val);
+                                string power = (string)val;
+                                data.TryGetValue("Amount", out val);
+                                int amount = (int)val;
+
+                                journalEvent = new PowerSalaryClaimedEvent(timestamp, power, amount);
+                                handled = true;
+                                break;
+                            }
+                        case "PowerplayCollect":
+                            {
+                                object val;
+                                data.TryGetValue("Power", out val);
+                                string power = (string)val;
+                                data.TryGetValue("Type", out val);
+                                string commodity = (string)val;
+                                data.TryGetValue("Count", out val);
+                                int amount = (int)val;
+
+                                journalEvent = new PowerCommodityObtainedEvent(timestamp, power, commodity, amount);
+                                handled = true;
+                                break;
+                            }
+                        case "PowerplayDeliver":
+                            {
+                                object val;
+                                data.TryGetValue("Power", out val);
+                                string power = (string)val;
+                                data.TryGetValue("Type", out val);
+                                string commodity = (string)val;
+                                data.TryGetValue("Count", out val);
+                                int amount = (int)val;
+
+                                journalEvent = new PowerCommodityDeliveredEvent(timestamp, power, commodity, amount);
+                                handled = true;
+                                break;
+                            }
+                        case "PowerplayFastTrack":
+                            {
+                                object val;
+                                data.TryGetValue("Power", out val);
+                                string power = (string)val;
+                                data.TryGetValue("Cost", out val);
+                                int amount = (int)val;
+
+                                journalEvent = new PowerCommodityFastTrackedEvent(timestamp, power, amount);
+                                handled = true;
+                                break;
+                            }
+                        case "PowerplayVoucher":
+                            {
+                                //object val;
+                                //data.TryGetValue("Power", out val);
+                                //string power = (string)val;
+                                //data.TryGetValue("Cost", out val);
+                                //int amount = (int)val;
+
+                                //journalEvent = new PowerVoucherReceivedEvent(timestamp, power, amount);
+                                //handled = true;
+                                break;
+                            }
                     }
 
                     if (journalEvent != null)
