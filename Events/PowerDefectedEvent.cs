@@ -12,7 +12,7 @@ namespace EddiEvents
     {
         public const string NAME = "Power defected";
         public const string DESCRIPTION = "Triggered when you defect from one power to another";
-        public const string SAMPLE = @"{ ""timestamp"":""2016-11-16T09:28:19Z"", ""event"":""PowerplayDefect"", ""FromPower"":""Zachary Hudson"", ""FromPower"":""Li Yong-Rui"" }";
+        public const string SAMPLE = @"{ ""timestamp"":""2016-11-16T09:28:19Z"", ""event"":""PowerplayDefect"", ""FromPower"":""Zachary Hudson"", ""ToPower"":""Li Yong-Rui"" }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 

@@ -1608,7 +1608,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("System", out val);
                                 string system = (string)val;
                                 data.TryGetValue("Votes", out val);
-                                int amount= (int)val;
+                                int amount= (int)(long)val;
 
                                 journalEvent = new PowerExpansionVoteCastEvent(timestamp, power, system, amount);
                                 handled = true;
@@ -1620,7 +1620,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Power", out val);
                                 string power = (string)val;
                                 data.TryGetValue("Amount", out val);
-                                int amount = (int)val;
+                                int amount = (int)(long)val;
 
                                 journalEvent = new PowerSalaryClaimedEvent(timestamp, power, amount);
                                 handled = true;
@@ -1631,10 +1631,11 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Power", out val);
                                 string power = (string)val;
-                                data.TryGetValue("Type", out val);
+                                // Currently using localised information as we don't have commodity definitions for all powerplay commodities
+                                data.TryGetValue("Type_Localised", out val);
                                 string commodity = (string)val;
                                 data.TryGetValue("Count", out val);
-                                int amount = (int)val;
+                                int amount = (int)(long)val;
 
                                 journalEvent = new PowerCommodityObtainedEvent(timestamp, power, commodity, amount);
                                 handled = true;
@@ -1645,10 +1646,11 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Power", out val);
                                 string power = (string)val;
-                                data.TryGetValue("Type", out val);
+                                // Currently using localised information as we don't have commodity definitions for all powerplay commodities
+                                data.TryGetValue("Type_Localised", out val);
                                 string commodity = (string)val;
                                 data.TryGetValue("Count", out val);
-                                int amount = (int)val;
+                                int amount = (int)(long)val;
 
                                 journalEvent = new PowerCommodityDeliveredEvent(timestamp, power, commodity, amount);
                                 handled = true;
@@ -1660,7 +1662,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Power", out val);
                                 string power = (string)val;
                                 data.TryGetValue("Cost", out val);
-                                int amount = (int)val;
+                                int amount = (int)(long)val;
 
                                 journalEvent = new PowerCommodityFastTrackedEvent(timestamp, power, amount);
                                 handled = true;
@@ -1672,7 +1674,7 @@ namespace EddiJournalMonitor
                                 //data.TryGetValue("Power", out val);
                                 //string power = (string)val;
                                 //data.TryGetValue("Cost", out val);
-                                //int amount = (int)val;
+                                //int amount = (int)(long)val;
 
                                 //journalEvent = new PowerVoucherReceivedEvent(timestamp, power, amount);
                                 //handled = true;
