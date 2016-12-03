@@ -549,6 +549,11 @@ namespace EddiSpeechService
             }
             else
             {
+                // See if we have an exact match
+                if (((long)(((decimal)value) / (decimal)Math.Pow(10, digits - 1))) * (decimal)(Math.Pow(10, digits - 1)) == value)
+                {
+                    return "" + number + " " + order;
+                }
                 if (number > 60)
                 {
                     if (nextDigit < 6)
@@ -559,11 +564,6 @@ namespace EddiSpeechService
                     {
                         return "Nearly " + (number + 1) + " " + order;
                     }
-                }
-                // See if we have an exact match
-                if (((long)(((decimal)value) / (decimal)Math.Pow(10, digits - 1))) * (decimal)(Math.Pow(10, digits - 1)) == value)
-                {
-                    return "" + number + " " + order;
                 }
                 switch (nextDigit)
                 {

@@ -12,7 +12,7 @@ namespace EddiEvents
     {
         public const string NAME = "Power commodity delivered";
         public const string DESCRIPTION = "Triggered when a commander delivers a commodity to a power";
-        public const string SAMPLE = @"{ ""timestamp"":""2016-11-16T09:28:19Z"", ""event"":""PowerplaySalary"", ""Power"":""Zachary Hudson"", ""Amount"":3000 }";
+        public const string SAMPLE = @"{ ""timestamp"":""2016-12-02T16:10:26Z"", ""event"":""PowerplayDeliver"", ""Power"":""Aisling Duval"", ""Type"":""$aislingmediamaterials_name;"", ""Type_Localised"":""Aisling Media Materials"", ""Count"":3 }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
