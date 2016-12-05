@@ -10,6 +10,7 @@
   * Update mission accepted and completed events to contain more fields.  Details on the new fields are in the relevant documentation
   * Update location event with details of station name and type where available
   * Add powerplay events.  Details on the new events are in the relevant documentation
+  * Ensure that personality names do not contain illegal file or path characters to avoid issues when saving them
 
 #2.0.13
   * Fix issue where engineer rank journal message without rank would cause a crash
