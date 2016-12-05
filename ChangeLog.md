@@ -12,6 +12,7 @@
   * Add events when entering and leaving a station's no-fire zone.  Details about the individual events are in the relevant documentation
   * Add powerplay events.  Details on the new events are in the relevant documentation
   * Ensure that personality names do not contain illegal file or path characters to avoid issues when saving them
+  * Send EDDN messages with "Unknown Commander" when commander name is not known
 
 #2.0.13
   * Fix issue where engineer rank journal message without rank would cause a crash
