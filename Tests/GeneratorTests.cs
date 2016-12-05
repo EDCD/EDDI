@@ -24,7 +24,7 @@ namespace Tests
                     if (variables.Count > 0)
                     {
                         Console.WriteLine();
-                        Console.WriteLine("Variables set with this events are as follows:");
+                        Console.WriteLine("Variables set with this event are as follows:");
                         Console.WriteLine();
                         foreach (KeyValuePair<string, string> variable in variables.OrderBy(i => i.Key))
                         {

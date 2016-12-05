@@ -142,7 +142,7 @@ namespace EddiSpeechResponder
             }
             else if (sample is string)
             {
-                // It's as tring so a journal entry.  Parse it
+                // It's a string so a journal entry.  Parse it
                 sampleEvent = JournalMonitor.ParseJournalEntry((string)sample);
             }
             else if (sample is Event)

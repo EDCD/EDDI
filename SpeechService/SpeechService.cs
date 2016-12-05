@@ -333,6 +333,7 @@ namespace EddiSpeechService
                             Logging.Debug("Obtaining best guess culture");
                             string culture = bestGuessCulture(synth);
                             Logging.Debug("Best guess culture is " + culture);
+                            //speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\" onlangfailure=\"ignorelang\"><s>" + speech + "</s></speak>";
                             speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\"><s>" + speech + "</s></speak>";
                             Logging.Debug("Feeding SSML to synthesizer: " + speech);
                             synth.SpeakSsml(speech);
