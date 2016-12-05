@@ -825,17 +825,32 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Channel", out val);
                                 string channel = (string)val;
 
+                                data.TryGetValue("Message", out val);
+                                string message = (string)val;
+
                                 if (!(from.StartsWith("$cmdr") || from.StartsWith("&")))
                                 {
-                                    // For now we log everything that isn't commander speech
-                                    // Stop this for now; we have lots of data already
-                                    // Logging.Report("NPC speech", line);
+                                    // This is NPC speech; see if it's something that we can use
+                                    if (message == "$STATION_NoFireZone_entered;")
+                                    {
+                                        journalEvent = new StationNoFireZoneEnteredEvent(timestamp, false);
+                                    }
+                                    else if (message == "STATION_NoFireZone_entered_deployed;")
+                                    {
+                                        journalEvent = new StationNoFireZoneEnteredEvent(timestamp, true);
+                                    }
+                                    else if (message == "$STATION_NoFireZone_exited;")
+                                    {
+                                        journalEvent = new StationNoFireZoneExitedEvent(timestamp);
+                                    }
+                                    //else if (message.Contains("_StartInterdiction"))
+                                    //{
+                                    //    journalEvent = new ShipInterdictionCommencedEvent(timestamp);
+                                    //}
                                 }
                                 else
                                 {
                                     from = from.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                    data.TryGetValue("Message", out val);
-                                    string message = (string)val;
                                     journalEvent = new MessageReceivedEvent(timestamp, from, true, channel, message);
                                 }
                             }

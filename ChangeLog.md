@@ -9,6 +9,7 @@
   * Provide update and MOTD information in VoiceAttack window if applicable
   * Update mission accepted and completed events to contain more fields.  Details on the new fields are in the relevant documentation
   * Update location event with details of station name and type where available
+  * Add events when entering and leaving a station's no-fire zone.  Details about the individual events are in the relevant documentation
 
 #2.0.13
   * Fix issue where engineer rank journal message without rank would cause a crash
