@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using EddiSpeechResponder;
 using System.Windows;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace EddiVoiceAttackResponder
 {
@@ -68,8 +69,8 @@ namespace EddiVoiceAttackResponder
                 // Spin out a worker thread to keep the VoiceAttack events up-to-date and run event-specific commands
                 updaterThread = new Thread(() =>
                 {
-                        while (true)
-                        {
+                    while (true)
+                    {
                         try
                         {
                             Event theEvent = EventQueue.Take();
@@ -78,51 +79,57 @@ namespace EddiVoiceAttackResponder
                             // Update all standard values
                             setValues(ref vaProxy);
 
-                            // Event-specific values
-                            foreach (string key in Events.VARIABLES[theEvent.type].Keys)
-                            {
-                                // Obtain the value by name.  Actually looking for a method get_<name>
-                                System.Reflection.MethodInfo method = theEvent.GetType().GetMethod("get_" + key);
-                                if (method != null)
-                                {
-                                    Type returnType = method.ReturnType;
-                                    if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                                    {
-                                        returnType = Nullable.GetUnderlyingType(returnType);
-                                    }
+                            setJsonValues(ref vaProxy, "EDDI " + theEvent.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(theEvent)));
 
-                                    string varname = "EDDI " + theEvent.type.ToLowerInvariant() + " " + key;
+                            //// Event-specific values
+                            //foreach (string key in Events.VARIABLES[theEvent.type].Keys)
+                            //{
+                            //    // Obtain the value by name.  Actually looking for a method get_<name>
+                            //    System.Reflection.MethodInfo method = theEvent.GetType().GetMethod("get_" + key);
+                            //    if (method != null)
+                            //    {
+                            //        Type returnType = method.ReturnType;
+                            //        if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                            //        {
+                            //            returnType = Nullable.GetUnderlyingType(returnType);
+                            //        }
 
-                                    if (returnType == typeof(string))
-                                    {
-                                        vaProxy.SetText(varname, (string)method.Invoke(theEvent, null));
-                                    }
-                                    else if (returnType == typeof(int))
-                                    {
-                                        vaProxy.SetInt(varname, (int?)method.Invoke(theEvent, null));
-                                    }
-                                    else if (returnType == typeof(bool))
-                                    {
-                                        vaProxy.SetBoolean(varname, (bool?)method.Invoke(theEvent, null));
-                                    }
-                                    else if (returnType == typeof(decimal))
-                                    {
-                                        vaProxy.SetDecimal(varname, (decimal?)method.Invoke(theEvent, null));
-                                    }
-                                    else if (returnType == typeof(double))
-                                    {
-                                        vaProxy.SetDecimal(varname, (decimal?)(double?)method.Invoke(theEvent, null));
-                                    }
-                                    else if (returnType == typeof(long))
-                                    {
-                                        vaProxy.SetDecimal(varname, (decimal?)(long?)method.Invoke(theEvent, null));
-                                    }
-                                    else
-                                    {
-                                        Logging.Debug("Not handling event field type " + method.ReturnType);
-                                    }
-                                }
-                            }
+                            //        string varname = "EDDI " + theEvent.type.ToLowerInvariant() + " " + key;
+
+                            //        if (returnType == typeof(string))
+                            //        {
+                            //            vaProxy.SetText(varname, (string)method.Invoke(theEvent, null));
+                            //        }
+                            //        else if (returnType == typeof(int))
+                            //        {
+                            //            vaProxy.SetInt(varname, (int?)method.Invoke(theEvent, null));
+                            //        }
+                            //        else if (returnType == typeof(bool))
+                            //        {
+                            //            vaProxy.SetBoolean(varname, (bool?)method.Invoke(theEvent, null));
+                            //        }
+                            //        else if (returnType == typeof(decimal))
+                            //        {
+                            //            vaProxy.SetDecimal(varname, (decimal?)method.Invoke(theEvent, null));
+                            //        }
+                            //        else if (returnType == typeof(double))
+                            //        {
+                            //            vaProxy.SetDecimal(varname, (decimal?)(double?)method.Invoke(theEvent, null));
+                            //        }
+                            //        else if (returnType == typeof(long))
+                            //        {
+                            //            vaProxy.SetDecimal(varname, (decimal?)(long?)method.Invoke(theEvent, null));
+                            //        }
+                            //        else if (returnType == typeof(List<>))
+                            //        {
+                            //            Logging.Debug("Not handling list " + key);
+                            //        }
+                            //        else
+                            //        {
+                            //            Logging.Debug("Not handling event field type " + method.ReturnType);
+                            //        }
+                            //    }
+                            //}
 
                             // Fire local command if present
                             string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
@@ -156,7 +163,78 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void VA_Exit1(dynamic vaProxy)
+        /// <summary>
+        /// Walk a JSON object and write out all of the possible fields
+        /// </summary>
+        private static void setJsonValues(ref dynamic vaProxy, string prefix, dynamic json)
+        {
+            foreach (JProperty child in json)
+            {
+                // We only take fully lower-cased entities, and ignore the raw key (as it's the raw journal event)
+                if ((!new Regex("^[a-z]+$").IsMatch(child.Name)) || child.Name == "raw")
+                {
+                    Logging.Debug("Ignoring key " + child.Name);
+                    continue;
+                }
+
+                string name = prefix + " " + child.Name;
+
+                if (child.Value == null)
+                {
+                    // No idea what it might have been so reset everything
+                    Logging.Warn(prefix + " " + child.Name + " is null; need to reset all values");
+                    vaProxy.SetText(name, null);
+                    vaProxy.SetInt(name, null);
+                    vaProxy.SetDecimal(name, null);
+                    vaProxy.SetBoolean(name, null);
+                    continue;
+                }
+                if (child.Value.Type == JTokenType.Boolean)
+                {
+                    Logging.Debug("Setting boolean value " + name);
+                    vaProxy.SetBoolean(name, (bool?)child.Value);
+                }
+                else if (child.Value.Type == JTokenType.String)
+                {
+                    Logging.Debug("Setting string value " + name);
+                    vaProxy.SetText(name, (string)child.Value);
+                }
+                else if (child.Value.Type == JTokenType.Float)
+                {
+                    Logging.Debug("Setting decimal value " + name);
+                    vaProxy.SetDecimal(name, (decimal?)(double?)child.Value);
+                }
+                else if (child.Value.Type == JTokenType.Integer)
+                {
+                    Logging.Debug("Setting integer value " + name);
+                    vaProxy.SetInt(name, (int?)(long?)child.Value);
+                }
+                else if (child.Value.Type == JTokenType.Date)
+                {
+                    Logging.Debug("Setting date value " + name);
+                    vaProxy.SetDate(name, (DateTime?)child.Value);
+                }
+                else if (child.Value.Type == JTokenType.Array)
+                {
+                    int i = 0;
+                    foreach (JToken arrayChild in child.Value.Children())
+                    {
+                        setJsonValues(ref vaProxy, prefix + " " + child.Name + " " + i++, arrayChild);
+                    }
+                    vaProxy.SetInt(name + " entries", i);
+                }
+                else if (child.Value.Type == JTokenType.Object)
+                {
+                    setJsonValues(ref vaProxy, prefix + " " + child.Name, child.Value);
+                }
+                else
+                {
+                    Logging.Warn(child.Value.Type + ": " + child.Name + "=" + child.Value);
+                }
+            }
+        }
+
+    public static void VA_Exit1(dynamic vaProxy)
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
             updaterThread.Abort();
