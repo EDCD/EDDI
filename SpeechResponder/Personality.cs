@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Utilities;
 
@@ -32,6 +33,11 @@ namespace EddiSpeechResponder
 
         public Personality(string name, string description, Dictionary<string, Script> scripts)
         {
+            // Ensure that the name doesn't have any illegal characters
+            string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
+            Name = r.Replace(name, "");
+
             Name = name;
             Description = description;
             Scripts = scripts;

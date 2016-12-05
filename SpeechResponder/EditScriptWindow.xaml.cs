@@ -85,11 +85,9 @@ namespace EddiSpeechResponder
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
-            if (script != null)
-            {
-                // Updated an existing script so remove it from the list
-                scripts.Remove(script.Name);
-            }
+            // Might be updating an existing script so remove it from the list
+            scripts.Remove(script.Name);
+
             script = new Script(scriptName, scriptDescription, script == null ? false : script.Responder, scriptValue);
             scripts.Add(script.Name, script);
 
