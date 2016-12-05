@@ -211,7 +211,7 @@ namespace EDDNResponder
             //    hash.Append(theByte.ToString("x2"));
             //}
             //return hash.ToString();
-            return EDDI.Instance.Cmdr == null ? "Unknown commander" : EDDI.Instance.Cmdr.name;
+            return EDDI.Instance.Cmdr == null || EDDI.Instance.Cmdr.name == null ? "Unknown commander" : EDDI.Instance.Cmdr.name;
         }
 
         private static EDDNHeader generateHeader()
