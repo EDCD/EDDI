@@ -41,6 +41,12 @@ namespace EDDNResponder
 
         public void Handle(Event theEvent)
         {
+            if (EDDI.Instance.inCQC)
+            {
+                // We don't do anything whilst in CQC
+                return;
+            }
+
             Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
             if (theEvent is DockedEvent)
             {

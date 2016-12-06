@@ -36,7 +36,7 @@ namespace Eddi
 
         private static bool running = true;
 
-        private bool inCQC = false;
+        public bool inCQC { get; private set; } = false;
 
         static EDDI()
         {
