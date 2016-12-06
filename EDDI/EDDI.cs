@@ -351,6 +351,50 @@ namespace Eddi
         }
 
         /// <summary>
+        /// Obtain a named responder
+        /// </summary>
+        public EDDIResponder ObtainResponder(string name)
+        {
+            foreach (EDDIResponder responder in responders)
+            {
+                if (responder.ResponderName() == name)
+                {
+                    return responder;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Disable a named responder for this session.  This does not update the on-disk status of the responder
+        /// </summary>
+        public void DisableResponder(string name)
+        {
+            EDDIResponder responder = ObtainResponder(name);
+            if (responder != null)
+            {
+                responder.Stop();
+                activeResponders.Remove(responder);
+            }
+        }
+
+        /// <summary>
+        /// Enable a named responder for this session.  This does not update the on-disk status of the responder
+        /// </summary>
+        public void EnableResponder(string name)
+        {
+            EDDIResponder responder = ObtainResponder(name);
+            if (responder != null)
+            {
+                if (!activeResponders.Contains(responder))
+                {
+                    responder.Start();
+                    activeResponders.Add(responder);
+                }
+            }
+        }
+
+        /// <summary>
         /// Reload a specific monitor or responder
         /// </summary>
         public void Reload(string name)

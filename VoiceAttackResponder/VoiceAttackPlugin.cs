@@ -41,8 +41,6 @@ namespace EddiVoiceAttackResponder
         public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
         public static Thread updaterThread = null;
 
-        private static SpeechResponder speechResponder = new SpeechResponder();
-
         public static void VA_Init1(dynamic vaProxy)
         {
             Logging.Info("Initialising EDDI VoiceAttack plugin");
@@ -278,14 +276,11 @@ namespace EddiVoiceAttackResponder
                     case "setstate":
                         InvokeSetState(ref vaProxy);
                         break;
-                    default:
-                        //if (context.ToLower().StartsWith("event:"))
-                        //{
-                        //    // Inject an event
-                        //    string data = context.Replace("event: ", "");
-                        //    JObject eventData = JObject.Parse(data);
-                        //    //LogQueue.Add(eventData);
-                        //}
+                    case "disablespeechresponder":
+                        InvokeDisableSpeechResponder(ref vaProxy);
+                        break;
+                    case "enablespeechresponder":
+                        InvokeEnableSpeechResponder(ref vaProxy);
                         break;
                 }
             }
@@ -535,11 +530,40 @@ namespace EddiVoiceAttackResponder
 
                 int? priority = vaProxy.GetInt("Priority");
 
+                SpeechResponder speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech responder");
+                if (speechResponder == null)
+                {
+                    Logging.Warn("Unable to find speech responder");
+                }
                 speechResponder.Say(script, null, priority);
             }
             catch (Exception e)
             {
                 setStatus(ref vaProxy, "Failed to run internal speech system", e);
+            }
+        }
+
+        public static void InvokeDisableSpeechResponder(ref dynamic vaProxy)
+        {
+            try
+            {
+                EDDI.Instance.DisableResponder("Speech responder");
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to disable speech responder", e);
+            }
+        }
+
+        public static void InvokeEnableSpeechResponder(ref dynamic vaProxy)
+        {
+            try
+            {
+                EDDI.Instance.EnableResponder("Speech responder");
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to enable speech responder", e);
             }
         }
 

@@ -292,6 +292,18 @@ This function stops any active EDDI speech.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'shutup'.
 
+### disablespeechresponder
+
+This function disables the speech responder until either VoiceAttack is restarted or an enablespeechresponder call is made.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'disablespeechresponder'.
+
+### enablespeechresponder
+
+This function enables the speech responder until either VoiceAttack is restarted or a disablespeechresponder call is made.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'enablespeechresponder'.
+
 ### profile
 
 This function obtains the latest information from the Elite servers.  It will give you up-to-date information on your ship (including its loadout and cargo), the station you are docked at, and your credit balance and rankings.
