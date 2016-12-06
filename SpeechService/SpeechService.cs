@@ -243,15 +243,13 @@ namespace EddiSpeechService
                 Logging.Debug("Source is null; skipping");
                 return;
             }
-            Logging.Debug("Creating waitHandle");
+
             using (EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset))
             {
                 ISoundOut soundOut = GetSoundOut();
                 try
                 {
-                    Logging.Debug("Setting up soundOut");
                     soundOut.Initialize(source);
-                    Logging.Debug("Configuring waitHandle");
                     soundOut.Stopped += (s, e) => waitHandle.Set();
 
                     TimeSpan waitTime = source.GetTime(source.Length);
@@ -321,12 +319,9 @@ namespace EddiSpeechService
 
                         Logging.Debug("Configuration is " + configuration == null ? "<null>" : JsonConvert.SerializeObject(configuration));
                         synth.Rate = configuration.Rate;
-                        Logging.Debug("Rate is " + synth.Rate);
                         synth.Volume = configuration.Volume;
-                        Logging.Debug("Volume is " + synth.Volume);
 
                         synth.SetOutputToWaveStream(stream);
-                        Logging.Debug("Output set to stream");
 
                         if (speech.Contains("<"))
                         {

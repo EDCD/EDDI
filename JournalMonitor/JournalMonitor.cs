@@ -198,14 +198,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("StarSystem", out val);
                                 string systemName = (string)val;
 
-                                if (string.IsNullOrEmpty(systemName))
-                                {
-                                    // This happens if we are in CQC.  Flag it back to EDDI so that it ignores everything that happens until
-                                    // we're out of CQC again
-                                    journalEvent = new EnteredCQCEvent(timestamp);
-                                    break;
-                                }
-                                else if (systemName == "Training")
+                                if (systemName == "Training")
                                 {
                                     // Training system; ignore
                                     break;
@@ -1168,8 +1161,19 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Commander", out val);
                                 string commander = (string)val;
+
                                 data.TryGetValue("ShipID", out val);
                                 int? shipId = (int?)(long?)val;
+
+                                if (shipId == null)
+                                {
+                                    // This happens if we are in CQC.  Flag it back to EDDI so that it ignores everything that happens until
+                                    // we're out of CQC again
+                                    journalEvent = new EnteredCQCEvent(timestamp, commander);
+                                    handled = true;
+                                    break;
+                                }
+
                                 data.TryGetValue("Ship", out val);
                                 string shipModel = (string)val;
                                 Ship ship = findShip(shipId, shipModel);
