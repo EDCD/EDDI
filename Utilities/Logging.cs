@@ -108,9 +108,16 @@ namespace Utilities
         {
             lock (logLock)
             {
-                using (StreamWriter file = new StreamWriter(LogFile, true))
+                try
                 {
-                    file.WriteLine(DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture) + " " + Path.GetFileNameWithoutExtension(path) + ":" + method + " [" + level + "] " + data);
+                    using (StreamWriter file = new StreamWriter(LogFile, true))
+                    {
+                        file.WriteLine(DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture) + " " + Path.GetFileNameWithoutExtension(path) + ":" + method + " [" + level + "] " + data);
+                    }
+                }
+                catch (Exception)
+                {
+                    // Failed; can't do anything about it as we're in the logging code anyway
                 }
             }
         }
