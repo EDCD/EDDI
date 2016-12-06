@@ -482,7 +482,7 @@ namespace EddiSpeechService
                 return "zero";
             }
 
-            if (value < 1)
+            if (value < 10)
             {
                 // Work out how many 0s to begin with
                 int numzeros = -1;

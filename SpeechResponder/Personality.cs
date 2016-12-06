@@ -151,6 +151,11 @@ namespace EddiSpeechResponder
         /// </summary>
         public Personality Copy(string name, string description)
         {
+            // Tidy the name up to avoid bad characters
+            string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
+            name = r.Replace(name, "");
+
             // Save a copy of this personality
             string iname = name.ToLowerInvariant();
             string copyPath = Constants.DATA_DIR + @"\personalities\" + iname + ".json";
