@@ -198,7 +198,14 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("StarSystem", out val);
                                 string systemName = (string)val;
 
-                                if (systemName == "Training")
+                                if (string.IsNullOrEmpty(systemName))
+                                {
+                                    // This happens if we are in CQC.  Flag it back to EDDI so that it ignores everything that happens until
+                                    // we're out of CQC again
+                                    journalEvent = new EnteredCQCEvent(timestamp);
+                                    break;
+                                }
+                                else if (systemName == "Training")
                                 {
                                     // Training system; ignore
                                     break;

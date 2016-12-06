@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnteredCQCEvent.cs" />
     <Compile Include="StationNoFireZoneExitedEvent.cs" />
     <Compile Include="StationNoFireZoneEnteredEvent.cs" />
     <Compile Include="PowerCommodityFastTrackedEvent.cs" />

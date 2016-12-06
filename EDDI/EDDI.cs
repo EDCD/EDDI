@@ -36,6 +36,8 @@ namespace Eddi
 
         private static bool running = true;
 
+        private bool inCQC = false;
+
         static EDDI()
         {
             // Set up our app directory
@@ -526,6 +528,10 @@ namespace Eddi
                     {
                         passEvent = eventCombatPromotionEvent((CombatPromotionEvent)journalEvent);
                     }
+                    else if (journalEvent is EnteredCQCEvent)
+                    {
+                        passEvent = eventEnteredCQCEvent((EnteredCQCEvent)journalEvent);
+                    }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -829,6 +835,9 @@ namespace Eddi
 
         private bool eventCommanderContinuedEvent(CommanderContinuedEvent theEvent)
         {
+            // If we see this it means that we aren't in CQC
+            inCQC = false;
+
             SetShip(theEvent.Ship);
 
             if (Cmdr.name == null)
@@ -845,6 +854,13 @@ namespace Eddi
             // Hence we check to see if this is a real event by comparing our known combat rating to the promoted rating
 
             return theEvent.rating != Cmdr.combatrating.name;
+        }
+
+        private bool eventEnteredCQCEvent(EnteredCQCEvent theEvent)
+        {
+            // In CQC we don't want to report anything, so set our CQC flag
+            inCQC = true;
+            return true;
         }
 
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
