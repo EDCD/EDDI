@@ -169,6 +169,9 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("FuelLevel", out val);
                                 decimal fuelRemaining = (decimal)(double)val;
 
+                                data.TryGetValue("JumpDist", out val);
+                                decimal distance = (decimal)(double)val;
+
                                 data.TryGetValue("SystemAllegiance", out val);
                                 // FD sends "" rather than null; fix that here
                                 if (((string)val) == "") { val = null; }
@@ -187,7 +190,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("SystemSecurity", out val);
                                 SecurityLevel security = SecurityLevel.FromEDName((string)val);
 
-                                journalEvent = new JumpedEvent(timestamp, systemName, x, y, z, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security);
+                                journalEvent = new JumpedEvent(timestamp, systemName, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security);
                             }
                             handled = true;
                             break;

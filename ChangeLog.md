@@ -17,6 +17,8 @@
   * Add VoiceAttack 'disablespeechresponder' and 'enablespeechresponder' contexts.  Details on these are in the VoiceAttack documentation
   * Unconditionally disable EDDN and EDSM responders whilst in CQC.  This ensures that no data is accidentally sent to these systems
   * Add 'target' to BountyAwardedEvent for Elite release 2.2.03 and above
+  * Add 'distance' to JumpedEvent.  This provides the distance jumped, in light years
+  * Removed reference to 'last jump' in VoiceAttack documentation (this is provided by the JumpedEvent)
 
 #2.0.13
   * Fix issue where engineer rank journal message without rank would cause a crash

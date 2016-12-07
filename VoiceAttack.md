@@ -256,8 +256,7 @@ If a value is not available it will be not set rather than empty.
 
 ### Miscellaneous Variables
 
-  * {TXT:Environment}: the environment the ship is in (either "Normal space" or "Supercruise")
-  * {DEC:Last jump}: the number of lights years between this system and the last, to two decimal places
+  * {TXT:Environment}: the environment the ship is in ("Normal space", "Supercruise" or "Witch space")
 
 EDDI also provides a number of pre-built commands to show off some of what it is capable of.  These include:
 
