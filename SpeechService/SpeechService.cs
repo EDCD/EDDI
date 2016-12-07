@@ -61,14 +61,14 @@ namespace EddiSpeechService
             configuration = SpeechServiceConfiguration.FromFile();
         }
 
-        public void Say(Ship ship, string speech, bool wait, int priority = 3)
+        public void Say(Ship ship, string speech, bool wait, int priority = 3, string voice = null)
         {
             if (speech == null)
             {
                 return;
             }
 
-            Speak(speech, null, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, wait, priority);
+            Speak(speech, voice, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, wait, priority);
         }
 
         public void ShutUp()

@@ -157,7 +157,7 @@ namespace EddiSpeechResponder
             }
 
             ScriptResolver scriptResolver = new ScriptResolver(newScripts);
-            responder.Say(scriptResolver, ScriptName, sampleEvent, 3, false);
+            responder.Say(scriptResolver, ScriptName, sampleEvent, 3, null, false);
         }
 
         private void showDefaultButtonClick(object sender, RoutedEventArgs e)

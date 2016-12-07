@@ -119,13 +119,13 @@ namespace EddiSpeechResponder
         }
 
         // Say something with the default resolver
-        public void Say(string scriptName, Event theEvent = null, int? priority = null, bool? wait = null)
+        public void Say(string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null)
         {
-            Say(scriptResolver, scriptName, theEvent, priority);
+            Say(scriptResolver, scriptName, theEvent, priority, voice);
         }
 
         // Say something with a custom resolver
-        public void Say(ScriptResolver resolver, string scriptName, Event theEvent = null, int? priority = null, bool? wait = null)
+        public void Say(ScriptResolver resolver, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null)
         {
             Dictionary<string, Cottle.Value> dict = createVariables(theEvent);
             string speech = resolver.resolve(scriptName, dict);
@@ -136,7 +136,7 @@ namespace EddiSpeechResponder
                     // Log a tidied version of the speech
                     log(Regex.Replace(speech, "<.*?>", string.Empty));
                 }
-                SpeechService.Instance.Say(EDDI.Instance.Ship, speech, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority));
+                SpeechService.Instance.Say(EDDI.Instance.Ship, speech, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority), voice);
             }
         }
 

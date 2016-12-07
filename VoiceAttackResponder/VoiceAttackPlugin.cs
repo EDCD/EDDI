@@ -282,6 +282,9 @@ namespace EddiVoiceAttackResponder
                     case "enablespeechresponder":
                         InvokeEnableSpeechResponder(ref vaProxy);
                         break;
+                    case "setspeechresponderpersonality":
+                        InvokeSetSpeechResponderPersonality(ref vaProxy);
+                        break;
                 }
             }
             catch (Exception e)
@@ -492,9 +495,11 @@ namespace EddiVoiceAttackResponder
                     priority = 3;
                 }
 
+                string voice = vaProxy.GetText("Voice");
+
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(EDDI.Instance.Ship, speech, true, (int)priority);
+                SpeechService.Instance.Say(EDDI.Instance.Ship, speech, true, (int)priority, voice);
             }
             catch (Exception e)
             {
@@ -535,7 +540,10 @@ namespace EddiVoiceAttackResponder
                 {
                     Logging.Warn("Unable to find speech responder");
                 }
-                speechResponder.Say(script, null, priority);
+
+                string voice = vaProxy.GetText("Voice");
+
+                speechResponder.Say(script, null, priority, voice);
             }
             catch (Exception e)
             {
@@ -564,6 +572,23 @@ namespace EddiVoiceAttackResponder
             catch (Exception e)
             {
                 setStatus(ref vaProxy, "Failed to enable speech responder", e);
+            }
+        }
+
+        public static void InvokeSetSpeechResponderPersonality(ref dynamic vaProxy)
+        {
+            string personality = vaProxy.GetText("Personality");
+            try
+            {
+                SpeechResponder speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech responder");
+                if (speechResponder != null)
+                {
+                    speechResponder.SetPersonality(personality);
+                }
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to set speech responder personality", e);
             }
         }
 
