@@ -247,6 +247,12 @@ namespace EddiJournalMonitor
 
                                 data.TryGetValue("Target", out val);
                                 string target = (string)val;
+                                if (target != null)
+                                {
+                                    // Target might be a ship, but if not then the string we provide is repopulated in ship.model so use it regardless
+                                    Ship ship = ShipDefinitions.FromEDModel(target);
+                                    target = ship.model;
+                                }
 
                                 data.TryGetValue("VictimFaction", out val);
                                 string victimFaction = (string)val;

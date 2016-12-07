@@ -14,8 +14,9 @@
   * Ensure that personality names do not contain illegal file or path characters to avoid issues when saving them
   * Send EDDN messages with "Unknown Commander" when commander name is not known
   * Use recursive/dynamic method to populate VoiceAttack variables.  This provides many more VoiceAttack variables than were previously available; details are in the relevent documentation
-  * Add VoiceAttack 'disablespeechresponder' and 'enablespeechresponder' contexts.  Details on these are in the VoiceAttack documentation.
-  * Unconditionally disable EDDN and EDSM responders whilst in CQC.  This ensures that no data is accidentally sent to these systems.
+  * Add VoiceAttack 'disablespeechresponder' and 'enablespeechresponder' contexts.  Details on these are in the VoiceAttack documentation
+  * Unconditionally disable EDDN and EDSM responders whilst in CQC.  This ensures that no data is accidentally sent to these systems
+  * Add 'target' to BountyAwardedEvent for Elite release 2.2.03 and above
 
 #2.0.13
   * Fix issue where engineer rank journal message without rank would cause a crash
