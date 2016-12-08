@@ -41,6 +41,12 @@ namespace EDDNResponder
 
         public void Handle(Event theEvent)
         {
+            if (EDDI.Instance.inCQC)
+            {
+                // We don't do anything whilst in CQC
+                return;
+            }
+
             Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
             if (theEvent is DockedEvent)
             {
@@ -211,7 +217,7 @@ namespace EDDNResponder
             //    hash.Append(theByte.ToString("x2"));
             //}
             //return hash.ToString();
-            return EDDI.Instance.Cmdr == null ? "Unknown commander" : EDDI.Instance.Cmdr.name;
+            return EDDI.Instance.Cmdr == null || EDDI.Instance.Cmdr.name == null ? "Unknown commander" : EDDI.Instance.Cmdr.name;
         }
 
         private static EDDNHeader generateHeader()

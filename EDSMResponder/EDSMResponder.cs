@@ -72,6 +72,12 @@ namespace EddiEdsmResponder
 
         public void Handle(Event theEvent)
         {
+            if (EDDI.Instance.inCQC)
+            {
+                // We don't do anything whilst in CQC
+                return;
+            }
+
             if (starMapService != null)
             {
                 // We could receive either or both of JumpingEvent and JumpedEvent.  Send EDSM update as soon as possible,

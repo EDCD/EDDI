@@ -36,6 +36,8 @@ namespace Eddi
 
         private static bool running = true;
 
+        public bool inCQC { get; private set; } = false;
+
         static EDDI()
         {
             // Set up our app directory
@@ -351,6 +353,50 @@ namespace Eddi
         }
 
         /// <summary>
+        /// Obtain a named responder
+        /// </summary>
+        public EDDIResponder ObtainResponder(string name)
+        {
+            foreach (EDDIResponder responder in responders)
+            {
+                if (responder.ResponderName() == name)
+                {
+                    return responder;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Disable a named responder for this session.  This does not update the on-disk status of the responder
+        /// </summary>
+        public void DisableResponder(string name)
+        {
+            EDDIResponder responder = ObtainResponder(name);
+            if (responder != null)
+            {
+                responder.Stop();
+                activeResponders.Remove(responder);
+            }
+        }
+
+        /// <summary>
+        /// Enable a named responder for this session.  This does not update the on-disk status of the responder
+        /// </summary>
+        public void EnableResponder(string name)
+        {
+            EDDIResponder responder = ObtainResponder(name);
+            if (responder != null)
+            {
+                if (!activeResponders.Contains(responder))
+                {
+                    responder.Start();
+                    activeResponders.Add(responder);
+                }
+            }
+        }
+
+        /// <summary>
         /// Reload a specific monitor or responder
         /// </summary>
         public void Reload(string name)
@@ -481,6 +527,10 @@ namespace Eddi
                     else if (journalEvent is CombatPromotionEvent)
                     {
                         passEvent = eventCombatPromotionEvent((CombatPromotionEvent)journalEvent);
+                    }
+                    else if (journalEvent is EnteredCQCEvent)
+                    {
+                        passEvent = eventEnteredCQCEvent((EnteredCQCEvent)journalEvent);
                     }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -785,6 +835,9 @@ namespace Eddi
 
         private bool eventCommanderContinuedEvent(CommanderContinuedEvent theEvent)
         {
+            // If we see this it means that we aren't in CQC
+            inCQC = false;
+
             SetShip(theEvent.Ship);
 
             if (Cmdr.name == null)
@@ -801,6 +854,13 @@ namespace Eddi
             // Hence we check to see if this is a real event by comparing our known combat rating to the promoted rating
 
             return theEvent.rating != Cmdr.combatrating.name;
+        }
+
+        private bool eventEnteredCQCEvent(EnteredCQCEvent theEvent)
+        {
+            // In CQC we don't want to report anything, so set our CQC flag
+            inCQC = true;
+            return true;
         }
 
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>

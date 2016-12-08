@@ -256,8 +256,7 @@ If a value is not available it will be not set rather than empty.
 
 ### Miscellaneous Variables
 
-  * {TXT:Environment}: the environment the ship is in (either "Normal space" or "Supercruise")
-  * {DEC:Last jump}: the number of lights years between this system and the last, to two decimal places
+  * {TXT:Environment}: the environment the ship is in ("Normal space", "Supercruise" or "Witch space")
 
 EDDI also provides a number of pre-built commands to show off some of what it is capable of.  These include:
 
@@ -278,11 +277,15 @@ EDDI's VoiceAttack plugin allows you to access its features in your own profile.
 
 This function uses EDDI's voice to read a script.  The script should be a text variable with the name 'Script'.
 
+If you want to use a different voice to the standard one then you can set the name of the voice you want to use in a text variable with the name 'Voice'.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
+
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'say'.
 
 ### speech
 
 This function uses EDDI's voice to read a Speech Responder script.  The name of the script should be a text variable with the name 'Script'.
+
+If you want to use a different voice to the standard one then you can set the name of the voice you want to use in a text variable with the name 'Voice'.  Note that when you set this variable it will continue to be used until you unset it, at which point EDDI will use the voice configured in its text-to-speech settings.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'speech'.
 
@@ -291,6 +294,26 @@ To use this function in your own commands use the 'Execute an external plugin fu
 This function stops any active EDDI speech.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'shutup'.
+
+### disablespeechresponder
+
+This function disables the speech responder until either VoiceAttack is restarted or an enablespeechresponder call is made.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'disablespeechresponder'.
+
+### enablespeechresponder
+
+This function enables the speech responder until either VoiceAttack is restarted or a disablespeechresponder call is made.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'enablespeechresponder'.
+
+### setspeechresponderpersonality
+
+This function changes the speech responder's personality.  The name of the personality should be a text variable with the name 'Personality'.
+
+Note that unlike enablespeechresponder and disablespeechresponder any changes made here are persistent.
+
+To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'setspeechresponderpersonality'.
 
 ### profile
 

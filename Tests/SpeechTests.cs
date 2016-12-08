@@ -420,6 +420,18 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestSpeechHumanize9()
+        {
+            Assert.AreEqual("10 thousand", Translations.Humanize(10000));
+        }
+
+        [TestMethod]
+        public void TestSpeechHumanize10()
+        {
+            Assert.AreEqual("100 thousand", Translations.Humanize(100000));
+        }
+
+        [TestMethod]
         public void TestSpeechServiceQueue()
         {
             Thread thread1 = new Thread(() => SpeechService.Instance.Say(null, "Hello.", true));

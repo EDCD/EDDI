@@ -28,7 +28,9 @@ namespace EddiDataDefinitions
 
         public static readonly Voucher Bounty = new Voucher("bounty", "Bounty");
         public static readonly Voucher Bond = new Voucher("CombatBond", "Combat Bond");
+        public static readonly Voucher Scannable = new Voucher("scannable", "Scannable");
         public static readonly Voucher Settlement = new Voucher("settlement", "Settlement");
+        public static readonly Voucher Trade = new Voucher("trade", "Trade");
 
         public static Voucher FromName(string from)
         {

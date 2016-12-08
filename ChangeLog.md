@@ -10,6 +10,26 @@
   * Update mission accepted and completed events to contain more fields.  Details on the new fields are in the relevant documentation
   * Update location event with details of station name and type where available
   * Add events when entering and leaving a station's no-fire zone.  Details about the individual events are in the relevant documentation
+  * Add powerplay events.  Details on the new events are in the relevant documentation
+  * Ensure that personality names do not contain illegal file or path characters to avoid issues when saving them
+  * Send EDDN messages with "Unknown Commander" when commander name is not known
+  * Use recursive/dynamic method to populate VoiceAttack variables.  This provides many more VoiceAttack variables than were previously available; details are in the relevent documentation
+  * Add VoiceAttack 'disablespeechresponder' and 'enablespeechresponder' contexts to temporarily disable and enable the speech responder.  Details on these are in the VoiceAttack documentation
+  * Unconditionally disable EDDN and EDSM responders whilst in CQC.  This ensures that no data is accidentally sent to these systems
+  * Add 'target' to BountyAwardedEvent for Elite release 2.2.03 and above
+  * Add 'distance' to JumpedEvent.  This provides the distance jumped, in light years
+  * Remove reference to 'last jump' in VoiceAttack documentation (this is provided by the JumpedEvent)
+  * Add 'Voice' parameter for VoiceAttack's 'say' and 'speech' commands to allow individual over-rides of default Voice
+  * Add VoiceAttack 'setspeechresponderpersonality' context to change the speech responder's personality.  Details on this is in the VoiceAttack documentation
+  * Updated EDDI's default scripts:
+    * Added scripts for new events 'Entered CQC', 'Power commodity fast tracked', 'Power commodity delivered', 'Power commodity obtained', 'Power salary claimed', 'Power expansion vote cast', 'Power defected', 'Power left', and 'Power joined'
+	* Updated script for 'Mission completed' event to provide more detail on the accepting faction and reward
+	* Updated script for 'Mission accepted' event to provide a warning about illegal passengers
+	* Updated script for 'Jumping' event to recognise when last system's allegiance is null (as opposed to empty)
+	* Updated 'Docking denied' script to provide info on the reason
+	* Updated 'Location' script to provide correct information when docked at ground stations
+	* Updated 'Body scanned' script to provide additional information about rotation period of the planetary
+	* Updated 'Galnet news published' script to read full contents of interesting items
 
 #2.0.13
   * Fix issue where engineer rank journal message without rank would cause a crash

@@ -97,12 +97,12 @@ namespace EddiSpeechResponder
             {
                 sampleEvent = null;
             }
-            else if (sample.GetType() == typeof(string))
+            else if (sample is string)
             {
                 // It's as tring so a journal entry.  Parse it
                 sampleEvent = JournalMonitor.ParseJournalEntry((string)sample);
             }
-            else if (sample.GetType() == typeof(Event))
+            else if (sample is Event)
             {
                 // It's a direct event
                 sampleEvent = (Event)sample;
