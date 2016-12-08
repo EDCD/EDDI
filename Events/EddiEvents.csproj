@@ -51,7 +51,7 @@
     <Compile Include="PowerCommodityDeliveredEvent.cs" />
     <Compile Include="PowerCommodityObtainedEvent.cs" />
     <Compile Include="PowerSalaryClaimedEvent.cs" />
-    <Compile Include="PowerExpansionVoteCastEvent.cs" />
+    <Compile Include="PowerPerparationVoteCastEvent.cs" />
     <Compile Include="PowerDefectedEvent.cs" />
     <Compile Include="PowerLeftEvent.cs" />
     <Compile Include="PowerJoinedEvent.cs" />

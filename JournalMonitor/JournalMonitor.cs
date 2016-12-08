@@ -1635,7 +1635,7 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
-                        case "PowerplayVoteCast":
+                        case "PowerplayVote":
                             {
                                 object val;
                                 data.TryGetValue("Power", out val);
@@ -1645,7 +1645,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Votes", out val);
                                 int amount= (int)(long)val;
 
-                                journalEvent = new PowerExpansionVoteCastEvent(timestamp, power, system, amount);
+                                journalEvent = new PowerPreparationVoteCast(timestamp, power, system, amount);
                                 handled = true;
                                 break;
                             }

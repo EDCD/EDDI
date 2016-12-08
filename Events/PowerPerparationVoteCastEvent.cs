@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace EddiEvents
 {
-    public class PowerExpansionVoteCastEvent : Event
+    public class PowerPreparationVoteCast : Event
     {
-        public const string NAME = "Power expansion vote cast";
-        public const string DESCRIPTION = "Triggered when a commander votes for system expansion";
+        public const string NAME = "Power preparation vote cast";
+        public const string DESCRIPTION = "Triggered when a commander votes for system perparation";
         public const string SAMPLE = @"{ ""timestamp"":""2016-11-16T09:28:19Z"", ""event"":""PowerplayVote"", ""Power"":""Zachary Hudson"", ""System"":""Sol"", ""Votes"":10 }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static PowerExpansionVoteCastEvent()
+        static PowerPreparationVoteCast()
         {
             VARIABLES.Add("power", "The name of the power for which the commander is voting");
-            VARIABLES.Add("system", "The name of the system for which the commander voted");
+            VARIABLES.Add("system", "The name of the system for which the commander voted (might be missing due to journal bug)");
             VARIABLES.Add("amount", "The number of votes cast for the system");
         }
 
@@ -29,7 +29,7 @@ namespace EddiEvents
 
         public int amount { get; private set; }
 
-        public PowerExpansionVoteCastEvent(DateTime timestamp, string power, string system, int amount) : base(timestamp, NAME)
+        public PowerPreparationVoteCast(DateTime timestamp, string power, string system, int amount) : base(timestamp, NAME)
         {
             this.power = power;
             this.system = system;
