@@ -1,3 +1,6 @@
+#2.1.0-b2
+  * Add 'Engineer' government type for engineer bases
+
 #2.1.0-b1
   * Fix material name for Cadmium
   * Add ability to set state variables from VoiceAttack.  Details on how to use this are in the VoiceAttack documentation
