@@ -110,7 +110,12 @@ namespace Eddi
                 ExceptionlessClient.Default.Configuration.SetVersion(Constants.EDDI_VERSION);
 
                 // Start by fetching information from the update server, and handling appropriately
-                Server = UpdateServer();
+                if (!UpdateServer())
+                {
+                    // We are too old to continue; don't
+                    running = false;
+                    return;
+                }
 
                 // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
                 Cmdr = new Commander();
@@ -211,7 +216,7 @@ namespace Eddi
         /// <summary>
         /// Obtain and check the information from the update server
         /// </summary>
-        private static InstanceInfo UpdateServer()
+        private bool UpdateServer()
         {
             try
             {
@@ -219,22 +224,48 @@ namespace Eddi
                 if (updateServerInfo == null)
                 {
                     Logging.Warn("Failed to contact update server");
+                    return false;
                 }
                 else
                 {
                     InstanceInfo info = Constants.EDDI_VERSION.Contains("b") ? updateServerInfo.beta : updateServerInfo.production;
-                    if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == -1)
+                    if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
-                        // We are too old to run
-                        Logging.Info("EDDI requires an update.  Please download the latest version at " + info.url);
-                        SpeechService.Instance.Say(null, "EDDI requires an update.", true);
-                        System.Environment.Exit(1);
+                        Logging.Warn("This version of EDDI is too old to operate; please upgrade at " + info.url);
+                        SpeechService.Instance.Say(null, "This version of EDDI is too old to operate; please upgrade.", true);
+                        //SpeechService.Instance.Say(null, "EDDI requires an update.  Downloading.", true);
+                        //// We are too old to run - update
+                        //string updateFile = Net.DownloadFile(info.url, @"EDDI-update.exe");
+                        //if (updateFile == null)
+                        //{
+                        //    SpeechService.Instance.Say(null, "Download failed.  Please try again later.", true);
+                        //}
+                        //else
+                        //{
+                        //    Logging.Info("Downloaded to " + updateFile);
+                        //    SpeechService.Instance.Say(null, "Download complete.  Please restart EDDI once upgrade has finished.", true);
+                        //    Process.Start(updateFile, @"/silent /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
+                        //}
+                        //System.Environment.Exit(1);
                     }
 
                     if (Versioning.Compare(info.version, Constants.EDDI_VERSION) == 1)
                     {
                         // There is an update available
-                        SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", false);
+                        SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", true);
+                        //SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.  Downloading.", true);
+                        //string updateFile = Net.DownloadFile(info.url, @"EDDI-update.exe");
+                        //if (updateFile == null)
+                        //{
+                        //    SpeechService.Instance.Say(null, "Download failed.  EDDI will try again next time.", true);
+                        //}
+                        //else
+                        //{
+                        //    Logging.Info("Downloaded to " + updateFile);
+                        //    SpeechService.Instance.Say(null, "Download complete.  Please restart EDDI once upgrade has finished.", true);
+                        //    Process.Start(updateFile, @"/silent /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
+                        //    System.Environment.Exit(1);
+                        //}
                     }
 
                     if (info.motd != null)
@@ -242,7 +273,7 @@ namespace Eddi
                         // There is a message
                         SpeechService.Instance.Say(null, info.motd, false);
                     }
-                    return info;
+                    Server = info;
                 }
             }
             catch (Exception ex)
@@ -250,7 +281,7 @@ namespace Eddi
                 SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
                 Logging.Warn("Failed to access api.eddp.co", ex);
             }
-            return null;
+            return true;
         }
 
         public void Start()
