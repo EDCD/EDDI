@@ -2,6 +2,7 @@
   * Add 'Engineer' government type for engineer bases
   * Enable update and outdate messages
   * Ensure that VoiceAttack decimal values are not written as integers
+  * Add 'SetState' Cottle function.  Details on how to use this are in the SpeechResponder documentation
 
 #2.1.0-b1
   * Fix material name for Cadmium
