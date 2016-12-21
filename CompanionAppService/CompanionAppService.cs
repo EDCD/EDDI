@@ -567,18 +567,18 @@ namespace EddiCompanionAppService
         private static void AugmentCmdrInfo(Commander cmdr)
         {
             Logging.Debug("Entered");
-            if (cmdr != null)
-            {
-                CommanderConfiguration cmdrConfiguration = CommanderConfiguration.FromFile();
-                if (cmdrConfiguration.PhoneticName == null || cmdrConfiguration.PhoneticName.Trim().Length == 0)
-                {
-                    cmdr.phoneticname = null;
-                }
-                else
-                {
-                    cmdr.phoneticname = cmdrConfiguration.PhoneticName;
-                }
-            }
+            //if (cmdr != null)
+            //{
+            //    CommanderConfiguration cmdrConfiguration = CommanderConfiguration.FromFile();
+            //    if (cmdrConfiguration.PhoneticName == null || cmdrConfiguration.PhoneticName.Trim().Length == 0)
+            //    {
+            //        cmdr.phoneticname = null;
+            //    }
+            //    else
+            //    {
+            //        cmdr.phoneticname = cmdrConfiguration.PhoneticName;
+            //    }
+            //}
             Logging.Debug("Leaving");
         }
 
