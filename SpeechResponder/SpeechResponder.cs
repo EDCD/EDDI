@@ -24,6 +24,8 @@ namespace EddiSpeechResponder
 
         private bool subtitles;
 
+        private bool subtitlesOnly;
+
         public string ResponderName()
         {
             return "Speech responder";
@@ -53,6 +55,7 @@ namespace EddiSpeechResponder
             }
             scriptResolver = new ScriptResolver(personality.Scripts);
             subtitles = configuration.Subtitles;
+            subtitlesOnly = configuration.SubtitlesOnly;
             Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
         }
 
@@ -109,6 +112,7 @@ namespace EddiSpeechResponder
             }
             scriptResolver = new ScriptResolver(personality.Scripts);
             subtitles = configuration.Subtitles;
+            subtitlesOnly = configuration.SubtitlesOnly;
             Logging.Info("Reloaded " + ResponderName() + " " + ResponderVersion());
         }
 
@@ -136,7 +140,10 @@ namespace EddiSpeechResponder
                     // Log a tidied version of the speech
                     log(Regex.Replace(speech, "<.*?>", string.Empty));
                 }
-                SpeechService.Instance.Say(EDDI.Instance.Ship, speech, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority), voice);
+                if (!(subtitles && subtitlesOnly))
+                {
+                    SpeechService.Instance.Say(EDDI.Instance.Ship, speech, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority), voice);
+                }
             }
         }
 
