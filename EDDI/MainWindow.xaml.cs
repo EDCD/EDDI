@@ -152,7 +152,6 @@ namespace Eddi
                 UserControl monitorConfiguration = monitor.ConfigurationTabItem();
                 if (monitorConfiguration != null)
                 {
-                    monitorConfiguration.Margin = new Thickness(10);
                     skeleton.panel.Children.Add(monitorConfiguration);
                 }
 

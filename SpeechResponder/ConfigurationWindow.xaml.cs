@@ -235,5 +235,21 @@ namespace EddiSpeechResponder
             configuration.ToFile();
             EDDI.Instance.Reload("Speech responder");
         }
+
+        private void subtitlesOnlyEnabled(object sender, RoutedEventArgs e)
+        {
+            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            configuration.SubtitlesOnly = true;
+            configuration.ToFile();
+            EDDI.Instance.Reload("Speech responder");
+        }
+
+        private void subtitlesOnlyDisabled(object sender, RoutedEventArgs e)
+        {
+            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            configuration.SubtitlesOnly = false;
+            configuration.ToFile();
+            EDDI.Instance.Reload("Speech responder");
+        }
     }
 }
