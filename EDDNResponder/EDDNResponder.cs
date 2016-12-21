@@ -53,6 +53,11 @@ namespace EDDNResponder
                 handleDockedEvent((DockedEvent)theEvent);
             }
 
+            if (theEvent is MarketInformationUpdatedEvent)
+            {
+                handleMarketInformationUpdatedEvent((MarketInformationUpdatedEvent)theEvent);
+            }
+
             if (theEvent is JumpedEvent || theEvent is DockedEvent || theEvent is BodyScannedEvent || theEvent is StarScannedEvent)
             {
                 handleRawEvent(theEvent);
@@ -116,6 +121,13 @@ namespace EDDNResponder
         }
 
         private void handleDockedEvent(DockedEvent theEvent)
+        {
+            // When we dock we have access to commodity and outfitting information
+            sendCommodityInformation();
+            sendOutfittingInformation();
+        }
+
+        private void handleMarketInformationUpdatedEvent(MarketInformationUpdatedEvent theEvent)
         {
             // When we dock we have access to commodity and outfitting information
             sendCommodityInformation();

@@ -4,6 +4,7 @@
   * Ensure that VoiceAttack decimal values are not written as integers
   * Add 'SetState' Cottle function.  Details on how to use this are in the SpeechResponder documentation
   * Allow speech responder to not speak when subtitles are written
+  * Retry companion API profile call if returned information is outdated.  This should help to avoid situations where outfitting and market data is out-of-date
 
 #2.1.0-b1
   * Fix material name for Cadmium
