@@ -40,6 +40,22 @@ namespace Utilities
             }
         }
 
+        public static string DownloadFile(string uri, string name)
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                string fileName = Path.GetTempPath() + @"\" + name;
+                client.DownloadFile(new Uri(uri), fileName);
+                return fileName;
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to download file", ex);
+                return null;
+            }
+        }
+
         // Set up a request with the correct parameters for talking to the companion app
         private static HttpWebRequest GetRequest(string url)
         {

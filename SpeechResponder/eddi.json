@@ -10,6 +10,30 @@
       "name": "Entered CQC",
       "description": "Triggered when you enter CQC"
     },
+    "NPC cargo scan commenced": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ See if we are carrying non-limpet cargo}\r\n{set carryingvaluablecargo to 0}\r\n{for cargo in ship.cargo:\r\n    {if cargo.commodity != 'Limpet':\r\n        {set carryingvaluablecargo to 1}\r\n    }\r\n}\r\n\r\n{if carryingvaluablecargo = 1:\r\n  Caution: cargo scan\r\n  {if event.by:\r\n    by {event.by} \r\n  }\r\n  detected.\r\n}\r\n",
+      "name": "NPC cargo scan commenced",
+      "description": "Triggered when a cargo scan on your ship by an NPC is detected"
+    },
+    "NPC attack commenced": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Warning: attack \r\n{if event.by:\r\n   by {event.by} \r\n}\r\ndetected.",
+      "name": "NPC attack commenced",
+      "description": "Triggered when an attach on your ship by an NPC is detected"
+    },
+    "NPC interdiction commenced": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Warning: interdiction attempt\r\n{if event.by:\r\n   by {event.by} \r\n}\r\ndetected.\r\n\r\n{Occasionally(3, \"Throttle down or evade.\")}",
+      "name": "NPC interdiction commenced",
+      "description": "Triggered when an interdiction attempt on your ship by an NPC is detected"
+    },
     "Station no fire zone exited": {
       "enabled": true,
       "priority": 3,
@@ -58,13 +82,13 @@
       "name": "Power salary claimed",
       "description": "Triggered when a commander claims salary from a power"
     },
-    "Power expansion vote cast": {
+    "Power preparation vote cast": {
       "enabled": true,
       "priority": 3,
       "responder": true,
       "script": null,
-      "name": "Power expansion vote cast",
-      "description": "Triggered when a commander votes for system expansion"
+      "name": "Power preparation vote cast",
+      "description": "Triggered when a commander votes for system perparation"
     },
     "Power defected": {
       "enabled": true,
@@ -214,7 +238,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ShipName()} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if system.bodies[0].distance = 0 && system.bodies[0].stellarclass:\r\n        {set stellarclass to slice(system.bodies[0].stellarclass, 0, 1)}\r\n        {if stellarclass = \"D\":\r\n            Caution: white dwarf detected.\r\n        |elif stellarclass = \"N\":\r\n            Caution: neutron star detected.\r\n        |elif stellarclass = \"H\":\r\n            Caution: black hole detected.\r\n        }\r\n    }\r\n\r\n    {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!system.allegiance || system.allegiance = \"None\" || system.allegiance = \"Independent\"):\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance && system.allegiance != \"None\":\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}\r\n        }\r\n    }.\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
+      "script": "{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ShipName()} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if system.bodies[0].distance = 0 && system.bodies[0].stellarclass:\r\n        {set stellarclass to slice(system.bodies[0].stellarclass, 0, 1)}\r\n        {if stellarclass = \"D\":\r\n            Caution: white dwarf detected.\r\n        |elif stellarclass = \"N\":\r\n            Caution: neutron star detected.\r\n        |elif stellarclass = \"H\":\r\n            Caution: black hole detected.\r\n        }\r\n    }\r\n\r\n    {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!system.allegiance || system.allegiance = \"None\" || system.allegiance = \"Independent\"):\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance && system.allegiance != \"None\":\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}\r\n        }\r\n    }.\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
       "name": "Jumping",
       "description": "Triggered when you start a jump to another system"
     },
@@ -769,6 +793,14 @@
       "script": "{set statustitle to \"^(Galactic News: ((Weekly .*)|(Starport Status Update)))|(Powerplay: Incoming Update)\"}\r\n\r\n{if len(event.items) = 1:\r\n    A new Galnet article has been published, entitled {event.items[0].title}.\r\n    {if !match(event.items[0].title, statustitle):\r\n      It reads: {event.items[0].content}.\r\n    }\r\n|elif len(event.items) > 1:\r\n    {len(event.items)} new Galnet articles have been published.\r\n    {set item to 0}\r\n    {while item < len(event.items):\r\n        {if item = 0:\r\n            The first is entitled {event.items[item].title}\r\n            {if !match(event.items[item].title, statustitle):\r\n                , and reads: {event.items[item].content}\r\n            }.\r\n        |elif item = 1:\r\n            The second is entitled {event.items[item].title}\r\n            {if !match(event.items[item].title, statustitle):\r\n                , and reads: {event.items[item].content}\r\n            }.\r\n        |elif item = len(event.items) - 1:\r\n            The last is entitled {event.items[item].title}\r\n            {if !match(event.items[item].title, statustitle):\r\n                , and reads: {event.items[item].content}\r\n            }.\r\n        |else:\r\n            The next is entitled {event.items[item].title}\r\n            {if !match(event.items[item].title, statustitle):\r\n                , and reads: {event.items[item].content}\r\n            }.\r\n        }\r\n        {set item to item + 1}\r\n        {Pause(1000)}\r\n    }\r\n}",
       "name": "Galnet news published",
       "description": "Triggered when news is published on Galnet"
+    },
+    "Power expansion vote cast": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Power expansion vote cast",
+      "description": "Triggered when a commander votes for system expansion"
     },
     "Cargo ejected": {
       "enabled": true,

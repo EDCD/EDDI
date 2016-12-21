@@ -350,6 +350,26 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
+            store["SetState"] = new NativeFunction((values) =>
+            {
+                string name = values[0].AsString.ToLowerInvariant().Replace(" ", "_");
+                Cottle.Value value = values[1];
+                if (value.Type == Cottle.ValueContent.Boolean)
+                {
+                    EDDI.Instance.State[name] = value.AsBoolean;
+                }
+                else if (value.Type == Cottle.ValueContent.Number)
+                {
+                    EDDI.Instance.State[name] = value.AsNumber;
+                }
+                else if (value.Type == Cottle.ValueContent.String)
+                {
+                    EDDI.Instance.State[name] = value.AsString;
+                }
+                // Ignore other possibilities
+                return "";
+            }, 2);
+
             // Variables
             foreach (KeyValuePair<string, Cottle.Value> entry in vars)
             {

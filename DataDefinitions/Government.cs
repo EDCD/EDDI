@@ -41,6 +41,7 @@ namespace EddiDataDefinitions
         public static readonly Government PrisonColony = new Government("$government_PrisonColony", "Prison Colony");
         public static readonly Government Theocracy = new Government("$government_Theocracy", "Theocracy");
         public static readonly Government Workshop = new Government("$government_Workshop", "Workshop");
+        public static readonly Government Engineer = new Government("$government_engineer", "Engineer");
 
         public static Government FromName(string from)
         {

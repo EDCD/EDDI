@@ -16,6 +16,9 @@ namespace EddiSpeechResponder
         [JsonProperty("subtitles")]
         public bool Subtitles { get; set; }
 
+        [JsonProperty("subtitlesonly")]
+        public bool SubtitlesOnly { get; set; }
+
         [JsonIgnore]
         private string dataPath;
 

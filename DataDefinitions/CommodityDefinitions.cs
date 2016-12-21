@@ -54,7 +54,7 @@ namespace EddiDataDefinitions
             {128049213, new Commodity(11, "Tobacco", "Legal Drugs", 5035, false) },
             {128049215, new Commodity(12, "Wine", "Legal Drugs", 260, false) },
             {128049177, new Commodity(13, "Algae", "Foods", 137, false) },
-            {128049182, new Commodity(14, "Animal Meat", "Foods", 1292, false) },
+            {128049182, new Commodity(14, "Animalmeat", "Animal Meat", "Foods", 1292, false) },
             {128049189, new Commodity(15, "Coffee", "Foods", 1279, false) },
             {128049183, new Commodity(16, "Fish", "Foods", 406, false) },
             {128049184, new Commodity(17, "Food Cartridges", "Foods", 105, false) },

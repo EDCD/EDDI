@@ -110,7 +110,12 @@ namespace Eddi
                 ExceptionlessClient.Default.Configuration.SetVersion(Constants.EDDI_VERSION);
 
                 // Start by fetching information from the update server, and handling appropriately
-                Server = UpdateServer();
+                if (!UpdateServer())
+                {
+                    // We are too old to continue; don't
+                    running = false;
+                    return;
+                }
 
                 // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
                 Cmdr = new Commander();
@@ -211,7 +216,7 @@ namespace Eddi
         /// <summary>
         /// Obtain and check the information from the update server
         /// </summary>
-        private static InstanceInfo UpdateServer()
+        private bool UpdateServer()
         {
             try
             {
@@ -219,22 +224,48 @@ namespace Eddi
                 if (updateServerInfo == null)
                 {
                     Logging.Warn("Failed to contact update server");
+                    return false;
                 }
                 else
                 {
                     InstanceInfo info = Constants.EDDI_VERSION.Contains("b") ? updateServerInfo.beta : updateServerInfo.production;
-                    if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == -1)
+                    if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
-                        // We are too old to run
-                        Logging.Info("EDDI requires an update.  Please download the latest version at " + info.url);
-                        SpeechService.Instance.Say(null, "EDDI requires an update.", true);
-                        System.Environment.Exit(1);
+                        Logging.Warn("This version of EDDI is too old to operate; please upgrade at " + info.url);
+                        SpeechService.Instance.Say(null, "This version of EDDI is too old to operate; please upgrade.", true);
+                        //SpeechService.Instance.Say(null, "EDDI requires an update.  Downloading.", true);
+                        //// We are too old to run - update
+                        //string updateFile = Net.DownloadFile(info.url, @"EDDI-update.exe");
+                        //if (updateFile == null)
+                        //{
+                        //    SpeechService.Instance.Say(null, "Download failed.  Please try again later.", true);
+                        //}
+                        //else
+                        //{
+                        //    Logging.Info("Downloaded to " + updateFile);
+                        //    SpeechService.Instance.Say(null, "Download complete.  Please restart EDDI once upgrade has finished.", true);
+                        //    Process.Start(updateFile, @"/silent /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
+                        //}
+                        //System.Environment.Exit(1);
                     }
 
                     if (Versioning.Compare(info.version, Constants.EDDI_VERSION) == 1)
                     {
                         // There is an update available
-                        SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", false);
+                        SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", true);
+                        //SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.  Downloading.", true);
+                        //string updateFile = Net.DownloadFile(info.url, @"EDDI-update.exe");
+                        //if (updateFile == null)
+                        //{
+                        //    SpeechService.Instance.Say(null, "Download failed.  EDDI will try again next time.", true);
+                        //}
+                        //else
+                        //{
+                        //    Logging.Info("Downloaded to " + updateFile);
+                        //    SpeechService.Instance.Say(null, "Download complete.  Please restart EDDI once upgrade has finished.", true);
+                        //    Process.Start(updateFile, @"/silent /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
+                        //    System.Environment.Exit(1);
+                        //}
                     }
 
                     if (info.motd != null)
@@ -242,7 +273,7 @@ namespace Eddi
                         // There is a message
                         SpeechService.Instance.Say(null, info.motd, false);
                     }
-                    return info;
+                    Server = info;
                 }
             }
             catch (Exception ex)
@@ -250,7 +281,7 @@ namespace Eddi
                 SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
                 Logging.Warn("Failed to access api.eddp.co", ex);
             }
-            return null;
+            return true;
         }
 
         public void Start()
@@ -614,8 +645,14 @@ namespace Eddi
 
                 CurrentStation = station;
 
-                // Now call refreshProfile() to obtain the outfitting and commodity information
-                refreshProfile();
+                // Kick off the profile refresh
+                profileUpdateNeeded = true;
+                profileStationRequired = CurrentStation.name;
+                Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+                updateThread.IsBackground = true;
+                updateThread.Start();
+                //// Now call refreshProfile() to obtain the outfitting and commodity information
+                //refreshProfile();
             }
             else
             {
@@ -655,8 +692,14 @@ namespace Eddi
 
             CurrentStation = station;
 
-            // Now call refreshProfile() to obtain the outfitting and commodity information
-            refreshProfile();
+            // Kick off the profile refresh
+            profileUpdateNeeded = true;
+            profileStationRequired = CurrentStation.name;
+            Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+            updateThread.IsBackground = true;
+            updateThread.Start();
+            //// Now call refreshProfile() to obtain the outfitting and commodity information
+            //refreshProfile();
 
             return true;
         }
@@ -815,14 +858,29 @@ namespace Eddi
 
         private bool eventShipDeliveredEvent(ShipDeliveredEvent theEvent)
         {
-            refreshProfile();
             SetShip(theEvent.Ship);
+
+            // Kick off the profile refresh
+            profileUpdateNeeded = true;
+            profileShipIdRequired = theEvent.Ship.LocalId;
+            Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+            updateThread.IsBackground = true;
+            updateThread.Start();
+
             return true;
         }
 
         private bool eventShipSwappedEvent(ShipSwappedEvent theEvent)
         {
             SetShip(theEvent.Ship);
+
+            // Kick off the profile refresh
+            profileUpdateNeeded = true;
+            profileShipIdRequired = theEvent.Ship.LocalId;
+            Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+            updateThread.IsBackground = true;
+            updateThread.Start();
+
             return true;
         }
 
@@ -1109,6 +1167,123 @@ namespace Eddi
                 }
             }
             return responders;
+        }
+
+        private bool profileUpdateNeeded = false;
+        private string profileStationRequired = null;
+        private int profileShipIdRequired = -1;
+
+        /// <summary>
+        /// Update the profile when requested, ensuring that we meet the condition in the updated profile
+        /// </summary>
+        private void conditionallyRefreshProfile()
+        {
+            if (CompanionAppService.Instance == null && CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
+            {
+                Logging.Debug("Cannot refresh profile when companion app service is not active");
+                return;
+            }
+
+            int maxTries = 6;
+
+            while (running && maxTries > 0)
+            {
+                try
+                {
+                    Logging.Debug("Starting conditional profile fetch");
+
+                    // See if we need to fetch the profile
+                    if (profileUpdateNeeded)
+                    {
+                        // See if we still need this particular update
+                        if (profileStationRequired != null && (CurrentStation == null || CurrentStation.name != profileStationRequired))
+                        {
+                            Logging.Debug("No longer at requested station; giving up on update");
+                            profileUpdateNeeded = false;
+                            profileStationRequired = null;
+                            break;
+                        }
+
+                        if (profileShipIdRequired != -1 && (Ship != null && Ship.LocalId != profileShipIdRequired))
+                        {
+                            Logging.Debug("No longer in requested ship; giving up on update");
+                            profileUpdateNeeded = false;
+                            profileShipIdRequired = -1;
+                            break;
+                        }
+
+                        // We do need to fetch an updated profile; do so
+                        long profileTime = (long)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                        Logging.Debug("Fetching profile");
+                        Profile profile = CompanionAppService.Instance.Profile(true);
+
+                        // Use the profile as primary information for our commander and shipyard
+                        Cmdr = profile.Cmdr;
+                        Shipyard = profile.Shipyard;
+
+                        // Only use the ship information if we agree that this is the correct ship to use
+                        if (Ship.model == null || profile.Ship.LocalId == Ship.LocalId)
+                        {
+                            SetShip(profile.Ship);
+                        }
+
+                        // See if it is up-to-date regarding our requirements
+                        Logging.Debug("profileStationRequired is " + profileStationRequired + ", profile station is " + profile.LastStation.name);
+                        if (profileStationRequired != null && profileStationRequired == profile.LastStation.name)
+                        {
+                            // We have the required station information
+                            CurrentStation.outfitting = profile.LastStation.outfitting;
+                            CurrentStation.updatedat = profileTime;
+                            CurrentStation.commodities = profile.LastStation.commodities;
+                            CurrentStation.commoditiesupdatedat = profileTime;
+                            CurrentStation.shipyard = profile.LastStation.shipyard;
+
+                            // Update the current station information in our backend DB
+                            Logging.Debug("Star system information updated from remote server; updating local copy");
+                            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
+                            // Post an update event
+                            Event @event = new MarketInformationUpdatedEvent(DateTime.Now);
+                            eventHandler(@event);
+
+                            profileUpdateNeeded = false;
+                            break;
+                        }
+
+                        Logging.Debug("profileShipIdRequired is " + profileShipIdRequired + ", profile ship ID is " + profile.Ship.LocalId);
+                        if (profileShipIdRequired != -1 && profileShipIdRequired == profile.Ship.LocalId)
+                        {
+                            // We have the required ship information
+                            Logging.Debug("Correct ship ID updated");
+
+                            profileUpdateNeeded = false;
+                            break;
+                        }
+
+
+                        // No luck; sleep and try again
+                        Thread.Sleep(15000);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Exception obtaining profile", ex);
+                }
+                finally
+                {
+                    maxTries--;
+                }
+            }
+
+            if (maxTries == 0)
+            {
+                Logging.Info("Maximum attempts reached; giving up on request");
+            }
+
+            // Clear the update info
+            profileUpdateNeeded = false;
+            profileStationRequired = null;
+            profileShipIdRequired = -1;
         }
     }
 }
