@@ -352,7 +352,7 @@ There are a large number of events available.  Full details of them and the vari
 Triggered when you complete a scan of a planetary body.
 To run a command when this event occurs you should create the command with the name ((EDDI body scanned))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI body scanned atmosphere} The atmosphere of the body that has been scanned
   * {TXT:EDDI body scanned bodyclass} The class of the body that has been scanned (High metal content body etc)
@@ -376,7 +376,7 @@ Variables set with this events are as follows:
 Triggered when you are awarded a combat bond.
 To run a command when this event occurs you should create the command with the name ((EDDI bond awarded))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI bond awarded awardingfaction} The name of the faction awarding the bond
   * {DEC:EDDI bond awarded reward} The number of credits received
@@ -386,7 +386,7 @@ Variables set with this events are as follows:
 Triggered when you are awarded a bounty.
 To run a command when this event occurs you should create the command with the name ((EDDI bounty awarded))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI bounty awarded faction} The name of the faction whose ship you destroyed
   * {DEC:EDDI bounty awarded reward} The total number of credits obtained for destroying the ship
@@ -397,7 +397,7 @@ Variables set with this events are as follows:
 Triggered when you incur a bounty.
 To run a command when this event occurs you should create the command with the name ((EDDI bounty incurred))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI bounty incurred bounty} The number of credits issued as the bounty
   * {TXT:EDDI bounty incurred crimetype} The type of crime committed
@@ -408,7 +408,7 @@ Variables set with this events are as follows:
 Triggered when you clear your save.
 To run a command when this event occurs you should create the command with the name ((EDDI cleared save))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI cleared save name} The name of the player whose save has been cleared
 
@@ -420,7 +420,7 @@ To run a command when this event occurs you should create the command with the n
 Triggered when your combat rank increases.
 To run a command when this event occurs you should create the command with the name ((EDDI combat promotion))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI combat promotion rating} The commander's new combat rating
 
@@ -428,7 +428,7 @@ Variables set with this events are as follows:
 Triggered when you continue an existing game.
 To run a command when this event occurs you should create the command with the name ((EDDI commander continued))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI commander continued commander} The commander's name
   * {DEC:EDDI commander continued credits} the number of credits the commander has
@@ -441,7 +441,7 @@ Variables set with this events are as follows:
 Triggered when your progress is reported.
 To run a command when this event occurs you should create the command with the name ((EDDI commander progress))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI commander progress combat} The percentage progress of the commander's combat rating
   * {DEC:EDDI commander progress cqc} The percentage progress of the commander's CQC rating
@@ -454,14 +454,14 @@ Variables set with this events are as follows:
 Triggered when your ratings are reported.
 To run a command when this event occurs you should create the command with the name ((EDDI commander ratings))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
 
 ### Commander started
 Triggered when you start a new game.
 To run a command when this event occurs you should create the command with the name ((EDDI commander started))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI commander started name} The name of the new commander
   * {TXT:EDDI commander started package} The starting package of the new commander
@@ -470,7 +470,7 @@ Variables set with this events are as follows:
 Triggered when you pick up a commodity in your ship or SRV.
 To run a command when this event occurs you should create the command with the name ((EDDI commodity collected))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI commodity collected commodity} The name of the commodity collected
   * {BOOL:EDDI commodity collected stolen} If the cargo is stolen
@@ -479,7 +479,7 @@ Variables set with this events are as follows:
 Triggered when you eject a commodity from your ship or SRV.
 To run a command when this event occurs you should create the command with the name ((EDDI commodity ejected))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {BOOL:EDDI commodity ejected abandoned} If the cargo has been abandoned
   * {INT:EDDI commodity ejected amount} The amount of cargo ejected
@@ -489,7 +489,7 @@ Variables set with this events are as follows:
 Triggered when you buy a commodity from the markets.
 To run a command when this event occurs you should create the command with the name ((EDDI commodity purchased))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {INT:EDDI commodity purchased amount} The amount of the purchased commodity
   * {TXT:EDDI commodity purchased commodity} The name of the purchased commodity
@@ -499,7 +499,7 @@ Variables set with this events are as follows:
 Triggered when you refine a commodity from the refinery.
 To run a command when this event occurs you should create the command with the name ((EDDI commodity refined))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI commodity refined commodity} The name of the commodity refined
 
@@ -507,7 +507,7 @@ Variables set with this events are as follows:
 Triggered when you sell a commodity to the markets.
 To run a command when this event occurs you should create the command with the name ((EDDI commodity sold))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {INT:EDDI commodity sold amount} The amount of the commodity sold
   * {BOOL:EDDI commodity sold blackmarket} True if the commodity was sold to a black market
@@ -529,7 +529,7 @@ To run a command when this event occurs you should create the command with the n
 Triggered when you assign crew.
 To run a command when this event occurs you should create the command with the name ((EDDI crew assigned))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI crew assigned name} The name of the crewmember being assigned
   * {TXT:EDDI crew assigned role} The role to which the crewmember is being assigned
@@ -538,7 +538,7 @@ Variables set with this events are as follows:
 Triggered when you fire crew.
 To run a command when this event occurs you should create the command with the name ((EDDI crew fired))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI crew fired name} The name of the crewmember being fired
 
@@ -546,7 +546,7 @@ Variables set with this events are as follows:
 Triggered when you hire crew.
 To run a command when this event occurs you should create the command with the name ((EDDI crew hired))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI crew hired combatrating} The combat rating of the crewmember being hired
   * {TXT:EDDI crew hired faction} The faction of the crewmember being hired
@@ -557,14 +557,14 @@ Variables set with this events are as follows:
 Triggered when you have died.
 To run a command when this event occurs you should create the command with the name ((EDDI died))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
 
 ### Docked
 Triggered when your ship docks at a station or outpost.
 To run a command when this event occurs you should create the command with the name ((EDDI docked))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI docked economy} The economy of the station at which the commander has docked
   * {TXT:EDDI docked faction} The faction controlling the station at which the commander has docked
@@ -578,7 +578,7 @@ Variables set with this events are as follows:
 Triggered when your ship cancels a docking request at a station or outpost.
 To run a command when this event occurs you should create the command with the name ((EDDI docking cancelled))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI docking cancelled station} The station at which the commander has cancelled docking
 
@@ -586,7 +586,7 @@ Variables set with this events are as follows:
 Triggered when your ship is denied docking at a station or outpost.
 To run a command when this event occurs you should create the command with the name ((EDDI docking denied))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI docking denied reason} The reason why commander has been denied docking (too far, fighter deployed etc)
   * {TXT:EDDI docking denied station} The station at which the commander has been denied docking
@@ -595,7 +595,7 @@ Variables set with this events are as follows:
 Triggered when your ship is granted docking permission at a station or outpost.
 To run a command when this event occurs you should create the command with the name ((EDDI docking granted))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {INT:EDDI docking granted landingpad} The landing apd at which the commander has been granted docking
   * {TXT:EDDI docking granted station} The station at which the commander has been granted docking
@@ -604,7 +604,7 @@ Variables set with this events are as follows:
 Triggered when your ship requests docking at a station or outpost.
 To run a command when this event occurs you should create the command with the name ((EDDI docking requested))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI docking requested station} The station at which the commander has requested docking
 
@@ -612,7 +612,7 @@ Variables set with this events are as follows:
 Triggered when your docking request times out.
 To run a command when this event occurs you should create the command with the name ((EDDI docking timed out))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI docking timed out station} The station at which the docking request has timed out
 
@@ -620,16 +620,24 @@ Variables set with this events are as follows:
 Triggered when you reach a new rank with an engineer.
 To run a command when this event occurs you should create the command with the name ((EDDI engineer progressed))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI engineer progressed engineer} The name of the engineer with whom you have progressed
   * {INT:EDDI engineer progressed rank} The rank of your relationship with the engineer
+
+### Entered CQC
+Triggered when you enter CQC.
+To run a command when this event occurs you should create the command with the name ((EDDI entered cqc))
+
+Variables set with this event are as follows:
+
+  * {TXT:EDDI entered cqc commander} The commander's name
 
 ### Entered normal space
 Triggered when your ship enters normal space.
 To run a command when this event occurs you should create the command with the name ((EDDI entered normal space))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI entered normal space body} The nearest body to the commander when entering normal space
   * {TXT:EDDI entered normal space bodytype} The type of the nearest body to the commander when entering normal space
@@ -639,7 +647,7 @@ Variables set with this events are as follows:
 Triggered when your ship enters a signal source.
 To run a command when this event occurs you should create the command with the name ((EDDI entered signal source))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI entered signal source source} The type of the signal source
   * {INT:EDDI entered signal source threat} The threat level of the signal source (0-4)
@@ -648,7 +656,7 @@ Variables set with this events are as follows:
 Triggered when your ship enters supercruise.
 To run a command when this event occurs you should create the command with the name ((EDDI entered supercruise))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI entered supercruise system} The system at which the commander has entered supercruise
 
@@ -656,7 +664,7 @@ Variables set with this events are as follows:
 Triggered when you purchase exploration data.
 To run a command when this event occurs you should create the command with the name ((EDDI exploration data purchased))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI exploration data purchased price} The price of the purchase
   * {TXT:EDDI exploration data purchased system} The system for which the exploration data was purchased
@@ -665,7 +673,7 @@ Variables set with this events are as follows:
 Triggered when you sell exploration data.
 To run a command when this event occurs you should create the command with the name ((EDDI exploration data sold))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI exploration data sold bonus} The bonus for first discovereds
   * {DEC:EDDI exploration data sold reward} The reward for selling the exploration data
@@ -674,7 +682,7 @@ Variables set with this events are as follows:
 Triggered when your exploration rank increases.
 To run a command when this event occurs you should create the command with the name ((EDDI exploration promotion))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI exploration promotion rating} The commander's new exploration rating
 
@@ -686,7 +694,7 @@ To run a command when this event occurs you should create the command with the n
 Triggered when you launch a fighter from your ship.
 To run a command when this event occurs you should create the command with the name ((EDDI fighter launched))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI fighter launched loadout} The fighter's loadout
   * {BOOL:EDDI fighter launched playercontrolled} True if the fighter is controlled by the player
@@ -695,7 +703,7 @@ Variables set with this events are as follows:
 Triggered when your incur a fine.
 To run a command when this event occurs you should create the command with the name ((EDDI fine incurred))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI fine incurred crimetype} The type of crime committed
   * {TXT:EDDI fine incurred faction} The name of the faction issuing the fine
@@ -705,7 +713,7 @@ Variables set with this events are as follows:
 Triggered when you pay a fine.
 To run a command when this event occurs you should create the command with the name ((EDDI fine paid))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI fine paid amount} The amount of the fine paid
   * {BOOL:EDDI fine paid legacy} True if the payment is for a legacy fine
@@ -722,7 +730,7 @@ To run a command when this event occurs you should create the command with the n
 Triggered when your hull is damaged to a certain extent.
 To run a command when this event occurs you should create the command with the name ((EDDI hull damaged))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI hull damaged health} The percentage health of the hull
 
@@ -730,9 +738,10 @@ Variables set with this events are as follows:
 Triggered when you complete a jump to another system.
 To run a command when this event occurs you should create the command with the name ((EDDI jumped))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI jumped allegiance} The allegiance of the system to which the commander has jumped
+  * {DEC:EDDI jumped distance} The distance the commander has jumped, in light years
   * {TXT:EDDI jumped economy} The economy of the system to which the commander has jumped
   * {TXT:EDDI jumped faction} The faction controlling the system to which the commander has jumped
   * {TXT:EDDI jumped factionstate} The state of the faction controlling the system to which the commander has jumped
@@ -749,7 +758,7 @@ Variables set with this events are as follows:
 Triggered when you start a jump to another system.
 To run a command when this event occurs you should create the command with the name ((EDDI jumping))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI jumping system} The name of the system to which the commander is jumping
   * {DEC:EDDI jumping x} The X co-ordinate of the system to which the commander is jumping
@@ -760,7 +769,7 @@ Variables set with this events are as follows:
 Triggered when you kill another player.
 To run a command when this event occurs you should create the command with the name ((EDDI killed))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI killed rating} The combat rating of the player killed
   * {TXT:EDDI killed victim} The name of the player killed
@@ -769,7 +778,7 @@ Variables set with this events are as follows:
 Triggered when your ship lifts off from a planet's surface.
 To run a command when this event occurs you should create the command with the name ((EDDI liftoff))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI liftoff latitude} The latitude from where the commander has lifted off
   * {DEC:EDDI liftoff longitude} The longitude from where the commander has lifted off
@@ -778,7 +787,7 @@ Variables set with this events are as follows:
 Triggered when you buy limpets from a station.
 To run a command when this event occurs you should create the command with the name ((EDDI limpet purchased))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {INT:EDDI limpet purchased amount} The amount of limpets purchased
   * {DEC:EDDI limpet purchased price} The price paid per limpet
@@ -787,7 +796,7 @@ Variables set with this events are as follows:
 Triggered when you sell limpets to a station.
 To run a command when this event occurs you should create the command with the name ((EDDI limpet sold))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {INT:EDDI limpet sold amount} The amount of limpets sold
   * {DEC:EDDI limpet sold price} The price obtained per limpet
@@ -796,7 +805,7 @@ Variables set with this events are as follows:
 Triggered when the commander's location is reported, usually when they reload their game..
 To run a command when this event occurs you should create the command with the name ((EDDI location))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI location allegiance} The allegiance of the system in which the commander resides
   * {TXT:EDDI location body} The nearest body to the commander
@@ -806,16 +815,22 @@ Variables set with this events are as follows:
   * {TXT:EDDI location faction} The faction controlling the system in which the commander resides
   * {TXT:EDDI location government} The government of the system in which the commander resides
   * {TXT:EDDI location security} The security of the system in which the commander resides
+  * {TXT:EDDI location station} The name of the station at which the commander is docked
+  * {TXT:EDDI location stationtype} The type of the station at which the commander is docked
   * {TXT:EDDI location system} The name of the system in which the commander resides
   * {DEC:EDDI location x} The X co-ordinate of the system in which the commander resides
   * {DEC:EDDI location y} The Y co-ordinate of the system in which the commander resides
   * {DEC:EDDI location z} The Z co-ordinate of the system in which the commander resides
 
+### Market information updated
+Triggered when market information for the currently docked station has been updated.
+To run a command when this event occurs you should create the command with the name ((EDDI market information updated))
+
 ### Material collected
 Triggered when you collect a material.
 To run a command when this event occurs you should create the command with the name ((EDDI material collected))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {INT:EDDI material collected amount} The amount of the collected material
   * {TXT:EDDI material collected name} The name of the collected material
@@ -824,7 +839,7 @@ Variables set with this events are as follows:
 Triggered when you discard a material.
 To run a command when this event occurs you should create the command with the name ((EDDI material discarded))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {INT:EDDI material discarded amount} The amount of the discarded material
   * {TXT:EDDI material discarded name} The name of the discarded material
@@ -833,7 +848,7 @@ Variables set with this events are as follows:
 Triggered when you discover a material.
 To run a command when this event occurs you should create the command with the name ((EDDI material discovered))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI material discovered name} The name of the discovered material
 
@@ -841,7 +856,7 @@ Variables set with this events are as follows:
 Triggered when you donate a material.
 To run a command when this event occurs you should create the command with the name ((EDDI material donated))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {INT:EDDI material donated amount} The amount of the donated material
   * {TXT:EDDI material donated name} The name of the donated material
@@ -850,7 +865,7 @@ Variables set with this events are as follows:
 Triggered when you receive a message.
 To run a command when this event occurs you should create the command with the name ((EDDI message received))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI message received channel} The channel in which the message came (direct, local, wing)
   * {TXT:EDDI message received from} The name of the pilot who sent the message
@@ -861,7 +876,7 @@ Variables set with this events are as follows:
 Triggered when you send a message.
 To run a command when this event occurs you should create the command with the name ((EDDI message sent))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI message sent message} The message
   * {TXT:EDDI message sent to} The name of the player to which the message was sent
@@ -870,7 +885,7 @@ Variables set with this events are as follows:
 Triggered when you abandon a mission.
 To run a command when this event occurs you should create the command with the name ((EDDI mission abandoned))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI mission abandoned missionid} The ID of the mission
   * {TXT:EDDI mission abandoned name} The name of the mission
@@ -879,32 +894,42 @@ Variables set with this events are as follows:
 Triggered when you accept a mission.
 To run a command when this event occurs you should create the command with the name ((EDDI mission accepted))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
+  * {INT:EDDI mission accepted amount} The amount of the commodity or passengers involved in the mission (if applicable)
+  * {TXT:EDDI mission accepted commodity} The commodity involved in the mission (if applicable)
   * {BOOL:EDDI mission accepted communal} True if the mission is a community goal
+  * {TXT:EDDI mission accepted destinationstation} The destination station for the mission (if applicable)
+  * {TXT:EDDI mission accepted destinationsystem} The destination system for the mission (if applicable)
   * {TXT:EDDI mission accepted faction} The faction issuing the mission
   * {DEC:EDDI mission accepted missionid} The ID of the mission
   * {TXT:EDDI mission accepted name} The name of the mission
-  * {TXT:EDDI mission accepted system} The system in which the mission was obtained
+  * {BOOL:EDDI mission accepted passengerswanted} True if the passengers are wanted (if applicable)
+  * {TXT:EDDI mission accepted passengertype} The type of passengers in the mission (if applicable)
+  * {TXT:EDDI mission accepted target} Name of the target of the mission (if applicable)
+  * {TXT:EDDI mission accepted targetfaction} Faction of the target of the mission (if applicable)
+  * {TXT:EDDI mission accepted targettype} Type of the target of the mission (if applicable)
 
 ### Mission completed
 Triggered when you complete a mission.
 To run a command when this event occurs you should create the command with the name ((EDDI mission completed))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
+  * {INT:EDDI mission completed amount} The amount of the commodity involved in the mission (if applicable)
+  * {TXT:EDDI mission completed commodity} The commodity involved in the mission (if applicable)
   * {BOOL:EDDI mission completed communal} True if the mission is a community goal
-  * {DEC:EDDI mission completed donation} The monetary donatin when completing the mission
+  * {DEC:EDDI mission completed donation} The monetary donation when completing the mission
+  * {TXT:EDDI mission completed faction} The faction receiving the mission
   * {DEC:EDDI mission completed missionid} The ID of the mission
   * {TXT:EDDI mission completed name} The name of the mission
   * {DEC:EDDI mission completed reward} The monetary reward for completing the mission
-  * {TXT:EDDI mission completed system} The system in which the mission was obtained
 
 ### Modification applied
 Triggered when you apply a modification to a module.
 To run a command when this event occurs you should create the command with the name ((EDDI modification applied))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI modification applied blueprint} The blueprint of the modification being applied
   * {TXT:EDDI modification applied engineer} The name of the engineer applying the modification
@@ -914,17 +939,114 @@ Variables set with this events are as follows:
 Triggered when you craft a modification to a module.
 To run a command when this event occurs you should create the command with the name ((EDDI modification crafted))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI modification crafted blueprint} The blueprint being crafted
   * {TXT:EDDI modification crafted engineer} The name of the engineer crafting the modification
   * {INT:EDDI modification crafted level} The level of the blueprint being crafted
 
+### NPC attack commenced
+Triggered when an attach on your ship by an NPC is detected.
+To run a command when this event occurs you should create the command with the name ((EDDI npc attack commenced))
+
+Variables set with this event are as follows:
+
+  * {TXT:EDDI npc attack commenced by} Who the attack is by (Pirate, Military, Bounty hunter, Cargo hunter, etc)
+
+### NPC cargo scan commenced
+Triggered when a cargo scan on your ship by an NPC is detected.
+To run a command when this event occurs you should create the command with the name ((EDDI npc cargo scan commenced))
+
+Variables set with this event are as follows:
+
+  * {TXT:EDDI npc cargo scan commenced by} Who the cargo scan is by (Pirate, Military, Bounty hunter, Cargo hunter, etc)
+
+### NPC interdiction commenced
+Triggered when an interdiction attempt on your ship by an NPC is detected.
+To run a command when this event occurs you should create the command with the name ((EDDI npc interdiction commenced))
+
+Variables set with this event are as follows:
+
+  * {TXT:EDDI npc interdiction commenced by} Who the interdiction is by (Pirate, Military, Bounty hunter, Cargo hunter, etc)
+
+### Power commodity delivered
+Triggered when a commander delivers a commodity to a power.
+To run a command when this event occurs you should create the command with the name ((EDDI power commodity delivered))
+
+Variables set with this event are as follows:
+
+  * {INT:EDDI power commodity delivered amount} The amount of the commodity the commander is delivering
+  * {TXT:EDDI power commodity delivered commodity} The commodity the commander is delivering
+  * {TXT:EDDI power commodity delivered power} The name of the power for which the commander is delivering the commodity
+
+### Power commodity fast tracked
+Triggered when a commander fast tracks a commodity of a power.
+To run a command when this event occurs you should create the command with the name ((EDDI power commodity fast tracked))
+
+Variables set with this event are as follows:
+
+  * {INT:EDDI power commodity fast tracked amount} The number of credits spent fast tracking
+  * {TXT:EDDI power commodity fast tracked power} The name of the power for which the commander is fast tracking the commodity
+
+### Power commodity obtained
+Triggered when a commander obtains a commodity from a power.
+To run a command when this event occurs you should create the command with the name ((EDDI power commodity obtained))
+
+Variables set with this event are as follows:
+
+  * {INT:EDDI power commodity obtained amount} The amount of the commodity the commander is obtaining
+  * {TXT:EDDI power commodity obtained commodity} The commodity the commander is obtaining
+  * {TXT:EDDI power commodity obtained power} The name of the power for which the commander is obtaining the commodity
+
+### Power defected
+Triggered when you defect from one power to another.
+To run a command when this event occurs you should create the command with the name ((EDDI power defected))
+
+Variables set with this event are as follows:
+
+  * {TXT:EDDI power defected frompower} The name of the power that the commander has defected from
+  * {TXT:EDDI power defected topower} The name of the power that the commander has defected to
+
+### Power joined
+Triggered when you join a power.
+To run a command when this event occurs you should create the command with the name ((EDDI power joined))
+
+Variables set with this event are as follows:
+
+  * {TXT:EDDI power joined power} The name of the power that the commander has joined
+
+### Power left
+Triggered when you leave a power.
+To run a command when this event occurs you should create the command with the name ((EDDI power left))
+
+Variables set with this event are as follows:
+
+  * {TXT:EDDI power left power} The name of the power that the commander has left
+
+### Power preparation vote cast
+Triggered when a commander votes for system perparation.
+To run a command when this event occurs you should create the command with the name ((EDDI power preparation vote cast))
+
+Variables set with this event are as follows:
+
+  * {INT:EDDI power preparation vote cast amount} The number of votes cast for the system
+  * {TXT:EDDI power preparation vote cast power} The name of the power for which the commander is voting
+  * {TXT:EDDI power preparation vote cast system} The name of the system for which the commander voted (might be missing due to journal bug)
+
+### Power salary claimed
+Triggered when a commander claims salary from a power.
+To run a command when this event occurs you should create the command with the name ((EDDI power salary claimed))
+
+Variables set with this event are as follows:
+
+  * {INT:EDDI power salary claimed amount} The salary claimed
+  * {TXT:EDDI power salary claimed power} The name of the power for which the commander is claiming salary
+
 ### Screenshot
 Triggered when you take a screenshot.
 To run a command when this event occurs you should create the command with the name ((EDDI screenshot))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI screenshot body} The name of the nearest body to where the screenshot was taken
   * {TXT:EDDI screenshot filename} The name of the file where the screenshot has been saved
@@ -948,7 +1070,7 @@ To run a command when this event occurs you should create the command with the n
 Triggered when your newly-purchased ship is delivered to you.
 To run a command when this event occurs you should create the command with the name ((EDDI ship delivered))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI ship delivered ship} The ship that was delivered
   * {INT:EDDI ship delivered shipid} The ID of the ship that was delivered
@@ -957,7 +1079,7 @@ Variables set with this events are as follows:
 Triggered when your ship is interdicted by another ship.
 To run a command when this event occurs you should create the command with the name ((EDDI ship interdicted))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI ship interdicted faction} The faction of the commander carrying out the interdiction
   * {TXT:EDDI ship interdicted interdictor} The name of the commander carrying out the interdiction
@@ -971,7 +1093,7 @@ Variables set with this events are as follows:
 Triggered when you interdict another ship.
 To run a command when this event occurs you should create the command with the name ((EDDI ship interdiction))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI ship interdiction faction} The faction of the commander being interdicted
   * {TXT:EDDI ship interdiction interdictee} The name of the commander being interdicted
@@ -984,7 +1106,7 @@ Variables set with this events are as follows:
 Triggered when you purchase a ship.
 To run a command when this event occurs you should create the command with the name ((EDDI ship purchased))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI ship purchased price} The price of the ship that was purchased
   * {TXT:EDDI ship purchased ship} The ship that was purchased
@@ -998,14 +1120,14 @@ Variables set with this events are as follows:
 Triggered when you run reboot/repair on your ship.
 To run a command when this event occurs you should create the command with the name ((EDDI ship rebooted))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
 
 ### Ship refuelled
 Triggered when you refuel your ship.
 To run a command when this event occurs you should create the command with the name ((EDDI ship refuelled))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI ship refuelled amount} The amount of fuel obtained
   * {DEC:EDDI ship refuelled price} The price of refuelling (only available if the source is Market)
@@ -1016,7 +1138,7 @@ Variables set with this events are as follows:
 Triggered when you repair your ship.
 To run a command when this event occurs you should create the command with the name ((EDDI ship repaired))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI ship repaired item} The item repaired, if repairing a specific item
   * {DEC:EDDI ship repaired price} The price of refuelling
@@ -1025,7 +1147,7 @@ Variables set with this events are as follows:
 Triggered when you restock your ship's ammunition.
 To run a command when this event occurs you should create the command with the name ((EDDI ship restocked))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI ship restocked price} The price of restocking
 
@@ -1033,7 +1155,7 @@ Variables set with this events are as follows:
 Triggered when you sell a ship.
 To run a command when this event occurs you should create the command with the name ((EDDI ship sold))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI ship sold price} The price for which the ship was sold
   * {TXT:EDDI ship sold ship} The ship that was sold
@@ -1043,7 +1165,7 @@ Variables set with this events are as follows:
 Triggered when you swap a ship.
 To run a command when this event occurs you should create the command with the name ((EDDI ship swapped))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI ship swapped ship} The ship that was swapped
   * {INT:EDDI ship swapped shipid} The ID of the ship that was swapped
@@ -1056,7 +1178,7 @@ Variables set with this events are as follows:
 Triggered when you initiate a ship transfer.
 To run a command when this event occurs you should create the command with the name ((EDDI ship transfer initiated))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI ship transfer initiated distance} The distance that the transferred ship needs to travel, in light years
   * {DEC:EDDI ship transfer initiated price} The price of transferring the ship
@@ -1072,7 +1194,7 @@ To run a command when this event occurs you should create the command with the n
 Triggered when you launch an SRV from your ship.
 To run a command when this event occurs you should create the command with the name ((EDDI srv launched))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI srv launched loadout} The SRV's loadout
 
@@ -1080,7 +1202,7 @@ Variables set with this events are as follows:
 Triggered when you complete a scan of a stellar body.
 To run a command when this event occurs you should create the command with the name ((EDDI star scanned))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI star scanned absolutemagnitude} The absolute magnitude of the star that has been scanned
   * {DEC:EDDI star scanned age} The age of the star that has been scanned, in years (rounded to millions of years)
@@ -1104,11 +1226,23 @@ Variables set with this events are as follows:
   * {DEC:EDDI star scanned temperature} The temperature of the star that has been scanned
   * {DEC:EDDI star scanned tempprobability} The probablility of finding a star of this class with this temperature
 
+### Station no fire zone entered
+Triggered when your ship enters a station's no fire zone.
+To run a command when this event occurs you should create the command with the name ((EDDI station no fire zone entered))
+
+Variables set with this event are as follows:
+
+  * {BOOL:EDDI station no fire zone entered weaponsdeployed} True if the ship's weapons are deployed when entering the zone
+
+### Station no fire zone exited
+Triggered when your ship exits a station's no fire zone.
+To run a command when this event occurs you should create the command with the name ((EDDI station no fire zone exited))
+
 ### Synthesised
 Triggered when you synthesise something from materials.
 To run a command when this event occurs you should create the command with the name ((EDDI synthesised))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI synthesised synthesis} The thing that has been synthesised
 
@@ -1116,7 +1250,7 @@ Variables set with this events are as follows:
 Triggered when your ship touches down on a planet's surface.
 To run a command when this event occurs you should create the command with the name ((EDDI touchdown))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI touchdown latitude} The latitude from where the commander has touched down
   * {DEC:EDDI touchdown longitude} The longitude from where the commander has touched down
@@ -1125,7 +1259,7 @@ Variables set with this events are as follows:
 Triggered when you purchase trade data.
 To run a command when this event occurs you should create the command with the name ((EDDI trade data purchased))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {DEC:EDDI trade data purchased price} The price of the purchase
   * {TXT:EDDI trade data purchased system} The system for which trade data was purchased
@@ -1134,7 +1268,7 @@ Variables set with this events are as follows:
 Triggered when you trade rank increases.
 To run a command when this event occurs you should create the command with the name ((EDDI trade promotion))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI trade promotion rating} The commander's new trade rating
 
@@ -1142,7 +1276,6 @@ Variables set with this events are as follows:
 Triggered when your ship undocks from a station or outpost.
 To run a command when this event occurs you should create the command with the name ((EDDI undocked))
 
-Variables set with this events are as follows:
+Variables set with this event are as follows:
 
   * {TXT:EDDI undocked station} The station from which the commander has undocked
-

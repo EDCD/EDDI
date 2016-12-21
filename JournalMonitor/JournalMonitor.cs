@@ -852,10 +852,25 @@ namespace EddiJournalMonitor
                                     {
                                         journalEvent = new StationNoFireZoneExitedEvent(timestamp);
                                     }
-                                    //else if (message.Contains("_StartInterdiction"))
-                                    //{
-                                    //    journalEvent = new ShipInterdictionCommencedEvent(timestamp);
-                                    //}
+                                    else if (message.Contains("_StartInterdiction"))
+                                    {
+                                        // Find out who is doing the interdicting
+                                        string by = npcSpeechBy(from, message);
+
+                                        journalEvent = new NPCInterdictionCommencedEvent(timestamp, by);
+                                    }
+                                    else if (message.Contains("_Attack") || message.Contains("_OnAttackStart") || message.Contains("AttackRun") || message.Contains("OnDeclarePiracyAttack"))
+                                    {
+                                        // Find out who is doing the attacking
+                                        string by = npcSpeechBy(from, message);
+                                        journalEvent = new NPCAttackCommencedEvent(timestamp, by);
+                                    }
+                                    else if (message.Contains("_OnStartScanCargo"))
+                                    {
+                                        // Find out who is doing the scanning
+                                        string by = npcSpeechBy(from, message);
+                                        journalEvent = new NPCCargoScanCommencedEvent(timestamp, by);
+                                    }
                                 }
                                 else
                                 {
@@ -1748,6 +1763,115 @@ namespace EddiJournalMonitor
             return null;
         }
 
+        private static string npcSpeechBy(string from, string message)
+        {
+            string by = null;
+            if (message.StartsWith("$AmbushedPilot_"))
+            {
+                by = "Ambushed pilot";
+            }
+            else if (message.StartsWith("$BountyHunter"))
+            {
+                by = "Bounty hunter";
+            }
+            else if (message.StartsWith("$CapShip") || message.StartsWith("$FEDCapShip"))
+            {
+                by = "Capital ship";
+            }
+            else if (message.StartsWith("$CargoHunter"))
+            {
+                by = "Cargo hunter";
+            }
+            else if (message.StartsWith("$Commuter"))
+            {
+                by = "Commuter";
+            }
+            else if (message.StartsWith("$ConvoyExplorers"))
+            {
+                by = "Exploration convoy";
+            }
+            else if (message.StartsWith("$ConvoyWedding"))
+            {
+                by = "Wedding convoy";
+            }
+            else if (message.StartsWith("$CruiseLiner"))
+            {
+                by = "Cruise liner";
+            }
+            else if (message.StartsWith("$Escort"))
+            {
+                by = "Escort";
+            }
+            else if (message.StartsWith("$Messenger"))
+            {
+                by = "Messenger";
+            }
+            else if (message.StartsWith("$Military"))
+            {
+                by = "Military";
+            }
+            else if (message.StartsWith("$Miner"))
+            {
+                by = "Miner";
+            }
+            else if (message.StartsWith("$PassengerHunter"))
+            {
+                by = "Passenger hunter";
+            }
+            else if (message.StartsWith("$PassengerLiner"))
+            {
+                by = "Passenger liner";
+            }
+            else if (message.StartsWith("$Pirate"))
+            {
+                by = "Pirate";
+            }
+            else if (message.StartsWith("$Police"))
+            {
+                // Police messages appear to be re-used by bounty hunters.  Check from to see if it really is police
+                if (from.Contains("Police"))
+                {
+                    by = "Police";
+                }
+                else
+                {
+                    by = "Bounty hunter";
+                }
+            }
+            else if (message.StartsWith("$PowersAssassin"))
+            {
+                by = "Rival power assassin";
+            }
+            else if (message.StartsWith("$PowersPirate"))
+            {
+                by = "Rival power pirate";
+            }
+            else if (message.StartsWith("$PowersSecurity"))
+            {
+                by = "Rival power security";
+            }
+            else if (message.StartsWith("$Propagandist"))
+            {
+                by = "Propagandist";
+            }
+            else if (message.StartsWith("$Protester"))
+            {
+                by = "Protester";
+            }
+            else if (message.StartsWith("$Refugee"))
+            {
+                by = "Refugee";
+            }
+            else if (message.StartsWith("$Smuggler"))
+            {
+                by = "Smuggler";
+            }
+            else if (message.StartsWith("$StarshipOne"))
+            {
+                by = "Starship One";
+            }
+            return by;
+        }
         private static Ship findShip(int? localId, string model)
         {
             Ship ship = null;

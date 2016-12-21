@@ -45,6 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnteredCQCEvent.cs" />
+    <Compile Include="NPCCargoScanCommencedEvent.cs" />
+    <Compile Include="NPCAttackCommencedEvent.cs" />
+    <Compile Include="NPCInterdictionCommendedEvent.cs" />
     <Compile Include="StationNoFireZoneExitedEvent.cs" />
     <Compile Include="StationNoFireZoneEnteredEvent.cs" />
     <Compile Include="PowerCommodityFastTrackedEvent.cs" />
@@ -80,8 +83,8 @@
     <Compile Include="MaterialCollectedEvent.cs" />
     <Compile Include="KilledEvent.cs" />
     <Compile Include="CommodityRefinedEvent.cs" />
-    <Compile Include="ShipInterdiction.cs" />
-    <Compile Include="ShipInterdicted.cs" />
+    <Compile Include="ShipInterdictionEvent.cs" />
+    <Compile Include="ShipInterdictedEvent.cs" />
     <Compile Include="CommanderRanksEvent.cs" />
     <Compile Include="CommanderProgressEvent.cs" />
     <Compile Include="CommanderStartedEvent.cs" />
