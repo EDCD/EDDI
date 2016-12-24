@@ -894,7 +894,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{_ Function to find a given commodity in market}\r\n{set market(commodity) to:\r\n    {for marketcommodity in station.commodities:\r\n        {if marketcommodity.EDDBID = commodity.EDDBID:\r\n            {return marketcommodity}\r\n        }\r\n    }\r\n}\r\n\r\n{for cargo in ship.cargo:\r\n    {set marketcommodity to market(cargo.commodity)}\r\n    {if marketcommodity && marketcommodity.demand > 0 && marketcommodity.sellprice > cargo.price:\r\n        You can sell your {cargo.commodity.name} here for a profit of {marketcommodity.sellprice - cargo.price} credits per tonne.\r\n    }\r\n}\r\n",
+      "script": "{_ Function to find a given commodity in market}\r\n{set market(commodity) to:\r\n    {for marketcommodity in station.commodities:\r\n        {if marketcommodity.EDDBID = commodity.EDDBID:\r\n            {return marketcommodity}\r\n        }\r\n    }\r\n}\r\n\r\n{for cargo in ship.cargo:\r\n    {if cargo.stolen:\r\n      {set carryingstolencargo to true}\r\n    |elif cargo.commodity.name != 'Limpet' && !cargo.missionid:\r\n        {set marketcommodity to market(cargo.commodity)}\r\n        {if marketcommodity && marketcommodity.demand > 0 && marketcommodity.sellprice > cargo.price:\r\n            You can sell your {cargo.commodity.name} here for a profit of {marketcommodity.sellprice - cargo.price} credits per tonne.\r\n        }\r\n    }\r\n}\r\n\r\n{if carryingstolencargo:\r\n    Reminder: you {OneOf(\"have stolen cargo on-board\", \"have stolen goods on-board\", \"are carrying stolen goods\", \"are carrying stolen cargo\")}.\r\n}\r\n",
       "name": "Commodity sale check",
       "description": "Check to see which commodities can be sold here"
     }
