@@ -1,3 +1,6 @@
+#2.1.0-b3
+  * Add 'stolen' flag and 'missionid' identifier to cargo
+
 #2.1.0-b2
   * Add 'Engineer' government type for engineer bases
   * Enable update and outdate messages

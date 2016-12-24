@@ -235,6 +235,10 @@ namespace EddiVoiceAttackResponder
                     int i = 0;
                     foreach (JToken arrayChild in child.Value.Children())
                     {
+                        // Might be simple values
+                        // TODO handle
+
+                        // Just recurse
                         setJsonValues(ref vaProxy, prefix + " " + child.Name + " " + i++, arrayChild, new List<string>());
                     }
                     Logging.Debug("Setting integer value " + name + " entries to " + i);
