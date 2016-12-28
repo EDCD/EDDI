@@ -942,6 +942,12 @@ namespace EddiCompanionAppService
                 module.health = Math.Round(Health);
             }
 
+            // Flag if module has modifications
+            if (json["module"]["modifiers"] != null)
+            {
+                module.modified = true;
+            }
+
             return module;
         }
     }
