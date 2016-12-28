@@ -52,7 +52,7 @@ namespace EddiDataDefinitions
         public static readonly Material Germanium = new Material("germanium", "Element", "Germanium", Rarity.Common, "Ge", 5.6M, 6.8M);
         public static readonly Material Manganese = new Material("manganese", "Element", "Manganese", Rarity.Common, "Mn", 12.7M, 15.2M);
         public static readonly Material Vanadium = new Material("vanadium", "Element", "Vanadium", Rarity.Common, "V", 8.2M, 9.8M);
-        public static readonly Material Zinc = new Material("zinc", "Element", "Zinc", Rarity.Common, "Zn", 13.1M, 15.7M);
+        public static readonly Material Zinc = new Material("zinc", "Element", "Zinc", Rarity.Common, "Zn", 9.0M, 10.8M);
 
         public static readonly Material Arsenic = new Material("arsenic", "Element", "Arsenic", Rarity.Standard, "As", 2.3M, 2.7M);
         public static readonly Material Niobium = new Material("niobium", "Element", "Niobium", Rarity.Standard, "Nb", 2.3M, 2.8M);
