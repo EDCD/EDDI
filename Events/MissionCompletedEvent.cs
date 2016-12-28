@@ -57,6 +57,7 @@ namespace EddiEvents
             this.communal = communal;
             this.reward = reward;
             this.commodityrewards = commodityrewards;
+            this.donation = donation;
         }
     }
 }
