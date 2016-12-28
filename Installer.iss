@@ -74,7 +74,7 @@ Source: "{#SourcePath}EDDI\bin\Debug\System.Data.SQLite.Linq.dll"; DestDir: "{ap
 Source: "{#SourcePath}EDDI\bin\Debug\Utilities.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\Variables.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}VoiceAttackResponder\EDDI.vap"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}VoiceAttackResponder\bin\Debug\EddiVoiceAttackResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}EDDI\bin\Debug\EddiVoiceAttackResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 ; Remove outdated files

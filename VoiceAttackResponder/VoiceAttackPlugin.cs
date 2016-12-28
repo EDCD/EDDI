@@ -197,11 +197,12 @@ namespace EddiVoiceAttackResponder
                 if (child.Value == null)
                 {
                     // No idea what it might have been so reset everything
-                    Logging.Warn(prefix + " " + child.Name + " is null; need to reset all values");
+                    Logging.Debug(prefix + " " + child.Name + " is null; need to reset all values");
                     vaProxy.SetText(name, null);
                     vaProxy.SetInt(name, null);
                     vaProxy.SetDecimal(name, null);
                     vaProxy.SetBoolean(name, null);
+                    vaProxy.SetDate(name, null);
                     continue;
                 }
                 if (child.Value.Type == JTokenType.Boolean)
@@ -235,17 +236,53 @@ namespace EddiVoiceAttackResponder
                     int i = 0;
                     foreach (JToken arrayChild in child.Value.Children())
                     {
-                        // Might be simple values
-                        // TODO handle
-
-                        // Just recurse
-                        setJsonValues(ref vaProxy, prefix + " " + child.Name + " " + i++, arrayChild, new List<string>());
+                        Logging.Warn("Handling element " + i);
+                        string childName = name + " " + i;
+                        if (arrayChild.Type == JTokenType.Boolean)
+                        {
+                            Logging.Debug("Setting boolean value " + childName + " to " + arrayChild.Value<bool?>());
+                            vaProxy.SetBoolean(childName, arrayChild.Value<bool?>());
+                        }
+                        else if (arrayChild.Type == JTokenType.String)
+                        {
+                            Logging.Debug("Setting string value " + childName + " to " + arrayChild.Value<string>());
+                            vaProxy.SetText(childName, arrayChild.Value<string>());
+                        }
+                        else if (arrayChild.Type == JTokenType.Float)
+                        {
+                            Logging.Debug("Setting decimal value " + childName + " to " + arrayChild.Value<decimal?>());
+                            vaProxy.SetDecimal(childName, arrayChild.Value<decimal?>());
+                        }
+                        else if (arrayChild.Type == JTokenType.Integer)
+                        {
+                            Logging.Debug("Setting decimal value " + childName + " to " + arrayChild.Value<decimal?>());
+                            vaProxy.SetDecimal(childName, arrayChild.Value<decimal?>());
+                        }
+                        else if (arrayChild.Type == JTokenType.Date)
+                        {
+                            Logging.Debug("Setting date value " + childName + " to " + arrayChild.Value<DateTime?>());
+                            vaProxy.SetDate(childName, arrayChild.Value<DateTime?>());
+                        }
+                        else if (arrayChild.Type == JTokenType.Null)
+                        {
+                            Logging.Debug("Setting null value " + childName);
+                            vaProxy.SetText(childName, null);
+                            vaProxy.SetInt(childName, null);
+                            vaProxy.SetDecimal(childName, null);
+                            vaProxy.SetBoolean(childName, null);
+                            vaProxy.SetDate(childName, null);
+                        }
+                        else if (arrayChild.Type == JTokenType.Object)
+                        {
+                            setJsonValues(ref vaProxy, childName, arrayChild, new List<string>());
+                        }
+                        i++;
                     }
-                    Logging.Debug("Setting integer value " + name + " entries to " + i);
                     vaProxy.SetInt(name + " entries", i);
                 }
                 else if (child.Value.Type == JTokenType.Object)
                 {
+                    Logging.Warn("Found object");
                     setJsonValues(ref vaProxy, prefix + " " + child.Name, child.Value, new List<string>());
                 }
                 else
