@@ -2,6 +2,7 @@
   * Add 'stolen' flag and 'missionid' identifier to cargo
   * Update default script for 'Commodity sale check': do not suggest that stolen goods or mission-specific goods can be sold
   * Update Zinc good and great percentages with latest data
+  * Use more intelligent method to work from FD names to definitions for commodities, and provide better fallback names if missing
 
 #2.1.0-b2
   * Add 'Engineer' government type for engineer bases
