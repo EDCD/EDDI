@@ -7,6 +7,14 @@
   * Track current vehicle which commander is controlling, and mmake the value available to the speech and VoiceAttack responders
   * Fix implementation of ShipDetails() so that it works according to its documentation
   * Use fixed-width font for edit script window
+  * Updated EDDI's default scripts:
+    * Added 'Synthesised' script
+	* Fix 'Mission completed' script to correctly provide information about commodities received as mission rewards
+	* Update 'Hull damaged' script to only report damage if the player is in the vehicle that is damaged
+	* Update 'Docking granted' script to provide clearer information on the location of pads
+	* Update 'Touchdown' script to use "coordinates" rather than "co-ordinates" as the latter can cause problems with some TTS voices
+	* Update 'Swapout check' script to use modules' modified flag to see if a module has modifications
+	* Update 'Commodity sale check' script to ensure that a commodity is in demand at the target station before reporting on a sale
 
 #2.1.0-b2
   * Add 'Engineer' government type for engineer bases
