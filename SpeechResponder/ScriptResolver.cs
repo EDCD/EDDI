@@ -209,10 +209,9 @@ namespace EddiSpeechResponder
 
             store["ShipDetails"] = new NativeFunction((values) =>
             {
-                int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);
-                Ship result = findShip(localId, null);
+                Ship result = ShipDefinitions.FromModel(values[0].AsString);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
-            }, 0, 1);
+            }, 1);
 
             store["CombatRatingDetails"] = new NativeFunction((values) =>
             {
