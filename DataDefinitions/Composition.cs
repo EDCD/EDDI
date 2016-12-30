@@ -33,6 +33,11 @@ namespace EddiDataDefinitions
 
         public static Composition FromName(string from)
         {
+            if (from == null)
+            {
+                return null;
+            }
+
             Composition result = COMPOSITIONS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
@@ -43,7 +48,12 @@ namespace EddiDataDefinitions
 
         public static Composition FromEDName(string from)
         {
-            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            if (from == null)
+            {
+                return null;
+            }
+
+            string tidiedFrom = from.ToLowerInvariant();
             Composition result = COMPOSITIONS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {

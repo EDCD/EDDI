@@ -48,6 +48,11 @@ namespace EddiDataDefinitions
 
         public static Crime FromName(string from)
         {
+            if (from == null)
+            {
+                return null;
+            }
+
             Crime result = CRIMES.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
@@ -58,7 +63,12 @@ namespace EddiDataDefinitions
 
         public static Crime FromEDName(string from)
         {
-            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            if (from == null)
+            {
+                return null;
+            }
+
+            string tidiedFrom = from.ToLowerInvariant();
             Crime result = CRIMES.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {

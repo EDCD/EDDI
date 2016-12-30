@@ -165,6 +165,11 @@ namespace EddiDataDefinitions
 
         public static Material FromName(string from)
         {
+            if (from == null)
+            {
+                return null;
+            }
+
             Material result = MATERIALS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
@@ -175,7 +180,12 @@ namespace EddiDataDefinitions
 
         public static Material FromEDName(string from)
         {
-            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            if (from == null)
+            {
+                return null;
+            }
+
+            string tidiedFrom = from.ToLowerInvariant();
             Material result = MATERIALS.FirstOrDefault(v => v.EDName.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {

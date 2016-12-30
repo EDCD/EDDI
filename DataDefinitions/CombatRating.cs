@@ -41,6 +41,11 @@ namespace EddiDataDefinitions
 
         public static CombatRating FromName(string from)
         {
+            if (from == null)
+            {
+                return null;
+            }
+
             CombatRating result = RATINGS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
@@ -51,7 +56,12 @@ namespace EddiDataDefinitions
 
         public static CombatRating FromEDName(string from)
         {
-            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            if (from == null)
+            {
+                return null;
+            }
+
+            string tidiedFrom = from.ToLowerInvariant();
             CombatRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {
@@ -62,6 +72,11 @@ namespace EddiDataDefinitions
 
         public static CombatRating FromRank(int from)
         {
+            if (from == null)
+            {
+                return null;
+            }
+
             CombatRating result = RATINGS.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
