@@ -74,9 +74,13 @@ Any values might be missing, depending on EDDI's configuration and the informati
     - security the level of security in the starsystem (Low, Medium, High)
     - power the power who is controlling the starsystem (Edmund Mahon, Zachary Hudson etc)
     - powerstate the state of the system for the power (controlled, contested etc)
+    - x the X co-ordinate of the starsystem
+    - y the Y co-ordinate of the starsystem
+    - z the Z co-ordinate of the starsystem
     - stations the starsystem's stations (array of Station objects)
     - bodies the starsystem's bodies (array of Body objects)
     - visits the number of visits that the commander has made to this starsystem
+    - lastvisit the time that the commander last visited this starsystem
     - distancefromhome the distance in LY from the commander's home starsystem
     - comment any comment the commander has made on the starsystem
     - updatedat the timestamp at which the system information was last updated
