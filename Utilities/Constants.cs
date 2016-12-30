@@ -18,5 +18,9 @@ namespace Utilities
         public const string ENVIRONMENT_WITCH_SPACE = "Witch space";
         public const string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         public const string ENVIRONMENT_NORMAL_SPACE = "Normal space";
+
+        public const string VEHICLE_SHIP = "Ship";
+        public const string VEHICLE_SRV = "SRV";
+        public const string VEHICLE_FIGHTER = "Fighter";
     }
 }

@@ -679,7 +679,11 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Loadout", out val);
                                 string loadout = (string)val;
-                                journalEvent = new SRVLaunchedEvent(timestamp, loadout);
+
+                                data.TryGetValue("PlayerControlled", out val);
+                                bool playercontrolled = (bool)val;
+
+                                journalEvent = new SRVLaunchedEvent(timestamp, loadout, playercontrolled);
                             }
                             handled = true;
                             break;
@@ -969,7 +973,20 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Health", out val);
                                 decimal health = sensibleHealth((decimal)(((double)val) * 100));
-                                journalEvent = new HullDamagedEvent(timestamp, health);
+
+                                data.TryGetValue("PlayerPilot", out val);
+                                bool? piloted = (bool?)val;
+
+                                data.TryGetValue("Fighter", out val);
+                                bool? fighter = (bool)val;
+
+                                string vehicle = EDDI.Instance.Vehicle;
+                                if (fighter == true && piloted == false)
+                                {
+                                    vehicle = Constants.VEHICLE_FIGHTER;
+                                }
+
+                                journalEvent = new HullDamagedEvent(timestamp, vehicle, piloted, health);
                             }
                             handled = true;
                             break;

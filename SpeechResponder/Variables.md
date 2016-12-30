@@ -6,6 +6,13 @@ EDDI can also have event-specific variables in the `event` object.  These usuall
 
 Details of the objects available are as follows:
 
+## Game state
+
+Information on game state is available at the top level i.e. these values can be accessed directlry.
+
+    - environment the commander's current environment.  Can be one of "Normal space", "Supercruise" or "Witch space"
+	- vehicle the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter"
+
 ## Commander
 
 Commander information is available under the `cmdr` object.  

@@ -152,6 +152,9 @@ namespace EddiSpeechResponder
         {
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
 
+            dict["vehicle"] = EDDI.Instance.Vehicle;
+            dict["environment"] = EDDI.Instance.Environment;
+
             if (EDDI.Instance.Cmdr != null)
             {
                 dict["cmdr"] = new ReflectionValue(EDDI.Instance.Cmdr);

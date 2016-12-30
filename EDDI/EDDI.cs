@@ -96,6 +96,9 @@ namespace Eddi
         // Information from the remote server
         public InstanceInfo Server { get; private set; }
 
+        // Current vehicle of player
+        public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
+
         // Session state
         public Dictionary<string, object> State = new Dictionary<string, object>();
 
@@ -563,6 +566,22 @@ namespace Eddi
                     {
                         passEvent = eventEnteredCQCEvent((EnteredCQCEvent)journalEvent);
                     }
+                    else if (journalEvent is SRVLaunchedEvent)
+                    {
+                        passEvent = eventSRVLaunchedEvent((SRVLaunchedEvent)journalEvent);
+                    }
+                    else if (journalEvent is SRVDockedEvent)
+                    {
+                        passEvent = eventSRVDockedEvent((SRVDockedEvent)journalEvent);
+                    }
+                    else if (journalEvent is FighterLaunchedEvent)
+                    {
+                        passEvent = eventFighterLaunchedEvent((FighterLaunchedEvent)journalEvent);
+                    }
+                    else if (journalEvent is FighterDockedEvent)
+                    {
+                        passEvent = eventFighterDockedEvent((FighterDockedEvent)journalEvent);
+                    }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -918,6 +937,42 @@ namespace Eddi
         {
             // In CQC we don't want to report anything, so set our CQC flag
             inCQC = true;
+            return true;
+        }
+
+        private bool eventSRVLaunchedEvent(SRVLaunchedEvent theEvent)
+        {
+            // SRV is always player-controlled, so we are in the SRV
+            Vehicle = Constants.VEHICLE_SRV;
+            return true;
+        }
+
+        private bool eventSRVDockedEvent(SRVDockedEvent theEvent)
+        {
+            // We are back in the ship
+            Vehicle = Constants.VEHICLE_SHIP;
+            return true;
+        }
+
+        private bool eventFighterLaunchedEvent(FighterLaunchedEvent theEvent)
+        {
+            if (theEvent.playercontrolled)
+            {
+                // We are in the fighter
+                Vehicle = Constants.VEHICLE_FIGHTER;
+            }
+            else
+            {
+                // We are (still) in the ship
+                Vehicle = Constants.VEHICLE_SHIP;
+            }
+            return true;
+        }
+
+        private bool eventFighterDockedEvent(FighterDockedEvent theEvent)
+        {
+            // We are back in the ship
+            Vehicle = Constants.VEHICLE_SHIP;
             return true;
         }
 

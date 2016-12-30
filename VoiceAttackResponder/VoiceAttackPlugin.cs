@@ -840,6 +840,8 @@ namespace EddiVoiceAttackResponder
 
             vaProxy.SetText("Environment", EDDI.Instance.Environment);
 
+            vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle);
+
             vaProxy.SetText("EDDI version", Constants.EDDI_VERSION);
 
             Logging.Debug("Set values");
