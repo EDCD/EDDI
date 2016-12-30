@@ -223,7 +223,7 @@ namespace EddiSpeechService
                 || starSystem.StartsWith("HD ")
                 )
             {
-                starSystem = starSystem.Replace("-", "dash ");
+                starSystem = starSystem.Replace("-", " dash ");
             }
             else if (starSystem.StartsWith("Gliese "))
             {

@@ -3,6 +3,7 @@
   * Update default script for 'Commodity sale check': do not suggest that stolen goods or mission-specific goods can be sold
   * Update Zinc good and great percentages with latest data
   * Use more intelligent method to work from FD names to definitions for commodities, and provide better fallback names if missing
+  * Ensure that there is a space either side when using the word 'dash' in place of the symbol '-'
 
 #2.1.0-b2
   * Add 'Engineer' government type for engineer bases
