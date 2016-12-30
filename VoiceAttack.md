@@ -257,6 +257,7 @@ If a value is not available it will be not set rather than empty.
 ### Miscellaneous Variables
 
   * {TXT:Environment}: the environment the ship is in ("Normal space", "Supercruise" or "Witch space")
+  * {TXT:Vehicle}: the vehicle the commander is currently controlling ("Ship", "SRV" or "Fighter")
 
 EDDI also provides a number of pre-built commands to show off some of what it is capable of.  These include:
 
@@ -733,6 +734,8 @@ To run a command when this event occurs you should create the command with the n
 Variables set with this event are as follows:
 
   * {DEC:EDDI hull damaged health} The percentage health of the hull
+  * {BOOL:EDDI hull damaged piloted} True if the vehicle receiving damage is piloted by the player
+  * {TXT:EDDI hull damaged vehicle} The vehicle that has been damaged (Ship, SRV, Fighter)
 
 ### Jumped
 Triggered when you complete a jump to another system.
@@ -1197,6 +1200,7 @@ To run a command when this event occurs you should create the command with the n
 Variables set with this event are as follows:
 
   * {TXT:EDDI srv launched loadout} The SRV's loadout
+  * {BOOL:EDDI srv launched playercontrolled} True if the SRV is controlled by the player
 
 ### Star scanned
 Triggered when you complete a scan of a stellar body.
