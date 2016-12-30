@@ -72,11 +72,6 @@ namespace EddiDataDefinitions
 
         public static CombatRating FromRank(int from)
         {
-            if (from == null)
-            {
-                return null;
-            }
-
             CombatRating result = RATINGS.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
