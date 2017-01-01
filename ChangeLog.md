@@ -15,6 +15,7 @@
 	* Update 'Touchdown' script to use "coordinates" rather than "co-ordinates" as the latter can cause problems with some TTS voices
 	* Update 'Swapout check' script to use modules' modified flag to see if a module has modifications
 	* Update 'Commodity sale check' script to ensure that a commodity is in demand at the target station before reporting on a sale
+  * Ensure that distance from home is updated whenever system co-ordinates are updated
 
 #2.1.0-b2
   * Add 'Engineer' government type for engineer bases
