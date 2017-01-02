@@ -115,6 +115,16 @@ namespace EddiSpeechResponder
                 {
                     translation = Translations.StarSystem(val);
                 }
+                Ship ship = ShipDefinitions.FromModel(val);
+                if (ship != null && ship.EDID > 0)
+                {
+                    translation = ship.SpokenModel();
+                }
+                ship = ShipDefinitions.FromEDModel(val);
+                if (ship != null && ship.EDID > 0)
+                {
+                    translation = ship.SpokenModel();
+                }
                 return translation;
             }, 1);
 
