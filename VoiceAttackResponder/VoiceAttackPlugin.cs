@@ -669,6 +669,7 @@ namespace EddiVoiceAttackResponder
                 if (strValue != null)
                 {
                     EDDI.Instance.State[stateVariableName] = strValue;
+                    vaProxy.SetText("EDDI state " + stateVariableName, strValue);
                     return;
                 }
 
@@ -676,6 +677,7 @@ namespace EddiVoiceAttackResponder
                 if (intValue != null)
                 {
                     EDDI.Instance.State[stateVariableName] = intValue;
+                    vaProxy.SetInt("EDDI state " + stateVariableName, intValue);
                     return;
                 }
 
@@ -683,6 +685,7 @@ namespace EddiVoiceAttackResponder
                 if (boolValue != null)
                 {
                     EDDI.Instance.State[stateVariableName] = boolValue;
+                    vaProxy.SetBoolean("EDDI state " + stateVariableName, boolValue);
                     return;
                 }
 
@@ -690,6 +693,7 @@ namespace EddiVoiceAttackResponder
                 if (decValue != null)
                 {
                     EDDI.Instance.State[stateVariableName] = decValue;
+                    vaProxy.SetDecimal("EDDI state " + stateVariableName, decValue);
                     return;
                 }
 
