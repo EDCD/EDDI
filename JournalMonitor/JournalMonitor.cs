@@ -1583,6 +1583,33 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Item", out val);
                                 string item = (string)val;
+                                // Item might be a module
+                                Module module = ModuleDefinitions.fromEDName(item);
+                                if (module != null)
+                                {
+                                    if (module.mount != null)
+                                    {
+                                        // This is a weapon so provide a bit more information
+                                        string mount;
+                                        if (module.mount == Module.ModuleMount.Fixed)
+                                        {
+                                            mount = "fixed";
+                                        }
+                                        else if (module.mount == Module.ModuleMount.Gimballed)
+                                        {
+                                            mount = "gimballed";
+                                        }
+                                        else
+                                        {
+                                            mount = "turreted";
+                                        }
+                                        item = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.name;
+                                    }
+                                    else
+                                    {
+                                        item = module.name;
+                                    }
+                                }
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
                                 journalEvent = new ShipRepairedEvent(timestamp, item, price);

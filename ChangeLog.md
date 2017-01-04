@@ -17,6 +17,7 @@
 	* Update 'Commodity sale check' script to ensure that a commodity is in demand at the target station before reporting on a sale
   * Ensure that distance from home is updated whenever system co-ordinates are updated
   * Ensure that speech responder's P() works for ships
+  * Provide correct name of repaired item in ShipRepairedEvent
 
 #2.1.0-b2
   * Add 'Engineer' government type for engineer bases
