@@ -366,14 +366,17 @@ namespace EddiSpeechResponder
                 if (value.Type == Cottle.ValueContent.Boolean)
                 {
                     EDDI.Instance.State[name] = value.AsBoolean;
+                    store["state"] = buildState();
                 }
                 else if (value.Type == Cottle.ValueContent.Number)
                 {
                     EDDI.Instance.State[name] = value.AsNumber;
+                    store["state"] = buildState();
                 }
                 else if (value.Type == Cottle.ValueContent.String)
                 {
                     EDDI.Instance.State[name] = value.AsString;
+                    store["state"] = buildState();
                 }
                 // Ignore other possibilities
                 return "";
@@ -386,6 +389,38 @@ namespace EddiSpeechResponder
             }
 
             return store;
+        }
+
+        private static Dictionary<Cottle.Value, Cottle.Value> buildState()
+        {
+            if (EDDI.Instance.State == null)
+            {
+                return null;
+            }
+
+            Dictionary<Cottle.Value, Cottle.Value> state = new Dictionary<Cottle.Value, Cottle.Value>();
+            foreach (string key in EDDI.Instance.State.Keys)
+            {
+                object value = EDDI.Instance.State[key];
+                Type valueType = value.GetType();
+                if (valueType == typeof(string))
+                {
+                    state[key] = (string)value;
+                }
+                else if (valueType == typeof(int))
+                {
+                    state[key] = (int)value;
+                }
+                else if (valueType == typeof(bool))
+                {
+                    state[key] = (bool)value;
+                }
+                else if (valueType == typeof(decimal))
+                {
+                    state[key] = (decimal)value;
+                }
+            }
+            return state;
         }
 
         private static Ship findShip(int? localId, string model)
