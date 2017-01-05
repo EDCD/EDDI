@@ -1086,11 +1086,11 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this event are as follows:
 
-  * {TXT:EDDI ship interdicted faction} The faction of the commander carrying out the interdiction
-  * {TXT:EDDI ship interdicted interdictor} The name of the commander carrying out the interdiction
+  * {TXT:EDDI ship interdicted faction} The faction of the NPC carrying out the interdiction
+  * {TXT:EDDI ship interdicted interdictor} The name of the commander or NPC carrying out the interdiction
   * {BOOL:EDDI ship interdicted iscommander} If the player carrying out the interdiction is a commander (as opposed to an NPC)
-  * {TXT:EDDI ship interdicted power} The power of the commander carrying out the interdiction
-  * {TXT:EDDI ship interdicted rating} The combat rating of the commander carrying out the interdiction
+  * {TXT:EDDI ship interdicted power} The power of the NPC carrying out the interdiction
+  * {TXT:EDDI ship interdicted rating} The combat rating of the commander or NPC carrying out the interdiction
   * {BOOL:EDDI ship interdicted submitted} If the commander submitted to the interdiction
   * {BOOL:EDDI ship interdicted succeeded} If the interdiction attempt was successful
 
