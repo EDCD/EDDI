@@ -1,13 +1,44 @@
-#2.1.0-b3
-  * Add 'stolen' flag and 'missionid' identifier to cargo
-  * Update default script for 'Commodity sale check': do not suggest that stolen goods or mission-specific goods can be sold
-  * Update Zinc good and great percentages with latest data
-  * Use more intelligent method to work from FD names to definitions for commodities, and provide better fallback names if missing
-  * Ensure that there is a space either side when using the word 'dash' in place of the symbol '-'
-  * Track current vehicle which commander is controlling, and mmake the value available to the speech and VoiceAttack responders
-  * Fix implementation of ShipDetails() so that it works according to its documentation
-  * Use fixed-width font for edit script window
-  * Updated EDDI's default scripts:
+#2.1.0
+  * Core
+    * Add 'stolen' flag and 'missionid' identifier to cargo
+    * Use more intelligent method to work from FD names to definitions for commodities, and provide better fallback names if missing
+    * Ensure that there is a space either side when using the word 'dash' in place of the symbol '-'
+    * Unconditionally disable EDDN and EDSM responders whilst in CQC.  This ensures that no data is accidentally sent to these systems
+    * Add option to write speech responder output to a file.  This is an option that can be checked in the speech responder tab, and writes all speech to %APPDATA%\EDDI\speechresponder.out
+    * Allow speech responder to not speak when subtitles are written
+    * Retry companion API profile call if returned information is outdated.  This should help to avoid situations where outfitting and market data is out-of-date
+    * Ensure that distance from home is updated whenever system co-ordinates are updated
+    * Ensure that personality names do not contain illegal file or path characters to avoid issues when saving them
+    * Send EDDN messages with "Unknown Commander" when commander name is not known
+    * Provide new API for EDDI versioning.  This allows EDDI to provide more information about updates to users, and is a precursor for automatic updates
+    * Track current vehicle which commander is controlling, and make the value available to the speech and VoiceAttack responders
+    * Update local system database with details from the journal and companion API.  This ensures that this data is always as up-to-date as possible
+    * Add unknown ship materials
+    * Update Zinc good and great percentages with latest data
+    * Fix material name for Cadmium
+    * Add 'Engineer' government type for engineer bases
+    * Enable update and outdate messages
+  * Events
+    * Add event when being scanned for cargo by an NPC
+    * Add event when being attacked by an NPC
+    * Add event when being interdicted by an NPC
+    * Add 'Ship shutdown' event
+    * Add 'Power voucher received' event
+    * Add 'target' to BountyAwardedEvent for Elite release 2.2.03 and above
+    * Add 'distance' to JumpedEvent.  This provides the distance jumped, in light years
+    * ModificationCraftedEvent now has details of commodities used in crafting as well as materials
+    * Update mission accepted and completed events to contain more fields.  Details on the new fields are in the relevant documentation
+    * Update location event with details of station name and type where available
+    * Add events when entering and leaving a station's no-fire zone.  Details about the individual events are in the relevant documentation
+    * Add powerplay events.  Details on the new events are in the relevant documentation
+    * Provide correct name of repaired item in ShipRepairedEvent
+  * Speech Responder
+    * Ensure that speech responder's P() Cottle function works for ships
+    * Add SetState() Cottle function.  Details on how to use this are in the SpeechResponder documentation
+    * Fix implementation of ShipDetails() Cottle function so that it works according to its documentation
+    * Use fixed-width font for edit script window
+  * Speech Responder scripts
+    * Update Commodity sale check' script to not suggest that stolen goods or mission-specific goods can be sold
     * Added 'Synthesised' script
 	* Fix 'Mission completed' script to correctly provide information about commodities received as mission rewards
 	* Update 'Hull damaged' script to only report damage if the player is in the vehicle that is damaged
@@ -15,56 +46,24 @@
 	* Update 'Touchdown' script to use "coordinates" rather than "co-ordinates" as the latter can cause problems with some TTS voices
 	* Update 'Swapout check' script to use modules' modified flag to see if a module has modifications
 	* Update 'Commodity sale check' script to ensure that a commodity is in demand at the target station before reporting on a sale
-  * Ensure that distance from home is updated whenever system co-ordinates are updated
-  * Ensure that speech responder's P() works for ships
-  * Provide correct name of repaired item in ShipRepairedEvent
-  * Add 'Ship shutdown' event
-  * Add 'Power voucher received' event
-  * Add unknown ship materials
-
-#2.1.0-b2
-  * Add 'Engineer' government type for engineer bases
-  * Enable update and outdate messages
-  * Ensure that VoiceAttack decimal values are not written as integers
-  * Add 'SetState' Cottle function.  Details on how to use this are in the SpeechResponder documentation
-  * Allow speech responder to not speak when subtitles are written
-  * Retry companion API profile call if returned information is outdated.  This should help to avoid situations where outfitting and market data is out-of-date
-  * Add event when being scanned for cargo by an NPC
-  * Add event when being attacked by an NPC
-  * Add event when being interdicted by an NPC
-
-#2.1.0-b1
-  * Fix material name for Cadmium
-  * Add ability to set state variables from VoiceAttack.  Details on how to use this are in the VoiceAttack documentation
-  * Add option to write speech responder output to a file.  This is an option that can be checked in the speech responder tab, and writes all speech to %APPDATA%\EDDI\speechresponder.out
-  * Add module definitions for SRV, fighter and training loadouts
-  * Provide new API for EDDI versioning.  This allows EDDI to provide more information about updates to users, and is a precursor for automatic updates
-  * Update local system database with details from the journal and companion API.  This ensures that this data is always as up-to-date as possible
-  * ModificationCraftedEvent now has details of commodities used in crafting as well as materials
-  * Provide update and MOTD information in VoiceAttack window if applicable
-  * Update mission accepted and completed events to contain more fields.  Details on the new fields are in the relevant documentation
-  * Update location event with details of station name and type where available
-  * Add events when entering and leaving a station's no-fire zone.  Details about the individual events are in the relevant documentation
-  * Add powerplay events.  Details on the new events are in the relevant documentation
-  * Ensure that personality names do not contain illegal file or path characters to avoid issues when saving them
-  * Send EDDN messages with "Unknown Commander" when commander name is not known
-  * Use recursive/dynamic method to populate VoiceAttack variables.  This provides many more VoiceAttack variables than were previously available; details are in the relevent documentation
-  * Add VoiceAttack 'disablespeechresponder' and 'enablespeechresponder' contexts to temporarily disable and enable the speech responder.  Details on these are in the VoiceAttack documentation
-  * Unconditionally disable EDDN and EDSM responders whilst in CQC.  This ensures that no data is accidentally sent to these systems
-  * Add 'target' to BountyAwardedEvent for Elite release 2.2.03 and above
-  * Add 'distance' to JumpedEvent.  This provides the distance jumped, in light years
-  * Remove reference to 'last jump' in VoiceAttack documentation (this is provided by the JumpedEvent)
-  * Add 'Voice' parameter for VoiceAttack's 'say' and 'speech' commands to allow individual over-rides of default Voice
-  * Add VoiceAttack 'setspeechresponderpersonality' context to change the speech responder's personality.  Details on this is in the VoiceAttack documentation
-  * Updated EDDI's default scripts:
-    * Added scripts for new events 'Entered CQC', 'Power commodity fast tracked', 'Power commodity delivered', 'Power commodity obtained', 'Power salary claimed', 'Power expansion vote cast', 'Power defected', 'Power left', and 'Power joined'
-	* Updated script for 'Mission completed' event to provide more detail on the accepting faction and reward
-	* Updated script for 'Mission accepted' event to provide a warning about illegal passengers
-	* Updated script for 'Jumping' event to recognise when last system's allegiance is null (as opposed to empty)
-	* Updated 'Docking denied' script to provide info on the reason
-	* Updated 'Location' script to provide correct information when docked at ground stations
-	* Updated 'Body scanned' script to provide additional information about rotation period of the planetary
-	* Updated 'Galnet news published' script to read full contents of interesting items
+    * Add scripts for new events 'Entered CQC', 'Power commodity fast tracked', 'Power commodity delivered', 'Power commodity obtained', 'Power salary claimed', 'Power expansion vote cast', 'Power defected', 'Power left', and 'Power joined'
+	* Update script for 'Mission completed' event to provide more detail on the accepting faction and reward
+	* Update script for 'Mission accepted' event to provide a warning about illegal passengers
+	* Update script for 'Jumping' event to recognise when last system's allegiance is null (as opposed to empty)
+	* Update 'Docking denied' script to provide info on the reason
+	* Update 'Location' script to provide correct information when docked at ground stations
+	* Update 'Body scanned' script to provide additional information about rotation period of the planetary
+	* Update 'Galnet news published' script to read full contents of interesting items
+  * VocieAtack integration
+    * Add 'Voice' parameter for VoiceAttack's 'say' and 'speech' commands to allow individual over-rides of default Voice
+    * Add VoiceAttack 'setspeechresponderpersonality' context to change the speech responder's personality.  Details on this is in the VoiceAttack documentation
+    * Add VoiceAttack 'disablespeechresponder' and 'enablespeechresponder' contexts to temporarily disable and enable the speech responder.  Details on these are in the VoiceAttack documentation
+    * Remove reference to 'last jump' in VoiceAttack documentation (this is provided by the JumpedEvent)
+    * Use recursive/dynamic method to populate VoiceAttack variables.  This provides many more VoiceAttack variables than were previously available; details are in the relevent documentation
+    * Add module definitions for SRV, fighter and training loadouts
+    * Provide update and MOTD information in VoiceAttack window if applicable
+    * Add ability to set state variables from VoiceAttack.  Details on how to use this are in the VoiceAttack documentation
+    * Ensure that VoiceAttack decimal values are not written as integers
 
 #2.0.13
   * Fix issue where engineer rank journal message without rank would cause a crash
