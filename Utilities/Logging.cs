@@ -52,27 +52,72 @@ namespace Utilities
             log(filePath, memberName, "W", message + " " + data);
         }
 
-        public static void Info(string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Info(string message, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            log(filePath, memberName, "I", data);
+            Info(message, (string)null, memberName, filePath);
         }
 
-        public static void Debug(string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Info(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        {
+            Info(message, ex.ToString(), memberName, filePath);
+        }
+
+        public static void Info(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        {
+            Info(ex.ToString(), memberName, filePath);
+        }
+
+        public static void Info(string message, string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        {
+            log(filePath, memberName, "I", message + " " + data);
+        }
+
+        public static void Debug(string message, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             if (Verbose)
             {
-                log(filePath, memberName, "D", data);
+                Debug(message, (string)null, memberName, filePath);
             }
         }
 
+        public static void Debug(string message, Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        {
+            if (Verbose)
+            {
+                Debug(message, ex.ToString(), memberName, filePath);
+            }
+        }
+
+        public static void Debug(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        {
+            if (Verbose)
+            {
+                Debug(ex.ToString(), memberName, filePath);
+            }
+        }
+
+        public static void Debug(string message, string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        {
+            if (Verbose)
+            {
+                log(filePath, memberName, "D", message + " " + data);
+            }
+        }
         private static readonly object logLock = new object();
         private static void log(string path, string method, string level, string data)
         {
             lock (logLock)
             {
-                using (StreamWriter file = new StreamWriter(LogFile, true))
+                try
                 {
-                    file.WriteLine(DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture) + " " + Path.GetFileNameWithoutExtension(path) + ":" + method + " [" + level + "] " + data);
+                    using (StreamWriter file = new StreamWriter(LogFile, true))
+                    {
+                        file.WriteLine(DateTime.UtcNow.ToString("s", System.Globalization.CultureInfo.InvariantCulture) + " " + Path.GetFileNameWithoutExtension(path) + ":" + method + " [" + level + "] " + data);
+                    }
+                }
+                catch (Exception)
+                {
+                    // Failed; can't do anything about it as we're in the logging code anyway
                 }
             }
         }
@@ -109,7 +154,10 @@ namespace Utilities
                 thread.IsBackground = true;
                 thread.Start();
             }
-            catch { }
+            catch (Exception)
+            {
+                // Nothing to do
+            }
         }
     }
 }

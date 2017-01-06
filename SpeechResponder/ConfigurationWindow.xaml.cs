@@ -55,6 +55,7 @@ namespace EddiSpeechResponder
             Personalities = personalities;
 
             SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            subtitlesCheckbox.IsChecked = configuration.Subtitles;
 
             foreach (Personality personality in Personalities)
             {
@@ -96,12 +97,12 @@ namespace EddiSpeechResponder
             {
                 sampleEvent = null;
             }
-            else if (sample.GetType() == typeof(string))
+            else if (sample is string)
             {
                 // It's as tring so a journal entry.  Parse it
                 sampleEvent = JournalMonitor.ParseJournalEntry((string)sample);
             }
-            else if (sample.GetType() == typeof(Event))
+            else if (sample is Event)
             {
                 // It's a direct event
                 sampleEvent = (Event)sample;
@@ -217,6 +218,38 @@ namespace EddiSpeechResponder
                     oldPersonality.RemoveFile();
                     break;
             }
+        }
+
+        private void subtitlesEnabled(object sender, RoutedEventArgs e)
+        {
+            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            configuration.Subtitles = true;
+            configuration.ToFile();
+            EDDI.Instance.Reload("Speech responder");
+        }
+
+        private void subtitlesDisabled(object sender, RoutedEventArgs e)
+        {
+            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            configuration.Subtitles = false;
+            configuration.ToFile();
+            EDDI.Instance.Reload("Speech responder");
+        }
+
+        private void subtitlesOnlyEnabled(object sender, RoutedEventArgs e)
+        {
+            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            configuration.SubtitlesOnly = true;
+            configuration.ToFile();
+            EDDI.Instance.Reload("Speech responder");
+        }
+
+        private void subtitlesOnlyDisabled(object sender, RoutedEventArgs e)
+        {
+            SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
+            configuration.SubtitlesOnly = false;
+            configuration.ToFile();
+            EDDI.Instance.Reload("Speech responder");
         }
     }
 }

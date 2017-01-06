@@ -13,6 +13,12 @@ namespace EddiSpeechResponder
         [JsonProperty("personality")]
         public string Personality { get; set; }
 
+        [JsonProperty("subtitles")]
+        public bool Subtitles { get; set; }
+
+        [JsonProperty("subtitlesonly")]
+        public bool SubtitlesOnly { get; set; }
+
         [JsonIgnore]
         private string dataPath;
 
@@ -32,7 +38,10 @@ namespace EddiSpeechResponder
             {
                 configuration = JsonConvert.DeserializeObject<SpeechResponderConfiguration>(File.ReadAllText(filename));
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Logging.Debug("Failed to read speech responder configuration", ex);
+            }
 
             if (configuration.Personality == null)
             {

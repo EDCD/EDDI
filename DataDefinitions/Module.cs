@@ -20,6 +20,7 @@ namespace EddiDataDefinitions
         public bool enabled { get; set; }
         public int priority { get; set; }
         public decimal health { get; set; }
+        public bool modified { get; set; } // If the module has been modified
 
         // Admin
         // The ID in Elite: Dangerous' database
@@ -44,6 +45,7 @@ namespace EddiDataDefinitions
             this.hoppercapacity = Module.hoppercapacity;
             this.EDID = Module.EDID;
             this.EDDBID = Module.EDDBID;
+            this.modified = Module.modified;
         }
 
         public Module(long EDID, string EDName, long EDDBID, string Name, int Class, string Grade, long Value)
@@ -55,6 +57,7 @@ namespace EddiDataDefinitions
             this.@class = Class;
             this.grade = Grade;
             this.value = Value;
+            this.modified = false;
         }
 
         // Module definition for a bulkhead - requires ship ID
@@ -68,6 +71,7 @@ namespace EddiDataDefinitions
             this.grade = Grade;
             this.value = Value;
             this.ShipId = ShipId;
+            this.modified = false;
         }
 
         // Module definition for a weapon - requires mount and optional ammo
@@ -83,6 +87,7 @@ namespace EddiDataDefinitions
             this.mount = Mount;
             this.clipcapacity = AmmoClipCapacity;
             this.hoppercapacity = AmmoHopperCapacity;
+            this.modified = false;
         }
 
         /// <summary>The mount of a weapons module</summary>

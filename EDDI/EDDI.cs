@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -34,6 +35,8 @@ namespace Eddi
         private static bool started;
 
         private static bool running = true;
+
+        public bool inCQC { get; private set; } = false;
 
         static EDDI()
         {
@@ -90,6 +93,15 @@ namespace Eddi
         public StarSystem CurrentStarSystem { get; private set; }
         public StarSystem LastStarSystem { get; private set; }
 
+        // Information from the remote server
+        public InstanceInfo Server { get; private set; }
+
+        // Current vehicle of player
+        public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
+
+        // Session state
+        public Dictionary<string, object> State = new Dictionary<string, object>();
+
         private EDDI()
         {
             try
@@ -100,8 +112,15 @@ namespace Eddi
                 ExceptionlessClient.Default.Startup("vJW9HtWB2NHiQb7AwVQsBQM6hjWN1sKzHf5PCpW1");
                 ExceptionlessClient.Default.Configuration.SetVersion(Constants.EDDI_VERSION);
 
-                // Start by ensuring that our primary data structures have something in them.  This allows them to be updated
-                // from any source
+                // Start by fetching information from the update server, and handling appropriately
+                if (!UpdateServer())
+                {
+                    // We are too old to continue; don't
+                    running = false;
+                    return;
+                }
+
+                // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
                 Cmdr = new Commander();
                 Ship = new Ship();
                 Shipyard = new List<Ship>();
@@ -189,35 +208,83 @@ namespace Eddi
                 monitors = findMonitors();
                 responders = findResponders();
 
-                // Check for an update
-                string response;
-                try
-                {
-                    if (Constants.EDDI_VERSION.Contains("b"))
-                    {
-                        response = Net.DownloadString("http://api.eddp.co/betaversion");
-                    }
-                    else
-                    {
-                        response = Net.DownloadString("http://api.eddp.co/version");
-                    }
-                    if (Versioning.Compare(response, Constants.EDDI_VERSION) == 1)
-                    {
-                        SpeechService.Instance.Say(null, "EDDI version " + response.Replace(".", " point ") + " is now available.", false);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may not work fully", false);
-                    Logging.Error("Failed to access api.eddp.co", ex);
-                }
-
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
             }
             catch (Exception ex)
             {
                 Logging.Error("Failed to initialise", ex);
             }
+        }
+
+        /// <summary>
+        /// Obtain and check the information from the update server
+        /// </summary>
+        private bool UpdateServer()
+        {
+            try
+            {
+                ServerInfo updateServerInfo = ServerInfo.FromServer("http://api.eddp.co/");
+                if (updateServerInfo == null)
+                {
+                    Logging.Warn("Failed to contact update server");
+                    return false;
+                }
+                else
+                {
+                    InstanceInfo info = Constants.EDDI_VERSION.Contains("b") ? updateServerInfo.beta : updateServerInfo.production;
+                    if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
+                    {
+                        Logging.Warn("This version of EDDI is too old to operate; please upgrade at " + info.url);
+                        SpeechService.Instance.Say(null, "This version of EDDI is too old to operate; please upgrade.", true);
+                        //SpeechService.Instance.Say(null, "EDDI requires an update.  Downloading.", true);
+                        //// We are too old to run - update
+                        //string updateFile = Net.DownloadFile(info.url, @"EDDI-update.exe");
+                        //if (updateFile == null)
+                        //{
+                        //    SpeechService.Instance.Say(null, "Download failed.  Please try again later.", true);
+                        //}
+                        //else
+                        //{
+                        //    Logging.Info("Downloaded to " + updateFile);
+                        //    SpeechService.Instance.Say(null, "Download complete.  Please restart EDDI once upgrade has finished.", true);
+                        //    Process.Start(updateFile, @"/silent /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
+                        //}
+                        //System.Environment.Exit(1);
+                    }
+
+                    if (Versioning.Compare(info.version, Constants.EDDI_VERSION) == 1)
+                    {
+                        // There is an update available
+                        SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", true);
+                        //SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.  Downloading.", true);
+                        //string updateFile = Net.DownloadFile(info.url, @"EDDI-update.exe");
+                        //if (updateFile == null)
+                        //{
+                        //    SpeechService.Instance.Say(null, "Download failed.  EDDI will try again next time.", true);
+                        //}
+                        //else
+                        //{
+                        //    Logging.Info("Downloaded to " + updateFile);
+                        //    SpeechService.Instance.Say(null, "Download complete.  Please restart EDDI once upgrade has finished.", true);
+                        //    Process.Start(updateFile, @"/silent /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
+                        //    System.Environment.Exit(1);
+                        //}
+                    }
+
+                    if (info.motd != null)
+                    {
+                        // There is a message
+                        SpeechService.Instance.Say(null, info.motd, false);
+                    }
+                    Server = info;
+                }
+            }
+            catch (Exception ex)
+            {
+                SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
+                Logging.Warn("Failed to access api.eddp.co", ex);
+            }
+            return true;
         }
 
         public void Start()
@@ -317,6 +384,50 @@ namespace Eddi
             }
 
             Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
+        }
+
+        /// <summary>
+        /// Obtain a named responder
+        /// </summary>
+        public EDDIResponder ObtainResponder(string name)
+        {
+            foreach (EDDIResponder responder in responders)
+            {
+                if (responder.ResponderName() == name)
+                {
+                    return responder;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Disable a named responder for this session.  This does not update the on-disk status of the responder
+        /// </summary>
+        public void DisableResponder(string name)
+        {
+            EDDIResponder responder = ObtainResponder(name);
+            if (responder != null)
+            {
+                responder.Stop();
+                activeResponders.Remove(responder);
+            }
+        }
+
+        /// <summary>
+        /// Enable a named responder for this session.  This does not update the on-disk status of the responder
+        /// </summary>
+        public void EnableResponder(string name)
+        {
+            EDDIResponder responder = ObtainResponder(name);
+            if (responder != null)
+            {
+                if (!activeResponders.Contains(responder))
+                {
+                    responder.Start();
+                    activeResponders.Add(responder);
+                }
+            }
         }
 
         /// <summary>
@@ -451,6 +562,26 @@ namespace Eddi
                     {
                         passEvent = eventCombatPromotionEvent((CombatPromotionEvent)journalEvent);
                     }
+                    else if (journalEvent is EnteredCQCEvent)
+                    {
+                        passEvent = eventEnteredCQCEvent((EnteredCQCEvent)journalEvent);
+                    }
+                    else if (journalEvent is SRVLaunchedEvent)
+                    {
+                        passEvent = eventSRVLaunchedEvent((SRVLaunchedEvent)journalEvent);
+                    }
+                    else if (journalEvent is SRVDockedEvent)
+                    {
+                        passEvent = eventSRVDockedEvent((SRVDockedEvent)journalEvent);
+                    }
+                    else if (journalEvent is FighterLaunchedEvent)
+                    {
+                        passEvent = eventFighterLaunchedEvent((FighterLaunchedEvent)journalEvent);
+                    }
+                    else if (journalEvent is FighterDockedEvent)
+                    {
+                        passEvent = eventFighterDockedEvent((FighterDockedEvent)journalEvent);
+                    }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -504,6 +635,7 @@ namespace Eddi
             CurrentStarSystem.x = theEvent.x;
             CurrentStarSystem.y = theEvent.y;
             CurrentStarSystem.z = theEvent.z;
+            setSystemDistanceFromHome(CurrentStarSystem);
 
             if (theEvent.docked == true)
             {
@@ -533,8 +665,19 @@ namespace Eddi
 
                 CurrentStation = station;
 
-                // Now call refreshProfile() to obtain the outfitting and commodity information
-                refreshProfile();
+                // Kick off the profile refresh
+                profileUpdateNeeded = true;
+                profileStationRequired = CurrentStation.name;
+                Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+                updateThread.IsBackground = true;
+                updateThread.Start();
+                //// Now call refreshProfile() to obtain the outfitting and commodity information
+                //refreshProfile();
+            }
+            else
+            {
+                // If we are not docked then our station information is invalid
+                CurrentStation = null;
             }
 
             return true;
@@ -569,8 +712,14 @@ namespace Eddi
 
             CurrentStation = station;
 
-            // Now call refreshProfile() to obtain the outfitting and commodity information
-            refreshProfile();
+            // Kick off the profile refresh
+            profileUpdateNeeded = true;
+            profileStationRequired = CurrentStation.name;
+            Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+            updateThread.IsBackground = true;
+            updateThread.Start();
+            //// Now call refreshProfile() to obtain the outfitting and commodity information
+            //refreshProfile();
 
             return true;
         }
@@ -613,6 +762,7 @@ namespace Eddi
                 CurrentStarSystem.x = theEvent.x;
                 CurrentStarSystem.y = theEvent.y;
                 CurrentStarSystem.z = theEvent.z;
+		setSystemDistanceFromHome(CurrentStarSystem);
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
@@ -643,11 +793,13 @@ namespace Eddi
                 CurrentStarSystem.x = theEvent.x;
                 CurrentStarSystem.y = theEvent.y;
                 CurrentStarSystem.z = theEvent.z;
+		setSystemDistanceFromHome(CurrentStarSystem);
                 CurrentStarSystem.allegiance = theEvent.allegiance;
                 CurrentStarSystem.faction = theEvent.faction;
                 CurrentStarSystem.primaryeconomy = theEvent.economy;
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
+                CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
@@ -672,6 +824,8 @@ namespace Eddi
                 CurrentStarSystem.primaryeconomy = theEvent.economy;
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
+                CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 setCommanderTitle();
             }
             else
@@ -683,6 +837,7 @@ namespace Eddi
                 CurrentStarSystem.x = theEvent.x;
                 CurrentStarSystem.y = theEvent.y;
                 CurrentStarSystem.z = theEvent.z;
+		setSystemDistanceFromHome(CurrentStarSystem);
                 CurrentStarSystem.allegiance = theEvent.allegiance;
                 CurrentStarSystem.faction = theEvent.faction;
                 CurrentStarSystem.primaryeconomy = theEvent.economy;
@@ -691,6 +846,7 @@ namespace Eddi
 
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
+                CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 setCommanderTitle();
             }
@@ -725,14 +881,29 @@ namespace Eddi
 
         private bool eventShipDeliveredEvent(ShipDeliveredEvent theEvent)
         {
-            refreshProfile();
             SetShip(theEvent.Ship);
+
+            // Kick off the profile refresh
+            profileUpdateNeeded = true;
+            profileShipIdRequired = theEvent.Ship.LocalId;
+            Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+            updateThread.IsBackground = true;
+            updateThread.Start();
+
             return true;
         }
 
         private bool eventShipSwappedEvent(ShipSwappedEvent theEvent)
         {
             SetShip(theEvent.Ship);
+
+            // Kick off the profile refresh
+            profileUpdateNeeded = true;
+            profileShipIdRequired = theEvent.Ship.LocalId;
+            Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+            updateThread.IsBackground = true;
+            updateThread.Start();
+
             return true;
         }
 
@@ -745,6 +916,9 @@ namespace Eddi
 
         private bool eventCommanderContinuedEvent(CommanderContinuedEvent theEvent)
         {
+            // If we see this it means that we aren't in CQC
+            inCQC = false;
+
             SetShip(theEvent.Ship);
 
             if (Cmdr.name == null)
@@ -763,6 +937,49 @@ namespace Eddi
             return theEvent.rating != Cmdr.combatrating.name;
         }
 
+        private bool eventEnteredCQCEvent(EnteredCQCEvent theEvent)
+        {
+            // In CQC we don't want to report anything, so set our CQC flag
+            inCQC = true;
+            return true;
+        }
+
+        private bool eventSRVLaunchedEvent(SRVLaunchedEvent theEvent)
+        {
+            // SRV is always player-controlled, so we are in the SRV
+            Vehicle = Constants.VEHICLE_SRV;
+            return true;
+        }
+
+        private bool eventSRVDockedEvent(SRVDockedEvent theEvent)
+        {
+            // We are back in the ship
+            Vehicle = Constants.VEHICLE_SHIP;
+            return true;
+        }
+
+        private bool eventFighterLaunchedEvent(FighterLaunchedEvent theEvent)
+        {
+            if (theEvent.playercontrolled)
+            {
+                // We are in the fighter
+                Vehicle = Constants.VEHICLE_FIGHTER;
+            }
+            else
+            {
+                // We are (still) in the ship
+                Vehicle = Constants.VEHICLE_SHIP;
+            }
+            return true;
+        }
+
+        private bool eventFighterDockedEvent(FighterDockedEvent theEvent)
+        {
+            // We are back in the ship
+            Vehicle = Constants.VEHICLE_SHIP;
+            return true;
+        }
+
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
         public void refreshProfile()
         {
@@ -770,6 +987,7 @@ namespace Eddi
             {
                 try
                 {
+                    long profileTime = (long)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                     Profile profile = CompanionAppService.Instance.Profile();
                     if (profile != null)
                     {
@@ -783,46 +1001,51 @@ namespace Eddi
                             SetShip(profile.Ship);
                         }
 
+                        bool updatedCurrentStarSystem = false;
+
                         // Only set the current star system if it is not present, otherwise we leave it to events
                         if (CurrentStarSystem == null)
                         {
                             CurrentStarSystem = profile == null ? null : profile.CurrentStarSystem;
                             setSystemDistanceFromHome(CurrentStarSystem);
-                        }
 
-                        //if (LastStation == null)
-                        //{
-                        //    Logging.Info("No last station; using the information available to us from the profile");
-                        //}
-                        //else
-                        //{
-                        //    Logging.Info("Internal last station is " + LastStation.name + "@" + LastStation.systemname + ", profile last station is " + LastStation.name + "@" + LastStation.systemname);
-                        //}
-
-                        // Last station's name should be set from the journal, so we confirm that this is correct
-                        // before we update the commodity and outfitting information
-                        //if (LastStation == null)
-                        //{
-                        //    // No current info so use profile data directly
-                        //    LastStation = profile.LastStation;
-                        //}
-                        //else if (LastStation.systemname == profile.LastStation.systemname && LastStation.name == profile.LastStation.name)
-                        if (CurrentStation != null && CurrentStation.systemname == profile.LastStation.systemname && CurrentStation.name == profile.LastStation.name)
-                        {
-                            // Match for our expected station with the information returned from the profile
-                            Logging.Debug("Current station matches profile information; updating info");
-
-                            // Update the outfitting, commodities and shipyard with the data obtained from the profile
-                            CurrentStation.outfitting = profile.LastStation.outfitting;
-                            CurrentStation.commodities = profile.LastStation.commodities;
-                            CurrentStation.shipyard = profile.LastStation.shipyard;
+                            // We don't know if we are docked or not at this point.  Fill in the data if we can, and
+                            // let later systems worry about removing it if it's decided that we aren't docked
+                            if (profile.LastStation.systemname == CurrentStarSystem.name)
+                            {
+                                CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStation.name);
+                                CurrentStation.updatedat = profileTime;
+                                updatedCurrentStarSystem = true;
+                            }
                         }
                         else
                         {
-                            Logging.Debug("Current station does not match profile information; ignoring");
+                            if (CurrentStation != null && CurrentStation.systemname == profile.LastStation.systemname && CurrentStation.name == profile.LastStation.name)
+                            {
+                                // Match for our expected station with the information returned from the profile
+                                Logging.Debug("Current station matches profile information; updating info");
+
+                                // Update the outfitting, commodities and shipyard with the data obtained from the profile
+                                CurrentStation.outfitting = profile.LastStation.outfitting;
+                                CurrentStation.updatedat = profileTime;
+                                CurrentStation.commodities = profile.LastStation.commodities;
+                                CurrentStation.commoditiesupdatedat = profileTime;
+                                CurrentStation.shipyard = profile.LastStation.shipyard;
+                                updatedCurrentStarSystem = true;
+                            }
+                            else
+                            {
+                                Logging.Debug("Current station does not match profile information; ignoring");
+                            }
                         }
 
                         setCommanderTitle();
+
+                        if (updatedCurrentStarSystem)
+                        {
+                            Logging.Debug("Star system information updated from remote server; updating local copy");
+                            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -1003,6 +1226,123 @@ namespace Eddi
                 }
             }
             return responders;
+        }
+
+        private bool profileUpdateNeeded = false;
+        private string profileStationRequired = null;
+        private int profileShipIdRequired = -1;
+
+        /// <summary>
+        /// Update the profile when requested, ensuring that we meet the condition in the updated profile
+        /// </summary>
+        private void conditionallyRefreshProfile()
+        {
+            if (CompanionAppService.Instance == null && CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
+            {
+                Logging.Debug("Cannot refresh profile when companion app service is not active");
+                return;
+            }
+
+            int maxTries = 6;
+
+            while (running && maxTries > 0)
+            {
+                try
+                {
+                    Logging.Debug("Starting conditional profile fetch");
+
+                    // See if we need to fetch the profile
+                    if (profileUpdateNeeded)
+                    {
+                        // See if we still need this particular update
+                        if (profileStationRequired != null && (CurrentStation == null || CurrentStation.name != profileStationRequired))
+                        {
+                            Logging.Debug("No longer at requested station; giving up on update");
+                            profileUpdateNeeded = false;
+                            profileStationRequired = null;
+                            break;
+                        }
+
+                        if (profileShipIdRequired != -1 && (Ship != null && Ship.LocalId != profileShipIdRequired))
+                        {
+                            Logging.Debug("No longer in requested ship; giving up on update");
+                            profileUpdateNeeded = false;
+                            profileShipIdRequired = -1;
+                            break;
+                        }
+
+                        // We do need to fetch an updated profile; do so
+                        long profileTime = (long)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                        Logging.Debug("Fetching profile");
+                        Profile profile = CompanionAppService.Instance.Profile(true);
+
+                        // Use the profile as primary information for our commander and shipyard
+                        Cmdr = profile.Cmdr;
+                        Shipyard = profile.Shipyard;
+
+                        // Only use the ship information if we agree that this is the correct ship to use
+                        if (Ship.model == null || profile.Ship.LocalId == Ship.LocalId)
+                        {
+                            SetShip(profile.Ship);
+                        }
+
+                        // See if it is up-to-date regarding our requirements
+                        Logging.Debug("profileStationRequired is " + profileStationRequired + ", profile station is " + profile.LastStation.name);
+                        if (profileStationRequired != null && profileStationRequired == profile.LastStation.name)
+                        {
+                            // We have the required station information
+                            CurrentStation.outfitting = profile.LastStation.outfitting;
+                            CurrentStation.updatedat = profileTime;
+                            CurrentStation.commodities = profile.LastStation.commodities;
+                            CurrentStation.commoditiesupdatedat = profileTime;
+                            CurrentStation.shipyard = profile.LastStation.shipyard;
+
+                            // Update the current station information in our backend DB
+                            Logging.Debug("Star system information updated from remote server; updating local copy");
+                            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
+                            // Post an update event
+                            Event @event = new MarketInformationUpdatedEvent(DateTime.Now);
+                            eventHandler(@event);
+
+                            profileUpdateNeeded = false;
+                            break;
+                        }
+
+                        Logging.Debug("profileShipIdRequired is " + profileShipIdRequired + ", profile ship ID is " + profile.Ship.LocalId);
+                        if (profileShipIdRequired != -1 && profileShipIdRequired == profile.Ship.LocalId)
+                        {
+                            // We have the required ship information
+                            Logging.Debug("Correct ship ID updated");
+
+                            profileUpdateNeeded = false;
+                            break;
+                        }
+
+
+                        // No luck; sleep and try again
+                        Thread.Sleep(15000);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error("Exception obtaining profile", ex);
+                }
+                finally
+                {
+                    maxTries--;
+                }
+            }
+
+            if (maxTries == 0)
+            {
+                Logging.Info("Maximum attempts reached; giving up on request");
+            }
+
+            // Clear the update info
+            profileUpdateNeeded = false;
+            profileStationRequired = null;
+            profileShipIdRequired = -1;
         }
     }
 }

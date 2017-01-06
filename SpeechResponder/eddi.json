@@ -2,6 +2,126 @@
   "name": "EDDI",
   "description": "A balanced, non-partisan personality",
   "scripts": {
+    "Entered CQC": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Entering close-quarters combat.",
+      "name": "Entered CQC",
+      "description": "Triggered when you enter CQC"
+    },
+    "NPC cargo scan commenced": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ See if we are carrying non-limpet cargo}\r\n{set carryingvaluablecargo to 0}\r\n{for cargo in ship.cargo:\r\n    {if cargo.commodity != 'Limpet':\r\n        {set carryingvaluablecargo to 1}\r\n    }\r\n}\r\n\r\n{if carryingvaluablecargo = 1:\r\n  Caution: cargo scan\r\n  {if event.by:\r\n    by {event.by} \r\n  }\r\n  detected.\r\n}\r\n",
+      "name": "NPC cargo scan commenced",
+      "description": "Triggered when a cargo scan on your ship by an NPC is detected"
+    },
+    "NPC attack commenced": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Warning: attack \r\n{if event.by:\r\n   by {event.by} \r\n}\r\ndetected.",
+      "name": "NPC attack commenced",
+      "description": "Triggered when an attach on your ship by an NPC is detected"
+    },
+    "NPC interdiction commenced": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Warning: interdiction attempt\r\n{if event.by:\r\n   by {event.by} \r\n}\r\ndetected.\r\n\r\n{Occasionally(3, \"Throttle down or evade.\")}",
+      "name": "NPC interdiction commenced",
+      "description": "Triggered when an interdiction attempt on your ship by an NPC is detected"
+    },
+    "Station no fire zone exited": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Station no fire zone exited",
+      "description": "Triggered when your ship exits a station's no fire zone"
+    },
+    "Station no fire zone entered": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Station no fire zone entered",
+      "description": "Triggered when your ship enters a station's no fire zone"
+    },
+    "Power commodity fast tracked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Humanise(event.amount)} credits spent fast-tracking commodities {Occasionally(2, \"for {P(event.power)}\")}.",
+      "name": "Power commodity fast tracked",
+      "description": "Triggered when a commander fast tracks a commodity of a power"
+    },
+    "Power commodity delivered": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.amount} units of {event.commodity} delivered {Occasionally(2, \"for {P(event.power)}\")}.",
+      "name": "Power commodity delivered",
+      "description": "Triggered when a commander delivers a commodity to a power"
+    },
+    "Power commodity obtained": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.amount} units of {event.commodity} obtained {Occasionally(2, \"for {P(event.power)}\")}.",
+      "name": "Power commodity obtained",
+      "description": "Triggered when a commander obtains a commodity from a power"
+    },
+    "Power salary claimed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Salary of {Humanise(event.amount)}  credits claimed {Occasionally(2, \"from {P(event.power)}\")}.",
+      "name": "Power salary claimed",
+      "description": "Triggered when a commander claims salary from a power"
+    },
+    "Power preparation vote cast": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Power preparation vote cast",
+      "description": "Triggered when a commander votes for system perparation"
+    },
+    "Power defected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have defected from {P(event.frompower)} to {P(event.topower)}.",
+      "name": "Power defected",
+      "description": "Triggered when you defect from one power to another"
+    },
+    "Power left": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You are no longer aligned with {P(event.power)}",
+      "name": "Power left",
+      "description": "Triggered when you leave a power"
+    },
+    "Power joined": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have aligned yourself with {P(event.power)}",
+      "name": "Power joined",
+      "description": "Triggered when you join a power"
+    },
+    "Market information updated": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Market information updated",
+      "description": "Triggered when market information for the currently docked station has been updated"
+    },
     "Bond awarded": {
       "enabled": true,
       "priority": 3,
@@ -54,7 +174,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "Synthesis complete.",
       "name": "Synthesised",
       "description": "Triggered when you synthesise something from materials"
     },
@@ -70,7 +190,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Mission completed.",
+      "script": "{if event.reward > 0:\r\n    Payment of {Humanise(event.reward)} credits {Occasionally(2, 'from {P(event.faction)}')} {OneOf('received', 'confirmed')}.\r\n|elif event.donation > 0:\r\n    {OneOf(\"Donated {Occasionally(2, '{Humanise(event.donation)} credits')} to {Occasionally(2, 'a grateful')} {P(event.faction)}\",\r\n                 \"{P(event.faction)} has {Occasionally(2, 'gratefully')} received your donation {Occasionally(2, 'of {Humanise(event.donation)} credits')}\",\r\n                 \"{P(event.faction)} thanks you for your donation {Occasionally(2, 'of {Humanise(event.donation)} credits')}\"\r\n    )}.\r\n|else:\r\n    Mission completed.\r\n}\r\n{for commodityreward in event.commodityrewards:\r\n  {commodityreward.amount} tonnes of {commodityreward.commodity} {OneOf(\"now on-board\", \"also received\", \"confirmed on-board\")}.\r\n}",
       "name": "Mission completed",
       "description": "Triggered when you complete a mission"
     },
@@ -78,7 +198,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.communal:\r\n    Community goal accepted.\r\n|else:\r\n    Mission for {P(event.faction)} accepted.\r\n}",
+      "script": "{if event.communal:\r\n    Community goal accepted.\r\n|else:\r\n    Mission for {P(event.faction)} accepted.\r\n    {if event.passengerswanted:\r\n        {set wanteddescription to OneOf(\"wanted passengers\", \"known felons\")}\r\n        Caution: {OneOf(\"you are carrying {wanteddescription}\",\"{wanteddescription} now on board\")}.\r\n    }\r\n}",
       "name": "Mission accepted",
       "description": "Triggered when you accept a mission"
     },
@@ -118,7 +238,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ShipName()} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if system.bodies[0].distance = 0 && system.bodies[0].stellarclass:\r\n        {set stellarclass to slice(system.bodies[0].stellarclass, 0, 1)}\r\n        {if stellarclass = \"D\":\r\n            Caution: white dwarf detected.\r\n        |elif stellarclass = \"N\":\r\n            Caution: neutron star detected.\r\n        |elif stellarclass = \"H\":\r\n            Caution: black hole detected.\r\n        }\r\n    }\r\n\r\n    {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!system.allegiance || system.allegiance = \"None\" || system.allegiance = \"Independent\"):\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance != \"None\":\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}\r\n        }\r\n    }.\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
+      "script": "{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ShipName()} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if system.bodies[0].distance = 0 && system.bodies[0].stellarclass:\r\n        {set stellarclass to slice(system.bodies[0].stellarclass, 0, 1)}\r\n        {if stellarclass = \"D\":\r\n            Caution: white dwarf detected.\r\n        |elif stellarclass = \"N\":\r\n            Caution: neutron star detected.\r\n        |elif stellarclass = \"H\":\r\n            Caution: black hole detected.\r\n        }\r\n    }\r\n\r\n    {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!system.allegiance || system.allegiance = \"None\" || system.allegiance = \"Independent\"):\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance && system.allegiance != \"None\":\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}.\r\n        }\r\n    }\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
       "name": "Jumping",
       "description": "Triggered when you start a jump to another system"
     },
@@ -326,7 +446,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.health < 40:\r\n    Danger:\r\n|elif event.health < 60:\r\n    Warning:\r\n|elif event.health < 80:\r\n    Caution:\r\n}\r\n{OneOf(\"Hull\", \"Hull integrity\", \"Integrity\", \"Structural integrity\")} {Occasionally(3, \"is\")} at {event.health}%.\r\n",
+      "script": "{if event.vehicle = vehicle:\r\n    {if event.health < 40:\r\n        Danger:\r\n    |elif event.health < 60:\r\n        Warning:\r\n    |elif event.health < 80:\r\n        Caution:\r\n    }\r\n    {OneOf(\"Hull\", \"Hull integrity\", \"Integrity\", \"Structural integrity\")} {Occasionally(3, \"is\")} at {event.health}%.\r\n}\r\n",
       "name": "Hull damaged",
       "description": "Triggered when your hull is damaged to a certain extent"
     },
@@ -454,7 +574,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "We have been denied docking.",
+      "script": "{Pause(2000)}\r\n\r\nWe have been denied docking\r\n\r\n{if event.reason = \"ActiveFighter\":\r\n    because our fighter is deployed\r\n|elif event.reason = \"Distance\":\r\n    because we are too far from the station\r\n|elif event.reason = \"Hostile\":\r\n    because the station's controlling faction doesn't like us\r\n|elif event.reason = \"NoSpace\":\r\n    because there is no space available\r\n|elif event.reason = \"Offences\":\r\n    because we have recently committed an offence against them\r\n|elif event.reason = \"TooLarge\":\r\n    because there are no landing pads that can accomodate the size of our ship\r\n}.",
       "name": "Docking denied",
       "description": "Triggered when your ship is denied docking at a station or outpost"
     },
@@ -462,7 +582,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{set station to StationDetails(event.station)}\r\n{if station.model = \"Coriolis Starport\" || station.model = \"Orbis Starport\" || station.model = \"Ocellus Starport\" || station.model = \"Unknown Starport\":\r\n    {Pause(8000)}\r\n    Landing pad {event.landingpad} is at\r\n    {if event.landingpad = 1:\r\n        six o'clock near\r\n    |elif event.landingpad = 2:\r\n        six o'clock near\r\n    |elif event.landingpad = 3:\r\n        six o'clock far\r\n    |elif event.landingpad = 4:\r\n        six o'clock far\r\n    |elif event.landingpad = 5:\r\n        seven o'clock near\r\n    |elif event.landingpad = 6:\r\n        seven o'clock near\r\n    |elif event.landingpad = 7:\r\n        seven o'clock\r\n    |elif event.landingpad = 8:\r\n        seven o'clock far\r\n    |elif event.landingpad = 9:\r\n        eight o'clock near\r\n    |elif event.landingpad = 10:\r\n        eight o'clock far\r\n    |elif event.landingpad = 11:\r\n        nine o'clock near\r\n    |elif event.landingpad = 12:\r\n        nine o'clock near\r\n    |elif event.landingpad = 13:\r\n        nine o'clock\r\n    |elif event.landingpad = 14:\r\n        nine o'clock far\r\n    |elif event.landingpad = 15:\r\n        nine o'clock far\r\n    |elif event.landingpad = 16:\r\n        ten o'clock near\r\n    |elif event.landingpad = 17:\r\n        ten o'clock near\r\n    |elif event.landingpad = 18:\r\n        ten o'clock far\r\n    |elif event.landingpad = 19:\r\n        ten o'clock far\r\n    |elif event.landingpad = 20:\r\n        eleven o'clock near\r\n    |elif event.landingpad = 21:\r\n        eleven o'clock near\r\n    |elif event.landingpad = 22:\r\n        eleven o'clock\r\n    |elif event.landingpad = 23:\r\n        eleven o'clock far\r\n    |elif event.landingpad = 24:\r\n        twelve o'clock near\r\n    |elif event.landingpad = 25:\r\n        twelve o'clock far\r\n    |elif event.landingpad = 26:\r\n        one o'clock near\r\n    |elif event.landingpad = 27:\r\n        one o'clock near\r\n    |elif event.landingpad = 28:\r\n        one o'clock\r\n    |elif event.landingpad = 29:\r\n        one o'clock far\r\n    |elif event.landingpad = 30:\r\n        one o'clock far\r\n    |elif event.landingpad = 31:\r\n        two o'clock near\r\n    |elif event.landingpad = 32:\r\n        two o'clock near\r\n    |elif event.landingpad = 33:\r\n        two o'clock far\r\n    |elif event.landingpad = 34:\r\n        two o'clock far\r\n    |elif event.landingpad = 35:\r\n        three o'clock near\r\n    |elif event.landingpad = 36:\r\n        three o'clock near\r\n    |elif event.landingpad = 37:\r\n        three o'clock\r\n    |elif event.landingpad = 38:\r\n        three o'clock near\r\n    |elif event.landingpad = 39:\r\n        four o'clock near\r\n    |elif event.landingpad = 40:\r\n        four o'clock far\r\n    |elif event.landingpad = 41:\r\n        five o'clock near\r\n    |elif event.landingpad = 42:\r\n        five o'clock near\r\n    |elif event.landingpad = 43:\r\n        five o'clock\r\n    |elif event.landingpad = 44:\r\n        five o'clock far\r\n    |elif event.landingpad = 45:\r\n        five o'clock far\r\n    }\r\n    , as you enter with the green lights on your right.\r\n}\r\n",
+      "script": "{set station to StationDetails(event.station)}\r\n{if station.model = \"Coriolis Starport\" || station.model = \"Orbis Starport\" || station.model = \"Ocellus Starport\" || station.model = \"Unknown Starport\":\r\n    {Pause(8000)}\r\n    Landing pad {event.landingpad} is at\r\n    {if event.landingpad = 1:\r\n        six o'clock near\r\n    |elif event.landingpad = 2:\r\n        six o'clock near\r\n    |elif event.landingpad = 3:\r\n        six o'clock far\r\n    |elif event.landingpad = 4:\r\n        six o'clock far\r\n    |elif event.landingpad = 5:\r\n        seven o'clock near\r\n    |elif event.landingpad = 6:\r\n        seven o'clock near\r\n    |elif event.landingpad = 7:\r\n        seven o'clock far\r\n    |elif event.landingpad = 8:\r\n        seven o'clock far\r\n    |elif event.landingpad = 9:\r\n        eight o'clock near\r\n    |elif event.landingpad = 10:\r\n        eight o'clock far\r\n    |elif event.landingpad = 11:\r\n        nine o'clock near\r\n    |elif event.landingpad = 12:\r\n        nine o'clock near\r\n    |elif event.landingpad = 13:\r\n        nine o'clock mid\r\n    |elif event.landingpad = 14:\r\n        nine o'clock far\r\n    |elif event.landingpad = 15:\r\n        nine o'clock far\r\n    |elif event.landingpad = 16:\r\n        ten o'clock near\r\n    |elif event.landingpad = 17:\r\n        ten o'clock near\r\n    |elif event.landingpad = 18:\r\n        ten o'clock far\r\n    |elif event.landingpad = 19:\r\n        ten o'clock far\r\n    |elif event.landingpad = 20:\r\n        eleven o'clock near\r\n    |elif event.landingpad = 21:\r\n        eleven o'clock near\r\n    |elif event.landingpad = 22:\r\n        eleven o'clock far\r\n    |elif event.landingpad = 23:\r\n        eleven o'clock far\r\n    |elif event.landingpad = 24:\r\n        twelve o'clock near\r\n    |elif event.landingpad = 25:\r\n        twelve o'clock far\r\n    |elif event.landingpad = 26:\r\n        one o'clock near\r\n    |elif event.landingpad = 27:\r\n        one o'clock near\r\n    |elif event.landingpad = 28:\r\n        one o'clock mid\r\n    |elif event.landingpad = 29:\r\n        one o'clock far\r\n    |elif event.landingpad = 30:\r\n        one o'clock far\r\n    |elif event.landingpad = 31:\r\n        two o'clock near\r\n    |elif event.landingpad = 32:\r\n        two o'clock near\r\n    |elif event.landingpad = 33:\r\n        two o'clock far\r\n    |elif event.landingpad = 34:\r\n        two o'clock far\r\n    |elif event.landingpad = 35:\r\n        three o'clock near\r\n    |elif event.landingpad = 36:\r\n        three o'clock near\r\n    |elif event.landingpad = 37:\r\n        three o'clock mid\r\n    |elif event.landingpad = 38:\r\n        three o'clock far\r\n    |elif event.landingpad = 39:\r\n        four o'clock near\r\n    |elif event.landingpad = 40:\r\n        four o'clock far\r\n    |elif event.landingpad = 41:\r\n        five o'clock near\r\n    |elif event.landingpad = 42:\r\n        five o'clock near\r\n    |elif event.landingpad = 43:\r\n        five o'clock mid\r\n    |elif event.landingpad = 44:\r\n        five o'clock far\r\n    |elif event.landingpad = 45:\r\n        five o'clock far\r\n    }\r\n    , as you enter with the green lights on your right.\r\n}\r\n",
       "name": "Docking granted",
       "description": "Triggered when your ship is granted docking permission at a station or outpost"
     },
@@ -502,7 +622,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "You are\r\n{if event.docked:\r\n    docked at {P(event.body)}\r\n|elif event.body:\r\n    near {P(event.body)}\r\n}\r\nin the {P(event.system)} system.",
+      "script": "You are\r\n{if event.docked:\r\n    docked at the\r\n    {if event.station = event.body:\r\n        orbital station {P(event.station)}\r\n    |else:\r\n        ground station {P(event.station)} on {P(event.body)}\r\n    }\r\n|elif event.body:\r\n    near {P(event.body)}\r\n}\r\nin the {P(event.system)} system.",
       "name": "Location",
       "description": "Triggered when the commander's location is reported, usually when they reload their game."
     },
@@ -526,7 +646,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(1000)}\r\n\r\nScan of {P(event.name)} complete.\r\n\r\nThis is a\r\n{if event.gravity < 0.5:\r\n    low-gravity\r\n|elif event.gravity <2:\r\n    medium-gravity\r\n|elif event.gravity <4:\r\n    high-gravity\r\n|else:\r\n    extremely high-gravity\r\n}\r\n\r\n{if event.tidallylocked:\r\n    tidally-locked\r\n}\r\n\r\n{if event.terraformstate = \"Terraformable\":\r\n    terraformable\r\n|elif event.terraformstate = \"Terraformed\":\r\n    terraformed\r\n}\r\n\r\n{if len(event.rings) > 0:\r\n    ringed\r\n}\r\n\r\n{event.bodyclass}\r\n\r\n{if event.terraformstate = \"Terraforming\":\r\n  in the process of being terraformed\r\n}\r\n\r\nthat is\r\n\r\n{if event.landable:\r\n    suitable\r\n|else:\r\n    unsuitable\r\n}\r\nfor landing.\r\n\r\n{_Atmosphere }\r\n\r\n{_ Volcanism}\r\n\r\n{if event.landable :\r\n    {set goodmaterials to []}\r\n    {set greatmaterials to []}\r\n    {for material in event.materials:\r\n        {if material.percentage >= material.definition.greatpctbody:\r\n            {set greatmaterials to cat(greatmaterials, [material])}\r\n        |elif material.percentage >= material.definition.goodpctbody:\r\n            {set goodmaterials to cat(goodmaterials, [material])}\r\n        }\r\n    }\r\n\r\n    {if len(greatmaterials) > 0:\r\n        This body contains very high levels of\r\n        {if len(greatmaterials) = 1:\r\n            {greatmaterials[0].name}\r\n        |elif len(greatmaterials) = 2:\r\n            {greatmaterials[0].name} and {greatmaterials[1].name}\r\n        |else:\r\n            {set cur to 0}\r\n            {while cur < len(greatmaterials):\r\n                {if cur = 0:\r\n                    {greatmaterials[cur].name}\r\n                |elif cur < len(greatmaterials) - 1:\r\n                    , {greatmaterials[cur].name}\r\n                |else:\r\n                    ,and {greatmaterials[cur].name}\r\n                }\r\n                {set cur to cur + 1}\r\n            }\r\n        }\r\n    }\r\n    {if len(goodmaterials) > 0:\r\n        {if len(greatmaterials) > 0:\r\n            and high levels of\r\n        |else:\r\n            This body contains high levels of\r\n        }\r\n        {if len(goodmaterials) = 1:\r\n            {goodmaterials[0].name}\r\n        |elif len(goodmaterials) = 2:\r\n            {goodmaterials[0].name} and {goodmaterials[1].name}\r\n        |else:\r\n            {set cur to 0}\r\n            {while cur < len(goodmaterials):\r\n                {if cur = 0:\r\n                    {goodmaterials[cur].name}\r\n                |elif cur < len(goodmaterials) - 1:\r\n                    , {goodmaterials[cur].name}\r\n                |else:\r\n                    ,and {goodmaterials[cur].name}\r\n                }\r\n                {set cur to cur + 1}\r\n            }\r\n        }\r\n    }.\r\n}",
+      "script": "{Pause(1000)}\r\n\r\nScan of {P(event.name)} complete.\r\n\r\nThis is a\r\n{if event.gravity < 0.5:\r\n    low-gravity\r\n|elif event.gravity <2:\r\n    medium-gravity\r\n|elif event.gravity <4:\r\n    high-gravity\r\n|else:\r\n    extremely high-gravity\r\n}\r\n\r\n{if event.tidallylocked:\r\n    tidally-locked\r\n}\r\n\r\n{_ Note three rs in terrraformable is a typo in information from Elite }\r\n{if event.terraformstate = \"Terrraformable\": \r\n    terraformable\r\n|elif event.terraformstate = \"Terraformed\":\r\n    terraformed\r\n}\r\n\r\n{if len(event.rings) > 0:\r\n    ringed\r\n}\r\n\r\n{event.bodyclass}\r\n\r\n{if event.terraformstate = \"Terraforming\":\r\n  in the process of being terraformed\r\n}\r\n\r\nthat is\r\n\r\n{if event.landable:\r\n    suitable\r\n|else:\r\n    unsuitable\r\n}\r\nfor landing.\r\n\r\n{_Atmosphere }\r\n\r\n{_ Volcanism}\r\n\r\n{if event.landable :\r\n\r\n    {set rotation to round(abs(event.rotationperiod) / 86400,2)}\r\n    It has a\r\n    {if rotation <= 0.5:\r\n        fast\r\n    |elif rotation > 20.0:\r\n        slow\r\n    |else:\r\n        normal\r\n    }\r\n    rotational period of {Humanise(rotation)} days.\r\n\r\n    {set goodmaterials to []}\r\n    {set greatmaterials to []}\r\n    {for material in event.materials:\r\n        {if material.percentage >= material.definition.greatpctbody:\r\n            {set greatmaterials to cat(greatmaterials, [material])}\r\n        |elif material.percentage >= material.definition.goodpctbody:\r\n            {set goodmaterials to cat(goodmaterials, [material])}\r\n        }\r\n    }\r\n\r\n    {if len(greatmaterials) > 0:\r\n        This body contains very high levels of\r\n        {if len(greatmaterials) = 1:\r\n            {greatmaterials[0].name}\r\n        |elif len(greatmaterials) = 2:\r\n            {greatmaterials[0].name} and {greatmaterials[1].name}\r\n        |else:\r\n            {set cur to 0}\r\n            {while cur < len(greatmaterials):\r\n                {if cur = 0:\r\n                    {greatmaterials[cur].name}\r\n                |elif cur < len(greatmaterials) - 1:\r\n                    , {greatmaterials[cur].name}\r\n                |else:\r\n                    ,and {greatmaterials[cur].name}\r\n                }\r\n                {set cur to cur + 1}\r\n            }\r\n        }\r\n    }\r\n    {if len(goodmaterials) > 0:\r\n        {if len(greatmaterials) > 0:\r\n            and high levels of\r\n        |else:\r\n            This body contains high levels of\r\n        }\r\n        {if len(goodmaterials) = 1:\r\n            {goodmaterials[0].name}\r\n        |elif len(goodmaterials) = 2:\r\n            {goodmaterials[0].name} and {goodmaterials[1].name}\r\n        |else:\r\n            {set cur to 0}\r\n            {while cur < len(goodmaterials):\r\n                {if cur = 0:\r\n                    {goodmaterials[cur].name}\r\n                |elif cur < len(goodmaterials) - 1:\r\n                    , {goodmaterials[cur].name}\r\n                |else:\r\n                    ,and {goodmaterials[cur].name}\r\n                }\r\n                {set cur to cur + 1}\r\n            }\r\n        }\r\n    }.\r\n}",
       "name": "Body scanned",
       "description": "Triggered when you complete a scan of a planetary body"
     },
@@ -638,7 +758,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Touchdown.\r\n\r\n{Pause(2000)}\r\n\r\nCo-ordinates are {event.longitude} degrees longitude, {event.latitude} degrees latitude.",
+      "script": "Touchdown.\r\n\r\n{Pause(2000)}\r\n\r\nCoordinates are {event.longitude} degrees longitude, {event.latitude} degrees latitude.",
       "name": "Touchdown",
       "description": "Triggered when your ship touches down on a planet's surface"
     },
@@ -670,9 +790,17 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if len(event.items) = 1:\r\n    A new Galnet article has been published, entitled {event.items[0].title}.\r\n|elif len(event.items) > 1:\r\n    {len(event.items)} new Galnet articles have been published.  Their titles are\r\n    {set item to 0}\r\n    {while item < len(event.items):\r\n        {if item = len(event.items) - 1:\r\n            and {event.items[item].title}\r\n        |else:\r\n            {event.items[item].title},\r\n        }\r\n        {set item to item + 1}\r\n    }.\r\n}\r\n",
+      "script": "{set statustitle to \"^(Galactic News: ((Weekly .*)|(Starport Status Update)))|(Powerplay: Incoming Update)\"}\r\n\r\n{if len(event.items) = 1:\r\n    A new Galnet article has been published, entitled {event.items[0].title}.\r\n    {if !match(event.items[0].title, statustitle):\r\n      It reads: {event.items[0].content}.\r\n    }\r\n|elif len(event.items) > 1:\r\n    {len(event.items)} new Galnet articles have been published.\r\n    {set item to 0}\r\n    {while item < len(event.items):\r\n        {if item = 0:\r\n            The first is entitled {event.items[item].title}\r\n            {if !match(event.items[item].title, statustitle):\r\n                , and reads: {event.items[item].content}\r\n            }.\r\n        |elif item = 1:\r\n            The second is entitled {event.items[item].title}\r\n            {if !match(event.items[item].title, statustitle):\r\n                , and reads: {event.items[item].content}\r\n            }.\r\n        |elif item = len(event.items) - 1:\r\n            The last is entitled {event.items[item].title}\r\n            {if !match(event.items[item].title, statustitle):\r\n                , and reads: {event.items[item].content}\r\n            }.\r\n        |else:\r\n            The next is entitled {event.items[item].title}\r\n            {if !match(event.items[item].title, statustitle):\r\n                , and reads: {event.items[item].content}\r\n            }.\r\n        }\r\n        {set item to item + 1}\r\n        {Pause(1000)}\r\n    }\r\n}",
       "name": "Galnet news published",
       "description": "Triggered when news is published on Galnet"
+    },
+    "Power expansion vote cast": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Power expansion vote cast",
+      "description": "Triggered when a commander votes for system expansion"
     },
     "Cargo ejected": {
       "enabled": true,
@@ -750,7 +878,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{_ Function to find a given module in outfitting}\r\n{set outfitting(module) to:\r\n    {for outfittingmodule in station.outfitting:\r\n        {if outfittingmodule.EDDBID = module.EDDBID:\r\n            {return outfittingmodule}\r\n        }\r\n    }\r\n}\r\n\r\n{_ Function to report if a module is cheaper in outfitting that on the ship}\r\n{set reportIfCheaper(shipmodule) to:\r\n    {_ Only consider if this has no modifications}\r\n    {if len(shipmodule.modifications) = 0:\r\n        {set outfittingmodule to outfitting(shipmodule)}\r\n        {if outfittingmodule:\r\n            {if outfittingmodule.price < shipmodule.price:\r\n                {set saving to shipmodule.price - outfittingmodule.price}\r\n                {_ Only bother if it's a relatively good saving}\r\n                {if saving / cmdr.credits > 0.001:\r\n                    You could save {Humanise(saving)} credits by swapping out your {shipmodule.name} here.\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n{reportIfCheaper(ship.powerplant)}\r\n{reportIfCheaper(ship.thrusters)}\r\n{reportIfCheaper(ship.frameshiftdrive)}\r\n{reportIfCheaper(ship.lifesupport)}\r\n{reportIfCheaper(ship.powerdistributor)}\r\n{reportIfCheaper(ship.sensors)}\r\n{for hardpoint in ship.hardpoints:\r\n    {if hardpoint.module:\r\n        {reportIfCheaper(hardpoint.module)}\r\n    }\r\n}\r\n{for compartment in ship.compartments:\r\n    {if compartment.module:\r\n        {reportIfCheaper(compartment.module)}\r\n    }\r\n}\r\n",
+      "script": "{_ Function to find a given module in outfitting}\r\n{set outfitting(module) to:\r\n    {for outfittingmodule in station.outfitting:\r\n        {if outfittingmodule.EDDBID = module.EDDBID:\r\n            {return outfittingmodule}\r\n        }\r\n    }\r\n}\r\n\r\n{_ Function to report if a module is cheaper in outfitting that on the ship}\r\n{set reportIfCheaper(shipmodule) to:\r\n    {_ Only consider if this has no modifications}\r\n    {if !shipmodule.modified:\r\n        {set outfittingmodule to outfitting(shipmodule)}\r\n        {if outfittingmodule:\r\n            {if outfittingmodule.price < shipmodule.price:\r\n                {set saving to shipmodule.price - outfittingmodule.price}\r\n                {_ Only bother if it's a relatively good saving}\r\n                {if saving / cmdr.credits > 0.001:\r\n                    You could save {Humanise(saving)} credits by swapping out your {shipmodule.name} here.\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n{reportIfCheaper(ship.powerplant)}\r\n{reportIfCheaper(ship.thrusters)}\r\n{reportIfCheaper(ship.frameshiftdrive)}\r\n{reportIfCheaper(ship.lifesupport)}\r\n{reportIfCheaper(ship.powerdistributor)}\r\n{reportIfCheaper(ship.sensors)}\r\n{for hardpoint in ship.hardpoints:\r\n    {if hardpoint.module:\r\n        {reportIfCheaper(hardpoint.module)}\r\n    }\r\n}\r\n{for compartment in ship.compartments:\r\n    {if compartment.module:\r\n        {reportIfCheaper(compartment.module)}\r\n    }\r\n}\r\n",
       "name": "Swapout check",
       "description": "Check to see if any fitted modules are available more cheaply here"
     },
@@ -766,7 +894,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{_ Function to find a given commodity in market}\r\n{set market(commodity) to:\r\n    {for marketcommodity in station.commodities:\r\n        {if marketcommodity.EDDBID = commodity.EDDBID:\r\n            {return marketcommodity}\r\n        }\r\n    }\r\n}\r\n\r\n{for cargo in ship.cargo:\r\n    {set marketcommodity to market(cargo.commodity)}\r\n    {if marketcommodity && marketcommodity.demand > 0 && marketcommodity.sellprice > cargo.price:\r\n        You can sell your {cargo.commodity.name} here for a profit of {marketcommodity.sellprice - cargo.price} credits per tonne.\r\n    }\r\n}\r\n",
+      "script": "{_ Function to find a given commodity in market}\r\n{set market(commodity) to:\r\n    {for marketcommodity in station.commodities:\r\n        {if marketcommodity.EDDBID = commodity.EDDBID:\r\n            {return marketcommodity}\r\n        }\r\n    }\r\n}\r\n\r\n{for cargo in ship.cargo:\r\n    {if cargo.stolen:\r\n      {set carryingstolencargo to true}\r\n    |elif cargo.commodity.name != 'Limpet' && !cargo.missionid:\r\n        {set marketcommodity to market(cargo.commodity)}\r\n        {if marketcommodity && marketcommodity.demand > 0 && marketcommodity.sellprice && marketcommodity.sellprice > cargo.price:\r\n            You can sell your {cargo.commodity.name} here for a profit of {marketcommodity.sellprice - cargo.price} credits per tonne.\r\n        }\r\n    }\r\n}\r\n\r\n{if carryingstolencargo:\r\n    Reminder: you {OneOf(\"have stolen cargo on-board\", \"have stolen goods on-board\", \"are carrying stolen goods\", \"are carrying stolen cargo\")}.\r\n}\r\n",
       "name": "Commodity sale check",
       "description": "Check to see which commodities can be sold here"
     }

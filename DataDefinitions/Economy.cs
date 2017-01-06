@@ -40,6 +40,11 @@ namespace EddiDataDefinitions
 
         public static Economy FromName(string from)
         {
+            if (from == null)
+            {
+                return null;
+            }
+
             Economy result = ECONOMIES.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
@@ -50,7 +55,12 @@ namespace EddiDataDefinitions
 
         public static Economy FromEDName(string from)
         {
-            string tidiedFrom = from == null ? null : from.Replace(";", "").ToLowerInvariant();
+            if (from == null)
+            {
+                return null;
+            }
+
+            string tidiedFrom = from.Replace(";", "").ToLowerInvariant();
 
             Economy result;
             if (tidiedFrom == null || tidiedFrom == "")

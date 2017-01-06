@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -92,7 +93,7 @@ namespace EddiDataProviderService
                 StarSystem.security = (string)json["security"];
                 StarSystem.power = (string)json["power"] == "None" ? null : (string)json["power"];
                 StarSystem.powerstate = (string)json["power_state"];
-
+                StarSystem.updatedat = (long?)json["updated_at"];
 
                 StarSystem.stations = StationsFromEDDP(StarSystem.name, json);
                 StarSystem.bodies = BodiesFromEDDP(StarSystem.name, json);
@@ -137,6 +138,8 @@ namespace EddiDataProviderService
                     Station.hasshipyard = (bool?)station["has_shipyard"];
                     Station.hasmarket = (bool?)station["has_market"];
                     Station.hasblackmarket = (bool?)station["has_blackmarket"];
+                    Station.updatedat = (long?)station["updated_at"];
+                    Station.outfittingupdatedat = (long?)station["outfitting_updated_at"];
 
                     if (((string)station["type"]) != null)
                     {
@@ -153,10 +156,27 @@ namespace EddiDataProviderService
                     if (largestpad == "L") { largestpad = "Large"; }
                     Station.largestpad = largestpad;
 
+                    Station.commodities = CommoditiesFromEDDP(station);
+                    Station.commoditiesupdatedat = (long?)station["market_updated_at"];
+
+                    Logging.Debug("Station is " + JsonConvert.SerializeObject(Station));
                     Stations.Add(Station);
                 }
             }
             return Stations;
+        }
+
+        public static List<Commodity> CommoditiesFromEDDP(dynamic json)
+        {
+            List<Commodity> commodities = new List<Commodity>();
+            if (json["commodities"] != null)
+            {
+                foreach (dynamic commodity in json["commodities"])
+                {
+                    commodities.Add(new Commodity((int)(long)commodity["id"], (string)commodity["name"], (int?)(long?)commodity["buy_price"], (int?)(long?)commodity["demand"], (int?)(long?)commodity["sell_price"], (int?)(long?)commodity["supply"]));
+                }
+            }
+            return commodities;
         }
 
         public static List<Body> BodiesFromEDDP(string systemName, dynamic json)

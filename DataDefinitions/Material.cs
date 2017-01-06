@@ -52,7 +52,7 @@ namespace EddiDataDefinitions
         public static readonly Material Germanium = new Material("germanium", "Element", "Germanium", Rarity.Common, "Ge", 5.6M, 6.8M);
         public static readonly Material Manganese = new Material("manganese", "Element", "Manganese", Rarity.Common, "Mn", 12.7M, 15.2M);
         public static readonly Material Vanadium = new Material("vanadium", "Element", "Vanadium", Rarity.Common, "V", 8.2M, 9.8M);
-        public static readonly Material Zinc = new Material("zinc", "Element", "Zinc", Rarity.Common, "Zn", 13.1M, 15.7M);
+        public static readonly Material Zinc = new Material("zinc", "Element", "Zinc", Rarity.Common, "Zn", 9.0M, 10.8M);
 
         public static readonly Material Arsenic = new Material("arsenic", "Element", "Arsenic", Rarity.Standard, "As", 2.3M, 2.7M);
         public static readonly Material Niobium = new Material("niobium", "Element", "Niobium", Rarity.Standard, "Nb", 2.3M, 2.8M);
@@ -60,7 +60,7 @@ namespace EddiDataDefinitions
         public static readonly Material Tungsten = new Material("tungsten", "Element", "Tungsten", Rarity.Standard, "W", 1.8M, 2.2M);
         public static readonly Material Zirconium = new Material("zirconium", "Element", "Zirconium", Rarity.Standard, "Zr", 4.1M, 4.9M);
 
-        public static readonly Material Cadmium = new Material("cadmium", "Element", "Cadmiun", Rarity.Rare, "Cd", 2.6M, 3.2M);
+        public static readonly Material Cadmium = new Material("cadmium", "Element", "Cadmium", Rarity.Rare, "Cd", 2.6M, 3.2M);
         public static readonly Material Mercury = new Material("mercury", "Element", "Mercury", Rarity.Rare, "Hg", 1.5M, 1.8M);
         public static readonly Material Molybdenum = new Material("molybdenum", "Element", "Molybdenum", Rarity.Rare, "Mo", 2.3M, 2.8M);
         public static readonly Material Tin = new Material("tin", "Element", "Tin", Rarity.Rare, "Sn", 2.3M, 2.8M);
@@ -92,6 +92,8 @@ namespace EddiDataDefinitions
         public static readonly Material StrangeWakeSolutions = new Material("wakesolutions", "Data", "Strange Wake Solutions", Rarity.Standard);
         public static readonly Material UnexpectedEmissionData = new Material("emissiondata", "Data", "Unexpected Emission Data", Rarity.Standard);
         public static readonly Material UntypicalShieldScans = new Material("shielddensityreports", "Data", "Untypical Shield Scans", Rarity.Standard);
+        public static readonly Material UnknownShipSignature = new Material("unknownshipsignature", "Data", "Unknown Ship Signature", Rarity.Standard);
+        public static readonly Material UnknownWakeScan = new Material("unknownwakedata", "Data", "Unknown Wake Data", Rarity.Standard);
 
         public static readonly Material AberrantShieldPatternAnalysis = new Material("shieldpatternanalysis", "Data", "Aberrant Shield Pattern Analysis", Rarity.Rare);
         public static readonly Material AtypicalEncryptionArchives = new Material("encryptionarchives", "Data", "Atypical Encryption Archives", Rarity.Rare);
@@ -165,6 +167,11 @@ namespace EddiDataDefinitions
 
         public static Material FromName(string from)
         {
+            if (from == null)
+            {
+                return null;
+            }
+
             Material result = MATERIALS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
@@ -175,7 +182,12 @@ namespace EddiDataDefinitions
 
         public static Material FromEDName(string from)
         {
-            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            if (from == null)
+            {
+                return null;
+            }
+
+            string tidiedFrom = from.ToLowerInvariant();
             Material result = MATERIALS.FirstOrDefault(v => v.EDName.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {

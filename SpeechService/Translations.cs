@@ -223,7 +223,7 @@ namespace EddiSpeechService
                 || starSystem.StartsWith("HD ")
                 )
             {
-                starSystem = starSystem.Replace("-", "dash ");
+                starSystem = starSystem.Replace("-", " dash ");
             }
             else if (starSystem.StartsWith("Gliese "))
             {
@@ -482,7 +482,7 @@ namespace EddiSpeechService
                 return "zero";
             }
 
-            if (value < 1)
+            if (value < 10)
             {
                 // Work out how many 0s to begin with
                 int numzeros = -1;
@@ -549,6 +549,11 @@ namespace EddiSpeechService
             }
             else
             {
+                // See if we have an exact match
+                if (((long)(((decimal)value) / (decimal)Math.Pow(10, digits - 1))) * (decimal)(Math.Pow(10, digits - 1)) == value)
+                {
+                    return "" + number + " " + order;
+                }
                 if (number > 60)
                 {
                     if (nextDigit < 6)
@@ -559,11 +564,6 @@ namespace EddiSpeechService
                     {
                         return "Nearly " + (number + 1) + " " + order;
                     }
-                }
-                // See if we have an exact match
-                if (((long)(((decimal)value) / (decimal)Math.Pow(10, digits - 1))) * (decimal)(Math.Pow(10, digits - 1)) == value)
-                {
-                    return "" + number + " " + order;
                 }
                 switch (nextDigit)
                 {

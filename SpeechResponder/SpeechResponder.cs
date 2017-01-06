@@ -6,6 +6,9 @@ using Newtonsoft.Json;
 using EddiEvents;
 using Eddi;
 using System.Windows.Controls;
+using System;
+using System.Text.RegularExpressions;
+using System.IO;
 
 namespace EddiSpeechResponder
 {
@@ -14,7 +17,14 @@ namespace EddiSpeechResponder
     /// </summary>
     public class SpeechResponder : EDDIResponder
     {
+        // The file to log speech
+        public static readonly string LogFile = Constants.DATA_DIR + @"\speechresponder.out";
+
         private ScriptResolver scriptResolver;
+
+        private bool subtitles;
+
+        private bool subtitlesOnly;
 
         public string ResponderName()
         {
@@ -44,6 +54,8 @@ namespace EddiSpeechResponder
                 personality = Personality.Default();
             }
             scriptResolver = new ScriptResolver(personality.Scripts);
+            subtitles = configuration.Subtitles;
+            subtitlesOnly = configuration.SubtitlesOnly;
             Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
         }
 
@@ -99,6 +111,8 @@ namespace EddiSpeechResponder
                 configuration.ToFile();
             }
             scriptResolver = new ScriptResolver(personality.Scripts);
+            subtitles = configuration.Subtitles;
+            subtitlesOnly = configuration.SubtitlesOnly;
             Logging.Info("Reloaded " + ResponderName() + " " + ResponderVersion());
         }
 
@@ -109,19 +123,27 @@ namespace EddiSpeechResponder
         }
 
         // Say something with the default resolver
-        public void Say(string scriptName, Event theEvent = null, int? priority = null, bool? wait = null)
+        public void Say(string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null)
         {
-            Say(scriptResolver, scriptName, theEvent, priority);
+            Say(scriptResolver, scriptName, theEvent, priority, voice);
         }
 
         // Say something with a custom resolver
-        public void Say(ScriptResolver resolver, string scriptName, Event theEvent = null, int? priority = null, bool? wait = null)
+        public void Say(ScriptResolver resolver, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null)
         {
             Dictionary<string, Cottle.Value> dict = createVariables(theEvent);
-            string script = resolver.resolve(scriptName, dict);
-            if (script != null)
+            string speech = resolver.resolve(scriptName, dict);
+            if (speech != null)
             {
-                SpeechService.Instance.Say(EDDI.Instance.Ship, script, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority));
+                if (subtitles)
+                {
+                    // Log a tidied version of the speech
+                    log(Regex.Replace(speech, "<.*?>", string.Empty));
+                }
+                if (!(subtitles && subtitlesOnly))
+                {
+                    SpeechService.Instance.Say(EDDI.Instance.Ship, speech, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority), voice);
+                }
             }
         }
 
@@ -129,6 +151,9 @@ namespace EddiSpeechResponder
         private Dictionary<string, Cottle.Value> createVariables(Event theEvent = null)
         {
             Dictionary<string, Cottle.Value> dict = new Dictionary<string, Cottle.Value>();
+
+            dict["vehicle"] = EDDI.Instance.Vehicle;
+            dict["environment"] = EDDI.Instance.Environment;
 
             if (EDDI.Instance.Cmdr != null)
             {
@@ -170,12 +195,58 @@ namespace EddiSpeechResponder
                 dict["event"] = new ReflectionValue(theEvent);
             }
 
+            if (EDDI.Instance.State != null)
+            {
+                Dictionary<Cottle.Value, Cottle.Value> state = new Dictionary<Cottle.Value, Cottle.Value>();
+                foreach (string key in EDDI.Instance.State.Keys)
+                {
+                    object value = EDDI.Instance.State[key];
+                    Type valueType = value.GetType();
+                    if (valueType == typeof(string))
+                    {
+                        state[key] = (string)value;
+                    }
+                    else if (valueType == typeof(int))
+                    {
+                        state[key] = (int)value;
+                    }
+                    else if (valueType == typeof(bool))
+                    {
+                        state[key] = (bool)value;
+                    }
+                    else if (valueType == typeof(decimal))
+                    {
+                        state[key] = (decimal)value;
+                    }
+                }
+                dict["state"] = state;
+            }
+
             return dict;
         }
 
         public UserControl ConfigurationTabItem()
         {
             return new ConfigurationWindow();
+        }
+
+        private static readonly object logLock = new object();
+        private static void log(string speech)
+        {
+            lock (logLock)
+            {
+                try
+                {
+                    using (StreamWriter file = new StreamWriter(LogFile, true))
+                    {
+                        file.WriteLine(speech);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to write speech", ex);
+                }
+            }
         }
     }
 }

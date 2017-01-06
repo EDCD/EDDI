@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using EddiSpeechResponder;
 using System.Windows;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace EddiVoiceAttackResponder
 {
@@ -40,8 +41,6 @@ namespace EddiVoiceAttackResponder
         public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
         public static Thread updaterThread = null;
 
-        private static SpeechResponder speechResponder = new SpeechResponder();
-
         public static void VA_Init1(dynamic vaProxy)
         {
             Logging.Info("Initialising EDDI VoiceAttack plugin");
@@ -50,14 +49,30 @@ namespace EddiVoiceAttackResponder
             {
                 EDDI.Instance.Start();
 
+                // Display instance information if available
+                if (EDDI.Instance.Server != null)
+                {
+                    if (Versioning.Compare(EDDI.Instance.Server.minversion, Constants.EDDI_VERSION) == 1)
+                    {
+                        vaProxy.WriteToLog("EDDI too old to work; please upgrade at " + EDDI.Instance.Server.url, "red");
+                    }
+                    else if (Versioning.Compare(EDDI.Instance.Server.version, Constants.EDDI_VERSION) == 1)
+                    {
+                        vaProxy.WriteToLog("EDDI version " + EDDI.Instance.Server.version + " is now available at " + EDDI.Instance.Server.url, "red");
+                    }
+                    if (EDDI.Instance.Server.motd != null)
+                    {
+                        vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Server.motd, "black");
+                    }
+                }
                 // Set the initial values from the main EDDI objects
                 setValues(ref vaProxy);
 
                 // Spin out a worker thread to keep the VoiceAttack events up-to-date and run event-specific commands
                 updaterThread = new Thread(() =>
                 {
-                        while (true)
-                        {
+                    while (true)
+                    {
                         try
                         {
                             Event theEvent = EventQueue.Take();
@@ -67,6 +82,8 @@ namespace EddiVoiceAttackResponder
                             setValues(ref vaProxy);
 
                             // Event-specific values
+                            List<string> setKeys = new List<string>();
+                            // We start off setting the keys which are official and known
                             foreach (string key in Events.VARIABLES[theEvent.type].Keys)
                             {
                                 // Obtain the value by name.  Actually looking for a method get_<name>
@@ -83,34 +100,45 @@ namespace EddiVoiceAttackResponder
 
                                     if (returnType == typeof(string))
                                     {
+                                        Logging.Debug("Setting string value " + varname + " to " + (string)method.Invoke(theEvent, null));
                                         vaProxy.SetText(varname, (string)method.Invoke(theEvent, null));
+                                        setKeys.Add(key);
                                     }
                                     else if (returnType == typeof(int))
                                     {
+                                        Logging.Debug("Setting int value " + varname + " to " + (int?)method.Invoke(theEvent, null));
                                         vaProxy.SetInt(varname, (int?)method.Invoke(theEvent, null));
+                                        setKeys.Add(key);
                                     }
                                     else if (returnType == typeof(bool))
                                     {
+                                        Logging.Debug("Setting boolean value " + varname + " to " + (bool?)method.Invoke(theEvent, null));
                                         vaProxy.SetBoolean(varname, (bool?)method.Invoke(theEvent, null));
+                                        setKeys.Add(key);
                                     }
                                     else if (returnType == typeof(decimal))
                                     {
+                                        Logging.Debug("Setting decimal value " + varname + " to " + (decimal?)method.Invoke(theEvent, null));
                                         vaProxy.SetDecimal(varname, (decimal?)method.Invoke(theEvent, null));
+                                        setKeys.Add(key);
                                     }
                                     else if (returnType == typeof(double))
                                     {
+                                        // Doubles are stored as decimals
+                                        Logging.Debug("Setting decimal value " + varname + " to " + (decimal?)(double?)method.Invoke(theEvent, null));
                                         vaProxy.SetDecimal(varname, (decimal?)(double?)method.Invoke(theEvent, null));
+                                        setKeys.Add(key);
                                     }
                                     else if (returnType == typeof(long))
                                     {
+                                        Logging.Debug("Setting long value " + varname + " to " + (long?)method.Invoke(theEvent, null));
                                         vaProxy.SetDecimal(varname, (decimal?)(long?)method.Invoke(theEvent, null));
-                                    }
-                                    else
-                                    {
-                                        Logging.Debug("Not handling event field type " + method.ReturnType);
+                                        setKeys.Add(key);
                                     }
                                 }
                             }
+                            // Now we carry out a generic walk through the event object to create whatever we find
+                            setJsonValues(ref vaProxy, "EDDI " + theEvent.type.ToLowerInvariant(), JsonConvert.DeserializeObject(JsonConvert.SerializeObject(theEvent)), setKeys);
 
                             // Fire local command if present
                             string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
@@ -144,7 +172,127 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        public static void VA_Exit1(dynamic vaProxy)
+        /// <summary>
+        /// Walk a JSON object and write out all of the possible fields
+        /// </summary>
+        private static void setJsonValues(ref dynamic vaProxy, string prefix, dynamic json, List<string> setKeys)
+        {
+            foreach (JProperty child in json)
+            {
+                // We only take fully lower-cased entities, and ignore the raw key (as it's the raw journal event)
+                if ((!new Regex("^[a-z]+$").IsMatch(child.Name)) || child.Name == "raw")
+                {
+                    Logging.Debug("Ignoring key " + child.Name);
+                    continue;
+                }
+                // We also ignore any keys that we have already set elsewhere
+                if (setKeys.Contains(child.Name))
+                {
+                    Logging.Debug("Skipping already-set key " + child.Name);
+                    continue;
+                }
+
+                string name = prefix + " " + child.Name;
+
+                if (child.Value == null)
+                {
+                    // No idea what it might have been so reset everything
+                    Logging.Debug(prefix + " " + child.Name + " is null; need to reset all values");
+                    vaProxy.SetText(name, null);
+                    vaProxy.SetInt(name, null);
+                    vaProxy.SetDecimal(name, null);
+                    vaProxy.SetBoolean(name, null);
+                    vaProxy.SetDate(name, null);
+                    continue;
+                }
+                if (child.Value.Type == JTokenType.Boolean)
+                {
+                    Logging.Debug("Setting boolean value " + name + " to " + (bool?)child.Value);
+                    vaProxy.SetBoolean(name, (bool?)child.Value);
+                }
+                else if (child.Value.Type == JTokenType.String)
+                {
+                    Logging.Debug("Setting string value " + name + " to " + (string)child.Value);
+                    vaProxy.SetText(name, (string)child.Value);
+                }
+                else if (child.Value.Type == JTokenType.Float)
+                {
+                    Logging.Debug("Setting decimal value " + name + " to " + (decimal?)(double?)child.Value);
+                    vaProxy.SetDecimal(name, (decimal?)(double?)child.Value);
+                }
+                else if (child.Value.Type == JTokenType.Integer)
+                {
+                    // We set integers as decimals
+                    Logging.Debug("Setting decimal value " + name + " to " + (decimal?)(long?)child.Value);
+                    vaProxy.SetDecimal(name, (decimal?)(long?)child.Value);
+                }
+                else if (child.Value.Type == JTokenType.Date)
+                {
+                    Logging.Debug("Setting date value " + name + " to " + (DateTime?)child.Value);
+                    vaProxy.SetDate(name, (DateTime?)child.Value);
+                }
+                else if (child.Value.Type == JTokenType.Array)
+                {
+                    int i = 0;
+                    foreach (JToken arrayChild in child.Value.Children())
+                    {
+                        Logging.Warn("Handling element " + i);
+                        string childName = name + " " + i;
+                        if (arrayChild.Type == JTokenType.Boolean)
+                        {
+                            Logging.Debug("Setting boolean value " + childName + " to " + arrayChild.Value<bool?>());
+                            vaProxy.SetBoolean(childName, arrayChild.Value<bool?>());
+                        }
+                        else if (arrayChild.Type == JTokenType.String)
+                        {
+                            Logging.Debug("Setting string value " + childName + " to " + arrayChild.Value<string>());
+                            vaProxy.SetText(childName, arrayChild.Value<string>());
+                        }
+                        else if (arrayChild.Type == JTokenType.Float)
+                        {
+                            Logging.Debug("Setting decimal value " + childName + " to " + arrayChild.Value<decimal?>());
+                            vaProxy.SetDecimal(childName, arrayChild.Value<decimal?>());
+                        }
+                        else if (arrayChild.Type == JTokenType.Integer)
+                        {
+                            Logging.Debug("Setting decimal value " + childName + " to " + arrayChild.Value<decimal?>());
+                            vaProxy.SetDecimal(childName, arrayChild.Value<decimal?>());
+                        }
+                        else if (arrayChild.Type == JTokenType.Date)
+                        {
+                            Logging.Debug("Setting date value " + childName + " to " + arrayChild.Value<DateTime?>());
+                            vaProxy.SetDate(childName, arrayChild.Value<DateTime?>());
+                        }
+                        else if (arrayChild.Type == JTokenType.Null)
+                        {
+                            Logging.Debug("Setting null value " + childName);
+                            vaProxy.SetText(childName, null);
+                            vaProxy.SetInt(childName, null);
+                            vaProxy.SetDecimal(childName, null);
+                            vaProxy.SetBoolean(childName, null);
+                            vaProxy.SetDate(childName, null);
+                        }
+                        else if (arrayChild.Type == JTokenType.Object)
+                        {
+                            setJsonValues(ref vaProxy, childName, arrayChild, new List<string>());
+                        }
+                        i++;
+                    }
+                    vaProxy.SetInt(name + " entries", i);
+                }
+                else if (child.Value.Type == JTokenType.Object)
+                {
+                    Logging.Warn("Found object");
+                    setJsonValues(ref vaProxy, prefix + " " + child.Name, child.Value, new List<string>());
+                }
+                else
+                {
+                    Logging.Warn(child.Value.Type + ": " + child.Name + "=" + child.Value);
+                }
+            }
+        }
+
+    public static void VA_Exit1(dynamic vaProxy)
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
             updaterThread.Abort();
@@ -185,14 +333,17 @@ namespace EddiVoiceAttackResponder
                     case "shutup":
                         InvokeShutUp(ref vaProxy);
                         break;
-                    default:
-                        //if (context.ToLower().StartsWith("event:"))
-                        //{
-                        //    // Inject an event
-                        //    string data = context.Replace("event: ", "");
-                        //    JObject eventData = JObject.Parse(data);
-                        //    //LogQueue.Add(eventData);
-                        //}
+                    case "setstate":
+                        InvokeSetState(ref vaProxy);
+                        break;
+                    case "disablespeechresponder":
+                        InvokeDisableSpeechResponder(ref vaProxy);
+                        break;
+                    case "enablespeechresponder":
+                        InvokeEnableSpeechResponder(ref vaProxy);
+                        break;
+                    case "setspeechresponderpersonality":
+                        InvokeSetSpeechResponderPersonality(ref vaProxy);
                         break;
                 }
             }
@@ -404,9 +555,11 @@ namespace EddiVoiceAttackResponder
                     priority = 3;
                 }
 
+                string voice = vaProxy.GetText("Voice");
+
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(EDDI.Instance.Ship, speech, true, (int)priority);
+                SpeechService.Instance.Say(EDDI.Instance.Ship, speech, true, (int)priority, voice);
             }
             catch (Exception e)
             {
@@ -442,11 +595,114 @@ namespace EddiVoiceAttackResponder
 
                 int? priority = vaProxy.GetInt("Priority");
 
-                speechResponder.Say(script, null, priority);
+                SpeechResponder speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech responder");
+                if (speechResponder == null)
+                {
+                    Logging.Warn("Unable to find speech responder");
+                }
+
+                string voice = vaProxy.GetText("Voice");
+
+                speechResponder.Say(script, null, priority, voice);
             }
             catch (Exception e)
             {
                 setStatus(ref vaProxy, "Failed to run internal speech system", e);
+            }
+        }
+
+        public static void InvokeDisableSpeechResponder(ref dynamic vaProxy)
+        {
+            try
+            {
+                EDDI.Instance.DisableResponder("Speech responder");
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to disable speech responder", e);
+            }
+        }
+
+        public static void InvokeEnableSpeechResponder(ref dynamic vaProxy)
+        {
+            try
+            {
+                EDDI.Instance.EnableResponder("Speech responder");
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to enable speech responder", e);
+            }
+        }
+
+        public static void InvokeSetSpeechResponderPersonality(ref dynamic vaProxy)
+        {
+            string personality = vaProxy.GetText("Personality");
+            try
+            {
+                SpeechResponder speechResponder = (SpeechResponder)EDDI.Instance.ObtainResponder("Speech responder");
+                if (speechResponder != null)
+                {
+                    speechResponder.SetPersonality(personality);
+                }
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to set speech responder personality", e);
+            }
+        }
+
+        public static void InvokeSetState(ref dynamic vaProxy)
+        {
+            try
+            {
+                string name = vaProxy.GetText("State variable");
+                if (name == null)
+                {
+                    return;
+                }
+
+                // State variable names are lower-case
+                string stateVariableName = name.ToLowerInvariant().Replace(" ", "_");
+
+                string strValue = vaProxy.GetText(name);
+                if (strValue != null)
+                {
+                    EDDI.Instance.State[stateVariableName] = strValue;
+                    vaProxy.SetText("EDDI state " + stateVariableName, strValue);
+                    return;
+                }
+
+                int? intValue = vaProxy.GetInt(name);
+                if (intValue != null)
+                {
+                    EDDI.Instance.State[stateVariableName] = intValue;
+                    vaProxy.SetInt("EDDI state " + stateVariableName, intValue);
+                    return;
+                }
+
+                bool? boolValue = vaProxy.GetBoolean(name);
+                if (boolValue != null)
+                {
+                    EDDI.Instance.State[stateVariableName] = boolValue;
+                    vaProxy.SetBoolean("EDDI state " + stateVariableName, boolValue);
+                    return;
+                }
+
+                decimal? decValue = vaProxy.GetDecimal(name);
+                if (decValue != null)
+                {
+                    EDDI.Instance.State[stateVariableName] = decValue;
+                    vaProxy.SetDecimal("EDDI state " + stateVariableName, decValue);
+                    return;
+                }
+
+                // Nothing above, so remove the item
+                EDDI.Instance.State.Remove(stateVariableName);
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to set state", e);
             }
         }
 
@@ -571,6 +827,8 @@ namespace EddiVoiceAttackResponder
             setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
             setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref vaProxy);
 
+            setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
+
             // Backwards-compatibility with 1.x
             if (EDDI.Instance.HomeStarSystem != null)
             {
@@ -586,9 +844,57 @@ namespace EddiVoiceAttackResponder
 
             vaProxy.SetText("Environment", EDDI.Instance.Environment);
 
+            vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle);
+
             vaProxy.SetText("EDDI version", Constants.EDDI_VERSION);
 
             Logging.Debug("Set values");
+        }
+
+        // Set values from a dictionary
+        private static void setDictionaryValues(Dictionary<string, object> dict, string prefix, ref dynamic vaProxy)
+        {
+            foreach (string key in dict.Keys)
+            {
+                object value = dict[key];
+                Type valueType = value.GetType();
+                if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    valueType = Nullable.GetUnderlyingType(valueType);
+                }
+
+                string varname = "EDDI " + prefix + " " + key;
+
+                if (valueType == typeof(string))
+                {
+                    vaProxy.SetText(varname, (string)value);
+                }
+                else if (valueType == typeof(int))
+                {
+                    vaProxy.SetInt(varname, (int?)value);
+                }
+                else if (valueType == typeof(bool))
+                {
+                    vaProxy.SetBoolean(varname, (bool?)value);
+                }
+                else if (valueType == typeof(decimal))
+                {
+                    vaProxy.SetDecimal(varname, (decimal?)value);
+                }
+                else if (valueType == typeof(double))
+                {
+                    vaProxy.SetDecimal(varname, (decimal?)(double?)value);
+                }
+                else if (valueType == typeof(long))
+                {
+                    vaProxy.SetDecimal(varname, (decimal?)(long?)value);
+                }
+                else
+                {
+                    Logging.Debug("Not handling state value type " + valueType);
+                }
+            }
+
         }
 
         /// <summary>Set values for a station</summary>

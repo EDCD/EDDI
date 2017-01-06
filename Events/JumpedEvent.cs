@@ -21,6 +21,7 @@ namespace EddiEvents
             VARIABLES.Add("x", "The X co-ordinate of the system to which the commander has jumped");
             VARIABLES.Add("y", "The Y co-ordinate of the system to which the commander has jumped");
             VARIABLES.Add("z", "The Z co-ordinate of the system to which the commander has jumped");
+            VARIABLES.Add("distance", "The distance the commander has jumped, in light years");
             VARIABLES.Add("fuelused", "The amount of fuel used in this jump");
             VARIABLES.Add("fuelremaining", "The amount of fuel remaining after this jump");
             VARIABLES.Add("allegiance", "The allegiance of the system to which the commander has jumped");
@@ -31,48 +32,39 @@ namespace EddiEvents
             VARIABLES.Add("security", "The security of the system to which the commander has jumped");
         }
 
-        [JsonProperty("system")]
         public string system { get; private set; }
 
-        [JsonProperty("x")]
         public decimal x { get; private set; }
 
-        [JsonProperty("y")]
         public decimal y { get; private set; }
 
-        [JsonProperty("z")]
         public decimal z { get; private set; }
 
-        [JsonProperty("fuelused")]
+        public decimal distance { get; private set; }
+
         public decimal fuelused { get; private set; }
 
-        [JsonProperty("fuelremaining")]
         public decimal fuelremaining { get; private set; }
 
-        [JsonProperty("allegiance")]
         public string allegiance { get; private set; }
 
-        [JsonProperty("faction")]
         public string faction { get; private set; }
 
-        [JsonProperty("factionstate")]
         public string factionstate { get; private set; }
 
-        [JsonProperty("economy")]
         public string economy { get; private set; }
 
-        [JsonProperty("government")]
         public string government { get; private set; }
 
-        [JsonProperty("security")]
         public string security { get; private set; }
 
-        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
+        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
             this.y = y;
             this.z = z;
+            this.distance = distance;
             this.fuelused = fuelused;
             this.fuelremaining = fuelremaining;
             this.allegiance = (allegiance == null ? Superpower.None.name : allegiance.name) ;

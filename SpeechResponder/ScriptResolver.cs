@@ -73,6 +73,8 @@ namespace EddiSpeechResponder
             {
                 var document = new SimpleDocument(script, setting);
                 var result = document.Render(store);
+                // Tidy up the output script
+                result = Regex.Replace(result, " +", " ").Replace(" ,", ",").Replace(" .", ".").Trim();
                 Logging.Debug("Turned script " + script + " in to speech " + result);
                 return result.Trim() == "" ? null : result.Trim();
             }
@@ -112,6 +114,16 @@ namespace EddiSpeechResponder
                 if (translation == val)
                 {
                     translation = Translations.StarSystem(val);
+                }
+                Ship ship = ShipDefinitions.FromModel(val);
+                if (ship != null && ship.EDID > 0)
+                {
+                    translation = ship.SpokenModel();
+                }
+                ship = ShipDefinitions.FromEDModel(val);
+                if (ship != null && ship.EDID > 0)
+                {
+                    translation = ship.SpokenModel();
                 }
                 return translation;
             }, 1);
@@ -193,12 +205,23 @@ namespace EddiSpeechResponder
             // Obtain definition objects for various items
             //
 
+            store["SecondsSince"] = new NativeFunction((values) =>
+            {
+                long? date = (long?)values[0].AsNumber;
+                if (date == null)
+                {
+                    return null;
+                }
+                long now = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+
+                return now - date;
+            }, 1);
+
             store["ShipDetails"] = new NativeFunction((values) =>
             {
-                int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);
-                Ship result = findShip(localId, null);
+                Ship result = ShipDefinitions.FromModel(values[0].AsString);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
-            }, 0, 1);
+            }, 1);
 
             store["CombatRatingDetails"] = new NativeFunction((values) =>
             {
@@ -336,6 +359,29 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
+            store["SetState"] = new NativeFunction((values) =>
+            {
+                string name = values[0].AsString.ToLowerInvariant().Replace(" ", "_");
+                Cottle.Value value = values[1];
+                if (value.Type == Cottle.ValueContent.Boolean)
+                {
+                    EDDI.Instance.State[name] = value.AsBoolean;
+                    store["state"] = buildState();
+                }
+                else if (value.Type == Cottle.ValueContent.Number)
+                {
+                    EDDI.Instance.State[name] = value.AsNumber;
+                    store["state"] = buildState();
+                }
+                else if (value.Type == Cottle.ValueContent.String)
+                {
+                    EDDI.Instance.State[name] = value.AsString;
+                    store["state"] = buildState();
+                }
+                // Ignore other possibilities
+                return "";
+            }, 2);
+
             // Variables
             foreach (KeyValuePair<string, Cottle.Value> entry in vars)
             {
@@ -343,6 +389,38 @@ namespace EddiSpeechResponder
             }
 
             return store;
+        }
+
+        private static Dictionary<Cottle.Value, Cottle.Value> buildState()
+        {
+            if (EDDI.Instance.State == null)
+            {
+                return null;
+            }
+
+            Dictionary<Cottle.Value, Cottle.Value> state = new Dictionary<Cottle.Value, Cottle.Value>();
+            foreach (string key in EDDI.Instance.State.Keys)
+            {
+                object value = EDDI.Instance.State[key];
+                Type valueType = value.GetType();
+                if (valueType == typeof(string))
+                {
+                    state[key] = (string)value;
+                }
+                else if (valueType == typeof(int))
+                {
+                    state[key] = (int)value;
+                }
+                else if (valueType == typeof(bool))
+                {
+                    state[key] = (bool)value;
+                }
+                else if (valueType == typeof(decimal))
+                {
+                    state[key] = (decimal)value;
+                }
+            }
+            return state;
         }
 
         private static Ship findShip(int? localId, string model)

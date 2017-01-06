@@ -41,6 +41,11 @@ namespace EddiDataDefinitions
 
         public static TradeRating FromName(string from)
         {
+            if (from == null)
+            {
+                return null;
+            }
+
             TradeRating result = RATINGS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
@@ -51,7 +56,12 @@ namespace EddiDataDefinitions
 
         public static TradeRating FromEDName(string from)
         {
-            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            if (from == null)
+            {
+                return null;
+            }
+
+            string tidiedFrom = from.ToLowerInvariant();
             TradeRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {

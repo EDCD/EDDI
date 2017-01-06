@@ -19,36 +19,62 @@ namespace EddiEvents
         {
             VARIABLES.Add("missionid", "The ID of the mission");
             VARIABLES.Add("name", "The name of the mission");
-            VARIABLES.Add("system", "The system in which the mission was obtained");
             VARIABLES.Add("faction", "The faction issuing the mission");
+            VARIABLES.Add("destinationsystem", "The destination system for the mission (if applicable)");
+            VARIABLES.Add("destinationstation", "The destination station for the mission (if applicable)");
+            VARIABLES.Add("commodity", "The commodity involved in the mission (if applicable)");
+            VARIABLES.Add("amount", "The amount of the commodity or passengers involved in the mission (if applicable)");
+            VARIABLES.Add("passengertype", "The type of passengers in the mission (if applicable)");
+            VARIABLES.Add("passengerswanted", "True if the passengers are wanted (if applicable)");
+            VARIABLES.Add("target", "Name of the target of the mission (if applicable)");
+            VARIABLES.Add("targettype", "Type of the target of the mission (if applicable)");
+            VARIABLES.Add("targetfaction", "Faction of the target of the mission (if applicable)");
             VARIABLES.Add("communal", "True if the mission is a community goal");
             VARIABLES.Add("expiry", "The expiry date of the mission");
         }
 
-        [JsonProperty("missionid")]
         public long? missionid { get; private set; }
 
-        [JsonProperty("name")]
         public string name { get; private set; }
 
-        [JsonProperty("system")]
-        public string system { get; private set; }
-
-        [JsonProperty("faction")]
         public string faction { get; private set; }
 
-        [JsonProperty("communal")]
+        public string commodity { get; private set; }
+
+        public int? amount { get; private set; }
+
+        public string destinationsystem { get; private set; }
+
+        public string destinationstation { get; private set; }
+
+        public string passengertype { get; private set; }
+
+        public bool? passengerswanted { get; private set; }
+
+        public string target { get; private set; }
+
+        public string targettype { get; private set; }
+
+        public string targetfaction { get; private set; }
+
         public bool communal { get; private set; }
 
-        [JsonProperty("expiry")]
         public DateTime? expiry { get; private set; }
 
-        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string system, string faction, bool communal, DateTime? expiry) : base(timestamp, NAME)
+        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string faction, string destinationsystem, string destinationstation, Commodity commodity, int? amount, string passengertype, bool? passengerswanted, string target, string targettype, string targetfaction, bool communal, DateTime? expiry) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;
-            this.system = system;
             this.faction = faction;
+            this.destinationsystem = destinationsystem;
+            this.destinationstation = destinationstation;
+            this.commodity = (commodity == null ? null : commodity.name);
+            this.amount = amount;
+            this.passengertype = passengertype;
+            this.passengerswanted = passengerswanted;
+            this.target = target;
+            this.targettype = targettype;
+            this.targetfaction = targetfaction;
             this.communal = communal;
             this.expiry = expiry;
         }

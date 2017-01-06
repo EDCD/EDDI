@@ -38,6 +38,11 @@ namespace EddiDataDefinitions
 
         public static Rarity FromName(string from)
         {
+            if (from == null)
+            {
+                return null;
+            }
+
             Rarity result = RARITIES.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
@@ -58,7 +63,12 @@ namespace EddiDataDefinitions
 
         public static Rarity FromEDName(string from)
         {
-            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            if (from == null)
+            {
+                return null;
+            }
+
+            string tidiedFrom = from.ToLowerInvariant();
             Rarity result = RARITIES.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {

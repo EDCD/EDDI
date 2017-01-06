@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EddiDataDefinitions
 {
@@ -842,7 +843,22 @@ namespace EddiDataDefinitions
                 {128727928, new Module(128727928, "Int_PassengerCabin_Size6_Class3", 1574, "First Class Passenger Cabin", 6, "C", -1) },
                 {128727925, new Module(128727925, "Int_PassengerCabin_Size5_Class4", 1575, "Luxury Class Passenger Cabin", 5, "B", -1) },
                 {128727929, new Module(128727929, "Int_PassengerCabin_Size6_Class4", 1576, "Luxury Class Passenger Cabin", 6, "B", -1) },
+
+                // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
+                {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },
+                {128666642, new Module(128666642, "Int_StellarBodyDiscoveryScanner_Standard_free", -1, "Basic Discovery Scanner", -1, "F", 0) },
+                {128666639, new Module(128666639, "Int_PowerDistributor_Size1_Class1_free", -1, "Power Distributor", 1, "E", 0) },
+                {128667018, new Module(128667018, "Int_FuelTank_Size1_Class3_free", -1, "Fuel Tank", 1, "C", 0) },
+                {128049673, new Module(128049673, "Hpt_PulseLaser_Fixed_SmallFree", -1, "Pulse Laser", 1, "F", 0, Module.ModuleMount.Fixed) },
+                {128666640, new Module(128666640, "Int_Sensors_Size1_Class1_free", -1, "Sensors", 1, "E", 0) },
+                {128666635, new Module(128666635, "Int_PowerPlant_Size2_Class1_free", -1, "Power Plant", 2, "E", 0) },
+                {128666641, new Module(128666641, "Int_ShieldGenerator_Size2_Class1_free", -1, "Shield Generator", 2, "E", 0) },
+                {128666637, new Module(128666637, "Int_Hyperdrive_Size2_Class1_free", -1, "Frame Shift Drive", 2, "E", 0) },
+                {128666636, new Module(128666636, "Int_Engine_Size2_Class1_free", -1, "Thrusters", 2, "E", 0) },
+                {128666638, new Module(128666638, "Int_LifeSupport_Size1_Class1_free", -1, "Life Support", 1, "E", 0) },
         };
+
+        private static Dictionary<string, Module> ModulesByEDName = ModulesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
 
         /// <summary>
         /// State if a given module is a PowerPlay module
@@ -863,6 +879,30 @@ namespace EddiDataDefinitions
                  || module.EDName == "Hpt_PlasmaAccelerator_Fixed_Large_Advanced"
                  || module.EDName == "Hpt_Railgun_Fixed_Medium_Burst"
                  );
+        }
+
+        public static Module fromEDName(string name)
+        {
+            if (name == null)
+            {
+                return null;
+            }
+
+            string cleanedName = name
+                .Replace("$", "") // Header for types from repair events
+                .Replace("_name;", "") // Trailer for types from repair events
+                .Replace("_Name;", "") // Trailer for types from repair events
+                ;
+
+            // Try to fetch the module by name
+            Module Template;
+            bool found = ModulesByEDName.TryGetValue(cleanedName.ToLowerInvariant(), out Template);
+            if (found)
+            {
+                return ModuleFromEliteID(Template.EDID);
+            }
+
+            return null;
         }
 
         /// <summary>Obtain details of a module given its Elite ID</summary>

@@ -137,7 +137,7 @@ namespace EddiDataProviderService
                                     {
                                         if (!rdr.IsDBNull(4)) result.comment = rdr.GetString(4);
                                     }
-                                    if (refreshIfOutdated && result.lastupdated < DateTime.Now.AddDays(-7))
+                                    if (refreshIfOutdated && result.lastupdated < DateTime.Now.AddHours(-1))
                                     {
                                         // Data is stale
                                         StarSystem updatedResult = DataProviderService.GetSystemData(name, null, null, null);
@@ -169,7 +169,7 @@ namespace EddiDataProviderService
 
         public void SaveStarSystem(StarSystem starSystem)
         {
-            if (GetStarSystem(starSystem.name) == null)
+            if (GetStarSystem(starSystem.name, false) == null)
             {
                 insertStarSystem(starSystem);
             }

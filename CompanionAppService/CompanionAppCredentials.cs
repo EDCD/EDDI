@@ -55,7 +55,10 @@ namespace EddiCompanionAppService
                 string credentialsData = File.ReadAllText(filename);
                 credentials = JsonConvert.DeserializeObject<CompanionAppCredentials>(credentialsData);
             }
-            catch {}
+            catch (Exception ex)
+            {
+                Logging.Debug("Failed to read companion app credentials", ex);
+            }
 
             credentials.dataPath = filename;
             return credentials;

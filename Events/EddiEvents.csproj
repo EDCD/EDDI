@@ -44,6 +44,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnteredCQCEvent.cs" />
+    <Compile Include="NPCCargoScanCommencedEvent.cs" />
+    <Compile Include="NPCAttackCommencedEvent.cs" />
+    <Compile Include="NPCInterdictionCommendedEvent.cs" />
+    <Compile Include="PowerVoucherReceivedEvent.cs" />
+    <Compile Include="ShipShutdownEvent.cs" />
+    <Compile Include="StationNoFireZoneExitedEvent.cs" />
+    <Compile Include="StationNoFireZoneEnteredEvent.cs" />
+    <Compile Include="PowerCommodityFastTrackedEvent.cs" />
+    <Compile Include="PowerCommodityDeliveredEvent.cs" />
+    <Compile Include="PowerCommodityObtainedEvent.cs" />
+    <Compile Include="PowerSalaryClaimedEvent.cs" />
+    <Compile Include="PowerPerparationVoteCastEvent.cs" />
+    <Compile Include="PowerDefectedEvent.cs" />
+    <Compile Include="PowerLeftEvent.cs" />
+    <Compile Include="PowerJoinedEvent.cs" />
     <Compile Include="MarketInformationUpdatedEvent.cs" />
     <Compile Include="BondAwardedEvent.cs" />
     <Compile Include="FindPaidEvent.cs" />
@@ -69,8 +85,8 @@
     <Compile Include="MaterialCollectedEvent.cs" />
     <Compile Include="KilledEvent.cs" />
     <Compile Include="CommodityRefinedEvent.cs" />
-    <Compile Include="ShipInterdiction.cs" />
-    <Compile Include="ShipInterdicted.cs" />
+    <Compile Include="ShipInterdictionEvent.cs" />
+    <Compile Include="ShipInterdictedEvent.cs" />
     <Compile Include="CommanderRanksEvent.cs" />
     <Compile Include="CommanderProgressEvent.cs" />
     <Compile Include="CommanderStartedEvent.cs" />

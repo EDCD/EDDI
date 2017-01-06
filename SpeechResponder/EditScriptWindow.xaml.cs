@@ -85,11 +85,9 @@ namespace EddiSpeechResponder
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
-            if (script != null)
-            {
-                // Updated an existing script so remove it from the list
-                scripts.Remove(script.Name);
-            }
+            // Might be updating an existing script so remove it from the list
+            scripts.Remove(script.Name);
+
             script = new Script(scriptName, scriptDescription, script == null ? false : script.Responder, scriptValue);
             scripts.Add(script.Name, script);
 
@@ -144,7 +142,7 @@ namespace EddiSpeechResponder
             }
             else if (sample is string)
             {
-                // It's as tring so a journal entry.  Parse it
+                // It's a string so a journal entry.  Parse it
                 sampleEvent = JournalMonitor.ParseJournalEntry((string)sample);
             }
             else if (sample is Event)
@@ -159,7 +157,7 @@ namespace EddiSpeechResponder
             }
 
             ScriptResolver scriptResolver = new ScriptResolver(newScripts);
-            responder.Say(scriptResolver, ScriptName, sampleEvent, 3, false);
+            responder.Say(scriptResolver, ScriptName, sampleEvent, 3, null, false);
         }
 
         private void showDefaultButtonClick(object sender, RoutedEventArgs e)

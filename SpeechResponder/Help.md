@@ -1,13 +1,19 @@
-﻿# Scripting with EDDI
+﻿# Templating with EDDI
 
-EDDI's speech responder uses Cottle for scripting.  Cottle has a number of great features, including:
+EDDI's speech responder uses Cottle for templating.  Cottle has a number of great features, including:
 
     * Ability to set and update variables, including arrays
     * Loops
     * Conditionals
     * Subroutines
 
-Information on how to write Cottle scripts is available at http://r3c.github.io/cottle/#toc-2, and EDDI's default scripts use a lot of the functions available.
+Information on how to write Cottle templates is available at http://r3c.github.io/cottle/#toc-2, and EDDI's default templates use a lot of the functions available.
+
+## State Variables
+
+Cottle does not retain state between templates, but EDDI provides a way of doing this with state variables.  State variables are provided to each Cottle template, and templates can set state variables that will be made available in future templates.
+
+State variables are available for individual templates in the 'state' object.  Note that state variables are not persistent, and the state is empty whenever EDDI restarts.
 
 ## EDDI Functions
 
@@ -55,6 +61,16 @@ Common usage of this is to allow speech to sync up with in-game sounds, for exam
 
     Hello.  {Pause(2000)} Yes.
 
+### SetState()
+
+This function will set a session state value.  The value will be available as a property of the 'state' object in future templates within the same EDDI session.
+
+SetState takes two arguments: the name of the state value to set, and its value.  The name of the state value will be converted to lower-case and spaces changed to underscores.  The value must be either a boolean, a number, or a string; other values will be ignored.
+
+Common usage of this is to keep track of the cumulative or persistent information within a session, for example:
+
+    {SetState("distance_travelled_today", state.distance_travelled_today + event.distance)}
+
 ### Humanise()
 
 This function will turn its argument into a more human number, for example turning 31245 in to "just over thirty thousand".
@@ -92,6 +108,16 @@ ShipDetails() takes a single argument of the model of the ship for which you wan
 Common usage of this is to provide further information about a ship, for example:
 
     The Vulture is made by {ShipDetails("Vulture").manufacturer}.
+
+### SecondsSince()
+
+This function will provide the number of seconds since a given timestamp.
+
+SecondsSince() takes a single argument of a UNIX timestamp.
+
+Common usage of this is to check how long it has been since a given time, for example:
+
+    Station data is {SecondsSince(station.updatedat) / 3600} hours old.
 
 ### StationDetails()
 

@@ -36,6 +36,11 @@ namespace EddiDataDefinitions
 
         public static Superpower From(string from)
         {
+            if (from == null)
+            {
+                return null;
+            }
+
             Superpower result = FromName(from);
             if (result == null)
             {
@@ -46,6 +51,11 @@ namespace EddiDataDefinitions
 
         public static Superpower FromName(string from)
         {
+            if (from == null)
+            {
+                return null;
+            }
+
             Superpower result = SUPERPOWERS.FirstOrDefault(v => v.name == from);
             return result;
         }
@@ -54,7 +64,12 @@ namespace EddiDataDefinitions
         // are not superpowers
         public static Superpower FromEDName(string from)
         {
-            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            if (from == null)
+            {
+                return null;
+            }
+
+            string tidiedFrom = from.ToLowerInvariant();
             Superpower result;
             if (tidiedFrom == null || tidiedFrom == "")
             {

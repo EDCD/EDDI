@@ -1,6 +1,6 @@
 # EDDI: The Elite Dangerous Data Interface
 
-Current version: 2.0.13
+Current version: 2.1.0
 
 EDDI is a companion application for Elite: Dangerous, providing responses to events that occur in-game using data from the game as well as various third-party tools.
 
@@ -33,6 +33,8 @@ Initial EDDI integration with VoiceAttack is automatic, but there is a lot that 
 ## Upgrading EDDI
 
 If you are upgrading from EDDI 1 EDDI it is recommended that you uninstall your existing version of EDDI and remove your %APPDATA%\EDDI directory prior to upgrading to the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
+
+If you used EDDI 1 with VoiceAttack then please follow the instructions at [https://github.com/cmdrmcdonald/EliteDangerousDataProvider/blob/master/VoiceAttack.md#upgrading-from-eddi-1x](https://github.com/cmdrmcdonald/EliteDangerousDataProvider/blob/master/VoiceAttack.md#upgrading-from-eddi-1x).
 
 If you are upgrading from another version of EDDI 2 the installer will take care of changes so you just need to run it.
 

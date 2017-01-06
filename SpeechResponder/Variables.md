@@ -6,6 +6,13 @@ EDDI can also have event-specific variables in the `event` object.  These usuall
 
 Details of the objects available are as follows:
 
+## Game state
+
+Information on game state is available at the top level i.e. these values can be accessed directlry.
+
+    - environment the commander's current environment.  Can be one of "Normal space", "Supercruise" or "Witch space"
+	- vehicle the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter"
+
 ## Commander
 
 Commander information is available under the `cmdr` object.  
@@ -67,11 +74,16 @@ Any values might be missing, depending on EDDI's configuration and the informati
     - security the level of security in the starsystem (Low, Medium, High)
     - power the power who is controlling the starsystem (Edmund Mahon, Zachary Hudson etc)
     - powerstate the state of the system for the power (controlled, contested etc)
+    - x the X co-ordinate of the starsystem
+    - y the Y co-ordinate of the starsystem
+    - z the Z co-ordinate of the starsystem
     - stations the starsystem's stations (array of Station objects)
     - bodies the starsystem's bodies (array of Body objects)
     - visits the number of visits that the commander has made to this starsystem
+    - lastvisit the time that the commander last visited this starsystem
     - distancefromhome the distance in LY from the commander's home starsystem
     - comment any comment the commander has made on the starsystem
+    - updatedat the timestamp at which the system information was last updated
 
 ## Last starsystem
 
@@ -176,6 +188,8 @@ An orbital or planetary station.
     - largestpad the largest pad available at this station (None, Small, Medium, Large)
     - commodities the commodities that are bought and sold by this station (array of Commodity objects)
     - outfitting the modules that are available for outfitting at this station (array of Module objects)
+    - updatedat the timestamp at which the station information was last updated
+    - commoditiesupdatedat the timestamp at which the station commodities information was last updated
 
 ## Body
 

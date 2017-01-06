@@ -24,6 +24,8 @@ namespace EddiEvents
             VARIABLES.Add("body", "The nearest body to the commander");
             VARIABLES.Add("bodytype", "The type of the nearest body to the commander");
             VARIABLES.Add("docked", "True if the commander is docked");
+            VARIABLES.Add("station", "The name of the station at which the commander is docked");
+            VARIABLES.Add("stationtype", "The type of the station at which the commander is docked");
             VARIABLES.Add("allegiance", "The allegiance of the system in which the commander resides");
             VARIABLES.Add("faction", "The faction controlling the system in which the commander resides");
             VARIABLES.Add("factionstate", "The state of the faction controlling the system in which the commander resides");
@@ -32,43 +34,35 @@ namespace EddiEvents
             VARIABLES.Add("security", "The security of the system in which the commander resides");
         }
 
-        [JsonProperty("system")]
         public string system { get; private set; }
 
-        [JsonProperty("x")]
         public decimal x { get; private set; }
 
-        [JsonProperty("y")]
         public decimal y { get; private set; }
 
-        [JsonProperty("z")]
         public decimal z { get; private set; }
 
-        [JsonProperty("body")]
         public string body { get; private set; }
 
-        [JsonProperty("bodytype")]
         public string bodytype { get; private set; }
 
-        [JsonProperty("docked")]
         public bool docked { get; private set; }
 
-        [JsonProperty("allegiance")]
+        public string station { get; private set; }
+
+        public string stationtype { get; private set; }
+
         public string allegiance { get; private set; }
 
-        [JsonProperty("faction")]
         public string faction { get; private set; }
 
-        [JsonProperty("economy")]
         public string economy { get; private set; }
 
-        [JsonProperty("government")]
         public string government { get; private set; }
 
-        [JsonProperty("security")]
         public string security { get; private set; }
 
-        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, string body, string bodytype, bool docked, Superpower allegiance, string faction, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
+        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, string body, string bodytype, bool docked, string station, string stationtype, Superpower allegiance, string faction, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
@@ -77,6 +71,8 @@ namespace EddiEvents
             this.body = body;
             this.bodytype = bodytype;
             this.docked = docked;
+            this.station = station;
+            this.stationtype = stationtype;
             this.allegiance = (allegiance == null ? Superpower.None.name : allegiance.name);
             this.faction = faction;
             this.economy = (economy == null ? Economy.None.name : economy.name);

@@ -152,7 +152,6 @@ namespace Eddi
                 UserControl monitorConfiguration = monitor.ConfigurationTabItem();
                 if (monitorConfiguration != null)
                 {
-                    monitorConfiguration.Margin = new Thickness(10);
                     skeleton.panel.Children.Add(monitorConfiguration);
                 }
 
@@ -452,7 +451,10 @@ namespace Eddi
                         Logging.Error("Failed to find a way of opening URL \"" + uri + "\"");
                     }
                 }
-                catch { }
+                catch (Exception)
+                {
+                    // Nothing to do
+                }
             }
         }
 
@@ -542,7 +544,6 @@ namespace Eddi
             {
                 SpeechService.Instance.Say(EDDI.Instance.Ship, "Goodbye.", true, 1);
                 EDDI.Instance.Stop();
-                Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
                 Application.Current.Shutdown();
             }
         }

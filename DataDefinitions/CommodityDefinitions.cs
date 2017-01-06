@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EddiDataDefinitions
 {
@@ -31,7 +32,7 @@ namespace EddiDataDefinitions
             {"usscargomilitaryplans", "militaryplans"},
             {"usscargoprototypetech", "prototypetech"},
             {"usscargorebeltransmissions", "rebeltransmissions"},
-            {"usscargotechnicalblueprints", "technicalnlueprints"},
+            {"usscargotechnicalblueprints", "technicalblueprints"},
             {"usscargotradedata", "tradedata"},
 
             {"comercialsamples", "commercialsamples"},
@@ -54,7 +55,7 @@ namespace EddiDataDefinitions
             {128049213, new Commodity(11, "Tobacco", "Legal Drugs", 5035, false) },
             {128049215, new Commodity(12, "Wine", "Legal Drugs", 260, false) },
             {128049177, new Commodity(13, "Algae", "Foods", 137, false) },
-            {128049182, new Commodity(14, "Animal Meat", "Foods", 1292, false) },
+            {128049182, new Commodity(14, "Animalmeat", "Animal Meat", "Foods", 1292, false) },
             {128049189, new Commodity(15, "Coffee", "Foods", 1279, false) },
             {128049183, new Commodity(16, "Fish", "Foods", 406, false) },
             {128049184, new Commodity(17, "Food Cartridges", "Foods", 105, false) },
@@ -172,6 +173,8 @@ namespace EddiDataDefinitions
             {128673854, new Commodity(281, "Methane Clathrate", "Minerals", 629, false) },
             {128673855, new Commodity(282, "Insulating Membrane", "Industrial Materials", 7837, false) },
             {128673856, new Commodity(283, "C M M Composite", "CMM Composite", "Industrial Materials", 3132, false) },
+            {128673857, new Commodity(284, "Micro-Weave Cooling Hoses", "Industrial Materials", 403, false) },
+            {128673858, new Commodity(285, "Neofabric Insulation", "Industrial Materials", 2769, false) },
             {128673859, new Commodity(286, "Articulation Motors", "Machinery", 4997, false) },
             {128673860, new Commodity(287, "H N Shock Mount", "HN Shock Mount", "Machinery", 406, false) },
             {128673861, new Commodity(288, "Emergency Power Cells", "Machinery", 1011, false) },
@@ -183,6 +186,7 @@ namespace EddiDataDefinitions
             {128673867, new Commodity(294, "Reinforced Mounting Plate", "Machinery", 1074, false) },
             {128673868, new Commodity(295, "Heatsink Interlink", "Machinery", 729, false) },
             {128673869, new Commodity(296, "Magnetic Emitter Coil", "Machinery", 199, false) },
+            {128673870, new Commodity(297, "Modular Terminals", "Machinery", 695, false) },
             {128673871, new Commodity(298, "Nanobreakers", "Technology", 639, false) },
             {128673872, new Commodity(299, "Telemetry Suite", "Technology", 2080, false) },
             {128673873, new Commodity(300, "Micro Controllers", "Technology", 3274, false) },
@@ -195,7 +199,7 @@ namespace EddiDataDefinitions
             {128682048, new Commodity(307, "Survival Equipment", "Consumer Items", 485, false) },
         };
 
-        private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.name.ToLower().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
+        private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.name.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
 
         public static Commodity CommodityFromEliteID(long id)
         {
@@ -224,18 +228,19 @@ namespace EddiDataDefinitions
             Commodity Commodity = new Commodity();
 
             string cleanedName = name
-                .Replace("$", "") // Header for types from mining refined events
-                .Replace("_name;", "") // Trailer for types from mining refined events
+                .Replace("$", "") // Header for types from mining and mission events
+                .Replace("_name;", "") // Trailer for types from mining and mission events
+                .Replace("_Name;", "") // Trailer for types from mining and mission events
                 ;
 
             // First try to map from cargo name to the commodity name
             string cargoName;
-            cargoNamesMapping.TryGetValue(cleanedName, out cargoName);
+            cargoNamesMapping.TryGetValue(cleanedName.ToLowerInvariant(), out cargoName);
             if (cargoName == null) { cargoName = cleanedName; }
 
             // Now try to fetch the commodity by name
             Commodity Template;
-            bool found = CommoditiesByName.TryGetValue(cargoName, out Template);
+            bool found = CommoditiesByName.TryGetValue(cargoName.ToLowerInvariant(), out Template);
             if (!found)
             {
                 // Failed to find it; try again using the external name
@@ -259,7 +264,7 @@ namespace EddiDataDefinitions
             {
                 // Put some basic information in place
                 Commodity.EDName = name;
-                Commodity.name = cleanedName;
+                Commodity.name = Regex.Replace(cleanedName, "([a-z])([A-Z])", "$1 $2");
             }
             return Commodity;
         }

@@ -225,7 +225,7 @@ namespace EddiCompanionAppService
             CurrentState = State.NEEDS_LOGIN;
         }
 
-        public Profile Profile()
+        public Profile Profile(bool forceRefresh = false)
         {
             Logging.Debug("Entered");
             if (CurrentState != State.READY)
@@ -235,7 +235,7 @@ namespace EddiCompanionAppService
                 Logging.Debug("Leaving");
                 throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide profile (" + CurrentState + ")");
             }
-            if (cachedProfileExpires > DateTime.Now)
+            if ((!forceRefresh) && cachedProfileExpires > DateTime.Now)
             {
                 // return the cached version
                 Logging.Debug("Returning cached profile");
@@ -567,18 +567,18 @@ namespace EddiCompanionAppService
         private static void AugmentCmdrInfo(Commander cmdr)
         {
             Logging.Debug("Entered");
-            if (cmdr != null)
-            {
-                CommanderConfiguration cmdrConfiguration = CommanderConfiguration.FromFile();
-                if (cmdrConfiguration.PhoneticName == null || cmdrConfiguration.PhoneticName.Trim().Length == 0)
-                {
-                    cmdr.phoneticname = null;
-                }
-                else
-                {
-                    cmdr.phoneticname = cmdrConfiguration.PhoneticName;
-                }
-            }
+            //if (cmdr != null)
+            //{
+            //    CommanderConfiguration cmdrConfiguration = CommanderConfiguration.FromFile();
+            //    if (cmdrConfiguration.PhoneticName == null || cmdrConfiguration.PhoneticName.Trim().Length == 0)
+            //    {
+            //        cmdr.phoneticname = null;
+            //    }
+            //    else
+            //    {
+            //        cmdr.phoneticname = cmdrConfiguration.PhoneticName;
+            //    }
+            //}
             Logging.Debug("Leaving");
         }
 
@@ -732,6 +732,9 @@ namespace EddiCompanionAppService
                             }
                             cargo.amount = (int)cargoJson["qty"];
                             cargo.price = (long)cargoJson["value"] / cargo.amount;
+                            cargo.missionid = (long?)cargoJson["mission"];
+                            cargo.stolen = ((int?)(long?)cargoJson["marked"]) == 1;
+
                             Ship.cargo.Add(cargo);
                         }
                     }
@@ -937,6 +940,12 @@ namespace EddiCompanionAppService
             else
             {
                 module.health = Math.Round(Health);
+            }
+
+            // Flag if module has modifications
+            if (json["module"]["modifiers"] != null)
+            {
+                module.modified = true;
             }
 
             return module;
