@@ -92,6 +92,8 @@ namespace EddiDataDefinitions
         public static readonly Material StrangeWakeSolutions = new Material("wakesolutions", "Data", "Strange Wake Solutions", Rarity.Standard);
         public static readonly Material UnexpectedEmissionData = new Material("emissiondata", "Data", "Unexpected Emission Data", Rarity.Standard);
         public static readonly Material UntypicalShieldScans = new Material("shielddensityreports", "Data", "Untypical Shield Scans", Rarity.Standard);
+        public static readonly Material UnknownShipSignature = new Material("unknownshipsignature", "Data", "Unknown Ship Signature", Rarity.Standard);
+        public static readonly Material UnknownWakeScan = new Material("unknownwakedata", "Data", "Unknown Wake Data", Rarity.Standard);
 
         public static readonly Material AberrantShieldPatternAnalysis = new Material("shieldpatternanalysis", "Data", "Aberrant Shield Pattern Analysis", Rarity.Rare);
         public static readonly Material AtypicalEncryptionArchives = new Material("encryptionarchives", "Data", "Atypical Encryption Archives", Rarity.Rare);
