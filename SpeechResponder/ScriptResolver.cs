@@ -115,6 +115,16 @@ namespace EddiSpeechResponder
                 {
                     translation = Translations.StarSystem(val);
                 }
+                Ship ship = ShipDefinitions.FromModel(val);
+                if (ship != null && ship.EDID > 0)
+                {
+                    translation = ship.SpokenModel();
+                }
+                ship = ShipDefinitions.FromEDModel(val);
+                if (ship != null && ship.EDID > 0)
+                {
+                    translation = ship.SpokenModel();
+                }
                 return translation;
             }, 1);
 
@@ -209,10 +219,9 @@ namespace EddiSpeechResponder
 
             store["ShipDetails"] = new NativeFunction((values) =>
             {
-                int? localId = (values.Count == 0 ? (int?)null : (int)values[0].AsNumber);
-                Ship result = findShip(localId, null);
+                Ship result = ShipDefinitions.FromModel(values[0].AsString);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
-            }, 0, 1);
+            }, 1);
 
             store["CombatRatingDetails"] = new NativeFunction((values) =>
             {
@@ -357,14 +366,17 @@ namespace EddiSpeechResponder
                 if (value.Type == Cottle.ValueContent.Boolean)
                 {
                     EDDI.Instance.State[name] = value.AsBoolean;
+                    store["state"] = buildState();
                 }
                 else if (value.Type == Cottle.ValueContent.Number)
                 {
                     EDDI.Instance.State[name] = value.AsNumber;
+                    store["state"] = buildState();
                 }
                 else if (value.Type == Cottle.ValueContent.String)
                 {
                     EDDI.Instance.State[name] = value.AsString;
+                    store["state"] = buildState();
                 }
                 // Ignore other possibilities
                 return "";
@@ -377,6 +389,38 @@ namespace EddiSpeechResponder
             }
 
             return store;
+        }
+
+        private static Dictionary<Cottle.Value, Cottle.Value> buildState()
+        {
+            if (EDDI.Instance.State == null)
+            {
+                return null;
+            }
+
+            Dictionary<Cottle.Value, Cottle.Value> state = new Dictionary<Cottle.Value, Cottle.Value>();
+            foreach (string key in EDDI.Instance.State.Keys)
+            {
+                object value = EDDI.Instance.State[key];
+                Type valueType = value.GetType();
+                if (valueType == typeof(string))
+                {
+                    state[key] = (string)value;
+                }
+                else if (valueType == typeof(int))
+                {
+                    state[key] = (int)value;
+                }
+                else if (valueType == typeof(bool))
+                {
+                    state[key] = (bool)value;
+                }
+                else if (valueType == typeof(decimal))
+                {
+                    state[key] = (decimal)value;
+                }
+            }
+            return state;
         }
 
         private static Ship findShip(int? localId, string model)

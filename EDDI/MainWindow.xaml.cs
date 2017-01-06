@@ -544,7 +544,6 @@ namespace Eddi
             {
                 SpeechService.Instance.Say(EDDI.Instance.Ship, "Goodbye.", true, 1);
                 EDDI.Instance.Stop();
-                Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
                 Application.Current.Shutdown();
             }
         }

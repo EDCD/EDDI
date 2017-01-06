@@ -11,8 +11,10 @@ namespace EddiDataDefinitions
     /// </summary>
     public class Cargo
     {
-        public Commodity commodity { get; set; } // The commodity
+        public Commodity commodity; // The commodity
         public int amount; // The number of items
-        public long price { get; set; } // How much we actually paid for it (per unit)
+        public long price; // How much we actually paid for it (per unit)
+        public bool stolen; // If the cargo is stolen
+        public long? missionid; // The mission ID to which the cargo relates
     }
 }

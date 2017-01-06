@@ -47,6 +47,11 @@ namespace EddiDataDefinitions
 
         public static EmpireRating FromName(string from)
         {
+            if (from == null)
+            {
+                return null;
+            }
+
             EmpireRating result = RATINGS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
@@ -57,7 +62,12 @@ namespace EddiDataDefinitions
 
         public static EmpireRating FromEDName(string from)
         {
-            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            if (from == null)
+            {
+                return null;
+            }
+
+            string tidiedFrom = from.ToLowerInvariant();
             EmpireRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {

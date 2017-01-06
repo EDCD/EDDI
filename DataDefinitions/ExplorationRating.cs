@@ -41,6 +41,11 @@ namespace EddiDataDefinitions
 
         public static ExplorationRating FromName(string from)
         {
+            if (from == null)
+            {
+                return null;
+            }
+
             ExplorationRating result = RATINGS.FirstOrDefault(v => v.name == from);
             if (result == null)
             {
@@ -51,7 +56,12 @@ namespace EddiDataDefinitions
 
         public static ExplorationRating FromEDName(string from)
         {
-            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
+            if (from == null)
+            {
+                return null;
+            }
+
+            string tidiedFrom = from.ToLowerInvariant();
             ExplorationRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {

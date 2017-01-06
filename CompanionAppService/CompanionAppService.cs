@@ -732,6 +732,9 @@ namespace EddiCompanionAppService
                             }
                             cargo.amount = (int)cargoJson["qty"];
                             cargo.price = (long)cargoJson["value"] / cargo.amount;
+                            cargo.missionid = (long?)cargoJson["mission"];
+                            cargo.stolen = ((int?)(long?)cargoJson["marked"]) == 1;
+
                             Ship.cargo.Add(cargo);
                         }
                     }
@@ -937,6 +940,12 @@ namespace EddiCompanionAppService
             else
             {
                 module.health = Math.Round(Health);
+            }
+
+            // Flag if module has modifications
+            if (json["module"]["modifiers"] != null)
+            {
+                module.modified = true;
             }
 
             return module;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EddiDataDefinitions
 {
@@ -31,7 +32,7 @@ namespace EddiDataDefinitions
             {"usscargomilitaryplans", "militaryplans"},
             {"usscargoprototypetech", "prototypetech"},
             {"usscargorebeltransmissions", "rebeltransmissions"},
-            {"usscargotechnicalblueprints", "technicalnlueprints"},
+            {"usscargotechnicalblueprints", "technicalblueprints"},
             {"usscargotradedata", "tradedata"},
 
             {"comercialsamples", "commercialsamples"},
@@ -198,7 +199,7 @@ namespace EddiDataDefinitions
             {128682048, new Commodity(307, "Survival Equipment", "Consumer Items", 485, false) },
         };
 
-        private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.name.ToLower().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
+        private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.name.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
 
         public static Commodity CommodityFromEliteID(long id)
         {
@@ -227,18 +228,19 @@ namespace EddiDataDefinitions
             Commodity Commodity = new Commodity();
 
             string cleanedName = name
-                .Replace("$", "") // Header for types from mining refined events
-                .Replace("_name;", "") // Trailer for types from mining refined events
+                .Replace("$", "") // Header for types from mining and mission events
+                .Replace("_name;", "") // Trailer for types from mining and mission events
+                .Replace("_Name;", "") // Trailer for types from mining and mission events
                 ;
 
             // First try to map from cargo name to the commodity name
             string cargoName;
-            cargoNamesMapping.TryGetValue(cleanedName, out cargoName);
+            cargoNamesMapping.TryGetValue(cleanedName.ToLowerInvariant(), out cargoName);
             if (cargoName == null) { cargoName = cleanedName; }
 
             // Now try to fetch the commodity by name
             Commodity Template;
-            bool found = CommoditiesByName.TryGetValue(cargoName, out Template);
+            bool found = CommoditiesByName.TryGetValue(cargoName.ToLowerInvariant(), out Template);
             if (!found)
             {
                 // Failed to find it; try again using the external name
@@ -262,7 +264,7 @@ namespace EddiDataDefinitions
             {
                 // Put some basic information in place
                 Commodity.EDName = name;
-                Commodity.name = cleanedName;
+                Commodity.name = Regex.Replace(cleanedName, "([a-z])([A-Z])", "$1 $2");
             }
             return Commodity;
         }

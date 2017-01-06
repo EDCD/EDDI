@@ -1,3 +1,27 @@
+#2.1.0-b3
+  * Add 'stolen' flag and 'missionid' identifier to cargo
+  * Update default script for 'Commodity sale check': do not suggest that stolen goods or mission-specific goods can be sold
+  * Update Zinc good and great percentages with latest data
+  * Use more intelligent method to work from FD names to definitions for commodities, and provide better fallback names if missing
+  * Ensure that there is a space either side when using the word 'dash' in place of the symbol '-'
+  * Track current vehicle which commander is controlling, and mmake the value available to the speech and VoiceAttack responders
+  * Fix implementation of ShipDetails() so that it works according to its documentation
+  * Use fixed-width font for edit script window
+  * Updated EDDI's default scripts:
+    * Added 'Synthesised' script
+	* Fix 'Mission completed' script to correctly provide information about commodities received as mission rewards
+	* Update 'Hull damaged' script to only report damage if the player is in the vehicle that is damaged
+	* Update 'Docking granted' script to provide clearer information on the location of pads
+	* Update 'Touchdown' script to use "coordinates" rather than "co-ordinates" as the latter can cause problems with some TTS voices
+	* Update 'Swapout check' script to use modules' modified flag to see if a module has modifications
+	* Update 'Commodity sale check' script to ensure that a commodity is in demand at the target station before reporting on a sale
+  * Ensure that distance from home is updated whenever system co-ordinates are updated
+  * Ensure that speech responder's P() works for ships
+  * Provide correct name of repaired item in ShipRepairedEvent
+  * Add 'Ship shutdown' event
+  * Add 'Power voucher received' event
+  * Add unknown ship materials
+
 #2.1.0-b2
   * Add 'Engineer' government type for engineer bases
   * Enable update and outdate messages

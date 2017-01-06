@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "EDDI"
-#define MyAppVersion "2.1.0-b2"
+#define MyAppVersion "2.1.0-b3"
 #define MyAppPublisher "Cmdr McDonald"
 #define MyAppURL "https://github.com/cmdrmcdonald/EliteDangerousDataProvider/"
 #define MyAppExeName "EDDI.exe"
@@ -74,7 +74,7 @@ Source: "{#SourcePath}EDDI\bin\Debug\System.Data.SQLite.Linq.dll"; DestDir: "{ap
 Source: "{#SourcePath}EDDI\bin\Debug\Utilities.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\Variables.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}VoiceAttackResponder\EDDI.vap"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}VoiceAttackResponder\bin\Debug\EddiVoiceAttackResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}EDDI\bin\Debug\EddiVoiceAttackResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 ; Remove outdated files

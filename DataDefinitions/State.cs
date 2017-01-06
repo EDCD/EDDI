@@ -60,21 +60,20 @@ namespace EddiDataDefinitions
 
         public static State FromEDName(string from)
         {
-            string tidiedFrom = from == null ? null : from.ToLowerInvariant();
-
             State result;
-            if (tidiedFrom == null || tidiedFrom == "")
+            if (from == null || from == "")
             {
                 result = None;
             }
             else
             {
+                string tidiedFrom = from.ToLowerInvariant();
                 result = STATES.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
-            }
-            if (result == null)
-            {
-                Logging.Report("Unknown State ED name " + from);
-                result = new State(from, tidiedFrom);
+                if (result == null)
+                {
+                    Logging.Report("Unknown State ED name " + from);
+                    result = new State(from, tidiedFrom);
+                }
             }
             return result;
         }

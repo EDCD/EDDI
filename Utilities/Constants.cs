@@ -12,11 +12,15 @@ namespace Utilities
     public class Constants
     {
         public const string EDDI_NAME = "EDDI";
-        public const string EDDI_VERSION = "2.1.0-b2";
+        public const string EDDI_VERSION = "2.1.0-b3";
         public static readonly string DATA_DIR = Environment.GetEnvironmentVariable("AppData") + "\\" + EDDI_NAME;
 
         public const string ENVIRONMENT_WITCH_SPACE = "Witch space";
         public const string ENVIRONMENT_SUPERCRUISE = "Supercruise";
         public const string ENVIRONMENT_NORMAL_SPACE = "Normal space";
+
+        public const string VEHICLE_SHIP = "Ship";
+        public const string VEHICLE_SRV = "SRV";
+        public const string VEHICLE_FIGHTER = "Fighter";
     }
 }

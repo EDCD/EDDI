@@ -257,6 +257,7 @@ If a value is not available it will be not set rather than empty.
 ### Miscellaneous Variables
 
   * {TXT:Environment}: the environment the ship is in ("Normal space", "Supercruise" or "Witch space")
+  * {TXT:Vehicle}: the vehicle the commander is currently controlling ("Ship", "SRV" or "Fighter")
 
 EDDI also provides a number of pre-built commands to show off some of what it is capable of.  These include:
 
@@ -336,6 +337,8 @@ To use this function in your own commands use the 'Execute an external plugin fu
 
 This function only supports integers, booleans, decimals and strings as state values.  The name of the value will be altered if necessary to ensure that it is all lower-case, and that spaces are replace by underscores.  For example, if you attempt to store a state variable "My variable" it will be stored as "my_variable".
 
+State variables are made available in VoiceAttack with the prefix 'EDDI state'.  For example, to access the text variable stored in the last paragraph you would use '{TXT:EDDI state my_variable}'.
+
 Please note that state is transient, and is purposefully not persisted beyond the running instance of EDDI.  This means that every time you start VoiceAttack the state will be empty.
 
 ## Events
@@ -346,7 +349,7 @@ Whenever EDDI sees a particular event occur it will attempt to run a script.  Th
 
 with the <event> being in lower-case.  For example, if you wanted VoiceAttack to run a script every time you docked you would create a script called `((EDDI docked))` (note the lower-case d at the beginning of docked).
 
-There are a large number of events available.  Full details of them and the variables that are set for each of them are as follows:
+There are a large number of events available.  Full details of them and the variables that are set for each of them are as below.  Note that event variables are only valid when the event occurs, and cannot be relied upon to be present or a specific value at any other time.  If you want to use information in an event after the event itself then you should copy the value to another variable.
 
 ### Body scanned
 Triggered when you complete a scan of a planetary body.
@@ -733,6 +736,8 @@ To run a command when this event occurs you should create the command with the n
 Variables set with this event are as follows:
 
   * {DEC:EDDI hull damaged health} The percentage health of the hull
+  * {BOOL:EDDI hull damaged piloted} True if the vehicle receiving damage is piloted by the player
+  * {TXT:EDDI hull damaged vehicle} The vehicle that has been damaged (Ship, SRV, Fighter)
 
 ### Jumped
 Triggered when you complete a jump to another system.
@@ -1081,11 +1086,11 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this event are as follows:
 
-  * {TXT:EDDI ship interdicted faction} The faction of the commander carrying out the interdiction
-  * {TXT:EDDI ship interdicted interdictor} The name of the commander carrying out the interdiction
+  * {TXT:EDDI ship interdicted faction} The faction of the NPC carrying out the interdiction
+  * {TXT:EDDI ship interdicted interdictor} The name of the commander or NPC carrying out the interdiction
   * {BOOL:EDDI ship interdicted iscommander} If the player carrying out the interdiction is a commander (as opposed to an NPC)
-  * {TXT:EDDI ship interdicted power} The power of the commander carrying out the interdiction
-  * {TXT:EDDI ship interdicted rating} The combat rating of the commander carrying out the interdiction
+  * {TXT:EDDI ship interdicted power} The power of the NPC carrying out the interdiction
+  * {TXT:EDDI ship interdicted rating} The combat rating of the commander or NPC carrying out the interdiction
   * {BOOL:EDDI ship interdicted submitted} If the commander submitted to the interdiction
   * {BOOL:EDDI ship interdicted succeeded} If the interdiction attempt was successful
 
@@ -1197,6 +1202,7 @@ To run a command when this event occurs you should create the command with the n
 Variables set with this event are as follows:
 
   * {TXT:EDDI srv launched loadout} The SRV's loadout
+  * {BOOL:EDDI srv launched playercontrolled} True if the SRV is controlled by the player
 
 ### Star scanned
 Triggered when you complete a scan of a stellar body.

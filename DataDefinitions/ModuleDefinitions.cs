@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EddiDataDefinitions
 {
@@ -857,6 +858,8 @@ namespace EddiDataDefinitions
                 {128666638, new Module(128666638, "Int_LifeSupport_Size1_Class1_free", -1, "Life Support", 1, "E", 0) },
         };
 
+        private static Dictionary<string, Module> ModulesByEDName = ModulesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
+
         /// <summary>
         /// State if a given module is a PowerPlay module
         /// </summary>
@@ -876,6 +879,30 @@ namespace EddiDataDefinitions
                  || module.EDName == "Hpt_PlasmaAccelerator_Fixed_Large_Advanced"
                  || module.EDName == "Hpt_Railgun_Fixed_Medium_Burst"
                  );
+        }
+
+        public static Module fromEDName(string name)
+        {
+            if (name == null)
+            {
+                return null;
+            }
+
+            string cleanedName = name
+                .Replace("$", "") // Header for types from repair events
+                .Replace("_name;", "") // Trailer for types from repair events
+                .Replace("_Name;", "") // Trailer for types from repair events
+                ;
+
+            // Try to fetch the module by name
+            Module Template;
+            bool found = ModulesByEDName.TryGetValue(cleanedName.ToLowerInvariant(), out Template);
+            if (found)
+            {
+                return ModuleFromEliteID(Template.EDID);
+            }
+
+            return null;
         }
 
         /// <summary>Obtain details of a module given its Elite ID</summary>

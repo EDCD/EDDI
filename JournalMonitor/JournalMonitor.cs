@@ -679,7 +679,11 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Loadout", out val);
                                 string loadout = (string)val;
-                                journalEvent = new SRVLaunchedEvent(timestamp, loadout);
+
+                                data.TryGetValue("PlayerControlled", out val);
+                                bool playercontrolled = (bool)val;
+
+                                journalEvent = new SRVLaunchedEvent(timestamp, loadout, playercontrolled);
                             }
                             handled = true;
                             break;
@@ -969,7 +973,20 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Health", out val);
                                 decimal health = sensibleHealth((decimal)(((double)val) * 100));
-                                journalEvent = new HullDamagedEvent(timestamp, health);
+
+                                data.TryGetValue("PlayerPilot", out val);
+                                bool? piloted = (bool?)val;
+
+                                data.TryGetValue("Fighter", out val);
+                                bool? fighter = (bool)val;
+
+                                string vehicle = EDDI.Instance.Vehicle;
+                                if (fighter == true && piloted == false)
+                                {
+                                    vehicle = Constants.VEHICLE_FIGHTER;
+                                }
+
+                                journalEvent = new HullDamagedEvent(timestamp, vehicle, piloted, health);
                             }
                             handled = true;
                             break;
@@ -1566,6 +1583,33 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Item", out val);
                                 string item = (string)val;
+                                // Item might be a module
+                                Module module = ModuleDefinitions.fromEDName(item);
+                                if (module != null)
+                                {
+                                    if (module.mount != null)
+                                    {
+                                        // This is a weapon so provide a bit more information
+                                        string mount;
+                                        if (module.mount == Module.ModuleMount.Fixed)
+                                        {
+                                            mount = "fixed";
+                                        }
+                                        else if (module.mount == Module.ModuleMount.Gimballed)
+                                        {
+                                            mount = "gimballed";
+                                        }
+                                        else
+                                        {
+                                            mount = "turreted";
+                                        }
+                                        item = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.name;
+                                    }
+                                    else
+                                    {
+                                        item = module.name;
+                                    }
+                                }
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
                                 journalEvent = new ShipRepairedEvent(timestamp, item, price);
@@ -1720,14 +1764,20 @@ namespace EddiJournalMonitor
                             }
                         case "PowerplayVoucher":
                             {
-                                //object val;
-                                //data.TryGetValue("Power", out val);
-                                //string power = (string)val;
-                                //data.TryGetValue("Cost", out val);
-                                //int amount = (int)(long)val;
+                                object val;
+                                data.TryGetValue("Power", out val);
+                                string power = (string)val;
+                                data.TryGetValue("Systems", out val);
+                                List<string> systems = ((List<object>)val).Cast<string>().ToList();
 
-                                //journalEvent = new PowerVoucherReceivedEvent(timestamp, power, amount);
-                                //handled = true;
+                                journalEvent = new PowerVoucherReceivedEvent(timestamp, power, systems);
+                                handled = true;
+                                break;
+                            }
+                        case "SystemsShutdown":
+                            {
+                                journalEvent = new ShipShutdownEvent(timestamp);
+                                handled = true;
                                 break;
                             }
                     }

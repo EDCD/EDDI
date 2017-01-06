@@ -48,6 +48,8 @@
     <Compile Include="NPCCargoScanCommencedEvent.cs" />
     <Compile Include="NPCAttackCommencedEvent.cs" />
     <Compile Include="NPCInterdictionCommendedEvent.cs" />
+    <Compile Include="PowerVoucherReceivedEvent.cs" />
+    <Compile Include="ShipShutdownEvent.cs" />
     <Compile Include="StationNoFireZoneExitedEvent.cs" />
     <Compile Include="StationNoFireZoneEnteredEvent.cs" />
     <Compile Include="PowerCommodityFastTrackedEvent.cs" />

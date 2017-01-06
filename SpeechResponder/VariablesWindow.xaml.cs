@@ -45,7 +45,7 @@ namespace EddiSpeechResponder
             if (Events.DESCRIPTIONS.TryGetValue(scriptName, out description))
             {
                 // The user is editing an event, add event-specific information
-                markdown += "## Event\n\n" + description + ".\n\n";
+                markdown += "\n\n## " + scriptName + " event\n\n" + description + ".\n\n";
                 IDictionary<string, string> variables;
                 if (Events.VARIABLES.TryGetValue(scriptName, out variables))
                 {
@@ -55,7 +55,7 @@ namespace EddiSpeechResponder
                     }
                     else
                     {
-                        markdown += "Information about this event is available under the `event` object.\n\n";
+                        markdown += "Information about this event is available under the `event` object.  Note that these variables are only valid for this particular script; other scripts triggered by different events will have different variables available to them.\n\n";
                         foreach (KeyValuePair<string, string> variable in Events.VARIABLES[scriptName])
                         {
                             markdown += "    - " + variable.Key + " " + variable.Value + "\n";
