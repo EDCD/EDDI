@@ -51,5 +51,11 @@ namespace Tests
         {
             Assert.AreEqual(-1, Versioning.Compare("1.0.0", "1.0.1-a5"));
         }
+
+        [TestMethod]
+        public void TestVersion8()
+        {
+            Assert.AreEqual(-1, Versioning.Compare("2.1.0-b3", "2.1.0"));
+        }
     }
 }

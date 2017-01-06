@@ -159,7 +159,7 @@ namespace EddiDataProviderService
                     Station.commodities = CommoditiesFromEDDP(station);
                     Station.commoditiesupdatedat = (long?)station["market_updated_at"];
 
-                    Logging.Warn("Station is " + JsonConvert.SerializeObject(Station));
+                    Logging.Debug("Station is " + JsonConvert.SerializeObject(Station));
                     Stations.Add(Station);
                 }
             }
