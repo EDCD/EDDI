@@ -1764,14 +1764,20 @@ namespace EddiJournalMonitor
                             }
                         case "PowerplayVoucher":
                             {
-                                //object val;
-                                //data.TryGetValue("Power", out val);
-                                //string power = (string)val;
-                                //data.TryGetValue("Cost", out val);
-                                //int amount = (int)(long)val;
+                                object val;
+                                data.TryGetValue("Power", out val);
+                                string power = (string)val;
+                                data.TryGetValue("Systems", out val);
+                                List<string> systems = ((List<object>)val).Cast<string>().ToList();
 
-                                //journalEvent = new PowerVoucherReceivedEvent(timestamp, power, amount);
-                                //handled = true;
+                                journalEvent = new PowerVoucherReceivedEvent(timestamp, power, systems);
+                                handled = true;
+                                break;
+                            }
+                        case "SystemsShutdown":
+                            {
+                                journalEvent = new ShipShutdownEvent(timestamp);
+                                handled = true;
                                 break;
                             }
                     }

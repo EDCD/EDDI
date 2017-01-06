@@ -349,7 +349,7 @@ Whenever EDDI sees a particular event occur it will attempt to run a script.  Th
 
 with the <event> being in lower-case.  For example, if you wanted VoiceAttack to run a script every time you docked you would create a script called `((EDDI docked))` (note the lower-case d at the beginning of docked).
 
-There are a large number of events available.  Full details of them and the variables that are set for each of them are as follows:
+There are a large number of events available.  Full details of them and the variables that are set for each of them are as below.  Note that event variables are only valid when the event occurs, and cannot be relied upon to be present or a specific value at any other time.  If you want to use information in an event after the event itself then you should copy the value to another variable.
 
 ### Body scanned
 Triggered when you complete a scan of a planetary body.

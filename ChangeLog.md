@@ -18,6 +18,9 @@
   * Ensure that distance from home is updated whenever system co-ordinates are updated
   * Ensure that speech responder's P() works for ships
   * Provide correct name of repaired item in ShipRepairedEvent
+  * Add 'Ship shutdown' event
+  * Add 'Power voucher received' event
+  * Add unknown ship materials
 
 #2.1.0-b2
   * Add 'Engineer' government type for engineer bases
