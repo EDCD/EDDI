@@ -1,3 +1,6 @@
+#2.1.1
+  * Fix issue where commander insurance % is not set internally
+
 #2.1.0
   * Core
     * Add 'stolen' flag and 'missionid' identifier to cargo

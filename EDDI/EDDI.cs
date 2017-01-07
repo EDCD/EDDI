@@ -993,6 +993,14 @@ namespace Eddi
                     {
                         // Use the profile as primary information for our commander and shipyard
                         Cmdr = profile.Cmdr;
+
+                        // Reinstate insurance
+                        EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                        if (configuration != null)
+                        {
+                            Cmdr.insurance = configuration.Insurance;
+                        }
+
                         Shipyard = profile.Shipyard;
 
                         // Only use the ship information if we agree that this is the correct ship to use
