@@ -1,5 +1,6 @@
 #2.1.1
   * Fix issue where commander insurance % is not set internally
+  * Ensure that state changes are picked up by VoiceAttack plugin immediately
 
 #2.1.0
   * Core

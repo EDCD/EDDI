@@ -100,7 +100,7 @@ namespace Eddi
         public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
 
         // Session state
-        public Dictionary<string, object> State = new Dictionary<string, object>();
+        public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
         private EDDI()
         {

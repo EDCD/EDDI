@@ -49,7 +49,7 @@ namespace EddiCompanionAppService
                 filename = Constants.DATA_DIR + @"\credentials.json";
             }
 
-            CompanionAppCredentials credentials = new CompanionAppCredentials();
+            CompanionAppCredentials credentials =null;
             try
             {
                 string credentialsData = File.ReadAllText(filename);
@@ -58,6 +58,10 @@ namespace EddiCompanionAppService
             catch (Exception ex)
             {
                 Logging.Debug("Failed to read companion app credentials", ex);
+            }
+            if (credentials == null)
+            {
+                credentials = new CompanionAppCredentials();
             }
 
             credentials.dataPath = filename;
