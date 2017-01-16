@@ -978,7 +978,7 @@ namespace EddiJournalMonitor
                                 bool? piloted = (bool?)val;
 
                                 data.TryGetValue("Fighter", out val);
-                                bool? fighter = (bool)val;
+                                bool? fighter = (bool?)val;
 
                                 string vehicle = EDDI.Instance.Vehicle;
                                 if (fighter == true && piloted == false)
@@ -1444,7 +1444,7 @@ namespace EddiJournalMonitor
                                 break;
                             }
                         case "RedeemVoucher":
-                            Logging.Report("Redeem voucher", line);
+                            // Logging.Report("Redeem voucher", line);
                             break;
                         case "CommunityGoalJoin":
                             {

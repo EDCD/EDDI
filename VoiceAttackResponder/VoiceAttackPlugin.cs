@@ -49,6 +49,9 @@ namespace EddiVoiceAttackResponder
             {
                 EDDI.Instance.Start();
 
+                // Add a notifier for state changes
+                EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
+
                 // Display instance information if available
                 if (EDDI.Instance.Server != null)
                 {
@@ -669,7 +672,6 @@ namespace EddiVoiceAttackResponder
                 if (strValue != null)
                 {
                     EDDI.Instance.State[stateVariableName] = strValue;
-                    vaProxy.SetText("EDDI state " + stateVariableName, strValue);
                     return;
                 }
 
@@ -677,7 +679,6 @@ namespace EddiVoiceAttackResponder
                 if (intValue != null)
                 {
                     EDDI.Instance.State[stateVariableName] = intValue;
-                    vaProxy.SetInt("EDDI state " + stateVariableName, intValue);
                     return;
                 }
 
@@ -685,7 +686,6 @@ namespace EddiVoiceAttackResponder
                 if (boolValue != null)
                 {
                     EDDI.Instance.State[stateVariableName] = boolValue;
-                    vaProxy.SetBoolean("EDDI state " + stateVariableName, boolValue);
                     return;
                 }
 
@@ -693,7 +693,6 @@ namespace EddiVoiceAttackResponder
                 if (decValue != null)
                 {
                     EDDI.Instance.State[stateVariableName] = decValue;
-                    vaProxy.SetDecimal("EDDI state " + stateVariableName, decValue);
                     return;
                 }
 
@@ -852,7 +851,7 @@ namespace EddiVoiceAttackResponder
         }
 
         // Set values from a dictionary
-        private static void setDictionaryValues(Dictionary<string, object> dict, string prefix, ref dynamic vaProxy)
+        private static void setDictionaryValues(IDictionary<string, object> dict, string prefix, ref dynamic vaProxy)
         {
             foreach (string key in dict.Keys)
             {
