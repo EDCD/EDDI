@@ -117,7 +117,6 @@ namespace EddiDataDefinitions
             }
             else
             {
-                Logging.Info("Failed to find ship");
                 Ship.model = model;
             }
             return Ship;

@@ -72,7 +72,7 @@ namespace EddiSpeechResponder
             try
             {
                 // Before we start, we remove the context.  This means that scripts without context still work as expected
-                EDDI.Instance.State["eddi_context_subject"] = null;
+                EDDI.Instance.State["eddi_context_last_subject"] = null;
 
                 var document = new SimpleDocument(script, setting);
                 var result = document.Render(store);
@@ -81,10 +81,11 @@ namespace EddiSpeechResponder
                 Logging.Debug("Turned script " + script + " in to speech " + result);
                 result = result.Trim() == "" ? null : result.Trim();
 
-                if (storeresult)
+                if (storeresult && result != null)
                 {
+                    Logging.Info("Last speech is " + result);
                     EDDI.Instance.State["eddi_context_last_speech"] = result;
-                    if (EDDI.Instance.State["eddi_context_subject"] != null)
+                    if (EDDI.Instance.State["eddi_context_last_subject"] != null)
                     {
                         EDDI.Instance.State["edd_context_last_speech_" + EDDI.Instance.State["eddi_context_subject"]] = result;
                     }
@@ -129,15 +130,21 @@ namespace EddiSpeechResponder
                 {
                     translation = Translations.StarSystem(val);
                 }
-                Ship ship = ShipDefinitions.FromModel(val);
-                if (ship != null && ship.EDID > 0)
+                if (translation == val)
                 {
-                    translation = ship.SpokenModel();
+                    Ship ship = ShipDefinitions.FromModel(val);
+                    if (ship != null && ship.EDID > 0)
+                    {
+                        translation = ship.SpokenModel();
+                    }
                 }
-                ship = ShipDefinitions.FromEDModel(val);
-                if (ship != null && ship.EDID > 0)
+                if (translation == val)
                 {
-                    translation = ship.SpokenModel();
+                    Ship ship = ShipDefinitions.FromEDModel(val);
+                    if (ship != null && ship.EDID > 0)
+                    {
+                        translation = ship.SpokenModel();
+                    }
                 }
                 return translation;
             }, 1);
@@ -145,14 +152,14 @@ namespace EddiSpeechResponder
             // Helper functions
             store["OneOf"] = new NativeFunction((values) =>
             {
-                return new ScriptResolver(scripts).resolveScript(values[random.Next(values.Count)].AsString, store);
+                return new ScriptResolver(scripts).resolveScript(values[random.Next(values.Count)].AsString, store, false);
             });
 
             store["Occasionally"] = new NativeFunction((values) =>
             {
                 if (random.Next((int)values[0].AsNumber) == 0)
                 {
-                    return new ScriptResolver(scripts).resolveScript(values[1].AsString, store);
+                    return new ScriptResolver(scripts).resolveScript(values[1].AsString, store, false);
                 }
                 else
                 {
