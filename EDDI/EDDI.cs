@@ -1004,7 +1004,7 @@ namespace Eddi
                         Shipyard = profile.Shipyard;
 
                         // Only use the ship information if we agree that this is the correct ship to use
-                        if (Ship.model == null || profile.Ship.LocalId == Ship.LocalId)
+                        if (profile.Ship != null && (Ship.model == null || profile.Ship.LocalId == Ship.LocalId))
                         {
                             SetShip(profile.Ship);
                         }
@@ -1019,27 +1019,33 @@ namespace Eddi
 
                             // We don't know if we are docked or not at this point.  Fill in the data if we can, and
                             // let later systems worry about removing it if it's decided that we aren't docked
-                            if (profile.LastStation.systemname == CurrentStarSystem.name)
+                            if (profile.LastStation != null && profile.LastStation.systemname == CurrentStarSystem.name && CurrentStarSystem.stations != null)
                             {
                                 CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStation.name);
-                                CurrentStation.updatedat = profileTime;
-                                updatedCurrentStarSystem = true;
+                                if (CurrentStation != null)
+                                {
+                                    CurrentStation.updatedat = profileTime;
+                                    updatedCurrentStarSystem = true;
+                                }
                             }
                         }
                         else
                         {
-                            if (CurrentStation != null && CurrentStation.systemname == profile.LastStation.systemname && CurrentStation.name == profile.LastStation.name)
+                            if (profile.LastStation != null && CurrentStation != null && CurrentStation.systemname == profile.LastStation.systemname && CurrentStation.name == profile.LastStation.name)
                             {
                                 // Match for our expected station with the information returned from the profile
                                 Logging.Debug("Current station matches profile information; updating info");
 
                                 // Update the outfitting, commodities and shipyard with the data obtained from the profile
-                                CurrentStation.outfitting = profile.LastStation.outfitting;
-                                CurrentStation.updatedat = profileTime;
-                                CurrentStation.commodities = profile.LastStation.commodities;
-                                CurrentStation.commoditiesupdatedat = profileTime;
-                                CurrentStation.shipyard = profile.LastStation.shipyard;
-                                updatedCurrentStarSystem = true;
+                                if (CurrentStation != null)
+                                {
+                                    CurrentStation.outfitting = profile.LastStation.outfitting;
+                                    CurrentStation.updatedat = profileTime;
+                                    CurrentStation.commodities = profile.LastStation.commodities;
+                                    CurrentStation.commoditiesupdatedat = profileTime;
+                                    CurrentStation.shipyard = profile.LastStation.shipyard;
+                                    updatedCurrentStarSystem = true;
+                                }
                             }
                             else
                             {
