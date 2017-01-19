@@ -3,6 +3,7 @@
   * Ensure that state changes are picked up by VoiceAttack plugin immediately
   * Fix issue where hull damage events were not always triggered
   * Add module definitions for Module Reinforcement Packages
+  * Initial addition of EDDI context.  Context attempts to keep track of what EDDI is talking about, to provide the possiblity of two-way dialogue.  Details about context can be found in the speech responder documentation
 
 #2.1.0
   * Core

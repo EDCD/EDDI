@@ -856,6 +856,10 @@ namespace EddiVoiceAttackResponder
             foreach (string key in dict.Keys)
             {
                 object value = dict[key];
+                if (value == null)
+                {
+                    continue;
+                }
                 Type valueType = value.GetType();
                 if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 {
