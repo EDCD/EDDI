@@ -32,9 +32,9 @@ namespace EddiSpeechResponder
             setting.Trimmer = BuiltinTrimmers.CollapseBlankCharacters;
         }
 
-        public string resolve(string name, Dictionary<string, Cottle.Value> vars, bool storeresult = true)
+        public string resolve(string name, Dictionary<string, Cottle.Value> vars, bool master = true)
         {
-            return resolve(name, buildStore(vars), storeresult);
+            return resolve(name, buildStore(vars), master);
         }
 
         public int priority(string name)
@@ -44,7 +44,7 @@ namespace EddiSpeechResponder
             return (script == null ? 5 : script.Priority);
         }
 
-        public string resolve(string name, BuiltinStore store, bool storeresult = true)
+        public string resolve(string name, BuiltinStore store, bool master = true)
         {
             Logging.Debug("Resolving script " + name);
             Script script;
@@ -61,18 +61,23 @@ namespace EddiSpeechResponder
                 return null;
             }
 
-            return resolveScript(script.Value, store, storeresult);
+            return resolveScript(script.Value, store, master);
         }
 
         /// <summary>
         /// Resolve a script with an existing store
         /// </summary>
-        public string resolveScript(string script, BuiltinStore store, bool storeresult = true)
+        public string resolveScript(string script, BuiltinStore store, bool master = true)
         {
             try
             {
-                // Before we start, we remove the context.  This means that scripts without context still work as expected
-                EDDI.Instance.State["eddi_context_last_subject"] = null;
+                // Before we start, we remove the context for master scripts.
+                // This means that scripts without context still work as expected
+                if (master)
+                {
+                    EDDI.Instance.State["eddi_context_last_subject"] = null;
+                    EDDI.Instance.State["eddi_context_last_action"] = null;
+                }
 
                 var document = new SimpleDocument(script, setting);
                 var result = document.Render(store);
@@ -81,13 +86,24 @@ namespace EddiSpeechResponder
                 Logging.Debug("Turned script " + script + " in to speech " + result);
                 result = result.Trim() == "" ? null : result.Trim();
 
-                if (storeresult && result != null)
+                if (master && result != null)
                 {
-                    Logging.Info("Last speech is " + result);
-                    EDDI.Instance.State["eddi_context_last_speech"] = result;
-                    if (EDDI.Instance.State["eddi_context_last_subject"] != null)
+                    string stored = result;
+                    // Remove any leading pause
+                    if (stored.StartsWith("<break"))
                     {
-                        EDDI.Instance.State["edd_context_last_speech_" + EDDI.Instance.State["eddi_context_subject"]] = result;
+                        string pattern = "^<break[^>]*>";
+                        string replacement = "";
+                        Regex rgx = new Regex(pattern);
+                        stored = rgx.Replace(stored, replacement);
+                    }
+
+                    EDDI.Instance.State["eddi_context_last_speech"] = stored;
+                    object lastSubject;
+                    if (EDDI.Instance.State.TryGetValue("eddi_context_last_subject", out lastSubject))
+                    {
+                        string csLastSubject = ((string)EDDI.Instance.State["eddi_context_last_subject"]).ToLowerInvariant().Replace(" ", "_");
+                        EDDI.Instance.State["eddi_context_last_speech_" + csLastSubject] = stored;
                     }
                 }
 
