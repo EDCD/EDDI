@@ -123,17 +123,6 @@ Common usage of this is to check how long it has been since a given time, for ex
 
     Station data is {SecondsSince(station.updatedat) / 3600} hours old.
 
-### StationDetails()
-
-This function will provide full information for a station given its name and optional system.
-
-StationDetails() takes a single mandatory argument of the name of the station for which you want more information.  If the station is not in the current system then it can be provided with a second parameter of the name of the system.
-
-Common usage of this is to provide further information about a station, for example:
-
-    {set station to StationDetails("Jameson Memorial", "Shinrarta Dezhra")}
-    Jameson Memorial is {station.distancefromstar} light years from the system's main star.
-
 ### CombatRatingDetails()
 
 This function will provide full information for a combat rating given its name.
@@ -196,13 +185,25 @@ Common usage of this is to provide further information about a star system, for 
 
 ### StationDetails()
 
-This function will provide full information for a station given its name.
+This function will provide full information for a station given its name and optional system.
 
-StationDetails() takes two arguments of the station and the starsystem of the station.
+StationDetails() takes a single mandatory argument of the name of the station for which you want more information.  If the station is not in the current system then it can be provided with a second parameter of the name of the system.
 
-Common usage of this is to provide further information about a station's capabilities, for example:
+Common usage of this is to provide further information about a station, for example:
 
-    Jameson Memorial is {StationDetails("Jameson Memorial", "Shinrarta Dezhra").distancefromstar} light seconds from the main star.
+    {set station to StationDetails("Jameson Memorial", "Shinrarta Dezhra")}
+    Jameson Memorial is {station.distancefromstar} light years from the system's main star.
+
+### BodyDetails()
+
+This function will provide full information for a body given its name.
+
+BodyDetails() takes a single mandatory argument of the name of the body for which you want more information.  If the body is not in the current system then it can be provided with a second parameter of the name of the system.
+
+Common usage of this is to provide further information about a body, for example:
+
+    {set body to BodyDetails("Earth", "Sol")}
+    Earth is {body.distancefromstar} light years from the system's main star.
 
 ### MaterialDetails()
 

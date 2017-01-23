@@ -313,8 +313,26 @@ namespace EddiSpeechResponder
             store["SystemDetails"] = new NativeFunction((values) =>
             {
                 StarSystem result = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[0].AsString, true);
+                setSystemDistanceFromHome(result);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
+
+            store["BodyDetails"] = new NativeFunction((values) =>
+            {
+                StarSystem system;
+                if (values.Count == 1)
+                {
+                    // Current system
+                    system = EDDI.Instance.CurrentStarSystem;
+                }
+                else
+                {
+                    // Named system
+                    system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
+                }
+                Body result = system != null && system.bodies != null ? system.bodies.FirstOrDefault(v => v.name == values[0].AsString) : null;
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1, 2);
 
             store["StationDetails"] = new NativeFunction((values) =>
             {
@@ -330,6 +348,7 @@ namespace EddiSpeechResponder
                 }
                 else
                 {
+                    // Named system
                     system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
                 }
                 Station result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name == values[0].AsString) : null;
@@ -495,6 +514,17 @@ namespace EddiSpeechResponder
                 }
             }
             return ship;
+        }
+
+        private void setSystemDistanceFromHome(StarSystem system)
+        {
+            if (EDDI.Instance.HomeStarSystem != null && EDDI.Instance.HomeStarSystem.x != null && system.x != null)
+            {
+                system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - EDDI.Instance.HomeStarSystem.x), 2)
+                                                                      + Math.Pow((double)(system.y - EDDI.Instance.HomeStarSystem.y), 2)
+                                                                      + Math.Pow((double)(system.z - EDDI.Instance.HomeStarSystem.z), 2)), 2);
+                Logging.Info("Distance from home is " + system.distancefromhome);
+            }
         }
     }
 }
