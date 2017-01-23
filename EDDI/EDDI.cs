@@ -582,6 +582,14 @@ namespace Eddi
                     {
                         passEvent = eventFighterDockedEvent((FighterDockedEvent)journalEvent);
                     }
+                    else if (journalEvent is StarScannedEvent)
+                    {
+                        passEvent = eventStarScannedEvent((StarScannedEvent)journalEvent);
+                    }
+                    else if (journalEvent is BodyScannedEvent)
+                    {
+                        passEvent = eventBodyScannedEvent((BodyScannedEvent)journalEvent);
+                    }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -762,7 +770,7 @@ namespace Eddi
                 CurrentStarSystem.x = theEvent.x;
                 CurrentStarSystem.y = theEvent.y;
                 CurrentStarSystem.z = theEvent.z;
-		setSystemDistanceFromHome(CurrentStarSystem);
+                setSystemDistanceFromHome(CurrentStarSystem);
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
@@ -793,7 +801,7 @@ namespace Eddi
                 CurrentStarSystem.x = theEvent.x;
                 CurrentStarSystem.y = theEvent.y;
                 CurrentStarSystem.z = theEvent.z;
-		setSystemDistanceFromHome(CurrentStarSystem);
+                setSystemDistanceFromHome(CurrentStarSystem);
                 CurrentStarSystem.allegiance = theEvent.allegiance;
                 CurrentStarSystem.faction = theEvent.faction;
                 CurrentStarSystem.primaryeconomy = theEvent.economy;
@@ -837,7 +845,7 @@ namespace Eddi
                 CurrentStarSystem.x = theEvent.x;
                 CurrentStarSystem.y = theEvent.y;
                 CurrentStarSystem.z = theEvent.z;
-		setSystemDistanceFromHome(CurrentStarSystem);
+                setSystemDistanceFromHome(CurrentStarSystem);
                 CurrentStarSystem.allegiance = theEvent.allegiance;
                 CurrentStarSystem.faction = theEvent.faction;
                 CurrentStarSystem.primaryeconomy = theEvent.economy;
@@ -977,6 +985,76 @@ namespace Eddi
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;
+            return true;
+        }
+
+        private bool eventStarScannedEvent(StarScannedEvent theEvent)
+        {
+            // We just scanned a star.  We can assume that it's in our current system
+            Body star = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.name);
+            if (star == null)
+            {
+                // A new item - set it up
+                star = new Body();
+                star.EDDBID = -1;
+                star.type = "Star";
+                star.name = theEvent.name;
+                star.systemname = CurrentStarSystem.name;
+                CurrentStarSystem.bodies.Add(star);
+            }
+
+            // Update with the information we have
+            star.age = theEvent.age;
+            star.distance = (long?)theEvent.distancefromarrival;
+            star.temperature = (long?)theEvent.temperature;
+            star.mainstar = theEvent.distancefromarrival == 0 ? true : false;
+            star.stellarclass = theEvent.stellarclass;
+            star.solarmass = theEvent.solarmass;
+            star.solarradius = theEvent.solarradius;
+            CurrentStarSystem.bodies.Add(star);
+            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
+            return true;
+        }
+
+        private bool eventBodyScannedEvent(BodyScannedEvent theEvent)
+        {
+            // We just scanned a planet.  We can assume that it's in our current system
+            Body body = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.name);
+            if (body == null)
+            {
+                // A new body - set it up
+                body = new Body();
+                body.EDDBID = -1;
+                body.type = "Planet";
+                body.name = theEvent.name;
+                body.systemname = CurrentStarSystem.name;
+                CurrentStarSystem.bodies.Add(body);
+            }
+
+            // Update with the information we have
+            body.distance = (long?)theEvent.distancefromarrival;
+            body.tidallylocked = theEvent.tidallylocked;
+            body.temperature = (long?)theEvent.temperature;
+            body.periapsis = theEvent.periapsis;
+            body.atmosphere = theEvent.atmosphere;
+            body.gravity = theEvent.gravity;
+            body.eccentricity = theEvent.eccentricity;
+            body.inclination = theEvent.orbitalinclination;
+            body.orbitalperiod = theEvent.orbitalperiod;
+            body.rotationalperiod = theEvent.rotationperiod;
+            body.semimajoraxis = theEvent.semimajoraxis;
+            body.pressure = theEvent.pressure;
+            body.terraformstate = theEvent.terraformstate;
+            body.planettype = theEvent.type;
+            body.volcanism = theEvent.volcanism;
+            body.materials = new List<MaterialPercentage>();
+            foreach (MaterialPresence presence in theEvent.materials)
+            {
+                body.materials.Add(new MaterialPercentage(presence.definition, presence.percentage));
+            }
+            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
             return true;
         }
 
