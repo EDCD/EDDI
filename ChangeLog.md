@@ -3,7 +3,17 @@
   * Ensure that state changes are picked up by VoiceAttack plugin immediately
   * Fix issue where hull damage events were not always triggered
   * Add module definitions for Module Reinforcement Packages
+  * Incorporate data from Body scanned and Star scanned events in to local database
+  * Add speech responder function to obtain body details
+  * Add EDDP monitor, and associated events: 'System faction changed' and 'System state changed'.  See the 'EDDP monitor' tab for more information
   * Initial addition of EDDI context.  Context attempts to keep track of what EDDI is talking about, to provide the possiblity of two-way dialogue.  Details about context can be found in the speech responder documentation
+  * Update VoiceAttack with context-related commands:
+    * 'Please repeat that/What was that?/Could you say that again?/Say that again' - repeat the last thing that EDDI said from a script
+    * 'Remind me of that landing pad/Which landing pad was it?' - repeat the landing pad name and location when docking
+    * 'Tell me about it/Tell me more' - provide more information about the last item EDDI mentioned
+    * 'Tell me about the/that system' - provide more information about the last system EDDI mentioned
+    * 'Tell me about the/that planet/body' - provide more information about the last body EDDI mentioned
+    * 'Tell me about the/that star' - provide more information about the last star EDDI mentioned
 
 #2.1.0
   * Core
