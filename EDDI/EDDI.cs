@@ -102,6 +102,11 @@ namespace Eddi
         // Session state
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
+        /// <summary>
+        ///  Special case - trigger our first location event regardless of if it matches our current location
+        /// </summary>
+        private bool firstLocation = true;
+
         private EDDI()
         {
             try
@@ -649,12 +654,15 @@ namespace Eddi
             {
                 // In this case body === station
 
-                if (CurrentStation != null && CurrentStation.name == theEvent.body)
+                // Force first location update even if it matches with 'firstLocation' bool
+                if (!firstLocation && (CurrentStation != null && CurrentStation.name == theEvent.body))
                 {
                     // We are already at this station; nothing to do
                     Logging.Debug("Already at station " + theEvent.body);
                     return false;
                 }
+                firstLocation = false;
+
                 // Update the station
                 Logging.Debug("Now at station " + theEvent.body);
                 Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.body);
@@ -1102,6 +1110,7 @@ namespace Eddi
                                 CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStation.name);
                                 if (CurrentStation != null)
                                 {
+                                    Logging.Debug("Set current station to " + CurrentStation.name);
                                     CurrentStation.updatedat = profileTime;
                                     updatedCurrentStarSystem = true;
                                 }

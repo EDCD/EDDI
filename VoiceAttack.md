@@ -244,7 +244,7 @@ If a value is not available it will be not set rather than empty.
 
 ### Shipyard Variables
 
-  * {INT: Stored ships}: the number of ships in storage
+  * {INT:Stored ship entries}: the number of ships in storage
   * {TXT:Stored ship *n* model}: the model of the *n*th stored ship
   * {TXT:Stored ship *n* name}: the name of the *n*th stored ship as set in EDDI configuration
   * {TXT:Stored ship *n* callsign}: the callsign of the *n*th stored ship as shown in EDDI configuration (e.g. "GEF-1020")

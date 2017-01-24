@@ -58,7 +58,6 @@ namespace EddiEddpMonitor
         public void Start()
         {
             configuration = EddpConfiguration.FromFile();
-            Logging.Warn("Configuration is " + JsonConvert.SerializeObject(configuration));
             running = true;
             monitor();
         }
@@ -99,7 +98,7 @@ namespace EddiEddpMonitor
                             {
                                 string topic = subscriber.ReceiveFrameString();
                                 string message = subscriber.ReceiveFrameString();
-                                Logging.Warn("Message is " + message);
+                                Logging.Debug("Message is " + message);
                                 JObject json = JObject.Parse(message);
                                 if (topic == "eddp.delta.system")
                                 {
@@ -144,7 +143,6 @@ namespace EddiEddpMonitor
         {
             // Fetch guaranteed information
             string systemname = (string)json["systemname"];
-            Logging.Warn("System name is " + systemname);
             decimal x = (decimal)(double)json["x"];
             decimal y = (decimal)(double)json["y"];
             decimal z = (decimal)(double)json["z"];

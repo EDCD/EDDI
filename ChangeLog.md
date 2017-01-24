@@ -14,6 +14,7 @@
     * 'Tell me about the/that system' - provide more information about the last system EDDI mentioned
     * 'Tell me about the/that planet/body' - provide more information about the last body EDDI mentioned
     * 'Tell me about the/that star' - provide more information about the last star EDDI mentioned
+  * Ensure that location script is always triggered on first login
 
 #2.1.0
   * Core
