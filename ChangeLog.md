@@ -8,13 +8,15 @@
   * Add EDDP monitor, and associated events: 'System faction changed' and 'System state changed'.  See the 'EDDP monitor' tab for more information
   * Initial addition of EDDI context.  Context attempts to keep track of what EDDI is talking about, to provide the possiblity of two-way dialogue.  Details about context can be found in the speech responder documentation
   * Update VoiceAttack with context-related commands:
-    * 'Please repeat that/What was that?/Could you say that again?/Say that again' - repeat the last thing that EDDI said from a script
+    * 'Please repeat that/What was that?/Could you say that again?/Say that again' - repeat EDDI's last scripted response
     * 'Remind me of that landing pad/Which landing pad was it?' - repeat the landing pad name and location when docking
     * 'Tell me about it/Tell me more' - provide more information about the last item EDDI mentioned
     * 'Tell me about the/that system' - provide more information about the last system EDDI mentioned
     * 'Tell me about the/that planet/body' - provide more information about the last body EDDI mentioned
     * 'Tell me about the/that star' - provide more information about the last star EDDI mentioned
+    * 'How far is that system?' - provide a distance report for the last system EDDI mentioned
   * Ensure that location script is always triggered on first login
+  * Change the MaterialPercentage material name variable from 'material' to 'name'
 
 #2.1.0
   * Core

@@ -549,51 +549,51 @@ namespace Eddi
                     }
                     else if (journalEvent is ShipDeliveredEvent)
                     {
-                        passEvent = eventShipDeliveredEvent((ShipDeliveredEvent)journalEvent);
+                        passEvent = eventShipDelivered((ShipDeliveredEvent)journalEvent);
                     }
                     else if (journalEvent is ShipSwappedEvent)
                     {
-                        passEvent = eventShipSwappedEvent((ShipSwappedEvent)journalEvent);
+                        passEvent = eventShipSwapped((ShipSwappedEvent)journalEvent);
                     }
                     else if (journalEvent is ShipSoldEvent)
                     {
-                        passEvent = eventShipSoldEvent((ShipSoldEvent)journalEvent);
+                        passEvent = eventShipSold((ShipSoldEvent)journalEvent);
                     }
                     else if (journalEvent is CommanderContinuedEvent)
                     {
-                        passEvent = eventCommanderContinuedEvent((CommanderContinuedEvent)journalEvent);
+                        passEvent = eventCommanderContinued((CommanderContinuedEvent)journalEvent);
                     }
                     else if (journalEvent is CombatPromotionEvent)
                     {
-                        passEvent = eventCombatPromotionEvent((CombatPromotionEvent)journalEvent);
+                        passEvent = eventCombatPromotion((CombatPromotionEvent)journalEvent);
                     }
                     else if (journalEvent is EnteredCQCEvent)
                     {
-                        passEvent = eventEnteredCQCEvent((EnteredCQCEvent)journalEvent);
+                        passEvent = eventEnteredCQC((EnteredCQCEvent)journalEvent);
                     }
                     else if (journalEvent is SRVLaunchedEvent)
                     {
-                        passEvent = eventSRVLaunchedEvent((SRVLaunchedEvent)journalEvent);
+                        passEvent = eventSRVLaunched((SRVLaunchedEvent)journalEvent);
                     }
                     else if (journalEvent is SRVDockedEvent)
                     {
-                        passEvent = eventSRVDockedEvent((SRVDockedEvent)journalEvent);
+                        passEvent = eventSRVDocked((SRVDockedEvent)journalEvent);
                     }
                     else if (journalEvent is FighterLaunchedEvent)
                     {
-                        passEvent = eventFighterLaunchedEvent((FighterLaunchedEvent)journalEvent);
+                        passEvent = eventFighterLaunched((FighterLaunchedEvent)journalEvent);
                     }
                     else if (journalEvent is FighterDockedEvent)
                     {
-                        passEvent = eventFighterDockedEvent((FighterDockedEvent)journalEvent);
+                        passEvent = eventFighterDocked((FighterDockedEvent)journalEvent);
                     }
                     else if (journalEvent is StarScannedEvent)
                     {
-                        passEvent = eventStarScannedEvent((StarScannedEvent)journalEvent);
+                        passEvent = eventStarScanned((StarScannedEvent)journalEvent);
                     }
                     else if (journalEvent is BodyScannedEvent)
                     {
-                        passEvent = eventBodyScannedEvent((BodyScannedEvent)journalEvent);
+                        passEvent = eventBodyScanned((BodyScannedEvent)journalEvent);
                     }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -895,7 +895,7 @@ namespace Eddi
             return false;
         }
 
-        private bool eventShipDeliveredEvent(ShipDeliveredEvent theEvent)
+        private bool eventShipDelivered(ShipDeliveredEvent theEvent)
         {
             SetShip(theEvent.Ship);
 
@@ -909,7 +909,7 @@ namespace Eddi
             return true;
         }
 
-        private bool eventShipSwappedEvent(ShipSwappedEvent theEvent)
+        private bool eventShipSwapped(ShipSwappedEvent theEvent)
         {
             SetShip(theEvent.Ship);
 
@@ -923,14 +923,14 @@ namespace Eddi
             return true;
         }
 
-        private bool eventShipSoldEvent(ShipSoldEvent theEvent)
+        private bool eventShipSold(ShipSoldEvent theEvent)
         {
             // Need to update shipyard
             refreshProfile();
             return true;
         }
 
-        private bool eventCommanderContinuedEvent(CommanderContinuedEvent theEvent)
+        private bool eventCommanderContinued(CommanderContinuedEvent theEvent)
         {
             // If we see this it means that we aren't in CQC
             inCQC = false;
@@ -945,7 +945,7 @@ namespace Eddi
             return true;
         }
 
-        private bool eventCombatPromotionEvent(CombatPromotionEvent theEvent)
+        private bool eventCombatPromotion(CombatPromotionEvent theEvent)
         {
             // There is a bug with the journal where it reports superpower increases in rank as combat increases
             // Hence we check to see if this is a real event by comparing our known combat rating to the promoted rating
@@ -953,28 +953,28 @@ namespace Eddi
             return theEvent.rating != Cmdr.combatrating.name;
         }
 
-        private bool eventEnteredCQCEvent(EnteredCQCEvent theEvent)
+        private bool eventEnteredCQC(EnteredCQCEvent theEvent)
         {
             // In CQC we don't want to report anything, so set our CQC flag
             inCQC = true;
             return true;
         }
 
-        private bool eventSRVLaunchedEvent(SRVLaunchedEvent theEvent)
+        private bool eventSRVLaunched(SRVLaunchedEvent theEvent)
         {
             // SRV is always player-controlled, so we are in the SRV
             Vehicle = Constants.VEHICLE_SRV;
             return true;
         }
 
-        private bool eventSRVDockedEvent(SRVDockedEvent theEvent)
+        private bool eventSRVDocked(SRVDockedEvent theEvent)
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;
             return true;
         }
 
-        private bool eventFighterLaunchedEvent(FighterLaunchedEvent theEvent)
+        private bool eventFighterLaunched(FighterLaunchedEvent theEvent)
         {
             if (theEvent.playercontrolled)
             {
@@ -989,19 +989,20 @@ namespace Eddi
             return true;
         }
 
-        private bool eventFighterDockedEvent(FighterDockedEvent theEvent)
+        private bool eventFighterDocked(FighterDockedEvent theEvent)
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;
             return true;
         }
 
-        private bool eventStarScannedEvent(StarScannedEvent theEvent)
+        private bool eventStarScanned(StarScannedEvent theEvent)
         {
             // We just scanned a star.  We can assume that it's in our current system
             Body star = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.name);
             if (star == null)
             {
+                Logging.Debug("Scanned star " + theEvent.name + " is new - creating");
                 // A new item - set it up
                 star = new Body();
                 star.EDDBID = -1;
@@ -1019,18 +1020,23 @@ namespace Eddi
             star.stellarclass = theEvent.stellarclass;
             star.solarmass = theEvent.solarmass;
             star.solarradius = theEvent.solarradius;
+
+            star.setStellarExtras();
+
             CurrentStarSystem.bodies.Add(star);
+            Logging.Debug("Saving data for scanned star " + theEvent.name);
             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
             return true;
         }
 
-        private bool eventBodyScannedEvent(BodyScannedEvent theEvent)
+        private bool eventBodyScanned(BodyScannedEvent theEvent)
         {
             // We just scanned a planet.  We can assume that it's in our current system
             Body body = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.name);
             if (body == null)
             {
+                Logging.Debug("Scanned body " + theEvent.name + " is new - creating");
                 // A new body - set it up
                 body = new Body();
                 body.EDDBID = -1;
@@ -1042,6 +1048,7 @@ namespace Eddi
 
             // Update with the information we have
             body.distance = (long?)theEvent.distancefromarrival;
+            body.landable = theEvent.landable;
             body.tidallylocked = theEvent.tidallylocked;
             body.temperature = (long?)theEvent.temperature;
             body.periapsis = theEvent.periapsis;
@@ -1050,17 +1057,36 @@ namespace Eddi
             body.eccentricity = theEvent.eccentricity;
             body.inclination = theEvent.orbitalinclination;
             body.orbitalperiod = theEvent.orbitalperiod;
-            body.rotationalperiod = theEvent.rotationperiod;
+            body.rotationalperiod = Math.Round(theEvent.rotationperiod / 86400, 2);
             body.semimajoraxis = theEvent.semimajoraxis;
             body.pressure = theEvent.pressure;
+            switch (theEvent.terraformstate)
+            {
+                case "terrraformable":
+                case "terraformable":
+                    body.terraformstate = "Terraformable";
+                    break;
+                case "terraforming":
+                    body.terraformstate = "Terraforming";
+                    break;
+                case "Terraformed":
+                    body.terraformstate = "Terraformed";
+                    break;
+                default:
+                    body.terraformstate = "None";
+                    break;
+            }
             body.terraformstate = theEvent.terraformstate;
-            body.planettype = theEvent.type;
+            body.planettype = theEvent.bodyclass;
             body.volcanism = theEvent.volcanism;
             body.materials = new List<MaterialPercentage>();
             foreach (MaterialPresence presence in theEvent.materials)
             {
                 body.materials.Add(new MaterialPercentage(presence.definition, presence.percentage));
             }
+            body.rings = theEvent.rings;
+
+            Logging.Debug("Saving data for scanned body " + theEvent.name);
             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
 
             return true;

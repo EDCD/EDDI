@@ -70,9 +70,9 @@ namespace Tests
             Assert.IsNull(mercury.mainstar);
             Assert.IsNotNull(mercury.materials);
             Assert.AreEqual(11, mercury.materials.Count);
-            Assert.AreEqual("Iron", mercury.materials[0].material);
+            Assert.AreEqual("Iron", mercury.materials[0].name);
             Assert.AreEqual(23.5M, mercury.materials[0].percentage);
-            Assert.AreEqual("Mercury", mercury.materials[10].material);
+            Assert.AreEqual("Mercury", mercury.materials[10].name);
             Assert.AreEqual(1, mercury.materials[10].percentage);
             Assert.AreEqual("Mercury", mercury.name);
             Assert.AreEqual(88, mercury.orbitalperiod);
