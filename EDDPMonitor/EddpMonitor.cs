@@ -369,11 +369,12 @@ namespace EddiEddpMonitor
                 }
 
                 // Passed all tests
-                Logging.Debug("Matched watch " + watch.name);
+                Logging.Debug("Message matched watch " + watch.name);
                 return watch.name;
             }
 
             // No match
+            Logging.Debug("Message did not match any watch; ignoring");
             return null;
         }
     }
