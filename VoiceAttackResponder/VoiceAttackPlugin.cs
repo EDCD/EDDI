@@ -821,6 +821,7 @@ namespace EddiVoiceAttackResponder
                     setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref vaProxy);
                     currentStoredShip++;
                 }
+                vaProxy.SetInt("Stored ship entries", EDDI.Instance.Shipyard.Count);
             }
             setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref vaProxy);
             setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
