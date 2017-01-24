@@ -102,8 +102,11 @@ namespace EddiSpeechResponder
                     object lastSubject;
                     if (EDDI.Instance.State.TryGetValue("eddi_context_last_subject", out lastSubject))
                     {
-                        string csLastSubject = ((string)EDDI.Instance.State["eddi_context_last_subject"]).ToLowerInvariant().Replace(" ", "_");
-                        EDDI.Instance.State["eddi_context_last_speech_" + csLastSubject] = stored;
+                        if (lastSubject != null)
+                        {
+                            string csLastSubject = ((string)lastSubject).ToLowerInvariant().Replace(" ", "_");
+                            EDDI.Instance.State["eddi_context_last_speech_" + csLastSubject] = stored;
+                        }
                     }
                 }
 
@@ -414,6 +417,13 @@ namespace EddiSpeechResponder
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
+
+            store["Distance"] = new NativeFunction((values) =>
+            {
+                return (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(values[0].AsNumber - values[3].AsNumber), 2)
+                                                                      + Math.Pow((double)(values[1].AsNumber - values[4].AsNumber), 2)
+                                                                      + Math.Pow((double)(values[2].AsNumber - values[5].AsNumber), 2)), 2);
+            }, 6);
 
             store["SetState"] = new NativeFunction((values) =>
             {
