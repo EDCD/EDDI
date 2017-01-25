@@ -1056,7 +1056,7 @@ namespace Eddi
             body.gravity = theEvent.gravity;
             body.eccentricity = theEvent.eccentricity;
             body.inclination = theEvent.orbitalinclination;
-            body.orbitalperiod = theEvent.orbitalperiod;
+            body.orbitalperiod = Math.Round(theEvent.orbitalperiod / 86400, 2);
             body.rotationalperiod = Math.Round(theEvent.rotationperiod / 86400, 2);
             body.semimajoraxis = theEvent.semimajoraxis;
             body.pressure = theEvent.pressure;
@@ -1073,7 +1073,7 @@ namespace Eddi
                     body.terraformstate = "Terraformed";
                     break;
                 default:
-                    body.terraformstate = "None";
+                    body.terraformstate = "Not terraformable";
                     break;
             }
             body.terraformstate = theEvent.terraformstate;

@@ -17,6 +17,7 @@
     * 'How far is that system?' - provide a distance report for the last system EDDI mentioned
   * Ensure that location script is always triggered on first login
   * Change the MaterialPercentage material name variable from 'material' to 'name'
+  * Add Mission failed event
 
 #2.1.0
   * Core

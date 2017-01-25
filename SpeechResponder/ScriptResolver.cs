@@ -168,6 +168,10 @@ namespace EddiSpeechResponder
                 return translation;
             }, 1);
 
+            // Boolean constants
+            store["true"] = true;
+            store["false"] = false;
+
             // Helper functions
             store["OneOf"] = new NativeFunction((values) =>
             {

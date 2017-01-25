@@ -49,7 +49,7 @@ namespace EddiEddpMonitor
         /// </summary>
         public string MonitorDescription()
         {
-            return @"Monitor EDDP for changes in system control and state, and generate events when changes occur";
+            return @"Monitor EDDP for changes in system control and state, and generate events that match the watch list";
         }
 
         /// <summary>
