@@ -525,6 +525,7 @@ namespace EddiCompanionAppService
                 Commander.combatrating = CombatRating.FromRank((int)json["commander"]["rank"]["combat"]);
                 Commander.traderating = TradeRating.FromRank((int)json["commander"]["rank"]["trade"]);
                 Commander.explorationrating = ExplorationRating.FromRank((int)json["commander"]["rank"]["explore"]);
+                Commander.cqcrating = CQCRating.FromRank((int)json["commander"]["rank"]["cqc"]);
                 Commander.empirerating = EmpireRating.FromRank((int)json["commander"]["rank"]["empire"]);
                 Commander.federationrating = FederationRating.FromRank((int)json["commander"]["rank"]["federation"]);
 

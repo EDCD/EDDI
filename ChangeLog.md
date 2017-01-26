@@ -18,6 +18,7 @@
   * Ensure that location script is always triggered on first login
   * Change the MaterialPercentage material name variable from 'material' to 'name'
   * Add Mission failed event
+  * Add CQC rating to commander
 
 #2.1.0
   * Core
