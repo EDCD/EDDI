@@ -44,6 +44,7 @@ Source: "{#SourcePath}EDDI\bin\Debug\x86\*"; DestDir: "{app}"; Flags: ignorevers
 Source: "{#SourcePath}EDDI\bin\Debug\AsyncIO.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\CommonMark.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\Cottle.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}EDDI\bin\Debug\CredentialManagement.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\CSCore.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\eddi.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiCompanionAppService.dll"; DestDir: "{app}"; Flags: ignoreversion

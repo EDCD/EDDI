@@ -1,4 +1,5 @@
-﻿using EddiDataDefinitions;
+﻿using CredentialManagement;
+using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiSpeechService;
 using Newtonsoft.Json;
@@ -103,7 +104,7 @@ namespace EddiCompanionAppService
             // Need to work out our current state.
 
             //If we're missing username and password then we need to log in again
-            if (string.IsNullOrEmpty(Credentials.email) || string.IsNullOrEmpty(Credentials.password))
+            if (string.IsNullOrEmpty(Credentials.email) || string.IsNullOrEmpty(getPassword()))
             {
                 CurrentState = State.NEEDS_LOGIN;
             }
@@ -141,7 +142,7 @@ namespace EddiCompanionAppService
             request.ContentType = "application/x-www-form-urlencoded";
             request.Method = "POST";
             string encodedUsername = WebUtility.UrlEncode(Credentials.email);
-            string encodedPassword = WebUtility.UrlEncode(Credentials.password);
+            string encodedPassword = WebUtility.UrlEncode(getPassword());
             byte[] data = Encoding.UTF8.GetBytes("email=" + encodedUsername + "&password=" + encodedPassword);
             request.ContentLength = data.Length;
             using (Stream dataStream = request.GetRequestStream())
@@ -220,7 +221,7 @@ namespace EddiCompanionAppService
             Credentials.machineToken = null;
             Credentials.machineId = null;
             Credentials.appId = null;
-            Credentials.password = null;
+            setPassword(null);
             Credentials.ToFile();
             CurrentState = State.NEEDS_LOGIN;
         }
@@ -949,6 +950,28 @@ namespace EddiCompanionAppService
             }
 
             return module;
+        }
+
+        public void setPassword(string password)
+        {
+            using (var credential = new Credential())
+            {
+                credential.Password = password;
+                credential.Target = @"EDDIFDevApi";
+                credential.Type = CredentialType.Generic;
+                credential.PersistanceType = PersistanceType.Enterprise;
+                credential.Save();
+            }
+        }
+
+        private string getPassword()
+        {
+            using (var credential = new Credential())
+            {
+                credential.Target = @"EDDIFDevApi";
+                credential.Load();
+                return credential.Password;
+            }
         }
     }
 }

@@ -246,7 +246,7 @@ namespace Eddi
             {
                 // Stage 1 of authentication - login
                 CompanionAppService.Instance.Credentials.email = companionAppEmailText.Text.Trim();
-                CompanionAppService.Instance.Credentials.password = companionAppPasswordText.Password.Trim();
+                CompanionAppService.Instance.setPassword(companionAppPasswordText.Password.Trim());
                 try
                 {
                     // It is possible that we have valid cookies at this point so don't log in, but we did
@@ -341,7 +341,7 @@ namespace Eddi
             companionAppEmailText.Text = CompanionAppService.Instance.Credentials.email;
             companionAppPasswordLabel.Visibility = Visibility.Visible;
             companionAppPasswordText.Visibility = Visibility.Visible;
-            companionAppPasswordText.Password = CompanionAppService.Instance.Credentials.password;
+            companionAppPasswordText.Password = null;
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
