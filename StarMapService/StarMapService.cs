@@ -79,6 +79,85 @@ namespace EddiStarMapService
             thread.Start();
         }
 
+        public void sendCredits(decimal credits, decimal loan)
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-commander-v1/set-credits");
+            request.AddParameter("apiKey", apiKey);
+            request.AddParameter("commanderName", commanderName);
+            request.AddParameter("balance", credits);
+            request.AddParameter("loan", loan);
+            request.AddParameter("fromSoftware", Constants.EDDI_NAME);
+            request.AddParameter("fromSoftwareVersion", Constants.EDDI_VERSION);
+
+            Thread thread = new Thread(() =>
+            {
+                try
+                {
+                    Logging.Debug("Sending data to EDSM: " + request.ToString());
+                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    StarMapLogResponse response = clientResponse.Data;
+                    Logging.Debug("Data sent to EDSM");
+                    // TODO check response
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to send data to EDSM", ex);
+                }
+            });
+            thread.IsBackground = true;
+            thread.Name = "StarMapService send credits";
+            thread.Start();
+        }
+
+        public void sendRanks(int combat, int combatProgress,
+            int trade, int tradeProgress,
+            int exploration, int explorationProgress,
+            int cqc, int cqcProgress,
+            int federation, int federationProgress,
+            int empire, int empireProgress)
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-commander-v1/set-ranks");
+            request.AddParameter("apiKey", apiKey);
+            request.AddParameter("commanderName", commanderName);
+            request.AddParameter("Combat", combat + ";" + combatProgress);
+            request.AddParameter("Trade", trade + ";" + tradeProgress);
+            request.AddParameter("Explore", exploration + ";" + explorationProgress);
+            request.AddParameter("CQC", cqc + ";" + cqcProgress);
+            request.AddParameter("Federation", federation + ";" + federationProgress);
+            request.AddParameter("Empire", empire + ";" + empireProgress);
+            request.AddParameter("fromSoftware", Constants.EDDI_NAME);
+            request.AddParameter("fromSoftwareVersion", Constants.EDDI_VERSION);
+
+            Thread thread = new Thread(() =>
+            {
+                try
+                {
+                    Logging.Debug("Sending data to EDSM: " + request.ToString());
+                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    StarMapLogResponse response = clientResponse.Data;
+                    Logging.Debug("Data sent to EDSM");
+                    // TODO check response
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to send data to EDSM", ex);
+                }
+            });
+            thread.IsBackground = true;
+            thread.Name = "StarMapService send ranks";
+            thread.Start();
+        }
+
         public void sendStarMapComment(string systemName, string comment)
         {
             var client = new RestClient(baseUrl);

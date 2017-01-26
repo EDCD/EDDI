@@ -22,7 +22,8 @@ namespace EddiEvents
             VARIABLES.Add("shipid", "The ID of the commander's ship");
             VARIABLES.Add("mode", "The game mode (Open, Group or Solo)");
             VARIABLES.Add("group", "The name of the group (only if mode == Group)");
-            VARIABLES.Add("credits", "the number of credits the commander has");
+            VARIABLES.Add("credits", "The number of credits the commander has");
+            VARIABLES.Add("loan", "The current loan the commander has");
         }
 
         [JsonProperty("commander")]
@@ -46,7 +47,10 @@ namespace EddiEvents
         [JsonProperty("credits")]
         public decimal credits { get; private set; }
 
-        public CommanderContinuedEvent(DateTime timestamp, string commander, Ship ship, GameMode mode, string group, decimal credits) : base(timestamp, NAME)
+        [JsonProperty("loan")]
+        public decimal loan { get; private set; }
+
+        public CommanderContinuedEvent(DateTime timestamp, string commander, Ship ship, GameMode mode, string group, decimal credits, decimal loan) : base(timestamp, NAME)
         {
             this.commander = commander;
             this.Ship = ship;
@@ -55,6 +59,7 @@ namespace EddiEvents
             this.mode = (mode == null ? null : mode.name);
             this.group = group;
             this.credits = credits;
+            this.loan = loan;
         }
     }
 }

@@ -19,6 +19,7 @@
   * Change the MaterialPercentage material name variable from 'material' to 'name'
   * Add Mission failed event
   * Add CQC rating to commander
+  * Send additional data to EDSM
 
 #2.1.0
   * Core

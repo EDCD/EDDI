@@ -1224,7 +1224,9 @@ namespace EddiJournalMonitor
                                 string group = (string)val;
                                 data.TryGetValue("Credits", out val);
                                 decimal credits = (long)val;
-                                journalEvent = new CommanderContinuedEvent(timestamp, commander, ship, mode, group, credits);
+                                data.TryGetValue("Loan", out val);
+                                decimal loan = (long)val;
+                                journalEvent = new CommanderContinuedEvent(timestamp, commander, ship, mode, group, credits, loan);
                                 handled = true;
                                 break;
                             }
