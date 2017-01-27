@@ -848,7 +848,7 @@ namespace EddiJournalMonitor
                                     {
                                         journalEvent = new StationNoFireZoneEnteredEvent(timestamp, false);
                                     }
-                                    else if (message == "STATION_NoFireZone_entered_deployed;")
+                                    else if (message == "$STATION_NoFireZone_entered_deployed;")
                                     {
                                         journalEvent = new StationNoFireZoneEnteredEvent(timestamp, true);
                                     }
