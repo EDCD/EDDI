@@ -115,17 +115,21 @@ namespace EddiNetLogMonitor
             }
 
             var directory = new DirectoryInfo(path);
-            try
+            if (directory != null)
             {
-                FileInfo info = directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name)).OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
-                // This info can be cached so force a refresh
-                info.Refresh();
-                return info;
+                try
+                {
+                    FileInfo info = directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name)).OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
+                    if (info != null)
+                    {
+                        // This info can be cached so force a refresh
+                        info.Refresh();
+                    }
+                    return info;
+                }
+                catch { }
             }
-            catch
-            {
-                return null;
-            }
+            return null;
         }
     }
 }

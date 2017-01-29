@@ -49,7 +49,7 @@ namespace EddiEddpMonitor
         /// </summary>
         public string MonitorDescription()
         {
-            return @"Monitor EDDP for changes in system control and state, and generate events that match the watch list";
+            return @"Monitor EDDP for changes in system control and state, and generate events that match the watch list.";
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace EddiEddpMonitor
         /// </summary>
         public System.Windows.Controls.UserControl ConfigurationTabItem()
         {
-            return null;
+            return new ConfigurationWindow();
         }
 
         private void monitor()
@@ -324,53 +324,53 @@ namespace EddiEddpMonitor
         {
             foreach (Watch watch in configuration.watches)
             {
-                if (watch.system != null && watch.system != systemname)
+                if (watch.System != null && watch.System != systemname)
                 {
                     continue;
                 }
 
-                if (watch.station != null && watch.station != stationname)
+                if (watch.Station != null && watch.Station != stationname)
                 {
                     continue;
                 }
 
-                if (watch.faction != null && watch.faction != oldfaction && watch.faction != newfaction)
+                if (watch.Faction != null && watch.Faction != oldfaction && watch.Faction != newfaction)
                 {
                     continue;
                 }
 
-                if (watch.state != null && watch.state != oldstate && watch.state != newstate)
+                if (watch.State != null && watch.State != oldstate && watch.State != newstate)
                 {
                     continue;
                 }
 
-                if (watch.maxdistancefromship != null)
+                if (watch.MaxDistanceFromShip != null)
                 {
                     // Calculate the distance of the system from the ship
                     decimal distance = (decimal)Math.Sqrt(Math.Pow((double)(EDDI.Instance.CurrentStarSystem.x - x), 2)
                                                  + Math.Pow((double)(EDDI.Instance.CurrentStarSystem.y - y), 2)
                                                  + Math.Pow((double)(EDDI.Instance.CurrentStarSystem.z - z), 2));
-                    if (distance > watch.maxdistancefromship)
+                    if (distance > watch.MaxDistanceFromShip)
                     {
                         continue;
                     }
                 }
 
-                if (watch.maxdistancefromhome != null)
+                if (watch.MaxDistanceFromHome != null)
                 {
                     // Calculate the distance of the system from the home system
                     decimal distance = (decimal)Math.Sqrt(Math.Pow((double)(EDDI.Instance.HomeStarSystem.x - x), 2)
                                                  + Math.Pow((double)(EDDI.Instance.HomeStarSystem.y - y), 2)
                                                  + Math.Pow((double)(EDDI.Instance.HomeStarSystem.z - z), 2));
-                    if (distance > watch.maxdistancefromhome)
+                    if (distance > watch.MaxDistanceFromHome)
                     {
                         continue;
                     }
                 }
 
                 // Passed all tests
-                Logging.Debug("Message matched watch " + watch.name);
-                return watch.name;
+                Logging.Debug("Message matched watch " + watch.Name);
+                return watch.Name;
             }
 
             // No match

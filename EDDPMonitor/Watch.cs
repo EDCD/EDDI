@@ -13,19 +13,19 @@ namespace EddiEddpMonitor
     public class Watch
     {
         [JsonProperty("name")]
-        public string name { get; private set; }
+        public string Name { get; set; }
         [JsonProperty("system")]
-        public string system { get; private set; }
+        public string System { get; set; }
         [JsonProperty("station")]
-        public string station { get; private set; }
+        public string Station { get; set; }
         [JsonProperty("faction")]
-        public string faction { get; private set; }
+        public string Faction { get; set; }
         [JsonProperty("state")]
-        public string state { get; private set; }
+        public string State { get; set; }
         [JsonProperty("maxdistancefromship")]
-        public decimal? maxdistancefromship { get; private set; }
+        public long? MaxDistanceFromShip { get; set; }
         [JsonProperty("maxdistancefromhome")]
-        public decimal? maxdistancefromhome { get; private set; }
+        public long? MaxDistanceFromHome { get; set; }
 
         public Watch() { }
     }

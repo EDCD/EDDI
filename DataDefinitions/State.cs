@@ -12,7 +12,7 @@ namespace EddiDataDefinitions
     /// </summary>
     public class State
     {
-        private static readonly List<State> STATES = new List<State>();
+        public static readonly List<State> STATES = new List<State>();
 
         public string name { get; private set; }
 
