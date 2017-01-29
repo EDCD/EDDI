@@ -47,19 +47,23 @@ namespace EddiSpeechService
                 filename = Constants.DATA_DIR + @"\speech.json";
             }
 
-            SpeechServiceConfiguration speech = new SpeechServiceConfiguration();
+            SpeechServiceConfiguration configuration = new SpeechServiceConfiguration();
             try
             {
                 string configData = File.ReadAllText(filename);
-                speech = JsonConvert.DeserializeObject<SpeechServiceConfiguration>(configData);
+                configuration = JsonConvert.DeserializeObject<SpeechServiceConfiguration>(configData);
             }
             catch (Exception ex)
             {
                 Logging.Debug("Failed to read speech service configuration", ex);
             }
+            if (configuration == null)
+            {
+                configuration = new SpeechServiceConfiguration();
+            }
 
-            speech.dataPath = filename;
-            return speech;
+            configuration.dataPath = filename;
+            return configuration;
         }
 
         /// <summary>

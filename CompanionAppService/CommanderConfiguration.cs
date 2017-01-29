@@ -32,19 +32,23 @@ namespace EddiCompanionAppService
                 filename = Constants.DATA_DIR + @"\commander.json";
             }
 
-            CommanderConfiguration speech = new CommanderConfiguration();
+            CommanderConfiguration configuration = new CommanderConfiguration();
             try
             {
                 string configData = File.ReadAllText(filename);
-                speech = JsonConvert.DeserializeObject<CommanderConfiguration>(configData);
+                configuration = JsonConvert.DeserializeObject<CommanderConfiguration>(configData);
             }
             catch (Exception ex)
             {
                 Logging.Debug("Failed to read commander configuration", ex);
             }
+            if (configuration == null)
+            {
+                configuration = new CommanderConfiguration();
+            }
 
-            speech.dataPath = filename;
-            return speech;
+            configuration.dataPath = filename;
+            return configuration;
         }
 
         /// <summary>

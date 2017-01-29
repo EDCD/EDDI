@@ -41,6 +41,10 @@ namespace EddiCompanionAppService
             {
                 Logging.Debug("Failed to read ships configuration", ex);
             }
+            if (configuration == null)
+            {
+                configuration = new ShipsConfiguration();
+            }
 
             configuration.dataPath = filename;
             return configuration;

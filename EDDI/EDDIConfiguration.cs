@@ -50,6 +50,11 @@ namespace Eddi
             {
                 Logging.Debug("Failed to read EDDI configuration", ex);
             }
+            if (configuration == null)
+            {
+                configuration = new EDDIConfiguration();
+            }
+
             configuration.dataPath = filename;
             if (configuration.Plugins == null)
             {

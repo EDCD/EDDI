@@ -42,6 +42,10 @@ namespace EddiSpeechResponder
             {
                 Logging.Debug("Failed to read speech responder configuration", ex);
             }
+            if (configuration == null)
+            {
+                configuration = new SpeechResponderConfiguration();
+            }
 
             if (configuration.Personality == null)
             {
