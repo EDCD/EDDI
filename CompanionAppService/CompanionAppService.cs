@@ -862,6 +862,8 @@ namespace EddiCompanionAppService
                         {
                             // Unknown module; log an error so that we can update the definitions
                             Logging.Error("No definition for outfitting module", module.ToString(Formatting.None));
+                            // Set the name from the JSON
+                            Module.EDName = (string)module["name"];
                         }
                         Module.price = module["cost"];
                         Modules.Add(Module);

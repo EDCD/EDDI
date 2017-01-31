@@ -16,10 +16,13 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using Utilities;
 
 namespace Eddi
@@ -31,6 +34,9 @@ namespace Eddi
     public class EDDI
     {
         private static EDDI instance;
+
+        // True if we have been started by VoiceAttack
+        public static bool FromVA = false;
 
         private static bool started;
 
@@ -68,6 +74,13 @@ namespace Eddi
             }
         }
 
+        // Upgrade information
+        public bool UpgradeAvailable = false;
+        public bool UpgradeRequired = false;
+        public string UpgradeVersion;
+        public string UpgradeLocation;
+        public string Motd;
+
         public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
         // Each monitor runs in its own thread
         private List<Thread> monitorThreads = new List<Thread>();
@@ -93,9 +106,6 @@ namespace Eddi
         public StarSystem CurrentStarSystem { get; private set; }
         public StarSystem LastStarSystem { get; private set; }
 
-        // Information from the remote server
-        public InstanceInfo Server { get; private set; }
-
         // Current vehicle of player
         public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
 
@@ -118,7 +128,8 @@ namespace Eddi
                 ExceptionlessClient.Default.Configuration.SetVersion(Constants.EDDI_VERSION);
 
                 // Start by fetching information from the update server, and handling appropriately
-                if (!UpdateServer())
+                CheckUpgrade();
+                if (UpgradeRequired)
                 {
                     // We are too old to continue; don't
                     running = false;
@@ -222,6 +233,62 @@ namespace Eddi
         }
 
         /// <summary>
+        /// Check to see if an upgrade is available and populate relevant variables
+        /// </summary>
+        public void CheckUpgrade()
+        {
+            // Clear the old values
+            UpgradeRequired = false;
+            UpgradeAvailable = false;
+            UpgradeLocation = null;
+            UpgradeVersion = null;
+            Motd = null;
+
+            try
+            {
+                ServerInfo updateServerInfo = ServerInfo.FromServer("http://api.eddp.co/");
+                if (updateServerInfo == null)
+                {
+                    Logging.Warn("Failed to contact update server");
+                }
+                else
+                {
+                    EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                    InstanceInfo info = configuration.Beta ? updateServerInfo.beta : updateServerInfo.production;
+                    Motd = info.motd;
+                    if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
+                    {
+                        // There is a mandatory update available
+                        if (!FromVA)
+                        {
+                            SpeechService.Instance.Say(null, "Mandatory EDDI upgrade to " + info.version.Replace(".", " point ") + " is required.", false);
+                        }
+                        UpgradeRequired = true;
+                        UpgradeLocation = info.url;
+                        UpgradeVersion = info.version;
+                    }
+
+                    if (Versioning.Compare(info.version, Constants.EDDI_VERSION) == 1)
+                    {
+                        // There is an update available
+                        if (!FromVA)
+                        {
+                            SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", false);
+                        }
+                        UpgradeAvailable = true;
+                        UpgradeLocation = info.url;
+                        UpgradeVersion = info.version;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
+                Logging.Warn("Failed to access api.eddp.co", ex);
+            }
+        }
+
+        /// <summary>
         /// Obtain and check the information from the update server
         /// </summary>
         private bool UpdateServer()
@@ -237,10 +304,14 @@ namespace Eddi
                 else
                 {
                     InstanceInfo info = Constants.EDDI_VERSION.Contains("b") ? updateServerInfo.beta : updateServerInfo.production;
+                    Motd = info.motd;
                     if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
                         Logging.Warn("This version of EDDI is too old to operate; please upgrade at " + info.url);
                         SpeechService.Instance.Say(null, "This version of EDDI is too old to operate; please upgrade.", true);
+                        UpgradeRequired = true;
+                        UpgradeLocation = info.url;
+                        UpgradeVersion = info.version;
                         //SpeechService.Instance.Say(null, "EDDI requires an update.  Downloading.", true);
                         //// We are too old to run - update
                         //string updateFile = Net.DownloadFile(info.url, @"EDDI-update.exe");
@@ -261,6 +332,9 @@ namespace Eddi
                     {
                         // There is an update available
                         SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", true);
+                        UpgradeAvailable = true;
+                        UpgradeLocation = info.url;
+                        UpgradeVersion = info.version;
                         //SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.  Downloading.", true);
                         //string updateFile = Net.DownloadFile(info.url, @"EDDI-update.exe");
                         //if (updateFile == null)
@@ -281,7 +355,6 @@ namespace Eddi
                         // There is a message
                         SpeechService.Instance.Say(null, info.motd, false);
                     }
-                    Server = info;
                 }
             }
             catch (Exception ex)
@@ -290,6 +363,43 @@ namespace Eddi
                 Logging.Warn("Failed to access api.eddp.co", ex);
             }
             return true;
+        }
+
+        [SecurityPermissionAttribute(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        [SecurityPermissionAttribute(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        public void Upgrade()
+        {
+            try
+            {
+                if (UpgradeLocation != null)
+                {
+                    Logging.Info("Downloading upgrade from " + UpgradeLocation);
+                    SpeechService.Instance.Say(Ship, "Downloading upgrade.", true);
+                    string updateFile = Net.DownloadFile(UpgradeLocation, @"EDDI-update.exe");
+                    if (updateFile == null)
+                    {
+                        SpeechService.Instance.Say(Ship, "Download failed.  Please try again later.", true);
+                    }
+                    else
+                    {
+                        // Inno setup will attempt to restart this application so register it
+                        RegisterApplicationRestart(null, RestartFlags.NONE);
+
+                        Logging.Info("Downloaded update to " + updateFile);
+                        Logging.Info("Path is " + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                        File.SetAttributes(updateFile, FileAttributes.Normal);
+                        SpeechService.Instance.Say(Ship, "Starting upgrade.", true);
+                        Logging.Info("Starting upgrade.");
+
+                        Process.Start(updateFile, @"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SpeechService.Instance.Say(Ship, "Upgrade failed.  Please try again later.", true);
+                Logging.Error("Upgrade failed", ex);
+            }
         }
 
         public void Start()
@@ -1291,6 +1401,12 @@ namespace Eddi
                     Logging.Error(msg, flex);
                     SpeechService.Instance.Say(null, msg, false);
                 }
+                catch (Exception ex)
+                {
+                    string msg = "Failed to load monitor: " + ex.Message;
+                    Logging.Error(msg, ex);
+                    SpeechService.Instance.Say(null, msg, false);
+                }
             }
             return monitors;
         }
@@ -1471,5 +1587,24 @@ namespace Eddi
             profileStationRequired = null;
             profileShipIdRequired = -1;
         }
+
+        // Required to restart app after upgrade
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        static extern uint RegisterApplicationRestart(string pwzCommandLine, RestartFlags dwFlags);
+
+        // Flags for upgrade
+        [Flags]
+        enum RestartFlags
+        {
+            NONE = 0,
+            RESTART_CYCLICAL = 1,
+            RESTART_NOTIFY_SOLUTION = 2,
+            RESTART_NOTIFY_FAULT = 4,
+            RESTART_NO_CRASH = 8,
+            RESTART_NO_HANG = 16,
+            RESTART_NO_PATCH = 32,
+            RESTART_NO_REBOOT = 64
+        }
+
     }
 }

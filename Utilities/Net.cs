@@ -51,7 +51,7 @@ namespace Utilities
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to download file", ex);
+                Logging.Error("Failed to download file " + uri, ex);
                 return null;
             }
         }

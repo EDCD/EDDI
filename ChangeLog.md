@@ -20,6 +20,8 @@
   * Add Mission failed event
   * Add CQC rating to commander
   * Send additional data to EDSM
+  * Add assisated upgrade for new versions of EDDI
+  * Allow opt-in to beta versions of EDDI
 
 #2.1.0
   * Core

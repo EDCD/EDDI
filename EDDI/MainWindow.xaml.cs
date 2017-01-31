@@ -38,10 +38,11 @@ namespace Eddi
             this.fromVA = fromVA;
 
             // Start the EDDI instance
+            EDDI.FromVA = fromVA;
             EDDI.Instance.Start();
 
             // Configure the EDDI tab
-            versionText.Text = Constants.EDDI_VERSION;
+            setStatusInfo();
 
             //// Need to set up the correct information in the hero text depending on from where we were started
             if (fromVA)
@@ -236,6 +237,51 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiConfiguration.Debug = eddiVerboseLogging.IsChecked.Value;
             eddiConfiguration.ToFile();
+        }
+
+        private void betaProgrammeEnabled(object sender, RoutedEventArgs e)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.Beta = eddiBetaProgramme.IsChecked.Value;
+            eddiConfiguration.ToFile();
+            // Because we have chaned to wanting beta upgrades we need to re-check upgrade information
+            EDDI.Instance.CheckUpgrade();
+            setStatusInfo();
+        }
+
+        private void betaProgrammeDisabled(object sender, RoutedEventArgs e)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.Beta = eddiBetaProgramme.IsChecked.Value;
+            eddiConfiguration.ToFile();
+            // Because we have chaned to not wanting beta upgrades we need to re-check upgrade information
+            EDDI.Instance.CheckUpgrade();
+            setStatusInfo();
+        }
+
+        // Set the fields relating to status information
+        private void setStatusInfo()
+        {
+            versionText.Text = Constants.EDDI_VERSION;
+
+            if (EDDI.Instance.UpgradeVersion != null)
+            {
+                statusText.Text = "Version " + EDDI.Instance.UpgradeVersion + " is available";
+                // Do not show upgrade button if EDDI is started from VA
+                upgradeButton.Visibility = EDDI.FromVA ? Visibility.Collapsed : Visibility.Visible;
+            }
+            else
+            {
+                upgradeButton.Visibility = Visibility.Collapsed;
+                if (CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
+                {
+                    statusText.Text = "Companion app not operational";
+                }
+                else
+                {
+                    statusText.Text = "Operational";
+                }
+            }
         }
 
         // Handle changes to the companion app tab
@@ -542,7 +588,6 @@ namespace Eddi
 
             if (!fromVA)
             {
-                SpeechService.Instance.Say(EDDI.Instance.Ship, "Goodbye.", true, 1);
                 EDDI.Instance.Stop();
                 Application.Current.Shutdown();
             }
@@ -594,6 +639,11 @@ namespace Eddi
                     Logging.Error("Failed to upload log", ex);
                 }
             }
+        }
+
+        private void upgradeClicked(object sender, RoutedEventArgs e)
+        {
+            EDDI.Instance.Upgrade();
         }
     }
 

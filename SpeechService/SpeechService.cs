@@ -348,6 +348,7 @@ namespace EddiSpeechService
                 catch (Exception ex)
                 {
                     Logging.Warn("speech failed: ", ex);
+                    Logging.Error("Speech failed", @"{""speech"":""" + speech + @"""}");
                 }
             });
             synthThread.Start();
