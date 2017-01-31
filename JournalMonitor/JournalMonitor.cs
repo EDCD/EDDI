@@ -17,7 +17,7 @@ namespace EddiJournalMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$");
 
-        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal\.[0-9\.]+\.log$", result => ForwardJournalEntry(result, EDDI.Instance.eventHandler)) {}
+        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal\.[0-9\.]+\.log$", result => ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
 
         public static void ForwardJournalEntry(string line, Action<Event> callback)
         {
@@ -539,16 +539,32 @@ namespace EddiJournalMonitor
                                     bool landable = (bool)val;
 
                                     data.TryGetValue("Materials", out val);
-                                    IDictionary<string, object> materialsData = (IDictionary<string, object>)val;
                                     List<MaterialPresence> materials = new List<MaterialPresence>();
-                                    if (materialsData != null)
+                                    if (val != null)
                                     {
-                                        foreach (KeyValuePair<string, object> kv in materialsData)
+                                        if (val is Dictionary<string, object>)
                                         {
-                                            Material material = Material.FromEDName(kv.Key);
-                                            if (material != null)
+                                            // 2.2 style
+                                            IDictionary<string, object> materialsData = (IDictionary<string, object>)val;
+                                            foreach (KeyValuePair<string, object> kv in materialsData)
                                             {
-                                                materials.Add(new MaterialPresence(material, (decimal)(double)kv.Value));
+                                                Material material = Material.FromEDName(kv.Key);
+                                                if (material != null)
+                                                {
+                                                    materials.Add(new MaterialPresence(material, (decimal)(double)kv.Value));
+                                                }
+                                            }
+                                        }
+                                        else if (val is List<object>)
+                                        {
+                                            // 2.3 style
+                                            List<object> materialsJson = (List<object>)val;
+
+                                            foreach (Dictionary<string, object> materialJson in materialsJson)
+                                            {
+                                                Material material = Material.FromEDName((string)materialJson["Name"]);
+                                                // TODO this might not be the correct key
+                                                materials.Add(new MaterialPresence(material, (decimal)(double)materialJson["Amount"]));
                                             }
                                         }
                                     }
@@ -1144,21 +1160,36 @@ namespace EddiJournalMonitor
                                 List<MaterialAmount> materials = new List<MaterialAmount>();
                                 if (data.TryGetValue("Ingredients", out val))
                                 {
-                                    Dictionary<string, object> usedData = (Dictionary<string, object>)val;
-                                    foreach (KeyValuePair<string, object> used in usedData)
+                                    if (val is Dictionary<string, object>)
                                     {
-                                        // Used could be a material or a commodity
-                                        Commodity commodity = CommodityDefinitions.FromName(used.Key);
-                                        if (commodity.category != null)
+                                        // 2.2 style
+                                        Dictionary<string, object> usedData = (Dictionary<string, object>)val;
+                                        foreach (KeyValuePair<string, object> used in usedData)
                                         {
-                                            // This is a real commodity
-                                            commodities.Add(new CommodityAmount(commodity, (int)(long)used.Value));
+                                            // Used could be a material or a commodity
+                                            Commodity commodity = CommodityDefinitions.FromName(used.Key);
+                                            if (commodity.category != null)
+                                            {
+                                                // This is a real commodity
+                                                commodities.Add(new CommodityAmount(commodity, (int)(long)used.Value));
+                                            }
+                                            else
+                                            {
+                                                // Probably a material then
+                                                Material material = Material.FromEDName(used.Key);
+                                                materials.Add(new MaterialAmount(material, (int)(long)used.Value));
+                                            }
                                         }
-                                        else
+                                    }
+                                    else if (val is List<object>)
+                                    {
+                                        // 2.3 style
+                                        List<object> materialsJson = (List<object>)val;
+
+                                        foreach (Dictionary<string, object> materialJson in materialsJson)
                                         {
-                                            // Probably a material then
-                                            Material material = Material.FromEDName(used.Key);
-                                            materials.Add(new MaterialAmount(material, (int)(long)used.Value));
+                                            Material material = Material.FromEDName((string)materialJson["Name"]);
+                                            materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                         }
                                     }
                                 }
@@ -1649,14 +1680,29 @@ namespace EddiJournalMonitor
                                 string synthesis = (string)val;
 
                                 data.TryGetValue("Materials", out val);
-                                Dictionary<string, object> materialsData = (Dictionary<string, object>)val;
                                 List<MaterialAmount> materials = new List<MaterialAmount>();
-                                if (materialsData != null)
+                                if (val is Dictionary<string, object>)
                                 {
-                                    foreach (KeyValuePair<string, object> materialData in materialsData)
+                                    // 2.2 style
+                                    Dictionary<string, object> materialsData = (Dictionary<string, object>)val;
+                                    if (materialsData != null)
                                     {
-                                        Material material = Material.FromEDName(materialData.Key);
-                                        materials.Add(new MaterialAmount(material, (int)(long)materialData.Value));
+                                        foreach (KeyValuePair<string, object> materialData in materialsData)
+                                        {
+                                            Material material = Material.FromEDName(materialData.Key);
+                                            materials.Add(new MaterialAmount(material, (int)(long)materialData.Value));
+                                        }
+                                    }
+                                }
+                                else if (val is List<object>)
+                                {
+                                    // 2.3 style
+                                    List<object> materialsJson = (List<object>)val;
+
+                                    foreach (Dictionary<string, object> materialJson in materialsJson)
+                                    {
+                                        Material material = Material.FromEDName((string)materialJson["Name"]);
+                                        materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                     }
                                 }
 
@@ -1704,7 +1750,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("System", out val);
                                 string system = (string)val;
                                 data.TryGetValue("Votes", out val);
-                                int amount= (int)(long)val;
+                                int amount = (int)(long)val;
 
                                 journalEvent = new PowerPreparationVoteCast(timestamp, power, system, amount);
                                 handled = true;
@@ -1985,7 +2031,7 @@ namespace EddiJournalMonitor
             stop();
         }
 
-        public void Reload() {}
+        public void Reload() { }
 
         public UserControl ConfigurationTabItem()
         {
