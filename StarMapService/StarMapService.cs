@@ -63,7 +63,10 @@ namespace EddiStarMapService
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
                     Logging.Debug("Data sent to EDSM");
-                    // TODO check response
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -98,7 +101,10 @@ namespace EddiStarMapService
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
                     Logging.Debug("Data sent to EDSM");
-                    // TODO check response
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -142,7 +148,10 @@ namespace EddiStarMapService
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
                     Logging.Debug("Data sent to EDSM");
-                    // TODO check response
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -173,7 +182,10 @@ namespace EddiStarMapService
                 {
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
-                    // TODO check response
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -212,7 +224,10 @@ namespace EddiStarMapService
             logRequest.AddParameter("systemName", systemName);
             var logClientResponse = client.Execute<StarMapLogResponse>(logRequest);
             StarMapLogResponse logResponse = logClientResponse.Data;
-            // TODO check response
+            if (logResponse.msgnum != 100)
+            {
+                Logging.Warn("EDSM responded with " + logResponse.msg);
+            }
 
             // Also grab any comment that might be present
             var commentRequest = new RestRequest("api-logs-v1/get-comment");
@@ -221,7 +236,10 @@ namespace EddiStarMapService
             commentRequest.AddParameter("systemName", systemName);
             var commentClientResponse = client.Execute<StarMapLogResponse>(commentRequest);
             StarMapLogResponse commentResponse = commentClientResponse.Data;
-            // TODO check response
+            if (commentResponse.msgnum != 100)
+            {
+                Logging.Warn("EDSM responded with " + commentResponse.msg);
+            }
 
             int visits = (logResponse != null && logResponse.logs != null) ? logResponse.logs.Count : 1;
             DateTime lastUpdate = (logResponse != null && logResponse.lastUpdate != null) ? (DateTime)logResponse.lastUpdate : new DateTime();

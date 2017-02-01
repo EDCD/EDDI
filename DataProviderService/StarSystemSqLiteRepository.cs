@@ -180,7 +180,6 @@ namespace EddiDataProviderService
                 Logging.Warn("Problem obtaining data: " + ex);
             }
 
-            // TODO if star system data is out-of-date then refresh it
             return result;
         }
 
