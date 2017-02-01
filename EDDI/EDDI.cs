@@ -1023,20 +1023,20 @@ namespace Eddi
         {
             SetShip(theEvent.Ship);
 
-            // Kick off the profile refresh
-            profileUpdateNeeded = true;
-            profileShipIdRequired = theEvent.Ship.LocalId;
-            Thread updateThread = new Thread(() => conditionallyRefreshProfile());
-            updateThread.IsBackground = true;
-            updateThread.Start();
-
             return true;
         }
 
         private bool eventShipSold(ShipSoldEvent theEvent)
         {
-            // Need to update shipyard
-            refreshProfile();
+            // Remove the ship from the list of stored ships
+            for (int i = 0; i < Shipyard.Count; i++)
+            {
+                if (Shipyard[i].LocalId == theEvent.shipid)
+                {
+                    Shipyard.RemoveAt(i);
+                    break;
+                }
+            }
             return true;
         }
 
@@ -1300,6 +1300,19 @@ namespace Eddi
             }
             else
             {
+                // Remove the ship we are now using from the shipyard
+                for (int i = 0; i < Shipyard.Count; i++)
+                {
+                    if (Shipyard[i].LocalId == ship.LocalId)
+                    {
+                        Shipyard.RemoveAt(i);
+                        break;
+                    }
+                }
+                // Add the ship we were using to the shipyard
+                Shipyard.Add(Ship);
+
+                // Set the ship we are using
                 Logging.Debug("Set ship to " + JsonConvert.SerializeObject(ship));
                 Ship = ship;
             }
