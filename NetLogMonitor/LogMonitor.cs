@@ -32,7 +32,7 @@ namespace EddiNetLogMonitor
         /// <summary>Monitor the netlog for changes, running a callback when the file changes</summary>
         public void start()
         {
-            if (Directory == null)
+            if (Directory == null || Directory.Trim() == "")
             {
                 return;
             }
@@ -41,7 +41,15 @@ namespace EddiNetLogMonitor
 
             // Start off by moving to the end of the file
             long lastSize = 0;
-            FileInfo fileInfo = FindLatestFile(Directory, Filter);
+            FileInfo fileInfo = null;
+            try
+            {
+                fileInfo = FindLatestFile(Directory, Filter);
+            }
+            catch (NotSupportedException nsex)
+            {
+                Logging.Error("Directory " + Directory + " not supported: ", nsex);
+            }
             if (fileInfo != null)
             {
                 lastSize = fileInfo.Length;
