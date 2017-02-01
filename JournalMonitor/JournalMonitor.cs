@@ -563,23 +563,7 @@ namespace EddiJournalMonitor
                                             foreach (Dictionary<string, object> materialJson in materialsJson)
                                             {
                                                 Material material = Material.FromEDName((string)materialJson["Name"]);
-                                                // TODO guessing the key for now, can tidy up when 2.3 shows up
-                                                if (materialJson["Amount"] != null)
-                                                {
-                                                    materials.Add(new MaterialPresence(material, (decimal)(double)materialJson["Amount"]));
-                                                }
-                                                else if (materialJson["Count"] != null)
-                                                {
-                                                    materials.Add(new MaterialPresence(material, (decimal)(double)materialJson["Count"]));
-                                                }
-                                                else if (materialJson["Presence"] != null)
-                                                {
-                                                    materials.Add(new MaterialPresence(material, (decimal)(double)materialJson["Presence"]));
-                                                }
-                                                else if (materialJson["Percent"] != null)
-                                                {
-                                                    materials.Add(new MaterialPresence(material, (decimal)(double)materialJson["Percent"]));
-                                                }
+                                                materials.Add(new MaterialPresence(material, (decimal)(double)materialJson["Percent"]));
                                             }
                                         }
                                     }
