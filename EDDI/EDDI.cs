@@ -498,7 +498,7 @@ namespace Eddi
                 monitor.Reload();
             }
 
-            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
+            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " reloaded");
         }
 
         /// <summary>

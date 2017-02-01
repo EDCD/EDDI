@@ -25,6 +25,7 @@ namespace EddiEddpMonitor
     public class EddpMonitor : EDDIMonitor
     {
         private bool running = false;
+        private bool reloading = false;
 
         private EddpConfiguration configuration;
 
@@ -70,7 +71,12 @@ namespace EddiEddpMonitor
             running = false;
         }
 
-        public void Reload() { }
+        public void Reload()
+        {
+            // Reload the configuration and let the monitor know that we have done so
+            configuration = EddpConfiguration.FromFile();
+            reloading = true;
+        }
 
         /// <summary>
         /// This method returns a user control with configuration controls.
@@ -85,57 +91,45 @@ namespace EddiEddpMonitor
         {
             while (running)
             {
-                try
+                while (!reloading)
                 {
-                    // We only listen for updates if the user has selected anything to listen to
-                    if (true) // (configuration.watches != null && configuration.watches.Count > 0)
+                    try
                     {
-                        using (var subscriber = new SubscriberSocket())
+                        // We only listen for updates if the user has selected anything to listen to
+                        if (configuration.watches != null && configuration.watches.Count > 0)
                         {
-                            subscriber.Connect("tcp://api.eddp.co:5556");
-                            subscriber.Subscribe("eddp.delta.system");
-                            while (running)
+                            using (var subscriber = new SubscriberSocket())
                             {
-                                string topic = subscriber.ReceiveFrameString();
-                                string message = subscriber.ReceiveFrameString();
-                                Logging.Debug("Message is " + message);
-                                JObject json = JObject.Parse(message);
-                                if (topic == "eddp.delta.system")
+                                subscriber.Connect("tcp://api.eddp.co:5556");
+                                subscriber.Subscribe("eddp.delta.system");
+                                while (running && !reloading)
                                 {
-                                    handleSystemDelta(json);
+                                    string topic = null;
+                                    if (subscriber.TryReceiveFrameString(new TimeSpan(0, 0, 1), out topic))
+                                    {
+                                        string message = subscriber.ReceiveFrameString();
+                                        Logging.Debug("Message is " + message);
+                                        JObject json = JObject.Parse(message);
+                                        if (topic == "eddp.delta.system")
+                                        {
+                                            handleSystemDelta(json);
+                                        }
+                                    }
                                 }
-                                //string data;
-                                //byte[] compressed = subscriber.ReceiveFrameBytes();
-                                //using (var stream = new MemoryStream(compressed, 2, compressed.Length - 2))
-                                //using (var inflater = new DeflateStream(stream, CompressionMode.Decompress))
-                                //using (var streamReader = new StreamReader(inflater))
-                                //{
-                                //    data = streamReader.ReadToEnd();
-                                //}
-                                //JObject json = JObject.Parse(data);
-
-                                //Logging.Debug("received message");
-                                //// We care about journal entries for 'Docked' and 'FSDJump'
-                                //if (json["$schemaRef"] != null && (string)json["$schemaRef"] == "http://schemas.elite-markets.net/eddn/journal/1")
-                                //{
-                                //    if (json["message"] != null)
-                                //    {
-                                //        string eventName = (string)json["message"]["event"];
-                                //        if (eventName == "FSDJump")
-                                //        {
-                                //            handleFSDJumpEvent(json);
-                                //        }
-                                //    }
-                                //}
                             }
                         }
                     }
-                    Thread.Sleep(1000);
+                    catch (Exception ex)
+                    {
+                        Logging.Error("Caught exception", ex);
+                    }
+                    finally
+                    {
+                        Thread.Sleep(1000);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Logging.Error("Caught exception", ex);
-                }
+                Thread.Sleep(1000);
+                reloading = false;
             }
         }
 
@@ -218,104 +212,8 @@ namespace EddiEddpMonitor
                     EDDI.Instance.eventHandler(@event);
                 }
             }
-
-            //try
-            //{
-            //    // Send faction changed event
-            //    SystemFactionChangedEvent @event = new SystemFactionChangedEvent(DateTime.Now, systemname, oldfactionname, factionname);
-            //    EDDI.Instance.eventHandler(@event);
-            //}
-            //catch (Exception ex)
-            //{
-            //    // Could be lots of reasons, just error it and move on
-            //    Logging.Error("Failed to handle EDDP message: ", ex);
-            //}
         }
 
-        //private void handleFSDJumpEvent(JObject json)
-        //{
-        //    // Pull the relevant bits from the JSON
-        //    try
-        //    {
-        //        string systemname = (string)json["message"]["StarSystem"];
-        //        string factionname = (string)json["message"]["SystemFaction"];
-        //        string factionstate = (string)json["message"]["FactionState"];
-        //        // Faction state is the ED version, so change it to a sane version here
-        //        if (factionstate != null)
-        //        {
-        //            factionstate = State.FromEDName(factionstate).name;
-        //        }
-        //        string allegiance = (string)json["message"]["SystemAllegiance"];
-        //        // Allegiance is the ED version, so change it to a sane version here
-        //        if (allegiance != null)
-        //        {
-        //            Superpower superpower = Superpower.FromEDName(allegiance);
-        //            if (superpower != null)
-        //            {
-        //                allegiance = superpower.name;
-        //            }
-        //        }
-        //        decimal x = (decimal)(double)json["message"]["StarPos"][0];
-        //        decimal y = (decimal)(double)json["message"]["StarPos"][1];
-        //        decimal z = (decimal)(double)json["message"]["StarPos"][2];
-        //        decimal? distance = null;
-        //        if (EDDI.Instance.CurrentStarSystem != null)
-        //        {
-        //            distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(x - EDDI.Instance.CurrentStarSystem.x), 2)
-        //                                                   + Math.Pow((double)(y - EDDI.Instance.CurrentStarSystem.y), 2)
-        //                                                   + Math.Pow((double)(z - EDDI.Instance.CurrentStarSystem.z), 2)), 2);
-        //        }
-
-        //        if (match(systemname, factionname, factionstate, allegiance, distance))
-        //        {
-        //            Logging.Debug("Watch match for " + systemname + "/" + factionname + "/" + factionstate + "/" + allegiance + "/" + distance);
-
-        //            // The user is potentially interested in this event
-
-        //            // Fetch the relevant starsystem
-        //            StarSystem system = StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(systemname);
-
-        //            if (system != null)
-        //            {
-        //                if (factionname != system.faction)
-        //                {
-        //                    Logging.Debug("System faction has changed");
-        //                    string oldfactionname = system.faction;
-
-        //                    // Update the system information so that it's up-to-date
-        //                    system.state = factionstate;
-        //                    system.faction = factionname;
-        //                    system.allegiance = allegiance;
-        //                    StarSystemSqLiteRepository.Instance.SaveStarSystem(system);
-
-        //                    // Send faction changed event
-        //                    SystemFactionChangedEvent @event = new SystemFactionChangedEvent(DateTime.Now, systemname, oldfactionname, factionname);
-        //                    EDDI.Instance.eventHandler(@event);
-        //                }
-        //                else if (factionstate != system.state)
-        //                {
-        //                    Logging.Debug("System state has changed");
-        //                    string oldstate = system.state;
-
-        //                    // Update the system information so that it's up-to-date
-        //                    system.state = factionstate;
-        //                    system.allegiance = allegiance;
-        //                    StarSystemSqLiteRepository.Instance.SaveStarSystem(system);
-
-        //                    // Send state changed event
-        //                    SystemStateChangedEvent @event = new SystemStateChangedEvent(DateTime.Now, systemname, factionname, oldstate, factionstate);
-        //                    EDDI.Instance.eventHandler(@event);
-        //                }
-
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Could be lots of reasons, just error it and move on
-        //        Logging.Error("Failed to handle EDDN message: ", ex);
-        //    }
-        //}
 
         /// <summary>
         /// Find a matching watch for a given set of parameters
