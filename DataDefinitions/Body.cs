@@ -140,19 +140,19 @@ namespace EddiDataDefinitions
 
     public class MaterialPercentage
     {
-        public string name { get; private set; }
+        public string material { get; private set; }
         public decimal percentage { get; private set; }
 
         [JsonConstructor]
         public MaterialPercentage(string name, decimal percentage)
         {
-            this.name = name;
+            this.material = name;
             this.percentage = percentage;
         }
 
         public MaterialPercentage(Material material, decimal percentage)
         {
-            this.name = material.name;
+            this.material = material.name;
             this.percentage = percentage;
         }
     }

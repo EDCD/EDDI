@@ -1,27 +1,63 @@
 #2.1.1
-  * Fix issue where commander insurance % is not set internally
-  * Ensure that state changes are picked up by VoiceAttack plugin immediately
-  * Fix issue where hull damage events were not always triggered
-  * Add module definitions for Module Reinforcement Packages
-  * Incorporate data from Body scanned and Star scanned events in to local database
-  * Add speech responder function to obtain body details
-  * Add EDDP monitor, and associated events: 'System faction changed' and 'System state changed'.  See the 'EDDP monitor' tab for more information
-  * Initial addition of EDDI context.  Context attempts to keep track of what EDDI is talking about, to provide the possiblity of two-way dialogue.  Details about context can be found in the speech responder documentation
-  * Update VoiceAttack with context-related commands:
-    * 'Please repeat that/What was that?/Could you say that again?/Say that again' - repeat EDDI's last scripted response
-    * 'Remind me of that landing pad/Which landing pad was it?' - repeat the landing pad name and location when docking
-    * 'Tell me about it/Tell me more' - provide more information about the last item EDDI mentioned
-    * 'Tell me about the/that system' - provide more information about the last system EDDI mentioned
-    * 'Tell me about the/that planet/body' - provide more information about the last body EDDI mentioned
-    * 'Tell me about the/that star' - provide more information about the last star EDDI mentioned
-    * 'How far is that system?' - provide a distance report for the last system EDDI mentioned
-  * Ensure that location script is always triggered on first login
-  * Change the MaterialPercentage material name variable from 'material' to 'name'
-  * Add Mission failed event
-  * Add CQC rating to commander
-  * Send additional data to EDSM
-  * Add assisated upgrade for new versions of EDDI
-  * Allow opt-in to beta versions of EDDI
+  * Core
+    * Fix issue where commander insurance % is not set internally
+    * Add assisated upgrade for new versions of EDDI
+    * Allow opt-in to beta versions of EDDI
+    * Incorporate data from Body scanned and Star scanned events in to local database
+    * Ensure that location script is always triggered on first login
+    * Add CQC rating to commander
+    * Fix issue where hull damage events were not always triggered
+    * Add module definitions for Module Reinforcement Packages
+    * Initial addition of EDDI context.  Context attempts to keep track of what EDDI is talking about, to provide the possiblity of two-way dialogue.  Details about context can be found in the speech responder documentation
+  * Events
+    * Add 'Mission failed' event
+	* Add 'System faction changed' and 'System state changed' EDDP events
+  * EDDP monitor
+    * Add EDDP monitor.  This monitor watches EDDP for state and ownership information about systems and generates events when changes are spotted.  See the 'EDDP monitor' tab for more information
+  * Speech Responder
+    * Add speech responder function 'BodyDetails' to obtain body details.  Details of this function are in the SpeechResponder help documentation
+	* Script changes:
+	  * 'Body report' - new script that uses context information to report on a body
+	  * 'Body scanned' - added context information.  Call new function 'Body report' to provide body details
+	  * 'Bounty awarded' - added context information
+	  * 'Bounty incurred' - added context information
+	  * 'Cleared save' - added context information
+	  * 'Cockpit breached' - added context information
+	  * 'Combat promotion' - added context information
+	  * 'Commodity collected' - added context information
+	  * 'Commodity ejected' - added context information
+      * 'Commodity refined' - added context information
+	  * 'Commodity sold' - added context information
+	  * 'Docking granted' - added context information.  Call new function 'Landing pad report' to provide pad details
+	  * 'Fine incurred' - added context information
+	  * 'Jumping' - added context information
+	  * 'Landing pad report' - use context information to report on a landing pad
+	  * 'Material collected' - added context information
+	  * 'Material discarded' - added context information
+	  * 'Material discovered' - added context information
+	  * 'Material donated' - added context information
+	  * 'Message received' - added context information
+	  * 'Message sent' - added context information
+	  * 'Repeat last speech' - new script that repeats the last speech
+	  * 'Star report' - new script that uses context information to report on a star
+	  * 'Star scanned' - added context information.  Call new function 'Star report' to provide body details
+	  * 'System distance report' - use context information to report on the distance to a system
+	  * 'System faction changed' - new script triggered when there is a change in the controlling faction of a system
+	  * 'System report' - use context information to report on a system
+	  * 'System state changed' - new script triggered when there is a change in the controlling faction of a system
+	  * 'System state report' - use context information to report on the state of a system
+  * VoiceAttack Responder
+    * Ensure that state changes are picked up by VoiceAttack plugin immediately
+    * Update VoiceAttack with context-related commands:
+      * 'Please repeat that/What was that?/Could you say that again?/Say that again' - repeat EDDI's last scripted response
+      * 'Remind me of that landing pad/Which landing pad was it?' - repeat the landing pad name and location when docking
+      * 'Tell me about it/Tell me more' - provide more information about the last item EDDI mentioned
+      * 'Tell me about the/that system' - provide more information about the last system EDDI mentioned
+      * 'Tell me about the/that planet/body' - provide more information about the last body EDDI mentioned
+      * 'Tell me about the/that star' - provide more information about the last star EDDI mentioned
+      * 'How far is that system?' - provide a distance report for the last system EDDI mentioned
+  * Misc
+    * Send additional data to EDSM
 
 #2.1.0
   * Core

@@ -26,6 +26,14 @@
       "name": "Entered CQC",
       "description": "Triggered when you enter CQC"
     },
+    "Mission failed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Mission failed",
+      "description": "Triggered when you fail a mission"
+    },
     "NPC cargo scan commenced": {
       "enabled": true,
       "priority": 3,
@@ -158,7 +166,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'combat bond')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n\r\nThat's another {event.reward} credits in the bank.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bond')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n{SetState('eddi_context_bond_amount', event.reward)}\r\n{SetState('eddi_context_bond_faction', event.awardingfaction)}\r\n\r\nThat's another {event.reward} credits in the bank.",
       "name": "Bond awarded",
       "description": "Triggered when you are awarded a combat bond"
     },
@@ -166,7 +174,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Paid fine of {Humanise(event.amount)} credits.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fine')}\r\n{SetState('eddi_context_last_action', 'pay')}\r\n{SetState('eddi_context_fine_amount', event.amount)}\r\n\r\n\r\nPaid fine of {Humanise(event.amount)} credits.",
       "name": "Fine paid",
       "description": "Triggered when you pay a fine"
     },
@@ -198,7 +206,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'donate')}\r\n{SetState('eddi_context_material_name', event.material)}\r\n",
       "name": "Material donated",
       "description": "Triggered when you donate a material"
     },
@@ -270,7 +278,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'system')}\r\n{SetState('eddi_context_last_action', 'jump')}\r\n{SetState('eddi_context_system_system', system.name)}\r\n\r\n{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ShipName()} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if system.bodies[0].distance = 0 && system.bodies[0].stellarclass:\r\n        {set stellarclass to slice(system.bodies[0].stellarclass, 0, 1)}\r\n        {if stellarclass = \"D\":\r\n            Caution: white dwarf detected.\r\n        |elif stellarclass = \"N\":\r\n            Caution: neutron star detected.\r\n        |elif stellarclass = \"H\":\r\n            Caution: black hole detected.\r\n        }\r\n    }\r\n\r\n    {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!system.allegiance || system.allegiance = \"None\" || system.allegiance = \"Independent\"):\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance && system.allegiance != \"None\":\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}.\r\n        }\r\n    }\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'start')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n\r\n{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ShipName()} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if system.bodies[0].distance = 0 && system.bodies[0].stellarclass:\r\n        {set stellarclass to slice(system.bodies[0].stellarclass, 0, 1)}\r\n        {if stellarclass = \"D\":\r\n            Caution: white dwarf detected.\r\n        |elif stellarclass = \"N\":\r\n            Caution: neutron star detected.\r\n        |elif stellarclass = \"H\":\r\n            Caution: black hole detected.\r\n        }\r\n    }\r\n\r\n    {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!system.allegiance || system.allegiance = \"None\" || system.allegiance = \"Independent\"):\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance && system.allegiance != \"None\":\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}.\r\n        }\r\n    }\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
       "name": "Jumping",
       "description": "Triggered when you start a jump to another system"
     },
@@ -310,7 +318,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'discover')}\r\n{SetState('eddi_context_material_name', event.material)}\r\n",
       "name": "Material discovered",
       "description": "Triggered when you discover a material"
     },
@@ -318,7 +326,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'discard')}\r\n{SetState('eddi_context_material_name', event.material)}\r\n",
       "name": "Material discarded",
       "description": "Triggered when you discard a material"
     },
@@ -326,7 +334,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'collect')}\r\n{SetState('eddi_context_material_name', event.material)}\r\n",
       "name": "Material collected",
       "description": "Triggered when you collect a material"
     },
@@ -342,7 +350,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'cargo')}\r\n{SetState('eddi_context_last_action', 'refine')}\r\n{SetState('eddi_context_cargo_cargo', 'event.commodity')}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'refine')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n\r\n",
       "name": "Commodity refined",
       "description": "Triggered when you refine a commodity from the refinery"
     },
@@ -446,7 +454,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Purchased trade data for {P(event.system)}\",\r\n            \"Trade data for {P(event.system)} now available\",\r\n            \"Received trade data for {P(event.system)} from station services\",\r\n            \"Receipt of {P(event.system)} trade data confirmed\")}.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'tradedata')}\r\n{SetState('eddi_context_last_action', 'buy')}\r\n{SetState('eddi_context_tradedata_name', event.system)}\r\n\r\n{OneOf(\"Purchased trade data for {P(event.system)}\",\r\n            \"Trade data for {P(event.system)} now available\",\r\n            \"Received trade data for {P(event.system)} from station services\",\r\n            \"Receipt of {P(event.system)} trade data confirmed\")}.",
       "name": "Trade data purchased",
       "description": "Triggered when you purchase trade data"
     },
@@ -494,7 +502,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Message away\", \"Message sent\", \"Sent\")}.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'message')}\r\n{SetState('eddi_context_last_action', 'send')}\r\n{SetState('eddi_context_message_name', event.to)}\r\n{SetState('eddi_context_message_content', event.message)}\r\n\r\n{OneOf(\"Message away\", \"Message sent\", \"Sent\")}.",
       "name": "Message sent",
       "description": "Triggered when you send a message"
     },
@@ -502,7 +510,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.message = \"o7\":\r\n    {event.from} salutes\r\n    {if event.channel = \"player\":\r\n        you\r\n    }.\r\n|else:\r\n    Message received from {event.from}.  Message reads: {event.message}.\r\n}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'message')}\r\n{SetState('eddi_context_last_action', 'receive')}\r\n{SetState('eddi_context_message_name', event.from)}\r\n{SetState('eddi_context_message_content', event.message)}\r\n\r\n{if event.message = \"o7\":\r\n    {event.from} salutes\r\n    {if event.channel = \"player\":\r\n        you\r\n    }.\r\n|else:\r\n    Message received from {event.from}.  Message reads: {event.message}.\r\n}\r\n",
       "name": "Message received",
       "description": "Triggered when you receive a message"
     },
@@ -566,7 +574,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'cargo')}\r\n{SetState('eddi_context_last_action', 'sell')}\r\n{SetState('eddi_context_cargo_cargo', 'event.commodity')}\r\n\r\n{if event.amount = 1:\r\n   You have just sold one tonne of {event.commodity} for {event.price} credits\r\n|elif event.amount > 1:\r\n    You have just sold {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total value is {event.amount * event.price} credits\r\n}\r\n{if event.profit < 0:\r\n    with a loss of {-1 * event.profit * event.amount} credits.\r\n|elif event.profit = 0:\r\n    and broke even on the trade.\r\n|else:\r\n    with a profit of {event.profit * event.amount} credits.\r\n}",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'sell')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n{SetState('eddi_context_commodity_amount', event.amount)}\r\n\r\n{if event.amount = 1:\r\n   You have just sold one tonne of {event.commodity} for {event.price} credits\r\n|elif event.amount > 1:\r\n    You have just sold {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total value is {event.amount * event.price} credits\r\n}\r\n{if event.profit < 0:\r\n    with a loss of {-1 * event.profit * event.amount} credits.\r\n|elif event.profit = 0:\r\n    and broke even on the trade.\r\n|else:\r\n    with a profit of {event.profit * event.amount} credits.\r\n}",
       "name": "Commodity sold",
       "description": "Triggered when you sell a commodity to the markets"
     },
@@ -574,7 +582,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n\r\n{P(event.faction)} just put a bounty of {event.bounty} credits on your head.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_bounty_name', event.victim)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.bounty)}\r\n\r\n{P(event.faction)} just put a bounty of {event.bounty} credits on your head.",
       "name": "Bounty incurred",
       "description": "Triggered when you incur a bounty"
     },
@@ -582,7 +590,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'eject')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n",
       "name": "Commodity ejected",
       "description": "Triggered when you eject a commodity from your ship or SRV"
     },
@@ -590,7 +598,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'cargo')}\r\n{SetState('eddi_context_last_action', 'purchase')}\r\n{SetState('eddi_context_cargo_cargo', 'event.commodity')}\r\n\r\n{if event.amount = 1:\r\n   You have just purchased one tonne of {event.commodity} for {event.price} credits.\r\n|elif event.amount > 1:\r\n    You have just purchased {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total cost is {event.amount * event.price} credits.\r\n}",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'purchase')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n{SetState('eddi_context_commodity_amount', event.amount)}\r\n\r\n{if event.amount = 1:\r\n   You have just purchased one tonne of {event.commodity} for {event.price} credits.\r\n|elif event.amount > 1:\r\n    You have just purchased {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total cost is {event.amount * event.price} credits.\r\n}",
       "name": "Commodity purchased",
       "description": "Triggered when you buy a commodity from the markets"
     },
@@ -654,7 +662,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_system_system', event.system)}\r\n\r\nYou are\r\n{if event.docked:\r\n    docked at the\r\n    {if event.station = event.body:\r\n        orbital station {P(event.station)}\r\n    |else:\r\n        ground station {P(event.station)} on {P(event.body)}\r\n    }\r\n|elif event.body:\r\n    near {P(event.body)}\r\n}\r\nin the {P(event.system)} system.",
+      "script": "You are\r\n{if event.docked:\r\n    docked at the\r\n    {if event.station = event.body:\r\n        orbital station {P(event.station)}\r\n    |else:\r\n        ground station {P(event.station)} on {P(event.body)}\r\n    }\r\n|elif event.body:\r\n    near {P(event.body)}\r\n}\r\nin the {P(event.system)} system.",
       "name": "Location",
       "description": "Triggered when the commander's location is reported, usually when they reload their game."
     },
@@ -678,7 +686,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'body')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_body_system', system.name)}\r\n{SetState('eddi_context_body_body', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan of {P(event.name)} complete.\r\n\r\n{F(\"Body report\")}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'body')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_body_system', system.name)}\r\n{SetState('eddi_context_body_name', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan of {P(event.name)} complete.\r\n\r\n{F(\"Body report\")}\r\n",
       "name": "Body scanned",
       "description": "Triggered when you complete a scan of a planetary body"
     },
@@ -702,7 +710,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'cargo')}\r\n{SetState('eddi_context_last_action', 'collect')}\r\n{SetState('eddi_context_cargo_name', event.cargo)}\r\n{SetState('eddi_context_bounty_name', event.target)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.reward)}\r\n\r\n{event.cargo} now on board.",
       "name": "Commodity collected",
       "description": "Triggered when you pick up a commodity in your ship or SRV"
     },
@@ -734,7 +742,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'rank')}\r\n{SetState('eddi_context_last_action', 'promotion')}\r\n{SetState('eddi_context_rank_type', 'combat')}\r\n\r\nYou have been recognised for your combat skills, {F(\"Honorific\")}.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'rank')}\r\n{SetState('eddi_context_last_action', 'promotion')}\r\n{SetState('eddi_context_rank_name', 'combat')}\r\n{SetState('eddi_context_rank_amount', event.rating)}\r\n\r\nYou have been recognised for your combat skills, {F(\"Honorific\")}.",
       "name": "Combat promotion",
       "description": "Triggered when your combat rank increases"
     },
@@ -742,7 +750,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "You owe {P(event.faction)} {Humanise(event.fine)} credits for that.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fine')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_fine_name', event.victim)}\r\n{SetState('eddi_context_fine_faction', event.faction)}\r\n{SetState('eddi_context_fine_amount', event.fine)}\r\n\r\nYou owe {P(event.faction)} {Humanise(event.fine)} credits for that.",
       "name": "Fine incurred",
       "description": "Triggered when your incur a fine"
     },
@@ -766,7 +774,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n\r\n{Pause(500)}\r\n{if len(event.rewards) = 1:\r\n    Bounty voucher of {Humanise(event.reward)} credits received from {P(event.rewards[0].faction)}\r\n|elif len(event.rewards) > 1:\r\n    {len(event.rewards)} bounty vouchers received for a total of {Humanise(event.reward)} credits\r\n}\r\n{if event.shared:\r\n    to share between yourself and your wing-mates\r\n}.\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n{SetState('eddi_context_bounty_name', event.target)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.reward)}\r\n\r\n{Pause(500)}\r\n{if len(event.rewards) = 1:\r\n    Bounty voucher of {Humanise(event.reward)} credits received from {P(event.rewards[0].faction)}\r\n|elif len(event.rewards) > 1:\r\n    {len(event.rewards)} bounty vouchers received for a total of {Humanise(event.reward)} credits\r\n}\r\n{if event.shared:\r\n    to share between yourself and your wing-mates\r\n}.\r\n",
       "name": "Bounty awarded",
       "description": "Triggered when you are awarded a bounty"
     },
@@ -814,7 +822,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n",
       "name": "Jumped",
       "description": "Triggered when you complete a jump to another system"
     },
@@ -826,14 +834,6 @@
       "name": "Galnet news published",
       "description": "Triggered when news is published on Galnet"
     },
-    "Station state changed": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": null,
-      "name": "Station state changed",
-      "description": "Triggered when there is a change in state of the controlling faction of a watched station"
-    },
     "Power expansion vote cast": {
       "enabled": true,
       "priority": 3,
@@ -841,22 +841,6 @@
       "script": null,
       "name": "Power expansion vote cast",
       "description": "Triggered when a commander votes for system expansion"
-    },
-    "Cargo ejected": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'cargo')}\r\n{SetState('eddi_context_last_action', 'eject')}\r\n{SetState('eddi_context_cargo_cargo', event.cargo)}\r\n\r\n{event.cargo} ejected.",
-      "name": "Cargo ejected",
-      "description": "Triggered when you eject cargo from your ship or SRV"
-    },
-    "Cargo collected": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'cargo')}\r\n{SetState('eddi_context_last_action', 'collect')}\r\n{SetState('eddi_context_cargo_cargo', event.cargo)}\r\n\r\n{event.cargo} now on board.",
-      "name": "Cargo collected",
-      "description": "Triggered when you pick up cargo in your ship or SRV"
     },
     "Honorific": {
       "enabled": true,
@@ -958,7 +942,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{_ Fetch from context }\r\n{set reportbody to BodyDetails(state.eddi_context_body_body, state.eddi_context_body_system)}\r\n\r\n{if !reportbody.name || reportbody.name = \"\":\r\n    I'm not sure which body you are asking about.\r\n|else:\r\n    {P(reportbody.name)} is a\r\n    {if reportbody.gravity < 0.5:\r\n        low-gravity\r\n    |elif reportbody.gravity <2:\r\n        medium-gravity\r\n    |elif reportbody.gravity <4:\r\n        high-gravity\r\n    |else:\r\n        extremely high-gravity\r\n    }\r\n\r\n    {if reportbody.tidallylocked:\r\n        tidally-locked\r\n    }\r\n\r\n    {if reportbody.terraformstate = \"Terraformable\":\r\n        terraformable\r\n    |elif reportbody.terraformstate = \"Terraformed\":\r\n        terraformed\r\n    }\r\n\r\n    {if len(reportbody.rings) > 0:\r\n        ringed\r\n    }\r\n\r\n    {reportbody.planettype}\r\n\r\n    {if reportbody.terraformstate = \"Terraforming\":\r\n      in the process of being terraformed\r\n    }\r\n\r\n    that is\r\n\r\n    {if reportbody.landable:\r\n        suitable\r\n    |else:\r\n        unsuitable\r\n    }\r\n    for landing.\r\n\r\n    {_ Atmosphere? }\r\n\r\n    {_ Volcanism? }\r\n\r\n    {if reportbody.landable :\r\n        It has a\r\n        {if reportbody.rotationalperiod <= 0.5:\r\n            fast\r\n        |elif reportbody.rotationalperiod > 20.0:\r\n            slow\r\n        }\r\n        rotational period of {Humanise(reportbody.rotationalperiod)} days.\r\n\r\n        {set goodmaterials to []}\r\n        {set greatmaterials to []}\r\n        {for material in reportbody.materials:\r\n            {if material.percentage >= MaterialDetails(material.name).greatpctbody:\r\n                {set greatmaterials to cat(greatmaterials, [material])}\r\n            |elif material.percentage >= MaterialDetails(material.name).goodpctbody:\r\n                {set goodmaterials to cat(goodmaterials, [material])}\r\n            }\r\n        }\r\n\r\n        {if len(greatmaterials) > 0:\r\n            This body contains very high levels of\r\n            {if len(greatmaterials) = 1:\r\n                {greatmaterials[0].name}\r\n            |elif len(greatmaterials) = 2:\r\n                {greatmaterials[0].name} and {greatmaterials[1].name}\r\n            |else:\r\n                {set cur to 0}\r\n                {while cur < len(greatmaterials):\r\n                    {if cur = 0:\r\n                        {greatmaterials[cur].name}\r\n                    |elif cur < len(greatmaterials) - 1:\r\n                        , {greatmaterials[cur].name}\r\n                    |else:\r\n                        , and {greatmaterials[cur].name}\r\n                    }\r\n                    {set cur to cur + 1}\r\n                }\r\n            }\r\n        }\r\n        {if len(goodmaterials) > 0:\r\n            {if len(greatmaterials) > 0:\r\n                and high levels of\r\n            |else:\r\n                This body contains high levels of\r\n            }\r\n            {if len(goodmaterials) = 1:\r\n                {goodmaterials[0].name}\r\n            |elif len(goodmaterials) = 2:\r\n                {goodmaterials[0].name} and {goodmaterials[1].name}\r\n            |else:\r\n                {set cur to 0}\r\n                {while cur < len(goodmaterials):\r\n                    {if cur = 0:\r\n                        {goodmaterials[cur].name}\r\n                    |elif cur < len(goodmaterials) - 1:\r\n                        , {goodmaterials[cur].name}\r\n                    |else:\r\n                        , and {goodmaterials[cur].name}\r\n                    }\r\n                    {set cur to cur + 1}\r\n                }\r\n            }\r\n        }\r\n        {if len(greatmaterials) > 0 || len(goodmaterials) > 0:\r\n            .\r\n        }\r\n    }\r\n}",
+      "script": "{_ Fetch from context }\r\n{set reportbody to BodyDetails(state.eddi_context_body_name, state.eddi_context_body_system)}\r\n\r\n{if !reportbody.name || reportbody.name = \"\":\r\n    I'm not sure which body you are asking about.\r\n|else:\r\n    {P(reportbody.name)} is a\r\n    {if reportbody.gravity < 0.5:\r\n        low-gravity\r\n    |elif reportbody.gravity <2:\r\n        medium-gravity\r\n    |elif reportbody.gravity <4:\r\n        high-gravity\r\n    |else:\r\n        extremely high-gravity\r\n    }\r\n\r\n    {if reportbody.tidallylocked:\r\n        tidally-locked\r\n    }\r\n\r\n    {if reportbody.terraformstate = \"Terraformable\":\r\n        terraformable\r\n    |elif reportbody.terraformstate = \"Terraformed\":\r\n        terraformed\r\n    }\r\n\r\n    {if len(reportbody.rings) > 0:\r\n        ringed\r\n    }\r\n\r\n    {reportbody.planettype}\r\n\r\n    {if reportbody.terraformstate = \"Terraforming\":\r\n      in the process of being terraformed\r\n    }\r\n\r\n    that is\r\n\r\n    {if reportbody.landable:\r\n        suitable\r\n    |else:\r\n        unsuitable\r\n    }\r\n    for landing.\r\n\r\n    {_ Atmosphere? }\r\n\r\n    {_ Volcanism? }\r\n\r\n    {if reportbody.landable :\r\n        It has a\r\n        {if reportbody.rotationalperiod <= 0.5:\r\n            fast\r\n        |elif reportbody.rotationalperiod > 20.0:\r\n            slow\r\n        }\r\n        rotational period of {Humanise(reportbody.rotationalperiod)} days.\r\n\r\n        {set goodmaterials to []}\r\n        {set greatmaterials to []}\r\n        {for material in reportbody.materials:\r\n            {if material.percentage >= MaterialDetails(material.material).greatpctbody:\r\n                {set greatmaterials to cat(greatmaterials, [material])}\r\n            |elif material.percentage >= MaterialDetails(material.material).goodpctbody:\r\n                {set goodmaterials to cat(goodmaterials, [material])}\r\n            }\r\n        }\r\n\r\n        {if len(greatmaterials) > 0:\r\n            This body contains very high levels of\r\n            {if len(greatmaterials) = 1:\r\n                {greatmaterials[0].material}\r\n            |elif len(greatmaterials) = 2:\r\n                {greatmaterials[0].material} and {greatmaterials[1].material}\r\n            |else:\r\n                {set cur to 0}\r\n                {while cur < len(greatmaterials):\r\n                    {if cur = 0:\r\n                        {greatmaterials[cur].material}\r\n                    |elif cur < len(greatmaterials) - 1:\r\n                        , {greatmaterials[cur].material}\r\n                    |else:\r\n                        , and {greatmaterials[cur].material}\r\n                    }\r\n                    {set cur to cur + 1}\r\n                }\r\n            }\r\n        }\r\n        {if len(goodmaterials) > 0:\r\n            {if len(greatmaterials) > 0:\r\n                and high levels of\r\n            |else:\r\n                This body contains high levels of\r\n            }\r\n            {if len(goodmaterials) = 1:\r\n                {goodmaterials[0].material}\r\n            |elif len(goodmaterials) = 2:\r\n                {goodmaterials[0].material} and {goodmaterials[1].material}\r\n            |else:\r\n                {set cur to 0}\r\n                {while cur < len(goodmaterials):\r\n                    {if cur = 0:\r\n                        {goodmaterials[cur].material}\r\n                    |elif cur < len(goodmaterials) - 1:\r\n                        , {goodmaterials[cur].material}\r\n                    |else:\r\n                        , and {goodmaterials[cur].material}\r\n                    }\r\n                    {set cur to cur + 1}\r\n                }\r\n            }\r\n        }\r\n        {if len(greatmaterials) > 0 || len(goodmaterials) > 0:\r\n            .\r\n        }\r\n    }\r\n}",
       "name": "Body report",
       "description": "Function to report on the details of the contextual body"
     },
