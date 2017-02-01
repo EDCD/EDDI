@@ -59,6 +59,7 @@ namespace Eddi
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;
             eddiInsuranceDecimal.Text = eddiConfiguration.Insurance.ToString(CultureInfo.InvariantCulture);
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
+            eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
 
             Logging.Verbose = eddiConfiguration.Debug;
 

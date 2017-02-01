@@ -46,6 +46,13 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
+                            <Button IsEnabled="{Binding Path=Value.HasValue}" Click="viewScript">View</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
                             <Button IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Click="editScript">Edit</Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

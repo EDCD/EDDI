@@ -15,6 +15,7 @@
   * EDDP monitor
     * Add EDDP monitor.  This monitor watches EDDP for state and ownership information about systems and generates events when changes are spotted.  See the 'EDDP monitor' tab for more information
   * Speech Responder
+    * Add 'View' button for all scripts
     * Add speech responder function 'BodyDetails' to obtain body details.  Details of this function are in the SpeechResponder help documentation
 	* Script changes:
 	  * 'Body report' - new script that uses context information to report on a body
