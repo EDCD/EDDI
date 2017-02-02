@@ -121,7 +121,7 @@ namespace EddiDataProviderService
 
                     Station.allegiance = (string)station["allegiance"];
                     Station.government = (string)station["government"];
-                    Station.faction = (string)station["faction"];
+                    Station.faction = (string)station["controlling_faction"];
                     Station.state = (string)station["state"] == "None" ? null : (string)station["state"];
                     Station.distancefromstar = (long?)station["distance_to_star"];
                     Station.hasrefuel = (bool?)station["has_refuel"];
