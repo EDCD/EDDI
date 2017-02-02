@@ -2003,6 +2003,7 @@ namespace EddiJournalMonitor
 
             if (ship == null)
             {
+                Logging.Warn("Failed to find ship given ID " + localId + " and model " + model);
                 // Provide a basic ship based on the model template
                 ship = ShipDefinitions.FromEDModel(model);
                 ship.LocalId = localId == null ? 0 : (int)localId;
