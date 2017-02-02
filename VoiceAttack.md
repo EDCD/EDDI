@@ -232,8 +232,6 @@ If a value is not available it will be not set rather than empty.
   * {TXT:Last station state}: the name of the state of the last station (boom, outbreak, etc.)
   * {DEC:Last station distance from star}: the distance from the primary star to this station, in light seconds
   * {TXT:Last station primary economy}: the primary economy of this station (extraction, prison colony, etc.)
-  * {TXT:Last station secondary economy}: the secondary economy of this station (extraction, prison colony, etc.)
-  * {TXT:Last station tertiary economy}: the tertiary economy of this station (extraction, prison colony, etc.)
   * {BOOL:Last station has refuel}: true if this station has refuel capability
   * {BOOL:Last station has rearm}: true if this station has rearm capability
   * {BOOL:Last station has repair}: true if this station has repair capability

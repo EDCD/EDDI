@@ -1610,6 +1610,17 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "MissionFailed":
+                            {
+                                object val;
+                                data.TryGetValue("MissionID", out val);
+                                long missionid = (long)val;
+                                data.TryGetValue("Name", out val);
+                                string name = (string)val;
+                                journalEvent = new MissionFailedEvent(timestamp, missionid, name);
+                                handled = true;
+                                break;
+                            }
                         case "Repair":
                             {
                                 object val;

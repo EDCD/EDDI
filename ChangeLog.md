@@ -9,6 +9,8 @@
     * Fix issue where hull damage events were not always triggered
     * Add module definitions for Module Reinforcement Packages
     * Initial addition of EDDI context.  Context attempts to keep track of what EDDI is talking about, to provide the possiblity of two-way dialogue.  Details about context can be found in the speech responder documentation
+    * Station objects no longer have economy arrays, instead they just have a primaryeconomy item
+    * Attempting to copy a personality over an existing personality will no longer succeed
   * Events
     * Add 'Mission failed' event
 	* Add 'System faction changed' and 'System state changed' EDDP events

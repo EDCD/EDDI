@@ -938,21 +938,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " allegiance", station.allegiance);
                 vaProxy.SetText(prefix + " faction", station.faction);
                 vaProxy.SetText(prefix + " state", station.state);
-                if (station.economies != null)
-                {
-                    if (station.economies.Count > 0)
-                    {
-                        vaProxy.SetText(prefix + " primary economy", station.economies[0]);
-                    }
-                    if (station.economies.Count > 1)
-                    {
-                        vaProxy.SetText(prefix + " secondary economy", station.economies[1]);
-                    }
-                    if (station.economies.Count > 2)
-                    {
-                        vaProxy.SetText(prefix + " tertiary economy", station.economies[2]);
-                    }
-                }
+                vaProxy.SetText(prefix + " primary economy", station.primaryeconomy);
                 // Services
                 vaProxy.SetBoolean(prefix + " has refuel", station.hasrefuel);
                 vaProxy.SetBoolean(prefix + " has repair", station.hasrepair);

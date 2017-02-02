@@ -1309,8 +1309,11 @@ namespace Eddi
                         break;
                     }
                 }
-                // Add the ship we were using to the shipyard
-                Shipyard.Add(Ship);
+                if (Ship != null)
+                {
+                    // Add the ship we were using to the shipyard
+                    Shipyard.Add(Ship);
+                }
 
                 // Set the ship we are using
                 Logging.Debug("Set ship to " + JsonConvert.SerializeObject(ship));
