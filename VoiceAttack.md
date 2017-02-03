@@ -46,7 +46,7 @@ If a value is not available it will be not set rather than empty.
   * {INT:Federation rating}: the federation rating of the commander, with 0 being None and 14 being Admiral
   * {TXT:Federation rank}: the federation rating of the commander, from None to Admiral
   * {DEC:Credits}: the number of credits owned by the commander
-  * {TXT:Credits}: the number of credits owned by the commander as would be spoken (e.g. "just over 2 million")
+  * {TXT:Credits (spoken)}: the number of credits owned by the commander as would be spoken (e.g. "just over 2 million")
   * {DEC:Debt}: the number of credits owed by the commander
   * {TXT:Debt}: the number of credits owed by the commander as would be spoken (e.g. "a little under 100 thousand")
   * {DEC:Insurance}: the percentage insurance excess for the commander (usually 5, 3.75 or 2.5)
@@ -61,7 +61,7 @@ If a value is not available it will be not set rather than empty.
   * {TXT:Ship role}: the role of the ship as set in EDDI configuration (Multipurpose, Combat, Exploration, Trading, Mining, Smuggling)
   * {TXT:Ship size}: the size of the ship (Small, Medium, or Large)
   * {DEC:Ship value}: the replacement cost of the ship plus modules
-  * {TXT:Ship value}: the replacement cost of the ship plus modules as would be spoken
+  * {TXT:Ship value (spoken)}: the replacement cost of the ship plus modules as would be spoken
   * {INT:Ship cargo capacity}: the maximum cargo capacity of the ship as currently configured
   * {INT:Ship cargo carried}: the cargo currently being carried by the ship
   * {INT:Ship limpets carried}: the number of limpets currently being carried by the ship
