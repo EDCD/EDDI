@@ -1297,28 +1297,24 @@ namespace Eddi
             if (ship == null)
             {
                 Logging.Warn("Refusing to set ship to null");
+                return;
             }
-            else
+
+            if (Ship != null)
             {
                 // Remove the ship we are now using from the shipyard
-                for (int i = 0; i < Shipyard.Count; i++)
+                Shipyard = Shipyard.Where(s => s.LocalId != ship.LocalId).ToList();
+
+                // Add the ship we were using to the shipyard (if it's real)
+                if (Ship.model != null)
                 {
-                    if (Shipyard[i].LocalId == ship.LocalId)
-                    {
-                        Shipyard.RemoveAt(i);
-                        break;
-                    }
-                }
-                if (Ship != null)
-                {
-                    // Add the ship we were using to the shipyard
                     Shipyard.Add(Ship);
                 }
-
-                // Set the ship we are using
-                Logging.Debug("Set ship to " + JsonConvert.SerializeObject(ship));
-                Ship = ship;
             }
+
+            // Set the ship we are using
+            Logging.Debug("Set ship to " + JsonConvert.SerializeObject(ship));
+            Ship = ship;
         }
 
         private void setSystemDistanceFromHome(StarSystem system)
