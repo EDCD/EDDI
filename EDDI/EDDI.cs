@@ -1539,6 +1539,13 @@ namespace Eddi
                         Cmdr = profile.Cmdr;
                         Shipyard = profile.Shipyard;
 
+                        // Reinstate insurance
+                        EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                        if (configuration != null)
+                        {
+                            Cmdr.insurance = configuration.Insurance;
+                        }
+
                         // Only use the ship information if we agree that this is the correct ship to use
                         if (Ship.model == null || profile.Ship.LocalId == Ship.LocalId)
                         {

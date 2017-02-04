@@ -30,6 +30,7 @@
 	  * 'Commodity collected' - added context information
 	  * 'Commodity ejected' - added context information
       * 'Commodity refined' - added context information
+	  * 'Commodity sale check' - avoid overly-long response if there are lots of commodities that can be sold
 	  * 'Commodity sold' - added context information
 	  * 'Docking granted' - added context information.  Call new function 'Landing pad report' to provide pad details
 	  * 'Fine incurred' - added context information
@@ -49,6 +50,7 @@
 	  * 'System report' - use context information to report on a system
 	  * 'System state changed' - new script triggered when there is a change in the controlling faction of a system
 	  * 'System state report' - use context information to report on the state of a system
+	  * 'Undocked' - do not pause just to find out that there is no limpet check result
   * VoiceAttack Responder
     * Ensure that state changes are picked up by VoiceAttack plugin immediately
     * Update VoiceAttack with context-related commands:
