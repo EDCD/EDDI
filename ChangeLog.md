@@ -1,4 +1,4 @@
-#2.1.1
+#2.2.0
   * Core
     * Fix issue where commander insurance % is not set internally
     * Add assisated upgrade for new versions of EDDI
