@@ -109,33 +109,11 @@ namespace EddiEvents
             StarClass starClass = StarClass.FromName(this.stellarclass);
             if (starClass != null)
             {
-                massprobability = sanitiseCP(starClass.stellarMassCP(solarmass));
-                radiusprobability = sanitiseCP(starClass.stellarRadiusCP(this.solarradius));
-                tempprobability = sanitiseCP(starClass.tempCP(this.temperature));
-                ageprobability = sanitiseCP(starClass.ageCP(this.age));
+                massprobability = StarClass.sanitiseCP(starClass.stellarMassCP(solarmass));
+                radiusprobability = StarClass.sanitiseCP(starClass.stellarRadiusCP(this.solarradius));
+                tempprobability = StarClass.sanitiseCP(starClass.tempCP(this.temperature));
+                ageprobability = StarClass.sanitiseCP(starClass.ageCP(this.age));
                 chromaticity = starClass.chromaticity;
-            }
-
-        }
-
-        private decimal sanitiseCP(decimal cp)
-        {
-            // Trim decimal places appropriately
-            if (cp < .00001M || cp > .9999M)
-            {
-                return Math.Round(cp * 100, 4);
-            }
-            else if (cp < .0001M || cp > .999M)
-            {
-                return Math.Round(cp * 100, 3);
-            }
-            else if (cp < .001M || cp > .99M)
-            {
-                return Math.Round(cp * 100, 2);
-            }
-            else
-            {
-                return Math.Round(cp * 100);
             }
         }
     }

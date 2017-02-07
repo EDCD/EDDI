@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnteredCQCEvent.cs" />
+    <Compile Include="MissionFailedEvent.cs" />
     <Compile Include="NPCCargoScanCommencedEvent.cs" />
     <Compile Include="NPCAttackCommencedEvent.cs" />
     <Compile Include="NPCInterdictionCommendedEvent.cs" />

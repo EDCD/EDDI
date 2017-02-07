@@ -856,6 +856,17 @@ namespace EddiDataDefinitions
                 {128666637, new Module(128666637, "Int_Hyperdrive_Size2_Class1_free", -1, "Frame Shift Drive", 2, "E", 0) },
                 {128666636, new Module(128666636, "Int_Engine_Size2_Class1_free", -1, "Thrusters", 2, "E", 0) },
                 {128666638, new Module(128666638, "Int_LifeSupport_Size1_Class1_free", -1, "Life Support", 1, "E", 0) },
+
+                {128737270, new Module(128737270, "Int_ModuleReinforcement_Size1_Class1", 1577, "Module Reinforcement Package", 1, "E", 5000) },
+                {128737271, new Module(128737271, "Int_ModuleReinforcement_Size1_Class2", 1578, "Module Reinforcement Package", 1, "D", 15000) },
+                {128737272, new Module(128737272, "Int_ModuleReinforcement_Size2_Class1", 1579, "Module Reinforcement Package", 2, "E", 12000) },
+                {128737273, new Module(128737273, "Int_ModuleReinforcement_Size2_Class2", 1580, "Module Reinforcement Package", 2, "D", 36000) },
+                {128737274, new Module(128737274, "Int_ModuleReinforcement_Size3_Class1", 1581, "Module Reinforcement Package", 3, "E", 28000) },
+                {128737275, new Module(128737275, "Int_ModuleReinforcement_Size3_Class2", 1582, "Module Reinforcement Package", 3, "D", 84000) },
+                {128737276, new Module(128737276, "Int_ModuleReinforcement_Size4_Class1", 1583, "Module Reinforcement Package", 4, "E", 65000) },
+                {128737277, new Module(128737277, "Int_ModuleReinforcement_Size4_Class2", 1584, "Module Reinforcement Package", 4, "D", 195000) },
+                {128737278, new Module(128737278, "Int_ModuleReinforcement_Size5_Class1", 1585, "Module Reinforcement Package", 5, "E", 150000) },
+                {128737279, new Module(128737279, "Int_ModuleReinforcement_Size5_Class2", 1586, "Module Reinforcement Package", 5, "D", 450000) },
         };
 
         private static Dictionary<string, Module> ModulesByEDName = ModulesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);

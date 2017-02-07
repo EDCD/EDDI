@@ -10,20 +10,7 @@ namespace EddiCompanionAppService
     {
         [JsonProperty("email")]
         public string email { get; set; }
-        [JsonProperty("password")]
-        private string encPassword;
 
-        [JsonIgnore]
-        public string password {
-            get
-            {
-                return encPassword == null ? null : rijndaelHelper.Decrypt(encPassword);
-            }
-            set
-            {
-                encPassword = value == null ? null : rijndaelHelper.Encrypt(value);
-            }
-        }
         [JsonProperty("CompanionApp")]
         public string appId { get; set; }
         [JsonProperty("mid")]
@@ -33,10 +20,6 @@ namespace EddiCompanionAppService
 
         [JsonIgnore]
         private string dataPath;
-
-        private static byte[] key = { 251, 9, 67, 117, 237, 158, 138, 150, 255, 97, 103, 128, 183, 65, 76, 161, 7, 79, 244, 225, 146, 180, 51, 123, 118, 167, 45, 10, 184, 181, 202, 190 };
-        private static byte[] vector = { 214, 11, 221, 108, 210, 71, 14, 15, 151, 57, 241, 174, 177, 142, 115, 137 };
-        private RijndaelHelper rijndaelHelper = new RijndaelHelper(key, vector);
 
         /// <summary>
         /// Obtain credentials from a file.  If the file name is not supplied the the default
@@ -49,7 +32,7 @@ namespace EddiCompanionAppService
                 filename = Constants.DATA_DIR + @"\credentials.json";
             }
 
-            CompanionAppCredentials credentials = new CompanionAppCredentials();
+            CompanionAppCredentials credentials =null;
             try
             {
                 string credentialsData = File.ReadAllText(filename);
@@ -58,6 +41,10 @@ namespace EddiCompanionAppService
             catch (Exception ex)
             {
                 Logging.Debug("Failed to read companion app credentials", ex);
+            }
+            if (credentials == null)
+            {
+                credentials = new CompanionAppCredentials();
             }
 
             credentials.dataPath = filename;

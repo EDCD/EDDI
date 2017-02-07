@@ -19,7 +19,7 @@ namespace EddiDataDefinitions
         public string type { get; set; }
 
         /// <summary>The name of the body</summary>
-        public string name { get; set;  }
+        public string name { get; set; }
 
         /// <summary>The name of the system in which the body resides</summary>
         public string systemname { get; set; }
@@ -39,6 +39,9 @@ namespace EddiDataDefinitions
         /// <summary>The surface temperature of the body</summary>
         public long? temperature;
 
+        /// <summary>The body's rings</summary>
+        public List<Ring> rings;
+
         // Star-specific items
 
         /// <summary>If this body is the main star</summary>
@@ -52,6 +55,13 @@ namespace EddiDataDefinitions
 
         /// <summary>The solar radius of the star</summary>
         public decimal? solarradius;
+
+        // Additional information
+        public string chromaticity;
+        public decimal? radiusprobability;
+        public decimal? massprobability;
+        public decimal? tempprobability;
+        public decimal? ageprobability;
 
         // Body-specific items
 
@@ -102,13 +112,29 @@ namespace EddiDataDefinitions
 
         // materials
         public List<MaterialPercentage> materials;
-        
+
         /// <summary>
         /// Convert gravity in m/s to g
         /// </summary>
         public static decimal ms2g(decimal gravity)
         {
             return gravity / (decimal)9.80665;
+        }
+
+        /// <summary>
+        /// Calculate additonal information for the star
+        /// </summary>
+        public void setStellarExtras()
+        {
+            StarClass starClass = StarClass.FromName(stellarclass);
+            if (starClass != null)
+            {
+                if (solarmass != null) massprobability = StarClass.sanitiseCP(starClass.stellarMassCP((decimal)solarmass));
+                if (solarradius != null) radiusprobability = StarClass.sanitiseCP(starClass.stellarRadiusCP((decimal)solarradius));
+                if (temperature != null) tempprobability = StarClass.sanitiseCP(starClass.tempCP((decimal)temperature));
+                if (age != null) ageprobability = StarClass.sanitiseCP(starClass.ageCP((decimal)age));
+                chromaticity = starClass.chromaticity;
+            }
         }
     }
 
@@ -118,9 +144,9 @@ namespace EddiDataDefinitions
         public decimal percentage { get; private set; }
 
         [JsonConstructor]
-        public MaterialPercentage(string material, decimal percentage)
+        public MaterialPercentage(string name, decimal percentage)
         {
-            this.material = material;
+            this.material = name;
             this.percentage = percentage;
         }
 

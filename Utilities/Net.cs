@@ -51,7 +51,7 @@ namespace Utilities
             }
             catch (Exception ex)
             {
-                Logging.Error("Failed to download file", ex);
+                Logging.Error("Failed to download file " + uri, ex);
                 return null;
             }
         }
@@ -92,7 +92,7 @@ namespace Utilities
                 else
                 {
                     Logging.Warn("Bad response, error code " + wex.Status);
-                    throw wex;
+                    throw;
                 }
             }
             Logging.Debug("Response is " + JsonConvert.SerializeObject(response));

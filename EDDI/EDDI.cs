@@ -16,10 +16,13 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using Utilities;
 
 namespace Eddi
@@ -31,6 +34,9 @@ namespace Eddi
     public class EDDI
     {
         private static EDDI instance;
+
+        // True if we have been started by VoiceAttack
+        public static bool FromVA = false;
 
         private static bool started;
 
@@ -68,6 +74,13 @@ namespace Eddi
             }
         }
 
+        // Upgrade information
+        public bool UpgradeAvailable = false;
+        public bool UpgradeRequired = false;
+        public string UpgradeVersion;
+        public string UpgradeLocation;
+        public string Motd;
+
         public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
         // Each monitor runs in its own thread
         private List<Thread> monitorThreads = new List<Thread>();
@@ -93,14 +106,16 @@ namespace Eddi
         public StarSystem CurrentStarSystem { get; private set; }
         public StarSystem LastStarSystem { get; private set; }
 
-        // Information from the remote server
-        public InstanceInfo Server { get; private set; }
-
         // Current vehicle of player
         public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
 
         // Session state
-        public Dictionary<string, object> State = new Dictionary<string, object>();
+        public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
+
+        /// <summary>
+        ///  Special case - trigger our first location event regardless of if it matches our current location
+        /// </summary>
+        private bool firstLocation = true;
 
         private EDDI()
         {
@@ -113,7 +128,8 @@ namespace Eddi
                 ExceptionlessClient.Default.Configuration.SetVersion(Constants.EDDI_VERSION);
 
                 // Start by fetching information from the update server, and handling appropriately
-                if (!UpdateServer())
+                CheckUpgrade();
+                if (UpgradeRequired)
                 {
                     // We are too old to continue; don't
                     running = false;
@@ -217,6 +233,62 @@ namespace Eddi
         }
 
         /// <summary>
+        /// Check to see if an upgrade is available and populate relevant variables
+        /// </summary>
+        public void CheckUpgrade()
+        {
+            // Clear the old values
+            UpgradeRequired = false;
+            UpgradeAvailable = false;
+            UpgradeLocation = null;
+            UpgradeVersion = null;
+            Motd = null;
+
+            try
+            {
+                ServerInfo updateServerInfo = ServerInfo.FromServer("http://api.eddp.co/");
+                if (updateServerInfo == null)
+                {
+                    Logging.Warn("Failed to contact update server");
+                }
+                else
+                {
+                    EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                    InstanceInfo info = configuration.Beta ? updateServerInfo.beta : updateServerInfo.production;
+                    Motd = info.motd;
+                    if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
+                    {
+                        // There is a mandatory update available
+                        if (!FromVA)
+                        {
+                            SpeechService.Instance.Say(null, "Mandatory EDDI upgrade to " + info.version.Replace(".", " point ") + " is required.", false);
+                        }
+                        UpgradeRequired = true;
+                        UpgradeLocation = info.url;
+                        UpgradeVersion = info.version;
+                    }
+
+                    if (Versioning.Compare(info.version, Constants.EDDI_VERSION) == 1)
+                    {
+                        // There is an update available
+                        if (!FromVA)
+                        {
+                            SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", false);
+                        }
+                        UpgradeAvailable = true;
+                        UpgradeLocation = info.url;
+                        UpgradeVersion = info.version;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
+                Logging.Warn("Failed to access api.eddp.co", ex);
+            }
+        }
+
+        /// <summary>
         /// Obtain and check the information from the update server
         /// </summary>
         private bool UpdateServer()
@@ -232,10 +304,14 @@ namespace Eddi
                 else
                 {
                     InstanceInfo info = Constants.EDDI_VERSION.Contains("b") ? updateServerInfo.beta : updateServerInfo.production;
+                    Motd = info.motd;
                     if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
                         Logging.Warn("This version of EDDI is too old to operate; please upgrade at " + info.url);
                         SpeechService.Instance.Say(null, "This version of EDDI is too old to operate; please upgrade.", true);
+                        UpgradeRequired = true;
+                        UpgradeLocation = info.url;
+                        UpgradeVersion = info.version;
                         //SpeechService.Instance.Say(null, "EDDI requires an update.  Downloading.", true);
                         //// We are too old to run - update
                         //string updateFile = Net.DownloadFile(info.url, @"EDDI-update.exe");
@@ -256,6 +332,9 @@ namespace Eddi
                     {
                         // There is an update available
                         SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", true);
+                        UpgradeAvailable = true;
+                        UpgradeLocation = info.url;
+                        UpgradeVersion = info.version;
                         //SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.  Downloading.", true);
                         //string updateFile = Net.DownloadFile(info.url, @"EDDI-update.exe");
                         //if (updateFile == null)
@@ -276,7 +355,6 @@ namespace Eddi
                         // There is a message
                         SpeechService.Instance.Say(null, info.motd, false);
                     }
-                    Server = info;
                 }
             }
             catch (Exception ex)
@@ -285,6 +363,43 @@ namespace Eddi
                 Logging.Warn("Failed to access api.eddp.co", ex);
             }
             return true;
+        }
+
+        [SecurityPermissionAttribute(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        [SecurityPermissionAttribute(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        public void Upgrade()
+        {
+            try
+            {
+                if (UpgradeLocation != null)
+                {
+                    Logging.Info("Downloading upgrade from " + UpgradeLocation);
+                    SpeechService.Instance.Say(Ship, "Downloading upgrade.", true);
+                    string updateFile = Net.DownloadFile(UpgradeLocation, @"EDDI-update.exe");
+                    if (updateFile == null)
+                    {
+                        SpeechService.Instance.Say(Ship, "Download failed.  Please try again later.", true);
+                    }
+                    else
+                    {
+                        // Inno setup will attempt to restart this application so register it
+                        RegisterApplicationRestart(null, RestartFlags.NONE);
+
+                        Logging.Info("Downloaded update to " + updateFile);
+                        Logging.Info("Path is " + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                        File.SetAttributes(updateFile, FileAttributes.Normal);
+                        SpeechService.Instance.Say(Ship, "Starting upgrade.", true);
+                        Logging.Info("Starting upgrade.");
+
+                        Process.Start(updateFile, @"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SpeechService.Instance.Say(Ship, "Upgrade failed.  Please try again later.", true);
+                Logging.Error("Upgrade failed", ex);
+            }
         }
 
         public void Start()
@@ -383,7 +498,7 @@ namespace Eddi
                 monitor.Reload();
             }
 
-            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
+            Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " reloaded");
         }
 
         /// <summary>
@@ -544,43 +659,51 @@ namespace Eddi
                     }
                     else if (journalEvent is ShipDeliveredEvent)
                     {
-                        passEvent = eventShipDeliveredEvent((ShipDeliveredEvent)journalEvent);
+                        passEvent = eventShipDelivered((ShipDeliveredEvent)journalEvent);
                     }
                     else if (journalEvent is ShipSwappedEvent)
                     {
-                        passEvent = eventShipSwappedEvent((ShipSwappedEvent)journalEvent);
+                        passEvent = eventShipSwapped((ShipSwappedEvent)journalEvent);
                     }
                     else if (journalEvent is ShipSoldEvent)
                     {
-                        passEvent = eventShipSoldEvent((ShipSoldEvent)journalEvent);
+                        passEvent = eventShipSold((ShipSoldEvent)journalEvent);
                     }
                     else if (journalEvent is CommanderContinuedEvent)
                     {
-                        passEvent = eventCommanderContinuedEvent((CommanderContinuedEvent)journalEvent);
+                        passEvent = eventCommanderContinued((CommanderContinuedEvent)journalEvent);
                     }
                     else if (journalEvent is CombatPromotionEvent)
                     {
-                        passEvent = eventCombatPromotionEvent((CombatPromotionEvent)journalEvent);
+                        passEvent = eventCombatPromotion((CombatPromotionEvent)journalEvent);
                     }
                     else if (journalEvent is EnteredCQCEvent)
                     {
-                        passEvent = eventEnteredCQCEvent((EnteredCQCEvent)journalEvent);
+                        passEvent = eventEnteredCQC((EnteredCQCEvent)journalEvent);
                     }
                     else if (journalEvent is SRVLaunchedEvent)
                     {
-                        passEvent = eventSRVLaunchedEvent((SRVLaunchedEvent)journalEvent);
+                        passEvent = eventSRVLaunched((SRVLaunchedEvent)journalEvent);
                     }
                     else if (journalEvent is SRVDockedEvent)
                     {
-                        passEvent = eventSRVDockedEvent((SRVDockedEvent)journalEvent);
+                        passEvent = eventSRVDocked((SRVDockedEvent)journalEvent);
                     }
                     else if (journalEvent is FighterLaunchedEvent)
                     {
-                        passEvent = eventFighterLaunchedEvent((FighterLaunchedEvent)journalEvent);
+                        passEvent = eventFighterLaunched((FighterLaunchedEvent)journalEvent);
                     }
                     else if (journalEvent is FighterDockedEvent)
                     {
-                        passEvent = eventFighterDockedEvent((FighterDockedEvent)journalEvent);
+                        passEvent = eventFighterDocked((FighterDockedEvent)journalEvent);
+                    }
+                    else if (journalEvent is StarScannedEvent)
+                    {
+                        passEvent = eventStarScanned((StarScannedEvent)journalEvent);
+                    }
+                    else if (journalEvent is BodyScannedEvent)
+                    {
+                        passEvent = eventBodyScanned((BodyScannedEvent)journalEvent);
                     }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
@@ -641,12 +764,15 @@ namespace Eddi
             {
                 // In this case body === station
 
-                if (CurrentStation != null && CurrentStation.name == theEvent.body)
+                // Force first location update even if it matches with 'firstLocation' bool
+                if (!firstLocation && (CurrentStation != null && CurrentStation.name == theEvent.body))
                 {
                     // We are already at this station; nothing to do
                     Logging.Debug("Already at station " + theEvent.body);
                     return false;
                 }
+                firstLocation = false;
+
                 // Update the station
                 Logging.Debug("Now at station " + theEvent.body);
                 Station station = CurrentStarSystem.stations.Find(s => s.name == theEvent.body);
@@ -762,7 +888,7 @@ namespace Eddi
                 CurrentStarSystem.x = theEvent.x;
                 CurrentStarSystem.y = theEvent.y;
                 CurrentStarSystem.z = theEvent.z;
-		setSystemDistanceFromHome(CurrentStarSystem);
+                setSystemDistanceFromHome(CurrentStarSystem);
                 CurrentStarSystem.visits++;
                 CurrentStarSystem.lastvisit = DateTime.Now;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
@@ -793,7 +919,7 @@ namespace Eddi
                 CurrentStarSystem.x = theEvent.x;
                 CurrentStarSystem.y = theEvent.y;
                 CurrentStarSystem.z = theEvent.z;
-		setSystemDistanceFromHome(CurrentStarSystem);
+                setSystemDistanceFromHome(CurrentStarSystem);
                 CurrentStarSystem.allegiance = theEvent.allegiance;
                 CurrentStarSystem.faction = theEvent.faction;
                 CurrentStarSystem.primaryeconomy = theEvent.economy;
@@ -837,7 +963,7 @@ namespace Eddi
                 CurrentStarSystem.x = theEvent.x;
                 CurrentStarSystem.y = theEvent.y;
                 CurrentStarSystem.z = theEvent.z;
-		setSystemDistanceFromHome(CurrentStarSystem);
+                setSystemDistanceFromHome(CurrentStarSystem);
                 CurrentStarSystem.allegiance = theEvent.allegiance;
                 CurrentStarSystem.faction = theEvent.faction;
                 CurrentStarSystem.primaryeconomy = theEvent.economy;
@@ -879,7 +1005,7 @@ namespace Eddi
             return false;
         }
 
-        private bool eventShipDeliveredEvent(ShipDeliveredEvent theEvent)
+        private bool eventShipDelivered(ShipDeliveredEvent theEvent)
         {
             SetShip(theEvent.Ship);
 
@@ -893,28 +1019,28 @@ namespace Eddi
             return true;
         }
 
-        private bool eventShipSwappedEvent(ShipSwappedEvent theEvent)
+        private bool eventShipSwapped(ShipSwappedEvent theEvent)
         {
             SetShip(theEvent.Ship);
 
-            // Kick off the profile refresh
-            profileUpdateNeeded = true;
-            profileShipIdRequired = theEvent.Ship.LocalId;
-            Thread updateThread = new Thread(() => conditionallyRefreshProfile());
-            updateThread.IsBackground = true;
-            updateThread.Start();
-
             return true;
         }
 
-        private bool eventShipSoldEvent(ShipSoldEvent theEvent)
+        private bool eventShipSold(ShipSoldEvent theEvent)
         {
-            // Need to update shipyard
-            refreshProfile();
+            // Remove the ship from the list of stored ships
+            for (int i = 0; i < Shipyard.Count; i++)
+            {
+                if (Shipyard[i].LocalId == theEvent.shipid)
+                {
+                    Shipyard.RemoveAt(i);
+                    break;
+                }
+            }
             return true;
         }
 
-        private bool eventCommanderContinuedEvent(CommanderContinuedEvent theEvent)
+        private bool eventCommanderContinued(CommanderContinuedEvent theEvent)
         {
             // If we see this it means that we aren't in CQC
             inCQC = false;
@@ -929,7 +1055,7 @@ namespace Eddi
             return true;
         }
 
-        private bool eventCombatPromotionEvent(CombatPromotionEvent theEvent)
+        private bool eventCombatPromotion(CombatPromotionEvent theEvent)
         {
             // There is a bug with the journal where it reports superpower increases in rank as combat increases
             // Hence we check to see if this is a real event by comparing our known combat rating to the promoted rating
@@ -937,28 +1063,28 @@ namespace Eddi
             return theEvent.rating != Cmdr.combatrating.name;
         }
 
-        private bool eventEnteredCQCEvent(EnteredCQCEvent theEvent)
+        private bool eventEnteredCQC(EnteredCQCEvent theEvent)
         {
             // In CQC we don't want to report anything, so set our CQC flag
             inCQC = true;
             return true;
         }
 
-        private bool eventSRVLaunchedEvent(SRVLaunchedEvent theEvent)
+        private bool eventSRVLaunched(SRVLaunchedEvent theEvent)
         {
             // SRV is always player-controlled, so we are in the SRV
             Vehicle = Constants.VEHICLE_SRV;
             return true;
         }
 
-        private bool eventSRVDockedEvent(SRVDockedEvent theEvent)
+        private bool eventSRVDocked(SRVDockedEvent theEvent)
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;
             return true;
         }
 
-        private bool eventFighterLaunchedEvent(FighterLaunchedEvent theEvent)
+        private bool eventFighterLaunched(FighterLaunchedEvent theEvent)
         {
             if (theEvent.playercontrolled)
             {
@@ -973,10 +1099,106 @@ namespace Eddi
             return true;
         }
 
-        private bool eventFighterDockedEvent(FighterDockedEvent theEvent)
+        private bool eventFighterDocked(FighterDockedEvent theEvent)
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;
+            return true;
+        }
+
+        private bool eventStarScanned(StarScannedEvent theEvent)
+        {
+            // We just scanned a star.  We can assume that it's in our current system
+            Body star = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.name);
+            if (star == null)
+            {
+                Logging.Debug("Scanned star " + theEvent.name + " is new - creating");
+                // A new item - set it up
+                star = new Body();
+                star.EDDBID = -1;
+                star.type = "Star";
+                star.name = theEvent.name;
+                star.systemname = CurrentStarSystem.name;
+                CurrentStarSystem.bodies.Add(star);
+            }
+
+            // Update with the information we have
+            star.age = theEvent.age;
+            star.distance = (long?)theEvent.distancefromarrival;
+            star.temperature = (long?)theEvent.temperature;
+            star.mainstar = theEvent.distancefromarrival == 0 ? true : false;
+            star.stellarclass = theEvent.stellarclass;
+            star.solarmass = theEvent.solarmass;
+            star.solarradius = theEvent.solarradius;
+
+            star.setStellarExtras();
+
+            CurrentStarSystem.bodies.Add(star);
+            Logging.Debug("Saving data for scanned star " + theEvent.name);
+            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
+            return true;
+        }
+
+        private bool eventBodyScanned(BodyScannedEvent theEvent)
+        {
+            // We just scanned a planet.  We can assume that it's in our current system
+            Body body = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.name);
+            if (body == null)
+            {
+                Logging.Debug("Scanned body " + theEvent.name + " is new - creating");
+                // A new body - set it up
+                body = new Body();
+                body.EDDBID = -1;
+                body.type = "Planet";
+                body.name = theEvent.name;
+                body.systemname = CurrentStarSystem.name;
+                CurrentStarSystem.bodies.Add(body);
+            }
+
+            // Update with the information we have
+            body.distance = (long?)theEvent.distancefromarrival;
+            body.landable = theEvent.landable;
+            body.tidallylocked = theEvent.tidallylocked;
+            body.temperature = (long?)theEvent.temperature;
+            body.periapsis = theEvent.periapsis;
+            body.atmosphere = theEvent.atmosphere;
+            body.gravity = theEvent.gravity;
+            body.eccentricity = theEvent.eccentricity;
+            body.inclination = theEvent.orbitalinclination;
+            body.orbitalperiod = Math.Round(theEvent.orbitalperiod / 86400, 2);
+            body.rotationalperiod = Math.Round(theEvent.rotationperiod / 86400, 2);
+            body.semimajoraxis = theEvent.semimajoraxis;
+            body.pressure = theEvent.pressure;
+            switch (theEvent.terraformstate)
+            {
+                case "terrraformable":
+                case "terraformable":
+                    body.terraformstate = "Terraformable";
+                    break;
+                case "terraforming":
+                    body.terraformstate = "Terraforming";
+                    break;
+                case "Terraformed":
+                    body.terraformstate = "Terraformed";
+                    break;
+                default:
+                    body.terraformstate = "Not terraformable";
+                    break;
+            }
+            body.terraformstate = theEvent.terraformstate;
+            body.planettype = theEvent.bodyclass;
+            body.volcanism = theEvent.volcanism;
+            body.materials = new List<MaterialPercentage>();
+            foreach (MaterialPresence presence in theEvent.materials)
+            {
+                body.materials.Add(new MaterialPercentage(presence.definition, presence.percentage));
+            }
+            body.rings = theEvent.rings;
+
+            Logging.Debug("Saving data for scanned body " + theEvent.name);
+            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+
             return true;
         }
 
@@ -993,10 +1215,18 @@ namespace Eddi
                     {
                         // Use the profile as primary information for our commander and shipyard
                         Cmdr = profile.Cmdr;
+
+                        // Reinstate insurance
+                        EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                        if (configuration != null)
+                        {
+                            Cmdr.insurance = configuration.Insurance;
+                        }
+
                         Shipyard = profile.Shipyard;
 
                         // Only use the ship information if we agree that this is the correct ship to use
-                        if (Ship.model == null || profile.Ship.LocalId == Ship.LocalId)
+                        if (profile.Ship != null && (Ship.model == null || profile.Ship.LocalId == Ship.LocalId))
                         {
                             SetShip(profile.Ship);
                         }
@@ -1011,27 +1241,34 @@ namespace Eddi
 
                             // We don't know if we are docked or not at this point.  Fill in the data if we can, and
                             // let later systems worry about removing it if it's decided that we aren't docked
-                            if (profile.LastStation.systemname == CurrentStarSystem.name)
+                            if (profile.LastStation != null && profile.LastStation.systemname == CurrentStarSystem.name && CurrentStarSystem.stations != null)
                             {
                                 CurrentStation = CurrentStarSystem.stations.FirstOrDefault(s => s.name == profile.LastStation.name);
-                                CurrentStation.updatedat = profileTime;
-                                updatedCurrentStarSystem = true;
+                                if (CurrentStation != null)
+                                {
+                                    Logging.Debug("Set current station to " + CurrentStation.name);
+                                    CurrentStation.updatedat = profileTime;
+                                    updatedCurrentStarSystem = true;
+                                }
                             }
                         }
                         else
                         {
-                            if (CurrentStation != null && CurrentStation.systemname == profile.LastStation.systemname && CurrentStation.name == profile.LastStation.name)
+                            if (profile.LastStation != null && CurrentStation != null && CurrentStation.systemname == profile.LastStation.systemname && CurrentStation.name == profile.LastStation.name)
                             {
                                 // Match for our expected station with the information returned from the profile
                                 Logging.Debug("Current station matches profile information; updating info");
 
                                 // Update the outfitting, commodities and shipyard with the data obtained from the profile
-                                CurrentStation.outfitting = profile.LastStation.outfitting;
-                                CurrentStation.updatedat = profileTime;
-                                CurrentStation.commodities = profile.LastStation.commodities;
-                                CurrentStation.commoditiesupdatedat = profileTime;
-                                CurrentStation.shipyard = profile.LastStation.shipyard;
-                                updatedCurrentStarSystem = true;
+                                if (CurrentStation != null)
+                                {
+                                    CurrentStation.outfitting = profile.LastStation.outfitting;
+                                    CurrentStation.updatedat = profileTime;
+                                    CurrentStation.commodities = profile.LastStation.commodities;
+                                    CurrentStation.commoditiesupdatedat = profileTime;
+                                    CurrentStation.shipyard = profile.LastStation.shipyard;
+                                    updatedCurrentStarSystem = true;
+                                }
                             }
                             else
                             {
@@ -1060,12 +1297,24 @@ namespace Eddi
             if (ship == null)
             {
                 Logging.Warn("Refusing to set ship to null");
+                return;
             }
-            else
+
+            if (Ship != null)
             {
-                Logging.Debug("Set ship to " + JsonConvert.SerializeObject(ship));
-                Ship = ship;
+                // Remove the ship we are now using from the shipyard
+                Shipyard = Shipyard.Where(s => s.LocalId != ship.LocalId).ToList();
+
+                // Add the ship we were using to the shipyard (if it's real)
+                if (Ship.model != null)
+                {
+                    Shipyard.Add(Ship);
+                }
             }
+
+            // Set the ship we are using
+            Logging.Debug("Set ship to " + JsonConvert.SerializeObject(ship));
+            Ship = ship;
         }
 
         private void setSystemDistanceFromHome(StarSystem system)
@@ -1162,6 +1411,12 @@ namespace Eddi
                 {
                     string msg = "Failed to load monitor.  Please ensure that " + dir.FullName + " is not on a network share, or itself shared";
                     Logging.Error(msg, flex);
+                    SpeechService.Instance.Say(null, msg, false);
+                }
+                catch (Exception ex)
+                {
+                    string msg = "Failed to load monitor: " + ex.Message;
+                    Logging.Error(msg, ex);
                     SpeechService.Instance.Say(null, msg, false);
                 }
             }
@@ -1280,6 +1535,13 @@ namespace Eddi
                         Cmdr = profile.Cmdr;
                         Shipyard = profile.Shipyard;
 
+                        // Reinstate insurance
+                        EDDIConfiguration configuration = EDDIConfiguration.FromFile();
+                        if (configuration != null)
+                        {
+                            Cmdr.insurance = configuration.Insurance;
+                        }
+
                         // Only use the ship information if we agree that this is the correct ship to use
                         if (Ship.model == null || profile.Ship.LocalId == Ship.LocalId)
                         {
@@ -1344,5 +1606,24 @@ namespace Eddi
             profileStationRequired = null;
             profileShipIdRequired = -1;
         }
+
+        // Required to restart app after upgrade
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        static extern uint RegisterApplicationRestart(string pwzCommandLine, RestartFlags dwFlags);
+
+        // Flags for upgrade
+        [Flags]
+        enum RestartFlags
+        {
+            NONE = 0,
+            RESTART_CYCLICAL = 1,
+            RESTART_NOTIFY_SOLUTION = 2,
+            RESTART_NOTIFY_FAULT = 4,
+            RESTART_NO_CRASH = 8,
+            RESTART_NO_HANG = 16,
+            RESTART_NO_PATCH = 32,
+            RESTART_NO_REBOOT = 64
+        }
+
     }
 }

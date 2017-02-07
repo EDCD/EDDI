@@ -2,6 +2,22 @@
   "name": "EDDI",
   "description": "A balanced, non-partisan personality",
   "scripts": {
+    "System faction changed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "System faction changed",
+      "description": "Triggered when there is a change in the controlling faction of a watched system"
+    },
+    "System state changed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'system')}\r\n{SetState('eddi_context_last_action', 'change_state')}\r\n{SetState('eddi_context_system', event.system)}\r\n{SetState('eddi_context_system_system', event.system)}\r\n\r\n{_ Set up our system name}\r\n{if event.system = homesystem.name:\r\n  {set system to OneOf('{P(event.system)}',\r\n                       'your home system')}\r\n|elif event.system = system.name:\r\n  {set system to OneOf('{P{event.system)}',\r\n                       'this system')}\r\n|else:\r\n  {set system to OneOf('system {P(event.system)}'\r\n                       '{P(event.system)}'))}\r\n}\r\n\r\n{if event.newstate != 'None':\r\n  {_ System has entered a new state}\r\n  {OneOf('Local transmissions report that', 'Information: ', 'Transmission intercepted.  Contents state that ')}\r\n  {if event.newstate = 'Boom':\r\n    {OneOf('{system} is experiencing a commercial boom',\r\n           '{system} is entering a period of hightened commercial success')}\r\n  |elif event.newstate = 'Bust':\r\n    {system} is experiencing economic hardship\r\n  |elif event.newstate = 'Civil Unrest':\r\n    {OneOf('{system} is experiencing civil unrest',\r\n           'there is unrest in the {system} system')}\r\n  |elif event.newstate = 'Civil War':\r\n    {OneOf('{system} is at war with another faction in the same system',\r\n           'civil war has broken out in {system}',\r\n           '{system} has fallen in to civil war',\r\n           'hostilities have broken out in {system}')}\r\n  |elif event.newstate = 'Election':\r\n    {system} is undergoing elections\r\n  |elif event.newstate = 'Expansion':\r\n    {OneOf(\"a faction in {system}'s is attempting to expand in to a neighbouring system\",\r\n           \"a faction in {system}'s is preparing to expand in to a neighbouring system\")}\r\n  |elif event.newstate = 'Famine':\r\n    {system} is suffering from famine\r\n  |elif event.newstate = 'Investment':\r\n    {system}'s controlling faction are investing heavily in their local infrastructure\r\n  |elif event.newstate = 'Lockdown':\r\n    {system} has hightened security due to a lockdown by the controlling faction\r\n  |elif event.newstate = 'Outbreak':\r\n    {system} is suffering from an outbreak of contagious disease\r\n  |elif event.newstate = 'Retreat':\r\n    {system}'s controlling faction is retreating from a neighbouring system\r\n  |elif event.newstate = 'War':\r\n    {system} is now at war with a neighbouring system\r\n  |else:\r\n    {OneOf('{system} has entered {event.state}',\r\n           '{system} is now in a state of {event.state}')}\r\n  }.\r\n}\r\n\r\n",
+      "name": "System state changed",
+      "description": "Triggered when there is a change in the state of a watched system"
+    },
     "Entered CQC": {
       "enabled": true,
       "priority": 3,
@@ -9,6 +25,14 @@
       "script": "Entering close-quarters combat.",
       "name": "Entered CQC",
       "description": "Triggered when you enter CQC"
+    },
+    "Mission failed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Mission failed",
+      "description": "Triggered when you fail a mission"
     },
     "NPC cargo scan commenced": {
       "enabled": true,
@@ -33,6 +57,22 @@
       "script": "Warning: interdiction attempt\r\n{if event.by:\r\n   by {event.by} \r\n}\r\ndetected.\r\n\r\n{Occasionally(3, \"Throttle down or evade.\")}",
       "name": "NPC interdiction commenced",
       "description": "Triggered when an interdiction attempt on your ship by an NPC is detected"
+    },
+    "Power voucher received": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Power voucher received",
+      "description": "Triggered when a commander turns in combat vouchers against an opposing power"
+    },
+    "Ship shutdown": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Ship shutdown",
+      "description": "Triggered when your ship's system are shutdown"
     },
     "Station no fire zone exited": {
       "enabled": true,
@@ -126,7 +166,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "That's another {event.reward} credits in the bank.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bond')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n{SetState('eddi_context_bond_amount', event.reward)}\r\n{SetState('eddi_context_bond_faction', event.awardingfaction)}\r\n\r\nThat's another {event.reward} credits in the bank.",
       "name": "Bond awarded",
       "description": "Triggered when you are awarded a combat bond"
     },
@@ -134,7 +174,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Paid fine of {Humanise(event.amount)} credits.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fine')}\r\n{SetState('eddi_context_last_action', 'pay')}\r\n{SetState('eddi_context_fine_amount', event.amount)}\r\n\r\n\r\nPaid fine of {Humanise(event.amount)} credits.",
       "name": "Fine paid",
       "description": "Triggered when you pay a fine"
     },
@@ -166,7 +206,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'donate')}\r\n{SetState('eddi_context_material_name', event.material)}\r\n",
       "name": "Material donated",
       "description": "Triggered when you donate a material"
     },
@@ -238,7 +278,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ShipName()} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if system.bodies[0].distance = 0 && system.bodies[0].stellarclass:\r\n        {set stellarclass to slice(system.bodies[0].stellarclass, 0, 1)}\r\n        {if stellarclass = \"D\":\r\n            Caution: white dwarf detected.\r\n        |elif stellarclass = \"N\":\r\n            Caution: neutron star detected.\r\n        |elif stellarclass = \"H\":\r\n            Caution: black hole detected.\r\n        }\r\n    }\r\n\r\n    {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!system.allegiance || system.allegiance = \"None\" || system.allegiance = \"Independent\"):\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance && system.allegiance != \"None\":\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}.\r\n        }\r\n    }\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'start')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n\r\n{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ShipName()} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if system.bodies[0].distance = 0 && system.bodies[0].stellarclass:\r\n        {set stellarclass to slice(system.bodies[0].stellarclass, 0, 1)}\r\n        {if stellarclass = \"D\":\r\n            Caution: white dwarf detected.\r\n        |elif stellarclass = \"N\":\r\n            Caution: neutron star detected.\r\n        |elif stellarclass = \"H\":\r\n            Caution: black hole detected.\r\n        }\r\n    }\r\n\r\n    {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!system.allegiance || system.allegiance = \"None\" || system.allegiance = \"Independent\"):\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance && system.allegiance != \"None\":\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}.\r\n        }\r\n    }\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
       "name": "Jumping",
       "description": "Triggered when you start a jump to another system"
     },
@@ -278,7 +318,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'discover')}\r\n{SetState('eddi_context_material_name', event.material)}\r\n",
       "name": "Material discovered",
       "description": "Triggered when you discover a material"
     },
@@ -286,7 +326,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'discard')}\r\n{SetState('eddi_context_material_name', event.material)}\r\n",
       "name": "Material discarded",
       "description": "Triggered when you discard a material"
     },
@@ -294,7 +334,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'collect')}\r\n{SetState('eddi_context_material_name', event.material)}\r\n",
       "name": "Material collected",
       "description": "Triggered when you collect a material"
     },
@@ -310,7 +350,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'refine')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n\r\n",
       "name": "Commodity refined",
       "description": "Triggered when you refine a commodity from the refinery"
     },
@@ -398,7 +438,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Goodbye {F(\"Honorific\")}.  It was a pleasure to serve you.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'save')}\r\n{SetState('eddi_context_last_action', 'clear')}\r\n\r\nGoodbye {F(\"Honorific\")}.  It was a pleasure to serve you.",
       "name": "Cleared save",
       "description": "Triggered when you clear your save"
     },
@@ -414,7 +454,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Purchased trade data for {P(event.system)}\",\r\n            \"Trade data for {P(event.system)} now available\",\r\n            \"Received trade data for {P(event.system)} from station services\",\r\n            \"Receipt of {P(event.system)} trade data confirmed\")}.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'tradedata')}\r\n{SetState('eddi_context_last_action', 'buy')}\r\n{SetState('eddi_context_tradedata_name', event.system)}\r\n\r\n{OneOf(\"Purchased trade data for {P(event.system)}\",\r\n            \"Trade data for {P(event.system)} now available\",\r\n            \"Received trade data for {P(event.system)} from station services\",\r\n            \"Receipt of {P(event.system)} trade data confirmed\")}.",
       "name": "Trade data purchased",
       "description": "Triggered when you purchase trade data"
     },
@@ -462,7 +502,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Message away\", \"Message sent\", \"Sent\")}.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'message')}\r\n{SetState('eddi_context_last_action', 'send')}\r\n{SetState('eddi_context_message_name', event.to)}\r\n{SetState('eddi_context_message_content', event.message)}\r\n\r\n{OneOf(\"Message away\", \"Message sent\", \"Sent\")}.",
       "name": "Message sent",
       "description": "Triggered when you send a message"
     },
@@ -470,7 +510,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.message = \"o7\":\r\n    {event.from} salutes\r\n    {if event.channel = \"player\":\r\n        you\r\n    }.\r\n|else:\r\n    Message received from {event.from}.  Message reads: {event.message}.\r\n}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'message')}\r\n{SetState('eddi_context_last_action', 'receive')}\r\n{SetState('eddi_context_message_name', event.from)}\r\n{SetState('eddi_context_message_content', event.message)}\r\n\r\n{if event.message = \"o7\":\r\n    {event.from} salutes\r\n    {if event.channel = \"player\":\r\n        you\r\n    }.\r\n|else:\r\n    Message received from {event.from}.  Message reads: {event.message}.\r\n}\r\n",
       "name": "Message received",
       "description": "Triggered when you receive a message"
     },
@@ -534,7 +574,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.amount = 1:\r\n   You have just sold one tonne of {event.commodity} for {event.price} credits\r\n|elif event.amount > 1:\r\n    You have just sold {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total value is {event.amount * event.price} credits\r\n}\r\n{if event.profit < 0:\r\n    with a loss of {-1 * event.profit * event.amount} credits.\r\n|elif event.profit = 0:\r\n    and broke even on the trade.\r\n|else:\r\n    with a profit of {event.profit * event.amount} credits.\r\n}",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'sell')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n{SetState('eddi_context_commodity_amount', event.amount)}\r\n\r\n{if event.amount = 1:\r\n   You have just sold one tonne of {event.commodity} for {event.price} credits\r\n|elif event.amount > 1:\r\n    You have just sold {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total value is {event.amount * event.price} credits\r\n}\r\n{if event.profit < 0:\r\n    with a loss of {-1 * event.profit * event.amount} credits.\r\n|elif event.profit = 0:\r\n    and broke even on the trade.\r\n|else:\r\n    with a profit of {event.profit * event.amount} credits.\r\n}",
       "name": "Commodity sold",
       "description": "Triggered when you sell a commodity to the markets"
     },
@@ -542,7 +582,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{P(event.faction)} just put a bounty of {event.bounty} credits on your head.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_bounty_name', event.victim)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.bounty)}\r\n\r\n{P(event.faction)} just put a bounty of {event.bounty} credits on your head.",
       "name": "Bounty incurred",
       "description": "Triggered when you incur a bounty"
     },
@@ -550,7 +590,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'eject')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n",
       "name": "Commodity ejected",
       "description": "Triggered when you eject a commodity from your ship or SRV"
     },
@@ -558,7 +598,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.amount = 1:\r\n   You have just purchased one tonne of {event.commodity} for {event.price} credits.\r\n|elif event.amount > 1:\r\n    You have just purchased {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total cost is {event.amount * event.price} credits.\r\n}",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'purchase')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n{SetState('eddi_context_commodity_amount', event.amount)}\r\n\r\n{if event.amount = 1:\r\n   You have just purchased one tonne of {event.commodity} for {event.price} credits.\r\n|elif event.amount > 1:\r\n    You have just purchased {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total cost is {event.amount * event.price} credits.\r\n}",
       "name": "Commodity purchased",
       "description": "Triggered when you buy a commodity from the markets"
     },
@@ -582,7 +622,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{set station to StationDetails(event.station)}\r\n{if station.model = \"Coriolis Starport\" || station.model = \"Orbis Starport\" || station.model = \"Ocellus Starport\" || station.model = \"Unknown Starport\":\r\n    {Pause(8000)}\r\n    Landing pad {event.landingpad} is at\r\n    {if event.landingpad = 1:\r\n        six o'clock near\r\n    |elif event.landingpad = 2:\r\n        six o'clock near\r\n    |elif event.landingpad = 3:\r\n        six o'clock far\r\n    |elif event.landingpad = 4:\r\n        six o'clock far\r\n    |elif event.landingpad = 5:\r\n        seven o'clock near\r\n    |elif event.landingpad = 6:\r\n        seven o'clock near\r\n    |elif event.landingpad = 7:\r\n        seven o'clock far\r\n    |elif event.landingpad = 8:\r\n        seven o'clock far\r\n    |elif event.landingpad = 9:\r\n        eight o'clock near\r\n    |elif event.landingpad = 10:\r\n        eight o'clock far\r\n    |elif event.landingpad = 11:\r\n        nine o'clock near\r\n    |elif event.landingpad = 12:\r\n        nine o'clock near\r\n    |elif event.landingpad = 13:\r\n        nine o'clock mid\r\n    |elif event.landingpad = 14:\r\n        nine o'clock far\r\n    |elif event.landingpad = 15:\r\n        nine o'clock far\r\n    |elif event.landingpad = 16:\r\n        ten o'clock near\r\n    |elif event.landingpad = 17:\r\n        ten o'clock near\r\n    |elif event.landingpad = 18:\r\n        ten o'clock far\r\n    |elif event.landingpad = 19:\r\n        ten o'clock far\r\n    |elif event.landingpad = 20:\r\n        eleven o'clock near\r\n    |elif event.landingpad = 21:\r\n        eleven o'clock near\r\n    |elif event.landingpad = 22:\r\n        eleven o'clock far\r\n    |elif event.landingpad = 23:\r\n        eleven o'clock far\r\n    |elif event.landingpad = 24:\r\n        twelve o'clock near\r\n    |elif event.landingpad = 25:\r\n        twelve o'clock far\r\n    |elif event.landingpad = 26:\r\n        one o'clock near\r\n    |elif event.landingpad = 27:\r\n        one o'clock near\r\n    |elif event.landingpad = 28:\r\n        one o'clock mid\r\n    |elif event.landingpad = 29:\r\n        one o'clock far\r\n    |elif event.landingpad = 30:\r\n        one o'clock far\r\n    |elif event.landingpad = 31:\r\n        two o'clock near\r\n    |elif event.landingpad = 32:\r\n        two o'clock near\r\n    |elif event.landingpad = 33:\r\n        two o'clock far\r\n    |elif event.landingpad = 34:\r\n        two o'clock far\r\n    |elif event.landingpad = 35:\r\n        three o'clock near\r\n    |elif event.landingpad = 36:\r\n        three o'clock near\r\n    |elif event.landingpad = 37:\r\n        three o'clock mid\r\n    |elif event.landingpad = 38:\r\n        three o'clock far\r\n    |elif event.landingpad = 39:\r\n        four o'clock near\r\n    |elif event.landingpad = 40:\r\n        four o'clock far\r\n    |elif event.landingpad = 41:\r\n        five o'clock near\r\n    |elif event.landingpad = 42:\r\n        five o'clock near\r\n    |elif event.landingpad = 43:\r\n        five o'clock mid\r\n    |elif event.landingpad = 44:\r\n        five o'clock far\r\n    |elif event.landingpad = 45:\r\n        five o'clock far\r\n    }\r\n    , as you enter with the green lights on your right.\r\n}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'landing pad')}\r\n{SetState('eddi_context_landing_pad_system', system.name)}\r\n{SetState('eddi_context_landing_pad_station', event.station)}\r\n{SetState('eddi_context_landing_pad_pad', event.landingpad)}\r\n\r\n{set station to StationDetails(event.station)}\r\n{if station.model = \"Coriolis Starport\" || station.model = \"Orbis Starport\" || station.model = \"Ocellus Starport\" || station.model = \"Unknown Starport\":\r\n    {Pause(8000)}\r\n    {F(\"Landing pad report\")}\r\n}\r\n",
       "name": "Docking granted",
       "description": "Triggered when your ship is granted docking permission at a station or outpost"
     },
@@ -646,7 +686,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(1000)}\r\n\r\nScan of {P(event.name)} complete.\r\n\r\nThis is a\r\n{if event.gravity < 0.5:\r\n    low-gravity\r\n|elif event.gravity <2:\r\n    medium-gravity\r\n|elif event.gravity <4:\r\n    high-gravity\r\n|else:\r\n    extremely high-gravity\r\n}\r\n\r\n{if event.tidallylocked:\r\n    tidally-locked\r\n}\r\n\r\n{_ Note three rs in terrraformable is a typo in information from Elite }\r\n{if event.terraformstate = \"Terrraformable\": \r\n    terraformable\r\n|elif event.terraformstate = \"Terraformed\":\r\n    terraformed\r\n}\r\n\r\n{if len(event.rings) > 0:\r\n    ringed\r\n}\r\n\r\n{event.bodyclass}\r\n\r\n{if event.terraformstate = \"Terraforming\":\r\n  in the process of being terraformed\r\n}\r\n\r\nthat is\r\n\r\n{if event.landable:\r\n    suitable\r\n|else:\r\n    unsuitable\r\n}\r\nfor landing.\r\n\r\n{_Atmosphere }\r\n\r\n{_ Volcanism}\r\n\r\n{if event.landable :\r\n\r\n    {set rotation to round(abs(event.rotationperiod) / 86400,2)}\r\n    It has a\r\n    {if rotation <= 0.5:\r\n        fast\r\n    |elif rotation > 20.0:\r\n        slow\r\n    |else:\r\n        normal\r\n    }\r\n    rotational period of {Humanise(rotation)} days.\r\n\r\n    {set goodmaterials to []}\r\n    {set greatmaterials to []}\r\n    {for material in event.materials:\r\n        {if material.percentage >= material.definition.greatpctbody:\r\n            {set greatmaterials to cat(greatmaterials, [material])}\r\n        |elif material.percentage >= material.definition.goodpctbody:\r\n            {set goodmaterials to cat(goodmaterials, [material])}\r\n        }\r\n    }\r\n\r\n    {if len(greatmaterials) > 0:\r\n        This body contains very high levels of\r\n        {if len(greatmaterials) = 1:\r\n            {greatmaterials[0].name}\r\n        |elif len(greatmaterials) = 2:\r\n            {greatmaterials[0].name} and {greatmaterials[1].name}\r\n        |else:\r\n            {set cur to 0}\r\n            {while cur < len(greatmaterials):\r\n                {if cur = 0:\r\n                    {greatmaterials[cur].name}\r\n                |elif cur < len(greatmaterials) - 1:\r\n                    , {greatmaterials[cur].name}\r\n                |else:\r\n                    ,and {greatmaterials[cur].name}\r\n                }\r\n                {set cur to cur + 1}\r\n            }\r\n        }\r\n    }\r\n    {if len(goodmaterials) > 0:\r\n        {if len(greatmaterials) > 0:\r\n            and high levels of\r\n        |else:\r\n            This body contains high levels of\r\n        }\r\n        {if len(goodmaterials) = 1:\r\n            {goodmaterials[0].name}\r\n        |elif len(goodmaterials) = 2:\r\n            {goodmaterials[0].name} and {goodmaterials[1].name}\r\n        |else:\r\n            {set cur to 0}\r\n            {while cur < len(goodmaterials):\r\n                {if cur = 0:\r\n                    {goodmaterials[cur].name}\r\n                |elif cur < len(goodmaterials) - 1:\r\n                    , {goodmaterials[cur].name}\r\n                |else:\r\n                    ,and {goodmaterials[cur].name}\r\n                }\r\n                {set cur to cur + 1}\r\n            }\r\n        }\r\n    }.\r\n}",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'body')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_body_system', system.name)}\r\n{SetState('eddi_context_body_name', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan of {P(event.name)} complete.\r\n\r\n{F(\"Body report\")}\r\n",
       "name": "Body scanned",
       "description": "Triggered when you complete a scan of a planetary body"
     },
@@ -654,7 +694,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(1000)}\r\n\r\nScan of {event.stellarclass}-class star {P(event.name)} complete.\r\n\r\n{set mainsequence to 0}\r\nThis is\r\n{if event.stellarclass = \"O\":\r\n    an incredibly rare main sequence star\r\n    {set mainsequence to 1}\r\n|elif event.stellarclass = \"B\":\r\n    a very rare main sequence star\r\n    {set mainsequence to 1}\r\n|elif event.stellarclass = \"A\":\r\n    a rare main sequence star\r\n    {set mainsequence to 1}\r\n|elif event.stellarclass = \"F\":\r\n    an uncommon main sequence star\r\n    {set mainsequence to 1}\r\n|elif event.stellarclass = \"G\":\r\n    a common main sequence star\r\n    {set mainsequence to 1}\r\n|elif event.stellarclass = \"K\":\r\n    a common main sequence star\r\n    {set mainsequence to 1}\r\n|elif event.stellarclass = \"M\":\r\n    a very common main sequence star\r\n    {set mainsequence to 1}\r\n|elif event.stellarclass = \"L\":\r\n    a brown dwarf\r\n|elif event.stellarclass = \"T\":\r\n    a brown dwarf\r\n|elif event.stellarclass = \"Y\":\r\n    a brown dwarf\r\n|elif event.stellarclass = \"TTS\":\r\n    a T tauri star in the process of gravitational contraction\r\n|elif event.stellarclass = \"AeBe\":\r\n    a very young proto-star yet to enter main sequence {Occasionally(4, \"but on the way to becoming an A or B class star\")}\r\n|elif event.stellarclass = \"W\":\r\n    an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n|elif event.stellarclass = \"WN\":\r\n    an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n|elif event.stellarclass = \"WNC\":\r\n    an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n|elif event.stellarclass = \"WC\":\r\n    an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n|elif event.stellarclass = \"WO\":\r\n    an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n|elif event.stellarclass = \"CS\":\r\n    a carbon star\r\n|elif event.stellarclass = \"C\":\r\n    a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(4, \"with an atmosphere dominated by carbon\")}\r\n|elif event.stellarclass = \"CN\":\r\n    a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(4, \"with an atmosphere dominated by carbon\")}\r\n|elif event.stellarclass = \"CJ\":\r\n    a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(2, \"with high levels of carbon 13 in its atmosphere\")}\r\n|elif event.stellarclass = \"CH\":\r\n    a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(4, \"with an atmosphere dominated by carbon\")}\r\n|elif event.stellarclass = \"CHd\":\r\n    a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(4, \"with an atmosphere dominated by carbon\")}\r\n|elif event.stellarclass = \"MS\":\r\n    a late sequence star {Occasionally(4, \"that was once an M class star and is on the way to becoming a carbon star\")}\r\n|elif event.stellarclass = \"S\":\r\n    a late sequence star {Occasionally(4, \"that was once an M class star and is becoming a carbon star\")}\r\n|elif event.stellarclass = \"D\":\r\n    a white dwarf\r\n|elif event.stellarclass = \"DA\":\r\n    a white dwarf {Occasionally(4, \"with a hydrogen-rich atmosphere\")}\r\n|elif event.stellarclass = \"DAB\":\r\n    a white dwarf {Occasionally(4, \"with an atmosphere rich in hydrogen and helium\")}\r\n|elif event.stellarclass = \"DAO\":\r\n    a white dwarf\r\n|elif event.stellarclass = \"DAZ\":\r\n    a white dwarf\r\n|elif event.stellarclass = \"DAV\":\r\n    a white dwarf\r\n|elif event.stellarclass = \"DB\":\r\n    a white dwarf\r\n|elif event.stellarclass = \"DBZ\":\r\n    a white dwarf\r\n|elif event.stellarclass = \"DBV\":\r\n    a white dwarf\r\n|elif event.stellarclass = \"DO\":\r\n    a white dwarf\r\n|elif event.stellarclass = \"DOV\":\r\n    a white dwarf\r\n|elif event.stellarclass = \"DQ\":\r\n    a white dwarf\r\n|elif event.stellarclass = \"DC\":\r\n    a white dwarf\r\n|elif event.stellarclass = \"DCV\":\r\n    a white dwarf\r\n|elif event.stellarclass = \"DX\":\r\n    a white dwarf\r\n|elif event.stellarclass = \"N\":\r\n    a neuutron star {Occasionally(4, \"that has a dangerously high-density core\")}\r\n|elif event.stellarclass = \"H\":\r\n    a black hole\r\n|elif event.stellarclass = \"X\":\r\n    an exotic stellar entity\r\n|elif event.stellarclass = \"SuperMassiveBlackHole\":\r\n     a supermassive black hole\r\n|elif event.stellarclass = \"A_BlueWhiteSuperGiant\":\r\n    a blue-white supergiant {Occasionally(4, \"that is expanding towards being a red supergiant\")}\r\n|elif event.stellarclass = \"F_WhiteSuperGiant\":\r\n    a yellow-white supergiant {Occasionally(4, \"that is expanding towards being a red supergiant\")}\r\n|elif event.stellarclass = \"M_RedSuperGiant\":\r\n    a red supergiant {Occasionally(4, \"in its helium burning phase\")}\r\n|elif event.stellarclass = \"M_RedGiant\":\r\n    a red giant {Occasionally(4, \"that is expanding towards being a red supergiant\")}\r\n|elif event.stellarclass = \"K_OrangeGiant\":\r\n    an orange giant {Occasionally(4, \"that is expanding as it heads towards the end of its life\")}\r\n|elif event.stellarclass = \"RoguePlanet\":\r\n    a rogue planet\r\n|elif event.stellarclass = \"Nebula\":\r\n    a nebula\r\n|elif event.stellarclass = \"StellarRemnantNebula\":\r\n    a nebula remnant\r\n}\r\n\r\n{OneOf(\"that has been around for {Humanise(event.age)} years\",\r\n             \"that is {Humanise(event.age)} years old\",\r\n             \"of {Humanise(event.age)} years\",\r\n)}\r\n{if event.age < 1000000:\r\n    making it one of the youngest stars in the galaxy\r\n|elif event.age >14000000000:\r\n    making it one of the oldest stars in the galaxy\r\n}.\r\n\r\n{if mainsequence = 1:\r\n    {Occasionally(2,\"As you can see, it emits a {event.chromaticity} light.\")}\r\n\r\n    {set notables to []}\r\n\r\n    {if event.massprobability < 0.01:\r\n        {set notables to cat(notables, [cat(\"an incredibly low solar mass of \", Humanise(event.solarmass))])}\r\n    |elif event.massprobability <0.1:\r\n        {set notables to cat(notables, [cat(\"an extremely low solar mass of \", Humanise(event.solarmass))])}\r\n    |elif event.massprobability <1:\r\n        {set notables to cat(notables, [\"an unusually low solar mass\"])}\r\n    |elif event.massprobability <10:\r\n        {set notables to cat(notables, [\"lower than average solar mass\"])}\r\n    |elif event.massprobability > 99.99:\r\n        {set notables to cat(notables, [cat(\"an incredibly high solar mass of \", Humanise(event.solarmass))])}\r\n    |elif event.massprobability > 99.9:\r\n        {set notables to cat(notables, [cat(\"an extremely high solar mass of \", Humanise(event.solarmass))])}\r\n    |elif event.massprobability > 99:\r\n        {set notables to cat(notables, [\"an unusually high solar mass\"])}\r\n    |elif event.massprobability > 90:\r\n        {set notables to cat(notables, [\"higher than average solar mass\"])}\r\n    }\r\n\r\n    {if event.radiusprobability < 0.01:\r\n        {set notables to cat(notables, [cat(\"an incredibly low solar radius of \", Humanise(event.solarradius))])}\r\n    |elif event.radiusprobability <0.1:\r\n        {set notables to cat(notables, [cat(\"an extremely low solar radius of \", Humanise(event.solarradius))])}\r\n    |elif event.radiusprobability <1:\r\n        {set notables to cat(notables, [\"an unusually low solar radius\"])}\r\n    |elif event.radiusprobability <10:\r\n        {set notables to cat(notables, [\"lower than average solar radius\"])}\r\n    |elif event.radiusprobability > 99.99:\r\n        {set notables to cat(notables, [cat(\"an extremely high solar radius of \", Humanise(event.solarradius))])}\r\n    |elif event.radiusprobability > 99.9:\r\n        {set notables to cat(notables, [cat(\"an incredibly high solar radius of \", Humanise(event.solarradius))])}\r\n    |elif event.radiusprobability > 99:\r\n        {set notables to cat(notables, [\"an unusually high solar radius\"])}\r\n    |elif event.radiusprobability > 90:\r\n        {set notables to cat(notables, [\"higher than average solar radius\"])}\r\n    }\r\n\r\n    {if event.tempprobability < 0.01:\r\n        {set notables to cat(notables, [cat(\"an incredibly low surface temperature of \", Humanise(event.temperature), \" kelvin\")])}\r\n    |elif event.tempprobability <0.1:\r\n        {set notables to cat(notables, [cat(\"an extremely low surface temperature of \", Humanise(event.temperature), \" kelvin\")])}\r\n    |elif event.tempprobability <1:\r\n        {set notables to cat(notables, [\"an unusually low surface temperature\"])}\r\n    |elif event.tempprobability <10:\r\n        {set notables to cat(notables, [\"lower than average surface temperature\"])}\r\n    |elif event.tempprobability > 99.99:\r\n        {set notables to cat(notables, [cat(\"an extremely high surface temperature of \", Humanise(event.temperature), \" kelvin\")])}\r\n    |elif event.tempprobability > 99.9:\r\n        {set notables to cat(notables, [cat(\"an incredibly high surface temperature of \", Humanise(event.temperature), \" kelvin\")])}\r\n    |elif event.tempprobability > 99:\r\n        {set notables to cat(notables, [\"an unusually high surface temperature\"])}\r\n    |elif event.tempprobability > 90:\r\n        {set notables to cat(notables, [\"higher than average surface temperature\"])}\r\n    }\r\n\r\n    {if len(notables) = 0:\r\n        {OneOf(\"\", \"This is a typical example of this class of star.\", \"There is nothing particularly notable about this star.\", \"It is an average example for such a star.\")}\r\n    |else:\r\n        {OneOf('Compared to other stars in its class', 'In comparison to other {event.stellarclass}-class stars', 'Relative to other {event.stellarclass}-class stars')}, this star is\r\n        {if len(notables) = 1:\r\n            notable for having {notables[0]}.\r\n        |elif len(notables) = 2:\r\n            {OneOf('interesting', 'unusual')}, with {notables[0]} and {notables[1]}.\r\n        |elif len(notables) = 3:\r\n            {OneOf('exceptional', 'remarkable')}, with {notables[0]}, {notables[1]} and {notables[2]}.\r\n        }\r\n    }\r\n}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'star')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_star_system', system.name)}\r\n{SetState('eddi_context_star_star', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan of {event.stellarclass}-class star {P(event.name)} complete.\r\n\r\n{F(\"Star report\")}\r\n",
       "name": "Star scanned",
       "description": "Triggered when you complete a scan of a stellar body"
     },
@@ -662,7 +702,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Is it me, or is it cold in here?",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'cockpit')}\r\n{SetState('eddi_context_last_action', 'breach')}\r\n\r\nIs it me, or is it cold in here?",
       "name": "Cockpit breached",
       "description": "Triggered when your ship's cockpit is broken"
     },
@@ -670,7 +710,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'cargo')}\r\n{SetState('eddi_context_last_action', 'collect')}\r\n{SetState('eddi_context_cargo_name', event.cargo)}\r\n{SetState('eddi_context_bounty_name', event.target)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.reward)}\r\n\r\n{event.cargo} now on board.",
       "name": "Commodity collected",
       "description": "Triggered when you pick up a commodity in your ship or SRV"
     },
@@ -702,7 +742,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "You have been recognised for your combat skills, {F(\"Honorific\")}.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'rank')}\r\n{SetState('eddi_context_last_action', 'promotion')}\r\n{SetState('eddi_context_rank_name', 'combat')}\r\n{SetState('eddi_context_rank_amount', event.rating)}\r\n\r\nYou have been recognised for your combat skills, {F(\"Honorific\")}.",
       "name": "Combat promotion",
       "description": "Triggered when your combat rank increases"
     },
@@ -710,7 +750,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "You owe {P(event.faction)} {Humanise(event.fine)} credits for that.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fine')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_fine_name', event.victim)}\r\n{SetState('eddi_context_fine_faction', event.faction)}\r\n{SetState('eddi_context_fine_amount', event.fine)}\r\n\r\nYou owe {P(event.faction)} {Humanise(event.fine)} credits for that.",
       "name": "Fine incurred",
       "description": "Triggered when your incur a fine"
     },
@@ -734,7 +774,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(500)}\r\n{if len(event.rewards) = 1:\r\n    Bounty voucher of {Humanise(event.reward)} credits received from {P(event.rewards[0].faction)}\r\n|elif len(event.rewards) > 1:\r\n    {len(event.rewards)} bounty vouchers received for a total of {Humanise(event.reward)} credits\r\n}\r\n{if event.shared:\r\n    to share between yourself and your wing-mates\r\n}.\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n{SetState('eddi_context_bounty_name', event.target)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.reward)}\r\n\r\n{Pause(500)}\r\n{if len(event.rewards) = 1:\r\n    Bounty voucher of {Humanise(event.reward)} credits received from {P(event.rewards[0].faction)}\r\n|elif len(event.rewards) > 1:\r\n    {len(event.rewards)} bounty vouchers received for a total of {Humanise(event.reward)} credits\r\n}\r\n{if event.shared:\r\n    to share between yourself and your wing-mates\r\n}.\r\n",
       "name": "Bounty awarded",
       "description": "Triggered when you are awarded a bounty"
     },
@@ -766,7 +806,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Full control re-established\", \"Docking clamps free\", \"Disengaged from local networks\")}.\r\n\r\n{Pause(5000)}\r\n\r\n{F(\"Limpet check\")}\r\n",
+      "script": "{OneOf(\"Full control re-established\", \"Docking clamps free\", \"Disengaged from local networks\")}.\r\n\r\n{set limpetcheck to F(\"Limpet check\")}\r\n\r\n{if limpetcheck:\r\n    {Pause(5000)}\r\n    {limpetcheck}\r\n}\r\n",
       "name": "Undocked",
       "description": "Triggered when your ship undocks from a station or outpost"
     },
@@ -774,7 +814,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(2000)}\r\n\r\n{OneOf(\"Establishing uplink with\",\r\n             \"Initiating link to\",\r\n             \"Connecting to \",\r\n             \"Accessing\")}\r\n{OneOf(\"local\", \"station\", \"{event.station}'s\")}\r\n{OneOf(\"data net\", \"network\", \"networks\", \"computers\", \"services\")}.\r\n\r\n{Pause(10000)}\r\n\r\n{OneOf(\"Uplink\", \"Link\", \"Access\", \"Connection\")} {OneOf(\"established\", \"confirmed\", \"obtained\", \"authorised\")}.\r\n\r\n{F(\"Commodity sale check\")}\r\n\r\n{if ship.role = \"Multi-purpose\" || ship.role = \"Trading\":\r\n    {F(\"Commodity purchase check\")}\r\n}\r\n\r\n{F(\"Swapout check\")}\r\n\r\n{F(\"Limpet check\")}",
+      "script": "{Pause(2000)}\r\n\r\n{_ Find out in advance what we have to say }\r\n{if ship.role = \"Multi-purpose\" || ship.role = \"Trading\":\r\n    {set purchasecheck to F(\"Commodity purchase check\")}\r\n}\r\n{set limpetcheck to F(\"Limpet check\")}\r\n{set swapoutcheck to F(\"Swapout check\")}\r\n{set salecheck to F(\"Commodity sale check\")}\r\n\r\n{if purchasecheck || salecheck || limpetcheck || swapoutcheck:\r\n    {OneOf(\"Establishing uplink with\",\r\n           \"Initiating link to\",\r\n           \"Connecting to \",\r\n           \"Accessing\")}\r\n    {OneOf(\"local\", \"station\", \"{event.station}'s\")}\r\n    {OneOf(\"data net\", \"network\", \"networks\", \"computers\", \"services\")}.\r\n\r\n    {Pause(10000)}\r\n    {OneOf(\"Uplink\", \"Link\", \"Access\", \"Connection\")} {OneOf(\"established\", \"confirmed\", \"obtained\", \"authorised\")}.\r\n    {salecheck}\r\n    {purchasecheck}\r\n    {swapoutcheck}\r\n    {limpetcheck}\r\n|else:\r\n    {OneOf(\"Communications with\", \"Access to\", \"Link to\", \"Access to\")}\r\n    {OneOf(\"local\", \"station\", \"{event.station}'s\")}\r\n    {OneOf(\"data net\", \"network\", \"networks\", \"computers\", \"services\")}\r\n    {OneOf(\"established\", \"confirmed\", \"authorised\", \"obtained\")}.\r\n}",
       "name": "Docked",
       "description": "Triggered when your ship docks at a station or outpost"
     },
@@ -782,7 +822,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n",
       "name": "Jumped",
       "description": "Triggered when you complete a jump to another system"
     },
@@ -801,22 +841,6 @@
       "script": null,
       "name": "Power expansion vote cast",
       "description": "Triggered when a commander votes for system expansion"
-    },
-    "Cargo ejected": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{event.cargo} ejected.",
-      "name": "Cargo ejected",
-      "description": "Triggered when you eject cargo from your ship or SRV"
-    },
-    "Cargo collected": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{event.cargo} now on board.",
-      "name": "Cargo collected",
-      "description": "Triggered when you pick up cargo in your ship or SRV"
     },
     "Honorific": {
       "enabled": true,
@@ -838,9 +862,9 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{OneOf(\"This is\", \"This system is\", \"{P(system.name)} is\")}\r\n{if system.allegiance = \"Federation\":\r\n    a Federation\r\n|elif system.allegiance = \"Empire\":\r\n    an Empire\r\n|else:\r\n    an independent\r\n}\r\n{if system.government:\r\n    {system.government}\r\n|else:\r\n  system\r\n}\r\n{OneOf(\"of\", \"with a population of\", \"home to\", \"supporting\")} {Humanise(system.population)} {OneOf(\"people\", \"souls\")}\r\n{if system.power:\r\n    , {OneOf(\"aligned to\", \"allied with\", \"controlled by\")} {P(system.power)}\r\n}.\r\n\r\n{if system.faction:\r\n  {P(system.faction)} is the {OneOf(\"controlling\", \"local\", \"immediate\")} {OneOf(\"power\", \"faction\")}.\r\n}\r\n\r\n{if len(system.stations) = 0:\r\n  There are no stations\r\n|else:\r\n    {if len(system.orbitalstations) = 0:\r\n        {if len(system.planetarystations) = 1:\r\n            There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} planetary station\r\n        |else:\r\n            There are {len(system.planetarystations)} planetary stations\r\n        }\r\n    |elif len(system.orbitalstations) = 1:\r\n        There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} orbital station\r\n        {if len(system.planetarystations) = 1:\r\n            and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n        |elif len(system.planetarystations) > 1:\r\n            and {len(system.planetarystations)} planetary stations\r\n        }\r\n    |else:\r\n        There are {len(system.orbitalstations)} orbital stations\r\n        {if len(system.planetarystations) = 1:\r\n            and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n        |elif len(system.planetarystations) > 1:\r\n            and {len(system.planetarystations)} planetary stations\r\n        }\r\n    }\r\n}\r\n{OneOf(\"here\", \"in this system\")}.\r\n\r\n{if system.state = \"Boom\":\r\n    This system is undergoing a boom; there might be good trading profits to be made here.\r\n|elif system.state = \"Civil War\":\r\n    This system is in civil war; caution is advised.\r\n|elif system.state = \"Famine\":\r\n    This system is in a state of famine; caution is advised.\r\n|elif system.state = \"Lockdown\":\r\n    This system is in lockdown; caution is advised.\r\n|elif system.state = \"Outbreak\":\r\n    This system is attempting to contain an outbreak of disease; caution is advised.\r\n|elif system.state = \"War\":\r\n    This system is at war; caution is advised.\r\n}",
+      "script": "{_ Fetch from context }\r\n{set reportsystem to SystemDetails(state.eddi_context_system_system)}\r\n\r\n{if !reportsystem.name || reportbody.name = \"\":\r\n    I'm not sure which system you are asking about.\r\n|else:\r\n    {P(reportsystem.name)} is\r\n    {if reportsystem.allegiance = \"Federation\":\r\n        a Federation\r\n    |elif reportsystem.allegiance = \"Empire\":\r\n        an Empire\r\n    |else:\r\n        an independent\r\n    }\r\n    {if reportsystem.government:\r\n        {reportsystem.government}\r\n    |else:\r\n      system\r\n    }\r\n    {OneOf(\"of\", \"with a population of\", \"home to\", \"supporting\")} {Humanise(reportsystem.population)} {OneOf(\"people\", \"souls\")}\r\n    {if reportsystem.power:\r\n        , {OneOf(\"aligned to\", \"allied with\", \"controlled by\")} {P(reportsystem.power)}\r\n    }.\r\n\r\n    {if reportsystem.faction:\r\n      {P(reportsystem.faction)} is the {OneOf(\"controlling\", \"local\", \"immediate\")} {OneOf(\"power\", \"faction\")}.\r\n    }\r\n\r\n    {if len(reportsystem.stations) = 0:\r\n      There are no stations present\r\n    |else:\r\n        {if len(reportsystem.orbitalstations) = 0:\r\n            {if len(reportsystem.planetarystations) = 1:\r\n                There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} planetary station\r\n            |else:\r\n                There are {len(reportsystem.planetarystations)} planetary stations\r\n            }\r\n        |elif len(reportsystem.orbitalstations) = 1:\r\n            There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} orbital station\r\n            {if len(reportsystem.planetarystations) = 1:\r\n                and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n            |elif len(reportsystem.planetarystations) > 1:\r\n                and {len(reportsystem.planetarystations)} planetary stations\r\n            }\r\n        |else:\r\n            There are {len(reportsystem.orbitalstations)} orbital stations\r\n            {if len(reportsystem.planetarystations) = 1:\r\n                and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n            |elif len(reportsystem.planetarystations) > 1:\r\n                and {len(reportsystem.planetarystations)} planetary stations\r\n            }\r\n        }\r\n    }\r\n    in this system.\r\n}",
       "name": "System report",
-      "description": "Function to report on the details of the current star system"
+      "description": "Function to report on the details of the contextual star system"
     },
     "Limpet check": {
       "enabled": true,
@@ -894,9 +918,57 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{_ Function to find a given commodity in market}\r\n{set market(commodity) to:\r\n    {for marketcommodity in station.commodities:\r\n        {if marketcommodity.EDDBID = commodity.EDDBID:\r\n            {return marketcommodity}\r\n        }\r\n    }\r\n}\r\n\r\n{for cargo in ship.cargo:\r\n    {if cargo.stolen:\r\n      {set carryingstolencargo to true}\r\n    |elif cargo.commodity.name != 'Limpet' && !cargo.missionid:\r\n        {set marketcommodity to market(cargo.commodity)}\r\n        {if marketcommodity && marketcommodity.demand > 0 && marketcommodity.sellprice && marketcommodity.sellprice > cargo.price:\r\n            You can sell your {cargo.commodity.name} here for a profit of {marketcommodity.sellprice - cargo.price} credits per tonne.\r\n        }\r\n    }\r\n}\r\n\r\n{if carryingstolencargo:\r\n    Reminder: you {OneOf(\"have stolen cargo on-board\", \"have stolen goods on-board\", \"are carrying stolen goods\", \"are carrying stolen cargo\")}.\r\n}\r\n",
+      "script": "{_ Function to find a given commodity in market}\r\n{set market(commodity) to:\r\n    {for marketcommodity in station.commodities:\r\n        {if marketcommodity.EDDBID = commodity.EDDBID:\r\n            {return marketcommodity}\r\n        }\r\n    }\r\n}\r\n\r\n{set totalprofit to 0}\r\n{set profitablecommodities to []}\r\n{set stolencommodities to []}\r\n\r\n{for cargo in ship.cargo:\r\n    {if cargo.commodity.name != 'Limpet':\r\n        {set marketcommodity to market(cargo.commodity)}\r\n        {set profit to (marketcommodity.sellprice - cargo.price) * cargo.amount}\r\n        {if cargo.stolen = true:\r\n            {set stolencommodities to cat(stolencommodities, [cargo.commodity])}\r\n        |elif cargo.missionid:\r\n            {_ don't do anything with mission cargo at the moment}\r\n        |elif marketcommodity && profit > 0:\r\n            {set profitablecommodities to cat(profitablecommodities, [cargo.commodity])}\r\n            {set totalprofit to totalprofit + profit}\r\n        }\r\n    }\r\n}\r\n\r\n{if len(profitablecommodities) > 0:\r\n    You can sell your\r\n    {if len(profitablecommodities) = 1:\r\n        {profitablecommodities[0].name}\r\n    |elif len(profitablecommodities) = 2:\r\n        {profitablecommodities[0].name} and {profitablecommodities[1].name}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(profitablecommodities):\r\n            {if cur = 0:\r\n                {profitablecommodities[cur].name}\r\n            |elif cur < len(profitablecommodities) - 1:\r\n                , {profitablecommodities[cur].name}\r\n            |else:\r\n                , and {profitablecommodities[cur].name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n    for a profit of {totalprofit} credits.\r\n}\r\n\r\n{if len(stolencommodities) > 0 && station.hasblackmarket:\r\n    You can {OneOf('offload, dump', 'fence')} your stolen\r\n    {if len(stolencommodities) = 1:\r\n        {stolencommodities[0].name}\r\n    |elif len(stolencommodities) = 2:\r\n        {stolencommodities[0].name} and {stolencommodities[1].name}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(stolencommodities):\r\n            {if cur = 0:\r\n                {stolencommodities[cur].name}\r\n            |elif cur < len(stolencommodities) - 1:\r\n                , {stolencommodities[cur].name}\r\n            |else:\r\n                , and {stolencommodities[cur].name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n    here.\r\n}\r\n",
       "name": "Commodity sale check",
       "description": "Check to see which commodities can be sold here"
+    },
+    "Repeat last speech": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{state.eddi_context_last_speech}",
+      "name": "Repeat last speech",
+      "description": "Repeat the last thing said"
+    },
+    "Landing pad report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{set landingpad to state.eddi_context_landing_pad_pad}\r\nLanding pad {landingpad} is at\r\n{if landingpad = 1:\r\n    six o'clock near\r\n|elif landingpad = 2:\r\n    six o'clock near\r\n|elif landingpad = 3:\r\n    six o'clock far\r\n|elif landingpad = 4:\r\n    six o'clock far\r\n|elif landingpad = 5:\r\n    seven o'clock near\r\n|elif landingpad = 6:\r\n    seven o'clock near\r\n|elif landingpad = 7:\r\n    seven o'clock far\r\n|elif landingpad = 8:\r\n    seven o'clock far\r\n|elif landingpad = 9:\r\n    eight o'clock near\r\n|elif landingpad = 10:\r\n    eight o'clock far\r\n|elif landingpad = 11:\r\n    nine o'clock near\r\n|elif landingpad = 12:\r\n    nine o'clock near\r\n|elif landingpad = 13:\r\n    nine o'clock mid\r\n|elif landingpad = 14:\r\n    nine o'clock far\r\n|elif landingpad = 15:\r\n    nine o'clock far\r\n|elif landingpad = 16:\r\n    ten o'clock near\r\n|elif landingpad = 17:\r\n    ten o'clock near\r\n|elif landingpad = 18:\r\n    ten o'clock far\r\n|elif landingpad = 19:\r\n    ten o'clock far\r\n|elif landingpad = 20:\r\n    eleven o'clock near\r\n|elif landingpad = 21:\r\n    eleven o'clock near\r\n|elif landingpad = 22:\r\n    eleven o'clock far\r\n|elif landingpad = 23:\r\n    eleven o'clock far\r\n|elif landingpad = 24:\r\n    twelve o'clock near\r\n|elif landingpad = 25:\r\n    twelve o'clock far\r\n|elif landingpad = 26:\r\n    one o'clock near\r\n|elif landingpad = 27:\r\n    one o'clock near\r\n|elif landingpad = 28:\r\n    one o'clock mid\r\n|elif landingpad = 29:\r\n    one o'clock far\r\n|elif landingpad = 30:\r\n    one o'clock far\r\n|elif landingpad = 31:\r\n    two o'clock near\r\n|elif landingpad = 32:\r\n    two o'clock near\r\n|elif landingpad = 33:\r\n    two o'clock far\r\n|elif landingpad = 34:\r\n    two o'clock far\r\n|elif landingpad = 35:\r\n    three o'clock near\r\n|elif landingpad = 36:\r\n    three o'clock near\r\n|elif landingpad = 37:\r\n    three o'clock mid\r\n|elif landingpad = 38:\r\n    three o'clock far\r\n|elif landingpad = 39:\r\n    four o'clock near\r\n|elif landingpad = 40:\r\n    four o'clock far\r\n|elif landingpad = 41:\r\n    five o'clock near\r\n|elif landingpad = 42:\r\n    five o'clock near\r\n|elif landingpad = 43:\r\n    five o'clock mid\r\n|elif landingpad = 44:\r\n    five o'clock far\r\n|elif landingpad = 45:\r\n    five o'clock far\r\n}\r\n, as you enter with the green lights on your right.\r\n\r\n",
+      "name": "Landing pad report",
+      "description": "Report on the location of a landing pad"
+    },
+    "Body report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch from context }\r\n{set reportbody to BodyDetails(state.eddi_context_body_name, state.eddi_context_body_system)}\r\n\r\n{if !reportbody.name || reportbody.name = \"\":\r\n    I'm not sure which body you are asking about.\r\n|else:\r\n    {P(reportbody.name)} is a\r\n    {if reportbody.gravity < 0.5:\r\n        low-gravity\r\n    |elif reportbody.gravity <2:\r\n        medium-gravity\r\n    |elif reportbody.gravity <4:\r\n        high-gravity\r\n    |else:\r\n        extremely high-gravity\r\n    }\r\n\r\n    {if reportbody.tidallylocked:\r\n        tidally-locked\r\n    }\r\n\r\n    {if reportbody.terraformstate = \"Terraformable\":\r\n        terraformable\r\n    |elif reportbody.terraformstate = \"Terraformed\":\r\n        terraformed\r\n    }\r\n\r\n    {if len(reportbody.rings) > 0:\r\n        ringed\r\n    }\r\n\r\n    {reportbody.planettype}\r\n\r\n    {if reportbody.terraformstate = \"Terraforming\":\r\n      in the process of being terraformed\r\n    }\r\n\r\n    that is\r\n\r\n    {if reportbody.landable:\r\n        suitable\r\n    |else:\r\n        unsuitable\r\n    }\r\n    for landing.\r\n\r\n    {_ Atmosphere? }\r\n\r\n    {_ Volcanism? }\r\n\r\n    {if reportbody.landable :\r\n        It has a\r\n        {if reportbody.rotationalperiod <= 0.5:\r\n            fast\r\n        |elif reportbody.rotationalperiod > 20.0:\r\n            slow\r\n        }\r\n        rotational period of {Humanise(reportbody.rotationalperiod)} days.\r\n\r\n        {set goodmaterials to []}\r\n        {set greatmaterials to []}\r\n        {for material in reportbody.materials:\r\n            {if material.percentage >= MaterialDetails(material.material).greatpctbody:\r\n                {set greatmaterials to cat(greatmaterials, [material])}\r\n            |elif material.percentage >= MaterialDetails(material.material).goodpctbody:\r\n                {set goodmaterials to cat(goodmaterials, [material])}\r\n            }\r\n        }\r\n\r\n        {if len(greatmaterials) > 0:\r\n            This body contains very high levels of\r\n            {if len(greatmaterials) = 1:\r\n                {greatmaterials[0].material}\r\n            |elif len(greatmaterials) = 2:\r\n                {greatmaterials[0].material} and {greatmaterials[1].material}\r\n            |else:\r\n                {set cur to 0}\r\n                {while cur < len(greatmaterials):\r\n                    {if cur = 0:\r\n                        {greatmaterials[cur].material}\r\n                    |elif cur < len(greatmaterials) - 1:\r\n                        , {greatmaterials[cur].material}\r\n                    |else:\r\n                        , and {greatmaterials[cur].material}\r\n                    }\r\n                    {set cur to cur + 1}\r\n                }\r\n            }\r\n        }\r\n        {if len(goodmaterials) > 0:\r\n            {if len(greatmaterials) > 0:\r\n                and high levels of\r\n            |else:\r\n                This body contains high levels of\r\n            }\r\n            {if len(goodmaterials) = 1:\r\n                {goodmaterials[0].material}\r\n            |elif len(goodmaterials) = 2:\r\n                {goodmaterials[0].material} and {goodmaterials[1].material}\r\n            |else:\r\n                {set cur to 0}\r\n                {while cur < len(goodmaterials):\r\n                    {if cur = 0:\r\n                        {goodmaterials[cur].material}\r\n                    |elif cur < len(goodmaterials) - 1:\r\n                        , {goodmaterials[cur].material}\r\n                    |else:\r\n                        , and {goodmaterials[cur].material}\r\n                    }\r\n                    {set cur to cur + 1}\r\n                }\r\n            }\r\n        }\r\n        {if len(greatmaterials) > 0 || len(goodmaterials) > 0:\r\n            .\r\n        }\r\n    }\r\n}",
+      "name": "Body report",
+      "description": "Function to report on the details of the contextual body"
+    },
+    "Star report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch from context }\r\n{set reportbody to BodyDetails(state.eddi_context_star_star, state.eddi_context_star_system)}\r\n\r\n{if !reportbody.name || reportbody.name = \"\":\r\n    I'm not sure which star you are asking about.\r\n|else:\r\n    {set mainsequence to 0}\r\n    This is\r\n    {if reportbody.stellarclass = \"O\":\r\n        an incredibly rare main sequence star\r\n        {set mainsequence to 1}\r\n    |elif reportbody.stellarclass = \"B\":\r\n        a very rare main sequence star\r\n        {set mainsequence to 1}\r\n    |elif reportbody.stellarclass = \"A\":\r\n        a rare main sequence star\r\n        {set mainsequence to 1}\r\n    |elif reportbody.stellarclass = \"F\":\r\n        an uncommon main sequence star\r\n        {set mainsequence to 1}\r\n    |elif reportbody.stellarclass = \"G\":\r\n        a common main sequence star\r\n        {set mainsequence to 1}\r\n    |elif reportbody.stellarclass = \"K\":\r\n        a common main sequence star\r\n        {set mainsequence to 1}\r\n    |elif reportbody.stellarclass = \"M\":\r\n        a very common main sequence star\r\n        {set mainsequence to 1}\r\n    |elif reportbody.stellarclass = \"L\":\r\n        a brown dwarf\r\n    |elif reportbody.stellarclass = \"T\":\r\n        a brown dwarf\r\n    |elif reportbody.stellarclass = \"Y\":\r\n        a brown dwarf\r\n    |elif reportbody.stellarclass = \"TTS\":\r\n        a T tauri star in the process of gravitational contraction\r\n    |elif reportbody.stellarclass = \"AeBe\":\r\n        a very young proto-star yet to enter main sequence {Occasionally(4, \"but on the way to becoming an A or B class star\")}\r\n    |elif reportbody.stellarclass = \"W\":\r\n        an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n    |elif reportbody.stellarclass = \"WN\":\r\n        an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n    |elif reportbody.stellarclass = \"WNC\":\r\n        an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n    |elif reportbody.stellarclass = \"WC\":\r\n        an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n    |elif reportbody.stellarclass = \"WO\":\r\n        an old star {Occasionally(4, \"nearing the end of its lifecycle and no longer burning hydrogen\")}\r\n    |elif reportbody.stellarclass = \"CS\":\r\n        a carbon star\r\n    |elif reportbody.stellarclass = \"C\":\r\n        a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(4, \"with an atmosphere dominated by carbon\")}\r\n    |elif reportbody.stellarclass = \"CN\":\r\n        a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(4, \"with an atmosphere dominated by carbon\")}\r\n    |elif reportbody.stellarclass = \"CJ\":\r\n        a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(2, \"with high levels of carbon 13 in its atmosphere\")}\r\n    |elif reportbody.stellarclass = \"CH\":\r\n        a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(4, \"with an atmosphere dominated by carbon\")}\r\n    |elif reportbody.stellarclass = \"CHd\":\r\n        a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(4, \"with an atmosphere dominated by carbon\")}\r\n    |elif reportbody.stellarclass = \"MS\":\r\n        a late sequence star {Occasionally(4, \"that was once an M class star and is on the way to becoming a carbon star\")}\r\n    |elif reportbody.stellarclass = \"S\":\r\n        a late sequence star {Occasionally(4, \"that was once an M class star and is becoming a carbon star\")}\r\n    |elif reportbody.stellarclass = \"D\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"DA\":\r\n        a white dwarf {Occasionally(4, \"with a hydrogen-rich atmosphere\")}\r\n    |elif reportbody.stellarclass = \"DAB\":\r\n        a white dwarf {Occasionally(4, \"with an atmosphere rich in hydrogen and helium\")}\r\n    |elif reportbody.stellarclass = \"DAO\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"DAZ\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"DAV\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"DB\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"DBZ\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"DBV\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"DO\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"DOV\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"DQ\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"DC\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"DCV\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"DX\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"N\":\r\n        a neuutron star {Occasionally(4, \"that has a dangerously high-density core\")}\r\n    |elif reportbody.stellarclass = \"H\":\r\n        a black hole\r\n    |elif reportbody.stellarclass = \"X\":\r\n        an exotic stellar entity\r\n    |elif reportbody.stellarclass = \"SuperMassiveBlackHole\":\r\n         a supermassive black hole\r\n    |elif reportbody.stellarclass = \"A_BlueWhiteSuperGiant\":\r\n        a blue-white supergiant {Occasionally(4, \"that is expanding towards being a red supergiant\")}\r\n    |elif reportbody.stellarclass = \"F_WhiteSuperGiant\":\r\n        a yellow-white supergiant {Occasionally(4, \"that is expanding towards being a red supergiant\")}\r\n    |elif reportbody.stellarclass = \"M_RedSuperGiant\":\r\n        a red supergiant {Occasionally(4, \"in its helium burning phase\")}\r\n    |elif reportbody.stellarclass = \"M_RedGiant\":\r\n        a red giant {Occasionally(4, \"that is expanding towards being a red supergiant\")}\r\n    |elif reportbody.stellarclass = \"K_OrangeGiant\":\r\n        an orange giant {Occasionally(4, \"that is expanding as it heads towards the end of its life\")}\r\n    |elif reportbody.stellarclass = \"RoguePlanet\":\r\n        a rogue planet\r\n    |elif reportbody.stellarclass = \"Nebula\":\r\n        a nebula\r\n    |elif reportbody.stellarclass = \"StellarRemnantNebula\":\r\n        a nebula remnant\r\n    }\r\n\r\n    {OneOf(\"that has been around for {Humanise(reportbody.age)} years\",\r\n           \"that is {Humanise(reportbody.age)} years old\",\r\n           \"of {Humanise(reportbody.age)} years\",\r\n    )}\r\n    {if reportbody.age < 1000000:\r\n        making it one of the youngest stars in the galaxy\r\n    |elif reportbody.age >14000000000:\r\n        making it one of the oldest stars in the galaxy\r\n    }.\r\n\r\n    {if mainsequence = 1:\r\n        {Occasionally(2,\"As you can see, it emits a {reportbody.chromaticity} light.\")}\r\n\r\n        {set notables to []}\r\n\r\n        {if reportbody.massprobability < 0.01:\r\n            {set notables to cat(notables, [cat(\"an incredibly low solar mass of \", Humanise(reportbody.solarmass))])}\r\n        |elif reportbody.massprobability <0.1:\r\n            {set notables to cat(notables, [cat(\"an extremely low solar mass of \", Humanise(reportbody.solarmass))])}\r\n        |elif reportbody.massprobability <1:\r\n            {set notables to cat(notables, [\"an unusually low solar mass\"])}\r\n        |elif reportbody.massprobability <10:\r\n            {set notables to cat(notables, [\"lower than average solar mass\"])}\r\n        |elif reportbody.massprobability > 99.99:\r\n            {set notables to cat(notables, [cat(\"an incredibly high solar mass of \", Humanise(reportbody.solarmass))])}\r\n        |elif reportbody.massprobability > 99.9:\r\n            {set notables to cat(notables, [cat(\"an extremely high solar mass of \", Humanise(reportbody.solarmass))])}\r\n        |elif reportbody.massprobability > 99:\r\n            {set notables to cat(notables, [\"an unusually high solar mass\"])}\r\n        |elif reportbody.massprobability > 90:\r\n            {set notables to cat(notables, [\"higher than average solar mass\"])}\r\n        }\r\n\r\n        {if reportbody.radiusprobability < 0.01:\r\n            {set notables to cat(notables, [cat(\"an incredibly low solar radius of \", Humanise(reportbody.solarradius))])}\r\n        |elif reportbody.radiusprobability <0.1:\r\n            {set notables to cat(notables, [cat(\"an extremely low solar radius of \", Humanise(reportbody.solarradius))])}\r\n        |elif reportbody.radiusprobability <1:\r\n            {set notables to cat(notables, [\"an unusually low solar radius\"])}\r\n        |elif reportbody.radiusprobability <10:\r\n            {set notables to cat(notables, [\"lower than average solar radius\"])}\r\n        |elif reportbody.radiusprobability > 99.99:\r\n            {set notables to cat(notables, [cat(\"an extremely high solar radius of \", Humanise(reportbody.solarradius))])}\r\n        |elif reportbody.radiusprobability > 99.9:\r\n            {set notables to cat(notables, [cat(\"an incredibly high solar radius of \", Humanise(reportbody.solarradius))])}\r\n        |elif reportbody.radiusprobability > 99:\r\n            {set notables to cat(notables, [\"an unusually high solar radius\"])}\r\n        |elif reportbody.radiusprobability > 90:\r\n            {set notables to cat(notables, [\"higher than average solar radius\"])}\r\n        }\r\n\r\n        {if reportbody.tempprobability < 0.01:\r\n            {set notables to cat(notables, [cat(\"an incredibly low surface temperature of \", Humanise(reportbody.temperature), \" kelvin\")])}\r\n        |elif reportbody.tempprobability <0.1:\r\n            {set notables to cat(notables, [cat(\"an extremely low surface temperature of \", Humanise(reportbody.temperature), \" kelvin\")])}\r\n        |elif reportbody.tempprobability <1:\r\n            {set notables to cat(notables, [\"an unusually low surface temperature\"])}\r\n        |elif reportbody.tempprobability <10:\r\n            {set notables to cat(notables, [\"lower than average surface temperature\"])}\r\n        |elif reportbody.tempprobability > 99.99:\r\n            {set notables to cat(notables, [cat(\"an extremely high surface temperature of \", Humanise(reportbody.temperature), \" kelvin\")])}\r\n        |elif reportbody.tempprobability > 99.9:\r\n            {set notables to cat(notables, [cat(\"an incredibly high surface temperature of \", Humanise(reportbody.temperature), \" kelvin\")])}\r\n        |elif reportbody.tempprobability > 99:\r\n            {set notables to cat(notables, [\"an unusually high surface temperature\"])}\r\n        |elif reportbody.tempprobability > 90:\r\n            {set notables to cat(notables, [\"higher than average surface temperature\"])}\r\n        }\r\n\r\n        {if len(notables) = 0:\r\n            {OneOf(\"\", \"This is a typical example of this class of star.\", \"There is nothing particularly notable about this star.\", \"It is an average example for such a star.\")}\r\n        |else:\r\n            {OneOf('Compared to other stars in its class', 'In comparison to other {reportbody.stellarclass}-class stars', 'Relative to other {reportbody.stellarclass}-class stars')}, this star is\r\n            {if len(notables) = 1:\r\n                notable for having {notables[0]}.\r\n            |elif len(notables) = 2:\r\n                {OneOf('interesting', 'unusual')}, with {notables[0]} and {notables[1]}.\r\n            |elif len(notables) = 3:\r\n                {OneOf('exceptional', 'remarkable')}, with {notables[0]}, {notables[1]} and {notables[2]}.\r\n            }\r\n        }\r\n    }    \r\n}",
+      "name": "Star report",
+      "description": "Function to report on the details of the contextual body"
+    },
+    "System distance report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch from context }\r\n{set reportsystem to SystemDetails(state.eddi_context_system_system)}\r\n\r\n{if !reportsystem.name || reportbody.name = \"\":\r\n    I'm not sure which system you are asking about.\r\n|else:\r\n    Distance to {P(reportsystem.name)} is {Humanise(Distance(reportsystem.x, reportsystem.y, reportsystem.z, system.x, system.y, system.z))} light years.\r\n}\r\n\r\n\r\n\r\n",
+      "name": "System distance report",
+      "description": "Function to report on the distance to the contextual system"
+    },
+    "System state report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch from context }\r\n{set reportsystem to SystemDetails(state.eddi_context_system_system)}\r\n\r\n{if !reportsystem.name || reportbody.name = \"\":\r\n    I'm not sure which system you are asking about.\r\n|else:\r\n    {P(reportsystem.name)}\r\n    {if reportsystem.state = \"None\":\r\n      is not in any particular state at current\r\n    |elif reportsystem.state = \"Retreat\":\r\n        is in retreat\r\n    |elif reportsystem.state = \"War\":\r\n        is at war; caution is advised\r\n    |elif reportsystem.state = \"Boom\":\r\n        is undergoing a boom; there might be good trading profits to be made here\r\n    |elif reportsystem.state = \"Civil War\":\r\n        is experiencing civil unrest; caution is advised\r\n    |elif reportsystem.state = \"Civil War\":\r\n        is in civil war; caution is advised\r\n    |elif reportsystem.state = \"Famine\":\r\n        is in a state of famine; caution is advised\r\n    |elif reportsystem.state = \"Lockdown\":\r\n        is in lockdown; caution is advised\r\n    |elif reportsystem.state = \"Outbreak\":\r\n        is attempting to contain an outbreak of disease; caution is advised\r\n    |elif reportsystem.state = \"Expansion\":\r\n        is gearing up to expand to another system\r\n    |elif reportsystem.state = \"Bust\":\r\n        is financially bust\r\n    |elif reportsystem.state = \"Election\":\r\n        is electing new leaders\r\n    |elif reportsystem.state = \"Investment\":\r\n        is investing in its infrastructure\r\n    |else:\r\n    }\r\n    .\r\n}",
+      "name": "System state report",
+      "description": "Report on the current state of the contextual system"
     }
   }
 }

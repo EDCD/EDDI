@@ -201,6 +201,10 @@ namespace EddiSpeechResponder
                 foreach (string key in EDDI.Instance.State.Keys)
                 {
                     object value = EDDI.Instance.State[key];
+                    if (value == null)
+                    {
+                        continue;
+                    }
                     Type valueType = value.GetType();
                     if (valueType == typeof(string))
                     {

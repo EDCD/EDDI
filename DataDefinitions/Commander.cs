@@ -24,6 +24,9 @@ namespace EddiDataDefinitions
         /// <summary>The commander's exploration rating</summary>
         public ExplorationRating explorationrating { get; set; }
 
+        /// <summary>The commander's CQC rating</summary>
+        public CQCRating cqcrating { get; set; }
+
         /// <summary>The commander's empire rating</summary>
         public EmpireRating empirerating { get; set; }
 

@@ -49,6 +49,7 @@
     <Compile Include="Deserializtion.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Net.cs" />
+    <Compile Include="ObservableConcurrentDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InstanceInfo.cs" />
     <Compile Include="Translation.cs" />

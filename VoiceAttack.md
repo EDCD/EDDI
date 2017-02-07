@@ -46,7 +46,7 @@ If a value is not available it will be not set rather than empty.
   * {INT:Federation rating}: the federation rating of the commander, with 0 being None and 14 being Admiral
   * {TXT:Federation rank}: the federation rating of the commander, from None to Admiral
   * {DEC:Credits}: the number of credits owned by the commander
-  * {TXT:Credits}: the number of credits owned by the commander as would be spoken (e.g. "just over 2 million")
+  * {TXT:Credits (spoken)}: the number of credits owned by the commander as would be spoken (e.g. "just over 2 million")
   * {DEC:Debt}: the number of credits owed by the commander
   * {TXT:Debt}: the number of credits owed by the commander as would be spoken (e.g. "a little under 100 thousand")
   * {DEC:Insurance}: the percentage insurance excess for the commander (usually 5, 3.75 or 2.5)
@@ -61,7 +61,7 @@ If a value is not available it will be not set rather than empty.
   * {TXT:Ship role}: the role of the ship as set in EDDI configuration (Multipurpose, Combat, Exploration, Trading, Mining, Smuggling)
   * {TXT:Ship size}: the size of the ship (Small, Medium, or Large)
   * {DEC:Ship value}: the replacement cost of the ship plus modules
-  * {TXT:Ship value}: the replacement cost of the ship plus modules as would be spoken
+  * {TXT:Ship value (spoken)}: the replacement cost of the ship plus modules as would be spoken
   * {INT:Ship cargo capacity}: the maximum cargo capacity of the ship as currently configured
   * {INT:Ship cargo carried}: the cargo currently being carried by the ship
   * {INT:Ship limpets carried}: the number of limpets currently being carried by the ship
@@ -232,8 +232,6 @@ If a value is not available it will be not set rather than empty.
   * {TXT:Last station state}: the name of the state of the last station (boom, outbreak, etc.)
   * {DEC:Last station distance from star}: the distance from the primary star to this station, in light seconds
   * {TXT:Last station primary economy}: the primary economy of this station (extraction, prison colony, etc.)
-  * {TXT:Last station secondary economy}: the secondary economy of this station (extraction, prison colony, etc.)
-  * {TXT:Last station tertiary economy}: the tertiary economy of this station (extraction, prison colony, etc.)
   * {BOOL:Last station has refuel}: true if this station has refuel capability
   * {BOOL:Last station has rearm}: true if this station has rearm capability
   * {BOOL:Last station has repair}: true if this station has repair capability
@@ -244,7 +242,7 @@ If a value is not available it will be not set rather than empty.
 
 ### Shipyard Variables
 
-  * {INT: Stored ships}: the number of ships in storage
+  * {INT:Stored ship entries}: the number of ships in storage
   * {TXT:Stored ship *n* model}: the model of the *n*th stored ship
   * {TXT:Stored ship *n* name}: the name of the *n*th stored ship as set in EDDI configuration
   * {TXT:Stored ship *n* callsign}: the callsign of the *n*th stored ship as shown in EDDI configuration (e.g. "GEF-1020")
@@ -339,7 +337,7 @@ This function only supports integers, booleans, decimals and strings as state va
 
 State variables are made available in VoiceAttack with the prefix 'EDDI state'.  For example, to access the text variable stored in the last paragraph you would use '{TXT:EDDI state my_variable}'.
 
-Please note that state is transient, and is purposefully not persisted beyond the running instance of EDDI.  This means that every time you start VoiceAttack the state will be empty.
+Please note that state is transient, and is purposefully not persisted beyond the running instance of EDDI.  This means that every time you start VoiceAttack the state will be empty.  Also, because EDDI responders run asynchronously and concurrently there is no guarantee that, for example, the speech responder for an event will finish before the VoiceAttack responder for an event starts (or vice versa).
 
 ## Events
 

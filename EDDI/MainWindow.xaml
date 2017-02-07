@@ -14,10 +14,11 @@
             <TabItem Header="EDDI">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <DockPanel LastChildFill="True" Background="#FFE5E5E5" DockPanel.Dock="Bottom" Margin="10">
-                        <TextBlock DockPanel.Dock="Left" Text="EDDI Status: "/>
-                        <TextBlock x:Name="versionText" DockPanel.Dock="Right"/>
-                        <TextBlock DockPanel.Dock="Right" Text="Version: "/>
-                        <TextBlock x:Name="statusText" DockPanel.Dock="Left" Text="Operational"/>
+                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="EDDI Status: "/>
+                        <TextBlock x:Name="versionText" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                        <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Text="Version: "/>
+                        <Button x:Name="upgradeButton" VerticalAlignment="Center" DockPanel.Dock="Left" Visibility="Collapsed" Margin="10,0,10,0" Foreground="Orange" Click="upgradeClicked">Upgrade EDDI</Button>
+                        <TextBlock x:Name="statusText" VerticalAlignment="Center" DockPanel.Dock="Left" Text="Operational"/>
                     </DockPanel>
                     <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="EDDI has a number of features that can be configured separately.  There are three different types of item." VerticalAlignment="Top"/>
                     <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="The first group obtain and manage the basic information used by EDDI.  These are the 'Commander Details', 'Companion App', 'Shipyard' and 'Text-to-Speech' tabs.  You should go through each of these and configure them so that EDDI has full access to your Elite: Dangerous information." VerticalAlignment="Top"/>
@@ -32,11 +33,14 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Margin="10" TextWrapping="Wrap" Text="Enable verbose logging (only if you have been requested to do so by EDDI developers)" VerticalAlignment="Top"/>
                         <CheckBox x:Name="eddiVerboseLogging" Grid.Row="0" Grid.Column="1" Margin="10" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
                         <TextBlock Grid.Row="1" Grid.Column="0" Margin="10" TextWrapping="Wrap" Text="Upload log files (only if you have been requested to do so by EDDI developers).  No personal information is sent in the log.  Please note that uploading the log can take a number of minutes to complete."/>
                         <Button  x:Name="sendLogButton" Grid.Row="1" Grid.Column="2" Content="Send EDDI log to developers" Margin="10" Click="sendLogsClicked"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="10" TextWrapping="Wrap" Text="Access beta versions of EDDI" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="eddiBetaProgramme" Grid.Row="2" Grid.Column="1" Margin="10" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
                     </Grid>
                     <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" FontSize="20" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center" TextAlignment="Center"/>
                 </DockPanel>

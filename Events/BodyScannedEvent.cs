@@ -31,11 +31,11 @@ namespace EddiEvents
             VARIABLES.Add("distancefromarrival", "The distance in LS from the main star");
             VARIABLES.Add("orbitalperiod", "The number of seconds taken for a full orbit of the main star");
             VARIABLES.Add("rotationperiod", "The number of seconds taken for a full rotation");
-            VARIABLES.Add("semimajoraxis", "");
-            VARIABLES.Add("eccentricity", "");
-            VARIABLES.Add("orbitalinclination", "");
-            VARIABLES.Add("periapsis", "");
-            VARIABLES.Add("rings", "The star's rings");
+            VARIABLES.Add("semimajoraxis", "The semi major axis of the body");
+            VARIABLES.Add("eccentricity", "The orbital eccentricity of the body");
+            VARIABLES.Add("orbitalinclination", "The orbital inclination of the body");
+            VARIABLES.Add("periapsis", "The periapsis of the body");
+            VARIABLES.Add("rings", "A list of the body's rings");
             VARIABLES.Add("materials", "A list of materials present on the body that has been scanned");
             VARIABLES.Add("terraformstate", "Whether the body can be, is in the process of, or has been terraformed");
         }

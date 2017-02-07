@@ -14,9 +14,11 @@ namespace EddiDataDefinitions
     {
         private static readonly List<Composition> COMPOSITIONS = new List<Composition>();
 
+        public string edname { get; private set; }
+
         public string name { get; private set; }
 
-        public string edname { get; private set; }
+        public Composition() { }
 
         private Composition(string edname, string name)
         {

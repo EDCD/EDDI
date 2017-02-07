@@ -152,6 +152,7 @@ namespace EddiSpeechService
             { "Sagittarius", new string[] { "ˌsædʒˈtɛəriəs" } },
             { "Scorpii", new string[] { "ˈskɔːpɪˌaɪ" } },
             { "Shui Wei", new string[] { "ˈʃuːi", "weɪ" } },
+            { "Tau Ceti" , new string[] { "taʊ", "ˈsiːtaɪ" } },
             { "Tascheter", new string[] { "ˈtɑːʃətɜː" } },
             { "Trianguli", new string[] { "traɪˈæŋˌɡjʊˌlaɪ" } },
             { "Trifid", new string[] { "ˈtraɪfɪd" } },

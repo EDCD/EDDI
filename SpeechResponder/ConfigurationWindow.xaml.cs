@@ -26,8 +26,14 @@ namespace EddiSpeechResponder
         public Personality Personality
         {
             get { return personality; }
-            set { personality = value; OnPropertyChanged("Personality"); }
+            set
+            {
+                personality = value;
+                viewEditContent = value != null && value.IsEditable ? "Edit" : "View";
+                OnPropertyChanged("Personality");
+            }
         }
+        public string viewEditContent = "View";
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
@@ -83,6 +89,13 @@ namespace EddiSpeechResponder
             EditScriptWindow editScriptWindow = new EditScriptWindow(Personality.Scripts, script.Name);
             editScriptWindow.ShowDialog();
             scriptsData.Items.Refresh();
+        }
+
+        private void viewScript(object sender, RoutedEventArgs e)
+        {
+            Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
+            ViewScriptWindow viewScriptWindow = new ViewScriptWindow(Personality.Scripts, script.Name);
+            viewScriptWindow.ShowDialog();
         }
 
         private void testScript(object sender, RoutedEventArgs e)

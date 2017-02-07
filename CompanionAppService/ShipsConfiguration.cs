@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Utilities;
 
 namespace EddiCompanionAppService
@@ -41,6 +42,13 @@ namespace EddiCompanionAppService
             {
                 Logging.Debug("Failed to read ships configuration", ex);
             }
+            if (configuration == null)
+            {
+                configuration = new ShipsConfiguration();
+            }
+
+            // There was a bug that caused null entries to be written to the ships configuration; remove these if present
+            configuration.Ships = configuration.Ships.Where(x => x.role != null).ToList();
 
             configuration.dataPath = filename;
             return configuration;
@@ -58,6 +66,9 @@ namespace EddiCompanionAppService
             {
                 return;
             }
+
+            // There was a bug that caused null entries to be written to the ships configuration; remove these if present
+            Ships = Ships.Where(x => x.role != null).ToList();
 
             if (filename == null)
             {

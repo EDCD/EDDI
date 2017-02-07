@@ -685,9 +685,9 @@ namespace Eddi
                 // Send the output out to the main decompress function
                 output = decompress(output);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
 
             return output;

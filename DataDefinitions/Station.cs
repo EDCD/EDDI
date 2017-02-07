@@ -29,8 +29,8 @@ namespace EddiDataDefinitions
         /// <summary>The state of the system</summary>
         public string state { get; set; }
 
-        /// <summary>The economies of the station</summary>
-        public List<string> economies { get; set; }
+        /// <summary>The primary economy of the station</summary>
+        public string primaryeconomy { get; set; }
 
         /// <summary>How far this is from the star</summary>
         public long? distancefromstar { get; set; }

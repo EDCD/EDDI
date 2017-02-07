@@ -38,10 +38,11 @@ namespace Eddi
             this.fromVA = fromVA;
 
             // Start the EDDI instance
+            EDDI.FromVA = fromVA;
             EDDI.Instance.Start();
 
             // Configure the EDDI tab
-            versionText.Text = Constants.EDDI_VERSION;
+            setStatusInfo();
 
             //// Need to set up the correct information in the hero text depending on from where we were started
             if (fromVA)
@@ -58,6 +59,7 @@ namespace Eddi
             eddiHomeStationText.Text = eddiConfiguration.HomeStation;
             eddiInsuranceDecimal.Text = eddiConfiguration.Insurance.ToString(CultureInfo.InvariantCulture);
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
+            eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
 
             Logging.Verbose = eddiConfiguration.Debug;
 
@@ -238,6 +240,51 @@ namespace Eddi
             eddiConfiguration.ToFile();
         }
 
+        private void betaProgrammeEnabled(object sender, RoutedEventArgs e)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.Beta = eddiBetaProgramme.IsChecked.Value;
+            eddiConfiguration.ToFile();
+            // Because we have chaned to wanting beta upgrades we need to re-check upgrade information
+            EDDI.Instance.CheckUpgrade();
+            setStatusInfo();
+        }
+
+        private void betaProgrammeDisabled(object sender, RoutedEventArgs e)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.Beta = eddiBetaProgramme.IsChecked.Value;
+            eddiConfiguration.ToFile();
+            // Because we have chaned to not wanting beta upgrades we need to re-check upgrade information
+            EDDI.Instance.CheckUpgrade();
+            setStatusInfo();
+        }
+
+        // Set the fields relating to status information
+        private void setStatusInfo()
+        {
+            versionText.Text = Constants.EDDI_VERSION;
+
+            if (EDDI.Instance.UpgradeVersion != null)
+            {
+                statusText.Text = "Version " + EDDI.Instance.UpgradeVersion + " is available";
+                // Do not show upgrade button if EDDI is started from VA
+                upgradeButton.Visibility = EDDI.FromVA ? Visibility.Collapsed : Visibility.Visible;
+            }
+            else
+            {
+                upgradeButton.Visibility = Visibility.Collapsed;
+                if (CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
+                {
+                    statusText.Text = "Companion app not operational";
+                }
+                else
+                {
+                    statusText.Text = "Operational";
+                }
+            }
+        }
+
         // Handle changes to the companion app tab
         private void companionAppNextClicked(object sender, RoutedEventArgs e)
         {
@@ -246,7 +293,7 @@ namespace Eddi
             {
                 // Stage 1 of authentication - login
                 CompanionAppService.Instance.Credentials.email = companionAppEmailText.Text.Trim();
-                CompanionAppService.Instance.Credentials.password = companionAppPasswordText.Password.Trim();
+                CompanionAppService.Instance.setPassword(companionAppPasswordText.Password.Trim());
                 try
                 {
                     // It is possible that we have valid cookies at this point so don't log in, but we did
@@ -341,7 +388,7 @@ namespace Eddi
             companionAppEmailText.Text = CompanionAppService.Instance.Credentials.email;
             companionAppPasswordLabel.Visibility = Visibility.Visible;
             companionAppPasswordText.Visibility = Visibility.Visible;
-            companionAppPasswordText.Password = CompanionAppService.Instance.Credentials.password;
+            companionAppPasswordText.Password = null;
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
@@ -542,7 +589,6 @@ namespace Eddi
 
             if (!fromVA)
             {
-                SpeechService.Instance.Say(EDDI.Instance.Ship, "Goodbye.", true, 1);
                 EDDI.Instance.Stop();
                 Application.Current.Shutdown();
             }
@@ -594,6 +640,11 @@ namespace Eddi
                     Logging.Error("Failed to upload log", ex);
                 }
             }
+        }
+
+        private void upgradeClicked(object sender, RoutedEventArgs e)
+        {
+            EDDI.Instance.Upgrade();
         }
     }
 

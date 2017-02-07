@@ -27,7 +27,8 @@ namespace Utilities
         /// </summary>
         public static ServerInfo FromServer(string baseUri)
         {
-            return JsonConvert.DeserializeObject<ServerInfo>(Net.DownloadString(baseUri + "_info"));
+            string data = Net.DownloadString(baseUri + "_info");
+            return data == null ? null : JsonConvert.DeserializeObject<ServerInfo>(data);
         }
     }
 }
