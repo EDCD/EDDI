@@ -127,7 +127,7 @@ namespace GalnetMonitor
                     EDDI.Instance.eventHandler(new GalnetNewsPublishedEvent(DateTime.Now, newsItems));
                 }
 
-                if (firstUid != lastUid)
+                if (firstUid != null && firstUid != lastUid)
                 {
                     Logging.Debug("Updated latest UID to " + firstUid);
                     File.WriteAllText(Constants.DATA_DIR + @"\galnet", firstUid);

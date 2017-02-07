@@ -104,6 +104,24 @@ namespace EddiEdsmResponder
                         system = jumpedEvent.system;
                     }
                 }
+                else if (theEvent is CommanderContinuedEvent)
+                {
+                    CommanderContinuedEvent continuedEvent = (CommanderContinuedEvent)theEvent;
+                    starMapService.sendCredits(continuedEvent.credits, continuedEvent.loan);
+                }
+                else if (theEvent is CommanderProgressEvent)
+                {
+                    CommanderProgressEvent progressEvent = (CommanderProgressEvent)theEvent;
+                    if (EDDI.Instance.Cmdr != null && EDDI.Instance.Cmdr.federationrating != null)
+                    {
+                        starMapService.sendRanks(EDDI.Instance.Cmdr.combatrating.rank, (int)progressEvent.combat,
+                            EDDI.Instance.Cmdr.traderating.rank, (int)progressEvent.trade,
+                            EDDI.Instance.Cmdr.explorationrating.rank, (int)progressEvent.exploration,
+                            EDDI.Instance.Cmdr.cqcrating.rank, (int)progressEvent.cqc,
+                            EDDI.Instance.Cmdr.federationrating.rank, (int)progressEvent.federation,
+                            EDDI.Instance.Cmdr.empirerating.rank, (int)progressEvent.empire);
+                    }
+                }
             }
         }
 

@@ -95,6 +95,23 @@ namespace EddiDataProviderService
             return system;
         }
 
+        public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true)
+        {
+            StarSystem system = GetStarSystem(name, fetchIfMissing);
+            if (system == null)
+            {
+                if (fetchIfMissing)
+                {
+                    system = DataProviderService.GetSystemData(name, null, null, null);
+                }
+                if (system != null)
+                {
+                    insertStarSystem(system);
+                }
+            }
+            return system;
+        }
+
         public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
         {
             if (!File.Exists(DbFile)) return null;
@@ -163,7 +180,6 @@ namespace EddiDataProviderService
                 Logging.Warn("Problem obtaining data: " + ex);
             }
 
-            // TODO if star system data is out-of-date then refresh it
             return result;
         }
 
@@ -181,6 +197,12 @@ namespace EddiDataProviderService
 
         private void insertStarSystem(StarSystem system)
         {
+            if (system.lastvisit == null)
+            {
+                // DB constraints don't allow this to be null
+                system.lastvisit = DateTime.Now;
+            }
+
             using (var con = SimpleDbConnection())
             {
                 con.Open();

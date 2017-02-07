@@ -63,7 +63,10 @@ namespace EddiStarMapService
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
                     Logging.Debug("Data sent to EDSM");
-                    // TODO check response
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -76,6 +79,91 @@ namespace EddiStarMapService
             });
             thread.IsBackground = true;
             thread.Name = "StarMapService send starmap log";
+            thread.Start();
+        }
+
+        public void sendCredits(decimal credits, decimal loan)
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-commander-v1/set-credits");
+            request.AddParameter("apiKey", apiKey);
+            request.AddParameter("commanderName", commanderName);
+            request.AddParameter("balance", credits);
+            request.AddParameter("loan", loan);
+            request.AddParameter("fromSoftware", Constants.EDDI_NAME);
+            request.AddParameter("fromSoftwareVersion", Constants.EDDI_VERSION);
+
+            Thread thread = new Thread(() =>
+            {
+                try
+                {
+                    Logging.Debug("Sending data to EDSM: " + request.ToString());
+                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    StarMapLogResponse response = clientResponse.Data;
+                    Logging.Debug("Data sent to EDSM");
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to send data to EDSM", ex);
+                }
+            });
+            thread.IsBackground = true;
+            thread.Name = "StarMapService send credits";
+            thread.Start();
+        }
+
+        public void sendRanks(int combat, int combatProgress,
+            int trade, int tradeProgress,
+            int exploration, int explorationProgress,
+            int cqc, int cqcProgress,
+            int federation, int federationProgress,
+            int empire, int empireProgress)
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-commander-v1/set-ranks");
+            request.AddParameter("apiKey", apiKey);
+            request.AddParameter("commanderName", commanderName);
+            request.AddParameter("Combat", combat + ";" + combatProgress);
+            request.AddParameter("Trade", trade + ";" + tradeProgress);
+            request.AddParameter("Explore", exploration + ";" + explorationProgress);
+            request.AddParameter("CQC", cqc + ";" + cqcProgress);
+            request.AddParameter("Federation", federation + ";" + federationProgress);
+            request.AddParameter("Empire", empire + ";" + empireProgress);
+            request.AddParameter("fromSoftware", Constants.EDDI_NAME);
+            request.AddParameter("fromSoftwareVersion", Constants.EDDI_VERSION);
+
+            Thread thread = new Thread(() =>
+            {
+                try
+                {
+                    Logging.Debug("Sending data to EDSM: " + request.ToString());
+                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    StarMapLogResponse response = clientResponse.Data;
+                    Logging.Debug("Data sent to EDSM");
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to send data to EDSM", ex);
+                }
+            });
+            thread.IsBackground = true;
+            thread.Name = "StarMapService send ranks";
             thread.Start();
         }
 
@@ -94,7 +182,10 @@ namespace EddiStarMapService
                 {
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
-                    // TODO check response
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -133,7 +224,10 @@ namespace EddiStarMapService
             logRequest.AddParameter("systemName", systemName);
             var logClientResponse = client.Execute<StarMapLogResponse>(logRequest);
             StarMapLogResponse logResponse = logClientResponse.Data;
-            // TODO check response
+            if (logResponse.msgnum != 100)
+            {
+                Logging.Warn("EDSM responded with " + logResponse.msg);
+            }
 
             // Also grab any comment that might be present
             var commentRequest = new RestRequest("api-logs-v1/get-comment");
@@ -142,7 +236,10 @@ namespace EddiStarMapService
             commentRequest.AddParameter("systemName", systemName);
             var commentClientResponse = client.Execute<StarMapLogResponse>(commentRequest);
             StarMapLogResponse commentResponse = commentClientResponse.Data;
-            // TODO check response
+            if (commentResponse.msgnum != 100)
+            {
+                Logging.Warn("EDSM responded with " + commentResponse.msg);
+            }
 
             int visits = (logResponse != null && logResponse.logs != null) ? logResponse.logs.Count : 1;
             DateTime lastUpdate = (logResponse != null && logResponse.lastUpdate != null) ? (DateTime)logResponse.lastUpdate : new DateTime();

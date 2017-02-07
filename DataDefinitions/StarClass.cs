@@ -127,5 +127,26 @@ namespace EddiDataDefinitions
 
             return (decimal)Math.Pow(((double)luminosity * solLuminosity) / (4 * Math.PI * Math.Pow((double)radius, 2) * stefanBoltzmann), 0.25);
         }
+
+        public static decimal sanitiseCP(decimal cp)
+        {
+            // Trim decimal places appropriately
+            if (cp < .00001M || cp > .9999M)
+            {
+                return Math.Round(cp * 100, 4);
+            }
+            else if (cp < .0001M || cp > .999M)
+            {
+                return Math.Round(cp * 100, 3);
+            }
+            else if (cp < .001M || cp > .99M)
+            {
+                return Math.Round(cp * 100, 2);
+            }
+            else
+            {
+                return Math.Round(cp * 100);
+            }
+        }
     }
 }

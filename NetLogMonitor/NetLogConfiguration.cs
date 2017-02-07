@@ -53,6 +53,11 @@ namespace EddiNetLogMonitor
                     Logging.Debug("Failed to read netlog configuration", ex);
                 }
             }
+            if (configuration == null)
+            {
+                configuration = new NetLogConfiguration();
+                configuration.dataPath = filename;
+            }
 
             return configuration;
         }

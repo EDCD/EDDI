@@ -159,7 +159,11 @@ namespace EddiSpeechResponder
             // Save a copy of this personality
             string iname = name.ToLowerInvariant();
             string copyPath = Constants.DATA_DIR + @"\personalities\" + iname + ".json";
-            ToFile(copyPath);
+            // Ensure it doesn't exist
+            if (!File.Exists(copyPath))
+            {
+                ToFile(copyPath);
+            }
             // Load the personality back in
             Personality newPersonality = FromFile(copyPath);
             // Change its name and description and save it back out again
@@ -206,6 +210,19 @@ namespace EddiSpeechResponder
                     fixedScripts.Add(kv.Key, kv.Value);
                 }
             }
+            if (personality.Name != "EDDI")
+            {
+                // Also add any secondary scripts in the default personality that aren't present in the list
+                Personality defaultPersonality = Default();
+                foreach (KeyValuePair<string, Script> kv in defaultPersonality.Scripts)
+                {
+                    if (!fixedScripts.ContainsKey(kv.Key))
+                    {
+                        fixedScripts.Add(kv.Key, kv.Value);
+                    }
+                }
+            }
+
             personality.Scripts = fixedScripts;
         }
     }

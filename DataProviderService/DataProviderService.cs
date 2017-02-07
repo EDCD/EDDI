@@ -117,18 +117,11 @@ namespace EddiDataProviderService
                     Station.name = (string)station["name"];
                     Station.systemname = systemName;
 
-                    Station.economies = new List<string>();
-                    if (station["economies"] != null)
-                    {
-                        foreach (dynamic economy in station["economies"])
-                        {
-                            Station.economies.Add((string)economy);
-                        }
-                    }
+                    Station.primaryeconomy = (string)station["primary_economy"];
 
                     Station.allegiance = (string)station["allegiance"];
                     Station.government = (string)station["government"];
-                    Station.faction = (string)station["faction"];
+                    Station.faction = (string)station["controlling_faction"];
                     Station.state = (string)station["state"] == "None" ? null : (string)station["state"];
                     Station.distancefromstar = (long?)station["distance_to_star"];
                     Station.hasrefuel = (bool?)station["has_refuel"];

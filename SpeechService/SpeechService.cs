@@ -96,7 +96,7 @@ namespace EddiSpeechService
 
         public void Speak(string speech, string voice, int echoDelay, int distortionLevel, int chorusLevel, int reverbLevel, int compressLevel, bool wait = true, int priority = 3)
         {
-            if (speech == null) { return; }
+            if (speech == null || speech.Trim() == "") { return; }
 
             // For now we rudely set distortion to 0 regardless of what the calling function wanted.  Might enable this again one day
             // if we can find a decent way of doing distortion that doesn't destroy speakers
@@ -348,6 +348,7 @@ namespace EddiSpeechService
                 catch (Exception ex)
                 {
                     Logging.Warn("speech failed: ", ex);
+                    Logging.Error("Speech failed", @"{""speech"":""" + speech + @"""}");
                 }
             });
             synthThread.Start();

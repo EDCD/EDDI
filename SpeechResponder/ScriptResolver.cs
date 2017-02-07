@@ -32,9 +32,9 @@ namespace EddiSpeechResponder
             setting.Trimmer = BuiltinTrimmers.CollapseBlankCharacters;
         }
 
-        public string resolve(string name, Dictionary<string, Cottle.Value> vars)
+        public string resolve(string name, Dictionary<string, Cottle.Value> vars, bool master = true)
         {
-            return resolve(name, buildStore(vars));
+            return resolve(name, buildStore(vars), master);
         }
 
         public int priority(string name)
@@ -44,7 +44,7 @@ namespace EddiSpeechResponder
             return (script == null ? 5 : script.Priority);
         }
 
-        public string resolve(string name, BuiltinStore store)
+        public string resolve(string name, BuiltinStore store, bool master = true)
         {
             Logging.Debug("Resolving script " + name);
             Script script;
@@ -61,22 +61,56 @@ namespace EddiSpeechResponder
                 return null;
             }
 
-            return resolveScript(script.Value, store);
+            return resolveScript(script.Value, store, master);
         }
 
         /// <summary>
         /// Resolve a script with an existing store
         /// </summary>
-        public string resolveScript(string script, BuiltinStore store)
+        public string resolveScript(string script, BuiltinStore store, bool master = true)
         {
             try
             {
+                // Before we start, we remove the context for master scripts.
+                // This means that scripts without context still work as expected
+                if (master)
+                {
+                    EDDI.Instance.State["eddi_context_last_subject"] = null;
+                    EDDI.Instance.State["eddi_context_last_action"] = null;
+                }
+
                 var document = new SimpleDocument(script, setting);
                 var result = document.Render(store);
                 // Tidy up the output script
                 result = Regex.Replace(result, " +", " ").Replace(" ,", ",").Replace(" .", ".").Trim();
                 Logging.Debug("Turned script " + script + " in to speech " + result);
-                return result.Trim() == "" ? null : result.Trim();
+                result = result.Trim() == "" ? null : result.Trim();
+
+                if (master && result != null)
+                {
+                    string stored = result;
+                    // Remove any leading pause
+                    if (stored.StartsWith("<break"))
+                    {
+                        string pattern = "^<break[^>]*>";
+                        string replacement = "";
+                        Regex rgx = new Regex(pattern);
+                        stored = rgx.Replace(stored, replacement);
+                    }
+
+                    EDDI.Instance.State["eddi_context_last_speech"] = stored;
+                    object lastSubject;
+                    if (EDDI.Instance.State.TryGetValue("eddi_context_last_subject", out lastSubject))
+                    {
+                        if (lastSubject != null)
+                        {
+                            string csLastSubject = ((string)lastSubject).ToLowerInvariant().Replace(" ", "_");
+                            EDDI.Instance.State["eddi_context_last_speech_" + csLastSubject] = stored;
+                        }
+                    }
+                }
+
+                return result;
             }
             catch (Exception e)
             {
@@ -95,7 +129,7 @@ namespace EddiSpeechResponder
             // Function to call another script
             store["F"] = new NativeFunction((values) =>
             {
-                return new ScriptResolver(scripts).resolve(values[0].AsString, store);
+                return new ScriptResolver(scripts).resolve(values[0].AsString, store, false);
             }, 1);
 
             // Translation functions
@@ -115,30 +149,40 @@ namespace EddiSpeechResponder
                 {
                     translation = Translations.StarSystem(val);
                 }
-                Ship ship = ShipDefinitions.FromModel(val);
-                if (ship != null && ship.EDID > 0)
+                if (translation == val)
                 {
-                    translation = ship.SpokenModel();
+                    Ship ship = ShipDefinitions.FromModel(val);
+                    if (ship != null && ship.EDID > 0)
+                    {
+                        translation = ship.SpokenModel();
+                    }
                 }
-                ship = ShipDefinitions.FromEDModel(val);
-                if (ship != null && ship.EDID > 0)
+                if (translation == val)
                 {
-                    translation = ship.SpokenModel();
+                    Ship ship = ShipDefinitions.FromEDModel(val);
+                    if (ship != null && ship.EDID > 0)
+                    {
+                        translation = ship.SpokenModel();
+                    }
                 }
                 return translation;
             }, 1);
 
+            // Boolean constants
+            store["true"] = true;
+            store["false"] = false;
+
             // Helper functions
             store["OneOf"] = new NativeFunction((values) =>
             {
-                return new ScriptResolver(scripts).resolveScript(values[random.Next(values.Count)].AsString, store);
+                return new ScriptResolver(scripts).resolveScript(values[random.Next(values.Count)].AsString, store, false);
             });
 
             store["Occasionally"] = new NativeFunction((values) =>
             {
                 if (random.Next((int)values[0].AsNumber) == 0)
                 {
-                    return new ScriptResolver(scripts).resolveScript(values[1].AsString, store);
+                    return new ScriptResolver(scripts).resolveScript(values[1].AsString, store, false);
                 }
                 else
                 {
@@ -276,8 +320,31 @@ namespace EddiSpeechResponder
             store["SystemDetails"] = new NativeFunction((values) =>
             {
                 StarSystem result = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[0].AsString, true);
+                setSystemDistanceFromHome(result);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
+
+            store["BodyDetails"] = new NativeFunction((values) =>
+            {
+                StarSystem system;
+                if (values.Count == 1)
+                {
+                    // Current system
+                    system = EDDI.Instance.CurrentStarSystem;
+                }
+                else
+                {
+                    // Named system
+                    system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
+                }
+                Body result = system != null && system.bodies != null ? system.bodies.FirstOrDefault(v => v.name == values[0].AsString) : null;
+                if (result != null && result.type == "Star" && result.chromaticity == null)
+                {
+                    // Need to set our internal extras for the star
+                    result.setStellarExtras();
+                }
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1, 2);
 
             store["StationDetails"] = new NativeFunction((values) =>
             {
@@ -293,6 +360,7 @@ namespace EddiSpeechResponder
                 }
                 else
                 {
+                    // Named system
                     system = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(values[1].AsString, true);
                 }
                 Station result = system != null && system.stations != null ? system.stations.FirstOrDefault(v => v.name == values[0].AsString) : null;
@@ -359,6 +427,13 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
+            store["Distance"] = new NativeFunction((values) =>
+            {
+                return (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(values[0].AsNumber - values[3].AsNumber), 2)
+                                                                      + Math.Pow((double)(values[1].AsNumber - values[4].AsNumber), 2)
+                                                                      + Math.Pow((double)(values[2].AsNumber - values[5].AsNumber), 2)), 2);
+            }, 6);
+
             store["SetState"] = new NativeFunction((values) =>
             {
                 string name = values[0].AsString.ToLowerInvariant().Replace(" ", "_");
@@ -402,6 +477,10 @@ namespace EddiSpeechResponder
             foreach (string key in EDDI.Instance.State.Keys)
             {
                 object value = EDDI.Instance.State[key];
+                if (value == null)
+                {
+                    continue;
+                }
                 Type valueType = value.GetType();
                 if (valueType == typeof(string))
                 {
@@ -454,6 +533,17 @@ namespace EddiSpeechResponder
                 }
             }
             return ship;
+        }
+
+        private void setSystemDistanceFromHome(StarSystem system)
+        {
+            if (EDDI.Instance.HomeStarSystem != null && EDDI.Instance.HomeStarSystem.x != null && system.x != null)
+            {
+                system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - EDDI.Instance.HomeStarSystem.x), 2)
+                                                                      + Math.Pow((double)(system.y - EDDI.Instance.HomeStarSystem.y), 2)
+                                                                      + Math.Pow((double)(system.z - EDDI.Instance.HomeStarSystem.z), 2)), 2);
+                Logging.Info("Distance from home is " + system.distancefromhome);
+            }
         }
     }
 }

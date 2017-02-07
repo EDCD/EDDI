@@ -15,6 +15,8 @@ namespace Eddi
         public string HomeStation { get; set; }
         [JsonProperty("debug")]
         public bool Debug { get; set; }
+        [JsonProperty("beta")]
+        public bool Beta { get; set; }
         [JsonProperty("insurance")]
         public decimal Insurance { get; set; }
         [JsonProperty("plugins")]
@@ -26,6 +28,7 @@ namespace Eddi
         public EDDIConfiguration()
         {
             Debug = false;
+            Beta = false;
             Insurance = 5;
             Plugins = new Dictionary<string, bool>();
         }
@@ -50,6 +53,11 @@ namespace Eddi
             {
                 Logging.Debug("Failed to read EDDI configuration", ex);
             }
+            if (configuration == null)
+            {
+                configuration = new EDDIConfiguration();
+            }
+
             configuration.dataPath = filename;
             if (configuration.Plugins == null)
             {

@@ -53,21 +53,25 @@ namespace EddiVoiceAttackResponder
                 EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
 
                 // Display instance information if available
-                if (EDDI.Instance.Server != null)
+                if (EDDI.Instance.UpgradeRequired)
                 {
-                    if (Versioning.Compare(EDDI.Instance.Server.minversion, Constants.EDDI_VERSION) == 1)
-                    {
-                        vaProxy.WriteToLog("EDDI too old to work; please upgrade at " + EDDI.Instance.Server.url, "red");
-                    }
-                    else if (Versioning.Compare(EDDI.Instance.Server.version, Constants.EDDI_VERSION) == 1)
-                    {
-                        vaProxy.WriteToLog("EDDI version " + EDDI.Instance.Server.version + " is now available at " + EDDI.Instance.Server.url, "red");
-                    }
-                    if (EDDI.Instance.Server.motd != null)
-                    {
-                        vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Server.motd, "black");
-                    }
+                    string msg = "EDDI too old to work; please shut down VoiceAttack and run EDDI standalone to upgrade";
+                    vaProxy.WriteToLog(msg, "red");
+                    SpeechService.Instance.Say(EDDI.Instance.Ship, msg, false);
                 }
+                else if (EDDI.Instance.UpgradeAvailable)
+                {
+                    string msg = "EDDI version " + EDDI.Instance.UpgradeVersion + " is now available; please shut down VoiceAttack and run EDDI standalone to upgrade";
+                    vaProxy.WriteToLog(msg, "orange");
+                    SpeechService.Instance.Say(EDDI.Instance.Ship, msg, false);
+                }
+                if (EDDI.Instance.Motd != null)
+                {
+                    string msg = "Message from EDDI: " + EDDI.Instance.Motd;
+                    vaProxy.WriteToLog(msg, "black");
+                    SpeechService.Instance.Say(EDDI.Instance.Ship, msg, false);
+                }
+
                 // Set the initial values from the main EDDI objects
                 setValues(ref vaProxy);
 
@@ -821,6 +825,7 @@ namespace EddiVoiceAttackResponder
                     setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref vaProxy);
                     currentStoredShip++;
                 }
+                vaProxy.SetInt("Stored ship entries", EDDI.Instance.Shipyard.Count);
             }
             setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref vaProxy);
             setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
@@ -856,6 +861,10 @@ namespace EddiVoiceAttackResponder
             foreach (string key in dict.Keys)
             {
                 object value = dict[key];
+                if (value == null)
+                {
+                    continue;
+                }
                 Type valueType = value.GetType();
                 if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 {
@@ -929,21 +938,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " allegiance", station.allegiance);
                 vaProxy.SetText(prefix + " faction", station.faction);
                 vaProxy.SetText(prefix + " state", station.state);
-                if (station.economies != null)
-                {
-                    if (station.economies.Count > 0)
-                    {
-                        vaProxy.SetText(prefix + " primary economy", station.economies[0]);
-                    }
-                    if (station.economies.Count > 1)
-                    {
-                        vaProxy.SetText(prefix + " secondary economy", station.economies[1]);
-                    }
-                    if (station.economies.Count > 2)
-                    {
-                        vaProxy.SetText(prefix + " tertiary economy", station.economies[2]);
-                    }
-                }
+                vaProxy.SetText(prefix + " primary economy", station.primaryeconomy);
                 // Services
                 vaProxy.SetBoolean(prefix + " has refuel", station.hasrefuel);
                 vaProxy.SetBoolean(prefix + " has repair", station.hasrepair);

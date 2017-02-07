@@ -61,6 +61,9 @@
     <Compile Include="CopyPersonalityWindow.xaml.cs">
       <DependentUpon>CopyPersonalityWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewScriptWindow.xaml.cs">
+      <DependentUpon>ViewScriptWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EditScriptWindow.xaml.cs">
       <DependentUpon>EditScriptWindow.xaml</DependentUpon>
     </Compile>
@@ -128,6 +131,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="CopyPersonalityWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewScriptWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
