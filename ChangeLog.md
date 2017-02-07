@@ -32,6 +32,7 @@
       * 'Commodity refined' - added context information
 	  * 'Commodity sale check' - avoid overly-long response if there are lots of commodities that can be sold
 	  * 'Commodity sold' - added context information
+	  * 'Docked' - do not pause just to find out that there is no commodity/swapout/limpet check result
 	  * 'Docking granted' - added context information.  Call new function 'Landing pad report' to provide pad details
 	  * 'Fine incurred' - added context information
 	  * 'Jumping' - added context information

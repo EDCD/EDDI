@@ -29,10 +29,7 @@ namespace EddiSpeechResponder
             set
             {
                 personality = value;
-                if (value.IsEditable)
-                {
-                    viewEditContent = value.IsEditable ? "Edit" : "View";
-                }
+                viewEditContent = value != null && value.IsEditable ? "Edit" : "View";
                 OnPropertyChanged("Personality");
             }
         }
