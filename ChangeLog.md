@@ -1,3 +1,7 @@
+#2.2.1
+  * Core
+    * Add ship role 'Taxi'
+
 #2.2.0
   * Core
     * Fix issue where commander insurance % is not set internally

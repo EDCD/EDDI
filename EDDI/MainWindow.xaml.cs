@@ -589,6 +589,7 @@ namespace Eddi
 
             if (!fromVA)
             {
+                SpeechService.Instance.ShutUp();
                 EDDI.Instance.Stop();
                 Application.Current.Shutdown();
             }
