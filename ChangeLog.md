@@ -1,6 +1,7 @@
 #2.2.1
   * Core
     * Add ship role 'Taxi'
+    * Rename 'Companion App' tab to 'Frontier API' and update relevant text to clarify its use and operation
 
 #2.2.0
   * Core

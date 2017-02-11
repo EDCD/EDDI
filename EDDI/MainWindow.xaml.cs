@@ -63,7 +63,7 @@ namespace Eddi
 
             Logging.Verbose = eddiConfiguration.Debug;
 
-            // Configure the Companion App tab
+            // Configure the Frontier API tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
             companionAppEmailText.Text = companionAppCredentials.email;
             // See if the credentials work
@@ -72,11 +72,11 @@ namespace Eddi
                 profile = CompanionAppService.Instance.Profile();
                 if (profile == null)
                 {
-                    setUpCompanionAppComplete("Your connection to the companion app is good but experiencing temporary issues.  Your information should be available soon");
+                    setUpCompanionAppComplete("Your connection to the Frontier API is good but experiencing temporary issues.  Your information should be available soon");
                 }
                 else
                 {
-                    setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
+                    setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
                 }
             }
             catch (Exception)
@@ -276,7 +276,7 @@ namespace Eddi
                 upgradeButton.Visibility = Visibility.Collapsed;
                 if (CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
                 {
-                    statusText.Text = "Companion app not operational";
+                    statusText.Text = "Frontier API connection not operational";
                 }
                 else
                 {
@@ -285,7 +285,7 @@ namespace Eddi
             }
         }
 
-        // Handle changes to the companion app tab
+        // Handle changes to the Frontier API tab
         private void companionAppNextClicked(object sender, RoutedEventArgs e)
         {
             // See if the user is entering their email address and password
@@ -314,11 +314,11 @@ namespace Eddi
                         }
                         if (profile == null)
                         {
-                            setUpCompanionAppComplete("Your connection to the companion app is good but experiencing temporary issues.  Your information should be available soon");
+                            setUpCompanionAppComplete("Your connection to the Frontier API is good but experiencing temporary issues.  Your information should be available soon");
                         }
                         else
                         {
-                            setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
+                            setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
                             setShipyardFromConfiguration();
                         }
                     }
@@ -347,7 +347,7 @@ namespace Eddi
                     profile = CompanionAppService.Instance.Profile();
                     if (profile != null)
                     {
-                        setUpCompanionAppComplete("Your connection to the companion app is operational, Commander " + profile.Cmdr.name);
+                        setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
                         setShipyardFromConfiguration();
                     }
                 }
@@ -376,7 +376,7 @@ namespace Eddi
         {
             if (message == null)
             {
-                companionAppText.Text = "You do not have a connection to the companion app at this time.  Please enter your Elite: Dangerous email address and password below";
+                companionAppText.Text = "You do not have a connection to the Frontier API at this time.  Please enter your Elite: Dangerous email address and password below";
             }
             else
             {

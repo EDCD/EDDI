@@ -72,9 +72,9 @@
                     </Grid>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Companion App">
+            <TabItem Header="Frontier API">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="The companion app is Frontier's API in to their data.  You need to configure this to obtain information about your commander, your ships, and the stations at which you dock.  Please note that if you purchased Elite: Dangerous Horizons as a standalone product and not as an expansion to Elite: Dangerous the companion app will not work for you." VerticalAlignment="Top"/>
+                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="Frontier has an API that allows EDDI to obtain information on your ships, the current station's market, and various other items.  This data is not available elsewhere.  If you want EDDI to obtain and use this information you need to enter your Frontier in-game email address and password below." VerticalAlignment="Top"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -86,7 +86,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock x:Name ="companionAppText" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10"  Text="You do not have a connection to the companion app at this time.  Please enter your Elite: Dangerous email address and password below" VerticalAlignment="Top"/>
+                        <TextBlock x:Name ="companionAppText" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10"  Text="You do not have a connection to the Frontier app at this time.  Please enter your Elite: Dangerous email address and password below" VerticalAlignment="Top"/>
                         <Label x:Name ="companionAppEmailLabel" Grid.Row="1" Grid.Column="0" Margin="10" Content="Email:"/>
                         <TextBox x:Name ="companionAppEmailText" Grid.Row="1" Grid.Column="1" Margin="10" />
                         <Label x:Name ="companionAppPasswordLabel" Grid.Row="2" Grid.Column="0" Margin="10" Content="Password:"/>
