@@ -17,7 +17,7 @@ namespace EddiEvents
 
         static BountyAwardedEvent()
         {
-            VARIABLES.Add("target", "The name of the pilot you destroyed");
+            VARIABLES.Add("target", "The name of the pilot or ship you destroyed (if applicable)");
             VARIABLES.Add("faction", "The name of the faction whose ship you destroyed");
             VARIABLES.Add("reward", "The total number of credits obtained for destroying the ship");
             VARIABLES.Add("rewards", "The rewards obtained for destroying the ship");
