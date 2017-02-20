@@ -437,6 +437,20 @@ namespace EddiJournalMonitor
                             journalEvent = new CockpitBreachedEvent(timestamp);
                             handled = true;
                             break;
+                        case "ApproachSettlement":
+                            {
+                                object val;
+                                data.TryGetValue("Name", out val);
+                                string name = (string)val;
+                                // Replace with localised name if available
+                                if (data.TryGetValue("Name_Localised", out val))
+                                {
+                                    name = (string)val;
+                                }
+                                journalEvent = new SettlementApproachedEvent(timestamp, name);
+                            }
+                            handled = true;
+                            break;
                         case "Scan":
                             {
                                 object val;
