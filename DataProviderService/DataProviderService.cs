@@ -228,7 +228,7 @@ namespace EddiDataProviderService
                         Body.pressure = (decimal?)(double?)body["surface_pressure"];
                         Body.terraformstate = (string)body["terraforming_state_name"];
                         Body.planettype = (string)body["type_name"];
-                        Body.volcanism = (string)body["volcanism_type_name"];
+                        Body.volcanism = Volcanism.FromName((string)body["volcanism_type_name"]);
                         if (body["materials"] != null)
                         {
                             List<MaterialPercentage> Materials = new List<MaterialPercentage>();

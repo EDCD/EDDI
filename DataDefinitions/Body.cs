@@ -108,7 +108,7 @@ namespace EddiDataDefinitions
         public string planettype;
 
         /// <summary>The volcanism</summary>
-        public string volcanism;
+        public Volcanism volcanism;
 
         // materials
         public List<MaterialPercentage> materials;

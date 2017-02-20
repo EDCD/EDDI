@@ -228,6 +228,14 @@ Planets have the following data:
     - pressure the surface pressure on the planet
     - terraformstate the terraforming state of the planet (Not terraformable, Terraformable, Terraforming, Terraformed)
     - planettype the type of the planet (Metal-rich body, Earth-like world, etc.)
-    - volcanism (No volcanism, Silicate magma, etc)
+    - volcanism the volcanism of the planet (Volcanism object)
     - landable true if the planet can be landed upon
     - materials list of materials and their percentage availability on the planet
+
+## Volcanism
+
+Details of a body's volcanism.
+
+    - type the type of volcanism: either "Geysers" or "Magma"
+    - composition the composition of the volcanism (Iron, Carbon dioxide, Nitrogen etc.)
+    - amount the amount of volcanism ("Major", "Minor" or nothing)
