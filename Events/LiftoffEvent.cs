@@ -16,8 +16,9 @@ namespace EddiEvents
 
         static LiftoffEvent()
         {
-            VARIABLES.Add("longitude", "The longitude from where the commander has lifted off");
-            VARIABLES.Add("latitude", "The latitude from where the commander has lifted off");
+            VARIABLES.Add("longitude", "The longitude from where the ship has lifted off");
+            VARIABLES.Add("latitude", "The latitude from where the ship has lifted off");
+            VARIABLES.Add("playercontrolled", "True if the ship is controlled by the player");
         }
 
         [JsonProperty("longitude")]
@@ -26,10 +27,14 @@ namespace EddiEvents
         [JsonProperty("latitude")]
         public decimal latitude { get; private set; }
 
-        public LiftoffEvent(DateTime timestamp, decimal longitude, decimal latitude) : base(timestamp, NAME)
+        [JsonProperty("playercontrolled")]
+        public bool? playercontrolled { get; private set; }
+
+        public LiftoffEvent(DateTime timestamp, decimal longitude, decimal latitude, bool? playercontrolled) : base(timestamp, NAME)
         {
             this.longitude = longitude;
             this.latitude = latitude;
+            this.playercontrolled = playercontrolled;
         }
     }
 }

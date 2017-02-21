@@ -1001,7 +1001,7 @@ namespace EddiVoiceAttackResponder
                 if (EDDI.Instance.Ship != null && EDDI.Instance.Cmdr != null && EDDI.Instance.Cmdr.name != null)
                 {
                     vaProxy.SetText(prefix + " callsign", ship == null ? null : ship.manufacturer + " " + EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant());
-                    vaProxy.SetText(prefix + " callsign (spoken)", ship == null ? null : ship.SpokenManufacturer() + " " + Translations.CallSign(EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant()));
+                    vaProxy.SetText(prefix + " callsign (spoken)", ship == null ? null : ship.SpokenManufacturer() + " " + Translations.ICAO(EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant()));
                 }
 
                 vaProxy.SetText(prefix + " name", ship == null ? null : ship.name);
