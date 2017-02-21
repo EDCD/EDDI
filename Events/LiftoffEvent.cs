@@ -28,9 +28,9 @@ namespace EddiEvents
         public decimal? latitude { get; private set; }
 
         [JsonProperty("playercontrolled")]
-        public bool? playercontrolled { get; private set; }
+        public bool playercontrolled { get; private set; }
 
-        public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, bool? playercontrolled) : base(timestamp, NAME)
+        public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude, bool playercontrolled) : base(timestamp, NAME)
         {
             this.longitude = longitude;
             this.latitude = latitude;

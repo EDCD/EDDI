@@ -97,11 +97,9 @@ namespace EddiJournalMonitor
                             {
                                 decimal? latitude = getOptionalDecimal(data, "Latitude");
                                 decimal? longitude = getOptionalDecimal(data, "Longitude");
-                                bool? playercontrolled = getOptionalBool(data, "PlayerControlled");
-                                // Default player controlled to true
-                                if (playercontrolled == null) { playercontrolled = true; }
+                                bool playercontrolled = getOptionalBool(data, "PlayerControlled") ?? true;
 
-                                journalEvent = new TouchdownEvent(timestamp, longitude, latitude, (bool)playercontrolled);
+                                journalEvent = new TouchdownEvent(timestamp, longitude, latitude, playercontrolled);
                             }
                             handled = true;
                             break;
@@ -109,7 +107,7 @@ namespace EddiJournalMonitor
                             {
                                 decimal? latitude = getOptionalDecimal(data, "Latitude");
                                 decimal? longitude = getOptionalDecimal(data, "Longitude");
-                                bool? playercontrolled = getOptionalBool(data, "PlayerControlled");
+                                bool playercontrolled = getOptionalBool(data, "PlayerControlled") ?? true;
                                 journalEvent = new LiftoffEvent(timestamp, longitude, latitude, playercontrolled);
                             }
                             handled = true;
@@ -181,7 +179,6 @@ namespace EddiJournalMonitor
                                 Economy economy = Economy.FromEDName(getString(data, "SystemEconomy"));
                                 Government government = Government.FromEDName(getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
-
                                 string station = getString(data, "StationName");
                                 string stationtype = getString(data, "StationType");
 
@@ -1201,6 +1198,7 @@ namespace EddiJournalMonitor
 
                                 GameMode mode = GameMode.FromEDName(getString(data, "GameMode"));
                                 string group = getString(data, "Group");
+
                                 data.TryGetValue("Credits", out val);
                                 decimal credits = (long)val;
                                 data.TryGetValue("Loan", out val);
@@ -1209,6 +1207,7 @@ namespace EddiJournalMonitor
                                 decimal? fuelCapacity = getOptionalDecimal(data, "FuelCapacity");
 
                                 journalEvent = new CommanderContinuedEvent(timestamp, commander, (int)shipId, ship, shipName, shipIdent, mode, group, credits, loan, fuel, fuelCapacity);
+
                                 handled = true;
                                 break;
                             }
@@ -1261,6 +1260,15 @@ namespace EddiJournalMonitor
                         case "ChangeCrewRole":
                             {
                                 string role = getRole(data, "Role");
+                                if (role == "FireCon")
+                                {
+                                    role = "Gunner";
+                                }
+                                else if (role == "FighterCon")
+                                {
+                                    role = "Fighter";
+                                }
+
                                 journalEvent = new CrewRoleChangedEvent(timestamp, role);
                                 handled = true;
                                 break;
@@ -1472,8 +1480,6 @@ namespace EddiJournalMonitor
                             }
                         case "RedeemVoucher":
                             {
-                                object val;
-
                                 string type = getString(data, "Type");
                                 string faction = getFaction(data, "Faction");
                                 data.TryGetValue("Amount", out val);
@@ -1548,6 +1554,7 @@ namespace EddiJournalMonitor
                                 string target = getString(data, "Target");
                                 string targettype = getString(data, "TargetType");
                                 string targetfaction = getFaction(data, "TargetFaction");
+
                                 data.TryGetValue("KillCount", out val);
                                 if (val != null)
                                 {
