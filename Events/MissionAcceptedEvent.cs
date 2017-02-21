@@ -23,7 +23,7 @@ namespace EddiEvents
             VARIABLES.Add("destinationsystem", "The destination system for the mission (if applicable)");
             VARIABLES.Add("destinationstation", "The destination station for the mission (if applicable)");
             VARIABLES.Add("commodity", "The commodity involved in the mission (if applicable)");
-            VARIABLES.Add("amount", "The amount of the commodity or passengers involved in the mission (if applicable)");
+            VARIABLES.Add("amount", "The amount of the commodity,  passengers or targets involved in the mission (if applicable)");
             VARIABLES.Add("passengertype", "The type of passengers in the mission (if applicable)");
             VARIABLES.Add("passengerswanted", "True if the passengers are wanted (if applicable)");
             VARIABLES.Add("target", "Name of the target of the mission (if applicable)");
@@ -31,6 +31,8 @@ namespace EddiEvents
             VARIABLES.Add("targetfaction", "Faction of the target of the mission (if applicable)");
             VARIABLES.Add("communal", "True if the mission is a community goal");
             VARIABLES.Add("expiry", "The expiry date of the mission");
+            VARIABLES.Add("influence", "The increase in the faction's influence in the system gained when completing this mission (None/Low/Med/High)");
+            VARIABLES.Add("reputation", "The increase in the commander's reputation with the faction gained when completing this mission (None/Low/Med/High)");
         }
 
         public long? missionid { get; private set; }
@@ -61,7 +63,11 @@ namespace EddiEvents
 
         public DateTime? expiry { get; private set; }
 
-        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string faction, string destinationsystem, string destinationstation, Commodity commodity, int? amount, string passengertype, bool? passengerswanted, string target, string targettype, string targetfaction, bool communal, DateTime? expiry) : base(timestamp, NAME)
+        public string influence { get; private set; }
+
+        public string reputation { get; private set; }
+
+        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string faction, string destinationsystem, string destinationstation, Commodity commodity, int? amount, string passengertype, bool? passengerswanted, string target, string targettype, string targetfaction, bool communal, DateTime? expiry, string influence, string reputation) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;
@@ -77,6 +83,8 @@ namespace EddiEvents
             this.targetfaction = targetfaction;
             this.communal = communal;
             this.expiry = expiry;
+            this.influence = influence;
+            this.reputation = reputation;
         }
     }
 }
