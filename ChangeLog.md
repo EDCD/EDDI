@@ -2,26 +2,9 @@
   * Core
     * Add ship role 'Taxi'
     * Rename 'Companion App' tab to 'Frontier API' and update relevant text to clarify its use and operation
-	* Add ship value 'ident' which is the user-defined identification string for a ship
-
-2.2.3
-  * Fix issue where undocumented change in Frontier API would cause EDDI to crash
-  * Update netlog monitor to handle new log format
-  * Add ship definition for Dolphin
-  * Add module definitions for Dolphin bulkheads
-
-#2.2.2
-  * Make a nuber of scan items optional for compatibility with Elite 2.3
-
-#2.2.1
-  * Add mechanism to see if game version is beta or production, using remote production build list if available
-  * Update EDSM responder to not send data if game version is beta
-  * Update EDDN responder to send data to /test schemas if game version is beta
-  * Core
-    * Add ship role 'Taxi'
-    * Rename 'Companion App' tab to 'Frontier API' and update relevant text to clarify its use and operation
     * Volcanism for bodies is now an object.  For details of its fields check the relevant documentation
     * Add ancient artifact commodity definitions
+    * Add ship value 'ident' which is the user-defined identification string for a ship
   * Events
 	* Update 'Body scanned' event - added information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
 	* Add 'Bond redeemed' event when a combat bond is redeemed
@@ -65,6 +48,20 @@
 	  * 'Ship renamed' - new script
 	  * 'Touchdown' - change speech depending on if player is controlling ship or not
 	  * 'Trade voucher redeemed' - new script
+
+2.2.3
+  * Fix issue where undocumented change in Frontier API would cause EDDI to crash
+  * Update netlog monitor to handle new log format
+  * Add ship definition for Dolphin
+  * Add module definitions for Dolphin bulkheads
+
+#2.2.2
+  * Make a nuber of scan items optional for compatibility with Elite 2.3
+
+#2.2.1
+  * Add mechanism to see if game version is beta or production, using remote production build list if available
+  * Update EDSM responder to not send data if game version is beta
+  * Update EDDN responder to send data to /test schemas if game version is beta
 
 #2.2.0
   * Core

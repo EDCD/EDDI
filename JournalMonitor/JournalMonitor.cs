@@ -551,11 +551,8 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("SurfaceGravity", out val);
                                     decimal gravity = Body.ms2g(getDecimal("SurfaceGravity", val));
 
-                                    data.TryGetValue("SurfaceTemperature", out val);
-                                    decimal? temperature = (decimal?)(double?)val;
-
-                                    data.TryGetValue("SurfacePressure", out val);
-                                    decimal? pressure = (decimal?)(double?)val;
+                                    decimal? temperature = getOptionalDecimal("SurfaceTemperature", val);
+                                    decimal? pressure = getOptionalDecimal("SurfacePressure", val);
 
                                     data.TryGetValue("Landable", out val);
                                     bool? landable = (bool?)val;
