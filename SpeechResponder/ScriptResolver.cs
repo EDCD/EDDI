@@ -224,7 +224,7 @@ namespace EddiSpeechResponder
                     {
                         // Obtain the first three characters
                         string chars = new Regex("[^a-zA-Z0-9]").Replace(EDDI.Instance.Cmdr.name, "").ToUpperInvariant().Substring(0, 3);
-                        result = ship.SpokenManufacturer() + " " + Translations.CallSign(chars);
+                        result = ship.SpokenManufacturer() + " " + Translations.ICAO(chars);
                     }
                     else
                     {
@@ -259,6 +259,24 @@ namespace EddiSpeechResponder
                 long now = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
 
                 return now - date;
+            }, 1);
+
+            store["ICAO"] = new NativeFunction((values) =>
+            {
+                // Turn a string in to an ICAO definition
+                string value = values[0].AsString;
+                if (value == null || value == "")
+                {
+                    return "";
+                }
+
+                // Remove anything that isn't alphanumeric
+                Logging.Warn("value is " + value);
+                value = value.ToUpperInvariant().Replace("[^A-Z0-9]", "");
+                Logging.Warn("value is " + value);
+
+                // Translate to ICAO
+                return Translations.ICAO(value);
             }, 1);
 
             store["ShipDetails"] = new NativeFunction((values) =>

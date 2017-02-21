@@ -18,6 +18,110 @@
       "name": "System state changed",
       "description": "Triggered when there is a change in the state of a watched system"
     },
+    "Crew member removed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'remove')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n\r\nYou have remove {event.crew} from your crew.",
+      "name": "Crew member removed",
+      "description": "Triggered when you remove a commander from your crew"
+    },
+    "Crew member left": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'leave')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n\r\n{event.crew} has left your crew.",
+      "name": "Crew member left",
+      "description": "Triggered when a commander leaves your crew"
+    },
+    "Crew member joined": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'join')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n\r\n{event.crew} has joined your crew.",
+      "name": "Crew member joined",
+      "description": "Triggered when a commander joins your crew"
+    },
+    "Crew role changed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.role = 'Gunner':\r\n  You are now this crew's gunner.\r\n|elif event.role = 'Fighter':\r\n  You are now this crew's fighter pilot.\r\n|elif event.role = 'Idle':\r\n  You have been unassigned from active duty.\r\n}",
+      "name": "Crew role changed",
+      "description": "Triggered when your role in the crew changes"
+    },
+    "Crew left": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'leave')}\r\n{SetState('eddi_context_crew_name', event.captain)}\r\n\r\nYou have left {event.captain}'s crew.",
+      "name": "Crew left",
+      "description": "Triggered when you leave a crew"
+    },
+    "Crew joined": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'join')}\r\n{SetState('eddi_context_crew_name', event.captain)}\r\n\r\nYou have joined {event.captain}'s crew.",
+      "name": "Crew joined",
+      "description": "Triggered when you join a crew"
+    },
+    "Data voucher redeemed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'data_voucher')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_data_voucher_faction', event.faction)}\r\n{SetState('eddi_context_data_voucher_amount', event.reward)}\r\n\r\nData vouchers for {Humanise(event.amount)} credits redeemed {Occasionally(2, \"by {P(event.faction)}\")}.",
+      "name": "Data voucher redeemed",
+      "description": "Triggered when you redeem a data voucher"
+    },
+    "FSD engaged": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'engage')}\r\n",
+      "name": "FSD engaged",
+      "description": "Triggered when your FSD has engaged"
+    },
+    "Ship renamed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{ShipName()} now registered with {P(system.faction)}.  Identification is {ICAO(event.ident)}.",
+      "name": "Ship renamed",
+      "description": "Triggered when you rename a ship"
+    },
+    "Bond redeemed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bond')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_bond_faction', event.faction)}\r\n{SetState('eddi_context_bond_amount', event.reward)}\r\n\r\nCombat bonds for {Humanise(event.amount)} credits redeemed {Occasionally(2, \"by {P(event.faction)}\")}.",
+      "name": "Bond redeemed",
+      "description": "Triggered when you redeem a bond voucher"
+    },
+    "Trade voucher redeemed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'trade_voucher')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_trade_voucher_faction', event.faction)}\r\n{SetState('eddi_context_trade_voucher_amount', event.reward)}\r\n\r\nTrade vouchers for {Humanise(event.amount)} credits redeemed {Occasionally(2, \"by {P(event.faction)}\")}.",
+      "name": "Trade voucher redeemed",
+      "description": "Triggered when you redeem a trade voucher"
+    },
+    "Bounty redeemed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.reward)}\r\n\r\nBounty vouchers for {Humanise(event.amount)} credits redeemed {Occasionally(2, \"by {P(event.faction)}\")}.",
+      "name": "Bounty redeemed",
+      "description": "Triggered when you redeem a bounty voucher"
+    },
+    "Settlement approached": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Settlement approached",
+      "description": "Triggered when you approach a settlement"
+    },
     "Entered CQC": {
       "enabled": true,
       "priority": 3,
@@ -414,7 +518,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{event.name} is no longer a member of the crew.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'fire')}\r\n{SetState('eddi_context_crew_name', event.name)}\r\n\r\n{event.name} has been fired.",
       "name": "Crew fired",
       "description": "Triggered when you fire crew"
     },
@@ -422,7 +526,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{event.name} has joined the crew.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'hire')}\r\n{SetState('eddi_context_crew_name', event.name)}\r\n\r\n{event.name} has been hired.",
       "name": "Crew hired",
       "description": "Triggered when you hire crew"
     },
@@ -710,7 +814,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'cargo')}\r\n{SetState('eddi_context_last_action', 'collect')}\r\n{SetState('eddi_context_cargo_name', event.cargo)}\r\n{SetState('eddi_context_bounty_name', event.target)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.reward)}\r\n\r\n{event.cargo} now on board.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'collect')}\r\n{SetState('eddi_context_cargo_name', event.commodity)}\r\n\r\n{event.commodity} now on board.",
       "name": "Commodity collected",
       "description": "Triggered when you pick up a commodity in your ship or SRV"
     },
@@ -758,7 +862,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(5000)}\r\n\r\n{OneOf(\"{ShipName()} has\", \"\")} {OneOf(\"left supercruise\", \"{OneOf(\\\"entered\\\", \\\"returned to\\\", \\\"dropped to\\\")} normal space\")}\r\n\r\n{if event.bodytype = 'Planet':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} planet {P(event.body)}\r\n|elif event.bodytype = 'Star':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} star {P(event.body)}\r\n  |elif event.bodytype = 'Station':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} {P(event.body)}\r\n}.\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'disengage')}\r\n\r\n{Pause(5000)}\r\n\r\n{OneOf(\"{ShipName()} has\", \"\")} {OneOf(\"left supercruise\", \"{OneOf(\\\"entered\\\", \\\"returned to\\\", \\\"dropped to\\\")} normal space\")}\r\n\r\n{if event.bodytype = 'Planet':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} planet {P(event.body)}\r\n|elif event.bodytype = 'Star':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} star {P(event.body)}\r\n  |elif event.bodytype = 'Station':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} {P(event.body)}\r\n}.\r\n",
       "name": "Entered normal space",
       "description": "Triggered when your ship enters normal space"
     },
@@ -766,7 +870,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(1000)}\r\n\r\n{OneOf(\"{ShipName()} has\", \"\")} {OneOf(\"entered\", \"jumped to\")} supercruise.\r\n\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'engage')}\r\n\r\n{Pause(1000)}\r\n\r\n{OneOf(\"{ShipName()} has\", \"\")} {OneOf(\"entered\", \"jumped to\")} supercruise.\r\n\r\n",
       "name": "Entered supercruise",
       "description": "Triggered when your ship enters supercruise"
     },
@@ -790,7 +894,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Lift off.",
+      "script": "{if event.playercontrolled = true:\r\n  Lift off.\r\n|else:\r\n  {ShipName()} has lifted off.\r\n}",
       "name": "Liftoff",
       "description": "Triggered when your ship lifts off from a planet's surface"
     },
@@ -798,7 +902,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Touchdown.\r\n\r\n{Pause(2000)}\r\n\r\nCoordinates are {event.longitude} degrees longitude, {event.latitude} degrees latitude.",
+      "script": "{if event.playercontrolled = true:\r\n  Touchdown.\r\n  {Pause(2000)}\r\n|else:\r\n  {ShipName()} has touched down.\r\n}\r\n\r\nCoordinates are {event.longitude} degrees longitude, {event.latitude} degrees latitude.",
       "name": "Touchdown",
       "description": "Triggered when your ship touches down on a planet's surface"
     },
@@ -969,6 +1073,14 @@
       "script": "{_ Fetch from context }\r\n{set reportsystem to SystemDetails(state.eddi_context_system_system)}\r\n\r\n{if !reportsystem.name || reportbody.name = \"\":\r\n    I'm not sure which system you are asking about.\r\n|else:\r\n    {P(reportsystem.name)}\r\n    {if reportsystem.state = \"None\":\r\n      is not in any particular state at current\r\n    |elif reportsystem.state = \"Retreat\":\r\n        is in retreat\r\n    |elif reportsystem.state = \"War\":\r\n        is at war; caution is advised\r\n    |elif reportsystem.state = \"Boom\":\r\n        is undergoing a boom; there might be good trading profits to be made here\r\n    |elif reportsystem.state = \"Civil War\":\r\n        is experiencing civil unrest; caution is advised\r\n    |elif reportsystem.state = \"Civil War\":\r\n        is in civil war; caution is advised\r\n    |elif reportsystem.state = \"Famine\":\r\n        is in a state of famine; caution is advised\r\n    |elif reportsystem.state = \"Lockdown\":\r\n        is in lockdown; caution is advised\r\n    |elif reportsystem.state = \"Outbreak\":\r\n        is attempting to contain an outbreak of disease; caution is advised\r\n    |elif reportsystem.state = \"Expansion\":\r\n        is gearing up to expand to another system\r\n    |elif reportsystem.state = \"Bust\":\r\n        is financially bust\r\n    |elif reportsystem.state = \"Election\":\r\n        is electing new leaders\r\n    |elif reportsystem.state = \"Investment\":\r\n        is investing in its infrastructure\r\n    |else:\r\n    }\r\n    .\r\n}",
       "name": "System state report",
       "description": "Report on the current state of the contextual system"
+    },
+    "Combat bond redeemed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Combat bonds for {Humanise(event.amount)} credits redeemed {Occasionally(2, \"by {P(event.faction)}\")}.",
+      "name": "Combat bond redeemed",
+      "description": "Triggered when you redeem a combat bond voucher"
     }
   }
 }

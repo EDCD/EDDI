@@ -45,6 +45,10 @@ namespace EddiDataDefinitions
 
         /// <summary>the name of this ship</summary>
         public string name { get; set; }
+
+        /// <summary>the identifier of this ship</summary>
+        public string ident { get; set; }
+
         [JsonIgnore]
         private string PhoneticName;
         /// <summary>the phonetic name of this ship</summary>

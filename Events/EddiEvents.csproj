@@ -44,6 +44,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CrewMemberRemovedEvent.cs" />
+    <Compile Include="CrewMemberLeftEvent.cs" />
+    <Compile Include="CrewMemberJoinedEvent.cs" />
+    <Compile Include="CrewRoleChanged.cs" />
+    <Compile Include="CrewLeftEvent.cs" />
+    <Compile Include="CrewJoinedEvent.cs" />
+    <Compile Include="DataVoucherRedeemed.cs" />
+    <Compile Include="FSDEngagedEvent.cs" />
+    <Compile Include="ShipRenamedEvent.cs" />
+    <Compile Include="TradeVoucherRedeemedEvent.cs" />
+    <Compile Include="CombatBondRedeemedEvent.cs" />
+    <Compile Include="BountyRedeemedEvent.cs" />
     <Compile Include="SettlementApproachedEvent.cs" />
     <Compile Include="EnteredCQCEvent.cs" />
     <Compile Include="FileHeaderEvent.cs" />
