@@ -110,10 +110,8 @@ namespace EddiJournalMonitor
                         case "Touchdown":
                             {
                                 object val;
-                                data.TryGetValue("Latitude", out val);
                                 decimal latitude = getDecimal("Latitude", val);
-                                data.TryGetValue("Longitude", out val);
-                                decimal longitude = (decimal)(double)val;
+                                decimal longitude = getDecimal("Longitude", val);
                                 data.TryGetValue("PlayerControlled", out val);
                                 bool? playercontrolled = (bool?)val;
                                 journalEvent = new TouchdownEvent(timestamp, longitude, latitude, playercontrolled);
@@ -125,8 +123,7 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Latitude", out val);
                                 decimal latitude = getDecimal("Latitude", val);
-                                data.TryGetValue("Longitude", out val);
-                                decimal longitude = (decimal)(double)val;
+                                decimal longitude = getDecimal("Longitude", val);
                                 data.TryGetValue("PlayerControlled", out val);
                                 bool? playercontrolled = (bool?)val;
                                 journalEvent = new LiftoffEvent(timestamp, longitude, latitude, playercontrolled);
@@ -553,6 +550,11 @@ namespace EddiJournalMonitor
 
                                     data.TryGetValue("SurfaceTemperature", out val);
                                     decimal? temperature = getOptionalDecimal("SurfaceTemperature", val);
+<<<<<<< 7776bfa4860aa9e9645531ba78de1a64e3dc581c
+=======
+
+                                    data.TryGetValue("SurfacePressure", out val);
+>>>>>>> Add new events coming in 2.3
                                     decimal? pressure = getOptionalDecimal("SurfacePressure", val);
 
                                     data.TryGetValue("Landable", out val);
