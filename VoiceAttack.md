@@ -56,8 +56,8 @@ If a value is not available it will be not set rather than empty.
   * {TXT:Ship model}: the model of the ship (e.g. "Cobra Mk", "Fer-de-Lance")
   * {TXT:Ship model (spoken)}: the model of the ship as would be spoken (e.g. "Cobra Mark 4")
   * {TXT:Ship name}: the name of the ship as set in EDDI configuration
-  * {TXT:Ship callsign}: the callsign of the ship as shown in EDDI configuration (e.g. "GEF-1020")
-  * {TXT:Ship callsign (spoken)}: the callsign of the ship as shown in EDDI configuration as would be spoken
+  * {TXT:Ship callsign}: the callsign of the ship (e.g. "Gutamaya MCD")
+  * {TXT:Ship callsign (spoken)}: the callsign of the ship as would be spoken
   * {TXT:Ship role}: the role of the ship as set in EDDI configuration (Multipurpose, Combat, Exploration, Trading, Mining, Smuggling)
   * {TXT:Ship size}: the size of the ship (Small, Medium, or Large)
   * {DEC:Ship value}: the replacement cost of the ship plus modules

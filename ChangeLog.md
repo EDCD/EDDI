@@ -2,6 +2,8 @@
   * Core
     * Add ship role 'Taxi'
     * Rename 'Companion App' tab to 'Frontier API' and update relevant text to clarify its use and operation
+    * Volcanism for bodies is now an object.  For details of its fields check the relevant documentation
+    * Add ancient artifact commodity definitions
   * Events
     * Add 'Settlement approached' event
 

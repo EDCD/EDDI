@@ -197,6 +197,13 @@ namespace EddiDataDefinitions
             {128682046, new Commodity(305, "Advanced Medicines", "Medicines", 1259, false) },
             {128682047, new Commodity(306, "Medical Diagnostic Equipment", "Technology", 2848, false) },
             {128682048, new Commodity(307, "Survival Equipment", "Consumer Items", 485, false) },
+            // We don't have ID info for ancient artifacts at current
+            {200000001, new Commodity(10001, "Ancient Orb", "Ancient Artifacts", 0, false) },
+            {200000002, new Commodity(10002, "Ancient Urn", "Ancient Artifacts", 0, false) },
+            {200000003, new Commodity(10003, "Ancient Tablet", "Ancient Artifacts", 0, false) },
+            {200000004, new Commodity(10004, "Ancient Casket", "Ancient Artifacts", 0, false) },
+            {200000005, new Commodity(10005, "Ancient Relic", "Ancient Artifacts", 0, false) },
+            {200000006, new Commodity(10006, "Ancient Totem", "Ancient Artifacts", 0, false) },
         };
 
         private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.name.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
