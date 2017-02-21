@@ -58,7 +58,7 @@ namespace Tests
         [TestMethod]
         public void TestCallsign()
         {
-            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), Translations.CallSign("GAB-1655"), true);
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), Translations.ICAO("GAB-1655"), true);
         }
 
 

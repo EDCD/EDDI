@@ -85,6 +85,16 @@ Common usage of this is to provide human-sounding numbers when speacking rather 
 
    You have {Humanise(cmdr.credits)} credits.
 
+### ICAO()
+
+This function will turn its argument into an ICAO spoken value, for example "NCC" becomes "November Charlie Charlie".
+
+ICAO() takes one argument: the value to turn in to ICAO.
+
+Common usage of this is to provide clear callsigns and idents for ships, for example:
+
+   Ship ident is {ICAO(ship.ident)}.
+
 ### ShipName()
 
 This function will provide the name of your ship.

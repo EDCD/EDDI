@@ -339,7 +339,7 @@ namespace EddiSpeechService
             return sb.ToString();
         }
 
-        public static string CallSign(string callsign)
+        public static string ICAO(string callsign)
         {
             if (callsign == null)
             {

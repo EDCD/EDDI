@@ -1,9 +1,51 @@
-#2.2.1
+#2.3.0
   * Core
     * Add ship role 'Taxi'
     * Rename 'Companion App' tab to 'Frontier API' and update relevant text to clarify its use and operation
+	* Add ship value 'ident' which is the user-defined identification string for a ship
   * Events
+	* Update 'Body scanned' event - added information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
+	* Add 'Bond redeemed' event when a combat bond is redeemed
+	* Add 'Bounty redeemed' event when a bounty voucher is redeemed
+	* Update 'Commander continued' event - added fuel level of current ship
+	* Add 'Crew joined' event when you join a crew
+	* Add 'Crew left' event when you leave a crew
+	* Add 'Crew member joined' event when someone joins your crew
+	* Add 'Crew member left' event when someone leaves your crew
+	* Add 'Crew member removed' event when you remove someone from your crew
+	* Add 'Crew role changed' event when your role on someone's crew changes
+	* Add 'Data voucher redeemed' event when a data voucher is redeemed
+	* Add 'FSD engaged' event when the FSD is engaged to jump to supercruise or hyperspace
+	* Update 'Liftoff' event to record if the ship lifting off is player controlled or not
+	* Update 'Location' event to add longitude and latitude if the location is on the ground
+	* Update 'Mission accepted' event to include the number of kills for massacre missions
     * Add 'Settlement approached' event
+	* Add 'Ship renamed' event to record when ship names and idents are changed
+	* Update 'Touchdown' event to record if the ship touching down is player controlled or not
+	* Add 'Trade voucher redeemed' event when a trade voucher is redeemed
+  * Speech Responder
+    * Added 'ICAO' function to allow ICAO-style speech of ship identifiers, sector names etc.
+	* Script changes:
+	  * 'Bond redeemed' - new script
+	  * 'Bounty redeemed' - new script
+	  * 'Commodity collected' - fix bug where 'cargo' was used instead of 'commodity'
+	  * 'Crew fired' - add context
+	  * 'Crew hired' - add context
+	  * 'Crew member joined' - new script
+	  * 'Crew member left' - new script
+	  * 'Crew member removed' - new script
+	  * 'Crew role changed' - new script
+	  * 'Crew joined' - new script
+	  * 'Crew left' - new script
+	  * 'Data voucher redeemed' - new script
+	  * 'Entered normal space' - add context
+	  * 'Entered supercruise' - add context
+	  * 'FSD engaged' - new script
+	  * 'Liftoff' - change speech depending on if player is controlling ship or not
+	  * 'Settlement approached' - new script
+	  * 'Ship renamed' - new script
+	  * 'Touchdown' - change speech depending on if player is controlling ship or not
+	  * 'Trade voucher redeemed' - new script
 
 #2.2.0
   * Core

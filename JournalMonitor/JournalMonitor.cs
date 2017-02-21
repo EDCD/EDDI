@@ -114,7 +114,9 @@ namespace EddiJournalMonitor
                                 decimal latitude = (decimal)(double)val;
                                 data.TryGetValue("Longitude", out val);
                                 decimal longitude = (decimal)(double)val;
-                                journalEvent = new TouchdownEvent(timestamp, longitude, latitude);
+                                data.TryGetValue("PlayerControlled", out val);
+                                bool? playercontrolled = (bool?)val;
+                                journalEvent = new TouchdownEvent(timestamp, longitude, latitude, playercontrolled);
                             }
                             handled = true;
                             break;
@@ -125,7 +127,9 @@ namespace EddiJournalMonitor
                                 decimal latitude = (decimal)(double)val;
                                 data.TryGetValue("Longitude", out val);
                                 decimal longitude = (decimal)(double)val;
-                                journalEvent = new LiftoffEvent(timestamp, longitude, latitude);
+                                data.TryGetValue("PlayerControlled", out val);
+                                bool? playercontrolled = (bool?)val;
+                                journalEvent = new LiftoffEvent(timestamp, longitude, latitude, playercontrolled);
                             }
                             handled = true;
                             break;
@@ -240,7 +244,12 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("StationType", out val);
                                 string stationtype = (string)val;
 
-                                journalEvent = new LocationEvent(timestamp, systemName, x, y, z, body, bodyType, docked, station, stationtype, allegiance, faction, economy, government, security);
+                                data.TryGetValue("Latitude", out val);
+                                decimal? latitude = (decimal?)(double?)val;
+                                data.TryGetValue("Longitude", out val);
+                                decimal? longitude = (decimal?)(double?)val;
+
+                                journalEvent = new LocationEvent(timestamp, systemName, x, y, z, body, bodyType, docked, station, stationtype, allegiance, faction, economy, government, security, longitude, latitude);
                             }
                             handled = true;
                             break;
@@ -508,7 +517,6 @@ namespace EddiJournalMonitor
                                     }
                                 }
 
-
                                 if (data.ContainsKey("StarType"))
                                 {
                                     // Star
@@ -534,7 +542,7 @@ namespace EddiJournalMonitor
                                 {
                                     // Body
                                     data.TryGetValue("TidalLock", out val);
-                                    bool tidallyLocked = (bool)val;
+                                    bool? tidallyLocked = (bool?)val;
 
                                     data.TryGetValue("PlanetClass", out val);
                                     string bodyClass = (string)val;
@@ -544,13 +552,18 @@ namespace EddiJournalMonitor
                                     decimal gravity = Body.ms2g((decimal)(double)val);
 
                                     data.TryGetValue("SurfaceTemperature", out val);
-                                    decimal temperature = (decimal)(double)val;
+                                    decimal? temperature = (decimal?)(double?)val;
 
                                     data.TryGetValue("SurfacePressure", out val);
-                                    decimal pressure = (decimal)(double)val;
+                                    decimal? pressure = (decimal?)(double?)val;
 
                                     data.TryGetValue("Landable", out val);
-                                    bool landable = (bool)val;
+                                    bool? landable = (bool?)val;
+
+                                    data.TryGetValue("ReserveLevel", out val);
+                                    string reserves = (string)val;
+
+                                    // TODO atmosphere composition
 
                                     data.TryGetValue("Materials", out val);
                                     List<MaterialPresence> materials = new List<MaterialPresence>();
@@ -593,7 +606,7 @@ namespace EddiJournalMonitor
                                     data.TryGetValue("Volcanism", out val);
                                     string volcanism = (string)val;
 
-                                    journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, materials, terraformState);
+                                    journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState);
                                     handled = true;
                                 }
                             }
@@ -702,6 +715,24 @@ namespace EddiJournalMonitor
 
                                 handled = true;
                             }
+                            break;
+                        case "SetUserShipName":
+                            {
+                                object val;
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                data.TryGetValue("Ship", out val);
+                                string shipModel = (string)val;
+                                Ship ship = findShip(shipId, shipModel);
+
+                                data.TryGetValue("UserShipName", out val);
+                                ship.name = (string)val;
+                                data.TryGetValue("UserShipId", out val);
+                                ship.ident = (string)val;
+
+                                journalEvent = new ShipRenamedEvent(timestamp, ship);
+                            }
+                            handled = true;
                             break;
                         case "LaunchSRV":
                             {
@@ -855,6 +886,17 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 journalEvent = new MaterialDonatedEvent(timestamp, material, amount);
+                                handled = true;
+                            }
+                            break;
+                        case "StartJump":
+                            {
+                                object val;
+                                data.TryGetValue("JumpType", out val);
+                                string target = (string)val;
+                                data.TryGetValue("StarClass", out val);
+                                string stellarclass = (string)val;
+                                journalEvent = new FSDEngagedEvent(timestamp, target, stellarclass);
                                 handled = true;
                             }
                             break;
@@ -1262,6 +1304,18 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Ship", out val);
                                 string shipModel = (string)val;
                                 Ship ship = findShip(shipId, shipModel);
+                                // Add ship name and ship ID
+                                data.TryGetValue("ShipName", out val);
+                                if (val != null)
+                                {
+                                    ship.name = (string)val;
+                                }
+                                data.TryGetValue("ShipIdent", out val);
+                                if (val != null)
+                                {
+                                    ship.ident = (string)val;
+                                }
+
                                 data.TryGetValue("GameMode", out val);
                                 GameMode mode = GameMode.FromEDName((string)val);
                                 data.TryGetValue("Group", out val);
@@ -1270,7 +1324,10 @@ namespace EddiJournalMonitor
                                 decimal credits = (long)val;
                                 data.TryGetValue("Loan", out val);
                                 decimal loan = (long)val;
-                                journalEvent = new CommanderContinuedEvent(timestamp, commander, ship, mode, group, credits, loan);
+                                data.TryGetValue("FuelLevel", out val);
+                                decimal? fuel = (decimal?)(double?)val;
+
+                                journalEvent = new CommanderContinuedEvent(timestamp, commander, ship, mode, group, credits, loan, fuel);
                                 handled = true;
                                 break;
                             }
@@ -1309,6 +1366,79 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Role", out val);
                                 string role = (string)val;
                                 journalEvent = new CrewAssignedEvent(timestamp, name, role);
+                                handled = true;
+                                break;
+                            }
+                        case "JoinACrew":
+                            {
+                                object val;
+                                data.TryGetValue("Captain", out val);
+                                string captain = (string)val;
+                                captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+
+                                journalEvent = new CrewJoinedEvent(timestamp, captain);
+                                handled = true;
+                                break;
+                            }
+                        case "QuitACrew":
+                            {
+                                object val;
+                                data.TryGetValue("Captain", out val);
+                                string captain = (string)val;
+                                captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+
+                                journalEvent = new CrewLeftEvent(timestamp, captain);
+                                handled = true;
+                                break;
+                            }
+                        case "ChangeCrewRole":
+                            {
+                                object val;
+                                data.TryGetValue("Role", out val);
+                                string role = (string)val;
+                                if (role == "FireCon")
+                                {
+                                    role = "Gunner";
+                                }
+                                else if (role == "FighterCon")
+                                {
+                                    role = "Fighter";
+                                }
+
+                                journalEvent = new CrewRoleChangedEvent(timestamp, role);
+                                handled = true;
+                                break;
+                            }
+                        case "CrewMemberJoins":
+                            {
+                                object val;
+                                data.TryGetValue("Crew", out val);
+                                string member = (string)val;
+                                member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+
+                                journalEvent = new CrewMemberJoinedEvent(timestamp, member);
+                                handled = true;
+                                break;
+                            }
+                        case "CrewMemberQuits":
+                            {
+                                object val;
+                                data.TryGetValue("Crew", out val);
+                                string member = (string)val;
+                                member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+
+                                journalEvent = new CrewMemberLeftEvent(timestamp, member);
+                                handled = true;
+                                break;
+                            }
+                        case "KickCrewMember":
+                            {
+                                object val;
+                                data.TryGetValue("Crew", out val);
+                                string member = (string)val;
+                                member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+
+                                journalEvent = new CrewMemberRemovedEvent(timestamp, member);
                                 handled = true;
                                 break;
                             }
@@ -1490,8 +1620,45 @@ namespace EddiJournalMonitor
                                 break;
                             }
                         case "RedeemVoucher":
-                            // Logging.Report("Redeem voucher", line);
-                            break;
+                            {
+                                object val;
+                                data.TryGetValue("Type", out val);
+                                string type = (string)val;
+
+                                data.TryGetValue("Faction", out val);
+                                string faction = (string)val;
+                                // Could be a superpower...
+                                Superpower superpowerFaction = Superpower.From(faction);
+                                faction = superpowerFaction != null ? superpowerFaction.name : faction;
+
+                                data.TryGetValue("Amount", out val);
+                                long amount = (long)val;
+
+                                if (type == "bounty")
+                                {
+                                    journalEvent = new BountyRedeemedEvent(timestamp, faction, amount);
+                                }
+                                else if (type == "CombatBond")
+                                {
+                                    journalEvent = new BondRedeemedEvent(timestamp, faction, amount);
+                                }
+                                else if (type == "trade")
+                                {
+                                    journalEvent = new TradeVoucherRedeemedEvent(timestamp, faction, amount);
+                                }
+                                else if (type == "settlement" || type == "scannable")
+                                {
+                                    journalEvent = new DataVoucherRedeemedEvent(timestamp, faction, amount);
+                                }
+                                else
+                                {
+                                    Logging.Warn("Unhandled voucher type " + type);
+                                    Logging.Report("Unhandled voucher type " + type);
+                                }
+
+                                handled = true;
+                                break;
+                            }
                         case "CommunityGoalJoin":
                             {
                                 object val;
@@ -1500,7 +1667,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("System", out val);
                                 string system = (string)val;
 
-                                journalEvent = new MissionAcceptedEvent(timestamp, null, name, system, null, null, null, null, null, null, null, null, null, true, null);
+                                journalEvent = new MissionAcceptedEvent(timestamp, null, name, system, null, null, null, null, null, null, null, null, null, true, null, null, null);
                                 handled = true;
                                 break;
                             }
@@ -1555,6 +1722,11 @@ namespace EddiJournalMonitor
                                 // Could be a superpower...
                                 Superpower superpowerTargetFaction = Superpower.From(targetfaction);
                                 targetfaction = superpowerTargetFaction != null ? superpowerTargetFaction.name : targetfaction;
+                                data.TryGetValue("KillCount", out val);
+                                if (val != null)
+                                {
+                                    amount = (int?)(long?)val;
+                                }
 
                                 // Missions with passengers
                                 data.TryGetValue("PassengerType", out val);
@@ -1567,7 +1739,15 @@ namespace EddiJournalMonitor
                                     amount = (int?)(long?)val;
                                 }
 
-                                journalEvent = new MissionAcceptedEvent(timestamp, missionid, name, faction, destinationsystem, destinationstation, commodity, amount, passengertype, passengerswanted, target, targettype, targetfaction, false, expiry);
+                                // Impact on influence
+                                data.TryGetValue("Influence", out val);
+                                string influence = (string)val;
+
+                                // Impact on reputation
+                                data.TryGetValue("Reputation", out val);
+                                string reputation = (string)val;
+
+                                journalEvent = new MissionAcceptedEvent(timestamp, missionid, name, faction, destinationsystem, destinationstation, commodity, amount, passengertype, passengerswanted, target, targettype, targetfaction, false, expiry, influence, reputation);
                                 handled = true;
                                 break;
                             }
