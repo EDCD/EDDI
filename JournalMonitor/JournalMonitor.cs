@@ -98,7 +98,6 @@ namespace EddiJournalMonitor
                                 decimal? latitude = getOptionalDecimal(data, "Latitude");
                                 decimal? longitude = getOptionalDecimal(data, "Longitude");
                                 bool playercontrolled = getOptionalBool(data, "PlayerControlled") ?? true;
-
                                 journalEvent = new TouchdownEvent(timestamp, longitude, latitude, playercontrolled);
                             }
                             handled = true;
