@@ -178,6 +178,7 @@ namespace EddiJournalMonitor
                                 Economy economy = Economy.FromEDName(getString(data, "SystemEconomy"));
                                 Government government = Government.FromEDName(getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
+
                                 string station = getString(data, "StationName");
                                 string stationtype = getString(data, "StationType");
 
@@ -1206,7 +1207,6 @@ namespace EddiJournalMonitor
                                 decimal? fuelCapacity = getOptionalDecimal(data, "FuelCapacity");
 
                                 journalEvent = new CommanderContinuedEvent(timestamp, commander, (int)shipId, ship, shipName, shipIdent, mode, group, credits, loan, fuel, fuelCapacity);
-
                                 handled = true;
                                 break;
                             }
@@ -1259,15 +1259,6 @@ namespace EddiJournalMonitor
                         case "ChangeCrewRole":
                             {
                                 string role = getRole(data, "Role");
-                                if (role == "FireCon")
-                                {
-                                    role = "Gunner";
-                                }
-                                else if (role == "FighterCon")
-                                {
-                                    role = "Fighter";
-                                }
-
                                 journalEvent = new CrewRoleChangedEvent(timestamp, role);
                                 handled = true;
                                 break;
@@ -1553,7 +1544,6 @@ namespace EddiJournalMonitor
                                 string target = getString(data, "Target");
                                 string targettype = getString(data, "TargetType");
                                 string targetfaction = getFaction(data, "TargetFaction");
-
                                 data.TryGetValue("KillCount", out val);
                                 if (val != null)
                                 {
@@ -2123,9 +2113,9 @@ namespace EddiJournalMonitor
 
         private static decimal? getOptionalDecimal(string key, object val)
         {
-            if (val == null)
+            if (val is long)
             {
-                return null;
+                return (decimal?)(long?)val;
             }
             else if (val is long)
             {
@@ -2193,7 +2183,7 @@ namespace EddiJournalMonitor
         {
             if (val is long)
             {
-                return (long)val;
+                return (decimal?)(double?)val;
             }
             throw new ArgumentException("Unparseable value for " + key);
         }
@@ -2214,8 +2204,58 @@ namespace EddiJournalMonitor
             else if (val is long)
             {
                 return (int?)(long?)val;
+        }
+
+        private static bool getBool(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            return getBool(key, val);
+        }
+
+        private static bool getBool(string key, object val)
+        {
+            if (val == null)
+            {
+                throw new ArgumentNullException("Expected value for " + key + " not present");
             }
-            throw new ArgumentException("Unparseable value for " + key);
+            return (bool)val;
+        }
+
+        private static bool? getOptionalBool(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            return getOptionalBool(key, val);
+        }
+
+        private static bool? getOptionalBool(string key, object val)
+        {
+            return (bool?)val;
+        }
+
+        private static string getString(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            return (string)val;
+        }
+
+        private static Superpower getAllegiance(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            // FD sends "" rather than null; fix that here
+            if (((string)val) == "") { val = null; }
+            return Superpower.From((string)val);
+        }
+
+        private static string getFaction(IDictionary<string, object> data, string key)
+        {
+            string faction = getString(data, key);
+            // Might be a superpower...
+            Superpower superpowerFaction = Superpower.From(faction);
+            return superpowerFaction != null ? superpowerFaction.name : faction;
         }
 
         private static bool getBool(IDictionary<string, object> data, string key)
