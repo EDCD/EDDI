@@ -1074,13 +1074,5 @@
       "name": "System state report",
       "description": "Report on the current state of the contextual system"
     },
-    "Combat bond redeemed": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "Combat bonds for {Humanise(event.amount)} credits redeemed {Occasionally(2, \"by {P(event.faction)}\")}.",
-      "name": "Combat bond redeemed",
-      "description": "Triggered when you redeem a combat bond voucher"
-    }
   }
 }

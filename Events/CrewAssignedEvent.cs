@@ -12,7 +12,7 @@ namespace EddiEvents
     {
         public const string NAME = "Crew assigned";
         public const string DESCRIPTION = "Triggered when you assign crew";
-        public const string SAMPLE = "{\"timestamp\":\"2016-08-09T08: 46:29Z\",\"event\":\"CrewAssgign\",\"Name\":\"Margaret Parrish\",\"Role\":\"Active\"}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-08-09T08: 46:29Z\",\"event\":\"CrewAssign\",\"Name\":\"Margaret Parrish\",\"Role\":\"Active\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CrewAssignedEvent()
