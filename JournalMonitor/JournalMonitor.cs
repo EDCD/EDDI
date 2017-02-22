@@ -111,9 +111,9 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Latitude", out val);
-                                decimal latitude = (decimal)(double)val;
+                                decimal latitude = getDecimal("Latitude", val);
                                 data.TryGetValue("Longitude", out val);
-                                decimal longitude = (decimal)(double)val;
+                                decimal longitude = getDecimal("Longitude", val);
                                 journalEvent = new TouchdownEvent(timestamp, longitude, latitude);
                             }
                             handled = true;
@@ -122,9 +122,9 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Latitude", out val);
-                                decimal latitude = (decimal)(double)val;
+                                decimal latitude = getDecimal("Latitude", val);
                                 data.TryGetValue("Longitude", out val);
-                                decimal longitude = (decimal)(double)val;
+                                decimal longitude = getDecimal("Longitude", val);
                                 journalEvent = new LiftoffEvent(timestamp, longitude, latitude);
                             }
                             handled = true;
@@ -159,18 +159,18 @@ namespace EddiJournalMonitor
                                 string systemName = (string)val;
                                 data.TryGetValue("StarPos", out val);
                                 List<object> starPos = (List<object>)val;
-                                decimal x = Math.Round((decimal)((double)starPos[0]) * 32) / (decimal)32.0;
-                                decimal y = Math.Round((decimal)((double)starPos[1]) * 32) / (decimal)32.0;
-                                decimal z = Math.Round((decimal)((double)starPos[2]) * 32) / (decimal)32.0;
+                                decimal x = Math.Round(getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
+                                decimal y = Math.Round(getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
+                                decimal z = Math.Round(getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
 
                                 data.TryGetValue("FuelUsed", out val);
-                                decimal fuelUsed = (decimal)(double)val;
+                                decimal fuelUsed = getDecimal("FuelUsed", val);
 
                                 data.TryGetValue("FuelLevel", out val);
-                                decimal fuelRemaining = (decimal)(double)val;
+                                decimal fuelRemaining = getDecimal("FuelRemaining", val);
 
                                 data.TryGetValue("JumpDist", out val);
-                                decimal distance = (decimal)(double)val;
+                                decimal distance = getDecimal("JumpDist", val);
 
                                 data.TryGetValue("SystemAllegiance", out val);
                                 // FD sends "" rather than null; fix that here
@@ -209,9 +209,9 @@ namespace EddiJournalMonitor
 
                                 data.TryGetValue("StarPos", out val);
                                 List<object> starPos = (List<object>)val;
-                                decimal x = Math.Round((decimal)((double)starPos[0]) * 32) / (decimal)32.0;
-                                decimal y = Math.Round((decimal)((double)starPos[1]) * 32) / (decimal)32.0;
-                                decimal z = Math.Round((decimal)((double)starPos[2]) * 32) / (decimal)32.0;
+                                decimal x = Math.Round(getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
+                                decimal y = Math.Round(getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
+                                decimal z = Math.Round(getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
 
                                 data.TryGetValue("Body", out val);
                                 string body = (string)val;
@@ -459,28 +459,28 @@ namespace EddiJournalMonitor
                                 string name = (string)val;
 
                                 data.TryGetValue("DistanceFromArrivalLS", out val);
-                                decimal distancefromarrival = (decimal)(double)val;
+                                decimal distancefromarrival = getDecimal("DistanceFromArrivalLS", val);
 
                                 data.TryGetValue("Radius", out val);
-                                decimal radius = (decimal)(double)val;
+                                decimal radius = getDecimal("Radius", val);
 
                                 data.TryGetValue("OrbitalPeriod", out val);
-                                decimal? orbitalperiod = (decimal?)(double?)val;
+                                decimal? orbitalperiod = getOptionalDecimal("OrbitalPeriod", val);
 
                                 data.TryGetValue("RotationPeriod", out val);
-                                decimal rotationperiod = (decimal)(double)val;
+                                decimal rotationperiod = getDecimal("RotationPeriod", val);
 
                                 data.TryGetValue("SemiMajorAxis", out val);
-                                decimal? semimajoraxis = (decimal?)(double?)val;
+                                decimal? semimajoraxis = getOptionalDecimal("SemiMajorAxis", val);
 
                                 data.TryGetValue("Eccentricity", out val);
-                                decimal? eccentricity = (decimal?)(double?)val;
+                                decimal? eccentricity = getOptionalDecimal("Eccentricity", val);
 
                                 data.TryGetValue("OrbitalInclination", out val);
-                                decimal? orbitalinclination = (decimal?)(double?)val;
+                                decimal? orbitalinclination = getOptionalDecimal("OrbitalInclination", val);
 
                                 data.TryGetValue("Periapsis", out val);
-                                decimal? periapsis = (decimal?)(double?)val;
+                                decimal? periapsis = getOptionalDecimal("Periapsis", val);
 
                                 data.TryGetValue("Rings", out val);
                                 List<object> ringsData = (List<object>)val;
@@ -496,13 +496,13 @@ namespace EddiJournalMonitor
                                         Composition ringComposition = Composition.FromEDName((string)val);
 
                                         ringData.TryGetValue("MassMT", out val);
-                                        decimal ringMass = (decimal)(double)val;
+                                        decimal ringMass = getDecimal("MassMT", val);
 
                                         ringData.TryGetValue("InnerRad", out val);
-                                        decimal ringInnerRadius = (decimal)(double)val;
+                                        decimal ringInnerRadius = getDecimal("InnerRad", val);
 
                                         ringData.TryGetValue("OuterRad", out val);
-                                        decimal ringOuterRadius = (decimal)(double)val;
+                                        decimal ringOuterRadius = getDecimal("OuterRad", val);
 
                                         rings.Add(new Ring(ringName, ringComposition, ringMass, ringInnerRadius, ringOuterRadius));
                                     }
@@ -516,16 +516,16 @@ namespace EddiJournalMonitor
                                     string starType = (string)val;
 
                                     data.TryGetValue("StellarMass", out val);
-                                    decimal stellarMass = (decimal)(double)val;
+                                    decimal stellarMass = getDecimal("StellarMass", val);
 
                                     data.TryGetValue("AbsoluteMagnitude", out val);
-                                    decimal absoluteMagnitude = (decimal)(double)val;
+                                    decimal absoluteMagnitude = getDecimal("AbsoluteMagnitude", val);
 
                                     data.TryGetValue("Age_MY", out val);
                                     long age = (long)val * 1000000;
 
                                     data.TryGetValue("SurfaceTemperature", out val);
-                                    decimal temperature = (decimal)(double)val;
+                                    decimal temperature = getDecimal("SurfaceTemperature", val);
 
                                     journalEvent = new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, age, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings);
                                     handled = true;
@@ -541,13 +541,13 @@ namespace EddiJournalMonitor
 
                                     // MKW: Gravity in the Journal is in m/s; must convert it to G
                                     data.TryGetValue("SurfaceGravity", out val);
-                                    decimal gravity = Body.ms2g((decimal)(double)val);
+                                    decimal gravity = Body.ms2g(getDecimal("SurfaceGravity", val));
 
                                     data.TryGetValue("SurfaceTemperature", out val);
-                                    decimal temperature = (decimal)(double)val;
+                                    decimal temperature = getDecimal("SurfaceTemperature", val);
 
                                     data.TryGetValue("SurfacePressure", out val);
-                                    decimal pressure = (decimal)(double)val;
+                                    decimal pressure = getDecimal("SurfacePressure", val);
 
                                     data.TryGetValue("Landable", out val);
                                     bool landable = (bool)val;
@@ -565,7 +565,7 @@ namespace EddiJournalMonitor
                                                 Material material = Material.FromEDName(kv.Key);
                                                 if (material != null)
                                                 {
-                                                    materials.Add(new MaterialPresence(material, (decimal)(double)kv.Value));
+                                                    materials.Add(new MaterialPresence(material, getDecimal("Amount", kv.Value)));
                                                 }
                                             }
                                         }
@@ -577,7 +577,7 @@ namespace EddiJournalMonitor
                                             foreach (Dictionary<string, object> materialJson in materialsJson)
                                             {
                                                 Material material = Material.FromEDName((string)materialJson["Name"]);
-                                                materials.Add(new MaterialPresence(material, (decimal)(double)materialJson["Percent"]));
+                                                materials.Add(new MaterialPresence(material, getDecimal("Percent", materialJson["Percent"])));
                                             }
                                         }
                                     }
@@ -591,7 +591,7 @@ namespace EddiJournalMonitor
 
                                     // Volcanism
                                     data.TryGetValue("Volcanism", out val);
-                                    string volcanism = (string)val;
+                                    Volcanism volcanism = Volcanism.FromName((string)val);
 
                                     journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, materials, terraformState);
                                     handled = true;
@@ -693,7 +693,7 @@ namespace EddiJournalMonitor
                                 string system = (string)val;
 
                                 data.TryGetValue("Distance", out val);
-                                decimal distance = (decimal)(double)val;
+                                decimal distance = getDecimal("Distance", val);
 
                                 data.TryGetValue("TransferPrice", out val);
                                 long price = (long)val;
@@ -1001,7 +1001,7 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Health", out val);
-                                decimal health = sensibleHealth((decimal)(((double)val) * 100));
+                                decimal health = sensibleHealth(getDecimal("Health", val) * 100);
 
                                 data.TryGetValue("PlayerPilot", out val);
                                 bool? piloted = (bool?)val;
@@ -1457,7 +1457,7 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Amount", out val);
-                                decimal amount = (decimal)(double)val;
+                                decimal amount = getDecimal("Amount", val);
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
 
@@ -1469,7 +1469,7 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Amount", out val);
-                                decimal amount = (decimal)(double)val;
+                                decimal amount = getDecimal("Amount", val);
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
 
@@ -1481,9 +1481,9 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Scooped", out val);
-                                decimal amount = (decimal)(double)val;
+                                decimal amount = getDecimal("Scooped", val);
                                 data.TryGetValue("Total", out val);
-                                decimal total = (decimal)(double)val;
+                                decimal total = getDecimal("Total", val);
 
                                 journalEvent = new ShipRefuelledEvent(timestamp, "Scoop", null, amount, total);
                                 handled = true;
@@ -2079,5 +2079,40 @@ namespace EddiJournalMonitor
 
         [DllImport("Shell32.dll")]
         private static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)]Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
+
+        // Helpers for parsing json
+        private static decimal getDecimal(string key, object val)
+        {
+            if (val == null)
+            {
+                throw new ArgumentNullException("Expected value for " + key + " not present");
+            }
+            if (val is long)
+            {
+                return (long)val;
+            }
+            else if (val is double)
+            {
+                return (decimal)(double)val;
+            }
+            throw new ArgumentException("Unparseable value for " + key);
+        }
+
+        private static decimal? getOptionalDecimal(string key, object val)
+        {
+            if (val == null)
+            {
+                return null;
+            }
+            if (val is long)
+            {
+                return (long)val;
+            }
+            else if (val is double)
+            {
+                return (decimal)(double)val;
+            }
+            throw new ArgumentException("Unparseable value for " + key);
+        }
     }
 }

@@ -108,7 +108,8 @@ namespace EddiDataDefinitions
         public string planettype;
 
         /// <summary>The volcanism</summary>
-        public string volcanism;
+        [JsonConverter(typeof(VolcanismConverter))]
+        public Volcanism volcanism;
 
         // materials
         public List<MaterialPercentage> materials;

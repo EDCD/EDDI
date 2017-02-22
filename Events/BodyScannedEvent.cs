@@ -13,7 +13,7 @@ namespace EddiEvents
     {
         public const string NAME = "Body scanned";
         public const string DESCRIPTION = "Triggered when you complete a scan of a planetary body";
-        public const string SAMPLE = "{ \"timestamp\":\"2016-10-05T10:28:04Z\", \"event\":\"Scan\", \"BodyName\":\"Dagutii ABC 1 b\", \"DistanceFromArrivalLS\":644.074463, \"TidalLock\":true, \"TerraformState\":\"\", \"PlanetClass\":\"Icy body\", \"Atmosphere\":\"\", \"Volcanism\":\"carbon dioxide geysers volcanism\", \"MassEM\":0.001305, \"Radius\":964000.375000, \"SurfaceGravity\":0.559799, \"SurfaceTemperature\":89.839241, \"SurfacePressure\":0.000000, \"Landable\":true, \"Materials\":{ \"sulphur\":26.8, \"carbon\":22.5, \"phosphorus\":14.4, \"iron\":12.1, \"nickel\":9.2, \"chromium\":5.4, \"selenium\":4.2, \"vanadium\":3.0, \"niobium\":0.8, \"molybdenum\":0.8, \"ruthenium\":0.7 }, \"SemiMajorAxis\":739982912.000000, \"Eccentricity\":0.000102, \"OrbitalInclination\":-0.614765, \"Periapsis\":233.420425, \"OrbitalPeriod\":242733.156250, \"RotationPeriod\":242735.265625 }";
+        public const string SAMPLE = @"{ ""timestamp"":""2016-10-05T10:28:04Z"", ""event"":""Scan"", ""BodyName"":""Dagutii ABC 1 b"", ""DistanceFromArrivalLS"":644.074463, ""TidalLock"":true, ""TerraformState"":"""", ""PlanetClass"":""Icy body"", ""Atmosphere"":"""", ""Volcanism"":""carbon dioxide geysers volcanism"", ""MassEM"":0.001305, ""Radius"":964000.375000, ""SurfaceGravity"":0.559799, ""SurfaceTemperature"":89.839241, ""SurfacePressure"":0.000000, ""Landable"":true, ""Materials"":{ ""sulphur"":26.8, ""carbon"":22.5, ""phosphorus"":14.4, ""iron"":12.1, ""nickel"":9.2, ""chromium"":5.4, ""selenium"":4.2, ""vanadium"":3.0, ""niobium"":0.8, ""molybdenum"":0.8, ""ruthenium"":0.7 }, ""SemiMajorAxis"":739982912.000000, ""Eccentricity"":0.000102, ""OrbitalInclination"":-0.614765, ""Periapsis"":233.420425, ""OrbitalPeriod"":242733.156250, ""RotationPeriod"":242735.265625 }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
@@ -56,7 +56,7 @@ namespace EddiEvents
 
         public string atmosphere { get; private set; }
 
-        public string volcanism{ get; private set; }
+        public Volcanism volcanism{ get; private set; }
 
         public decimal distancefromarrival { get; private set; }
 
@@ -78,7 +78,7 @@ namespace EddiEvents
 
         public string terraformstate { get; private set; }
 
-        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal gravity, decimal temperature, decimal pressure, bool tidallylocked, bool landable, string atmosphere, string volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, List<MaterialPresence> materials, string terraformState) : base(timestamp, NAME)
+        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal gravity, decimal temperature, decimal pressure, bool tidallylocked, bool landable, string atmosphere, Volcanism volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, List<MaterialPresence> materials, string terraformState) : base(timestamp, NAME)
         {
             this.name = name;
             this.distancefromarrival = distancefromarrival;
