@@ -28,6 +28,7 @@
   * Speech Responder
     * Added 'ICAO' function to allow ICAO-style speech of ship identifiers, sector names etc.
 	* Script changes:
+	  * 'Body report' - add details of volcanism
 	  * 'Bond redeemed' - new script
 	  * 'Bounty redeemed' - new script
 	  * 'Commodity collected' - fix bug where 'cargo' was used instead of 'commodity'
