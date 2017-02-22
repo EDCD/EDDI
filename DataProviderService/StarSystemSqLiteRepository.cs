@@ -132,7 +132,10 @@ namespace EddiDataProviderService
                         {
                             if (rdr.Read())
                             {
-                                result = JsonConvert.DeserializeObject<StarSystem>(rdr.GetString(2));
+                                string data = rdr.GetString(2);
+                                // Old versions of the data could have a string "No volcanism" for volcanism.  If so we remove it
+                                data = data.Replace(@"""No volcanism""", "null");
+                                result = JsonConvert.DeserializeObject<StarSystem>(data);
                                 if (result == null)
                                 {
                                     Logging.Info("Failed to obtain system for " + name);

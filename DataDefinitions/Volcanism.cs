@@ -15,11 +15,11 @@ namespace EddiDataDefinitions
         // Translation of composition of volcanism 
         private static readonly IDictionary<string, string> COMPOSITIONS = new Dictionary<string, string>();
 
-        public string type { get; private set; } // Geysers/Magma
+        public string type { get; set; } // Geysers/Magma
 
-        public string composition { get; private set; } // Iron, Silicate, etc.
+        public string composition { get; set; } // Iron, Silicate, etc.
 
-        public string amount { get; private set; } // Minor, Major, null (for normal)
+        public string amount { get; set; } // Minor, Major, null (for normal)
 
         static Volcanism()
         {
@@ -33,7 +33,7 @@ namespace EddiDataDefinitions
             COMPOSITIONS.Add("water", "Water");
         }
 
-        private Volcanism(string type, string composition, string amount)
+        public Volcanism(string type, string composition, string amount)
         {
             this.type = type;
             this.composition = composition;
@@ -45,7 +45,7 @@ namespace EddiDataDefinitions
         /// </summary>
         public static Volcanism FromName(string from)
         {
-            if (from == null || from == "")
+            if (from == null || from == "" || from == "No volcanism")
             {
                 return null;
             }
