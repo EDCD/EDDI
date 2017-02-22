@@ -53,8 +53,8 @@
     <Compile Include="DataVoucherRedeemed.cs" />
     <Compile Include="FSDEngagedEvent.cs" />
     <Compile Include="ShipRenamedEvent.cs" />
+    <Compile Include="BondRedeemedEvent.cs" />
     <Compile Include="TradeVoucherRedeemedEvent.cs" />
-    <Compile Include="CombatBondRedeemedEvent.cs" />
     <Compile Include="BountyRedeemedEvent.cs" />
     <Compile Include="SettlementApproachedEvent.cs" />
     <Compile Include="EnteredCQCEvent.cs" />
