@@ -47,7 +47,7 @@ namespace EddiJournalMonitor
                         }
                         else
                         {
-                            timestamp = DateTime.Parse((string)data["timestamp"]).ToUniversalTime();
+                            timestamp = DateTime.Parse(getString(data, "timestamp")).ToUniversalTime();
                         }
                     }
                     else
@@ -65,92 +65,60 @@ namespace EddiJournalMonitor
                     bool handled = false;
 
                     Event journalEvent = null;
-                    string edType = (string)data["event"];
+                    string edType = getString(data, "event");
                     switch (edType)
                     {
                         case "Docked":
                             {
-                                object val;
-                                data.TryGetValue("StarSystem", out val);
-                                string systemName = (string)val;
-                                data.TryGetValue("StationName", out val);
-                                string stationName = (string)val;
-                                data.TryGetValue("StationType", out val);
-                                string stationModel = (string)val;
-                                data.TryGetValue("StationAllegiance", out val);
-                                // FD sends "" rather than null; fix that here
-                                if (((string)val) == "") { val = null; }
-                                Superpower allegiance = Superpower.From((string)val);
-                                data.TryGetValue("StationFaction", out val);
-                                string faction = (string)val;
-                                // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.From(faction);
-                                faction = superpowerFaction != null ? superpowerFaction.name : faction;
-                                data.TryGetValue("FactionState", out val);
-                                State factionState = State.FromEDName((string)val);
-                                data.TryGetValue("StationEconomy", out val);
-                                Economy economy = Economy.FromEDName((string)val);
-                                data.TryGetValue("StationGovernment", out val);
-                                Government government = Government.FromEDName((string)val);
-                                //data.TryGetValue("Security", out val);
-                                //SecurityLevel securityLevel = SecurityLevel.FromEDName((string)val);
+                                string systemName = getString(data, "StarSystem");
+                                string stationName = getString(data, "StationName");
+                                string stationModel = getString(data, "StationType");
+                                Superpower allegiance = getAllegiance(data, "StationAllegiance");
+                                string faction = getFaction(data, "StationFaction");
+                                State factionState = State.FromEDName(getString(data, "FactionState"));
+                                Economy economy = Economy.FromEDName(getString(data, "StationEconomy"));
+                                Government government = Government.FromEDName(getString(data, "StationGovernment"));
                                 journalEvent = new DockedEvent(timestamp, systemName, stationName, stationModel, faction, factionState, economy, government);
                             }
                             handled = true;
                             break;
                         case "Undocked":
                             {
-                                object val;
-                                data.TryGetValue("StationName", out val);
-                                string stationName = (string)val;
+                                string stationName = getString(data, "StationName");
                                 journalEvent = new UndockedEvent(timestamp, stationName);
                             }
                             handled = true;
                             break;
                         case "Touchdown":
                             {
-                                object val;
-                                data.TryGetValue("Latitude", out val);
-                                decimal? latitude = (decimal?)(double?)val;
-                                data.TryGetValue("Longitude", out val);
-                                decimal? longitude = (decimal?)(double?)val;
-                                data.TryGetValue("PlayerControlled", out val);
-                                bool? playercontrolled = (bool?)val;
+                                decimal? latitude = getOptionalDecimal(data, "Latitude");
+                                decimal? longitude = getOptionalDecimal(data, "Longitude");
+                                bool? playercontrolled = getOptionalBool(data, "PlayerControlled");
                                 journalEvent = new TouchdownEvent(timestamp, longitude, latitude, playercontrolled);
                             }
                             handled = true;
                             break;
                         case "Liftoff":
                             {
-                                object val;
-                                data.TryGetValue("Latitude", out val);
-                                decimal? latitude = (decimal?)(double?)val;
-                                data.TryGetValue("Longitude", out val);
-                                decimal? longitude = (decimal?)(double?)val;
-                                data.TryGetValue("PlayerControlled", out val);
-                                bool? playercontrolled = (bool?)val;
+                                decimal? latitude = getOptionalDecimal(data, "Latitude");
+                                decimal? longitude = getOptionalDecimal(data, "Longitude");
+                                bool? playercontrolled = getOptionalBool(data, "PlayerControlled");
                                 journalEvent = new LiftoffEvent(timestamp, longitude, latitude, playercontrolled);
                             }
                             handled = true;
                             break;
                         case "SupercruiseEntry":
                             {
-                                object val;
-                                data.TryGetValue("StarSystem", out val);
-                                string system = (string)val;
+                                string system = getString(data, "StarySystem");
                                 journalEvent = new EnteredSupercruiseEvent(timestamp, system);
                             }
                             handled = true;
                             break;
                         case "SupercruiseExit":
                             {
-                                object val;
-                                data.TryGetValue("StarSystem", out val);
-                                string system = (string)val;
-                                data.TryGetValue("Body", out val);
-                                string body = (string)val;
-                                data.TryGetValue("BodyType", out val);
-                                string bodyType = (string)val;
+                                string system = getString(data, "StarSystem");
+                                string body = getString(data, "Body");
+                                string bodyType = getString(data, "BodyType");
                                 journalEvent = new EnteredNormalSpaceEvent(timestamp, system, body, bodyType);
                             }
                             handled = true;
@@ -159,40 +127,22 @@ namespace EddiJournalMonitor
                             {
                                 object val;
 
-                                data.TryGetValue("StarSystem", out val);
-                                string systemName = (string)val;
+                                string systemName = getString(data, "StarSystem");
                                 data.TryGetValue("StarPos", out val);
                                 List<object> starPos = (List<object>)val;
                                 decimal x = Math.Round(getDecimal("X", starPos[0]) * 32) / (decimal)32.0;
                                 decimal y = Math.Round(getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
                                 decimal z = Math.Round(getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
 
-                                data.TryGetValue("FuelUsed", out val);
-                                decimal fuelUsed = getDecimal("FuelUsed", val);
-
-                                data.TryGetValue("FuelLevel", out val);
-                                decimal fuelRemaining = getDecimal("FuelRemaining", val);
-
-                                data.TryGetValue("JumpDist", out val);
-                                decimal distance = getDecimal("JumpDist", val);
-
-                                data.TryGetValue("SystemAllegiance", out val);
-                                // FD sends "" rather than null; fix that here
-                                if (((string)val) == "") { val = null; }
-                                Superpower allegiance = Superpower.From((string)val);
-                                data.TryGetValue("SystemFaction", out val);
-                                string faction = (string)val;
-                                // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.From(faction);
-                                faction = superpowerFaction != null ? superpowerFaction.name : faction;
-                                data.TryGetValue("FactionState", out val);
-                                State factionState = State.FromEDName((string)val);
-                                data.TryGetValue("SystemEconomy", out val);
-                                Economy economy = Economy.FromEDName((string)val);
-                                data.TryGetValue("SystemGovernment", out val);
-                                Government government = Government.FromEDName((string)val);
-                                data.TryGetValue("SystemSecurity", out val);
-                                SecurityLevel security = SecurityLevel.FromEDName((string)val);
+                                decimal fuelUsed = getDecimal(data, "FuelUsed");
+                                decimal fuelRemaining = getDecimal(data, "FuelLevel");
+                                decimal distance = getDecimal(data, "JumpDist");
+                                Superpower allegiance = getAllegiance(data, "SystemAllegiance");
+                                string faction = getFaction(data, "SystemFaction");
+                                State factionState = State.FromEDName(getString(data, "FactionState"));
+                                Economy economy = Economy.FromEDName(getString(data, "SystemEconomy"));
+                                Government government = Government.FromEDName(getString(data, "SystemGovernment"));
+                                SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
 
                                 journalEvent = new JumpedEvent(timestamp, systemName, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security);
                             }
@@ -202,8 +152,7 @@ namespace EddiJournalMonitor
                             {
                                 object val;
 
-                                data.TryGetValue("StarSystem", out val);
-                                string systemName = (string)val;
+                                string systemName = getString(data, "StarSystem");
 
                                 if (systemName == "Training")
                                 {
@@ -217,37 +166,20 @@ namespace EddiJournalMonitor
                                 decimal y = Math.Round(getDecimal("Y", starPos[1]) * 32) / (decimal)32.0;
                                 decimal z = Math.Round(getDecimal("Z", starPos[2]) * 32) / (decimal)32.0;
 
-                                data.TryGetValue("Body", out val);
-                                string body = (string)val;
-                                data.TryGetValue("BodyType", out val);
-                                string bodyType = (string)val;
-                                data.TryGetValue("Docked", out val);
-                                bool docked = (bool)val;
-                                data.TryGetValue("SystemAllegiance", out val);
-                                // FD sends "" rather than null; fix that here
-                                if (((string)val) == "") { val = null; }
-                                Superpower allegiance = Superpower.From((string)val);
-                                data.TryGetValue("SystemFaction", out val);
-                                string faction = (string)val;
-                                // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.From(faction);
-                                faction = superpowerFaction != null ? superpowerFaction.name : faction;
-                                data.TryGetValue("SystemEconomy", out val);
-                                Economy economy = Economy.FromEDName((string)val);
-                                data.TryGetValue("SystemGovernment", out val);
-                                Government government = Government.FromEDName((string)val);
-                                data.TryGetValue("SystemSecurity", out val);
-                                SecurityLevel security = SecurityLevel.FromEDName((string)val);
+                                string body = getString(data, "Body");
+                                string bodyType = getString(data, "BodyType");
+                                bool docked = getBool(data, "Docked");
+                                Superpower allegiance = getAllegiance(data, "SystemAllegiance");
+                                string faction = getFaction(data, "SystemFaction");
+                                Economy economy = Economy.FromEDName(getString(data, "SystemEconomy"));
+                                Government government = Government.FromEDName(getString(data, "SystemGovernment"));
+                                SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
 
-                                data.TryGetValue("StationName", out val);
-                                string station = (string)val;
-                                data.TryGetValue("StationType", out val);
-                                string stationtype = (string)val;
+                                string station = getString(data, "StationName");
+                                string stationtype = getString(data, "StationType");
 
-                                data.TryGetValue("Latitude", out val);
-                                decimal? latitude = (decimal?)(double?)val;
-                                data.TryGetValue("Longitude", out val);
-                                decimal? longitude = (decimal?)(double?)val;
+                                decimal? latitude = getOptionalDecimal(data, "Latitude");
+                                decimal? longitude = getOptionalDecimal(data, "Longitude");
 
                                 journalEvent = new LocationEvent(timestamp, systemName, x, y, z, body, bodyType, docked, station, stationtype, allegiance, faction, economy, government, security, longitude, latitude);
                             }
@@ -257,8 +189,7 @@ namespace EddiJournalMonitor
                             {
                                 object val;
 
-                                data.TryGetValue("Target", out val);
-                                string target = (string)val;
+                                string target = getString(data, "Target");
                                 if (target != null)
                                 {
                                     // Target might be a ship, but if not then the string we provide is repopulated in ship.model so use it regardless
@@ -266,11 +197,7 @@ namespace EddiJournalMonitor
                                     target = ship.model;
                                 }
 
-                                data.TryGetValue("VictimFaction", out val);
-                                string victimFaction = (string)val;
-                                // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.From(victimFaction);
-                                victimFaction = superpowerFaction != null ? superpowerFaction.name : victimFaction;
+                                string victimFaction = getFaction(data, "VictimFaction");
 
                                 data.TryGetValue("SharedWithOthers", out val);
                                 bool shared = false;
@@ -292,11 +219,7 @@ namespace EddiJournalMonitor
                                         // 0-credit reward; ignore
                                         break;
                                     }
-                                    data.TryGetValue("Faction", out val);
-                                    string factionName = (string)val;
-                                    // Might be a superpower...
-                                    superpowerFaction = Superpower.From(factionName);
-                                    factionName = superpowerFaction != null ? superpowerFaction.name : factionName;
+                                    string factionName = getFaction(data, "Faction");
                                     rewards.Add(new Reward(factionName, reward));
                                 }
                                 else
@@ -315,12 +238,7 @@ namespace EddiJournalMonitor
                                     {
                                         foreach (Dictionary<string, object> rewardData in rewardsData)
                                         {
-                                            rewardData.TryGetValue("Faction", out val);
-                                            string factionName = (string)val;
-                                            // Might be a superpower...
-                                            superpowerFaction = Superpower.From(factionName);
-                                            factionName = superpowerFaction != null ? superpowerFaction.name : factionName;
-
+                                            string factionName = getFaction(rewardData, "Faction");
                                             rewardData.TryGetValue("Reward", out val);
                                             long factionReward = (long)val;
 
@@ -337,15 +255,10 @@ namespace EddiJournalMonitor
                         case "FactionKillBond":
                             {
                                 object val;
-                                data.TryGetValue("Faction", out val);
-                                string awardingFaction = (string)val;
-                                // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.From(awardingFaction);
-                                awardingFaction = superpowerFaction != null ? superpowerFaction.name : awardingFaction;
+                                string awardingFaction = getFaction(data, "Faction");
                                 data.TryGetValue("Reward", out val);
                                 long reward = (long)val;
-                                data.TryGetValue("VictimFaction", out val);
-                                string victimFaction = (string)val;
+                                string victimFaction = getString(data, "VictimFaction");
 
                                 journalEvent = new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward);
                             }
@@ -354,15 +267,9 @@ namespace EddiJournalMonitor
                         case "CommitCrime":
                             {
                                 object val;
-                                data.TryGetValue("CrimeType", out val);
-                                string crimetype = (string)val;
-                                data.TryGetValue("Faction", out val);
-                                string faction = (string)val;
-                                // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.From(faction);
-                                faction = superpowerFaction != null ? superpowerFaction.name : faction;
-                                data.TryGetValue("Victim", out val);
-                                string victim = (string)val;
+                                string crimetype = getString(data, "CrimeType");
+                                string faction = getFaction(data, "Faction");
+                                string victim = getString(data, "Victim");
                                 // Might be a fine or a bounty
                                 if (data.ContainsKey("Fine"))
                                 {
@@ -407,16 +314,13 @@ namespace EddiJournalMonitor
                             break;
                         case "CollectCargo":
                             {
-                                object val;
-                                data.TryGetValue("Type", out val);
-                                string commodityName = (string)val;
+                                string commodityName = getString(data, "Type");
                                 Commodity commodity = CommodityDefinitions.FromName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map collectcargo type " + commodityName + " to commodity");
                                 }
-                                data.TryGetValue("Stolen", out val);
-                                bool stolen = (bool)val;
+                                bool stolen = getBool(data, "Stolen");
                                 journalEvent = new CommodityCollectedEvent(timestamp, commodity, stolen);
                                 handled = true;
                             }
@@ -425,18 +329,15 @@ namespace EddiJournalMonitor
                         case "EjectCargo":
                             {
                                 object val;
-                                data.TryGetValue("Type", out val);
-                                string commodityName = (string)val;
+                                string commodityName = getString(data, "Type");
                                 Commodity commodity = CommodityDefinitions.FromName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map ejectcargo type " + commodityName + " to commodity");
                                 }
-                                string cargo = (string)val;
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
-                                data.TryGetValue("Abandoned", out val);
-                                bool abandoned = (bool)val;
+                                bool abandoned = getBool(data, "Abandoned");
                                 journalEvent = new CommodityEjectedEvent(timestamp, commodity, amount, abandoned);
                                 handled = true;
                             }
@@ -449,8 +350,7 @@ namespace EddiJournalMonitor
                         case "ApproachSettlement":
                             {
                                 object val;
-                                data.TryGetValue("Name", out val);
-                                string name = (string)val;
+                                string name = getString(data, "Name");
                                 // Replace with localised name if available
                                 if (data.TryGetValue("Name_Localised", out val))
                                 {
@@ -464,32 +364,16 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 // Common items
-                                data.TryGetValue("BodyName", out val);
-                                string name = (string)val;
+                                string name = getString(data, "BodyName");
 
-                                data.TryGetValue("DistanceFromArrivalLS", out val);
-                                decimal distancefromarrival = getDecimal("DistanceFromArrivalLS", val);
-
-                                data.TryGetValue("Radius", out val);
-                                decimal radius = getDecimal("Radius", val);
-
-                                data.TryGetValue("OrbitalPeriod", out val);
-                                decimal? orbitalperiod = getOptionalDecimal("OrbitalPeriod", val);
-
-                                data.TryGetValue("RotationPeriod", out val);
-                                decimal rotationperiod = getDecimal("RotationPeriod", val);
-
-                                data.TryGetValue("SemiMajorAxis", out val);
-                                decimal? semimajoraxis = getOptionalDecimal("SemiMajorAxis", val);
-
-                                data.TryGetValue("Eccentricity", out val);
-                                decimal? eccentricity = getOptionalDecimal("Eccentricity", val);
-
-                                data.TryGetValue("OrbitalInclination", out val);
-                                decimal? orbitalinclination = getOptionalDecimal("OrbitalInclination", val);
-
-                                data.TryGetValue("Periapsis", out val);
-                                decimal? periapsis = getOptionalDecimal("Periapsis", val);
+                                decimal distancefromarrival = getDecimal(data, "DistanceFromArrivalLS");
+                                decimal radius = getDecimal(data, "Radius");
+                                decimal? orbitalperiod = getOptionalDecimal(data, "OrbitalPeriod");
+                                decimal rotationperiod = getDecimal(data, "RotationPeriod");
+                                decimal? semimajoraxis = getOptionalDecimal(data, "SemiMajorAxis");
+                                decimal? eccentricity = getOptionalDecimal(data, "Eccentricity");
+                                decimal? orbitalinclination = getOptionalDecimal(data, "OrbitalInclination");
+                                decimal? periapsis = getOptionalDecimal(data, "Periapsis");
 
                                 data.TryGetValue("Rings", out val);
                                 List<object> ringsData = (List<object>)val;
@@ -498,20 +382,11 @@ namespace EddiJournalMonitor
                                 {
                                     foreach (Dictionary<string, object> ringData in ringsData)
                                     {
-                                        ringData.TryGetValue("Name", out val);
-                                        string ringName = (string)val;
-
-                                        ringData.TryGetValue("RingClass", out val);
-                                        Composition ringComposition = Composition.FromEDName((string)val);
-
-                                        ringData.TryGetValue("MassMT", out val);
-                                        decimal ringMass = getDecimal("MassMT", val);
-
-                                        ringData.TryGetValue("InnerRad", out val);
-                                        decimal ringInnerRadius = getDecimal("InnerRad", val);
-
-                                        ringData.TryGetValue("OuterRad", out val);
-                                        decimal ringOuterRadius = getDecimal("OuterRad", val);
+                                        string ringName = getString(ringData, "Name");
+                                        Composition ringComposition = Composition.FromEDName(getString(ringData, "RingClass"));
+                                        decimal ringMass = getDecimal(data, "MassMT");
+                                        decimal ringInnerRadius = getDecimal(data, "InnerRad");
+                                        decimal ringOuterRadius = getDecimal(data, "OuterRad");
 
                                         rings.Add(new Ring(ringName, ringComposition, ringMass, ringInnerRadius, ringOuterRadius));
                                     }
@@ -520,20 +395,12 @@ namespace EddiJournalMonitor
                                 if (data.ContainsKey("StarType"))
                                 {
                                     // Star
-                                    data.TryGetValue("StarType", out val);
-                                    string starType = (string)val;
-
-                                    data.TryGetValue("StellarMass", out val);
-                                    decimal stellarMass = getDecimal("StellarMass", val);
-
-                                    data.TryGetValue("AbsoluteMagnitude", out val);
-                                    decimal absoluteMagnitude = getDecimal("AbsoluteMagnitude", val);
-
+                                    string starType = getString(data, "StarType");
+                                    decimal stellarMass = getDecimal(data, "StellarMass");
+                                    decimal absoluteMagnitude = getDecimal(data, "AbsoluteMagnitude");
                                     data.TryGetValue("Age_MY", out val);
                                     long age = (long)val * 1000000;
-
-                                    data.TryGetValue("SurfaceTemperature", out val);
-                                    decimal temperature = getDecimal("SurfaceTemperature", val);
+                                    decimal temperature = getDecimal(data, "SurfaceTemperature");
 
                                     journalEvent = new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, age, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings);
                                     handled = true;
@@ -541,24 +408,19 @@ namespace EddiJournalMonitor
                                 else
                                 {
                                     // Body
-                                    data.TryGetValue("TidalLock", out val);
-                                    bool? tidallyLocked = (bool?)val;
+                                    bool? tidallyLocked = getOptionalBool(data, "TidalLock");
 
-                                    data.TryGetValue("PlanetClass", out val);
-                                    string bodyClass = (string)val;
+                                    string bodyClass = getString(data, "PlanetClass");
 
                                     // MKW: Gravity in the Journal is in m/s; must convert it to G
-                                    data.TryGetValue("SurfaceGravity", out val);
-                                    decimal gravity = Body.ms2g(getDecimal("SurfaceGravity", val));
+                                    decimal gravity = Body.ms2g(getDecimal(data, "SurfaceGravity"));
 
-                                    decimal? temperature = getOptionalDecimal("SurfaceTemperature", val);
-                                    decimal? pressure = getOptionalDecimal("SurfacePressure", val);
+                                    decimal? temperature = getOptionalDecimal(data, "SurfaceTemperature");
+                                    decimal? pressure = getOptionalDecimal(data, "SurfacePressure");
 
-                                    data.TryGetValue("Landable", out val);
-                                    bool? landable = (bool?)val;
+                                    bool? landable = getOptionalBool(data, "Landable");
 
-                                    data.TryGetValue("ReserveLevel", out val);
-                                    string reserves = (string)val;
+                                    string reserves = getString(data, "ReserveLevel");
 
                                     // TODO atmosphere composition
 
@@ -587,21 +449,14 @@ namespace EddiJournalMonitor
                                             foreach (Dictionary<string, object> materialJson in materialsJson)
                                             {
                                                 Material material = Material.FromEDName((string)materialJson["Name"]);
-                                                materials.Add(new MaterialPresence(material, getDecimal("Percent", materialJson["Percent"])));
+                                                materials.Add(new MaterialPresence(material, getDecimal(materialJson, "Percent")));
                                             }
                                         }
                                     }
 
-                                    data.TryGetValue("TerraformState", out val);
-                                    string terraformState = (string)val;
-
-                                    // Atmosphere
-                                    data.TryGetValue("Atmosphere", out val);
-                                    string atmosphere = (string)val;
-
-                                    // Volcanism
-                                    data.TryGetValue("Volcanism", out val);
-                                    Volcanism volcanism = Volcanism.FromName((string)val);
+                                    string terraformState = getString(data, "TerraformState");
+                                    string atmosphere = getString(data, "Atmosphere");
+                                    Volcanism volcanism = Volcanism.FromName(getString(data, "Volcanism"));
 
                                     journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState);
                                     handled = true;
@@ -612,8 +467,7 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 // We don't have a ship ID at this point so use the ship type
-                                data.TryGetValue("ShipType", out val);
-                                string shipModel = (string)val;
+                                string shipModel = getString(data, "ShipType");
                                 Ship ship = findShip(null, shipModel);
 
                                 data.TryGetValue("ShipPrice", out val);
@@ -621,14 +475,12 @@ namespace EddiJournalMonitor
 
                                 data.TryGetValue("StoreShipID", out val);
                                 int? storedShipId = (val == null ? (int?)null : (int)(long)val);
-                                data.TryGetValue("StoreOldShip", out val);
-                                string storedShipModel = (string)val;
+                                string storedShipModel = getString(data, "StoreOldShip");
                                 Ship storedShip = storedShipId == null ? null : findShip(storedShipId, storedShipModel);
 
                                 data.TryGetValue("SellShipID", out val);
                                 int? soldShipId = (val == null ? (int?)null : (int)(long)val);
-                                data.TryGetValue("SellOldShip", out val);
-                                string soldShipModel = (string)val;
+                                string soldShipModel = getString(data, "SellOldShip");
                                 Ship soldShip = soldShipId == null ? null : findShip(soldShipId, soldShipModel);
 
                                 data.TryGetValue("SellPrice", out val);
@@ -642,8 +494,7 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("NewShipID", out val);
                                 int shipId = (int)(long)val;
-                                data.TryGetValue("ShipType", out val);
-                                string shipModel = (string)val;
+                                string shipModel = getString(data, "ShipType");
                                 Ship ship = findShip(shipId, shipModel);
 
                                 journalEvent = new ShipDeliveredEvent(timestamp, ship);
@@ -655,8 +506,7 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("SellShipID", out val);
                                 int shipId = (int)(long)val;
-                                data.TryGetValue("ShipType", out val);
-                                string shipModel = (string)val;
+                                string shipModel = getString(data, "ShipType");
                                 Ship ship = findShip(shipId, shipModel);
                                 data.TryGetValue("ShipPrice", out val);
                                 long price = (long)val;
@@ -670,20 +520,17 @@ namespace EddiJournalMonitor
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
-                                data.TryGetValue("ShipType", out val);
-                                string shipModel = (string)val;
+                                string shipModel = getString(data, "ShipType");
                                 Ship ship = findShip(shipId, shipModel);
 
                                 data.TryGetValue("StoreShipID", out val);
                                 int? storedShipId = (val == null ? (int?)null : (int)(long)val);
-                                data.TryGetValue("StoreOldShip", out val);
-                                string storedShipModel = (string)val;
+                                string storedShipModel = getString(data, "StoreOldShip");
                                 Ship storedShip = storedShipId == null ? null : findShip(storedShipId, storedShipModel);
 
                                 data.TryGetValue("SellShipID", out val);
                                 int? soldShipId = (val == null ? (int?)null : (int)(long)val);
-                                data.TryGetValue("SellOldShip", out val);
-                                string soldShipModel = (string)val;
+                                string soldShipModel = getString(data, "SellOldShip");
                                 Ship soldShip = soldShipId == null ? null : findShip(soldShipId, soldShipModel);
 
                                 journalEvent = new ShipSwappedEvent(timestamp, ship, soldShip, storedShip);
@@ -695,16 +542,11 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
-                                data.TryGetValue("ShipType", out val);
-                                string shipModel = (string)val;
+                                string shipModel = getString(data, "ShipType");
                                 Ship ship = findShip(shipId, shipModel);
 
-                                data.TryGetValue("System", out val);
-                                string system = (string)val;
-
-                                data.TryGetValue("Distance", out val);
-                                decimal distance = getDecimal("Distance", val);
-
+                                string system = getString(data, "System");
+                                decimal distance = getDecimal(data, "Distance");
                                 data.TryGetValue("TransferPrice", out val);
                                 long price = (long)val;
 
@@ -718,14 +560,10 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
-                                data.TryGetValue("Ship", out val);
-                                string shipModel = (string)val;
+                                string shipModel = getString(data, "Ship");
                                 Ship ship = findShip(shipId, shipModel);
-
-                                data.TryGetValue("UserShipName", out val);
-                                ship.name = (string)val;
-                                data.TryGetValue("UserShipId", out val);
-                                ship.ident = (string)val;
+                                ship.name = getString(data, "UserShipName");
+                                ship.ident = getString(data, "UserShipId");
 
                                 journalEvent = new ShipRenamedEvent(timestamp, ship);
                             }
@@ -733,12 +571,8 @@ namespace EddiJournalMonitor
                             break;
                         case "LaunchSRV":
                             {
-                                object val;
-                                data.TryGetValue("Loadout", out val);
-                                string loadout = (string)val;
-
-                                data.TryGetValue("PlayerControlled", out val);
-                                bool playercontrolled = (bool)val;
+                                string loadout = getString(data, "Loadout");
+                                bool playercontrolled = getBool(data, "PlayerControlled");
 
                                 journalEvent = new SRVLaunchedEvent(timestamp, loadout, playercontrolled);
                             }
@@ -750,11 +584,8 @@ namespace EddiJournalMonitor
                             break;
                         case "LaunchFighter":
                             {
-                                object val;
-                                data.TryGetValue("Loadout", out val);
-                                string loadout = (string)val;
-                                data.TryGetValue("PlayerControlled", out val);
-                                bool playerControlled = (bool)val;
+                                string loadout = getString(data, "Loadout");
+                                bool playerControlled = getBool(data, "PlayerControlled");
                                 journalEvent = new FighterLaunchedEvent(timestamp, loadout, playerControlled);
                             }
                             handled = true;
@@ -765,9 +596,7 @@ namespace EddiJournalMonitor
                             break;
                         case "VehicleSwitch":
                             {
-                                object val;
-                                data.TryGetValue("To", out val);
-                                string to = (string)val;
+                                string to = getString(data, "To");
                                 if (to == "Fighter")
                                 {
                                     journalEvent = new ControllingFighterEvent(timestamp);
@@ -783,18 +612,13 @@ namespace EddiJournalMonitor
                         case "Interdicted":
                             {
                                 object val;
-                                data.TryGetValue("Submitted", out val);
-                                bool submitted = (bool)val;
-                                data.TryGetValue("Interdictor", out val);
-                                string interdictor = (string)val;
-                                data.TryGetValue("IsPlayer", out val);
-                                bool iscommander = (bool)val;
+                                bool submitted = getBool(data, "Submitted");
+                                string interdictor = getString(data, "Interdictor");
+                                bool iscommander = getBool(data, "IsPlayer");
                                 data.TryGetValue("CombatRank", out val);
                                 CombatRating rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
-                                data.TryGetValue("Faction", out val);
-                                string faction = (string)val;
-                                data.TryGetValue("Power", out val);
-                                string power = (string)val;
+                                string faction = getFaction(data, "Faction");
+                                string power = getString(data, "Power");
 
                                 journalEvent = new ShipInterdictedEvent(timestamp, true, submitted, iscommander, interdictor, rating, faction, power);
                                 handled = true;
@@ -802,11 +626,8 @@ namespace EddiJournalMonitor
                             break;
                         case "EscapeInterdiction":
                             {
-                                object val;
-                                data.TryGetValue("Interdictor", out val);
-                                string interdictor = (string)val;
-                                data.TryGetValue("IsPlayer", out val);
-                                bool iscommander = (bool)val;
+                                string interdictor = getString(data, "Interdictor");
+                                bool iscommander = getBool(data, "IsPlayer");
 
                                 journalEvent = new ShipInterdictedEvent(timestamp, false, false, iscommander, interdictor, null, null, null);
                                 handled = true;
@@ -815,18 +636,13 @@ namespace EddiJournalMonitor
                         case "Interdiction":
                             {
                                 object val;
-                                data.TryGetValue("Success", out val);
-                                bool success = (bool)val;
-                                data.TryGetValue("Interdicted", out val);
-                                string interdictee = (string)val;
-                                data.TryGetValue("IsPlayer", out val);
-                                bool iscommander = (bool)val;
+                                bool success = getBool(data, "Success");
+                                string interdictee = getString(data, "Interdicted");
+                                bool iscommander = getBool(data, "IsPlayer");
                                 data.TryGetValue("CombatRank", out val);
                                 CombatRating rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
-                                data.TryGetValue("Faction", out val);
-                                string faction = (string)val;
-                                data.TryGetValue("Power", out val);
-                                string power = (string)val;
+                                string faction = getFaction(data, "Faction");
+                                string power = getString(data, "Power");
 
                                 journalEvent = new ShipInterdictionEvent(timestamp, success, iscommander, interdictee, rating, faction, power);
                                 handled = true;
@@ -835,8 +651,7 @@ namespace EddiJournalMonitor
                         case "PVPKill":
                             {
                                 object val;
-                                data.TryGetValue("Victim", out val);
-                                string victim = (string)val;
+                                string victim = getString(data, "Victim");
                                 data.TryGetValue("CombatRank", out val);
                                 CombatRating rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
 
@@ -847,8 +662,7 @@ namespace EddiJournalMonitor
                         case "MaterialCollected":
                             {
                                 object val;
-                                data.TryGetValue("Name", out val);
-                                Material material = Material.FromEDName((string)val);
+                                Material material = Material.FromEDName(getString(data, "Name"));
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 journalEvent = new MaterialCollectedEvent(timestamp, material, amount);
@@ -858,8 +672,7 @@ namespace EddiJournalMonitor
                         case "MaterialDiscarded":
                             {
                                 object val;
-                                data.TryGetValue("Name", out val);
-                                Material material = Material.FromEDName((string)val);
+                                Material material = Material.FromEDName(getString(data, "Name"));
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 journalEvent = new MaterialDiscardedEvent(timestamp, material, amount);
@@ -869,8 +682,7 @@ namespace EddiJournalMonitor
                         case "MaterialDiscovered":
                             {
                                 object val;
-                                data.TryGetValue("Name", out val);
-                                Material material = Material.FromEDName((string)val);
+                                Material material = Material.FromEDName(getString(data, "Name"));
                                 journalEvent = new MaterialDiscoveredEvent(timestamp, material);
                                 handled = true;
                             }
@@ -879,7 +691,7 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Name", out val);
-                                Material material = Material.FromEDName((string)val);
+                                Material material = Material.FromEDName(getString(data, "Name"));
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 journalEvent = new MaterialDonatedEvent(timestamp, material, amount);
@@ -889,25 +701,17 @@ namespace EddiJournalMonitor
                         case "StartJump":
                             {
                                 object val;
-                                data.TryGetValue("JumpType", out val);
-                                string target = (string)val;
-                                data.TryGetValue("StarClass", out val);
-                                string stellarclass = (string)val;
+                                string target = getString(data, "JumpType");
+                                string stellarclass = getString(data, "StarClass");
                                 journalEvent = new FSDEngagedEvent(timestamp, target, stellarclass);
                                 handled = true;
                             }
                             break;
                         case "ReceiveText":
                             {
-                                object val;
-                                data.TryGetValue("From", out val);
-                                string from = (string)val;
-
-                                data.TryGetValue("Channel", out val);
-                                string channel = (string)val;
-
-                                data.TryGetValue("Message", out val);
-                                string message = (string)val;
+                                string from = getString(data, "From");
+                                string channel = getString(data, "Channel");
+                                string message = getString(data, "Message");
 
                                 if (!(from.StartsWith("$cmdr") || from.StartsWith("&")))
                                 {
@@ -954,21 +758,16 @@ namespace EddiJournalMonitor
                             break;
                         case "SendText":
                             {
-                                object val;
-                                data.TryGetValue("To", out val);
-                                string to = (string)val;
+                                string to = getString(data, "To");
                                 to = to.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
-                                data.TryGetValue("Message", out val);
-                                string message = (string)val;
+                                string message = getString(data, "Message");
                                 journalEvent = new MessageSentEvent(timestamp, to, message);
                             }
                             handled = true;
                             break;
                         case "DockingRequested":
                             {
-                                object val;
-                                data.TryGetValue("StationName", out val);
-                                string stationName = (string)val;
+                                string stationName = getString(data, "StationName");
                                 journalEvent = new DockingRequestedEvent(timestamp, stationName);
                             }
                             handled = true;
@@ -976,8 +775,7 @@ namespace EddiJournalMonitor
                         case "DockingGranted":
                             {
                                 object val;
-                                data.TryGetValue("StationName", out val);
-                                string stationName = (string)val;
+                                string stationName = getString(data, "StationName");
                                 data.TryGetValue("LandingPad", out val);
                                 int landingPad = (int)(long)val;
                                 journalEvent = new DockingGrantedEvent(timestamp, stationName, landingPad);
@@ -986,38 +784,29 @@ namespace EddiJournalMonitor
                             break;
                         case "DockingDenied":
                             {
-                                object val;
-                                data.TryGetValue("StationName", out val);
-                                string stationName = (string)val;
-                                data.TryGetValue("Reason", out val);
-                                string reason = (string)val;
+                                string stationName = getString(data, "StationName");
+                                string reason = getString(data, "Reason");
                                 journalEvent = new DockingDeniedEvent(timestamp, stationName, reason);
                             }
                             handled = true;
                             break;
                         case "DockingCancelled":
                             {
-                                object val;
-                                data.TryGetValue("StationName", out val);
-                                string stationName = (string)val;
+                                string stationName = getString(data, "StationName");
                                 journalEvent = new DockingCancelledEvent(timestamp, stationName);
                             }
                             handled = true;
                             break;
                         case "DockingTimeout":
                             {
-                                object val;
-                                data.TryGetValue("StationName", out val);
-                                string stationName = (string)val;
+                                string stationName = getString(data, "StationName");
                                 journalEvent = new DockingTimedOutEvent(timestamp, stationName);
                             }
                             handled = true;
                             break;
                         case "MiningRefined":
                             {
-                                object val;
-                                data.TryGetValue("Type", out val);
-                                string commodityName = (string)val;
+                                string commodityName = getString(data, "Type");
 
                                 Commodity commodity = CommodityDefinitions.FromName(commodityName);
                                 if (commodity == null)
@@ -1038,15 +827,9 @@ namespace EddiJournalMonitor
                             break;
                         case "HullDamage":
                             {
-                                object val;
-                                data.TryGetValue("Health", out val);
-                                decimal health = sensibleHealth(getDecimal("Health", val) * 100);
-
-                                data.TryGetValue("PlayerPilot", out val);
-                                bool? piloted = (bool?)val;
-
-                                data.TryGetValue("Fighter", out val);
-                                bool? fighter = (bool?)val;
+                                decimal health = sensibleHealth(getDecimal(data, "Health") * 100);
+                                bool? piloted = getOptionalBool(data, "PlayerPilot");
+                                bool? fighter = getOptionalBool(data, "Fighter");
 
                                 string vehicle = EDDI.Instance.Vehicle;
                                 if (fighter == true && piloted == false)
@@ -1060,9 +843,7 @@ namespace EddiJournalMonitor
                             break;
                         case "ShieldState":
                             {
-                                object val;
-                                data.TryGetValue("ShieldsUp", out val);
-                                bool shieldsUp = (bool)val;
+                                bool shieldsUp = getBool(data, "ShieldsUp");
                                 if (shieldsUp == true)
                                 {
                                     journalEvent = new ShieldsUpEvent(timestamp);
@@ -1089,12 +870,9 @@ namespace EddiJournalMonitor
                                 if (data.ContainsKey("KillerName"))
                                 {
                                     // Single killer
-                                    data.TryGetValue("KillerName", out val);
-                                    names.Add((string)val);
-                                    data.TryGetValue("KillerShip", out val);
-                                    ships.Add((string)val);
-                                    data.TryGetValue("KillerRank", out val);
-                                    ratings.Add(CombatRating.FromEDName((string)val));
+                                    names.Add(getString(data, "KillerName"));
+                                    ships.Add(getString(data, "KillerShip"));
+                                    ratings.Add(CombatRating.FromEDName(getString(data, "KillerRank")));
                                 }
                                 if (data.ContainsKey("killers"))
                                 {
@@ -1103,12 +881,9 @@ namespace EddiJournalMonitor
                                     List<object> killers = (List<object>)val;
                                     foreach (IDictionary<string, object> killer in killers)
                                     {
-                                        killer.TryGetValue("Name", out val);
-                                        names.Add((string)val);
-                                        killer.TryGetValue("Ship", out val);
-                                        ships.Add((string)val);
-                                        killer.TryGetValue("Rank", out val);
-                                        ratings.Add(CombatRating.FromEDName((string)val));
+                                        names.Add(getString(killer, "Name"));
+                                        ships.Add(getString(killer, "Ship"));
+                                        ratings.Add(CombatRating.FromEDName(getString(killer, "Rank")));
                                     }
                                 }
                                 journalEvent = new DiedEvent(timestamp, names, ships, ratings);
@@ -1118,8 +893,7 @@ namespace EddiJournalMonitor
                         case "BuyExplorationData":
                             {
                                 object val;
-                                data.TryGetValue("System", out val);
-                                string system = (string)val;
+                                string system = getString(data, "System");
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
                                 journalEvent = new ExplorationDataPurchasedEvent(timestamp, system, price);
@@ -1144,8 +918,7 @@ namespace EddiJournalMonitor
                         case "USSDrop":
                             {
                                 object val;
-                                data.TryGetValue("USSType", out val);
-                                string source = (string)val;
+                                string source = getString(data, "USSType");
                                 data.TryGetValue("USSThreat", out val);
                                 int threat = (int)(long)val;
                                 journalEvent = new EnteredSignalSourceEvent(timestamp, source, threat);
@@ -1155,8 +928,7 @@ namespace EddiJournalMonitor
                         case "MarketBuy":
                             {
                                 object val;
-                                data.TryGetValue("Type", out val);
-                                string commodityName = (string)val;
+                                string commodityName = getString(data, "Type");
                                 Commodity commodity = CommodityDefinitions.FromName(commodityName);
                                 if (commodity == null)
                                 {
@@ -1173,8 +945,7 @@ namespace EddiJournalMonitor
                         case "MarketSell":
                             {
                                 object val;
-                                data.TryGetValue("Type", out val);
-                                string commodityName = (string)val;
+                                string commodityName = getString(data, "Type");
                                 Commodity commodity = CommodityDefinitions.FromName(commodityName);
                                 if (commodity == null)
                                 {
@@ -1188,12 +959,12 @@ namespace EddiJournalMonitor
                                 long buyPrice = (long)val;
                                 // We don't care about buy price, we care about profit per unit
                                 long profit = price - buyPrice;
-                                data.TryGetValue("IllegalGoods", out val);
-                                bool illegal = (val == null ? false : (bool)val);
-                                data.TryGetValue("StolenGoods", out val);
-                                bool stolen = (val == null ? false : (bool)val);
-                                data.TryGetValue("BlackMarket", out val);
-                                bool blackmarket = (val == null ? false : (bool)val);
+                                bool? tmp = getOptionalBool(data, "IllegalGoods");
+                                bool illegal = tmp.HasValue ? (bool)tmp : false;
+                                tmp = getOptionalBool(data, "StolenGoods");
+                                bool stolen = tmp.HasValue ? (bool)tmp : false;
+                                tmp = getOptionalBool(data, "BlackMarket");
+                                bool blackmarket = tmp.HasValue ? (bool)tmp : false;
                                 journalEvent = new CommoditySoldEvent(timestamp, commodity, amount, price, profit, illegal, stolen, blackmarket);
                                 handled = true;
                                 break;
@@ -1201,10 +972,8 @@ namespace EddiJournalMonitor
                         case "EngineerCraft":
                             {
                                 object val;
-                                data.TryGetValue("Engineer", out val);
-                                string engineer = (string)val;
-                                data.TryGetValue("Blueprint", out val);
-                                string blueprint = (string)val;
+                                string engineer = getString(data, "Engineer");
+                                string blueprint = getString(data, "Blueprint");
                                 data.TryGetValue("Level", out val);
                                 int level = (int)(long)val;
 
@@ -1240,7 +1009,7 @@ namespace EddiJournalMonitor
 
                                         foreach (Dictionary<string, object> materialJson in materialsJson)
                                         {
-                                            Material material = Material.FromEDName((string)materialJson["Name"]);
+                                            Material material = Material.FromEDName(getString(materialJson, "Name"));
                                             materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                         }
                                     }
@@ -1252,10 +1021,8 @@ namespace EddiJournalMonitor
                         case "EngineerApply":
                             {
                                 object val;
-                                data.TryGetValue("Engineer", out val);
-                                string engineer = (string)val;
-                                data.TryGetValue("Blueprint", out val);
-                                string blueprint = (string)val;
+                                string engineer = getString(data, "Engineer");
+                                string blueprint = getString(data, "Blueprint");
                                 data.TryGetValue("Level", out val);
                                 int level = (int)(long)val;
 
@@ -1266,8 +1033,7 @@ namespace EddiJournalMonitor
                         case "EngineerProgress":
                             {
                                 object val;
-                                data.TryGetValue("Engineer", out val);
-                                string engineer = (string)val;
+                                string engineer = getString(data, "Engineer");
                                 data.TryGetValue("Rank", out val);
                                 if (val == null)
                                 {
@@ -1283,8 +1049,7 @@ namespace EddiJournalMonitor
                         case "LoadGame":
                             {
                                 object val;
-                                data.TryGetValue("Commander", out val);
-                                string commander = (string)val;
+                                string commander = getString(data, "Commander");
 
                                 data.TryGetValue("ShipID", out val);
                                 int? shipId = (int?)(long?)val;
@@ -1298,8 +1063,7 @@ namespace EddiJournalMonitor
                                     break;
                                 }
 
-                                data.TryGetValue("Ship", out val);
-                                string shipModel = (string)val;
+                                string shipModel = getString(data, "Ship");
                                 Ship ship = findShip(shipId, shipModel);
                                 // Add ship name and ship ID
                                 data.TryGetValue("ShipName", out val);
@@ -1313,16 +1077,13 @@ namespace EddiJournalMonitor
                                     ship.ident = (string)val;
                                 }
 
-                                data.TryGetValue("GameMode", out val);
-                                GameMode mode = GameMode.FromEDName((string)val);
-                                data.TryGetValue("Group", out val);
-                                string group = (string)val;
+                                GameMode mode = GameMode.FromEDName(getString(data, "GameMode"));
+                                string group = getString(data, "Group");
                                 data.TryGetValue("Credits", out val);
                                 decimal credits = (long)val;
                                 data.TryGetValue("Loan", out val);
                                 decimal loan = (long)val;
-                                data.TryGetValue("FuelLevel", out val);
-                                decimal? fuel = (decimal?)(double?)val;
+                                decimal? fuel = getOptionalDecimal(data, "FuelLevel");
 
                                 journalEvent = new CommanderContinuedEvent(timestamp, commander, ship, mode, group, credits, loan, fuel);
                                 handled = true;
@@ -1331,13 +1092,8 @@ namespace EddiJournalMonitor
                         case "CrewHire":
                             {
                                 object val;
-                                data.TryGetValue("Name", out val);
-                                string name = (string)val;
-                                data.TryGetValue("Faction", out val);
-                                string faction = (string)val;
-                                // Might be a superpower...
-                                Superpower superpowerFaction = Superpower.From(faction);
-                                faction = superpowerFaction != null ? superpowerFaction.name : faction;
+                                string name = getString(data, "Name");
+                                string faction = getFaction(data, "Faction");
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
                                 data.TryGetValue("CombatRank", out val);
@@ -1348,29 +1104,22 @@ namespace EddiJournalMonitor
                             }
                         case "CrewFire":
                             {
-                                object val;
-                                data.TryGetValue("Name", out val);
-                                string name = (string)val;
+                                string name = getString(data, "Name");
                                 journalEvent = new CrewFiredEvent(timestamp, name);
                                 handled = true;
                                 break;
                             }
                         case "CrewAssign":
                             {
-                                object val;
-                                data.TryGetValue("Name", out val);
-                                string name = (string)val;
-                                data.TryGetValue("Role", out val);
-                                string role = (string)val;
+                                string name = getString(data, "Name");
+                                string role = getString(data, "Role");
                                 journalEvent = new CrewAssignedEvent(timestamp, name, role);
                                 handled = true;
                                 break;
                             }
                         case "JoinACrew":
                             {
-                                object val;
-                                data.TryGetValue("Captain", out val);
-                                string captain = (string)val;
+                                string captain = getString(data, "Captain");
                                 captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
 
                                 journalEvent = new CrewJoinedEvent(timestamp, captain);
@@ -1379,9 +1128,7 @@ namespace EddiJournalMonitor
                             }
                         case "QuitACrew":
                             {
-                                object val;
-                                data.TryGetValue("Captain", out val);
-                                string captain = (string)val;
+                                string captain = getString(data, "Captain");
                                 captain = captain.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
 
                                 journalEvent = new CrewLeftEvent(timestamp, captain);
@@ -1390,9 +1137,7 @@ namespace EddiJournalMonitor
                             }
                         case "ChangeCrewRole":
                             {
-                                object val;
-                                data.TryGetValue("Role", out val);
-                                string role = (string)val;
+                                string role = getString(data, "Role");
                                 if (role == "FireCon")
                                 {
                                     role = "Gunner";
@@ -1408,9 +1153,7 @@ namespace EddiJournalMonitor
                             }
                         case "CrewMemberJoins":
                             {
-                                object val;
-                                data.TryGetValue("Crew", out val);
-                                string member = (string)val;
+                                string member = getString(data, "Crew");
                                 member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
 
                                 journalEvent = new CrewMemberJoinedEvent(timestamp, member);
@@ -1419,9 +1162,7 @@ namespace EddiJournalMonitor
                             }
                         case "CrewMemberQuits":
                             {
-                                object val;
-                                data.TryGetValue("Crew", out val);
-                                string member = (string)val;
+                                string member = getString(data, "Crew");
                                 member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
 
                                 journalEvent = new CrewMemberLeftEvent(timestamp, member);
@@ -1430,9 +1171,7 @@ namespace EddiJournalMonitor
                             }
                         case "KickCrewMember":
                             {
-                                object val;
-                                data.TryGetValue("Crew", out val);
-                                string member = (string)val;
+                                string member = getString(data, "Crew");
                                 member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
 
                                 journalEvent = new CrewMemberRemovedEvent(timestamp, member);
@@ -1472,20 +1211,15 @@ namespace EddiJournalMonitor
                             }
                         case "ClearSavedGame":
                             {
-                                object val;
-                                data.TryGetValue("Name", out val);
-                                string name = (string)val;
+                                string name = getString(data, "Name");
                                 journalEvent = new ClearedSaveEvent(timestamp, name);
                                 handled = true;
                                 break;
                             }
                         case "NewCommander":
                             {
-                                object val;
-                                data.TryGetValue("Name", out val);
-                                string name = (string)val;
-                                data.TryGetValue("Package", out val);
-                                string package = (string)val;
+                                string name = getString(data, "Name");
+                                string package = getString(data, "Package");
                                 journalEvent = new CommanderStartedEvent(timestamp, name, package);
                                 handled = true;
                                 break;
@@ -1533,16 +1267,13 @@ namespace EddiJournalMonitor
                         case "Screenshot":
                             {
                                 object val;
-                                data.TryGetValue("Filename", out val);
-                                string filename = (string)val;
+                                string filename = getString(data, "Filename");
                                 data.TryGetValue("Width", out val);
                                 int width = (int)(long)val;
                                 data.TryGetValue("Height", out val);
                                 int height = (int)(long)val;
-                                data.TryGetValue("System", out val);
-                                string system = (string)val;
-                                data.TryGetValue("Body", out val);
-                                string body = (string)val;
+                                string system = getString(data, "System");
+                                string body = getString(data, "Body");
 
                                 journalEvent = new ScreenshotEvent(timestamp, filename, width, height, system, body);
                                 handled = true;
@@ -1551,8 +1282,7 @@ namespace EddiJournalMonitor
                         case "BuyTradeData":
                             {
                                 object val;
-                                data.TryGetValue("System", out val);
-                                string system = (string)val;
+                                string system = getString(data, "System");
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
 
@@ -1583,8 +1313,7 @@ namespace EddiJournalMonitor
                         case "RefuelPartial":
                             {
                                 object val;
-                                data.TryGetValue("Amount", out val);
-                                decimal amount = getDecimal("Amount", val);
+                                decimal amount = getDecimal(data, "Amount");
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
 
@@ -1595,8 +1324,7 @@ namespace EddiJournalMonitor
                         case "RefuelAll":
                             {
                                 object val;
-                                data.TryGetValue("Amount", out val);
-                                decimal amount = getDecimal("Amount", val);
+                                decimal amount = getDecimal(data, "Amount");
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
 
@@ -1606,11 +1334,8 @@ namespace EddiJournalMonitor
                             }
                         case "FuelScoop":
                             {
-                                object val;
-                                data.TryGetValue("Scooped", out val);
-                                decimal amount = getDecimal("Scooped", val);
-                                data.TryGetValue("Total", out val);
-                                decimal total = getDecimal("Total", val);
+                                decimal amount = getDecimal(data, "Scooped");
+                                decimal total = getDecimal(data, "Total");
 
                                 journalEvent = new ShipRefuelledEvent(timestamp, "Scoop", null, amount, total);
                                 handled = true;
@@ -1619,15 +1344,9 @@ namespace EddiJournalMonitor
                         case "RedeemVoucher":
                             {
                                 object val;
-                                data.TryGetValue("Type", out val);
-                                string type = (string)val;
 
-                                data.TryGetValue("Faction", out val);
-                                string faction = (string)val;
-                                // Could be a superpower...
-                                Superpower superpowerFaction = Superpower.From(faction);
-                                faction = superpowerFaction != null ? superpowerFaction.name : faction;
-
+                                string type = getString(data, "Type");
+                                string faction = getFaction(data, "Faction");
                                 data.TryGetValue("Amount", out val);
                                 long amount = (long)val;
 
@@ -1658,11 +1377,8 @@ namespace EddiJournalMonitor
                             }
                         case "CommunityGoalJoin":
                             {
-                                object val;
-                                data.TryGetValue("Name", out val);
-                                string name = (string)val;
-                                data.TryGetValue("System", out val);
-                                string system = (string)val;
+                                string name = getString(data, "Name");
+                                string system = getString(data, "System");
 
                                 journalEvent = new MissionAcceptedEvent(timestamp, null, name, system, null, null, null, null, null, null, null, null, null, true, null, null, null);
                                 handled = true;
@@ -1671,10 +1387,8 @@ namespace EddiJournalMonitor
                         case "CommunityGoalReward":
                             {
                                 object val;
-                                data.TryGetValue("Name", out val);
-                                string name = (string)val;
-                                data.TryGetValue("System", out val);
-                                string system = (string)val;
+                                string name = getString(data, "Name");
+                                string system = getString(data, "System");
                                 data.TryGetValue("Reward", out val);
                                 long reward = (val == null ? 0 : (long)val);
 
@@ -1689,36 +1403,22 @@ namespace EddiJournalMonitor
                                 long missionid = (long)val;
                                 data.TryGetValue("Expiry", out val);
                                 DateTime? expiry = (val == null ? (DateTime?)null : (DateTime)val);
-                                data.TryGetValue("Name", out val);
-                                string name = (string)val;
-                                data.TryGetValue("Faction", out val);
-                                string faction = (string)val;
-                                // Could be a superpower...
-                                Superpower superpowerFaction = Superpower.From(faction);
-                                faction = superpowerFaction != null ? superpowerFaction.name : faction;
+                                string name = getString(data, "Name");
+                                string faction = getFaction(data, "Faction");
 
                                 // Missions with destinations
-                                data.TryGetValue("DestinationSystem", out val);
-                                string destinationsystem = (string)val;
-                                data.TryGetValue("DestinationStation", out val);
-                                string destinationstation = (string)val;
+                                string destinationsystem = getString(data, "DestinationSystem");
+                                string destinationstation = getString(data, "DestinationStation");
 
                                 // Missions with commodities
-                                data.TryGetValue("Commodity", out val);
-                                Commodity commodity = CommodityDefinitions.FromName((string)val);
+                                Commodity commodity = CommodityDefinitions.FromName(getString(data, "Commodity"));
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
 
                                 // Missions with targets
-                                data.TryGetValue("Target", out val);
-                                string target = (string)val;
-                                data.TryGetValue("TargetType", out val);
-                                string targettype = (string)val;
-                                data.TryGetValue("TargetFaction", out val);
-                                string targetfaction = (string)val;
-                                // Could be a superpower...
-                                Superpower superpowerTargetFaction = Superpower.From(targetfaction);
-                                targetfaction = superpowerTargetFaction != null ? superpowerTargetFaction.name : targetfaction;
+                                string target = getString(data, "Target");
+                                string targettype = getString(data, "TargetType");
+                                string targetfaction = getFaction(data, "TargetFaction");
                                 data.TryGetValue("KillCount", out val);
                                 if (val != null)
                                 {
@@ -1726,23 +1426,17 @@ namespace EddiJournalMonitor
                                 }
 
                                 // Missions with passengers
-                                data.TryGetValue("PassengerType", out val);
-                                string passengertype = (string)val;
-                                data.TryGetValue("PassengersWanted", out val);
-                                bool? passengerswanted = (bool?)val;
+                                string passengertype = getString(data, "PassengerType");
+                                bool? passengerswanted = getOptionalBool(data, "PassengersWanted");
                                 data.TryGetValue("PassengerCount", out val);
                                 if (val != null)
                                 {
                                     amount = (int?)(long?)val;
                                 }
 
-                                // Impact on influence
-                                data.TryGetValue("Influence", out val);
-                                string influence = (string)val;
-
-                                // Impact on reputation
-                                data.TryGetValue("Reputation", out val);
-                                string reputation = (string)val;
+                                // Impact on influence and reputation
+                                string influence = getString(data, "Influence");
+                                string reputation = getString(data, "Reputation");
 
                                 journalEvent = new MissionAcceptedEvent(timestamp, missionid, name, faction, destinationsystem, destinationstation, commodity, amount, passengertype, passengerswanted, target, targettype, targetfaction, false, expiry, influence, reputation);
                                 handled = true;
@@ -1753,21 +1447,15 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("MissionID", out val);
                                 long missionid = (long)val;
-                                data.TryGetValue("Name", out val);
-                                string name = (string)val;
+                                string name = getString(data, "Name");
                                 data.TryGetValue("Reward", out val);
                                 long reward = (val == null ? 0 : (long)val);
                                 data.TryGetValue("Donation", out val);
                                 long donation = (val == null ? 0 : (long)val);
-                                data.TryGetValue("Faction", out val);
-                                string faction = (string)val;
-                                // Could be a superpower...
-                                Superpower superpowerFaction = Superpower.From(faction);
-                                faction = superpowerFaction != null ? superpowerFaction.name : faction;
+                                string faction = getFaction(data, "Faction");
 
                                 // Missions with commodities
-                                data.TryGetValue("Commodity", out val);
-                                Commodity commodity = CommodityDefinitions.FromName((string)val);
+                                Commodity commodity = CommodityDefinitions.FromName(getString(data, "Commodity"));
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
 
@@ -1778,8 +1466,7 @@ namespace EddiJournalMonitor
                                 {
                                     foreach (Dictionary<string, object> commodityRewardData in commodityRewardsData)
                                     {
-                                        commodityRewardData.TryGetValue("Name", out val);
-                                        Commodity rewardCommodity = CommodityDefinitions.FromName((string)val);
+                                        Commodity rewardCommodity = CommodityDefinitions.FromName(getString(commodityRewardData, "Name"));
                                         commodityRewardData.TryGetValue("Count", out val);
                                         int count = (int)(long)val;
                                         commodityrewards.Add(new CommodityAmount(rewardCommodity, count));
@@ -1795,8 +1482,7 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("MissionID", out val);
                                 long missionid = (long)val;
-                                data.TryGetValue("Name", out val);
-                                string name = (string)val;
+                                string name = getString(data, "Name");
                                 journalEvent = new MissionAbandonedEvent(timestamp, missionid, name);
                                 handled = true;
                                 break;
@@ -1806,8 +1492,7 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("MissionID", out val);
                                 long missionid = (long)val;
-                                data.TryGetValue("Name", out val);
-                                string name = (string)val;
+                                string name = getString(data, "Name");
                                 journalEvent = new MissionFailedEvent(timestamp, missionid, name);
                                 handled = true;
                                 break;
@@ -1815,8 +1500,7 @@ namespace EddiJournalMonitor
                         case "Repair":
                             {
                                 object val;
-                                data.TryGetValue("Item", out val);
-                                string item = (string)val;
+                                string item = getString(data, "Item");
                                 // Item might be a module
                                 Module module = ModuleDefinitions.fromEDName(item);
                                 if (module != null)
@@ -1877,8 +1561,7 @@ namespace EddiJournalMonitor
                         case "Synthesis":
                             {
                                 object val;
-                                data.TryGetValue("Name", out val);
-                                string synthesis = (string)val;
+                                string synthesis = getString(data, "Name");
 
                                 data.TryGetValue("Materials", out val);
                                 List<MaterialAmount> materials = new List<MaterialAmount>();
@@ -1902,7 +1585,7 @@ namespace EddiJournalMonitor
 
                                     foreach (Dictionary<string, object> materialJson in materialsJson)
                                     {
-                                        Material material = Material.FromEDName((string)materialJson["Name"]);
+                                        Material material = Material.FromEDName(getString(materialJson, "Name"));
                                         materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                     }
                                 }
@@ -1913,9 +1596,7 @@ namespace EddiJournalMonitor
                             }
                         case "PowerplayJoin":
                             {
-                                object val;
-                                data.TryGetValue("Power", out val);
-                                string power = (string)val;
+                                string power = getString(data, "Power");
 
                                 journalEvent = new PowerJoinedEvent(timestamp, power);
                                 handled = true;
@@ -1923,9 +1604,7 @@ namespace EddiJournalMonitor
                             }
                         case "PowerplayLeave":
                             {
-                                object val;
-                                data.TryGetValue("Power", out val);
-                                string power = (string)val;
+                                string power = getString(data, "Power");
 
                                 journalEvent = new PowerLeftEvent(timestamp, power);
                                 handled = true;
@@ -1933,11 +1612,8 @@ namespace EddiJournalMonitor
                             }
                         case "PowerplayDefect":
                             {
-                                object val;
-                                data.TryGetValue("FromPower", out val);
-                                string frompower = (string)val;
-                                data.TryGetValue("ToPower", out val);
-                                string topower = (string)val;
+                                string frompower = getString(data, "FromPower");
+                                string topower = getString(data, "ToPower");
 
                                 journalEvent = new PowerDefectedEvent(timestamp, frompower, topower);
                                 handled = true;
@@ -1946,10 +1622,8 @@ namespace EddiJournalMonitor
                         case "PowerplayVote":
                             {
                                 object val;
-                                data.TryGetValue("Power", out val);
-                                string power = (string)val;
-                                data.TryGetValue("System", out val);
-                                string system = (string)val;
+                                string power = getString(data, "Power");
+                                string system = getString(data, "System");
                                 data.TryGetValue("Votes", out val);
                                 int amount = (int)(long)val;
 
@@ -1960,8 +1634,7 @@ namespace EddiJournalMonitor
                         case "PowerplaySalary":
                             {
                                 object val;
-                                data.TryGetValue("Power", out val);
-                                string power = (string)val;
+                                string power = getString(data, "Power");
                                 data.TryGetValue("Amount", out val);
                                 int amount = (int)(long)val;
 
@@ -1972,11 +1645,9 @@ namespace EddiJournalMonitor
                         case "PowerplayCollect":
                             {
                                 object val;
-                                data.TryGetValue("Power", out val);
-                                string power = (string)val;
+                                string power = getString(data, "Power");
                                 // Currently using localised information as we don't have commodity definitions for all powerplay commodities
-                                data.TryGetValue("Type_Localised", out val);
-                                string commodity = (string)val;
+                                string commodity = getString(data, "Type_Localised");
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
 
@@ -1987,11 +1658,9 @@ namespace EddiJournalMonitor
                         case "PowerplayDeliver":
                             {
                                 object val;
-                                data.TryGetValue("Power", out val);
-                                string power = (string)val;
+                                string power = getString(data, "Power");
                                 // Currently using localised information as we don't have commodity definitions for all powerplay commodities
-                                data.TryGetValue("Type_Localised", out val);
-                                string commodity = (string)val;
+                                string commodity = getString(data, "Type_Localised");
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
 
@@ -2002,8 +1671,7 @@ namespace EddiJournalMonitor
                         case "PowerplayFastTrack":
                             {
                                 object val;
-                                data.TryGetValue("Power", out val);
-                                string power = (string)val;
+                                string power = getString(data, "Power");
                                 data.TryGetValue("Cost", out val);
                                 int amount = (int)(long)val;
 
@@ -2014,8 +1682,7 @@ namespace EddiJournalMonitor
                         case "PowerplayVoucher":
                             {
                                 object val;
-                                data.TryGetValue("Power", out val);
-                                string power = (string)val;
+                                string power = getString(data, "Power");
                                 data.TryGetValue("Systems", out val);
                                 List<string> systems = ((List<object>)val).Cast<string>().ToList();
 
@@ -2269,6 +1936,13 @@ namespace EddiJournalMonitor
         private static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)]Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
 
         // Helpers for parsing json
+        private static decimal getDecimal(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            return getDecimal(key, val);
+        }
+
         private static decimal getDecimal(string key, object val)
         {
             if (val == null)
@@ -2286,21 +1960,75 @@ namespace EddiJournalMonitor
             throw new ArgumentException("Unparseable value for " + key);
         }
 
+        private static decimal? getOptionalDecimal(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            return getOptionalDecimal(key, val);
+        }
+
         private static decimal? getOptionalDecimal(string key, object val)
+        {
+            if (val is long)
+            {
+                return (decimal?)(long?)val;
+            }
+            else
+            {
+                return (decimal?)(double?)val;
+            }
+        }
+
+        private static bool getBool(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            return getBool(key, val);
+        }
+
+        private static bool getBool(string key, object val)
         {
             if (val == null)
             {
-                return null;
+                throw new ArgumentNullException("Expected value for " + key + " not present");
             }
-            if (val is long)
-            {
-                return (long)val;
-            }
-            else if (val is double)
-            {
-                return (decimal)(double)val;
-            }
-            throw new ArgumentException("Unparseable value for " + key);
+            return (bool)val;
+        }
+
+        private static bool? getOptionalBool(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            return getOptionalBool(key, val);
+        }
+
+        private static bool? getOptionalBool(string key, object val)
+        {
+            return (bool?)val;
+        }
+
+        private static string getString(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            return (string)val;
+        }
+
+        private static Superpower getAllegiance(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            // FD sends "" rather than null; fix that here
+            if (((string)val) == "") { val = null; }
+            return Superpower.From((string)val);
+        }
+
+        private static string getFaction(IDictionary<string, object> data, string key)
+        {
+            string faction = getString(data, key);
+            // Might be a superpower...
+            Superpower superpowerFaction = Superpower.From(faction);
+            return superpowerFaction != null ? superpowerFaction.name : faction;
         }
     }
 }
