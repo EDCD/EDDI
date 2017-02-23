@@ -1,8 +1,11 @@
 ﻿using System.Windows.Controls;
 using EddiEvents;
+<<<<<<< 7cbcc8de1cbcbf428f25b18ac4a1658a1f0ba9cf
 using System.Collections.Generic;
 using EddiCompanionAppService;
 using Newtonsoft.Json.Linq;
+=======
+>>>>>>> Add material monitor.
 
 namespace Eddi
 {
