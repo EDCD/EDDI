@@ -5,6 +5,8 @@
     * Volcanism for bodies is now an object.  For details of its fields check the relevant documentation
     * Add ancient artifact commodity definitions
     * Add ship value 'ident' which is the user-defined identification string for a ship
+    * Allow monitors to handle events, and generate their own events in turn
+    * New monitor: Material monitor.  This allows you to set minimum/desired/maximum limits for materials and generate events when they are reached and breached
   * Events
 	* Update 'Body scanned' event - added information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
 	* Add 'Bond redeemed' event when a combat bond is redeemed

@@ -2030,5 +2030,9 @@ namespace EddiJournalMonitor
             Superpower superpowerFaction = Superpower.From(faction);
             return superpowerFaction != null ? superpowerFaction.name : faction;
         }
+
+        public void Handle(Event @event)
+        {
+        }
     }
 }

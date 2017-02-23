@@ -275,5 +275,9 @@ namespace EddiEddpMonitor
             Logging.Debug("Message did not match any watch; ignoring");
             return null;
         }
+
+        public void Handle(Event @event)
+        {
+        }
     }
 }
