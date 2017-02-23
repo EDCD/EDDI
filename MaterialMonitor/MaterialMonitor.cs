@@ -22,9 +22,6 @@ namespace EddiMaterialMonitor
         // Configuration of the responder
         private MaterialMonitorConfiguration configuration;
 
-        // Our inventory of materials
-        private IDictionary<string, int> inventory = new Dictionary<string, int>();
-
         public string MonitorName()
         {
             return "Material monitor";
@@ -170,33 +167,35 @@ namespace EddiMaterialMonitor
         /// </summary>
         private void incMaterial(string name, int amount)
         {
-            int oldInventory = 0;
-            inventory.TryGetValue(name, out oldInventory);
-            int newInventory = oldInventory + amount;
-            inventory[name] = newInventory;
-            Logging.Debug(name + ": " + oldInventory + "->" + newInventory);
-
             Limits limits;
-            if (configuration.limits.TryGetValue(name, out limits))
+            if (!configuration.limits.TryGetValue(name, out limits))
             {
-                // We have limits for this material; carry out relevant checks
-                if (limits.maximum.HasValue)
+                // No information for the current material - create one and set it to 0
+                limits = new Limits(0, null, null, null);
+            }
+            int previous = limits.current;
+            limits.current += amount;
+            Logging.Debug(name + ": " + previous + "->" + limits.current);
+            configuration.limits[name] = limits;
+
+            if (limits.maximum.HasValue)
+            {
+                if (previous <= limits.maximum && limits.current > limits.maximum)
                 {
-                    if (oldInventory <= limits.maximum && newInventory > limits.maximum)
-                    {
-                        // We have crossed the high water threshold for this material
-                        EDDI.Instance.eventHandler(new MaterialInventoryEvent(DateTime.Now, Material.FromEDName(name), "Maximum", (int)limits.maximum, newInventory, "Increase"));
-                    }
-                }
-                if (limits.desired.HasValue)
-                {
-                    if (oldInventory < limits.desired && newInventory >= limits.desired)
-                    {
-                        // We have crossed the desired threshold for this material
-                        EDDI.Instance.eventHandler(new MaterialInventoryEvent(DateTime.Now, Material.FromEDName(name), "Desired", (int)limits.maximum, newInventory, "Increase"));
-                    }
+                    // We have crossed the high water threshold for this material
+                    EDDI.Instance.eventHandler(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Maximum", (int)limits.maximum, limits.current, "Increase"));
                 }
             }
+            if (limits.desired.HasValue)
+            {
+                if (previous < limits.desired && limits.current >= limits.desired)
+                {
+                    // We have crossed the desired threshold for this material
+                    EDDI.Instance.eventHandler(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Desired", (int)limits.desired, limits.current, "Increase"));
+                }
+            }
+            // Update configuration information
+            configuration.ToFile();
         }
 
         /// <summary>
@@ -204,35 +203,51 @@ namespace EddiMaterialMonitor
         /// </summary>
         private void decMaterial(string name, int amount)
         {
-            // Update in-memory stats
-            int oldInventory = 0;
-            inventory.TryGetValue(name, out oldInventory);
-            int newInventory = oldInventory - amount;
-            inventory[name] = newInventory;
-            Logging.Debug(name + ": " + oldInventory + "->" + newInventory);
-
-            // Check for events
             Limits limits;
-            if (configuration.limits.TryGetValue(name, out limits))
+            if (!configuration.limits.TryGetValue(name, out limits))
             {
-                // We have limits for this material; carry out relevant checks
-                if (limits.minimum.HasValue)
+                // No information for the current material - create one and set it to amount
+                limits = new Limits(amount, null, null, null);
+            }
+            int previous = limits.current;
+            limits.current -= amount;
+            Logging.Debug(name + ": " + previous + "->" + limits.current);
+            configuration.limits[name] = limits;
+
+
+            // We have limits for this material; carry out relevant checks
+            if (limits.minimum.HasValue)
+            {
+                if (previous >= limits.minimum && limits.current < limits.minimum)
                 {
-                    if (oldInventory >= limits.minimum && newInventory < limits.minimum)
-                    {
-                        // We have crossed the low water threshold for this material
-                        EDDI.Instance.eventHandler(new MaterialInventoryEvent(DateTime.Now, Material.FromEDName(name), "Minimum", (int)limits.maximum, newInventory, "Decrease"));
-                    }
-                }
-                if (limits.desired.HasValue)
-                {
-                    if (oldInventory >= limits.desired && newInventory < limits.desired)
-                    {
-                        // We have crossed the desired threshold for this material
-                        EDDI.Instance.eventHandler(new MaterialInventoryEvent(DateTime.Now, Material.FromEDName(name), "Desired", (int)limits.maximum, newInventory, "Decrease"));
-                    }
+                    // We have crossed the low water threshold for this material
+                    EDDI.Instance.eventHandler(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Minimum", (int)limits.minimum, limits.current, "Decrease"));
                 }
             }
+            if (limits.desired.HasValue)
+            {
+                if (previous >= limits.desired && limits.current < limits.desired)
+                {
+                    // We have crossed the desired threshold for this material
+                    EDDI.Instance.eventHandler(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Desired", (int)limits.desired, limits.current, "Decrease"));
+                }
+            }
+            // Update configuration information
+            configuration.ToFile();
+        }
+
+        /// <summary>
+        /// Set the current amount of a material
+        /// </summary>
+        private void setMaterial(string name, int amount)
+        {
+            Limits limits;
+            if (!configuration.limits.TryGetValue(name, out limits))
+            {
+                // No information for the current material - create one and set it to amount
+                limits = new Limits(amount, null, null, null);
+            }
+            configuration.ToFile();
         }
     }
 }

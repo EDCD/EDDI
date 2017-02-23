@@ -682,7 +682,6 @@ namespace EddiJournalMonitor
                             break;
                         case "MaterialDiscovered":
                             {
-                                object val;
                                 Material material = Material.FromEDName(getString(data, "Name"));
                                 journalEvent = new MaterialDiscoveredEvent(timestamp, material);
                                 handled = true;
@@ -701,7 +700,6 @@ namespace EddiJournalMonitor
                             break;
                         case "StartJump":
                             {
-                                object val;
                                 string target = getString(data, "JumpType");
                                 string stellarclass = getString(data, "StarClass");
                                 journalEvent = new FSDEngagedEvent(timestamp, target, stellarclass);
