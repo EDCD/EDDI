@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -22,6 +23,7 @@ namespace EddiDataDefinitions
             {"hazardousenvironmentsuits", "hesuits"},
             {"heliostaticfurnaces", "microbialfurnaces"},
             {"marinesupplies", "marineequipment"},
+            {"methanolmonohydratecrystals", "methanolmonohydrate"},
             {"mutomimager", "muonimager"},
             {"skimercomponents", "skimmercomponents"},
             {"terrainenrichmentsystems", "landenrichmentsystems"},
@@ -269,6 +271,8 @@ namespace EddiDataDefinitions
             }
             else
             {
+                Logging.Report("Unknown commodity", @"{""name"":""" + name + @"""}");
+
                 // Put some basic information in place
                 Commodity.EDName = name;
                 Commodity.name = Regex.Replace(cleanedName, "([a-z])([A-Z])", "$1 $2");

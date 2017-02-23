@@ -46,15 +46,15 @@ namespace EddiMaterialMonitor
                 configuration = new MaterialMonitorConfiguration();
             }
 
-            // We fully populate the list with all known materials
-            foreach (Material material in Material.MATERIALS)
-            {
-                Limits cur;
-                if (!configuration.limits.TryGetValue(material.EDName, out cur))
-                {
-                    configuration.limits[material.EDName] = new Limits(null, null, null);
-                }
-            }
+            //// We fully populate the list with all known materials
+            //foreach (Material material in Material.MATERIALS)
+            //{
+            //    Limits cur;
+            //    if (!configuration.limits.TryGetValue(material.EDName, out cur))
+            //    {
+            //        configuration.limits[material.EDName] = new Limits(null, null, null);
+            //    }
+            //}
 
             configuration.dataPath = filename;
             return configuration;
@@ -68,7 +68,7 @@ namespace EddiMaterialMonitor
         public void ToFile(string filename=null)
         {
             // Remove any items that are all NULL
-            limits = limits.Where(x => x.Value.minimum.HasValue || x.Value.desired.HasValue || x.Value.maximum.HasValue).ToDictionary(x => x.Key, x => x.Value);
+            //limits = limits.Where(x => x.Value.minimum.HasValue || x.Value.desired.HasValue || x.Value.maximum.HasValue).ToDictionary(x => x.Key, x => x.Value);
 
             if (filename == null)
             {

@@ -58,6 +58,7 @@ Source: "{#SourcePath}EDDI\bin\Debug\EddiEdsmResponder.dll"; DestDir: "{app}"; F
 Source: "{#SourcePath}EDDI\bin\Debug\EddiEvents.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiGalnetMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiJournalMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}EDDI\bin\Debug\EddiMaterialMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiNetLogMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiSpeechResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiSpeechService.dll"; DestDir: "{app}"; Flags: ignoreversion

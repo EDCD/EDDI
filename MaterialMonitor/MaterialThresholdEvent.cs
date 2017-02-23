@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace EddiMaterialMonitor
 {
-    class MaterialInventoryEvent : Event
+    class MaterialThresholdEvent : Event
     {
-        public const string NAME = "Material inventory";
-        public const string DESCRIPTION = "Triggered when a limit material inventory has been passed";
+        public const string NAME = "Material threshold";
+        public const string DESCRIPTION = "Triggered when a material reaches a threshold";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-        public static MaterialInventoryEvent SAMPLE = new MaterialInventoryEvent(DateTime.Now, Material.AnomalousBulkScanData, "Minimum", 6, 5, "Reduction");
+        public static MaterialThresholdEvent SAMPLE = new MaterialThresholdEvent(DateTime.Now, Material.AnomalousBulkScanData, "Minimum", 6, 5, "Reduction");
 
-        static MaterialInventoryEvent()
+        static MaterialThresholdEvent()
         {
             VARIABLES.Add("material", "The material");
             VARIABLES.Add("level", "The level that has been triggered (Minimum/Desired/Maximum)");
@@ -21,13 +21,13 @@ namespace EddiMaterialMonitor
             VARIABLES.Add("change", "The change to the inventory (Increase/Reduction)");
         }
 
-        Material material;
-        string level;
-        int limit;
-        int amount;
-        string change;
+        public Material material { get; private set; }
+        public string level { get; private set; }
+        public int limit { get; private set; }
+        public int amount { get; private set; }
+        public string change { get; private set; }
 
-        public MaterialInventoryEvent(DateTime timestamp, Material material, string level, int limit, int amount, string change) : base(timestamp, NAME)
+        public MaterialThresholdEvent(DateTime timestamp, Material material, string level, int limit, int amount, string change) : base(timestamp, NAME)
         {
             this.material = material;
             this.level = level;
