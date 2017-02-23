@@ -145,5 +145,9 @@ namespace EddiNetLogMonitor
         {
             return new ConfigurationWindow();
         }
+
+        public void Handle(Event @event)
+        {
+        }
     }
 }

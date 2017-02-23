@@ -749,6 +749,37 @@ namespace Eddi
                     Logging.Error(JsonConvert.SerializeObject(@event), ex);
                 }
             }
+
+            // We also pass the event to all monitors in case they have follow-on work
+            foreach (EDDIMonitor monitor in monitors)
+            {
+                try
+                {
+                    Thread monitorThread = new Thread(() =>
+                    {
+                        try
+                        {
+                            monitor.Handle(@event);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Warn("Monitor failed", ex);
+                        }
+                    });
+                    monitorThread.Name = monitor.MonitorName();
+                    monitorThread.IsBackground = true;
+                    monitorThread.Start();
+                }
+                catch (ThreadAbortException tax)
+                {
+                    Thread.ResetAbort();
+                    Logging.Error(JsonConvert.SerializeObject(@event), tax);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                }
+            }
         }
 
         private bool eventLocation(LocationEvent theEvent)
