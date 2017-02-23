@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using EddiEvents;
 
 namespace Eddi
 {
@@ -36,6 +37,11 @@ namespace Eddi
         /// Called when this monitor needs to reload its configuration
         /// </summary>
         void Reload();
+
+        /// <summary>
+        /// Called to receive information about other events
+        /// </summary>
+        void Handle(Event @event);
 
         UserControl ConfigurationTabItem();
     }

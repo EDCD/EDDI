@@ -12,7 +12,7 @@ namespace EddiDataDefinitions
     /// </summary>
     public class Material
     {
-        private static readonly List<Material> MATERIALS = new List<Material>();
+        public static readonly List<Material> MATERIALS = new List<Material>();
 
         public string category { get; private set; }
 

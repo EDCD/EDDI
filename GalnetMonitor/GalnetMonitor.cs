@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using Utilities;
+using EddiEvents;
 
 namespace GalnetMonitor
 {
@@ -135,6 +136,10 @@ namespace GalnetMonitor
                 }
                 Thread.Sleep(120000);
             }
+        }
+
+        public void Handle(Event @event)
+        {
         }
     }
 }
