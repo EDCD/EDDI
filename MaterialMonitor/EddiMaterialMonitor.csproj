@@ -52,12 +52,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< 7cbcc8de1cbcbf428f25b18ac4a1658a1f0ba9cf
-    <Compile Include="MaterialThresholdEvent.cs" />
-=======
     <Compile Include="MaterialInventoryEvent.cs" />
+    <Compile Include="MaterialThresholdEvent.cs" />
     <Compile Include="Limits.cs" />
->>>>>>> Add material monitor.
     <Compile Include="MaterialMonitor.cs" />
     <Compile Include="MaterialMonitorConfiguration.cs" />
     <Page Include="ConfigurationWindow.xaml">
@@ -95,13 +92,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< 7cbcc8de1cbcbf428f25b18ac4a1658a1f0ba9cf
     <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
       <Project>{462ED721-1C9C-43FA-8A3F-4C1644363A5A}</Project>
       <Name>EddiCompanionAppService</Name>
     </ProjectReference>
-=======
->>>>>>> Add material monitor.
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
       <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EddiDataDefinitions</Name>
