@@ -1,5 +1,6 @@
 ﻿using System.Windows.Controls;
 using EddiEvents;
+using System.Collections.Generic;
 
 namespace Eddi
 {
@@ -42,6 +43,11 @@ namespace Eddi
         /// Called to receive information about other events
         /// </summary>
         void Handle(Event @event);
+
+        /// <summary>
+        /// Provide any local variables
+        /// </summary>
+        IDictionary<string, object> GetVariables();
 
         UserControl ConfigurationTabItem();
     }
