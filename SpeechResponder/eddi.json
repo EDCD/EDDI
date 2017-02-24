@@ -94,9 +94,15 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
+<<<<<<< ebc015af0ea8e6502a4b86abba3e78815994d626
       "script": "Welcome back {F(\"Honorific\")}.",
       "name": "Commander continued",
       "description": "Triggered when you continue an existing game"
+=======
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bond')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_bond_faction', event.faction)}\r\n{SetState('eddi_context_bond_amount', event.reward)}\r\n\r\nCombat bonds for {Humanise(event.amount)} credits redeemed {Occasionally(2, \"by {P(event.faction)}\")}.",
+      "name": "Bond redeemed",
+      "description": "Triggered when you redeem a combat bond"
+>>>>>>> Update default personality.
     },
     "Commander progress": {
       "enabled": true,
@@ -262,11 +268,19 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
+<<<<<<< ebc015af0ea8e6502a4b86abba3e78815994d626
       "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'remove')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n\r\nYou have remove {event.crew} from your crew.",
       "name": "Crew member removed",
       "description": "Triggered when you remove a commander from your crew"
     },
     "Crew member role changed": {
+=======
+      "script": "{_ Find out in advance what we have to say }\r\n{if ship.role = \"Multi-purpose\" || ship.role = \"Trading\":\r\n    {set purchasecheck to F(\"Commodity purchase check\")}\r\n}\r\n{set limpetcheck to F(\"Limpet check\")}\r\n{set swapoutcheck to F(\"Swapout check\")}\r\n{set salecheck to F(\"Commodity sale check\")}\r\n\r\n{if purchasecheck || salecheck || limpetcheck || swapoutcheck:\r\n    {OneOf(\"Market\", \"Local market\", \"Station services\")}\r\n    {OneOf(\"data\", \"information\", \"price\")}\r\n    {OneOf(\"update\", \"refresh\", \"changes\")}\r\n    {OneOf(\"received\", \"obtained\")}.\r\n\r\n\r\n    {salecheck}\r\n    {purchasecheck}\r\n    {swapoutcheck}\r\n    {limpetcheck}\r\n}",
+      "name": "Market information updated",
+      "description": "Triggered when market information for the currently docked station has been updated"
+    },
+    "Bond awarded": {
+>>>>>>> Update default personality.
       "enabled": true,
       "priority": 3,
       "responder": true,
@@ -669,10 +683,17 @@
     "Material use report": {
       "enabled": true,
       "priority": 3,
+<<<<<<< ebc015af0ea8e6502a4b86abba3e78815994d626
       "responder": false,
       "script": "{_ Fetch material from state }\r\n{set material to state.material}\r\n{if material:\r\n    {_ Fetch full material details }\r\n    {set material to MaterialDetails(material)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'material')}\r\n    {SetState('eddi_context_material_name', material.name)}\r\n}\r\n\r\n{if !material:\r\n    {_ Fetch from context }\r\n    {set material to MaterialDetails(state.eddi_context_material_name)}\r\n}\r\n\r\n{if material:\r\n    {set uses to len(material.blueprints)}\r\n    {if slice(material.name, len(material.name)-1) = 's':\r\n        {set plural to 'are'}\r\n    |else:\r\n        {set plural to 'is'}\r\n    }\r\n    {if uses = 0:\r\n      {material.name} {plural} not required for any blueprints\r\n    |elif uses = 1:\r\n        {set name to cat(material.blueprints[0].name, material.blueprints[0].modulename, 'grade', material.blueprints[0].grade)}\r\n        {material.name} {plural} used for the {name} blueprint\r\n    |elif uses = 2:\r\n        {set name0 to cat(material.blueprints[0].name, material.blueprints[0].modulename, 'grade', material.blueprints[0].grade)}\r\n        {set name1 to cat(material.blueprints[1].name, material.blueprints[1].modulename, 'grade', material.blueprints[1].grade)}\r\n        {material.name} {plural} used for the {name0} and {name1} blueprints\r\n    |else:\r\n        {material.name} {plural} used for {len(material.blueprints)} blueprints.  These are\r\n        {set cur to 0}\r\n        {while cur < len(material.blueprints):\r\n            {set name to cat(material.blueprints[cur].name, material.blueprints[cur].modulename, 'grade', material.blueprints[cur].grade)}\r\n            {if cur = 0:\r\n                {name}\r\n            |elif cur < len(material.blueprints) - 1:\r\n                , {name}\r\n            |else:\r\n                , and {name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n|else:\r\n    I don't have any information about that material\r\n}.\r\n",
       "name": "Material use report",
       "description": "Report on the use of a material"
+=======
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'sell')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n{SetState('eddi_context_commodity_amount', event.amount)}\r\n\r\n{if event.amount = 1:\r\n   You have just sold one tonne of {event.commodity} for {event.price} credits\r\n|elif event.amount > 1:\r\n    You have just sold {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne for a total of {event.amount * event.price} credits\r\n}\r\n{if event.price != event.profit:\r\n    {if event.profit < 0:\r\n        with a loss of {-1 * event.profit * event.amount} credits.\r\n    |elif event.profit = 0:\r\n        and broke even on the trade.\r\n    |else:\r\n        with a profit of {event.profit * event.amount} credits.\r\n    }\r\n}",
+      "name": "Commodity sold",
+      "description": "Triggered when you sell a commodity to the markets"
+>>>>>>> Update default personality.
     },
     "Materials discard report": {
       "enabled": true,
@@ -966,17 +987,29 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
+<<<<<<< ebc015af0ea8e6502a4b86abba3e78815994d626
       "script": "{Pause(2000)}\r\n\r\n{ShipName()} refuelled.",
       "name": "Ship refuelled",
       "description": "Triggered when you refuel your ship"
+=======
+      "script": "{Pause(2000)}\r\n\r\nDocking complete.\r\n{OneOf(\"Communications with\", \"Access to\", \"Link to\", \"Access to\")}\r\n{OneOf(\"local\", \"station\", \"{event.station}'s\")}\r\n{OneOf(\"data net\", \"network\", \"networks\", \"computers\", \"services\")}\r\n{OneOf(\"established\", \"confirmed\", \"authorised\", \"obtained\")}.\r\n\r\n",
+      "name": "Docked",
+      "description": "Triggered when your ship docks at a station or outpost"
+>>>>>>> Update default personality.
     },
     "Ship renamed": {
       "enabled": true,
       "priority": 3,
       "responder": true,
+<<<<<<< ebc015af0ea8e6502a4b86abba3e78815994d626
       "script": "{ShipName()} now registered with {P(system.faction)}.  Identification is {ICAO(event.ident)}.",
       "name": "Ship renamed",
       "description": "Triggered when you rename a ship"
+=======
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n\r\n{set statereport to F(\"System state report\")}\r\n{if statereport:\r\n    {Pause(2000)}\r\n    Information:  {statereport}\r\n}",
+      "name": "Jumped",
+      "description": "Triggered when you complete a jump to another system"
+>>>>>>> Update default personality.
     },
     "Ship repaired": {
       "enabled": true,
@@ -986,7 +1019,19 @@
       "name": "Ship repaired",
       "description": "Triggered when you repair your ship"
     },
+<<<<<<< ebc015af0ea8e6502a4b86abba3e78815994d626
     "Ship repurchased": {
+=======
+    "Material threshold": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Material threshold",
+      "description": "Triggered when a material reaches a threshold"
+    },
+    "Power expansion vote cast": {
+>>>>>>> Update default personality.
       "enabled": true,
       "priority": 3,
       "responder": true,
@@ -1069,10 +1114,17 @@
     "Station no fire zone entered": {
       "enabled": true,
       "priority": 3,
+<<<<<<< ebc015af0ea8e6502a4b86abba3e78815994d626
       "responder": true,
       "script": null,
       "name": "Station no fire zone entered",
       "description": "Triggered when your ship enters a station's no fire zone"
+=======
+      "responder": false,
+      "script": "{_ Function to find a given commodity in market}\r\n{set market(commodity) to:\r\n    {for marketcommodity in station.commodities:\r\n        {if marketcommodity.EDDBID = commodity.EDDBID:\r\n            {return marketcommodity}\r\n        }\r\n    }\r\n}\r\n\r\n{set totalprofit to 0}\r\n{set profitablecommodities to []}\r\n{set stolencommodities to []}\r\n{set unknowncommodities to []}\r\n\r\n{for cargo in ship.cargo:\r\n    {if cargo.commodity.name != 'Limpet':\r\n        {set marketcommodity to market(cargo.commodity)}\r\n        {if !marketcommodity:\r\n            {_ We have no market information for this commodity.  Add it to the list of unknowns }\r\n            {set unknowncommodities to cat(unknowncommodities, [cargo.commodity])}\r\n        }\r\n        {set profit to (marketcommodity.sellprice - cargo.price) * cargo.amount}\r\n        {if cargo.stolen = true:\r\n            {set stolencommodities to cat(stolencommodities, [cargo.commodity])}\r\n        |elif cargo.missionid:\r\n            {_ don't do anything with mission cargo at the moment}\r\n        |elif marketcommodity && profit > 0:\r\n            {set profitablecommodities to cat(profitablecommodities, [cargo.commodity])}\r\n            {set totalprofit to totalprofit + profit}\r\n        }\r\n    }\r\n}\r\n\r\n{_ Let the user know about any commodities they can sell here for a profit}\r\n{if len(profitablecommodities) > 0:\r\n    You can sell your\r\n    {if len(profitablecommodities) = 1:\r\n        {profitablecommodities[0].name}\r\n    |elif len(profitablecommodities) = 2:\r\n        {profitablecommodities[0].name} and {profitablecommodities[1].name}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(profitablecommodities):\r\n            {if cur = 0:\r\n                {profitablecommodities[cur].name}\r\n            |elif cur < len(profitablecommodities) - 1:\r\n                , {profitablecommodities[cur].name}\r\n            |else:\r\n                , and {profitablecommodities[cur].name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n    for a profit of {totalprofit} credits.\r\n}\r\n\r\n{_ Let the user know about any commodities about which we are unsure if they can sell for a profit}\r\n{if len(unknowncommodities) > 0:\r\n    You could {if len(profitablecommodities) > 0: also } sell your\r\n    {if len(unknowncommodities) = 1:\r\n        {unknowncommodities[0].name}\r\n    |elif len(unknowncommodities) = 2:\r\n        {unknowncommodities[0].name} and {unknowncommodities[1].name}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(unknowncommodities):\r\n            {if cur = 0:\r\n                {unknowncommodities[cur].name}\r\n            |elif cur < len(profitablecommodities) - 1:\r\n                , {unknowncommodities[cur].name}\r\n            |else:\r\n                , and {unknowncommodities[cur].name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n    , although check potential profits for {if len(unknowncommodities) > 1: these |else: this} before confirming the transaction.\r\n}\r\n\r\n{_ Let the user know about any stolen commodities they can sell on the black market}\r\n{if len(stolencommodities) > 0:\r\n    {if station.hasblackmarket:\r\n        You can {OneOf('offload, dump', 'fence')} your stolen\r\n        {if len(stolencommodities) = 1:\r\n            {stolencommodities[0].name}\r\n        |elif len(stolencommodities) = 2:\r\n            {stolencommodities[0].name} and {stolencommodities[1].name}\r\n        |else:\r\n            {set cur to 0}\r\n            {while cur < len(stolencommodities):\r\n                {if cur = 0:\r\n                    {stolencommodities[cur].name}\r\n                |elif cur < len(stolencommodities) - 1:\r\n                    , {stolencommodities[cur].name}\r\n                |else:\r\n                    , and {stolencommodities[cur].name}\r\n                }\r\n                {set cur to cur + 1}\r\n            }\r\n        }\r\n        here.\r\n    |else:\r\n        Reminder: you {OneOf(\"have stolen cargo on-board\", \"have stolen goods on-board\", \"are carrying stolen goods\", \"are carrying stolen cargo\")}.\r\n    }\r\n}\r\n",
+      "name": "Commodity sale check",
+      "description": "Check to see which commodities can be sold here"
+>>>>>>> Update default personality.
     },
     "Station no fire zone exited": {
       "enabled": true,
