@@ -51,6 +51,7 @@
     <Compile Include="CrewLeftEvent.cs" />
     <Compile Include="CrewJoinedEvent.cs" />
     <Compile Include="DataVoucherRedeemed.cs" />
+    <Compile Include="MaterialInventoryEvent.cs" />
     <Compile Include="FSDEngagedEvent.cs" />
     <Compile Include="ShipRenamedEvent.cs" />
     <Compile Include="BondRedeemedEvent.cs" />

@@ -6,7 +6,7 @@
     * Add ancient artifact commodity definitions
     * Add ship value 'ident' which is the user-defined identification string for a ship
     * Allow monitors to handle events, and generate their own events in turn
-    * New monitor: Material monitor.  This allows you to set minimum/desired/maximum limits for materials and generate events when they are reached and breached
+    * New monitor: Material monitor.  This allows you to set minimum/desired/maximum limits for materials and generate events when the limits are exceeded
   * Events
 	* Update 'Body scanned' event - added information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
 	* Add 'Bond redeemed' event when a combat bond is redeemed
@@ -22,6 +22,7 @@
 	* Add 'FSD engaged' event when the FSD is engaged to jump to supercruise or hyperspace
 	* Update 'Liftoff' event to record if the ship lifting off is player controlled or not
 	* Update 'Location' event to add longitude and latitude if the location is on the ground
+	* Add 'Material inventory' event when material information is supplied
 	* Add 'Material threshold' event when a threshold set in the material monitor is breached
 	* Update 'Mission accepted' event to include the number of kills for massacre missions
     * Add 'Settlement approached' event
@@ -53,11 +54,19 @@
 	  * 'Jumped' - call system security report here rather than in 'Jumping' to guarantee up-to-date information
 	  * 'Liftoff' - change speech depending on if player is controlling ship or not
 	  * 'Market information updated' - new script taken from the end of the previous 'Docked' script
+	  * 'Material discard report' - new script to report which materials can be discarded (as per the material monitor settings)
+	  * 'Material inventory report' - new script to report on how much of a particular material is on board
+	  * 'Material required report' - new script to report on how much of a particular material is required (as per the material monitor settings)
 	  * 'Settlement approached' - new script
 	  * 'Ship renamed' - new script
 	  * 'System state report' - fixed a couple of typos
 	  * 'Touchdown' - change speech depending on if player is controlling ship or not
 	  * 'Trade voucher redeemed' - new script
+  * VoiceAttack Responder
+    * Update VoiceAttack commands for the material monitor:
+      * 'How many <material> are on board' - Find out how many units of a particular material is on board
+      * 'How many <material> do I need' - Find out how many units of a particular material are required to meet your desired level as set in the material monitor
+      * 'Which materials can I discard' - Find out how many units of materials can be discarded due to being above your maximum or desired level as set in the material monitor
 
 2.2.3
   * Fix issue where undocumented change in Frontier API would cause EDDI to crash

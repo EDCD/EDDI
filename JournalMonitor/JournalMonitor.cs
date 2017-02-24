@@ -1592,6 +1592,48 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "Materials":
+                            {
+                                object val;
+                                List<MaterialAmount> materials = new List<MaterialAmount>();
+
+                                data.TryGetValue("Raw", out val);
+                                if (val != null)
+                                {
+                                    List<object> materialsJson = (List<object>)val;
+                                    foreach (Dictionary<string, object> materialJson in materialsJson)
+                                    {
+                                        Material material = Material.FromEDName(getString(materialJson, "Name"));
+                                        materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
+                                    }
+                                }
+
+                                data.TryGetValue("Manufactured", out val);
+                                if (val != null)
+                                {
+                                    List<object> materialsJson = (List<object>)val;
+                                    foreach (Dictionary<string, object> materialJson in materialsJson)
+                                    {
+                                        Material material = Material.FromEDName(getString(materialJson, "Name"));
+                                        materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
+                                    }
+                                }
+
+                                data.TryGetValue("Encoded", out val);
+                                if (val != null)
+                                {
+                                    List<object> materialsJson = (List<object>)val;
+                                    foreach (Dictionary<string, object> materialJson in materialsJson)
+                                    {
+                                        Material material = Material.FromEDName(getString(materialJson, "Name"));
+                                        materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
+                                    }
+                                }
+
+                                journalEvent = new MaterialInventoryEvent(DateTime.Now, materials);
+                            }
+                            handled = true;
+                            break;
                         case "PowerplayJoin":
                             {
                                 string power = getString(data, "Power");
@@ -2031,6 +2073,12 @@ namespace EddiJournalMonitor
 
         public void Handle(Event @event)
         {
+        }
+
+
+        public IDictionary<string, object> GetVariables()
+        {
+            return null;
         }
     }
 }

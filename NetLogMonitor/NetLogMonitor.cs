@@ -2,6 +2,7 @@
 using EddiEvents;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
@@ -174,6 +175,11 @@ namespace EddiNetLogMonitor
 
         public void Handle(Event @event)
         {
+        }
+
+        public IDictionary<string, object> GetVariables()
+        {
+            return null;
         }
     }
 }
