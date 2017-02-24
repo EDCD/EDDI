@@ -11,14 +11,14 @@ namespace EddiMaterialMonitor
     /// <summary>Storage for configuration of material amounts</summary>
     public class MaterialMonitorConfiguration
     {
-        public IDictionary<string, Limits> limits { get; set; }
+        public List<MaterialAmount> materials { get; set; }
 
         [JsonIgnore]
         private string dataPath;
 
         public MaterialMonitorConfiguration()
         {
-            limits = new Dictionary<string, Limits>();
+            materials = new List<MaterialAmount>();
         }
 
         /// <summary>

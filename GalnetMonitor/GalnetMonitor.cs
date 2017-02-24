@@ -141,5 +141,10 @@ namespace GalnetMonitor
         public void Handle(Event @event)
         {
         }
+
+        public IDictionary<string, object> GetVariables()
+        {
+            return null;
+        }
     }
 }

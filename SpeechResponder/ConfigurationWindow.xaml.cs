@@ -62,6 +62,7 @@ namespace EddiSpeechResponder
 
             SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
             subtitlesCheckbox.IsChecked = configuration.Subtitles;
+            subtitlesOnlyCheckbox.IsChecked = configuration.SubtitlesOnly;
 
             foreach (Personality personality in Personalities)
             {

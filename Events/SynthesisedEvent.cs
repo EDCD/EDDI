@@ -33,16 +33,4 @@ namespace EddiEvents
             this.materials = materials;
         }
     }
-
-    public class MaterialAmount
-    {
-        public string material { get; private set; }
-        public int amount { get; private set; }
-
-        public MaterialAmount(Material material, int amount)
-        {
-            this.material = material.name;
-            this.amount = amount;
-        }
-    }
 }
