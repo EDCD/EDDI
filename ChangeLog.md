@@ -22,6 +22,7 @@
 	* Add 'FSD engaged' event when the FSD is engaged to jump to supercruise or hyperspace
 	* Update 'Liftoff' event to record if the ship lifting off is player controlled or not
 	* Update 'Location' event to add longitude and latitude if the location is on the ground
+	* Add 'Material threshold' event when a threshold set in the material monitor is breached
 	* Update 'Mission accepted' event to include the number of kills for massacre missions
     * Add 'Settlement approached' event
 	* Add 'Ship renamed' event to record when ship names and idents are changed
@@ -33,7 +34,9 @@
 	  * 'Body report' - add details of volcanism
 	  * 'Bond redeemed' - new script
 	  * 'Bounty redeemed' - new script
+	  * 'Commodity sale check' - various updates to give more reliable results
 	  * 'Commodity collected' - fix bug where 'cargo' was used instead of 'commodity'
+	  * 'Commodity sold' - do not report profit when purchase price is 0 (mined/stolen/mission commodities)
 	  * 'Crew fired' - add context
 	  * 'Crew hired' - add context
 	  * 'Crew member joined' - new script
@@ -43,12 +46,16 @@
 	  * 'Crew joined' - new script
 	  * 'Crew left' - new script
 	  * 'Data voucher redeemed' - new script
+	  * 'Docked' - moved information messages to the 'Market information updated' script to trigger at a better time
 	  * 'Entered normal space' - add context
 	  * 'Entered supercruise' - add context
 	  * 'FSD engaged' - new script
+	  * 'Jumped' - call system security report here rather than in 'Jumping' to guarantee up-to-date information
 	  * 'Liftoff' - change speech depending on if player is controlling ship or not
+	  * 'Market information updated' - new script taken from the end of the previous 'Docked' script
 	  * 'Settlement approached' - new script
 	  * 'Ship renamed' - new script
+	  * 'System state report' - fixed a couple of typos
 	  * 'Touchdown' - change speech depending on if player is controlling ship or not
 	  * 'Trade voucher redeemed' - new script
 
