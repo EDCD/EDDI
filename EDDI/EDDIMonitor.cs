@@ -1,11 +1,8 @@
 ﻿using System.Windows.Controls;
 using EddiEvents;
-<<<<<<< 7cbcc8de1cbcbf428f25b18ac4a1658a1f0ba9cf
 using System.Collections.Generic;
 using EddiCompanionAppService;
 using Newtonsoft.Json.Linq;
-=======
->>>>>>> Add material monitor.
 
 namespace Eddi
 {
@@ -68,6 +65,11 @@ namespace Eddi
         /// Called to receive information from the Frontier API
         /// </summary>
         void HandleProfile(JObject profile);
+
+        /// <summary>
+        /// Provide any local variables
+        /// </summary>
+        IDictionary<string, object> GetVariables();
 
         /// <summary>
         /// Provide any local variables

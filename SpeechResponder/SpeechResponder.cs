@@ -223,6 +223,19 @@ namespace EddiSpeechResponder
                 }
             }
 
+            // Obtain additional variables from each monitor
+            foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
+            {
+                IDictionary<string, object> monitorVariables = monitor.GetVariables();
+                if (monitorVariables != null)
+                {
+                    foreach (string key in monitorVariables.Keys)
+                    {
+                        dict[key] = new ReflectionValue(monitorVariables[key]);
+                    }
+                }
+            }
+
             return dict;
         }
 

@@ -2340,5 +2340,11 @@ namespace EddiJournalMonitor
             }
             return role;
         }
+
+
+        public IDictionary<string, object> GetVariables()
+        {
+            return null;
+        }
     }
 }

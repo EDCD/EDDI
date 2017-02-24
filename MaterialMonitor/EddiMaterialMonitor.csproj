@@ -54,7 +54,6 @@
   <ItemGroup>
     <Compile Include="MaterialInventoryEvent.cs" />
     <Compile Include="MaterialThresholdEvent.cs" />
-    <Compile Include="Limits.cs" />
     <Compile Include="MaterialMonitor.cs" />
     <Compile Include="MaterialMonitorConfiguration.cs" />
     <Page Include="ConfigurationWindow.xaml">
