@@ -622,7 +622,7 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                EDDI.Instance.DisableResponder("Speech responder");
+                EDDI.Instance.State["speechresponder_quiet"] = true;
             }
             catch (Exception e)
             {
@@ -634,7 +634,7 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                EDDI.Instance.EnableResponder("Speech responder");
+                EDDI.Instance.State["speechresponder_quiet"] = false;
             }
             catch (Exception e)
             {

@@ -8,7 +8,6 @@ using System.IO;
 using EddiEvents;
 using Utilities;
 using Newtonsoft.Json;
-using EddiDataDefinitions;
 using System.Linq;
 
 namespace EddiMaterialMonitor

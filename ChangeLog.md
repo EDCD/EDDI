@@ -63,7 +63,11 @@
 	  * 'Touchdown' - change speech depending on if player is controlling ship or not
 	  * 'Trade voucher redeemed' - new script
   * VoiceAttack Responder
-    * Update VoiceAttack commands for the material monitor:
+    * Update 'disablespeechresponder' and 'enablespeechresponder' plugin contexts to continue to work in the background but just be quiet
+    * Add VoiceAttack commands for the new speech responder plugin contexts:
+      * "Be quiet" - Speech responder will not talk unless explicitly asked for information
+      * "You may talk" - Speech responder will talk about events occuring in-game without prompting (this is the default behaviour)
+    * Add VoiceAttack commands for the material monitor:
       * 'How many <material> are on board' - Find out how many units of a particular material is on board
       * 'How many <material> do I need' - Find out how many units of a particular material are required to meet your desired level as set in the material monitor
       * 'Which materials can I discard' - Find out how many units of materials can be discarded due to being above your maximum or desired level as set in the material monitor
