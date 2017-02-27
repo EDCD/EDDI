@@ -1649,6 +1649,14 @@ namespace Eddi
             eventHandler(@event);
         }
 
+        // If we have no access to the companion API but need to trigger a market update then we can call this method
+        private void dummyRefreshMarketData()
+        {
+            Thread.Sleep(2000);
+            Event @event = new MarketInformationUpdatedEvent(DateTime.Now);
+            eventHandler(@event);
+        }
+
         // Required to restart app after upgrade
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
         static extern uint RegisterApplicationRestart(string pwzCommandLine, RestartFlags dwFlags);
