@@ -296,13 +296,13 @@ To use this function in your own commands use the 'Execute an external plugin fu
 
 ### disablespeechresponder
 
-This function disables the speech responder until either VoiceAttack is restarted or an enablespeechresponder call is made.
+This function tells the speech responder to not talk unless specifically asked for information.  This lasts until either VoiceAttack is restarted or an enablespeechresponder call is made.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'disablespeechresponder'.
 
 ### enablespeechresponder
 
-This function enables the speech responder until either VoiceAttack is restarted or a disablespeechresponder call is made.
+This function tells the speech responder to respond normally to events.
 
 To use this function in your own commands use the 'Execute an external plugin function' command with the plugin context set to 'enablespeechresponder'.
 

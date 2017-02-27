@@ -119,17 +119,29 @@ namespace EddiSpeechResponder
         public void Handle(Event theEvent)
         {
             Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
-            Say(scriptResolver, theEvent.type, theEvent);
+
+            // By default we say things unless we've been told not to
+            bool sayOutLoud = true;
+            object tmp;
+            if (EDDI.Instance.State.TryGetValue("speechresponder_quiet", out tmp))
+            {
+                if (tmp is bool)
+                {
+                    sayOutLoud = !(bool)tmp;
+                }
+            }
+
+            Say(scriptResolver, theEvent.type, theEvent, null, null, null, sayOutLoud);
         }
 
         // Say something with the default resolver
-        public void Say(string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null)
+        public void Say(string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null, bool sayOutLoud = true)
         {
-            Say(scriptResolver, scriptName, theEvent, priority, voice);
+            Say(scriptResolver, scriptName, theEvent, priority, voice, null, sayOutLoud);
         }
 
         // Say something with a custom resolver
-        public void Say(ScriptResolver resolver, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null)
+        public void Say(ScriptResolver resolver, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null, bool sayOutLoud = true)
         {
             Dictionary<string, Cottle.Value> dict = createVariables(theEvent);
             string speech = resolver.resolve(scriptName, dict);
@@ -140,7 +152,7 @@ namespace EddiSpeechResponder
                     // Log a tidied version of the speech
                     log(Regex.Replace(speech, "<.*?>", string.Empty));
                 }
-                if (!(subtitles && subtitlesOnly))
+                if (sayOutLoud && !(subtitles && subtitlesOnly))
                 {
                     SpeechService.Instance.Say(EDDI.Instance.Ship, speech, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority), voice);
                 }

@@ -44,6 +44,9 @@ namespace Eddi
 
         public bool inCQC { get; private set; } = false;
 
+        // Responders that never run if we are against a beta version of Elite
+        private readonly List<string> BETA_OFF_RESPONDERS = new List<string>() { "EDDN Responder", "EDSM Responder" };
+
         static EDDI()
         {
             // Set up our app directory
