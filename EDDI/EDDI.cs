@@ -838,14 +838,15 @@ namespace Eddi
 
                 CurrentStation = station;
 
-                // Kick off the profile refresh
-                profileUpdateNeeded = true;
-                profileStationRequired = CurrentStation.name;
-                Thread updateThread = new Thread(() => conditionallyRefreshProfile());
-                updateThread.IsBackground = true;
-                updateThread.Start();
-                //// Now call refreshProfile() to obtain the outfitting and commodity information
-                //refreshProfile();
+                // Kick off the profile refresh if the companion API is available
+                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+                {
+                    profileUpdateNeeded = true;
+                    profileStationRequired = CurrentStation.name;
+                    Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+                    updateThread.IsBackground = true;
+                    updateThread.Start();
+                }
             }
             else
             {
@@ -885,14 +886,23 @@ namespace Eddi
 
             CurrentStation = station;
 
-            // Kick off the profile refresh
-            profileUpdateNeeded = true;
-            profileStationRequired = CurrentStation.name;
-            Thread updateThread = new Thread(() => conditionallyRefreshProfile());
-            updateThread.IsBackground = true;
-            updateThread.Start();
-            //// Now call refreshProfile() to obtain the outfitting and commodity information
-            //refreshProfile();
+            // Kick off the profile refresh if the companion API is available
+            if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+            {
+                // Kick off the profile refresh
+                profileUpdateNeeded = true;
+                profileStationRequired = CurrentStation.name;
+                Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+                updateThread.IsBackground = true;
+                updateThread.Start();
+            }
+            else
+            {
+                // Kick off a dummy that triggers a market refresh after a couple of seconds
+                Thread updateThread = new Thread(() => dummyRefreshMarketData());
+                updateThread.IsBackground = true;
+                updateThread.Start();
+            }
 
             return true;
         }
@@ -1075,12 +1085,15 @@ namespace Eddi
         {
             SetShip(theEvent.Ship);
 
-            // Kick off the profile refresh
-            profileUpdateNeeded = true;
-            profileShipIdRequired = theEvent.Ship.LocalId;
-            Thread updateThread = new Thread(() => conditionallyRefreshProfile());
-            updateThread.IsBackground = true;
-            updateThread.Start();
+            // Kick off the profile refresh if the companion API is available
+            if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+            {
+                profileUpdateNeeded = true;
+                profileShipIdRequired = theEvent.Ship.LocalId;
+                Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+                updateThread.IsBackground = true;
+                updateThread.Start();
+            }
 
             return true;
         }
@@ -1671,6 +1684,14 @@ namespace Eddi
             profileUpdateNeeded = false;
             profileStationRequired = null;
             profileShipIdRequired = -1;
+        }
+
+        // If we have no access to the companion API but need to trigger a market update then we can call this method
+        private void dummyRefreshMarketData()
+        {
+            Thread.Sleep(2000);
+            Event @event = new MarketInformationUpdatedEvent(DateTime.Now);
+            eventHandler(@event);
         }
 
         // Required to restart app after upgrade
