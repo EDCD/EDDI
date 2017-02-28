@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCompanionAppService", "CompanionAppService\EddiCompanionAppService.csproj", "{462ED721-1C9C-43FA-8A3F-4C1644363A5A}"
 EndProject
@@ -61,6 +61,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiEddpMonitor", "EDDPMonitor\EddiEddpMonitor.csproj", "{C9A4F3E1-5152-4648-A409-368576975ACE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiMaterialMonitor", "MaterialMonitor\EddiMaterialMonitor.csproj", "{A2401E3A-586A-41FF-8237-3FB598C5FCF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCargoMonitor", "CargoMonitor\EddiCargoMonitor.csproj", "{35D5FF83-01B8-4051-BA99-1052596E047D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -140,6 +142,10 @@ Global
 		{A2401E3A-586A-41FF-8237-3FB598C5FCF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2401E3A-586A-41FF-8237-3FB598C5FCF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2401E3A-586A-41FF-8237-3FB598C5FCF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35D5FF83-01B8-4051-BA99-1052596E047D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35D5FF83-01B8-4051-BA99-1052596E047D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35D5FF83-01B8-4051-BA99-1052596E047D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35D5FF83-01B8-4051-BA99-1052596E047D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
