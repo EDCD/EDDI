@@ -18,6 +18,14 @@
       "name": "System state changed",
       "description": "Triggered when there is a change in the state of a watched system"
     },
+    "File Header": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "File Header",
+      "description": "Triggered when the file header is read"
+    },
     "Crew member removed": {
       "enabled": true,
       "priority": 3,
@@ -86,7 +94,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'engage')}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'engage')}\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_system_system', event.system)}\r\n\r\n{if event.target = 'Hyperspace':\r\n    {_ Rewrite context to represent a jump }\r\n    {SetState('eddi_context_last_subject', 'jump')}\r\n    {SetState('eddi_context_last_action', 'start')}\r\n\r\n    {set system to SystemDetails(event.system)}\r\n\r\n    {_ Wait for the FSD countdown and initial jump}\r\n    {Pause(6000)}\r\n\r\n    {OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n    {ShipName()} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n    {if system.name = homesystem.name:\r\n        Welcome home, {F(\"Honorific\")}\r\n    |else:\r\n        {if event.stellarclass = \"D\":\r\n            Caution: white dwarf detected.\r\n        |elif event.stellarclass = \"N\":\r\n            Caution: neutron star detected.\r\n        |elif event.stellarclass = \"H\":\r\n            Caution: black hole detected.\r\n        |elif event.stellarclass != 'F' && event.stellarclass != 'O' && event.stellarclass != 'G' && event.stellarclass != 'K' && event.stellarclass != 'B' && event.stellarclass != 'A' && event.stellarclass != 'M':\r\n            Information: arrival star is not scoopable.\r\n        }\r\n\r\n        {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!system.allegiance || system.allegiance = \"None\" || system.allegiance = \"Independent\"):\r\n            You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n        |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance && system.allegiance != \"None\":\r\n            You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n            {if cmdr.title != \"Commander\":\r\n                Welcome back {F(\"Honorific\")}.\r\n            }\r\n        }\r\n\r\n        {if system.visits = 1:\r\n            This is your first visit to this system\r\n        |elif system.visits = 2:\r\n            This is your second visit to this system\r\n        |elif system.visits = 3:\r\n            This is your third visit to this system\r\n        |elif system.visits = 4:\r\n            This is your fourth visit to this system\r\n        |else:\r\n            You have visited this system {system.visits} times\r\n        }.\r\n\r\n        {if !system.population:\r\n            {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n        |else:\r\n            {F(\"System report\")}\r\n        }\r\n\r\n        {if system.distancefromhome:\r\n            {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n        }\r\n\r\n        {if system.comment:\r\n            You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n        }\r\n    }\r\n}",
       "name": "FSD engaged",
       "description": "Triggered when your FSD has engaged"
     },
@@ -374,7 +382,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{ShipName()} refuelled.",
+      "script": "{Pause(1000)}\r\n\r\n{ShipName()} refuelled.",
       "name": "Ship refuelled",
       "description": "Triggered when you refuel your ship"
     },
@@ -385,14 +393,6 @@
       "script": "{ShipName()} {OneOf(\"restocked\",\"rearmed\")}.",
       "name": "Ship restocked",
       "description": "Triggered when you restock your ship's ammunition"
-    },
-    "Jumping": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'start')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n\r\n{OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n{ShipName()} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n{if system.name = homesystem.name:\r\n    Welcome home, {F(\"Honorific\")}\r\n|else:\r\n    {if system.bodies[0].distance = 0 && system.bodies[0].stellarclass:\r\n        {set stellarclass to slice(system.bodies[0].stellarclass, 0, 1)}\r\n        {if stellarclass = \"D\":\r\n            Caution: white dwarf detected.\r\n        |elif stellarclass = \"N\":\r\n            Caution: neutron star detected.\r\n        |elif stellarclass = \"H\":\r\n            Caution: black hole detected.\r\n        }\r\n    }\r\n\r\n    {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!system.allegiance || system.allegiance = \"None\" || system.allegiance = \"Independent\"):\r\n      You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n    |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance && system.allegiance != \"None\":\r\n        You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n        {if cmdr.title != \"Commander\":\r\n            Welcome back {F(\"Honorific\")}.\r\n        }\r\n    }\r\n\r\n    {if system.visits = 1:\r\n        This is your first visit to this system\r\n    |elif system.visits = 2:\r\n        This is your second visit to this system\r\n    |elif system.visits = 3:\r\n        This is your third visit to this system\r\n    |elif system.visits = 4:\r\n        This is your fourth visit to this system\r\n    |else:\r\n        You have visited this system {system.visits} times\r\n    }.\r\n\r\n    {if !system.population:\r\n        {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n    |else:\r\n        {F(\"System report\")}\r\n    }\r\n\r\n    {if system.distancefromhome:\r\n        {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n    }\r\n\r\n    {if system.comment:\r\n        You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n    }\r\n}",
-      "name": "Jumping",
-      "description": "Triggered when you start a jump to another system"
     },
     "Limpet sold": {
       "enabled": true,
@@ -1086,7 +1086,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{_ Fetch from context }\r\n{set reportsystem to SystemDetails(state.eddi_context_system_system)}\r\n\r\n{if !reportsystem.name || reportbody.name = \"\":\r\n    I'm not sure which system you are asking about.\r\n|else:\r\n    {P(reportsystem.name)}\r\n    {if reportsystem.state = \"None\":\r\n      is not in any particular state at current\r\n    |elif reportsystem.state = \"Retreat\":\r\n        is in retreat\r\n    |elif reportsystem.state = \"War\":\r\n        is at war; caution is advised\r\n    |elif reportsystem.state = \"Boom\":\r\n        is undergoing a boom; there might be good trading profits to be made here\r\n    |elif reportsystem.state = \"Civil War\":\r\n        is experiencing civil unrest; caution is advised\r\n    |elif reportsystem.state = \"Civil War\":\r\n        is in civil war; caution is advised\r\n    |elif reportsystem.state = \"Famine\":\r\n        is in a state of famine; caution is advised\r\n    |elif reportsystem.state = \"Lockdown\":\r\n        is in lockdown; caution is advised\r\n    |elif reportsystem.state = \"Outbreak\":\r\n        is attempting to contain an outbreak of disease; caution is advised\r\n    |elif reportsystem.state = \"Expansion\":\r\n        is gearing up to expand to another system\r\n    |elif reportsystem.state = \"Bust\":\r\n        is financially bust\r\n    |elif reportsystem.state = \"Election\":\r\n        is electing new leaders\r\n    |elif reportsystem.state = \"Investment\":\r\n        is investing in its infrastructure\r\n    |else:\r\n    }\r\n    .\r\n}",
+      "script": "{_ Fetch from context }\r\n{set reportsystem to SystemDetails(state.eddi_context_system_system)}\r\n\r\n{if !reportsystem.name || reportsystem.name = \"\":\r\n    I'm not sure which system you are asking about.\r\n|elif reportsystem.state && reportsystem.state != 'None':\r\n    {P(reportsystem.name)}\r\n    {if reportsystem.state = \"Retreat\":\r\n        is in retreat\r\n    |elif reportsystem.state = \"War\":\r\n        is at war; caution is advised\r\n    |elif reportsystem.state = \"Boom\":\r\n        is undergoing a boom; there might be some good trading profits to be made here\r\n    |elif reportsystem.state = \"Civil Unrest\":\r\n        is experiencing civil unrest; caution is advised\r\n    |elif reportsystem.state = \"Civil War\":\r\n        is in civil war; caution is advised\r\n    |elif reportsystem.state = \"Famine\":\r\n        is in a state of famine; caution is advised\r\n    |elif reportsystem.state = \"Lockdown\":\r\n        is in lockdown; caution is advised\r\n    |elif reportsystem.state = \"Outbreak\":\r\n        is attempting to contain an outbreak of disease; caution is advised\r\n    |elif reportsystem.state = \"Expansion\":\r\n        is gearing up to expand to another system\r\n    |elif reportsystem.state = \"Bust\":\r\n        is financially bust\r\n    |elif reportsystem.state = \"Election\":\r\n        is electing new leaders\r\n    |elif reportsystem.state = \"Investment\":\r\n        is investing in its infrastructure\r\n    }\r\n    .\r\n}",
       "name": "System state report",
       "description": "Report on the current state of the contextual system"
     },
