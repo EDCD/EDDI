@@ -66,19 +66,19 @@ namespace EddiCargoMonitor
 
         public void Handle(Event @event)
         {
-            Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
-            // Handle the events that we care about
+            //Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
+            //// Handle the events that we care about
 
-            if (@event is CargoInventoryEvent)
-            {
-                handleCargoInventoryEvent((CargoInventoryEvent)@event);
-            }
+            //if (@event is CargoInventoryEvent)
+            //{
+            //    handleCargoInventoryEvent((CargoInventoryEvent)@event);
+            //}
         }
 
-        private void handleCargoInventoryEvent(CargoInventoryEvent @event)
-        {
+        //private void handleCargoInventoryEvent(CargoInventoryEvent @event)
+        //{
 
-        }
+        //}
 
         public IDictionary<string, object> GetVariables()
         {
