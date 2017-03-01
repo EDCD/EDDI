@@ -23,6 +23,11 @@ namespace Utilities
         public InstanceInfo beta { get;  set; }
 
         /// <summary>
+        /// Production releases
+        /// </summary>
+        public List<string> productionbuilds { get; set; }
+
+        /// <summary>
         /// Obtain information from the update server.  Note that this throws exceptions if it fails
         /// </summary>
         public static ServerInfo FromServer(string baseUri)

@@ -44,8 +44,7 @@ namespace Eddi
 
         public bool inCQC { get; private set; } = false;
 
-        // Responders that never run if we are against a beta version of Elite
-        private readonly List<string> BETA_OFF_RESPONDERS = new List<string>() { "EDDN Responder", "EDSM Responder" };
+        public bool inBeta { get; private set; } = false;
 
         static EDDI()
         {
@@ -83,6 +82,7 @@ namespace Eddi
         public string UpgradeVersion;
         public string UpgradeLocation;
         public string Motd;
+        public List<string> ProductionBuilds = new List<string>() { "x" };
 
         public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
         // Each monitor runs in its own thread
@@ -143,6 +143,11 @@ namespace Eddi
                 Cmdr = new Commander();
                 Ship = new Ship();
                 Shipyard = new List<Ship>();
+
+                // Set up the Elite configuration
+                EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
+                inBeta = eliteConfiguration.Beta;
+                Logging.Info(inBeta ? "On beta" : "On live");
 
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
@@ -259,6 +264,11 @@ namespace Eddi
                     EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                     InstanceInfo info = configuration.Beta ? updateServerInfo.beta : updateServerInfo.production;
                     Motd = info.motd;
+                    if (updateServerInfo.productionbuilds != null)
+                    {
+                        ProductionBuilds = updateServerInfo.productionbuilds;
+                    }
+
                     if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
                         // There is a mandatory update available
@@ -632,7 +642,11 @@ namespace Eddi
                     Logging.Debug("Handling event " + JsonConvert.SerializeObject(journalEvent));
                     // We have some additional processing to do for a number of events
                     bool passEvent = true;
-                    if (journalEvent is JumpingEvent)
+                    if (journalEvent is FileHeaderEvent)
+                    {
+                        passEvent = eventFileHeader((FileHeaderEvent)journalEvent);
+                    }
+                    else if (journalEvent is JumpingEvent)
                     {
                         passEvent = eventJumping((JumpingEvent)journalEvent);
                     }
@@ -917,6 +931,25 @@ namespace Eddi
                 CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
                 setSystemDistanceFromHome(CurrentStarSystem);
             }
+        }
+
+        private bool eventFileHeader(FileHeaderEvent @event)
+        {
+            // If we don't recognise the build number then assume we're in beta
+            if (ProductionBuilds.Contains(@event.build))
+            {
+                inBeta = false;
+            }
+            else
+            {
+                inBeta = true;
+            }
+            Logging.Info(inBeta ? "On beta" : "On live");
+            EliteConfiguration config = EliteConfiguration.FromFile();
+            config.Beta = inBeta;
+            config.ToFile();
+
+            return true;
         }
 
         private bool eventJumping(JumpingEvent theEvent)

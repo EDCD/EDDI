@@ -78,6 +78,12 @@ namespace EddiEdsmResponder
                 return;
             }
 
+            if (EDDI.Instance.inBeta)
+            {
+                // We don't send data whilst in beta
+                return;
+            }
+
             if (starMapService != null)
             {
                 // We could receive either or both of JumpingEvent and JumpedEvent.  Send EDSM update as soon as possible,
