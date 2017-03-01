@@ -20,7 +20,9 @@
 	* Add 'Crew member removed' event when you remove someone from your crew
 	* Add 'Crew role changed' event when your role on someone's crew changes
 	* Add 'Data voucher redeemed' event when a data voucher is redeemed
-	* Add 'FSD engaged' event when the FSD is engaged to jump to supercruise or hyperspace
+	* Add 'File Header' event when a new journal file is found.  This is usually just for internal use
+	* Add 'FSD engaged' event when the FSD is engaged to jump to supercruise or hyperspace.  This replaces the 'Jumping' event and has a similar script
+	* Remove 'Jumping' event.  This is part of the netlog monitor, which is no longer required
 	* Update 'Liftoff' event to record if the ship lifting off is player controlled or not
 	* Update 'Location' event to add longitude and latitude if the location is on the ground
 	* Add 'Material inventory' event when material information is supplied
@@ -28,6 +30,7 @@
 	* Update 'Mission accepted' event to include the number of kills for massacre missions
     * Add 'Settlement approached' event
 	* Add 'Ship renamed' event to record when ship names and idents are changed
+	* Update 'System state report' to say nothing if the system is not in any particular state
 	* Update 'Touchdown' event to record if the ship touching down is player controlled or not
 	* Add 'Trade voucher redeemed' event when a trade voucher is redeemed
   * Speech Responder
