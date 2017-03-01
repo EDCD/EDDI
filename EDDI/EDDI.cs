@@ -268,6 +268,7 @@ namespace Eddi
                     {
                         ProductionBuilds = updateServerInfo.productionbuilds;
                     }
+
                     if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
                         // There is a mandatory update available
@@ -930,6 +931,25 @@ namespace Eddi
                 CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
                 setSystemDistanceFromHome(CurrentStarSystem);
             }
+        }
+
+        private bool eventFileHeader(FileHeaderEvent @event)
+        {
+            // If we don't recognise the build number then assume we're in beta
+            if (ProductionBuilds.Contains(@event.build))
+            {
+                inBeta = false;
+            }
+            else
+            {
+                inBeta = true;
+            }
+            Logging.Info(inBeta ? "On beta" : "On live");
+            EliteConfiguration config = EliteConfiguration.FromFile();
+            config.Beta = inBeta;
+            config.ToFile();
+
+            return true;
         }
 
         private bool eventJumping(JumpingEvent theEvent)
