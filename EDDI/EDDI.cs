@@ -45,7 +45,7 @@ namespace Eddi
 
         public bool inCQC { get; private set; } = false;
 
-        public bool inBeta { get; private set; }
+        public bool inBeta { get; private set; } = false;
 
         static EDDI()
         {
