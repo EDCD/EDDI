@@ -86,5 +86,15 @@ namespace Tests
             Event theEvent = JournalMonitor.ParseJournalEntry(line);
             Assert.IsNotNull(theEvent);
         }
+
+        [TestMethod]
+        public void TestJournalFileHeader1()
+        {
+            string line = @"{""timestamp"":""2016-06-10T14:31:00Z"", ""event"":""FileHeader"", ""part"":1, ""gameversion"":""2.2"", ""build"":""r131487/r0 "" }";
+            FileHeaderEvent theEvent = (FileHeaderEvent)JournalMonitor.ParseJournalEntry(line);
+            Assert.IsNotNull(theEvent);
+
+            Assert.AreEqual("r131487/r0", theEvent.build);
+        }
     }
 }

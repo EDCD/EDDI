@@ -703,7 +703,8 @@ namespace EddiJournalMonitor
                             {
                                 string target = getString(data, "JumpType");
                                 string stellarclass = getString(data, "StarClass");
-                                journalEvent = new FSDEngagedEvent(timestamp, target, stellarclass);
+                                string system = getString(data, "StarSystem");
+                                journalEvent = new FSDEngagedEvent(timestamp, target, system, stellarclass);
                                 handled = true;
                             }
                             break;
@@ -1735,6 +1736,14 @@ namespace EddiJournalMonitor
                         case "SystemsShutdown":
                             {
                                 journalEvent = new ShipShutdownEvent(timestamp);
+                                handled = true;
+                                break;
+                            }
+                        case "Fileheader":
+                            {
+                                string version = getString(data, "gameversion");
+                                string build = getString(data, "build").Replace(" ", "");
+                                journalEvent = new FileHeaderEvent(timestamp, version, build);
                                 handled = true;
                                 break;
                             }
