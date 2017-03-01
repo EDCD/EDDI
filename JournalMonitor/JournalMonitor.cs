@@ -701,7 +701,8 @@ namespace EddiJournalMonitor
                             {
                                 string target = getString(data, "JumpType");
                                 string stellarclass = getString(data, "StarClass");
-                                journalEvent = new FSDEngagedEvent(timestamp, target, stellarclass);
+                                string system = getString(data, "StarSystem");
+                                journalEvent = new FSDEngagedEvent(timestamp, target, system, stellarclass);
                                 handled = true;
                             }
                             break;
@@ -1738,11 +1739,8 @@ namespace EddiJournalMonitor
                             }
                         case "Fileheader":
                             {
-                                object val;
-                                data.TryGetValue("gameversion", out val);
-                                string version = (string)val;
-                                data.TryGetValue("build", out val);
-                                string build = ((string)val).Replace(" ", "");
+                                string version = getString(data, "gameversion");
+                                string build = getString(data, "build").Replace(" ", "");
                                 journalEvent = new FileHeaderEvent(timestamp, version, build);
                                 handled = true;
                                 break;
