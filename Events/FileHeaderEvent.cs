@@ -12,7 +12,7 @@ namespace EddiEvents
     {
         public const string NAME = "File Header";
         public const string DESCRIPTION = "Triggered when the file header is read";
-        public const string SAMPLE = @"{""timestamp"":""2016-06-10T14:31:00Z"", “event”:”FileHeader”, ""part"":1, ""gameversion"":""2.2"", ""build"":""r113684"" }";
+        public const string SAMPLE = @"{""timestamp"":""2016-06-10T14:31:00Z"", ""event"":""FileHeader"", ""part"":1, ""gameversion"":""2.2"", ""build"":""r131487/r0 "" }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static FileHeaderEvent()

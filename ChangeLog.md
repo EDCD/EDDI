@@ -7,6 +7,7 @@
     * Add ship value 'ident' which is the user-defined identification string for a ship
     * Allow monitors to handle events, and generate their own events in turn
     * New monitor: Material monitor.  This allows you to set minimum/desired/maximum limits for materials and generate events when the limits are exceeded
+	* Identify beta builds of Elite and use the appropriate EDDN schema
   * Events
 	* Update 'Body scanned' event - added information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
 	* Add 'Bond redeemed' event when a combat bond is redeemed

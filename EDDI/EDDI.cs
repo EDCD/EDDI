@@ -82,7 +82,7 @@ namespace Eddi
         public string UpgradeVersion;
         public string UpgradeLocation;
         public string Motd;
-        public List<string> ProductionBuilds = new List<string>() { "x" };
+        public List<string> ProductionBuilds = new List<string>() { "r131487/r0" };
 
         public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
         // Each monitor runs in its own thread

@@ -41,6 +41,7 @@ namespace EddiNetLogMonitor
 
             // Start off by moving to the end of the file
             long lastSize = 0;
+            string lastName = null;
             FileInfo fileInfo = null;
             try
             {
@@ -53,14 +54,16 @@ namespace EddiNetLogMonitor
             if (fileInfo != null)
             {
                 lastSize = fileInfo.Length;
+                lastName = fileInfo.Name;
             }
 
             // Main loop
             while (running)
             {
                 fileInfo = FindLatestFile(Directory, Filter);
-                if (fileInfo == null)
+                if (fileInfo == null || fileInfo.Name != lastName)
                 {
+                    lastName = fileInfo == null ? null : fileInfo.Name;
                     lastSize = 0;
                 }
                 else
