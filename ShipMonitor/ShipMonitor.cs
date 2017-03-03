@@ -143,6 +143,14 @@ namespace EddiShipMonitor
             {
                 SetCurrentShip(@event.shipid, @event.ship);
                 Ship ship = GetCurrentShip();
+                if (ship == null)
+                {
+                    // We don't know of this ship so need to create it
+                    ship = ShipDefinitions.FromEDModel(@event.ship);
+                    ship.LocalId = (int)@event.shipid;
+                    ship.role = Role.MultiPurpose;
+                    AddShip(ship);
+                }
                 ship.name = @event.shipname;
                 ship.ident = @event.shipident;
                 if (@event.fuelcapacity.HasValue)
@@ -192,8 +200,8 @@ namespace EddiShipMonitor
                 if (storedShip != null)
                 {
                     // Set location of stored ship to the current sstem
-                    storedShip.starsystem = EDDI.Instance.CurrentStarSystem.name;
-                    storedShip.station = EDDI.Instance.CurrentStation.name;
+                    storedShip.starsystem = EDDI.Instance.CurrentStarSystem != null ? EDDI.Instance.CurrentStarSystem.name : null;
+                    storedShip.station = EDDI.Instance.CurrentStation != null ? EDDI.Instance.CurrentStation.name : null;
                 }
             }
             else if (@event.soldshipid != null)
@@ -251,6 +259,8 @@ namespace EddiShipMonitor
             {
                 ship.ident = @event.shipident;
             }
+
+            ship.paintjob = @event.paintjob;
 
             // Augment the ship info if required
             if (ship.model == null)
@@ -315,7 +325,10 @@ namespace EddiShipMonitor
             {
                 ship.fueltank = compartment.module;
             }
-            ship.fueltankcapacity = (decimal)Math.Pow(2, ship.fueltank.@class);
+            if (ship.fueltank != null)
+            {
+                ship.fueltankcapacity = (decimal)Math.Pow(2, ship.fueltank.@class);
+            }
 
             compartment = @event.compartments.FirstOrDefault(c => c.name == "CargoHatch");
             if (compartment != null)
@@ -451,11 +464,10 @@ namespace EddiShipMonitor
             }
 
             // Add the raw JSON for each known ship provided in the profile
-            // TODO Rationalise companion API data - munge the JSON according to the compartment information, removing anything tht is out-of-sync
+            // TODO Rationalise companion API data - munge the JSON according to the compartment information, removing anything that is out-of-sync
             if (profileCurrentShip != null)
             {
                 Ship ship = GetShip(profileCurrentShip.LocalId);
-                ship.raw = profileCurrentShip.raw;
                 if (ship.model == null)
                 {
                     // We don't know this ship's model but can fill it from the info we have
@@ -464,6 +476,23 @@ namespace EddiShipMonitor
                 }
                 // Obtain items that we can't obtain from the journal
                 ship.value = profileCurrentShip.value;
+                if (ship.cargohatch != null)
+                {
+                    // Engineering info for each module isn't in the journal, but we only use this to pass on to Coriolis so don't
+                    // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
+                    // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
+                    JObject cargoHatchModule = new JObject();
+                    cargoHatchModule.Add("on", ship.cargohatch.enabled);
+                    cargoHatchModule.Add("priority", ship.cargohatch.priority);
+                    cargoHatchModule.Add("value", ship.cargohatch.price);
+                    cargoHatchModule.Add("health", ship.cargohatch.health);
+                    cargoHatchModule.Add("name", "ModularCargoBayDoor");
+                    JObject cargoHatchSlot = new JObject();
+                    cargoHatchSlot.Add("module", cargoHatchModule);
+                    JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
+                    parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
+                    ship.raw = parsedRaw.ToString(Formatting.None);
+                }
             }
 
             foreach (Ship profileShip in profileShipyard)
@@ -544,7 +573,8 @@ namespace EddiShipMonitor
             }
             else
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                {
                     shipyard.Add(ship);
                 }));
             }
@@ -561,7 +591,8 @@ namespace EddiShipMonitor
             }
             else
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                {
                     _RemoveShip(localid);
                 }));
             }

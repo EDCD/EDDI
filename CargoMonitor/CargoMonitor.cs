@@ -46,6 +46,11 @@ namespace EddiCargoMonitor
             return true;
         }
 
+        public bool IsRequired()
+        {
+            return true;
+        }
+
         public CargoMonitor()
         {
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());

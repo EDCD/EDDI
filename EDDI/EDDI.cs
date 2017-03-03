@@ -94,7 +94,6 @@ namespace Eddi
 
         // Information obtained from the companion app service
         public Commander Cmdr { get; private set; }
-        //public ObservableCollection<Ship> Shipyard { get; private set; } = new ObservableCollection<Ship>();
         public Station CurrentStation { get; private set; }
 
         // Services made available from EDDI
@@ -1099,11 +1098,6 @@ namespace Eddi
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
             updateCurrentSystem(theEvent.system);
-            return true;
-        }
-
-        private bool eventShipDelivered(ShipDeliveredEvent theEvent)
-        {
             return true;
         }
 
