@@ -646,10 +646,6 @@ namespace Eddi
                     {
                         passEvent = eventFileHeader((FileHeaderEvent)journalEvent);
                     }
-                    else if (journalEvent is JumpingEvent)
-                    {
-                        passEvent = eventJumping((JumpingEvent)journalEvent);
-                    }
                     else if (journalEvent is JumpedEvent)
                     {
                         passEvent = eventJumped((JumpedEvent)journalEvent);
@@ -665,6 +661,10 @@ namespace Eddi
                     else if (journalEvent is LocationEvent)
                     {
                         passEvent = eventLocation((LocationEvent)journalEvent);
+                    }
+                    else if (journalEvent is FSDEngagedEvent)
+                    {
+                        passEvent = eventFSDEngaged((FSDEngagedEvent)journalEvent);
                     }
                     else if (journalEvent is EnteredSupercruiseEvent)
                     {
@@ -952,35 +952,19 @@ namespace Eddi
             return true;
         }
 
-        private bool eventJumping(JumpingEvent theEvent)
+        private bool eventFSDEngaged(FSDEngagedEvent @event)
         {
-            bool passEvent;
-            Logging.Debug("Jumping to " + theEvent.system);
-            if (CurrentStarSystem == null || CurrentStarSystem.name != theEvent.system)
+            // Keep track of our environment
+            if (@event.target == "Supercruise")
             {
-                // New system
-                passEvent = true;
-                updateCurrentSystem(theEvent.system);
-                // The information in the event is more up-to-date than the information we obtain from external sources, so update it here
-                CurrentStarSystem.x = theEvent.x;
-                CurrentStarSystem.y = theEvent.y;
-                CurrentStarSystem.z = theEvent.z;
-                setSystemDistanceFromHome(CurrentStarSystem);
-                CurrentStarSystem.visits++;
-                CurrentStarSystem.lastvisit = DateTime.Now;
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-                setCommanderTitle();
+                Environment = Constants.ENVIRONMENT_SUPERCRUISE;
             }
             else
             {
-                // Restatement of current system
-                passEvent = false;
+                Environment = Constants.ENVIRONMENT_WITCH_SPACE;
             }
 
-            // Whilst jumping we are in witch space
-            Environment = Constants.ENVIRONMENT_WITCH_SPACE;
-
-            return passEvent;
+            return true;
         }
 
         private bool eventFileHeader(FileHeaderEvent @event)

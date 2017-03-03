@@ -107,10 +107,6 @@
       <Project>{72B6F41D-0107-4D3A-8603-C3EDDA1C5243}</Project>
       <Name>EddiJournalMonitor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetLogMonitor\EddiNetLogMonitor.csproj">
-      <Project>{0928ADE6-F260-4820-AFBC-1661130C3474}</Project>
-      <Name>EddiNetLogMonitor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SpeechService\EddiSpeechService.csproj">
       <Project>{19572A69-C13A-459D-AB72-2B0F034AC27F}</Project>
       <Name>EddiSpeechService</Name>

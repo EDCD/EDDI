@@ -8,6 +8,7 @@
     * Allow monitors to handle events, and generate their own events in turn
     * New monitor: Material monitor.  This allows you to set minimum/desired/maximum limits for materials and generate events when the limits are exceeded
 	* Identify beta builds of Elite and use the appropriate EDDN schema
+	* Remove the Netlog monitor.  This was only used to obtain destination system when jumping and is no longer required due to additional information made available in the journal for this purpose
   * Events
 	* Update 'Body scanned' event - added information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
 	* Add 'Bond redeemed' event when a combat bond is redeemed
@@ -22,7 +23,7 @@
 	* Add 'Data voucher redeemed' event when a data voucher is redeemed
 	* Add 'File Header' event when a new journal file is found.  This is usually just for internal use
 	* Add 'FSD engaged' event when the FSD is engaged to jump to supercruise or hyperspace.  This replaces the 'Jumping' event and has a similar script
-	* Remove 'Jumping' event.  This is part of the netlog monitor, which is no longer required
+	* Deprecate 'Jumping' event.  This is part of the netlog monitor, which is no longer required.  The functionality has been replaced by the 'FSD engaged' event
 	* Update 'Liftoff' event to record if the ship lifting off is player controlled or not
 	* Update 'Location' event to add longitude and latitude if the location is on the ground
 	* Add 'Material inventory' event when material information is supplied
