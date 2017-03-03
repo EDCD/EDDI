@@ -94,7 +94,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'engage')}\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_system_system', event.system)}\r\n\r\n{if event.target = 'Hyperspace':\r\n    {_ Rewrite context to represent a jump }\r\n    {SetState('eddi_context_last_subject', 'jump')}\r\n    {SetState('eddi_context_last_action', 'start')}\r\n\r\n    {set system to SystemDetails(event.system)}\r\n\r\n    {_ Wait for the FSD countdown and initial jump}\r\n    {Pause(6000)}\r\n\r\n    {OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n    {ShipName()} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n    {if system.name = homesystem.name:\r\n        Welcome home, {F(\"Honorific\")}\r\n    |else:\r\n        {if event.stellarclass = \"D\":\r\n            Caution: white dwarf detected.\r\n        |elif event.stellarclass = \"N\":\r\n            Caution: neutron star detected.\r\n        |elif event.stellarclass = \"H\":\r\n            Caution: black hole detected.\r\n        |elif event.stellarclass != 'F' && event.stellarclass != 'O' && event.stellarclass != 'G' && event.stellarclass != 'K' && event.stellarclass != 'B' && event.stellarclass != 'A' && event.stellarclass != 'M':\r\n            Information: arrival star is not scoopable.\r\n        }\r\n\r\n        {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!system.allegiance || system.allegiance = \"None\" || system.allegiance = \"Independent\"):\r\n            You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n        |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance && system.allegiance != \"None\":\r\n            You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n            {if cmdr.title != \"Commander\":\r\n                Welcome back {F(\"Honorific\")}.\r\n            }\r\n        }\r\n\r\n        {if system.visits = 1:\r\n            This is your first visit to this system\r\n        |elif system.visits = 2:\r\n            This is your second visit to this system\r\n        |elif system.visits = 3:\r\n            This is your third visit to this system\r\n        |elif system.visits = 4:\r\n            This is your fourth visit to this system\r\n        |else:\r\n            You have visited this system {system.visits} times\r\n        }.\r\n\r\n        {if !system.population:\r\n            {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n        |else:\r\n            {F(\"System report\")}\r\n        }\r\n\r\n        {if system.distancefromhome:\r\n            {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n        }\r\n\r\n        {if system.comment:\r\n            You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n        }\r\n    }\r\n}",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'engage')}\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_system_system', event.system)}\r\n\r\n{if event.target = 'Hyperspace':\r\n    {_ Rewrite context to represent a jump }\r\n    {SetState('eddi_context_last_subject', 'jump')}\r\n    {SetState('eddi_context_last_action', 'start')}\r\n\r\n    {set system to SystemDetails(event.system)}\r\n\r\n    {_ Wait for the FSD countdown and initial jump}\r\n    {Pause(6000)}\r\n\r\n    {OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n    {ShipName()} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n    {if system.name = homesystem.name:\r\n        Welcome home, {F(\"Honorific\")}\r\n    |else:\r\n        {if event.stellarclass = \"D\":\r\n            Caution: white dwarf detected.\r\n        |elif event.stellarclass = \"N\":\r\n            Caution: neutron star detected.\r\n        |elif event.stellarclass = \"H\":\r\n            Caution: black hole detected.\r\n        |elif event.stellarclass != 'F' && event.stellarclass != 'O' && event.stellarclass != 'G' && event.stellarclass != 'K' && event.stellarclass != 'B' && event.stellarclass != 'A' && event.stellarclass != 'M':\r\n            Information: arrival star is not scoopable.\r\n        }\r\n\r\n        {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!system.allegiance || system.allegiance = \"None\" || system.allegiance = \"Independent\"):\r\n            You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n        |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance && system.allegiance != \"None\":\r\n            You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n            {if cmdr.title != \"Commander\":\r\n                Welcome back {F(\"Honorific\")}.\r\n            }\r\n        }\r\n\r\n        {if system.visits = 0:\r\n            This is your first visit to this system\r\n        |elif system.visits = 1:\r\n            This is your second visit to this system\r\n        |elif system.visits = 2:\r\n            This is your third visit to this system\r\n        |elif system.visits = 3:\r\n            This is your fourth visit to this system\r\n        |else:\r\n            You have visited this system {system.visits} times\r\n        }.\r\n\r\n        {if !system.population:\r\n            {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n        |else:\r\n            {F(\"System report\")}\r\n        }\r\n\r\n        {if system.distancefromhome:\r\n            {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n        }\r\n\r\n        {if system.comment:\r\n            You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n        }\r\n    }\r\n}",
       "name": "FSD engaged",
       "description": "Triggered when your FSD has engaged"
     },
@@ -382,7 +382,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(1000)}\r\n\r\n{ShipName()} refuelled.",
+      "script": "{Pause(2000)}\r\n\r\n{ShipName()} refuelled.",
       "name": "Ship refuelled",
       "description": "Triggered when you refuel your ship"
     },
@@ -393,6 +393,14 @@
       "script": "{ShipName()} {OneOf(\"restocked\",\"rearmed\")}.",
       "name": "Ship restocked",
       "description": "Triggered when you restock your ship's ammunition"
+    },
+    "Jumping": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Jumping",
+      "description": "NO LONGER IN USE"
     },
     "Limpet sold": {
       "enabled": true,
@@ -926,7 +934,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(2000)}\r\n\r\nDocking complete.\r\n{OneOf(\"Communications with\", \"Access to\", \"Link to\", \"Access to\")}\r\n{OneOf(\"local\", \"station\", \"{event.station}'s\")}\r\n{OneOf(\"data net\", \"network\", \"networks\", \"computers\", \"services\")}\r\n{OneOf(\"established\", \"confirmed\", \"authorised\", \"obtained\")}.\r\n\r\n",
+      "script": "Docking complete.\r\n",
       "name": "Docked",
       "description": "Triggered when your ship docks at a station or outpost"
     },
