@@ -59,9 +59,11 @@
 	  * 'Jumped' - call system security report here rather than in 'Jumping' to guarantee up-to-date information
 	  * 'Liftoff' - change speech depending on if player is controlling ship or not
 	  * 'Market information updated' - new script taken from the end of the previous 'Docked' script
-	  * 'Material discard report' - new script to report which materials can be discarded (as per the material monitor settings)
-	  * 'Material inventory report' - new script to report on how much of a particular material is on board
-	  * 'Material required report' - new script to report on how much of a particular material is required (as per the material monitor settings)
+	  * 'Material discard report' - new script to report how much of a particular material can be discarded (as per the material monitor settings)
+	  * 'Material inventory report' - new script to report how much of a particular material is on board
+	  * 'Material required report' - new script to report how much of a particular material is required (as per the material monitor settings)
+	  * 'Materials discard report' - new script to report which materials can be discarded (as per the material monitor settings)
+	  * 'Materials required report' - new script to report which materials can be discarded (as per the material monitor settings)
 	  * 'Settlement approached' - new script
 	  * 'Ship renamed' - new script
 	  * 'System state report' - fixed a couple of typos

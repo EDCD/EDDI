@@ -61,6 +61,7 @@ Source: "{#SourcePath}EDDI\bin\Debug\EddiJournalMonitor.dll"; DestDir: "{app}"; 
 Source: "{#SourcePath}EDDI\bin\Debug\EddiMaterialMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiSpeechResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiSpeechService.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}EDDI\bin\Debug\EddiShipMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiStarMapService.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EntityFramework.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EntityFramework.SqlServer.dll"; DestDir: "{app}"; Flags: ignoreversion

@@ -96,6 +96,7 @@ namespace EddiShipMonitor
 
         private void handleShipSwappedEvent(ShipSwappedEvent @event)
         {
+            SetCurrentShip(@event.Ship);
         }
 
         private void handleShipSoldEvent(ShipSoldEvent @event)
@@ -116,6 +117,7 @@ namespace EddiShipMonitor
 
         private void handleShipDeliveredEvent(ShipDeliveredEvent @event)
         {
+            SetCurrentShip(@event.Ship);
         }
 
         private void handleShipRenamedEvent(ShipRenamedEvent @event)
@@ -130,6 +132,11 @@ namespace EddiShipMonitor
                 }
             }
             writeShips();
+        }
+
+        private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
+        {
+            SetCurrentShip(@event.Ship);
         }
 
         public IDictionary<string, object> GetVariables()
@@ -175,6 +182,43 @@ namespace EddiShipMonitor
             {
                 shipyard.Add(ship);
             }
+        }
+
+        private void SetCurrentShip(Ship ship)
+        {
+            if (ship == null)
+            {
+                Logging.Warn("Refusing to set ship to null");
+                return;
+            }
+
+            if (EDDI.Instance.Ship != null)
+            {
+                // Remove the ship we are now using from the shipyard
+                int shipIndex = -1;
+                for (int i = 0; i < EDDI.Instance.Shipyard.Count; i++)
+                {
+                    if (EDDI.Instance.Shipyard[i].LocalId == ship.LocalId)
+                    {
+                        shipIndex = i;
+                        break;
+                    }
+                }
+                if (shipIndex > -1)
+                {
+                    EDDI.Instance.Shipyard.RemoveAt(shipIndex);
+                }
+
+                // Add the ship we were using to the shipyard (if it's real)
+                if (EDDI.Instance.Ship.model != null)
+                {
+                    EDDI.Instance.Shipyard.Add(EDDI.Instance.Ship);
+                }
+            }
+
+            // Set the ship we are using
+            Logging.Debug("Set ship to " + JsonConvert.SerializeObject(ship));
+            EDDI.Instance.Ship = ship;
         }
     }
 }
