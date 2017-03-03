@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Utilities;
@@ -12,14 +13,13 @@ namespace EddiCompanionAppService
     public class ShipsConfiguration
     {
         [JsonProperty("ships")]
-        public List<Ship> Ships;
+        public ObservableCollection<Ship> Ships = new ObservableCollection<Ship>();
 
         [JsonIgnore]
         private string dataPath;
 
         public ShipsConfiguration()
         {
-            Ships = new List<Ship>();
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace EddiCompanionAppService
             }
 
             // There was a bug that caused null entries to be written to the ships configuration; remove these if present
-            configuration.Ships = configuration.Ships.Where(x => x.role != null).ToList();
+            configuration.Ships = new ObservableCollection<Ship>(configuration.Ships.Where(x => x.role != null));
 
             configuration.dataPath = filename;
             return configuration;
@@ -68,7 +68,7 @@ namespace EddiCompanionAppService
             }
 
             // There was a bug that caused null entries to be written to the ships configuration; remove these if present
-            Ships = Ships.Where(x => x.role != null).ToList();
+            Ships = new ObservableCollection<Ship>(Ships.Where(x => x.role != null));
 
             if (filename == null)
             {

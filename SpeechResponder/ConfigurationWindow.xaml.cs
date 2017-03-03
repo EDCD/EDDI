@@ -96,7 +96,7 @@ namespace EddiSpeechResponder
         {
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
             ViewScriptWindow viewScriptWindow = new ViewScriptWindow(Personality.Scripts, script.Name);
-            viewScriptWindow.ShowDialog();
+            viewScriptWindow.Show();
         }
 
         private void testScript(object sender, RoutedEventArgs e)

@@ -25,6 +25,11 @@ namespace Eddi
         string MonitorDescription();
 
         /// <summary>
+        /// If the monitor is required to be running
+        /// </summary>
+        bool IsRequired();
+
+        /// <summary>
         /// Called when this monitor is started.  This is not expected to return whilst the monitor is running
         /// </summary>
         void Start();

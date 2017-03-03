@@ -39,6 +39,11 @@ namespace EddiCargoMonitor
             return "Tracks your cargo and provides information to speech responder scripts.";
         }
 
+        public bool IsRequired()
+        {
+            return true;
+        }
+
         public CargoMonitor()
         {
             ReadCargo();

@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -94,7 +95,7 @@ namespace Eddi
         // Information obtained from the companion app service
         public Commander Cmdr { get; private set; }
         public Ship Ship { get; private set; }
-        public List<Ship> Shipyard { get; private set; }
+        public ObservableCollection<Ship> Shipyard { get; private set; } = new ObservableCollection<Ship>();
         public Station CurrentStation { get; private set; }
 
         // Services made available from EDDI
@@ -142,7 +143,6 @@ namespace Eddi
                 // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
                 Cmdr = new Commander();
                 Ship = new Ship();
-                Shipyard = new List<Ship>();
 
                 // Set up the Elite configuration
                 EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
@@ -697,10 +697,6 @@ namespace Eddi
                     {
                         passEvent = eventShipSwapped((ShipSwappedEvent)journalEvent);
                     }
-                    else if (journalEvent is ShipSoldEvent)
-                    {
-                        passEvent = eventShipSold((ShipSoldEvent)journalEvent);
-                    }
                     else if (journalEvent is CommanderContinuedEvent)
                     {
                         passEvent = eventCommanderContinued((CommanderContinuedEvent)journalEvent);
@@ -1105,20 +1101,6 @@ namespace Eddi
             return true;
         }
 
-        private bool eventShipSold(ShipSoldEvent theEvent)
-        {
-            // Remove the ship from the list of stored ships
-            for (int i = 0; i < Shipyard.Count; i++)
-            {
-                if (Shipyard[i].LocalId == theEvent.shipid)
-                {
-                    Shipyard.RemoveAt(i);
-                    break;
-                }
-            }
-            return true;
-        }
-
         private bool eventCommanderContinued(CommanderContinuedEvent theEvent)
         {
             // If we see this it means that we aren't in CQC
@@ -1302,7 +1284,12 @@ namespace Eddi
                             Cmdr.insurance = configuration.Insurance;
                         }
 
-                        Shipyard = profile.Shipyard;
+                        // Reset the shipyard from the profile information
+                        Shipyard.Clear();
+                        foreach (Ship ship in profile.Shipyard)
+                        {
+                            Shipyard.Add(ship);
+                        }
 
                         // Only use the ship information if we agree that this is the correct ship to use
                         if (profile.Ship != null && (Ship.model == null || profile.Ship.LocalId == Ship.LocalId))
@@ -1382,7 +1369,19 @@ namespace Eddi
             if (Ship != null)
             {
                 // Remove the ship we are now using from the shipyard
-                Shipyard = Shipyard.Where(s => s.LocalId != ship.LocalId).ToList();
+                int shipIndex = -1;
+                for (int i = 0; i < Shipyard.Count; i++)
+                {
+                    if (Shipyard[i].LocalId == ship.LocalId)
+                    {
+                        shipIndex = i;
+                        break;
+                    }
+                }
+                if (shipIndex > -1)
+                {
+                    Shipyard.RemoveAt(shipIndex);
+                }
 
                 // Add the ship we were using to the shipyard (if it's real)
                 if (Ship.model != null)
@@ -1612,7 +1611,12 @@ namespace Eddi
 
                         // Use the profile as primary information for our commander and shipyard
                         Cmdr = profile.Cmdr;
-                        Shipyard = profile.Shipyard;
+                        // Reset the shipyard from the profile information
+                        Shipyard.Clear();
+                        foreach (Ship ship in profile.Shipyard)
+                        {
+                            Shipyard.Add(ship);
+                        }
 
                         // Reinstate insurance
                         EDDIConfiguration configuration = EDDIConfiguration.FromFile();

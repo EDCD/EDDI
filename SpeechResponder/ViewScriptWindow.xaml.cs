@@ -35,7 +35,6 @@ namespace EddiSpeechResponder
 
         private void okButtonClick(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
             Close();
         }
     }

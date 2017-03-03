@@ -1939,6 +1939,11 @@ namespace EddiJournalMonitor
             return "Monitor Elite: Dangerous' journal.log for many common events.  This should not be disabled unless you are sure you know what you are doing, as it will result in many functions inside EDDI no longer working";
         }
 
+        public bool IsRequired()
+        {
+            return true;
+        }
+
         public void Start()
         {
             start();
