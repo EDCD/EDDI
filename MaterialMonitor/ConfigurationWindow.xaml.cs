@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Eddi;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,20 @@ namespace EddiMaterialMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
+        MaterialMonitor monitor;
+
         public ConfigurationWindow()
         {
             InitializeComponent();
+
+            monitor = ((MaterialMonitor)EDDI.Instance.ObtainMonitor("Material monitor"));
+            watchData.ItemsSource = monitor.inventory;
+        }
+
+        private void materialsUpdated(object sender, DataTransferEventArgs e)
+        {
+            // Update the material monitor's information
+            monitor.writeMaterials();
         }
     }
 }

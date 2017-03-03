@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Utilities;
@@ -11,14 +12,14 @@ namespace EddiMaterialMonitor
     /// <summary>Storage for configuration of material amounts</summary>
     public class MaterialMonitorConfiguration
     {
-        public List<MaterialAmount> materials { get; set; }
+        public ObservableCollection<MaterialAmount> materials { get; set; }
 
         [JsonIgnore]
         private string dataPath;
 
         public MaterialMonitorConfiguration()
         {
-            materials = new List<MaterialAmount>();
+            materials = new ObservableCollection<MaterialAmount>();
         }
 
         /// <summary>
