@@ -515,6 +515,21 @@ namespace Eddi
         }
 
         /// <summary>
+        /// Obtain a named monitor
+        /// </summary>
+        public EDDIMonitor ObtainMonitor(string name)
+        {
+            foreach (EDDIMonitor monitor in monitors)
+            {
+                if (monitor.MonitorName() == name)
+                {
+                    return monitor;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Obtain a named responder
         /// </summary>
         public EDDIResponder ObtainResponder(string name)
