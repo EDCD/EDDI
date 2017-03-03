@@ -108,7 +108,6 @@
     <Compile Include="StarSystemDataTests.cs" />
     <Compile Include="CommanderDataTests.cs" />
     <Compile Include="CoriolisTests.cs" />
-    <Compile Include="NetLogMonitorTests.cs" />
     <Compile Include="ScriptResolverTest.cs" />
     <Compile Include="VoiceAttackPluginTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -137,10 +136,6 @@
     <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj">
       <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>
       <Name>EddiJournalMonitor</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetLogMonitor\EddiNetLogMonitor.csproj">
-      <Project>{0928ade6-f260-4820-afbc-1661130c3474}</Project>
-      <Name>EddiNetLogMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\SpeechResponder\EddiSpeechResponder.csproj">
       <Project>{b164baec-9d66-4846-b152-2f8914406b89}</Project>

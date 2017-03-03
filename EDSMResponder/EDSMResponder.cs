@@ -86,20 +86,7 @@ namespace EddiEdsmResponder
 
             if (starMapService != null)
             {
-                // We could receive either or both of JumpingEvent and JumpedEvent.  Send EDSM update as soon as possible,
-                // but don't send it twice
-                if (theEvent is JumpingEvent)
-                {
-                    JumpingEvent jumpingEvent = (JumpingEvent)theEvent;
-
-                    if (jumpingEvent.system != system)
-                    {
-                        Logging.Debug("Sending jump data to EDSM (jumping)");
-                        starMapService.sendStarMapLog(jumpingEvent.timestamp, jumpingEvent.system, jumpingEvent.x, jumpingEvent.y, jumpingEvent.z);
-                        system = jumpingEvent.system;
-                    }
-                }
-                else if (theEvent is JumpedEvent)
+                if (theEvent is JumpedEvent)
                 {
                     JumpedEvent jumpedEvent = (JumpedEvent)theEvent;
 

@@ -1,7 +1,6 @@
 ﻿using Eddi;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiNetLogMonitor;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
