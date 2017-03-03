@@ -94,6 +94,7 @@ namespace Eddi
 
         // Information obtained from the companion app service
         public Commander Cmdr { get; private set; }
+        //public ObservableCollection<Ship> Shipyard { get; private set; } = new ObservableCollection<Ship>();
         public Station CurrentStation { get; private set; }
 
         // Services made available from EDDI
@@ -957,25 +958,6 @@ namespace Eddi
             }
         }
 
-        private bool eventFileHeader(FileHeaderEvent @event)
-        {
-            // If we don't recognise the build number then assume we're in beta
-            if (ProductionBuilds.Contains(@event.build))
-            {
-                inBeta = false;
-            }
-            else
-            {
-                inBeta = true;
-            }
-            Logging.Info(inBeta ? "On beta" : "On live");
-            EliteConfiguration config = EliteConfiguration.FromFile();
-            config.Beta = inBeta;
-            config.ToFile();
-
-            return true;
-        }
-
         private bool eventFSDEngaged(FSDEngagedEvent @event)
         {
             // Keep track of our environment
@@ -1101,6 +1083,11 @@ namespace Eddi
             return true;
         }
 
+        private bool eventShipDelivered(ShipDeliveredEvent theEvent)
+        {
+            return true;
+        }
+
         private bool eventCommanderContinued(CommanderContinuedEvent theEvent)
         {
             // If we see this it means that we aren't in CQC
@@ -1119,7 +1106,7 @@ namespace Eddi
             // There is a bug with the journal where it reports superpower increases in rank as combat increases
             // Hence we check to see if this is a real event by comparing our known combat rating to the promoted rating
 
-            return theEvent.rating != Cmdr.combatrating.name;
+            return (Cmdr == null || Cmdr.combatrating == null) || theEvent.rating != Cmdr.combatrating.name;
         }
 
         private bool eventEnteredCQC(EnteredCQCEvent theEvent)
@@ -1168,7 +1155,7 @@ namespace Eddi
         private bool eventStarScanned(StarScannedEvent theEvent)
         {
             // We just scanned a star.  We can assume that it's in our current system
-            Body star = CurrentStarSystem?.bodies?.FirstOrDefault(b => b.name == theEvent.name);
+            Body star = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.name);
             if (star == null)
             {
                 Logging.Debug("Scanned star " + theEvent.name + " is new - creating");
@@ -1178,7 +1165,7 @@ namespace Eddi
                 star.type = "Star";
                 star.name = theEvent.name;
                 star.systemname = CurrentStarSystem.name;
-                CurrentStarSystem?.bodies?.Add(star);
+                CurrentStarSystem.bodies.Add(star);
             }
 
             // Update with the information we have
@@ -1375,13 +1362,12 @@ namespace Eddi
 
         private void setSystemDistanceFromHome(StarSystem system)
         {
-            Logging.Info("HomeStarSystem is " + (HomeStarSystem == null ? null : HomeStarSystem.name));
             if (HomeStarSystem != null && HomeStarSystem.x != null && system.x != null)
             {
                 system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - HomeStarSystem.x), 2)
                                                                       + Math.Pow((double)(system.y - HomeStarSystem.y), 2)
                                                                       + Math.Pow((double)(system.z - HomeStarSystem.z), 2)), 2);
-                Logging.Info("Distance from home is " + system.distancefromhome);
+                Logging.Debug("Distance from home is " + system.distancefromhome);
             }
         }
 
@@ -1547,15 +1533,9 @@ namespace Eddi
         /// </summary>
         private void conditionallyRefreshProfile()
         {
-            if (CompanionAppService.Instance == null && CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
-            {
-                Logging.Debug("Cannot refresh profile when companion app service is not active");
-                return;
-            }
-
             int maxTries = 6;
 
-            while (running && maxTries > 0)
+            while (running && maxTries > 0 && CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
             {
                 try
                 {
@@ -1633,14 +1613,6 @@ namespace Eddi
             // Clear the update info
             profileUpdateNeeded = false;
             profileStationRequired = null;
-        }
-
-        // If we have no access to the companion API but need to trigger a market update then we can call this method
-        private void dummyRefreshMarketData()
-        {
-            Thread.Sleep(2000);
-            Event @event = new MarketInformationUpdatedEvent(DateTime.Now);
-            eventHandler(@event);
         }
 
         // If we have no access to the companion API but need to trigger a market update then we can call this method
