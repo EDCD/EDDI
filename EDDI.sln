@@ -61,6 +61,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiMaterialMonitor", "Mate
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCargoMonitor", "CargoMonitor\EddiCargoMonitor.csproj", "{35D5FF83-01B8-4051-BA99-1052596E047D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiShipMonitor", "ShipMonitor\EddiShipMonitor.csproj", "{5294706E-E600-4EA1-B904-66A41561E852}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -139,6 +141,10 @@ Global
 		{35D5FF83-01B8-4051-BA99-1052596E047D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35D5FF83-01B8-4051-BA99-1052596E047D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35D5FF83-01B8-4051-BA99-1052596E047D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5294706E-E600-4EA1-B904-66A41561E852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5294706E-E600-4EA1-B904-66A41561E852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5294706E-E600-4EA1-B904-66A41561E852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5294706E-E600-4EA1-B904-66A41561E852}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

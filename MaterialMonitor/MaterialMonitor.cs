@@ -18,9 +18,6 @@ namespace EddiMaterialMonitor
     /// </summary>
     public class MaterialMonitor : EDDIMonitor
     {
-        // The file to log speech
-        public static readonly string LogFile = Constants.DATA_DIR + @"\materialsresponder.out";
-
         // Observable collection for us to handle
         public ObservableCollection<MaterialAmount> inventory = new ObservableCollection<MaterialAmount>();
 
@@ -37,6 +34,11 @@ namespace EddiMaterialMonitor
         public string MonitorDescription()
         {
             return "Track the amount of materials and generate events when limits are reached.";
+        }
+
+        public bool IsRequired()
+        {
+            return true;
         }
 
         public MaterialMonitor()
@@ -68,8 +70,8 @@ namespace EddiMaterialMonitor
         public void Handle(Event @event)
         {
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
-            // Handle the events that we care about
 
+            // Handle the events that we care about
             if (@event is MaterialInventoryEvent)
             {
                 handleMaterialInventoryEvent((MaterialInventoryEvent)@event);
