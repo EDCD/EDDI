@@ -94,7 +94,7 @@ namespace Eddi
 
         // Information obtained from the companion app service
         public Commander Cmdr { get; private set; }
-        public Ship Ship { get; private set; }
+        public Ship Ship { get; set; }
         public ObservableCollection<Ship> Shipyard { get; private set; } = new ObservableCollection<Ship>();
         public Station CurrentStation { get; private set; }
 
@@ -693,10 +693,6 @@ namespace Eddi
                     {
                         passEvent = eventShipDelivered((ShipDeliveredEvent)journalEvent);
                     }
-                    else if (journalEvent is ShipSwappedEvent)
-                    {
-                        passEvent = eventShipSwapped((ShipSwappedEvent)journalEvent);
-                    }
                     else if (journalEvent is CommanderContinuedEvent)
                     {
                         passEvent = eventCommanderContinued((CommanderContinuedEvent)journalEvent);
@@ -1098,8 +1094,6 @@ namespace Eddi
 
         private bool eventShipDelivered(ShipDeliveredEvent theEvent)
         {
-            SetShip(theEvent.Ship);
-
             // Kick off the profile refresh if the companion API is available
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
             {
@@ -1113,19 +1107,10 @@ namespace Eddi
             return true;
         }
 
-        private bool eventShipSwapped(ShipSwappedEvent theEvent)
-        {
-            SetShip(theEvent.Ship);
-
-            return true;
-        }
-
         private bool eventCommanderContinued(CommanderContinuedEvent theEvent)
         {
             // If we see this it means that we aren't in CQC
             inCQC = false;
-
-            SetShip(theEvent.Ship);
 
             if (Cmdr.name == null)
             {
@@ -1375,43 +1360,6 @@ namespace Eddi
                     Logging.Error("Exception obtaining profile", ex);
                 }
             }
-        }
-
-        private void SetShip(Ship ship)
-        {
-            if (ship == null)
-            {
-                Logging.Warn("Refusing to set ship to null");
-                return;
-            }
-
-            if (Ship != null)
-            {
-                // Remove the ship we are now using from the shipyard
-                int shipIndex = -1;
-                for (int i = 0; i < Shipyard.Count; i++)
-                {
-                    if (Shipyard[i].LocalId == ship.LocalId)
-                    {
-                        shipIndex = i;
-                        break;
-                    }
-                }
-                if (shipIndex > -1)
-                {
-                    Shipyard.RemoveAt(shipIndex);
-                }
-
-                // Add the ship we were using to the shipyard (if it's real)
-                if (Ship.model != null)
-                {
-                    Shipyard.Add(Ship);
-                }
-            }
-
-            // Set the ship we are using
-            Logging.Debug("Set ship to " + JsonConvert.SerializeObject(ship));
-            Ship = ship;
         }
 
         private void setSystemDistanceFromHome(StarSystem system)
@@ -1707,6 +1655,44 @@ namespace Eddi
             profileUpdateNeeded = false;
             profileStationRequired = null;
             profileShipIdRequired = -1;
+        }
+
+        // This mirrors a method in ShipMonitor until we get around to allowing monitors to handle profile data
+        private void SetShip(Ship ship)
+        {
+            if (ship == null)
+            {
+                Logging.Warn("Refusing to set ship to null");
+                return;
+            }
+
+            if (Ship != null)
+            {
+                // Remove the ship we are now using from the shipyard
+                int shipIndex = -1;
+                for (int i = 0; i < Shipyard.Count; i++)
+                {
+                    if (Shipyard[i].LocalId == ship.LocalId)
+                    {
+                        shipIndex = i;
+                        break;
+                    }
+                }
+                if (shipIndex > -1)
+                {
+                    Shipyard.RemoveAt(shipIndex);
+                }
+
+                // Add the ship we were using to the shipyard (if it's real)
+                if (Ship.model != null)
+                {
+                    Shipyard.Add(Ship);
+                }
+            }
+
+            // Set the ship we are using
+            Logging.Debug("Set ship to " + JsonConvert.SerializeObject(ship));
+            Ship = ship;
         }
 
         // If we have no access to the companion API but need to trigger a market update then we can call this method
