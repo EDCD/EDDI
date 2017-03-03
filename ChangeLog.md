@@ -1,4 +1,4 @@
-#2.3.0
+#2.3.0-b1
   * Core
     * Add ship role 'Taxi'
     * Rename 'Companion App' tab to 'Frontier API' and update relevant text to clarify its use and operation
@@ -6,7 +6,7 @@
     * Add ancient artifact commodity definitions
     * Add ship value 'ident' which is the user-defined identification string for a ship
     * Allow monitors to handle events, and generate their own events in turn
-    * New monitor: Material monitor.  This allows you to set minimum/desired/maximum limits for materials and generate events when the limits are exceeded
+    * New monitor: Material monitor.  This allows you to set minimum/desired/maximum limits for materials and generate events when the limits are exceeded.  Materials are tracked automatically in EDDI
 	* Identify beta builds of Elite and use the appropriate EDDN schema
 	* Remove the Netlog monitor.  This was only used to obtain destination system when jumping and is no longer required due to additional information made available in the journal for this purpose
   * Events
