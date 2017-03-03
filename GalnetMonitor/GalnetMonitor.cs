@@ -49,6 +49,11 @@ namespace GalnetMonitor
             return @"Monitor Galnet for new news items and generate a ""Galnet news published"" event when new items are posted";
         }
 
+        public bool IsRequired()
+        {
+            return false;
+        }
+
         /// <summary>
         /// This method is run when the monitor is requested to start
         /// </summary>

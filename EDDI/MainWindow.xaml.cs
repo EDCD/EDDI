@@ -3,6 +3,7 @@ using EddiDataDefinitions;
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -135,31 +136,35 @@ namespace Eddi
             {
                 Logging.Debug("Adding configuration tab for " + monitor.MonitorName());
 
-                PluginSkeleton skeleton = new PluginSkeleton(monitor.MonitorName());
-                skeleton.plugindescription.Text = monitor.MonitorDescription();
-
-                bool enabled;
-                if (eddiConfiguration.Plugins.TryGetValue(monitor.MonitorName(), out enabled))
-                {
-                    skeleton.pluginenabled.IsChecked = enabled;
-                }
-                else
-                {
-                    // Default to enabled
-                    skeleton.pluginenabled.IsChecked = true;
-                    eddiConfiguration.ToFile();
-                }
-
-                // Add monitor-specific configuration items
                 UserControl monitorConfiguration = monitor.ConfigurationTabItem();
-                if (monitorConfiguration != null)
+                // Only show a tab if this can be turned off or has configuration elements
+                if (monitorConfiguration != null || !monitor.IsRequired())
                 {
-                    skeleton.panel.Children.Add(monitorConfiguration);
-                }
+                    PluginSkeleton skeleton = new PluginSkeleton(monitor.MonitorName());
+                    skeleton.plugindescription.Text = monitor.MonitorDescription();
 
-                TabItem item = new TabItem { Header = monitor.MonitorName() };
-                item.Content = skeleton;
-                tabControl.Items.Add(item);
+                    bool enabled;
+                    if (eddiConfiguration.Plugins.TryGetValue(monitor.MonitorName(), out enabled))
+                    {
+                        skeleton.pluginenabled.IsChecked = enabled;
+                    }
+                    else
+                    {
+                        // Default to enabled
+                        skeleton.pluginenabled.IsChecked = true;
+                        eddiConfiguration.ToFile();
+                    }
+
+                    // Add monitor-specific configuration items
+                    if (monitorConfiguration != null)
+                    {
+                        skeleton.panel.Children.Add(monitorConfiguration);
+                    }
+
+                    TabItem item = new TabItem { Header = monitor.MonitorName() };
+                    item.Content = skeleton;
+                    tabControl.Items.Add(item);
+                }
             }
 
             foreach (EDDIResponder responder in EDDI.Instance.responders)
@@ -445,11 +450,14 @@ namespace Eddi
         private void setShipyardFromConfiguration()
         {
             shipsConfiguration = new ShipsConfiguration();
-            List<Ship> ships = new List<Ship>();
+            ObservableCollection<Ship> ships = new ObservableCollection<Ship>();
             if (profile != null)
             {
                 ships.Add(profile.Ship);
-                ships.AddRange(profile.Shipyard);
+                foreach (Ship storedShip in profile.Shipyard)
+                {
+                    ships.Add(storedShip);
+                }
             }
             shipsConfiguration.Ships = ships;
             shipyardData.ItemsSource = ships;

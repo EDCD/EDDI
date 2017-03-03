@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -631,9 +632,13 @@ namespace EddiCompanionAppService
             }
 
             // Update our configuration with the new data (this also removes any old redundant ships)
-            shipsConfiguration.Ships = new List<Ship>();
+            shipsConfiguration.Ships = new ObservableCollection<Ship>();
             shipsConfiguration.Ships.Add(ship);
-            shipsConfiguration.Ships.AddRange(storedShips);
+            foreach (Ship storedShip in storedShips)
+            {
+                shipsConfiguration.Ships.Add(storedShip);
+
+            }
             shipsConfiguration.ToFile();
             Logging.Debug("Leaving");
         }

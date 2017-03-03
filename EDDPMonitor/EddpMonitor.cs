@@ -53,6 +53,11 @@ namespace EddiEddpMonitor
             return @"Monitor EDDP for changes in system control and state, and generate events that match the watch list.";
         }
 
+        public bool IsRequired()
+        {
+            return false;
+        }
+
         /// <summary>
         /// This method is run when the monitor is requested to start
         /// </summary>
