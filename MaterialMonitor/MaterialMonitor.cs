@@ -301,7 +301,7 @@ namespace EddiMaterialMonitor
 
         private void populateMaterialBlueprints()
         {
-            string data = Net.DownloadString("http://www.mcdee.net/elite/blueprints.json");
+            string data = Net.DownloadString("http://api.eddp.co/_materialuses");
             if (data != null)
             {
                 Dictionary<string, List<Blueprint>> blueprints = JsonConvert.DeserializeObject<Dictionary<string, List<Blueprint>>>(data);
