@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using EddiEvents;
 using System.Collections.Generic;
+using EddiCompanionAppService;
 
 namespace Eddi
 {
@@ -48,6 +49,11 @@ namespace Eddi
         /// Called to receive information about other events
         /// </summary>
         void Handle(Event @event);
+
+        /// <summary>
+        /// Called to receive information from the Frontier API
+        /// </summary>
+        void Handle(Profile profile);
 
         /// <summary>
         /// Provide any local variables

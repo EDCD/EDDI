@@ -9,6 +9,8 @@ using System.Windows.Controls;
 using System;
 using System.Text.RegularExpressions;
 using System.IO;
+using EddiDataDefinitions;
+using EddiShipMonitor;
 
 namespace EddiSpeechResponder
 {
@@ -131,17 +133,17 @@ namespace EddiSpeechResponder
                 }
             }
 
-            Say(scriptResolver, theEvent.type, theEvent, null, null, null, sayOutLoud);
+            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship, theEvent.type, theEvent, null, null, null, sayOutLoud);
         }
 
         // Say something with the default resolver
-        public void Say(string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null, bool sayOutLoud = true)
+        public void Say(Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null, bool sayOutLoud = true)
         {
-            Say(scriptResolver, scriptName, theEvent, priority, voice, null, sayOutLoud);
+            Say(scriptResolver, ship, scriptName, theEvent, priority, voice, null, sayOutLoud);
         }
 
         // Say something with a custom resolver
-        public void Say(ScriptResolver resolver, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null, bool sayOutLoud = true)
+        public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null, bool sayOutLoud = true)
         {
             Dictionary<string, Cottle.Value> dict = createVariables(theEvent);
             string speech = resolver.resolve(scriptName, dict);
@@ -154,7 +156,7 @@ namespace EddiSpeechResponder
                 }
                 if (sayOutLoud && !(subtitles && subtitlesOnly))
                 {
-                    SpeechService.Instance.Say(EDDI.Instance.Ship, speech, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority), voice);
+                    SpeechService.Instance.Say(ship, speech, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority), voice);
                 }
             }
         }
@@ -170,11 +172,6 @@ namespace EddiSpeechResponder
             if (EDDI.Instance.Cmdr != null)
             {
                 dict["cmdr"] = new ReflectionValue(EDDI.Instance.Cmdr);
-            }
-
-            if (EDDI.Instance.Ship != null)
-            {
-                dict["ship"] = new ReflectionValue(EDDI.Instance.Ship);
             }
 
             if (EDDI.Instance.HomeStarSystem != null)

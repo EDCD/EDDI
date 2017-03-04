@@ -24,13 +24,13 @@ namespace EddiMaterialMonitor
 
         /// <summary>
         /// Obtain materials configuration from a file.  If the file name is not supplied the the default
-        /// path of Constants.Data_DIR\materialsmonitor.json is used
+        /// path of Constants.Data_DIR\materialmonitor.json is used
         /// </summary>
         public static MaterialMonitorConfiguration FromFile(string filename=null)
         {
             if (filename == null)
             {
-                filename = Constants.DATA_DIR + @"\materialsmonitor.json";
+                filename = Constants.DATA_DIR + @"\materialmonitor.json";
             }
 
             MaterialMonitorConfiguration configuration = new MaterialMonitorConfiguration();
@@ -64,7 +64,7 @@ namespace EddiMaterialMonitor
         /// <summary>
         /// Write configuration to a file.  If the filename is not supplied then the path used
         /// when reading in the configuration will be used, or the default path of 
-        /// Constants.Data_DIR\materialsmonitor.json will be used
+        /// Constants.Data_DIR\materialmonitor.json will be used
         /// </summary>
         public void ToFile(string filename=null)
         {
@@ -77,7 +77,7 @@ namespace EddiMaterialMonitor
             }
             if (filename == null)
             {
-                filename = Constants.DATA_DIR + @"\materialsmonitor.json";
+                filename = Constants.DATA_DIR + @"\materialmonitor.json";
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);

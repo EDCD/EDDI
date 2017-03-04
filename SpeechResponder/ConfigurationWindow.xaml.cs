@@ -1,6 +1,7 @@
 ﻿using Eddi;
 using EddiEvents;
 using EddiJournalMonitor;
+using EddiShipMonitor;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -128,7 +129,7 @@ namespace EddiSpeechResponder
             }
 
             ScriptResolver scriptResolver = new ScriptResolver(Personality.Scripts);
-            responder.Say(scriptResolver, script.Name, sampleEvent);
+            responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship, script.Name, sampleEvent);
         }
 
         private void deleteScript(object sender, RoutedEventArgs e)

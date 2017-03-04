@@ -1,6 +1,8 @@
 ﻿using Eddi;
+using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
+using EddiShipMonitor;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -1894,18 +1896,18 @@ namespace EddiJournalMonitor
             if (localId == null && model == null)
             {
                 // Default to the current ship
-                ship = EDDI.Instance.Ship;
+                ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship;
             }
             else
             {
                 // Find the ship with the given local ID
-                if (EDDI.Instance.Ship != null && EDDI.Instance.Ship.LocalId == localId)
+                if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship != null && ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship.LocalId == localId)
                 {
-                    ship = EDDI.Instance.Ship;
+                    ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship;
                 }
                 else
                 {
-                    ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == localId);
+                    ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).shipyard.FirstOrDefault(v => v.LocalId == localId);
                 }
             }
 
@@ -2079,6 +2081,9 @@ namespace EddiJournalMonitor
         {
         }
 
+        public void Handle(Profile profile)
+        {
+        }
 
         public IDictionary<string, object> GetVariables()
         {

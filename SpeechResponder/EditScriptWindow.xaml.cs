@@ -1,5 +1,7 @@
-﻿using EddiEvents;
+﻿using Eddi;
+using EddiEvents;
 using EddiJournalMonitor;
+using EddiShipMonitor;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -157,7 +159,7 @@ namespace EddiSpeechResponder
             }
 
             ScriptResolver scriptResolver = new ScriptResolver(newScripts);
-            responder.Say(scriptResolver, ScriptName, sampleEvent, 3, null, false);
+            responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship, ScriptName, sampleEvent, 3, null, false);
         }
 
         private void showDefaultButtonClick(object sender, RoutedEventArgs e)

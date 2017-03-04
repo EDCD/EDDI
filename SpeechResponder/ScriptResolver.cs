@@ -7,6 +7,7 @@ using Cottle.Values;
 using Eddi;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiShipMonitor;
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
@@ -526,18 +527,18 @@ namespace EddiSpeechResponder
             if (localId == null)
             {
                 // No local ID so take the current ship
-                ship = EDDI.Instance.Ship;
+                ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship;
             }
             else
             {
                 // Find the ship with the given local ID
-                if (EDDI.Instance.Ship != null && EDDI.Instance.Ship.LocalId == localId)
+                if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship != null && ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship.LocalId == localId)
                 {
-                    ship = EDDI.Instance.Ship;
+                    ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship;
                 }
                 else
                 {
-                    ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == localId);
+                    ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).shipyard.FirstOrDefault(v => v.LocalId == localId);
                 }
             }
 
