@@ -13,6 +13,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Utilities;
 using EddiEvents;
+using EddiCompanionAppService;
 
 namespace GalnetMonitor
 {
@@ -144,6 +145,10 @@ namespace GalnetMonitor
         }
 
         public void Handle(Event @event)
+        {
+        }
+
+        public void Handle(Profile profile)
         {
         }
 

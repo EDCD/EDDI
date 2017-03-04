@@ -10,6 +10,7 @@ using Utilities;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Collections.ObjectModel;
+using EddiCompanionAppService;
 
 namespace EddiMaterialMonitor
 {
@@ -145,6 +146,10 @@ namespace EddiMaterialMonitor
             {
                 decMaterial(component.material, component.amount);
             }
+        }
+
+        public void Handle(Profile profile)
+        {
         }
 
         /// <summary>

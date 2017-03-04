@@ -18,6 +18,7 @@ namespace EddiShipMonitor
     {
         // Observable collection for us to handle
         public ObservableCollection<Ship> shipyard = new ObservableCollection<Ship>();
+        public Ship ship { get; set; } = new Ship();
 
         public string MonitorName()
         {
@@ -101,11 +102,11 @@ namespace EddiShipMonitor
 
         private void handleShipSoldEvent(ShipSoldEvent @event)
         {
-            for (int i = 0; i < EDDI.Instance.Shipyard.Count; i++)
+            for (int i = 0; i < shipyard.Count; i++)
             {
-                if (EDDI.Instance.Shipyard[i].LocalId == @event.shipid)
+                if (shipyard[i].LocalId == @event.shipid)
                 {
-                    EDDI.Instance.Shipyard.RemoveAt(i);
+                    shipyard.RemoveAt(i);
                     break;
                 }
             }
@@ -122,7 +123,7 @@ namespace EddiShipMonitor
 
         private void handleShipRenamedEvent(ShipRenamedEvent @event)
         {
-            if (EDDI.Instance.Ship.LocalId == @event.Ship.LocalId)
+            if (ship.LocalId == @event.Ship.LocalId)
             {
                 // This ship
                 @event.Ship.name = @event.name;
@@ -139,10 +140,30 @@ namespace EddiShipMonitor
             SetCurrentShip(@event.Ship);
         }
 
+        public void Handle(Profile profile)
+        {
+            // Information from the Frontier API can be out-of-date so we only use it to augment what we already have
+
+            // Reset the shipyard from the profile information
+            //Shipyard.Clear();
+            //foreach (Ship ship in profile.Shipyard)
+            //{
+            //    Shipyard.Add(ship);
+            //}
+
+            //// Only use the ship information if we agree that this is the correct ship to use
+            //if (profile.Ship != null && (Ship.model == null || profile.Ship.LocalId == Ship.LocalId))
+            //{
+            //    SetShip(profile.Ship);
+            //}
+
+        }
+
         public IDictionary<string, object> GetVariables()
         {
             IDictionary<string, object> variables = new Dictionary<string, object>();
-            variables["shipyard"] = EDDI.Instance.Shipyard;
+            variables["ship"] = ship;
+            variables["shipyard"] = shipyard;
 
             return variables;
         }
@@ -150,25 +171,20 @@ namespace EddiShipMonitor
         public void writeShips()
         {
             // Write ship configuration with current inventory
-            ShipsConfiguration configuration = new ShipsConfiguration();
-            configuration.Ships = new ObservableCollection<Ship>();
-            configuration.Ships.Add(EDDI.Instance.Ship);
-            foreach (Ship storedShip in EDDI.Instance.Shipyard)
-            {
-                configuration.Ships.Add(storedShip);
-            }
-            //configuration.Ships = shipyard;
+            ShipMonitorConfiguration configuration = new ShipMonitorConfiguration();
+            configuration.ship = ship;
+            configuration.shipyard = shipyard;
             configuration.ToFile();
         }
 
         private void readShips()
         {
             // Obtain current inventory from  configuration
-            ShipsConfiguration configuration = ShipsConfiguration.FromFile();
+            ShipMonitorConfiguration configuration = ShipMonitorConfiguration.FromFile();
 
             // Build a new shipyard
             List<Ship> newShipyard = new List<Ship>();
-            foreach (Ship ship in configuration.Ships)
+            foreach (Ship ship in configuration.shipyard)
             {
                 newShipyard.Add(ship);
             }
@@ -192,13 +208,13 @@ namespace EddiShipMonitor
                 return;
             }
 
-            if (EDDI.Instance.Ship != null)
+            if (ship != null)
             {
                 // Remove the ship we are now using from the shipyard
                 int shipIndex = -1;
-                for (int i = 0; i < EDDI.Instance.Shipyard.Count; i++)
+                for (int i = 0; i < shipyard.Count; i++)
                 {
-                    if (EDDI.Instance.Shipyard[i].LocalId == ship.LocalId)
+                    if (shipyard[i].LocalId == ship.LocalId)
                     {
                         shipIndex = i;
                         break;
@@ -206,19 +222,19 @@ namespace EddiShipMonitor
                 }
                 if (shipIndex > -1)
                 {
-                    EDDI.Instance.Shipyard.RemoveAt(shipIndex);
+                    shipyard.RemoveAt(shipIndex);
                 }
 
                 // Add the ship we were using to the shipyard (if it's real)
-                if (EDDI.Instance.Ship.model != null)
+                if (ship.model != null)
                 {
-                    EDDI.Instance.Shipyard.Add(EDDI.Instance.Ship);
+                    shipyard.Add(ship);
                 }
             }
 
             // Set the ship we are using
             Logging.Debug("Set ship to " + JsonConvert.SerializeObject(ship));
-            EDDI.Instance.Ship = ship;
+            this.ship = ship;
         }
     }
 }

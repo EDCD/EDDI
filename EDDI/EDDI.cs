@@ -94,8 +94,7 @@ namespace Eddi
 
         // Information obtained from the companion app service
         public Commander Cmdr { get; private set; }
-        public Ship Ship { get; set; }
-        public ObservableCollection<Ship> Shipyard { get; private set; } = new ObservableCollection<Ship>();
+        //public ObservableCollection<Ship> Shipyard { get; private set; } = new ObservableCollection<Ship>();
         public Station CurrentStation { get; private set; }
 
         // Services made available from EDDI
@@ -142,7 +141,6 @@ namespace Eddi
 
                 // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
                 Cmdr = new Commander();
-                Ship = new Ship();
 
                 // Set up the Elite configuration
                 EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
@@ -387,11 +385,11 @@ namespace Eddi
                 if (UpgradeLocation != null)
                 {
                     Logging.Info("Downloading upgrade from " + UpgradeLocation);
-                    SpeechService.Instance.Say(Ship, "Downloading upgrade.", true);
+                    SpeechService.Instance.Say(null, "Downloading upgrade.", true);
                     string updateFile = Net.DownloadFile(UpgradeLocation, @"EDDI-update.exe");
                     if (updateFile == null)
                     {
-                        SpeechService.Instance.Say(Ship, "Download failed.  Please try again later.", true);
+                        SpeechService.Instance.Say(null, "Download failed.  Please try again later.", true);
                     }
                     else
                     {
@@ -401,7 +399,7 @@ namespace Eddi
                         Logging.Info("Downloaded update to " + updateFile);
                         Logging.Info("Path is " + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                         File.SetAttributes(updateFile, FileAttributes.Normal);
-                        SpeechService.Instance.Say(Ship, "Starting upgrade.", true);
+                        SpeechService.Instance.Say(null, "Starting upgrade.", true);
                         Logging.Info("Starting upgrade.");
 
                         Process.Start(updateFile, @"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
@@ -410,7 +408,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(Ship, "Upgrade failed.  Please try again later.", true);
+                SpeechService.Instance.Say(null, "Upgrade failed.  Please try again later.", true);
                 Logging.Error("Upgrade failed", ex);
             }
         }
@@ -1075,16 +1073,6 @@ namespace Eddi
 
         private bool eventShipDelivered(ShipDeliveredEvent theEvent)
         {
-            // Kick off the profile refresh if the companion API is available
-            if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
-            {
-                profileUpdateNeeded = true;
-                profileShipIdRequired = theEvent.Ship.LocalId;
-                Thread updateThread = new Thread(() => conditionallyRefreshProfile());
-                updateThread.IsBackground = true;
-                updateThread.Start();
-            }
-
             return true;
         }
 
@@ -1269,19 +1257,6 @@ namespace Eddi
                             Cmdr.insurance = configuration.Insurance;
                         }
 
-                        // Reset the shipyard from the profile information
-                        Shipyard.Clear();
-                        foreach (Ship ship in profile.Shipyard)
-                        {
-                            Shipyard.Add(ship);
-                        }
-
-                        // Only use the ship information if we agree that this is the correct ship to use
-                        if (profile.Ship != null && (Ship.model == null || profile.Ship.LocalId == Ship.LocalId))
-                        {
-                            SetShip(profile.Ship);
-                        }
-
                         bool updatedCurrentStarSystem = false;
 
                         // Only set the current star system if it is not present, otherwise we leave it to events
@@ -1333,6 +1308,36 @@ namespace Eddi
                         {
                             Logging.Debug("Star system information updated from remote server; updating local copy");
                             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                        }
+                    }
+
+                    foreach (EDDIMonitor monitor in monitors)
+                    {
+                        try
+                        {
+                            Thread monitorThread = new Thread(() =>
+                            {
+                                try
+                                {
+                                    monitor.Handle(profile);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logging.Warn("Monitor failed", ex);
+                                }
+                            });
+                            monitorThread.Name = monitor.MonitorName();
+                            monitorThread.IsBackground = true;
+                            monitorThread.Start();
+                        }
+                        catch (ThreadAbortException tax)
+                        {
+                            Thread.ResetAbort();
+                            Logging.Error(JsonConvert.SerializeObject(profile), tax);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Error(JsonConvert.SerializeObject(profile), ex);
                         }
                     }
                 }
@@ -1511,7 +1516,6 @@ namespace Eddi
 
         private bool profileUpdateNeeded = false;
         private string profileStationRequired = null;
-        private int profileShipIdRequired = -1;
 
         /// <summary>
         /// Update the profile when requested, ensuring that we meet the condition in the updated profile
@@ -1544,14 +1548,6 @@ namespace Eddi
                             break;
                         }
 
-                        if (profileShipIdRequired != -1 && (Ship != null && Ship.LocalId != profileShipIdRequired))
-                        {
-                            Logging.Debug("No longer in requested ship; giving up on update");
-                            profileUpdateNeeded = false;
-                            profileShipIdRequired = -1;
-                            break;
-                        }
-
                         // We do need to fetch an updated profile; do so
                         long profileTime = (long)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                         Logging.Debug("Fetching profile");
@@ -1559,24 +1555,12 @@ namespace Eddi
 
                         // Use the profile as primary information for our commander and shipyard
                         Cmdr = profile.Cmdr;
-                        // Reset the shipyard from the profile information
-                        Shipyard.Clear();
-                        foreach (Ship ship in profile.Shipyard)
-                        {
-                            Shipyard.Add(ship);
-                        }
 
                         // Reinstate insurance
                         EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                         if (configuration != null)
                         {
                             Cmdr.insurance = configuration.Insurance;
-                        }
-
-                        // Only use the ship information if we agree that this is the correct ship to use
-                        if (Ship.model == null || profile.Ship.LocalId == Ship.LocalId)
-                        {
-                            SetShip(profile.Ship);
                         }
 
                         // See if it is up-to-date regarding our requirements
@@ -1602,17 +1586,6 @@ namespace Eddi
                             break;
                         }
 
-                        Logging.Debug("profileShipIdRequired is " + profileShipIdRequired + ", profile ship ID is " + profile.Ship.LocalId);
-                        if (profileShipIdRequired != -1 && profileShipIdRequired == profile.Ship.LocalId)
-                        {
-                            // We have the required ship information
-                            Logging.Debug("Correct ship ID updated");
-
-                            profileUpdateNeeded = false;
-                            break;
-                        }
-
-
                         // No luck; sleep and try again
                         Thread.Sleep(15000);
                     }
@@ -1635,45 +1608,6 @@ namespace Eddi
             // Clear the update info
             profileUpdateNeeded = false;
             profileStationRequired = null;
-            profileShipIdRequired = -1;
-        }
-
-        // This mirrors a method in ShipMonitor until we get around to allowing monitors to handle profile data
-        private void SetShip(Ship ship)
-        {
-            if (ship == null)
-            {
-                Logging.Warn("Refusing to set ship to null");
-                return;
-            }
-
-            if (Ship != null)
-            {
-                // Remove the ship we are now using from the shipyard
-                int shipIndex = -1;
-                for (int i = 0; i < Shipyard.Count; i++)
-                {
-                    if (Shipyard[i].LocalId == ship.LocalId)
-                    {
-                        shipIndex = i;
-                        break;
-                    }
-                }
-                if (shipIndex > -1)
-                {
-                    Shipyard.RemoveAt(shipIndex);
-                }
-
-                // Add the ship we were using to the shipyard (if it's real)
-                if (Ship.model != null)
-                {
-                    Shipyard.Add(Ship);
-                }
-            }
-
-            // Set the ship we are using
-            Logging.Debug("Set ship to " + JsonConvert.SerializeObject(ship));
-            Ship = ship;
         }
 
         // If we have no access to the companion API but need to trigger a market update then we can call this method

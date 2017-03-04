@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -282,6 +283,10 @@ namespace EddiEddpMonitor
         }
 
         public void Handle(Event @event)
+        {
+        }
+
+        public void Handle(Profile profile)
         {
         }
 
