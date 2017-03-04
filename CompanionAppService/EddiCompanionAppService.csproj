@@ -50,7 +50,6 @@
   <ItemGroup>
     <Compile Include="CompanionIllegalStateException.cs" />
     <Compile Include="Profile.cs" />
-    <Compile Include="ShipsConfiguration.cs" />
     <Compile Include="CompanionAppService.cs" />
     <Compile Include="CompanionAppCredentials.cs" />
     <Compile Include="CompanionAppErrorException.cs" />

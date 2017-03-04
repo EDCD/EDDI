@@ -26,7 +26,6 @@ namespace Eddi
     public partial class MainWindow : Window
     {
         private Profile profile;
-        private ShipsConfiguration shipsConfiguration;
 
         private bool fromVA;
 
@@ -94,10 +93,10 @@ namespace Eddi
                 }
             }
 
-            if (profile != null)
-            {
-                setShipyardFromConfiguration();
-            }
+            //if (profile != null)
+            //{
+            //    setShipyardFromConfiguration();
+            //}
 
             // Configure the Text-to-speech tab
             SpeechServiceConfiguration speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
@@ -324,7 +323,7 @@ namespace Eddi
                         else
                         {
                             setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
-                            setShipyardFromConfiguration();
+                            //setShipyardFromConfiguration();
                         }
                     }
                 }
@@ -353,7 +352,7 @@ namespace Eddi
                     if (profile != null)
                     {
                         setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
-                        setShipyardFromConfiguration();
+                        //setShipyardFromConfiguration();
                     }
                 }
                 catch (EliteDangerousCompanionAppAuthenticationException ex)
@@ -447,21 +446,21 @@ namespace Eddi
         }
 
         // Handle changes to the Shipyard tab
-        private void setShipyardFromConfiguration()
-        {
-            shipsConfiguration = new ShipsConfiguration();
-            ObservableCollection<Ship> ships = new ObservableCollection<Ship>();
-            if (profile != null)
-            {
-                ships.Add(profile.Ship);
-                foreach (Ship storedShip in profile.Shipyard)
-                {
-                    ships.Add(storedShip);
-                }
-            }
-            shipsConfiguration.Ships = ships;
-            shipyardData.ItemsSource = ships;
-        }
+        //private void setShipyardFromConfiguration()
+        //{
+        //    shipsConfiguration = new ShipsConfiguration();
+        //    ObservableCollection<Ship> ships = new ObservableCollection<Ship>();
+        //    if (profile != null)
+        //    {
+        //        ships.Add(profile.Ship);
+        //        foreach (Ship storedShip in profile.Shipyard)
+        //        {
+        //            ships.Add(storedShip);
+        //        }
+        //    }
+        //    shipsConfiguration.Ships = ships;
+        //    shipyardData.ItemsSource = ships;
+        //}
 
         private void testShipName(object sender, RoutedEventArgs e)
         {
@@ -513,21 +512,21 @@ namespace Eddi
             }
         }
 
-        private void ShipRoleChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (shipsConfiguration != null && CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
-            {
-                shipsConfiguration.ToFile();
-            }
-        }
+        //private void ShipRoleChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (shipsConfiguration != null && CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+        //    {
+        //        shipsConfiguration.ToFile();
+        //    }
+        //}
 
-        private void shipYardUpdated(object sender, DataTransferEventArgs e)
-        {
-            if (shipsConfiguration != null && CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
-            {
-                shipsConfiguration.ToFile();
-            }
-        }
+        //private void shipYardUpdated(object sender, DataTransferEventArgs e)
+        //{
+        //    if (shipsConfiguration != null && CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+        //    {
+        //        shipsConfiguration.ToFile();
+        //    }
+        //}
 
         // Handle Text-to-speech tab
 
