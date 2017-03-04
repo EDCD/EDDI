@@ -223,6 +223,9 @@ namespace EddiSpeechResponder
                 }
             }
 
+            // Re-order the scripts by name
+            fixedScripts = fixedScripts.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
+
             personality.Scripts = fixedScripts;
         }
     }
