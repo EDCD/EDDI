@@ -60,8 +60,9 @@
 	  * 'Liftoff' - change speech depending on if player is controlling ship or not
 	  * 'Market information updated' - new script taken from the end of the previous 'Docked' script
 	  * 'Material discard report' - new script to report how much of a particular material can be discarded (as per the material monitor settings)
-	  * 'Material inventory report' - new script to report how much of a particular material is on board
-	  * 'Material required report' - new script to report how much of a particular material is required (as per the material monitor settings)
+	  * 'Material inventory report' - new script to report how much of a particular material as defined by state or context is on board
+	  * 'Material required report' - new script to report how much of a particular material as defined by state or context is required (as per the material monitor settings)
+	  * 'Material use report' - new script to the blueprint uses of a particular material as defined by state or context
 	  * 'Materials discard report' - new script to report which materials can be discarded (as per the material monitor settings)
 	  * 'Materials required report' - new script to report which materials can be discarded (as per the material monitor settings)
 	  * 'Settlement approached' - new script
@@ -77,7 +78,9 @@
     * Add VoiceAttack commands for the material monitor:
       * 'How many <material> are on board' - Find out how many units of a particular material is on board
       * 'How many <material> do I need' - Find out how many units of a particular material are required to meet your desired level as set in the material monitor
+      * 'What use is <material>' - Find out the blueprints that use a particular material
       * 'Which materials can I discard' - Find out how many units of materials can be discarded due to being above your maximum or desired level as set in the material monitor
+      * 'Which materials do I need' - Find out how many units of materials are still required due to being below your minimum or desired level as set in the material monitor
 
 #2.2.0
   * Core

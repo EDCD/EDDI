@@ -29,6 +29,9 @@ namespace EddiDataDefinitions
 
         public decimal? greatpctbody { get; private set; }
 
+        // Blueprints for the material; 
+        public List<Blueprint> blueprints { get; set; }
+
         private Material(string EDName, string category, string name, Rarity rarity, string symbol = null, decimal? goodpctbody = null, decimal? greatpctbody = null)
         {
             this.EDName = EDName;
