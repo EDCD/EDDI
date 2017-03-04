@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
@@ -175,6 +176,10 @@ namespace EddiCargoMonitor
             //{
             //    inventory.Add(cargo);
             //}
+        }
+
+        public void Handle(Profile profile)
+        {
         }
 
         public IDictionary<string, object> GetVariables()

@@ -2318,6 +2318,7 @@ namespace EddiJournalMonitor
         {
         }
 
+<<<<<<< a90e5f156177e51f7aec39d281a621b40df72574
         public void HandleProfile(JObject profile)
         {
         }
@@ -2341,6 +2342,11 @@ namespace EddiJournalMonitor
             return role;
         }
 
+=======
+        public void Handle(Profile profile)
+        {
+        }
+>>>>>>> Reworking ship management.
 
         public IDictionary<string, object> GetVariables()
         {

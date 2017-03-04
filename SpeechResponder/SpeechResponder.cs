@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using EddiDataDefinitions;
 using EddiShipMonitor;
+using Cottle;
 
 namespace EddiSpeechResponder
 {
@@ -206,21 +207,9 @@ namespace EddiSpeechResponder
 
             if (EDDI.Instance.State != null)
             {
-                dict["state"] = new ReflectionValue(EDDI.Instance.State);
+                //dict["state"] = new ReflectionValue(EDDI.Instance.State);
+                dict["state"] = ScriptResolver.buildState();
                 Logging.Debug("State is " + JsonConvert.SerializeObject(EDDI.Instance.State));
-            }
-
-            // Obtain additional variables from each monitor
-            foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
-            {
-                IDictionary<string, object> monitorVariables = monitor.GetVariables();
-                if (monitorVariables != null)
-                {
-                    foreach (string key in monitorVariables.Keys)
-                    {
-                        dict[key] = new ReflectionValue(monitorVariables[key]);
-                    }
-                }
             }
 
             // Obtain additional variables from each monitor

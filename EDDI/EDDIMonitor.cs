@@ -71,11 +71,6 @@ namespace Eddi
         /// </summary>
         IDictionary<string, object> GetVariables();
 
-        /// <summary>
-        /// Provide any local variables
-        /// </summary>
-        IDictionary<string, object> GetVariables();
-
         UserControl ConfigurationTabItem();
     }
 }

@@ -60,7 +60,7 @@ namespace EddiShipMonitor
         private void exportShip(object sender, RoutedEventArgs e)
         {
             Ship ship = (Ship)((Button)e.Source).DataContext;
-            string uri = Coriolis.ShipUri(ship);
+            string uri = ship.CoriolisUri();
             Logging.Debug("URI is " + uri);
 
             // URI can be very long so we can't use a simple Process.Start(), as that fails

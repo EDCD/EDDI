@@ -9,6 +9,7 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiShipMonitor;
 using EddiSpeechService;
+using GalnetMonitor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -198,7 +199,12 @@ namespace EddiSpeechResponder
 
             store["Pause"] = new NativeFunction((values) =>
             {
-                return @"<break time =""" + values[0].AsNumber + @"ms"" />";
+                return @"<break time=""" + values[0].AsNumber + @"ms"" />";
+            }, 1);
+
+            store["Play"] = new NativeFunction((values) =>
+            {
+                return @"<audio src=""" + values[0].AsString + @""" />";
             }, 1);
 
             //
@@ -438,6 +444,11 @@ namespace EddiSpeechResponder
 
             store["MaterialDetails"] = new NativeFunction((values) =>
             {
+                if (string.IsNullOrEmpty(values[0].AsString))
+                {
+                    return new ReflectionValue(new object());
+                }
+
                 Material result = Material.FromName(values[0].AsString);
                 if (result == null)
                 {
@@ -450,6 +461,53 @@ namespace EddiSpeechResponder
             {
                 BlueprintMaterials result = BlueprintMaterials.FromName(values[0].AsString);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1);
+
+            store["GalnetNewsArticle"] = new NativeFunction((values) =>
+            {
+                News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1);
+
+            store["GalnetNewsArticles"] = new NativeFunction((values) =>
+            {
+                List<News> results = null;
+                if (values.Count == 0)
+                {
+                    // Obtain all unread articles
+                    results = GalnetSqLiteRepository.Instance.getArticles();
+                }
+                else if (values.Count == 1)
+                {
+                    // Obtain all unread news of a given category
+                    results = GalnetSqLiteRepository.Instance.getArticles(values[0].AsString);
+                }
+                else if (values.Count == 2)
+                {
+                    // Obtain all news of a given category
+                    results = GalnetSqLiteRepository.Instance.getArticles(values[0].AsString, false);
+                }
+                return (results == null ? new ReflectionValue(new List<News>()) : new ReflectionValue(results));
+            }, 0, 2);
+
+            store["GalnetNewsMarkRead"] = new NativeFunction((values) =>
+            {
+                News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
+                if (result != null)
+                {
+                    GalnetSqLiteRepository.Instance.MarkRead(result);
+                }
+                return "";
+            }, 1);
+
+            store["GalnetNewsMarkUnread"] = new NativeFunction((values) =>
+            {
+                News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
+                if (result != null)
+                {
+                    GalnetSqLiteRepository.Instance.MarkUnread(result);
+                }
+                return "";
             }, 1);
 
             store["Distance"] = new NativeFunction((values) =>
@@ -491,7 +549,7 @@ namespace EddiSpeechResponder
             return store;
         }
 
-        private static Dictionary<Cottle.Value, Cottle.Value> buildState()
+        public static Dictionary<Cottle.Value, Cottle.Value> buildState()
         {
             if (EDDI.Instance.State == null)
             {
