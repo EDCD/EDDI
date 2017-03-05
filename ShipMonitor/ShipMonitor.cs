@@ -135,7 +135,6 @@ namespace EddiShipMonitor
             // TODO ModuleRetrievedEvent
             // TODO ModulesSwappedEvent
             // TODO ModulesStoredEvent
-            // TODO loadout
         }
 
         private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
@@ -240,7 +239,105 @@ namespace EddiShipMonitor
 
         private void handleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
-            // TODO
+            // Obtain the ship to which this loadout refers
+            Ship ship = GetShip(@event.shipid);
+            if (ship == null)
+            {
+                // The ship is unknown - create it
+                ship = ShipDefinitions.FromEDModel(@event.ship);
+                ship.LocalId = (int)@event.shipid;
+                ship.role = Role.MultiPurpose;
+                AddShip(ship);
+            }
+
+            // Update name and ident if required
+            if (@event.shipname != null && @event.shipname != "")
+            {
+                ship.name = @event.shipname;
+            }
+            if (@event.shipident != null && @event.shipident != "")
+            {
+                ship.ident = @event.shipident;
+            }
+
+            // Augment the ship info if required
+            if (ship.model == null)
+            {
+                ship.model = @event.ship;
+                ship.Augment();
+            }
+
+            // Set the standard modules
+            Compartment compartment = @event.compartments.FirstOrDefault(c => c.name == "Armour");
+            if (compartment != null)
+            {
+                ship.bulkheads = compartment.module;
+            }
+
+            compartment = @event.compartments.FirstOrDefault(c => c.name == "ShipCockpit");
+            if (compartment != null)
+            {
+                ship.canopy = compartment.module;
+            }
+
+            compartment = @event.compartments.FirstOrDefault(c => c.name == "PowerPlant");
+            if (compartment != null)
+            {
+                ship.powerplant = compartment.module;
+            }
+
+            compartment = @event.compartments.FirstOrDefault(c => c.name == "MainEngines");
+            if (compartment != null)
+            {
+                ship.thrusters = compartment.module;
+            }
+
+            compartment = @event.compartments.FirstOrDefault(c => c.name == "PowerDistributor");
+            if (compartment != null)
+            {
+                ship.powerdistributor = compartment.module;
+            }
+
+            compartment = @event.compartments.FirstOrDefault(c => c.name == "FrameShiftDrive");
+            if (compartment != null)
+            {
+                ship.frameshiftdrive = compartment.module;
+            }
+
+            compartment = @event.compartments.FirstOrDefault(c => c.name == "LifeSupport");
+            if (compartment != null)
+            {
+                ship.lifesupport = compartment.module;
+            }
+
+            compartment = @event.compartments.FirstOrDefault(c => c.name == "Radar");
+            if (compartment != null)
+            {
+                ship.sensors = compartment.module;
+            }
+
+            compartment = @event.compartments.FirstOrDefault(c => c.name == "FuelTank");
+            if (compartment != null)
+            {
+                ship.fueltank = compartment.module;
+            }
+            ship.fueltankcapacity = (decimal)Math.Pow(2, ship.fueltank.@class);
+
+            // TODO total fuel tank capacity
+
+            compartment = @event.compartments.FirstOrDefault(c => c.name == "CargoHatch");
+            if (compartment != null)
+            {
+                ship.cargohatch = compartment.module;
+            }
+
+            // Internal + restricted modules
+            ship.compartments = @event.compartments.Where(c => c.name.StartsWith("Slot") || c.name.StartsWith("Military")).ToList();
+
+            // Hardpoints
+            ship.hardpoints = @event.hardpoints;
+
+            writeShips();
         }
 
         private void handleShipRebootedEvent(ShipRebootedEvent @event)
