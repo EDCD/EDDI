@@ -135,6 +135,7 @@ namespace EddiShipMonitor
             // TODO ModuleRetrievedEvent
             // TODO ModulesSwappedEvent
             // TODO ModulesStoredEvent
+            // TODO loadout
         }
 
         private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
@@ -238,6 +239,35 @@ namespace EddiShipMonitor
         }
 
         private void handleShipLoadoutEvent(ShipLoadoutEvent @event)
+        {
+            // TODO
+        }
+
+        private void handleShipRebootedEvent(ShipRebootedEvent @event)
+        {
+            // TODO
+        }
+
+        private void handleShipRepairedEvent(ShipRepairedEvent @event)
+        {
+            // TODO
+        }
+
+        private void handleShipRefuelledEvent(ShipRefuelledEvent @event)
+        {
+            // TODO
+        }
+
+        private void handleShipRestockedEvent(ShipRestockedEvent @event)
+        {
+            // TODO
+        }
+
+        public void PostHandle(Event @event)
+        {
+        }
+
+        public void Handle(Profile profile)
         {
             // Obtain the ship to which this loadout refers
             Ship ship = GetShip(@event.shipid);
