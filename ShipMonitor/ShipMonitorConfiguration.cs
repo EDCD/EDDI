@@ -12,7 +12,7 @@ namespace EddiShipMonitor
     /// <summary>Storage for ship and shipyard information</summary>
     public class ShipMonitorConfiguration
     {
-        public Ship ship{ get; set; }
+        public int? currentshipid{ get; set; }
         public ObservableCollection<Ship> shipyard{ get; set; }
 
         [JsonIgnore]
@@ -71,6 +71,12 @@ namespace EddiShipMonitor
             if (configuration == null)
             {
                 configuration = new ShipMonitorConfiguration();
+            }
+
+            // Populate static information from definitions
+            foreach (Ship ship in configuration.shipyard)
+            {
+                ship.Augment();
             }
 
             configuration.dataPath = filename;

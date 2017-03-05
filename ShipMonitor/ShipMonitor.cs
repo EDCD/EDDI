@@ -7,18 +7,19 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using Utilities;
 
 namespace EddiShipMonitor
 {
     public class ShipMonitor : EDDIMonitor
     {
-        // Observable collection for us to handle
+        // Observable collection for us to handle changes
         public ObservableCollection<Ship> shipyard = new ObservableCollection<Ship>();
-        public Ship ship { get; set; } = new Ship();
+        // The ID of the current ship; can be null
+        private int? currentShipId;
 
         public string MonitorName()
         {
@@ -63,8 +64,7 @@ namespace EddiShipMonitor
 
         public UserControl ConfigurationTabItem()
         {
-            return null;
-//            return new ConfigurationWindow();
+            return new ConfigurationWindow();
         }
 
         public void Handle(Event @event)
@@ -97,39 +97,75 @@ namespace EddiShipMonitor
 
         private void handleShipSwappedEvent(ShipSwappedEvent @event)
         {
-            SetCurrentShip(@event.Ship);
+            // Update our current ship
+            SetCurrentShip(@event.shipid, @event.ship);
+
+            if (@event.storedshipid != null)
+            {
+                // We stored a ship - set its location to the current location
+                Ship storedShip = GetShip(@event.storedshipid);
+                if (storedShip != null)
+                {
+                    // Set location of stored ship to the current sstem
+                    storedShip.starsystem = EDDI.Instance.CurrentStarSystem.name;
+                    storedShip.station = EDDI.Instance.CurrentStation.name;
+                }
+            }
+            else if (@event.soldshipid != null)
+            {
+                // We sold a ship - remove it
+                RemoveShip(@event.soldshipid);
+            }
+
+            writeShips();
         }
 
         private void handleShipSoldEvent(ShipSoldEvent @event)
         {
-            for (int i = 0; i < shipyard.Count; i++)
-            {
-                if (shipyard[i].LocalId == @event.shipid)
-                {
-                    shipyard.RemoveAt(i);
-                    break;
-                }
-            }
+            RemoveShip(@event.shipid);
+
+            writeShips();
         }
 
         private void handleShipPurchasedEvent(ShipPurchasedEvent @event)
         {
+            // We don't have a ship ID for the new ship at this point so just handle what we did with our old ship
+            if (@event.storedshipid != null)
+            {
+                // We stored a ship - set its location to the current location
+                Ship storedShip = GetShip(@event.storedshipid);
+                if (storedShip != null)
+                {
+                    // Set location of stored ship to the current sstem
+                    storedShip.starsystem = EDDI.Instance.CurrentStarSystem.name;
+                    storedShip.station = EDDI.Instance.CurrentStation.name;
+                }
+            }
+            else if (@event.soldshipid != null)
+            {
+                // We sold a ship - remove it
+                RemoveShip(@event.soldshipid);
+            }
         }
 
         private void handleShipDeliveredEvent(ShipDeliveredEvent @event)
         {
-            SetCurrentShip(@event.Ship);
+            // Set this is our current ship
+            SetCurrentShip(@event.shipid, @event.ship);
         }
 
         private void handleShipRenamedEvent(ShipRenamedEvent @event)
         {
-            if (ship.LocalId == @event.Ship.LocalId)
+            Ship ship = GetShip(@event.shipid);
+            if (ship != null)
             {
-                // This ship
-                @event.Ship.name = @event.name;
+                if (@event.name != null)
+                {
+                    ship.name = @event.name;
+                }
                 if (@event.ident != null)
                 {
-                    @event.Ship.ident = @event.ident;
+                    ship.ident = @event.ident;
                 }
             }
             writeShips();
@@ -137,13 +173,26 @@ namespace EddiShipMonitor
 
         private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
         {
-            SetCurrentShip(@event.Ship);
+            SetCurrentShip(@event.shipid, @event.ship);
+            Ship ship = GetCurrentShip();
+            ship.name = @event.shipname;
+            ship.ident = @event.shipident;
+            writeShips();
         }
 
         public void Handle(Profile profile)
         {
-            // Information from the Frontier API can be out-of-date so we only use it to augment what we already have
+            // Information from the Frontier API can be out-of-date so we only use it to set our ship if we don't know what it already is
+            if (currentShipId == null)
+            {
+                // This means that we don't have any info so far; set our active ship
+                if (profile.Ship != null)
+                {
+                    SetCurrentShip(profile.Ship.LocalId, profile.Ship.model);
+                }
+            }
 
+            // Augment our existing ships with data unavailable elsewhere
             // Reset the shipyard from the profile information
             //Shipyard.Clear();
             //foreach (Ship ship in profile.Shipyard)
@@ -162,7 +211,7 @@ namespace EddiShipMonitor
         public IDictionary<string, object> GetVariables()
         {
             IDictionary<string, object> variables = new Dictionary<string, object>();
-            variables["ship"] = ship;
+            variables["ship"] = GetCurrentShip();
             variables["shipyard"] = shipyard;
 
             return variables;
@@ -172,7 +221,7 @@ namespace EddiShipMonitor
         {
             // Write ship configuration with current inventory
             ShipMonitorConfiguration configuration = new ShipMonitorConfiguration();
-            configuration.ship = ship;
+            configuration.currentshipid = currentShipId;
             configuration.shipyard = shipyard;
             configuration.ToFile();
         }
@@ -196,45 +245,112 @@ namespace EddiShipMonitor
             shipyard.Clear();
             foreach (Ship ship in newShipyard)
             {
+                AddShip(ship);
+            }
+
+            currentShipId = configuration.currentshipid;
+        }
+
+        private void AddShip(Ship ship)
+        {
+            if (Application.Current.Dispatcher.CheckAccess())
+            {
                 shipyard.Add(ship);
+            }
+            else
+            {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => {
+                    shipyard.Add(ship);
+                }));
             }
         }
 
-        private void SetCurrentShip(Ship ship)
+        /// <summary>
+        /// Remove a ship from the shipyard
+        /// </summary>
+        private void RemoveShip(int? localid)
         {
-            if (ship == null)
+            if (Application.Current.Dispatcher.CheckAccess())
             {
-                Logging.Warn("Refusing to set ship to null");
-                return;
+                _RemoveShip(localid);
             }
-
-            if (ship != null)
+            else
             {
-                // Remove the ship we are now using from the shipyard
-                int shipIndex = -1;
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => {
+                    _RemoveShip(localid);
+                }));
+            }
+        }
+
+        /// <summary>
+        /// Remove a ship from the shipyard
+        /// </summary>
+        private void _RemoveShip(int? localid)
+        {
+            if (localid.HasValue)
+            {
                 for (int i = 0; i < shipyard.Count; i++)
                 {
-                    if (shipyard[i].LocalId == ship.LocalId)
+                    if (shipyard[i].LocalId == localid)
                     {
-                        shipIndex = i;
+                        shipyard.RemoveAt(i);
                         break;
                     }
                 }
-                if (shipIndex > -1)
-                {
-                    shipyard.RemoveAt(shipIndex);
-                }
+            }
+        }
 
-                // Add the ship we were using to the shipyard (if it's real)
-                if (ship.model != null)
+        /// <summary>
+        /// Obtain the current ship
+        /// </summary>
+        public Ship GetCurrentShip()
+        {
+            return GetShip(currentShipId);
+        }
+
+        /// <summary>
+        /// Obtain a specific ship as identified by its local ID
+        /// </summary>
+        public Ship GetShip(int? localId)
+        {
+            if (localId == null)
+            {
+                return null;
+            }
+            return shipyard.FirstOrDefault(s => s.LocalId == localId);
+        }
+
+        public void SetCurrentShip(int? localId, string model = null)
+        {
+            // Ensure that this ID is present
+            Ship ship = GetShip(localId);
+            if (ship == null)
+            {
+                // We don't know about this ship yet
+                Logging.Debug("Unknown ship ID " + localId);
+                if (localId.HasValue && model != null)
                 {
-                    shipyard.Add(ship);
+                    // We can make one though
+                    ship = ShipDefinitions.FromEDModel(model);
+                    ship.LocalId = (int)localId;
+                    ship.role = Role.MultiPurpose;
+                    AddShip(ship);
+                    currentShipId = ship.LocalId;
+                    Logging.Debug("Created ship ID " + localId);
+                }
+                else
+                {
+                    Logging.Warn("Cannot set ship ID " + localId + "; unsetting current ship");
+                    currentShipId = null;
                 }
             }
-
-            // Set the ship we are using
-            Logging.Debug("Set ship to " + JsonConvert.SerializeObject(ship));
-            this.ship = ship;
+            else
+            {
+                currentShipId = ship.LocalId;
+                // Location for the current ship is always null, as it's with us
+                ship.starsystem = null;
+                ship.station = null;
+            }
         }
     }
 }

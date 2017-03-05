@@ -111,10 +111,7 @@ namespace EddiDataDefinitions
 
         public void NotifyPropertyChanged(string propName)
         {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }

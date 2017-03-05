@@ -173,6 +173,10 @@ namespace Eddi
                     }
                 }
 
+                // Set up monitors and responders
+                monitors = findMonitors();
+                responders = findResponders();
+
                 // Set up the app service
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
                 {
@@ -225,10 +229,6 @@ namespace Eddi
 
                 // We always start in normal space
                 Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
-
-                // Set up monitors and responders
-                monitors = findMonitors();
-                responders = findResponders();
 
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " initialised");
             }
@@ -1309,35 +1309,35 @@ namespace Eddi
                             Logging.Debug("Star system information updated from remote server; updating local copy");
                             StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                         }
-                    }
 
-                    foreach (EDDIMonitor monitor in monitors)
-                    {
-                        try
+                        foreach (EDDIMonitor monitor in monitors)
                         {
-                            Thread monitorThread = new Thread(() =>
+                            try
                             {
-                                try
+                                Thread monitorThread = new Thread(() =>
                                 {
-                                    monitor.Handle(profile);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Logging.Warn("Monitor failed", ex);
-                                }
-                            });
-                            monitorThread.Name = monitor.MonitorName();
-                            monitorThread.IsBackground = true;
-                            monitorThread.Start();
-                        }
-                        catch (ThreadAbortException tax)
-                        {
-                            Thread.ResetAbort();
-                            Logging.Error(JsonConvert.SerializeObject(profile), tax);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logging.Error(JsonConvert.SerializeObject(profile), ex);
+                                    try
+                                    {
+                                        monitor.Handle(profile);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Logging.Warn("Monitor failed", ex);
+                                    }
+                                });
+                                monitorThread.Name = monitor.MonitorName();
+                                monitorThread.IsBackground = true;
+                                monitorThread.Start();
+                            }
+                            catch (ThreadAbortException tax)
+                            {
+                                Thread.ResetAbort();
+                                Logging.Error(JsonConvert.SerializeObject(profile), tax);
+                            }
+                            catch (Exception ex)
+                            {
+                                Logging.Error(JsonConvert.SerializeObject(profile), ex);
+                            }
                         }
                     }
                 }

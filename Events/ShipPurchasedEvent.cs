@@ -20,17 +20,14 @@ namespace EddiEvents
             VARIABLES.Add("ship", "The ship that was purchased");
             VARIABLES.Add("price", "The price of the ship that was purchased");
             VARIABLES.Add("soldship", "The ship that was sold as part of the purchase");
-            VARIABLES.Add("soldname", "The name of the ship that was sold as part of the purchase");
+            VARIABLES.Add("soldshipid", "The ID of the ship that was sold as part of the purchase");
             VARIABLES.Add("soldprice", "The credits obtained by selling the ship");
             VARIABLES.Add("storedship", "The ship that was stored as part of the purchase");
-            VARIABLES.Add("storedname", "The name of the ship that was stored as part of the purchase");
+            VARIABLES.Add("storedid", "The ID of the ship that was stored as part of the purchase");
         }
 
         [JsonProperty("ship")]
         public string ship { get; private set; }
-
-        [JsonIgnore]
-        public Ship Ship { get; private set; }
 
         [JsonProperty("price")]
         public long price { get; private set; }
@@ -38,8 +35,8 @@ namespace EddiEvents
         [JsonProperty("soldship")]
         public string  soldship { get; private set; }
 
-        [JsonProperty("soldname")]
-        public string soldname { get; private set; }
+        [JsonProperty("soldshipid")]
+        public int? soldshipid { get; private set; }
 
         [JsonProperty("soldprice")]
         public long? soldprice { get; private set; }
@@ -47,19 +44,18 @@ namespace EddiEvents
         [JsonProperty("storedship")]
         public string storedship { get; private set; }
 
-        [JsonProperty("storedname")]
-        public string storedname { get; private set; }
+        [JsonProperty("storedshipid")]
+        public int? storedshipid { get; private set; }
 
-        public ShipPurchasedEvent(DateTime timestamp, Ship ship, long price, Ship soldShip, long? soldPrice, Ship storedShip) : base(timestamp, NAME)
+        public ShipPurchasedEvent(DateTime timestamp, string ship, long price, string soldShip, int? soldShipId, long? soldPrice, string storedShip, int? storedShipId) : base(timestamp, NAME)
         {
-            this.Ship = ship;
-            this.ship = (ship == null ? null : ship.model);
+            this.ship = ship;
             this.price = price;
-            this.soldship = (soldShip == null ? null : soldShip.model);
-            this.soldname = (soldShip == null ? null : soldShip.name);
+            this.soldship = soldShip;
+            this.soldshipid = soldShipId;
             this.soldprice = soldPrice;
-            this.storedship = (storedShip == null ? null : storedShip.model);
-            this.storedname = (storedShip == null ? null : storedShip.name);
+            this.storedship = storedShip;
+            this.storedshipid = storedShipId;
         }
     }
 }

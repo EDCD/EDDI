@@ -17,8 +17,8 @@ namespace EddiEvents
 
         static ShipDeliveredEvent()
         {
-            VARIABLES.Add("shipid", "The ID of the ship that was delivered");
             VARIABLES.Add("ship", "The ship that was delivered");
+            VARIABLES.Add("shipid", "The ID of the ship that was delivered");
         }
 
         [JsonProperty("shipid")]
@@ -27,14 +27,10 @@ namespace EddiEvents
         [JsonProperty("ship")]
         public string ship { get; private set; }
 
-        [JsonIgnore]
-        public Ship Ship { get; private set; }
-
-        public ShipDeliveredEvent(DateTime timestamp, Ship ship) : base(timestamp, NAME)
+        public ShipDeliveredEvent(DateTime timestamp, string ship, int? shipId) : base(timestamp, NAME)
         {
-            this.Ship = ship;
-            this.ship = (ship == null ? null : ship.model);
-            this.shipid = (ship == null ? (int?)null : ship.LocalId);
+            this.ship = ship;
+            this.shipid = shipId;
         }
     }
 }
