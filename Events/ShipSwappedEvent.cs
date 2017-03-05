@@ -31,17 +31,11 @@ namespace EddiEvents
         [JsonProperty("ship")]
         public string ship { get; private set; }
 
-        [JsonIgnore]
-        public Ship Ship { get; private set; }
-
         [JsonProperty("soldshipid")]
         public int? soldshipid { get; private set; }
 
         [JsonProperty("soldship")]
         public string soldship { get; private set; }
-
-        [JsonIgnore]
-        public Ship SoldShip { get; private set; }
 
         [JsonProperty("storedshipid")]
         public int? storedshipid { get; private set; }
@@ -49,20 +43,14 @@ namespace EddiEvents
         [JsonProperty("storedship")]
         public string storedship { get; private set; }
 
-        [JsonIgnore]
-        public Ship StoredShip { get; private set; }
-
-        public ShipSwappedEvent(DateTime timestamp, Ship ship, Ship soldship, Ship storedship) : base(timestamp, NAME)
+        public ShipSwappedEvent(DateTime timestamp, string ship, int shipId, string soldship, int? soldshipid, string storedship, int? storedshipid) : base(timestamp, NAME)
         {
-            this.Ship = ship;
-            this.ship = (ship == null ? null : ship.model);
-            this.shipid = (ship == null ? (int?)null : ship.LocalId);
-            this.SoldShip = SoldShip;
-            this.soldship = (soldship == null ? null : soldship.model);
-            this.soldshipid = (soldship == null ? (int?)null : soldship.LocalId);
-            this.StoredShip = StoredShip;
-            this.storedship = (storedship == null ? null : storedship.model);
-            this.storedshipid = (storedship == null ? (int?)null : storedship.LocalId);
+            this.ship = ship;
+            this.shipid = shipId;
+            this.soldship = soldship;
+            this.soldshipid = soldshipid;
+            this.storedship = storedship;
+            this.storedshipid = storedshipid;
         }
     }
 }

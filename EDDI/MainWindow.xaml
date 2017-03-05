@@ -98,6 +98,7 @@
                     </Grid>
                 </DockPanel>
             </TabItem>
+            <!--
             <TabItem Header="Shipyard">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="This allows you to set names and roles for your ships.  The information is made available to responders and is used in scripts to tailor actions." VerticalAlignment="Top"/>
@@ -148,6 +149,7 @@
                     </DataGrid>
                 </DockPanel>
             </TabItem>
+            -->
             <TabItem Header="Text-to-Speech">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <TextBlock x:Name="ttsText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="EDDI uses its own text-to-speech engine that processes the voice depending on feature such as ship damage and size of cockpit.  You can adjust the voice's parameters here." />

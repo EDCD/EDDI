@@ -133,7 +133,7 @@ namespace EddiSpeechResponder
                 }
             }
 
-            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship, theEvent.type, theEvent, null, null, null, sayOutLoud);
+            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), theEvent.type, theEvent, null, null, null, sayOutLoud);
         }
 
         // Say something with the default resolver

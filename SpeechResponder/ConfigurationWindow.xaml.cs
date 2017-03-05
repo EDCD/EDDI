@@ -129,7 +129,7 @@ namespace EddiSpeechResponder
             }
 
             ScriptResolver scriptResolver = new ScriptResolver(Personality.Scripts);
-            responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship, script.Name, sampleEvent);
+            responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script.Name, sampleEvent);
         }
 
         private void deleteScript(object sender, RoutedEventArgs e)

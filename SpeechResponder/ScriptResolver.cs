@@ -527,19 +527,12 @@ namespace EddiSpeechResponder
             if (localId == null)
             {
                 // No local ID so take the current ship
-                ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship;
+                ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
             }
             else
             {
                 // Find the ship with the given local ID
-                if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship != null && ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship.LocalId == localId)
-                {
-                    ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship;
-                }
-                else
-                {
-                    ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).shipyard.FirstOrDefault(v => v.LocalId == localId);
-                }
+                ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetShip(localId);
             }
 
             if (ship == null)
