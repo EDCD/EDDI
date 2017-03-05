@@ -169,6 +169,7 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public decimal health { get; set; }
 
+        public Module cargohatch { get; set; }
         public Module bulkheads { get; set; }
         public Module powerplant { get; set; }
         public Module thrusters { get; set; }
