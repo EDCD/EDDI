@@ -355,14 +355,88 @@ namespace EddiJournalMonitor
 
                                 data.TryGetValue("Modules", out val);
                                 List<object> modulesData = (List<object>)val;
-                                List<object> modules = new List<object>();
+
+                                string paintjob = null;
+                                List<Hardpoint> hardpoints = new List<Hardpoint>();
+                                List<Compartment> compartments = new List<Compartment>();
                                 if (modulesData != null)
                                 {
                                     foreach (Dictionary<string, object> moduleData in modulesData)
                                     {
+                                        // Common items
+                                        string slot = getString(moduleData, "Slot");
+                                        string item = getString(moduleData, "Item");
+                                        bool enabled = getBool(moduleData, "On");
+                                        int priority = getInt(moduleData, "Priority");
+                                        decimal health = getDecimal(moduleData, "Health");
+                                        long value = getLong(moduleData, "Value");
+
+                                        // Ammunition
+                                        int? clip = getOptionalInt(moduleData, "AmmoInClip");
+                                        int? hopper = getOptionalInt(moduleData, "AmmoInHopper");
+
+                                        if (slot.Contains("Hardpoint"))
+                                        {
+                                            // This is a hardpoint
+                                            Hardpoint hardpoint = new Hardpoint() { name = slot };
+                                            Module module = ModuleDefinitions.fromEDName(item);
+                                            if (module == null)
+                                            {
+                                                Logging.Info("Unknown module " + item);
+                                                Logging.Report("Unknown module " + item, JsonConvert.SerializeObject(moduleData));
+                                            }
+                                            else
+                                            {
+                                                module.enabled = enabled;
+                                                module.priority = priority;
+                                                module.health = health;
+                                                module.value = value;
+                                                module.clipcapacity = clip;
+                                                module.hoppercapacity = hopper;
+                                                hardpoint.module = module;
+                                                hardpoints.Add(hardpoint);
+                                            }
+                                        }
+                                        else if (slot == "PaintJob")
+                                        {
+                                            // This is a paintjob
+                                            paintjob = item;
+                                        }
+                                        else if (slot.Contains("Bobble"))
+                                        {
+                                            // Ignore bobbles
+                                        }
+                                        else if (slot == "WeaponColour")
+                                        {
+                                            // Ignore weapon colour
+                                        }
+                                        else if (slot == "EngineColour" || slot == "EnginesColour" || slot == "ThrusterColour" || slot == "ThrustersColour") // Guesses until it goes live
+                                        {
+                                            // Ignore engine colour
+                                        }
+                                        else
+                                        {
+                                            // This is a compartment
+                                            Compartment compartment = new Compartment() { name = slot };
+                                            Module module = ModuleDefinitions.fromEDName(item);
+                                            if (module == null)
+                                            {
+                                                Logging.Info("Unknown module " + item);
+                                                Logging.Report("Unknown module " + item, JsonConvert.SerializeObject(moduleData));
+                                            }
+                                            else
+                                            {
+                                                module.enabled = enabled;
+                                                module.priority = priority;
+                                                module.health = health;
+                                                module.value = value;
+                                                compartment.module = module;
+                                                compartments.Add(compartment);
+                                            }
+                                        }
                                     }
                                 }
-                                journalEvent = new ShipLoadoutEvent(timestamp, ship, shipId, shipName, shipIdent, modules);
+                                journalEvent = new ShipLoadoutEvent(timestamp, ship, shipId, shipName, shipIdent, compartments, hardpoints, paintjob);
                             }
                             handled = true;
                             break;
@@ -1985,14 +2059,99 @@ namespace EddiJournalMonitor
 
         private static decimal? getOptionalDecimal(string key, object val)
         {
-            if (val is long)
+            if (val == null)
+            {
+                return null;
+            }
+            else if (val is long)
             {
                 return (decimal?)(long?)val;
             }
-            else
+            else if (val is double)
             {
                 return (decimal?)(double?)val;
             }
+            throw new ArgumentException("Unparseable value for " + key);
+        }
+
+        private static int getInt(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            return getInt(key, val);
+        }
+
+        private static int getInt(string key, object val)
+        {
+            if (val is long)
+            {
+                return (int)(long)val;
+            }
+            else if (val is int)
+            {
+                return (int)val;
+            }
+            throw new ArgumentException("Unparseable value for " + key);
+        }
+
+        private static int? getOptionalInt(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            return getOptionalInt(key, val);
+        }
+
+        private static int? getOptionalInt(string key, object val)
+        {
+            if (val == null)
+            {
+                return null;
+            }
+            else if (val is long)
+            {
+                return (int?)(long?)val;
+            }
+            else if (val is int)
+            {
+                return (int?)val;
+            }
+            throw new ArgumentException("Unparseable value for " + key);
+        }
+
+        private static long getLong(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            return getLong(key, val);
+        }
+
+        private static long getLong(string key, object val)
+        {
+            if (val is long)
+            {
+                return (long)val;
+            }
+            throw new ArgumentException("Unparseable value for " + key);
+        }
+
+        private static long? getOptionalLong(IDictionary<string, object> data, string key)
+        {
+            object val;
+            data.TryGetValue(key, out val);
+            return getOptionalLong(key, val);
+        }
+
+        private static long? getOptionalLong(string key, object val)
+        {
+            if (val == null)
+            {
+                return null;
+            }
+            else if (val is long)
+            {
+                return (int?)(long?)val;
+            }
+            throw new ArgumentException("Unparseable value for " + key);
         }
 
         private static bool getBool(IDictionary<string, object> data, string key)
