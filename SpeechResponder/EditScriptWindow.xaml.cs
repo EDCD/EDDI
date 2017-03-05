@@ -159,7 +159,7 @@ namespace EddiSpeechResponder
             }
 
             ScriptResolver scriptResolver = new ScriptResolver(newScripts);
-            responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship, ScriptName, sampleEvent, 3, null, false);
+            responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), ScriptName, sampleEvent, 3, null, false);
         }
 
         private void showDefaultButtonClick(object sender, RoutedEventArgs e)

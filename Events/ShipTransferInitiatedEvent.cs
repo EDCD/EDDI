@@ -39,10 +39,10 @@ namespace EddiEvents
         [JsonProperty("price")]
         public long price { get; private set; }
 
-        public ShipTransferInitiatedEvent(DateTime timestamp, Ship ship, string system, decimal distance, long price) : base(timestamp, NAME)
+        public ShipTransferInitiatedEvent(DateTime timestamp, string ship, int? shipid, string system, decimal distance, long price) : base(timestamp, NAME)
         {
-            this.ship = (ship == null ? null : ship.model);
-            this.shipid = (ship == null ? (int?)null : ship.LocalId);
+            this.ship = ship;
+            this.shipid = shipid;
             this.system = system;
             this.distance = distance;
             this.price = price;

@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="EddiShipMonitor.ConfigurationWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EddiShipMonitor"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Below is a list of all known materials.  You can set values for the minimum, desired and maximum levels of each and EDDI will generate events when you move beyond the levels."></TextBlock>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated."></TextBlock>
+        <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="shipData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="shipsUpdated">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Path=name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Make" IsReadOnly="True" Binding="{Binding Path=manufacturer}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Model" IsReadOnly="True" Binding="{Binding Path=model}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Location" IsReadOnly="True" Binding="{Binding Path=starsystem}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Ident" IsReadOnly="True" Binding="{Binding Path=ident}"></DataGridTextColumn>
+                <!-- Role -->
+                <!-- Phonetic name -->
+                <!-- Hear it -->
+                <!-- Export to Coriolis -->
+                <!--
+                <DataGridTextColumn Header="Inventory" IsReadOnly="True" Binding="{Binding Path=amount}"></DataGridTextColumn>
+                <local:DataGridNumericColumn Header="Minimum" Binding="{Binding Path=minimum, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></local:DataGridNumericColumn>
+                <local:DataGridNumericColumn Header="Desired" Binding="{Binding Path=desired, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></local:DataGridNumericColumn>
+                <local:DataGridNumericColumn Header="Maximum" Binding="{Binding Path=maximum, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></local:DataGridNumericColumn>
+                -->
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

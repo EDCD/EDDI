@@ -470,25 +470,22 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 // We don't have a ship ID at this point so use the ship type
-                                string shipModel = getString(data, "ShipType");
-                                Ship ship = findShip(null, shipModel);
+                                string ship = getString(data, "ShipType");
 
                                 data.TryGetValue("ShipPrice", out val);
                                 long price = (long)val;
 
                                 data.TryGetValue("StoreShipID", out val);
                                 int? storedShipId = (val == null ? (int?)null : (int)(long)val);
-                                string storedShipModel = getString(data, "StoreOldShip");
-                                Ship storedShip = storedShipId == null ? null : findShip(storedShipId, storedShipModel);
+                                string storedShip = getString(data, "StoreOldShip");
 
                                 data.TryGetValue("SellShipID", out val);
                                 int? soldShipId = (val == null ? (int?)null : (int)(long)val);
-                                string soldShipModel = getString(data, "SellOldShip");
-                                Ship soldShip = soldShipId == null ? null : findShip(soldShipId, soldShipModel);
+                                string soldShip = getString(data, "SellOldShip");
 
                                 data.TryGetValue("SellPrice", out val);
                                 long? soldPrice = (long?)val;
-                                journalEvent = new ShipPurchasedEvent(timestamp, ship, price, soldShip, soldPrice, storedShip);
+                                journalEvent = new ShipPurchasedEvent(timestamp, ship, price, soldShip, soldShipId, soldPrice, storedShip, storedShipId);
                             }
                             handled = true;
                             break;
@@ -497,10 +494,9 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("NewShipID", out val);
                                 int shipId = (int)(long)val;
-                                string shipModel = getString(data, "ShipType");
-                                Ship ship = findShip(shipId, shipModel);
+                                string ship = getString(data, "ShipType");
 
-                                journalEvent = new ShipDeliveredEvent(timestamp, ship);
+                                journalEvent = new ShipDeliveredEvent(timestamp, ship, shipId);
                             }
                             handled = true;
                             break;
@@ -509,11 +505,10 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("SellShipID", out val);
                                 int shipId = (int)(long)val;
-                                string shipModel = getString(data, "ShipType");
-                                Ship ship = findShip(shipId, shipModel);
+                                string ship = getString(data, "ShipType");
                                 data.TryGetValue("ShipPrice", out val);
                                 long price = (long)val;
-                                journalEvent = new ShipSoldEvent(timestamp, ship, price);
+                                journalEvent = new ShipSoldEvent(timestamp, ship, shipId, price);
                             }
                             handled = true;
                             break;
@@ -523,20 +518,17 @@ namespace EddiJournalMonitor
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
-                                string shipModel = getString(data, "ShipType");
-                                Ship ship = findShip(shipId, shipModel);
+                                string ship = getString(data, "ShipType");
 
                                 data.TryGetValue("StoreShipID", out val);
                                 int? storedShipId = (val == null ? (int?)null : (int)(long)val);
-                                string storedShipModel = getString(data, "StoreOldShip");
-                                Ship storedShip = storedShipId == null ? null : findShip(storedShipId, storedShipModel);
+                                string storedShip = getString(data, "StoreOldShip");
 
                                 data.TryGetValue("SellShipID", out val);
                                 int? soldShipId = (val == null ? (int?)null : (int)(long)val);
-                                string soldShipModel = getString(data, "SellOldShip");
-                                Ship soldShip = soldShipId == null ? null : findShip(soldShipId, soldShipModel);
+                                string soldShip = getString(data, "SellOldShip");
 
-                                journalEvent = new ShipSwappedEvent(timestamp, ship, soldShip, storedShip);
+                                journalEvent = new ShipSwappedEvent(timestamp, ship, shipId, soldShip, soldShipId, storedShip, storedShipId);
                             }
                             handled = true;
                             break;
@@ -545,15 +537,14 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
-                                string shipModel = getString(data, "ShipType");
-                                Ship ship = findShip(shipId, shipModel);
+                                string ship = getString(data, "ShipType");
 
                                 string system = getString(data, "System");
                                 decimal distance = getDecimal(data, "Distance");
                                 data.TryGetValue("TransferPrice", out val);
                                 long price = (long)val;
 
-                                journalEvent = new ShipTransferInitiatedEvent(timestamp, ship, system, distance, price);
+                                journalEvent = new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price);
 
                                 handled = true;
                             }
@@ -563,12 +554,11 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
-                                string shipModel = getString(data, "Ship");
-                                Ship ship = findShip(shipId, shipModel);
-                                ship.name = getString(data, "UserShipName");
-                                ship.ident = getString(data, "UserShipId");
+                                string ship = getString(data, "Ship");
+                                string name = getString(data, "UserShipName");
+                                string ident = getString(data, "UserShipId");
 
-                                journalEvent = new ShipRenamedEvent(timestamp, ship);
+                                journalEvent = new ShipRenamedEvent(timestamp, ship, shipId, name, ident);
                             }
                             handled = true;
                             break;
@@ -1065,19 +1055,9 @@ namespace EddiJournalMonitor
                                     break;
                                 }
 
-                                string shipModel = getString(data, "Ship");
-                                Ship ship = findShip(shipId, shipModel);
-                                // Add ship name and ship ID
-                                data.TryGetValue("ShipName", out val);
-                                if (val != null)
-                                {
-                                    ship.name = (string)val;
-                                }
-                                data.TryGetValue("ShipIdent", out val);
-                                if (val != null)
-                                {
-                                    ship.ident = (string)val;
-                                }
+                                string ship = getString(data, "Ship");
+                                string shipName = getString(data, "ShipName");
+                                string shipIdent = getString(data, "ShipIdent");
 
                                 GameMode mode = GameMode.FromEDName(getString(data, "GameMode"));
                                 string group = getString(data, "Group");
@@ -1087,7 +1067,7 @@ namespace EddiJournalMonitor
                                 decimal loan = (long)val;
                                 decimal? fuel = getOptionalDecimal(data, "FuelLevel");
 
-                                journalEvent = new CommanderContinuedEvent(timestamp, commander, ship, mode, group, credits, loan, fuel);
+                                journalEvent = new CommanderContinuedEvent(timestamp, commander, (int)shipId, ship, shipName, shipIdent, mode, group, credits, loan, fuel);
                                 handled = true;
                                 break;
                             }
@@ -1889,36 +1869,6 @@ namespace EddiJournalMonitor
                 by = "Starship One";
             }
             return by;
-        }
-        private static Ship findShip(int? localId, string model)
-        {
-            Ship ship = null;
-            if (localId == null && model == null)
-            {
-                // Default to the current ship
-                ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship;
-            }
-            else
-            {
-                // Find the ship with the given local ID
-                if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship != null && ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship.LocalId == localId)
-                {
-                    ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).ship;
-                }
-                else
-                {
-                    ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).shipyard.FirstOrDefault(v => v.LocalId == localId);
-                }
-            }
-
-            if (ship == null)
-            {
-                Logging.Warn("Failed to find ship given ID " + localId + " and model " + model);
-                // Provide a basic ship based on the model template
-                ship = ShipDefinitions.FromEDModel(model);
-                ship.LocalId = localId == null ? 0 : (int)localId;
-            }
-            return ship;
         }
 
         // Be sensible with health - round it unless it's very low
