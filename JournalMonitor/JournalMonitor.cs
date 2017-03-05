@@ -1206,11 +1206,7 @@ namespace EddiJournalMonitor
                                 decimal? fuel = getOptionalDecimal(data, "FuelLevel");
                                 decimal? fuelCapacity = getOptionalDecimal(data, "FuelCapacity");
 
-<<<<<<< 729961629afebba91af748bc8fa4dd6e82b3da12
                                 journalEvent = new CommanderContinuedEvent(timestamp, commander, (int)shipId, ship, shipName, shipIdent, mode, group, credits, loan, fuel, fuelCapacity);
-=======
-                                journalEvent = new CommanderContinuedEvent(timestamp, commander, (int)shipId, ship, shipName, shipIdent, mode, group, credits, loan, fuel);
->>>>>>> On-going changes to separate ships in to their own monitor.
                                 handled = true;
                                 break;
                             }
@@ -2322,7 +2318,6 @@ namespace EddiJournalMonitor
         {
         }
 
-<<<<<<< a90e5f156177e51f7aec39d281a621b40df72574
         public void HandleProfile(JObject profile)
         {
         }
@@ -2346,11 +2341,6 @@ namespace EddiJournalMonitor
             return role;
         }
 
-=======
-        public void Handle(Profile profile)
-        {
-        }
->>>>>>> Reworking ship management.
 
         public IDictionary<string, object> GetVariables()
         {
