@@ -356,6 +356,7 @@ namespace EddiShipMonitor
             }
             else
             {
+                Logging.Debug("Current ship ID is " + localId);
                 currentShipId = ship.LocalId;
                 // Location for the current ship is always null, as it's with us
                 ship.starsystem = null;
