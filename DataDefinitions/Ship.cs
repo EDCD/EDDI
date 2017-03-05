@@ -171,6 +171,7 @@ namespace EddiDataDefinitions
 
         public Module cargohatch { get; set; }
         public Module bulkheads { get; set; }
+        public Module canopy { get; set; }
         public Module powerplant { get; set; }
         public Module thrusters { get; set; }
         public Module frameshiftdrive { get; set; }
