@@ -4,29 +4,57 @@
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:eddi="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              xmlns:local="clr-namespace:EddiShipMonitor"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Below is a list of all known materials.  You can set values for the minimum, desired and maximum levels of each and EDDI will generate events when you move beyond the levels."></TextBlock>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated."></TextBlock>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="This allows you to see your ships and give them individual roles.  The information is made available to responders and is used in scripts to tailor actions." VerticalAlignment="Top"/>
+        <RichTextBox DockPanel.Dock="Top" Margin="10"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
+            <FlowDocument Background="#FFE5E5E5">
+                <Paragraph >
+                    If the name of your ship is hard for EDDI to pronounce then you can add a spoken version of the ship using the
+                    <Hyperlink Click="ipaClicked">International Phonetic Alphabet</Hyperlink> . For example, if your ship was called 'Pride of Achenar' then your spoken name would be 'praɪdɒvˈakɜːnɑ' (note no spaces in the phonetic version).
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="Please note that for this feature to work the companion app tab must be configured." VerticalAlignment="Top"/>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="shipData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="shipsUpdated">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Path=name}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Make" IsReadOnly="True" Binding="{Binding Path=manufacturer}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Model" IsReadOnly="True" Binding="{Binding Path=model}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Location" IsReadOnly="True" Binding="{Binding Path=starsystem}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Ident" IsReadOnly="True" Binding="{Binding Path=ident}"></DataGridTextColumn>
-                <!-- Role -->
-                <!-- Phonetic name -->
-                <!-- Hear it -->
-                <!-- Export to Coriolis -->
-                <!--
-                <DataGridTextColumn Header="Inventory" IsReadOnly="True" Binding="{Binding Path=amount}"></DataGridTextColumn>
-                <local:DataGridNumericColumn Header="Minimum" Binding="{Binding Path=minimum, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></local:DataGridNumericColumn>
-                <local:DataGridNumericColumn Header="Desired" Binding="{Binding Path=desired, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></local:DataGridNumericColumn>
-                <local:DataGridNumericColumn Header="Maximum" Binding="{Binding Path=maximum, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></local:DataGridNumericColumn>
-                -->
+                <DataGridTextColumn Header="Location" IsReadOnly="True" Binding="{Binding Path=starsystem}"></DataGridTextColumn>
+                <DataGridComboBoxColumn Header="Role" SelectedItemBinding="{Binding Path=role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static eddi:Role.ROLES}}">
+                    <DataGridComboBoxColumn.EditingElementStyle>
+                        <Style TargetType="{x:Type ComboBox}">
+                            <EventSetter Event="SelectionChanged" Handler="shipsUpdated" />
+                        </Style>
+                    </DataGridComboBoxColumn.EditingElementStyle>
+                </DataGridComboBoxColumn>
+                <DataGridTextColumn Header="Name (spoken)" Width="*">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="phoneticname" NotifyOnTargetUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" TargetNullValue="{x:Static System:String.Empty}">
+                            <Binding.ValidationRules>
+                                <local:ValidIPARule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="testShipName">Hear it</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="exportShip">Export to Coriolis</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

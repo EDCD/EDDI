@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Collections.ObjectModel;
 using EddiCompanionAppService;
+using System.Collections.Concurrent;
 
 namespace EddiMaterialMonitor
 {
@@ -21,6 +22,10 @@ namespace EddiMaterialMonitor
     {
         // Observable collection for us to handle
         public ObservableCollection<MaterialAmount> inventory = new ObservableCollection<MaterialAmount>();
+
+        // The material monitor both consumes and emits events, but only one for a given event.  We hold any pending events here so
+        // they are fired at the correct time
+        private ConcurrentQueue<Event> pendingEvents = new ConcurrentQueue<Event>();
 
         public string MonitorName()
         {
@@ -69,7 +74,7 @@ namespace EddiMaterialMonitor
             return new ConfigurationWindow();
         }
 
-        public void Handle(Event @event)
+        public void PreHandle(Event @event)
         {
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
@@ -100,6 +105,16 @@ namespace EddiMaterialMonitor
             }
         }
 
+        // Flush any pending events
+        public void PostHandle(Event @event)
+        {
+            Event pendingEvent;
+            while (pendingEvents.TryDequeue(out pendingEvent))
+            {
+                EDDI.Instance.eventHandler(pendingEvent);
+            }
+        }
+
         private void handleMaterialInventoryEvent(MaterialInventoryEvent @event)
         {
             List<string> knownNames = new List<string>();
@@ -108,10 +123,6 @@ namespace EddiMaterialMonitor
                 setMaterial(materialAmount.material, materialAmount.amount);
                 knownNames.Add(materialAmount.material);
             }
-
-            // Also remove any items for which we have neither inventory nor limits
-            // Later
-            //inventory new ObservableCollection<MaterialAmount>(inventory.Where(i => (i.amount != 0 || i.desired.HasValue || i.minimum.HasValue || i.maximum.HasValue)));
 
             // Update configuration information
             writeMaterials();
@@ -175,7 +186,7 @@ namespace EddiMaterialMonitor
                 if (previous <= ma.maximum && ma.amount > ma.maximum)
                 {
                     // We have crossed the high water threshold for this material
-                    EDDI.Instance.eventHandler(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Maximum", (int)ma.maximum, ma.amount, "Increase"));
+                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Maximum", (int)ma.maximum, ma.amount, "Increase"));
                 }
             }
             if (ma.desired.HasValue)
@@ -183,7 +194,7 @@ namespace EddiMaterialMonitor
                 if (previous < ma.desired && ma.amount >= ma.desired)
                 {
                     // We have crossed the desired threshold for this material
-                    EDDI.Instance.eventHandler(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Desired", (int)ma.desired, ma.amount, "Increase"));
+                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Desired", (int)ma.desired, ma.amount, "Increase"));
                 }
             }
 
@@ -214,7 +225,7 @@ namespace EddiMaterialMonitor
                 if (previous >= ma.minimum && ma.amount < ma.minimum)
                 {
                     // We have crossed the low water threshold for this material
-                    EDDI.Instance.eventHandler(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Minimum", (int)ma.minimum, ma.amount, "Decrease"));
+                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Minimum", (int)ma.minimum, ma.amount, "Decrease"));
                 }
             }
             if (ma.desired.HasValue)
@@ -222,7 +233,7 @@ namespace EddiMaterialMonitor
                 if (previous >= ma.desired && ma.amount < ma.desired)
                 {
                     // We have crossed the desired threshold for this material
-                    EDDI.Instance.eventHandler(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Desired", (int)ma.desired, ma.amount, "Decrease"));
+                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Desired", (int)ma.desired, ma.amount, "Decrease"));
                 }
             }
 
