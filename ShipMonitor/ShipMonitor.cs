@@ -75,13 +75,9 @@ namespace EddiShipMonitor
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
             // Handle the events that we care about
-            if (@event is ShipSwappedEvent)
+            if (@event is CommanderContinuedEvent)
             {
-                handleShipSwappedEvent((ShipSwappedEvent)@event);
-            }
-            else if (@event is ShipSoldEvent)
-            {
-                handleShipSoldEvent((ShipSoldEvent)@event);
+                handleCommanderContinuedEvent((CommanderContinuedEvent)@event);
             }
             else if (@event is ShipPurchasedEvent)
             {
@@ -91,46 +87,54 @@ namespace EddiShipMonitor
             {
                 handleShipDeliveredEvent((ShipDeliveredEvent)@event);
             }
+            else if (@event is ShipSwappedEvent)
+            {
+                handleShipSwappedEvent((ShipSwappedEvent)@event);
+            }
             else if (@event is ShipRenamedEvent)
             {
                 handleShipRenamedEvent((ShipRenamedEvent)@event);
             }
+            else if (@event is ShipSoldEvent)
+            {
+                handleShipSoldEvent((ShipSoldEvent)@event);
+            }
+            else if (@event is ShipLoadoutEvent)
+            {
+                handleShipLoadoutEvent((ShipLoadoutEvent)@event);
+            }
+            else if (@event is ShipRebootedEvent)
+            {
+                handleShipRebootedEvent((ShipRebootedEvent)@event);
+            }
+            else if (@event is ShipRefuelledEvent)
+            {
+                handleShipRefuelledEvent((ShipRefuelledEvent)@event);
+            }
+            else if (@event is ShipRepairedEvent)
+            {
+                handleShipRepairedEvent((ShipRepairedEvent)@event);
+            }
+            else if (@event is ShipRestockedEvent)
+            {
+                handleShipRestockedEvent((ShipRestockedEvent)@event);
+            }
+            // TODO ModulePurchasedEvent
+            // TODO ModuleSoldEvent
+            // TODO ModuleStoredEvent
+            // TODO ModuleRetrievedEvent
+            // TODO ModulesSwappedEvent
+            // TODO ModulesStoredEvent
             // TODO loadout
+            // TODO 
         }
 
-        public void PostHandle(Event @event)
+        private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
         {
-        }
-
-        private void handleShipSwappedEvent(ShipSwappedEvent @event)
-        {
-            // Update our current ship
             SetCurrentShip(@event.shipid, @event.ship);
-
-            if (@event.storedshipid != null)
-            {
-                // We stored a ship - set its location to the current location
-                Ship storedShip = GetShip(@event.storedshipid);
-                if (storedShip != null)
-                {
-                    // Set location of stored ship to the current sstem
-                    storedShip.starsystem = EDDI.Instance.CurrentStarSystem.name;
-                    storedShip.station = EDDI.Instance.CurrentStation.name;
-                }
-            }
-            else if (@event.soldshipid != null)
-            {
-                // We sold a ship - remove it
-                RemoveShip(@event.soldshipid);
-            }
-
-            writeShips();
-        }
-
-        private void handleShipSoldEvent(ShipSoldEvent @event)
-        {
-            RemoveShip(@event.shipid);
-
+            Ship ship = GetCurrentShip();
+            ship.name = @event.shipname;
+            ship.ident = @event.shipident;
             writeShips();
         }
 
@@ -161,6 +165,31 @@ namespace EddiShipMonitor
             SetCurrentShip(@event.shipid, @event.ship);
         }
 
+        private void handleShipSwappedEvent(ShipSwappedEvent @event)
+        {
+            // Update our current ship
+            SetCurrentShip(@event.shipid, @event.ship);
+
+            if (@event.storedshipid != null)
+            {
+                // We stored a ship - set its location to the current location
+                Ship storedShip = GetShip(@event.storedshipid);
+                if (storedShip != null)
+                {
+                    // Set location of stored ship to the current sstem
+                    storedShip.starsystem = EDDI.Instance.CurrentStarSystem.name;
+                    storedShip.station = EDDI.Instance.CurrentStation.name;
+                }
+            }
+            else if (@event.soldshipid != null)
+            {
+                // We sold a ship - remove it
+                RemoveShip(@event.soldshipid);
+            }
+
+            writeShips();
+        }
+
         private void handleShipRenamedEvent(ShipRenamedEvent @event)
         {
             Ship ship = GetShip(@event.shipid);
@@ -178,13 +207,40 @@ namespace EddiShipMonitor
             writeShips();
         }
 
-        private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
+        private void handleShipSoldEvent(ShipSoldEvent @event)
         {
-            SetCurrentShip(@event.shipid, @event.ship);
-            Ship ship = GetCurrentShip();
-            ship.name = @event.shipname;
-            ship.ident = @event.shipident;
+            RemoveShip(@event.shipid);
+
             writeShips();
+        }
+
+        private void handleShipLoadoutEvent(ShipLoadoutEvent @event)
+        {
+            // TODO
+        }
+
+        private void handleShipRebootedEvent(ShipRebootedEvent @event)
+        {
+            // TODO
+        }
+
+        private void handleShipRepairedEvent(ShipRepairedEvent @event)
+        {
+            // TODO
+        }
+
+        private void handleShipRefuelledEvent(ShipRefuelledEvent @event)
+        {
+            // TODO
+        }
+
+        private void handleShipRestockedEvent(ShipRestockedEvent @event)
+        {
+            // TODO
+        }
+
+        public void PostHandle(Event @event)
+        {
         }
 
         public void Handle(Profile profile)

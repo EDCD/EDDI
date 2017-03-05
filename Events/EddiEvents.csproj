@@ -54,6 +54,7 @@
     <Compile Include="DataVoucherRedeemed.cs" />
     <Compile Include="MaterialInventoryEvent.cs" />
     <Compile Include="FSDEngagedEvent.cs" />
+    <Compile Include="ShipLoadoutEvent.cs" />
     <Compile Include="ShipRenamedEvent.cs" />
     <Compile Include="BondRedeemedEvent.cs" />
     <Compile Include="TradeVoucherRedeemedEvent.cs" />
