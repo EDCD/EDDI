@@ -1206,7 +1206,11 @@ namespace EddiJournalMonitor
                                 decimal? fuel = getOptionalDecimal(data, "FuelLevel");
                                 decimal? fuelCapacity = getOptionalDecimal(data, "FuelCapacity");
 
+<<<<<<< 729961629afebba91af748bc8fa4dd6e82b3da12
                                 journalEvent = new CommanderContinuedEvent(timestamp, commander, (int)shipId, ship, shipName, shipIdent, mode, group, credits, loan, fuel, fuelCapacity);
+=======
+                                journalEvent = new CommanderContinuedEvent(timestamp, commander, (int)shipId, ship, shipName, shipIdent, mode, group, credits, loan, fuel);
+>>>>>>> On-going changes to separate ships in to their own monitor.
                                 handled = true;
                                 break;
                             }
