@@ -5,8 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
-        xmlns:j="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
-        xmlns:local="clr-namespace:Eddi"
         mc:Ignorable="d"
         Title="EDDI" Height="600"  Width="800">
     <DockPanel LastChildFill="True">
@@ -98,58 +96,6 @@
                     </Grid>
                 </DockPanel>
             </TabItem>
-            <!--
-            <TabItem Header="Shipyard">
-                <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="This allows you to set names and roles for your ships.  The information is made available to responders and is used in scripts to tailor actions." VerticalAlignment="Top"/>
-                    <RichTextBox DockPanel.Dock="Top" Margin="10"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
-                        <FlowDocument Background="#FFE5E5E5">
-                            <Paragraph >
-                                If the name of your ship is hard for EDDI to pronounce then you can add a spoken version of the ship using the <Hyperlink Click="ipaClicked">International Phonetic Alphabet</Hyperlink>. For example, if your ship was called 'Pride of Achenar' then your spoken name would be 'praɪdɒvˈakɜːnɑ' (note no spaces in the phonetic version).
-                            </Paragraph>
-                        </FlowDocument>
-                    </RichTextBox>
-                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="Please note that for this feature to work the companion app tab must be configured." VerticalAlignment="Top"/>
-                    <DataGrid AutoGenerateColumns="False" x:Name="shipyardData" CanUserAddRows="false" TargetUpdated="shipYardUpdated">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn IsReadOnly="True" Header="Model" Binding="{Binding Path=model}"></DataGridTextColumn>
-                            <DataGridComboBoxColumn Header="Role" SelectedItemBinding="{Binding Path=role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static j:Role.ROLES}}">
-                                <DataGridComboBoxColumn.EditingElementStyle>
-                                    <Style TargetType="{x:Type ComboBox}">
-                                        <EventSetter Event="SelectionChanged" Handler="ShipRoleChanged" />
-                                    </Style>
-                                </DataGridComboBoxColumn.EditingElementStyle>
-                            </DataGridComboBoxColumn>
-                            <DataGridTextColumn IsReadOnly="True" Header="In Storage At" Binding="{Binding Path=starsystem}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Name" Width="*" Binding="{Binding Path=name,  NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
-                            <DataGridTextColumn Header="Name (spoken)" Width="*">
-                                <DataGridTextColumn.Binding>
-                                    <Binding Path="phoneticname" NotifyOnTargetUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" TargetNullValue="{x:Static System:String.Empty}">
-                                        <Binding.ValidationRules>
-                                            <local:ValidIPARule/>
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </DataGridTextColumn.Binding>
-                            </DataGridTextColumn>
-                            <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Click="testShipName">Hear it</Button>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Click="exportShip">Export to Coriolis</Button>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
-            -->
             <TabItem Header="Text-to-Speech">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <TextBlock x:Name="ttsText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="EDDI uses its own text-to-speech engine that processes the voice depending on feature such as ship damage and size of cockpit.  You can adjust the voice's parameters here." />

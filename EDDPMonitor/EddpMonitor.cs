@@ -282,7 +282,11 @@ namespace EddiEddpMonitor
             return null;
         }
 
-        public void Handle(Event @event)
+        public void PreHandle(Event @event)
+        {
+        }
+
+        public void PostHandle(Event @event)
         {
         }
 

@@ -70,7 +70,7 @@ namespace EddiCargoMonitor
             return null;
         }
 
-        public void Handle(Event @event)
+        public void PreHandle(Event @event)
         {
             //Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
             //// Handle the events that we care about
@@ -79,6 +79,10 @@ namespace EddiCargoMonitor
             //{
             //    handleCargoInventoryEvent((CargoInventoryEvent)@event);
             //}
+        }
+
+        public void PostHandle(Event @event)
+        {
         }
 
         //private void handleCargoInventoryEvent(CargoInventoryEvent @event)

@@ -742,6 +742,23 @@ namespace Eddi
 
         private void OnEvent(Event @event)
         {
+            // We send the event to all monitors to ensure that their info is up-to-date
+            // This is synchronous
+            foreach (EDDIMonitor monitor in monitors)
+            {
+                try
+                {
+                    monitor.PreHandle(@event);
+
+                }
+                catch (Exception ex)
+                {
+                    Logging.Error(JsonConvert.SerializeObject(@event), ex);
+                }
+            }
+
+            // Now we pass the data to the responders
+            // This is asynchronous
             foreach (EDDIResponder responder in activeResponders)
             {
                 try
@@ -781,7 +798,7 @@ namespace Eddi
                     {
                         try
                         {
-                            monitor.Handle(@event);
+                            monitor.PreHandle(@event);
                         }
                         catch (Exception ex)
                         {
