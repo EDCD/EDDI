@@ -341,7 +341,29 @@ namespace EddiJournalMonitor
                                 int amount = (int)(long)val;
                                 bool abandoned = getBool(data, "Abandoned");
                                 journalEvent = new CommodityEjectedEvent(timestamp, commodity, amount, abandoned);
-                                handled = true;
+                            }
+                            handled = true;
+                            break;
+                        case "Loadout":
+                            {
+                                object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+                                string shipName = getString(data, "ShipName");
+                                string shipIdent = getString(data, "ShipIdent");
+
+                                data.TryGetValue("Modules", out val);
+                                List<object> modulesData = (List<object>)val;
+                                List<object> modules = new List<object>();
+                                if (modulesData != null)
+                                {
+                                    foreach (Dictionary<string, object> moduleData in modulesData)
+                                    {
+                                    }
+                                }
+                                journalEvent = new ShipLoadoutEvent(timestamp, ship, shipId, shipName, shipIdent, modules);
                             }
                             handled = true;
                             break;
