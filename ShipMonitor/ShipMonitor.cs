@@ -259,7 +259,14 @@ namespace EddiShipMonitor
             // TODO Rationalise companion API data - munge the JSON according to the compartment information, removing anything tht is out-of-sync
             if (profile.Ship != null)
             {
-                GetShip(profile.Ship.LocalId).raw = profile.Ship.raw;
+                Ship ship = GetShip(profile.Ship.LocalId);
+                ship.raw = profile.Ship.raw;
+                if (ship.model == null)
+                {
+                    // We don't know this ship's model but can fill it from the info we have
+                    ship.model = profile.Ship.model;
+                    ship.Augment();
+                }
             }
 
             foreach (Ship profileShip in profile.Shipyard)
@@ -268,6 +275,12 @@ namespace EddiShipMonitor
                 if (ship != null)
                 {
                     ship.raw = profileShip.raw;
+                    if (ship.model == null)
+                    {
+                        // We don't know this ship's model but can fill it from the info we have
+                        ship.model = profileShip.model;
+                        ship.Augment();
+                    }
                 }
             }
 
