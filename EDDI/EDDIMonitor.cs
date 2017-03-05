@@ -46,9 +46,14 @@ namespace Eddi
         void Reload();
 
         /// <summary>
-        /// Called to receive information about other events
+        /// Called prior to responders running.  This should be used to update state
         /// </summary>
-        void Handle(Event @event);
+        void PreHandle(Event @event);
+
+        /// <summary>
+        /// Called after responders running.  This should be used to generate follow-on events
+        /// </summary>
+        void PostHandle(Event @event);
 
         /// <summary>
         /// Called to receive information from the Frontier API

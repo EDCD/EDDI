@@ -144,7 +144,11 @@ namespace GalnetMonitor
             }
         }
 
-        public void Handle(Event @event)
+        public void PreHandle(Event @event)
+        {
+        }
+
+        public void PostHandle(Event @event)
         {
         }
 

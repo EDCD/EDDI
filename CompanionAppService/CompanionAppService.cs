@@ -585,63 +585,6 @@ namespace EddiCompanionAppService
             Logging.Debug("Leaving");
         }
 
-        //private static void AugmentShipInfo(Ship ship, List<Ship> storedShips)
-        //{
-        //    Logging.Debug("Entered");
-        //    ShipsConfiguration shipsConfiguration = ShipsConfiguration.FromFile();
-        //    Dictionary<int, Ship> lookup = shipsConfiguration.Ships.ToDictionary(o => o.LocalId);
-
-        //    Ship shipConfig;
-        //    // Start with our current ship
-        //    if (lookup.TryGetValue(ship.LocalId, out shipConfig))
-        //    {
-        //        // Already exists; grab the relevant information and supplement it
-        //        // Ship config name might be just whitespace, in which case we unset it
-        //        if (shipConfig.name != null && shipConfig.name.Trim().Length > 0)
-        //        {
-        //            ship.name = shipConfig.name.Trim();
-        //        }
-        //        if (shipConfig.phoneticname != null && shipConfig.phoneticname.Trim().Length > 0)
-        //        {
-        //            ship.phoneticname = shipConfig.phoneticname.Trim();
-        //        }
-        //        ship.role = shipConfig.role;
-        //    }
-        //    else
-        //    {
-        //        // Doesn't already exist; add a default role
-        //        ship.role = Role.MultiPurpose;
-        //    }
-
-        //    // Work through our shipyard
-        //    foreach (Ship storedShip in storedShips)
-        //    {
-        //        if (lookup.TryGetValue(storedShip.LocalId, out shipConfig))
-        //        {
-        //            // Already exists; grab the relevant information and supplement it
-        //            storedShip.name = shipConfig.name;
-        //            storedShip.phoneticname = shipConfig.phoneticname;
-        //            storedShip.role = shipConfig.role;
-        //        }
-        //        else
-        //        {
-        //            // Doesn't already exist; add a default role
-        //            storedShip.role = Role.MultiPurpose;
-        //        }
-        //    }
-
-        //// Update our configuration with the new data (this also removes any old redundant ships)
-        //shipsConfiguration.Ships = new ObservableCollection<Ship>();
-        //shipsConfiguration.Ships.Add(ship);
-        //foreach (Ship storedShip in storedShips)
-        //{
-        //    shipsConfiguration.Ships.Add(storedShip);
-
-        //}
-        //shipsConfiguration.ToFile();
-        //Logging.Debug("Leaving");
-        //}
-
         public static Ship ShipFromProfile(dynamic json)
         {
             Logging.Debug("Entered");
@@ -653,7 +596,7 @@ namespace EddiCompanionAppService
 
             Ship Ship = ShipDefinitions.FromEDModel((string)json["name"]);
 
-            Ship.json = json.ToString(Formatting.None);
+            Ship.raw = json.ToString(Formatting.None);
 
             Ship.LocalId = json["id"];
 

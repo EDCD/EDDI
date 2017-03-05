@@ -2026,7 +2026,11 @@ namespace EddiJournalMonitor
             return superpowerFaction != null ? superpowerFaction.name : faction;
         }
 
-        public void Handle(Event @event)
+        public void PreHandle(Event @event)
+        {
+        }
+
+        public void PostHandle(Event @event)
         {
         }
 

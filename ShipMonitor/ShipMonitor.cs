@@ -67,7 +67,10 @@ namespace EddiShipMonitor
             return new ConfigurationWindow();
         }
 
-        public void Handle(Event @event)
+        /// <summary>
+        /// We pre-handle the events to ensure that the data is up-to-date when it hits the responders
+        /// </summary>
+        public void PreHandle(Event @event)
         {
             Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
 
@@ -93,6 +96,10 @@ namespace EddiShipMonitor
                 handleShipRenamedEvent((ShipRenamedEvent)@event);
             }
             // TODO loadout
+        }
+
+        public void PostHandle(Event @event)
+        {
         }
 
         private void handleShipSwappedEvent(ShipSwappedEvent @event)
@@ -192,20 +199,23 @@ namespace EddiShipMonitor
                 }
             }
 
-            // Augment our existing ships with data unavailable elsewhere
-            // Reset the shipyard from the profile information
-            //Shipyard.Clear();
-            //foreach (Ship ship in profile.Shipyard)
-            //{
-            //    Shipyard.Add(ship);
-            //}
+            // Add the raw JSON for each known ship provided in the profile
+            // TODO Rationalise companion API data - munge the JSON according to the compartment information, removing anything tht is out-of-sync
+            if (profile.Ship != null)
+            {
+                GetShip(profile.Ship.LocalId).raw = profile.Ship.raw;
+            }
 
-            //// Only use the ship information if we agree that this is the correct ship to use
-            //if (profile.Ship != null && (Ship.model == null || profile.Ship.LocalId == Ship.LocalId))
-            //{
-            //    SetShip(profile.Ship);
-            //}
+            foreach (Ship profileShip in profile.Shipyard)
+            {
+                Ship ship = GetShip(profileShip.LocalId);
+                if (ship != null)
+                {
+                    ship.raw = profileShip.raw;
+                }
+            }
 
+            writeShips();
         }
 
         public IDictionary<string, object> GetVariables()

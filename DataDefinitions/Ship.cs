@@ -128,8 +128,7 @@ namespace EddiDataDefinitions
         /// <summary>
         /// The raw JSON from the companion API for this ship
         /// </summary>
-        [JsonIgnore]
-        public string json { get; set; }
+        public string raw { get; set; }
 
         /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
         private string _starsystem;
