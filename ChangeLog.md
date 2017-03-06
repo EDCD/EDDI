@@ -89,7 +89,6 @@
       * 'What use is <material>' - Find out the blueprints that use a particular material
       * 'Which materials can I discard' - Find out how many units of materials can be discarded due to being above your maximum or desired level as set in the material monitor
       * 'Which materials do I need' - Find out how many units of materials are still required due to being below your minimum or desired level as set in the material monitor
-<<<<<<< cdcc6333ea1c20b65d4f9f653d29c8cfc0538877
     * Add other VoiceAttack commands
       * 'What do I need for <blueprint>' - Find out the materials required for a particular blueprint
 
@@ -106,8 +105,6 @@
   * Add mechanism to see if game version is beta or production, using remote production build list if available
   * Update EDSM responder to not send data if game version is beta
   * Update EDDN responder to send data to /test schemas if game version is beta
-=======
->>>>>>> Updates to material monitor and related scripts
 
 #2.2.0
   * Core

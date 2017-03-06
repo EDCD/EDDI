@@ -272,6 +272,8 @@ namespace EddiShipMonitor
             if (compartment != null)
             {
                 ship.bulkheads = compartment.module;
+                // We take ship overall health from here
+                ship.health = compartment.module.health;
             }
 
             compartment = @event.compartments.FirstOrDefault(c => c.name == "ShipCockpit");
@@ -323,8 +325,6 @@ namespace EddiShipMonitor
             }
             ship.fueltankcapacity = (decimal)Math.Pow(2, ship.fueltank.@class);
 
-            // TODO total fuel tank capacity
-
             compartment = @event.compartments.FirstOrDefault(c => c.name == "CargoHatch");
             if (compartment != null)
             {
@@ -336,6 +336,12 @@ namespace EddiShipMonitor
 
             // Hardpoints
             ship.hardpoints = @event.hardpoints;
+
+            // total fuel tank capacity
+            ship.fueltanktotalcapacity = ship.fueltankcapacity + (int)ship.compartments.Where(c => c.module != null && c.module.name.EndsWith("Fuel Tank")).Sum(c => Math.Pow(2, c.module.@class));
+
+            // Cargo capacity
+            ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.name.EndsWith("Cargo Rack")).Sum(c => Math.Pow(2, c.module.@class));
 
             writeShips();
         }
