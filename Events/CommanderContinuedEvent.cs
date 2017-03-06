@@ -12,7 +12,7 @@ namespace EddiEvents
     {
         public const string NAME = "Commander continued";
         public const string DESCRIPTION = "Triggered when you continue an existing game";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"LoadGame\",\"Commander\":\"HRC1\",\"Ship\":\"CobraMkIII\",\"ShipID\":1,\"GameMode\":\"Group\",\"Group\":\"Mobius\",\"Credits\":600120,\"Loan\":0,\"ShipName\":\"jewel of parhoon\",\"ShipIdent\":\"hr-17f\",\"FuelLevel\":3.964024}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"LoadGame\",\"Commander\":\"HRC1\",\"Ship\":\"CobraMkIII\",\"ShipID\":1,\"GameMode\":\"Group\",\"Group\":\"Mobius\",\"Credits\":600120,\"Loan\":0,\"ShipName\":\"jewel of parhoon\",\"ShipIdent\":\"hr-17f\",\"FuelLevel\":3.964024\"FuelCapacity\":8}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CommanderContinuedEvent()
@@ -25,6 +25,7 @@ namespace EddiEvents
             VARIABLES.Add("credits", "The number of credits the commander has");
             VARIABLES.Add("loan", "The current loan the commander has");
             VARIABLES.Add("fuel", "The current fuel level of the commander's vehicle");
+            VARIABLES.Add("fuelcapacity", "The total fuel capacity of the commander's vehicle");
         }
 
         [JsonProperty("commander")]
@@ -57,7 +58,10 @@ namespace EddiEvents
         [JsonProperty("fuel")]
         public decimal? fuel { get; private set; }
 
-        public CommanderContinuedEvent(DateTime timestamp, string commander, int shipId, string ship, string shipName, string shipIdent, GameMode mode, string group, decimal credits, decimal loan, decimal? fuel) : base(timestamp, NAME)
+        [JsonProperty("fuelcapacity")]
+        public decimal? fuelcapacity { get; private set; }
+
+        public CommanderContinuedEvent(DateTime timestamp, string commander, int shipId, string ship, string shipName, string shipIdent, GameMode mode, string group, decimal credits, decimal loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
         {
             this.commander = commander;
             this.shipid = shipId;
@@ -69,6 +73,7 @@ namespace EddiEvents
             this.credits = credits;
             this.loan = loan;
             this.fuel = fuel;
+            this.fuelcapacity = fuelcapacity;
         }
     }
 }
