@@ -368,8 +368,17 @@ namespace EddiJournalMonitor
                                         string item = getString(moduleData, "Item");
                                         bool enabled = getBool(moduleData, "On");
                                         int priority = getInt(moduleData, "Priority");
-                                        decimal health = getDecimal(moduleData, "Health");
-                                        long value = getLong(moduleData, "Value");
+                                        // Health is as 0->1 but we want 0->100, and to a sensible number of decimal places
+                                        decimal health = getDecimal(moduleData, "Health") * 100;
+                                        if (health < 5)
+                                        {
+                                            health = Math.Round(health, 1);
+                                        }
+                                        else
+                                        {
+                                            health = Math.Round(health);
+                                        }
+                                        long price = getLong(moduleData, "Value");
 
                                         // Ammunition
                                         int? clip = getOptionalInt(moduleData, "AmmoInClip");
@@ -379,6 +388,27 @@ namespace EddiJournalMonitor
                                         {
                                             // This is a hardpoint
                                             Hardpoint hardpoint = new Hardpoint() { name = slot };
+                                            if (hardpoint.name.StartsWith("Tiny"))
+                                            {
+                                                hardpoint.size = 0;
+                                            }
+                                            else if (hardpoint.name.StartsWith("Small"))
+                                            {
+                                                hardpoint.size = 1;
+                                            }
+                                            else if (hardpoint.name.StartsWith("Medium"))
+                                            {
+                                                hardpoint.size = 2;
+                                            }
+                                            else if (hardpoint.name.StartsWith("Large"))
+                                            {
+                                                hardpoint.size = 3;
+                                            }
+                                            else if (hardpoint.name.StartsWith("Huge"))
+                                            {
+                                                hardpoint.size = 4;
+                                            }
+
                                             Module module = ModuleDefinitions.fromEDName(item);
                                             if (module == null)
                                             {
@@ -390,7 +420,7 @@ namespace EddiJournalMonitor
                                                 module.enabled = enabled;
                                                 module.priority = priority;
                                                 module.health = health;
-                                                module.value = value;
+                                                module.price = price;
                                                 module.clipcapacity = clip;
                                                 module.hoppercapacity = hopper;
                                                 hardpoint.module = module;
@@ -429,7 +459,7 @@ namespace EddiJournalMonitor
                                                 module.enabled = enabled;
                                                 module.priority = priority;
                                                 module.health = health;
-                                                module.value = value;
+                                                module.price = price;
                                                 compartment.module = module;
                                                 compartments.Add(compartment);
                                             }
@@ -1161,8 +1191,9 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Loan", out val);
                                 decimal loan = (long)val;
                                 decimal? fuel = getOptionalDecimal(data, "FuelLevel");
+                                decimal? fuelCapacity = getOptionalDecimal(data, "FuelCapacity");
 
-                                journalEvent = new CommanderContinuedEvent(timestamp, commander, (int)shipId, ship, shipName, shipIdent, mode, group, credits, loan, fuel);
+                                journalEvent = new CommanderContinuedEvent(timestamp, commander, (int)shipId, ship, shipName, shipIdent, mode, group, credits, loan, fuel, fuelCapacity);
                                 handled = true;
                                 break;
                             }

@@ -6,6 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:eddi="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              xmlns:local="clr-namespace:EddiShipMonitor"
+             xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
@@ -18,12 +19,20 @@
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="Please note that for this feature to work the companion app tab must be configured." VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="Please note that if you have not configured access to the Frontier API then some of the data below will be inaccurate or unavailable.  Also, if you had multiple ships prior to installing EDDI you will need to swap to them as your primary ship before full information for them will be available." VerticalAlignment="Top"/>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="shipData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="shipsUpdated">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Path=name}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Model" IsReadOnly="True" Binding="{Binding Path=model}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Ident" IsReadOnly="True" Binding="{Binding Path=ident}"></DataGridTextColumn>
+                <utility:DataGridNumericColumn Header="Value" IsReadOnly="True" Binding="{Binding Path=value, StringFormat=\{0:N0\}}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Right" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </utility:DataGridNumericColumn>
                 <DataGridTextColumn Header="Location" IsReadOnly="True" Binding="{Binding Path=starsystem}"></DataGridTextColumn>
                 <DataGridComboBoxColumn Header="Role" SelectedItemBinding="{Binding Path=role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static eddi:Role.ROLES}}">
                     <DataGridComboBoxColumn.EditingElementStyle>

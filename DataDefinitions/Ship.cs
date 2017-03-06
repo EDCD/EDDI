@@ -29,11 +29,7 @@ namespace EddiDataDefinitions
         /// <summary>the size of this ship</summary>
         [JsonIgnore]
         public string size { get; set; }
-        /// <summary>the value of the ship without cargo, in credits</summary>
-        [JsonIgnore]
-        public long value { get; set; }
         /// <summary>the total tonnage cargo capacity</summary>
-        [JsonIgnore]
         public int cargocapacity { get; set; }
         /// <summary>the current tonnage cargo carried</summary>
         [JsonIgnore]
@@ -42,6 +38,24 @@ namespace EddiDataDefinitions
         /// <summary>the specific cargo carried</summary>
         [JsonIgnore]
         public List<Cargo> cargo { get; set; }
+
+        private long _value;
+        /// <summary>the value of the ship without cargo, in credits</summary>
+        public long value
+        {
+            get
+            {
+                return _value;
+            }
+            set
+            {
+                if (_value != value)
+                {
+                    _value = value;
+                    NotifyPropertyChanged("value");
+                }
+            }
+        }
 
         private string _name;
         /// <summary>the name of this ship</summary>
@@ -56,7 +70,7 @@ namespace EddiDataDefinitions
                 if (_name != value)
                 {
                     _name = value;
-                    this.NotifyPropertyChanged("name");
+                    NotifyPropertyChanged("name");
                 }
             }
         }
@@ -74,7 +88,7 @@ namespace EddiDataDefinitions
                 if (_ident != value)
                 {
                     _ident = value;
-                    this.NotifyPropertyChanged("ident");
+                    NotifyPropertyChanged("ident");
                 }
             }
         }
@@ -143,7 +157,7 @@ namespace EddiDataDefinitions
                 if (_starsystem != value)
                 {
                     _starsystem = value;
-                    this.NotifyPropertyChanged("starsystem");
+                    NotifyPropertyChanged("starsystem");
                 }
             }
         }
@@ -161,7 +175,7 @@ namespace EddiDataDefinitions
                 if (_station != value)
                 {
                     _station = value;
-                    this.NotifyPropertyChanged("station");
+                    NotifyPropertyChanged("station");
                 }
             }
         }

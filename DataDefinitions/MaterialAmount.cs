@@ -16,14 +16,14 @@ namespace EddiDataDefinitions
         private int _amount;
         public int amount { get
             {
-                return this._amount;
+                return _amount;
             }
             set
             {
-                if (this._amount != value)
+                if (_amount != value)
                 {
-                    this._amount = value;
-                    this.NotifyPropertyChanged("amount");
+                    _amount = value;
+                    NotifyPropertyChanged("amount");
                 }
             }
         }
@@ -34,14 +34,14 @@ namespace EddiDataDefinitions
         {
             get
             {
-                return this._minimum;
+                return _minimum;
             }
             set
             {
-                if (this._minimum != value)
+                if (_minimum != value)
                 {
-                    this._minimum = value;
-                    this.NotifyPropertyChanged("minimum");
+                    _minimum = value;
+                    NotifyPropertyChanged("minimum");
                 }
             }
         }
@@ -52,14 +52,14 @@ namespace EddiDataDefinitions
         {
             get
             {
-                return this._desired;
+                return _desired;
             }
             set
             {
-                if (this._desired != value)
+                if (_desired != value)
                 {
-                    this._desired = value;
-                    this.NotifyPropertyChanged("desired");
+                    _desired = value;
+                    NotifyPropertyChanged("desired");
                 }
             }
         }
@@ -70,14 +70,14 @@ namespace EddiDataDefinitions
         {
             get
             {
-                return this._maximum;
+                return _maximum;
             }
             set
             {
-                if (this._maximum != value)
+                if (_maximum != value)
                 {
-                    this._maximum = value;
-                    this.NotifyPropertyChanged("maximum");
+                    _maximum = value;
+                    NotifyPropertyChanged("maximum");
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace EddiDataDefinitions
         public MaterialAmount(Material material, int? minimum, int? desired, int? maximum)
         {
             this.material = material.name;
-            this.amount = 0;
+            amount = 0;
             this.minimum = minimum;
             this.desired = desired;
             this.maximum = maximum;

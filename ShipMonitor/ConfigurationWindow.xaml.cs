@@ -105,41 +105,6 @@ namespace EddiShipMonitor
         }
     }
 
-    public class DataGridNumericColumn : DataGridTextColumn
-    {
-        protected override object PrepareCellForEdit(FrameworkElement editingElement, RoutedEventArgs editingEventArgs)
-        {
-            TextBox edit = editingElement as TextBox;
-            edit.PreviewTextInput += OnPreviewTextInput;
-
-            return base.PrepareCellForEdit(editingElement, editingEventArgs);
-        }
-
-        private void OnPaste(object sender, DataObjectPastingEventArgs e)
-        {
-            var data = e.SourceDataObject.GetData(DataFormats.Text);
-            if (!IsDataValid(data)) e.CancelCommand();
-        }
-
-        void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !IsDataValid(e.Text);
-        }
-
-        bool IsDataValid(object data)
-        {
-            try
-            {
-                Convert.ToInt32(data);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-    }
-
     public class ValidIPARule : ValidationRule
     {
         private static Regex IPA_REGEX = new Regex(@"^[bdfɡhjklmnprstvwzxaɪ˜iu\.ᵻᵿɑɐɒæɓʙβɔɕçɗɖðʤəɘɚɛɜɝɞɟʄɡ(ɠɢʛɦɧħɥʜɨɪʝɭɬɫɮʟɱɯɰŋɳɲɴøɵɸθœɶʘɹɺɾɻʀʁɽʂʃʈʧʉʊʋⱱʌɣɤʍχʎʏʑʐʒʔʡʕʢǀǁǂǃˈˌːˑʼʴʰʱʲʷˠˤ˞n̥d̥ŋ̊b̤a̤t̪d̪s̬t̬b̰a̰t̺d̺t̼d̼t̻d̻t̚ɔ̹ẽɔ̜u̟e̠ël̴n̴ɫe̽e̝ɹ̝m̩n̩l̩e̞β̞e̯e̘e̙ĕe̋éēèȅx͜xx͡x↓↑→↗↘]+$");
