@@ -129,11 +129,18 @@ namespace EddiShipMonitor
 
         private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
         {
-            SetCurrentShip(@event.shipid, @event.ship);
-            Ship ship = GetCurrentShip();
-            ship.name = @event.shipname;
-            ship.ident = @event.shipident;
-            writeShips();
+            if (!inFighterOrBuggy(@event.ship))
+            {
+                SetCurrentShip(@event.shipid, @event.ship);
+                Ship ship = GetCurrentShip();
+                ship.name = @event.shipname;
+                ship.ident = @event.shipident;
+                if (@event.fuelcapacity.HasValue)
+                {
+                    ship.fueltanktotalcapacity = (decimal)@event.fuelcapacity;
+                }
+                writeShips();
+            }
         }
 
         private void handleShipPurchasedEvent(ShipPurchasedEvent @event)
@@ -247,6 +254,8 @@ namespace EddiShipMonitor
             if (compartment != null)
             {
                 ship.bulkheads = compartment.module;
+                // We take ship overall health from here
+                ship.health = compartment.module.health;
             }
 
             compartment = @event.compartments.FirstOrDefault(c => c.name == "ShipCockpit");
@@ -298,8 +307,6 @@ namespace EddiShipMonitor
             }
             ship.fueltankcapacity = (decimal)Math.Pow(2, ship.fueltank.@class);
 
-            // TODO total fuel tank capacity
-
             compartment = @event.compartments.FirstOrDefault(c => c.name == "CargoHatch");
             if (compartment != null)
             {
@@ -311,6 +318,12 @@ namespace EddiShipMonitor
 
             // Hardpoints
             ship.hardpoints = @event.hardpoints;
+
+            // total fuel tank capacity
+            ship.fueltanktotalcapacity = ship.fueltankcapacity + (int)ship.compartments.Where(c => c.module != null && c.module.name.EndsWith("Fuel Tank")).Sum(c => Math.Pow(2, c.module.@class));
+
+            // Cargo capacity
+            ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.name.EndsWith("Cargo Rack")).Sum(c => Math.Pow(2, c.module.@class));
 
             writeShips();
         }
@@ -363,6 +376,8 @@ namespace EddiShipMonitor
                     ship.model = profile.Ship.model;
                     ship.Augment();
                 }
+                // Obtain items that we can't obtain from the journal
+                ship.value = profile.Ship.value;
             }
 
             foreach (Ship profileShip in profile.Shipyard)
@@ -377,6 +392,8 @@ namespace EddiShipMonitor
                         ship.model = profileShip.model;
                         ship.Augment();
                     }
+                    // Obtain items that we can't obtain from the journal
+                    ship.value = profileShip.value;
                 }
             }
 
@@ -428,6 +445,13 @@ namespace EddiShipMonitor
 
         private void AddShip(Ship ship)
         {
+            // If we were started from VoiceAttack then we might not have an application; check here and create if it doesn't exist
+            if (Application.Current == null)
+            {
+                new Application();
+            }
+
+            // Run this on the dispatcher to ensure that we can update it whilst reflecting changes in the UI
             if (Application.Current.Dispatcher.CheckAccess())
             {
                 shipyard.Add(ship);
@@ -527,6 +551,14 @@ namespace EddiShipMonitor
                 ship.starsystem = null;
                 ship.station = null;
             }
+        }
+
+        /// <summary>
+        /// See if we're in a fighter or a buggy
+        /// </summary>
+        private bool inFighterOrBuggy(string model)
+        {
+            return (model == "Empire_Fighter" || model == "Federation_Fighter" || model == "Independent_Fighter" || model == "TestBuggy");
         }
     }
 }

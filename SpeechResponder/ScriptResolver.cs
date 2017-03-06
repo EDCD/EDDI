@@ -446,6 +446,12 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
+            store["BlueprintDetails"] = new NativeFunction((values) =>
+            {
+                BlueprintMaterials result = BlueprintMaterials.FromName(values[0].AsString);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1);
+
             store["Distance"] = new NativeFunction((values) =>
             {
                 return (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(values[0].AsNumber - values[3].AsNumber), 2)

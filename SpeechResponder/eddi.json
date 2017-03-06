@@ -2,6 +2,14 @@
   "name": "EDDI",
   "description": "A balanced, non-partisan personality",
   "scripts": {
+    "Blueprint material report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch blueprint from state }\r\n{set blueprintname to state.blueprint}\r\n{if blueprintname:\r\n    {_ Fetch full blueprint details }\r\n    {set blueprint to BlueprintDetails(blueprintname)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'blueprint')}\r\n    {SetState('eddi_context_blueprint_name', blueprintname)}\r\n}\r\n\r\n{if !blueprint:\r\n    {_ Fetch from context }\r\n    {set blueprint to BlueprintDetails(state.eddi_context_blueprint_name)}\r\n}\r\n\r\n{if blueprint:\r\n    {set materials to len(blueprint.materials)}\r\n    {blueprintname} requires \r\n    {if materials = 1:\r\n        {blueprint.materials[0].material}\r\n    |elif materials = 2:\r\n        {blueprint.materials[0].material} and {blueprint.materials[1].material}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(blueprint.materials):\r\n            {if cur = 0:\r\n                {blueprint.materials[cur].material}\r\n            |elif cur < len(blueprint.materials) - 1:\r\n                , {blueprint.materials[cur].material}\r\n            |else:\r\n                , and {blueprint.materials[cur].material}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n|else:\r\n    No information available on materials required for {blueprintname}\r\n}.\r\n",
+      "name": "Blueprint material report",
+      "description": "Report on the material requirements for a blueprint"
+    },
     "Body report": {
       "enabled": true,
       "priority": 3,
@@ -642,6 +650,14 @@
       "name": "Material threshold",
       "description": "Triggered when a material reaches a threshold"
     },
+    "Material use report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch material from state }\r\n{set material to state.material}\r\n{if material:\r\n    {_ Fetch full material details }\r\n    {set material to MaterialDetails(material)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'material')}\r\n    {SetState('eddi_context_material_name', material.name)}\r\n}\r\n\r\n{if !material:\r\n    {_ Fetch from context }\r\n    {set material to MaterialDetails(state.eddi_context_material_name)}\r\n}\r\n\r\n{if material:\r\n    {set uses to len(material.blueprints)}\r\n    {if slice(material.name, len(material.name)-1) = 's':\r\n        {set plural to 'are'}\r\n    |else:\r\n        {set plural to 'is'}\r\n    }\r\n    {if uses = 0:\r\n      {material.name} {plural} not required for any blueprints\r\n    |elif uses = 1:\r\n        {set name to cat(material.blueprints[0].name, material.blueprints[0].modulename, 'grade', material.blueprints[0].grade)}\r\n        {material.name} {plural} used for the {name} blueprint\r\n    |elif uses = 2:\r\n        {set name0 to cat(material.blueprints[0].name, material.blueprints[0].modulename, 'grade', material.blueprints[0].grade)}\r\n        {set name1 to cat(material.blueprints[1].name, material.blueprints[1].modulename, 'grade', material.blueprints[1].grade)}\r\n        {material.name} {plural} used for the {name0} and {name1} blueprints\r\n    |else:\r\n        {material.name} {plural} used for {len(material.blueprints)} blueprints.  These are\r\n        {set cur to 0}\r\n        {while cur < len(material.blueprints):\r\n            {set name to cat(material.blueprints[cur].name, material.blueprints[cur].modulename, 'grade', material.blueprints[cur].grade)}\r\n            {if cur = 0:\r\n                {name}\r\n            |elif cur < len(material.blueprints) - 1:\r\n                , {name}\r\n            |else:\r\n                , and {name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n|else:\r\n    I don't have any information about that material\r\n}.\r\n",
+      "name": "Material use report",
+      "description": "Report on the use of a material"
+    },
     "Materials discard report": {
       "enabled": true,
       "priority": 3,
@@ -906,6 +922,14 @@
       "name": "Ship interdiction",
       "description": "Triggered when you interdict another ship"
     },
+    "Ship loadout": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "name": "Ship loadout",
+      "description": "Triggered when you obtain the loadout of your ship"
+    },
     "Ship purchased": {
       "enabled": true,
       "priority": 3,
@@ -1137,14 +1161,6 @@
       "script": "{OneOf(\"Full control re-established\", \"Docking clamps free\", \"Disengaged from local networks\")}.\r\n\r\n{set limpetcheck to F(\"Limpet check\")}\r\n\r\n{if limpetcheck:\r\n    {Pause(5000)}\r\n    {limpetcheck}\r\n}\r\n",
       "name": "Undocked",
       "description": "Triggered when your ship undocks from a station or outpost"
-    },
-    "Material use report": {
-      "enabled": true,
-      "priority": 3,
-      "responder": false,
-      "script": "{_ Fetch material from state }\r\n{set material to state.material}\r\n{if material:\r\n    {_ Fetch full material details }\r\n    {set material to MaterialDetails(material)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'material')}\r\n    {SetState('eddi_context_material_name', material.name)}\r\n}\r\n\r\n{if !material:\r\n    {_ Fetch from context }\r\n    {set material to MaterialDetails(state.eddi_context_material_name)}\r\n}\r\n\r\n{if material:\r\n    {set uses to len(material.blueprints)}\r\n    {if slice(material.name, len(material.name)-1) = 's':\r\n        {set plural to 'are'}\r\n    |else:\r\n        {set plural to 'is'}\r\n    }\r\n    {if uses = 0:\r\n      {material.name} {plural} not required for any blueprints\r\n    |elif uses = 1:\r\n        {set name to cat(material.blueprints[0].name, material.blueprints[0].modulename, 'grade', material.blueprints[0].grade)}\r\n        {material.name} {plural} used for the {name} blueprint\r\n    |elif uses = 2:\r\n        {set name0 to cat(material.blueprints[0].name, material.blueprints[0].modulename, 'grade', material.blueprints[0].grade)}\r\n        {set name1 to cat(material.blueprints[1].name, material.blueprints[1].modulename, 'grade', material.blueprints[1].grade)}\r\n        {material.name} {plural} used for the {name0} and {name1} blueprints\r\n    |else:\r\n        {material.name} {plural} used for {len(material.blueprints)} blueprints.  These are\r\n        {set cur to 0}\r\n        {while cur < len(material.blueprints):\r\n            {set name to cat(material.blueprints[cur].name, material.blueprints[cur].modulename, 'grade', material.blueprints[cur].grade)}\r\n            {if cur = 0:\r\n                {name}\r\n            |elif cur < len(material.blueprints) - 1:\r\n                , {name}\r\n            |else:\r\n                , and {name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n|else:\r\n    I don't have any information about that material\r\n}.\r\n",
-      "name": "Material use report",
-      "description": "Report on the use of a material"
     }
   }
 }
