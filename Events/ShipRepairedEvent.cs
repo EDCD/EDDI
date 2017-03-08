@@ -17,7 +17,7 @@ namespace EddiEvents
         static ShipRepairedEvent()
         {
             VARIABLES.Add("item", "The item repaired, if repairing a specific item");
-            VARIABLES.Add("price", "The price of refuelling");
+            VARIABLES.Add("price", "The price of the repair");
         }
 
         public string item { get; private set; }

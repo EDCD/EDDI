@@ -340,12 +340,18 @@ namespace EddiShipMonitor
 
         private void handleShipRefuelledEvent(ShipRefuelledEvent @event)
         {
-            // TODO
+            // We do not keep track of current fuel level so nothing to do here
         }
 
         private void handleShipRestockedEvent(ShipRestockedEvent @event)
         {
             // TODO
+        }
+
+        private void handleShipRepurchasedEvent(ShipRepurchasedEvent @event)
+        {
+            // TODO set all health to 100%
+            // Do we need to do this or will we get a loadout event?
         }
 
         public void PostHandle(Event @event)

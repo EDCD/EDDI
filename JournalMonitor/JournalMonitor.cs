@@ -1008,12 +1008,22 @@ namespace EddiJournalMonitor
                                 handled = true;
                             }
                             break;
+                        case "Resurrect":
+                            {
+                                string option = getString(data, "Option");
+                                long price = getLong(data, "Cost");
+
+                                if (option == "rebuy")
+                                {
+                                    journalEvent = new ShipRepurchasedEvent(timestamp, price);
+                                    handled = true;
+                                }
+                            }
+                            break;
                         case "BuyExplorationData":
                             {
-                                object val;
                                 string system = getString(data, "System");
-                                data.TryGetValue("Cost", out val);
-                                long price = (long)val;
+                                long price = getLong(data, "Cost");
                                 journalEvent = new ExplorationDataPurchasedEvent(timestamp, system, price);
                                 handled = true;
                                 break;
