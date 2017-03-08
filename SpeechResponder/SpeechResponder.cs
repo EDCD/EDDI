@@ -207,7 +207,6 @@ namespace EddiSpeechResponder
 
             if (EDDI.Instance.State != null)
             {
-                //dict["state"] = new ReflectionValue(EDDI.Instance.State);
                 dict["state"] = ScriptResolver.buildState();
                 Logging.Debug("State is " + JsonConvert.SerializeObject(EDDI.Instance.State));
             }
