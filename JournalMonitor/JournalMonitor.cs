@@ -4,6 +4,7 @@ using EddiDataDefinitions;
 using EddiEvents;
 using EddiShipMonitor;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,7 +80,9 @@ namespace EddiJournalMonitor
                                 State factionState = State.FromEDName(getString(data, "FactionState"));
                                 Economy economy = Economy.FromEDName(getString(data, "StationEconomy"));
                                 Government government = Government.FromEDName(getString(data, "StationGovernment"));
-                                journalEvent = new DockedEvent(timestamp, systemName, stationName, stationModel, faction, factionState, economy, government);
+                                decimal? distancefromstar = getOptionalDecimal(data, "DistFromStarLS");
+
+                                journalEvent = new DockedEvent(timestamp, systemName, stationName, stationModel, faction, factionState, economy, government, distancefromstar);
                             }
                             handled = true;
                             break;
@@ -2256,7 +2259,7 @@ namespace EddiJournalMonitor
         {
         }
 
-        public void Handle(Profile profile)
+        public void HandleProfile(JObject profile)
         {
         }
 

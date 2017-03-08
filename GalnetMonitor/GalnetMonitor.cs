@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using Utilities;
 using EddiEvents;
 using EddiCompanionAppService;
+using Newtonsoft.Json.Linq;
 
 namespace GalnetMonitor
 {
@@ -152,7 +153,7 @@ namespace GalnetMonitor
         {
         }
 
-        public void Handle(Profile profile)
+        public void HandleProfile(JObject profile)
         {
         }
 

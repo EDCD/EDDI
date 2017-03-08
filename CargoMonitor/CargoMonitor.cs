@@ -3,6 +3,7 @@ using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -90,7 +91,7 @@ namespace EddiCargoMonitor
 
         //}
 
-        public void Handle(Profile profile)
+        public void HandleProfile(JObject profile)
         {
         }
 

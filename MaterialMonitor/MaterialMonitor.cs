@@ -12,6 +12,7 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using EddiCompanionAppService;
 using System.Collections.Concurrent;
+using Newtonsoft.Json.Linq;
 
 namespace EddiMaterialMonitor
 {
@@ -159,7 +160,7 @@ namespace EddiMaterialMonitor
             }
         }
 
-        public void Handle(Profile profile)
+        public void HandleProfile(JObject profile)
         {
         }
 

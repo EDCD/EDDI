@@ -3,6 +3,7 @@ using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -114,6 +115,10 @@ namespace EddiShipMonitor
             else if (@event is ShipRepairedEvent)
             {
                 handleShipRepairedEvent((ShipRepairedEvent)@event);
+            }
+            else if (@event is ShipRepurchasedEvent)
+            {
+                handleShipRepurchasedEvent((ShipRepurchasedEvent)@event);
             }
             else if (@event is ShipRestockedEvent)
             {
@@ -330,12 +335,78 @@ namespace EddiShipMonitor
 
         private void handleShipRebootedEvent(ShipRebootedEvent @event)
         {
-            // TODO
+            Ship ship = GetCurrentShip();
+            if (ship == null)
+            {
+                return;
+            }
+            foreach (string modulename in @event.modules)
+            {
+                // Find the matching module and set health to 1%
+                if (modulename == "ShipCockpit" && ship.canopy != null)
+                {
+                    ship.canopy.health = 1;
+                }
+                else if (modulename == "PowerPlant" && ship.powerplant != null)
+                {
+                    ship.powerplant.health = 1;
+                }
+                else if (modulename == "MainEngines" && ship.thrusters != null)
+                {
+                    ship.thrusters.health = 1;
+                }
+                else if (modulename == "PowerDistributor" && ship.powerdistributor != null)
+                {
+                    ship.powerdistributor.health = 1;
+                }
+                else if (modulename == "FrameShiftDrive" && ship.frameshiftdrive != null)
+                {
+                    ship.frameshiftdrive.health = 1;
+                }
+                else if (modulename == "LifeSupport" && ship.lifesupport != null)
+                {
+                    ship.lifesupport.health = 1;
+                }
+                else if (modulename == "Radar" && ship.sensors != null)
+                {
+                    ship.sensors.health = 1;
+                }
+                else if (modulename == "CargoHatch" && ship.cargohatch != null)
+                {
+                    ship.cargohatch.health = 1;
+                }
+                else if (modulename == "DataLinkScanner" && ship.datalinkscanner != null)
+                {
+                    ship.datalinkscanner.health = 1;
+                }
+                else if (modulename.Contains("Hardpoint"))
+                {
+                    foreach (Hardpoint hardpoint in ship.hardpoints)
+                    {
+                        if (hardpoint.name == modulename && hardpoint.module != null)
+                        {
+                            hardpoint.module.health = 1;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (Compartment compartment in ship.compartments)
+                    {
+                        if (compartment.name == modulename && compartment.module != null)
+                        {
+                            compartment.module.health = 1;
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         private void handleShipRepairedEvent(ShipRepairedEvent @event)
         {
-            // TODO
+            // This doesn't give us enough information at present to do anything useful
         }
 
         private void handleShipRefuelledEvent(ShipRefuelledEvent @event)
@@ -350,43 +421,47 @@ namespace EddiShipMonitor
 
         private void handleShipRepurchasedEvent(ShipRepurchasedEvent @event)
         {
-            // TODO set all health to 100%
-            // Do we need to do this or will we get a loadout event?
+            // We don't do anything here as this is followed by a full ship loadout event
         }
 
         public void PostHandle(Event @event)
         {
         }
 
-        public void Handle(Profile profile)
+        public void HandleProfile(JObject profile)
         {
+            // Obtain the shipyard from the profile
+            List<Ship> profileShipyard = FrontierApi.ShipyardFromJson(profile);
+
+            Ship profileCurrentShip = FrontierApi.ShipFromJson((JObject)profile["ship"]);
+
             // Information from the Frontier API can be out-of-date so we only use it to set our ship if we don't know what it already is
             if (currentShipId == null)
             {
                 // This means that we don't have any info so far; set our active ship
-                if (profile.Ship != null)
+                if (profileCurrentShip != null)
                 {
-                    SetCurrentShip(profile.Ship.LocalId, profile.Ship.model);
+                    SetCurrentShip(profileCurrentShip.LocalId, profileCurrentShip.model);
                 }
             }
 
             // Add the raw JSON for each known ship provided in the profile
             // TODO Rationalise companion API data - munge the JSON according to the compartment information, removing anything tht is out-of-sync
-            if (profile.Ship != null)
+            if (profileCurrentShip != null)
             {
-                Ship ship = GetShip(profile.Ship.LocalId);
-                ship.raw = profile.Ship.raw;
+                Ship ship = GetShip(profileCurrentShip.LocalId);
+                ship.raw = profileCurrentShip.raw;
                 if (ship.model == null)
                 {
                     // We don't know this ship's model but can fill it from the info we have
-                    ship.model = profile.Ship.model;
+                    ship.model = profileCurrentShip.model;
                     ship.Augment();
                 }
                 // Obtain items that we can't obtain from the journal
-                ship.value = profile.Ship.value;
+                ship.value = profileCurrentShip.value;
             }
 
-            foreach (Ship profileShip in profile.Shipyard)
+            foreach (Ship profileShip in profileShipyard)
             {
                 Ship ship = GetShip(profileShip.LocalId);
                 if (ship != null)

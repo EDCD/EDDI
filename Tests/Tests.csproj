@@ -137,6 +137,10 @@
       <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>
       <Name>EddiJournalMonitor</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
+      <Project>{5294706E-E600-4EA1-B904-66A41561E852}</Project>
+      <Name>EddiShipMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SpeechResponder\EddiSpeechResponder.csproj">
       <Project>{b164baec-9d66-4846-b152-2f8914406b89}</Project>
       <Name>EddiSpeechResponder</Name>
