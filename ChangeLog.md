@@ -31,6 +31,7 @@
 	* Update 'Mission accepted' event to include the number of kills for massacre missions
     * Add 'Settlement approached' event
 	* Add 'Ship renamed' event to record when ship names and idents are changed
+    * Add 'Ship repurchased' event to record when player resurrects with their existing ship
 	* Update 'System state report' to say nothing if the system is not in any particular state
 	* Update 'Touchdown' event to record if the ship touching down is player controlled or not
 	* Add 'Trade voucher redeemed' event when a trade voucher is redeemed
