@@ -178,7 +178,7 @@ namespace EddiCargoMonitor
             //}
         }
 
-        public void Handle(Profile profile)
+        public void HandleProfile(JObject profile)
         {
         }
 

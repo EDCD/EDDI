@@ -299,10 +299,6 @@ namespace EddiEddpMonitor
         {
         }
 
-        public void Handle(Profile profile)
-        {
-        }
-
         public IDictionary<string, object> GetVariables()
         {
             return null;
