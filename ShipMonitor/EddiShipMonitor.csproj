@@ -51,6 +51,7 @@
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FrontierApi.cs" />
     <Compile Include="ShipMonitorConfiguration.cs" />
     <Compile Include="ShipMonitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

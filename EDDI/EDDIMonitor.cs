@@ -2,6 +2,7 @@
 using EddiEvents;
 using System.Collections.Generic;
 using EddiCompanionAppService;
+using Newtonsoft.Json.Linq;
 
 namespace Eddi
 {
@@ -58,7 +59,7 @@ namespace Eddi
         /// <summary>
         /// Called to receive information from the Frontier API
         /// </summary>
-        void Handle(Profile profile);
+        void HandleProfile(JObject profile);
 
         /// <summary>
         /// Provide any local variables

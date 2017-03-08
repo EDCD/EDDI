@@ -26,30 +26,26 @@ namespace EddiEvents
             VARIABLES.Add("economy", "The economy of the station at which the commander has docked");
             VARIABLES.Add("government", "The government of the station at which the commander has docked");
             VARIABLES.Add("security", "The security of the station at which the commander has docked");
+            VARIABLES.Add("distancefromstar", "The distance of this station from the star (light seconds)");
         }
 
-        [JsonProperty("system")]
         public string system { get; private set; }
 
-        [JsonProperty("station")]
         public string station { get; private set; }
 
-        [JsonProperty("model")]
         public string model { get; private set; }
 
-        [JsonProperty("faction")]
         public string faction { get; private set; }
 
-        [JsonProperty("factionstate")]
         public string factionstate { get; private set; }
 
-        [JsonProperty("economy")]
         public string economy { get; private set; }
 
-        [JsonProperty("government")]
         public string government { get; private set; }
 
-        public DockedEvent(DateTime timestamp, string system, string station, string model, string faction, State factionstate, Economy economy, Government government) : base(timestamp, NAME)
+        public decimal? distancefromstar { get; private set; }
+
+        public DockedEvent(DateTime timestamp, string system, string station, string model, string faction, State factionstate, Economy economy, Government government, decimal? distancefromstar) : base(timestamp, NAME)
         {
             this.system = system;
             this.station = station;
@@ -58,6 +54,7 @@ namespace EddiEvents
             this.factionstate = (factionstate == null ? State.None.name : factionstate.name);
             this.economy = (economy == null ? Economy.None.name : economy.name);
             this.government = (government == null ? Government.None.name : government.name);
+            this.distancefromstar = distancefromstar;
         }
     }
 }

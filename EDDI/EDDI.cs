@@ -1354,7 +1354,7 @@ namespace Eddi
                                 {
                                     try
                                     {
-                                        monitor.Handle(profile);
+                                        monitor.HandleProfile(profile.json);
                                     }
                                     catch (Exception ex)
                                     {
