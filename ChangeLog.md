@@ -61,6 +61,7 @@
 	  * 'FSD engaged' - new script
 	  * 'Jumped' - call system security report here rather than in 'Jumping' to guarantee up-to-date information
 	  * 'Liftoff' - change speech depending on if player is controlling ship or not
+	  * 'Location' - add context
 	  * 'Market information updated' - new script taken from the end of the previous 'Docked' script
 	  * 'Material discard report' - new script to report how much of a particular material can be discarded (as per the material monitor settings)
 	  * 'Material inventory report' - new script to report how much of a particular material as defined by state or context is on board
@@ -71,7 +72,7 @@
 	  * 'Settlement approached' - new script
 	  * 'Ship renamed' - new script
 	  * 'System state report' - fixed a couple of typos
-	  * 'Touchdown' - change speech depending on if player is controlling ship or not
+	  * 'Touchdown' - change speech depending on if player is controlling ship or not.  Name body on which the ship has touched down
 	  * 'Trade voucher redeemed' - new script
   * VoiceAttack Responder
     * Update 'disablespeechresponder' and 'enablespeechresponder' plugin contexts to continue to work in the background but just be quiet

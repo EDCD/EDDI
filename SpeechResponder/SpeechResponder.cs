@@ -206,33 +206,8 @@ namespace EddiSpeechResponder
 
             if (EDDI.Instance.State != null)
             {
-                Dictionary<Cottle.Value, Cottle.Value> state = new Dictionary<Cottle.Value, Cottle.Value>();
-                foreach (string key in EDDI.Instance.State.Keys)
-                {
-                    object value = EDDI.Instance.State[key];
-                    if (value == null)
-                    {
-                        continue;
-                    }
-                    Type valueType = value.GetType();
-                    if (valueType == typeof(string))
-                    {
-                        state[key] = (string)value;
-                    }
-                    else if (valueType == typeof(int))
-                    {
-                        state[key] = (int)value;
-                    }
-                    else if (valueType == typeof(bool))
-                    {
-                        state[key] = (bool)value;
-                    }
-                    else if (valueType == typeof(decimal))
-                    {
-                        state[key] = (decimal)value;
-                    }
-                }
-                dict["state"] = state;
+                dict["state"] = new ReflectionValue(EDDI.Instance.State);
+                Logging.Debug("State is " + JsonConvert.SerializeObject(EDDI.Instance.State));
             }
 
             // Obtain additional variables from each monitor

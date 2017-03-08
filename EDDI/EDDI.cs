@@ -1087,24 +1087,16 @@ namespace Eddi
 
         private bool eventEnteredSupercruise(EnteredSupercruiseEvent theEvent)
         {
-            if (Environment == null || Environment != Constants.ENVIRONMENT_SUPERCRUISE)
-            {
-                Environment = Constants.ENVIRONMENT_SUPERCRUISE;
-                updateCurrentSystem(theEvent.system);
-                return true;
-            }
-            return false;
+            Environment = Constants.ENVIRONMENT_SUPERCRUISE;
+            updateCurrentSystem(theEvent.system);
+            return true;
         }
 
         private bool eventEnteredNormalSpace(EnteredNormalSpaceEvent theEvent)
         {
-            if (Environment == null || Environment != Constants.ENVIRONMENT_NORMAL_SPACE)
-            {
-                Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
-                updateCurrentSystem(theEvent.system);
-                return true;
-            }
-            return false;
+            Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
+            updateCurrentSystem(theEvent.system);
+            return true;
         }
 
         private bool eventShipDelivered(ShipDeliveredEvent theEvent)
