@@ -21,6 +21,7 @@
 	* Add 'Crew member removed' event when you remove someone from your crew
 	* Add 'Crew role changed' event when your role on someone's crew changes
 	* Add 'Data voucher redeemed' event when a data voucher is redeemed
+	* Updated 'Docked' event to include distance from start
 	* Add 'File Header' event when a new journal file is found.  This is usually just for internal use
 	* Add 'FSD engaged' event when the FSD is engaged to jump to supercruise or hyperspace.  This replaces the 'Jumping' event and has a similar script
 	* Deprecate 'Jumping' event.  This is part of the netlog monitor, which is no longer required.  The functionality has been replaced by the 'FSD engaged' event
