@@ -358,7 +358,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'disengage')}\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_body_name', event.body)}\r\n\r\n{Pause(5000)}\r\n\r\n{OneOf(\"{ShipName()} has\", \"\")} {OneOf(\"left supercruise\", \"{OneOf(\\\"entered\\\", \\\"returned to\\\", \\\"dropped to\\\")} normal space\")}\r\n\r\n{if event.bodytype = 'Planet':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} planet {P(event.body)}\r\n|elif event.bodytype = 'Star':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} star {P(event.body)}\r\n  |elif event.bodytype = 'Station':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} {P(event.body)}\r\n}.\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'disengage')}\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_body_name', event.body)}\r\n{SetState('eddi_context_body_system', event.system)}\r\n\r\n{Pause(5000)}\r\n\r\n{OneOf(\"{ShipName()} has\", \"\")} {OneOf(\"left supercruise\", \"{OneOf(\\\"entered\\\", \\\"returned to\\\", \\\"dropped to\\\")} normal space\")}\r\n\r\n{if event.bodytype = 'Planet':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} planet {P(event.body)}\r\n|elif event.bodytype = 'Star':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} star {P(event.body)}\r\n  |elif event.bodytype = 'Station':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} {P(event.body)}\r\n}.\r\n",
       "name": "Entered normal space",
       "description": "Triggered when your ship enters normal space"
     },
@@ -566,7 +566,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_body_name', event.body)}\r\n\r\nYou are\r\n{if event.docked:\r\n    docked at the\r\n    {if event.station = event.body:\r\n        orbital station {P(event.station)}\r\n    |else:\r\n        ground station {P(event.station)} on {P(event.body)}\r\n    }\r\n|elif event.body:\r\n    near {P(event.body)}\r\n}\r\nin the {P(event.system)} system.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_body_name', event.body)}\r\n{SetState('eddi_context_body_system', event.system)}\r\n\r\nYou are\r\n{if event.docked:\r\n    docked at the\r\n    {if event.station = event.body:\r\n        orbital station {P(event.station)}\r\n    |else:\r\n        ground station {P(event.station)} on {P(event.body)}\r\n    }\r\n|elif event.body:\r\n    near {P(event.body)}\r\n}\r\nin the {P(event.system)} system.",
       "name": "Location",
       "description": "Triggered when the commander's location is reported, usually when they reload their game."
     },
