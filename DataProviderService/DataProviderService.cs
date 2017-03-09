@@ -239,14 +239,14 @@ namespace EddiDataProviderService
                         }
                         if (body["materials"] != null)
                         {
-                            List<MaterialPercentage> Materials = new List<MaterialPercentage>();
+                            List<MaterialPresence> Materials = new List<MaterialPresence>();
                             foreach (dynamic materialJson in body["materials"])
                             {
                                 Material material = Material.FromName((string)materialJson["material_name"]);
                                 decimal? amount = (decimal?)(double?)materialJson["share"];
                                 if (material != null && amount != null)
                                 {
-                                    Materials.Add(new MaterialPercentage(material, (decimal)amount));
+                                    Materials.Add(new MaterialPresence(material, (decimal)amount));
                                 }
                             }
                             if (Materials.Count > 0)
