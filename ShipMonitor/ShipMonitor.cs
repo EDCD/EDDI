@@ -48,9 +48,14 @@ namespace EddiShipMonitor
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
         }
 
+        public bool NeedsStart()
+        {
+            // We don't actively do anything, just listen to events
+            return false;
+        }
+
         public void Start()
         {
-            // We don't actively do anything, just listen to events, so nothing to do here
         }
 
         public void Stop()
