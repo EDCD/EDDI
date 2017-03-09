@@ -18,7 +18,9 @@
 	* Add 'Crew left' event when you leave a crew
 	* Add 'Crew member joined' event when someone joins your crew
 	* Add 'Crew member left' event when someone leaves your crew
+	* Add 'Crew member launched' event when a crewmember launches a fighter
 	* Add 'Crew member removed' event when you remove someone from your crew
+	* Add 'Crew member role changed' event when a crewmember changes their role
 	* Add 'Crew role changed' event when your role on someone's crew changes
 	* Add 'Data voucher redeemed' event when a data voucher is redeemed
 	* Updated 'Docked' event to include distance from start
@@ -50,7 +52,9 @@
 	  * 'Crew hired' - add context
 	  * 'Crew member joined' - new script
 	  * 'Crew member left' - new script
+	  * 'Crew member launched' - new script
 	  * 'Crew member removed' - new script
+	  * 'Crew member role changed' - new script
 	  * 'Crew role changed' - new script
 	  * 'Crew joined' - new script
 	  * 'Crew left' - new script

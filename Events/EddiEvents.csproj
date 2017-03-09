@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CrewMemberRoleChangedEvent.cs" />
+    <Compile Include="CrewMemberLaunchedEvent.cs" />
     <Compile Include="FileHeaderEvent.cs" />
     <Compile Include="CrewMemberRemovedEvent.cs" />
     <Compile Include="CrewMemberLeftEvent.cs" />

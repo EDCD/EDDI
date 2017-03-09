@@ -242,6 +242,14 @@
       "name": "Crew member joined",
       "description": "Triggered when a commander joins your crew"
     },
+    "Crew member launched": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'launch')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n\r\n{event.crew} has launched their fighter.",
+      "name": "Crew member launched",
+      "description": "Triggered when a crew member launches the fighter"
+    },
     "Crew member left": {
       "enabled": true,
       "priority": 3,
@@ -257,6 +265,14 @@
       "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'remove')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n\r\nYou have remove {event.crew} from your crew.",
       "name": "Crew member removed",
       "description": "Triggered when you remove a commander from your crew"
+    },
+    "Crew member role changed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'role')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n{SetState('eddi_context_crew_role', event.role)}\r\n\r\n{if event.role = 'Idle':\r\n    {event.crew} is no longer manning a position\r\n|elif event.role = 'Fighter':\r\n    {event.crew} is now manning the fighter\r\n|elif event.role = 'Gunner':\r\n    {event.crew} is now manning the guns\r\n}.\r\n",
+      "name": "Crew member role change",
+      "description": "Triggered when a crew member changes their role"
     },
     "Crew role changed": {
       "enabled": true,
