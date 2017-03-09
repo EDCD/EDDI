@@ -179,6 +179,7 @@ namespace EddiDataDefinitions
             if (result == null)
             {
                 Logging.Report("Unknown material name " + from);
+                result = new Material(from.ToLowerInvariant().Replace(" ", ""), "Unknown", from, Rarity.Unknown);
             }
             return result;
         }

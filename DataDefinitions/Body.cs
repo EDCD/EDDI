@@ -112,7 +112,7 @@ namespace EddiDataDefinitions
         public Volcanism volcanism;
 
         // materials
-        public List<MaterialPercentage> materials;
+        public List<MaterialPresence> materials;
 
         /// <summary>
         /// Convert gravity in m/s to g
@@ -136,25 +136,6 @@ namespace EddiDataDefinitions
                 if (age != null) ageprobability = StarClass.sanitiseCP(starClass.ageCP((decimal)age));
                 chromaticity = starClass.chromaticity;
             }
-        }
-    }
-
-    public class MaterialPercentage
-    {
-        public string material { get; private set; }
-        public decimal percentage { get; private set; }
-
-        [JsonConstructor]
-        public MaterialPercentage(string name, decimal percentage)
-        {
-            this.material = name;
-            this.percentage = percentage;
-        }
-
-        public MaterialPercentage(Material material, decimal percentage)
-        {
-            this.material = material.name;
-            this.percentage = percentage;
         }
     }
 }
