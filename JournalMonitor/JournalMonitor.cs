@@ -1236,7 +1236,7 @@ namespace EddiJournalMonitor
                         case "CrewAssign":
                             {
                                 string name = getString(data, "Name");
-                                string role = getString(data, "Role");
+                                string role = getRole(data, "Role");
                                 journalEvent = new CrewAssignedEvent(timestamp, name, role);
                                 handled = true;
                                 break;
@@ -1261,16 +1261,7 @@ namespace EddiJournalMonitor
                             }
                         case "ChangeCrewRole":
                             {
-                                string role = getString(data, "Role");
-                                if (role == "FireCon")
-                                {
-                                    role = "Gunner";
-                                }
-                                else if (role == "FighterCon")
-                                {
-                                    role = "Fighter";
-                                }
-
+                                string role = getRole(data, "Role");
                                 journalEvent = new CrewRoleChangedEvent(timestamp, role);
                                 handled = true;
                                 break;
@@ -1290,6 +1281,21 @@ namespace EddiJournalMonitor
                                 member = member.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
 
                                 journalEvent = new CrewMemberLeftEvent(timestamp, member);
+                                handled = true;
+                                break;
+                            }
+                        case "CrewLaunchFighter":
+                            {
+                                string name = getString(data, "Crew");
+                                journalEvent = new CrewMemberLaunchedEvent(timestamp, name);
+                                handled = true;
+                                break;
+                            }
+                        case "CrewMemberRoleChange":
+                            {
+                                string name = getString(data, "Crew");
+                                string role = getRole(data, "Role");
+                                journalEvent = new CrewMemberRoleChangedEvent(timestamp, name, role);
                                 handled = true;
                                 break;
                             }
@@ -2274,6 +2280,20 @@ namespace EddiJournalMonitor
         public IDictionary<string, object> GetVariables()
         {
             return null;
+        }
+
+        private static string getRole(IDictionary<string, object> data, string key)
+        {
+            string role = getString(data, key);
+            if (role == "FireCon")
+            {
+                role = "Gunner";
+            }
+            else if (role == "FighterCon")
+            {
+                role = "Fighter";
+            }
+            return role;
         }
     }
 }

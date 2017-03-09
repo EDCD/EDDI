@@ -1235,10 +1235,10 @@ namespace Eddi
             body.terraformstate = theEvent.terraformstate;
             body.planettype = theEvent.bodyclass;
             body.volcanism = theEvent.volcanism;
-            body.materials = new List<MaterialPercentage>();
+            body.materials = new List<MaterialPresence>();
             foreach (MaterialPresence presence in theEvent.materials)
             {
-                body.materials.Add(new MaterialPercentage(presence.definition, presence.percentage));
+                body.materials.Add(new MaterialPresence(presence.definition, presence.percentage));
             }
             body.rings = theEvent.rings;
 
