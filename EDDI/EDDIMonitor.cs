@@ -32,6 +32,11 @@ namespace Eddi
         bool IsRequired();
 
         /// <summary>
+        /// If the monitor needs to be explicitly started/stopped
+        /// </summary>
+        bool NeedsStart();
+
+        /// <summary>
         /// Called when this monitor is started.  This is not expected to return whilst the monitor is running
         /// </summary>
         void Start();

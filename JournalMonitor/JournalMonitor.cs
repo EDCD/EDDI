@@ -2038,6 +2038,11 @@ namespace EddiJournalMonitor
             return true;
         }
 
+        public bool NeedsStart()
+        {
+            return true;
+        }
+
         public void Start()
         {
             start();

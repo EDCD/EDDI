@@ -59,6 +59,11 @@ namespace EddiEddpMonitor
             return false;
         }
 
+        public bool NeedsStart()
+        {
+            return true;
+        }
+
         /// <summary>
         /// This method is run when the monitor is requested to start
         /// </summary>
