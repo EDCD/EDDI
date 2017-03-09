@@ -57,6 +57,19 @@ namespace EddiJournalMonitor
                 lastName = fileInfo.Name;
             }
 
+            // Elite-specific: start off by grabbing the first line so that we know if we're in beta or live
+            using (var fs = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+            {
+                string firstLine = reader.ReadLine() ?? "";
+                // First line should be a file header
+                if (firstLine.Contains("Fileheader"))
+                {
+                    // Pass this along as an event
+                    Callback(firstLine);
+                }
+            }
+
             // Main loop
             while (running)
             {
