@@ -52,8 +52,6 @@ namespace EddiShipMonitor
 
         public static List<Ship> ShipyardFromJson(dynamic json)
         {
-            Logging.Debug("Entered");
-
             List<Ship> shipyard = new List<Ship>();
 
             foreach (dynamic shipJson in json["ships"])
@@ -75,16 +73,13 @@ namespace EddiShipMonitor
                 }
             }
 
-            Logging.Debug("Leaving");
             return shipyard;
         }
 
         public static Ship ShipFromJson(JObject json)
         {
-            Logging.Debug("Entered");
             if (json == null)
             {
-                Logging.Debug("Leaving");
                 return null;
             }
 
@@ -94,7 +89,7 @@ namespace EddiShipMonitor
 
             Ship.LocalId = json.GetValue("id").Value<int>();
 
-            Logging.Warn("Local ID is " + Ship.LocalId);
+            Logging.Debug("Local ID is " + Ship.LocalId);
 
             // Some ship information is just skeleton data of the ship's ID.  Use value as our canary to see if there is more data
             if (json["value"] != null)
@@ -187,7 +182,6 @@ namespace EddiShipMonitor
                 }
             }
 
-            Logging.Debug("Leaving");
             return Ship;
         }
 

@@ -434,10 +434,13 @@ namespace Eddi
                     }
                     else
                     {
-                        Thread monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start));
-                        monitorThread.IsBackground = true;
-                        Logging.Info("Starting keepalive for " + monitor.MonitorName());
-                        monitorThread.Start();
+                        if (monitor.NeedsStart())
+                        {
+                            Thread monitorThread = new Thread(() => keepAlive(monitor.MonitorName(), monitor.Start));
+                            monitorThread.IsBackground = true;
+                            Logging.Info("Starting keepalive for " + monitor.MonitorName());
+                            monitorThread.Start();
+                        }
                     }
                 }
 
