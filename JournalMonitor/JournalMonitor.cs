@@ -95,9 +95,8 @@ namespace EddiJournalMonitor
                             break;
                         case "Touchdown":
                             {
-                                decimal latitude = getDecimal("Latitude", val);
-                                decimal longitude = getDecimal("Longitude", val);
-                                data.TryGetValue("PlayerControlled", out val);
+                                decimal latitude = getDecimal(data, "Latitude");
+                                decimal longitude = getDecimal(data, "Longitude");
                                 bool? playercontrolled = getOptionalBool(data, "PlayerControlled");
                                 // Default player controlled to true
                                 if (playercontrolled == null) { playercontrolled = true; }
@@ -108,8 +107,8 @@ namespace EddiJournalMonitor
                             break;
                         case "Liftoff":
                             {
-                                decimal latitude = getDecimal("Latitude", val);
-                                decimal longitude = getDecimal("Longitude", val);
+                                decimal latitude = getDecimal(data, "Latitude");
+                                decimal longitude = getDecimal(data, "Longitude");
                                 bool? playercontrolled = getOptionalBool(data, "PlayerControlled");
                                 journalEvent = new LiftoffEvent(timestamp, longitude, latitude, playercontrolled);
                             }

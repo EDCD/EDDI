@@ -958,25 +958,6 @@ namespace Eddi
             }
         }
 
-        private bool eventFileHeader(FileHeaderEvent @event)
-        {
-            // If we don't recognise the build number then assume we're in beta
-            if (ProductionBuilds.Contains(@event.build))
-            {
-                inBeta = false;
-            }
-            else
-            {
-                inBeta = true;
-            }
-            Logging.Info(inBeta ? "On beta" : "On live");
-            EliteConfiguration config = EliteConfiguration.FromFile();
-            config.Beta = inBeta;
-            config.ToFile();
-
-            return true;
-        }
-
         private bool eventFSDEngaged(FSDEngagedEvent @event)
         {
             // Keep track of our environment
