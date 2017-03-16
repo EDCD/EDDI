@@ -44,6 +44,8 @@ namespace Eddi
 
         public bool inCQC { get; private set; } = false;
 
+        public bool inBeta { get; private set; }
+
         static EDDI()
         {
             // Set up our app directory
@@ -80,6 +82,7 @@ namespace Eddi
         public string UpgradeVersion;
         public string UpgradeLocation;
         public string Motd;
+        public List<string> ProductionBuilds = new List<string>() { "r131487/r0" };
 
         public List<EDDIMonitor> monitors = new List<EDDIMonitor>();
         // Each monitor runs in its own thread
@@ -140,6 +143,11 @@ namespace Eddi
                 Cmdr = new Commander();
                 Ship = new Ship();
                 Shipyard = new List<Ship>();
+
+                // Set up the Elite configuration
+                EliteConfiguration eliteConfiguration = EliteConfiguration.FromFile();
+                inBeta = eliteConfiguration.Beta;
+                Logging.Info(inBeta ? "On beta" : "On live");
 
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
@@ -256,6 +264,10 @@ namespace Eddi
                     EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                     InstanceInfo info = configuration.Beta ? updateServerInfo.beta : updateServerInfo.production;
                     Motd = info.motd;
+                    if (updateServerInfo.productionbuilds != null)
+                    {
+                        ProductionBuilds = updateServerInfo.productionbuilds;
+                    }
                     if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
                         // There is a mandatory update available
@@ -629,7 +641,11 @@ namespace Eddi
                     Logging.Debug("Handling event " + JsonConvert.SerializeObject(journalEvent));
                     // We have some additional processing to do for a number of events
                     bool passEvent = true;
-                    if (journalEvent is JumpingEvent)
+                    if (journalEvent is FileHeaderEvent)
+                    {
+                        passEvent = eventFileHeader((FileHeaderEvent)journalEvent);
+                    }
+                    else if (journalEvent is JumpingEvent)
                     {
                         passEvent = eventJumping((JumpingEvent)journalEvent);
                     }
@@ -904,6 +920,25 @@ namespace Eddi
             Environment = Constants.ENVIRONMENT_WITCH_SPACE;
 
             return passEvent;
+        }
+
+        private bool eventFileHeader(FileHeaderEvent @event)
+        {
+            // If we don't recognise the build number then assume we're in beta
+            if (ProductionBuilds.Contains(@event.build))
+            {
+                inBeta = false;
+            }
+            else
+            {
+                inBeta = true;
+            }
+            Logging.Info(inBeta ? "On beta" : "On live");
+            EliteConfiguration config = EliteConfiguration.FromFile();
+            config.Beta = inBeta;
+            config.ToFile();
+
+            return true;
         }
 
         private bool eventJumped(JumpedEvent theEvent)
