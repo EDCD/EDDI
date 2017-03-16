@@ -296,6 +296,7 @@ namespace EddiStarMapService
             var request = new RestRequest("api-logs-v1/get-logs");
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
+            request.AddParameter("fullSync", 1);
             if (since.HasValue)
             {
                 request.AddParameter("startdatetime", since.Value.ToString("yyyy-MM-dd HH:mm:ss"));
