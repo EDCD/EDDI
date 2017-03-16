@@ -1,3 +1,8 @@
+#2.2.1
+  * Add mechanism to see if game version is beta or production, using remote production build list if available
+  * Update EDSM responder to not send data if game version is beta
+  * Update EDDN responder to send data to /test schemas if game version is beta
+
 #2.2.0
   * Core
     * Fix issue where commander insurance % is not set internally

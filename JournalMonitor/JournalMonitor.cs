@@ -1838,6 +1838,17 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "Fileheader":
+                            {
+                                object val;
+                                data.TryGetValue("gameversion", out val);
+                                string version = (string)val;
+                                data.TryGetValue("build", out val);
+                                string build = ((string)val).Replace(" ", "");
+                                journalEvent = new FileHeaderEvent(timestamp, version, build);
+                                handled = true;
+                                break;
+                            }
                     }
 
                     if (journalEvent != null)

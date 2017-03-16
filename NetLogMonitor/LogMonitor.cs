@@ -41,6 +41,7 @@ namespace EddiNetLogMonitor
 
             // Start off by moving to the end of the file
             long lastSize = 0;
+            string lastName = null;
             FileInfo fileInfo = null;
             try
             {
@@ -53,14 +54,29 @@ namespace EddiNetLogMonitor
             if (fileInfo != null)
             {
                 lastSize = fileInfo.Length;
+                lastName = fileInfo.Name;
+
+                // Elite-specific: start off by grabbing the first line so that we know if we're in beta or live
+                using (var fs = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+                {
+                    string firstLine = reader.ReadLine() ?? "";
+                    // First line should be a file header
+                    if (firstLine.Contains("Fileheader"))
+                    {
+                        // Pass this along as an event
+                        Callback(firstLine);
+                    }
+                }
             }
 
             // Main loop
             while (running)
             {
                 fileInfo = FindLatestFile(Directory, Filter);
-                if (fileInfo == null)
+                if (fileInfo == null || fileInfo.Name != lastName)
                 {
+                    lastName = fileInfo == null ? null : fileInfo.Name;
                     lastSize = 0;
                 }
                 else

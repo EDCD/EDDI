@@ -111,6 +111,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EDDIConfiguration.cs" />
+    <Compile Include="EliteConfiguration.cs" />
     <Compile Include="LZString.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
