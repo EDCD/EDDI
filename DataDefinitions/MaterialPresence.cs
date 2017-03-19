@@ -40,10 +40,13 @@ namespace EddiDataDefinitions
         public MaterialPresence(string material, decimal percentage)
         {
             Material definition = Material.FromName(material);
-            this.definition = definition;
-            this.name = definition.name;
-            this.material = definition.name;
-            this.rarity = definition.rarity;
+            if (definition != null)
+            {
+                this.definition = definition;
+                this.name = definition.name;
+                this.material = definition.name;
+                this.rarity = definition.rarity;
+            }
             this.percentage = percentage;
         }
     }
