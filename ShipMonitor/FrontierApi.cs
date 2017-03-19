@@ -26,6 +26,7 @@ namespace EddiShipMonitor
             { "Cutter", "Imperial Cutter" },
             { "DiamondBack", "Diamondback Scout" },
             { "DiamondBackXL", "Diamondback Explorer" },
+            { "Dolphin", "Dolphin" },
             { "Eagle", "Eagle" },
             { "Empire_Courier", "Imperial Courier" },
             { "Empire_Eagle", "Imperial Eagle" },

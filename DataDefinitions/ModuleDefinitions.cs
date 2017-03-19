@@ -869,11 +869,11 @@ namespace EddiDataDefinitions
                 // Items for which we are awaiting FD IDs
                 {999999901, new Module(999999901, "Hpt_MiningLaser_Turret_Small", 1587, "Mining Laser", 1, "D", 9400, Module.ModuleMount.Turreted) },
                 {999999902, new Module(999999902, "Hpt_MiningLaser_Turret_Medium", 1588, "Mining Laser", 2, "D", 22580, Module.ModuleMount.Turreted) },
-                {999999903, new Module(999999903, "Dolphin_Armour_Grade1", 1589, "Lightweight Alloy", 1, "I", 0, -1) },
-                {999999904, new Module(999999904, "Dolphin_Armour_Grade2", 1590, "Reinforced Alloy", 1, "I", 534390, -1) },
-                {999999905, new Module(999999905, "Dolphin_Armour_Grade3", 1591, "Military Grade Composite", 1, "I", 1115330, -1) },
-                {999999906, new Module(999999906, "Dolphin_Armour_Mirrored", 1592, "Mirrored Surface Composite", 1, "I", 2808390, -1) },
-                {999999907, new Module(999999907, "Dolphin_Armour_Reactive", 1593, "Reactive Surface Composite", 1, "I", -3152080, -1) },
+                {999999903, new Module(999999903, "Dolphin_Armour_Grade1", 1589, "Lightweight Alloy", 1, "I", 0, 128049291) },
+                {999999904, new Module(999999904, "Dolphin_Armour_Grade2", 1590, "Reinforced Alloy", 1, "I", 534390, 128049291) },
+                {999999905, new Module(999999905, "Dolphin_Armour_Grade3", 1591, "Military Grade Composite", 1, "I", 1115330, 128049291) },
+                {999999906, new Module(999999906, "Dolphin_Armour_Mirrored", 1592, "Mirrored Surface Composite", 1, "I", 2808390, 128049291) },
+                {999999907, new Module(999999907, "Dolphin_Armour_Reactive", 1593, "Reactive Surface Composite", 1, "I", -3152080, 128049291) },
                 {999999908, new Module(999999908, "ModularCargoBayDoor", -1, "Cargo Hatch", 1, "H", 0, -1) },
                 {999999909, new Module(999999909, "Empire_Courier_Cockpit", -1, "Cockpit", 1, "I", 0, 128671223) },
                 {999999910, new Module(999999910, "SideWinder_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049249) },
@@ -905,7 +905,7 @@ namespace EddiDataDefinitions
                 {999999936, new Module(999999936, "Independant_Trader_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128672269) },
                 {999999937, new Module(999999937, "CobraMkIV_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128672262) },
                 {999999938, new Module(999999938, "BelugaLiner_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049345) },
-                {999999939, new Module(999999939, "Dolphin_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049345) },
+                {999999939, new Module(999999939, "Dolphin_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049291) },
         };
 
         private static Dictionary<string, Module> ModulesByEDName = ModulesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
