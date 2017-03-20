@@ -150,10 +150,10 @@ namespace EddiVoiceAttackResponder
 
                             // Fire local command if present
                             string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
-                            Logging.Info("Searching for command " + commandName);
+                            Logging.Debug("Searching for command " + commandName);
                             if (vaProxy.CommandExists(commandName))
                             {
-                                Logging.Info("Found command " + commandName);
+                                Logging.Debug("Found command " + commandName);
                                 vaProxy.ExecuteCommand(commandName);
                                 Logging.Info("Executed command " + commandName);
                             }
@@ -244,7 +244,7 @@ namespace EddiVoiceAttackResponder
                     int i = 0;
                     foreach (JToken arrayChild in child.Value.Children())
                     {
-                        Logging.Warn("Handling element " + i);
+                        Logging.Debug("Handling element " + i);
                         string childName = name + " " + i;
                         if (arrayChild.Type == JTokenType.Boolean)
                         {
@@ -290,7 +290,7 @@ namespace EddiVoiceAttackResponder
                 }
                 else if (child.Value.Type == JTokenType.Object)
                 {
-                    Logging.Warn("Found object");
+                    Logging.Debug("Found object");
                     setJsonValues(ref vaProxy, prefix + " " + child.Name, child.Value, new List<string>());
                 }
                 else
