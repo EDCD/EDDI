@@ -23,6 +23,12 @@ If you have version 1.x of EDDI installed then you should remove it entirely pri
   * Shut down VoiceAttack
   * Remove the EDDI directory from the `Apps` directory of your VoiceAttack installation (default C:\Program Files (x86)\VoiceAttack\Apps)
 
+## EDDI Profile
+
+EDDI provides a VoiceAttack profile with some basic commands.  Although it isn't a full control profile it does allow the user to interact with EDDI with phrases such as "please could you repeat that" and questions such as "what use is decoded emission data?"  It also allows you to bring up EDDI's configuration UI with the "Configure EDDI" command.
+
+The profile is available in the EDDI installation directory as EDDI.vap.
+
 ## EDDI Variables
 
 EDDI makes a large number of values available to augment your existing scripts.  The values are shown below, along with a brief description of what the value holds.
