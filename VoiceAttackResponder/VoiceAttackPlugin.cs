@@ -310,6 +310,7 @@ namespace EddiVoiceAttackResponder
 
         public static void VA_Invoke1(dynamic vaProxy)
         {
+            Logging.Debug("Invoked with context " + (string)vaProxy.Context);
             try
             {
                 switch ((string)vaProxy.Context)

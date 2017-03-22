@@ -150,7 +150,7 @@ If a value is not available it will be not set rather than empty.
   * {DATETIME:System previous visit}: the last time the commander visited the system (empty if this is their first visit)
   * {INT:System minutes since previous visit}: the number of minutes since the commander's last visit to the system
   * {DEC:System population}: the population of the system
-  * {TXT:System population}: the population of the system as would be spoken (e.g. "nearly 12 and a half billion")
+  * {TXT:System population (spoken)}: the population of the system as would be spoken (e.g. "nearly 12 and a half billion")
   * {TXT:System allegiance}: the allegiance of the system ("Federation", "Empire", "Alliance", "Independant" or empty)
   * {TXT:System government}: the government of the system (e.g. "Democracy")
   * {TXT:System faction}: the primary faction of the system (e.g. "The Pilots' Federation")
