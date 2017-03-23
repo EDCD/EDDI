@@ -262,7 +262,7 @@ namespace EddiJournalMonitor
                         case "FactionKillBond":
                             {
                                 object val;
-                                string awardingFaction = getFaction(data, "Faction");
+                                string awardingFaction = getFaction(data, "AwardingFaction");
                                 data.TryGetValue("Reward", out val);
                                 long reward = (long)val;
                                 string victimFaction = getString(data, "VictimFaction");
