@@ -42,6 +42,7 @@
   * Speech Responder
     * Added 'ICAO' function to allow ICAO-style speech of ship identifiers, sector names etc.
 	* Script changes:
+	  * 'Blueprint make report' - new script to report how many of a blueprint can be made
 	  * 'Blueprint material report' - new script to report which materials are required for a blueprint
 	  * 'Body report' - add details of volcanism
 	  * 'Bond redeemed' - new script
@@ -70,6 +71,7 @@
 	  * 'Market information updated' - new script taken from the end of the previous 'Docked' script
 	  * 'Material discard report' - new script to report how much of a particular material can be discarded (as per the material monitor settings)
 	  * 'Material inventory report' - new script to report how much of a particular material as defined by state or context is on board
+	  * 'Material location report' - new script to report where to obtain a particular material as defined by state or context
 	  * 'Material required report' - new script to report how much of a particular material as defined by state or context is required (as per the material monitor settings)
 	  * 'Material use report' - new script to the blueprint uses of a particular material as defined by state or context
 	  * 'Materials discard report' - new script to report which materials can be discarded (as per the material monitor settings)
@@ -88,10 +90,12 @@
       * 'How many <material> are on board' - Find out how many units of a particular material is on board
       * 'How many <material> do I need' - Find out how many units of a particular material are required to meet your desired level as set in the material monitor
       * 'What use is <material>' - Find out the blueprints that use a particular material
+      * 'Where can I obtain <material>- Find out where to obtain a particular material
       * 'Which materials can I discard' - Find out how many units of materials can be discarded due to being above your maximum or desired level as set in the material monitor
       * 'Which materials do I need' - Find out how many units of materials are still required due to being below your minimum or desired level as set in the material monitor
     * Add other VoiceAttack commands
       * 'What do I need for <blueprint>' - Find out the materials required for a particular blueprint
+      * 'How many <blueprint> can I make' - Find out how many of a particular blueprint you can make with your current inventory
 
 2.2.3
   * Fix issue where undocumented change in Frontier API would cause EDDI to crash

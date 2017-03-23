@@ -32,6 +32,9 @@ namespace EddiDataDefinitions
         // Blueprints for the material; 
         public List<Blueprint> blueprints { get; set; }
 
+        // Location of the material
+        public string location { get; set; }
+
         private Material(string EDName, string category, string name, Rarity rarity, string symbol = null, decimal? goodpctbody = null, decimal? greatpctbody = null)
         {
             this.EDName = EDName;
@@ -175,7 +178,8 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            Material result = MATERIALS.FirstOrDefault(v => v.name == from);
+            string tidiedFrom = from.ToLowerInvariant().Replace(" ", "");
+            Material result = MATERIALS.FirstOrDefault(v => v.name.ToLowerInvariant().Replace(" ", "") == tidiedFrom);
             if (result == null)
             {
                 Logging.Report("Unknown material name " + from);
