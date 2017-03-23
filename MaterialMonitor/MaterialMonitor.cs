@@ -52,6 +52,7 @@ namespace EddiMaterialMonitor
         {
             readMaterials();
             populateMaterialBlueprints();
+            populateMaterialLocations();
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
         }
 
@@ -328,6 +329,23 @@ namespace EddiMaterialMonitor
                     if (material != null)
                     {
                         material.blueprints = kv.Value;
+                    }
+                }
+            }
+        }
+
+        private void populateMaterialLocations()
+        {
+            string data = Net.DownloadString("http://api.eddp.co/_materiallocations");
+            if (data != null)
+            {
+                Dictionary<string, Dictionary<string, object>> locations= JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(data);
+                foreach (KeyValuePair<string, Dictionary<string, object>> kv in locations)
+                {
+                    Material material = Material.MATERIALS.FirstOrDefault(m => m.name == kv.Key);
+                    if (material != null)
+                    {
+                        material.location = (string)kv.Value["location"];
                     }
                 }
             }

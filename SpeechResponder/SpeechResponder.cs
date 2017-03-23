@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using EddiDataDefinitions;
 using EddiShipMonitor;
+using Cottle;
 
 namespace EddiSpeechResponder
 {
@@ -206,7 +207,8 @@ namespace EddiSpeechResponder
 
             if (EDDI.Instance.State != null)
             {
-                dict["state"] = new ReflectionValue(EDDI.Instance.State);
+                //dict["state"] = new ReflectionValue(EDDI.Instance.State);
+                dict["state"] = ScriptResolver.buildState();
                 Logging.Debug("State is " + JsonConvert.SerializeObject(EDDI.Instance.State));
             }
 

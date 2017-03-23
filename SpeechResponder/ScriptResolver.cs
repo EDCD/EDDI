@@ -438,6 +438,11 @@ namespace EddiSpeechResponder
 
             store["MaterialDetails"] = new NativeFunction((values) =>
             {
+                if (string.IsNullOrEmpty(values[0].AsString))
+                {
+                    return new ReflectionValue(new object());
+                }
+
                 Material result = Material.FromName(values[0].AsString);
                 if (result == null)
                 {
@@ -491,7 +496,7 @@ namespace EddiSpeechResponder
             return store;
         }
 
-        private static Dictionary<Cottle.Value, Cottle.Value> buildState()
+        public static Dictionary<Cottle.Value, Cottle.Value> buildState()
         {
             if (EDDI.Instance.State == null)
             {

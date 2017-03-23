@@ -2,6 +2,14 @@
   "name": "EDDI",
   "description": "A balanced, non-partisan personality",
   "scripts": {
+    "Blueprint make report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Function to obtain current inventory of a material}\r\n{set _inventory(required) to:\r\n    {for material in materials:\r\n        {if material.material = required:\r\n            {return material}\r\n        }\r\n    }\r\n}\r\n\r\n{_ Fetch blueprint from state }\r\n{set blueprintname to state.blueprint}\r\n{if blueprintname:\r\n    {_ Fetch full blueprint details }\r\n    {set blueprint to BlueprintDetails(blueprintname)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'blueprint')}\r\n    {SetState('eddi_context_blueprint_name', blueprintname)}\r\n}\r\n\r\n{if !blueprint:\r\n    {_ Fetch from context }\r\n    {set blueprint to BlueprintDetails(state.eddi_context_blueprint_name)}\r\n}\r\n\r\n{set canbemade to 999}\r\n\r\n{if blueprint:\r\n    {_ Find the smallest number of this blueprint that can be made }\r\n    \r\n    {set cur to 0}\r\n    {while cur < len(blueprint.materials):\r\n        {set inventory to _inventory(blueprint.materials[cur].material)}\r\n        {if !inventory:\r\n            {set canbemade to 0}\r\n        |else:\r\n            {if inventory.amount < canbemade:\r\n                {set canbemade to inventory.amount}\r\n            }\r\n        }\r\n        {set cur to cur + 1}\r\n    }\r\n\r\n    {if canbemade = 0:\r\n        You cannot make any {blueprintname}\r\n    |elif canbemade = 1:\r\n        You can make one {blueprintname}\r\n    |else:\r\n        You can make {canbemade} {blueprintname}\r\n    }\r\n|else:\r\n    No information available on materials required for {blueprintname}\r\n}.\r\n",
+      "name": "Blueprint make report",
+      "description": "Report on how many of a particular blueprint we can make"
+    },
     "Blueprint material report": {
       "enabled": true,
       "priority": 3,
@@ -650,6 +658,14 @@
       "name": "Material inventory report",
       "description": "Report on how many of a material are on-board"
     },
+    "Material location report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch material from state }\r\n{set material to state.material}\r\n{if material:\r\n    {_ Fetch full material details }\r\n    {set material to MaterialDetails(material)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'material')}\r\n    {SetState('eddi_context_material_name', material.name)}\r\n}\r\n\r\n{if !material:\r\n    {_ Fetch from context }\r\n    {set material to MaterialDetails(state.eddi_context_material_name)}\r\n}\r\n\r\n{if material.name:\r\n    {if material.location:\r\n        {material.name} can be {material.location}\r\n    |else:\r\n        No information available on where to find {material.name}\r\n    }\r\n|else:\r\n    I don't have any information about that material\r\n}.\r\n",
+      "name": "Material location report",
+      "description": "Report on the where to obtain a particular material"
+    },
     "Material required report": {
       "enabled": true,
       "priority": 3,
@@ -670,7 +686,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{_ Fetch material from state }\r\n{set material to state.material}\r\n{if material:\r\n    {_ Fetch full material details }\r\n    {set material to MaterialDetails(material)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'material')}\r\n    {SetState('eddi_context_material_name', material.name)}\r\n}\r\n\r\n{if !material:\r\n    {_ Fetch from context }\r\n    {set material to MaterialDetails(state.eddi_context_material_name)}\r\n}\r\n\r\n{if material:\r\n    {set uses to len(material.blueprints)}\r\n    {if slice(material.name, len(material.name)-1) = 's':\r\n        {set plural to 'are'}\r\n    |else:\r\n        {set plural to 'is'}\r\n    }\r\n    {if uses = 0:\r\n      {material.name} {plural} not required for any blueprints\r\n    |elif uses = 1:\r\n        {set name to cat(material.blueprints[0].name, material.blueprints[0].modulename, 'grade', material.blueprints[0].grade)}\r\n        {material.name} {plural} used for the {name} blueprint\r\n    |elif uses = 2:\r\n        {set name0 to cat(material.blueprints[0].name, material.blueprints[0].modulename, 'grade', material.blueprints[0].grade)}\r\n        {set name1 to cat(material.blueprints[1].name, material.blueprints[1].modulename, 'grade', material.blueprints[1].grade)}\r\n        {material.name} {plural} used for the {name0} and {name1} blueprints\r\n    |else:\r\n        {material.name} {plural} used for {len(material.blueprints)} blueprints.  These are\r\n        {set cur to 0}\r\n        {while cur < len(material.blueprints):\r\n            {set name to cat(material.blueprints[cur].name, material.blueprints[cur].modulename, 'grade', material.blueprints[cur].grade)}\r\n            {if cur = 0:\r\n                {name}\r\n            |elif cur < len(material.blueprints) - 1:\r\n                , {name}\r\n            |else:\r\n                , and {name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n|else:\r\n    I don't have any information about that material\r\n}.\r\n",
+      "script": "{_ Fetch material from state }\r\n{set material to state.material}\r\n{if material:\r\n    {_ Fetch full material details }\r\n    {set material to MaterialDetails(material)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'material')}\r\n    {SetState('eddi_context_material_name', material.name)}\r\n}\r\n\r\n{if !material:\r\n    {_ Fetch from context }\r\n    {set material to MaterialDetails(state.eddi_context_material_name)}\r\n}\r\n\r\n{if material && material.name:\r\n    {set uses to len(material.blueprints)}\r\n    {if slice(material.name, len(material.name)-1) = 's':\r\n        {set plural to 'are'}\r\n    |else:\r\n        {set plural to 'is'}\r\n    }\r\n    {if uses = 0:\r\n      {material.name} {plural} not required for any blueprints\r\n    |elif uses = 1:\r\n        {set name to cat(material.blueprints[0].name, material.blueprints[0].modulename, 'grade', material.blueprints[0].grade)}\r\n        {material.name} {plural} used for the {name} blueprint\r\n    |elif uses = 2:\r\n        {set name0 to cat(material.blueprints[0].name, material.blueprints[0].modulename, 'grade', material.blueprints[0].grade)}\r\n        {set name1 to cat(material.blueprints[1].name, material.blueprints[1].modulename, 'grade', material.blueprints[1].grade)}\r\n        {material.name} {plural} used for the {name0} and {name1} blueprints\r\n    |else:\r\n        {material.name} {plural} used for {len(material.blueprints)} blueprints.  These are\r\n        {set cur to 0}\r\n        {while cur < len(material.blueprints):\r\n            {set name to cat(material.blueprints[cur].name, material.blueprints[cur].modulename, 'grade', material.blueprints[cur].grade)}\r\n            {if cur = 0:\r\n                {name}\r\n            |elif cur < len(material.blueprints) - 1:\r\n                , {name}\r\n            |else:\r\n                , and {name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n|else:\r\n    I don't have any information about that material\r\n}.\r\n",
       "name": "Material use report",
       "description": "Report on the use of a material"
     },
@@ -1185,14 +1201,6 @@
       "script": "{OneOf(\"Full control re-established\", \"Docking clamps free\", \"Disengaged from local networks\")}.\r\n\r\n{set limpetcheck to F(\"Limpet check\")}\r\n\r\n{if limpetcheck:\r\n    {Pause(5000)}\r\n    {limpetcheck}\r\n}\r\n",
       "name": "Undocked",
       "description": "Triggered when your ship undocks from a station or outpost"
-    },
-    "Blueprint make report": {
-      "enabled": true,
-      "priority": 3,
-      "responder": false,
-      "script": "{_ Function to obtain current inventory of a material}\r\n{set _inventory(required) to:\r\n    {for material in materials:\r\n        {if material.material = required:\r\n            {return material}\r\n        }\r\n    }\r\n}\r\n\r\n{_ Fetch blueprint from state }\r\n{set blueprintname to state.blueprint}\r\n{if blueprintname:\r\n    {_ Fetch full blueprint details }\r\n    {set blueprint to BlueprintDetails(blueprintname)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'blueprint')}\r\n    {SetState('eddi_context_blueprint_name', blueprintname)}\r\n}\r\n\r\n{if !blueprint:\r\n    {_ Fetch from context }\r\n    {set blueprint to BlueprintDetails(state.eddi_context_blueprint_name)}\r\n}\r\n\r\n{set canbemade to 999}\r\n\r\n{if blueprint:\r\n    {_ Find the smallest number of this blueprint that can be made }\r\n    {set materials to len(blueprint.materials)}\r\n    \r\n    {set cur to 0}\r\n    {while cur < len(blueprint.materials):\r\n        {set inventory to _inventory(blueprint.materials[cur])}\r\n        {if !inventory:\r\n            {set canbemade to 0}\r\n        |else:\r\n            {if inventory.amount < canbemade|\r\n                {set canbemade to inventory.amount}\r\n            }\r\n        }\r\n        {set cur to cur + 1}\r\n    }\r\n\r\n    {if canbemade = 0:\r\n        You cannot make any {blueprint}\r\n    |elif canbemade = 1:\r\n        You can make one {blueprint}\r\n    |else:\r\n        You can make {canbemade} blueprint\r\n    }\r\n|else:\r\n    No information available on materials required for {blueprintname}\r\n}.\r\n",
-      "name": "Blueprint make report",
-      "description": "Report on how many of a particular blueprint we can make"
     }
   }
 }
