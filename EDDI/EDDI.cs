@@ -1362,13 +1362,12 @@ namespace Eddi
 
         private void setSystemDistanceFromHome(StarSystem system)
         {
-            Logging.Info("HomeStarSystem is " + (HomeStarSystem == null ? null : HomeStarSystem.name));
             if (HomeStarSystem != null && HomeStarSystem.x != null && system.x != null)
             {
                 system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - HomeStarSystem.x), 2)
                                                                       + Math.Pow((double)(system.y - HomeStarSystem.y), 2)
                                                                       + Math.Pow((double)(system.z - HomeStarSystem.z), 2)), 2);
-                Logging.Info("Distance from home is " + system.distancefromhome);
+                Logging.Debug("Distance from home is " + system.distancefromhome);
             }
         }
 
