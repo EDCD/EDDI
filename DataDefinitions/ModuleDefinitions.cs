@@ -852,6 +852,7 @@ namespace EddiDataDefinitions
                 {128737277, new Module(128737277, "Int_ModuleReinforcement_Size4_Class2", 1584, "Module Reinforcement Package", 4, "D", 195000) },
                 {128737278, new Module(128737278, "Int_ModuleReinforcement_Size5_Class1", 1585, "Module Reinforcement Package", 5, "E", 150000) },
                 {128737279, new Module(128737279, "Int_ModuleReinforcement_Size5_Class2", 1586, "Module Reinforcement Package", 5, "D", 450000) },
+                {128672317, new Module(128672317, "Int_PlanetApproachSuite", -1, "Planetary Approach Suite", 0, "I", 500) },
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },

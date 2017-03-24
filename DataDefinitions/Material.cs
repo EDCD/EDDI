@@ -123,7 +123,7 @@ namespace EddiDataDefinitions
         public static readonly Material HeatConductionWiring = new Material("heatconductionwiring", "Manufactured", "Heat Conduction Wiring", Rarity.VeryCommon);
         public static readonly Material MechanicalScrap = new Material("mechanicalscrap", "Manufactured", "Mechanical Scrap", Rarity.VeryCommon);
         public static readonly Material SalvagedAlloys = new Material("salvagedalloys", "Manufactured", "Salvaged Alloys", Rarity.VeryCommon);
-        public static readonly Material TemperedAlloys = new Material("", "Manufactured", "Tempered Alloys", Rarity.VeryCommon);
+        public static readonly Material TemperedAlloys = new Material("temperedalloys", "Manufactured", "Tempered Alloys", Rarity.VeryCommon);
         public static readonly Material WornShieldEmitters = new Material("wornshieldemitters", "Manufactured", "Worn Shield Emitters", Rarity.VeryCommon);
 
         public static readonly Material ChemicalProcessors = new Material("chemicalprocessors", "Manufactured", "Chemical Processors", Rarity.Common);
@@ -171,9 +171,15 @@ namespace EddiDataDefinitions
         public static readonly Material ProtoRadiolicAlloys = new Material("protoradiolicalloys", "Manufactured", "Proto Radiolic Alloys", Rarity.VeryRare);
         public static readonly Material UnknownFragment = new Material("unknownenergysource", "Manufactured", "Unknown Fragment", Rarity.VeryRare);
 
+        public static readonly Material AncientBiologicalData = new Material("ancientbiologicaldata", "Data", "Ancient Biological Data", Rarity.Common);
+        public static readonly Material AncientCulturalData = new Material("ancientculturaldata", "Data", "Ancient Cultural Data", Rarity.Common);
+        public static readonly Material AncientHistoricalData = new Material("ancienthistoricaldata", "Data", "Ancient Historical Data", Rarity.Common);
+        public static readonly Material AncientLanguageData = new Material("ancientlanguagedata", "Data", "Ancient Language Data", Rarity.Common);
+        public static readonly Material AncientTechnologicalData = new Material("ancienttechnologicaldata", "Data", "Ancient Technological Data", Rarity.Common);
+
         public static Material FromName(string from)
         {
-            if (from == null)
+            if (string.IsNullOrEmpty(from))
             {
                 return null;
             }
@@ -183,7 +189,7 @@ namespace EddiDataDefinitions
             if (result == null)
             {
                 Logging.Report("Unknown material name " + from);
-                result = new Material(from.ToLowerInvariant().Replace(" ", ""), "Unknown", from, Rarity.Unknown);
+                result = new Material(tidiedFrom, "Unknown", from, Rarity.Unknown);
             }
             return result;
         }
