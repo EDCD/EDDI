@@ -1,6 +1,7 @@
 ﻿using EddiDataProviderService;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using Utilities;
@@ -40,6 +41,37 @@ namespace GalnetMonitor
                            read
                     FROM galnet
                     WHERE uuid = @uuid";
+        private static string SELECT_ALL_UNREAD_SQL = @"
+                    SELECT uuid,
+                           category,
+                           title,
+                           content,
+                           published,
+                           read
+                    FROM galnet
+                    WHERE read = 0
+                    ORDER BY published DESC";
+        private static string SELECT_CATEGORY_UNREAD_SQL = @"
+                    SELECT uuid,
+                           category,
+                           title,
+                           content,
+                           published,
+                           read
+                    FROM galnet
+                    WHERE read = 0
+                      AND category = @category
+                    ORDER BY published DESC";
+        private static string SELECT_CATEGORY_SQL = @"
+                    SELECT uuid,
+                           category,
+                           title,
+                           content,
+                           published,
+                           read
+                    FROM galnet
+                    WHERE category = @category
+                    ORDER BY published DESC";
 
         private static GalnetSqLiteRepository instance;
 
@@ -70,7 +102,7 @@ namespace GalnetMonitor
 
         private static readonly object insertLock = new object();
 
-        public News GetNews(string uuid)
+        public News GetArticle(string uuid)
         {
             if (!File.Exists(DbFile)) return null;
             News result = null;
@@ -102,9 +134,57 @@ namespace GalnetMonitor
             return result;
         }
 
+        public List<News> getArticles(string category = null, bool incRead = false)
+        {
+            if (!File.Exists(DbFile)) return null;
+
+            List<News> result = null;
+            try
+            {
+                using (var con = SimpleDbConnection())
+                {
+                    con.Open();
+                    using (var cmd = new SQLiteCommand(con))
+                    {
+                        if (category != null)
+                        {
+                            if (incRead)
+                            {
+                                cmd.CommandText = SELECT_CATEGORY_SQL;
+                            }
+                            else
+                            {
+                                cmd.CommandText = SELECT_CATEGORY_UNREAD_SQL;
+                            }
+                        }
+                        else
+                        {
+                            cmd.CommandText = SELECT_ALL_UNREAD_SQL;
+                        }
+                        cmd.Prepare();
+                        cmd.Parameters.AddWithValue("@category", category);
+                        using (SQLiteDataReader rdr = cmd.ExecuteReader())
+                        {
+                            while (rdr.Read())
+                            {
+                                if (result == null) result = new List<News>();
+                                result.Add(new News(Convert.ToString(rdr["uuid"]), Convert.ToString(rdr["category"]), Convert.ToString(rdr["title"]), Convert.ToString(rdr["content"]), Convert.ToDateTime(rdr["published"]), Convert.ToBoolean(rdr["read"])));
+                            }
+                        }
+                    }
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Warn("Problem obtaining data: " + ex);
+            }
+            return result;
+        }
+
         public void SaveNews(News news)
         {
-            if (GetNews(news.uuid) == null)
+            if (GetArticle(news.uuid) == null)
             {
                 insertNews(news);
             }
@@ -115,7 +195,7 @@ namespace GalnetMonitor
             lock (insertLock)
             {
                 // Before we insert we attempt to fetch to ensure that we don't have it present
-                News existingNews = GetNews(news.uuid);
+                News existingNews = GetArticle(news.uuid);
                 if (existingNews == null)
                 {
                     Logging.Debug("Creating new news" + news.title);

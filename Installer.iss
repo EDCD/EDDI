@@ -41,8 +41,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "{#SourcePath}EDDI\bin\Debug\EDDI.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#SourcePath}EDDI\bin\Debug\x86\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourcePath}EDDI\bin\Debug\x86\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs replacesameversion
 Source: "{#SourcePath}EDDI\bin\Debug\AsyncIO.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\CommonMark.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\Cottle.dll"; DestDir: "{app}"; Flags: ignoreversion
