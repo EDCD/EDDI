@@ -23,7 +23,10 @@ namespace GalnetMonitor
     /// </summary>
     public class GalnetMonitor : EDDIMonitor
     {
-        private readonly string SOURCE = "https://community.elitedangerous.com/galnet-rss";
+        private readonly string SOURCE = "https://community.elitedangerous.com/";
+        private readonly string RESOURCE = "/galnet-rss";
+
+        private GalnetConfiguration configuration = new GalnetConfiguration();
 
         private bool running = false;
 
@@ -66,6 +69,18 @@ namespace GalnetMonitor
         /// </summary>
         public void Start()
         {
+            // Remove the old configuration file if it still exists
+            if (File.Exists(Constants.DATA_DIR + @"\galnet"))
+            {
+                try
+                {
+                    File.Delete(Constants.DATA_DIR + @"\galnet");
+                }
+                catch { }
+            }
+
+
+            configuration = GalnetConfiguration.FromFile();
             running = true;
             monitor();
         }
@@ -78,7 +93,10 @@ namespace GalnetMonitor
             running = false;
         }
 
-        public void Reload() {}
+        public void Reload()
+        {
+            configuration = GalnetConfiguration.FromFile();
+        }
 
         /// <summary>
         /// This method returns a user control with configuration controls.
@@ -91,43 +109,37 @@ namespace GalnetMonitor
 
         private void monitor()
         {
-            string lastUid;
-            try
-            {
-                lastUid = File.ReadAllText(Constants.DATA_DIR + @"\galnet");
-            }
-            catch
-            {
-                lastUid = null;
-            }
-
             while (running)
             {
                 List<News> newsItems = new List<News>();
                 string firstUid = null;
                 try
                 {
-                    foreach (FeedItem item in new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(SOURCE))
+                    foreach (FeedItem item in new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(SOURCE + configuration.language + RESOURCE))
                     {
                         if (firstUid == null)
                         {
                             // Obtain the ID of the first item that we read
                             firstUid = item.Id;
-                            if (lastUid == null)
+                            if (configuration.lastuuid == null)
                             {
                                 // We don't have any ID yet; use this as the marker
                                 break;
                             }
                         }
 
-                        if (item.Id == lastUid)
+                        if (item.Id == configuration.lastuuid)
                         {
                             // Reached the first item we have already seen - go no further
                             break;
                         }
 
-                        News newsItem = new News(item.PublishDate.DateTime, item.Title, item.GetContent());
-                        newsItems.Add(newsItem);
+                        if (isInteresting(item.Title))
+                        {
+                            News newsItem = new News(item.Id, item.PublishDate.DateTime, categoryFromTitle(item.Title), item.Title, item.GetContent());
+                            newsItems.Add(newsItem);
+                            GalnetSqLiteRepository.Instance.SaveNews(newsItem);
+                        }
                     }
                 }
                 catch (WebException wex)
@@ -140,11 +152,11 @@ namespace GalnetMonitor
                     EDDI.Instance.eventHandler(new GalnetNewsPublishedEvent(DateTime.Now, newsItems));
                 }
 
-                if (firstUid != null && firstUid != lastUid)
+                if (firstUid != null && firstUid != configuration.lastuuid)
                 {
                     Logging.Debug("Updated latest UID to " + firstUid);
-                    File.WriteAllText(Constants.DATA_DIR + @"\galnet", firstUid);
-                    lastUid = firstUid;
+                    configuration.lastuuid = firstUid;
+                    configuration.ToFile();
                 }
                 Thread.Sleep(120000);
             }
@@ -166,5 +178,80 @@ namespace GalnetMonitor
         {
             return null;
         }
-    }
+
+        private static bool isInteresting(string title)
+        {
+            return (title != "Powerplay: Incoming Update" && title != "Luttes d'influence galactiques";
+        }
+
+        /// <summary>
+        /// Pick a category for the news item given its title
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        private string categoryFromTitle(string title)
+        {
+            if (configuration.language == "en")
+            {
+                if (title.StartsWith("Galactic News: Weekly "))
+                {
+                    return title.Replace("Galactic News: Weekly ", "");
+                }
+
+                if (title.StartsWith("Community Goal: "))
+                {
+                    return "Community Goal";
+                }
+
+                if (title == "Galactic News: Starport Status Update")
+                {
+                    return "Starport Status Update";
+                }
+
+                return "Article";
+            }
+            else if (configuration.language == "fr")
+            {
+                if (title.StartsWith("Actualité galactique : Rapport hebdomadaire - "))
+                {
+                    string subtitle = title.Replace("Actualité galactique : Rapport hebdomadaire -", "");
+                    if (subtitle == "Démocratie")
+                    {
+                        return "Democracy Report";
+                    }
+                    else if (subtitle == "Santé")
+                    {
+                        return "Health Report";
+                    }
+                    else if (subtitle == "Économie")
+                    {
+                        return "Economic Report";
+                    }
+                    else if (subtitle == "Sécurité")
+                    {
+                        return "Security Report";
+                    }
+                }
+
+                if (title.StartsWith("Opération communautaire : "))
+                {
+                    return "Community Goal";
+                }
+
+                if (title == "Actualité galactique : Mise à jour - État des spatioports")
+                {
+                    return "Starport Status Update";
+                }
+
+                return "Article";
+            }
+            else if (configuration.language == "de")
+            {
+
+            }
+            else
+            {
+                return "Article";
+            }
+        }
 }

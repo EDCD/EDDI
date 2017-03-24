@@ -97,6 +97,8 @@
     * Add other VoiceAttack commands
       * 'What do I need for <blueprint>' - Find out the materials required for a particular blueprint
       * 'How many <blueprint> can I make' - Find out how many of a particular blueprint you can make with your current inventory
+    * Galnet Monitor
+      * Galnet monitor now categories and stores news articles
 
 #2.2.0
   * Core
