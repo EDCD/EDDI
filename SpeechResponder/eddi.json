@@ -474,6 +474,14 @@
       "name": "FSD engaged",
       "description": "Triggered when your FSD has engaged"
     },
+    "Galnet news": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch article from state }\r\n{set articleid to state.articleid}\r\n{if articleid:\r\n    {set article to GalnetNews(articleid)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'news')}\r\n    {SetState('eddi_context_galnet_news_id', articleid)}\r\n}\r\n\r\n{if !article:\r\n    {_ Fetch from context }\r\n    {set article to GalnetNews(state.eddi_context_galnet_news_id)}\r\n}\r\n\r\n{if article:\r\n    {article.title}: {article.content}\r\n|else:\r\n    I don't have any information about that article\r\n}.\r\n\r\n",
+      "name": "Galnet news",
+      "description": "Read a particular news article"
+    },
     "Galnet news published": {
       "enabled": true,
       "priority": 3,
@@ -481,6 +489,22 @@
       "script": "{set statustitle to \"^(Galactic News: ((Weekly .*)|(Starport Status Update)))|(Powerplay: Incoming Update)\"}\r\n\r\n{if len(event.items) = 1:\r\n    A new Galnet article has been published, entitled {event.items[0].title}.\r\n    {if !match(event.items[0].title, statustitle):\r\n      It reads: {event.items[0].content}.\r\n    }\r\n|elif len(event.items) > 1:\r\n    {len(event.items)} new Galnet articles have been published.\r\n    {set item to 0}\r\n    {while item < len(event.items):\r\n        {if item = 0:\r\n            The first is entitled {event.items[item].title}\r\n            {if !match(event.items[item].title, statustitle):\r\n                , and reads: {event.items[item].content}\r\n            }.\r\n        |elif item = 1:\r\n            The second is entitled {event.items[item].title}\r\n            {if !match(event.items[item].title, statustitle):\r\n                , and reads: {event.items[item].content}\r\n            }.\r\n        |elif item = len(event.items) - 1:\r\n            The last is entitled {event.items[item].title}\r\n            {if !match(event.items[item].title, statustitle):\r\n                , and reads: {event.items[item].content}\r\n            }.\r\n        |else:\r\n            The next is entitled {event.items[item].title}\r\n            {if !match(event.items[item].title, statustitle):\r\n                , and reads: {event.items[item].content}\r\n            }.\r\n        }\r\n        {set item to item + 1}\r\n        {Pause(1000)}\r\n    }\r\n}",
       "name": "Galnet news published",
       "description": "Triggered when news is published on Galnet"
+    },
+    "Galnet unread news": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch category from state }\r\n{set articlecategory to state.article_category}\r\n\r\n{if articlecategory:\r\n    {set articles to GalnetNewsArticles(articlecategory)}\r\n|else:\r\n    {set articles to GalnetNewsArticles('Article')}\r\n}\r\n\r\n{if len(articles) = 0:\r\n    There is no unread news in that category\r\n|else:\r\n    {SetState('eddi_context_galnet_news_id', article[0].id)}\r\n    {articles[0].title}: {articles[0].content}\r\n}.\r\n",
+      "name": "Galnet unread news",
+      "description": "Read the latest unread news in a given category"
+    },
+    "Galnet unread report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{set articles to GalnetNewsArticles(\"Article\")}\r\n\r\n{if len(articles) = 0:\r\n    You have no unread news\r\n|elif len(articles) = 1:\r\n    You have one unread news item\r\n|else:\r\n    You have {len(articles)} unread news items\r\n}.",
+      "name": "Galnet unread report",
+      "description": "Report on unread news"
     },
     "Heat damage": {
       "enabled": true,

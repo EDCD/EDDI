@@ -458,10 +458,51 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
-            store["GalnetNews"] = new NativeFunction((values) =>
+            store["GalnetNewsArticle"] = new NativeFunction((values) =>
             {
-                News result = GalnetSqLiteRepository.Instance.GetNews(values[0].AsString);
+                News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1);
+
+            store["GalnetNewsArticles"] = new NativeFunction((values) =>
+            {
+                List<News> results = null;
+                if (values.Count == 0)
+                {
+                    // Obtain all unread articles
+                    results = GalnetSqLiteRepository.Instance.getArticles();
+                }
+                else if (values.Count == 1)
+                {
+                    // Obtain all unread news of a given category
+                    results = GalnetSqLiteRepository.Instance.getArticles(values[0].AsString);
+                }
+                else if (values.Count == 2)
+                {
+                    // Obtain all news of a given category
+                    results = GalnetSqLiteRepository.Instance.getArticles(values[0].AsString, false);
+                }
+                return (results == null ? new ReflectionValue(new List<News>()) : new ReflectionValue(results));
+            }, 0, 2);
+
+            store["GalnetNewsMarkRead"] = new NativeFunction((values) =>
+            {
+                News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
+                if (result != null)
+                {
+                    GalnetSqLiteRepository.Instance.MarkRead(result);
+                }
+                return "";
+            }, 1);
+
+            store["GalnetNewsMarkUnread"] = new NativeFunction((values) =>
+            {
+                News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
+                if (result != null)
+                {
+                    GalnetSqLiteRepository.Instance.MarkUnread(result);
+                }
+                return "";
             }, 1);
 
             store["Distance"] = new NativeFunction((values) =>
