@@ -435,19 +435,31 @@ namespace EddiJournalMonitor
                                             // This is a paintjob
                                             paintjob = item;
                                         }
-                                        else if (slot.Contains("Bobble"))
+                                        else if (slot == "PlanetaryApproachSuite")
+                                        {
+                                            // Ignore planetary approach suite for now
+                                        }
+                                        else if (slot.StartsWith("Bobble"))
                                         {
                                             // Ignore bobbles
+                                        }
+                                        else if (slot.StartsWith("Decal"))
+                                        {
+                                            // Ignore decals
                                         }
                                         else if (slot == "WeaponColour")
                                         {
                                             // Ignore weapon colour
                                         }
-                                        else if (slot == "EngineColour" || slot == "EnginesColour" || slot == "ThrusterColour" || slot == "ThrustersColour") // Guesses until it goes live
+                                        else if (slot == "EngineColour")
                                         {
                                             // Ignore engine colour
                                         }
-                                        else
+                                        else if (slot.StartsWith("ShipKit"))
+                                        {
+                                            // Ignore ship kits
+                                        }
+                                        else if (slot.StartsWith("Slot") || slot.StartsWith("Military"))
                                         {
                                             // This is a compartment
                                             Compartment compartment = new Compartment() { name = slot };

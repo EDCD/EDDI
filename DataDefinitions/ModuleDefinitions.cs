@@ -852,11 +852,7 @@ namespace EddiDataDefinitions
                 {128737277, new Module(128737277, "Int_ModuleReinforcement_Size4_Class2", 1584, "Module Reinforcement Package", 4, "D", 195000) },
                 {128737278, new Module(128737278, "Int_ModuleReinforcement_Size5_Class1", 1585, "Module Reinforcement Package", 5, "E", 150000) },
                 {128737279, new Module(128737279, "Int_ModuleReinforcement_Size5_Class2", 1586, "Module Reinforcement Package", 5, "D", 450000) },
-                {128049292, new Module(128049292, "Dolphin_Armour_Grade1", 738, "Lightweight Alloy", 1, "I", 0, 128049291) },
-                {128049293, new Module(128049293, "Dolphin_Armour_Grade2", 739, "Reinforced Alloy", 1, "I", 534940, 128049291) },
-                {128049294, new Module(128049294, "Dolphin_Armour_Grade3", 740, "Military Grade Composite", 1, "I", 1203600, 128049291) },
-                {128049295, new Module(128049295, "Dolphin_Armour_Mirrored", 741, "Mirrored Surface Composite", 1, "I", 2808390, 128049291) },
-                {128049296, new Module(128049296, "Dolphin_Armour_Reactive", 742, "Reactive Surface Composite", 1, "I", 3152080, 128049291) },
+                {128672317, new Module(128672317, "Int_PlanetApproachSuite", -1, "Planetary Approach Suite", 0, "I", 500) },
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },

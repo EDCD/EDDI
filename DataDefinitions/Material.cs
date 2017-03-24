@@ -171,9 +171,15 @@ namespace EddiDataDefinitions
         public static readonly Material ProtoRadiolicAlloys = new Material("protoradiolicalloys", "Manufactured", "Proto Radiolic Alloys", Rarity.VeryRare);
         public static readonly Material UnknownFragment = new Material("unknownenergysource", "Manufactured", "Unknown Fragment", Rarity.VeryRare);
 
+        public static readonly Material AncientBiologicalData = new Material("ancientbiologicaldata", "Data", "Ancient Biological Data", Rarity.Common);
+        public static readonly Material AncientCulturalData = new Material("ancientculturaldata", "Data", "Ancient Cultural Data", Rarity.Common);
+        public static readonly Material AncientHistoricalData = new Material("ancienthistoricaldata", "Data", "Ancient Historical Data", Rarity.Common);
+        public static readonly Material AncientLanguageData = new Material("ancientlanguagedata", "Data", "Ancient Language Data", Rarity.Common);
+        public static readonly Material AncientTechnologicalData = new Material("ancienttechnologicaldata", "Data", "Ancient Technological Data", Rarity.Common);
+
         public static Material FromName(string from)
         {
-            if (from == null)
+            if (string.IsNullOrEmpty(from))
             {
                 return null;
             }
@@ -183,7 +189,7 @@ namespace EddiDataDefinitions
             if (result == null)
             {
                 Logging.Report("Unknown material name " + from);
-                result = new Material(from.ToLowerInvariant().Replace(" ", ""), "Unknown", from, Rarity.Unknown);
+                result = new Material(tidiedFrom, "Unknown", from, Rarity.Unknown);
             }
             return result;
         }
