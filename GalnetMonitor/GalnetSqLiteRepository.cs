@@ -16,9 +16,9 @@ namespace GalnetMonitor
                      ,title TEXT NOT NULL
                      ,content TEXT NOT NULL
                      ,published DATETIME NOT NULL
-                     ,read INT NOT NULL)";
+                     ,read BOOLEAN NOT NULL)";
         private static string CREATE_INDEX_SQL = @"
-                    CREATE INDEX IF NOT EXISTS galnet_idx_1
+                    CREATE UNIQUE INDEX IF NOT EXISTS galnet_idx_1
                     ON galnet(uuid)";
         private static string INSERT_SQL = @"
                     INSERT INTO galnet(
@@ -59,7 +59,7 @@ namespace GalnetMonitor
                     {
                         if (instance == null)
                         {
-                            Logging.Debug("No StarSystemSqLiteRepository instance: creating one");
+                            Logging.Debug("No GalnetSqLiteRepository instance: creating one");
                             instance = new GalnetSqLiteRepository();
                         }
                     }
@@ -88,7 +88,7 @@ namespace GalnetMonitor
                         {
                             if (rdr.Read())
                             {
-                                result = new News(rdr.GetString(0), rdr.GetDateTime(1), rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
+                                result = new News(rdr.GetString(0), rdr.GetString(1), rdr.GetString(2), rdr.GetString(3), rdr.GetDateTime(4), rdr.GetBoolean(5));
                             }
                         }
                     }
@@ -126,14 +126,21 @@ namespace GalnetMonitor
 
                         using (var cmd = new SQLiteCommand(con))
                         {
-                            cmd.CommandText = INSERT_SQL;
-                            cmd.Prepare();
-                            cmd.Parameters.AddWithValue("@uuid", news.uuid);
-                            cmd.Parameters.AddWithValue("@published", news.published);
-                            cmd.Parameters.AddWithValue("@category", news.category);
-                            cmd.Parameters.AddWithValue("@title", news.title);
-                            cmd.Parameters.AddWithValue("@content", news.content);
-                            cmd.ExecuteNonQuery();
+                            try
+                            {
+                                cmd.CommandText = INSERT_SQL;
+                                cmd.Prepare();
+                                cmd.Parameters.AddWithValue("@uuid", news.uuid);
+                                cmd.Parameters.AddWithValue("@published", news.published);
+                                cmd.Parameters.AddWithValue("@category", news.category);
+                                cmd.Parameters.AddWithValue("@title", news.title);
+                                cmd.Parameters.AddWithValue("@content", news.content);
+                                cmd.ExecuteNonQuery();
+                            }
+                            catch (SQLiteException sle)
+                            {
+                                Logging.Warn("Failed to insert news", sle);
+                            }
                         }
                         con.Close();
                     }
@@ -199,20 +206,20 @@ namespace GalnetMonitor
 
                 using (var cmd = new SQLiteCommand(CREATE_SQL, con))
                 {
-                    Logging.Debug("Creating news repository");
+                    Logging.Debug("Creating galnet repository");
                     cmd.ExecuteNonQuery();
                 }
 
                 // Add an index
                 using (var cmd = new SQLiteCommand(CREATE_INDEX_SQL, con))
                 {
-                    Logging.Debug("Creating news index");
+                    Logging.Debug("Creating galnet index");
                     cmd.ExecuteNonQuery();
                 }
 
                 con.Close();
             }
-            Logging.Debug("Created news repository");
+            Logging.Debug("Created galnet repository");
         }
     }
 }

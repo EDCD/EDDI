@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using EddiCompanionAppService;
 using System.Collections.Concurrent;
 using Newtonsoft.Json.Linq;
+using System.Threading;
 
 namespace EddiMaterialMonitor
 {
@@ -115,11 +116,24 @@ namespace EddiMaterialMonitor
         // Flush any pending events
         public void PostHandle(Event @event)
         {
-            Event pendingEvent;
-            while (pendingEvents.TryDequeue(out pendingEvent))
+            // Spin out event in to a different thread to stop blocking
+            Thread thread = new Thread(() =>
             {
-                EDDI.Instance.eventHandler(pendingEvent);
-            }
+                try
+                {
+                    Event pendingEvent;
+                    while (pendingEvents.TryDequeue(out pendingEvent))
+                    {
+                        EDDI.Instance.eventHandler(pendingEvent);
+                    }
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
+            });
+            thread.IsBackground = true;
+            thread.Start();
         }
 
         private void handleMaterialInventoryEvent(MaterialInventoryEvent @event)

@@ -16,14 +16,16 @@ namespace GalnetMonitor
         public string category { get; private set; }
         public string title { get; private set; }
         public string content { get; private set; }
+        public bool read { get; private set; }
 
-        public News(string uuid, DateTime published, string category, string title, string content)
+        public News(string uuid, string category, string title, string content, DateTime published, bool read)
         {
             this.uuid = uuid;
-            this.published = published;
             this.category = category;
             this.title = title;
             this.content = content;
+            this.published = published;
+            this.read = read;
         }
     }
 }

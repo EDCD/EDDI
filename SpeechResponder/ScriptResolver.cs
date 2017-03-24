@@ -9,6 +9,7 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiShipMonitor;
 using EddiSpeechService;
+using GalnetMonitor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -454,6 +455,12 @@ namespace EddiSpeechResponder
             store["BlueprintDetails"] = new NativeFunction((values) =>
             {
                 BlueprintMaterials result = BlueprintMaterials.FromName(values[0].AsString);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1);
+
+            store["GalnetNews"] = new NativeFunction((values) =>
+            {
+                News result = GalnetSqLiteRepository.Instance.GetNews(values[0].AsString);
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
