@@ -25,7 +25,7 @@ namespace GalnetMonitor
     {
         private readonly string SOURCE = "https://community.elitedangerous.com/";
         private readonly string RESOURCE = "/galnet-rss";
-
+        private static Dictionary<string, string> locales = new Dictionary<string, string>() { { "English", "en" }, { "Français", "fr" }, { "Deutsch", "de" } };
         private GalnetConfiguration configuration = new GalnetConfiguration();
 
         private bool running = false;
@@ -115,17 +115,12 @@ namespace GalnetMonitor
                 string firstUid = null;
                 try
                 {
-                    foreach (FeedItem item in new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(SOURCE + configuration.language + RESOURCE))
+                    foreach (FeedItem item in new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(SOURCE + locales[configuration.language] + RESOURCE))
                     {
                         if (firstUid == null)
                         {
-                            // Obtain the ID of the first item that we read
+                            // Obtain the ID of the first item that we read as a marker
                             firstUid = item.Id;
-                            if (configuration.lastuuid == null)
-                            {
-                                // We don't have any ID yet; use this as the marker
-                                break;
-                            }
                         }
 
                         if (item.Id == configuration.lastuuid)
@@ -136,7 +131,7 @@ namespace GalnetMonitor
 
                         if (isInteresting(item.Title))
                         {
-                            News newsItem = new News(item.Id, item.PublishDate.DateTime, categoryFromTitle(item.Title), item.Title, item.GetContent());
+                            News newsItem = new News(item.Id, categoryFromTitle(item.Title), item.Title, item.GetContent(), item.PublishDate.DateTime, false);
                             newsItems.Add(newsItem);
                             GalnetSqLiteRepository.Instance.SaveNews(newsItem);
                         }
@@ -147,17 +142,31 @@ namespace GalnetMonitor
                     Logging.Error("Exception attempting to obtain galnet feed: ", wex);
                 }
 
-                if (newsItems.Count > 0)
-                {
-                    EDDI.Instance.eventHandler(new GalnetNewsPublishedEvent(DateTime.Now, newsItems));
-                }
-
-                if (firstUid != null && firstUid != configuration.lastuuid)
+                if (firstUid != configuration.lastuuid)
                 {
                     Logging.Debug("Updated latest UID to " + firstUid);
                     configuration.lastuuid = firstUid;
                     configuration.ToFile();
                 }
+
+                if (newsItems.Count > 0)
+                {
+                    // Spin out event in to a different thread to stop blocking
+                    Thread thread = new Thread(() =>
+                    {
+                        try
+                        {
+                            EDDI.Instance.eventHandler(new GalnetNewsPublishedEvent(DateTime.Now, newsItems));
+                        }
+                        catch (ThreadAbortException)
+                        {
+                            Logging.Debug("Thread aborted");
+                        }
+                    });
+                    thread.IsBackground = true;
+                    thread.Start();
+                }
+
                 Thread.Sleep(120000);
             }
         }
@@ -181,7 +190,7 @@ namespace GalnetMonitor
 
         private static bool isInteresting(string title)
         {
-            return (title != "Powerplay: Incoming Update" && title != "Luttes d'influence galactiques";
+            return title != "Powerplay: Incoming Update" && title != "Luttes d'influence galactiques";
         }
 
         /// <summary>
@@ -191,7 +200,7 @@ namespace GalnetMonitor
         /// <returns></returns>
         private string categoryFromTitle(string title)
         {
-            if (configuration.language == "en")
+            if (configuration.language == "English")
             {
                 if (title.StartsWith("Galactic News: Weekly "))
                 {
@@ -210,7 +219,7 @@ namespace GalnetMonitor
 
                 return "Article";
             }
-            else if (configuration.language == "fr")
+            else if (configuration.language == "Français")
             {
                 if (title.StartsWith("Actualité galactique : Rapport hebdomadaire - "))
                 {
@@ -245,13 +254,14 @@ namespace GalnetMonitor
 
                 return "Article";
             }
-            else if (configuration.language == "de")
+            else if (configuration.language == "Deutsch")
             {
-
+                return "Article";
             }
             else
             {
                 return "Article";
             }
         }
+    }
 }

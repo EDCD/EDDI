@@ -14,7 +14,7 @@ namespace GalnetMonitor
 
         public string lastuuid { get; set; }
 
-        public string language { get; set; } = "en";
+        public string language { get; set; } = "English";
 
         /// <summary>
         /// Obtain configuration from a file.  If the file name is not supplied the the default
