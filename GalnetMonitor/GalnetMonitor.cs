@@ -190,7 +190,7 @@ namespace GalnetMonitor
 
         private static bool isInteresting(string title)
         {
-            return title != "Powerplay: Incoming Update" && title != "Luttes d'influence galactiques";
+            return title != "Powerplay: Incoming Update" && title != "Luttes d'influence galactiques" && title != "Machtspiele: Neues Update";
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace GalnetMonitor
             {
                 if (title.StartsWith("Actualité galactique : Rapport hebdomadaire - "))
                 {
-                    string subtitle = title.Replace("Actualité galactique : Rapport hebdomadaire -", "");
+                    string subtitle = title.Replace("Actualité galactique : Rapport hebdomadaire - ", "");
                     if (subtitle == "Démocratie")
                     {
                         return "Democracy Report";
@@ -242,7 +242,7 @@ namespace GalnetMonitor
                     }
                 }
 
-                if (title.StartsWith("Opération communautaire : "))
+                if (title.StartsWith("Opération communautaire"))
                 {
                     return "Community Goal";
                 }
@@ -256,6 +256,36 @@ namespace GalnetMonitor
             }
             else if (configuration.language == "Deutsch")
             {
+                if (title.StartsWith("Galaktische News: Wöchentlicher "))
+                {
+                    string subtitle = title.Replace("Galaktische News: Wöchentlicher ", "");
+                    if (subtitle == "Demokratiereport")
+                    {
+                        return "Democracy Report";
+                    }
+                    else if (subtitle == "Gesundheitsreport")
+                    {
+                        return "Health Report";
+                    }
+                    else if (subtitle == "Wirtschaftsreport")
+                    {
+                        return "Economic Report";
+                    }
+                    else if (subtitle == "Sicherheitsreport")
+                    {
+                        return "Security Report";
+                    }
+                }
+                if (title.StartsWith("Community-Ziel"))
+                {
+                    return "Community Goal";
+                }
+
+                if (title == "Galaktische News: Sternenhafen-Status-Update")
+                {
+                    return "Starport Status Update";
+                }
+
                 return "Article";
             }
             else
