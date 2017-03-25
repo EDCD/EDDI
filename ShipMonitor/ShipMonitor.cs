@@ -472,7 +472,8 @@ namespace EddiShipMonitor
                     cargoHatchModule.Add("on", ship.cargohatch.enabled);
                     cargoHatchModule.Add("priority", ship.cargohatch.priority);
                     cargoHatchModule.Add("value", ship.cargohatch.price);
-                    cargoHatchModule.Add("name", ship.cargohatch.EDName);
+                    cargoHatchModule.Add("health", ship.cargohatch.health);
+                    cargoHatchModule.Add("name", "ModularCargoBayDoor");
                     JObject cargoHatchSlot = new JObject();
                     cargoHatchSlot.Add("module", cargoHatchModule);
                     JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
