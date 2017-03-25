@@ -115,25 +115,31 @@ namespace GalnetMonitor
                 string firstUid = null;
                 try
                 {
-                    foreach (FeedItem item in new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(SOURCE + locales[configuration.language] + RESOURCE))
+                    string locale = "en";
+                    locales.TryGetValue(configuration.language, out locale);
+                    IEnumerable<FeedItem> items = new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(SOURCE + locale + RESOURCE);
+                    if (items != null)
                     {
-                        if (firstUid == null)
+                        foreach (FeedItem item in items)
                         {
-                            // Obtain the ID of the first item that we read as a marker
-                            firstUid = item.Id;
-                        }
+                            if (firstUid == null)
+                            {
+                                // Obtain the ID of the first item that we read as a marker
+                                firstUid = item.Id;
+                            }
 
-                        if (item.Id == configuration.lastuuid)
-                        {
-                            // Reached the first item we have already seen - go no further
-                            break;
-                        }
+                            if (item.Id == configuration.lastuuid)
+                            {
+                                // Reached the first item we have already seen - go no further
+                                break;
+                            }
 
-                        if (isInteresting(item.Title))
-                        {
-                            News newsItem = new News(item.Id, categoryFromTitle(item.Title), item.Title, item.GetContent(), item.PublishDate.DateTime, false);
-                            newsItems.Add(newsItem);
-                            GalnetSqLiteRepository.Instance.SaveNews(newsItem);
+                            if (isInteresting(item.Title))
+                            {
+                                News newsItem = new News(item.Id, categoryFromTitle(item.Title), item.Title, item.GetContent(), item.PublishDate.DateTime, false);
+                                newsItems.Add(newsItem);
+                                GalnetSqLiteRepository.Instance.SaveNews(newsItem);
+                            }
                         }
                     }
                 }
