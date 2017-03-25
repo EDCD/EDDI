@@ -103,8 +103,10 @@
     * Add VoiceAttack commands for the Galnet monitor:
 	  * 'Is there any news?' - Report the number of unread articles
 	  * 'Read the latest community goal [news;]' - Read the latest community goal article
+	  * 'Read the latest conflict [news;report]' - Read the latest weekly conflict report
 	  * 'Read the latest democracy [news;report]' - Read the latest weekly democracy report
 	  * 'Read the latest economy [news;report]' - Read the latest weekly economy report
+	  * 'Read the latest expansion [news;report]' - Read the latest weekly expansion report
 	  * 'Read the latest health [news;report]' - Read the latest weekly health report
 	  * 'Read the latest security [news;report]' - Read the latest weekly security report
 	  * 'Read the latest starport status [news;report]' - Read the latest starport status update
