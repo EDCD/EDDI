@@ -1106,7 +1106,7 @@ namespace Eddi
             // There is a bug with the journal where it reports superpower increases in rank as combat increases
             // Hence we check to see if this is a real event by comparing our known combat rating to the promoted rating
 
-            return theEvent.rating != Cmdr.combatrating.name;
+            return (Cmdr == null || Cmdr.combatrating == null) || theEvent.rating != Cmdr.combatrating.name;
         }
 
         private bool eventEnteredCQC(EnteredCQCEvent theEvent)

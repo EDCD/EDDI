@@ -451,11 +451,10 @@ namespace EddiShipMonitor
             }
 
             // Add the raw JSON for each known ship provided in the profile
-            // TODO Rationalise companion API data - munge the JSON according to the compartment information, removing anything tht is out-of-sync
+            // TODO Rationalise companion API data - munge the JSON according to the compartment information, removing anything that is out-of-sync
             if (profileCurrentShip != null)
             {
                 Ship ship = GetShip(profileCurrentShip.LocalId);
-                ship.raw = profileCurrentShip.raw;
                 if (ship.model == null)
                 {
                     // We don't know this ship's model but can fill it from the info we have
@@ -464,6 +463,22 @@ namespace EddiShipMonitor
                 }
                 // Obtain items that we can't obtain from the journal
                 ship.value = profileCurrentShip.value;
+                if (ship.cargohatch != null)
+                {
+                    // Engineering info for each module isn't in the journal, but we only use this to pass on to Coriolis so don't
+                    // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
+                    // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
+                    JObject cargoHatchModule = new JObject();
+                    cargoHatchModule.Add("on", ship.cargohatch.enabled);
+                    cargoHatchModule.Add("priority", ship.cargohatch.priority);
+                    cargoHatchModule.Add("value", ship.cargohatch.price);
+                    cargoHatchModule.Add("name", ship.cargohatch.EDName);
+                    JObject cargoHatchSlot = new JObject();
+                    cargoHatchSlot.Add("module", cargoHatchModule);
+                    JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
+                    parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
+                    ship.raw = parsedRaw.ToString(Formatting.None);
+                }
             }
 
             foreach (Ship profileShip in profileShipyard)
@@ -544,7 +559,8 @@ namespace EddiShipMonitor
             }
             else
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                {
                     shipyard.Add(ship);
                 }));
             }
@@ -561,7 +577,8 @@ namespace EddiShipMonitor
             }
             else
             {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                {
                     _RemoveShip(localid);
                 }));
             }
