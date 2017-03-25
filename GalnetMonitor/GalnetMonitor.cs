@@ -234,6 +234,10 @@ namespace GalnetMonitor
                     {
                         return "Democracy Report";
                     }
+                    else if (subtitle == "Conflits")
+                    {
+                        return "Conflict Report";
+                    }
                     else if (subtitle == "Santé")
                     {
                         return "Health Report";
@@ -245,6 +249,10 @@ namespace GalnetMonitor
                     else if (subtitle == "Sécurité")
                     {
                         return "Security Report";
+                    }
+                    else if (subtitle == "Expansions")
+                    {
+                        return "Expansion Report";
                     }
                 }
 
@@ -269,6 +277,10 @@ namespace GalnetMonitor
                     {
                         return "Democracy Report";
                     }
+                    else if (subtitle == "Konfliktreport")
+                    {
+                        return "Conflict Report";
+                    }
                     else if (subtitle == "Gesundheitsreport")
                     {
                         return "Health Report";
@@ -280,6 +292,10 @@ namespace GalnetMonitor
                     else if (subtitle == "Sicherheitsreport")
                     {
                         return "Security Report";
+                    }
+                    else if (subtitle == "Expansionsreport")
+                    {
+                        return "Expansion Report";
                     }
                 }
                 if (title.StartsWith("Community-Ziel"))
