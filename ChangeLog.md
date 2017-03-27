@@ -12,7 +12,7 @@
     * Add definition for the Dolphin
     * Fix exploration role 'Trailblazer' to have correct name (was showing up as 'Explorer')
   * Events
-	* Update 'Body scanned' event - added information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
+	* Update 'Body scanned' event - added earth mass, radius and information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
 	* Update 'Bond awarded' event to provide details of the awarding faction
 	* Add 'Bond redeemed' event when a combat bond is redeemed
 	* Add 'Bounty redeemed' event when a bounty voucher is redeemed

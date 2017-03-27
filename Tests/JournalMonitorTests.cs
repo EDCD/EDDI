@@ -11,7 +11,7 @@ namespace Tests
     public class JournalMonitorTests
     {
         [TestMethod]
-        public void TestJournalPlanetScan()
+        public void TestJournalPlanetScan1()
         {
             string line = @"{ ""timestamp"":""2016-09-22T21:34:30Z"", ""event"":""Scan"", ""BodyName"":""Nemehim 4"", ""DistanceFromArrivalLS"":1115.837646, ""TidalLock"":false, ""TerraformState"":"""", ""PlanetClass"":""Rocky ice body"", ""Atmosphere"":"""", ""Volcanism"":"""", ""MassEM"":0.013448, ""Radius"":1688803.625000, ""SurfaceGravity"":1.879402, ""SurfaceTemperature"":103.615654, ""SurfacePressure"":0.000000, ""Landable"":true, ""Materials"":{ ""iron"":18.8, ""sulphur"":17.7, ""carbon"":14.9, ""nickel"":14.3, ""phosphorus"":9.6, ""chromium"":8.5, ""manganese"":7.8, ""zinc"":5.1, ""molybdenum"":1.2, ""tungsten"":1.0, ""tellurium"":1.0 }, ""OrbitalPeriod"":122165280.000000, ""RotationPeriod"":112645.117188 }";
             Event theEvent = JournalMonitor.ParseJournalEntry(line);
@@ -19,12 +19,12 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestJournalPlanetScan1()
+        public void TestJournalPlanetScan2()
         {
             string line = @"{ ""timestamp"":""2016 - 11 - 01T18: 49:07Z"", ""event"":""Scan"", ""BodyName"":""Grea Bloae HH-T d4-44 4"", ""DistanceFromArrivalLS"":703.763611, ""TidalLock"":false, ""TerraformState"":""Terraformable"", ""PlanetClass"":""High metal content body"", ""Atmosphere"":""hot thick carbon dioxide atmosphere"", ""Volcanism"":""minor metallic magma volcanism"", ""MassEM"":2.171783, ""Radius"":7622170.500000, ""SurfaceGravity"":14.899396, ""SurfaceTemperature"":836.165466, ""SurfacePressure"":33000114.000000, ""Landable"":false, ""SemiMajorAxis"":210957926400.000000, ""Eccentricity"":0.000248, ""OrbitalInclination"":0.015659, ""Periapsis"":104.416656, ""OrbitalPeriod"":48801056.000000, ""RotationPeriod"":79442.242188 }";
             Event theEvent = JournalMonitor.ParseJournalEntry(line);
             Assert.IsNotNull(theEvent);
-            //Assert.IsInstanceOfType(theEvent, BodyScannedEvent);
+            Assert.IsInstanceOfType(theEvent, typeof(BodyScannedEvent));
             BodyScannedEvent ev = theEvent as BodyScannedEvent;
             Assert.IsNotNull(ev);
             Assert.AreEqual(ev.name, "Grea Bloae HH-T d4-44 4");
@@ -37,8 +37,8 @@ namespace Tests
             Assert.AreEqual("Magma", ev.volcanism.type);
             Assert.AreEqual("Iron", ev.volcanism.composition);
             Assert.AreEqual("Minor", ev.volcanism.amount);
-            //Assert.IsTrue(ev.massEM == (decimal)2.171783)
-            //Assert.IsTrue(ev.radius  == (decimal)7622170.500000);
+            Assert.IsTrue(ev.earthmass == (decimal)2.171783);
+            Assert.IsTrue(ev.radius  == (decimal)7622170.500000);
             Assert.AreEqual(ev.gravity, Body.ms2g((decimal)14.899396));
             Assert.AreEqual(ev.temperature, (decimal)836.165466);
             Assert.AreEqual(ev.pressure, (decimal)33000114.000000);
