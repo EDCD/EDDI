@@ -199,7 +199,12 @@ namespace EddiSpeechResponder
 
             store["Pause"] = new NativeFunction((values) =>
             {
-                return @"<break time =""" + values[0].AsNumber + @"ms"" />";
+                return @"<break time=""" + values[0].AsNumber + @"ms"" />";
+            }, 1);
+
+            store["Play"] = new NativeFunction((values) =>
+            {
+                return @"<audio src=""" + values[0].AsString + @""" />";
             }, 1);
 
             //
