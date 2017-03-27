@@ -553,6 +553,7 @@ namespace EddiJournalMonitor
                                     bool? tidallyLocked = getOptionalBool(data, "TidalLock");
 
                                     string bodyClass = getString(data, "PlanetClass");
+                                    decimal? earthMass = getOptionalDecimal(data, "MassEM");
 
                                     // MKW: Gravity in the Journal is in m/s; must convert it to G
                                     decimal gravity = Body.ms2g(getDecimal(data, "SurfaceGravity"));
@@ -600,7 +601,7 @@ namespace EddiJournalMonitor
                                     string atmosphere = getString(data, "Atmosphere");
                                     Volcanism volcanism = Volcanism.FromName(getString(data, "Volcanism"));
 
-                                    journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState);
+                                    journalEvent = new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radius, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState);
                                     handled = true;
                                 }
                             }

@@ -21,6 +21,8 @@ namespace EddiEvents
             VARIABLES.Add("name", "The name of the body that has been scanned");
             VARIABLES.Add("bodyclass", "The class of the body that has been scanned (High metal content body etc)");
             VARIABLES.Add("gravity", "The surface gravity of the body that has been scanned, relative to Earth's gravity");
+            VARIABLES.Add("earthmass", "The mass of the body that has been scanned, relative to Earth's mass");
+            VARIABLES.Add("radius", "The radius of the body that has been scanned, in metres");
             VARIABLES.Add("temperature", "The surface temperature of the body that has been scanned (only available if DSS equipped)");
             VARIABLES.Add("pressure", "The surface pressure of the body that has been scanned (only available if DSS equipped)");
             VARIABLES.Add("tidallylocked", "True if the body is tidally locked (only available if DSS equipped)");
@@ -43,6 +45,10 @@ namespace EddiEvents
         public string name { get; private set; }
 
         public string bodyclass { get; private set; }
+
+        public decimal? earthmass { get; private set; }
+
+        public decimal? radius { get; private set; }
 
         public decimal gravity{ get; private set; }
 
@@ -80,11 +86,13 @@ namespace EddiEvents
 
         public string terraformstate { get; private set; }
 
-        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal gravity, decimal? temperature, decimal? pressure, bool? tidallylocked, bool? landable, string atmosphere, Volcanism volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, string reserves, List<MaterialPresence> materials, string terraformstate) : base(timestamp, NAME)
+        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal? earthmass, decimal? radius, decimal gravity, decimal? temperature, decimal? pressure, bool? tidallylocked, bool? landable, string atmosphere, Volcanism volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, string reserves, List<MaterialPresence> materials, string terraformstate) : base(timestamp, NAME)
         {
             this.name = name;
             this.distancefromarrival = distancefromarrival;
             this.bodyclass = bodyclass;
+            this.earthmass = earthmass;
+            this.radius = radius;
             this.gravity = gravity;
             this.temperature = temperature;
             this.pressure = pressure;
