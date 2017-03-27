@@ -56,6 +56,33 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestAudio()
+        {
+            EventWaitHandle waitHandle = new AutoResetEvent(false);
+
+            using (MemoryStream stream = new MemoryStream())
+            using (SpeechSynthesizer synth = new SpeechSynthesizer())
+            {
+                synth.SetOutputToWaveStream(stream);
+
+                synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s><audio src=\"C:\\Users\\jgm\\Desktop\\positive.wav\"/>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈlaʊ.təns\">Luyten's</phoneme> <phoneme alphabet=\"ipa\" ph=\"stɑː\">Star</phoneme> system.</s></speak>");
+                stream.Seek(0, SeekOrigin.Begin);
+
+                IWaveSource source = new WaveFileReader(stream);
+
+                var soundOut = new WasapiOut();
+                soundOut.Stopped += (s, e) => waitHandle.Set();
+
+                soundOut.Initialize(source);
+                soundOut.Play();
+
+                waitHandle.WaitOne();
+                soundOut.Dispose();
+                source.Dispose();
+            }
+        }
+
+        [TestMethod]
         public void TestCallsign()
         {
             SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), Translations.ICAO("GAB-1655"), true);

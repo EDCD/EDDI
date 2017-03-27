@@ -43,6 +43,7 @@
 	* Add 'Trade voucher redeemed' event when a trade voucher is redeemed
   * Speech Responder
     * Added 'ICAO' function to allow ICAO-style speech of ship identifiers, sector names etc.
+    * Added 'Play' function to play an audio file instead of a speech
 	* Script changes:
 	  * 'Blueprint make report' - new script to report how many of a blueprint can be made
 	  * 'Blueprint material report' - new script to report which materials are required for a blueprint

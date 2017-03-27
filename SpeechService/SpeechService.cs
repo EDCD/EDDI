@@ -103,9 +103,6 @@ namespace EddiSpeechService
             distortionLevel = 0;
 
 
-            // Escape any ampersands
-            speech = Regex.Replace(speech, "&", "&amp;");
-
             // If the user wants to disable SSML then we remove any tags here
             if (configuration.DisableSsml && (speech.Contains("<")))
             {
@@ -120,6 +117,15 @@ namespace EddiSpeechService
                 voice = configuration.StandardVoice;
             }
 
+            bool isAudio = false;
+            if (speech.Contains("<audio"))
+            {
+                // This is an audio file; remove other text
+                speech = Regex.Replace(speech, "^.*<audio", "<audio");
+                speech = Regex.Replace(speech, ">.*$", ">");
+                isAudio = true;
+            }
+
             // Put everything in a thread
             Thread speechThread = new Thread(() =>
             {
@@ -132,10 +138,14 @@ namespace EddiSpeechService
                             Logging.Debug("getSpeechStream() returned null; nothing to say");
                             return;
                         }
-                        if (stream.Length == 0)
+                        if (stream.Length < 50)
                         {
                             Logging.Debug("getSpeechStream() returned empty stream; nothing to say");
                             return;
+                        }
+                        else
+                        {
+                            Logging.Debug("Stream length is " + stream.Length);
                         }
                         Logging.Debug("Seeking back to the beginning of the stream");
                         stream.Seek(0, SeekOrigin.Begin);
@@ -143,7 +153,10 @@ namespace EddiSpeechService
                         Logging.Debug("Setting up source from stream");
 
                         IWaveSource source = new WaveFileReader(stream);
-                        addEffectsToSource(ref source, chorusLevel, reverbLevel, echoDelay, distortionLevel);
+                        if (!isAudio)
+                        {
+                            addEffectsToSource(ref source, chorusLevel, reverbLevel, echoDelay, distortionLevel);
+                        }
 
                         if (priority < activeSpeechPriority)
                         {
@@ -328,8 +341,7 @@ namespace EddiSpeechService
                             Logging.Debug("Obtaining best guess culture");
                             string culture = bestGuessCulture(synth);
                             Logging.Debug("Best guess culture is " + culture);
-                            //speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\" onlangfailure=\"ignorelang\"><s>" + speech + "</s></speak>";
-                            speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\"><s>" + speech + "</s></speak>";
+                            speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis"" xml:lang=""" + bestGuessCulture(synth) + @""">" + speech + @"</speak>";
                             Logging.Debug("Feeding SSML to synthesizer: " + speech);
                             synth.SpeakSsml(speech);
                         }
