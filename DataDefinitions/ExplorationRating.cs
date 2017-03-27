@@ -33,7 +33,7 @@ namespace EddiDataDefinitions
         public static readonly ExplorationRating MostlyAimless = new ExplorationRating("MostlyAimless", 1, "Mostly Aimless");
         public static readonly ExplorationRating Scout = new ExplorationRating("Scout", 2, "Scout");
         public static readonly ExplorationRating Surveyor = new ExplorationRating("Surveyor", 3, "Surveyor");
-        public static readonly ExplorationRating Explorer = new ExplorationRating("Explorer", 4, "Explorer");
+        public static readonly ExplorationRating Trailblazer = new ExplorationRating("Trailblazer", 4, "Trailblazer");
         public static readonly ExplorationRating Pathfinder = new ExplorationRating("Pathfinder", 5, "Pathfinder");
         public static readonly ExplorationRating Ranger = new ExplorationRating("Ranger", 6, "Ranger");
         public static readonly ExplorationRating Pioneer = new ExplorationRating("Pioneer", 7, "Pioneer");
