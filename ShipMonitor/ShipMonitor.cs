@@ -143,11 +143,14 @@ namespace EddiShipMonitor
             {
                 SetCurrentShip(@event.shipid, @event.ship);
                 Ship ship = GetCurrentShip();
-                ship.name = @event.shipname;
-                ship.ident = @event.shipident;
-                if (@event.fuelcapacity.HasValue)
+                if (ship != null)
                 {
-                    ship.fueltanktotalcapacity = (decimal)@event.fuelcapacity;
+                    ship.name = @event.shipname;
+                    ship.ident = @event.shipident;
+                    if (@event.fuelcapacity.HasValue)
+                    {
+                        ship.fueltanktotalcapacity = (decimal)@event.fuelcapacity;
+                    }
                 }
                 writeShips();
             }
