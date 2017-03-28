@@ -1489,25 +1489,39 @@ namespace EddiJournalMonitor
                                 object val;
 
                                 string type = getString(data, "Type");
-                                string faction = getFaction(data, "Faction");
+                                List<Reward> rewards = new List<Reward>();
+                                // Obtain list of factions
+                                data.TryGetValue("Factions", out val);
+                                List<object> factionsData = (List<object>)val;
+                                if (factionsData != null)
+                                {
+                                    foreach (Dictionary<string, object> rewardData in factionsData)
+                                    {
+                                        string factionName = getFaction(rewardData, "Faction");
+                                        rewardData.TryGetValue("Amount", out val);
+                                        long factionReward = (long)val;
+
+                                        rewards.Add(new Reward(factionName, factionReward));
+                                    }
+                                }
                                 data.TryGetValue("Amount", out val);
                                 long amount = (long)val;
 
                                 if (type == "bounty")
                                 {
-                                    journalEvent = new BountyRedeemedEvent(timestamp, faction, amount);
+                                    journalEvent = new BountyRedeemedEvent(timestamp, rewards, amount);
                                 }
                                 else if (type == "CombatBond")
                                 {
-                                    journalEvent = new BondRedeemedEvent(timestamp, faction, amount);
+                                    journalEvent = new BondRedeemedEvent(timestamp, rewards, amount);
                                 }
                                 else if (type == "trade")
                                 {
-                                    journalEvent = new TradeVoucherRedeemedEvent(timestamp, faction, amount);
+                                    journalEvent = new TradeVoucherRedeemedEvent(timestamp, rewards, amount);
                                 }
                                 else if (type == "settlement" || type == "scannable")
                                 {
-                                    journalEvent = new DataVoucherRedeemedEvent(timestamp, faction, amount);
+                                    journalEvent = new DataVoucherRedeemedEvent(timestamp, rewards, amount);
                                 }
                                 else
                                 {
