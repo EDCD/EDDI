@@ -145,7 +145,7 @@ namespace GalnetMonitor
                 }
                 catch (WebException wex)
                 {
-                    Logging.Error("Exception attempting to obtain galnet feed: ", wex);
+                    Logging.Debug("Exception attempting to obtain galnet feed: ", wex);
                 }
 
                 if (firstUid != configuration.lastuuid)
