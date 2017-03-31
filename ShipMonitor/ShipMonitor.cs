@@ -143,6 +143,14 @@ namespace EddiShipMonitor
             {
                 SetCurrentShip(@event.shipid, @event.ship);
                 Ship ship = GetCurrentShip();
+                if (ship == null)
+                {
+                    // We don't know of this ship so need to create it
+                    ship = ShipDefinitions.FromEDModel(@event.ship);
+                    ship.LocalId = (int)@event.shipid;
+                    ship.role = Role.MultiPurpose;
+                    AddShip(ship);
+                }
                 ship.name = @event.shipname;
                 ship.ident = @event.shipident;
                 if (@event.fuelcapacity.HasValue)

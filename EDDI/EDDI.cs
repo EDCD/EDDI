@@ -1533,15 +1533,9 @@ namespace Eddi
         /// </summary>
         private void conditionallyRefreshProfile()
         {
-            if (CompanionAppService.Instance == null && CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
-            {
-                Logging.Debug("Cannot refresh profile when companion app service is not active");
-                return;
-            }
-
             int maxTries = 6;
 
-            while (running && maxTries > 0)
+            while (running && maxTries > 0 && CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
             {
                 try
                 {
