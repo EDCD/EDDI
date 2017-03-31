@@ -464,7 +464,7 @@ namespace EddiVoiceAttackResponder
                     return;
                 }
 
-                string shipUri = Coriolis.ShipUri(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip());
+                string shipUri = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip().CoriolisUri();
 
                 Logging.Debug("Starting process with uri " + shipUri);
 

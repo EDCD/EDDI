@@ -192,8 +192,8 @@ namespace EddiShipMonitor
                 if (storedShip != null)
                 {
                     // Set location of stored ship to the current sstem
-                    storedShip.starsystem = EDDI.Instance.CurrentStarSystem.name;
-                    storedShip.station = EDDI.Instance.CurrentStation.name;
+                    storedShip.starsystem = EDDI.Instance.CurrentStarSystem != null ? EDDI.Instance.CurrentStarSystem.name : null;
+                    storedShip.station = EDDI.Instance.CurrentStation != null ? EDDI.Instance.CurrentStation.name : null;
                 }
             }
             else if (@event.soldshipid != null)
@@ -251,6 +251,8 @@ namespace EddiShipMonitor
             {
                 ship.ident = @event.shipident;
             }
+
+            ship.paintjob = @event.paintjob;
 
             // Augment the ship info if required
             if (ship.model == null)
@@ -315,7 +317,10 @@ namespace EddiShipMonitor
             {
                 ship.fueltank = compartment.module;
             }
-            ship.fueltankcapacity = (decimal)Math.Pow(2, ship.fueltank.@class);
+            if (ship.fueltank != null)
+            {
+                ship.fueltankcapacity = (decimal)Math.Pow(2, ship.fueltank.@class);
+            }
 
             compartment = @event.compartments.FirstOrDefault(c => c.name == "CargoHatch");
             if (compartment != null)

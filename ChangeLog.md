@@ -41,6 +41,8 @@
 	* Update 'System state report' to say nothing if the system is not in any particular state
 	* Update 'Touchdown' event to record if the ship touching down is player controlled or not
 	* Add 'Trade voucher redeemed' event when a trade voucher is redeemed
+  * EDSM Responder
+    * Add upload of materials, ship, etc.
   * Speech Responder
     * Added 'ICAO' function to allow ICAO-style speech of ship identifiers, sector names etc.
     * Added 'Play' function to play an audio file instead of a speech

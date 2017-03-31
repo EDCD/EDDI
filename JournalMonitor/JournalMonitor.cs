@@ -462,7 +462,7 @@ namespace EddiJournalMonitor
                                         {
                                             // Ignore ship kits
                                         }
-                                        else if (slot.StartsWith("Slot") || slot.StartsWith("Military"))
+                                        else
                                         {
                                             // This is a compartment
                                             Compartment compartment = new Compartment() { name = slot };

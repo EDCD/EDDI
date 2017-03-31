@@ -97,7 +97,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Coriolis.cs" />
     <Compile Include="CoriolisIDDefinitions.cs" />
     <Compile Include="EDDI.cs" />
     <Compile Include="EliteConfiguration.cs" />
