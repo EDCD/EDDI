@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Utilities;
 using System.ComponentModel;
+using System.Text;
+using System.IO;
+using System.IO.Compression;
 
 namespace EddiDataDefinitions
 {
@@ -198,6 +201,7 @@ namespace EddiDataDefinitions
         public decimal fueltanktotalcapacity { get; set; } // Capacity including additional tanks
         public List<Hardpoint> hardpoints { get; set; }
         public List<Compartment> compartments { get; set; }
+        public string paintjob { get; set; }
 
         // Admin
         // The ID in Elite: Dangerous' database
@@ -279,6 +283,42 @@ namespace EddiDataDefinitions
                 }
             }
             return result;
+        }
+
+        public string CoriolisUri()
+        {
+            if (raw != null)
+            {
+                // Generate a Coriolis import URI to retain as much information as possible
+                string uri = "https://coriolis.edcd.io/import?";
+
+                // Take the ship's JSON, gzip it, then turn it in to base64 and attach it to the base uri
+                var bytes = Encoding.UTF8.GetBytes(raw);
+                using (var streamIn = new MemoryStream(bytes))
+                using (var streamOut = new MemoryStream())
+                {
+                    using (var gzipStream = new GZipStream(streamOut, CompressionLevel.Optimal, true))
+                    {
+                        streamIn.CopyTo(gzipStream);
+                    }
+                    uri += "data=" + Uri.EscapeDataString(Convert.ToBase64String(streamOut.ToArray()));
+                }
+
+                // Add the ship's name
+                string bn;
+                if (name == null)
+                {
+                    bn = role + " " + model;
+                }
+                else
+                {
+                    bn = name;
+                }
+                uri += "&bn=" + Uri.EscapeDataString(bn);
+
+                return uri;
+            }
+            return null;
         }
 
         /// <summary>
