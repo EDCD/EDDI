@@ -34,12 +34,12 @@
       <HintPath>..\packages\CommonMark.NET.0.15.1\lib\net45\CommonMark.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Cottle, Version=1.3.2.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Cottle.1.3.2.2\lib\net35\Cottle.dll</HintPath>
+    <Reference Include="Cottle, Version=1.4.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Cottle.1.4.0.1\lib\net40\Cottle.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />

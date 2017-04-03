@@ -1,12 +1,10 @@
 ﻿using Eddi;
-using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,16 +13,30 @@ using Utilities;
 
 namespace EddiCargoMonitor
 {
-    /// <summary>
-    /// A monitor that keeps track of cargo
-    /// </summary>
+    /**
+     * Monitor cargo for the current ship
+     * Missing: there is no event for when a drone is fired, so we cannot keep track of this individually.  Instead we have to rely
+     * on the inventory events to give us information on the number of drones in-ship.
+     */
     public class CargoMonitor : EDDIMonitor
     {
-        // The file to log cargo
-        public static readonly string CargoFile = Constants.DATA_DIR + @"\cargo.json";
+        // List of cargo for the current ship
+        public List<Cargo> cargo { get; private set; }
 
-        // The cargo
-        private List<Cargo> cargo = new List<Cargo>();
+        public void HandleProfile(JObject profile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsRequired()
+        {
+            return true;
+        }
+
+        public string MonitorDescription()
+        {
+            throw new NotImplementedException();
+        }
 
         public string MonitorName()
         {
@@ -36,26 +48,81 @@ namespace EddiCargoMonitor
             return "1.0.0";
         }
 
-        public string MonitorDescription()
-        {
-            return "Tracks your cargo and provides information to speech responder scripts.";
-        }
-
-        public bool IsRequired()
-        {
-            return true;
-        }
-
-        public CargoMonitor()
-        {
-            ReadCargo();
-            Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
-        }
-
         public bool NeedsStart()
         {
             // We don't actively do anything, just listen to events
             return false;
+        }
+
+        public void PostHandle(Event @event)
+        {
+        }
+
+        public void PreHandle(Event @event)
+        {
+            Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
+
+            // Handle the events that we care about
+            if (@event is CargoInventoryEvent)
+            {
+
+            }
+            else if (@event is CommodityCollectedEvent)
+            {
+
+            }
+            else if (@event is CommodityEjectedEvent)
+            {
+
+            }
+            else if (@event is CommodityPurchasedEvent)
+            {
+
+            }
+            else if (@event is CommodityRefinedEvent)
+            {
+
+            }
+            else if (@event is CommoditySoldEvent)
+            {
+
+            }
+            else if (@event is PowerCommodityObtainedEvent)
+            {
+
+            }
+            else if (@event is PowerCommodityDeliveredEvent)
+            {
+
+            }
+            else if (@event is LimpetPurchasedEvent)
+            {
+
+            }
+            else if (@event is LimpetSoldEvent)
+            {
+
+            }
+            else if (@event is MissionAbandonedEvent)
+            {
+                // If we abandon a mission with cargo it becomes stolen
+            }
+            else if (@event is MissionAcceptedEvent)
+            {
+                // Check to see if this is a cargo mission and update our inventory accordingly
+            }
+            else if (@event is MissionCompletedEvent)
+            {
+                // Check to see if this is a cargo mission and update our inventory accordingly
+            }
+            else if (@event is MissionFailedEvent)
+            {
+                // If we fail a mission with cargo it becomes stolen
+            }
+        }
+
+        public void Reload()
+        {
         }
 
         public void Start()
@@ -66,74 +133,17 @@ namespace EddiCargoMonitor
         {
         }
 
-        public void Reload()
-        {
-            ReadCargo();
-        }
-
         public UserControl ConfigurationTabItem()
         {
             return null;
         }
 
-        public void PreHandle(Event @event)
-        {
-            //Logging.Debug("Received event " + JsonConvert.SerializeObject(@event));
-            //// Handle the events that we care about
-
-            //if (@event is CargoInventoryEvent)
-            //{
-            //    handleCargoInventoryEvent((CargoInventoryEvent)@event);
-            //}
-        }
-
-        public void PostHandle(Event @event)
-        {
-        }
-
-        //private void handleCargoInventoryEvent(CargoInventoryEvent @event)
-        //{
-
-        //}
-
-        public void HandleProfile(JObject profile)
-        {
-        }
-
         public IDictionary<string, object> GetVariables()
         {
             IDictionary<string, object> variables = new Dictionary<string, object>();
-            //variables["cargo"] = configuration.materials;
+            variables["cargo"] = cargo;
 
             return variables;
-        }
-
-        private void ReadCargo()
-        {
-            try
-            {
-                cargo = JsonConvert.DeserializeObject<List<Cargo>>(File.ReadAllText(CargoFile));
-            }
-            catch (Exception ex)
-            {
-                Logging.Warn("Failed to read cargo", ex);
-            }
-            if (cargo == null)
-            {
-                cargo = new List<Cargo>();
-            }
-        }
-
-        private void WriteCargo()
-        {
-            try
-            {
-                File.WriteAllText(CargoFile, JsonConvert.SerializeObject(this, Formatting.Indented));
-            }
-            catch (Exception ex)
-            {
-                Logging.Warn("Failed to write cargo", ex);
-            }
         }
     }
 }

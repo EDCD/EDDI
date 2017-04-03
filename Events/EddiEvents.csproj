@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -54,6 +54,7 @@
     <Compile Include="CrewLeftEvent.cs" />
     <Compile Include="CrewJoinedEvent.cs" />
     <Compile Include="DataVoucherRedeemed.cs" />
+    <Compile Include="CargoInventoryEvent.cs" />
     <Compile Include="MaterialInventoryEvent.cs" />
     <Compile Include="FSDEngagedEvent.cs" />
     <Compile Include="ShipLoadoutEvent.cs" />
@@ -169,9 +170,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
       <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
       <Name>EddiDataDefinitions</Name>
@@ -180,6 +178,9 @@
       <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
