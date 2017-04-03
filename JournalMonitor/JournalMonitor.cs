@@ -1788,6 +1788,28 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
+                        case "Cargo":
+                            {
+                                object val;
+                                List<Cargo> inventory = new List<Cargo>();
+
+                                data.TryGetValue("Inventory", out val);
+                                if (val != null)
+                                {
+                                    List<object> inventoryJson = (List<object>)val;
+                                    foreach (Dictionary<string, object> cargoJson in inventoryJson)
+                                    {
+                                        Cargo cargo = new Cargo();
+                                        cargo.commodity = CommodityDefinitions.FromName(getString(cargoJson, "Name"));
+                                        cargo.amount = getInt(cargoJson, "Count");
+                                        inventory.Add(cargo);
+                                    }
+                                }
+
+                                journalEvent = new CargoInventoryEvent(DateTime.Now, inventory);
+                            }
+                            handled = true;
+                            break;
                         case "PowerplayJoin":
                             {
                                 string power = getString(data, "Power");

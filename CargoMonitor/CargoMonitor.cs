@@ -1,5 +1,4 @@
 ﻿using Eddi;
-using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
@@ -40,11 +39,6 @@ namespace EddiCargoMonitor
         public string MonitorDescription()
         {
             return "Track information on your cargo.";
-        }
-
-        public bool IsRequired()
-        {
-            return true;
         }
 
         public bool IsRequired()
@@ -176,10 +170,6 @@ namespace EddiCargoMonitor
             //{
             //    inventory.Add(cargo);
             //}
-        }
-
-        public void HandleProfile(JObject profile)
-        {
         }
 
         public IDictionary<string, object> GetVariables()
