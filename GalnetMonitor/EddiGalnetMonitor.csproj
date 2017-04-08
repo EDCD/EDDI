@@ -45,9 +45,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationFramework" />
-    <Reference Include="SimpleFeedReader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleFeedReader.1.0.7\lib\net40-client\SimpleFeedReader.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="SimpleFeedReader, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleFeedReader.1.0.6.0\lib\net40-client\SimpleFeedReader.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -106,7 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Documentation.chm" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
