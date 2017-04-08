@@ -1,3 +1,6 @@
+#2.2.2
+  * Make a nuber of scan items optional for compatibility with Elite 2.3
+
 #2.2.1
   * Add mechanism to see if game version is beta or production, using remote production build list if available
   * Update EDSM responder to not send data if game version is beta

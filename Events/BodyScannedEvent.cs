@@ -46,13 +46,13 @@ namespace EddiEvents
 
         public decimal gravity{ get; private set; }
 
-        public decimal temperature { get; private set; }
+        public decimal? temperature { get; private set; }
 
-        public decimal pressure { get; private set; }
+        public decimal? pressure { get; private set; }
 
-        public bool tidallylocked { get; private set; }
+        public bool? tidallylocked { get; private set; }
 
-        public bool landable { get; private set; }
+        public bool? landable { get; private set; }
 
         public string atmosphere { get; private set; }
 
@@ -78,7 +78,7 @@ namespace EddiEvents
 
         public string terraformstate { get; private set; }
 
-        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal gravity, decimal temperature, decimal pressure, bool tidallylocked, bool landable, string atmosphere, string volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, List<MaterialPresence> materials, string terraformState) : base(timestamp, NAME)
+        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal gravity, decimal? temperature, decimal? pressure, bool? tidallylocked, bool? landable, string atmosphere, string volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, List<MaterialPresence> materials, string terraformState) : base(timestamp, NAME)
         {
             this.name = name;
             this.distancefromarrival = distancefromarrival;
