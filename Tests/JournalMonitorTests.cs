@@ -29,7 +29,8 @@ namespace Tests
             Assert.IsNotNull(ev);
             Assert.AreEqual(ev.name, "Grea Bloae HH-T d4-44 4");
             Assert.AreEqual(ev.distancefromarrival, (decimal)703.763611);
-            Assert.IsFalse(ev.tidallylocked);
+            Assert.IsTrue(ev.tidallylocked.HasValue);
+            Assert.IsFalse((bool)ev.tidallylocked);
             Assert.AreEqual(ev.terraformstate, "Terraformable");
             Assert.AreEqual(ev.bodyclass, "High metal content body");
             Assert.AreEqual(ev.atmosphere, "hot thick carbon dioxide atmosphere");
@@ -39,7 +40,8 @@ namespace Tests
             Assert.AreEqual(ev.gravity, Body.ms2g((decimal)14.899396));
             Assert.AreEqual(ev.temperature, (decimal)836.165466);
             Assert.AreEqual(ev.pressure, (decimal)33000114.000000);
-            Assert.IsFalse(ev.landable);
+            Assert.IsTrue(ev.landable.HasValue);
+            Assert.IsFalse((bool)ev.landable);
             Assert.AreEqual(ev.semimajoraxis, (decimal)210957926400.000000);
             Assert.AreEqual(ev.eccentricity, (decimal)0.000248);
             Assert.AreEqual(ev.orbitalinclination, (decimal)0.015659);

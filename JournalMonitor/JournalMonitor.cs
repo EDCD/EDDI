@@ -520,7 +520,7 @@ namespace EddiJournalMonitor
                                 {
                                     // Body
                                     data.TryGetValue("TidalLock", out val);
-                                    bool tidallyLocked = (bool)val;
+                                    bool? tidallyLocked = (bool?)val;
 
                                     data.TryGetValue("PlanetClass", out val);
                                     string bodyClass = (string)val;
@@ -530,13 +530,13 @@ namespace EddiJournalMonitor
                                     decimal gravity = Body.ms2g((decimal)(double)val);
 
                                     data.TryGetValue("SurfaceTemperature", out val);
-                                    decimal temperature = (decimal)(double)val;
+                                    decimal? temperature = (decimal?)(double?)val;
 
                                     data.TryGetValue("SurfacePressure", out val);
-                                    decimal pressure = (decimal)(double)val;
+                                    decimal? pressure = (decimal?)(double?)val;
 
                                     data.TryGetValue("Landable", out val);
-                                    bool landable = (bool)val;
+                                    bool? landable = (bool?)val;
 
                                     data.TryGetValue("Materials", out val);
                                     List<MaterialPresence> materials = new List<MaterialPresence>();
