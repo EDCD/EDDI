@@ -534,7 +534,7 @@ namespace EddiJournalMonitor
                                 {
                                     // Body
                                     data.TryGetValue("TidalLock", out val);
-                                    bool tidallyLocked = (bool)val;
+                                    bool? tidallyLocked = (bool?)val;
 
                                     data.TryGetValue("PlanetClass", out val);
                                     string bodyClass = (string)val;
@@ -544,13 +544,13 @@ namespace EddiJournalMonitor
                                     decimal gravity = Body.ms2g(getDecimal("SurfaceGravity", val));
 
                                     data.TryGetValue("SurfaceTemperature", out val);
-                                    decimal temperature = getDecimal("SurfaceTemperature", val);
+                                    decimal? temperature = (decimal?)(double?)val;
 
                                     data.TryGetValue("SurfacePressure", out val);
-                                    decimal pressure = getDecimal("SurfacePressure", val);
+                                    decimal? pressure = (decimal?)(double?)val;
 
                                     data.TryGetValue("Landable", out val);
-                                    bool landable = (bool)val;
+                                    bool? landable = (bool?)val;
 
                                     data.TryGetValue("Materials", out val);
                                     List<MaterialPresence> materials = new List<MaterialPresence>();
@@ -1849,6 +1849,17 @@ namespace EddiJournalMonitor
                         case "SystemsShutdown":
                             {
                                 journalEvent = new ShipShutdownEvent(timestamp);
+                                handled = true;
+                                break;
+                            }
+                        case "Fileheader":
+                            {
+                                object val;
+                                data.TryGetValue("gameversion", out val);
+                                string version = (string)val;
+                                data.TryGetValue("build", out val);
+                                string build = ((string)val).Replace(" ", "");
+                                journalEvent = new FileHeaderEvent(timestamp, version, build);
                                 handled = true;
                                 break;
                             }

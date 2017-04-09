@@ -1,4 +1,10 @@
+#2.2.2
+  * Make a nuber of scan items optional for compatibility with Elite 2.3
+
 #2.2.1
+  * Add mechanism to see if game version is beta or production, using remote production build list if available
+  * Update EDSM responder to not send data if game version is beta
+  * Update EDDN responder to send data to /test schemas if game version is beta
   * Core
     * Add ship role 'Taxi'
     * Rename 'Companion App' tab to 'Frontier API' and update relevant text to clarify its use and operation
