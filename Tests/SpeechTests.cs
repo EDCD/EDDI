@@ -56,6 +56,31 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestSsml1()
+        {
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>Fred's ship.", true);
+        }
+
+        [TestMethod]
+        public void TestSsml2()
+        {
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>7 < 10.", true);
+        }
+
+        [TestMethod]
+        public void TestSsml3()
+        {
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>He said ""Foo"".", true);
+        }
+
+        [TestMethod]
+        public void TestSsml4()
+        {
+            Logging.Verbose = true;
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>We're on our way to " + Translations.StarSystem("Achenar") + ".", true);
+        }
+
+        [TestMethod]
         public void TestAudio()
         {
             EventWaitHandle waitHandle = new AutoResetEvent(false);
