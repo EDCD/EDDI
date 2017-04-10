@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Security;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -102,14 +103,12 @@ namespace EddiSpeechService
             // if we can find a decent way of doing distortion that doesn't destroy speakers
             distortionLevel = 0;
 
-
             // If the user wants to disable SSML then we remove any tags here
             if (configuration.DisableSsml && (speech.Contains("<")))
             {
                 Logging.Debug("Removing SSML");
                 // User has disabled SSML so remove all tags
                 speech = Regex.Replace(speech, "<.*?>", string.Empty);
-                speech = Regex.Replace(speech, "&amp;", "&");
             }
 
             if (string.IsNullOrWhiteSpace(voice))
@@ -341,7 +340,7 @@ namespace EddiSpeechService
                             Logging.Debug("Obtaining best guess culture");
                             string culture = bestGuessCulture(synth);
                             Logging.Debug("Best guess culture is " + culture);
-                            speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis"" xml:lang=""" + bestGuessCulture(synth) + @""">" + speech + @"</speak>";
+                            speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis"" xml:lang=""" + bestGuessCulture(synth) + @""">" + escapeSsml(speech) + @"</speak>";
                             Logging.Debug("Feeding SSML to synthesizer: " + speech);
                             synth.SpeakSsml(speech);
                         }
@@ -419,6 +418,31 @@ namespace EddiSpeechService
                 }
                 Thread.Sleep(10);
             }
+        }
+
+        private string escapeSsml(string text)
+        {
+            // Our input text might have SSML elements in it but the rest needs escaping
+            // Our valid SSML elements are break, play and phoneme, so encode these differently for now
+            // Also escape any double quotes inside the elements
+            string result = text;
+            result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
+            result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
+            result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
+            result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
+            result = Regex.Replace(result, "<(break.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(play.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(phoneme.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(/phoneme)>", "XXXXX$1YYYYY");
+
+            // Now escape anything that is still present
+            result = SecurityElement.Escape(result);
+
+            // Put back the characters we hid
+            result = Regex.Replace(result, "XXXXX", "<");
+            result = Regex.Replace(result, "YYYYY", ">");
+            result = Regex.Replace(result, "ZZZZZ", "\"");
+            return result;
         }
 
         private void StopCurrentSpeech()
