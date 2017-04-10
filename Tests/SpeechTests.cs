@@ -77,7 +77,7 @@ namespace Tests
         public void TestSsml4()
         {
             Logging.Verbose = true;
-            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>We're on our way to " + Translations.StarSystem("Achenar") + ".", true);
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>We're on our way to " + Translations.StarSystem("i Bootis") + ".", true);
         }
 
         [TestMethod]
