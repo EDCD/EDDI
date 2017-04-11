@@ -133,6 +133,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">
+      <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
+      <Name>EddiCargoMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EDDI\Eddi.csproj">
       <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
       <Name>Eddi</Name>
@@ -149,13 +153,33 @@
       <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
       <Name>EddiDataProviderService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\EDDNResponder\EddiEddnResponder.csproj">
+      <Project>{9aba5418-95bb-40db-b4bc-71698a37066d}</Project>
+      <Name>EddiEddnResponder</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EDDPMonitor\EddiEddpMonitor.csproj">
+      <Project>{c9a4f3e1-5152-4648-a409-368576975ace}</Project>
+      <Name>EddiEddpMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EDSMResponder\EddiEdsmResponder.csproj">
+      <Project>{2c2f3380-781d-45de-b387-aef26b834f29}</Project>
+      <Name>EddiEdsmResponder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Events\EddiEvents.csproj">
       <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
       <Name>EddiEvents</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GalnetMonitor\EddiGalnetMonitor.csproj">
+      <Project>{93b946c8-3f78-465a-8cc4-c0fc4127b762}</Project>
+      <Name>EddiGalnetMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj">
       <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>
       <Name>EddiJournalMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MaterialMonitor\EddiMaterialMonitor.csproj">
+      <Project>{a2401e3a-586a-41ff-8237-3fb598c5fcf9}</Project>
+      <Name>EddiMaterialMonitor</Name>
     </ProjectReference>
     <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
       <Project>{5294706E-E600-4EA1-B904-66A41561E852}</Project>
