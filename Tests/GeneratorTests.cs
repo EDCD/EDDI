@@ -108,13 +108,46 @@ namespace Tests
                     }
                     else
                     {
-                        output.Add("Information about this event is available under the `event` object.");
+                        output.Add("When using this event in the [Speech responder](Speech-Responder) the information about this event is available under the `event` object.  The available variables are as follows");
                         output.Add("");
                         output.Add("");
                         foreach (KeyValuePair<string, string> variable in Events.VARIABLES[entry.Key])
                         {
                             output.Add("  * `" + variable.Key + "` " + variable.Value);
                             output.Add("");
+                        }
+
+                        output.Add("When using this event in VoiceAttack the information about this event is available as follows");
+                        output.Add("");
+                        output.Add("");
+                        foreach (KeyValuePair<string, string> variable in variables.OrderBy(i => i.Key))
+                        {
+                            System.Reflection.MethodInfo method = entry.Value.GetMethod("get_" + variable.Key);
+                            if (method != null)
+                            {
+                                Type returnType = method.ReturnType;
+                                if (returnType.IsGenericType && returnType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                                {
+                                    returnType = Nullable.GetUnderlyingType(returnType);
+                                }
+
+                                if (returnType == typeof(string))
+                                {
+                                    output.Add("  * `{TXT:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                                }
+                                else if (returnType == typeof(int))
+                                {
+                                    output.Add("  * `{INT:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                                }
+                                else if (returnType == typeof(bool))
+                                {
+                                    output.Add("  * `{BOOL:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                                }
+                                else if (returnType == typeof(decimal) || returnType == typeof(double) || returnType == typeof(long))
+                                {
+                                    output.Add("  * `{DEC:EDDI " + entry.Key.ToLowerInvariant() + " " + variable.Key + "}` " + variable.Value);
+                                }
+                            }
                         }
                     }
                 }
