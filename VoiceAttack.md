@@ -429,6 +429,13 @@ Variables set with this event are as follows:
 
   * {DEC:EDDI bounty redeemed amount} The amount rewarded (after any broker fees)
 
+### Cargo inventory
+Triggered when you obtain an inventory of your cargo.
+To run a command when this event occurs you should create the command with the name ((EDDI cargo inventory))
+
+Variables set with this event are as follows:
+
+
 ### Cleared save
 Triggered when you clear your save.
 To run a command when this event occurs you should create the command with the name ((EDDI cleared save))
@@ -990,6 +997,17 @@ To run a command when this event occurs you should create the command with the n
 Variables set with this event are as follows:
 
 
+### Material threshold
+Triggered when a material reaches a threshold.
+To run a command when this event occurs you should create the command with the name ((EDDI material threshold))
+
+Variables set with this event are as follows:
+
+  * {INT:EDDI material threshold amount} The current amount of the material
+  * {TXT:EDDI material threshold change} The change to the inventory (Increase/Reduction)
+  * {TXT:EDDI material threshold level} The level that has been triggered (Minimum/Desired/Maximum)
+  * {INT:EDDI material threshold limit} The amount of the limit that has been passed
+
 ### Message received
 Triggered when you receive a message.
 To run a command when this event occurs you should create the command with the name ((EDDI message received))
@@ -1264,7 +1282,7 @@ To run a command when this event occurs you should create the command with the n
 
 Variables set with this event are as follows:
 
-  * {TXT:EDDI ship loadout paintjob} The paintjob on the ship
+  * {TXT:EDDI ship loadout paintjob} The paintjob of the ship
   * {TXT:EDDI ship loadout ship} The ship
   * {INT:EDDI ship loadout shipid} The ID of the ship
   * {TXT:EDDI ship loadout shipident} The identification string of the ship
@@ -1436,6 +1454,28 @@ To run a command when this event occurs you should create the command with the n
 Variables set with this event are as follows:
 
   * {TXT:EDDI synthesised synthesis} The thing that has been synthesised
+
+### System faction changed
+Triggered when there is a change in the controlling faction of a watched system.
+To run a command when this event occurs you should create the command with the name ((EDDI system faction changed))
+
+Variables set with this event are as follows:
+
+  * {TXT:EDDI system faction changed match} The name of the pattern that this event matched
+  * {TXT:EDDI system faction changed newfaction} The name of the new controlling faction of the system
+  * {TXT:EDDI system faction changed oldfaction} The name of the old controlling faction of the system
+  * {TXT:EDDI system faction changed system} The name of the system
+
+### System state changed
+Triggered when there is a change in the state of a watched system.
+To run a command when this event occurs you should create the command with the name ((EDDI system state changed))
+
+Variables set with this event are as follows:
+
+  * {TXT:EDDI system state changed match} The name of the pattern that this event matched
+  * {TXT:EDDI system state changed newstate} The new state of the system
+  * {TXT:EDDI system state changed oldstate} The old state of the system
+  * {TXT:EDDI system state changed system} The name of the system
 
 ### Touchdown
 Triggered when your ship touches down on a planet's surface.

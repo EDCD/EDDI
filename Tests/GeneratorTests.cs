@@ -4,6 +4,7 @@ using System;
 using EddiEvents;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace Tests
 {
@@ -11,7 +12,7 @@ namespace Tests
     public class GeneratorTests
     {
         [TestMethod]
-        public void TestGenerate()
+        public void TestGenerateVoiceAttack()
         {
             foreach (KeyValuePair<string, Type> entry in Events.TYPES.OrderBy(i => i.Key))
             {
@@ -57,6 +58,78 @@ namespace Tests
                         }
                     }
                 }
+                Console.WriteLine();
+            }
+        }
+
+        [TestMethod]
+        public void TestGenerateCottle()
+        {
+            foreach (KeyValuePair<string, Type> entry in Events.TYPES.OrderBy(i => i.Key))
+            {
+                Console.WriteLine("# " + entry.Key + " event");
+                Console.WriteLine(Events.DESCRIPTIONS[entry.Key] + ".");
+
+                IDictionary<string, string> variables;
+                if (Events.VARIABLES.TryGetValue(entry.Key, out variables))
+                {
+                    if (variables.Count == 0)
+                    {
+                        Console.WriteLine("This event has no variables.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Information about this event is available under the `event` object.\n\n");
+                        foreach (KeyValuePair<string, string> variable in Events.VARIABLES[entry.Key])
+                        {
+                            Console.WriteLine("  * `" + variable.Key + "` " + variable.Value + "\n");
+                        }
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+
+        [TestMethod]
+        public void TestGenerateWikiEvents()
+        {
+            foreach (KeyValuePair<string, Type> entry in Events.TYPES.OrderBy(i => i.Key))
+            {
+                List<string> output = new List<string>();
+                Console.WriteLine("# " + entry.Key + " event");
+                output.Add(Events.DESCRIPTIONS[entry.Key] + ".");
+
+                IDictionary<string, string> variables;
+                if (Events.VARIABLES.TryGetValue(entry.Key, out variables))
+                {
+                    if (variables.Count == 0)
+                    {
+                        output.Add("This event has no variables.");
+                    }
+                    else
+                    {
+                        output.Add("Information about this event is available under the `event` object.");
+                        output.Add("");
+                        output.Add("");
+                        foreach (KeyValuePair<string, string> variable in Events.VARIABLES[entry.Key])
+                        {
+                            output.Add("  * `" + variable.Key + "` " + variable.Value);
+                            output.Add("");
+                        }
+                    }
+                }
+                output.Add("");
+                File.WriteAllLines(@"C:\Users\jgm\Desktop\Wiki\events\" + entry.Key.Replace(" ", "-") + "-event.md", output);
+            }
+        }
+
+        [TestMethod]
+        public void TestGenerateWikiEventsList()
+        {
+            foreach (KeyValuePair<string, Type> entry in Events.TYPES.OrderBy(i => i.Key))
+            {
+                Console.WriteLine("## [" + entry.Key + "](" + entry.Key.Replace(" ", "-") + "-event)");
+                Console.WriteLine(Events.DESCRIPTIONS[entry.Key] + ".");
                 Console.WriteLine();
             }
         }

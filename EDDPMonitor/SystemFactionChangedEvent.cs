@@ -23,13 +23,13 @@ namespace EddiEddpMonitor
             VARIABLES.Add("newfaction", "The name of the new controlling faction of the system");
         }
 
-        public string match;
+        public string match { get; private set; }
 
-        public string system;
+        public string system { get; private set; }
 
-        public string oldfaction;
+        public string oldfaction { get; private set; }
 
-        public string newfaction;
+        public string newfaction { get; private set; }
 
         public SystemFactionChangedEvent(DateTime timestamp, string match, string system, string oldfaction, string newfaction) : base(timestamp, NAME)
         {
