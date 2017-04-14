@@ -7,9 +7,7 @@
     * Add ship value 'ident' which is the user-defined identification string for a ship
     * Allow monitors to handle events, and generate their own events in turn
     * New monitor: Material monitor.  This allows you to set minimum/desired/maximum limits for materials and generate events when the limits are exceeded.  Materials are tracked automatically in EDDI.  Full details of the material monitor operations are available at https://github.com/cmdrmcdonald/EliteDangerousDataProvider/wiki/Material-monitor
-	* Identify beta builds of Elite and use the appropriate EDDN schema
 	* Remove the Netlog monitor.  This was only used to obtain destination system when jumping and is no longer required due to additional information made available in the journal for this purpose
-    * Add definition for the Dolphin
     * Fix exploration role 'Trailblazer' to have correct name (was showing up as 'Explorer')
   * Events
 	* Update 'Body scanned' event - added earth mass, radius and information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body

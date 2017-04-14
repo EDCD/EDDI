@@ -51,7 +51,7 @@ namespace EddiShipMonitor
             { "Vulture", "Vulture" }
         };
 
-        public static List<Ship> ShipyardFromJson(dynamic json)
+        public static List<Ship> ShipyardFromJson(Ship activeShip, dynamic json)
         {
             List<Ship> shipyard = new List<Ship>();
 
@@ -64,12 +64,20 @@ namespace EddiShipMonitor
                     if (shipObj != null)
                     {
                         Ship ship = ShipFromJson(shipObj);
-                        if (shipObj["starsystem"] != null)
+                        if (activeShip?.LocalId == ship.LocalId)
                         {
-                            ship.starsystem = (string)shipObj["starsystem"]["name"];
-                            ship.station = (string)shipObj["station"]["name"];
+                            // This is the active ship so add that instead
+                            shipyard.Add(activeShip);
                         }
-                        shipyard.Add(ship);
+                        else
+                        {
+                            if (shipObj["starsystem"] != null)
+                            {
+                                ship.starsystem = (string)shipObj["starsystem"]["name"];
+                                ship.station = (string)shipObj["station"]["name"];
+                            }
+                            shipyard.Add(ship);
+                        }
                     }
                 }
             }
@@ -84,7 +92,7 @@ namespace EddiShipMonitor
                 return null;
             }
 
-            Ship Ship = ShipDefinitions.FromEDModel(json.GetValue("name").Value<string>());
+            Ship Ship = ShipDefinitions.FromEDModel((string)json.GetValue("name"));
 
             // We want to return a basic ship if the parsing fails so wrap this
             try
@@ -97,7 +105,7 @@ namespace EddiShipMonitor
                 Ship.cargocarried = (int)(json["cargo"]?["qty"] ?? 0);
 
                 // Be sensible with health - round it unless it's very low
-                decimal Health = (decimal)json["health"]?["hull"] / 10000;
+                decimal Health = (decimal)(json["health"]?["hull"] ?? 0) / 10000;
                 if (Health < 5)
                 {
                     Ship.health = Math.Round(Health, 1);
@@ -158,7 +166,6 @@ namespace EddiShipMonitor
 
 
                 // Obtain the cargo
-                Ship.cargo = new List<Cargo>();
                 if (json["cargo"] != null && json["cargo"]["items"] != null)
                 {
                     foreach (dynamic cargoJson in json["cargo"]["items"])

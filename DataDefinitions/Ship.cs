@@ -215,6 +215,7 @@ namespace EddiDataDefinitions
         {
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
+            cargo = new List<Cargo>();
         }
 
         public Ship(long EDID, string EDName, string Manufacturer, List<Translation> PhoneticManufacturer, string Model, List<Translation> PhoneticModel, string Size)

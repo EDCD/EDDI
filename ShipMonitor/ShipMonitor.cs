@@ -448,10 +448,11 @@ namespace EddiShipMonitor
 
         public void HandleProfile(JObject profile)
         {
-            // Obtain the shipyard from the profile
-            List<Ship> profileShipyard = FrontierApi.ShipyardFromJson(profile);
-
+            // Obtain the current ship from the profile
             Ship profileCurrentShip = FrontierApi.ShipFromJson((JObject)profile["ship"]);
+
+            // Obtain the shipyard from the profile
+            List<Ship> profileShipyard = FrontierApi.ShipyardFromJson(profileCurrentShip, profile);
 
             // Information from the Frontier API can be out-of-date so we only use it to set our ship if we don't know what it already is
             if (currentShipId == null)
