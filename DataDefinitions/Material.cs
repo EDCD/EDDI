@@ -117,7 +117,7 @@ namespace EddiDataDefinitions
         public static readonly Material HeatConductionWiring = new Material("heatconductionwiring", "Manufactured", "Heat Conduction Wiring", Rarity.VeryCommon);
         public static readonly Material MechanicalScrap = new Material("mechanicalscrap", "Manufactured", "Mechanical Scrap", Rarity.VeryCommon);
         public static readonly Material SalvagedAlloys = new Material("salvagedalloys", "Manufactured", "Salvaged Alloys", Rarity.VeryCommon);
-        public static readonly Material TemperedAlloys = new Material("", "Manufactured", "Tempered Alloys", Rarity.VeryCommon);
+        public static readonly Material TemperedAlloys = new Material("temperedalloys", "Manufactured", "Tempered Alloys", Rarity.VeryCommon);
         public static readonly Material WornShieldEmitters = new Material("wornshieldemitters", "Manufactured", "Worn Shield Emitters", Rarity.VeryCommon);
 
         public static readonly Material ChemicalProcessors = new Material("chemicalprocessors", "Manufactured", "Chemical Processors", Rarity.Common);

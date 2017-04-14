@@ -1,6 +1,8 @@
 2.2.3
   * Fix issue where undocumented change in Frontier API would cause EDDI to crash
+  * Update netlog monitor to handle new log format
   * Add ship definition for Dolphin
+  * Add module definitions for Dolphin bulkheads
 
 #2.2.2
   * Make a nuber of scan items optional for compatibility with Elite 2.3

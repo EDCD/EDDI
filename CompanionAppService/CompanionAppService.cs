@@ -747,9 +747,9 @@ namespace EddiCompanionAppService
                     }
                 }
             }
-            catch (Exception jgm)
+            catch (Exception ex)
             {
-
+                Logging.Warn("Failed to parse ship", ex);
             }
 
             Logging.Debug("Leaving");
