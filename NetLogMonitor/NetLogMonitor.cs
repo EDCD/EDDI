@@ -17,6 +17,7 @@ namespace EddiNetLogMonitor
         private static Regex OldSystemRegex = new Regex(@"^{([0-9][0-9]:[0-9][0-9]:[0-9][0-9])} System:([0-9]+)\(([^\)]+)\).* ([A-Za-z]+)$");
         // {19:24:56} System:"Wolf 397" StarPos:(40.000,79.219,-10.406)ly Body:23 RelPos:(-2.01138,1.32957,1.7851)km NormalFlight
         private static Regex SystemRegex = new Regex(@"^{([0-9][0-9]:[0-9][0-9]:[0-9][0-9])} System:""([^""]+)"" StarPos:\((-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+)\)ly .*? ([A-Za-z]+)$");
+        private static Regex NewSystemRegex = new Regex(@"^{([^}]+?)} System:""([^""]+)"" StarPos:\((-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+)\)ly .*? ([A-Za-z]+)$");
 
         private static string lastStarsystem = null;
         private static string lastEnvironment = null;
@@ -71,6 +72,31 @@ namespace EddiNetLogMonitor
                     x = Math.Round(decimal.Parse(match.Groups[3].Value) * 32) / (decimal)32.0;
                     y = Math.Round(decimal.Parse(match.Groups[4].Value) * 32) / (decimal)32.0;
                     z = Math.Round(decimal.Parse(match.Groups[5].Value) * 32) / (decimal)32.0;
+                }
+                else
+                {
+                    Match newMatch = NewSystemRegex.Match(line);
+                    if (newMatch.Success)
+                    {
+                        Logging.Debug("Match against new new regex");
+                        if (@"Training" == newMatch.Groups[2].Value || @"Destination" == newMatch.Groups[2].Value)
+                        {
+                            // We ignore training missions
+                            return;
+                        }
+
+                        if (@"ProvingGround" == newMatch.Groups[6].Value)
+                        {
+                            // We ignore CQC
+                            return;
+                        }
+
+                        starSystem = newMatch.Groups[2].Value;
+                        environment = newMatch.Groups[6].Value;
+                        x = Math.Round(decimal.Parse(newMatch.Groups[3].Value) * 32) / (decimal)32.0;
+                        y = Math.Round(decimal.Parse(newMatch.Groups[4].Value) * 32) / (decimal)32.0;
+                        z = Math.Round(decimal.Parse(newMatch.Groups[5].Value) * 32) / (decimal)32.0;
+                    }
                 }
             }
 

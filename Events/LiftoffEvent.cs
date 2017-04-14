@@ -21,12 +21,12 @@ namespace EddiEvents
         }
 
         [JsonProperty("longitude")]
-        public decimal longitude { get; private set; }
+        public decimal? longitude { get; private set; }
 
         [JsonProperty("latitude")]
-        public decimal latitude { get; private set; }
+        public decimal? latitude { get; private set; }
 
-        public LiftoffEvent(DateTime timestamp, decimal longitude, decimal latitude) : base(timestamp, NAME)
+        public LiftoffEvent(DateTime timestamp, decimal? longitude, decimal? latitude) : base(timestamp, NAME)
         {
             this.longitude = longitude;
             this.latitude = latitude;

@@ -1144,7 +1144,7 @@ namespace Eddi
         private bool eventStarScanned(StarScannedEvent theEvent)
         {
             // We just scanned a star.  We can assume that it's in our current system
-            Body star = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.name);
+            Body star = CurrentStarSystem?.bodies?.FirstOrDefault(b => b.name == theEvent.name);
             if (star == null)
             {
                 Logging.Debug("Scanned star " + theEvent.name + " is new - creating");
@@ -1154,7 +1154,7 @@ namespace Eddi
                 star.type = "Star";
                 star.name = theEvent.name;
                 star.systemname = CurrentStarSystem.name;
-                CurrentStarSystem.bodies.Add(star);
+                CurrentStarSystem?.bodies?.Add(star);
             }
 
             // Update with the information we have

@@ -108,5 +108,22 @@ namespace Tests
             Console.Out.WriteLine(match.Groups[6].Value);
             Assert.AreEqual("Supercruise", match.Groups[6].Value);
         }
+
+        [TestMethod]
+        public void TestRegex5()
+        {
+            string line = @"{08:32:16GMT 121.477s} System:""Gandii"" StarPos:(-84.438,-102.500,33.250)ly  NormalFlight";
+            Regex SystemRegex = new Regex(@"^{([^}]+?)} System:""([^""]+)"" StarPos:\((-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+),(-?[0-9]+\.[0-9]+)\)ly .*? ([A-Za-z]+)$");
+            Match match = SystemRegex.Match(line);
+            Assert.IsTrue(match.Success);
+            Console.Out.WriteLine(match.Groups[0].Value);
+            Console.Out.WriteLine(match.Groups[1].Value);
+            Console.Out.WriteLine(match.Groups[2].Value);
+            Console.Out.WriteLine(match.Groups[3].Value);
+            Console.Out.WriteLine(match.Groups[4].Value);
+            Console.Out.WriteLine(match.Groups[5].Value);
+            Console.Out.WriteLine(match.Groups[6].Value);
+            Assert.AreEqual("NormalFlight", match.Groups[6].Value);
+        }
     }
 }

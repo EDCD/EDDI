@@ -825,7 +825,7 @@ namespace EddiDataDefinitions
                 {128049349, new Module(128049349, "BelugaLiner_Armour_Mirrored", 1557, "Mirrored Surface Composite", 1, "I", -1, 128049345) },
                 {128049350, new Module(128049350, "BelugaLiner_Armour_Reactive", 1558, "Reactive Surface Composite", 1, "I", -1, 128049345) },
                 // FSD disruptor
-                {1, new Module(1, "?", 1559, "Rocket Propelled FSD Disruptor", 2, "B", -1, Module.ModuleMount.Fixed, 12, 48) },
+                {128732552, new Module(128732552, "Hpt_DumbfireMissileRack_Fixed_Medium_Lasso", 1559, "Rocket Propelled FSD Disruptor", 2, "B", -1, Module.ModuleMount.Fixed, 12, 48) },
                 {128727932, new Module(128727932, "Int_FighterBay_Size7_Class1", 1560, "Fighter Hangar", 7, "D", -1) },
                 {128727931, new Module(128727931, "Int_FighterBay_Size6_Class1", 1561, "Fighter Hangar", 6, "D", -1) },
                 {128727930, new Module(128727930, "Int_FighterBay_Size5_Class1", 1562, "Fighter Hangar", 5, "D", -1) },
@@ -867,6 +867,12 @@ namespace EddiDataDefinitions
                 {128737277, new Module(128737277, "Int_ModuleReinforcement_Size4_Class2", 1584, "Module Reinforcement Package", 4, "D", 195000) },
                 {128737278, new Module(128737278, "Int_ModuleReinforcement_Size5_Class1", 1585, "Module Reinforcement Package", 5, "E", 150000) },
                 {128737279, new Module(128737279, "Int_ModuleReinforcement_Size5_Class2", 1586, "Module Reinforcement Package", 5, "D", 450000) },
+
+                {128049292, new Module(128049292, "Dolphin_Armour_Grade1", 738, "Lightweight Alloy", 1, "I", 0, 128049291) },
+                {128049293, new Module(128049293, "Dolphin_Armour_Grade2", 739, "Reinforced Alloy", 1, "I", 534940, 128049291) },
+                {128049294, new Module(128049294, "Dolphin_Armour_Grade3", 740, "Military Grade Composite", 1, "I", 1203600, 128049291) },
+                {128049295, new Module(128049295, "Dolphin_Armour_Mirrored", 741, "Mirrored Surface Composite", 1, "I", 2808390, 128049291) },
+                {128049296, new Module(128049296, "Dolphin_Armour_Reactive", 742, "Reactive Surface Composite", 1, "I", 3152080, 128049291) },
         };
 
         private static Dictionary<string, Module> ModulesByEDName = ModulesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
@@ -889,6 +895,7 @@ namespace EddiDataDefinitions
                  || module.EDName == "Hpt_DrunkMissileRack_Fixed_Medium"
                  || module.EDName == "Hpt_PlasmaAccelerator_Fixed_Large_Advanced"
                  || module.EDName == "Hpt_Railgun_Fixed_Medium_Burst"
+                 || module.EDName == "Hpt_DumbfireMissileRack_Fixed_Medium_Lasso"
                  );
         }
 

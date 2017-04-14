@@ -20,6 +20,7 @@ namespace EddiDataDefinitions
             { 128672262, new Ship(128672262, "CobraMkIV", "Faulcon DeLacy", null, "Cobra Mk. IV", new List<Translation> {new Translation("cobra", "ˈkəʊbrə"), new Translation("Mk.", "mɑːk"), new Translation("IV", "fɔː") }, "Small") },
             { 128671831, new Ship(128671831, "DiamondbackXL", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Diamondback Explorer", null, "Small") },
             { 128671217, new Ship(128671217, "Diamondback", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Diamondback Scout", null, "Small") },
+            { 128049291, new Ship(128049291, "Dolphin", "Saud Kruger", new List<Translation> {new Translation("Saud", "saʊd"), new Translation("Kruger", "ˈkruːɡə") }, "Dolphin", null, "Small") },
             { 128049255, new Ship(128049255, "Eagle", "Core Dynamics", null, "Eagle", null, "Small") },
             { 128672145, new Ship(128672145, "Federation_Dropship_MkII", "Core Dynamics", null, "Federal Assault Ship", null, "Medium") },
             { 128049369, new Ship(128049369, "Federation_Corvette", "Core Dynamics", null, "Federal Corvette", null, "Large") },
