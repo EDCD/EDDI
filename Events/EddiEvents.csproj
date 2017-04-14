@@ -65,7 +65,6 @@
     <Compile Include="BountyRedeemedEvent.cs" />
     <Compile Include="SettlementApproachedEvent.cs" />
     <Compile Include="EnteredCQCEvent.cs" />
-    <Compile Include="FileHeaderEvent.cs" />
     <Compile Include="MissionFailedEvent.cs" />
     <Compile Include="NPCCargoScanCommencedEvent.cs" />
     <Compile Include="NPCAttackCommencedEvent.cs" />

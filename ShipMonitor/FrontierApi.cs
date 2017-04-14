@@ -86,22 +86,18 @@ namespace EddiShipMonitor
 
             Ship Ship = ShipDefinitions.FromEDModel(json.GetValue("name").Value<string>());
 
-            Ship.raw = json.ToString(Formatting.None);
-
-            Ship.LocalId = json.GetValue("id").Value<int>();
-
-            Logging.Debug("Local ID is " + Ship.LocalId);
-
-            // Some ship information is just skeleton data of the ship's ID.  Use value as our canary to see if there is more data
-            if (json["value"] != null)
+            // We want to return a basic ship if the parsing fails so wrap this
+            try
             {
-                Ship.value = (long)json["value"]["hull"] + (long)json["value"]["modules"];
+                Ship.raw = json.ToString(Formatting.None);
+                Ship.LocalId = json.GetValue("id").Value<int>();
 
-                Ship.cargocapacity = (int)json["cargo"]["capacity"];
-                Ship.cargocarried = (int)json["cargo"]["qty"];
+                Ship.value = (long)(json["value"]?["hull"] ?? 0) + (long)(json["value"]?["modules"] ?? 0);
+                Ship.cargocapacity = (int)(json["cargo"]?["capacity"] ?? 0);
+                Ship.cargocarried = (int)(json["cargo"]?["qty"] ?? 0);
 
                 // Be sensible with health - round it unless it's very low
-                decimal Health = (decimal)json["health"]["hull"] / 10000;
+                decimal Health = (decimal)json["health"]?["hull"] / 10000;
                 if (Health < 5)
                 {
                     Ship.health = Math.Round(Health, 1);
@@ -111,49 +107,55 @@ namespace EddiShipMonitor
                     Ship.health = Math.Round(Health);
                 }
 
-                // Obtain the internals
-                Ship.bulkheads = ModuleFromJson("Armour", (JObject)json["modules"]["Armour"]);
-                Ship.powerplant = ModuleFromJson("PowerPlant", (JObject)json["modules"]["PowerPlant"]);
-                Ship.thrusters = ModuleFromJson("MainEngines", (JObject)json["modules"]["MainEngines"]);
-                Ship.frameshiftdrive = ModuleFromJson("FrameShiftDrive", (JObject)json["modules"]["FrameShiftDrive"]);
-                Ship.lifesupport = ModuleFromJson("LifeSupport", (JObject)json["modules"]["LifeSupport"]);
-                Ship.powerdistributor = ModuleFromJson("PowerDistributor", (JObject)json["modules"]["PowerDistributor"]);
-                Ship.sensors = ModuleFromJson("Radar", (JObject)json["modules"]["Radar"]);
-                Ship.fueltank = ModuleFromJson("FuelTank", (JObject)json["modules"]["FuelTank"]);
-                Ship.fueltankcapacity = (decimal)Math.Pow(2, Ship.fueltank.@class);
-                Ship.fueltanktotalcapacity = (decimal)json["fuel"]["main"]["capacity"];
-
-                // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
-                Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
-                foreach (JProperty module in json["modules"])
+                if (json["modules"] != null)
                 {
-                    if (module.Name.Contains("Hardpoint"))
+                    // Obtain the internals
+                    Ship.bulkheads = ModuleFromJson("Armour", (JObject)json["modules"]["Armour"]);
+                    Ship.powerplant = ModuleFromJson("PowerPlant", (JObject)json["modules"]["PowerPlant"]);
+                    Ship.thrusters = ModuleFromJson("MainEngines", (JObject)json["modules"]["MainEngines"]);
+                    Ship.frameshiftdrive = ModuleFromJson("FrameShiftDrive", (JObject)json["modules"]["FrameShiftDrive"]);
+                    Ship.lifesupport = ModuleFromJson("LifeSupport", (JObject)json["modules"]["LifeSupport"]);
+                    Ship.powerdistributor = ModuleFromJson("PowerDistributor", (JObject)json["modules"]["PowerDistributor"]);
+                    Ship.sensors = ModuleFromJson("Radar", (JObject)json["modules"]["Radar"]);
+                    Ship.fueltank = ModuleFromJson("FuelTank", (JObject)json["modules"]["FuelTank"]);
+                    if (Ship.fueltank != null)
                     {
-                        hardpoints.Add(module.Name, HardpointFromJson(module));
+                        Ship.fueltankcapacity = (decimal)Math.Pow(2, Ship.fueltank.@class);
                     }
-                }
+                    Ship.fueltanktotalcapacity = (decimal)json["fuel"]?["main"]?["capacity"];
 
-                foreach (string size in HARDPOINT_SIZES)
-                {
-                    for (int i = 1; i < 12; i++)
+                    // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
+                    Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
+                    foreach (JProperty module in json["modules"])
                     {
-                        Hardpoint hardpoint;
-                        hardpoints.TryGetValue(size + "Hardpoint" + i, out hardpoint);
-                        if (hardpoint != null)
+                        if (module.Name.Contains("Hardpoint"))
                         {
-                            Ship.hardpoints.Add(hardpoint);
+                            hardpoints.Add(module.Name, HardpointFromJson(module));
+                        }
+                    }
+                    foreach (string size in HARDPOINT_SIZES)
+                    {
+                        for (int i = 1; i < 12; i++)
+                        {
+                            Hardpoint hardpoint;
+                            hardpoints.TryGetValue(size + "Hardpoint" + i, out hardpoint);
+                            if (hardpoint != null)
+                            {
+                                Ship.hardpoints.Add(hardpoint);
+                            }
+                        }
+                    }
+
+                    // Obtain the compartments
+                    foreach (dynamic module in json["modules"])
+                    {
+                        if (module.Name.Contains("Slot"))
+                        {
+                            Ship.compartments.Add(CompartmentFromJson(module));
                         }
                     }
                 }
 
-                // Obtain the compartments
-                foreach (dynamic module in json["modules"])
-                {
-                    if (module.Name.Contains("Slot"))
-                    {
-                        Ship.compartments.Add(CompartmentFromJson(module));
-                    }
-                }
 
                 // Obtain the cargo
                 Ship.cargo = new List<Cargo>();
@@ -181,6 +183,10 @@ namespace EddiShipMonitor
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logging.Warn("Failed to parse ship", ex);
             }
 
             return Ship;

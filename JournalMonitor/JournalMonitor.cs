@@ -559,14 +559,6 @@ namespace EddiJournalMonitor
                                     decimal gravity = Body.ms2g(getDecimal(data, "SurfaceGravity"));
 
                                     decimal? temperature = getOptionalDecimal(data, "SurfaceTemperature");
-<<<<<<< HEAD
-                                    decimal? pressure = getOptionalDecimal(data, "SurfacePressure");
-
-                                    bool? landable = getOptionalBool(data, "Landable");
-
-                                    string reserves = getString(data, "ReserveLevel");
-
-=======
 
                                     decimal? pressure = getOptionalDecimal(data, "SurfacePressure");
 
@@ -574,7 +566,6 @@ namespace EddiJournalMonitor
 
                                     string reserves = getString(data, "ReserveLevel");
 
->>>>>>> 029354b745ce07bc23a3182b4047a5a1dcf2b77e
                                     // TODO atmosphere composition
 
                                     data.TryGetValue("Materials", out val);
@@ -1221,10 +1212,6 @@ namespace EddiJournalMonitor
 
                                 GameMode mode = GameMode.FromEDName(getString(data, "GameMode"));
                                 string group = getString(data, "Group");
-<<<<<<< HEAD
-
-=======
->>>>>>> 029354b745ce07bc23a3182b4047a5a1dcf2b77e
                                 data.TryGetValue("Credits", out val);
                                 decimal credits = (long)val;
                                 data.TryGetValue("Loan", out val);
@@ -1495,58 +1482,6 @@ namespace EddiJournalMonitor
                                 break;
                             }
                         case "RedeemVoucher":
-<<<<<<< HEAD
-                            {
-                                string type = getString(data, "Type");
-                                List<Reward> rewards = new List<Reward>();
-                                // Obtain list of factions
-                                data.TryGetValue("Factions", out val);
-                                List<object> factionsData = (List<object>)val;
-                                if (factionsData != null)
-                                {
-                                    foreach (Dictionary<string, object> rewardData in factionsData)
-                                    {
-                                        string factionName = getFaction(rewardData, "Faction");
-                                        rewardData.TryGetValue("Amount", out val);
-                                        long factionReward = (long)val;
-
-                                        rewards.Add(new Reward(factionName, factionReward));
-                                    }
-                                }
-                                data.TryGetValue("Amount", out val);
-                                long amount = (long)val;
-
-                                if (type == "bounty")
-                                {
-                                    journalEvent = new BountyRedeemedEvent(timestamp, rewards, amount);
-                                }
-                                else if (type == "CombatBond")
-                                {
-                                    journalEvent = new BondRedeemedEvent(timestamp, rewards, amount);
-                                }
-                                else if (type == "trade")
-                                {
-                                    journalEvent = new TradeVoucherRedeemedEvent(timestamp, rewards, amount);
-                                }
-                                else if (type == "settlement" || type == "scannable")
-                                {
-                                    journalEvent = new DataVoucherRedeemedEvent(timestamp, rewards, amount);
-                                }
-                                else
-                                {
-                                    Logging.Warn("Unhandled voucher type " + type);
-                                    Logging.Report("Unhandled voucher type " + type);
-                                }
-
-                                handled = true;
-                                break;
-                            }
-                        case "CommunityGoalJoin":
-                            {
-                                string name = getString(data, "Name");
-                                string system = getString(data, "System");
-
-=======
                             {
                                 object val;
 
@@ -1599,7 +1534,6 @@ namespace EddiJournalMonitor
                                 string name = getString(data, "Name");
                                 string system = getString(data, "System");
 
->>>>>>> 029354b745ce07bc23a3182b4047a5a1dcf2b77e
                                 journalEvent = new MissionAcceptedEvent(timestamp, null, name, system, null, null, null, null, null, null, null, null, null, true, null, null, null);
                                 handled = true;
                                 break;
@@ -1815,7 +1749,6 @@ namespace EddiJournalMonitor
                                 break;
                             }
                         case "Materials":
-<<<<<<< HEAD
                             {
                                 object val;
                                 List<MaterialAmount> materials = new List<MaterialAmount>();
@@ -1860,52 +1793,6 @@ namespace EddiJournalMonitor
                         case "Cargo":
                             {
                                 object val;
-=======
-                            {
-                                object val;
-                                List<MaterialAmount> materials = new List<MaterialAmount>();
-
-                                data.TryGetValue("Raw", out val);
-                                if (val != null)
-                                {
-                                    List<object> materialsJson = (List<object>)val;
-                                    foreach (Dictionary<string, object> materialJson in materialsJson)
-                                    {
-                                        Material material = Material.FromEDName(getString(materialJson, "Name"));
-                                        materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
-                                    }
-                                }
-
-                                data.TryGetValue("Manufactured", out val);
-                                if (val != null)
-                                {
-                                    List<object> materialsJson = (List<object>)val;
-                                    foreach (Dictionary<string, object> materialJson in materialsJson)
-                                    {
-                                        Material material = Material.FromEDName(getString(materialJson, "Name"));
-                                        materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
-                                    }
-                                }
-
-                                data.TryGetValue("Encoded", out val);
-                                if (val != null)
-                                {
-                                    List<object> materialsJson = (List<object>)val;
-                                    foreach (Dictionary<string, object> materialJson in materialsJson)
-                                    {
-                                        Material material = Material.FromEDName(getString(materialJson, "Name"));
-                                        materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
-                                    }
-                                }
-
-                                journalEvent = new MaterialInventoryEvent(DateTime.Now, materials);
-                            }
-                            handled = true;
-                            break;
-                        case "Cargo":
-                            {
-                                object val;
->>>>>>> 029354b745ce07bc23a3182b4047a5a1dcf2b77e
                                 List<Cargo> inventory = new List<Cargo>();
 
                                 data.TryGetValue("Inventory", out val);
@@ -2349,11 +2236,6 @@ namespace EddiJournalMonitor
             {
                 return (long)val;
             }
-<<<<<<< HEAD
-            else if (val is int)
-            {
-                return (long)(int)val;
-=======
             throw new ArgumentException("Unparseable value for " + key);
         }
 
@@ -2373,37 +2255,10 @@ namespace EddiJournalMonitor
             else if (val is long)
             {
                 return (int?)(long?)val;
->>>>>>> 029354b745ce07bc23a3182b4047a5a1dcf2b77e
             }
             throw new ArgumentException("Unparseable value for " + key);
         }
 
-<<<<<<< HEAD
-        private static long? getOptionalLong(IDictionary<string, object> data, string key)
-        {
-            object val;
-            data.TryGetValue(key, out val);
-            return getOptionalLong(key, val);
-        }
-
-        private static long? getOptionalLong(string key, object val)
-        {
-            if (val == null)
-            {
-                return null;
-            }
-            else if (val is long)
-            {
-                return (long?)val;
-            }
-            else if (val is int)
-            {
-                return (long?)(int?)val;
-            }
-        }
-
-=======
->>>>>>> 029354b745ce07bc23a3182b4047a5a1dcf2b77e
         private static bool getBool(IDictionary<string, object> data, string key)
         {
             object val;
@@ -2486,14 +2341,5 @@ namespace EddiJournalMonitor
             }
             return role;
         }
-<<<<<<< HEAD
-
-
-        public IDictionary<string, object> GetVariables()
-        {
-            return null;
-        }
-=======
->>>>>>> 029354b745ce07bc23a3182b4047a5a1dcf2b77e
     }
 }
