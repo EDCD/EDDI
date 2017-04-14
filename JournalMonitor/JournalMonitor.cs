@@ -111,9 +111,9 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Latitude", out val);
-                                decimal latitude = getDecimal("Latitude", val);
+                                decimal? latitude = (decimal?)(double?)val;
                                 data.TryGetValue("Longitude", out val);
-                                decimal longitude = getDecimal("Longitude", val);
+                                decimal? longitude = (decimal?)(double?)val;
                                 journalEvent = new TouchdownEvent(timestamp, longitude, latitude);
                             }
                             handled = true;
@@ -122,9 +122,9 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 data.TryGetValue("Latitude", out val);
-                                decimal latitude = getDecimal("Latitude", val);
+                                decimal? latitude = (decimal?)(double?)val;
                                 data.TryGetValue("Longitude", out val);
-                                decimal longitude = getDecimal("Longitude", val);
+                                decimal? longitude = (decimal?)(double?)val;
                                 journalEvent = new LiftoffEvent(timestamp, longitude, latitude);
                             }
                             handled = true;
