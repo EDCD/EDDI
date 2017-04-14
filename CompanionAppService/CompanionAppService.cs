@@ -32,6 +32,7 @@ namespace EddiCompanionAppService
             { "Cutter", "Imperial Cutter" },
             { "DiamondBack", "Diamondback Scout" },
             { "DiamondBackXL", "Diamondback Explorer" },
+            { "Dolphin", "Dolphin" },
             { "Eagle", "Eagle" },
             { "Empire_Courier", "Imperial Courier" },
             { "Empire_Eagle", "Imperial Eagle" },
@@ -648,20 +649,18 @@ namespace EddiCompanionAppService
 
             Ship Ship = ShipDefinitions.FromEDModel((string)json["name"]);
 
-            Ship.json = json.ToString(Formatting.None);
-
-            Ship.LocalId = json["id"];
-
-            // Some ship information is just skeleton data of the ship's ID.  Use value as our canary to see if there is more data
-            if (json["value"] != null)
+            // We want to return a basic ship if the parsing fails so wrap this
+            try
             {
-                Ship.value = (long)json["value"]["hull"] + (long)json["value"]["modules"];
+                Ship.json = json.ToString(Formatting.None);
+                Ship.LocalId = json["id"];
 
-                Ship.cargocapacity = (int)json["cargo"]["capacity"];
-                Ship.cargocarried = (int)json["cargo"]["qty"];
+                Ship.value = (long)(json["value"]?["hull"] ?? 0) + (long)(json["value"]?["modules"] ?? 0);
+                Ship.cargocapacity = (int)(json["cargo"]?["capacity"] ?? 0);
+                Ship.cargocarried = (int)(json["cargo"]?["qty"] ?? 0);
 
                 // Be sensible with health - round it unless it's very low
-                decimal Health = (decimal)json["health"]["hull"] / 10000;
+                decimal Health = (decimal)json["health"]?["hull"] / 10000;
                 if (Health < 5)
                 {
                     Ship.health = Math.Round(Health, 1);
@@ -671,49 +670,55 @@ namespace EddiCompanionAppService
                     Ship.health = Math.Round(Health);
                 }
 
-                // Obtain the internals
-                Ship.bulkheads = ModuleFromProfile("Armour", json["modules"]["Armour"]);
-                Ship.powerplant = ModuleFromProfile("PowerPlant", json["modules"]["PowerPlant"]);
-                Ship.thrusters = ModuleFromProfile("MainEngines", json["modules"]["MainEngines"]);
-                Ship.frameshiftdrive = ModuleFromProfile("FrameShiftDrive", json["modules"]["FrameShiftDrive"]);
-                Ship.lifesupport = ModuleFromProfile("LifeSupport", json["modules"]["LifeSupport"]);
-                Ship.powerdistributor = ModuleFromProfile("PowerDistributor", json["modules"]["PowerDistributor"]);
-                Ship.sensors = ModuleFromProfile("Radar", json["modules"]["Radar"]);
-                Ship.fueltank = ModuleFromProfile("FuelTank", json["modules"]["FuelTank"]);
-                Ship.fueltankcapacity = (decimal)Math.Pow(2, Ship.fueltank.@class);
-                Ship.fueltanktotalcapacity = (decimal)json["fuel"]["main"]["capacity"];
-
-                // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
-                Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
-                foreach (JProperty module in json["modules"])
+                if (json["modules"])
                 {
-                    if (module.Name.Contains("Hardpoint"))
+                    // Obtain the internals
+                    Ship.bulkheads = ModuleFromProfile("Armour", json["modules"]["Armour"]);
+                    Ship.powerplant = ModuleFromProfile("PowerPlant", json["modules"]["PowerPlant"]);
+                    Ship.thrusters = ModuleFromProfile("MainEngines", json["modules"]["MainEngines"]);
+                    Ship.frameshiftdrive = ModuleFromProfile("FrameShiftDrive", json["modules"]["FrameShiftDrive"]);
+                    Ship.lifesupport = ModuleFromProfile("LifeSupport", json["modules"]["LifeSupport"]);
+                    Ship.powerdistributor = ModuleFromProfile("PowerDistributor", json["modules"]["PowerDistributor"]);
+                    Ship.sensors = ModuleFromProfile("Radar", json["modules"]["Radar"]);
+                    Ship.fueltank = ModuleFromProfile("FuelTank", json["modules"]["FuelTank"]);
+                    if (Ship.fueltank != null)
                     {
-                        hardpoints.Add(module.Name, HardpointFromProfile(module));
+                        Ship.fueltankcapacity = (decimal)Math.Pow(2, Ship.fueltank.@class);
                     }
-                }
+                    Ship.fueltanktotalcapacity = (decimal)json["fuel"]?["main"]?["capacity"];
 
-                foreach (string size in HARDPOINT_SIZES)
-                {
-                    for (int i = 1; i < 12; i++)
+                    // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
+                    Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
+                    foreach (JProperty module in json["modules"])
                     {
-                        Hardpoint hardpoint;
-                        hardpoints.TryGetValue(size + "Hardpoint" + i, out hardpoint);
-                        if (hardpoint != null)
+                        if (module.Name.Contains("Hardpoint"))
                         {
-                            Ship.hardpoints.Add(hardpoint);
+                            hardpoints.Add(module.Name, HardpointFromProfile(module));
+                        }
+                    }
+                    foreach (string size in HARDPOINT_SIZES)
+                    {
+                        for (int i = 1; i < 12; i++)
+                        {
+                            Hardpoint hardpoint;
+                            hardpoints.TryGetValue(size + "Hardpoint" + i, out hardpoint);
+                            if (hardpoint != null)
+                            {
+                                Ship.hardpoints.Add(hardpoint);
+                            }
+                        }
+                    }
+
+                    // Obtain the compartments
+                    foreach (dynamic module in json["modules"])
+                    {
+                        if (module.Name.Contains("Slot"))
+                        {
+                            Ship.compartments.Add(CompartmentFromProfile(module));
                         }
                     }
                 }
 
-                // Obtain the compartments
-                foreach (dynamic module in json["modules"])
-                {
-                    if (module.Name.Contains("Slot"))
-                    {
-                        Ship.compartments.Add(CompartmentFromProfile(module));
-                    }
-                }
 
                 // Obtain the cargo
                 Ship.cargo = new List<Cargo>();
@@ -741,6 +746,10 @@ namespace EddiCompanionAppService
                         }
                     }
                 }
+            }
+            catch (Exception jgm)
+            {
+
             }
 
             Logging.Debug("Leaving");
@@ -924,6 +933,10 @@ namespace EddiCompanionAppService
 
         public static Module ModuleFromProfile(string name, JObject json)
         {
+            if (json == null)
+            {
+                return null;
+            }
             long id = (long)json["module"]["id"];
             Module module = ModuleDefinitions.ModuleFromEliteID(id);
             if (module.name == null)

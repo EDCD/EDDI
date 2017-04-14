@@ -1,3 +1,7 @@
+2.2.3
+  * Fix issue where undocumented change in Frontier API would cause EDDI to crash
+  * Add ship definition for Dolphin
+
 #2.2.2
   * Make a nuber of scan items optional for compatibility with Elite 2.3
 
