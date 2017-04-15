@@ -526,9 +526,9 @@ namespace EddiJournalMonitor
                                     {
                                         string ringName = getString(ringData, "Name");
                                         Composition ringComposition = Composition.FromEDName(getString(ringData, "RingClass"));
-                                        decimal ringMass = getDecimal(data, "MassMT");
-                                        decimal ringInnerRadius = getDecimal(data, "InnerRad");
-                                        decimal ringOuterRadius = getDecimal(data, "OuterRad");
+                                        decimal ringMass = getDecimal(ringData, "MassMT");
+                                        decimal ringInnerRadius = getDecimal(ringData, "InnerRad");
+                                        decimal ringOuterRadius = getDecimal(ringData, "OuterRad");
 
                                         rings.Add(new Ring(ringName, ringComposition, ringMass, ringInnerRadius, ringOuterRadius));
                                     }
