@@ -155,7 +155,7 @@ namespace EddiShipMonitor
                 ship.ident = @event.shipident;
                 if (@event.fuelcapacity.HasValue)
                 {
-                    ship.fueltanktotalcapacity = (decimal)@event.fuelcapacity;
+                    ship.fueltanktotalcapacity = (decimal?)@event.fuelcapacity;
                 }
                 writeShips();
             }
@@ -482,55 +482,64 @@ namespace EddiShipMonitor
                     // Engineering info for each module isn't in the journal, but we only use this to pass on to Coriolis so don't
                     // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
                     // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
-                    JObject cargoHatchModule = new JObject();
-                    cargoHatchModule.Add("on", ship.cargohatch.enabled);
-                    cargoHatchModule.Add("priority", ship.cargohatch.priority);
-                    cargoHatchModule.Add("value", ship.cargohatch.price);
-                    cargoHatchModule.Add("health", ship.cargohatch.health);
-                    cargoHatchModule.Add("name", "ModularCargoBayDoor");
-                    JObject cargoHatchSlot = new JObject();
-                    cargoHatchSlot.Add("module", cargoHatchModule);
+                    JObject cargoHatchModule = new JObject
+                    {
+                        { "on", ship.cargohatch.enabled },
+                        { "priority", ship.cargohatch.priority },
+                        { "value", ship.cargohatch.price },
+                        { "health", ship.cargohatch.health },
+                        { "name", "ModularCargoBayDoor" }
+                    };
+                    JObject cargoHatchSlot = new JObject
+                    {
+                        { "module", cargoHatchModule }
+                    };
                     JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
                     parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
                     ship.raw = parsedRaw.ToString(Formatting.None);
                 }
             }
 
-            foreach (Ship profileShip in profileShipyard)
-            {
-                Ship ship = GetShip(profileShip.LocalId);
-                if (ship != null)
-                {
-                    ship.raw = profileShip.raw;
-                    if (ship.model == null)
-                    {
-                        // We don't know this ship's model but can fill it from the info we have
-                        ship.model = profileShip.model;
-                        ship.Augment();
-                    }
-                    // Obtain items that we can't obtain from the journal
-                    ship.value = profileShip.value;
-                }
-            }
+            // As of 2.3.0 Frontier no longer supplies module information for ships other than the active ship, so we
+            // keep around the oldest information that we have available
+            //foreach (Ship profileShip in profileShipyard)
+            //{
+            //    Ship ship = GetShip(profileShip.LocalId);
+            //    if (ship != null)
+            //    {
+            //        ship.raw = profileShip.raw;
+            //        if (ship.model == null)
+            //        {
+            //            // We don't know this ship's model but can fill it from the info we have
+            //            ship.model = profileShip.model;
+            //            ship.Augment();
+            //        }
+            //        // Obtain items that we can't obtain from the journal
+            //        ship.value = profileShip.value;
+            //    }
+            //}
 
             writeShips();
         }
 
         public IDictionary<string, object> GetVariables()
         {
-            IDictionary<string, object> variables = new Dictionary<string, object>();
-            variables["ship"] = GetCurrentShip();
-            variables["shipyard"] = shipyard;
-
+            IDictionary<string, object> variables = new Dictionary<string, object>
+            {
+                ["ship"] = GetCurrentShip(),
+                ["shipyard"] = shipyard
+            };
             return variables;
         }
 
         public void writeShips()
         {
             // Write ship configuration with current inventory
-            ShipMonitorConfiguration configuration = new ShipMonitorConfiguration();
-            configuration.currentshipid = currentShipId;
-            configuration.shipyard = shipyard;
+            ShipMonitorConfiguration configuration = new ShipMonitorConfiguration()
+            {
+                currentshipid = currentShipId,
+                shipyard = shipyard
+            };
             configuration.ToFile();
         }
 

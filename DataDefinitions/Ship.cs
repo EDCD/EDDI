@@ -197,8 +197,8 @@ namespace EddiDataDefinitions
         public Module sensors { get; set; }
         public Module fueltank { get; set; }
         public Module datalinkscanner { get; set; }
-        public decimal fueltankcapacity { get; set; } // Core capacity
-        public decimal fueltanktotalcapacity { get; set; } // Capacity including additional tanks
+        public decimal? fueltankcapacity { get; set; } // Core capacity
+        public decimal? fueltanktotalcapacity { get; set; } // Capacity including additional tanks
         public List<Hardpoint> hardpoints { get; set; }
         public List<Compartment> compartments { get; set; }
         public string paintjob { get; set; }
