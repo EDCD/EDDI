@@ -15,6 +15,7 @@ using Utilities;
 using EddiEvents;
 using EddiCompanionAppService;
 using Newtonsoft.Json.Linq;
+using System.Windows.Controls;
 
 namespace GalnetMonitor
 {
@@ -29,6 +30,22 @@ namespace GalnetMonitor
         private GalnetConfiguration configuration = new GalnetConfiguration();
 
         private bool running = false;
+
+        public GalnetMonitor()
+        {
+            // Remove the old configuration file if it still exists
+            if (File.Exists(Constants.DATA_DIR + @"\galnet"))
+            {
+                try
+                {
+                    File.Delete(Constants.DATA_DIR + @"\galnet");
+                }
+                catch { }
+            }
+
+
+            configuration = GalnetConfiguration.FromFile();
+        }
 
         /// <summary>
         /// The name of the monitor; shows up in EDDI's configuration window
@@ -69,18 +86,6 @@ namespace GalnetMonitor
         /// </summary>
         public void Start()
         {
-            // Remove the old configuration file if it still exists
-            if (File.Exists(Constants.DATA_DIR + @"\galnet"))
-            {
-                try
-                {
-                    File.Delete(Constants.DATA_DIR + @"\galnet");
-                }
-                catch { }
-            }
-
-
-            configuration = GalnetConfiguration.FromFile();
             running = true;
             monitor();
         }
@@ -102,9 +107,9 @@ namespace GalnetMonitor
         /// This method returns a user control with configuration controls.
         /// It is attached the the monitor's configuration tab in EDDI.
         /// </summary>
-        public System.Windows.Controls.UserControl ConfigurationTabItem()
+        public UserControl ConfigurationTabItem()
         {
-            return null;
+            return new ConfigurationWindow();
         }
 
         private void monitor()
@@ -117,7 +122,9 @@ namespace GalnetMonitor
                 {
                     string locale = "en";
                     locales.TryGetValue(configuration.language, out locale);
-                    IEnumerable<FeedItem> items = new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(SOURCE + locale + RESOURCE);
+                    string url = SOURCE + locale + RESOURCE;
+                    Logging.Debug("Fetching Galnet articles from " + url);
+                    IEnumerable<FeedItem> items = new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(url);
                     if (items != null)
                     {
                         foreach (FeedItem item in items)

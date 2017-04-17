@@ -31,6 +31,7 @@ namespace GalnetMonitor
                       ,read)
                     VALUES(@uuid, @category, @title, @content, @published, 0)";
         private static string DELETE_SQL = @"DELETE FROM galnet WHERE uuid = @uuid";
+        private static string TRUNCATE_SQL = @"DELETE FROM galnet";
         private static string MARK_READ_SQL = @"UPDATE galnet SET read = @read WHERE uuid = @uuid";
         private static string SELECT_BY_UUID_SQL = @"
                     SELECT uuid,
@@ -134,7 +135,7 @@ namespace GalnetMonitor
             return result;
         }
 
-        public List<News> getArticles(string category = null, bool incRead = false)
+        public List<News> GetArticles(string category = null, bool incRead = false)
         {
             if (!File.Exists(DbFile)) return null;
 
@@ -186,11 +187,11 @@ namespace GalnetMonitor
         {
             if (GetArticle(news.uuid) == null)
             {
-                insertNews(news);
+                InsertNews(news);
             }
         }
 
-        private void insertNews(News news)
+        private void InsertNews(News news)
         {
             lock (insertLock)
             {
@@ -228,7 +229,22 @@ namespace GalnetMonitor
             }
         }
 
-        private void deleteNews(News news)
+        public void DeleteNews()
+        {
+            using (var con = SimpleDbConnection())
+            {
+                con.Open();
+                using (var cmd = new SQLiteCommand(con))
+                {
+                    cmd.CommandText = TRUNCATE_SQL;
+                    cmd.Prepare();
+                    cmd.ExecuteNonQuery();
+                }
+                con.Close();
+            }
+        }
+
+        public void DeleteNews(News news)
         {
             using (var con = SimpleDbConnection())
             {

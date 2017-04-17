@@ -475,17 +475,17 @@ namespace EddiSpeechResponder
                 if (values.Count == 0)
                 {
                     // Obtain all unread articles
-                    results = GalnetSqLiteRepository.Instance.getArticles();
+                    results = GalnetSqLiteRepository.Instance.GetArticles();
                 }
                 else if (values.Count == 1)
                 {
                     // Obtain all unread news of a given category
-                    results = GalnetSqLiteRepository.Instance.getArticles(values[0].AsString);
+                    results = GalnetSqLiteRepository.Instance.GetArticles(values[0].AsString);
                 }
                 else if (values.Count == 2)
                 {
                     // Obtain all news of a given category
-                    results = GalnetSqLiteRepository.Instance.getArticles(values[0].AsString, false);
+                    results = GalnetSqLiteRepository.Instance.GetArticles(values[0].AsString, false);
                 }
                 return (results == null ? new ReflectionValue(new List<News>()) : new ReflectionValue(results));
             }, 0, 2);
