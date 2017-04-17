@@ -799,15 +799,16 @@ namespace Eddi
                     {
                         try
                         {
-                            monitor.PreHandle(@event);
+                            monitor.PostHandle(@event);
                         }
                         catch (Exception ex)
                         {
                             Logging.Warn("Monitor failed", ex);
                         }
-                    });
-                    monitorThread.Name = monitor.MonitorName();
-                    monitorThread.IsBackground = true;
+                    })
+                    {
+                        IsBackground = true
+                    };
                     monitorThread.Start();
                 }
                 catch (ThreadAbortException tax)

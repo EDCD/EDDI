@@ -882,7 +882,7 @@ namespace EddiVoiceAttackResponder
                 }
                 else if (valueType == typeof(int))
                 {
-                    vaProxy.SetInt(varname, (int?)value);
+                    vaProxy.SetInt(varname, (int)value);
                 }
                 else if (valueType == typeof(bool))
                 {
@@ -1197,7 +1197,14 @@ namespace EddiVoiceAttackResponder
         {
             Logging.Debug("Setting body information (" + prefix + ")");
             vaProxy.SetText(prefix + " stellar class", body?.stellarclass);
-            vaProxy.SetInt(prefix + " age", body?.age);
+            if (body?.age == null)
+            {
+                vaProxy.SetDecimal(prefix + " age", null);
+            }
+            else
+            {
+                vaProxy.SetDecimal(prefix + " age", (decimal)(long)body.age);
+            }
             Logging.Debug("Set body information (" + prefix + ")");
         }
 

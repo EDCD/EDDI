@@ -121,8 +121,7 @@ namespace EddiMaterialMonitor
             {
                 try
                 {
-                    Event pendingEvent;
-                    while (pendingEvents.TryDequeue(out pendingEvent))
+                    while (pendingEvents.TryDequeue(out Event pendingEvent))
                     {
                         EDDI.Instance.eventHandler(pendingEvent);
                     }
@@ -131,8 +130,10 @@ namespace EddiMaterialMonitor
                 {
                     Logging.Debug("Thread aborted");
                 }
-            });
-            thread.IsBackground = true;
+            })
+            {
+                IsBackground = true
+            };
             thread.Start();
         }
 

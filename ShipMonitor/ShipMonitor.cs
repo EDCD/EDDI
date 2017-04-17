@@ -469,6 +469,12 @@ namespace EddiShipMonitor
             if (profileCurrentShip != null)
             {
                 Ship ship = GetShip(profileCurrentShip.LocalId);
+                if (ship == null)
+                {
+                    // TODO shouldn't be necessary
+                    ship = profileCurrentShip;
+                    
+                }
                 if (ship.model == null)
                 {
                     // We don't know this ship's model but can fill it from the info we have

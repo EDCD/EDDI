@@ -219,7 +219,14 @@ namespace EddiSpeechResponder
                 {
                     foreach (string key in monitorVariables.Keys)
                     {
-                        dict[key] = new ReflectionValue(monitorVariables[key]);
+                        if (monitorVariables[key] == null)
+                        {
+                            dict.Remove(key);
+                        }
+                        else
+                        {
+                            dict[key] = new ReflectionValue(monitorVariables[key]);
+                        }
                     }
                 }
             }
