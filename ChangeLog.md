@@ -72,7 +72,8 @@
 	  * 'FSD engaged' - new script
 	  * 'Galnet news' - new script
 	  * 'Galnet news published' - updated script to only report on latest non-status news reports; by default does not read contents
-	  * 'Galnet unread news' - new script
+	  * 'Galnet latest news' - new script
+	  * 'Galnet oldest news' - new script
 	  * 'Galnet unread report' - new script
 	  * 'Jumped' - call system security report here rather than in 'Jumping' to guarantee up-to-date information
 	  * 'Liftoff' - change speech depending on if player is controlling ship or not
@@ -112,9 +113,18 @@
 	  * 'Read the latest economy [news;report]' - Read the latest weekly economy report
 	  * 'Read the latest expansion [news;report]' - Read the latest weekly expansion report
 	  * 'Read the latest health [news;report]' - Read the latest weekly health report
+	  * 'Read the latest news' - Read the latest news article
 	  * 'Read the latest security [news;report]' - Read the latest weekly security report
 	  * 'Read the latest starport status [news;report]' - Read the latest starport status update
-	  * 'Read the latest news;What's the latest news?' - Read the latest news article
+	  * 'Read the latest community goal [news;]' - Read the latest community goal article
+	  * 'Read the [next;oldest] conflict [news;report]' - Read the oldest weekly conflict report
+	  * 'Read the [next;oldest] democracy [news;report]' - Read the oldest weekly democracy report
+	  * 'Read the [next;oldest] economy [news;report]' - Read the oldest weekly economy report
+	  * 'Read the [next;oldest] expansion [news;report]' - Read the oldest weekly expansion report
+	  * 'Read the [next;oldest] health [news;report]' - Read the oldest weekly health report
+	  * 'Read the [next;oldest] news' - Read the oldest news article
+	  * 'Read the [next;oldest] security [news;report]' - Read the oldest weekly security report
+	  * 'Read the [next;oldest] starport status [news;report]' - Read the oldest starport status update
     * Add other VoiceAttack commands
       * 'What do I need for <blueprint>' - Find out the materials required for a particular blueprint
       * 'How many <blueprint> can I make' - Find out how many of a particular blueprint you can make with your current inventory

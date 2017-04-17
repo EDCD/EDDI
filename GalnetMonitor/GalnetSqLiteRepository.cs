@@ -185,7 +185,7 @@ namespace GalnetMonitor
 
         public void SaveNews(News news)
         {
-            if (GetArticle(news.uuid) == null)
+            if (GetArticle(news.id) == null)
             {
                 InsertNews(news);
             }
@@ -196,7 +196,7 @@ namespace GalnetMonitor
             lock (insertLock)
             {
                 // Before we insert we attempt to fetch to ensure that we don't have it present
-                News existingNews = GetArticle(news.uuid);
+                News existingNews = GetArticle(news.id);
                 if (existingNews == null)
                 {
                     Logging.Debug("Creating new news" + news.title);
@@ -211,7 +211,7 @@ namespace GalnetMonitor
                             {
                                 cmd.CommandText = INSERT_SQL;
                                 cmd.Prepare();
-                                cmd.Parameters.AddWithValue("@uuid", news.uuid);
+                                cmd.Parameters.AddWithValue("@uuid", news.id);
                                 cmd.Parameters.AddWithValue("@published", news.published);
                                 cmd.Parameters.AddWithValue("@category", news.category);
                                 cmd.Parameters.AddWithValue("@title", news.title);
@@ -253,7 +253,7 @@ namespace GalnetMonitor
                 {
                     cmd.CommandText = DELETE_SQL;
                     cmd.Prepare();
-                    cmd.Parameters.AddWithValue("@uuid", news.uuid);
+                    cmd.Parameters.AddWithValue("@uuid", news.id);
                     cmd.ExecuteNonQuery();
                 }
                 con.Close();
@@ -270,7 +270,7 @@ namespace GalnetMonitor
                     cmd.CommandText = MARK_READ_SQL;
                     cmd.Prepare();
                     cmd.Parameters.AddWithValue("@read", 1);
-                    cmd.Parameters.AddWithValue("@uuid", news.uuid);
+                    cmd.Parameters.AddWithValue("@uuid", news.id);
                     cmd.ExecuteNonQuery();
                 }
                 con.Close();
@@ -287,7 +287,7 @@ namespace GalnetMonitor
                     cmd.CommandText = MARK_READ_SQL;
                     cmd.Prepare();
                     cmd.Parameters.AddWithValue("@read", 1);
-                    cmd.Parameters.AddWithValue("@uuid", news.uuid);
+                    cmd.Parameters.AddWithValue("@uuid", news.id);
                     cmd.ExecuteNonQuery();
                 }
                 con.Close();
