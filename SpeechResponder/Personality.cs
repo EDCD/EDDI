@@ -23,6 +23,9 @@ namespace EddiSpeechResponder
         [JsonProperty("description")]
         public string Description { get; private set; }
 
+        [JsonIgnore]
+        public bool IsDefault { get; set; } = false;
+
         [JsonProperty("scripts")]
         public Dictionary<string, Script> Scripts { get; private set; }
 
@@ -91,14 +94,14 @@ namespace EddiSpeechResponder
         /// </summary>
         public static Personality Default()
         {
-            return FromFile(DEFAULT_PATH);
+            return FromFile(DEFAULT_PATH, true);
         }
 
         /// <summary>
         /// Obtain personality from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\personalities\eddi.json is used
         /// </summary>
-        public static Personality FromFile(string filename = null)
+        public static Personality FromFile(string filename = null, bool isDefault = false)
         {
             if (filename == null)
             {
@@ -118,6 +121,7 @@ namespace EddiSpeechResponder
             if (personality != null)
             {
                 personality.dataPath = filename;
+                personality.IsDefault = isDefault;
                 fixPersonalityInfo(personality);
             }
 
@@ -210,7 +214,7 @@ namespace EddiSpeechResponder
                     fixedScripts.Add(kv.Key, kv.Value);
                 }
             }
-            if (personality.Name != "EDDI")
+            if (!personality.IsDefault)
             {
                 // Also add any secondary scripts in the default personality that aren't present in the list
                 Personality defaultPersonality = Default();
