@@ -287,6 +287,13 @@ namespace Eddi
             }
         }
 
+        private void companionAppResetClicked(object sender, RoutedEventArgs e)
+        {
+            // Logout from the companion app and start again
+            CompanionAppService.Instance.Logout();
+            setUpCompanionAppStage1();
+        }
+
         // Handle changes to the Frontier API tab
         private void companionAppNextClicked(object sender, RoutedEventArgs e)
         {
@@ -366,12 +373,6 @@ namespace Eddi
                     setUpCompanionAppStage1("Unexpected problem\r\nPlease report this at http://github.com/CmdrMcDonald/EliteDangerousDataProvider/issues\r\n" + ex);
                 }
             }
-            else if (companionAppLogoutText.Visibility == Visibility.Visible)
-            {
-                // Logged in - handle logout
-                CompanionAppService.Instance.Logout();
-                setUpCompanionAppStage1();
-            }
         }
 
         private void setUpCompanionAppStage1(string message = null)
@@ -394,7 +395,6 @@ namespace Eddi
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
-            companionAppLogoutText.Visibility = Visibility.Hidden;
             companionAppNextButton.Content = "Next";
         }
 
@@ -416,7 +416,6 @@ namespace Eddi
             companionAppPasswordText.Visibility = Visibility.Hidden;
             companionAppCodeLabel.Visibility = Visibility.Visible;
             companionAppCodeText.Visibility = Visibility.Visible;
-            companionAppLogoutText.Visibility = Visibility.Hidden;
             companionAppNextButton.Content = "Next";
         }
 
@@ -439,7 +438,6 @@ namespace Eddi
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
-            companionAppLogoutText.Visibility = Visibility.Visible;
             companionAppNextButton.Content = "Log out";
         }
 

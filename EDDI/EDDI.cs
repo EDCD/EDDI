@@ -692,10 +692,6 @@ namespace Eddi
                     {
                         passEvent = eventEnteredNormalSpace((EnteredNormalSpaceEvent)journalEvent);
                     }
-                    else if (journalEvent is ShipDeliveredEvent)
-                    {
-                        passEvent = eventShipDelivered((ShipDeliveredEvent)journalEvent);
-                    }
                     else if (journalEvent is CommanderContinuedEvent)
                     {
                         passEvent = eventCommanderContinued((CommanderContinuedEvent)journalEvent);
@@ -1082,11 +1078,6 @@ namespace Eddi
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
             updateCurrentSystem(theEvent.system);
-            return true;
-        }
-
-        private bool eventShipDelivered(ShipDeliveredEvent theEvent)
-        {
             return true;
         }
 

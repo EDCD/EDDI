@@ -1,6 +1,8 @@
-﻿using System;
+﻿using EddiEvents;
+using System;
 using System.Collections.Generic;
-namespace EddiEvents
+
+namespace EddiShipMonitor
 {
     public class ShipRepurchasedEvent : Event
     {
