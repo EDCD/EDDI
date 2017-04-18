@@ -106,30 +106,33 @@ namespace EddiSpeechResponder
             SpeechResponder responder = new SpeechResponder();
             responder.Start();
             // See if we have a sample
-            Event sampleEvent;
+            List<Event> sampleEvents;
             object sample = Events.SampleByName(script.Name);
             if (sample == null)
             {
-                sampleEvent = null;
+                sampleEvents = new List<Event>();
             }
             else if (sample is string)
             {
                 // It's as tring so a journal entry.  Parse it
-                sampleEvent = JournalMonitor.ParseJournalEntry((string)sample);
+                sampleEvents = JournalMonitor.ParseJournalEntry((string)sample);
             }
             else if (sample is Event)
             {
                 // It's a direct event
-                sampleEvent = (Event)sample;
+                sampleEvents = new List<Event>() { (Event)sample };
             }
             else
             {
                 Logging.Warn("Unknown sample type " + sample.GetType());
-                sampleEvent = null;
+                sampleEvents = new List<Event>();
             }
 
             ScriptResolver scriptResolver = new ScriptResolver(Personality.Scripts);
-            responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script.Name, sampleEvent, null, null, false);
+            foreach (Event sampleEvent in sampleEvents)
+            {
+                responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script.Name, sampleEvent, null, null, false);
+            }
         }
 
         private void deleteScript(object sender, RoutedEventArgs e)
