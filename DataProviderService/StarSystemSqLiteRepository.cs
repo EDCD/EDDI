@@ -91,11 +91,18 @@ namespace EddiDataProviderService
                     system = new StarSystem();
                     system.name = name;
                 }
+                // TODO can we just remove lastvisit from the database definition?
+                bool lastvisitSet = false;
                 if (system.lastvisit == null)
                 {
                     system.lastvisit = DateTime.Now;
+                    lastvisitSet = true;
                 }
                 insertStarSystem(system);
+                if (lastvisitSet)
+                {
+                    system.lastvisit = null;
+                }
             }
             return system;
         }
@@ -204,6 +211,13 @@ namespace EddiDataProviderService
             }
         }
 
+        // Triggered when leaving a starsystem - just update lastvisit
+        public void LeaveStarSystem(StarSystem system)
+        {
+            system.lastvisit = DateTime.Now;
+            SaveStarSystem(system);
+        }
+
         private void insertStarSystem(StarSystem system)
         {
             lock (insertLock)
@@ -212,12 +226,12 @@ namespace EddiDataProviderService
                 StarSystem existingStarSystem = GetStarSystem(system.name, false);
                 if (existingStarSystem != null)
                 {
-                    Logging.Warn("Attempt to insert existing star system - updating instead");
+                    Logging.Debug("Attempt to insert existing star system - updating instead");
                     updateStarSystem(system);
                 }
                 else
                 {
-                    Logging.Warn("Creating new starsystem " + system.name);
+                    Logging.Debug("Creating new starsystem " + system.name);
                     if (system.lastvisit == null)
                     {
                         // DB constraints don't allow this to be null

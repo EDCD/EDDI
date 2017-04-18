@@ -21,8 +21,6 @@ namespace GalnetMonitor
             monitor = ((GalnetMonitor)EDDI.Instance.ObtainMonitor("Galnet monitor"));
 
             GalnetConfiguration configuration = GalnetConfiguration.FromFile();
-            Logging.Warn("Configuration is " + JsonConvert.SerializeObject(configuration));
-            Logging.Warn("Language is " + configuration.language);
             languageComboBox.SelectedValue = configuration.language;
         }
 

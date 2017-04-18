@@ -1008,6 +1008,7 @@ namespace EddiVoiceAttackResponder
                 }
 
                 vaProxy.SetText(prefix + " name", ship?.name);
+                vaProxy.SetText(prefix + " name (spoken)", ship?.phoneticname);
                 vaProxy.SetText(prefix + " role", ship?.role?.ToString());
                 vaProxy.SetText(prefix + " size", ship?.size?.ToString());
                 vaProxy.SetDecimal(prefix + " value", ship?.value);
@@ -1160,6 +1161,8 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetDecimal(prefix + " Y", system?.y);
                 vaProxy.SetDecimal(prefix + " Z", system?.z);
                 vaProxy.SetInt(prefix + " visits", system?.visits);
+                vaProxy.SetDateTime(prefix + " last visit", system?.visits > 1 ? system.lastvisit : null);
+                vaProxy.SetDecimal(prefix + " minutes since last visit", system?.visits > 1 && system?.lastvisit.HasValue == true ? (decimal)(long)(DateTime.Now - system.lastvisit.Value).TotalMinutes : (decimal?)null);
                 vaProxy.SetText(prefix + " comment", system?.comment);
                 vaProxy.SetDecimal(prefix + " distance from home", system?.distancefromhome);
 

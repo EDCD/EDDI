@@ -951,6 +951,11 @@ namespace Eddi
             }
             if (CurrentStarSystem == null || CurrentStarSystem.name != name)
             {
+                if (CurrentStarSystem.name != name)
+                {
+                    // We have changed system so update the old one as to when we left
+                    StarSystemSqLiteRepository.Instance.LeaveStarSystem(CurrentStarSystem);
+                }
                 LastStarSystem = CurrentStarSystem;
                 CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(name);
                 setSystemDistanceFromHome(CurrentStarSystem);
@@ -1013,7 +1018,7 @@ namespace Eddi
                 CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
 
                 CurrentStarSystem.visits++;
-                CurrentStarSystem.lastvisit = DateTime.Now;
+                // We don't update lastvisit because we do that when we leave
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 setCommanderTitle();
             }
@@ -1056,7 +1061,7 @@ namespace Eddi
                 CurrentStarSystem.security = theEvent.security;
 
                 CurrentStarSystem.visits++;
-                CurrentStarSystem.lastvisit = DateTime.Now;
+                // We don't update lastvisit because we do that when we leave
                 CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 setCommanderTitle();

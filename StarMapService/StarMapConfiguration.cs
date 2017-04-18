@@ -28,14 +28,17 @@ namespace EddiStarMapService
             }
 
             StarMapConfiguration configuration = new StarMapConfiguration();
-            try
+            if (File.Exists(filename))
             {
-                string credentialsData = File.ReadAllText(filename);
-                configuration = JsonConvert.DeserializeObject<StarMapConfiguration>(credentialsData);
-            }
-            catch (Exception ex)
-            {
-                Logging.Debug("Failed to read starmap configuration", ex);
+                try
+                {
+                    string credentialsData = File.ReadAllText(filename);
+                    configuration = JsonConvert.DeserializeObject<StarMapConfiguration>(credentialsData);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Debug("Failed to read starmap configuration", ex);
+                }
             }
             if (configuration == null)
             {
