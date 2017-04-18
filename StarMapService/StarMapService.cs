@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Deserializers;
 using RestSharp.Serializers;
@@ -59,7 +60,7 @@ namespace EddiStarMapService
             {
                 try
                 {
-                    Logging.Debug("Sending data to EDSM: " + request.ToString());
+                    Logging.Debug("Sending data to EDSM: " + client.BuildUri(request).AbsoluteUri);
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
                     Logging.Debug("Data sent to EDSM");
@@ -97,7 +98,7 @@ namespace EddiStarMapService
             {
                 try
                 {
-                    Logging.Debug("Sending data to EDSM: " + request.ToString());
+                    Logging.Debug("Sending data to EDSM: " + client.BuildUri(request).AbsoluteUri);
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
                     Logging.Debug("Data sent to EDSM");
@@ -144,7 +145,7 @@ namespace EddiStarMapService
             {
                 try
                 {
-                    Logging.Debug("Sending data to EDSM: " + request.ToString());
+                    Logging.Debug("Sending data to EDSM: " + client.BuildUri(request).AbsoluteUri);
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
                     Logging.Debug("Data sent to EDSM");
@@ -164,6 +165,194 @@ namespace EddiStarMapService
             });
             thread.IsBackground = true;
             thread.Name = "StarMapService send ranks";
+            thread.Start();
+        }
+
+        public void sendMaterials(Dictionary<string, int> materials)
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-commander-v1/set-materials");
+            request.AddParameter("apiKey", apiKey);
+            request.AddParameter("commanderName", commanderName);
+            request.AddParameter("type", "materials");
+            request.AddParameter("values", JsonConvert.SerializeObject(materials));
+            request.AddParameter("fromSoftware", Constants.EDDI_NAME);
+            request.AddParameter("fromSoftwareVersion", Constants.EDDI_VERSION);
+
+            Thread thread = new Thread(() =>
+            {
+                try
+                {
+                    Logging.Debug("Sending data to EDSM: " + client.BuildUri(request).AbsoluteUri);
+                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    StarMapLogResponse response = clientResponse.Data;
+                    Logging.Debug("Data sent to EDSM");
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to send data to EDSM", ex);
+                }
+            });
+            thread.IsBackground = true;
+            thread.Name = "StarMapService send materials";
+            thread.Start();
+        }
+
+        public void sendData(Dictionary<string, int> data)
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-commander-v1/set-materials");
+            request.AddParameter("apiKey", apiKey);
+            request.AddParameter("commanderName", commanderName);
+            request.AddParameter("type", "data");
+            request.AddParameter("values", JsonConvert.SerializeObject(data));
+            request.AddParameter("fromSoftware", Constants.EDDI_NAME);
+            request.AddParameter("fromSoftwareVersion", Constants.EDDI_VERSION);
+
+            Thread thread = new Thread(() =>
+            {
+                try
+                {
+                    Logging.Debug("Sending data to EDSM: " + client.BuildUri(request).AbsoluteUri);
+                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    StarMapLogResponse response = clientResponse.Data;
+                    Logging.Debug("Data sent to EDSM");
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to send data to EDSM", ex);
+                }
+            });
+            thread.IsBackground = true;
+            thread.Name = "StarMapService send data";
+            thread.Start();
+        }
+
+        public void sendShip(Ship ship)
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-commander-v1/update-ship");
+            request.AddParameter("apiKey", apiKey);
+            request.AddParameter("commanderName", commanderName);
+            request.AddParameter("shipId", ship.LocalId);
+            request.AddParameter("shipName", ship.name);
+            request.AddParameter("shipIdent", ship.ident);
+            request.AddParameter("type", ship.EDName);
+            request.AddParameter("paintJob", ship.paintjob);
+            request.AddParameter("cargoQty", ship.cargocarried);
+            request.AddParameter("cargoCapacity", ship.cargocapacity);
+            request.AddParameter("linkToCoriolis", ship.CoriolisUri());
+
+            Thread thread = new Thread(() =>
+            {
+                try
+                {
+                    Logging.Debug("Sending data to EDSM: " + client.BuildUri(request).AbsoluteUri);
+                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    StarMapLogResponse response = clientResponse.Data;
+                    Logging.Debug("Data sent to EDSM");
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to send data to EDSM", ex);
+                }
+            });
+            thread.IsBackground = true;
+            thread.Name = "StarMapService send ship";
+            thread.Start();
+        }
+
+        public void sendShipSwapped(int shipId)
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-commander-v1/set-ship-id");
+            request.AddParameter("apiKey", apiKey);
+            request.AddParameter("commanderName", commanderName);
+            request.AddParameter("shipId", shipId);
+
+            Thread thread = new Thread(() =>
+            {
+                try
+                {
+                    Logging.Debug("Sending data to EDSM: " + client.BuildUri(request).AbsoluteUri);
+                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    StarMapLogResponse response = clientResponse.Data;
+                    Logging.Debug("Data sent to EDSM");
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to send data to EDSM", ex);
+                }
+            });
+            thread.IsBackground = true;
+            thread.Name = "StarMapService send ship ID";
+            thread.Start();
+        }
+
+        public void sendShipSold(int shipId)
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-commander-v1/sell-ship");
+            request.AddParameter("apiKey", apiKey);
+            request.AddParameter("commanderName", commanderName);
+            request.AddParameter("shipId", shipId);
+
+            Thread thread = new Thread(() =>
+            {
+                try
+                {
+                    Logging.Debug("Sending data to EDSM: " + client.BuildUri(request).AbsoluteUri);
+                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    StarMapLogResponse response = clientResponse.Data;
+                    Logging.Debug("Data sent to EDSM");
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
+                }
+                catch (ThreadAbortException)
+                {
+                    Logging.Debug("Thread aborted");
+                }
+                catch (Exception ex)
+                {
+                    Logging.Warn("Failed to send data to EDSM", ex);
+                }
+            });
+            thread.IsBackground = true;
+            thread.Name = "StarMapService sell ship";
             thread.Start();
         }
 
@@ -296,6 +485,7 @@ namespace EddiStarMapService
             var request = new RestRequest("api-logs-v1/get-logs");
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
+            request.AddParameter("fullSync", 1);
             if (since.HasValue)
             {
                 request.AddParameter("startdatetime", since.Value.ToString("yyyy-MM-dd HH:mm:ss"));

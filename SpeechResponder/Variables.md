@@ -157,6 +157,7 @@ A material.
     - name the name of the material (e.g. Iron)
     - category the category of the material (Element, Data or Manufactured)
     - rarity the rarity of the material
+    - uses the blueprints for which the material is used
 
 ## Rarity
 

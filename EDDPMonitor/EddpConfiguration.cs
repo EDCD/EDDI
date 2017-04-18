@@ -31,13 +31,16 @@ namespace EddiEddpMonitor
             }
 
             EddpConfiguration configuration = new EddpConfiguration();
-            try
+            if (File.Exists(filename))
             {
-                configuration = JsonConvert.DeserializeObject<EddpConfiguration>(File.ReadAllText(filename));
-            }
-            catch (Exception ex)
-            {
-                Logging.Debug("Failed to read EDDP monitor configuration", ex);
+                try
+                {
+                    configuration = JsonConvert.DeserializeObject<EddpConfiguration>(File.ReadAllText(filename));
+                }
+                catch (Exception ex)
+                {
+                    Logging.Debug("Failed to read EDDP monitor configuration", ex);
+                }
             }
             if (configuration == null)
             {

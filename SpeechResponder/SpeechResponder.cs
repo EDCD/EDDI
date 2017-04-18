@@ -9,6 +9,9 @@ using System.Windows.Controls;
 using System;
 using System.Text.RegularExpressions;
 using System.IO;
+using EddiDataDefinitions;
+using EddiShipMonitor;
+using Cottle;
 
 namespace EddiSpeechResponder
 {
@@ -119,17 +122,29 @@ namespace EddiSpeechResponder
         public void Handle(Event theEvent)
         {
             Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
-            Say(scriptResolver, theEvent.type, theEvent);
+
+            // By default we say things unless we've been told not to
+            bool sayOutLoud = true;
+            object tmp;
+            if (EDDI.Instance.State.TryGetValue("speechresponder_quiet", out tmp))
+            {
+                if (tmp is bool)
+                {
+                    sayOutLoud = !(bool)tmp;
+                }
+            }
+
+            Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), theEvent.type, theEvent, null, null, null, sayOutLoud);
         }
 
         // Say something with the default resolver
-        public void Say(string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null)
+        public void Say(Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null, bool sayOutLoud = true)
         {
-            Say(scriptResolver, scriptName, theEvent, priority, voice);
+            Say(scriptResolver, ship, scriptName, theEvent, priority, voice, null, sayOutLoud);
         }
 
         // Say something with a custom resolver
-        public void Say(ScriptResolver resolver, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null)
+        public void Say(ScriptResolver resolver, Ship ship, string scriptName, Event theEvent = null, int? priority = null, string voice = null, bool? wait = null, bool sayOutLoud = true)
         {
             Dictionary<string, Cottle.Value> dict = createVariables(theEvent);
             string speech = resolver.resolve(scriptName, dict);
@@ -140,9 +155,9 @@ namespace EddiSpeechResponder
                     // Log a tidied version of the speech
                     log(Regex.Replace(speech, "<.*?>", string.Empty));
                 }
-                if (!(subtitles && subtitlesOnly))
+                if (sayOutLoud && !(subtitles && subtitlesOnly))
                 {
-                    SpeechService.Instance.Say(EDDI.Instance.Ship, speech, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority), voice);
+                    SpeechService.Instance.Say(ship, speech, (wait == null ? true : (bool)wait), (priority == null ? resolver.priority(scriptName) : (int)priority), voice);
                 }
             }
         }
@@ -158,11 +173,6 @@ namespace EddiSpeechResponder
             if (EDDI.Instance.Cmdr != null)
             {
                 dict["cmdr"] = new ReflectionValue(EDDI.Instance.Cmdr);
-            }
-
-            if (EDDI.Instance.Ship != null)
-            {
-                dict["ship"] = new ReflectionValue(EDDI.Instance.Ship);
             }
 
             if (EDDI.Instance.HomeStarSystem != null)
@@ -197,33 +207,28 @@ namespace EddiSpeechResponder
 
             if (EDDI.Instance.State != null)
             {
-                Dictionary<Cottle.Value, Cottle.Value> state = new Dictionary<Cottle.Value, Cottle.Value>();
-                foreach (string key in EDDI.Instance.State.Keys)
+                dict["state"] = ScriptResolver.buildState();
+                Logging.Debug("State is " + JsonConvert.SerializeObject(EDDI.Instance.State));
+            }
+
+            // Obtain additional variables from each monitor
+            foreach (EDDIMonitor monitor in EDDI.Instance.monitors)
+            {
+                IDictionary<string, object> monitorVariables = monitor.GetVariables();
+                if (monitorVariables != null)
                 {
-                    object value = EDDI.Instance.State[key];
-                    if (value == null)
+                    foreach (string key in monitorVariables.Keys)
                     {
-                        continue;
-                    }
-                    Type valueType = value.GetType();
-                    if (valueType == typeof(string))
-                    {
-                        state[key] = (string)value;
-                    }
-                    else if (valueType == typeof(int))
-                    {
-                        state[key] = (int)value;
-                    }
-                    else if (valueType == typeof(bool))
-                    {
-                        state[key] = (bool)value;
-                    }
-                    else if (valueType == typeof(decimal))
-                    {
-                        state[key] = (decimal)value;
+                        if (monitorVariables[key] == null)
+                        {
+                            dict.Remove(key);
+                        }
+                        else
+                        {
+                            dict[key] = new ReflectionValue(monitorVariables[key]);
+                        }
                     }
                 }
-                dict["state"] = state;
             }
 
             return dict;

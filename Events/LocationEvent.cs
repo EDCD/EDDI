@@ -32,6 +32,8 @@ namespace EddiEvents
             VARIABLES.Add("economy", "The economy of the system in which the commander resides");
             VARIABLES.Add("government", "The government of the system in which the commander resides");
             VARIABLES.Add("security", "The security of the system in which the commander resides");
+            VARIABLES.Add("longitude", "The longitude of the commander (if on the ground)");
+            VARIABLES.Add("latitude", "The latitude of the commander (if on the ground)");
         }
 
         public string system { get; private set; }
@@ -62,7 +64,11 @@ namespace EddiEvents
 
         public string security { get; private set; }
 
-        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, string body, string bodytype, bool docked, string station, string stationtype, Superpower allegiance, string faction, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
+        public decimal? longitude { get; private set; }
+
+        public decimal? latitude { get; private set; }
+
+        public LocationEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, string body, string bodytype, bool docked, string station, string stationtype, Superpower allegiance, string faction, Economy economy, Government government, SecurityLevel security, decimal? longitude, decimal? latitude) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
@@ -78,6 +84,8 @@ namespace EddiEvents
             this.economy = (economy == null ? Economy.None.name : economy.name);
             this.government = (government == null ? Government.None.name : government.name);
             this.security = (security == null ? SecurityLevel.Low.name : security.name);
+            this.longitude = longitude;
+            this.latitude = latitude;
         }
     }
 }

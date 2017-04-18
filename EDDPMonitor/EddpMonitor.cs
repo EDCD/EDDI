@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -51,6 +52,16 @@ namespace EddiEddpMonitor
         public string MonitorDescription()
         {
             return @"Monitor EDDP for changes in system control and state, and generate events that match the watch list.";
+        }
+
+        public bool IsRequired()
+        {
+            return false;
+        }
+
+        public bool NeedsStart()
+        {
+            return true;
         }
 
         /// <summary>
@@ -273,6 +284,23 @@ namespace EddiEddpMonitor
 
             // No match
             Logging.Debug("Message did not match any watch; ignoring");
+            return null;
+        }
+
+        public void PreHandle(Event @event)
+        {
+        }
+
+        public void PostHandle(Event @event)
+        {
+        }
+
+        public void HandleProfile(JObject profile)
+        {
+        }
+
+        public IDictionary<string, object> GetVariables()
+        {
             return null;
         }
     }

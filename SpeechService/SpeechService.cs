@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Security;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -102,22 +103,26 @@ namespace EddiSpeechService
             // if we can find a decent way of doing distortion that doesn't destroy speakers
             distortionLevel = 0;
 
-
-            // Escape any ampersands
-            speech = Regex.Replace(speech, "&", "&amp;");
-
             // If the user wants to disable SSML then we remove any tags here
             if (configuration.DisableSsml && (speech.Contains("<")))
             {
                 Logging.Debug("Removing SSML");
                 // User has disabled SSML so remove all tags
                 speech = Regex.Replace(speech, "<.*?>", string.Empty);
-                speech = Regex.Replace(speech, "&amp;", "&");
             }
 
             if (string.IsNullOrWhiteSpace(voice))
             {
                 voice = configuration.StandardVoice;
+            }
+
+            bool isAudio = false;
+            if (speech.Contains("<audio"))
+            {
+                // This is an audio file; remove other text
+                speech = Regex.Replace(speech, "^.*<audio", "<audio");
+                speech = Regex.Replace(speech, ">.*$", ">");
+                isAudio = true;
             }
 
             // Put everything in a thread
@@ -132,10 +137,14 @@ namespace EddiSpeechService
                             Logging.Debug("getSpeechStream() returned null; nothing to say");
                             return;
                         }
-                        if (stream.Length == 0)
+                        if (stream.Length < 50)
                         {
                             Logging.Debug("getSpeechStream() returned empty stream; nothing to say");
                             return;
+                        }
+                        else
+                        {
+                            Logging.Debug("Stream length is " + stream.Length);
                         }
                         Logging.Debug("Seeking back to the beginning of the stream");
                         stream.Seek(0, SeekOrigin.Begin);
@@ -143,7 +152,10 @@ namespace EddiSpeechService
                         Logging.Debug("Setting up source from stream");
 
                         IWaveSource source = new WaveFileReader(stream);
-                        addEffectsToSource(ref source, chorusLevel, reverbLevel, echoDelay, distortionLevel);
+                        if (!isAudio)
+                        {
+                            addEffectsToSource(ref source, chorusLevel, reverbLevel, echoDelay, distortionLevel);
+                        }
 
                         if (priority < activeSpeechPriority)
                         {
@@ -328,8 +340,7 @@ namespace EddiSpeechService
                             Logging.Debug("Obtaining best guess culture");
                             string culture = bestGuessCulture(synth);
                             Logging.Debug("Best guess culture is " + culture);
-                            //speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\" onlangfailure=\"ignorelang\"><s>" + speech + "</s></speak>";
-                            speech = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"" + bestGuessCulture(synth) + "\"><s>" + speech + "</s></speak>";
+                            speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis"" xml:lang=""" + bestGuessCulture(synth) + @""">" + escapeSsml(speech) + @"</speak>";
                             Logging.Debug("Feeding SSML to synthesizer: " + speech);
                             synth.SpeakSsml(speech);
                         }
@@ -407,6 +418,31 @@ namespace EddiSpeechService
                 }
                 Thread.Sleep(10);
             }
+        }
+
+        private string escapeSsml(string text)
+        {
+            // Our input text might have SSML elements in it but the rest needs escaping
+            // Our valid SSML elements are break, play and phoneme, so encode these differently for now
+            // Also escape any double quotes inside the elements
+            string result = text;
+            result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
+            result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
+            result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
+            result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
+            result = Regex.Replace(result, "<(break.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(play.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(phoneme.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(/phoneme)>", "XXXXX$1YYYYY");
+
+            // Now escape anything that is still present
+            result = SecurityElement.Escape(result);
+
+            // Put back the characters we hid
+            result = Regex.Replace(result, "XXXXX", "<");
+            result = Regex.Replace(result, "YYYYY", ">");
+            result = Regex.Replace(result, "ZZZZZ", "\"");
+            return result;
         }
 
         private void StopCurrentSpeech()

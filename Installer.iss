@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "EDDI"
-#define MyAppVersion "2.2.3"
+#define MyAppVersion "2.3.0-b1"
 #define MyAppPublisher "Cmdr McDonald"
 #define MyAppURL "https://github.com/cmdrmcdonald/EliteDangerousDataProvider/"
 #define MyAppExeName "EDDI.exe"
@@ -41,8 +41,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "{#SourcePath}EDDI\bin\Debug\EDDI.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\x64\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "{#SourcePath}EDDI\bin\Debug\x86\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourcePath}EDDI\bin\Debug\x86\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs replacesameversion
 Source: "{#SourcePath}EDDI\bin\Debug\AsyncIO.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\CommonMark.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\Cottle.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -58,9 +57,10 @@ Source: "{#SourcePath}EDDI\bin\Debug\EddiEdsmResponder.dll"; DestDir: "{app}"; F
 Source: "{#SourcePath}EDDI\bin\Debug\EddiEvents.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiGalnetMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiJournalMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\EddiNetLogMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}EDDI\bin\Debug\EddiMaterialMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiSpeechResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiSpeechService.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#SourcePath}EDDI\bin\Debug\EddiShipMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EddiStarMapService.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EntityFramework.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#SourcePath}EDDI\bin\Debug\EntityFramework.SqlServer.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -85,6 +85,7 @@ Source: "{#SourcePath}EDDI\bin\Debug\EddiVoiceAttackResponder.dll"; DestDir: "{a
 [InstallDelete]
 Type: files; Name: "{app}\Eddi.exe"
 Type: files; Name: "{app}\EDDI.ico"
+Type: files; Name: "{app}\EddiNetLogMonitor.dll"
 
 ; Remove sensitive data on uninstall
 [UninstallDelete]

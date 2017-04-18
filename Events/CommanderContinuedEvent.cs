@@ -12,7 +12,7 @@ namespace EddiEvents
     {
         public const string NAME = "Commander continued";
         public const string DESCRIPTION = "Triggered when you continue an existing game";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"LoadGame\",\"Commander\":\"HRC1\",\"Ship\":\"CobraMkIII\",\"ShipID\":1,\"GameMode\":\"Group\",\"Group\":\"Mobius\",\"Credits\":600120,\"Loan\":0}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"LoadGame\",\"Commander\":\"HRC1\",\"Ship\":\"CobraMkIII\",\"ShipID\":1,\"GameMode\":\"Group\",\"Group\":\"Mobius\",\"Credits\":600120,\"Loan\":0,\"ShipName\":\"jewel of parhoon\",\"ShipIdent\":\"hr-17f\",\"FuelLevel\":3.964024\"FuelCapacity\":8}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CommanderContinuedEvent()
@@ -24,6 +24,8 @@ namespace EddiEvents
             VARIABLES.Add("group", "The name of the group (only if mode == Group)");
             VARIABLES.Add("credits", "The number of credits the commander has");
             VARIABLES.Add("loan", "The current loan the commander has");
+            VARIABLES.Add("fuel", "The current fuel level of the commander's vehicle");
+            VARIABLES.Add("fuelcapacity", "The total fuel capacity of the commander's vehicle");
         }
 
         [JsonProperty("commander")]
@@ -35,8 +37,11 @@ namespace EddiEvents
         [JsonProperty("shipid")]
         public int? shipid { get; private set; }
 
-        [JsonIgnore]
-        public Ship Ship { get; private set; }
+        [JsonProperty("shipname")]
+        public string shipname { get; private set; }
+
+        [JsonProperty("shipident")]
+        public string shipident { get; private set; }
 
         [JsonProperty("mode")]
         public string mode { get; private set; }
@@ -50,16 +55,25 @@ namespace EddiEvents
         [JsonProperty("loan")]
         public decimal loan { get; private set; }
 
-        public CommanderContinuedEvent(DateTime timestamp, string commander, Ship ship, GameMode mode, string group, decimal credits, decimal loan) : base(timestamp, NAME)
+        [JsonProperty("fuel")]
+        public decimal? fuel { get; private set; }
+
+        [JsonProperty("fuelcapacity")]
+        public decimal? fuelcapacity { get; private set; }
+
+        public CommanderContinuedEvent(DateTime timestamp, string commander, int shipId, string ship, string shipName, string shipIdent, GameMode mode, string group, decimal credits, decimal loan, decimal? fuel, decimal? fuelcapacity) : base(timestamp, NAME)
         {
             this.commander = commander;
-            this.Ship = ship;
-            this.ship = (ship == null ? null : ship.model);
-            this.shipid = (ship == null ? (int?)null : ship.LocalId);
+            this.shipid = shipId;
+            this.ship = ship;
+            this.shipname = shipName;
+            this.shipident = shipIdent;
             this.mode = (mode == null ? null : mode.name);
             this.group = group;
             this.credits = credits;
             this.loan = loan;
+            this.fuel = fuel;
+            this.fuelcapacity = fuelcapacity;
         }
     }
 }

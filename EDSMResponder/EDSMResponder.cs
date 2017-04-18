@@ -1,6 +1,9 @@
 ﻿using Eddi;
+using EddiDataDefinitions;
 using EddiEvents;
+using EddiShipMonitor;
 using EddiStarMapService;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,20 +89,7 @@ namespace EddiEdsmResponder
 
             if (starMapService != null)
             {
-                // We could receive either or both of JumpingEvent and JumpedEvent.  Send EDSM update as soon as possible,
-                // but don't send it twice
-                if (theEvent is JumpingEvent)
-                {
-                    JumpingEvent jumpingEvent = (JumpingEvent)theEvent;
-
-                    if (jumpingEvent.system != system)
-                    {
-                        Logging.Debug("Sending jump data to EDSM (jumping)");
-                        starMapService.sendStarMapLog(jumpingEvent.timestamp, jumpingEvent.system, jumpingEvent.x, jumpingEvent.y, jumpingEvent.z);
-                        system = jumpingEvent.system;
-                    }
-                }
-                else if (theEvent is JumpedEvent)
+                if (theEvent is JumpedEvent)
                 {
                     JumpedEvent jumpedEvent = (JumpedEvent)theEvent;
 
@@ -115,6 +105,57 @@ namespace EddiEdsmResponder
                     CommanderContinuedEvent continuedEvent = (CommanderContinuedEvent)theEvent;
                     starMapService.sendCredits(continuedEvent.credits, continuedEvent.loan);
                 }
+                else if (theEvent is MaterialInventoryEvent)
+                {
+                    MaterialInventoryEvent materialInventoryEvent = (MaterialInventoryEvent)theEvent;
+                    Dictionary<string, int> materials = new Dictionary<string, int>();
+                    Dictionary<string, int> data = new Dictionary<string, int>();
+                    foreach (MaterialAmount ma in materialInventoryEvent.inventory)
+                    {
+                        Material material = Material.FromName(ma.material);
+                        if (material.category == "Element" || material.category == "Manufactured")
+                        {
+                            materials.Add(material.EDName, ma.amount);
+                        }
+                        else
+                        {
+                            data.Add(material.EDName, ma.amount);
+                        }
+                    }
+                    starMapService.sendMaterials(materials);
+                    starMapService.sendData(data);
+                }
+                else if (theEvent is ShipLoadoutEvent)
+                {
+                    ShipLoadoutEvent shipLoadoutEvent = (ShipLoadoutEvent)theEvent;
+                    Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetShip(shipLoadoutEvent.shipid);
+                    starMapService.sendShip(ship);
+                }
+                else if (theEvent is ShipSwappedEvent)
+                {
+                    ShipSwappedEvent shipSwappedEvent = (ShipSwappedEvent)theEvent;
+                    if (shipSwappedEvent.shipid.HasValue)
+                    {
+                        starMapService.sendShipSwapped((int)shipSwappedEvent.shipid);
+                    }
+                }
+                else if (theEvent is ShipSoldEvent)
+                {
+                    ShipSoldEvent shipSoldEvent = (ShipSoldEvent)theEvent;
+                    if (shipSoldEvent.shipid.HasValue)
+                    {
+                        starMapService.sendShipSold((int)shipSoldEvent.shipid);
+                    }
+                }
+                else if (theEvent is ShipDeliveredEvent)
+                {
+                    ShipDeliveredEvent shipDeliveredEvent = (ShipDeliveredEvent)theEvent;
+                    if (shipDeliveredEvent.shipid.HasValue)
+                    {
+                        starMapService.sendShipSwapped((int)shipDeliveredEvent.shipid);
+                    }
+                }
+
                 else if (theEvent is CommanderProgressEvent)
                 {
                     CommanderProgressEvent progressEvent = (CommanderProgressEvent)theEvent;

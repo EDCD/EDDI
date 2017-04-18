@@ -36,70 +36,81 @@ namespace EddiEvents
                         }
                         else
                         {
-                            foreach (Type type in assembly.GetTypes())
+                            try
                             {
-                                if (type.IsInterface || type.IsAbstract)
+
+                                foreach (Type type in assembly.GetTypes())
                                 {
-                                    continue;
-                                }
-                                else
-                                {
-                                    if (type.IsSubclassOf(eventType))
+                                    if (type.IsInterface || type.IsAbstract)
                                     {
-                                        // Ensure that the static constructor of the class has been run
-                                        System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
-
-                                        if (type.GetField("NAME") != null)
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        if (type.IsSubclassOf(eventType))
                                         {
-                                            string eventName = (string)type.GetField("NAME").GetValue(null);
+                                            // Ensure that the static constructor of the class has been run
+                                            System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(type.TypeHandle);
 
-                                            TYPES.Add(eventName, type);
-
-                                            if (type.GetField("DESCRIPTION") != null)
+                                            if (type.GetField("NAME") != null)
                                             {
-                                                string eventDescription = (string)type.GetField("DESCRIPTION").GetValue(null);
-                                                if (eventDescription != null)
+                                                string eventName = (string)type.GetField("NAME").GetValue(null);
+
+                                                TYPES.Add(eventName, type);
+
+                                                if (type.GetField("DESCRIPTION") != null)
                                                 {
-                                                    DESCRIPTIONS.Add(eventName, eventDescription);
+                                                    string eventDescription = (string)type.GetField("DESCRIPTION").GetValue(null);
+                                                    if (eventDescription != null)
+                                                    {
+                                                        DESCRIPTIONS.Add(eventName, eventDescription);
+                                                    }
                                                 }
-                                            }
 
-                                            if (type.GetField("VARIABLES") != null)
-                                            {
-                                                Dictionary<string, string> eventVariables = (Dictionary<string, string>)type.GetField("VARIABLES").GetValue(null);
-                                                if (eventVariables != null)
+                                                if (type.GetField("VARIABLES") != null)
                                                 {
-                                                    VARIABLES.Add(eventName, eventVariables);
+                                                    Dictionary<string, string> eventVariables = (Dictionary<string, string>)type.GetField("VARIABLES").GetValue(null);
+                                                    if (eventVariables != null)
+                                                    {
+                                                        VARIABLES.Add(eventName, eventVariables);
+                                                    }
                                                 }
-                                            }
 
-                                            if (type.GetField("DEFAULT") != null)
-                                            {
-                                                string eventDefault = (string)type.GetField("DEFAULT").GetValue(null);
-                                                if (eventDefault != null)
+                                                if (type.GetField("DEFAULT") != null)
                                                 {
-                                                    DEFAULTS.Add(eventName, eventDefault);
+                                                    string eventDefault = (string)type.GetField("DEFAULT").GetValue(null);
+                                                    if (eventDefault != null)
+                                                    {
+                                                        DEFAULTS.Add(eventName, eventDefault);
+                                                    }
                                                 }
-                                            }
 
-                                            if (type.GetField("SAMPLE") != null)
-                                            {
-                                                object eventSample = type.GetField("SAMPLE").GetValue(null);
-                                                if (eventSample != null)
+                                                if (type.GetField("SAMPLE") != null)
                                                 {
-                                                    SAMPLES.Add(eventName, eventSample);
+                                                    object eventSample = type.GetField("SAMPLE").GetValue(null);
+                                                    if (eventSample != null)
+                                                    {
+                                                        SAMPLES.Add(eventName, eventSample);
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
-
+                            catch (ReflectionTypeLoadException)
+                            {
+                                // DLL we can't parse; ignore
+                            }
                         }
                     }
                     catch (BadImageFormatException)
                     {
                         // Ignore this; probably due to CPU architecure mismatch
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Warn("Exception: ", ex);
                     }
                 }
             }

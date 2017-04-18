@@ -34,13 +34,16 @@ namespace EddiSpeechResponder
             }
 
             SpeechResponderConfiguration configuration = new SpeechResponderConfiguration();
-            try
+            if (File.Exists(filename))
             {
-                configuration = JsonConvert.DeserializeObject<SpeechResponderConfiguration>(File.ReadAllText(filename));
-            }
-            catch (Exception ex)
-            {
-                Logging.Debug("Failed to read speech responder configuration", ex);
+                try
+                {
+                    configuration = JsonConvert.DeserializeObject<SpeechResponderConfiguration>(File.ReadAllText(filename));
+                }
+                catch (Exception ex)
+                {
+                    Logging.Debug("Failed to read speech responder configuration", ex);
+                }
             }
             if (configuration == null)
             {

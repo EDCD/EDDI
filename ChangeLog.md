@@ -1,3 +1,134 @@
+#2.3.0-b1
+  * Core
+    * Add ship role 'Taxi'
+    * Rename 'Companion App' tab to 'Frontier API' and update relevant text to clarify its use and operation
+    * Volcanism for bodies is now an object.  For details of its fields check the relevant documentation
+    * Add ancient artifact commodity definitions
+    * Add ship value 'ident' which is the user-defined identification string for a ship
+    * Allow monitors to handle events, and generate their own events in turn
+    * New monitor: Material monitor.  This allows you to set minimum/desired/maximum limits for materials and generate events when the limits are exceeded.  Materials are tracked automatically in EDDI.  Full details of the material monitor operations are available at https://github.com/cmdrmcdonald/EliteDangerousDataProvider/wiki/Material-monitor
+	* Remove the Netlog monitor.  This was only used to obtain destination system when jumping and is no longer required due to additional information made available in the journal for this purpose
+    * Fix exploration role 'Trailblazer' to have correct name (was showing up as 'Explorer')
+	* Add reset button to Frontier API configuration panel
+
+  * Events
+	* Update 'Body scanned' event - added earth mass, radius and information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
+	* Update 'Bond awarded' event to provide details of the awarding faction
+	* Add 'Bond redeemed' event when a combat bond is redeemed
+	* Add 'Bounty redeemed' event when a bounty voucher is redeemed
+	* Update 'Commander continued' event - added fuel level of current ship
+	* Add 'Crew joined' event when you join a crew
+	* Add 'Crew left' event when you leave a crew
+	* Add 'Crew member joined' event when someone joins your crew
+	* Add 'Crew member left' event when someone leaves your crew
+	* Add 'Crew member launched' event when a crewmember launches a fighter
+	* Add 'Crew member removed' event when you remove someone from your crew
+	* Add 'Crew member role changed' event when a crewmember changes their role
+	* Add 'Crew role changed' event when your role on someone's crew changes
+	* Add 'Data voucher redeemed' event when a data voucher is redeemed
+	* Updated 'Docked' event to include distance from start
+	* Add 'File Header' event when a new journal file is found.  This is usually just for internal use
+	* Add 'FSD engaged' event when the FSD is engaged to jump to supercruise or hyperspace.  This replaces the 'Jumping' event and has a similar script
+	* Deprecate 'Jumping' event.  This is part of the netlog monitor, which is no longer required.  The functionality has been replaced by the 'FSD engaged' event
+	* Update 'Liftoff' event to record if the ship lifting off is player controlled or not
+	* Update 'Location' event to add longitude and latitude if the location is on the ground
+	* Add 'Material inventory' event when material information is supplied
+	* Add 'Material threshold' event when a threshold set in the material monitor is breached
+	* Update 'Mission accepted' event to include the number of kills for massacre missions
+    * Add 'Settlement approached' event
+	* Add 'Ship renamed' event to record when ship names and idents are changed
+    * Add 'Ship repurchased' event to record when player resurrects with their existing ship
+	* Update 'System state report' to say nothing if the system is not in any particular state
+	* Update 'Touchdown' event to record if the ship touching down is player controlled or not
+	* Add 'Trade voucher redeemed' event when a trade voucher is redeemed
+  * EDSM Responder
+    * Add upload of materials, ship, etc.
+  * Speech Responder
+    * Added 'ICAO' function to allow ICAO-style speech of ship identifiers, sector names etc.
+    * Added 'Play' function to play an audio file instead of a speech
+	* Script changes:
+	  * 'Blueprint make report' - new script to report how many of a blueprint can be made
+	  * 'Blueprint material report' - new script to report which materials are required for a blueprint
+	  * 'Body report' - add details of volcanism
+	  * 'Bond redeemed' - new script
+	  * 'Bounty redeemed' - new script
+	  * 'Commodity sale check' - various updates to give more reliable results
+	  * 'Commodity collected' - fix bug where 'cargo' was used instead of 'commodity'
+	  * 'Commodity sold' - do not report profit when purchase price is 0 (mined/stolen/mission commodities)
+	  * 'Crew fired' - add context
+	  * 'Crew hired' - add context
+	  * 'Crew member joined' - new script
+	  * 'Crew member left' - new script
+	  * 'Crew member launched' - new script
+	  * 'Crew member removed' - new script
+	  * 'Crew member role changed' - new script
+	  * 'Crew role changed' - new script
+	  * 'Crew joined' - new script
+	  * 'Crew left' - new script
+	  * 'Data voucher redeemed' - new script
+	  * 'Docked' - moved information messages to the 'Market information updated' script to trigger at a better time
+	  * 'Entered normal space' - add context
+	  * 'Entered supercruise' - add context
+	  * 'FSD engaged' - new script
+	  * 'Galnet news' - new script
+	  * 'Galnet news published' - updated script to only report on latest non-status news reports; by default does not read contents
+	  * 'Galnet latest news' - new script
+	  * 'Galnet oldest news' - new script
+	  * 'Galnet unread report' - new script
+	  * 'Jumped' - call system security report here rather than in 'Jumping' to guarantee up-to-date information
+	  * 'Liftoff' - change speech depending on if player is controlling ship or not
+	  * 'Location' - add context
+	  * 'Market information updated' - new script taken from the end of the previous 'Docked' script
+	  * 'Material discard report' - new script to report how much of a particular material can be discarded (as per the material monitor settings)
+	  * 'Material inventory report' - new script to report how much of a particular material as defined by state or context is on board
+	  * 'Material location report' - new script to report where to obtain a particular material as defined by state or context
+	  * 'Material required report' - new script to report how much of a particular material as defined by state or context is required (as per the material monitor settings)
+	  * 'Material use report' - new script to the blueprint uses of a particular material as defined by state or context
+	  * 'Materials discard report' - new script to report which materials can be discarded (as per the material monitor settings)
+	  * 'Materials required report' - new script to report which materials can be discarded (as per the material monitor settings)
+	  * 'Settlement approached' - new script
+	  * 'Ship renamed' - new script
+	  * 'System state report' - fixed a couple of typos
+	  * 'Touchdown' - change speech depending on if player is controlling ship or not.  Name body on which the ship has touched down
+	  * 'Trade voucher redeemed' - new script
+  * Galnet Monitor
+    * Galnet monitor now categories and stores news articles
+  * VoiceAttack Responder
+    * Update 'disablespeechresponder' and 'enablespeechresponder' plugin contexts to continue to work in the background but just be quiet
+    * Add VoiceAttack commands for the new speech responder plugin contexts:
+      * "Be quiet" - Speech responder will not talk unless explicitly asked for information
+      * "You may talk" - Speech responder will talk about events occuring in-game without prompting (this is the default behaviour)
+    * Add VoiceAttack commands for the material monitor:
+      * 'How many <material> are on board' - Find out how many units of a particular material is on board
+      * 'How many <material> do I need' - Find out how many units of a particular material are required to meet your desired level as set in the material monitor
+      * 'What use is <material>' - Find out the blueprints that use a particular material
+      * 'Where can I obtain <material>- Find out where to obtain a particular material
+      * 'Which materials can I discard' - Find out how many units of materials can be discarded due to being above your maximum or desired level as set in the material monitor
+      * 'Which materials do I need' - Find out how many units of materials are still required due to being below your minimum or desired level as set in the material monitor
+    * Add VoiceAttack commands for the Galnet monitor:
+	  * 'Is there any news?' - Report the number of unread articles
+	  * 'Read the latest community goal [news;]' - Read the latest community goal article
+	  * 'Read the latest conflict [news;report]' - Read the latest weekly conflict report
+	  * 'Read the latest democracy [news;report]' - Read the latest weekly democracy report
+	  * 'Read the latest economy [news;report]' - Read the latest weekly economy report
+	  * 'Read the latest expansion [news;report]' - Read the latest weekly expansion report
+	  * 'Read the latest health [news;report]' - Read the latest weekly health report
+	  * 'Read the latest news' - Read the latest news article
+	  * 'Read the latest security [news;report]' - Read the latest weekly security report
+	  * 'Read the latest starport status [news;report]' - Read the latest starport status update
+	  * 'Read the latest community goal [news;]' - Read the latest community goal article
+	  * 'Read the [next;oldest] conflict [news;report]' - Read the oldest weekly conflict report
+	  * 'Read the [next;oldest] democracy [news;report]' - Read the oldest weekly democracy report
+	  * 'Read the [next;oldest] economy [news;report]' - Read the oldest weekly economy report
+	  * 'Read the [next;oldest] expansion [news;report]' - Read the oldest weekly expansion report
+	  * 'Read the [next;oldest] health [news;report]' - Read the oldest weekly health report
+	  * 'Read the [next;oldest] news' - Read the oldest news article
+	  * 'Read the [next;oldest] security [news;report]' - Read the oldest weekly security report
+	  * 'Read the [next;oldest] starport status [news;report]' - Read the oldest starport status update
+    * Add other VoiceAttack commands
+      * 'What do I need for <blueprint>' - Find out the materials required for a particular blueprint
+      * 'How many <blueprint> can I make' - Find out how many of a particular blueprint you can make with your current inventory
+
 2.2.3
   * Fix issue where undocumented change in Frontier API would cause EDDI to crash
   * Update netlog monitor to handle new log format
@@ -11,13 +142,6 @@
   * Add mechanism to see if game version is beta or production, using remote production build list if available
   * Update EDSM responder to not send data if game version is beta
   * Update EDDN responder to send data to /test schemas if game version is beta
-  * Core
-    * Add ship role 'Taxi'
-    * Rename 'Companion App' tab to 'Frontier API' and update relevant text to clarify its use and operation
-    * Volcanism for bodies is now an object.  For details of its fields check the relevant documentation
-    * Add ancient artifact commodity definitions
-  * Events
-    * Add 'Settlement approached' event
 
 #2.2.0
   * Core

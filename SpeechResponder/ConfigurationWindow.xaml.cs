@@ -1,6 +1,7 @@
 ﻿using Eddi;
 using EddiEvents;
 using EddiJournalMonitor;
+using EddiShipMonitor;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -62,6 +63,7 @@ namespace EddiSpeechResponder
 
             SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
             subtitlesCheckbox.IsChecked = configuration.Subtitles;
+            subtitlesOnlyCheckbox.IsChecked = configuration.SubtitlesOnly;
 
             foreach (Personality personality in Personalities)
             {
@@ -95,7 +97,7 @@ namespace EddiSpeechResponder
         {
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
             ViewScriptWindow viewScriptWindow = new ViewScriptWindow(Personality.Scripts, script.Name);
-            viewScriptWindow.ShowDialog();
+            viewScriptWindow.Show();
         }
 
         private void testScript(object sender, RoutedEventArgs e)
@@ -104,30 +106,33 @@ namespace EddiSpeechResponder
             SpeechResponder responder = new SpeechResponder();
             responder.Start();
             // See if we have a sample
-            Event sampleEvent;
+            List<Event> sampleEvents;
             object sample = Events.SampleByName(script.Name);
             if (sample == null)
             {
-                sampleEvent = null;
+                sampleEvents = new List<Event>();
             }
             else if (sample is string)
             {
                 // It's as tring so a journal entry.  Parse it
-                sampleEvent = JournalMonitor.ParseJournalEntry((string)sample);
+                sampleEvents = JournalMonitor.ParseJournalEntry((string)sample);
             }
             else if (sample is Event)
             {
                 // It's a direct event
-                sampleEvent = (Event)sample;
+                sampleEvents = new List<Event>() { (Event)sample };
             }
             else
             {
                 Logging.Warn("Unknown sample type " + sample.GetType());
-                sampleEvent = null;
+                sampleEvents = new List<Event>();
             }
 
             ScriptResolver scriptResolver = new ScriptResolver(Personality.Scripts);
-            responder.Say(scriptResolver, script.Name, sampleEvent);
+            foreach (Event sampleEvent in sampleEvents)
+            {
+                responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script.Name, sampleEvent, null, null, false);
+            }
         }
 
         private void deleteScript(object sender, RoutedEventArgs e)

@@ -3,7 +3,6 @@ using EddiDataDefinitions;
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -25,7 +24,6 @@ namespace Eddi
     public partial class MainWindow : Window
     {
         private Profile profile;
-        private ShipsConfiguration shipsConfiguration;
 
         private bool fromVA;
 
@@ -93,10 +91,10 @@ namespace Eddi
                 }
             }
 
-            if (profile != null)
-            {
-                setShipyardFromConfiguration();
-            }
+            //if (profile != null)
+            //{
+            //    setShipyardFromConfiguration();
+            //}
 
             // Configure the Text-to-speech tab
             SpeechServiceConfiguration speechServiceConfiguration = SpeechServiceConfiguration.FromFile();
@@ -135,31 +133,35 @@ namespace Eddi
             {
                 Logging.Debug("Adding configuration tab for " + monitor.MonitorName());
 
-                PluginSkeleton skeleton = new PluginSkeleton(monitor.MonitorName());
-                skeleton.plugindescription.Text = monitor.MonitorDescription();
-
-                bool enabled;
-                if (eddiConfiguration.Plugins.TryGetValue(monitor.MonitorName(), out enabled))
-                {
-                    skeleton.pluginenabled.IsChecked = enabled;
-                }
-                else
-                {
-                    // Default to enabled
-                    skeleton.pluginenabled.IsChecked = true;
-                    eddiConfiguration.ToFile();
-                }
-
-                // Add monitor-specific configuration items
                 UserControl monitorConfiguration = monitor.ConfigurationTabItem();
-                if (monitorConfiguration != null)
+                // Only show a tab if this can be turned off or has configuration elements
+                if (monitorConfiguration != null || !monitor.IsRequired())
                 {
-                    skeleton.panel.Children.Add(monitorConfiguration);
-                }
+                    PluginSkeleton skeleton = new PluginSkeleton(monitor.MonitorName());
+                    skeleton.plugindescription.Text = monitor.MonitorDescription();
 
-                TabItem item = new TabItem { Header = monitor.MonitorName() };
-                item.Content = skeleton;
-                tabControl.Items.Add(item);
+                    bool enabled;
+                    if (eddiConfiguration.Plugins.TryGetValue(monitor.MonitorName(), out enabled))
+                    {
+                        skeleton.pluginenabled.IsChecked = enabled;
+                    }
+                    else
+                    {
+                        // Default to enabled
+                        skeleton.pluginenabled.IsChecked = true;
+                        eddiConfiguration.ToFile();
+                    }
+
+                    // Add monitor-specific configuration items
+                    if (monitorConfiguration != null)
+                    {
+                        skeleton.panel.Children.Add(monitorConfiguration);
+                    }
+
+                    TabItem item = new TabItem { Header = monitor.MonitorName() };
+                    item.Content = skeleton;
+                    tabControl.Items.Add(item);
+                }
             }
 
             foreach (EDDIResponder responder in EDDI.Instance.responders)
@@ -285,6 +287,13 @@ namespace Eddi
             }
         }
 
+        private void companionAppResetClicked(object sender, RoutedEventArgs e)
+        {
+            // Logout from the companion app and start again
+            CompanionAppService.Instance.Logout();
+            setUpCompanionAppStage1();
+        }
+
         // Handle changes to the Frontier API tab
         private void companionAppNextClicked(object sender, RoutedEventArgs e)
         {
@@ -319,7 +328,7 @@ namespace Eddi
                         else
                         {
                             setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
-                            setShipyardFromConfiguration();
+                            //setShipyardFromConfiguration();
                         }
                     }
                 }
@@ -348,7 +357,7 @@ namespace Eddi
                     if (profile != null)
                     {
                         setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
-                        setShipyardFromConfiguration();
+                        //setShipyardFromConfiguration();
                     }
                 }
                 catch (EliteDangerousCompanionAppAuthenticationException ex)
@@ -363,12 +372,6 @@ namespace Eddi
                 {
                     setUpCompanionAppStage1("Unexpected problem\r\nPlease report this at http://github.com/CmdrMcDonald/EliteDangerousDataProvider/issues\r\n" + ex);
                 }
-            }
-            else if (companionAppLogoutText.Visibility == Visibility.Visible)
-            {
-                // Logged in - handle logout
-                CompanionAppService.Instance.Logout();
-                setUpCompanionAppStage1();
             }
         }
 
@@ -392,7 +395,6 @@ namespace Eddi
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
-            companionAppLogoutText.Visibility = Visibility.Hidden;
             companionAppNextButton.Content = "Next";
         }
 
@@ -414,7 +416,6 @@ namespace Eddi
             companionAppPasswordText.Visibility = Visibility.Hidden;
             companionAppCodeLabel.Visibility = Visibility.Visible;
             companionAppCodeText.Visibility = Visibility.Visible;
-            companionAppLogoutText.Visibility = Visibility.Hidden;
             companionAppNextButton.Content = "Next";
         }
 
@@ -437,88 +438,7 @@ namespace Eddi
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
-            companionAppLogoutText.Visibility = Visibility.Visible;
             companionAppNextButton.Content = "Log out";
-        }
-
-        // Handle changes to the Shipyard tab
-        private void setShipyardFromConfiguration()
-        {
-            shipsConfiguration = new ShipsConfiguration();
-            List<Ship> ships = new List<Ship>();
-            if (profile != null)
-            {
-                ships.Add(profile.Ship);
-                ships.AddRange(profile.Shipyard);
-            }
-            shipsConfiguration.Ships = ships;
-            shipyardData.ItemsSource = ships;
-        }
-
-        private void testShipName(object sender, RoutedEventArgs e)
-        {
-            Ship ship = (Ship)((Button)e.Source).DataContext;
-            ship.health = 100;
-            SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
-            if (string.IsNullOrEmpty(ship.phoneticname))
-            {
-                SpeechService.Instance.Say(ship, ship.name + " stands ready.", false);
-            }
-            else
-            {
-                SpeechService.Instance.Say(ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>" + " stands ready.", false);
-            }
-        }
-
-        private void exportShip(object sender, RoutedEventArgs e)
-        {
-            Ship ship = (Ship)((Button)e.Source).DataContext;
-            string uri = Coriolis.ShipUri(ship);
-            Logging.Debug("URI is " + uri);
-
-            // URI can be very long so we can't use a simple Process.Start(), as that fails
-            try
-            {
-                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), uri);
-                proc.UseShellExecute = false;
-                Process.Start(proc);
-            }
-            catch (Exception ex)
-            {
-                Logging.Error("Failed: ", ex);
-                try
-                {
-                    // Last-gasp attempt if we have a shorter URL
-                    if (uri.Length < 2048)
-                    {
-                        Process.Start(uri);
-                    }
-                    else
-                    {
-                        Logging.Error("Failed to find a way of opening URL \"" + uri + "\"");
-                    }
-                }
-                catch (Exception)
-                {
-                    // Nothing to do
-                }
-            }
-        }
-
-        private void ShipRoleChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (shipsConfiguration != null && CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
-            {
-                shipsConfiguration.ToFile();
-            }
-        }
-
-        private void shipYardUpdated(object sender, DataTransferEventArgs e)
-        {
-            if (shipsConfiguration != null && CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
-            {
-                shipsConfiguration.ToFile();
-            }
         }
 
         // Handle Text-to-speech tab
@@ -603,11 +523,6 @@ namespace Eddi
             e.Handled = !regex.IsMatch(e.Text);
         }
 
-        private void ipaClicked(object sender, RoutedEventArgs e)
-        {
-            Process.Start("https://en.wikipedia.org/wiki/International_Phonetic_Alphabet");
-        }
-
         private async void sendLogsClicked(object sender, RoutedEventArgs e)
         {
             // Write out useful information to the log before procedding
@@ -646,28 +561,6 @@ namespace Eddi
         private void upgradeClicked(object sender, RoutedEventArgs e)
         {
             EDDI.Instance.Upgrade();
-        }
-    }
-
-    public class ValidIPARule : ValidationRule
-    {
-        private static Regex IPA_REGEX = new Regex(@"^[bdfɡhjklmnprstvwzxaɪ˜iu\.ᵻᵿɑɐɒæɓʙβɔɕçɗɖðʤəɘɚɛɜɝɞɟʄɡ(ɠɢʛɦɧħɥʜɨɪʝɭɬɫɮʟɱɯɰŋɳɲɴøɵɸθœɶʘɹɺɾɻʀʁɽʂʃʈʧʉʊʋⱱʌɣɤʍχʎʏʑʐʒʔʡʕʢǀǁǂǃˈˌːˑʼʴʰʱʲʷˠˤ˞n̥d̥ŋ̊b̤a̤t̪d̪s̬t̬b̰a̰t̺d̺t̼d̼t̻d̻t̚ɔ̹ẽɔ̜u̟e̠ël̴n̴ɫe̽e̝ɹ̝m̩n̩l̩e̞β̞e̯e̘e̙ĕe̋éēèȅx͜xx͡x↓↑→↗↘]+$");
-
-        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
-        {
-            if (value == null)
-            {
-                return ValidationResult.ValidResult;
-            }
-            string val = value.ToString();
-            if (IPA_REGEX.Match(val).Success)
-            {
-                return ValidationResult.ValidResult;
-            }
-            else
-            {
-                return new ValidationResult(false, "Invalid IPA");
-            }
         }
     }
 }
