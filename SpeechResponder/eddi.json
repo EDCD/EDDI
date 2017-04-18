@@ -482,6 +482,14 @@
       "name": "FSD engaged",
       "description": "Triggered when your FSD has engaged"
     },
+    "Galnet latest news": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch category from state }\r\n{set articlecategory to state.article_category}\r\n\r\n{if articlecategory:\r\n    {set articles to GalnetNewsArticles(articlecategory)}\r\n|else:\r\n    {set articles to GalnetNewsArticles('Article')}\r\n}\r\n\r\n{if len(articles) = 0:\r\n    There is no unread news in that category\r\n|else:\r\n    {set article to articles[0]}\r\n    {SetState('eddi_context_galnet_news_id', article.id)}\r\n    {article.title}: {article.content}\r\n    {GalnetNewsMarkRead(article.id)}\r\n}.\r\n",
+      "name": "Galnet latest news",
+      "description": "Read the latest unread news in a given category"
+    },
     "Galnet news": {
       "enabled": true,
       "priority": 3,
@@ -505,14 +513,6 @@
       "script": "{_ Fetch category from state }\r\n{set articlecategory to state.article_category}\r\n\r\n{if articlecategory:\r\n    {set articles to GalnetNewsArticles(articlecategory)}\r\n|else:\r\n    {set articles to GalnetNewsArticles('Article')}\r\n}\r\n\r\n{if len(articles) = 0:\r\n    There is no unread news in that category\r\n|else:\r\n    {set article to articles[len(articles)-1]}\r\n    {SetState('eddi_context_galnet_news_id', article.id)}\r\n    {article.title}: {article.content}\r\n    {GalnetNewsMarkRead(article.id)}\r\n}.\r\n",
       "name": "Galnet oldest news",
       "description": "Read the oldest unread news in a given category"
-    },
-    "Galnet latest news": {
-      "enabled": true,
-      "priority": 3,
-      "responder": false,
-      "script": "{_ Fetch category from state }\r\n{set articlecategory to state.article_category}\r\n\r\n{if articlecategory:\r\n    {set articles to GalnetNewsArticles(articlecategory)}\r\n|else:\r\n    {set articles to GalnetNewsArticles('Article')}\r\n}\r\n\r\n{if len(articles) = 0:\r\n    There is no unread news in that category\r\n|else:\r\n    {set article to articles[0]}\r\n    {SetState('eddi_context_galnet_news_id', article.id)}\r\n    {article.title}: {article.content}\r\n    {GalnetNewsMarkRead(article.id)}\r\n}.\r\n",
-      "name": "Galnet latest news",
-      "description": "Read the latest unread news in a given category"
     },
     "Galnet unread report": {
       "enabled": true,
