@@ -78,7 +78,7 @@ namespace EddiDataDefinitions
         public static readonly Material Technetium = new Material("technetium", "Element", "Technetium", Rarity.VeryRare, "Tc", 1.3M, 1.5M);
         public static readonly Material Tellurium = new Material("tellurium", "Element", "Tellurium", Rarity.VeryRare, "Te", 1.3M, 1.5M);
 
-        public static readonly Material AnomalousBulkScanData = new Material("bulkscandata", "Data", "Anomalous bulk scan data", Rarity.VeryCommon);
+        public static readonly Material AnomalousBulkScanData = new Material("bulkscandata", "Data", "Anomalous Bulk Scan Data", Rarity.VeryCommon);
         public static readonly Material AtypicalDisruptedWakeEchoes = new Material("disruptedwakeechoes", "Data", "Atypical Disrupted Wake Echoes", Rarity.VeryCommon);
         public static readonly Material DistortedShieldCycleRecordings = new Material("shieldcyclerecordings", "Data", "Distorted Shield Cycle Recordings", Rarity.VeryCommon);
         public static readonly Material ExceptionalScrambledEmissionData = new Material("scrambledemissiondata", "Data", "Exceptional Scrambled Emission Data", Rarity.VeryCommon);
