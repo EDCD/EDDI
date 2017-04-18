@@ -265,14 +265,17 @@ namespace EddiDataProviderService
 
         private static List<string> stationModels = new List<string>()
         {
+            "Asteroid Base",
             "Civilian Outpost",
             "Commercial Outpost",
             "Coriolis Starport",
             "Industrial Outpost",
+            "Megaship",
             "Military Outpost",
             "Mining Outpost",
             "Ocellus Starport",
             "Orbis Starport",
+            "Orbital Engineer Base",
             "Planetary Engineer Base",
             "Planetary Outpost",
             "Planetary Port",

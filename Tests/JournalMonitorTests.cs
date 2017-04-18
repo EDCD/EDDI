@@ -102,5 +102,17 @@ namespace Tests
 
             Assert.AreEqual("r131487/r0", theEvent.build);
         }
+
+        [TestMethod]
+        public void TestJournalDocked1()
+        {
+            string line = @"{ ""timestamp"":""2017-04-14T19:34:32Z"",""event"":""Docked"",""StationName"":""Freeholm"",""StationType"":""AsteroidBase"",""StarSystem"":""Artemis"",""StationFaction"":""Artemis Empire Assembly"",""FactionState"":""Boom"",""StationGovernment"":""$government_Patronage;"",""StationGovernment_Localised"":""Patronage"",""StationAllegiance"":""Empire"",""StationEconomy"":""$economy_Industrial;"",""StationEconomy_Localised"":""Industrial"",""DistFromStarLS"":2527.211914}";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            DockedEvent theEvent = (DockedEvent)events[0];
+
+            Assert.AreEqual("AsteroidBase", theEvent.model);
+        }
     }
 }
