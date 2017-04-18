@@ -293,6 +293,14 @@ namespace EddiVoiceAttackResponder
                     Logging.Debug("Found object");
                     setJsonValues(ref vaProxy, prefix + " " + child.Name, child.Value, new List<string>());
                 }
+                else if (child.Value.Type == JTokenType.Null)
+                {
+                    // Because the type is NULL we don't know which VA item it was; empty all of them
+                    vaProxy.SetBoolean(prefix + " " + child.Name, null);
+                    vaProxy.SetText(prefix + " " + child.Name, null);
+                    vaProxy.SetDecimal(prefix + " " + child.Name, null);
+                    vaProxy.SetDate(prefix + " " + child.Name, null);
+                }
                 else
                 {
                     Logging.Warn(child.Value.Type + ": " + child.Name + "=" + child.Value);
