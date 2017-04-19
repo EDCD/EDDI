@@ -816,7 +816,7 @@
       "responder": true,
       "script": "Warning: attack \r\n{if event.by:\r\n   by {event.by} \r\n}\r\ndetected.",
       "name": "NPC attack commenced",
-      "description": "Triggered when an attach on your ship by an NPC is detected"
+      "description": "Triggered when an attack on your ship by an NPC is detected"
     },
     "NPC cargo scan commenced": {
       "enabled": true,
@@ -1224,7 +1224,7 @@
       "responder": true,
       "script": "You have been recognised for your trading ability, {F(\"Honorific\")}.",
       "name": "Trade promotion",
-      "description": "Triggered when you trade rank increases"
+      "description": "Triggered when your trade rank increases"
     },
     "Trade voucher redeemed": {
       "enabled": true,
