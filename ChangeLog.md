@@ -3,6 +3,7 @@
     * Fix error when caching starsystem information
 	* Fix potential crash when comparing current and future star systems
 	* Fix typo in test event for 'Commander continued'
+	* Ignore nameplates when obtaining modules from journal
 
 #2.3.0-b1
   * Core
