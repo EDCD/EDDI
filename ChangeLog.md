@@ -1,6 +1,7 @@
 #2.3.0-b2
   * Core
     * Fix error when caching starsystem information
+	* Fix potential crash when comparing current and future star systems
 
 #2.3.0-b1
   * Core

@@ -951,7 +951,7 @@ namespace Eddi
             }
             if (CurrentStarSystem == null || CurrentStarSystem.name != name)
             {
-                if (CurrentStarSystem.name != name)
+                if (CurrentStarSystem != null && CurrentStarSystem.name != name)
                 {
                     // We have changed system so update the old one as to when we left
                     StarSystemSqLiteRepository.Instance.LeaveStarSystem(CurrentStarSystem);
