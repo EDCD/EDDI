@@ -1,3 +1,7 @@
+#2.3.0-b2
+  * Core
+    * Fix error when caching starsystem information
+
 #2.3.0-b1
   * Core
     * Add ship role 'Taxi'
