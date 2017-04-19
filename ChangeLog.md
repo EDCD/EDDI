@@ -49,7 +49,7 @@
 	* Script changes:
 	  * 'Blueprint make report' - new script to report how many of a blueprint can be made
 	  * 'Blueprint material report' - new script to report which materials are required for a blueprint
-	  * 'Body report' - add details of volcanism
+	  * 'Body report' - add details of volcanism; handle retrograde rotation
 	  * 'Bond redeemed' - new script
 	  * 'Bounty redeemed' - new script
 	  * 'Commodity sale check' - various updates to give more reliable results
@@ -87,7 +87,9 @@
 	  * 'Materials discard report' - new script to report which materials can be discarded (as per the material monitor settings)
 	  * 'Materials required report' - new script to report which materials can be discarded (as per the material monitor settings)
 	  * 'Settlement approached' - new script
+	  * 'Ship refuelled' - state when ship is fully refuelled from scooping
 	  * 'Ship renamed' - new script
+	  * 'Ship swapped' - add reminders for limpets and crew if appropriate
 	  * 'System state report' - fixed a couple of typos
 	  * 'Touchdown' - change speech depending on if player is controlling ship or not.  Name body on which the ship has touched down
 	  * 'Trade voucher redeemed' - new script
