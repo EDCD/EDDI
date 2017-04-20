@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,6 +52,12 @@ namespace EddiSpeechService
         private static Dictionary<string, string> STAR_SYSTEM_FIXES = new Dictionary<string, string>()
         {
             { "VESPER-M4", "Vesper M 4" } // Stop Vesper being treated as a sector
+        };
+
+        // Fixes to avoid issues with some of the more strangely-named factions
+        private static Dictionary<string, string> FACTION_FIXES = new Dictionary<string, string>()
+        {
+            { "SCORPIONS ORDER", "Scorpions Order" } // Stop it being treated as a sector
         };
 
         private static Dictionary<string, string[]> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string[]>()
@@ -160,11 +167,17 @@ namespace EddiSpeechService
             { "Wredguia", new string[] { "ˈredɡaɪə" } },
         };
 
-        private static Regex UPPERCASE = new Regex(@"[A-Z]{2,}");
-        private static Regex DIGITS = new Regex(@"\d{3,}");
+        // Various handy regexes so we don't keep recreating them
+        private static Regex ALPHA_THEN_NUMERIC = new Regex(@"[A-Za-z][0-9]");
+        private static Regex UPPERCASE = new Regex(@"([A-Z]{2,})|(?:([A-Z])(?:\s|$))");
+        private static Regex TEXT = new Regex(@"([A-Za-z]{1,3}(?:\s|$))");
+        private static Regex DIGIT = new Regex(@"\d+(?:\s|$)");
+        private static Regex THREE_OR_MORE_DIGITS = new Regex(@"\d{3,}");
         private static Regex DECIMAL_DIGITS = new Regex(@"( point )(\d{2,})");
-        // Regular expression to locate generated star systems
         private static Regex SECTOR = new Regex("(.*) ([A-Za-z][A-Za-z]-[A-Za-z] .*)");
+        private static Regex PLANET = new Regex(@"[A-Za-z](?=[^A-Za-z])");
+        private static Regex SUBSTARS = new Regex(@"^A[BCDE]?[CDE]?[DE]?[E]?|B[CDE]?[DE]?[E]?|C[DE]?[E]?|D[E]?$");
+        private static Regex BODY = new Regex(@"^(.*?) ([A-E]+ )?(Belt(?:\s|$)|Cluster(?:\s|$)|\d{1,2}(?:\s|$)|[A-Za-z](?:\s|$)){1,12}$", RegexOptions.IgnoreCase);
 
         /// <summary>Fix up faction names</summary>
         public static string Faction(string faction)
@@ -173,6 +186,13 @@ namespace EddiSpeechService
             {
                 return null;
             }
+
+            // Specific fixing of names to avoid later confusion
+            if (FACTION_FIXES.ContainsKey(faction))
+            {
+                faction = FACTION_FIXES[faction];
+            }
+            
             // Faction names can contain system names; hunt them down and change them
             foreach (var pronunciation in STAR_SYSTEM_PRONUNCIATIONS)
             {
@@ -186,8 +206,79 @@ namespace EddiSpeechService
             return faction;
         }
 
+        /// <summary>Fix up body names</summary>
+        public static string Body(string body, bool useICAO = false)
+        {
+            if (body == null)
+            {
+                return null;
+            }
+
+            List<string> results = new List<string>();
+
+            // Use a regex to break apart the body from the system
+            Match match = BODY.Match(body);
+            if (!match.Success)
+            {
+                // There was no match so we pass this as-is
+                return body;
+            }
+            else
+            {
+                // Parse the starsystem
+                results.Add(StarSystem(match.Groups[1].Value.Trim(), useICAO));
+                // Parse the body
+                for (int i = 2; i < match.Groups.Count; i++)
+                {
+                    for (int j = 0; j < match.Groups[i].Captures.Count; j++)
+                    {
+Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Captures[j].Value.Trim()+ "*");
+                        string part = match.Groups[i].Captures[j].Value.Trim();
+
+                        if (DIGIT.IsMatch(part))
+                        {
+                            Console.WriteLine("Part " + part + " is digit");
+                            // The part is a number; turn it in to ICAO if required
+                            results.Add(useICAO ? ICAO(part, true) : part);
+                        }
+                        else if (PLANET.IsMatch(part))
+                        {
+                            Console.WriteLine("Part " + part + " is planet");
+                            // The part is a planet; turn it in to ICAO if required
+                            results.Add(useICAO ? ICAO(part, true) : part);
+                        }
+                        else if (part == "Belt" || part == "Cluster")
+                        {
+                            // Pass as-is
+                            results.Add(part);
+                        }
+                        else if (SUBSTARS.IsMatch(part))
+                        {
+                            Console.WriteLine("Part " + part + " is substars");
+                            // The part is uppercase; turn it in to ICAO if required
+                            results.Add(UPPERCASE.Replace(part, m => useICAO ? ICAO(m.Value, true) : string.Join<char>(" ", m.Value)));
+                        }
+                        else if (TEXT.IsMatch(part))
+                        {
+                            Console.WriteLine("Part " + part + " is text");
+                            // The part is uppercase; turn it in to ICAO if required
+                            results.Add(useICAO ? ICAO(part) : part);
+                        }
+                        else
+                        {
+                            // Pass it as-is
+                            results.Add(part);
+                        }
+                    }
+                    Console.WriteLine("Results is " + Regex.Replace(string.Join(" ", results), @"\s+", " "));
+                }
+            }
+
+            return Regex.Replace(string.Join(" ", results), @"\s+", " ");
+        }
+
         /// <summary>Fix up star system names</summary>
-        public static string StarSystem(string starSystem)
+        public static string StarSystem(string starSystem, bool useICAO=false)
         {
             if (starSystem == null)
             {
@@ -263,7 +354,15 @@ namespace EddiSpeechService
                     firstPiece = replaceWithPronunciation(firstPiece, CONSTELLATION_PRONUNCIATIONS[firstPiece]);
                 }
 
-                string secondPiece = Match.Groups[2].Value.Replace("-", " dash ");
+                string secondPiece = Match.Groups[2].Value;
+                Console.WriteLine("1) Second piece is " + secondPiece);
+                if (useICAO)
+                {
+                    secondPiece = ICAO(secondPiece, true);
+                }
+                Console.WriteLine("2) Second piece is " + secondPiece);
+                secondPiece = secondPiece.Replace("-", " dash ");
+                Console.WriteLine("3) Second piece is " + secondPiece);
 
                 starSystem = firstPiece + subPiece + " " + secondPiece;
             }
@@ -308,16 +407,19 @@ namespace EddiSpeechService
                 starSystem = string.Join(" ", pieces);
             }
 
-            // Fix up digit strings.  
+            // Any string of an alpha followd by a numeric is broken up
+            starSystem = ALPHA_THEN_NUMERIC.Replace(starSystem, match => useICAO ? ICAO(match.Value, true) : string.Join<char>(" ", match.Value));
+
+            // Fix up digit strings
             // Any digits after a decimal point are broken in to individual digits
-            starSystem = DECIMAL_DIGITS.Replace(starSystem, match => match.Groups[1].Value + string.Join<char>(" ", match.Groups[2].Value));
+            starSystem = DECIMAL_DIGITS.Replace(starSystem, match => match.Groups[1].Value + string.Join<char>(" ", useICAO ? ICAO(match.Groups[2].Value, true) : match.Groups[2].Value));
             // Any string of more than two digits is broken up in to individual digits
-            starSystem = DIGITS.Replace(starSystem, match => string.Join<char>(" ", match.Value));
+            starSystem = THREE_OR_MORE_DIGITS.Replace(starSystem, match => useICAO ? ICAO(match.Value, true) : string.Join<char>(" ", match.Value));
 
-            // Any string of more than two upper-case letters is broken up to avoid issues such as 'DR' being pronounced as 'Doctor'
-            starSystem = UPPERCASE.Replace(starSystem, match => string.Join<char>(" ", match.Value));
+            // Any string of upper-case letters is broken up to avoid issues such as 'DR' being pronounced as 'Doctor'
+            starSystem = UPPERCASE.Replace(starSystem, match => useICAO ? ICAO(match.Value, true) : string.Join<char>(" ", match.Value));
 
-            return starSystem;
+            return Regex.Replace(starSystem, @"\s+", " ");
         }
 
         private static string replaceWithPronunciation(string sourcePhrase, string[] pronunciation)
@@ -339,7 +441,7 @@ namespace EddiSpeechService
             return sb.ToString();
         }
 
-        public static string ICAO(string callsign)
+        public static string ICAO(string callsign, bool passDash=false)
         {
             if (callsign == null)
             {
@@ -347,7 +449,7 @@ namespace EddiSpeechService
             }
 
             List<string> elements = new List<string>();
-            foreach (char c in callsign)
+            foreach (char c in callsign.ToUpperInvariant())
             {
                 switch (c)
                 {
@@ -458,6 +560,9 @@ namespace EddiSpeechService
                         break;
                     case '9':
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈnaɪnər\">niner</phoneme>");
+                        break;
+                    case '-':
+                        if (passDash) elements.Add("-");
                         break;
                 }
             }

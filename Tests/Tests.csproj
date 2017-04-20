@@ -129,6 +129,7 @@
     <Compile Include="CommanderDataTests.cs" />
     <Compile Include="CoriolisTests.cs" />
     <Compile Include="ScriptResolverTest.cs" />
+    <Compile Include="TranslationTests.cs" />
     <Compile Include="VoiceAttackPluginTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

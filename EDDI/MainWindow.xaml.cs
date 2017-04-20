@@ -125,6 +125,7 @@ namespace Eddi
             ttsEffectsLevelSlider.Value = speechServiceConfiguration.EffectsLevel;
             ttsDistortCheckbox.IsChecked = speechServiceConfiguration.DistortOnDamage;
             disableSsmlCheckbox.IsChecked = speechServiceConfiguration.DisableSsml;
+            enableIcaoCheckbox.IsChecked = speechServiceConfiguration.EnableIcao;
 
             ttsTestShipDropDown.ItemsSource = ShipDefinitions.ShipModels;
             ttsTestShipDropDown.Text = "Adder";
@@ -487,6 +488,11 @@ namespace Eddi
             ttsUpdated();
         }
 
+        private void enableICAOUpdated(object sender, RoutedEventArgs e)
+        {
+            ttsUpdated();
+        }
+
         /// <summary>
         /// fetch the Text-to-Speech Configuration and write it to File
         /// </summary>
@@ -499,6 +505,7 @@ namespace Eddi
             speechConfiguration.EffectsLevel = (int)ttsEffectsLevelSlider.Value;
             speechConfiguration.DistortOnDamage = ttsDistortCheckbox.IsChecked.Value;
             speechConfiguration.DisableSsml = disableSsmlCheckbox.IsChecked.Value;
+            speechConfiguration.EnableIcao = enableIcaoCheckbox.IsChecked.Value;
             speechConfiguration.ToFile();
             SpeechService.Instance.ReloadConfiguration();
         }

@@ -4,6 +4,7 @@
 	* Fix potential crash when comparing current and future star systems
 	* Fix typo in test event for 'Commander continued'
 	* Ignore nameplates when obtaining modules from journal
+	* Add 'Enable ICAO' option on text-to-speech tab.  When enabled, planets and starsystems with alphanumeric qualifiers (e.g. the "AB 1" in "Shinrarta Dezhra AB 1") will be spoken phonetically (e.g. "Alpha Bravo One")
 
 #2.3.0-b1
   * Core

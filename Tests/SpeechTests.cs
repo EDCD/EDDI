@@ -420,7 +420,7 @@ namespace Tests
         [TestMethod]
         public void TestSectorTranslations()
         {
-            Assert.AreEqual("Swoiwns N Y dash B a95 dash 0", Translations.StarSystem("Swoiwns NY-B a95-0"));
+            Assert.AreEqual("Swoiwns N Y dash B a 95 dash 0", Translations.StarSystem("Swoiwns NY-B a95-0"));
             Assert.AreEqual("P P M 5 2 8 7", Translations.StarSystem("PPM 5287"));
         }
 

@@ -128,6 +128,9 @@ namespace EddiSpeechResponder
         {
             BuiltinStore store = new BuiltinStore();
 
+            // TODO fetch this from configuration
+            bool useICAO = SpeechServiceConfiguration.FromFile().EnableIcao;
+
             // Function to call another script
             store["F"] = new NativeFunction((values) =>
             {
@@ -141,15 +144,19 @@ namespace EddiSpeechResponder
                 string translation = val;
                 if (translation == val)
                 {
+                    translation = Translations.Body(val, useICAO);
+                }
+                if (translation == val)
+                {
+                    translation = Translations.StarSystem(val, useICAO);
+                }
+                if (translation == val)
+                {
                     translation = Translations.Faction(val);
                 }
                 if (translation == val)
                 {
                     translation = Translations.Power(val);
-                }
-                if (translation == val)
-                {
-                    translation = Translations.StarSystem(val);
                 }
                 if (translation == val)
                 {
@@ -618,7 +625,7 @@ namespace EddiSpeechResponder
                 system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - EDDI.Instance.HomeStarSystem.x), 2)
                                                                       + Math.Pow((double)(system.y - EDDI.Instance.HomeStarSystem.y), 2)
                                                                       + Math.Pow((double)(system.z - EDDI.Instance.HomeStarSystem.z), 2)), 2);
-                Logging.Info("Distance from home is " + system.distancefromhome);
+                Logging.Debug("Distance from home is " + system.distancefromhome);
             }
         }
     }
