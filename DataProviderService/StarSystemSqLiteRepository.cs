@@ -91,18 +91,8 @@ namespace EddiDataProviderService
                     system = new StarSystem();
                     system.name = name;
                 }
-                // TODO can we just remove lastvisit from the database definition?
-                bool lastvisitSet = false;
-                if (system.lastvisit == null)
-                {
-                    system.lastvisit = DateTime.Now;
-                    lastvisitSet = true;
-                }
+
                 insertStarSystem(system);
-                if (lastvisitSet)
-                {
-                    system.lastvisit = null;
-                }
             }
             return system;
         }
@@ -248,7 +238,7 @@ namespace EddiDataProviderService
                             cmd.Prepare();
                             cmd.Parameters.AddWithValue("@name", system.name);
                             cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                            cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit);
+                            cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.Now);
                             cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
                             cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
                             cmd.ExecuteNonQuery();
@@ -270,7 +260,7 @@ namespace EddiDataProviderService
                     cmd.CommandText = UPDATE_SQL;
                     cmd.Prepare();
                     cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                    cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit);
+                    cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.Now);
                     cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
                     cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
                     cmd.Parameters.AddWithValue("@name", system.name);

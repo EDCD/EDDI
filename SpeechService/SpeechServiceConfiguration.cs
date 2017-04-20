@@ -32,6 +32,9 @@ namespace EddiSpeechService
         [JsonProperty("disablessml")]
         public bool DisableSsml { get; set; } = false;
 
+        [JsonProperty("enableicao")]
+        public bool EnableIcao { get; set; } = false;
+
         [JsonIgnore]
         private string dataPath;
 
@@ -79,6 +82,7 @@ namespace EddiSpeechService
             EffectsLevel = 50;
             DistortOnDamage = true;
             DisableSsml = false;
+            EnableIcao = false;
         }
 
         public void ToFile(string filename = null)

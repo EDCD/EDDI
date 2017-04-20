@@ -459,6 +459,10 @@ namespace EddiJournalMonitor
                                         {
                                             // Ignore ship kits
                                         }
+                                        else if (slot.StartsWith("ShipName") || slot.StartsWith("ShipID"))
+                                        {
+                                            // Ignore nameplates
+                                        }
                                         else
                                         {
                                             // This is a compartment
