@@ -233,17 +233,13 @@ namespace EddiDataDefinitions
 
         public string SpokenName(string defaultname = null)
         {
-            string model = defaultname == null ? SpokenModel() : defaultname;
-            if (model == null)
-            {
-                model = "ship";
-            }
+            string model = (defaultname == null ? SpokenModel() : defaultname) ?? "ship";
             string result = ("your " + model);
-            if (phoneticname != null)
+            if (!string.IsNullOrEmpty(phoneticname))
             {
                 result = "<phoneme alphabet=\"ipa\" ph=\"" + phoneticname + "\">" + name + "</phoneme>";
             }
-            else if (name != null)
+            else if (!string.IsNullOrEmpty(name))
             {
                 result = name;
             }

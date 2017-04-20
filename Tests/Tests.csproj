@@ -120,6 +120,7 @@
     <Compile Include="GeneratorTests.cs" />
     <Compile Include="JournalMonitorTests.cs" />
     <Compile Include="BodyScanTests.cs" />
+    <Compile Include="ShipTests.cs" />
     <Compile Include="VersioningTests.cs" />
     <Compile Include="StarTests.cs" />
     <Compile Include="DataProviderTests.cs" />
