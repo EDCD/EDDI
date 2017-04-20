@@ -471,8 +471,9 @@ namespace EddiShipMonitor
                 Ship ship = GetShip(profileCurrentShip.LocalId);
                 if (ship == null)
                 {
-                    // TODO shouldn't be necessary
+                    // This means that we haven't seen the ship in the profile before.  Add it to the shipyard
                     ship = profileCurrentShip;
+                    AddShip(ship);
                     
                 }
                 if (ship.model == null)
@@ -576,6 +577,18 @@ namespace EddiShipMonitor
 
         private void AddShip(Ship ship)
         {
+            if (ship == null)
+            {
+                return;
+            }
+
+            // Ensure that we have a role for this ship
+
+            if (ship.role == null)
+            {
+                ship.role = Role.MultiPurpose;
+            }
+
             // If we were started from VoiceAttack then we might not have an application; check here and create if it doesn't exist
             if (Application.Current == null)
             {
@@ -585,15 +598,26 @@ namespace EddiShipMonitor
             // Run this on the dispatcher to ensure that we can update it whilst reflecting changes in the UI
             if (Application.Current.Dispatcher.CheckAccess())
             {
-                shipyard.Add(ship);
+                _AddShip(ship);
             }
             else
             {
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                 {
-                    shipyard.Add(ship);
+                    _AddShip(ship);
                 }));
             }
+        }
+
+        private void _AddShip(Ship ship)
+        {
+            if (ship == null)
+            {
+                return;
+            }
+            // Remove the ship first (just in case we are trying to add a ship that already exists)
+            RemoveShip(ship.LocalId);
+            shipyard.Add(ship);
         }
 
         /// <summary>

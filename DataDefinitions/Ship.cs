@@ -183,9 +183,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        [JsonIgnore]
         public decimal health { get; set; }
-
         public Module cargohatch { get; set; }
         public Module bulkheads { get; set; }
         public Module canopy { get; set; }
@@ -332,6 +330,10 @@ namespace EddiDataDefinitions
                 phoneticmanufacturer = template.phoneticmanufacturer;
                 phoneticmodel = template.phoneticmodel;
                 size = template.size;
+                if (role == null)
+                {
+                    role = EddiDataDefinitions.Role.MultiPurpose;
+                }
             }
         }
 

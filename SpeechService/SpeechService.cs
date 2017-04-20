@@ -149,11 +149,10 @@ namespace EddiSpeechService
                         Logging.Debug("Seeking back to the beginning of the stream");
                         stream.Seek(0, SeekOrigin.Begin);
 
-                        Logging.Debug("Setting up source from stream");
-
                         IWaveSource source = new WaveFileReader(stream);
                         if (!isAudio)
                         {
+                            Logging.Debug("Adding effects");
                             addEffectsToSource(ref source, chorusLevel, reverbLevel, echoDelay, distortionLevel);
                         }
 
@@ -261,7 +260,15 @@ namespace EddiSpeechService
                 ISoundOut soundOut = GetSoundOut();
                 try
                 {
-                    soundOut.Initialize(source);
+                    try
+                    {
+                        soundOut.Initialize(source);
+                    }
+                    catch (System.Runtime.InteropServices.COMException ce)
+                    {
+                        Logging.Error("Failed to speak; missing media pack?", ce);
+                        return;
+                    }
                     soundOut.Stopped += (s, e) => waitHandle.Set();
 
                     TimeSpan waitTime = source.GetTime(source.Length);
