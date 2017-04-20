@@ -1,3 +1,7 @@
+#2.3.0-b3
+  * VoiceAttack Responder
+    * Add "Ship ident" and "Ship ident (spoken)"
+
 #2.3.0-b2
   * Core
     * Fix error when caching starsystem information
