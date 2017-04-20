@@ -233,6 +233,7 @@ namespace Eddi
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiConfiguration.Debug = eddiVerboseLogging.IsChecked.Value;
+            Logging.Verbose = eddiConfiguration.Debug;
             eddiConfiguration.ToFile();
         }
 
@@ -240,6 +241,7 @@ namespace Eddi
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiConfiguration.Debug = eddiVerboseLogging.IsChecked.Value;
+            Logging.Verbose = eddiConfiguration.Debug;
             eddiConfiguration.ToFile();
         }
 

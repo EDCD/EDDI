@@ -129,6 +129,10 @@ namespace EddiSpeechResponder
             }
 
             ScriptResolver scriptResolver = new ScriptResolver(Personality.Scripts);
+            if (sampleEvents.Count == 0)
+            {
+                sampleEvents.Add(null);
+            }
             foreach (Event sampleEvent in sampleEvents)
             {
                 responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script.Name, sampleEvent, null, null, false);

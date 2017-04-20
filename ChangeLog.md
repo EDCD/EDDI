@@ -6,6 +6,9 @@
 	* Ignore nameplates when obtaining modules from journal
 	* Add 'Enable ICAO' option on text-to-speech tab.  When enabled, planets and starsystems with alphanumeric qualifiers (e.g. the "AB 1" in "Shinrarta Dezhra AB 1") will be spoken phonetically (e.g. "Alpha Bravo One")
 	* Catch corner cases where ship name could come back empty
+	* Fix issue where 'Test script' button would not activate with custom scripts
+	* Changing verbose logging checkbox updates immediately
+    * Better updating of ship information from combined journal and API data sources
 
 #2.3.0-b1
   * Core
