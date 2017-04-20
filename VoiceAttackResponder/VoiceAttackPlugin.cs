@@ -167,8 +167,10 @@ namespace EddiVoiceAttackResponder
                             Logging.Warn("Failed to handle event", ex);
                         }
                     }
-                });
-                updaterThread.IsBackground = true;
+                })
+                {
+                    IsBackground = true
+                };
                 updaterThread.Start();
 
                 setStatus(ref vaProxy, "Operational");
@@ -502,8 +504,10 @@ namespace EddiVoiceAttackResponder
             }
             else
             {
-                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), "\"" + uri + "\"");
-                proc.UseShellExecute = false;
+                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), "\"" + uri + "\"")
+                {
+                    UseShellExecute = false
+                };
                 Process.Start(proc);
             }
         }
@@ -1095,7 +1099,7 @@ namespace EddiVoiceAttackResponder
 
                         vaProxy.SetBoolean(baseHardpointName + " occupied", Hardpoint.module != null);
                         setShipModuleValues(Hardpoint.module, baseHardpointName + " module", ref vaProxy);
-                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.module, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, baseHardpointName + " module", ref vaProxy);
+                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.module, EDDI.Instance.CurrentStation?.outfitting, baseHardpointName + " module", ref vaProxy);
                     }
 
                     vaProxy.SetInt(prefix + " hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
@@ -1108,7 +1112,7 @@ namespace EddiVoiceAttackResponder
                         vaProxy.SetInt(baseCompartmentName + " size", Compartment.size);
                         vaProxy.SetBoolean(baseCompartmentName + " occupied", Compartment.module != null);
                         setShipModuleValues(Compartment.module, baseCompartmentName + " module", ref vaProxy);
-                        setShipModuleOutfittingValues(ship == null ? null : Compartment.module, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, baseCompartmentName + " module", ref vaProxy);
+                        setShipModuleOutfittingValues(ship == null ? null : Compartment.module, EDDI.Instance.CurrentStation?.outfitting, baseCompartmentName + " module", ref vaProxy);
                     }
                     vaProxy.SetInt(prefix + " compartments", curCompartment);
                 }
