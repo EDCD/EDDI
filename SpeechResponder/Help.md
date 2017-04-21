@@ -274,3 +274,9 @@ This function will provide full information for a security level given its name.
 SecurityLevelDetails() takes a single argument of the security level for which you want more information.
 
 At current this does not have a lot of use as the security level object only contains its name, but expect it to be expanded in future.
+
+### Log()
+
+This function will write the supplied text to EDDI's log.
+
+Log() takes a single argument of the string to log.
