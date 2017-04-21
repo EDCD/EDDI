@@ -114,5 +114,39 @@ namespace Tests
 
             Assert.AreEqual("AsteroidBase", theEvent.model);
         }
+
+        [TestMethod]
+        public void TestJournalMessageReceived1()
+        {
+            string line = @"{ ""timestamp"":""2016-10-07T03:02:44Z"", ""event"":""ReceiveText"", ""From"":""$ShipName_Police_Federation;"", ""From_Localised"":""Federal Security Service"", ""Message"":""$Police_StartPatrol03;"", ""Message_Localised"":""Receiving five by five, I'm in the air now, joining patrol."", ""Channel"":""npc"" }";
+
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            MessageReceivedEvent theEvent = (MessageReceivedEvent)events[0];
+
+            Assert.IsFalse(theEvent.player);
+            Assert.AreEqual("Police", theEvent.source);
+            Assert.AreEqual("Federal Security Service", theEvent.from);
+        }
+
+        [TestMethod]
+        public void TestJournalMessageReceived2()
+        {
+            string line = @"{ ""timestamp"":""2016-10-06T12:48:56Z"", ""event"":""ReceiveText"", ""From"":""$npc_name_decorate:#name=Jonathan Dallard;"", ""From_Localised"":""Jonathan Dallard"", ""Message"":""$Pirate_OnStartScanCargo07;"", ""Message_Localised"":""Do you have anything of value?"", ""Channel"":""npc"" }";
+
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 2);
+
+            MessageReceivedEvent event1 = (MessageReceivedEvent)events[0];
+
+            Assert.IsFalse(event1.player);
+            Assert.AreEqual("NPC", event1.source);
+            Assert.AreEqual("Jonathan Dallard", event1.from);
+
+            NPCCargoScanCommencedEvent event2 = (NPCCargoScanCommencedEvent)events[1];
+
+            Assert.AreEqual("Pirate", event2.by);
+        }
     }
 }

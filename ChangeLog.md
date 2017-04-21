@@ -1,6 +1,10 @@
 #2.3.0-b3
+  * Events
+    * Update 'Message received' event to include NPC messages.  Additional field 'Source' provides more details about the source of the message
   * Speech Responder
-    * Add "Log" function to write informaiton to EDDI's log.  This is an aid when debugging templates
+    * Add "Log" function to write information to EDDI's log.  This is an aid when debugging templates
+	* Script changes:
+	  * 'Message received' - updated to only respond to player messages, and to use appropriate source
   * VoiceAttack Responder
     * Add "Ship ident" and "Ship ident (spoken)"
 
@@ -28,7 +32,6 @@
 	* Remove the Netlog monitor.  This was only used to obtain destination system when jumping and is no longer required due to additional information made available in the journal for this purpose
     * Fix exploration role 'Trailblazer' to have correct name (was showing up as 'Explorer')
 	* Add reset button to Frontier API configuration panel
-
   * Events
 	* Update 'Body scanned' event - added earth mass, radius and information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
 	* Update 'Bond awarded' event to provide details of the awarding faction

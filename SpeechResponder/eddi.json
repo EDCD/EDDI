@@ -750,7 +750,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'message')}\r\n{SetState('eddi_context_last_action', 'receive')}\r\n{SetState('eddi_context_message_name', event.from)}\r\n{SetState('eddi_context_message_content', event.message)}\r\n\r\n{if event.message = \"o7\":\r\n    {event.from} salutes\r\n    {if event.channel = \"player\":\r\n        you\r\n    }.\r\n|else:\r\n    Message received from {event.from}.  Message reads: {event.message}.\r\n}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'message')}\r\n{SetState('eddi_context_last_action', 'receive')}\r\n{SetState('eddi_context_message_name', event.from)}\r\n{SetState('eddi_context_message_content', event.message)}\r\n\r\n{if event.player = true:\r\n    {if event.message = \"o7\":\r\n        {event.from} salutes\r\n        {if event.channel = \"player\":\r\n            you\r\n        }.\r\n    |else:\r\n        Message received from {event.source} {event.from}.  Message reads: {event.message}.\r\n    }\r\n}\r\n",
       "name": "Message received",
       "description": "Triggered when you receive a message"
     },
