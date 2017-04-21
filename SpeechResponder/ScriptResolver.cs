@@ -524,6 +524,12 @@ namespace EddiSpeechResponder
                                                                       + Math.Pow((double)(values[2].AsNumber - values[5].AsNumber), 2)), 2);
             }, 6);
 
+            store["Log"] = new NativeFunction((values) =>
+            {
+                Logging.Info(values[0].AsString);
+                return "";
+            }, 1);
+
             store["SetState"] = new NativeFunction((values) =>
             {
                 string name = values[0].AsString.ToLowerInvariant().Replace(" ", "_");

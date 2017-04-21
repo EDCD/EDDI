@@ -326,12 +326,17 @@ namespace EddiSpeechService
                             try
                             {
                                 Logging.Debug("Selecting voice " + voice);
-                                synth.SelectVoice(voice);
-                                Logging.Debug("Selected voice " + synth.Voice.Name);
+                                Thread t = new Thread(() => synth.SelectVoice(voice));
+                                t.Start();
+                                if (!t.Join(TimeSpan.FromSeconds(2)))
+                                {
+                                    t.Abort();
+                                    Logging.Warn("Failed to select voice " + voice + " (1)");
+                                }
                             }
                             catch (Exception ex)
                             {
-                                Logging.Warn("Failed to select voice " + voice, ex);
+                                Logging.Warn("Failed to select voice " + voice + " (2)", ex);
                             }
                         }
                         Logging.Debug("Post-selection");

@@ -1,4 +1,6 @@
 #2.3.0-b3
+  * Speech Responder
+    * Add "Log" function to write informaiton to EDDI's log.  This is an aid when debugging templates
   * VoiceAttack Responder
     * Add "Ship ident" and "Ship ident (spoken)"
 

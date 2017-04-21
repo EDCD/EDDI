@@ -310,7 +310,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-    public static void VA_Exit1(dynamic vaProxy)
+        public static void VA_Exit1(dynamic vaProxy)
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
             updaterThread.Abort();
@@ -343,7 +343,7 @@ namespace EddiVoiceAttackResponder
                     case "speech":
                         InvokeSpeech(ref vaProxy);
                         break;
-                    case "system comment":
+                        case "system comment":
                         InvokeStarMapSystemComment(ref vaProxy);
                         break;
                     case "configuration":
@@ -678,8 +678,9 @@ namespace EddiVoiceAttackResponder
             try
             {
                 string name = vaProxy.GetText("State variable");
-                if (name == null)
+                if (string.IsNullOrEmpty(name))
                 {
+                    Logging.Info("No value in the VoiceAttack text variable 'State variable'; nothing to set");
                     return;
                 }
 
