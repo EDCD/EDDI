@@ -31,7 +31,6 @@ namespace EddiSpeechResponder
                 {
                     Text = diffItem.data + Environment.NewLine
                 };
-                Logging.Warn("Data is " + diffItem.type + ": " + diffItem.data + " (" + String.Concat(diffItem.data.Select(c => ((int)c).ToString("x2"))) + ")");
                 if (diffItem.type == "Deleted")
                 {
                     tr.ApplyPropertyValue(TextElement.BackgroundProperty, "#FFF8FF");
