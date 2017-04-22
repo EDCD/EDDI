@@ -33,15 +33,20 @@ namespace EddiEdsmResponder
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
             edsmApiKeyTextBox.Text = starMapConfiguration.apiKey;
             edsmCommanderNameTextBox.Text = starMapConfiguration.commanderName;
+            edsmFetchLogsButton.Content = String.IsNullOrEmpty(edsmApiKeyTextBox.Text) ? "Please enter EDSM API key  to obtain log" : "Obtain log";
         }
 
         private void edsmCommanderNameChanged(object sender, TextChangedEventArgs e)
         {
+            edsmFetchLogsButton.IsEnabled = true;
+            edsmFetchLogsButton.Content = "Obtain log";
             updateEdsmConfiguration();
         }
 
         private void edsmApiKeyChanged(object sender, TextChangedEventArgs e)
         {
+            edsmFetchLogsButton.IsEnabled = true;
+            edsmFetchLogsButton.Content = String.IsNullOrEmpty(edsmApiKeyTextBox.Text) ? "Please enter EDSM API key  to obtain log" : "Obtain log";
             updateEdsmConfiguration();
         }
 
@@ -67,6 +72,13 @@ namespace EddiEdsmResponder
         {
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
 
+            if (string.IsNullOrEmpty(starMapConfiguration.apiKey))
+            {
+                edsmFetchLogsButton.IsEnabled = false;
+                edsmFetchLogsButton.Content = "Please enter EDSM API key  to obtain log";
+                return;
+            }
+
             string commanderName;
             if (string.IsNullOrEmpty(starMapConfiguration.commanderName))
             {
@@ -91,28 +103,37 @@ namespace EddiEdsmResponder
             edsmFetchLogsButton.IsEnabled = false;
             edsmFetchLogsButton.Content = "Obtaining log...";
 
-            var progress = new Progress<string>(s => edsmFetchLogsButton.Content = "Obtaining log..." + s);
+            var progress = new Progress<string>(s => edsmFetchLogsButton.Content = s);
             await Task.Factory.StartNew(() => obtainEdsmLogs(starMapConfiguration, commanderName, progress),
                                             TaskCreationOptions.LongRunning);
-            edsmFetchLogsButton.Content = "Obtained log";
         }
 
         public static void obtainEdsmLogs(StarMapConfiguration starMapConfiguration, string commanderName, IProgress<string> progress)
         {
             StarMapService starMapService = new StarMapService(starMapConfiguration.apiKey, commanderName);
-            Dictionary<string, StarMapLogInfo> systems = starMapService.getStarMapLog();
-            Dictionary<string, string> comments = starMapService.getStarMapComments();
-            foreach (string system in systems.Keys)
+            try
             {
-                progress.Report(system);
-                StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
-                CurrentStarSystem.visits = systems[system].visits;
-                CurrentStarSystem.lastvisit = systems[system].lastVisit;
-                if (comments.ContainsKey(system))
+                Dictionary<string, StarMapLogInfo> systems = starMapService.getStarMapLog();
+                Dictionary<string, string> comments = starMapService.getStarMapComments();
+                int total = systems.Count;
+                int i = 0;
+                foreach (string system in systems.Keys)
                 {
-                    CurrentStarSystem.comment = comments[system];
+                    progress.Report("Obtaining log " + i++ + "/" + total);
+                    StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
+                    CurrentStarSystem.visits = systems[system].visits;
+                    CurrentStarSystem.lastvisit = systems[system].lastVisit;
+                    if (comments.ContainsKey(system))
+                    {
+                        CurrentStarSystem.comment = comments[system];
+                    }
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 }
-                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                progress.Report("Obtained log");
+            }
+            catch (EDSMException edsme)
+            {
+                progress.Report("EDSM error received: " + edsme.Message);
             }
         }
     }

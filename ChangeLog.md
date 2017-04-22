@@ -1,4 +1,9 @@
 #2.3.0-b3
+  * EDSM Responder
+    * Provide error message when attempt to obtain logs fails
+	* Provide numeirc progress information rather than system name when syncing logs
+
+#2.3.0-b3
   * Events
     * Update 'Message received' event to include NPC messages.  Additional field 'Source' provides more details about the source of the message
   * Speech Responder

@@ -494,6 +494,11 @@ namespace EddiStarMapService
             StarMapLogResponse response = starMapLogResponse.Data;
 
             Logging.Debug("Response for star map logs is " + JsonConvert.SerializeObject(response));
+            if (response.msgnum != 100)
+            {
+                // An error occurred
+                throw new EDSMException(response.msg);
+            }
 
             Dictionary<string, StarMapLogInfo> vals = new Dictionary<string, StarMapLogInfo>();
             if (response != null && response.logs != null)

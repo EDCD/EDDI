@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EDSMException.cs" />
     <Compile Include="StarMapConfiguration.cs" />
     <Compile Include="StarMapService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
