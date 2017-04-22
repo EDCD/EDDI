@@ -93,7 +93,7 @@ Play() takes one argument: the path to the file to play.  This file must be a '.
 
 Common usage of this is to provide a pre-recorded custom audio file rather than use EDDI's text-to-speech, for example:
 
-    {Play(C:\\Users\\CmdrMcDonald\\Desktop\\Warning.wav)}
+    {Play('C:\\Users\\CmdrMcDonald\\Desktop\\Warning.wav')}
 
 ### ICAO()
 
