@@ -69,6 +69,12 @@ namespace EddiSpeechService
                 return;
             }
 
+            if (ship == null)
+            {
+                // Provide basic ship definition
+                ship = ShipDefinitions.FromModel("Sidewinder");
+            }
+
             Speak(speech, voice, echoDelayForShip(ship), distortionLevelForShip(ship), chorusLevelForShip(ship), reverbLevelForShip(ship), 0, wait, priority);
         }
 
