@@ -134,10 +134,25 @@ namespace Utilities
 
         public static List<DiffItem> DiffTexts(string a, string b)
         {
-            Item[] items = DiffText(a, b, false, false, false);
-            string[] aLines = a.Replace("\r", "").Trim().Split('\n');
-            string[] bLines = b.Replace("\r", "").Trim().Split('\n');
             List<DiffItem> diffItems = new List<DiffItem>();
+            string[] aLines = a?.Replace("\r", "")?.Trim()?.Split('\n');
+            string[] bLines = b?.Replace("\r", "")?.Trim()?.Split('\n');
+
+            // Handle simple case of equality first
+            if (a == b)
+            {
+                for (int i = 0; i < aLines.Length; i++)
+                {
+                    diffItems.Add(new DiffItem()
+                    {
+                        type = "Unmodified",
+                        data = aLines[i]
+                    });
+                }
+                return diffItems;
+            }
+
+            Item[] items = DiffText(a, b, false, false, false);
 
             int line = 0;
             for (int i = 0; i < items.Length; i++)
@@ -177,16 +192,16 @@ namespace Utilities
                         line++;
                     }
                 }
+            }
 
-                while (line < bLines.Length)
+            while (line < bLines.Length)
+            {
+                diffItems.Add(new DiffItem()
                 {
-                    diffItems.Add(new DiffItem()
-                    {
-                        type = "Unmodified",
-                        data = bLines[line]
-                    });
-                    line++;
-                }
+                    type = "Unmodified",
+                    data = bLines[line]
+                });
+                line++;
             }
             return diffItems;
         }

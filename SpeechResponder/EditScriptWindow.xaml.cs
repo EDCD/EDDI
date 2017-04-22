@@ -172,12 +172,10 @@ namespace EddiSpeechResponder
         private void showDefaultButtonClick(object sender, RoutedEventArgs e)
         {
             Personality defaultPersonality = Personality.Default();
-            Script defaultScript;
-            defaultPersonality.Scripts.TryGetValue(scriptName, out defaultScript);
-
-            if (defaultScript != null)
+            if (defaultPersonality.Scripts.TryGetValue(scriptName, out Script defaultScript))
             {
-                new ShowScriptWindow(defaultScript.Value).Show();
+                new ShowDiffWindow(defaultScript.Value, ScriptValue).Show();
+                //new ShowScriptWindow(defaultScript.Value).Show();
             }
         }
     }

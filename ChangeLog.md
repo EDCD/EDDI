@@ -4,6 +4,7 @@
   * Speech Responder
     * Add "Log" function to write information to EDDI's log.  This is an aid when debugging templates
 	* Fix issue where new templates might show up in custom personalities blank rather than with the contents of the default template
+	* Change edit window's "Show default" button to "Compare to default"; allowing diff-style comparison between the current and default scripts for templates
 	* Script changes:
 	  * 'Message received' - updated to only respond to player messages, and to use appropriate source
   * VoiceAttack Responder

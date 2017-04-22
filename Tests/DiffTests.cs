@@ -43,5 +43,21 @@ namespace Tests
             Assert.AreEqual(diffItems[1].type, "Inserted");
             Assert.AreEqual("The quick brown fox jumps over the lazy dog", diffItems[1].data);
         }
+
+        [TestMethod]
+        public void TestDiff3()
+        {
+            string a = "Line 1\r\nLine 2\r\nLine 3";
+
+            List<DiffItem> diffItems = DiffTexts(a, a);
+
+            Assert.AreEqual(3, diffItems.Count);
+            Assert.AreEqual("Unmodified", diffItems[0].type);
+            Assert.AreEqual("Line 1", diffItems[0].data);
+            Assert.AreEqual("Unmodified", diffItems[1].type);
+            Assert.AreEqual("Line 2", diffItems[1].data);
+            Assert.AreEqual("Unmodified", diffItems[2].type);
+            Assert.AreEqual("Line 3", diffItems[2].data);
+        }
     }
 }
