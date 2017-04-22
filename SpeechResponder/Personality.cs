@@ -188,6 +188,9 @@ namespace EddiSpeechResponder
         /// </summary>
         private static void fixPersonalityInfo(Personality personality)
         {
+            // Default personality for reference
+            Personality defaultPersonality = personality.IsDefault ? null : Default();
+
             Dictionary<string, Script> fixedScripts = new Dictionary<string, Script>();
             // Ensure that every required event is present
             foreach (KeyValuePair<string, string> defaultEvent in Events.DESCRIPTIONS)
@@ -197,8 +200,12 @@ namespace EddiSpeechResponder
                 if (script == null)
                 {
                     // The personality doesn't have this event; create a default
-                    string defaultScript = Events.DefaultByName(defaultEvent.Key);
-                    script = new Script(defaultEvent.Key, defaultEvent.Value, true, defaultScript);
+                    defaultPersonality?.Scripts?.TryGetValue(defaultEvent.Key, out script);
+                }
+                if (script == null)
+                {
+                    // No script at all, create an empty entry
+                    script = new Script(defaultEvent.Key, defaultEvent.Value, true, null);
                 }
                 else if (script.Description != defaultEvent.Value)
                 {
@@ -217,7 +224,6 @@ namespace EddiSpeechResponder
             if (!personality.IsDefault)
             {
                 // Also add any secondary scripts in the default personality that aren't present in the list
-                Personality defaultPersonality = Default();
                 foreach (KeyValuePair<string, Script> kv in defaultPersonality.Scripts)
                 {
                     if (!fixedScripts.ContainsKey(kv.Key))

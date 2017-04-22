@@ -115,6 +115,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DiffTests.cs" />
     <Compile Include="EddnTests.cs" />
     <Compile Include="DataDefinitionTests.cs" />
     <Compile Include="GeneratorTests.cs" />
