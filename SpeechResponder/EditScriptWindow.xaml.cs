@@ -87,10 +87,17 @@ namespace EddiSpeechResponder
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
-            // Might be updating an existing script so remove it from the list
+            // Fetch the default script and mark this as default if it matches
+            script = new Script(scriptName, scriptDescription, script == null ? false : script.Responder, scriptValue, script.Priority, false);
+            Script defaultScript = null;
+            if (Personality.Default().Scripts?.TryGetValue(script.Name, out defaultScript) ?? false)
+            {
+                script = Personality.UpgradeScript(script, defaultScript);
+            }
+
+            // Might be updating an existing script so remove it from the list before adding
             scripts.Remove(script.Name);
 
-            script = new Script(scriptName, scriptDescription, script == null ? false : script.Responder, scriptValue);
             scripts.Add(script.Name, script);
 
             DialogResult = true;

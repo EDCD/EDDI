@@ -13,7 +13,7 @@ namespace EddiSpeechResponder
         [JsonProperty("name")]
         public string Name { get; private set; }
         [JsonProperty("description")]
-        public string Description { get; private set; }
+        public string Description { get; set; }
         [JsonProperty("enabled")]
         private bool enabled;
         [JsonProperty("priority")]
@@ -22,6 +22,8 @@ namespace EddiSpeechResponder
         private bool responder;
         [JsonProperty("script")]
         private string script;
+        [JsonProperty("default")]
+        private bool isDefault;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -43,7 +45,14 @@ namespace EddiSpeechResponder
         public bool Responder
         {
             get { return responder; }
-            private set {  }
+            private set { responder = value; OnPropertyChanged("Responder"); }
+        }
+
+        [JsonIgnore]
+        public bool Default
+        {
+            get { return isDefault; }
+            set { isDefault = value; OnPropertyChanged("Default"); }
         }
 
         [JsonIgnore]
@@ -65,7 +74,7 @@ namespace EddiSpeechResponder
             get { return script != null; }
         }
 
-        public Script(string name, string description, bool responder, string script, int priority = 3)
+        public Script(string name, string description, bool responder, string script, int priority = 3, bool Default = false)
         {
             Name = name;
             Description = description;
@@ -73,6 +82,7 @@ namespace EddiSpeechResponder
             Value = script;
             Priority = priority;
             Enabled = true;
+            this.Default = Default;
         }
 
         protected void OnPropertyChanged(string name)

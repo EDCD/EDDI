@@ -188,37 +188,34 @@ namespace EddiSpeechResponder
         /// </summary>
         private static void fixPersonalityInfo(Personality personality)
         {
-            // Default personality for reference
+            // Default personality for reference scripts
             Personality defaultPersonality = personality.IsDefault ? null : Default();
 
             Dictionary<string, Script> fixedScripts = new Dictionary<string, Script>();
             // Ensure that every required event is present
             foreach (KeyValuePair<string, string> defaultEvent in Events.DESCRIPTIONS)
             {
-                Script script;
-                personality.Scripts.TryGetValue(defaultEvent.Key, out script);
+                personality.Scripts.TryGetValue(defaultEvent.Key, out Script script);
+                Script defaultScript = null;
+                defaultPersonality?.Scripts?.TryGetValue(defaultEvent.Key, out defaultScript);
+                script = UpgradeScript(script, defaultScript);
                 if (script == null)
                 {
-                    // The personality doesn't have this event; create a default
-                    defaultPersonality?.Scripts?.TryGetValue(defaultEvent.Key, out script);
+                    Logging.Report("Failed to find script for " + defaultEvent.Key);
                 }
-                if (script == null)
+                else
                 {
-                    // No script at all, create an empty entry
-                    script = new Script(defaultEvent.Key, defaultEvent.Value, true, null);
+                    fixedScripts.Add(defaultEvent.Key, script);
                 }
-                else if (script.Description != defaultEvent.Value)
-                {
-                    // The description has been updated
-                    script = new Script(defaultEvent.Key, defaultEvent.Value, true, script.Value, script.Priority);
-                }
-                fixedScripts.Add(defaultEvent.Key, script);
             }
             foreach (KeyValuePair<string, Script> kv in personality.Scripts)
             {
                 if (!fixedScripts.ContainsKey(kv.Key))
                 {
-                    fixedScripts.Add(kv.Key, kv.Value);
+                    Script defaultScript = null;
+                    defaultPersonality?.Scripts?.TryGetValue(kv.Key, out defaultScript);
+                    Script script = UpgradeScript(kv.Value, defaultScript);
+                    fixedScripts.Add(kv.Key, script);
                 }
             }
             if (!personality.IsDefault)
@@ -237,6 +234,36 @@ namespace EddiSpeechResponder
             fixedScripts = fixedScripts.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
 
             personality.Scripts = fixedScripts;
+        }
+
+        public static Script UpgradeScript(Script personalityScript, Script defaultScript)
+        {
+            Script script = personalityScript ?? defaultScript;
+            if (script != null)
+            {
+                if (defaultScript != null)
+                {
+                    if (defaultScript.Responder)
+                    {
+                        // This is a responder script so update the description
+                        script.Description = defaultScript.Description;
+                    }
+
+                    if (script.Default)
+                    {
+                        // This is a default script so take the latest value
+                        script.Value = defaultScript.Value;
+                    }
+
+                    if (script.Value == defaultScript.Value)
+                    {
+                        // Ensure this is flaged as a default script (pre 2-3 didn't have this flag)
+                        script.Default = true;
+                    }
+                }
+            }
+
+            return script;
         }
     }
 }

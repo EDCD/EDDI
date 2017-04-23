@@ -2,6 +2,8 @@
   * EDSM Responder
     * Provide error message when attempt to obtain logs fails
 	* Provide numeirc progress information rather than system name when syncing logs
+  * Script Responder
+    * Update default templates to current latest version when reading in a custom personality
 
 #2.3.0-b3
   * Events
