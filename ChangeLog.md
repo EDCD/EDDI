@@ -1,4 +1,6 @@
-#2.3.0-b3
+#2.3.0-b4
+  * Core
+    * Update internal list of commodities to include all known items
   * EDSM Responder
     * Provide error message when attempt to obtain logs fails
 	* Provide numeirc progress information rather than system name when syncing logs

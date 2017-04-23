@@ -874,6 +874,8 @@ namespace EddiDataDefinitions
                 // Items for which we are awaiting FD IDs
                 {999999901, new Module(999999901, "Hpt_MiningLaser_Turret_Small", 1587, "Mining Laser", 1, "D", 9400, Module.ModuleMount.Turreted) },
                 {999999902, new Module(999999902, "Hpt_MiningLaser_Turret_Medium", 1588, "Mining Laser", 2, "D", 22580, Module.ModuleMount.Turreted) },
+                // The FDL has its own cargo bay door.  The FDL is like that
+                {999999907, new Module(999999907, "ModularCargoBayDoorFDL", -1, "Cargo Hatch", 1, "H", 0, -1) },
                 {999999908, new Module(999999908, "ModularCargoBayDoor", -1, "Cargo Hatch", 1, "H", 0, -1) },
                 {999999909, new Module(999999909, "Empire_Courier_Cockpit", -1, "Cockpit", 1, "I", 0, 128671223) },
                 {999999910, new Module(999999910, "SideWinder_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049249) },
