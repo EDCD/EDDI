@@ -1153,98 +1153,103 @@ namespace Eddi
 
         private bool eventStarScanned(StarScannedEvent theEvent)
         {
-            // We just scanned a star.  We can assume that it's in our current system
-            Body star = CurrentStarSystem?.bodies?.FirstOrDefault(b => b.name == theEvent.name);
-            if (star == null)
+            // We just scanned a star.  We can only proceed if we know our current star system
+            if (CurrentStarSystem != null)
             {
-                Logging.Debug("Scanned star " + theEvent.name + " is new - creating");
-                // A new item - set it up
-                star = new Body();
-                star.EDDBID = -1;
-                star.type = "Star";
-                star.name = theEvent.name;
-                star.systemname = CurrentStarSystem.name;
-                CurrentStarSystem?.bodies?.Add(star);
+                Body star = CurrentStarSystem.bodies?.FirstOrDefault(b => b.name == theEvent.name);
+                if (star == null)
+                {
+                    Logging.Debug("Scanned star " + theEvent.name + " is new - creating");
+                    // A new item - set it up
+                    star = new Body();
+                    star.EDDBID = -1;
+                    star.type = "Star";
+                    star.name = theEvent.name;
+                    star.systemname = CurrentStarSystem?.name;
+                    CurrentStarSystem.bodies?.Add(star);
+                }
+
+                // Update with the information we have
+                star.age = theEvent.age;
+                star.distance = (long?)theEvent.distancefromarrival;
+                star.temperature = (long?)theEvent.temperature;
+                star.mainstar = theEvent.distancefromarrival == 0 ? true : false;
+                star.stellarclass = theEvent.stellarclass;
+                star.solarmass = theEvent.solarmass;
+                star.solarradius = theEvent.solarradius;
+
+                star.setStellarExtras();
+
+                CurrentStarSystem.bodies?.Add(star);
+                Logging.Debug("Saving data for scanned star " + theEvent.name);
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
-
-            // Update with the information we have
-            star.age = theEvent.age;
-            star.distance = (long?)theEvent.distancefromarrival;
-            star.temperature = (long?)theEvent.temperature;
-            star.mainstar = theEvent.distancefromarrival == 0 ? true : false;
-            star.stellarclass = theEvent.stellarclass;
-            star.solarmass = theEvent.solarmass;
-            star.solarradius = theEvent.solarradius;
-
-            star.setStellarExtras();
-
-            CurrentStarSystem?.bodies?.Add(star);
-            Logging.Debug("Saving data for scanned star " + theEvent.name);
-            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-
-            return true;
+            return CurrentStarSystem != null;
         }
 
         private bool eventBodyScanned(BodyScannedEvent theEvent)
         {
-            // We just scanned a planet.  We can assume that it's in our current system
-            Body body = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.name);
-            if (body == null)
+            // We just scanned a body.  We can only proceed if we know our current star system
+            if (CurrentStarSystem != null)
             {
-                Logging.Debug("Scanned body " + theEvent.name + " is new - creating");
-                // A new body - set it up
-                body = new Body();
-                body.EDDBID = -1;
-                body.type = "Planet";
-                body.name = theEvent.name;
-                body.systemname = CurrentStarSystem.name;
-                CurrentStarSystem.bodies.Add(body);
+                Body body = CurrentStarSystem.bodies.FirstOrDefault(b => b.name == theEvent.name);
+                if (body == null)
+                {
+                    Logging.Debug("Scanned body " + theEvent.name + " is new - creating");
+                    // A new body - set it up
+                    body = new Body();
+                    body.EDDBID = -1;
+                    body.type = "Planet";
+                    body.name = theEvent.name;
+                    body.systemname = CurrentStarSystem.name;
+                    CurrentStarSystem.bodies.Add(body);
+                }
+
+                // Update with the information we have
+                body.distance = (long?)theEvent.distancefromarrival;
+                body.landable = theEvent.landable;
+                body.tidallylocked = theEvent.tidallylocked;
+                body.temperature = (long?)theEvent.temperature;
+                body.periapsis = theEvent.periapsis;
+                body.atmosphere = theEvent.atmosphere;
+                body.gravity = theEvent.gravity;
+                body.eccentricity = theEvent.eccentricity;
+                body.inclination = theEvent.orbitalinclination;
+                body.orbitalperiod = Math.Round(theEvent.orbitalperiod / 86400, 2);
+                body.rotationalperiod = Math.Round(theEvent.rotationperiod / 86400, 2);
+                body.semimajoraxis = theEvent.semimajoraxis;
+                body.pressure = theEvent.pressure;
+                switch (theEvent.terraformstate)
+                {
+                    case "terrraformable":
+                    case "terraformable":
+                        body.terraformstate = "Terraformable";
+                        break;
+                    case "terraforming":
+                        body.terraformstate = "Terraforming";
+                        break;
+                    case "Terraformed":
+                        body.terraformstate = "Terraformed";
+                        break;
+                    default:
+                        body.terraformstate = "Not terraformable";
+                        break;
+                }
+                body.terraformstate = theEvent.terraformstate;
+                body.planettype = theEvent.bodyclass;
+                body.volcanism = theEvent.volcanism;
+                body.materials = new List<MaterialPresence>();
+                foreach (MaterialPresence presence in theEvent.materials)
+                {
+                    body.materials.Add(new MaterialPresence(presence.definition, presence.percentage));
+                }
+                body.rings = theEvent.rings;
+
+                Logging.Debug("Saving data for scanned body " + theEvent.name);
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
             }
 
-            // Update with the information we have
-            body.distance = (long?)theEvent.distancefromarrival;
-            body.landable = theEvent.landable;
-            body.tidallylocked = theEvent.tidallylocked;
-            body.temperature = (long?)theEvent.temperature;
-            body.periapsis = theEvent.periapsis;
-            body.atmosphere = theEvent.atmosphere;
-            body.gravity = theEvent.gravity;
-            body.eccentricity = theEvent.eccentricity;
-            body.inclination = theEvent.orbitalinclination;
-            body.orbitalperiod = Math.Round(theEvent.orbitalperiod / 86400, 2);
-            body.rotationalperiod = Math.Round(theEvent.rotationperiod / 86400, 2);
-            body.semimajoraxis = theEvent.semimajoraxis;
-            body.pressure = theEvent.pressure;
-            switch (theEvent.terraformstate)
-            {
-                case "terrraformable":
-                case "terraformable":
-                    body.terraformstate = "Terraformable";
-                    break;
-                case "terraforming":
-                    body.terraformstate = "Terraforming";
-                    break;
-                case "Terraformed":
-                    body.terraformstate = "Terraformed";
-                    break;
-                default:
-                    body.terraformstate = "Not terraformable";
-                    break;
-            }
-            body.terraformstate = theEvent.terraformstate;
-            body.planettype = theEvent.bodyclass;
-            body.volcanism = theEvent.volcanism;
-            body.materials = new List<MaterialPresence>();
-            foreach (MaterialPresence presence in theEvent.materials)
-            {
-                body.materials.Add(new MaterialPresence(presence.definition, presence.percentage));
-            }
-            body.rings = theEvent.rings;
-
-            Logging.Debug("Saving data for scanned body " + theEvent.name);
-            StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
-
-            return true;
+            return CurrentStarSystem != null;
         }
 
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>

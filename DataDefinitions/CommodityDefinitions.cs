@@ -225,7 +225,7 @@ namespace EddiDataDefinitions
             {300000060, new Commodity(181, "Gilya Signature Weapons", "Weapons", 13038, true) },
             {300000061, new Commodity(182, "Delta Phoenicis Palms", "Chemicals", 8188, true) },
             {300000062, new Commodity(183, "Toxandji Virocide", "Chemicals", 8275, true) },
-            {300000063, new Commodity(184, "Xihe Biomorphic Companions", "Technology", 11058, true) },
+            {300000063, new Commodity(184, "xihecompanions", "Xihe Biomorphic Companions", "Technology", 11058, true) },
             {300000064, new Commodity(185, "Sanuma Decorative Meat", "Foods", 8504, true) },
             {300000065, new Commodity(186, "Ethgreze Tea Buds", "Foods", 10197, true) },
             {300000066, new Commodity(187, "Ceremonial Heike Tea", "Foods", 9251, true) },
@@ -281,8 +281,8 @@ namespace EddiDataDefinitions
             {300000116, new Commodity(237, "Momus Bog Spaniel", "Consumer Items", 9184, true) },
             {300000117, new Commodity(238, "Diso Ma Corn", "Foods", 8134, true) },
             {300000118, new Commodity(239, "Leestian Evil Juice", "Legal Drugs", 8220, true) },
-            {300000119, new Commodity(240, "Azure Milk", "Legal Drugs", 10805, true) },
-            {300000120, new Commodity(241, "Leathery Eggs", "Consumer Items", 25067, true) },
+            {300000119, new Commodity(240, "bluemilk", "Azure Milk", "Legal Drugs", 10805, true) },
+            {300000120, new Commodity(241, "alieneggs", "Leathery Eggs", "Consumer Items", 25067, true) },
             {300000121, new Commodity(242, "Alya Body Soap", "Medicines", 8218, true) },
             {300000122, new Commodity(243, "Vidavantian Lace", "Consumer Items", 12615, true) },
             {300000123, new Commodity(244, "Jaques Quinentian Still", "consumer Items", 2108, true) },
@@ -325,7 +325,7 @@ namespace EddiDataDefinitions
             {128673854, new Commodity(281, "Methane Clathrate", "Minerals", 629, false) },
             {128673855, new Commodity(282, "Insulating Membrane", "Industrial Materials", 7837, false) },
             {128673856, new Commodity(283, "C M M Composite", "CMM Composite", "Industrial Materials", 3132, false) },
-            {128673857, new Commodity(284, "Micro-Weave Cooling Hoses", "Industrial Materials", 403, false) },
+            {128673857, new Commodity(284, "Cooling Hoses", "Micro-Weave Cooling Hoses", "Industrial Materials", 403, false) },
             {128673858, new Commodity(285, "Neofabric Insulation", "Industrial Materials", 2769, false) },
             {128673859, new Commodity(286, "Articulation Motors", "Machinery", 4997, false) },
             {128673860, new Commodity(287, "H N Shock Mount", "HN Shock Mount", "Machinery", 406, false) },
@@ -372,6 +372,7 @@ namespace EddiDataDefinitions
         };
 
         private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.name.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
+        private static Dictionary<string, Commodity> CommoditiesByEDName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
 
         public static Commodity CommodityFromEliteID(long id)
         {
@@ -410,18 +411,16 @@ namespace EddiDataDefinitions
             cargoNamesMapping.TryGetValue(cleanedName.ToLowerInvariant(), out cargoName);
             if (cargoName == null) { cargoName = cleanedName; }
 
-            // Now try to fetch the commodity by name
+            // Another mapping
+            string edName;
+            nameMapping.TryGetValue(cargoName, out edName);
+
+            // Now try to fetch the commodity by either ED or real name
             Commodity Template;
-            bool found = CommoditiesByName.TryGetValue(cargoName.ToLowerInvariant(), out Template);
+            bool found = CommoditiesByEDName.TryGetValue(cargoName.ToLowerInvariant(), out Template);
             if (!found)
             {
-                // Failed to find it; try again using the external name
-                string edName;
-                nameMapping.TryGetValue(cargoName, out edName);
-                if (edName != null)
-                {
-                    found = CommoditiesByName.TryGetValue(edName, out Template);
-                }
+                found = CommoditiesByName.TryGetValue(cargoName.ToLowerInvariant(), out Template);
             }
             if (found)
             {

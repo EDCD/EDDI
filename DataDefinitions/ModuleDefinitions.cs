@@ -750,6 +750,7 @@ namespace EddiDataDefinitions
                 {128671344, new Module(128671344, "Hpt_DrunkMissileRack_Fixed_Medium", 1480, "Pack-Hound", 2, "B", 768600, Module.ModuleMount.Fixed, 0, 120) },
                 {128671339, new Module(128671339, "Hpt_PlasmaAccelerator_Fixed_Large_Advanced", 1482, "Advanced Plasma Accelerator", 3, "B", 4119120, Module.ModuleMount.Fixed, 0, 300) },
                 {128671341, new Module(128671341, "Hpt_Railgun_Fixed_Medium_Burst", 1484, "Imperial Hammer", 2, "B", 619200, Module.ModuleMount.Fixed, 0, 90) },
+                {128671342, new Module(128671342, "Hpt_PulseLaser_Fixed_Medium_?", -1, "Disruptor", 2, "E", 26400, Module.ModuleMount.Fixed) },
                 {128671323, new Module(128671323, "Int_ShieldGenerator_Size1_Class5_Strong", 1485, "Prismatic Shield Generator", 1, "A", 132200) },
                 {128671324, new Module(128671324, "Int_ShieldGenerator_Size2_Class5_Strong", 1486, "Prismatic Shield Generator", 2, "A", 240340) },
                 {128671325, new Module(128671325, "Int_ShieldGenerator_Size3_Class5_Strong", 1487, "Prismatic Shield Generator", 3, "A", 761870) },
@@ -874,6 +875,7 @@ namespace EddiDataDefinitions
                 // Items for which we are awaiting FD IDs
                 {999999901, new Module(999999901, "Hpt_MiningLaser_Turret_Small", 1587, "Mining Laser", 1, "D", 9400, Module.ModuleMount.Turreted) },
                 {999999902, new Module(999999902, "Hpt_MiningLaser_Turret_Medium", 1588, "Mining Laser", 2, "D", 22580, Module.ModuleMount.Turreted) },
+                {999999903, new Module(999999903, "Hpt_MiningLaser_Fixed_Small_Advanced", -1, "Mining Lance", 1, "D", 6800, Module.ModuleMount.Fixed) },
                 // The FDL has its own cargo bay door.  The FDL is like that
                 {999999907, new Module(999999907, "ModularCargoBayDoorFDL", -1, "Cargo Hatch", 1, "H", 0, -1) },
                 {999999908, new Module(999999908, "ModularCargoBayDoor", -1, "Cargo Hatch", 1, "H", 0, -1) },
@@ -931,6 +933,9 @@ namespace EddiDataDefinitions
                  || module.EDName == "Hpt_PlasmaAccelerator_Fixed_Large_Advanced"
                  || module.EDName == "Hpt_Railgun_Fixed_Medium_Burst"
                  || module.EDName == "Hpt_DumbfireMissileRack_Fixed_Medium_Lasso"
+                 || module.EDName == "Hpt_MiningLaser_Fixed_Small_Advanced"
+                 || module.EDName == "Hpt_BeamLaser_Fixed_Small_Heat"
+                 || module.EDName == "Hpt_PulseLaser_Fixed_Medium_?" // Disruptor
                  );
         }
 
