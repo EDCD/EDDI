@@ -10,6 +10,9 @@
   * Ship Monitor
     * Lock updates to ship monitor data structures to prevent corruption
 	* Do not update ship name or ident if it contains filtered sequences (***)
+  * VoiceAttack Responder
+    * Add other VoiceAttack commands
+      * 'Tell me about this sytem' - Find out about the current system
 
 #2.3.0-b3
   * Events
