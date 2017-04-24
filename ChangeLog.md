@@ -1,3 +1,7 @@
+#2.3.0-b5
+  * Update EDDI personality to latest
+  * Update VoiceAttack profile to latest
+
 #2.3.0-b4
   * Core
     * Update internal list of commodities to include all known items
