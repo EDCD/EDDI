@@ -137,6 +137,32 @@ namespace EddiShipMonitor
             // TODO ModulesStoredEvent
         }
 
+        // Set the ship name conditionally, avoiding filtered names
+        private void setShipName(Ship ship, string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                ship.name = null;
+            }
+            else if (name != null && !name.Contains("***"))
+            {
+                ship.name = name;
+            }
+        }
+
+        // Set the ship ident conditionally, avoiding filtered idents
+        private void setShipIdent(Ship ship, string ident)
+        {
+            if (string.IsNullOrEmpty(ident))
+            {
+                ship.ident = null;
+            }
+            else if (ident != null && !ident.Contains("***"))
+            {
+                ship.ident = ident;
+            }
+        }
+
         private void handleCommanderContinuedEvent(CommanderContinuedEvent @event)
         {
             if (!inFighterOrBuggy(@event.ship))
@@ -151,8 +177,8 @@ namespace EddiShipMonitor
                     ship.role = Role.MultiPurpose;
                     AddShip(ship);
                 }
-                ship.name = @event.shipname;
-                ship.ident = @event.shipident;
+                setShipName(ship, @event.shipname);
+                setShipIdent(ship, @event.shipident);
                 if (@event.fuelcapacity.HasValue)
                 {
                     ship.fueltanktotalcapacity = (decimal?)@event.fuelcapacity;
@@ -218,14 +244,8 @@ namespace EddiShipMonitor
             Ship ship = GetShip(@event.shipid);
             if (ship != null)
             {
-                if (@event.name != null)
-                {
-                    ship.name = @event.name == "" ? null : @event.name;
-                }
-                if (@event.ident != null)
-                {
-                    ship.ident = @event.ident == "" ? null : @event.ident;
-                }
+                setShipName(ship, @event.name);
+                setShipIdent(ship, @event.ident);
             }
             writeShips();
         }
@@ -251,14 +271,8 @@ namespace EddiShipMonitor
             }
 
             // Update name and ident if required
-            if (@event.shipname != null && @event.shipname != "")
-            {
-                ship.name = @event.shipname;
-            }
-            if (@event.shipident != null && @event.shipident != "")
-            {
-                ship.ident = @event.shipident;
-            }
+            setShipName(ship, @event.shipname);
+            setShipIdent(ship, @event.shipident);
 
             ship.paintjob = @event.paintjob;
 

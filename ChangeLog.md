@@ -6,6 +6,10 @@
 	* Provide numeirc progress information rather than system name when syncing logs
   * Script Responder
     * Update default templates to current latest version when reading in a custom personality
+	* Attempt to ignore invalid system names if presented in BodyDetails()
+  * Ship Monitor
+    * Lock updates to ship monitor data structures to prevent corruption
+	* Do not update ship name or ident if it contains filtered sequences (***)
 
 #2.3.0-b3
   * Events
