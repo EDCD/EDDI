@@ -1,21 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiVoiceAttackResponder;
 using System.Collections.Generic;
 using System;
-using System.Speech.Synthesis;
-using System.IO;
-using System.Speech.AudioFormat;
-using System.Threading;
-using System.Globalization;
-using System.Collections.ObjectModel;
-using System.Linq;
-using EddiSpeechService;
-using CSCore;
-using CSCore.Codecs.WAV;
-using CSCore.SoundOut;
-using CSCore.Streams.Effects;
 using EddiDataDefinitions;
-using Utilities;
+using EddiEvents;
+using EddiJournalMonitor;
+using EddiShipMonitor;
 
 namespace Tests
 {
@@ -33,8 +22,10 @@ namespace Tests
         [TestMethod]
         public void TestShipSpokenName2()
         {
-            Ship ship = new Ship();
-            ship.name = "";
+            Ship ship = new Ship()
+            {
+                name = ""
+            };
             string spokenName = ship.SpokenName();
             Assert.AreEqual("your ship", spokenName);
         }
@@ -54,6 +45,45 @@ namespace Tests
             ship.name = "Testy";
             string spokenName = ship.SpokenName();
             Assert.AreEqual("Testy", spokenName);
+        }
+
+        [TestMethod]
+        public void TestJournalShipScenario1()
+        {
+            // Set ourselves as in beta to stop sending data to remote systems
+            Eddi.EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.Now, "beta", "beta"));
+
+            // Start a ship monitor
+            ShipMonitor shipMonitor = new ShipMonitor();
+
+            // LoadGame
+            SendEvents(@"", shipMonitor);
+
+            // Loadout
+            SendEvents(@"", shipMonitor);
+
+            // Purchase a Courier
+
+            // Swap back to the SideWinder
+
+            // Swap back to the Courier
+
+            // Name the Courier
+
+            // Swap back to the SideWinder
+
+            // Swap back to the Courier
+
+            // Sell the Sidewinder
+        }
+
+        private void SendEvents(string line, ShipMonitor monitor)
+        {
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            foreach (Event @event in events)
+            {
+                monitor.PreHandle(@event);
+            }
         }
     }
 }
