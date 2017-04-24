@@ -138,7 +138,41 @@ namespace Utilities
             string[] aLines = a?.Replace("\r", "")?.Trim()?.Split('\n');
             string[] bLines = b?.Replace("\r", "")?.Trim()?.Split('\n');
 
-            // Handle simple case of equality first
+            // Handle simple cases first
+
+            // Both NULL
+            if (string.IsNullOrEmpty(a) && string.IsNullOrEmpty(b))
+            {
+                return diffItems;
+            }
+
+            // One NULL
+            if (string.IsNullOrEmpty(a))
+            {
+                for (int i = 0; i < bLines.Length; i++)
+                {
+                    diffItems.Add(new DiffItem()
+                    {
+                        type = "Inserted",
+                        data = bLines[i]
+                    });
+                }
+                return diffItems;
+            }
+            if (string.IsNullOrEmpty(b))
+            {
+                for (int i = 0; i < aLines.Length; i++)
+                {
+                    diffItems.Add(new DiffItem()
+                    {
+                        type = "Deleted",
+                        data = aLines[i]
+                    });
+                }
+                return diffItems;
+            }
+
+            // Equal
             if (a == b)
             {
                 for (int i = 0; i < aLines.Length; i++)

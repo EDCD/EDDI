@@ -1,3 +1,6 @@
+#2.3.0-b6
+  * Handle additional conditions for "changes from default" windows when editing templates in the speech responder
+
 #2.3.0-b5
   * Update EDDI personality to latest
   * Update VoiceAttack profile to latest
