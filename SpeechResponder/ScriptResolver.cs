@@ -10,6 +10,7 @@ using EddiDataProviderService;
 using EddiShipMonitor;
 using EddiSpeechService;
 using GalnetMonitor;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -359,7 +360,7 @@ namespace EddiSpeechResponder
             store["BodyDetails"] = new NativeFunction((values) =>
             {
                 StarSystem system;
-                if (values.Count == 1)
+                if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
                 {
                     // Current system
                     system = EDDI.Instance.CurrentStarSystem;
