@@ -859,6 +859,11 @@ namespace EddiJournalMonitor
                                         source = "Police";
                                         from = getString(data, "From_Localised");
                                     }
+                                    else if (from.Contains("ShipName_"))
+                                    {
+                                        source = from.Replace("$ShipName_", "").Replace("_", " ").Replace(";", "");
+                                        from = getString(data, "From_Localised");
+                                    }
                                     else if (from.Contains("npc_name_decorate"))
                                     {
                                         source = "NPC";
