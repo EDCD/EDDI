@@ -16,6 +16,7 @@ namespace EddiSpeechResponder
     {
         private Dictionary<string, Script> scripts;
         private Script script;
+        private string originalName;
 
         private string scriptName;
         public string ScriptName
@@ -54,6 +55,7 @@ namespace EddiSpeechResponder
             DataContext = this;
 
             this.scripts = scripts;
+            this.originalName = name;
 
             scripts.TryGetValue(name, out script);
             if (script == null)
@@ -96,7 +98,7 @@ namespace EddiSpeechResponder
             }
 
             // Might be updating an existing script so remove it from the list before adding
-            scripts.Remove(script.Name);
+            scripts.Remove(originalName);
 
             scripts.Add(script.Name, script);
 
