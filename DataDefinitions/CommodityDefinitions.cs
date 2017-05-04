@@ -362,6 +362,8 @@ namespace EddiDataDefinitions
             {200000008, new Commodity(10008, "largeexplorationdatacash", "Large Exploration Data Cache", "Salvage", 0, false) },
             {200000009, new Commodity(10009, "unknownartifact2", "Unknown Artefact", "Salvage", 0, false) },
             {200000010, new Commodity(10010, "siriuscommercialcontracts", "Sirius Commerical Contracts", "Powerplay", 0, false) },
+            {200000011, new Commodity(10011, "siriusindustrialequipment", "Sirius Inustrial Equipment", "Powerplay", 0, false) },
+            {200000012, new Commodity(10012, "siriusfranchisepackage", "Sirius Franchise Package", "Powerplay", 0, false) },
         };
 
         private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.name.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);

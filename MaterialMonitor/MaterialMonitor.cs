@@ -24,6 +24,7 @@ namespace EddiMaterialMonitor
     {
         // Observable collection for us to handle
         public ObservableCollection<MaterialAmount> inventory = new ObservableCollection<MaterialAmount>();
+        private static readonly object inventoryLock = new object();
 
         // The material monitor both consumes and emits events, but only one for a given event.  We hold any pending events here so
         // they are fired at the correct time
@@ -190,37 +191,40 @@ namespace EddiMaterialMonitor
         /// </summary>
         private void incMaterial(string name, int amount)
         {
-            Material material = Material.FromName(name);
-            MaterialAmount ma = inventory.Where(inv => inv.material == material.name).FirstOrDefault();
-            if (ma == null)
+            lock(inventoryLock)
             {
-                // No information for the current material - create one and set it to 0
-                ma = new MaterialAmount(material, 0);
-                inventory.Add(ma);
-            }
-
-            int previous = ma.amount;
-            ma.amount += amount;
-            Logging.Debug(ma.material + ": " + previous + "->" + ma.amount);
-
-            if (ma.maximum.HasValue)
-            {
-                if (previous <= ma.maximum && ma.amount > ma.maximum)
+                Material material = Material.FromName(name);
+                MaterialAmount ma = inventory.Where(inv => inv.material == material.name).FirstOrDefault();
+                if (ma == null)
                 {
-                    // We have crossed the high water threshold for this material
-                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Maximum", (int)ma.maximum, ma.amount, "Increase"));
+                    // No information for the current material - create one and set it to 0
+                    ma = new MaterialAmount(material, 0);
+                    inventory.Add(ma);
                 }
-            }
-            if (ma.desired.HasValue)
-            {
-                if (previous < ma.desired && ma.amount >= ma.desired)
-                {
-                    // We have crossed the desired threshold for this material
-                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Desired", (int)ma.desired, ma.amount, "Increase"));
-                }
-            }
 
-            writeMaterials();
+                int previous = ma.amount;
+                ma.amount += amount;
+                Logging.Debug(ma.material + ": " + previous + "->" + ma.amount);
+
+                if (ma.maximum.HasValue)
+                {
+                    if (previous <= ma.maximum && ma.amount > ma.maximum)
+                    {
+                        // We have crossed the high water threshold for this material
+                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Maximum", (int)ma.maximum, ma.amount, "Increase"));
+                    }
+                }
+                if (ma.desired.HasValue)
+                {
+                    if (previous < ma.desired && ma.amount >= ma.desired)
+                    {
+                        // We have crossed the desired threshold for this material
+                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Desired", (int)ma.desired, ma.amount, "Increase"));
+                    }
+                }
+
+                writeMaterials();
+            }
         }
 
         /// <summary>
@@ -228,38 +232,41 @@ namespace EddiMaterialMonitor
         /// </summary>
         private void decMaterial(string name, int amount)
         {
-            Material material = Material.FromName(name);
-            MaterialAmount ma = inventory.Where(inv => inv.material == material.name).FirstOrDefault();
-            if (ma == null)
+            lock(inventoryLock)
             {
-                // No information for the current material - create one and set it to amount
-                ma = new MaterialAmount(material, amount);
-                inventory.Add(ma);
-            }
-
-            int previous = ma.amount;
-            ma.amount -= amount;
-            Logging.Debug(ma.material + ": " + previous + "->" + ma.amount);
-
-            // We have limits for this material; carry out relevant checks
-            if (ma.minimum.HasValue)
-            {
-                if (previous >= ma.minimum && ma.amount < ma.minimum)
+                Material material = Material.FromName(name);
+                MaterialAmount ma = inventory.Where(inv => inv.material == material.name).FirstOrDefault();
+                if (ma == null)
                 {
-                    // We have crossed the low water threshold for this material
-                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Minimum", (int)ma.minimum, ma.amount, "Decrease"));
+                    // No information for the current material - create one and set it to amount
+                    ma = new MaterialAmount(material, amount);
+                    inventory.Add(ma);
                 }
-            }
-            if (ma.desired.HasValue)
-            {
-                if (previous >= ma.desired && ma.amount < ma.desired)
-                {
-                    // We have crossed the desired threshold for this material
-                    pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Desired", (int)ma.desired, ma.amount, "Decrease"));
-                }
-            }
 
-            writeMaterials();
+                int previous = ma.amount;
+                ma.amount -= amount;
+                Logging.Debug(ma.material + ": " + previous + "->" + ma.amount);
+
+                // We have limits for this material; carry out relevant checks
+                if (ma.minimum.HasValue)
+                {
+                    if (previous >= ma.minimum && ma.amount < ma.minimum)
+                    {
+                        // We have crossed the low water threshold for this material
+                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Minimum", (int)ma.minimum, ma.amount, "Decrease"));
+                    }
+                }
+                if (ma.desired.HasValue)
+                {
+                    if (previous >= ma.desired && ma.amount < ma.desired)
+                    {
+                        // We have crossed the desired threshold for this material
+                        pendingEvents.Enqueue(new MaterialThresholdEvent(DateTime.Now, Material.FromName(name), "Desired", (int)ma.desired, ma.amount, "Decrease"));
+                    }
+                }
+
+                writeMaterials();
+            }
         }
 
         /// <summary>
@@ -267,16 +274,19 @@ namespace EddiMaterialMonitor
         /// </summary>
         private void setMaterial(string name, int amount)
         {
-            Material material = Material.FromName(name);
-            MaterialAmount ma = inventory.Where(inv => inv.material == material.name).FirstOrDefault();
-            if (ma == null)
+            lock(inventoryLock)
             {
-                // No information for the current material - create one and set it to amount
-                ma = new MaterialAmount(material, amount);
-                Logging.Debug(ma.material + ": " + ma.amount);
-                inventory.Add(ma);
+                Material material = Material.FromName(name);
+                MaterialAmount ma = inventory.Where(inv => inv.material == material.name).FirstOrDefault();
+                if (ma == null)
+                {
+                    // No information for the current material - create one and set it to amount
+                    ma = new MaterialAmount(material, amount);
+                    Logging.Debug(ma.material + ": " + ma.amount);
+                    inventory.Add(ma);
+                }
+                ma.amount = amount;
             }
-            ma.amount = amount;
         }
 
         public IDictionary<string, object> GetVariables()
@@ -289,46 +299,52 @@ namespace EddiMaterialMonitor
 
         public void writeMaterials()
         {
-            // Write material configuration with current inventory
-            MaterialMonitorConfiguration configuration = new MaterialMonitorConfiguration();
-            configuration.materials = inventory;
-            configuration.ToFile();
+            lock(inventoryLock)
+            {
+                // Write material configuration with current inventory
+                MaterialMonitorConfiguration configuration = new MaterialMonitorConfiguration();
+                configuration.materials = inventory;
+                configuration.ToFile();
+            }
         }
 
         private void readMaterials()
         {
-            // Obtain current inventory from  configuration
-            MaterialMonitorConfiguration configuration = MaterialMonitorConfiguration.FromFile();
-
-            // Build a new inventory
-            List<MaterialAmount> newInventory = new List<MaterialAmount>();
-
-            // Start with the materials we have in the log
-            foreach (MaterialAmount ma in configuration.materials)
+            lock(inventoryLock)
             {
-                newInventory.Add(ma);
-            }
+                // Obtain current inventory from  configuration
+                MaterialMonitorConfiguration configuration = MaterialMonitorConfiguration.FromFile();
 
-            // Add in any new materials
-            foreach (Material material in Material.MATERIALS)
-            {
-                MaterialAmount ma = newInventory.Where(inv => inv.material == material.name).FirstOrDefault();
-                if (ma == null)
+                // Build a new inventory
+                List<MaterialAmount> newInventory = new List<MaterialAmount>();
+
+                // Start with the materials we have in the log
+                foreach (MaterialAmount ma in configuration.materials)
                 {
-                    // We don't have this one - add it
-                    ma = new MaterialAmount(material, 0);
                     newInventory.Add(ma);
                 }
-            }
 
-            // Now order the list by name
-            newInventory = newInventory.OrderBy(m => m.material).ToList();
+                // Add in any new materials
+                foreach (Material material in Material.MATERIALS)
+                {
+                    MaterialAmount ma = newInventory.Where(inv => inv.material == material.name).FirstOrDefault();
+                    if (ma == null)
+                    {
+                        // We don't have this one - add it
+                        ma = new MaterialAmount(material, 0);
+                        newInventory.Add(ma);
+                    }
+                }
 
-            // Update the inventory 
-            inventory.Clear();
-            foreach (MaterialAmount ma in newInventory)
-            {
-                inventory.Add(ma);
+                // Now order the list by name
+                newInventory = newInventory.OrderBy(m => m.material).ToList();
+
+                // Update the inventory 
+                inventory.Clear();
+                foreach (MaterialAmount ma in newInventory)
+                {
+                    inventory.Add(ma);
+                }
             }
         }
 

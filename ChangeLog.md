@@ -4,6 +4,7 @@
   * Speech Responder
     * Handle additional conditions for "changes from default" windows when editing templates in the speech responder
     * When renaming scripts ensure that they are renamed not copied
+	* Update locking conditions for shipyard and inventory
 
 #2.3.0-b5
   * Update EDDI personality to latest
