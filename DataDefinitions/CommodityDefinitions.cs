@@ -7,39 +7,28 @@ namespace EddiDataDefinitions
 {
     public class CommodityDefinitions
     {
-        // Names that are totally different between cargo and commodity
-        private static Dictionary<string, string> cargoNamesMapping = new Dictionary<string, string>
-        {
-            {"drones", "limpet" },
-        };
-
         // Mapping from Elite internal names to common names
         private static Dictionary<string, string> nameMapping = new Dictionary<string, string>
         {
             {"agriculturalmedicines", "agrimedicines"},
             {"atmosphericextractors", "atmosphericprocessors"},
             {"basicnarcotics", "narcotics"},
-            {"drones", "limpet"},
             {"hazardousenvironmentsuits", "hesuits"},
             {"heliostaticfurnaces", "microbialfurnaces"},
             {"marinesupplies", "marineequipment"},
-            {"methanolmonohydratecrystals", "methanolmonohydrate"},
-            {"mutomimager", "muonimager"},
+            //{"mutomimager", "muonimager"},
             {"skimercomponents", "skimmercomponents"},
             {"terrainenrichmentsystems", "landenrichmentsystems"},
             {"trinketsoffortune", "trinketsofhiddenfortune"},
-            {"unknownartifact", "unknownartefact"},
-            {"usscargoancientartefact", "ancientartefact"},
-            {"usscargoexperimentalchemicals", "experimentalchemicals"},
-            {"usscargomilitaryplans", "militaryplans"},
-            {"usscargoprototypetech", "prototypetech"},
-            {"usscargorebeltransmissions", "rebeltransmissions"},
-            {"usscargotechnicalblueprints", "technicalblueprints"},
-            {"usscargotradedata", "tradedata"},
-
+            //{"unknownartifact", "unknownartefact"},
+            //{"usscargoancientartefact", "ancientartefact"},
+            //{"usscargoexperimentalchemicals", "experimentalchemicals"},
+            //{"usscargomilitaryplans", "militaryplans"},
+            //{"usscargoprototypetech", "prototypetech"},
+            //{"usscargorebeltransmissions", "rebeltransmissions"},
+            //{"usscargotechnicalblueprints", "technicalblueprints"},
+            //{"usscargotradedata", "tradedata"},
             {"comercialsamples", "commercialsamples"},
-            {"encripteddatastorage", "encrypteddatastorage"},
-            {"wreckagecomponents", "salvageablewreckage"},
         };
 
         private static Dictionary<long, Commodity> CommoditiesByEliteID = new Dictionary<long, Commodity>
@@ -126,7 +115,7 @@ namespace EddiDataDefinitions
             {128049234, new Commodity(81, "Battle Weapons", "Weapons", 7259, false) },
             {200000009, new Commodity(82, "Toxic Waste", "Waste", 287, false) },
             {128668550, new Commodity(83, "Painite", "Minerals", 40508, false) },
-            {128066403, new Commodity(84, "Drones", "Limpet", "NonMarketable", 101, false) },
+            {128066403, new Commodity(84, "drones", "Limpet", "NonMarketable", 101, false) },
             {300000001, new Commodity(85, "Eranin Pearl Whiskey", "Legal Drugs", 9040, true) },
             {300000002, new Commodity(86, "Kamorin Historic Weapons", "Weapons", 9766, true) },
             {300000003, new Commodity(87, "Lucan Onion Head", "Legal Drugs", 8472, true) },
@@ -165,16 +154,16 @@ namespace EddiDataDefinitions
             {128672312, new Commodity(121, "Landmines", "Weapons", 4602, false) },
             {128672304, new Commodity(122, "Nerve Agents", "Chemicals", 13526, false) },
             {200000008, new Commodity(123, "Occupied CryoPod", "Salvage", 5132, false) },
-            {128672310, new Commodity(124, "Mu Tom Imager", "Muon Imager", "Technology", 6353, false) },
+            {128672310, new Commodity(124, "mutomimager", "Muon Imager", "Technology", 6353, false) },
             {310000001, new Commodity(125, "Lavian Brandy", "Legal Drugs", 10365, true) },
-            {310000002, new Commodity(126, "Black Box", "Salvage", 6995, false) },
-            {128666755, new Commodity(127, "U S S Cargo Military Plans", "Military Plans", "Salvage", 9413, false) },
-            {128666756, new Commodity(128, "U S S Cargo Ancient Artefact", "Ancient Artefact", "Salvage", 8183, false) },
-            {300000012, new Commodity(129, "U S S Rare Artwork", "Rare Artwork", "Salvage", 7774, false) },
-            {128666758, new Commodity(130, "U S S Cargo Experimental Chemicals", "Experimental Chemicals", "Salvage", 3524, false) },
-            {128666759, new Commodity(131, "U S S Cargo Rebel Transmissions", "Rebel Transmissions", "Salvage", 4068, false) },
-            {128666760, new Commodity(132, "U S S Cargo Prototype Tech", "Prototype Tech", "Salvage", 10696, false) },
-            {128666761, new Commodity(133, "U S S Cargo Technical Blueprints", "Technical Blueprints", "Salvage", 6333, false) },
+            {310000002, new Commodity(126, "usscargoblackbox", "Black Box", "Salvage", 6995, false) },
+            {128666755, new Commodity(127, "usscargomilitaryplans", "Military Plans", "Salvage", 9413, false) },
+            {128666756, new Commodity(128, "usscargoancientartefact", "Ancient Artefact", "Salvage", 8183, false) },
+            {300000012, new Commodity(129, "usscargorareartwork", "Rare Artwork", "Salvage", 7774, false) },
+            {128666758, new Commodity(130, "usscargoexperimentalchemicals", "Experimental Chemicals", "Salvage", 3524, false) },
+            {128666759, new Commodity(131, "usscargorebeltransmissions", "Rebel Transmissions", "Salvage", 4068, false) },
+            {128666760, new Commodity(132, "usscargoprototypetech", "Prototype Tech", "Salvage", 10696, false) },
+            {128666761, new Commodity(133, "usscargotechnicalblueprints", "Technical Blueprints", "Salvage", 6333, false) },
             {300000013, new Commodity(134, "HIP 10175 Bush Meat", "Foods", 9382, true) },
             {300000014, new Commodity(135, "Albino Quechua Mammoth", "Foods", 9687, true) },
             {300000015, new Commodity(136, "Utgaroar Millennial Eggs", "Foods", 9163, true) },
@@ -287,13 +276,13 @@ namespace EddiDataDefinitions
             {300000122, new Commodity(243, "Vidavantian Lace", "Consumer Items", 12615, true) },
             {300000123, new Commodity(244, "Jaques Quinentian Still", "consumer Items", 2108, true) },
             {300000124, new Commodity(245, "Soontill Relics", "Consumer Items", 19885, true) },
-            {128668547, new Commodity(246, "Unknown Artifact", "Unknown Artefact", "Salvage", 290190, false) },
+            {128668547, new Commodity(246, "unknownartifact", "Unknown Artefact", "Salvage", 290190, false) },
             {128668549, new Commodity(247, "Hafnium178", "Hafnium 178", "Metals", 69098, false) },
             {128668552, new Commodity(248, "Military Intelligence", "Salvage", 55527, false) },
             {300000128, new Commodity(249, "The Hutton Mug", "Consumer Items", 7986, true) },
             {300000129, new Commodity(250, "Sothis Crystalline Gold", "metals", 19112, true) },
-            {300000130, new Commodity(251, "Salvageable Wreckage", "Salvage", 394, false) },
-            {300000131, new Commodity(252, "Encrypted Data Storage", "Salvage", 806, false) },
+            {300000130, new Commodity(251, "wreckagecomponents", "Salvageable Wreckage", "Salvage", 394, false) },
+            {300000131, new Commodity(252, "encripteddatastorage", "Encrypted Data Storage", "Salvage", 806, false) },
             {300000132, new Commodity(253, "Personal Effects", "Salvage", 379, false) },
             {300000133, new Commodity(254, "Commercial Samples", "Salvage", 361, false) },
             {300000134, new Commodity(255, "Tactical Data", "Salvage", 457, false) },
@@ -331,7 +320,7 @@ namespace EddiDataDefinitions
             {128673860, new Commodity(287, "H N Shock Mount", "HN Shock Mount", "Machinery", 406, false) },
             {128673861, new Commodity(288, "Emergency Power Cells", "Machinery", 1011, false) },
             {128673862, new Commodity(289, "Power Converter", "Machinery", 246, false) },
-            {128673863, new Commodity(290, "Energy Grid Assembly", "Machinery", 1684, false) },
+            {128673863, new Commodity(290, "powergridassembly", "Energy Grid Assembly", "Machinery", 1684, false) },
             {128673864, new Commodity(291, "Power Transfer Conduits", "Machinery", 857, false) },
             {128673865, new Commodity(292, "Radiation Baffle", "Machinery", 383, false) },
             {128673866, new Commodity(293, "Exhaust Manifold", "Machinery", 479, false) },
@@ -369,6 +358,10 @@ namespace EddiDataDefinitions
             {200000004, new Commodity(10004, "Ancient Casket", "Ancient Artifacts", 0, false) },
             {200000005, new Commodity(10005, "Ancient Relic", "Ancient Artifacts", 0, false) },
             {200000006, new Commodity(10006, "Ancient Totem", "Ancient Artifacts", 0, false) },
+            {200000007, new Commodity(10007, "smallexplorationdatacash", "Small Exploration Data Cache", "Salvage", 0, false) },
+            {200000008, new Commodity(10008, "largeexplorationdatacash", "Large Exploration Data Cache", "Salvage", 0, false) },
+            {200000009, new Commodity(10009, "unknownartifact2", "Unknown Artefact", "Salvage", 0, false) },
+            {200000010, new Commodity(10010, "siriuscommercialcontracts", "Sirius Commerical Contracts", "Powerplay", 0, false) },
         };
 
         private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.name.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
@@ -400,27 +393,29 @@ namespace EddiDataDefinitions
 
             Commodity Commodity = new Commodity();
 
-            string cleanedName = name
+            string cleanedName = name.ToLowerInvariant()
                 .Replace("$", "") // Header for types from mining and mission events
                 .Replace("_name;", "") // Trailer for types from mining and mission events
-                .Replace("_Name;", "") // Trailer for types from mining and mission events
                 ;
 
-            // First try to map from cargo name to the commodity name
-            string cargoName;
-            cargoNamesMapping.TryGetValue(cleanedName.ToLowerInvariant(), out cargoName);
-            if (cargoName == null) { cargoName = cleanedName; }
-
-            // Another mapping
+            // Map from ED name to sensible name
             string edName;
-            nameMapping.TryGetValue(cargoName, out edName);
+            nameMapping.TryGetValue(cleanedName, out edName);
 
             // Now try to fetch the commodity by either ED or real name
             Commodity Template;
-            bool found = CommoditiesByEDName.TryGetValue(cargoName.ToLowerInvariant(), out Template);
+            bool found = CommoditiesByEDName.TryGetValue(edName, out Template);
             if (!found)
             {
-                found = CommoditiesByName.TryGetValue(cargoName.ToLowerInvariant(), out Template);
+                found = CommoditiesByEDName.TryGetValue(cleanedName, out Template);
+            }
+            if (!found)
+            {
+                found = CommoditiesByName.TryGetValue(edName, out Template);
+            }
+            if (!found)
+            {
+                found = CommoditiesByName.TryGetValue(cleanedName, out Template);
             }
             if (found)
             {

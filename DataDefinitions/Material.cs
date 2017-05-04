@@ -184,7 +184,7 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            string tidiedFrom = from.ToLowerInvariant().Replace(" ", "");
+            string tidiedFrom = from.ToLowerInvariant().Replace(" ", "").Replace("cadmiun", "cadmium");
             Material result = MATERIALS.FirstOrDefault(v => v.name.ToLowerInvariant().Replace(" ", "") == tidiedFrom);
             if (result == null)
             {
@@ -201,7 +201,7 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            string tidiedFrom = from.ToLowerInvariant();
+            string tidiedFrom = from.ToLowerInvariant().Replace("cadmiun", "cadmium");
             Material result = MATERIALS.FirstOrDefault(v => v.EDName.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {
