@@ -1,6 +1,9 @@
 #2.3.0-b6
-  * Handle additional conditions for "changes from default" windows when editing templates in the speech responder
-  * Attempt to handle messages coming from unknown ships with the prefix "$ShipName_" 
+  * Core
+    * Attempt to handle messages coming from unknown ships with the prefix "$ShipName_" 
+  * Speech Responder
+    * Handle additional conditions for "changes from default" windows when editing templates in the speech responder
+    * When renaming scripts ensure that they are renamed not copied
 
 #2.3.0-b5
   * Update EDDI personality to latest
