@@ -1,10 +1,14 @@
 #2.3.0-b6
   * Core
     * Attempt to handle messages coming from unknown ships with the prefix "$ShipName_" 
+	* Update internal list of commodities
+  * Material Monitor
+	* Update locking conditions for inventory
   * Speech Responder
     * Handle additional conditions for "changes from default" windows when editing templates in the speech responder
     * When renaming scripts ensure that they are renamed not copied
-	* Update locking conditions for shipyard and inventory
+  * Ship Monitor
+	* Update locking conditions for shipyard
 
 #2.3.0-b5
   * Update EDDI personality to latest

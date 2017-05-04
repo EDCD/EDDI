@@ -198,8 +198,8 @@ namespace EddiShipMonitor
                 if (storedShip != null)
                 {
                     // Set location of stored ship to the current sstem
-                    storedShip.starsystem = EDDI.Instance.CurrentStarSystem.name;
-                    storedShip.station = EDDI.Instance.CurrentStation.name;
+                    storedShip.starsystem = EDDI.Instance?.CurrentStarSystem?.name;
+                    storedShip.station = EDDI.Instance?.CurrentStation?.name;
                 }
             }
             else if (@event.soldshipid != null)
@@ -227,8 +227,8 @@ namespace EddiShipMonitor
                 if (storedShip != null)
                 {
                     // Set location of stored ship to the current sstem
-                    storedShip.starsystem = EDDI.Instance.CurrentStarSystem != null ? EDDI.Instance.CurrentStarSystem.name : null;
-                    storedShip.station = EDDI.Instance.CurrentStation != null ? EDDI.Instance.CurrentStation.name : null;
+                    storedShip.starsystem = EDDI.Instance?.CurrentStarSystem?.name;
+                    storedShip.station = EDDI.Instance?.CurrentStation?.name;
                 }
             }
             else if (@event.soldshipid != null)

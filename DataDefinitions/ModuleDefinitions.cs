@@ -891,7 +891,7 @@ namespace EddiDataDefinitions
                 {999999918, new Module(999999918, "Asp_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049303) },
                 {999999919, new Module(999999919, "Vulture_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049309) },
                 {999999920, new Module(999999920, "Empire_Trader_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049315) },
-                {999999921, new Module(999999921, "Federation_Dropshop_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049321) },
+                {999999921, new Module(999999921, "Federation_Dropship_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049321) },
                 {999999922, new Module(999999922, "Orca_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049327) },
                 {999999923, new Module(999999923, "Type9_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049333) },
                 {999999924, new Module(999999924, "Python_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049339) },
