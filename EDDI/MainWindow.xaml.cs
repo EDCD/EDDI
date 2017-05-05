@@ -29,6 +29,8 @@ namespace Eddi
 
         public MainWindow() : this(false) { }
 
+        private bool runBetaCheck = false;
+
         public MainWindow(bool fromVA = false)
         {
             InitializeComponent();
@@ -250,9 +252,16 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiConfiguration.Beta = eddiBetaProgramme.IsChecked.Value;
             eddiConfiguration.ToFile();
-            // Because we have chaned to wanting beta upgrades we need to re-check upgrade information
-            EDDI.Instance.CheckUpgrade();
-            setStatusInfo();
+            if (runBetaCheck)
+            {
+                // Because we have changed to wanting beta upgrades we need to re-check upgrade information
+                EDDI.Instance.CheckUpgrade();
+                setStatusInfo();
+            }
+            else
+            {
+                runBetaCheck = true;
+            }
         }
 
         private void betaProgrammeDisabled(object sender, RoutedEventArgs e)
@@ -260,9 +269,16 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiConfiguration.Beta = eddiBetaProgramme.IsChecked.Value;
             eddiConfiguration.ToFile();
-            // Because we have chaned to not wanting beta upgrades we need to re-check upgrade information
-            EDDI.Instance.CheckUpgrade();
-            setStatusInfo();
+            if (runBetaCheck)
+            {
+                // Because we have changed to not wanting beta upgrades we need to re-check upgrade information
+                EDDI.Instance.CheckUpgrade();
+                setStatusInfo();
+            }
+            else
+            {
+                runBetaCheck = true;
+            }
         }
 
         // Set the fields relating to status information

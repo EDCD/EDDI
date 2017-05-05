@@ -272,7 +272,7 @@ namespace Eddi
                         // There is a mandatory update available
                         if (!FromVA)
                         {
-                            SpeechService.Instance.Say(null, "Mandatory EDDI upgrade to " + info.version.Replace(".", " point ") + " is required.", false);
+                            SpeechService.Instance.Say(null, "Mandatory Eddi upgrade to " + info.version.Replace(".", " point ") + " is required.", false);
                         }
                         UpgradeRequired = true;
                         UpgradeLocation = info.url;
@@ -284,7 +284,7 @@ namespace Eddi
                         // There is an update available
                         if (!FromVA)
                         {
-                            SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", false);
+                            SpeechService.Instance.Say(null, "Eddi version " + info.version.Replace(".", " point ") + " is now available.", false);
                         }
                         UpgradeAvailable = true;
                         UpgradeLocation = info.url;
@@ -318,8 +318,8 @@ namespace Eddi
                     Motd = info.motd;
                     if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
-                        Logging.Warn("This version of EDDI is too old to operate; please upgrade at " + info.url);
-                        SpeechService.Instance.Say(null, "This version of EDDI is too old to operate; please upgrade.", true);
+                        Logging.Warn("This version of Eddi is too old to operate; please upgrade at " + info.url);
+                        SpeechService.Instance.Say(null, "This version of Eddiis too old to operate; please upgrade.", true);
                         UpgradeRequired = true;
                         UpgradeLocation = info.url;
                         UpgradeVersion = info.version;
