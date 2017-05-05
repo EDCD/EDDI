@@ -405,15 +405,20 @@ namespace EddiDataDefinitions
             nameMapping.TryGetValue(cleanedName, out edName);
 
             // Now try to fetch the commodity by either ED or real name
-            Commodity Template;
-            bool found = CommoditiesByEDName.TryGetValue(edName, out Template);
-            if (!found)
+            Commodity Template = null;
+            bool found = false;
+
+            if (edName != null)
             {
-                found = CommoditiesByEDName.TryGetValue(cleanedName, out Template);
+                found = CommoditiesByEDName.TryGetValue(edName, out Template);
+                if (!found)
+                {
+                    found = CommoditiesByName.TryGetValue(edName, out Template);
+                }
             }
             if (!found)
             {
-                found = CommoditiesByName.TryGetValue(edName, out Template);
+                found = CommoditiesByEDName.TryGetValue(cleanedName, out Template);
             }
             if (!found)
             {
@@ -421,12 +426,12 @@ namespace EddiDataDefinitions
             }
             if (found)
             {
-                Commodity.EDDBID = Template.EDDBID;
-                Commodity.EDName = Template.EDName;
-                Commodity.name = Template.name;
-                Commodity.category = Template.category;
-                Commodity.rare = Template.rare;
-                Commodity.avgprice = Template.avgprice;
+                Commodity.EDDBID = Template?.EDDBID ?? Commodity.EDDBID;
+                Commodity.EDName = Template?.EDName ?? Commodity.EDName;
+                Commodity.name = Template?.name ?? Commodity.name;
+                Commodity.category = Template?.category ?? Commodity.category;
+                Commodity.rare = Template?.rare ?? Commodity.rare;
+                Commodity.avgprice = Template?.avgprice ?? Commodity.avgprice;
             }
             else
             {
@@ -434,7 +439,7 @@ namespace EddiDataDefinitions
 
                 // Put some basic information in place
                 Commodity.EDName = name;
-                Commodity.name = Regex.Replace(cleanedName, "([a-z])([A-Z])", "$1 $2");
+                Commodity.name = Regex.Replace(name.Replace("$", "").Replace("_Name;", ""), "([a-z])([A-Z])", "$1 $2");
             }
             return Commodity;
         }

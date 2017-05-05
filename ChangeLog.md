@@ -1,3 +1,7 @@
+#2.3.0-b7
+  * Core
+    * Better handling of unknown commodities
+
 #2.3.0-b6
   * Core
     * Attempt to handle messages coming from unknown ships with the prefix "$ShipName_" 
