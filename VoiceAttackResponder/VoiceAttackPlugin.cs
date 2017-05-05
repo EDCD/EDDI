@@ -56,20 +56,20 @@ namespace EddiVoiceAttackResponder
                 // Display instance information if available
                 if (EDDI.Instance.UpgradeRequired)
                 {
-                    string msg = "EDDI too old to work; please shut down VoiceAttack and run EDDI standalone to upgrade";
-                    vaProxy.WriteToLog(msg, "red");
+                    string msg = "Please shut down VoiceAttack and run Eddi standalone to upgrade";
+                    vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
                 else if (EDDI.Instance.UpgradeAvailable)
                 {
-                    string msg = "EDDI version " + EDDI.Instance.UpgradeVersion + " is now available; please shut down VoiceAttack and run EDDI standalone to upgrade";
-                    vaProxy.WriteToLog(msg, "orange");
+                    string msg = "Please shut down VoiceAttack and run Eddi standalone to upgrade";
+                    vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
                 if (EDDI.Instance.Motd != null)
                 {
-                    string msg = "Message from EDDI: " + EDDI.Instance.Motd;
-                    vaProxy.WriteToLog(msg, "black");
+                    string msg = "Message from Eddi: " + EDDI.Instance.Motd;
+                    vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
 

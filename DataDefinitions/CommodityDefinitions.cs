@@ -359,11 +359,11 @@ namespace EddiDataDefinitions
             {200000005, new Commodity(10005, "Ancient Relic", "Ancient Artifacts", 0, false) },
             {200000006, new Commodity(10006, "Ancient Totem", "Ancient Artifacts", 0, false) },
             {200000007, new Commodity(10007, "smallexplorationdatacash", "Small Exploration Data Cache", "Salvage", 0, false) },
-            {200000008, new Commodity(10008, "largeexplorationdatacash", "Large Exploration Data Cache", "Salvage", 0, false) },
-            {200000009, new Commodity(10009, "unknownartifact2", "Unknown Artefact", "Salvage", 0, false) },
-            {200000010, new Commodity(10010, "siriuscommercialcontracts", "Sirius Commerical Contracts", "Powerplay", 0, false) },
-            {200000011, new Commodity(10011, "siriusindustrialequipment", "Sirius Inustrial Equipment", "Powerplay", 0, false) },
-            {200000012, new Commodity(10012, "siriusfranchisepackage", "Sirius Franchise Package", "Powerplay", 0, false) },
+            {200000010, new Commodity(10010, "largeexplorationdatacash", "Large Exploration Data Cache", "Salvage", 0, false) },
+            {200000011, new Commodity(10011, "unknownartifact2", "Unknown Artefact (2)", "Salvage", 0, false) },
+            {200000012, new Commodity(10012, "siriuscommercialcontracts", "Sirius Commerical Contracts", "Powerplay", 0, false) },
+            {200000013, new Commodity(10013, "siriusindustrialequipment", "Sirius Inustrial Equipment", "Powerplay", 0, false) },
+            {200000014, new Commodity(10014, "siriusfranchisepackage", "Sirius Franchise Package", "Powerplay", 0, false) },
         };
 
         private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.name.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
