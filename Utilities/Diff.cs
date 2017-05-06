@@ -135,8 +135,8 @@ namespace Utilities
         public static List<DiffItem> DiffTexts(string a, string b)
         {
             List<DiffItem> diffItems = new List<DiffItem>();
-            string[] aLines = a?.Replace("\r", "")?.Trim()?.Split('\n');
-            string[] bLines = b?.Replace("\r", "")?.Trim()?.Split('\n');
+            string[] aLines = a?.Replace("\r", "")?.Split('\n');
+            string[] bLines = b?.Replace("\r", "")?.Split('\n');
 
             // Handle simple cases first
 

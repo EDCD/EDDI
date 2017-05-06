@@ -1,6 +1,8 @@
 #2.3.0-b7
   * Core
     * Better handling of unknown commodities
+  * Speech Responder
+    * Fix crash when showing "Changes from default" window
 
 #2.3.0-b6
   * Core

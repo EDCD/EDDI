@@ -59,5 +59,45 @@ namespace Tests
             Assert.AreEqual("Unmodified", diffItems[2].type);
             Assert.AreEqual("Line 3", diffItems[2].data);
         }
+
+        [TestMethod]
+        public void TestDiff4()
+        {
+            string a = "Line 1\r\nLine 2\r\nLine 3";
+            string b = "Something completely different\r\n\r\n";
+
+            List<DiffItem> diffItems = DiffTexts(a, b);
+
+            Assert.AreEqual(6, diffItems.Count);
+            Assert.AreEqual("Deleted", diffItems[0].type);
+            Assert.AreEqual("Line 1", diffItems[0].data);
+            Assert.AreEqual("Deleted", diffItems[1].type);
+            Assert.AreEqual("Line 2", diffItems[1].data);
+            Assert.AreEqual("Deleted", diffItems[2].type);
+            Assert.AreEqual("Line 3", diffItems[2].data);
+            Assert.AreEqual("Inserted", diffItems[3].type);
+            Assert.AreEqual("Something completely different", diffItems[3].data);
+            Assert.AreEqual("Inserted", diffItems[4].type);
+            Assert.AreEqual("", diffItems[4].data);
+            Assert.AreEqual("Inserted", diffItems[5].type);
+            Assert.AreEqual("", diffItems[5].data);
+        }
+
+        [TestMethod]
+        public void TestDiff5()
+        {
+            string a = "";
+            string b = "Line 1\r\nLine 2\r\nLine 3";
+
+            List<DiffItem> diffItems = DiffTexts(a, b);
+
+            Assert.AreEqual(3, diffItems.Count);
+            Assert.AreEqual("Inserted", diffItems[0].type);
+            Assert.AreEqual("Line 1", diffItems[0].data);
+            Assert.AreEqual("Inserted", diffItems[1].type);
+            Assert.AreEqual("Line 2", diffItems[1].data);
+            Assert.AreEqual("Inserted", diffItems[2].type);
+            Assert.AreEqual("Line 3", diffItems[2].data);
+        }
     }
 }
