@@ -1,3 +1,7 @@
+#2.3.0-b8
+  * EDDN Responder
+    * Avoid use of data from Frontier API when setting starsystem information
+
 #2.3.0-b7
   * Core
     * Better handling of unknown commodities
