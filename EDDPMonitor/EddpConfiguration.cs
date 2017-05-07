@@ -33,13 +33,17 @@ namespace EddiEddpMonitor
             EddpConfiguration configuration = new EddpConfiguration();
             if (File.Exists(filename))
             {
-                try
+                string data = Files.Read(filename);
+                if (data != null)
                 {
-                    configuration = JsonConvert.DeserializeObject<EddpConfiguration>(File.ReadAllText(filename));
-                }
-                catch (Exception ex)
-                {
-                    Logging.Debug("Failed to read EDDP monitor configuration", ex);
+                    try
+                    {
+                        configuration = JsonConvert.DeserializeObject<EddpConfiguration>(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Debug("Failed to read EDDP monitor configuration", ex);
+                    }
                 }
             }
             if (configuration == null)
@@ -78,7 +82,7 @@ namespace EddiEddpMonitor
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(filename, json);
+            Files.Write(filename, json);
         }
     }
 }

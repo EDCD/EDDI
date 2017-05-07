@@ -212,13 +212,23 @@ namespace EddiCompanionAppService
             {
                 // Happens if there is a problem with the API.  Logging in again might clear this...
                 relogin();
-                data = obtainProfile();
-                if (data == null || data == "Profile unavailable")
+                if (CurrentState != State.READY)
                 {
-                    // No luck with a relogin; give up
-                    SpeechService.Instance.Say(null, "Access to companion API data has been lost.  Please update the companion app information to re-establish the connection.", false);
+                    // No luck; give up
+                    SpeechService.Instance.Say(null, "Access to Frontier API has been lost.  Please update your information in Eddi's Frontier API tab to re-establish the connection.", false);
                     Logout();
-                    throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
+                }
+                else
+                {
+                    // Looks like login worked; try again
+                    data = obtainProfile();
+                    if (data == null || data == "Profile unavailable")
+                    {
+                        // No luck with a relogin; give up
+                        SpeechService.Instance.Say(null, "Access to Frontier API has been lost.  Please update your information in Eddi's Frontier API tab to re-establish the connection.", false);
+                        Logout();
+                        throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
+                    }
                 }
             }
 

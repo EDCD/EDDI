@@ -1,6 +1,10 @@
 #2.3.0-b8
+  * Core
+    * Tidy ups for reading from and writing to files to catch potential exceptions
   * EDDN Responder
     * Avoid use of data from Frontier API when setting starsystem information
+  * VoiceAttack Responder
+    * Use defensive copies of arrays to avoid potential exceptions when they are modified whilst we are reading them
 
 #2.3.0-b7
   * Core

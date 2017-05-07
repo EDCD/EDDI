@@ -1255,7 +1255,7 @@ namespace Eddi
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
         public void refreshProfile()
         {
-            if (CompanionAppService.Instance != null && CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+            if (CompanionAppService.Instance?.CurrentState == CompanionAppService.State.READY)
             {
                 try
                 {

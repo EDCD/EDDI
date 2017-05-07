@@ -52,6 +52,7 @@
     <Compile Include="Dates.cs" />
     <Compile Include="Deserializtion.cs" />
     <Compile Include="Diff.cs" />
+    <Compile Include="Files.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Net.cs" />
     <Compile Include="ObservableConcurrentDictionary.cs" />

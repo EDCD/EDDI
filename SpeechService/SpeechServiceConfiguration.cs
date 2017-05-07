@@ -53,14 +53,17 @@ namespace EddiSpeechService
             SpeechServiceConfiguration configuration = new SpeechServiceConfiguration();
             if (File.Exists(filename))
             {
-                try
+                string data = Files.Read(filename);
+                if (data != null)
                 {
-                    string configData = File.ReadAllText(filename);
-                    configuration = JsonConvert.DeserializeObject<SpeechServiceConfiguration>(configData);
-                }
-                catch (Exception ex)
-                {
-                    Logging.Debug("Failed to read speech service configuration", ex);
+                    try
+                    {
+                        configuration = JsonConvert.DeserializeObject<SpeechServiceConfiguration>(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Debug("Failed to read speech service configuration", ex);
+                    }
                 }
             }
             if (configuration == null)
@@ -97,7 +100,7 @@ namespace EddiSpeechService
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(filename, json);
+            Files.Write(filename, json);
         }
     }
 }

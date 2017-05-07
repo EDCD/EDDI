@@ -36,13 +36,17 @@ namespace EddiMaterialMonitor
             MaterialMonitorConfiguration configuration = new MaterialMonitorConfiguration();
             if (File.Exists(filename))
             {
-                try
+                string data = Files.Read(filename);
+                if (data != null)
                 {
-                    configuration = JsonConvert.DeserializeObject<MaterialMonitorConfiguration>(File.ReadAllText(filename));
-                }
-                catch (Exception ex)
-                {
-                    Logging.Debug("Failed to read materials configuration", ex);
+                    try
+                    {
+                        configuration = JsonConvert.DeserializeObject<MaterialMonitorConfiguration>(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Debug("Failed to read materials configuration", ex);
+                    }
                 }
             }
             if (configuration == null)
@@ -84,7 +88,7 @@ namespace EddiMaterialMonitor
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(filename, json);
+            Files.Write(filename, json);
         }
     }
 }

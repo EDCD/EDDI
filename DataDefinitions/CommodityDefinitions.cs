@@ -300,7 +300,7 @@ namespace EddiDataDefinitions
             {300000146, new Commodity(267, "Jadeite", "Minerals", 13474, false) },
             {300000147, new Commodity(268, "Unstable Data Core", "Salvage", 2427, false) },
             {300000148, new Commodity(269, "Onionhead Alpha Strain", "Legal Drugs", 8437, true) },
-            {300000149, new Commodity(270, "Occupied Escape Pod", "Salvage", 4474, false) },
+            {300000149, new Commodity(270, "damagedescapepod", "Occupied Escape Pod", "Salvage", 4474, false) },
             {128049166, new Commodity(271, "Water", "Chemicals", 120, false) },
             {300000150, new Commodity(272, "Onionhead Beta Strain", "Legal Drugs", 8437, true) },
             {128673845, new Commodity(273, "Praseodymium", "Metals", 7156, false) },
@@ -309,7 +309,7 @@ namespace EddiDataDefinitions
             {128673848, new Commodity(276, "Low Temperature Diamond", "Minerals", 57445, false) },
             {128673850, new Commodity(277, "Hydrogen Peroxide", "Chemicals", 917, false) },
             {128673851, new Commodity(278, "Liquid Oxygen", "Chemicals", 263, false) },
-            {128673852, new Commodity(279, "Methanol Monohydrate", "Minerals", 2282, false) },
+            {128673852, new Commodity(279, "methanolmonohydratecrystals", "Methanol Monohydrate", "Minerals", 2282, false) },
             {128673853, new Commodity(280, "Lithium Hydroxide", "Minerals", 5646, false) },
             {128673854, new Commodity(281, "Methane Clathrate", "Minerals", 629, false) },
             {128673855, new Commodity(282, "Insulating Membrane", "Industrial Materials", 7837, false) },
@@ -364,6 +364,7 @@ namespace EddiDataDefinitions
             {200000012, new Commodity(10012, "siriuscommercialcontracts", "Sirius Commerical Contracts", "Powerplay", 0, false) },
             {200000013, new Commodity(10013, "siriusindustrialequipment", "Sirius Inustrial Equipment", "Powerplay", 0, false) },
             {200000014, new Commodity(10014, "siriusfranchisepackage", "Sirius Franchise Package", "Powerplay", 0, false) },
+            {200000015, new Commodity(10015, "republicangarisonsupplies", "Repiblic Garrison Supplies", "Powerplay", 0, false) },
         };
 
         private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.name.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);

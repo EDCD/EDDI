@@ -32,13 +32,17 @@ namespace Eddi
             }
 
             EliteConfiguration configuration = new EliteConfiguration();
-            try
+            string data = Files.Read(filename);
+            if (data != null)
             {
-                configuration = JsonConvert.DeserializeObject<EliteConfiguration>(File.ReadAllText(filename));
-            }
-            catch (Exception ex)
-            {
-                Logging.Debug("Failed to read Elite configuration", ex);
+                try
+                {
+                    configuration = JsonConvert.DeserializeObject<EliteConfiguration>(data);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Debug("Failed to read Elite configuration", ex);
+                }
             }
             if (configuration == null)
             {
@@ -67,7 +71,7 @@ namespace Eddi
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(filename, json);
+            Files.Write(filename, json);
         }
     }
 }

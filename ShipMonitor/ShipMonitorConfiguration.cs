@@ -37,13 +37,17 @@ namespace EddiShipMonitor
             ShipMonitorConfiguration configuration = new ShipMonitorConfiguration();
             if (File.Exists(filename))
             {
-                try
+                string data = Files.Read(filename);
+                if (data != null)
                 {
-                    configuration = JsonConvert.DeserializeObject<ShipMonitorConfiguration>(File.ReadAllText(filename));
-                }
-                catch (Exception ex)
-                {
-                    Logging.Debug("Failed to read ship configuration", ex);
+                    try
+                    {
+                        configuration = JsonConvert.DeserializeObject<ShipMonitorConfiguration>(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Debug("Failed to read ship configuration", ex);
+                    }
                 }
             }
             else
@@ -52,19 +56,23 @@ namespace EddiShipMonitor
                 string oldFilename = Constants.DATA_DIR + @"\ships.json";
                 if (File.Exists(oldFilename))
                 {
-                    try
+                    string oldData = Files.Read(oldFilename);
+                    if (oldData != null)
                     {
-                        Dictionary<string, ObservableCollection<Ship>> oldShipsConfiguration = JsonConvert.DeserializeObject<Dictionary<string, ObservableCollection<Ship>>>(File.ReadAllText(oldFilename));
-                        // At this point the old file is confirmed to have been there - migrate it
-                        // There was a bug that caused null entries to be written to the ships configuration; remove these if present
-                        ObservableCollection<Ship> oldShips = new ObservableCollection<Ship>(oldShipsConfiguration["ships"].Where(x => x.role != null));
-                        configuration.shipyard = oldShips;
-                        File.Delete(oldFilename);
-                        configuration.ToFile();
-                    }
-                    catch
-                    {
-                        // Ther was a problem parsing the old file
+                        try
+                        {
+                            Dictionary<string, ObservableCollection<Ship>> oldShipsConfiguration = JsonConvert.DeserializeObject<Dictionary<string, ObservableCollection<Ship>>>(oldData);
+                            // At this point the old file is confirmed to have been there - migrate it
+                            // There was a bug that caused null entries to be written to the ships configuration; remove these if present
+                            ObservableCollection<Ship> oldShips = new ObservableCollection<Ship>(oldShipsConfiguration["ships"].Where(x => x.role != null));
+                            configuration.shipyard = oldShips;
+                            File.Delete(oldFilename);
+                            configuration.ToFile();
+                        }
+                        catch
+                        {
+                            // Ther was a problem parsing the old file
+                        }
                     }
                 }
             }
@@ -100,7 +108,7 @@ namespace EddiShipMonitor
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(filename, json);
+            Files.Write(filename, json);
         }
     }
 }

@@ -47,13 +47,17 @@ namespace Eddi
             EDDIConfiguration configuration = new EDDIConfiguration();
             if (File.Exists(filename))
             {
-                try
+                string data = Files.Read(filename);
+                if (data != null)
                 {
-                    configuration = JsonConvert.DeserializeObject<EDDIConfiguration>(File.ReadAllText(filename));
-                }
-                catch (Exception ex)
-                {
-                    Logging.Debug("Failed to read EDDI configuration", ex);
+                    try
+                    {
+                        configuration = JsonConvert.DeserializeObject<EDDIConfiguration>(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Debug("Failed to read EDDI configuration", ex);
+                    }
                 }
             }
             if (configuration == null)
@@ -87,7 +91,7 @@ namespace Eddi
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(filename, json);
+            Files.Write(filename, json);
         }
     }
 }

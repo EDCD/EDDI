@@ -291,9 +291,10 @@ namespace EddiMaterialMonitor
 
         public IDictionary<string, object> GetVariables()
         {
-            IDictionary<string, object> variables = new Dictionary<string, object>();
-            variables["materials"] = inventory;
-
+            IDictionary<string, object> variables = new Dictionary<string, object>
+            {
+                ["materials"] = new List<MaterialAmount>(inventory)
+            };
             return variables;
         }
 

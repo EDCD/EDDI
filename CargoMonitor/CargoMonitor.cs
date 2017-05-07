@@ -143,6 +143,7 @@ namespace EddiCargoMonitor
             {
                 // If we fail a mission with cargo it becomes stolen
             }
+            // TODO Powerplay events
         }
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
@@ -174,9 +175,10 @@ namespace EddiCargoMonitor
 
         public IDictionary<string, object> GetVariables()
         {
-            IDictionary<string, object> variables = new Dictionary<string, object>();
-            variables["cargo"] = inventory;
-
+            IDictionary<string, object> variables = new Dictionary<string, object>
+            {
+                ["cargo"] = new List<Cargo>(inventory)
+            };
             return variables;
         }
 

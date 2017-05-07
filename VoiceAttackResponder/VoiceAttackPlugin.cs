@@ -17,6 +17,7 @@ using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using EddiShipMonitor;
+using System.Collections.ObjectModel;
 
 namespace EddiVoiceAttackResponder
 {
@@ -343,7 +344,7 @@ namespace EddiVoiceAttackResponder
                     case "speech":
                         InvokeSpeech(ref vaProxy);
                         break;
-                        case "system comment":
+                    case "system comment":
                         InvokeStarMapSystemComment(ref vaProxy);
                         break;
                     case "configuration":
@@ -831,42 +832,118 @@ namespace EddiVoiceAttackResponder
         private static void setValues(ref dynamic vaProxy)
         {
             Logging.Debug("Setting values");
-            setCommanderValues(EDDI.Instance.Cmdr, ref vaProxy);
-            setShipValues(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), "Ship", ref vaProxy);
-            int currentStoredShip = 1;
-            if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).shipyard != null)
+            try
             {
-                foreach (Ship StoredShip in ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).shipyard)
-                {
-                    setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref vaProxy);
-                    currentStoredShip++;
-                }
-                vaProxy.SetInt("Stored ship entries", ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).shipyard.Count);
+                setCommanderValues(EDDI.Instance.Cmdr, ref vaProxy);
             }
-            setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref vaProxy);
-            setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
-            setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref vaProxy);
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set commander values", ex);
+            }
 
-            setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
+            try
+            {
+                setShipValues(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), "Ship", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set current ship values", ex);
+            }
+
+            try
+            {
+                List<Ship> shipyard = new List<Ship>(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.shipyard);
+                if (shipyard != null)
+                {
+                    int currentStoredShip = 1;
+                    foreach (Ship StoredShip in shipyard)
+                    {
+                        setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref vaProxy);
+                        currentStoredShip++;
+                    }
+                    vaProxy.SetInt("Stored ship entries", ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).shipyard.Count);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set shipyard", ex);
+            }
+
+            try
+            {
+                setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set current system", ex);
+            }
+
+            try
+            {
+                setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set last system", ex);
+            }
+
+            try
+            {
+                setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set home system", ex);
+            }
+
+            try
+            {
+                setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set state", ex);
+            }
 
             // Backwards-compatibility with 1.x
-            if (EDDI.Instance.HomeStarSystem != null)
+            try
             {
-                vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem.name);
-                vaProxy.SetText("Home system (spoken)", Translations.StarSystem(EDDI.Instance.HomeStarSystem.name));
+                if (EDDI.Instance.HomeStarSystem != null)
+                {
+                    vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem.name);
+                    vaProxy.SetText("Home system (spoken)", Translations.StarSystem(EDDI.Instance.HomeStarSystem.name));
+                }
+                if (EDDI.Instance.HomeStation != null)
+                {
+                    vaProxy.SetText("Home station", EDDI.Instance.HomeStation.name);
+                }
             }
-            if (EDDI.Instance.HomeStation != null)
+            catch (Exception ex)
             {
-                vaProxy.SetText("Home station", EDDI.Instance.HomeStation.name);
+                Logging.Error("Failed to set 1.x values", ex);
             }
 
-            setStationValues(EDDI.Instance.CurrentStation, "Last station", ref vaProxy);
+            try
+            {
+                setStationValues(EDDI.Instance.CurrentStation, "Last station", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set last station", ex);
+            }
 
-            vaProxy.SetText("Environment", EDDI.Instance.Environment);
+            try
+            {
+                vaProxy.SetText("Environment", EDDI.Instance.Environment);
 
-            vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle);
+                vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle);
 
-            vaProxy.SetText("EDDI version", Constants.EDDI_VERSION);
+                vaProxy.SetText("EDDI version", Constants.EDDI_VERSION);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set misc values", ex);
+            }
 
             Logging.Debug("Set values");
         }
@@ -1007,6 +1084,10 @@ namespace EddiVoiceAttackResponder
 
         private static void setShipValues(Ship ship, string prefix, ref dynamic vaProxy)
         {
+            if (ship == null)
+            {
+                return;
+            }
             Logging.Debug("Setting ship information (" + prefix + ")");
             try
             {
@@ -1156,6 +1237,10 @@ namespace EddiVoiceAttackResponder
 
         private static void setStarSystemValues(StarSystem system, string prefix, ref dynamic vaProxy)
         {
+            if (system == null)
+            {
+                return;
+            }
             Logging.Debug("Setting system information (" + prefix + ")");
             try
             {

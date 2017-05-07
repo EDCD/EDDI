@@ -313,7 +313,7 @@ namespace EddiSpeechService
             }
             catch (Exception ex)
             {
-                Logging.Warn("Speech failed", ex);
+                Logging.Warn("Speech failed (" + Encoding.Default.EncodingName + ")", ex);
             }
             return null;
         }

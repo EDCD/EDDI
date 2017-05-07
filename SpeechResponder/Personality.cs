@@ -109,13 +109,17 @@ namespace EddiSpeechResponder
             }
 
             Personality personality = null;
-            try
+            string data = Files.Read(filename);
+            if (data != null)
             {
-                personality = JsonConvert.DeserializeObject<Personality>(File.ReadAllText(filename));
-            }
-            catch (Exception e)
-            {
-                Logging.Warn("Failed to access personality at " + filename + ": " + e.Message);
+                try
+                {
+                    personality = JsonConvert.DeserializeObject<Personality>(data);
+                }
+                catch (Exception e)
+                {
+                    Logging.Warn("Failed to access personality at " + filename + ": " + e.Message);
+                }
             }
 
             if (personality != null)
@@ -146,7 +150,7 @@ namespace EddiSpeechResponder
             if (filename != DEFAULT_PATH)
             {
                 string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-                File.WriteAllText(filename, json);
+                Files.Write(filename, json);
             }
         }
 

@@ -36,13 +36,17 @@ namespace EddiSpeechResponder
             SpeechResponderConfiguration configuration = new SpeechResponderConfiguration();
             if (File.Exists(filename))
             {
-                try
+                string data = Files.Read(filename);
+                if (data != null)
                 {
-                    configuration = JsonConvert.DeserializeObject<SpeechResponderConfiguration>(File.ReadAllText(filename));
-                }
-                catch (Exception ex)
-                {
-                    Logging.Debug("Failed to read speech responder configuration", ex);
+                    try
+                    {
+                        configuration = JsonConvert.DeserializeObject<SpeechResponderConfiguration>(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Debug("Failed to read speech responder configuration", ex);
+                    }
                 }
             }
             if (configuration == null)
@@ -77,7 +81,7 @@ namespace EddiSpeechResponder
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(filename, json);
+            Files.Write(filename, json);
         }
     }
 }

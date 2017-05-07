@@ -549,7 +549,7 @@ namespace EddiShipMonitor
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
                 ["ship"] = GetCurrentShip(),
-                ["shipyard"] = shipyard
+                ["shipyard"] = new List<Ship>(shipyard)
             };
             return variables;
         }
