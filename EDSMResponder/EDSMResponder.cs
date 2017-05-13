@@ -81,6 +81,12 @@ namespace EddiEdsmResponder
                 return;
             }
 
+            if (EDDI.Instance.inCrew)
+            {
+                // We don't do anything whilst in multicrew
+                return;
+            }
+
             if (EDDI.Instance.inBeta)
             {
                 // We don't send data whilst in beta

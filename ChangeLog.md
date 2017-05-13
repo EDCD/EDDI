@@ -1,6 +1,7 @@
 #2.3.0-b8
   * Core
     * Tidy ups for reading from and writing to files to catch potential exceptions
+    * Do not send data to EDSM or EDDN if in a multicrew session
   * EDDN Responder
     * Avoid use of data from Frontier API when setting starsystem information
   * VoiceAttack Responder

@@ -53,6 +53,12 @@ namespace EDDNResponder
                 return;
             }
 
+            if (EDDI.Instance.inCrew)
+            {
+                // We don't do anything whilst in multicrew
+                return;
+            }
+
             Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
 
             if (theEvent is LocationEvent)
