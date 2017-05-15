@@ -1100,12 +1100,14 @@ namespace Eddi
         private bool eventCrewJoined(CrewJoinedEvent theEvent)
         {
             inCrew = true;
+            Logging.Info("Entering multicrew session");
             return true;
         }
 
         private bool eventCrewLeft(CrewLeftEvent theEvent)
         {
             inCrew = false;
+            Logging.Info("Leaving multicrew session");
             return true;
         }
 
