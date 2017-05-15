@@ -45,6 +45,8 @@ namespace Eddi
 
         public bool inCQC { get; private set; } = false;
 
+        public bool inCrew { get; private set; } = false;
+
         public bool inBeta { get; private set; } = false;
 
         static EDDI()
@@ -700,6 +702,14 @@ namespace Eddi
                     {
                         passEvent = eventCombatPromotion((CombatPromotionEvent)journalEvent);
                     }
+                    else if (journalEvent is CrewJoinedEvent)
+                    {
+                        passEvent = eventCrewJoined((CrewJoinedEvent)journalEvent);
+                    }
+                    else if (journalEvent is CrewLeftEvent)
+                    {
+                        passEvent = eventCrewLeft((CrewLeftEvent)journalEvent);
+                    }
                     else if (journalEvent is EnteredCQCEvent)
                     {
                         passEvent = eventEnteredCQC((EnteredCQCEvent)journalEvent);
@@ -1084,6 +1094,20 @@ namespace Eddi
         {
             Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
             updateCurrentSystem(theEvent.system);
+            return true;
+        }
+
+        private bool eventCrewJoined(CrewJoinedEvent theEvent)
+        {
+            inCrew = true;
+            Logging.Info("Entering multicrew session");
+            return true;
+        }
+
+        private bool eventCrewLeft(CrewLeftEvent theEvent)
+        {
+            inCrew = false;
+            Logging.Info("Leaving multicrew session");
             return true;
         }
 
