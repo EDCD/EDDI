@@ -99,6 +99,7 @@ namespace EddiSpeechService
             { "Laksak", new string[] { "ˈlæks.æk" } },
             { "Leesti", new string[] { "ˈliːstiː" } },
             { "Leucos", new string[] { "ˈluːkɒs" } },
+            { "Luyten's Star", new string[] { "ˈlaʊ.təns", "stɑː" } },
             { "Maia", new string[] { "ˈmaɪ.ə" } },
             { "Mata", new string[] { "ˈmɑː.tʌ" } },
             { "Merope", new string[] { "ˈmɛrəpiː" } },
