@@ -574,6 +574,8 @@ namespace EddiJournalMonitor
 
                                     string reserves = getString(data, "ReserveLevel");
 
+                                    decimal? axialTilt = getOptionalDecimal(data, "AxialTilt");
+
                                     // TODO atmosphere composition
 
                                     data.TryGetValue("Materials", out val);
@@ -610,7 +612,7 @@ namespace EddiJournalMonitor
                                     string atmosphere = getString(data, "Atmosphere");
                                     Volcanism volcanism = Volcanism.FromName(getString(data, "Volcanism"));
 
-                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radius, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState) { raw = line });
+                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radius, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState, axialTilt) { raw = line });
                                     handled = true;
                                 }
                             }
@@ -1805,6 +1807,7 @@ namespace EddiJournalMonitor
                                     foreach (Dictionary<string, object> materialJson in materialsJson)
                                     {
                                         Material material = Material.FromEDName(getString(materialJson, "Name"));
+                                        material.category = "Element";
                                         materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                     }
                                 }
@@ -1816,6 +1819,7 @@ namespace EddiJournalMonitor
                                     foreach (Dictionary<string, object> materialJson in materialsJson)
                                     {
                                         Material material = Material.FromEDName(getString(materialJson, "Name"));
+                                        material.category = "Manufactured";
                                         materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                     }
                                 }
@@ -1827,6 +1831,7 @@ namespace EddiJournalMonitor
                                     foreach (Dictionary<string, object> materialJson in materialsJson)
                                     {
                                         Material material = Material.FromEDName(getString(materialJson, "Name"));
+                                        material.category = "Data";
                                         materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                     }
                                 }
