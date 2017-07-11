@@ -33,14 +33,17 @@ namespace EddiCompanionAppService
             }
 
             CompanionAppCredentials credentials =null;
+            string data = Files.Read(filename);
+            if (data != null)
+            {
             try
             {
-                string credentialsData = File.ReadAllText(filename);
-                credentials = JsonConvert.DeserializeObject<CompanionAppCredentials>(credentialsData);
+                credentials = JsonConvert.DeserializeObject<CompanionAppCredentials>(data);
             }
             catch (Exception ex)
             {
                 Logging.Debug("Failed to read companion app credentials", ex);
+            }
             }
             if (credentials == null)
             {
@@ -78,7 +81,7 @@ namespace EddiCompanionAppService
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(filename, json);
+            Files.Write(filename, json);
         }
     }
 }

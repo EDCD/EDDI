@@ -1,5 +1,7 @@
-﻿using EddiEvents;
+﻿using Eddi;
+using EddiEvents;
 using EddiJournalMonitor;
+using EddiShipMonitor;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -14,6 +16,7 @@ namespace EddiSpeechResponder
     {
         private Dictionary<string, Script> scripts;
         private Script script;
+        private string originalName;
 
         private string scriptName;
         public string ScriptName
@@ -52,6 +55,7 @@ namespace EddiSpeechResponder
             DataContext = this;
 
             this.scripts = scripts;
+            this.originalName = name;
 
             scripts.TryGetValue(name, out script);
             if (script == null)
@@ -85,10 +89,17 @@ namespace EddiSpeechResponder
 
         private void acceptButtonClick(object sender, RoutedEventArgs e)
         {
-            // Might be updating an existing script so remove it from the list
-            scripts.Remove(script.Name);
+            // Fetch the default script and mark this as default if it matches
+            script = new Script(scriptName, scriptDescription, script == null ? false : script.Responder, scriptValue, script.Priority, false);
+            Script defaultScript = null;
+            if (Personality.Default().Scripts?.TryGetValue(script.Name, out defaultScript) ?? false)
+            {
+                script = Personality.UpgradeScript(script, defaultScript);
+            }
 
-            script = new Script(scriptName, scriptDescription, script == null ? false : script.Responder, scriptValue);
+            // Might be updating an existing script so remove it from the list before adding
+            scripts.Remove(originalName);
+
             scripts.Add(script.Name, script);
 
             DialogResult = true;
@@ -134,41 +145,46 @@ namespace EddiSpeechResponder
             responder.Start();
 
             // See if we have a sample
-            Event sampleEvent;
+            List<Event> sampleEvents;
             object sample = Events.SampleByName(script.Name);
             if (sample == null)
             {
-                sampleEvent = null;
+                sampleEvents = new List<Event>();
             }
             else if (sample is string)
             {
                 // It's a string so a journal entry.  Parse it
-                sampleEvent = JournalMonitor.ParseJournalEntry((string)sample);
+                sampleEvents = JournalMonitor.ParseJournalEntry((string)sample);
             }
             else if (sample is Event)
             {
                 // It's a direct event
-                sampleEvent = (Event)sample;
+                sampleEvents = new List<Event>(){ (Event)sample };
             }
             else
             {
                 Logging.Warn("Unknown sample type " + sample.GetType());
-                sampleEvent = null;
+                sampleEvents = new List<Event>();
             }
 
             ScriptResolver scriptResolver = new ScriptResolver(newScripts);
-            responder.Say(scriptResolver, ScriptName, sampleEvent, 3, null, false);
+            if (sampleEvents.Count == 0)
+            {
+                sampleEvents.Add(null);
+            }
+            foreach (Event sampleEvent in sampleEvents)
+            {
+                responder.Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), ScriptName, sampleEvent, 3, null, false);
+            }
         }
 
         private void showDefaultButtonClick(object sender, RoutedEventArgs e)
         {
             Personality defaultPersonality = Personality.Default();
-            Script defaultScript;
-            defaultPersonality.Scripts.TryGetValue(scriptName, out defaultScript);
-
-            if (defaultScript != null)
+            if (defaultPersonality.Scripts.TryGetValue(scriptName, out Script defaultScript))
             {
-                new ShowScriptWindow(defaultScript.Value).Show();
+                new ShowDiffWindow(defaultScript.Value, ScriptValue).Show();
+                //new ShowScriptWindow(defaultScript.Value).Show();
             }
         }
     }

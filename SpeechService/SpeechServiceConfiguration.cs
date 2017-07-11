@@ -32,6 +32,9 @@ namespace EddiSpeechService
         [JsonProperty("disablessml")]
         public bool DisableSsml { get; set; } = false;
 
+        [JsonProperty("enableicao")]
+        public bool EnableIcao { get; set; } = false;
+
         [JsonIgnore]
         private string dataPath;
 
@@ -48,14 +51,20 @@ namespace EddiSpeechService
             }
 
             SpeechServiceConfiguration configuration = new SpeechServiceConfiguration();
-            try
+            if (File.Exists(filename))
             {
-                string configData = File.ReadAllText(filename);
-                configuration = JsonConvert.DeserializeObject<SpeechServiceConfiguration>(configData);
-            }
-            catch (Exception ex)
-            {
-                Logging.Debug("Failed to read speech service configuration", ex);
+                string data = Files.Read(filename);
+                if (data != null)
+                {
+                    try
+                    {
+                        configuration = JsonConvert.DeserializeObject<SpeechServiceConfiguration>(data);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Debug("Failed to read speech service configuration", ex);
+                    }
+                }
             }
             if (configuration == null)
             {
@@ -76,6 +85,7 @@ namespace EddiSpeechService
             EffectsLevel = 50;
             DistortOnDamage = true;
             DisableSsml = false;
+            EnableIcao = false;
         }
 
         public void ToFile(string filename = null)
@@ -90,7 +100,7 @@ namespace EddiSpeechService
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(filename, json);
+            Files.Write(filename, json);
         }
     }
 }

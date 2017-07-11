@@ -20,7 +20,7 @@ namespace EddiSpeechResponder
             try
             {
                 DirectoryInfo dir = new DirectoryInfo(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                markdown = File.ReadAllText(dir.FullName + @"\Help.md");
+                markdown = Files.Read(dir.FullName + @"\Help.md");
             }
             catch (Exception ex)
             {

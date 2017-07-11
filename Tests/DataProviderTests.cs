@@ -19,13 +19,14 @@ namespace Tests
         [TestMethod]
         public void TestDataProviderBodies()
         {
+            // Force obtain the data from remote source
             StarSystem starSystem = DataProviderService.GetSystemData("Sol", null, null, null);
             Assert.IsNotNull(starSystem);
 
             Assert.IsNotNull(starSystem.bodies);
             Assert.IsFalse(starSystem.bodies.Count == 0);
 
-            Body sol = starSystem.bodies[0];
+            Body sol = starSystem.bodies.Find(b => b.type == "Star");
             Assert.AreEqual(4792, sol.age);
             Assert.IsNull(sol.atmosphere);
             Assert.AreEqual(0, sol.distance);
@@ -92,7 +93,7 @@ namespace Tests
             Assert.IsFalse((bool)mercury.tidallylocked);
             Assert.AreEqual(2.11M, mercury.tilt);
             Assert.AreEqual("Planet", mercury.type);
-            Assert.AreEqual("No volcanism", mercury.volcanism);
+            Assert.IsNull(mercury.volcanism);
         }
 
         [TestMethod]

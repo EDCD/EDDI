@@ -7,7 +7,10 @@ using Cottle.Values;
 using Eddi;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiShipMonitor;
 using EddiSpeechService;
+using GalnetMonitor;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,6 +129,9 @@ namespace EddiSpeechResponder
         {
             BuiltinStore store = new BuiltinStore();
 
+            // TODO fetch this from configuration
+            bool useICAO = SpeechServiceConfiguration.FromFile().EnableIcao;
+
             // Function to call another script
             store["F"] = new NativeFunction((values) =>
             {
@@ -139,15 +145,19 @@ namespace EddiSpeechResponder
                 string translation = val;
                 if (translation == val)
                 {
+                    translation = Translations.Body(val, useICAO);
+                }
+                if (translation == val)
+                {
+                    translation = Translations.StarSystem(val, useICAO);
+                }
+                if (translation == val)
+                {
                     translation = Translations.Faction(val);
                 }
                 if (translation == val)
                 {
                     translation = Translations.Power(val);
-                }
-                if (translation == val)
-                {
-                    translation = Translations.StarSystem(val);
                 }
                 if (translation == val)
                 {
@@ -197,7 +207,12 @@ namespace EddiSpeechResponder
 
             store["Pause"] = new NativeFunction((values) =>
             {
-                return @"<break time =""" + values[0].AsNumber + @"ms"" />";
+                return @"<break time=""" + values[0].AsNumber + @"ms"" />";
+            }, 1);
+
+            store["Play"] = new NativeFunction((values) =>
+            {
+                return @"<audio src=""" + values[0].AsString + @""" />";
             }, 1);
 
             //
@@ -224,7 +239,7 @@ namespace EddiSpeechResponder
                     {
                         // Obtain the first three characters
                         string chars = new Regex("[^a-zA-Z0-9]").Replace(EDDI.Instance.Cmdr.name, "").ToUpperInvariant().Substring(0, 3);
-                        result = ship.SpokenManufacturer() + " " + Translations.CallSign(chars);
+                        result = ship.SpokenManufacturer() + " " + Translations.ICAO(chars);
                     }
                     else
                     {
@@ -259,6 +274,24 @@ namespace EddiSpeechResponder
                 long now = (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
 
                 return now - date;
+            }, 1);
+
+            store["ICAO"] = new NativeFunction((values) =>
+            {
+                // Turn a string in to an ICAO definition
+                string value = values[0].AsString;
+                if (value == null || value == "")
+                {
+                    return "";
+                }
+
+                // Remove anything that isn't alphanumeric
+                Logging.Warn("value is " + value);
+                value = value.ToUpperInvariant().Replace("[^A-Z0-9]", "");
+                Logging.Warn("value is " + value);
+
+                // Translate to ICAO
+                return Translations.ICAO(value);
             }, 1);
 
             store["ShipDetails"] = new NativeFunction((values) =>
@@ -327,7 +360,7 @@ namespace EddiSpeechResponder
             store["BodyDetails"] = new NativeFunction((values) =>
             {
                 StarSystem system;
-                if (values.Count == 1)
+                if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
                 {
                     // Current system
                     system = EDDI.Instance.CurrentStarSystem;
@@ -419,6 +452,11 @@ namespace EddiSpeechResponder
 
             store["MaterialDetails"] = new NativeFunction((values) =>
             {
+                if (string.IsNullOrEmpty(values[0].AsString))
+                {
+                    return new ReflectionValue(new object());
+                }
+
                 Material result = Material.FromName(values[0].AsString);
                 if (result == null)
                 {
@@ -427,12 +465,71 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
+            store["BlueprintDetails"] = new NativeFunction((values) =>
+            {
+                BlueprintMaterials result = BlueprintMaterials.FromName(values[0].AsString);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1);
+
+            store["GalnetNewsArticle"] = new NativeFunction((values) =>
+            {
+                News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1);
+
+            store["GalnetNewsArticles"] = new NativeFunction((values) =>
+            {
+                List<News> results = null;
+                if (values.Count == 0)
+                {
+                    // Obtain all unread articles
+                    results = GalnetSqLiteRepository.Instance.GetArticles();
+                }
+                else if (values.Count == 1)
+                {
+                    // Obtain all unread news of a given category
+                    results = GalnetSqLiteRepository.Instance.GetArticles(values[0].AsString);
+                }
+                else if (values.Count == 2)
+                {
+                    // Obtain all news of a given category
+                    results = GalnetSqLiteRepository.Instance.GetArticles(values[0].AsString, false);
+                }
+                return (results == null ? new ReflectionValue(new List<News>()) : new ReflectionValue(results));
+            }, 0, 2);
+
+            store["GalnetNewsMarkRead"] = new NativeFunction((values) =>
+            {
+                News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
+                if (result != null)
+                {
+                    GalnetSqLiteRepository.Instance.MarkRead(result);
+                }
+                return "";
+            }, 1);
+
+            store["GalnetNewsMarkUnread"] = new NativeFunction((values) =>
+            {
+                News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
+                if (result != null)
+                {
+                    GalnetSqLiteRepository.Instance.MarkUnread(result);
+                }
+                return "";
+            }, 1);
+
             store["Distance"] = new NativeFunction((values) =>
             {
                 return (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(values[0].AsNumber - values[3].AsNumber), 2)
                                                                       + Math.Pow((double)(values[1].AsNumber - values[4].AsNumber), 2)
                                                                       + Math.Pow((double)(values[2].AsNumber - values[5].AsNumber), 2)), 2);
             }, 6);
+
+            store["Log"] = new NativeFunction((values) =>
+            {
+                Logging.Info(values[0].AsString);
+                return "";
+            }, 1);
 
             store["SetState"] = new NativeFunction((values) =>
             {
@@ -466,7 +563,7 @@ namespace EddiSpeechResponder
             return store;
         }
 
-        private static Dictionary<Cottle.Value, Cottle.Value> buildState()
+        public static Dictionary<Cottle.Value, Cottle.Value> buildState()
         {
             if (EDDI.Instance.State == null)
             {
@@ -508,19 +605,12 @@ namespace EddiSpeechResponder
             if (localId == null)
             {
                 // No local ID so take the current ship
-                ship = EDDI.Instance.Ship;
+                ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
             }
             else
             {
                 // Find the ship with the given local ID
-                if (EDDI.Instance.Ship != null && EDDI.Instance.Ship.LocalId == localId)
-                {
-                    ship = EDDI.Instance.Ship;
-                }
-                else
-                {
-                    ship = EDDI.Instance.Shipyard.FirstOrDefault(v => v.LocalId == localId);
-                }
+                ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetShip(localId);
             }
 
             if (ship == null)
@@ -542,7 +632,7 @@ namespace EddiSpeechResponder
                 system.distancefromhome = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(system.x - EDDI.Instance.HomeStarSystem.x), 2)
                                                                       + Math.Pow((double)(system.y - EDDI.Instance.HomeStarSystem.y), 2)
                                                                       + Math.Pow((double)(system.z - EDDI.Instance.HomeStarSystem.z), 2)), 2);
-                Logging.Info("Distance from home is " + system.distancefromhome);
+                Logging.Debug("Distance from home is " + system.distancefromhome);
             }
         }
     }

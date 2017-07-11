@@ -22,6 +22,7 @@ namespace EddiDataDefinitions
         public static readonly string Piracy = "Piracy";
         public static readonly string Smuggling = "Smuggling";
         public static readonly string Trading = "Trading";
+        public static readonly string Taxi = "Taxi";
 
         static Role()
         {
@@ -32,6 +33,7 @@ namespace EddiDataDefinitions
             ROLES.Add(MultiPurpose);
             ROLES.Add(Piracy);
             ROLES.Add(Smuggling);
+            ROLES.Add(Taxi);
             ROLES.Add(Trading);
         }
     }

@@ -33,7 +33,7 @@ namespace EddiSpeechResponder
             try
             {
                 DirectoryInfo dir = new DirectoryInfo(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                markdown = File.ReadAllText(dir.FullName + @"\Variables.md");
+                markdown = Files.Read(dir.FullName + @"\Variables.md");
             }
             catch (Exception ex)
             {

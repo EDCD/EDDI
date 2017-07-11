@@ -27,7 +27,7 @@
         </UniformGrid>
         <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding Personality.Scripts}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Path=Value.Name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Name" Binding="{Binding Path=Value.Name}" SortDirection="Ascending" />
                 <DataGridTemplateColumn Header="Enabled">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -35,7 +35,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Path=Value.Description}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Description" Width="*" Binding="{Binding Path=Value.Description}" />
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

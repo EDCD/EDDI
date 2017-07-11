@@ -16,6 +16,8 @@ using EddiSpeechResponder;
 using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using EddiShipMonitor;
+using System.Collections.ObjectModel;
 
 namespace EddiVoiceAttackResponder
 {
@@ -55,21 +57,21 @@ namespace EddiVoiceAttackResponder
                 // Display instance information if available
                 if (EDDI.Instance.UpgradeRequired)
                 {
-                    string msg = "EDDI too old to work; please shut down VoiceAttack and run EDDI standalone to upgrade";
-                    vaProxy.WriteToLog(msg, "red");
-                    SpeechService.Instance.Say(EDDI.Instance.Ship, msg, false);
+                    string msg = "Please shut down VoiceAttack and run Eddi standalone to upgrade";
+                    vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
                 else if (EDDI.Instance.UpgradeAvailable)
                 {
-                    string msg = "EDDI version " + EDDI.Instance.UpgradeVersion + " is now available; please shut down VoiceAttack and run EDDI standalone to upgrade";
-                    vaProxy.WriteToLog(msg, "orange");
-                    SpeechService.Instance.Say(EDDI.Instance.Ship, msg, false);
+                    string msg = "Please shut down VoiceAttack and run Eddi standalone to upgrade";
+                    vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
                 if (EDDI.Instance.Motd != null)
                 {
-                    string msg = "Message from EDDI: " + EDDI.Instance.Motd;
-                    vaProxy.WriteToLog(msg, "black");
-                    SpeechService.Instance.Say(EDDI.Instance.Ship, msg, false);
+                    string msg = "Message from Eddi: " + EDDI.Instance.Motd;
+                    vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
+                    SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
 
                 // Set the initial values from the main EDDI objects
@@ -149,10 +151,10 @@ namespace EddiVoiceAttackResponder
 
                             // Fire local command if present
                             string commandName = "((EDDI " + theEvent.type.ToLowerInvariant() + "))";
-                            Logging.Info("Searching for command " + commandName);
+                            Logging.Debug("Searching for command " + commandName);
                             if (vaProxy.CommandExists(commandName))
                             {
-                                Logging.Info("Found command " + commandName);
+                                Logging.Debug("Found command " + commandName);
                                 vaProxy.ExecuteCommand(commandName);
                                 Logging.Info("Executed command " + commandName);
                             }
@@ -166,8 +168,10 @@ namespace EddiVoiceAttackResponder
                             Logging.Warn("Failed to handle event", ex);
                         }
                     }
-                });
-                updaterThread.IsBackground = true;
+                })
+                {
+                    IsBackground = true
+                };
                 updaterThread.Start();
 
                 setStatus(ref vaProxy, "Operational");
@@ -243,7 +247,7 @@ namespace EddiVoiceAttackResponder
                     int i = 0;
                     foreach (JToken arrayChild in child.Value.Children())
                     {
-                        Logging.Warn("Handling element " + i);
+                        Logging.Debug("Handling element " + i);
                         string childName = name + " " + i;
                         if (arrayChild.Type == JTokenType.Boolean)
                         {
@@ -289,8 +293,16 @@ namespace EddiVoiceAttackResponder
                 }
                 else if (child.Value.Type == JTokenType.Object)
                 {
-                    Logging.Warn("Found object");
+                    Logging.Debug("Found object");
                     setJsonValues(ref vaProxy, prefix + " " + child.Name, child.Value, new List<string>());
+                }
+                else if (child.Value.Type == JTokenType.Null)
+                {
+                    // Because the type is NULL we don't know which VA item it was; empty all of them
+                    vaProxy.SetBoolean(prefix + " " + child.Name, null);
+                    vaProxy.SetText(prefix + " " + child.Name, null);
+                    vaProxy.SetDecimal(prefix + " " + child.Name, null);
+                    vaProxy.SetDate(prefix + " " + child.Name, null);
                 }
                 else
                 {
@@ -299,7 +311,7 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-    public static void VA_Exit1(dynamic vaProxy)
+        public static void VA_Exit1(dynamic vaProxy)
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
             updaterThread.Abort();
@@ -309,6 +321,7 @@ namespace EddiVoiceAttackResponder
 
         public static void VA_Invoke1(dynamic vaProxy)
         {
+            Logging.Debug("Invoked with context " + (string)vaProxy.Context);
             try
             {
                 switch ((string)vaProxy.Context)
@@ -429,7 +442,7 @@ namespace EddiVoiceAttackResponder
                     Logging.Debug("No information on current station");
                     return;
                 }
-                Station thisStation = EDDI.Instance.CurrentStarSystem.stations.SingleOrDefault(s => s.name == (EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.name));
+                Station thisStation = EDDI.Instance.CurrentStarSystem.stations.SingleOrDefault(s => s.name == (EDDI.Instance.CurrentStation?.name));
                 if (thisStation == null)
                 {
                     // Missing current star system information
@@ -456,13 +469,13 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Entered");
             try
             {
-                if (EDDI.Instance.Ship == null)
+                if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip() == null)
                 {
                     Logging.Debug("No information on ship");
                     return;
                 }
 
-                string shipUri = Coriolis.ShipUri(EDDI.Instance.Ship);
+                string shipUri = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip().CoriolisUri();
 
                 Logging.Debug("Starting process with uri " + shipUri);
 
@@ -492,8 +505,10 @@ namespace EddiVoiceAttackResponder
             }
             else
             {
-                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), "\"" + uri + "\"");
-                proc.UseShellExecute = false;
+                ProcessStartInfo proc = new ProcessStartInfo(Net.GetDefaultBrowserPath(), "\"" + uri + "\"")
+                {
+                    UseShellExecute = false
+                };
                 Process.Start(proc);
             }
         }
@@ -501,12 +516,12 @@ namespace EddiVoiceAttackResponder
         /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
         private static void setShipModuleValues(Module module, string name, ref dynamic vaProxy)
         {
-            vaProxy.SetText(name, module == null ? null : module.name);
-            vaProxy.SetInt(name + " class", module == null ? (int?)null : module.@class);
-            vaProxy.SetText(name + " grade", module == null ? null : module.grade);
-            vaProxy.SetDecimal(name + " health", module == null ? (decimal?)null : module.health);
-            vaProxy.SetDecimal(name + " cost", module == null ? (decimal?)null : (decimal)module.price);
-            vaProxy.SetDecimal(name + " value", module == null ? (decimal?)null : (decimal)module.value);
+            vaProxy.SetText(name, module?.name);
+            vaProxy.SetInt(name + " class", module?.@class);
+            vaProxy.SetText(name + " grade", module?.grade);
+            vaProxy.SetDecimal(name + " health", module?.health);
+            vaProxy.SetDecimal(name + " cost", module?.price);
+            vaProxy.SetDecimal(name + " value", module?.value);
             if (module != null && module.price < module.value)
             {
                 decimal discount = Math.Round((1 - (((decimal)module.price) / ((decimal)module.value))) * 100, 1);
@@ -566,7 +581,7 @@ namespace EddiVoiceAttackResponder
 
                 string speech = SpeechFromScript(script);
 
-                SpeechService.Instance.Say(EDDI.Instance.Ship, speech, true, (int)priority, voice);
+                SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, true, (int)priority, voice);
             }
             catch (Exception e)
             {
@@ -610,7 +625,7 @@ namespace EddiVoiceAttackResponder
 
                 string voice = vaProxy.GetText("Voice");
 
-                speechResponder.Say(script, null, priority, voice);
+                speechResponder.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), script, null, priority, voice);
             }
             catch (Exception e)
             {
@@ -622,7 +637,7 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                EDDI.Instance.DisableResponder("Speech responder");
+                EDDI.Instance.State["speechresponder_quiet"] = true;
             }
             catch (Exception e)
             {
@@ -634,7 +649,7 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                EDDI.Instance.EnableResponder("Speech responder");
+                EDDI.Instance.State["speechresponder_quiet"] = false;
             }
             catch (Exception e)
             {
@@ -664,8 +679,9 @@ namespace EddiVoiceAttackResponder
             try
             {
                 string name = vaProxy.GetText("State variable");
-                if (name == null)
+                if (string.IsNullOrEmpty(name))
                 {
+                    Logging.Info("No value in the VoiceAttack text variable 'State variable'; nothing to set");
                     return;
                 }
 
@@ -714,15 +730,16 @@ namespace EddiVoiceAttackResponder
             if (script == null) { return null; }
 
             // Variable replacement
-            if (EDDI.Instance.Ship != null)
+            Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
+            if (ship != null)
             {
-                if (EDDI.Instance.Ship != null && EDDI.Instance.Ship.phoneticname != null)
+                if (ship != null && ship.phoneticname != null)
                 {
-                    script = script.Replace("$=", EDDI.Instance.Ship.phoneticname);
+                    script = script.Replace("$=", ship.phoneticname);
                 }
-                else if (EDDI.Instance.Ship != null && EDDI.Instance.Ship.name != null)
+                else if (ship != null && ship.name != null)
                 {
-                    script = script.Replace("$=", EDDI.Instance.Ship.name);
+                    script = script.Replace("$=", ship.name);
                 }
                 else
                 {
@@ -815,42 +832,118 @@ namespace EddiVoiceAttackResponder
         private static void setValues(ref dynamic vaProxy)
         {
             Logging.Debug("Setting values");
-            setCommanderValues(EDDI.Instance.Cmdr, ref vaProxy);
-            setShipValues(EDDI.Instance.Ship, "Ship", ref vaProxy);
-            int currentStoredShip = 1;
-            if (EDDI.Instance.Shipyard != null)
+            try
             {
-                foreach (Ship StoredShip in EDDI.Instance.Shipyard)
-                {
-                    setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref vaProxy);
-                    currentStoredShip++;
-                }
-                vaProxy.SetInt("Stored ship entries", EDDI.Instance.Shipyard.Count);
+                setCommanderValues(EDDI.Instance.Cmdr, ref vaProxy);
             }
-            setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref vaProxy);
-            setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
-            setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref vaProxy);
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set commander values", ex);
+            }
 
-            setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
+            try
+            {
+                setShipValues(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.GetCurrentShip(), "Ship", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set current ship values", ex);
+            }
+
+            try
+            {
+                List<Ship> shipyard = new List<Ship>(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"))?.shipyard);
+                if (shipyard != null)
+                {
+                    int currentStoredShip = 1;
+                    foreach (Ship StoredShip in shipyard)
+                    {
+                        setShipValues(StoredShip, "Stored ship " + currentStoredShip, ref vaProxy);
+                        currentStoredShip++;
+                    }
+                    vaProxy.SetInt("Stored ship entries", ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).shipyard.Count);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set shipyard", ex);
+            }
+
+            try
+            {
+                setStarSystemValues(EDDI.Instance.CurrentStarSystem, "System", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set current system", ex);
+            }
+
+            try
+            {
+                setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set last system", ex);
+            }
+
+            try
+            {
+                setStarSystemValues(EDDI.Instance.HomeStarSystem, "Home system", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set home system", ex);
+            }
+
+            try
+            {
+                setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set state", ex);
+            }
 
             // Backwards-compatibility with 1.x
-            if (EDDI.Instance.HomeStarSystem != null)
+            try
             {
-                vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem.name);
-                vaProxy.SetText("Home system (spoken)", Translations.StarSystem(EDDI.Instance.HomeStarSystem.name));
+                if (EDDI.Instance.HomeStarSystem != null)
+                {
+                    vaProxy.SetText("Home system", EDDI.Instance.HomeStarSystem.name);
+                    vaProxy.SetText("Home system (spoken)", Translations.StarSystem(EDDI.Instance.HomeStarSystem.name));
+                }
+                if (EDDI.Instance.HomeStation != null)
+                {
+                    vaProxy.SetText("Home station", EDDI.Instance.HomeStation.name);
+                }
             }
-            if (EDDI.Instance.HomeStation != null)
+            catch (Exception ex)
             {
-                vaProxy.SetText("Home station", EDDI.Instance.HomeStation.name);
+                Logging.Error("Failed to set 1.x values", ex);
             }
 
-            setStationValues(EDDI.Instance.CurrentStation, "Last station", ref vaProxy);
+            try
+            {
+                setStationValues(EDDI.Instance.CurrentStation, "Last station", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set last station", ex);
+            }
 
-            vaProxy.SetText("Environment", EDDI.Instance.Environment);
+            try
+            {
+                vaProxy.SetText("Environment", EDDI.Instance.Environment);
 
-            vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle);
+                vaProxy.SetText("Vehicle", EDDI.Instance.Vehicle);
 
-            vaProxy.SetText("EDDI version", Constants.EDDI_VERSION);
+                vaProxy.SetText("EDDI version", Constants.EDDI_VERSION);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set misc values", ex);
+            }
 
             Logging.Debug("Set values");
         }
@@ -879,7 +972,7 @@ namespace EddiVoiceAttackResponder
                 }
                 else if (valueType == typeof(int))
                 {
-                    vaProxy.SetInt(varname, (int?)value);
+                    vaProxy.SetInt(varname, (int)value);
                 }
                 else if (valueType == typeof(bool))
                 {
@@ -956,28 +1049,28 @@ namespace EddiVoiceAttackResponder
         {
             try
             {
-                vaProxy.SetText("Name", cmdr == null ? null : cmdr.name);
-                vaProxy.SetInt("Combat rating", cmdr == null || cmdr.combatrating == null ? (int?)null : cmdr.combatrating.rank);
-                vaProxy.SetText("Combat rank", cmdr == null || cmdr.combatrating == null ? null : cmdr.combatrating.name);
-                vaProxy.SetInt("Trade rating", cmdr == null || cmdr.traderating == null ? (int?)null : cmdr.traderating.rank);
-                vaProxy.SetText("Trade rank", cmdr == null || cmdr.traderating == null ? null : cmdr.traderating.name);
-                vaProxy.SetInt("Explore rating", cmdr == null || cmdr.explorationrating == null ? (int?)null : cmdr.explorationrating.rank);
-                vaProxy.SetText("Explore rank", cmdr == null || cmdr.explorationrating == null ? null : cmdr.explorationrating.name);
-                vaProxy.SetInt("Empire rating", cmdr == null || cmdr.empirerating == null ? (int?)null : cmdr.empirerating.rank);
-                vaProxy.SetText("Empire rank", cmdr == null || cmdr.empirerating == null ? null : cmdr.empirerating.name);
-                vaProxy.SetInt("Federation rating", cmdr == null || cmdr.federationrating == null ? (int?)null : cmdr.federationrating.rank);
-                vaProxy.SetText("Federation rank", cmdr == null || cmdr.federationrating == null ? null : cmdr.federationrating.name);
-                vaProxy.SetDecimal("Credits", cmdr == null ? (decimal?)null : cmdr.credits);
-                vaProxy.SetText("Credits (spoken)", cmdr == null ? null : Translations.Humanize(cmdr.credits));
-                vaProxy.SetDecimal("Debt", cmdr == null ? (decimal?)null : cmdr.debt);
-                vaProxy.SetText("Debt (spoken)", cmdr == null ? null : Translations.Humanize(cmdr.debt));
+                vaProxy.SetText("Name", cmdr?.name);
+                vaProxy.SetInt("Combat rating", cmdr?.combatrating?.rank);
+                vaProxy.SetText("Combat rank", cmdr?.combatrating?.name);
+                vaProxy.SetInt("Trade rating", cmdr?.traderating?.rank);
+                vaProxy.SetText("Trade rank", cmdr?.traderating?.name);
+                vaProxy.SetInt("Explore rating", cmdr?.explorationrating?.rank);
+                vaProxy.SetText("Explore rank", cmdr?.explorationrating?.name);
+                vaProxy.SetInt("Empire rating", cmdr?.empirerating?.rank);
+                vaProxy.SetText("Empire rank", cmdr?.empirerating?.name);
+                vaProxy.SetInt("Federation rating", cmdr?.federationrating?.rank);
+                vaProxy.SetText("Federation rank", cmdr?.federationrating?.name);
+                vaProxy.SetDecimal("Credits", cmdr?.credits);
+                vaProxy.SetText("Credits (spoken)", Translations.Humanize(cmdr?.credits));
+                vaProxy.SetDecimal("Debt", cmdr?.debt);
+                vaProxy.SetText("Debt (spoken)", Translations.Humanize(cmdr?.debt));
 
-                vaProxy.SetText("Title", cmdr == null ? null : cmdr.title);
+                vaProxy.SetText("Title", cmdr?.title);
 
-                vaProxy.SetDecimal("Insurance", cmdr == null ? null : cmdr.insurance);
+                vaProxy.SetDecimal("Insurance", cmdr?.insurance);
 
                 // Backwards-compatibility with 1.x
-                vaProxy.SetText("System rank", cmdr == null ? null : cmdr.title);
+                vaProxy.SetText("System rank", cmdr?.title);
 
                 setStatus(ref vaProxy, "Operational");
             }
@@ -991,27 +1084,34 @@ namespace EddiVoiceAttackResponder
 
         private static void setShipValues(Ship ship, string prefix, ref dynamic vaProxy)
         {
+            if (ship == null)
+            {
+                return;
+            }
             Logging.Debug("Setting ship information (" + prefix + ")");
             try
             {
-                vaProxy.SetText(prefix + " manufacturer", ship == null ? null : ship.manufacturer);
-                vaProxy.SetText(prefix + " model", ship == null ? null : ship.model);
-                vaProxy.SetText(prefix + " model (spoken)", ship == null ? null : ship.SpokenModel());
+                vaProxy.SetText(prefix + " manufacturer", ship?.manufacturer);
+                vaProxy.SetText(prefix + " model", ship?.model);
+                vaProxy.SetText(prefix + " model (spoken)", ship?.SpokenModel());
 
-                if (EDDI.Instance.Ship != null && EDDI.Instance.Cmdr != null && EDDI.Instance.Cmdr.name != null)
+                if (((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip() != null && EDDI.Instance.Cmdr != null && EDDI.Instance.Cmdr.name != null)
                 {
                     vaProxy.SetText(prefix + " callsign", ship == null ? null : ship.manufacturer + " " + EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant());
-                    vaProxy.SetText(prefix + " callsign (spoken)", ship == null ? null : ship.SpokenManufacturer() + " " + Translations.CallSign(EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant()));
+                    vaProxy.SetText(prefix + " callsign (spoken)", ship == null ? null : ship.SpokenManufacturer() + " " + Translations.ICAO(EDDI.Instance.Cmdr.name.Substring(0, 3).ToUpperInvariant()));
                 }
 
-                vaProxy.SetText(prefix + " name", ship == null ? null : ship.name);
-                vaProxy.SetText(prefix + " role", ship == null || ship.role == null ? null : ship.role.ToString());
-                vaProxy.SetText(prefix + " size", ship == null || ship.size == null ? null : ship.size.ToString());
-                vaProxy.SetDecimal(prefix + " value", ship == null ? (decimal?)null : ship.value);
-                vaProxy.SetText(prefix + " value (spoken)", ship == null ? null : Translations.Humanize(ship.value));
-                vaProxy.SetDecimal(prefix + " health", ship == null ? (decimal?)null : ship.health);
-                vaProxy.SetInt(prefix + " cargo capacity", ship == null ? (int?)null : ship.cargocapacity);
-                vaProxy.SetInt(prefix + " cargo carried", ship == null ? (int?)null : ship.cargocarried);
+                vaProxy.SetText(prefix + " name", ship?.name);
+                vaProxy.SetText(prefix + " name (spoken)", ship?.phoneticname);
+                vaProxy.SetText(prefix + " ident", ship?.ident);
+                vaProxy.SetText(prefix + " ident (spoken)", Translations.ICAO(ship?.ident, false));
+                vaProxy.SetText(prefix + " role", ship?.role?.ToString());
+                vaProxy.SetText(prefix + " size", ship?.size?.ToString());
+                vaProxy.SetDecimal(prefix + " value", ship?.value);
+                vaProxy.SetText(prefix + " value (spoken)", Translations.Humanize(ship?.value));
+                vaProxy.SetDecimal(prefix + " health", ship?.health);
+                vaProxy.SetInt(prefix + " cargo capacity", ship?.cargocapacity);
+                vaProxy.SetInt(prefix + " cargo carried", ship?.cargocarried);
                 // Add number of limpets carried
                 if (ship == null || ship.cargo == null)
                 {
@@ -1030,26 +1130,26 @@ namespace EddiVoiceAttackResponder
                     vaProxy.SetInt(prefix + " limpets carried", limpets);
                 }
 
-                setShipModuleValues(ship == null ? null : ship.bulkheads, prefix + " bulkheads", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.bulkheads, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " bulkheads", ref vaProxy);
-                setShipModuleValues(ship == null ? null : ship.powerplant, prefix + " power plant", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.powerplant, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " power plant", ref vaProxy);
-                setShipModuleValues(ship == null ? null : ship.thrusters, prefix + " thrusters", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.thrusters, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " thrusters", ref vaProxy);
-                setShipModuleValues(ship == null ? null : ship.frameshiftdrive, prefix + " frame shift drive", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.frameshiftdrive, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " frame shift drive", ref vaProxy);
-                setShipModuleValues(ship == null ? null : ship.lifesupport, prefix + " life support", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.lifesupport, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " life support", ref vaProxy);
-                setShipModuleValues(ship == null ? null : ship.powerdistributor, prefix + " power distributor", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.powerdistributor, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " power distributor", ref vaProxy);
-                setShipModuleValues(ship == null ? null : ship.sensors, prefix + " sensors", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.sensors, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " sensors", ref vaProxy);
-                setShipModuleValues(ship == null ? null : ship.fueltank, prefix + " fuel tank", ref vaProxy);
-                setShipModuleOutfittingValues(ship == null ? null : ship.fueltank, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, prefix + " fuel tank", ref vaProxy);
+                setShipModuleValues(ship?.bulkheads, prefix + " bulkheads", ref vaProxy);
+                setShipModuleOutfittingValues(ship?.bulkheads, EDDI.Instance.CurrentStation?.outfitting, prefix + " bulkheads", ref vaProxy);
+                setShipModuleValues(ship?.powerplant, prefix + " power plant", ref vaProxy);
+                setShipModuleOutfittingValues(ship?.powerplant, EDDI.Instance.CurrentStation?.outfitting, prefix + " power plant", ref vaProxy);
+                setShipModuleValues(ship?.thrusters, prefix + " thrusters", ref vaProxy);
+                setShipModuleOutfittingValues(ship?.thrusters, EDDI.Instance.CurrentStation?.outfitting, prefix + " thrusters", ref vaProxy);
+                setShipModuleValues(ship?.frameshiftdrive, prefix + " frame shift drive", ref vaProxy);
+                setShipModuleOutfittingValues(ship?.frameshiftdrive, EDDI.Instance.CurrentStation?.outfitting, prefix + " frame shift drive", ref vaProxy);
+                setShipModuleValues(ship?.lifesupport, prefix + " life support", ref vaProxy);
+                setShipModuleOutfittingValues(ship?.lifesupport, EDDI.Instance.CurrentStation?.outfitting, prefix + " life support", ref vaProxy);
+                setShipModuleValues(ship?.powerdistributor, prefix + " power distributor", ref vaProxy);
+                setShipModuleOutfittingValues(ship?.powerdistributor, EDDI.Instance.CurrentStation?.outfitting, prefix + " power distributor", ref vaProxy);
+                setShipModuleValues(ship?.sensors, prefix + " sensors", ref vaProxy);
+                setShipModuleOutfittingValues(ship?.sensors, EDDI.Instance.CurrentStation?.outfitting, prefix + " sensors", ref vaProxy);
+                setShipModuleValues(ship?.fueltank, prefix + " fuel tank", ref vaProxy);
+                setShipModuleOutfittingValues(ship?.fueltank, EDDI.Instance.CurrentStation?.outfitting, prefix + " fuel tank", ref vaProxy);
 
                 // Special for fuel tank - capacity and total capacity
-                vaProxy.SetDecimal(prefix + " fuel tank capacity", ship == null ? (decimal?)null : ship.fueltankcapacity);
-                vaProxy.SetDecimal(prefix + " total fuel tank capacity", ship == null ? (decimal?)null : ship.fueltanktotalcapacity);
+                vaProxy.SetDecimal(prefix + " fuel tank capacity", ship?.fueltankcapacity);
+                vaProxy.SetDecimal(prefix + " total fuel tank capacity", ship?.fueltanktotalcapacity);
 
                 // Hardpoints
                 if (ship != null)
@@ -1083,7 +1183,7 @@ namespace EddiVoiceAttackResponder
 
                         vaProxy.SetBoolean(baseHardpointName + " occupied", Hardpoint.module != null);
                         setShipModuleValues(Hardpoint.module, baseHardpointName + " module", ref vaProxy);
-                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.module, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, baseHardpointName + " module", ref vaProxy);
+                        setShipModuleOutfittingValues(ship == null ? null : Hardpoint.module, EDDI.Instance.CurrentStation?.outfitting, baseHardpointName + " module", ref vaProxy);
                     }
 
                     vaProxy.SetInt(prefix + " hardpoints", numSmallHardpoints + numMediumHardpoints + numLargeHardpoints + numHugeHardpoints);
@@ -1096,7 +1196,7 @@ namespace EddiVoiceAttackResponder
                         vaProxy.SetInt(baseCompartmentName + " size", Compartment.size);
                         vaProxy.SetBoolean(baseCompartmentName + " occupied", Compartment.module != null);
                         setShipModuleValues(Compartment.module, baseCompartmentName + " module", ref vaProxy);
-                        setShipModuleOutfittingValues(ship == null ? null : Compartment.module, EDDI.Instance.CurrentStation == null ? null : EDDI.Instance.CurrentStation.outfitting, baseCompartmentName + " module", ref vaProxy);
+                        setShipModuleOutfittingValues(ship == null ? null : Compartment.module, EDDI.Instance.CurrentStation?.outfitting, baseCompartmentName + " module", ref vaProxy);
                     }
                     vaProxy.SetInt(prefix + " compartments", curCompartment);
                 }
@@ -1137,28 +1237,34 @@ namespace EddiVoiceAttackResponder
 
         private static void setStarSystemValues(StarSystem system, string prefix, ref dynamic vaProxy)
         {
+            if (system == null)
+            {
+                return;
+            }
             Logging.Debug("Setting system information (" + prefix + ")");
             try
             {
-                vaProxy.SetText(prefix + " name", system == null ? null : system.name);
-                vaProxy.SetText(prefix + " name (spoken)", system == null ? null : Translations.StarSystem(system.name));
-                vaProxy.SetDecimal(prefix + " population", system == null ? null : (decimal?)system.population);
-                vaProxy.SetText(prefix + " population (spoken)", system == null ? null : Translations.Humanize(system.population));
-                vaProxy.SetText(prefix + " allegiance", system == null ? null : system.allegiance);
-                vaProxy.SetText(prefix + " government", system == null ? null : system.government);
-                vaProxy.SetText(prefix + " faction", system == null ? null : system.faction);
-                vaProxy.SetText(prefix + " primary economy", system == null ? null : system.primaryeconomy);
-                vaProxy.SetText(prefix + " state", system == null ? null : system.state);
-                vaProxy.SetText(prefix + " security", system == null ? null : system.security);
-                vaProxy.SetText(prefix + " power", system == null ? null : system.power);
-                vaProxy.SetText(prefix + " power (spoken)", EDDI.Instance.CurrentStarSystem == null ? null : Translations.Power(EDDI.Instance.CurrentStarSystem.power));
-                vaProxy.SetText(prefix + " power state", system == null ? null : system.powerstate);
-                vaProxy.SetDecimal(prefix + " X", system == null ? null : system.x);
-                vaProxy.SetDecimal(prefix + " Y", system == null ? null : system.y);
-                vaProxy.SetDecimal(prefix + " Z", system == null ? null : system.z);
-                vaProxy.SetInt(prefix + " visits", system == null ? (int?)null : system.visits);
-                vaProxy.SetText(prefix + " comment", system == null ? null : system.comment);
-                vaProxy.SetDecimal(prefix + " distance from home", system == null ? null : system.distancefromhome);
+                vaProxy.SetText(prefix + " name", system?.name);
+                vaProxy.SetText(prefix + " name (spoken)", Translations.StarSystem(system?.name));
+                vaProxy.SetDecimal(prefix + " population", system?.population);
+                vaProxy.SetText(prefix + " population (spoken)", Translations.Humanize(system?.population));
+                vaProxy.SetText(prefix + " allegiance", system?.allegiance);
+                vaProxy.SetText(prefix + " government", system?.government);
+                vaProxy.SetText(prefix + " faction", system?.faction);
+                vaProxy.SetText(prefix + " primary economy", system?.primaryeconomy);
+                vaProxy.SetText(prefix + " state", system?.state);
+                vaProxy.SetText(prefix + " security", system?.security);
+                vaProxy.SetText(prefix + " power", system?.power);
+                vaProxy.SetText(prefix + " power (spoken)", Translations.Power(EDDI.Instance.CurrentStarSystem?.power));
+                vaProxy.SetText(prefix + " power state", system?.powerstate);
+                vaProxy.SetDecimal(prefix + " X", system?.x);
+                vaProxy.SetDecimal(prefix + " Y", system?.y);
+                vaProxy.SetDecimal(prefix + " Z", system?.z);
+                vaProxy.SetInt(prefix + " visits", system?.visits);
+                vaProxy.SetDate(prefix + " previous visit", system?.visits > 1 ? system.lastvisit : null);
+                vaProxy.SetDecimal(prefix + " minutes since previous visit", system?.visits > 1 && system?.lastvisit.HasValue == true ? (decimal)(long)(DateTime.Now - system.lastvisit.Value).TotalMinutes : (decimal?)null);
+                vaProxy.SetText(prefix + " comment", system?.comment);
+                vaProxy.SetDecimal(prefix + " distance from home", system?.distancefromhome);
 
                 if (system != null)
                 {
@@ -1193,8 +1299,15 @@ namespace EddiVoiceAttackResponder
         private static void setBodyValues(Body body, string prefix, dynamic vaProxy)
         {
             Logging.Debug("Setting body information (" + prefix + ")");
-            vaProxy.SetText(prefix + " stellar class", body == null ? null : body.stellarclass);
-            vaProxy.SetInt(prefix + " age", body == null ? null : (int?)body.age);
+            vaProxy.SetText(prefix + " stellar class", body?.stellarclass);
+            if (body?.age == null)
+            {
+                vaProxy.SetDecimal(prefix + " age", null);
+            }
+            else
+            {
+                vaProxy.SetDecimal(prefix + " age", (decimal)(long)body.age);
+            }
             Logging.Debug("Set body information (" + prefix + ")");
         }
 
@@ -1208,7 +1321,7 @@ namespace EddiVoiceAttackResponder
             else
             {
                 Logging.Warn("EDDI exception: " + (exception == null ? "<null>" : exception.ToString()));
-                vaProxy.SetText("EDDI exception", exception == null ? null : exception.ToString());
+                vaProxy.SetText("EDDI exception", exception?.ToString());
             }
         }
     }

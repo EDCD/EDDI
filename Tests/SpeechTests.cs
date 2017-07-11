@@ -56,9 +56,61 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestSsml1()
+        {
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>Fred's ship.", true);
+        }
+
+        [TestMethod]
+        public void TestSsml2()
+        {
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>7 < 10.", true);
+        }
+
+        [TestMethod]
+        public void TestSsml3()
+        {
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>He said ""Foo"".", true);
+        }
+
+        [TestMethod]
+        public void TestSsml4()
+        {
+            Logging.Verbose = true;
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>We're on our way to " + Translations.StarSystem("i Bootis") + ".", true);
+        }
+
+        [TestMethod]
+        public void TestAudio()
+        {
+            EventWaitHandle waitHandle = new AutoResetEvent(false);
+
+            using (MemoryStream stream = new MemoryStream())
+            using (SpeechSynthesizer synth = new SpeechSynthesizer())
+            {
+                synth.SetOutputToWaveStream(stream);
+
+                synth.SpeakSsml("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><speak version = \"1.0\" xmlns = \"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-GB\"><s><audio src=\"C:\\Users\\jgm\\Desktop\\positive.wav\"/>You are travelling to the <phoneme alphabet=\"ipa\" ph=\"ˈlaʊ.təns\">Luyten's</phoneme> <phoneme alphabet=\"ipa\" ph=\"stɑː\">Star</phoneme> system.</s></speak>");
+                stream.Seek(0, SeekOrigin.Begin);
+
+                IWaveSource source = new WaveFileReader(stream);
+
+                var soundOut = new WasapiOut();
+                soundOut.Stopped += (s, e) => waitHandle.Set();
+
+                soundOut.Initialize(source);
+                soundOut.Play();
+
+                waitHandle.WaitOne();
+                soundOut.Dispose();
+                source.Dispose();
+            }
+        }
+
+        [TestMethod]
         public void TestCallsign()
         {
-            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), Translations.CallSign("GAB-1655"), true);
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), Translations.ICAO("GAB-1655"), true);
         }
 
 
@@ -368,7 +420,7 @@ namespace Tests
         [TestMethod]
         public void TestSectorTranslations()
         {
-            Assert.AreEqual("Swoiwns N Y dash B a95 dash 0", Translations.StarSystem("Swoiwns NY-B a95-0"));
+            Assert.AreEqual("Swoiwns N Y dash B a 95 dash 0", Translations.StarSystem("Swoiwns NY-B a95-0"));
             Assert.AreEqual("P P M 5 2 8 7", Translations.StarSystem("PPM 5287"));
         }
 
@@ -446,6 +498,12 @@ namespace Tests
 
             thread1.Join();
             thread2.Join();
+        }
+
+        [TestMethod]
+        public void TestSpeechServicePhonetics1()
+        {
+            SpeechService.Instance.Say(null, @"Destination confirmed. your <phoneme alphabet=""ipa"" ph=""ˈkəʊbrə"">cobra</phoneme> <phoneme alphabet=""ipa"" ph=""mɑːk"">Mk.</phoneme> <phoneme alphabet=""ipa"" ph=""θriː"">III</phoneme> is travelling to the L T T 1 7 8 6 8 system. This is your first visit to this system. L T T 1 7 8 6 8 is a Federation Corporate with a population of Over 65 thousand souls, aligned to <phoneme alphabet=""ipa"" ph=""fəˈlɪʃɪə"">Felicia</phoneme> <phoneme alphabet=""ipa"" ph=""ˈwɪntəs"">Winters</phoneme>. Kungurutii Gold Power Org is the immediate faction. There are 2 orbital stations and a single planetary station in this system.", true);
         }
 
         [TestMethod]

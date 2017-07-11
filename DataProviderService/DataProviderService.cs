@@ -228,17 +228,25 @@ namespace EddiDataProviderService
                         Body.pressure = (decimal?)(double?)body["surface_pressure"];
                         Body.terraformstate = (string)body["terraforming_state_name"];
                         Body.planettype = (string)body["type_name"];
-                        Body.volcanism = (string)body["volcanism_type_name"];
+                        // Volcanism might be a simple name or an object
+                        if (body["volcanism_type_name"] != null)
+                        {
+                            Body.volcanism = Volcanism.FromName((string)body["volcanism_type_name"]);
+                        }
+                        if (body["volcanism"] != null)
+                        {
+                            Body.volcanism = new Volcanism((string)body["volcanism"]["type"], (string)body["volcanism"]["composition"], (string)body["volcanism"]["amount"]);
+                        }
                         if (body["materials"] != null)
                         {
-                            List<MaterialPercentage> Materials = new List<MaterialPercentage>();
+                            List<MaterialPresence> Materials = new List<MaterialPresence>();
                             foreach (dynamic materialJson in body["materials"])
                             {
                                 Material material = Material.FromName((string)materialJson["material_name"]);
                                 decimal? amount = (decimal?)(double?)materialJson["share"];
                                 if (material != null && amount != null)
                                 {
-                                    Materials.Add(new MaterialPercentage(material, (decimal)amount));
+                                    Materials.Add(new MaterialPresence(material, (decimal)amount));
                                 }
                             }
                             if (Materials.Count > 0)
@@ -257,14 +265,17 @@ namespace EddiDataProviderService
 
         private static List<string> stationModels = new List<string>()
         {
+            "Asteroid Base",
             "Civilian Outpost",
             "Commercial Outpost",
             "Coriolis Starport",
             "Industrial Outpost",
+            "Megaship",
             "Military Outpost",
             "Mining Outpost",
             "Ocellus Starport",
             "Orbis Starport",
+            "Orbital Engineer Base",
             "Planetary Engineer Base",
             "Planetary Outpost",
             "Planetary Port",

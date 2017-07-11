@@ -35,7 +35,7 @@ namespace EddiCompanionAppService
             CommanderConfiguration configuration = new CommanderConfiguration();
             try
             {
-                string configData = File.ReadAllText(filename);
+                string configData = Files.Read(filename);
                 configuration = JsonConvert.DeserializeObject<CommanderConfiguration>(configData);
             }
             catch (Exception ex)
@@ -71,7 +71,7 @@ namespace EddiCompanionAppService
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            File.WriteAllText(filename, json);
+            Files.Write(filename, json);
         }
     }
 }

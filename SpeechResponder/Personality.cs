@@ -23,6 +23,9 @@ namespace EddiSpeechResponder
         [JsonProperty("description")]
         public string Description { get; private set; }
 
+        [JsonIgnore]
+        public bool IsDefault { get; set; } = false;
+
         [JsonProperty("scripts")]
         public Dictionary<string, Script> Scripts { get; private set; }
 
@@ -91,14 +94,14 @@ namespace EddiSpeechResponder
         /// </summary>
         public static Personality Default()
         {
-            return FromFile(DEFAULT_PATH);
+            return FromFile(DEFAULT_PATH, true);
         }
 
         /// <summary>
         /// Obtain personality from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\personalities\eddi.json is used
         /// </summary>
-        public static Personality FromFile(string filename = null)
+        public static Personality FromFile(string filename = null, bool isDefault = false)
         {
             if (filename == null)
             {
@@ -106,18 +109,23 @@ namespace EddiSpeechResponder
             }
 
             Personality personality = null;
-            try
+            string data = Files.Read(filename);
+            if (data != null)
             {
-                personality = JsonConvert.DeserializeObject<Personality>(File.ReadAllText(filename));
-            }
-            catch (Exception e)
-            {
-                Logging.Warn("Failed to access personality at " + filename + ": " + e.Message);
+                try
+                {
+                    personality = JsonConvert.DeserializeObject<Personality>(data);
+                }
+                catch (Exception e)
+                {
+                    Logging.Warn("Failed to access personality at " + filename + ": " + e.Message);
+                }
             }
 
             if (personality != null)
             {
                 personality.dataPath = filename;
+                personality.IsDefault = isDefault;
                 fixPersonalityInfo(personality);
             }
 
@@ -142,7 +150,7 @@ namespace EddiSpeechResponder
             if (filename != DEFAULT_PATH)
             {
                 string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-                File.WriteAllText(filename, json);
+                Files.Write(filename, json);
             }
         }
 
@@ -184,36 +192,39 @@ namespace EddiSpeechResponder
         /// </summary>
         private static void fixPersonalityInfo(Personality personality)
         {
+            // Default personality for reference scripts
+            Personality defaultPersonality = personality.IsDefault ? null : Default();
+
             Dictionary<string, Script> fixedScripts = new Dictionary<string, Script>();
             // Ensure that every required event is present
             foreach (KeyValuePair<string, string> defaultEvent in Events.DESCRIPTIONS)
             {
-                Script script;
-                personality.Scripts.TryGetValue(defaultEvent.Key, out script);
+                personality.Scripts.TryGetValue(defaultEvent.Key, out Script script);
+                Script defaultScript = null;
+                defaultPersonality?.Scripts?.TryGetValue(defaultEvent.Key, out defaultScript);
+                script = UpgradeScript(script, defaultScript);
                 if (script == null)
                 {
-                    // The personality doesn't have this event; create a default
-                    string defaultScript = Events.DefaultByName(defaultEvent.Key);
-                    script = new Script(defaultEvent.Key, defaultEvent.Value, true, defaultScript);
+                    Logging.Report("Failed to find script for " + defaultEvent.Key);
                 }
-                else if (script.Description != defaultEvent.Value)
+                else
                 {
-                    // The description has been updated
-                    script = new Script(defaultEvent.Key, defaultEvent.Value, true, script.Value, script.Priority);
+                    fixedScripts.Add(defaultEvent.Key, script);
                 }
-                fixedScripts.Add(defaultEvent.Key, script);
             }
             foreach (KeyValuePair<string, Script> kv in personality.Scripts)
             {
                 if (!fixedScripts.ContainsKey(kv.Key))
                 {
-                    fixedScripts.Add(kv.Key, kv.Value);
+                    Script defaultScript = null;
+                    defaultPersonality?.Scripts?.TryGetValue(kv.Key, out defaultScript);
+                    Script script = UpgradeScript(kv.Value, defaultScript);
+                    fixedScripts.Add(kv.Key, script);
                 }
             }
-            if (personality.Name != "EDDI")
+            if (!personality.IsDefault)
             {
                 // Also add any secondary scripts in the default personality that aren't present in the list
-                Personality defaultPersonality = Default();
                 foreach (KeyValuePair<string, Script> kv in defaultPersonality.Scripts)
                 {
                     if (!fixedScripts.ContainsKey(kv.Key))
@@ -223,7 +234,40 @@ namespace EddiSpeechResponder
                 }
             }
 
+            // Re-order the scripts by name
+            fixedScripts = fixedScripts.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
+
             personality.Scripts = fixedScripts;
+        }
+
+        public static Script UpgradeScript(Script personalityScript, Script defaultScript)
+        {
+            Script script = personalityScript ?? defaultScript;
+            if (script != null)
+            {
+                if (defaultScript != null)
+                {
+                    if (defaultScript.Responder)
+                    {
+                        // This is a responder script so update the description
+                        script.Description = defaultScript.Description;
+                    }
+
+                    if (script.Default)
+                    {
+                        // This is a default script so take the latest value
+                        script.Value = defaultScript.Value;
+                    }
+
+                    if (script.Value == defaultScript.Value)
+                    {
+                        // Ensure this is flaged as a default script (pre 2-3 didn't have this flag)
+                        script.Default = true;
+                    }
+                }
+            }
+
+            return script;
         }
     }
 }

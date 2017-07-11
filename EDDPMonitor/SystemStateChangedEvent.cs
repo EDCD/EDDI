@@ -23,13 +23,13 @@ namespace EddiEddpMonitor
             VARIABLES.Add("newstate", "The new state of the system");
         }
 
-        public string match;
+        public string match { get; private set; }
 
-        public string system;
+        public string system { get; private set; }
 
-        public string oldstate;
+        public string oldstate { get; private set; }
 
-        public string newstate;
+        public string newstate { get; private set; }
 
         public SystemStateChangedEvent(DateTime timestamp, string match, string system, string oldstate, string newstate) : base(timestamp, NAME)
         {

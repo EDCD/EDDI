@@ -19,6 +19,12 @@ namespace EDDNResponder
     /// </summary>
     public class EDDNResponder : EDDIResponder
     {
+        // We keep a local track of the starsystem information
+        private string systemName = null;
+        private decimal? systemX = null;
+        private decimal? systemY = null;
+        private decimal? systemZ = null;
+
         public string ResponderName()
         {
             return "EDDN responder";
@@ -47,7 +53,23 @@ namespace EDDNResponder
                 return;
             }
 
+            if (EDDI.Instance.inCrew)
+            {
+                // We don't do anything whilst in multicrew
+                return;
+            }
+
             Logging.Debug("Received event " + JsonConvert.SerializeObject(theEvent));
+
+            if (theEvent is LocationEvent)
+            {
+                handleLocationEvent((LocationEvent)theEvent);
+            }
+            if (theEvent is JumpedEvent)
+            {
+                handleJumpedEvent((JumpedEvent)theEvent);
+            }
+
             if (theEvent is DockedEvent)
             {
                 handleDockedEvent((DockedEvent)theEvent);
@@ -77,6 +99,22 @@ namespace EDDNResponder
         {
         }
 
+        private void handleLocationEvent(LocationEvent @event)
+        {
+            systemName = @event.system;
+            systemX = @event.x;
+            systemY = @event.y;
+            systemZ = @event.z;
+        }
+
+        private void handleJumpedEvent(JumpedEvent @event)
+        {
+            systemName = @event.system;
+            systemX = @event.x;
+            systemY = @event.y;
+            systemZ = @event.z;
+        }
+
         private void handleRawEvent(Event theEvent)
         {
             IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
@@ -90,30 +128,37 @@ namespace EDDNResponder
             // Need to remove any keys ending with _Localised
             data = data.Where(x => !x.Key.EndsWith("_Localised")).ToDictionary(x => x.Key, x => x.Value);
 
-            // Need to add StarSystem to scan events
+            // Can only proceed if we know our current system
+
+            // Need to add StarSystem to scan events - can only do so if we have the data
             if (theEvent is StarScannedEvent || theEvent is BodyScannedEvent)
             {
-                data.Add("StarSystem", EDDI.Instance.CurrentStarSystem.name);
+                if (systemName == null || systemX == null || systemY == null || systemZ == null)
+                {
+                    Logging.Debug("Missing current starsystem information, cannot send message to EDDN");
+                    return;
+                }
+                data.Add("StarSystem", systemName);
             }
-
 
             // Need to add StarPos to all events that don't already have them
             if (!data.ContainsKey("StarPos"))
             {
-                if (EDDI.Instance.CurrentStarSystem == null || EDDI.Instance.CurrentStarSystem.x == null)
+                if (systemName == null || systemX == null || systemY == null || systemZ == null)
                 {
                     Logging.Debug("Missing current starsystem information, cannot send message to EDDN");
+                    return;
                 }
                 IList<decimal> starpos = new List<decimal>();
-                starpos.Add((decimal)EDDI.Instance.CurrentStarSystem.x);
-                starpos.Add((decimal)EDDI.Instance.CurrentStarSystem.y);
-                starpos.Add((decimal)EDDI.Instance.CurrentStarSystem.z);
+                starpos.Add(systemX.Value);
+                starpos.Add(systemY.Value);
+                starpos.Add(systemZ.Value);
                 data.Add("StarPos", starpos);
             }
 
             EDDNBody body = new EDDNBody();
             body.header = generateHeader();
-            body.schemaRef = "http://schemas.elite-markets.net/eddn/journal/1" + (EDDI.Instance.inBeta ? "/test" : "");
+            body.schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (EDDI.Instance.inBeta ? "/test" : "");
             body.message = data;
 
             sendMessage(body);
@@ -169,13 +214,13 @@ namespace EDDNResponder
                 {
                     IDictionary<string, object> data = new Dictionary<string, object>();
                     data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
-                    data.Add("systemName", EDDI.Instance.CurrentStation.systemname);
+                    data.Add("systemName", systemName);
                     data.Add("stationName", EDDI.Instance.CurrentStation.name);
                     data.Add("commodities", eddnCommodities);
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
-                    body.schemaRef = "http://schemas.elite-markets.net/eddn/commodity/3" + (EDDI.Instance.inBeta ? "/test" : "");
+                    body.schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (EDDI.Instance.inBeta ? "/test" : "");
                     body.message = data;
 
                     sendMessage(body);
@@ -209,7 +254,7 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
-                    body.schemaRef = "http://schemas.elite-markets.net/eddn/outfitting/2" + (EDDI.Instance.inBeta ? "/test" : "");
+                    body.schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (EDDI.Instance.inBeta ? "/test" : "");
                     body.message = data;
 
                     sendMessage(body);
@@ -244,7 +289,7 @@ namespace EDDNResponder
         private static void sendMessage(EDDNBody body)
         {
             Logging.Debug(JsonConvert.SerializeObject(body));
-            var client = new RestClient("http://eddn-gateway.elite-markets.net:8080/");
+            var client = new RestClient("https://eddn.edcd.io:4430/");
             var request = new RestRequest("upload/", Method.POST);
             request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
 

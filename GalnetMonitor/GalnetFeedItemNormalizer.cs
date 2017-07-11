@@ -1,4 +1,5 @@
-﻿using SimpleFeedReader;
+﻿using Newtonsoft.Json;
+using SimpleFeedReader;
 using System;
 using System.Collections.Generic;
 using System.Linq;

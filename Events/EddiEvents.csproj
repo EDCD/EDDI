@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -44,14 +44,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnteredCQCEvent.cs" />
+    <Compile Include="CrewMemberRoleChangedEvent.cs" />
+    <Compile Include="CrewMemberLaunchedEvent.cs" />
     <Compile Include="FileHeaderEvent.cs" />
+    <Compile Include="CrewMemberRemovedEvent.cs" />
+    <Compile Include="CrewMemberLeftEvent.cs" />
+    <Compile Include="CrewMemberJoinedEvent.cs" />
+    <Compile Include="CrewRoleChanged.cs" />
+    <Compile Include="CrewLeftEvent.cs" />
+    <Compile Include="CrewJoinedEvent.cs" />
+    <Compile Include="DataVoucherRedeemed.cs" />
+    <Compile Include="CargoInventoryEvent.cs" />
+    <Compile Include="MaterialInventoryEvent.cs" />
+    <Compile Include="FSDEngagedEvent.cs" />
+    <Compile Include="BondRedeemedEvent.cs" />
+    <Compile Include="TradeVoucherRedeemedEvent.cs" />
+    <Compile Include="BountyRedeemedEvent.cs" />
+    <Compile Include="SettlementApproachedEvent.cs" />
+    <Compile Include="EnteredCQCEvent.cs" />
     <Compile Include="MissionFailedEvent.cs" />
     <Compile Include="NPCCargoScanCommencedEvent.cs" />
     <Compile Include="NPCAttackCommencedEvent.cs" />
     <Compile Include="NPCInterdictionCommendedEvent.cs" />
     <Compile Include="PowerVoucherReceivedEvent.cs" />
-    <Compile Include="ShipShutdownEvent.cs" />
     <Compile Include="StationNoFireZoneExitedEvent.cs" />
     <Compile Include="StationNoFireZoneEnteredEvent.cs" />
     <Compile Include="PowerCommodityFastTrackedEvent.cs" />
@@ -73,10 +88,6 @@
     <Compile Include="MissionAbandonedEvent.cs" />
     <Compile Include="MissionCompletedEvent.cs" />
     <Compile Include="MissionAcceptedEvent.cs" />
-    <Compile Include="ShipDeliveredEvent.cs" />
-    <Compile Include="ShipRepairedEvent.cs" />
-    <Compile Include="ShipRefuelledEvent.cs" />
-    <Compile Include="ShipRestockedEvent.cs" />
     <Compile Include="JumpingEvent.cs" />
     <Compile Include="LimpetSoldEvent.cs" />
     <Compile Include="LimpetPurchasedEvent.cs" />
@@ -98,16 +109,11 @@
     <Compile Include="CrewHiredEvent.cs" />
     <Compile Include="DiedEvent.cs" />
     <Compile Include="ClearSaveEvent.cs" />
-    <Compile Include="ShipPurchasedEvent.cs" />
     <Compile Include="TradeDataPurchasedEvent.cs" />
-    <Compile Include="ShipTransferInitiatedEvent.cs" />
-    <Compile Include="ShipSwappedEvent.cs" />
-    <Compile Include="ShipSoldEvent.cs" />
     <Compile Include="HullDamageEvent.cs" />
     <Compile Include="EnteredSignalSourceEvent.cs" />
     <Compile Include="MessageSentEvent.cs" />
     <Compile Include="MessageReceivedEvent.cs" />
-    <Compile Include="ShipRebootedEvent.cs" />
     <Compile Include="ControllingFighterEvent.cs" />
     <Compile Include="SelfDestructEvent.cs" />
     <Compile Include="SRVLaunchedEvent.cs" />
@@ -151,9 +157,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
       <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
       <Name>EddiDataDefinitions</Name>
@@ -162,6 +165,9 @@
       <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
