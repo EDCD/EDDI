@@ -40,6 +40,7 @@ namespace EddiEvents
             VARIABLES.Add("reserves", "The level of reserves in the rings if applicable (Pristine/Major/Common/Low/Depleted)");
             VARIABLES.Add("materials", "A list of materials present on the body that has been scanned");
             VARIABLES.Add("terraformstate", "Whether the body can be, is in the process of, or has been terraformed (only available if DSS equipped)");
+            VARIABLES.Add("axialtilt", "Axial tilt for the body (only available if DSS equipped)");
         }
 
         public string name { get; private set; }
@@ -86,7 +87,9 @@ namespace EddiEvents
 
         public string terraformstate { get; private set; }
 
-        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal? earthmass, decimal? radius, decimal gravity, decimal? temperature, decimal? pressure, bool? tidallylocked, bool? landable, string atmosphere, Volcanism volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, string reserves, List<MaterialPresence> materials, string terraformstate) : base(timestamp, NAME)
+        public decimal? axialtilt { get; private set; }
+
+        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal? earthmass, decimal? radius, decimal gravity, decimal? temperature, decimal? pressure, bool? tidallylocked, bool? landable, string atmosphere, Volcanism volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, string reserves, List<MaterialPresence> materials, string terraformstate, decimal? axialtilt) : base(timestamp, NAME)
         {
             this.name = name;
             this.distancefromarrival = distancefromarrival;
@@ -110,6 +113,7 @@ namespace EddiEvents
             this.reserves = reserves;
             this.materials = materials;
             this.terraformstate = terraformstate;
+            this.axialtilt = axialtilt;
         }
 
         private decimal sanitiseCP(decimal cp)

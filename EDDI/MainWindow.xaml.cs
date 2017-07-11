@@ -359,9 +359,9 @@ namespace Eddi
                 {
                     companionAppText.Text = ex.Message;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    companionAppText.Text = "Unexpected problem\r\nPlease report this at http://github.com/CmdrMcDonald/EliteDangerousDataProvider/issues\r\n" + ex;
+                    companionAppText.Text = "Unable to log in.  This is usually a temporary issue with Frontier's servvice; please try again later";
                 }
             }
             else if (companionAppCodeText.Visibility == Visibility.Visible)
@@ -387,9 +387,9 @@ namespace Eddi
                 {
                     setUpCompanionAppStage1(ex.Message);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    setUpCompanionAppStage1("Unexpected problem\r\nPlease report this at http://github.com/CmdrMcDonald/EliteDangerousDataProvider/issues\r\n" + ex);
+                    setUpCompanionAppStage1("Unable to log in.  This is usually a temporary issue with Frontier's servvice; please try again later");
                 }
             }
         }

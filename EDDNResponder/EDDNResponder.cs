@@ -158,7 +158,7 @@ namespace EDDNResponder
 
             EDDNBody body = new EDDNBody();
             body.header = generateHeader();
-            body.schemaRef = "http://schemas.elite-markets.net/eddn/journal/1" + (EDDI.Instance.inBeta ? "/test" : "");
+            body.schemaRef = "https://eddn.edcd.io/schemas/journal/1" + (EDDI.Instance.inBeta ? "/test" : "");
             body.message = data;
 
             sendMessage(body);
@@ -220,7 +220,7 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
-                    body.schemaRef = "http://schemas.elite-markets.net/eddn/commodity/3" + (EDDI.Instance.inBeta ? "/test" : "");
+                    body.schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (EDDI.Instance.inBeta ? "/test" : "");
                     body.message = data;
 
                     sendMessage(body);
@@ -254,7 +254,7 @@ namespace EDDNResponder
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
-                    body.schemaRef = "http://schemas.elite-markets.net/eddn/outfitting/2" + (EDDI.Instance.inBeta ? "/test" : "");
+                    body.schemaRef = "https://eddn.edcd.io/schemas/outfitting/2" + (EDDI.Instance.inBeta ? "/test" : "");
                     body.message = data;
 
                     sendMessage(body);
@@ -289,7 +289,7 @@ namespace EDDNResponder
         private static void sendMessage(EDDNBody body)
         {
             Logging.Debug(JsonConvert.SerializeObject(body));
-            var client = new RestClient("http://eddn-gateway.elite-markets.net:8080/");
+            var client = new RestClient("https://eddn.edcd.io:4430/");
             var request = new RestRequest("upload/", Method.POST);
             request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);
 

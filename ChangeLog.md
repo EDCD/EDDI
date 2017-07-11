@@ -1,64 +1,11 @@
-#2.3.0-b8
+#2.3.0
   * Core
     * Tidy ups for reading from and writing to files to catch potential exceptions
     * Do not send data to EDSM or EDDN if in a multicrew session
-  * EDDN Responder
-    * Avoid use of data from Frontier API when setting starsystem information
-  * VoiceAttack Responder
-    * Use defensive copies of arrays to avoid potential exceptions when they are modified whilst we are reading them
-
-#2.3.0-b7
-  * Core
     * Better handling of unknown commodities
-  * Speech Responder
-    * Fix crash when showing "Changes from default" window
-
-#2.3.0-b6
-  * Core
     * Attempt to handle messages coming from unknown ships with the prefix "$ShipName_" 
 	* Update internal list of commodities
-  * Material Monitor
-	* Update locking conditions for inventory
-  * Speech Responder
-    * Handle additional conditions for "changes from default" windows when editing templates in the speech responder
-    * When renaming scripts ensure that they are renamed not copied
-  * Ship Monitor
-	* Update locking conditions for shipyard
-
-#2.3.0-b5
-  * Update EDDI personality to latest
-  * Update VoiceAttack profile to latest
-
-#2.3.0-b4
-  * Core
     * Update internal list of commodities to include all known items
-  * EDSM Responder
-    * Provide error message when attempt to obtain logs fails
-	* Provide numeirc progress information rather than system name when syncing logs
-  * Script Responder
-    * Update default templates to current latest version when reading in a custom personality
-	* Attempt to ignore invalid system names if presented in BodyDetails()
-  * Ship Monitor
-    * Lock updates to ship monitor data structures to prevent corruption
-	* Do not update ship name or ident if it contains filtered sequences (***)
-  * VoiceAttack Responder
-    * Add other VoiceAttack commands
-      * 'Tell me about this sytem' - Find out about the current system
-
-#2.3.0-b3
-  * Events
-    * Update 'Message received' event to include NPC messages.  Additional field 'Source' provides more details about the source of the message
-  * Speech Responder
-    * Add "Log" function to write information to EDDI's log.  This is an aid when debugging templates
-	* Fix issue where new templates might show up in custom personalities blank rather than with the contents of the default template
-	* Change edit window's "Show default" button to "Compare to default"; allowing diff-style comparison between the current and default scripts for templates
-	* Script changes:
-	  * 'Message received' - updated to only respond to player messages, and to use appropriate source
-  * VoiceAttack Responder
-    * Add "Ship ident" and "Ship ident (spoken)"
-
-#2.3.0-b2
-  * Core
     * Fix error when caching starsystem information
 	* Fix potential crash when comparing current and future star systems
 	* Fix typo in test event for 'Commander continued'
@@ -68,9 +15,6 @@
 	* Fix issue where 'Test script' button would not activate with custom scripts
 	* Changing verbose logging checkbox updates immediately
     * Better updating of ship information from combined journal and API data sources
-
-#2.3.0-b1
-  * Core
     * Add ship role 'Taxi'
     * Rename 'Companion App' tab to 'Frontier API' and update relevant text to clarify its use and operation
     * Volcanism for bodies is now an object.  For details of its fields check the relevant documentation
@@ -81,8 +25,15 @@
 	* Remove the Netlog monitor.  This was only used to obtain destination system when jumping and is no longer required due to additional information made available in the journal for this purpose
     * Fix exploration role 'Trailblazer' to have correct name (was showing up as 'Explorer')
 	* Add reset button to Frontier API configuration panel
+  * EDDN Responder
+	* Migrate to new EDDN endpoint
+    * Avoid use of data from Frontier API when setting starsystem information
+  * EDSM Responder
+    * Provide error message when attempt to obtain logs fails
+	* Provide numeirc progress information rather than system name when syncing logs
+    * Add upload of materials, ship, etc.
   * Events
-	* Update 'Body scanned' event - added earth mass, radius and information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
+	* Update 'Body scanned' event - added axial tilt.  Added earth mass, radius and information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
 	* Update 'Bond awarded' event to provide details of the awarding faction
 	* Add 'Bond redeemed' event when a combat bond is redeemed
 	* Add 'Bounty redeemed' event when a bounty voucher is redeemed
@@ -104,6 +55,7 @@
 	* Update 'Location' event to add longitude and latitude if the location is on the ground
 	* Add 'Material inventory' event when material information is supplied
 	* Add 'Material threshold' event when a threshold set in the material monitor is breached
+    * Update 'Message received' event to include NPC messages.  Additional field 'Source' provides more details about the source of the message
 	* Update 'Mission accepted' event to include the number of kills for massacre missions
     * Add 'Settlement approached' event
 	* Add 'Ship renamed' event to record when ship names and idents are changed
@@ -111,15 +63,22 @@
 	* Update 'System state report' to say nothing if the system is not in any particular state
 	* Update 'Touchdown' event to record if the ship touching down is player controlled or not
 	* Add 'Trade voucher redeemed' event when a trade voucher is redeemed
-  * EDSM Responder
-    * Add upload of materials, ship, etc.
+  * Galnet Monitor
+    * Galnet monitor now categories and stores news articles
+  * Material Monitor
+	* Update locking conditions for inventory
+  * Ship monitor
+	* Track cargo using loadout event.  This only gives a rough idea of cargo as it only triggers with certain events (docking, swapping ship etc.)
+	* Track limpets.  This gives an approximation of how many limpets are on board and is useful when docked but does not track limpets as they are used
+	* Update locking conditions for shipyard
+    * Lock updates to ship monitor data structures to prevent corruption
+	* Do not update ship name or ident if it contains filtered sequences (***)
   * Speech Responder
-    * Added 'ICAO' function to allow ICAO-style speech of ship identifiers, sector names etc.
-    * Added 'Play' function to play an audio file instead of a speech
 	* Script changes:
 	  * 'Blueprint make report' - new script to report how many of a blueprint can be made
 	  * 'Blueprint material report' - new script to report which materials are required for a blueprint
 	  * 'Body report' - add details of volcanism; handle retrograde rotation
+	  * 'Body scanned' - remove name of body so that it is not repeated in following report
 	  * 'Bond redeemed' - new script
 	  * 'Bounty redeemed' - new script
 	  * 'Commodity sale check' - various updates to give more reliable results
@@ -147,6 +106,7 @@
 	  * 'Galnet unread report' - new script
 	  * 'Jumped' - call system security report here rather than in 'Jumping' to guarantee up-to-date information
 	  * 'Liftoff' - change speech depending on if player is controlling ship or not
+	  * 'Limpet check' - correctly select singular or plural of limpet
 	  * 'Location' - add context
 	  * 'Market information updated' - new script taken from the end of the previous 'Docked' script
 	  * 'Material discard report' - new script to report how much of a particular material can be discarded (as per the material monitor settings)
@@ -156,16 +116,30 @@
 	  * 'Material use report' - new script to the blueprint uses of a particular material as defined by state or context
 	  * 'Materials discard report' - new script to report which materials can be discarded (as per the material monitor settings)
 	  * 'Materials required report' - new script to report which materials can be discarded (as per the material monitor settings)
+	  * 'Message received' - updated to only respond to player messages, and to use appropriate source
 	  * 'Settlement approached' - new script
 	  * 'Ship refuelled' - state when ship is fully refuelled from scooping
 	  * 'Ship renamed' - new script
 	  * 'Ship swapped' - add reminders for limpets and crew if appropriate
+	  * 'Star scanned' - remove name of star so that it is not repeated in following report
 	  * 'System state report' - fixed a couple of typos
 	  * 'Touchdown' - change speech depending on if player is controlling ship or not.  Name body on which the ship has touched down
 	  * 'Trade voucher redeemed' - new script
-  * Galnet Monitor
-    * Galnet monitor now categories and stores news articles
+    * Fix crash when showing "Changes from default" window
+    * Handle additional conditions for "changes from default" windows when editing templates in the speech responder
+    * When renaming scripts ensure that they are renamed not copied
+    * Update default templates to current latest version when reading in a custom personality
+	* Attempt to ignore invalid system names if presented in BodyDetails()
+    * Add "Log" function to write information to EDDI's log.  This is an aid when debugging templates
+	* Fix issue where new templates might show up in custom personalities blank rather than with the contents of the default template
+	* Change edit window's "Show default" button to "Compare to default"; allowing diff-style comparison between the current and default scripts for templates
+    * Added 'ICAO' function to allow ICAO-style speech of ship identifiers, sector names etc.
+    * Added 'Play' function to play an audio file instead of a speech
   * VoiceAttack Responder
+    * Use defensive copies of arrays to avoid potential exceptions when they are modified whilst we are reading them
+    * Add other VoiceAttack commands
+      * 'Tell me about this sytem' - Find out about the current system
+    * Add "Ship ident" and "Ship ident (spoken)"
     * Update 'disablespeechresponder' and 'enablespeechresponder' plugin contexts to continue to work in the background but just be quiet
     * Add VoiceAttack commands for the new speech responder plugin contexts:
       * "Be quiet" - Speech responder will not talk unless explicitly asked for information
@@ -201,7 +175,7 @@
       * 'What do I need for <blueprint>' - Find out the materials required for a particular blueprint
       * 'How many <blueprint> can I make' - Find out how many of a particular blueprint you can make with your current inventory
 
-2.2.3
+#2.2.3
   * Fix issue where undocumented change in Frontier API would cause EDDI to crash
   * Update netlog monitor to handle new log format
   * Add ship definition for Dolphin

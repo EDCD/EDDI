@@ -14,7 +14,7 @@ namespace EddiDataDefinitions
     {
         public static readonly List<Material> MATERIALS = new List<Material>();
 
-        public string category { get; private set; }
+        public string category { get; set; }
 
         public string EDName { get; private set; }
 
