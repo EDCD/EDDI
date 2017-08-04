@@ -393,7 +393,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'landing pad')}\r\n{SetState('eddi_context_landing_pad_system', system.name)}\r\n{SetState('eddi_context_landing_pad_station', event.station)}\r\n{SetState('eddi_context_landing_pad_pad', event.landingpad)}\r\n\r\n{set station to StationDetails(event.station)}\r\n{if station.model = \"Coriolis Starport\" || station.model = \"Orbis Starport\" || station.model = \"Ocellus Starport\" || station.model = \"Unknown Starport\":\r\n    {Pause(8000)}\r\n    {F(\"Landing pad report\")}\r\n}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'landing pad')}\r\n{SetState('eddi_context_landing_pad_system', system.name)}\r\n{SetState('eddi_context_landing_pad_station', event.station)}\r\n{SetState('eddi_context_landing_pad_pad', event.landingpad)}\r\n\r\n{set station to StationDetails(event.station)}\r\n{if station.model = \"Coriolis Starport\" || station.model = \"Orbis Starport\" || station.model = \"Ocellus Starport\" || station.model = \"Asteroid Base\" || station.model = \"Unknown Starport\":\r\n    {Pause(8000)}\r\n    {F(\"Landing pad report\")}\r\n}\r\n",
       "default": true,
       "name": "Docking granted",
       "description": "Triggered when your ship is granted docking permission at a station or outpost"
