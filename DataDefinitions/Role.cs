@@ -20,6 +20,7 @@ namespace EddiDataDefinitions
         public static readonly string Mining = "Mining";
         public static readonly string MultiPurpose = "Multi-purpose";
         public static readonly string Piracy = "Piracy";
+        public static readonly string Racing = "Racing";        
         public static readonly string Smuggling = "Smuggling";
         public static readonly string Trading = "Trading";
         public static readonly string Taxi = "Taxi";
@@ -32,6 +33,7 @@ namespace EddiDataDefinitions
             ROLES.Add(Mining);
             ROLES.Add(MultiPurpose);
             ROLES.Add(Piracy);
+            ROLES.Add(Racing);            
             ROLES.Add(Smuggling);
             ROLES.Add(Taxi);
             ROLES.Add(Trading);
