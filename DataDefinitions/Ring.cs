@@ -15,7 +15,7 @@ namespace EddiDataDefinitions
         public string name { get; set; }
 
         /// <summary>The composition of the ring</summary>
-        public Composition composition { get; set; }
+        public string composition { get; set; }
 
         /// <summary>The mass of the ring, in megatonnes</summary>
         public decimal mass { get; set; }
