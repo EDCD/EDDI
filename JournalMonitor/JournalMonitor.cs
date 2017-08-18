@@ -548,11 +548,12 @@ namespace EddiJournalMonitor
                                     string starType = getString(data, "StarType");
                                     decimal stellarMass = getDecimal(data, "StellarMass");
                                     decimal absoluteMagnitude = getDecimal(data, "AbsoluteMagnitude");
+                                    string luminosityClass = getString(data, "Luminosity");
                                     data.TryGetValue("Age_MY", out val);
                                     long age = (long)val * 1000000;
                                     decimal temperature = getDecimal(data, "SurfaceTemperature");
 
-                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, age, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings) { raw = line });
+                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, luminosityClass, age, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings) { raw = line });
                                     handled = true;
                                 }
                                 else
