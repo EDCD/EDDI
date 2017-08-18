@@ -1476,8 +1476,10 @@ namespace EddiJournalMonitor
                                 int height = (int)(long)val;
                                 string system = getString(data, "System");
                                 string body = getString(data, "Body");
+                                decimal? latitude = getOptionalDecimal(data, "Latitude");
+                                decimal? longitude = getOptionalDecimal(data, "Longitude");                                
 
-                                events.Add(new ScreenshotEvent(timestamp, filename, width, height, system, body) { raw = line });
+                                events.Add(new ScreenshotEvent(timestamp, filename, width, height, system, body, longitude, latitude) { raw = line });
                                 handled = true;
                                 break;
                             }
