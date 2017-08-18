@@ -1552,6 +1552,16 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "Friends":
+                            {
+                                string status = getString(data, "Status");                            
+                                string friend = getString(data, "Name");
+                                friend = friend.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+
+                                events.Add(new FriendsEvent(timestamp, status, friend) { raw = line });
+                                handled = true;
+                                break;
+                            }                            
                         case "RedeemVoucher":
                             {
                                 object val;
