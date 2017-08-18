@@ -737,6 +737,13 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
+                        case "Music":
+                            {
+                                string musicTrack = getString(data, "MusicTrack");
+                                events.Add(new MusicEvent(timestamp, musicTrack) { raw = line });
+                            }
+                            handled = true;
+                            break;                            
                         case "DockSRV":
                             events.Add(new SRVDockedEvent(timestamp) { raw = line });
                             handled = true;
