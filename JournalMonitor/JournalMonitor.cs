@@ -673,7 +673,8 @@ namespace EddiJournalMonitor
                                 string ship = getString(data, "ShipType");
                                 data.TryGetValue("ShipPrice", out val);
                                 long price = (long)val;
-                                events.Add(new ShipSoldEvent(timestamp, ship, shipId, price) { raw = line });
+                                string system = getString(data, "System");                                
+                                events.Add(new ShipSoldEvent(timestamp, ship, shipId, price, system) { raw = line });
                             }
                             handled = true;
                             break;
