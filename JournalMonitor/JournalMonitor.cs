@@ -1688,6 +1688,19 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "MissionRedirected":
+                            {
+                                object val;
+                                data.TryGetValue("MissionID", out val);
+                                long missionid = (long)val;
+                                string newdestinationstation = getString(data, "NewDestinationStation");  
+                                string olddestinationstation = getString(data, "OldDestinationStation");
+                                string newdestinationsystem = getString(data, "NewDestinationSystem");
+                                string olddestinationsystem = getString(data, "OldDestinationSystem");
+                                events.Add(new MissionRedirectedEvent(timestamp, missionid, newdestinationstation, olddestinationstation, newdestinationsystem, olddestinationsystem) { raw = line });
+                                handled = true;
+                                break;
+                            }
                         case "MissionFailed":
                             {
                                 object val;
