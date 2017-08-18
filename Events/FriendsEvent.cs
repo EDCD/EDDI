@@ -18,16 +18,16 @@ namespace EddiEvents
         static FriendsEvent()
         {
             VARIABLES.Add("status", "Status: one of the following: Requested, Declined, Added, Lost, Offline, Online");
-            VARIABLES.Add("name", "the friend's commander name");          
+            VARIABLES.Add("friend", "the friend's commander name");          
         }
 
         public string status { get; private set; }
-        public string name { get; private set; }        
+        public string friend { get; private set; }        
 
-        public FriendsEvent(DateTime timestamp, string status, string name) : base(timestamp, NAME)
+        public FriendsEvent(DateTime timestamp, string status, string friend) : base(timestamp, NAME)
         {
             this.status = status;
-            this.name = name;            
+            this.friend = friend;            
         }
     }
 }
