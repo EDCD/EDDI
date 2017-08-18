@@ -21,6 +21,8 @@ namespace EddiEvents
             VARIABLES.Add("height", "The height in pixels of the screenshot");
             VARIABLES.Add("system", "The name of the system where the screenshot was taken");
             VARIABLES.Add("body", "The name of the nearest body to where the screenshot was taken");
+            VARIABLES.Add("latitude", "The latitude where the screenshot was taken (if applicable)");
+            VARIABLES.Add("longitude", "The longitude where the screenshot was taken (if applicable)");            
         }
 
         public string filename { get; private set; }
@@ -28,14 +30,18 @@ namespace EddiEvents
         public int height { get; private set; }
         public string system { get; private set; }
         public string body { get; private set; }
+        public long latitude { get; private set; }
+        public long longitude { get; private set; }        
 
-        public ScreenshotEvent(DateTime timestamp, string filename, int width, int height, string system, string body) : base(timestamp, NAME)
+        public ScreenshotEvent(DateTime timestamp, string filename, int width, int height, string system, string body, long latitude, long longitude) : base(timestamp, NAME)
         {
             this.filename = filename;
             this.width = width;
             this.height = height;
             this.system = system;
             this.body = body;
+            this.latitude = latitude;
+            this.longitude = longitude;            
         }
     }
 }
