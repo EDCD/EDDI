@@ -47,7 +47,7 @@ namespace Eddi
 
         public bool inCrew { get; private set; } = false;
 
-        public bool inBeta { get; private set; } = true;
+        public bool inBeta { get; private set; } = false;
 
         static EDDI()
         {
