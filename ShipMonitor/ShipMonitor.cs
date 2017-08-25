@@ -274,6 +274,13 @@ namespace EddiShipMonitor
             writeShips();
         }
 
+        private void handleShipSoldOnRebuyEvent(ShipSoldOnRebuyEvent @event)
+        {
+            RemoveShip(@event.shipid);
+
+            writeShips();
+        }
+
         private void handleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
             // Obtain the ship to which this loadout refers
