@@ -12,7 +12,7 @@ namespace EddiEvents
     {
         public const string NAME = "Friends status";
         public const string DESCRIPTION = "Triggered when a friendly commander changes status";
-        public const string SAMPLE = "";
+        public const string SAMPLE = "{ \"timestamp\":\"2017-08-24T17:22:03Z\", \"event\":\"Friends\", \"Status\":\"Online\", \"Name\":\"Ipsum\" }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static FriendsEvent()

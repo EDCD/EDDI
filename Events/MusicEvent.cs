@@ -11,7 +11,7 @@ namespace EddiEvents
     {
         public const string NAME = "Music";
         public const string DESCRIPTION = "Triggered when the game music 'mood' changes";
-        public const string SAMPLE = "";
+        public const string SAMPLE = "{ \"timestamp\":\"2017-08-24T16:46:15Z\", \"event\":\"Music\", \"MusicTrack\":\"Exploration\" }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static MusicEvent()
