@@ -66,6 +66,7 @@
     <Compile Include="ShipRestockedEvent.cs" />
     <Compile Include="ShipShutdownEvent.cs" />
     <Compile Include="ShipSoldEvent.cs" />
+    <Compile Include="ShipSoldOnRebuyEvent.cs" />
     <Compile Include="ShipSwappedEvent.cs" />
     <Compile Include="ShipTransferInitiatedEvent.cs" />
   </ItemGroup>

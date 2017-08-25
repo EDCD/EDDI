@@ -50,6 +50,7 @@
     <Compile Include="CrewMemberRemovedEvent.cs" />
     <Compile Include="CrewMemberLeftEvent.cs" />
     <Compile Include="CrewMemberJoinedEvent.cs" />
+    <Compile Include="FriendsEvent.cs" />    
     <Compile Include="CrewRoleChanged.cs" />
     <Compile Include="CrewLeftEvent.cs" />
     <Compile Include="CrewJoinedEvent.cs" />
@@ -88,6 +89,8 @@
     <Compile Include="MissionAbandonedEvent.cs" />
     <Compile Include="MissionCompletedEvent.cs" />
     <Compile Include="MissionAcceptedEvent.cs" />
+    <Compile Include="MissionRedirectedEvent.cs" />
+    <Compile Include="SearchAndRescueEvent.cs" />    
     <Compile Include="JumpingEvent.cs" />
     <Compile Include="LimpetSoldEvent.cs" />
     <Compile Include="LimpetPurchasedEvent.cs" />
@@ -141,6 +144,7 @@
     <Compile Include="CommodityCollectedEvent.cs" />
     <Compile Include="ExplorationPromotionEvent.cs" />
     <Compile Include="ScreenshotEvent.cs" />
+    <Compile Include="MusicEvent.cs" />    
     <Compile Include="TradePromotionEvent.cs" />
     <Compile Include="CombatPromotionEvent.cs" />
     <Compile Include="FineIncurredEvent.cs" />

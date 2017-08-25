@@ -106,6 +106,10 @@ namespace EddiShipMonitor
             {
                 handleShipSoldEvent((ShipSoldEvent)@event);
             }
+            else if (@event is ShipSoldOnRebuyEvent)
+            {
+                handleShipSoldOnRebuyEvent((ShipSoldOnRebuyEvent)@event);
+            }
             else if (@event is ShipLoadoutEvent)
             {
                 handleShipLoadoutEvent((ShipLoadoutEvent)@event);

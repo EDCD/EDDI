@@ -13,7 +13,7 @@ namespace EddiShipMonitor
     {
         public const string NAME = "Ship sold on rebuy";
         public const string DESCRIPTION = "Triggered when you sell a ship to raise funds on the insurance / rebuy screen";
-        public const string SAMPLE = "{ "timestamp":"2017-07-20T08:56:39Z", "event":"SellShipOnRebuy", "ShipType":"Dolphin", "System":"Shinrarta Dezhra", "SellShipId":4, "ShipPrice":4110183 }";
+        public const string SAMPLE = "{ \"timestamp\":\"2017-07-20T08:56:39Z\", \"event\":\"SellShipOnRebuy\", \"ShipType\":\"Dolphin\", \"System\":\"Shinrarta Dezhra\", \"SellShipId\":4, \"ShipPrice\":4110183 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ShipSoldOnRebuyEvent()
@@ -36,7 +36,7 @@ namespace EddiShipMonitor
         [JsonProperty("price")]
         public long price { get; private set; }
 
-        public ShipSoldEvent(DateTime timestamp, string ship, string system, int shipId, long price) : base(timestamp, NAME)
+        public ShipSoldOnRebuyEvent(DateTime timestamp, string ship, string system, int shipId, long price) : base(timestamp, NAME)
         {
             this.ship = ship;
             this.system = system;            

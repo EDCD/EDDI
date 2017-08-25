@@ -12,7 +12,7 @@ namespace EddiEvents
     {
         public const string NAME = "Mission redirected";
         public const string DESCRIPTION = "Triggered when a mission is redirected";
-        public const string SAMPLE = "{ "timestamp": "2017-08-01T09:04:07Z", "event": "MissionRedirected", "MissionID": 65367315, "NewDestinationStation": "Metcalf Orbital", "OldDestinationStation": "Cuffey Orbital", "NewDestinationSystem": "Cemiess", "OldDestinationSystem": "Vequess" }";
+        public const string SAMPLE = "{ \"timestamp\": \"2017-08-01T09:04:07Z\", \"event\": \"MissionRedirected\", \"MissionID\": 65367315, \"NewDestinationStation\": \"Metcalf Orbital\", \"OldDestinationStation\": \"Cuffey Orbital\", \"NewDestinationSystem\": \"Cemiess\", \"OldDestinationSystem\": \"Vequess\" }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static MissionRedirectedEvent()

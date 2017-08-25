@@ -37,7 +37,7 @@ namespace EddiEvents
         [JsonProperty("latitude")]
         public decimal? latitude { get; private set; }     
 
-        public ScreenshotEvent(DateTime timestamp, string filename, int width, int height, string system, string body, long longitude, long latitude) : base(timestamp, NAME)
+        public ScreenshotEvent(DateTime timestamp, string filename, int width, int height, string system, string body, decimal? longitude, decimal? latitude) : base(timestamp, NAME)
         {
             this.filename = filename;
             this.width = width;
