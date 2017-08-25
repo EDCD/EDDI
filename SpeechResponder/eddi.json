@@ -893,6 +893,15 @@
       "name": "Mission failed",
       "description": "Triggered when you fail a mission"
     },
+    "Mission redirected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Mission redirected",
+      "description": "Triggered when a mission is redirected"
+    },
     "Modification applied": {
       "enabled": true,
       "priority": 3,
@@ -910,6 +919,15 @@
       "default": true,
       "name": "Modification crafted",
       "description": "Triggered when you craft a modification to a module"
+    },
+    "Music": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Music",
+      "description": "Triggered when the game music 'mood' changes"
     },
     "NPC attack commenced": {
       "enabled": true,
@@ -1045,6 +1063,15 @@
       "default": true,
       "name": "Screenshot",
       "description": "Triggered when you take a screenshot"
+    },
+    "Search and rescue": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Search and rescue",
+      "description": "Triggered when delivering items to a Search and Rescue contact"
     },
     "Security presence report": {
       "enabled": true,
