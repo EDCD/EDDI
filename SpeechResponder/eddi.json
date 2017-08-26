@@ -1244,6 +1244,15 @@
       "name": "Ship sold",
       "description": "Triggered when you sell a ship"
     },
+    "Ship sold on rebuy": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship sold on rebuy",
+      "description": "Triggered when you sell a ship to raise funds on the insurance / rebuy screen"
+    },
     "Ship swapped": {
       "enabled": true,
       "priority": 3,
