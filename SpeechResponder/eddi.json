@@ -533,6 +533,15 @@
       "name": "Fine paid",
       "description": "Triggered when you pay a fine"
     },
+    "Friends status": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Friends status",
+      "description": "Triggered when a friendly commander changes status"
+    },
     "FSD engaged": {
       "enabled": true,
       "priority": 3,

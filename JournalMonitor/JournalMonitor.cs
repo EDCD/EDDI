@@ -1750,7 +1750,8 @@ namespace EddiJournalMonitor
                                 object val;
                                 string name = getString(data, "Name");
                                 data.TryGetValue("Count", out val);
-                                int? amount = (int?)(long?)val;                                
+                                int? amount = (int?)(long?)val;
+                                data.TryGetValue("Reward", out val);
                                 long reward = (val == null ? 0 : (long)val);                                
                                 events.Add(new SearchAndRescueEvent(timestamp, name, amount, reward) { raw = line });
                                 handled = true;
