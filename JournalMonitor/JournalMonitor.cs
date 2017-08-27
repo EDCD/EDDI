@@ -709,8 +709,10 @@ namespace EddiJournalMonitor
                                 decimal distance = getDecimal(data, "Distance");
                                 data.TryGetValue("TransferPrice", out val);
                                 long price = (long)val;
+                                data.TryGetValue("TransferTime", out val);
+                                long time = (long)val;
 
-                                events.Add(new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price) { raw = line });
+                                events.Add(new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price, time) { raw = line });
 
                                 handled = true;
                             }
@@ -1727,11 +1729,12 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("MissionID", out val);
                                 long missionid = (long)val;
+                                string name = getString(data, "MissionName");
                                 string newdestinationstation = getString(data, "NewDestinationStation");  
                                 string olddestinationstation = getString(data, "OldDestinationStation");
                                 string newdestinationsystem = getString(data, "NewDestinationSystem");
                                 string olddestinationsystem = getString(data, "OldDestinationSystem");
-                                events.Add(new MissionRedirectedEvent(timestamp, missionid, newdestinationstation, olddestinationstation, newdestinationsystem, olddestinationsystem) { raw = line });
+                                events.Add(new MissionRedirectedEvent(timestamp, missionid, name, newdestinationstation, olddestinationstation, newdestinationsystem, olddestinationsystem) { raw = line });
                                 handled = true;
                                 break;
                             }
