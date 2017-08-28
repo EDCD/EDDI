@@ -51,6 +51,7 @@
     <Compile Include="BlueprintMaterials.cs" />
     <Compile Include="Composition.cs" />
     <Compile Include="Blueprint.cs" />
+    <Compile Include="DataScan.cs" />
     <Compile Include="MaterialAmount.cs" />
     <Compile Include="Ring.cs" />
     <Compile Include="Cargo.cs" />

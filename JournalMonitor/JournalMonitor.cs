@@ -618,11 +618,19 @@ namespace EddiJournalMonitor
                                 }
                             }
                             break;
+                        case "DataScanned":
+                            {
+                                object val;
+                                DataScan type = DataScan.FromName(getString(data, "Type"));
+                                events.Add(new DataScannedEvent(timestamp, type) { raw = line });
+                            }
+                            handled = true;
+                            break;
                         case "SellShipOnRebuy":
                             {
                                 object val;
-                                string ship = getString(data, "ShipType");    
-                                string system = getString(data, "System");                                
+                                string ship = getString(data, "ShipType");
+                                string system = getString(data, "System");
                                 data.TryGetValue("SellShipID", out val);
                                 int shipId = (int)(long)val;
                                 data.TryGetValue("ShipPrice", out val);
@@ -630,7 +638,7 @@ namespace EddiJournalMonitor
                                 events.Add(new ShipSoldOnRebuyEvent(timestamp, ship, system, shipId, price) { raw = line });
                             }
                             handled = true;
-                            break;                            
+                            break;
                         case "ShipyardBuy":
                             {
                                 object val;
