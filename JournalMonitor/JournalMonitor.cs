@@ -1586,6 +1586,7 @@ namespace EddiJournalMonitor
 
                                 string type = getString(data, "Type");
                                 List<Reward> rewards = new List<Reward>();
+
                                 // Obtain list of factions
                                 data.TryGetValue("Factions", out val);
                                 List<object> factionsData = (List<object>)val;
@@ -1603,28 +1604,29 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Amount", out val);
                                 long amount = (long)val;
 
+                                decimal? brokerpercentage = getOptionalDecimal(data, "BrokerPercentage");
+
                                 if (type == "bounty")
                                 {
-                                    events.Add(new BountyRedeemedEvent(timestamp, rewards, amount) { raw = line });
+                                    events.Add(new BountyRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line });
                                 }
                                 else if (type == "CombatBond")
                                 {
-                                    events.Add(new BondRedeemedEvent(timestamp, rewards, amount) { raw = line });
+                                    events.Add(new BondRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line });
                                 }
                                 else if (type == "trade")
                                 {
-                                    events.Add(new TradeVoucherRedeemedEvent(timestamp, rewards, amount) { raw = line });
+                                    events.Add(new TradeVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line });
                                 }
                                 else if (type == "settlement" || type == "scannable")
                                 {
-                                    events.Add(new DataVoucherRedeemedEvent(timestamp, rewards, amount) { raw = line });
+                                    events.Add(new DataVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line });
                                 }
                                 else
                                 {
                                     Logging.Warn("Unhandled voucher type " + type);
                                     Logging.Report("Unhandled voucher type " + type);
                                 }
-
                                 handled = true;
                                 break;
                             }
