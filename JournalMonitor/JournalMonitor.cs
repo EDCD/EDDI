@@ -256,15 +256,24 @@ namespace EddiJournalMonitor
                             handled = true;
                             break;
                         case "CapShipBond":
+                        case "DatalinkVoucher":
                         case "FactionKillBond":
                             {
                                 object val;
-                                string awardingFaction = getFaction(data, "AwardingFaction");
                                 data.TryGetValue("Reward", out val);
                                 long reward = (long)val;
                                 string victimFaction = getString(data, "VictimFaction");
 
-                                events.Add(new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward) { raw = line });
+                                if (data.ContainsKey("AwardingFaction"))
+                                {
+                                    string awardingFaction = getFaction(data, "AwardingFaction");
+                                    events.Add(new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward) { raw = line });
+                                }
+                                else if (data.ContainsKey("PayeeFaction"))
+                                {
+                                    string payeeFaction = getFaction(data, "PayeeFaction");
+                                    events.Add(new DataVoucherAwardedEvent(timestamp, payeeFaction, victimFaction, reward) { raw = line });
+                                }
                             }
                             handled = true;
                             break;
@@ -620,7 +629,6 @@ namespace EddiJournalMonitor
                             break;
                         case "DataScanned":
                             {
-                                object val;
                                 DataScan type = DataScan.FromName(getString(data, "Type"));
                                 events.Add(new DataScannedEvent(timestamp, type) { raw = line });
                             }
