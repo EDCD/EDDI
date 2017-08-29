@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataVoucherAwardedEvent.cs" />
+    <Compile Include="NavBeaconScanEvent.cs" />
     <Compile Include="CrewMemberRoleChangedEvent.cs" />
     <Compile Include="CrewMemberLaunchedEvent.cs" />
     <Compile Include="DataScannedEvent.cs" />
