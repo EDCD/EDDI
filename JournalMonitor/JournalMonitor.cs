@@ -1106,6 +1106,15 @@ namespace EddiJournalMonitor
                                 }
                             }
                             break;
+                        case "NavBeaconScan":
+                            {
+                                object val;
+                                data.TryGetValue("NumBodies", out val);
+                                int numbodies = (int)(long)val;
+                                events.Add(new NavBeaconScanEvent(timestamp, numbodies) { raw = line });
+                            }
+                            handled = true;
+                            break;
                         case "BuyExplorationData":
                             {
                                 string system = getString(data, "System");

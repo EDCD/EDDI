@@ -938,6 +938,15 @@
       "name": "Music",
       "description": "Triggered when the game music 'mood' changes"
     },
+    "Nav beacon scan": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context _}\r\n{SetState('eddi_context_last_subject', 'nav beacon')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_star_system', system.name)}\r\n{SetState('eddi_context_nav_scans', event.numbodies)}\r\n\r\n{set nav to OneOf(\"nav\", \"navigation\")}\r\n{set beacon to OneOf(\"beacon\", \"buoy\")}\r\n{OneOf(\"This {nav} {beacon} has transferred details of {event.numbodies} bodies in this system.\",\r\n \"Details on {event.numbodies} bodies in this system received.\")}\r\n\r\n{Pause(500)}",
+      "default": true,
+      "name": "Nav beacon scan",
+      "description": "Triggered when you scan a nav beacon, before the scan data for all the bodies in the system is written into the journal"
+    },
     "NPC attack commenced": {
       "enabled": true,
       "priority": 3,
