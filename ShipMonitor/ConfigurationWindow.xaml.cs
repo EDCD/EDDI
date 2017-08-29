@@ -1,4 +1,4 @@
-﻿using Eddi;
+using Eddi;
 using EddiDataDefinitions;
 using EddiSpeechService;
 using System;
@@ -49,7 +49,7 @@ namespace EddiShipMonitor
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             if (string.IsNullOrEmpty(ship.phoneticname))
             {
-                SpeechService.Instance.Say(ship, ship.name + " stands ready.", false);
+                SpeechService.Instance.Say(ship, ship.name + " est prêt.", false);
             }
             else
             {
