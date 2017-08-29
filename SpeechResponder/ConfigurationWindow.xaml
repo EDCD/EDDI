@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="EddiSpeechResponder.ConfigurationWindow"
+<UserControl x:Class="EddiSpeechResponder.ConfigurationWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,27 +8,27 @@
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-            <TextBlock TextWrapping="Wrap" Text="Write text copies of speech to the file %APPDATA%\EDDI\speechresponder.out"></TextBlock>
+            <TextBlock TextWrapping="Wrap" Text="Enregistre tout ce qui est dit dans le fichier : %APPDATA%\EDDI\speechresponder.out"></TextBlock>
             <CheckBox x:Name="subtitlesCheckbox" VerticalAlignment="Center" Checked="subtitlesEnabled" Unchecked="subtitlesDisabled"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,5">
-            <TextBlock Margin="0,5" TextWrapping="Wrap" Text="Do not speak out loud when text is written to the file as above"></TextBlock>
+            <TextBlock Margin="0,5" TextWrapping="Wrap" Text="Ne pas parler à haute voix lorsque le texte est sauvegardé comme ci-dessus"></TextBlock>
             <CheckBox x:Name="subtitlesOnlyCheckbox" Margin="5" VerticalAlignment="Center" Checked="subtitlesOnlyEnabled" Unchecked="subtitlesOnlyDisabled"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0">
-            <TextBlock Margin="0,5" Text="Active personality"></TextBlock>
+            <TextBlock Margin="0,5" Text="Personnalité active"></TextBlock>
             <ComboBox Margin="5" ItemsSource="{Binding Personalities}" SelectedValue="{Binding Personality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectionChanged="personalityChanged" />
             <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top" Text="{Binding Personality.Description}"/>
         </StackPanel>
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0,5">
-            <Button Margin="10" HorizontalAlignment="Center" Click="newScriptClicked" IsEnabled="{Binding Path=Personality.IsEditable}">Create new script</Button>
-            <Button Margin="10" HorizontalAlignment="Center" Click="copyPersonalityClicked" >Copy personality</Button>
-            <Button Margin="10" HorizontalAlignment="Center" Click="deletePersonalityClicked" IsEnabled="{Binding Path=Personality.IsEditable}">Delete personality</Button>
+            <Button Margin="10" HorizontalAlignment="Center" Click="newScriptClicked" IsEnabled="{Binding Path=Personality.IsEditable}">Nouveau Script</Button>
+            <Button Margin="10" HorizontalAlignment="Center" Click="copyPersonalityClicked" >Copie Personalité</Button>
+            <Button Margin="10" HorizontalAlignment="Center" Click="deletePersonalityClicked" IsEnabled="{Binding Path=Personality.IsEditable}">Efface personalité</Button>
         </UniformGrid>
         <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding Personality.Scripts}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Path=Value.Name}" SortDirection="Ascending" />
-                <DataGridTemplateColumn Header="Enabled">
+                <DataGridTextColumn Header="Nom" Binding="{Binding Path=Value.Name}" SortDirection="Ascending" />
+                <DataGridTemplateColumn Header="Actif">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Checked="eddiScriptsUpdated" Unchecked="eddiScriptsUpdated" IsHitTestVisible="{Binding Path=Value.Responder}" />
