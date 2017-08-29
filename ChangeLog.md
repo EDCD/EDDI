@@ -1,3 +1,28 @@
+#2.4.0
+* Core
+  * New roles have been added to the shipyard
+* Events
+  * 'Mission redirected' event added
+  * 'Search and rescue' event added
+  * 'Star scanned' event now includes a luminosity class string
+  * 'Ship sold' event  now contains a value for the system where the ship was sold
+  * 'Ship sold on rebuy' event added
+  * 'Screenshot' event now contains longitude & latitude, when appropriate
+  * 'Music' event added (add your own music tracks and/or monitor game state)
+  * 'Friends' event added
+  * 'Nav beacon scan' event added
+  * 'Shipyard transfer' event now includes transfer time
+* Speech Responder
+  * Script changes:
+    * 'Docking granted' script revised to recognize asteroid bases
+    * 'Mission redirected' - new script
+	* 'Search and rescue' - new script
+	* 'Ship sold on rebuy' - new script
+	* 'Ship sold' - revised to include location for ships sold remotely
+	* 'Nav beacon scan' - new script
+	
+
+
 #2.3.0
   * Core
     * Tidy ups for reading from and writing to files to catch potential exceptions
