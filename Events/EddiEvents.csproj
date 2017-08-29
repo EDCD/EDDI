@@ -44,9 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataVoucherAwardedEvent.cs" />
     <Compile Include="NavBeaconScanEvent.cs" />
     <Compile Include="CrewMemberRoleChangedEvent.cs" />
     <Compile Include="CrewMemberLaunchedEvent.cs" />
+    <Compile Include="DataScannedEvent.cs" />
     <Compile Include="FileHeaderEvent.cs" />
     <Compile Include="CrewMemberRemovedEvent.cs" />
     <Compile Include="CrewMemberLeftEvent.cs" />
@@ -55,7 +57,7 @@
     <Compile Include="CrewRoleChanged.cs" />
     <Compile Include="CrewLeftEvent.cs" />
     <Compile Include="CrewJoinedEvent.cs" />
-    <Compile Include="DataVoucherRedeemed.cs" />
+    <Compile Include="DataVoucherRedeemedEvent.cs" />
     <Compile Include="CargoInventoryEvent.cs" />
     <Compile Include="MaterialInventoryEvent.cs" />
     <Compile Include="FSDEngagedEvent.cs" />

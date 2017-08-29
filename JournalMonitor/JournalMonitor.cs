@@ -256,15 +256,24 @@ namespace EddiJournalMonitor
                             handled = true;
                             break;
                         case "CapShipBond":
+                        case "DatalinkVoucher":
                         case "FactionKillBond":
                             {
                                 object val;
-                                string awardingFaction = getFaction(data, "AwardingFaction");
                                 data.TryGetValue("Reward", out val);
                                 long reward = (long)val;
                                 string victimFaction = getString(data, "VictimFaction");
 
-                                events.Add(new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward) { raw = line });
+                                if (data.ContainsKey("AwardingFaction"))
+                                {
+                                    string awardingFaction = getFaction(data, "AwardingFaction");
+                                    events.Add(new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward) { raw = line });
+                                }
+                                else if (data.ContainsKey("PayeeFaction"))
+                                {
+                                    string payeeFaction = getFaction(data, "PayeeFaction");
+                                    events.Add(new DataVoucherAwardedEvent(timestamp, payeeFaction, victimFaction, reward) { raw = line });
+                                }
                             }
                             handled = true;
                             break;
@@ -618,11 +627,18 @@ namespace EddiJournalMonitor
                                 }
                             }
                             break;
+                        case "DataScanned":
+                            {
+                                DataScan type = DataScan.FromName(getString(data, "Type"));
+                                events.Add(new DataScannedEvent(timestamp, type) { raw = line });
+                            }
+                            handled = true;
+                            break;
                         case "SellShipOnRebuy":
                             {
                                 object val;
-                                string ship = getString(data, "ShipType");    
-                                string system = getString(data, "System");                                
+                                string ship = getString(data, "ShipType");
+                                string system = getString(data, "System");
                                 data.TryGetValue("SellShipID", out val);
                                 int shipId = (int)(long)val;
                                 data.TryGetValue("ShipPrice", out val);
@@ -630,7 +646,7 @@ namespace EddiJournalMonitor
                                 events.Add(new ShipSoldOnRebuyEvent(timestamp, ship, system, shipId, price) { raw = line });
                             }
                             handled = true;
-                            break;                            
+                            break;
                         case "ShipyardBuy":
                             {
                                 object val;
@@ -1579,6 +1595,7 @@ namespace EddiJournalMonitor
 
                                 string type = getString(data, "Type");
                                 List<Reward> rewards = new List<Reward>();
+
                                 // Obtain list of factions
                                 data.TryGetValue("Factions", out val);
                                 List<object> factionsData = (List<object>)val;
@@ -1596,28 +1613,29 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Amount", out val);
                                 long amount = (long)val;
 
+                                decimal? brokerpercentage = getOptionalDecimal(data, "BrokerPercentage");
+
                                 if (type == "bounty")
                                 {
-                                    events.Add(new BountyRedeemedEvent(timestamp, rewards, amount) { raw = line });
+                                    events.Add(new BountyRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line });
                                 }
                                 else if (type == "CombatBond")
                                 {
-                                    events.Add(new BondRedeemedEvent(timestamp, rewards, amount) { raw = line });
+                                    events.Add(new BondRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line });
                                 }
                                 else if (type == "trade")
                                 {
-                                    events.Add(new TradeVoucherRedeemedEvent(timestamp, rewards, amount) { raw = line });
+                                    events.Add(new TradeVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line });
                                 }
                                 else if (type == "settlement" || type == "scannable")
                                 {
-                                    events.Add(new DataVoucherRedeemedEvent(timestamp, rewards, amount) { raw = line });
+                                    events.Add(new DataVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line });
                                 }
                                 else
                                 {
                                     Logging.Warn("Unhandled voucher type " + type);
                                     Logging.Report("Unhandled voucher type " + type);
                                 }
-
                                 handled = true;
                                 break;
                             }
