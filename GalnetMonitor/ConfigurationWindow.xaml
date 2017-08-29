@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="GalnetMonitor.ConfigurationWindow"
+<UserControl x:Class="GalnetMonitor.ConfigurationWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,13 +7,13 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel LastChildFill="False" Background="#FFE5E5E5" Margin="0,5">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Top">
-            <TextBlock Margin="5,0" TextWrapping="Wrap" Text="Galnet article language" VerticalAlignment="Center"/>
+            <TextBlock Margin="5,0" TextWrapping="Wrap" Text="Langue des articles Galnet" VerticalAlignment="Center"/>
             <ComboBox x:Name="languageComboBox" Background="#FFE5E5E5" SelectionChanged="onLanguageChanged" SelectedValuePath="Content">
                 <ComboBoxItem>English</ComboBoxItem>
                 <ComboBoxItem>Français</ComboBoxItem>
                 <ComboBoxItem>Deutsch</ComboBoxItem>
             </ComboBox>
         </StackPanel>
-        <TextBlock Margin="5" TextWrapping="Wrap" Text="Please note that after changing language it can take up to 2 minutes for new Galnet articles to be available" VerticalAlignment="Top"/>
+        <TextBlock Margin="5" TextWrapping="Wrap" Text="Veuillez noter qu'après avoir changé de langue, la prise en compte de la demande peut prendre dans les 2 minutes pour accéder aux nouveaux articles Galnet." VerticalAlignment="Top"/>
     </DockPanel>
 </UserControl>
