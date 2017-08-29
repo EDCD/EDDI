@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="EddiEdsmResponder.ConfigurationWindow"
+<UserControl x:Class="EddiEdsmResponder.ConfigurationWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -20,14 +20,14 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="To connect to EDSM you need to have registered an account with them.  Once you have done this you can obtain your API key by clicking on your portrait in the top-right corner of the screen and selecting 'My API Key'" VerticalAlignment="Top"/>
-            <Label Grid.Row="1" Grid.Column="0" Margin="10" Content="EDSM API key"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="Pour vous connecter à EDSM, vous devez avoir enregistré un compte sur leur site. Une fois que vous avez fait cela, vous pouvez obtenir votre clé API en cliquant sur votre portrait dans le coin supérieur droit de l'écran et en sélectionnant 'Ma clé API'" VerticalAlignment="Top"/>
+            <Label Grid.Row="1" Grid.Column="0" Margin="10" Content="Clef API de EDSM"/>
             <TextBox x:Name="edsmApiKeyTextBox" Grid.Row="1" Grid.Column="1" Margin="10" TextChanged="edsmApiKeyChanged"/>
-            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="If you registered a different commander name to your actual one, or you have not enabled the companion app, please enter your commander name below" VerticalAlignment="Top"/>
-            <Label Grid.Row="3" Grid.Column="0" Margin="10" Content="EDSM Commander name"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="Si vous avez enregistré un nom de commandant différent de celui que vous utilisez en jeu ou si vous n'avez pas activé l'application complémentaire, veuillez entrer le nom de votre commandant ci-dessous" VerticalAlignment="Top"/>
+            <Label Grid.Row="3" Grid.Column="0" Margin="10" Content="Nom de Commandant enregistré dans EDSM"/>
             <TextBox x:Name="edsmCommanderNameTextBox" Grid.Row="3" Grid.Column="1" Margin="10" TextChanged="edsmCommanderNameChanged"/>
-            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="Once you have entered your data above you can pull your existing logs from EDSM so that EDDI knows how many times you have been to each system.  You only need to do this the first time you set up EDSM.  Note that this can take a while to run" VerticalAlignment="Top"/>
-            <Button x:Name="edsmFetchLogsButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Obtain EDSM log" Margin="10" Click="edsmObtainLogClicked"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="Une fois que vous avez entré vos données ci-dessus, vous pouvez extraire vos journaux existants d'EDSM afin que EDDI sache combien de fois vous avez été dans chaque système. Vous devez le faire seulement la première fois que vous avez configuré EDSM. Notez que cela peut prendre un certain temps pour fonctionner" VerticalAlignment="Top"/>
+            <Button x:Name="edsmFetchLogsButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Obtenir les Logs EDSM" Margin="10" Click="edsmObtainLogClicked"/>
         </Grid>
     </DockPanel>
 </UserControl>
