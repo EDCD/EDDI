@@ -82,7 +82,7 @@
     <Compile Include="PowerJoinedEvent.cs" />
     <Compile Include="MarketInformationUpdatedEvent.cs" />
     <Compile Include="BondAwardedEvent.cs" />
-    <Compile Include="FindPaidEvent.cs" />
+    <Compile Include="FinePaidEvent.cs" />
     <Compile Include="EngineerProgressedEvent.cs" />
     <Compile Include="ModificationAppliedEvent.cs" />
     <Compile Include="ModificationCraftedEvent.cs" />

@@ -18,16 +18,20 @@ namespace EddiEvents
         static FinePaidEvent()
         {
             VARIABLES.Add("amount", "The amount of the fine paid");
+            VARIABLES.Add("brokerpercentage", "Broker precentage fee (if paid via a Broker)");
             VARIABLES.Add("legacy", "True if the payment is for a legacy fine");
         }
 
         [JsonProperty("amount")]
         public long amount { get; private set; }
 
+        [JsonProperty("brokerpercentage")]
+        public decimal? brokerpercentage { get; private set; }
+
         [JsonProperty("legacy")]
         public bool legacy { get; private set; }
 
-        public FinePaidEvent(DateTime timestamp, long amount, bool legacy) : base(timestamp, NAME)
+        public FinePaidEvent(DateTime timestamp, long amount, decimal? brokerpercentage, bool legacy) : base(timestamp, NAME)
         {
             this.amount = amount;
             this.legacy = legacy;

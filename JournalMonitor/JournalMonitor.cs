@@ -1524,8 +1524,9 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Amount", out val);
                                 long amount = (long)val;
+                                decimal? brokerpercentage = getOptionalDecimal(data, "BrokerPercentage");
 
-                                events.Add(new FinePaidEvent(timestamp, amount, false) { raw = line });
+                                events.Add(new FinePaidEvent(timestamp, amount, brokerpercentage, false) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -1534,8 +1535,9 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Amount", out val);
                                 long amount = (long)val;
+                                decimal? brokerpercentage = getOptionalDecimal(data, "BrokerPercentage");
 
-                                events.Add(new FinePaidEvent(timestamp, amount, true) { raw = line });
+                                events.Add(new FinePaidEvent(timestamp, amount, brokerpercentage, true) { raw = line });
                                 handled = true;
                                 break;
                             }
