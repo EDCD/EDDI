@@ -1,4 +1,4 @@
-﻿using Eddi;
+using Eddi;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
@@ -37,7 +37,7 @@ namespace EDDNResponder
 
         public string ResponderDescription()
         {
-            return "Send station, jump, and scan information to EDDN.  EDDN is a third-party tool that gathers information on systems and markets, and provides data for most trading tools as well as starsystem information tools such as EDDB";
+            return "Envoyer les informations de station, de saut et de scan à EDDN. EDDN est un outil tiers qui regroupe des informations sur les systèmes et les marchés et fournit des données pour la plupart des outils de commerce ainsi que des outils d'information sur les sytèmes stellaires tels que EDDB";
         }
 
         public EDDNResponder()

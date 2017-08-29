@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="EddiVoiceAttackResponder.ConfigurationWindow"
+<UserControl x:Class="EddiVoiceAttackResponder.ConfigurationWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,18 +7,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="To integrate EDDI with VoiceAttack EDDI needs to be installed within VoiceAttack's 'Apps' directory.  The default path for this is 'C:\Program Files (x86)\VoiceAttack\Apps', and is where EDDI will be installed by default." VerticalAlignment="Top"/>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="EDDI will only work with versions of VoiceAttack 1.5.12.22 and higher.  Note that this a beta release." VerticalAlignment="Top"/>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="Once VoiceAttack is installed you will need to enable plugin support.  To do so you must click on the Settings icon (a spanner) in the top-right corner of the VoiceAttack and check the 'Enable plugin support' option and restart VoiceAttack.  You should see a message in the VoiceAttack window along the lines of 'Plugin EDDI 2.0.0 initialized'." VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="Pour intégrer EDDI avec VoiceAttack EDDI doit être installé dans le répertoire 'Apps' de VoiceAttack. Le chemin par défaut pour cela est 'C:\Program Files (x86)\VoiceAttack\Apps', et c'est le répertoire d'installation par défaut de EDDI." VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="EDDI ne fonctionnera qu'avec les versions de VoiceAttack 1.5.12.22 et plus. Notez que ceci est en version bêta." VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="Une fois que VoiceAttack est installé, vous devrez activer le support du plugin. Pour ce faire, vous devez cliquer sur l'icône Paramètres (une clé) dans le coin supérieur droit du VoiceAttack et vérifier l'option «Activer le support de plugin» et redémarrer VoiceAttack. Vous devriez voir un message dans la fenêtre VoiceAttack selon les lignes de 'Plugin EDDI 2.3.0 initialisé'." VerticalAlignment="Top"/>
         <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
             <FlowDocument Background="#FFE5E5E5">
-                <Paragraph>At this point you can integrate EDDI's variables with your own VoiceAttack scripts.  For example, your commander's name is stored in the 'Name' text variable so to access it you just use '{TXT:Name}' in your own commands.  There are variables for your commander, your ships, the current starsystem and station you are at, and more.  A full list of variables is available <Hyperlink Click="VAVariablesClicked">on the main EDDI site</Hyperlink>.</Paragraph>
+                <Paragraph>À ce stade, vous pouvez intégrer les variables EDDI avec vos propres scripts VoiceAttack. Par exemple, le nom de votre commandant est stocké dans la variable de texte «Nom» afin de l'accéder, vous venez d'utiliser «{TXT: Name}" dans vos propres commandes. Il existe des variables pour votre commandant, vos navires, le système d'étoiles actuel et la station que vous êtes, et plus encore. Une liste complète de variables est disponible <Hyperlink Click="VAVariablesClicked">sur le site principal de EDDI</Hyperlink>.</Paragraph>
             </FlowDocument>
         </RichTextBox>
         <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
             <FlowDocument Background="#FFE5E5E5">
-                <Paragraph>In addition to writing scripts that you trigger with voice or keyboard actions you can also write scripts that trigger on events that occur within Elite.  For example, if you wanted to trigger a script every time the 'Docked' event occurs then you would write a script called '((EDDI docked))' (note the double brackets around the name to avoid it being called accidentally, and the lower cased 'd' in docked).  A full list of events is also available
-                    <Hyperlink Click="VAVariablesClicked">on the main EDDI site</Hyperlink>.
+                <Paragraph>En plus d'écrire des scripts que vous déclenchez avec des actions vocales ou clavier, vous pouvez également écrire des scripts qui déclenchent des événements qui se produisent dans Elite. Par exemple, si vous vouliez déclencher un script chaque fois que l'événement «Docked» se produisait, vous écririez un script intitulé «((EDDI docked))» (notez les parenthèses autour du nom pour éviter qu'il ne soit appelé accidentellement, et l'utilisation du 'd' minuscule dans docked). Une liste complète des événements est également disponible
+                    <Hyperlink Click="VAVariablesClicked">sur le site principal de EDDI (documentation en anglais)</Hyperlink>.
                     <!--, and you can also
                     <Hyperlink Click="VAExampleClicked">watch a video setting up a command to trigger on an event</Hyperlink>.-->
                 </Paragraph>

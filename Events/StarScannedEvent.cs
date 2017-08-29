@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace EddiEvents
     {
         public const string NAME = "Star scanned";
         public const string DESCRIPTION = "Triggered when you complete a scan of a stellar body";
-        public static string SAMPLE = "{ \"timestamp\":\"2016-10-05T10:13:55Z\", \"event\":\"Scan\", \"BodyName\":\"Col 285 Sector RS-K c8-5 A\", \"DistanceFromArrivalLS\":0.000000, \"StarType\":\"TTS\", \"StellarMass\":0.449219, \"Radius\":458926400.000000, \"AbsoluteMagnitude\":8.287720, \"Age_MY\":51, \"SurfaceTemperature\":3209.000000, \"SemiMajorAxis\":352032544.000000, \"Eccentricity\":0.027010, \"OrbitalInclination\":74.195038, \"Periapsis\":330.750244, \"OrbitalPeriod\":36441.519531, \"RotationPeriod\":203102.843750 }";
+        public static string SAMPLE = "{ \"timestamp\":\"2017-08-28T10:56:04Z\", \"event\":\"Scan\", \"BodyName\":\"Crucis Sector PC-V a2-0 A\", \"DistanceFromArrivalLS\":0.000000, \"StarType\":\"M\", \"StellarMass\":0.183594, \"Radius\":239969568.000000, \"AbsoluteMagnitude\":11.577454, \"Age_MY\":6322, \"SurfaceTemperature\":2081.000000, \"Luminosity\":\"VI\", \"SemiMajorAxis\":18455684186112.000000, \"Eccentricity\":0.024318, \"OrbitalInclination\":80.848442, \"Periapsis\":183.522415, \"OrbitalPeriod\":981915533312.000000, \"RotationPeriod\":120296.101563, \"AxialTilt\":0.000000 }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
@@ -29,6 +29,7 @@ namespace EddiEvents
             VARIABLES.Add("radiusprobability", "The probablility of finding a star of this class with this radius");
             VARIABLES.Add("absolutemagnitude", "The absolute magnitude of the star that has been scanned");
             VARIABLES.Add("luminosity", "The luminosity of the star that has been scanned");
+            VARIABLES.Add("luminosityClass", "The luminosity class of the star that has been scanned");            
             VARIABLES.Add("tempprobability", "The probablility of finding a star of this class with this temperature");
             VARIABLES.Add("age", "The age of the star that has been scanned, in years (rounded to millions of years)");
             VARIABLES.Add("ageprobability", "The probablility of finding a star of this class with this age");
@@ -60,6 +61,8 @@ namespace EddiEvents
         public decimal absolutemagnitude { get; private set; }
 
         public decimal luminosity { get; private set; }
+        
+        public string luminosityClass { get; private set; }
 
         public decimal tempprobability { get; private set; }
 
@@ -87,13 +90,14 @@ namespace EddiEvents
 
         public List<Ring> rings { get; private set; }
 
-        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings) : base(timestamp, NAME)
+        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, string luminosityClass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings) : base(timestamp, NAME)
         {
             this.name = name;
             this.stellarclass = stellarclass;
             this.solarmass = solarmass;
             this.radius = radius;
             this.absolutemagnitude = absolutemagnitude;
+            this.luminosityClass = luminosityClass;         
             this.age = age;
             this.temperature = temperature;
             this.distancefromarrival = distancefromarrival;
@@ -105,7 +109,7 @@ namespace EddiEvents
             this.periapsis = periapsis;
             this.rings = rings;
             solarradius = StarClass.solarradius(radius);
-            luminosity = StarClass.luminosity(absolutemagnitude);
+            luminosity = StarClass.luminosity(absolutemagnitude);        
             StarClass starClass = StarClass.FromName(this.stellarclass);
             if (starClass != null)
             {

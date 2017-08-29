@@ -393,7 +393,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'landing pad')}\r\n{SetState('eddi_context_landing_pad_system', system.name)}\r\n{SetState('eddi_context_landing_pad_station', event.station)}\r\n{SetState('eddi_context_landing_pad_pad', event.landingpad)}\r\n\r\n{set station to StationDetails(event.station)}\r\n{if station.model = \"Coriolis Starport\" || station.model = \"Orbis Starport\" || station.model = \"Ocellus Starport\" || station.model = \"Unknown Starport\":\r\n    {Pause(8000)}\r\n    {F(\"Landing pad report\")}\r\n}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'landing pad')}\r\n{SetState('eddi_context_landing_pad_system', system.name)}\r\n{SetState('eddi_context_landing_pad_station', event.station)}\r\n{SetState('eddi_context_landing_pad_pad', event.landingpad)}\r\n\r\n{set station to StationDetails(event.station)}\r\n{if station.model = \"Coriolis Starport\" || station.model = \"Orbis Starport\" || station.model = \"Ocellus Starport\" || station.model = \"Asteroid Base\" || station.model = \"Unknown Starport\":\r\n    {Pause(8000)}\r\n    {F(\"Landing pad report\")}\r\n}\r\n",
       "default": true,
       "name": "Docking granted",
       "description": "Triggered when your ship is granted docking permission at a station or outpost"
@@ -532,6 +532,15 @@
       "default": true,
       "name": "Fine paid",
       "description": "Triggered when you pay a fine"
+    },
+    "Friends status": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Friends status",
+      "description": "Triggered when a friendly commander changes status"
     },
     "FSD engaged": {
       "enabled": true,
@@ -893,6 +902,15 @@
       "name": "Mission failed",
       "description": "Triggered when you fail a mission"
     },
+    "Mission redirected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Mission redirected from \r\n{if event.olddestinationstation:\r\n   {event.olddestinationstation} in the {event.olddestinationsystem} \r\n   to {event.newdestinationstation} in the {event.newdestinationsystem}\r\n|else:\r\n   {event.olddestinationsystem} to {event.newdestinationsystem}\r\n}",
+      "default": true,
+      "name": "Mission redirected",
+      "description": "Triggered when a mission is redirected"
+    },
     "Modification applied": {
       "enabled": true,
       "priority": 3,
@@ -910,6 +928,24 @@
       "default": true,
       "name": "Modification crafted",
       "description": "Triggered when you craft a modification to a module"
+    },
+    "Music": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Music",
+      "description": "Triggered when the game music 'mood' changes"
+    },
+    "Nav beacon scan": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context _}\r\n{SetState('eddi_context_last_subject', 'nav beacon')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_star_system', system.name)}\r\n{SetState('eddi_context_nav_scans', event.numbodies)}\r\n\r\n{set nav to OneOf(\"nav\", \"navigation\")}\r\n{set beacon to OneOf(\"beacon\", \"buoy\")}\r\n{OneOf(\"This {nav} {beacon} has transferred details of {event.numbodies} bodies in this system.\",\r\n \"Details on {event.numbodies} bodies in this system received.\")}\r\n\r\n{Pause(500)}",
+      "default": true,
+      "name": "Nav beacon scan",
+      "description": "Triggered when you scan a nav beacon, before the scan data for all the bodies in the system is written into the journal"
     },
     "NPC attack commenced": {
       "enabled": true,
@@ -1045,6 +1081,15 @@
       "default": true,
       "name": "Screenshot",
       "description": "Triggered when you take a screenshot"
+    },
+    "Search and rescue": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.amount} \r\n\r\n{if event.name = \"usscargoblackbox\":\r\n   {if event.amount > 1:\r\n      {OneOf(\"flight records\", \"black boxes\")}\r\n   |else: \r\n      {OneOf(\"flight record\", \"black box\")}\r\n   }\r\n|elif event.name = \"occupiedcryopod\":\r\n   {if event.amount > 1:\r\n      {OneOf(\"occupied escape pods\", \"occupied cryo pods\")}\r\n   |else: \r\n      {OneOf(\"occupied escape pod\", \"occupied cryo pod\")}\r\n   }\r\n|elif event.name = \"damagedcryopod\":\r\n   {if event.amount > 1:\r\n      {OneOf(\"damaged escape pods\", \"damaged cryo pods\")}\r\n   |else: \r\n      {OneOf(\"damaged escape pod\", \"damaged cryo pod\")}\r\n   }\r\n|elif event.name = \"personaleffects\":\r\n   {if event.amount > 1:\r\n      {OneOf(\"sets\", \"collections\")} of   \r\n   |else: \r\n      {OneOf(\"set\", \"collection\")} of\r\n   }\r\n   {OneOf(\"personal effects\", \"personal belongings\")}\r\n|elif event.name = \"wreakagecomponent\":\r\n   {set wreakage to OneOf(\"wreakage\", \"debris\")}\r\n   {set fragment to OneOf(\"fragment\", \"bit\", \"piece\")}\r\n   {if event.amount > 1:\r\n      {OneOf(\"{fragment}s of {wreakage}\", \"{wreakage} {fragment}s\")}\r\n   |else: \r\n      {OneOf(\"{fragment} of {wreakage}\", \"{wreakage} {fragment}\")}\r\n   }\r\n|elif event.name = \"hostage\":\r\n   {if event.amount > 1:\r\n      {OneOf(\"hostages\")}\r\n   |else: \r\n      {OneOf(\"hostage\")}\r\n   }\r\n|else:\r\n   {if event.amount > 1:\r\n      {event.name}s\r\n   |else: \r\n      {event.name}\r\n   }   \r\n}\r\n\r\n{OneOf(\"recovered\")}\r\n{Occasionally(2, \"in exchange\")}\r\nfor {Humanise(event.reward)} credits",
+      "default": true,
+      "name": "Search and rescue",
+      "description": "Triggered when delivering items to a Search and Rescue contact"
     },
     "Security presence report": {
       "enabled": true,
@@ -1207,6 +1252,15 @@
       "default": true,
       "name": "Ship sold",
       "description": "Triggered when you sell a ship"
+    },
+    "Ship sold on rebuy": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.ship}, identification {event.shipid}, sold in {event.system} for {Humanise(event.price)} credits",
+      "default": true,
+      "name": "Ship sold on rebuy",
+      "description": "Triggered when you sell a ship to raise funds on the insurance / rebuy screen"
     },
     "Ship swapped": {
       "enabled": true,

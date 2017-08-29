@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using EddiEvents;
 using System;
 using System.Collections.Generic;
@@ -15,6 +15,7 @@ namespace EddiMaterialMonitor
         static MaterialThresholdEvent()
         {
             VARIABLES.Add("material", "The material");
+            VARIABLES.Add("category", "The category");
             VARIABLES.Add("level", "The level that has been triggered (Minimum/Desired/Maximum)");
             VARIABLES.Add("limit", "The amount of the limit that has been passed");
             VARIABLES.Add("amount", "The current amount of the material");
@@ -22,6 +23,7 @@ namespace EddiMaterialMonitor
         }
 
         public Material material { get; private set; }
+        //public Material category { get; private set; }
         public string level { get; private set; }
         public int limit { get; private set; }
         public int amount { get; private set; }

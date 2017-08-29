@@ -19,7 +19,7 @@ namespace EddiJournalMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$");
 
-        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal\.[0-9\.]+\.log$", result => ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
+        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result => ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
 
         public static void ForwardJournalEntry(string line, Action<Event> callback)
         {
@@ -256,15 +256,24 @@ namespace EddiJournalMonitor
                             handled = true;
                             break;
                         case "CapShipBond":
+                        case "DatalinkVoucher":
                         case "FactionKillBond":
                             {
                                 object val;
-                                string awardingFaction = getFaction(data, "AwardingFaction");
                                 data.TryGetValue("Reward", out val);
                                 long reward = (long)val;
                                 string victimFaction = getString(data, "VictimFaction");
 
-                                events.Add(new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward) { raw = line });
+                                if (data.ContainsKey("AwardingFaction"))
+                                {
+                                    string awardingFaction = getFaction(data, "AwardingFaction");
+                                    events.Add(new BondAwardedEvent(timestamp, awardingFaction, victimFaction, reward) { raw = line });
+                                }
+                                else if (data.ContainsKey("PayeeFaction"))
+                                {
+                                    string payeeFaction = getFaction(data, "PayeeFaction");
+                                    events.Add(new DataVoucherAwardedEvent(timestamp, payeeFaction, victimFaction, reward) { raw = line });
+                                }
                             }
                             handled = true;
                             break;
@@ -548,11 +557,12 @@ namespace EddiJournalMonitor
                                     string starType = getString(data, "StarType");
                                     decimal stellarMass = getDecimal(data, "StellarMass");
                                     decimal absoluteMagnitude = getDecimal(data, "AbsoluteMagnitude");
+                                    string luminosityClass = getString(data, "Luminosity");
                                     data.TryGetValue("Age_MY", out val);
                                     long age = (long)val * 1000000;
                                     decimal temperature = getDecimal(data, "SurfaceTemperature");
 
-                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, age, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings) { raw = line });
+                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, luminosityClass, age, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings) { raw = line });
                                     handled = true;
                                 }
                                 else
@@ -617,6 +627,26 @@ namespace EddiJournalMonitor
                                 }
                             }
                             break;
+                        case "DataScanned":
+                            {
+                                DataScan type = DataScan.FromEDName(getString(data, "Type"));
+                                events.Add(new DataScannedEvent(timestamp, type) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "SellShipOnRebuy":
+                            {
+                                object val;
+                                string ship = getString(data, "ShipType");
+                                string system = getString(data, "System");
+                                data.TryGetValue("SellShipID", out val);
+                                int shipId = (int)(long)val;
+                                data.TryGetValue("ShipPrice", out val);
+                                long price = (long)val;
+                                events.Add(new ShipSoldOnRebuyEvent(timestamp, ship, system, shipId, price) { raw = line });
+                            }
+                            handled = true;
+                            break;
                         case "ShipyardBuy":
                             {
                                 object val;
@@ -659,7 +689,8 @@ namespace EddiJournalMonitor
                                 string ship = getString(data, "ShipType");
                                 data.TryGetValue("ShipPrice", out val);
                                 long price = (long)val;
-                                events.Add(new ShipSoldEvent(timestamp, ship, shipId, price) { raw = line });
+                                string system = getString(data, "System");                                
+                                events.Add(new ShipSoldEvent(timestamp, ship, shipId, price, system) { raw = line });
                             }
                             handled = true;
                             break;
@@ -694,8 +725,10 @@ namespace EddiJournalMonitor
                                 decimal distance = getDecimal(data, "Distance");
                                 data.TryGetValue("TransferPrice", out val);
                                 long price = (long)val;
+                                data.TryGetValue("TransferTime", out val);
+                                long time = (long)val;
 
-                                events.Add(new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price) { raw = line });
+                                events.Add(new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price, time) { raw = line });
 
                                 handled = true;
                             }
@@ -722,6 +755,13 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
+                        case "Music":
+                            {
+                                string musicTrack = getString(data, "MusicTrack");
+                                events.Add(new MusicEvent(timestamp, musicTrack) { raw = line });
+                            }
+                            handled = true;
+                            break;                            
                         case "DockSRV":
                             events.Add(new SRVDockedEvent(timestamp) { raw = line });
                             handled = true;
@@ -1081,6 +1121,15 @@ namespace EddiJournalMonitor
                                     handled = true;
                                 }
                             }
+                            break;
+                        case "NavBeaconScan":
+                            {
+                                object val;
+                                data.TryGetValue("NumBodies", out val);
+                                int numbodies = (int)(long)val;
+                                events.Add(new NavBeaconScanEvent(timestamp, numbodies) { raw = line });
+                            }
+                            handled = true;
                             break;
                         case "BuyExplorationData":
                             {
@@ -1461,8 +1510,10 @@ namespace EddiJournalMonitor
                                 int height = (int)(long)val;
                                 string system = getString(data, "System");
                                 string body = getString(data, "Body");
+                                decimal? latitude = getOptionalDecimal(data, "Latitude");
+                                decimal? longitude = getOptionalDecimal(data, "Longitude");                                
 
-                                events.Add(new ScreenshotEvent(timestamp, filename, width, height, system, body) { raw = line });
+                                events.Add(new ScreenshotEvent(timestamp, filename, width, height, system, body, longitude, latitude) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -1482,8 +1533,9 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Amount", out val);
                                 long amount = (long)val;
+                                decimal? brokerpercentage = getOptionalDecimal(data, "BrokerPercentage");
 
-                                events.Add(new FinePaidEvent(timestamp, amount, false) { raw = line });
+                                events.Add(new FinePaidEvent(timestamp, amount, brokerpercentage, false) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -1492,8 +1544,9 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Amount", out val);
                                 long amount = (long)val;
+                                decimal? brokerpercentage = getOptionalDecimal(data, "BrokerPercentage");
 
-                                events.Add(new FinePaidEvent(timestamp, amount, true) { raw = line });
+                                events.Add(new FinePaidEvent(timestamp, amount, brokerpercentage, true) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -1528,12 +1581,23 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "Friends":
+                            {
+                                string status = getString(data, "Status");                            
+                                string friend = getString(data, "Name");
+                                friend = friend.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+
+                                events.Add(new FriendsEvent(timestamp, status, friend) { raw = line });
+                                handled = true;
+                                break;
+                            }                            
                         case "RedeemVoucher":
                             {
                                 object val;
 
                                 string type = getString(data, "Type");
                                 List<Reward> rewards = new List<Reward>();
+
                                 // Obtain list of factions
                                 data.TryGetValue("Factions", out val);
                                 List<object> factionsData = (List<object>)val;
@@ -1551,28 +1615,29 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Amount", out val);
                                 long amount = (long)val;
 
+                                decimal? brokerpercentage = getOptionalDecimal(data, "BrokerPercentage");
+
                                 if (type == "bounty")
                                 {
-                                    events.Add(new BountyRedeemedEvent(timestamp, rewards, amount) { raw = line });
+                                    events.Add(new BountyRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line });
                                 }
                                 else if (type == "CombatBond")
                                 {
-                                    events.Add(new BondRedeemedEvent(timestamp, rewards, amount) { raw = line });
+                                    events.Add(new BondRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line });
                                 }
                                 else if (type == "trade")
                                 {
-                                    events.Add(new TradeVoucherRedeemedEvent(timestamp, rewards, amount) { raw = line });
+                                    events.Add(new TradeVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line });
                                 }
                                 else if (type == "settlement" || type == "scannable")
                                 {
-                                    events.Add(new DataVoucherRedeemedEvent(timestamp, rewards, amount) { raw = line });
+                                    events.Add(new DataVoucherRedeemedEvent(timestamp, rewards, amount, brokerpercentage) { raw = line });
                                 }
                                 else
                                 {
                                     Logging.Warn("Unhandled voucher type " + type);
                                     Logging.Report("Unhandled voucher type " + type);
                                 }
-
                                 handled = true;
                                 break;
                             }
@@ -1688,6 +1753,20 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "MissionRedirected":
+                            {
+                                object val;
+                                data.TryGetValue("MissionID", out val);
+                                long missionid = (long)val;
+                                string name = getString(data, "MissionName");
+                                string newdestinationstation = getString(data, "NewDestinationStation");  
+                                string olddestinationstation = getString(data, "OldDestinationStation");
+                                string newdestinationsystem = getString(data, "NewDestinationSystem");
+                                string olddestinationsystem = getString(data, "OldDestinationSystem");
+                                events.Add(new MissionRedirectedEvent(timestamp, missionid, name, newdestinationstation, olddestinationstation, newdestinationsystem, olddestinationsystem) { raw = line });
+                                handled = true;
+                                break;
+                            }
                         case "MissionFailed":
                             {
                                 object val;
@@ -1698,6 +1777,18 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "SearchAndRescue":
+                            {
+                                object val;
+                                string name = getString(data, "Name");
+                                data.TryGetValue("Count", out val);
+                                int? amount = (int?)(long?)val;
+                                data.TryGetValue("Reward", out val);
+                                long reward = (val == null ? 0 : (long)val);                                
+                                events.Add(new SearchAndRescueEvent(timestamp, name, amount, reward) { raw = line });
+                                handled = true;
+                                break;
+                            }                            
                         case "Repair":
                             {
                                 object val;

@@ -1,4 +1,4 @@
-﻿using EddiCompanionAppService;
+using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiSpeechService;
 using System;
@@ -47,11 +47,11 @@ namespace Eddi
             //// Need to set up the correct information in the hero text depending on from where we were started
             if (fromVA)
             {
-                heroText.Text = "Any changes made here will take effect automatically in VoiceAttack.  You can close this window when you have finished.";
+                heroText.Text = "Toute modification effectuée ici prendra effet automatiquement dans VoiceAttack. Vous pouvez fermer cette fenêtre lorsque vous avez terminé.";
             }
             else
             {
-                heroText.Text = "If you are using VoiceAttack then please close this window before you start VoiceAttack for your changes to take effect.  You can access this window from VoiceAttack with the \"Configure EDDI\" command.";
+                heroText.Text = "Si vous utilisez VoiceAttack, fermez cette fenêtre avant de commencer VoiceAttack pour que vos modifications prennent effet. Vous pouvez accéder à cette fenêtre à partir de VoiceAttack avec la commande : \"Configure EDDI\" .";
             }
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
@@ -72,11 +72,11 @@ namespace Eddi
                 profile = CompanionAppService.Instance.Profile();
                 if (profile == null)
                 {
-                    setUpCompanionAppComplete("Your connection to the Frontier API is good but experiencing temporary issues.  Your information should be available soon");
+                    setUpCompanionAppComplete("Votre connexion à l'API Frontier est bonne mais présente des problèmes temporaires. Vos informations devraient être bientôt disponibles");
                 }
                 else
                 {
-                    setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
+                    setUpCompanionAppComplete("Votre connexion à l'API Frontier est opérationnelle, Commandeur " + profile.Cmdr.name);
                 }
             }
             catch (Exception)
@@ -398,7 +398,7 @@ namespace Eddi
         {
             if (message == null)
             {
-                companionAppText.Text = "You do not have a connection to the Frontier API at this time.  Please enter your Elite: Dangerous email address and password below";
+                companionAppText.Text = "Vous n'êtes pas connecté à l'API Frontier en ce moment. Entrez votre adresse électronique et votre mot de passe pour Elite : Dangerous ci-dessous";
             }
             else
             {
@@ -421,7 +421,7 @@ namespace Eddi
         {
             if (message == null)
             {
-                companionAppText.Text = "Please enter the verification code that should have been sent to your email address";
+                companionAppText.Text = "Entrez le code de vérification vous devriez avoir reçu dans votre adresse e-mail";
             }
             else
             {
@@ -442,7 +442,7 @@ namespace Eddi
         {
             if (message == null)
             {
-                companionAppText.Text = "Complete";
+                companionAppText.Text = "Complété";
             }
             else
             {
@@ -457,7 +457,7 @@ namespace Eddi
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
-            companionAppNextButton.Content = "Log out";
+            companionAppNextButton.Content = "Déconexion";
         }
 
         // Handle Text-to-speech tab
@@ -491,14 +491,14 @@ namespace Eddi
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 100;
-            SpeechService.Instance.Say(testShip, "This is how I will sound in your " + ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() + ".", false);
+            SpeechService.Instance.Say(testShip, "C'est ce que ça va donner dans votre " + ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() + ".", false);
         }
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 20;
-            SpeechService.Instance.Say(testShip, "Severe damage to your " + ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() + ".", false);
+            SpeechService.Instance.Say(testShip, "Dégats critiques dans votre " + ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() + ".", false);
         }
 
         private void disableSsmlUpdated(object sender, RoutedEventArgs e)
@@ -572,13 +572,13 @@ namespace Eddi
                     }
                     catch (Exception ex)
                     {
-                        Logging.Error("Failed to delete file after upload", ex);
+                        Logging.Error("Echec effacement des fichiers aprés envoi", ex);
                     }
                 }
                 catch (Exception ex)
                 {
-                    progress.Report("failed");
-                    Logging.Error("Failed to upload log", ex);
+                    progress.Report("Echec");
+                    Logging.Error("Echec d'envoie des fichiers", ex);
                 }
             }
         }

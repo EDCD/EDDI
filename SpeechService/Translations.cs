@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,27 +22,27 @@ namespace EddiSpeechService
             switch (power)
             {
                 case "Archon Delaine":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈɑːkɒn\">Archon</phoneme> <phoneme alphabet=\"ipa\" ph=\"dəˈleɪn\">Delaine</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"aʁkɔ̃ \">Archon</phoneme> <phoneme alphabet=\"ipa\" ph=\"delɛn\">Delaine</phoneme>";
                 case "Aisling Duval":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈæʃlɪŋ\">Aisling</phoneme> <phoneme alphabet=\"ipa\" ph=\"duːˈvæl\">Duval</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"ɛsliŋ\">Aisling</phoneme> <phoneme alphabet=\"ipa\" ph=\"duːˈvæl\">dyval</phoneme>";
                 case "Arissa Lavigny-Duval":
-                    return "<phoneme alphabet=\"ipa\" ph=\"əˈrɪsə\">Arissa</phoneme> <phoneme alphabet=\"ipa\" ph=\"ləˈviːniː\">Lavigny</phoneme> <phoneme alphabet=\"ipa\" ph=\"duːˈvæl\">Duval</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"aʁisa\">Arissa</phoneme> <phoneme alphabet=\"ipa\" ph=\"laviɲi\">Lavigny</phoneme> <phoneme alphabet=\"ipa\" ph=\"duːˈvæl\">dyval</phoneme>";
                 case "Denton Patreus":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈdɛntən\">Denton</phoneme> <phoneme alphabet=\"ipa\" ph=\"pətˈreɪəs\">Patreus</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"ˈdɛntən\">Denton</phoneme> <phoneme alphabet=\"ipa\" ph=\"patʁeys\">Patreus</phoneme>";
                 case "Edmund Mahon":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈɛdmənd\">Edmund</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈmɑːn\">Mahon</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"ɛdmund\">Edmund</phoneme> <phoneme alphabet=\"ipa\" ph=\"maɔ̃\">Mahon</phoneme>";
                 case "Felicia Winters":
-                    return "<phoneme alphabet=\"ipa\" ph=\"fəˈlɪʃɪə\">Felicia</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈwɪntəs\">Winters</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"felisja\">Felicia</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈwɪntəs\">Winters</phoneme>";
                 case "Pranav Antal":
-                    return "<phoneme alphabet=\"ipa\" ph=\"pɜːnʌv\">Pranav</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˌænˈtæl\">Antal</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"pʁanav\">Pranav</phoneme> <phoneme alphabet=\"ipa\" ph=\"ɑ̃tal\">Antal</phoneme>";
                 case "Zachary Hudson":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈzækərɪ\">Zachary</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈhʌdsən\">Hudson</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"zakaʁi\">Zachary</phoneme> <phoneme alphabet=\"ipa\" ph=\"ydsɔ̃\">Hudson</phoneme>";
                 case "Zemina Torval":
-                    return "<phoneme alphabet=\"ipa\" ph=\"zəˈmiːnə\">Zemina</phoneme> <phoneme alphabet=\"ipa\" ph=\"tɔːˈvæl\">Torval</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"zemina\">Zemina</phoneme> <phoneme alphabet=\"ipa\" ph=\"tɔʁval\">Torval</phoneme>";
                 case "Li Yong-Rui":
-                    return "<phoneme alphabet=\"ipa\" ph=\"liː\">Li</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈjɒŋ\">Yong</phoneme> <phoneme alphabet=\"ipa\" ph=\"reɪ\">Rui</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"li\">Li</phoneme> <phoneme alphabet=\"ipa\" ph=\"jɔ̃ɡ\">Yong</phoneme> <phoneme alphabet=\"ipa\" ph=\"ʁɥi\">Rui</phoneme>";
                 case "Yuri Grom":
-                    return "<phoneme alphabet=\"ipa\" ph=\"jʊəˈriː\">Yuri</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈɡrɒm\">Grom</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"juʁi\">Yuri</phoneme> <phoneme alphabet=\"ipa\" ph=\"ɡʁɔm\">Grom</phoneme>";
                 default:
                     return power;
             }
@@ -62,110 +62,109 @@ namespace EddiSpeechService
 
         private static Dictionary<string, string[]> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
-            { "Achenar", new string[] { "ˈakɜːnɑ" } },
-            { "Acihault", new string[] { "əˈsɪhɔːt" } },
-            { "Adan", new string[] { "ˈædən" } },
-            { "Alcyone", new string[] { "ælˈsaɪəniː" } },
-            { "Aldebaran", new string[] { "alˈdɛbəɹən" } },
+            { "Achenar", new string[] { "akenaʁ" } },
+            { "Acihault", new string[] { "asiol" } },
+            { "Adan", new string[] { "adɑ̃" } },
+            { "Alcyone", new string[] { "alsjɔn" } },
+            { "Aldebaran", new string[] { "aldebaʁɑ̃" } },
             { "Anemoi", new string[] { "æˈniːmɔɪ" } },
-            { "Apoyota", new string[] { "æˈpɔɪəʊtə" } },
-            { "Arque", new string[] { "ɑːrk" } },
-            { "Asterope", new string[] { "əˈstɛroʊpiː" } },
-            { "Atlas", new string[] {  "ˈætləs" } },
-            { "Aulin", new string[] { "ˈɔːlɪn" } },
-            { "Bunda", new string[] { "ˈbuːndə" } },
-            { "Cayutorme", new string[] { "ˈkaɪətɔːm" }  },
-            { "Celaeno", new string[] {  "sᵻˈliːnoʊ" }  },
-            { "Ceos", new string[] { "ˈkeɪɒs" }  },
-            { "Cygnus", new string[] { "ˈsɪɡnəs" }  },
-            { "Deciat", new string[] { "ˈdɛsiːæt" } },
-            { "Diso ", new string[] { "ˈdiːsəʊ" } },
-            { "Djiwal", new string[] { "ˈdʒɪwæl" } },
-            { "Dvorsi", new string[] { "ˈdvɔːsiː" } },
-            { "Electra", new string[] { "ᵻˈlɛktrə" } },
-            { "Eravate" , new string[] { "ɛrəˈvɑːtˌeɪ" } },
-            { "Eranin" , new string[] { "ˈɛrənin" } },
-            { "Frigaha", new string[] { "frɪɡˈɑːhɑːr" } },
-            { "Grandmort" , new string[] { "ˈɡʀɒdˌmɔʀ" } },
-            { "Hecate" , new string[] { "ˈhɛkətɪ" } },
-            { "Hotas" , new string[] { "həʊtæs" } },
-            { "Isleta" , new string[] { "aɪlˈetə" } },
-            { "i Bootis" , new string[] { "aɪ", "bəʊˈəʊtɪs" } },
-            { "Lave", new string[] { "leɪv" } },
-            { "Kaia Bajaja", new string[] { "ˈkaɪə", "ˈbɑːhɑːhɑː" } },
-            { "Kigana", new string[] { "kiːˈɡɑːnə" } },
-            { "Kini", new string[] { "ˈkiːniː" } },
-            { "Kremainn", new string[] { "krəˈmeɪn" } },
-            { "Laksak", new string[] { "ˈlæks.æk" } },
-            { "Leesti", new string[] { "ˈliːstiː" } },
-            { "Leucos", new string[] { "ˈluːkɒs" } },
-            { "Luyten's Star", new string[] { "ˈlaʊ.təns", "stɑː" } },
-            { "Maia", new string[] { "ˈmaɪ.ə" } },
-            { "Mata", new string[] { "ˈmɑː.tʌ" } },
-            { "Merope", new string[] { "ˈmɛrəpiː" } },
-            { "Mu Koji", new string[] { "mjuː", "ˈkəʊdʒiː" } },
-            { "Nuenets", new string[] { "ˈnjuːənɛts" } },
-            { "Okinura", new string[] { "ɒkɪˈnjʊrə" } },
-            { "Orrere", new string[] { "ɒrˈɪər" } },
-            { "Pai Szu", new string[] { "paɪ", "ʃuː" } },
-            { "Pleione", new string[] { "ˈplaɪəniː" } },
-            { "Procyon", new string[] { "ˈprəʊˌsɪən" } },
-            { "Potriti", new string[] { "pəˈtriːtɪ" } },
-            { "Reorte", new string[] { "ˌriːˈɔːt" } },
-            { "Sakti", new string[] { "ˈsæk.tiː" } },
-            { "Shinrarta Dezhra", new string[] { "ʃɪnˈrɑːrtə", "ˈdezɦrə" } },
-            { "Surya", new string[] { "ˈsuːˈrɪːˈɛr" } },
-            { "Taygeta", new string[] { "teɪˈɪdʒᵻtə" } },
-            { "Tse", new string[] { "ʃjɛ" } },
-            { "Xihe", new string[] { "ʃiː.hər" } },
-            { "Xinca", new string[] { "ˈʃɛnkə" } },
-            { "Yakabugai", new string[] { "ˈjækəbuːɡaɪ" } },
-            { "Zaonce", new string[] { "ˈzeɪɒns" } },
+            { "Apoyota", new string[] { "apwajɔta" } },
+            { "Arque", new string[] { "aʁk" } },
+            { "Asterope", new string[] { "asteʁɔp" } },
+            { "Atlas", new string[] {  "atlas" } },
+            { "Aulin", new string[] { "olɛ̃" } },
+            { "Bunda", new string[] { "bynda" } },
+            { "Cayutorme", new string[] { "kɛjytɔʁm" }  },
+            { "Celaeno", new string[] {  "səlaeno" }  },
+            { "Ceos", new string[] { "seo" }  },
+            { "Cygnus", new string[] { "siɲy" }  },
+            { "Deciat", new string[] { "desja" } },
+            { "Diso ", new string[] { "dizo" } },
+            { "Djiwal", new string[] { "dʒiwal" } },
+            { "Dvorsi", new string[] { "dvɔʁsi" } },
+            { "Electra", new string[] { "elɛktʁa" } },
+            { "Eravate" , new string[] { "eʁavat" } },
+            { "Eranin" , new string[] { "eʁanɛ̃" } },
+            { "Frigaha", new string[] { "fʁiɡaa" } },
+            { "Grandmort" , new string[] { "ɡʁɑ̃dmɔʁ" } },
+            { "Hecate" , new string[] { "ekat" } },
+            { "Hotas" , new string[] { "ɔtas" } },
+            { "Isleta" , new string[] { "isleta" } },
+            { "i Bootis" , new string[] { "i", "butis" } },
+            { "Lave", new string[] { "lav" } },
+            { "Kaia Bajaja", new string[] { "kɛa", "baʒaʒa" } },
+            { "Kigana", new string[] { "kiɡana" } },
+            { "Kini", new string[] { "kini" } },
+            { "Kremainn", new string[] { "kʁemɛ̃n" } },
+            { "Laksak", new string[] { "laksak" } },
+            { "Leesti", new string[] { "listi" } },
+            { "Leucos", new string[] { "løko" } },
+            { "Maia", new string[] { "Maïa" } },
+            { "Mata", new string[] { "mata" } },
+            { "Merope", new string[] { "meʁɔp" } },
+            { "Mu Koji", new string[] { "my", "kɔʒi" } },
+            { "Nuenets", new string[] { "nɥenɛ" } },
+            { "Okinura", new string[] { "ɔkinuʁa" } },
+            { "Orrere", new string[] { "ɔʁeʁe" } },
+            { "Pai Szu", new string[] { "pɛ", "szu" } },
+            { "Pleione", new string[] { "plejɔn" } },
+            { "Procyon", new string[] { "pʁɔsjɔ̃" } },
+            { "Potriti", new string[] { "pɔtʁiti" } },
+            { "Reorte", new string[] { "ʁeɔʁt" } },
+            { "Sakti", new string[] { "sakti" } },
+            { "Shinrarta Dezhra", new string[] { "ʃinʁaʁta", "dɛzʁa" } },
+            { "Surya", new string[] { "syʁja" } },
+            { "Taygeta", new string[] { "tɛʒta" } },
+            { "Tse", new string[] { "tse" } },
+            { "Xihe", new string[] { "ksie" } },
+            { "Xinca", new string[] { "ksinka" } },
+            { "Yakabugai", new string[] { "jakabuɡɛj" } },
+            { "Zaonce", new string[] { "zaɔ̃s" } },
             { "Zhang Fei", new string[] { "ʈʂáŋ", "feɪ" } },
         };
 
         private static Dictionary<string, string[]> CONSTELLATION_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
-            { "Alrai" , new string[] { "ˈalraɪ" } },
-            { "Antliae" , new string[] { "ˈæntlɪˌiː" } },
-            { "Aquarii" , new string[] { "əˈkwɛərɪˌaɪ" } },
-            { "Arietis" , new string[] { "əˈraɪɪtɪs" } },
-            { "Bei Dou" , new string[] { "beɪ", "ˈduː" } },
-            { "Blanco" , new string[] { "blæŋkˌəʊ" } },
-            { "Bleae Thaa" , new string[] { "bliːiː", "θɑː" } },
-            { "Bleae Thua" , new string[] { "bliːiː", "θuːə" } },
-            { "Capricorni" , new string[] { "ˌkæprɪˈkɔːnaɪ" } },
-            { "Cepheus" , new string[] { "ˈsiːfjuːs" } },
-            { "Cephei" , new string[] { "ˈsiːfɪˌaɪ" } },
-            { "Ceti" , new string[] { "ˈsiːtaɪ" } },
-            { "Chi Persei" , new string[] { "kaɪ", "ˈpɜːsɪˌaɪ" } },
-            { "Crucis" , new string[] { "ˈkruːsɪs" } },
-            { "Cygni" , new string[] { "ˈsɪɡnaɪ" } },
-            { "Eta Carina" , new string[] { "ˈiːtə", "kəˈriːnə" } },
-            { "Fornacis" , new string[] { "fɔːˈneɪsɪs" } },
-            { "Herculis" , new string[] { "hɜːkjʊˈlɪs" } },
-            { "Hyades" , new string[] { "ˈhaɪəˌdiːz" } },
-            { "Hydrae" , new string[] { "ˈhaɪdriː" } },
-            { "Lupus" , new string[] { "ˈluːpəs" } },
-            { "Lyncis" , new string[] { "ˈlɪnsɪs" } },
-            { "Omega" , new string[] { "ˈəʊmɪɡə" } },
+            { "Alrai" , new string[] { "alʁai" } },
+            { "Antliae" , new string[] { "ɑ̃tlijae" } },
+            { "Aquarii" , new string[] { "vɛʁso" } },
+            { "Arietis" , new string[] { "belje" } },
+            { "Bei Dou" , new string[] { "bɛ", "du" } },
+            { "Blanco" , new string[] { "blɑ̃ko" } },
+            { "Bleae Thaa" , new string[] { "bləa", "taa" } },
+            { "Bleae Thua" , new string[] { "bləa", "tɥa" } },
+            { "Capricorni" , new string[] { "kapʁikɔʁn" } },
+            { "Cepheus" , new string[] { "seføs" } },
+            { "Cephei" , new string[] { "sefəi" } },
+            { "Ceti" , new string[] { "seti" } },
+            { "Chi Persei" , new string[] { "ʃi", "pɛʁsei" } },
+            { "Crucis" , new string[] { "kʁwa", "dy", "syd" } },
+            { "Cygni" , new string[] { "siɲ" } },
+            { "Eta Carina" , new string[] { "eta", "kaʁina" } },
+            { "Fornacis" , new string[] { "fɔʁnasist" } },
+            { "Herculis" , new string[] { "ɛʁkyl" } },
+            { "Hyades" , new string[] { "jad" } },
+            { "Hydrae" , new string[] { "idʁ" } },
+            { "Lupus" , new string[] { "lu" } },
+            { "Lyncis" , new string[] { "lɛ̃ks" } },
+            { "Omega" , new string[] { "ɔmeɡa" } },
             { "Ophiuchus" , new string[] { "ɒˈfjuːkəs" } },
-            { "Pegasi" , new string[] { "ˈpɛɡəˌsaɪ" } },
-            { "Persei" , new string[] { "ˈpɜːsɪˌaɪ" } },
-            { "Piscium" , new string[] { "ˈpaɪsɪəm" } },
-            { "Pleiades" , new string[] { "ˈplaɪədiːz" } },
-            { "Puppis" , new string[] { "ˈpʌpɪs" } },
-            { "Pru Euq" , new string[] { "pruː", "juːk"} },
-            { "Rho Ophiuchi" , new string[] { "rəʊ", "ɒˈfjuːkaɪ" } },
-            { "Sagittarius", new string[] { "ˌsædʒˈtɛəriəs" } },
-            { "Scorpii", new string[] { "ˈskɔːpɪˌaɪ" } },
+            { "Pegasi" , new string[] { "peɡaz" } },
+            { "Persei" , new string[] { "pɛʁse" } },
+            { "Piscium" , new string[] { "pwasɔ̃" } },
+            { "Pleiades" , new string[] { "plejad" } },
+            { "Puppis" , new string[] { "pup" } },
+            { "Pru Euq" , new string[] { "pʁy", "øk"} },
+            { "Rho Ophiuchi" , new string[] { "ʁo", "ɔfjyʃy" } },
+            { "Sagittarius", new string[] { "saʒitɛʁ" } },
+            { "Scorpii", new string[] { "skɔʁpjɔ̃" } },
             { "Shui Wei", new string[] { "ˈʃuːi", "weɪ" } },
-            { "Tau Ceti" , new string[] { "taʊ", "ˈsiːtaɪ" } },
+            { "Tau Ceti" , new string[] { "to", "seti" } },
             { "Tascheter", new string[] { "ˈtɑːʃətɜː" } },
-            { "Trianguli", new string[] { "traɪˈæŋˌɡjʊˌlaɪ" } },
+            { "Trianguli", new string[] { "tʁijɑ̃ɡl" } },
             { "Trifid", new string[] { "ˈtraɪfɪd" } },
-            { "Tucanae", new string[] { "tuːˈkɑːniː" } },
-            { "Wredguia", new string[] { "ˈredɡaɪə" } },
+            { "Tucanae", new string[] { "tykana" } },
+            { "Wredguia", new string[] { "wʁedɡja" } },
         };
 
         // Various handy regexes so we don't keep recreating them
@@ -193,7 +192,7 @@ namespace EddiSpeechService
             {
                 faction = FACTION_FIXES[faction];
             }
-            
+
             // Faction names can contain system names; hunt them down and change them
             foreach (var pronunciation in STAR_SYSTEM_PRONUNCIATIONS)
             {
@@ -233,7 +232,7 @@ namespace EddiSpeechService
                 {
                     for (int j = 0; j < match.Groups[i].Captures.Count; j++)
                     {
-Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Captures[j].Value.Trim()+ "*");
+                        Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Captures[j].Value.Trim() + "*");
                         string part = match.Groups[i].Captures[j].Value.Trim();
 
                         if (DIGIT.IsMatch(part))
@@ -279,7 +278,7 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
         }
 
         /// <summary>Fix up star system names</summary>
-        public static string StarSystem(string starSystem, bool useICAO=false)
+        public static string StarSystem(string starSystem, bool useICAO = false)
         {
             if (starSystem == null)
             {
@@ -316,7 +315,7 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
                 || starSystem.StartsWith("HD ")
                 )
             {
-                starSystem = starSystem.Replace("-", " dash ");
+                starSystem = starSystem.Replace("-", " tiré ");
             }
             else if (starSystem.StartsWith("Gliese "))
             {
@@ -341,12 +340,12 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
                 if (firstPiece.EndsWith(" Dark Region B Sector"))
                 {
                     firstPiece = firstPiece.Replace(" Dark Region B Sector", "");
-                    subPiece = " Dark Region B Sector";
+                    subPiece = " Dark Region Secteur B";
                 }
                 else if (firstPiece.EndsWith(" Sector"))
                 {
                     firstPiece = firstPiece.Replace(" Sector", "");
-                    subPiece = " Sector";
+                    subPiece = " Secteur";
                 }
 
                 // Might be a name that we need to translate
@@ -362,7 +361,7 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
                     secondPiece = ICAO(secondPiece, true);
                 }
                 Console.WriteLine("2) Second piece is " + secondPiece);
-                secondPiece = secondPiece.Replace("-", " dash ");
+                secondPiece = secondPiece.Replace("-", " tiré ");
                 Console.WriteLine("3) Second piece is " + secondPiece);
 
                 starSystem = firstPiece + subPiece + " " + secondPiece;
@@ -391,7 +390,7 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
                                        .Replace("WISE ", "Wise ")
                                        .Replace("2MASS ", "2 mass ")
                                        .Replace("+", " plus ")
-                                       .Replace("-", " minus ")
+                                       .Replace("-", " moins ")
                                        .Replace(".", " point ");
             }
             else
@@ -423,7 +422,7 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
             return Regex.Replace(starSystem, @"\s+", " ");
         }
 
-        private static string replaceWithPronunciation(string sourcePhrase, string[] pronunciation)
+        public static string replaceWithPronunciation(string sourcePhrase, string[] pronunciation)
         {
             StringBuilder sb = new StringBuilder();
             int i = 0;
@@ -442,7 +441,7 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
             return sb.ToString();
         }
 
-        public static string ICAO(string callsign, bool passDash=false)
+        public static string ICAO(string callsign, bool passDash = false)
         {
             if (callsign == null)
             {
@@ -455,115 +454,112 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
                 switch (c)
                 {
                     case 'A':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈælfə\">alpha</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"alfa\">alpha</phoneme>");
                         break;
                     case 'B':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈbrɑːˈvo\">bravo</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"bʁavo\">bravo</phoneme>");
                         break;
                     case 'C':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtʃɑːli\">charlie</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ʃaʁli\">charlie</phoneme>");
                         break;
                     case 'D':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈdɛltə\">delta</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"dɛlta\">delta</phoneme>");
                         break;
                     case 'E':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈeko\">echo</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"eko\">echo</phoneme>");
                         break;
                     case 'F':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈfɒkstrɒt\">foxtrot</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"fɔkstʁɔt\">foxtrot</phoneme>");
                         break;
                     case 'G':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ɡɒlf\">golf</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ɡɔlf\">golf</phoneme>");
                         break;
                     case 'H':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"hoːˈtel\">hotel</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ɔtɛl\">hotel</phoneme>");
                         break;
                     case 'I':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈindiˑɑ\">india</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"indja\">india</phoneme>");
                         break;
                     case 'J':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈdʒuːliˑˈet\">juliet</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ʒyljɛt\">juliet</phoneme>");
                         break;
                     case 'K':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈkiːlo\">kilo</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"kilo\">kilo</phoneme>");
                         break;
                     case 'L':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈliːmɑ\">lima</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"lima\">lima</phoneme>");
                         break;
                     case 'M':
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"maɪk\">mike</phoneme>");
                         break;
                     case 'N':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"noˈvembə\">november</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"nɔvɑ̃bʁ\">november</phoneme>");
                         break;
                     case 'O':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈɒskə\">oscar</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ɔskaʁ\">oscar</phoneme>");
                         break;
                     case 'P':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"pəˈpɑ\">papa</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"papa\">papa</phoneme>");
                         break;
                     case 'Q':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"keˈbek\">quebec</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"kebɛk\">quebec</phoneme>");
                         break;
                     case 'R':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈroːmiˑo\">romeo</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ʁɔmeo\">romeo</phoneme>");
                         break;
                     case 'S':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"siˈerə\">sierra</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"sjeʁa\">sierra</phoneme>");
                         break;
                     case 'T':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtænɡo\">tango</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"tɑ̃ɡo\">tango</phoneme>");
                         break;
                     case 'U':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈjuːnifɔːm\">uniform</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ynifɔʁm\">uniform</phoneme>");
                         break;
                     case 'V':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈvɪktə\">victor</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"viktɔʁ\">victor</phoneme>");
                         break;
                     case 'W':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈwiski\">whiskey</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"wiski\">whiskey</phoneme>");
                         break;
                     case 'X':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈeksˈrei\">x-ray</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ksʁɛ\">x-ray</phoneme>");
                         break;
                     case 'Y':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈjænki\">yankee</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"jɑ̃ki\">yankee</phoneme>");
                         break;
                     case 'Z':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈzuːluː\">zulu</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"zulu\">zulu</phoneme>");
                         break;
                     case '0':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈzɪərəʊ\">zero</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"zəʁo\">zero</phoneme>");
                         break;
                     case '1':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈwʌn\">one</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ɛ̃\">un</phoneme>");
                         break;
                     case '2':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtuː\">two</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"dø\">deux</phoneme>");
                         break;
                     case '3':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtriː\">tree</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"tʁwa\">trois</phoneme>");
                         break;
                     case '4':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈfoʊ.ər\">fawer</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"katʁ\">quatre</phoneme>");
                         break;
                     case '5':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈfaɪf\">fife</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"sɛ̃k\">cinq</phoneme>");
                         break;
                     case '6':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈsɪks\">six</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"sis\">six</phoneme>");
                         break;
                     case '7':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈsɛvɛn\">seven</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"sɛt\">sept</phoneme>");
                         break;
                     case '8':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈeɪt\">eight</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ɥit\">huit</phoneme>");
                         break;
                     case '9':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈnaɪnər\">niner</phoneme>");
-                        break;
-                    case '-':
-                        if (passDash) elements.Add("-");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"nœf\">neuf</phoneme>");
                         break;
                 }
             }
@@ -618,7 +614,7 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
             {
                 // Thousands
                 number = (int)(value / 1000);
-                order = "thousand";
+                order = "Millier";
                 nextDigit = (((int)value) - (number * 1000)) / 100;
             }
             else if (digits < 9)
@@ -632,7 +628,7 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
             {
                 // Billions
                 number = (int)(value / 1000000000);
-                order = "billion";
+                order = "miliard";
                 nextDigit = (int)(((long)value) - ((long)number * 1000000000)) / 100000000;
             }
             else if (digits < 15)
@@ -665,37 +661,38 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
                 {
                     if (nextDigit < 6)
                     {
-                        return "Over " + number + " " + order;
+						return "au delà de " + number + " " + order;
                     }
                     else
                     {
-                        return "Nearly " + (number + 1) + " " + order;
+                        return "approximativement  " + (number + 1) + " " + order;
                     }
                 }
-                switch (nextDigit)
-                {
-                    case 0:
-                        return "just over " + number + " " + order;
-                    case 1:
-                        return "over " + number + " " + order;
-                    case 2:
-                        return "well over " + number + " " + order;
-                    case 3:
-                        return "on the way to " + number + " and a half " + order;
-                    case 4:
-                        return "nearly " + number + " and a half " + order;
-                    case 5:
-                        return "around " + number + " and a half " + order;
-                    case 6:
-                        return "just over " + number + " and a half " + order;
-                    case 7:
-                        return "well over " + number + " and a half " + order;
-                    case 8:
-                        return "on the way to " + (number + 1) + " " + order;
-                    case 9:
-                        return "nearly " + (number + 1) + " " + order;
-                    default:
-                        return "around " + number + " " + order;
+									
+				switch (nextDigit)
+				{
+					case 0:
+						return "supérieur à " + number + " " + order;
+					case 1:
+						return "au-delà de " + number + " " + order;
+					case 2:
+						return "bien au delà de " + number + " " + order;
+					case 3:
+						return "environ " + number + " and a half " + order;
+					case 4:
+						return "près de " + number + " and a half " + order;
+					case 5:
+						return "autour de " + number + " and a half " + order;
+					case 6:
+						return "juste au dessus de " + number + " and a half " + order;
+					case 7:
+						return "largement au delà de " + number + " and a half " + order;
+					case 8:
+						return "vers les " + (number + 1) + " " + order;
+					case 9:
+						return "près de " + (number + 1) + " " + order;
+					default:
+						return "autour de " + number + " " + order;
                 }
             }
 

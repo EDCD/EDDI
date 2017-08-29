@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,7 +28,7 @@ namespace EddiVoiceAttackResponder
 
         public string ResponderDescription()
         {
-            return "A responder that generates a large number of variables within VoiceAttack as well as triggering user-defined actions.";
+            return "Un Plugin qui génère un grand nombre de variables dans VoiceAttack et pouvant déclencher des actions définies par l'utilisateur.";
         }
 
         public VoiceAttackResponder()

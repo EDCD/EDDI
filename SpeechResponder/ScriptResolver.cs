@@ -1,4 +1,4 @@
-﻿using Cottle.Builtins;
+using Cottle.Builtins;
 using Cottle.Documents;
 using Cottle.Functions;
 using Cottle.Settings;
@@ -203,6 +203,20 @@ namespace EddiSpeechResponder
             store["Humanise"] = new NativeFunction((values) =>
             {
                 return Translations.Humanize(values[0].AsNumber);
+            }, 1);
+
+            store["Spacialise"] = new NativeFunction((values) =>
+            {
+                string Entree = values[0].AsString;
+                if (Entree == "")
+                { return ""; }
+                string Sortie = "";
+                foreach (char c in Entree)
+                {
+                    Sortie = Sortie + c + " ";
+                }
+                return Sortie;
+
             }, 1);
 
             store["Pause"] = new NativeFunction((values) =>
