@@ -661,37 +661,38 @@ namespace EddiSpeechService
                 {
                     if (nextDigit < 6)
                     {
-                        return "plus de " + number + " " + order;
+						return "au delà de " + number + " " + order;
                     }
                     else
                     {
-                        return "proche de " + (number + 1) + " " + order;
+                        return "approximativement  " + (number + 1) + " " + order;
                     }
                 }
-                switch (nextDigit)
-                {
-                    case 0:
-                        return "juste au dessus de" + number + " " + order;
-                    case 1:
-                        return "au dessus de" + number + " " + order;
-                    case 2:
-                        return "bien au dessus de " + number + " " + order;
-                    case 3:
-                        return "vers les " + number + " et demi " + order;
-                    case 4:
-                        return "proche des " + number + " et demi " + order;
-                    case 5:
-                        return "autour des " + number + " et demi " + order;
-                    case 6:
-                        return "juste au dela des " + number + " et demi " + order;
-                    case 7:
-                        return "bien au dessus des " + number + " et demi " + order;
-                    case 8:
-                        return "vers les " + (number + 1) + " " + order;
-                    case 9:
-                        return "prôche de" + (number + 1) + " " + order;
-                    default:
-                        return "environ " + number + " " + order;
+									
+				switch (nextDigit)
+				{
+					case 0:
+						return "supérieur à " + number + " " + order;
+					case 1:
+						return "au-delà de " + number + " " + order;
+					case 2:
+						return "bien au delà de " + number + " " + order;
+					case 3:
+						return "environ " + number + " and a half " + order;
+					case 4:
+						return "près de " + number + " and a half " + order;
+					case 5:
+						return "autour de " + number + " and a half " + order;
+					case 6:
+						return "juste au dessus de " + number + " and a half " + order;
+					case 7:
+						return "largement au delà de " + number + " and a half " + order;
+					case 8:
+						return "vers les " + (number + 1) + " " + order;
+					case 9:
+						return "près de " + (number + 1) + " " + order;
+					default:
+						return "autour de " + number + " " + order;
                 }
             }
 
