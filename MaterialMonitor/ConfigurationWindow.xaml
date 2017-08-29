@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="EddiMaterialMonitor.ConfigurationWindow"
+<UserControl x:Class="EddiMaterialMonitor.ConfigurationWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
@@ -9,12 +9,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Below is a list of all known materials.  You can set values for the minimum, desired and maximum levels of each and EDDI will generate events when you move beyond the levels."></TextBlock>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated."></TextBlock>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Vous trouverez ci-dessous une liste de tous les matériaux connus. Vous pouvez définir des valeurs pour les niveaux minimum, désiré et maximal de chacun et EDDI générera des événements lorsque vous dépasserez ces niveaux."></TextBlock>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Notez que si votre inventaire est incorrect, vous devrez démarrer ou redémarrer Elite et cette information sera mise à jour."></TextBlock>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="materialsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="materialsUpdated">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Path=material}"></DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="Inventory" IsReadOnly="True" Binding="{Binding Path=amount}">
+                <DataGridTextColumn Header="Nom" Width="*" IsReadOnly="True" Binding="{Binding Path=material}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Type" Width="*" IsReadOnly="True" Binding="{Binding Path=Categorie}"></DataGridTextColumn>
+                <utility:DataGridNumericColumn Header="Qté Inventaire" IsReadOnly="True" Binding="{Binding Path=amount}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
@@ -30,7 +31,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="Desired" Binding="{Binding Path=desired, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="Désiré" Binding="{Binding Path=desired, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
