@@ -1,4 +1,4 @@
-﻿using Eddi;
+using Eddi;
 using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
@@ -51,7 +51,7 @@ namespace EddiEddpMonitor
         /// </summary>
         public string MonitorDescription()
         {
-            return @"Monitor EDDP for changes in system control and state, and generate events that match the watch list.";
+            return @"Onglet servant à suivre EDDP et ajuster les éléments d'intérêts de l'état du système afin de générer des événements qui correspondent à la liste de surveillance.";
         }
 
         public bool IsRequired()
@@ -305,3 +305,4 @@ namespace EddiEddpMonitor
         }
     }
 }
+
