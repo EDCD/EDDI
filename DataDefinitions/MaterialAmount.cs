@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +14,9 @@ namespace EddiDataDefinitions
 
         [JsonIgnore]
         private int _amount;
-        public int amount { get
+        public int amount
+        {
+            get
             {
                 return _amount;
             }
@@ -82,29 +84,53 @@ namespace EddiDataDefinitions
             }
         }
 
+
+        private string _Categorie;
+        public string Categorie 
+        {
+            get
+            {
+                return _Categorie;
+            }
+            set
+            {
+                if (_Categorie != value)
+                {
+                    _Categorie = value;
+                    NotifyPropertyChanged("category");
+                }
+            }
+        }
+
         public MaterialAmount(Material material, int amount)
         {
+            Material My_material = Material.FromName(material.name);
             this.material = material.name;
             this.amount = amount;
+            this.Categorie = My_material.category;
         }
 
         public MaterialAmount(Material material, int? minimum, int? desired, int? maximum)
         {
+            Material My_material = Material.FromName(material.name);
             this.material = material.name;
             amount = 0;
             this.minimum = minimum;
             this.desired = desired;
             this.maximum = maximum;
+            this.Categorie = My_material.category;
         }
 
         [JsonConstructor]
         public MaterialAmount(string material, int amount, int? minimum, int? desired, int? maximum)
         {
+            Material My_material = Material.FromName(material);
             this.material = material;
             this.amount = amount;
             this.minimum = minimum;
             this.desired = desired;
             this.maximum = maximum;
+            this.Categorie = My_material.category;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
