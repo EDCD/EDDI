@@ -1,3 +1,24 @@
+#2.4.0-b1
+  * Core
+    * Add 'DataScan' definition for types of datalink scans
+  * Events
+    * Add 'Data scanned' event when some type of datalinks (Data Links, Data Posts, Abandoned Data Logs, Listerning Posts, Wrecked Ships) are scanned
+    * Add 'Data voucher awarded' event when you are awarded a data voucher
+	* Add 'Friends status' event when a friendly commander changes status
+	* Add 'Music' event when the game music 'mood' changes
+	* Add 'Search and rescue' event when delivering items to a Search and Rescue contact
+	* Add 'Ship sold on rebuy' event when when you sell a ship to raise funds on the insurance / rebuy screen
+	* Update 'Bond redeemed', 'Bounty redeemed', 'Fine paid', 'Data voucher redeemed', and 'Trade voucher redeemed' events to add Broker Percentage when redeemed via broker
+	* Update 'Star scanned' event to add luminosity class property
+  * Speech Responder
+	* Script changes:
+	  * 'Data scanned' - new script
+	  * 'Data voucher awarded' - new script
+	  * 'Music' - new script
+	  * 'Friends status' - new script
+	  * 'Search and rescue' - new script
+	  * 'Sold ship on rebuy' - new script
+
 #2.3.0
   * Core
     * Tidy ups for reading from and writing to files to catch potential exceptions
