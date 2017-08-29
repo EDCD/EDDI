@@ -21,11 +21,11 @@ namespace EddiEvents
         }
 
         [JsonProperty("type")]
-        public DataScan type { get; private set; }
+        public string type { get; private set; }
 
         public DataScannedEvent(DateTime timestamp, DataScan type) : base(timestamp, NAME)
         {
-            this.type = type;
+            this.type = type.name;
         }
     }
 }

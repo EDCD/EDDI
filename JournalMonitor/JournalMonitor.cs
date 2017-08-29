@@ -629,7 +629,7 @@ namespace EddiJournalMonitor
                             break;
                         case "DataScanned":
                             {
-                                DataScan type = DataScan.FromName(getString(data, "Type"));
+                                DataScan type = DataScan.FromEDName(getString(data, "Type"));
                                 events.Add(new DataScannedEvent(timestamp, type) { raw = line });
                             }
                             handled = true;

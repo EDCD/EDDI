@@ -54,7 +54,7 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            string tidiedFrom = from.ToLowerInvariant();
+            string tidiedFrom = from == null ? null : from.Replace(";", "").ToLowerInvariant();
             DataScan result = DATASCANS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {
