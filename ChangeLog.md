@@ -1,27 +1,33 @@
-#2.4.0
-* Core
-  * New roles have been added to the shipyard
-* Events
-  * 'Mission redirected' event added
-  * 'Search and rescue' event added
-  * 'Star scanned' event now includes a luminosity class string
-  * 'Ship sold' event  now contains a value for the system where the ship was sold
-  * 'Ship sold on rebuy' event added
-  * 'Screenshot' event now contains longitude & latitude, when appropriate
-  * 'Music' event added (add your own music tracks and/or monitor game state)
-  * 'Friends' event added
-  * 'Nav beacon scan' event added
-  * 'Shipyard transfer' event now includes transfer time
-* Speech Responder
-  * Script changes:
-    * 'Docking granted' script revised to recognize asteroid bases
-    * 'Mission redirected' - new script
-	* 'Search and rescue' - new script
-	* 'Ship sold on rebuy' - new script
-	* 'Ship sold' - revised to include location for ships sold remotely
-	* 'Nav beacon scan' - new script
-	
-
+#2.4.0-b1
+  * Core
+    * Add 'DataScan' definition for types of datalink scans
+	* Add new roles to the shipyard
+  * Events
+    * Add 'Data scanned' event when some type of datalinks (Data Links, Data Posts, Abandoned Data Logs, Listerning Posts, Wrecked Ships) are scanned
+    * Add 'Data voucher awarded' event when you are awarded a data voucher
+	* Add 'Friends status' event when a friendly commander changes status
+	* Add 'Mission redirected' event
+	* Add 'Nav beacon scan' event
+	* Add 'Music' event when the game music 'mood' changes
+	* Add 'Search and rescue' event when delivering items to a Search and Rescue contact
+	* Add 'Ship sold on rebuy' event when when you sell a ship to raise funds on the insurance / rebuy screen
+	* Update 'Bond redeemed', 'Bounty redeemed', 'Fine paid', 'Data voucher redeemed', and 'Trade voucher redeemed' events to add Broker Percentage when redeemed via broker
+    * Update 'Screenshot' event, now contains longitude & latitude, when appropriate
+	* Update 'Ship sold' event, now contains a value for the system where the ship was sold
+	* Update 'Shipyard transfer' event, now includes transfer time
+	* Update 'Star scanned' event to add luminosity class property
+  * Speech Responder
+	* Script changes:
+	  * 'Data scanned' - new script
+	  * 'Data voucher awarded' - new script
+	  * 'Docking granted' script revised to recognize asteroid bases
+      * 'Mission redirected' - new script
+	  * 'Music' - new script
+      * 'Nav beacon scan' - new script
+	  * 'Friends status' - new script
+	  * 'Search and rescue' - new script
+      * 'Ship sold' - revised to include location for ships sold remotely
+	  * 'Sold ship on rebuy' - new script
 
 #2.3.0
   * Core
