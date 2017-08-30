@@ -356,9 +356,9 @@
     "Data voucher awarded": {
       "enabled": true,
       "priority": 3,
-      "responder": true,
-      "script": "{_ Data voucher awarded }\r\n{_ Triggered when you are awarded a data voucher }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'data_voucher')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n{SetState('eddi_context_bond_amount', event.reward)}\r\n{SetState('eddi_context_bond_faction', event.payeefaction)}\r\n\r\n{_ Update Fines & Bounties}\r\n{F(\"FinesBounties_Add\")}\r\n\r\nData voucher awarded from {event.payeefaction} for {event.reward} credits.\r\n",
-      "default": true,
+      "responder": false,
+      "script": "{_ Data voucher awarded }\r\n{_ Triggered when you are awarded a data voucher }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'data_voucher')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n{SetState('eddi_context_bond_amount', event.reward)}\r\n{SetState('eddi_context_bond_faction', event.payeefaction)}\r\n\r\nData voucher awarded from {event.payeefaction} for {event.reward} credits.\r\n",
+      "default": false,
       "name": "Data voucher awarded",
       "description": "Triggered when you are awarded a data voucher"
     },
