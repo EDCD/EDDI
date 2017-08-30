@@ -14,6 +14,7 @@
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="materialsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="materialsUpdated">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Path=material}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Type" Width="100" IsReadOnly="True" Binding="{Binding Path=Category}"></DataGridTextColumn>
                 <utility:DataGridNumericColumn Header="Inventory" IsReadOnly="True" Binding="{Binding Path=amount}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">

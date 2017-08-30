@@ -82,29 +82,52 @@ namespace EddiDataDefinitions
             }
         }
 
+        private string _Category;
+        public string Category
+        {
+            get
+            {
+                return _Category;
+            }
+            set
+            {
+                if (_Category != value)
+                {
+                    _Category = value;
+                    NotifyPropertyChanged("category");
+                }
+            }
+        }
+
         public MaterialAmount(Material material, int amount)
         {
+            Material My_material = Material.FromName(material.name);
             this.material = material.name;
             this.amount = amount;
+            this.Category = My_material.category;
         }
 
         public MaterialAmount(Material material, int? minimum, int? desired, int? maximum)
         {
+            Material My_material = Material.FromName(material.name);
             this.material = material.name;
             amount = 0;
             this.minimum = minimum;
             this.desired = desired;
             this.maximum = maximum;
+            this.Category = My_material.category;
         }
 
         [JsonConstructor]
         public MaterialAmount(string material, int amount, int? minimum, int? desired, int? maximum)
         {
+            Material My_material = Material.FromName(material);
             this.material = material;
             this.amount = amount;
             this.minimum = minimum;
             this.desired = desired;
             this.maximum = maximum;
+            this.Category = My_material.category;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

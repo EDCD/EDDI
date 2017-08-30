@@ -1,7 +1,8 @@
 #2.4.0-b1
   * Core
     * Add 'DataScan' definition for types of datalink scans
-	* Add new roles to the shipyard
+	* Add new roles to the Ship Monitor
+	* Add material type information to the Material Monitor
   * Events
     * Add 'Data scanned' event when some type of datalinks (Data Links, Data Posts, Abandoned Data Logs, Listerning Posts, Wrecked Ships) are scanned
     * Add 'Data voucher awarded' event when you are awarded a data voucher

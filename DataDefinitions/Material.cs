@@ -39,7 +39,7 @@ namespace EddiDataDefinitions
         {
             this.EDName = EDName;
             this.category = category;
-            this.symbol= symbol;
+            this.symbol = symbol;
             this.name = name;
             this.rarity = rarity;
             this.goodpctbody = goodpctbody;
@@ -169,13 +169,22 @@ namespace EddiDataDefinitions
         public static readonly Material PharmaceuticalIsolators = new Material("pharmaceuticalisolators", "Manufactured", "Pharmaceutical Isolators", Rarity.VeryRare);
         public static readonly Material ProtoHeatRadiators = new Material("protoheatradiators", "Manufactured", "Proto Heat Radiators", Rarity.VeryRare);
         public static readonly Material ProtoRadiolicAlloys = new Material("protoradiolicalloys", "Manufactured", "Proto Radiolic Alloys", Rarity.VeryRare);
-        public static readonly Material UnknownFragment = new Material("unknownenergysource", "Manufactured", "Unknown Fragment", Rarity.VeryRare);
 
         public static readonly Material AncientBiologicalData = new Material("ancientbiologicaldata", "Data", "Ancient Biological Data", Rarity.Common);
         public static readonly Material AncientCulturalData = new Material("ancientculturaldata", "Data", "Ancient Cultural Data", Rarity.Common);
         public static readonly Material AncientHistoricalData = new Material("ancienthistoricaldata", "Data", "Ancient Historical Data", Rarity.Common);
         public static readonly Material AncientLanguageData = new Material("ancientlanguagedata", "Data", "Ancient Language Data", Rarity.Common);
         public static readonly Material AncientTechnologicalData = new Material("ancienttechnologicaldata", "Data", "Ancient Technological Data", Rarity.Common);
+
+        //public static readonly Material UnknownCarapace = new Material("unknowncarapace", "Manufactured", "Unknown Carapace", Rarity.Common);
+        //public static readonly Material UnknownEnergyCell = new Material("unknownenergycell", "Manufactured", "Unknown Energy Cell", Rarity.Standard);
+        //public static readonly Material UnknownTechnologyComponents = new Material("unknowntechnologycomponents", "Manufactured", "Unknown Technology Components", Rarity.Rare);
+        //public static readonly Material UnknownFragment = new Material("unknownenergysource", "Manufactured", "Unknown Fragment", Rarity.VeryRare);
+        //public static readonly Material UnknownOrganicCircuitry = new Material("unknownorganiccircuitry", "Manufactured", "Unknown Organic Circuitry", Rarity.VeryRare);
+
+        //public static readonly Material Tg_StructuralData = new Material("tg_structuraldata", "Data", "Thargoid Structural Data", Rarity.Common);
+        //public static readonly Material Tg_CompositionData = new Material("tg_compositiondata", "Data", "Thargoid Material Composition Data", Rarity.Standard);
+        //public static readonly Material Tg_ResidueData = new Material("tg_residuedata", "Data", "Thargoid Residue Data Analysis", Rarity.Rare);
 
         public static Material FromName(string from)
         {
