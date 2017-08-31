@@ -7,6 +7,7 @@ namespace EddiDataDefinitions
     {
         private static Dictionary<long, Module> ModulesByEliteID = new Dictionary<long, Module>
         {
+                //Module(long EDID, string EDName, long EDDBID, string Name, int Class, string Grade, long Value, int ShipID)
                 {128049250, new Module(128049250, "SideWinder_Armour_Grade1", 738, "Lightweight Alloy", 1, "I", 0, 128049249) },
                 {128049251, new Module(128049251, "SideWinder_Armour_Grade2", 739, "Reinforced Alloy", 1, "I", 25600, 128049249) },
                 {128049252, new Module(128049252, "SideWinder_Armour_Grade3", 740, "Military Grade Composite", 1, "I", 80320, 128049249) },
@@ -858,6 +859,25 @@ namespace EddiDataDefinitions
                 {128049294, new Module(128049294, "Dolphin_Armour_Grade3", 1591, "Military Grade Composite", 1, "I", 1115330, 128049291) },
                 {128049295, new Module(128049295, "Dolphin_Armour_Mirrored", 1592, "Mirrored Surface Composite", 1, "I", 2808390, 128049291) },
                 {128049296, new Module(128049296, "Dolphin_Armour_Reactive", 1593, "Reactive Surface Composite", 1, "I", -3152080, 128049291) },
+                {128740819, new Module(128740819, "Hpt_MiningLaser_Turret_Small", 1587, "Mining Laser", 1, "D", 9400, Module.ModuleMount.Turreted) },
+                {128740820, new Module(128740820, "Hpt_MiningLaser_Turret_Medium", 1588, "Mining Laser", 2, "D", 22580, Module.ModuleMount.Turreted) },
+
+                // Needs EDDBID (to replace '-1')
+                {128777327, new Module(128777327, "Int_DroneControl_Repair_Size1_Class1", -1, "Repair Limpet Controller", 1, "E", 600) },  
+                {128777328, new Module(128777328, "Int_DroneControl_Repair_Size1_Class2", -1, "Repair Limpet Controller", 1, "D", 1200) }, 
+                {128777329, new Module(128777329, "Int_DroneControl_Repair_Size1_Class3", -1, "Repair Limpet Controller", 1, "C", 2400) }, 
+                {128777330, new Module(128777330, "Int_DroneControl_Repair_Size1_Class4", -1, "Repair Limpet Controller", 1, "B", 4800) },  
+                {128777331, new Module(128777331, "Int_DroneControl_Repair_Size1_Class5", -1, "Repair Limpet Controller", 1, "A", 9600) },  
+                {128777332, new Module(128777332, "Int_DroneControl_Repair_Size3_Class1", -1, "Repair Limpet Controller", 3, "E", 5400) }, 
+                {128777333, new Module(128777333, "Int_DroneControl_Repair_Size3_Class2", -1, "Repair Limpet Controller", 3, "D", 10800) },  
+                {128777334, new Module(128777334, "Int_DroneControl_Repair_Size3_Class3", -1, "Repair Limpet Controller", 3, "C", 21600) }, 
+                {128777335, new Module(128777335, "Int_DroneControl_Repair_Size3_Class4", -1, "Repair Limpet Controller", 3, "B", 43200) },  
+                {128777336, new Module(128777336, "Int_DroneControl_Repair_Size3_Class5", -1, "Repair Limpet Controller", 3, "A", 86400) },  
+                {128777337, new Module(128777337, "Int_DroneControl_Repair_Size5_Class1", -1, "Repair Limpet Controller", 5, "E", 48600) }, 
+                {128777338, new Module(128777338, "Int_DroneControl_Repair_Size5_Class2", -1, "Repair Limpet Controller", 5, "D", 97200) },  
+                {128777339, new Module(128777339, "Int_DroneControl_Repair_Size5_Class3", -1, "Repair Limpet Controller", 5, "C", 194400) },  
+                {128777340, new Module(128777340, "Int_DroneControl_Repair_Size5_Class4", -1, "Repair Limpet Controller", 5, "B", 388800) }, 
+                {128777341, new Module(128777341, "Int_DroneControl_Repair_Size5_Class5", -1, "Repair Limpet Controller", 5, "A", 777600) },  
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },
@@ -873,8 +893,6 @@ namespace EddiDataDefinitions
                 {128666638, new Module(128666638, "Int_LifeSupport_Size1_Class1_free", -1, "Life Support", 1, "E", 0) },
 
                 // Items for which we are awaiting FD IDs
-                {999999901, new Module(999999901, "Hpt_MiningLaser_Turret_Small", 1587, "Mining Laser", 1, "D", 9400, Module.ModuleMount.Turreted) },
-                {999999902, new Module(999999902, "Hpt_MiningLaser_Turret_Medium", 1588, "Mining Laser", 2, "D", 22580, Module.ModuleMount.Turreted) },
                 {999999903, new Module(999999903, "Hpt_MiningLaser_Fixed_Small_Advanced", -1, "Mining Lance", 1, "D", 6800, Module.ModuleMount.Fixed) },
                 // The FDL has its own cargo bay door.  The FDL is like that
                 {999999907, new Module(999999907, "ModularCargoBayDoorFDL", -1, "Cargo Hatch", 1, "H", 0, -1) },
