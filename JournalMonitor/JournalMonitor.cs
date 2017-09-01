@@ -1695,7 +1695,7 @@ namespace EddiJournalMonitor
 
                                 // Missions with passengers
                                 string passengertype = getString(data, "PassengerType");
-                                bool? passengerswanted = getOptionalBool(data, "PassengersWanted");
+                                bool? passengerswanted = getOptionalBool(data, "PassengerWanted");
                                 data.TryGetValue("PassengerCount", out val);
                                 if (val != null)
                                 {
