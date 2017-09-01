@@ -348,7 +348,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Data scanned }\r\n{_ Triggered when scanning some types of data links }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'scan')}\r\n{SetState('eddi_context_last_action', 'data')}\r\n{SetState('eddi_context_data_scan_type', event.type)}\r\n\r\nData scan of {event.type} completed.",
+      "script": "{_ Data scanned }\r\n{_ Triggered when scanning some types of data links }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'scan')}\r\n{SetState('eddi_context_last_action', 'data')}\r\n{SetState('eddi_context_data_scan_type', event.datalinktype)}\r\n\r\nData scan of {event.datalinktype} completed.",
       "default": true,
       "name": "Data scanned",
       "description": "Triggered when scanning some types of data links"
