@@ -205,6 +205,22 @@ namespace EddiSpeechResponder
                 return Translations.Humanize(values[0].AsNumber);
             }, 1);
 
+            store["Spacialise"] = new NativeFunction((values) =>
+            {
+                string Entree = values[0].AsString;
+                if (Entree == "")
+                { return ""; }
+                string Sortie = "";
+                string UpperSortie = "";
+                foreach (char c in Entree)
+                {
+                    Sortie = Sortie + c + " ";
+                }
+                UpperSortie = Sortie.ToUpper();
+                return UpperSortie;
+
+            }, 1);
+
             store["Pause"] = new NativeFunction((values) =>
             {
                 return @"<break time=""" + values[0].AsNumber + @"ms"" />";

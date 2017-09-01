@@ -21,6 +21,7 @@
 	* Update 'Shipyard transfer' event, now includes transfer time
 	* Update 'Star scanned' event to add luminosity class property
   * Speech Responder
+    * Add Spacialise() Cottle function.  Details on how to use this are in the SpeechResponder documentation
 	* Script changes:
 	  * 'Data scanned' - new script
 	  * 'Data voucher awarded' - new script
