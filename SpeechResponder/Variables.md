@@ -204,6 +204,7 @@ All bodies have the following data:
     - distance the distance from the arrival point in the system, in light seconds
     - tidallylocked true if the body is tidally locked to its parent
     - temperature the surface temperature of the body
+	- rings (when applicable) (array of ring objects)
 
 In addition, stars have the following data:
 
@@ -232,6 +233,14 @@ Planets have the following data:
     - volcanism the volcanism of the planet (Volcanism object)
     - landable true if the planet can be landed upon
     - materials list of materials and their percentage availability on the planet
+
+Rings have the following data:
+
+    - name the name of the ring
+	- mass the mass of the ring
+	- innerradius the inner radius of the ring
+	- outerradius the outer radius of the ring
+	- composition the composition of the ring
 
 ## Volcanism
 

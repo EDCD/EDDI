@@ -544,7 +544,7 @@ namespace EddiJournalMonitor
                                     foreach (Dictionary<string, object> ringData in ringsData)
                                     {
                                         string ringName = getString(ringData, "Name");
-                                        Composition ringComposition = Composition.FromEDName(getString(ringData, "RingClass"));
+                                        string ringComposition = Composition.FromEDName(getString(ringData, "RingClass")).name;
                                         decimal ringMass = getDecimal(ringData, "MassMT");
                                         decimal ringInnerRadius = getDecimal(ringData, "InnerRad");
                                         decimal ringOuterRadius = getDecimal(ringData, "OuterRad");

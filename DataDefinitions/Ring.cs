@@ -15,7 +15,7 @@ namespace EddiDataDefinitions
         public string name { get; set; }
 
         /// <summary>The composition of the ring</summary>
-        public Composition composition { get; set; }
+        public string composition { get; set; }
 
         /// <summary>The mass of the ring, in megatonnes</summary>
         public decimal mass { get; set; }
@@ -26,7 +26,7 @@ namespace EddiDataDefinitions
         /// <summary>The outer radius of the ring, in metres</summary>
         public decimal outerradius { get; set; }
 
-        public Ring(string name, Composition composition, decimal mass, decimal innerradius, decimal outerradius)
+        public Ring(string name, string composition, decimal mass, decimal innerradius, decimal outerradius)
         {
             this.name = name;
             this.composition = composition;
