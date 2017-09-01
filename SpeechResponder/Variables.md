@@ -204,7 +204,7 @@ All bodies have the following data:
     - distance the distance from the arrival point in the system, in light seconds
     - tidallylocked true if the body is tidally locked to its parent
     - temperature the surface temperature of the body
-	- rings (when applicable) (array of ring objects)
+	- rings (when applicable) (list of ring objects)
 
 In addition, stars have the following data:
 
