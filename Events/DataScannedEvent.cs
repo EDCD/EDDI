@@ -17,15 +17,15 @@ namespace EddiEvents
 
         static DataScannedEvent()
         {
-            VARIABLES.Add("type", "The type of Data Link scanned");
+            VARIABLES.Add("datalinktype", "The type of Data Link scanned");
         }
 
         [JsonProperty("type")]
-        public string type { get; private set; }
+        public string datalinktype { get; private set; }
 
-        public DataScannedEvent(DateTime timestamp, DataScan type) : base(timestamp, NAME)
+        public DataScannedEvent(DateTime timestamp, DataScan datalinktype) : base(timestamp, NAME)
         {
-            this.type = type.name;
+            this.datalinktype = datalinktype.name;
         }
     }
 }
