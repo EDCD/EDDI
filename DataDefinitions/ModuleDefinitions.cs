@@ -875,7 +875,12 @@ namespace EddiDataDefinitions
                 {128777338, new Module(128777338, "Int_DroneControl_Repair_Size5_Class2", 1605, "Repair Limpet Controller", 5, "D", 97200) },  
                 {128777339, new Module(128777339, "Int_DroneControl_Repair_Size5_Class3", 1606, "Repair Limpet Controller", 5, "C", 194400) },  
                 {128777340, new Module(128777340, "Int_DroneControl_Repair_Size5_Class4", 1607, "Repair Limpet Controller", 5, "B", 388800) }, 
-                {128777341, new Module(128777341, "Int_DroneControl_Repair_Size5_Class5", 1608, "Repair Limpet Controller", 5, "A", 777600) },  
+                {128777341, new Module(128777341, "Int_DroneControl_Repair_Size5_Class5", 1608, "Repair Limpet Controller", 5, "A", 777600) },
+                {128777342, new Module(128777342, "Int_DroneControl_Repair_Size7_Class1", 1609, "Repair Limpet Controller", 7, "E", 437400) },
+                {128777343, new Module(128777343, "Int_DroneControl_Repair_Size7_Class2", 1610, "Repair Limpet Controller", 7, "D", 874800) },
+                {128777344, new Module(128777344, "Int_DroneControl_Repair_Size7_Class3", 1611, "Repair Limpet Controller", 7, "C", 1749600) },
+                {128777345, new Module(128777345, "Int_DroneControl_Repair_Size7_Class4", 1612, "Repair Limpet Controller", 7, "B", 3499200) },
+                {128777346, new Module(128777346, "Int_DroneControl_Repair_Size7_Class5", 1613, "Repair Limpet Controller", 7, "A", 6998400) }, 
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },
