@@ -12,7 +12,7 @@ namespace EddiEvents
     {
         public const string NAME = "Jumped";
         public const string DESCRIPTION = "Triggered when you complete a jump to another system";
-        public const string SAMPLE = "{\"timestamp\":\"2016-07-21T13:16:49Z\",\"event\":\"FSDJump\",\"StarSystem\":\"LP 98-132\",\"StarPos\":[-26.781,37.031,-4.594],\"Economy\":\"$economy_Extraction;\",\"Allegiance\":\"Federation\",\"Government\":\"$government_Anarchy;\",\"Security\":\"$SYSTEM_SECURITY_high_anarchy;\",\"JumpDist\":5.230,\"FuelUsed\":0.355614,\"FuelLevel\":12.079949,\"Faction\":\"Brotherhood of LP 98-132\",\"FactionState\":\"Outbreak\"}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-07-21T13:16:49Z\",\"event\":\"FSDJump\",\"StarSystem\":\"LP 98-132\",\"StarPos\":[-26.781,37.031,-4.594],\"Economy\":\"$economy_Extraction;\",\"Allegiance\":\"Federation\",\"Government\":\"$government_Anarchy;\",\"Security\":\"$SYSTEM_SECURITY_high_anarchy;\", \"Population\":14087951,\"JumpDist\":5.230,\"FuelUsed\":0.355614,\"FuelLevel\":12.079949,\"Faction\":\"Brotherhood of LP 98-132\",\"FactionState\":\"Outbreak\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static JumpedEvent()
@@ -30,6 +30,7 @@ namespace EddiEvents
             VARIABLES.Add("economy", "The economy of the system to which the commander has jumped");
             VARIABLES.Add("government", "The government of the system to which the commander has jumped");
             VARIABLES.Add("security", "The security of the system to which the commander has jumped");
+            VARIABLES.Add("population", "The population of the system to which the commander has jumped");
         }
 
         public string system { get; private set; }
@@ -58,7 +59,9 @@ namespace EddiEvents
 
         public string security { get; private set; }
 
-        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security) : base(timestamp, NAME)
+        public long? population { get; private set; }
+
+        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security, long? population) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
@@ -73,6 +76,7 @@ namespace EddiEvents
             this.economy = (economy == null ? Economy.None.name : economy.name);
             this.government = (government == null ? Government.None.name : government.name);
             this.security = (security == null ? SecurityLevel.None.name : security.name);
+            this.population = population;
         }
     }
 }

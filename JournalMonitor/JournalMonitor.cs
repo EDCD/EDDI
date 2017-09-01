@@ -147,8 +147,9 @@ namespace EddiJournalMonitor
                                 Economy economy = Economy.FromEDName(getString(data, "SystemEconomy"));
                                 Government government = Government.FromEDName(getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
+                                long? population = getLong(data, "Population");
 
-                                events.Add(new JumpedEvent(timestamp, systemName, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security) { raw = line });
+                                events.Add(new JumpedEvent(timestamp, systemName, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security, population) { raw = line });
                             }
                             handled = true;
                             break;
@@ -178,6 +179,7 @@ namespace EddiJournalMonitor
                                 Economy economy = Economy.FromEDName(getString(data, "SystemEconomy"));
                                 Government government = Government.FromEDName(getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
+                                long? population = getLong(data, "Population");
 
                                 string station = getString(data, "StationName");
                                 string stationtype = getString(data, "StationType");
@@ -185,7 +187,7 @@ namespace EddiJournalMonitor
                                 decimal? latitude = getOptionalDecimal(data, "Latitude");
                                 decimal? longitude = getOptionalDecimal(data, "Longitude");
 
-                                events.Add(new LocationEvent(timestamp, systemName, x, y, z, body, bodyType, docked, station, stationtype, allegiance, faction, economy, government, security, longitude, latitude) { raw = line });
+                                events.Add(new LocationEvent(timestamp, systemName, x, y, z, body, bodyType, docked, station, stationtype, allegiance, faction, economy, government, security, population, longitude, latitude) { raw = line });
                             }
                             handled = true;
                             break;
