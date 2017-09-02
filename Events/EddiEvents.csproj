@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommunityGoalEvent.cs" />
     <Compile Include="DataVoucherAwardedEvent.cs" />
     <Compile Include="NavBeaconScanEvent.cs" />
     <Compile Include="CrewMemberRoleChangedEvent.cs" />
