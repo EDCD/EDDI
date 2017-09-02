@@ -335,6 +335,15 @@
       "name": "Crew role changed",
       "description": "Triggered when your role in the crew changes"
     },
+    "Community goal": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Community goal",
+      "description": "Triggered when checking the status of a community goal"
+    },
     "Damage check": {
       "enabled": true,
       "priority": 3,
