@@ -22,7 +22,6 @@ namespace EddiShipMonitor
             VARIABLES.Add("shipid", "The ID of the ship that was sold");
             VARIABLES.Add("price", "The price for which the ship was sold");
             VARIABLES.Add("system", "The system where the ship was sold");
-            
         }
 
         [JsonProperty("ship")]

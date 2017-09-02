@@ -636,19 +636,6 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
-                        case "SellShipOnRebuy":
-                            {
-                                object val;
-                                string ship = getString(data, "ShipType");
-                                string system = getString(data, "System");
-                                data.TryGetValue("SellShipID", out val);
-                                int shipId = (int)(long)val;
-                                data.TryGetValue("ShipPrice", out val);
-                                long price = (long)val;
-                                events.Add(new ShipSoldOnRebuyEvent(timestamp, ship, system, shipId, price) { raw = line });
-                            }
-                            handled = true;
-                            break;
                         case "ShipyardBuy":
                             {
                                 object val;
@@ -693,6 +680,19 @@ namespace EddiJournalMonitor
                                 long price = (long)val;
                                 string system = getString(data, "System");                                
                                 events.Add(new ShipSoldEvent(timestamp, ship, shipId, price, system) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "SellShipOnRebuy":
+                            {
+                                object val;
+                                data.TryGetValue("SellShipId", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "ShipType");
+                                data.TryGetValue("ShipPrice", out val);
+                                long price = (long)val;
+                                string system = getString(data, "System");
+                                events.Add(new ShipSoldOnRebuyEvent(timestamp, ship, shipId, price, system) { raw = line });
                             }
                             handled = true;
                             break;
