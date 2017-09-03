@@ -1645,6 +1645,7 @@ namespace EddiJournalMonitor
                             }
                         case "CommunityGoal":
                             {
+                                /*
                                 object val;
 
                                 // Create empty lists
@@ -1699,6 +1700,7 @@ namespace EddiJournalMonitor
                                 }
 
                                 events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line });
+                                */
 
                                 // An alternate method, though with its own problems
                                 /*
