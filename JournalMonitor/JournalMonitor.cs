@@ -1931,6 +1931,16 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "RepairDrone":
+                            {
+                                decimal? hull = getOptionalDecimal(data, "HullRepaired");
+                                decimal? cockpit = getOptionalDecimal(data, "CockpitRepaired");
+                                decimal? corrosion = getOptionalDecimal(data, "CorrosionRepaired");
+
+                                events.Add(new ShipRepairDroneEvent(timestamp, hull, cockpit, corrosion) { raw = line });
+                                handled = true;
+                                break;
+                            }
                         case "RepairAll":
                             {
                                 object val;
