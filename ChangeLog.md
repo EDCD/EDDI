@@ -25,16 +25,21 @@
   * Speech Responder
     * Add Spacialise() Cottle function.  Details on how to use this are in the SpeechResponder documentation
 	* Script changes:
+	  * 'Bond redeemed' - revised to correctly get faction names and faction amounts
 	  * 'Data scanned' - new script
 	  * 'Data voucher awarded' - new script
+	  * 'Died' - new script
 	  * 'Docking granted' script revised to recognize asteroid bases
 	  * 'Friends status' - new script
-      * 'Mission redirected' - new script
+	  * 'Limpet purchased' - new script
+	  * 'Limpet sold' - new script
+    * 'Mission redirected' - new script
 	  * 'Music' - new script
-      * 'Nav beacon scan' - new script
-	  * 'Repair drone' - new script
+    * 'Nav beacon scan' - new script
+	  * 'Power expansion vote cast' - new script
+ 	  * 'Repair drone' - new script
 	  * 'Search and rescue' - new script
-      * 'Ship sold' - revised to include location for ships sold remotely
+    * 'Ship sold' - revised to include location for ships sold remotely
 	  * 'Sold ship on rebuy' - new script
 
 #2.3.0
