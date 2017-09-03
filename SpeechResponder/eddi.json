@@ -1091,6 +1091,15 @@
       "name": "Power voucher received",
       "description": "Triggered when a commander turns in combat vouchers against an opposing power"
     },
+    "Repair drone": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{set systemsrepaired to []}\r\n\r\n{if event.hull:\r\n   {set systemsrepaired to cat(systemsrepaired, [\"the hull\"])} \r\n}\r\n{if event.cockpit:\r\n   {set systemsrepaired to cat(systemsrepaired, [\"the cockpit\"])} \r\n}\r\n{if event.corrosion:\r\n   {set systemsrepaired to cat(systemsrepaired, [OneOf(\"corroded systems\", \"systems affected by corrosion\")])} \r\n}\r\n\r\n{if len(systemsrepaired) > 0:\r\n\r\n    {set remote to Occasionally(2, \"remote\")}\r\n    {set sequence to OneOf(\"sequence\", \"cycle\")}\r\n    {OneOf(\r\n        \"The limpet has completed it's {remote} repairs to\", \r\n        \"{remote} {sequence} completed, repairs made to\"\r\n    )}\r\n\r\n    {set cur to 0}\r\n    {while cur < len(systemsrepaired):\r\n        {if cur = 0:\r\n        |elif cur < len(systemsrepaired) - 1:\r\n            , \r\n        |else:\r\n            and\r\n        }\r\n        {systemsrepaired[cur]}\r\n        {set cur to cur + 1}\r\n    }\r\n}.\r\n",
+      "default": true,
+      "name": "Repair drone",
+      "description": "Triggered when your ship is repaired via a repair limpet controller"
+    },
     "Repeat last speech": {
       "enabled": true,
       "priority": 3,
