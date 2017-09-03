@@ -12,7 +12,6 @@ namespace EddiEvents
         public const string NAME = "Bounty awarded";
         public const string DESCRIPTION = "Triggered when you are awarded a bounty";
         public const string SAMPLE = @"{ ""timestamp"":""2016-12-29T10:10:11Z"", ""event"":""Bounty"", ""Rewards"":[ { ""Faction"":""FrogCorp"", ""Reward"":400 }, { ""Faction"":""Federation"", ""Reward"":123187 } ], ""Target"":""federation_dropship_mkii"", ""TotalReward"":123587, ""VictimFaction"":""TZ Arietis Purple Council"" }";
-
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static BountyAwardedEvent()
