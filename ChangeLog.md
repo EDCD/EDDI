@@ -36,8 +36,8 @@
       * 'Mission redirected' - new script
 	  * 'Music' - new script
       * 'Nav beacon scan' - new script
-	  * 'Repair drone' - new script
 	  * 'Power expansion vote cast' - new script
+ 	  * 'Repair drone' - new script
 	  * 'Search and rescue' - new script
       * 'Ship sold' - revised to include location for ships sold remotely
 	  * 'Sold ship on rebuy' - new script
