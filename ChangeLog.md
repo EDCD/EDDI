@@ -11,7 +11,8 @@
 	* Add 'Friends status' event when a friendly commander changes status
 	* Add 'Mission redirected' event
 	* Add 'Nav beacon scan' event
-	* Add 'Music' event when the game music 'mood' changes
+	* Add 'Music' event (triggered when the game music 'mood' changes)
+	* Add 'Repair drone' event
 	* Add 'Search and rescue' event when delivering items to a Search and Rescue contact
 	* Add 'Ship sold on rebuy' event when when you sell a ship to raise funds on the insurance / rebuy screen
 	* Update 'Bond redeemed', 'Bounty redeemed', 'Fine paid', 'Data voucher redeemed', and 'Trade voucher redeemed' events to add Broker Percentage when redeemed via broker
@@ -27,10 +28,11 @@
 	  * 'Data scanned' - new script
 	  * 'Data voucher awarded' - new script
 	  * 'Docking granted' script revised to recognize asteroid bases
+	  * 'Friends status' - new script
       * 'Mission redirected' - new script
 	  * 'Music' - new script
       * 'Nav beacon scan' - new script
-	  * 'Friends status' - new script
+	  * 'Repair drone' - new script
 	  * 'Search and rescue' - new script
       * 'Ship sold' - revised to include location for ships sold remotely
 	  * 'Sold ship on rebuy' - new script
