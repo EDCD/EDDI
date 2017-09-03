@@ -51,7 +51,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bond')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_bond_amount', event.amount)}\r\n\r\nCombat bonds for {Humanise(event.amount)} credits redeemed\r\n{Occasionally(2, \"\r\n  {if len(event.rewards) = 1:\r\n    by {P(event.rewards[0].faction)}\r\n  |else:\r\n    by\r\n    {set cur to 0}\r\n    {while cur < len(event.rewards):\r\n        {if cur = 0:\r\n        |elif cur < len(event.rewards) - 1:\r\n            , \r\n        |else:\r\n            and\r\n        }\r\n        {P(event.rewards[cur].faction)}\r\n        {set cur to cur + 1}\r\n    }\r\n  }\r\n\")}.\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bond')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_bond_amount', event.amount)}\r\n\r\nCombat bonds for {Humanise(event.amount)} credits \r\n{Occasionally(2, OneOf(\"have been\", \"have now been\"))}\r\n{OneOf(\"redeemed\", \"claimed\")}\r\n\r\n{Occasionally(2, \"\r\n  {if len(event.rewards) = 1:\r\n    from {P(event.rewards[0].faction)}\r\n  |else:\r\n    . \r\n    {set cur to 0}\r\n    {while cur < len(event.rewards):\r\n        {if cur = 0:\r\n        |elif cur < len(event.rewards) - 1:\r\n            , \r\n        |else:\r\n            and\r\n        }\r\n        {Humanise(event.rewards[cur].amount)} credits from\r\n        {P(event.rewards[cur].faction)} \r\n        {set cur to cur + 1}\r\n    }\r\n  }\r\n\")}.",
       "default": true,
       "name": "Bond redeemed",
       "description": "Triggered when you redeem a combat bond"
