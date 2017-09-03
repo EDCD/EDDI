@@ -384,7 +384,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{if len(event.ships) > 0:\r\n\r\n    {set commanders to []}\r\n    {for cmdr in event.commanders:\r\n        {if find(cmdr, \"$ShipName\") >= 0:\r\n           {_ Ignore NPC ships _}        \r\n        |else: \r\n           {set commanders to cat(commanders, [cmdr])}\r\n        }\r\n    }\r\n\r\n    {ShipName()} was\r\n    {Occasionally(2, \"just\")}\r\n    {OneOf(\"blown away\", \"terminated\", \"destroyed\")}\r\n\r\n    {if len(commanders) = 1:\r\n        by {commanders[0]} \r\n        in a {event.ships[0]} \r\n        and with a combat ranking of {event.ratings[0]}.\r\n    |elif len(commanders) = 2:\r\n        by {commanders[0]} \r\n        in a {event.ships[0]} and with a \r\n        combat ranking of {event.ratings[0]}, \r\n        and by {commanders[1]} \r\n        in a {event.ships[1]} and with a \r\n        combat ranking of {event.ratings[1]}.\r\n    |elif len(commanders) > 2:\r\n        {set cur to 0}\r\n        by\r\n        {while cur < len(commanders):\r\n            {if cur = 0:\r\n                {commanders[cur]} \r\n                in a {event.ships[cur]} \r\n                and with a combat ranking of {event.ratings[cur]}\r\n            |elif cur < len(commanders) - 1:\r\n                , {commanders[cur]} \r\n                in a {event.ships[cur]} \r\n                and with a combat ranking of {event.ratings[cur]}\r\n            |else:\r\n                , and {commanders[cur]} \r\n                in a {event.ships[cur]} \r\n                and with a combat ranking of {event.ratings[cur]}.\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n}",
       "default": true,
       "name": "Died",
       "description": "Triggered when you have died"
@@ -564,7 +564,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{event.friend} is now {event.status}.",
       "default": true,
       "name": "Friends status",
       "description": "Triggered when a friendly commander changes status"
@@ -726,7 +726,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{event.amount} limpet{if event.amount > 1:s}\r\n{Occasionally(2, \"have been\")}\r\nadded to \r\n{OneOf(\"our\", \"{ShipName()}'s\")}\r\n{OneOf(\"cargo hold\", \"inventory\", \"hold\")}",
       "default": true,
       "name": "Limpet purchased",
       "description": "Triggered when you buy limpets from a station"
@@ -735,7 +735,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "{event.amount} limpet{if event.amount > 1:s}\r\n{Occasionally(2, \"have been\")} sold.",
       "default": true,
       "name": "Limpet sold",
       "description": "Triggered when you sell limpets to a station"
@@ -1041,7 +1041,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "Vote\r\n{OneOf(\"cast\", \"registered\")}",
       "default": true,
       "name": "Power expansion vote cast",
       "description": "Triggered when a commander votes for system expansion"
@@ -1068,7 +1068,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": null,
+      "script": "Vote\r\n{OneOf(\"cast\", \"registered\")}",
       "default": true,
       "name": "Power preparation vote cast",
       "description": "Triggered when a commander votes for system perparation"
