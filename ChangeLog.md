@@ -6,6 +6,7 @@
 	* Changed the format for calling ring composition. Was 'composition.name', is 'composition'
 	* Update Variables.md to include information available for rings in 'Body scanned' and 'Star scanned' events
   * Events
+	* Add 'Community goal' event
     * Add 'Data scanned' event when some type of datalinks (Data Links, Data Posts, Abandoned Data Logs, Listerning Posts, Wrecked Ships) are scanned
     * Add 'Data voucher awarded' event when you are awarded a data voucher
 	* Add 'Friends status' event when a friendly commander changes status
@@ -24,6 +25,7 @@
   * Speech Responder
     * Add Spacialise() Cottle function.  Details on how to use this are in the SpeechResponder documentation
 	* Script changes:
+	  * 'Community goal' - new script
 	  * 'Data scanned' - new script
 	  * 'Data voucher awarded' - new script
 	  * 'Docking granted' script revised to recognize asteroid bases
