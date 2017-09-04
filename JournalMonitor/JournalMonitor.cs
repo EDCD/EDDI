@@ -522,11 +522,6 @@ namespace EddiJournalMonitor
                                 object val;
                                 // Common items
                                 string name = getString(data, "BodyName");
-                                if (name.Contains("Belt Cluster"))
-                                {
-                                    // We ignore belt clusters
-                                    break;
-                                }
                                 decimal distancefromarrival = getDecimal(data, "DistanceFromArrivalLS");
                                 decimal radius = getDecimal(data, "Radius");
                                 decimal? orbitalperiod = getOptionalDecimal(data, "OrbitalPeriod");
