@@ -85,6 +85,16 @@ Common usage of this is to provide human-sounding numbers when speacking rather 
 
    You have {Humanise(cmdr.credits)} credits.
 
+### Spacialise()
+
+This function will add spaces between letters in a string & convert to uppercase, in order to allow letters in a string to be pronounced individually.
+
+Spacialise() takes one argument: the number to Spacialise.
+
+Common usage of this is to provide a more human-sounding reading of a string of letters that are not a part of known word:
+
+   Star luminosity class: {Spacialise(event.luminosityclass)}.
+
 ### Play()
 
 This function will play an audio file as supplied in the argument.  If this is in the result of a template then all other text is removed; it is not possible for EDDI to both play an audio file and speak in the same response.
