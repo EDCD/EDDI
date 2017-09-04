@@ -1893,7 +1893,45 @@ namespace EddiJournalMonitor
                                 events.Add(new SearchAndRescueEvent(timestamp, name, amount, reward) { raw = line });
                                 handled = true;
                                 break;
-                            }                            
+                            }
+                        case "AfmuRepairs":
+                            {
+                                string item = getString(data, "Module");
+                                // Item might be a module
+                                Module module = ModuleDefinitions.fromEDName(item);
+                                if (module != null)
+                                {
+                                    if (module.mount != null)
+                                    {
+                                        // This is a weapon so provide a bit more information
+                                        string mount;
+                                        if (module.mount == Module.ModuleMount.Fixed)
+                                        {
+                                            mount = "fixed";
+                                        }
+                                        else if (module.mount == Module.ModuleMount.Gimballed)
+                                        {
+                                            mount = "gimballed";
+                                        }
+                                        else
+                                        {
+                                            mount = "turreted";
+                                        }
+                                        item = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.name;
+                                    }
+                                    else
+                                    {
+                                        item = module.name;
+                                    }
+                                }
+
+                                bool repairedfully = getBool(data, "FullyRepaired");
+                                decimal health = getDecimal(data, "Health");
+
+                                events.Add(new ShipAfmuRepairedEvent(timestamp, item, repairedfully, health) { raw = line });
+                                handled = true;
+                                break;
+                            }
                         case "Repair":
                             {
                                 object val;
