@@ -122,6 +122,10 @@ namespace EddiShipMonitor
             {
                 handleShipRefuelledEvent((ShipRefuelledEvent)@event);
             }
+            else if (@event is ShipAfmuRepairedEvent)
+            {
+                handleShipAFMURepairedEvent((ShipAfmuRepairedEvent)@event);
+            }
             else if (@event is ShipRepairedEvent)
             {
                 handleShipRepairedEvent((ShipRepairedEvent)@event);
@@ -462,6 +466,11 @@ namespace EddiShipMonitor
                     }
                 }
             }
+        }
+
+        private void handleShipAFMURepairedEvent(ShipAfmuRepairedEvent @event)
+        {
+            // This doesn't give us enough information at present to do anything useful
         }
 
         private void handleShipRepairedEvent(ShipRepairedEvent @event)
