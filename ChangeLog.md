@@ -17,6 +17,7 @@
 	* Add 'Search and rescue' event when delivering items to a Search and Rescue contact
 	* Add 'Ship sold on rebuy' event when when you sell a ship to raise funds on the insurance / rebuy screen
 	* Update 'Bond redeemed', 'Bounty redeemed', 'Fine paid', 'Data voucher redeemed', and 'Trade voucher redeemed' events to add Broker Percentage when redeemed via broker
+	* Update 'Docked' event, now includes a list of station services under 'stationservices'
 	* Update 'Mission accepted' event to correct a bug preventing wanted passengers from being detected
 	* Update 'Jumped' and 'Location' events to include system population, when present
     * Update 'Screenshot' event, now contains longitude & latitude, when appropriate

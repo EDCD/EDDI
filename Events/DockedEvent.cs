@@ -12,7 +12,7 @@ namespace EddiEvents
     {
         public const string NAME = "Docked";
         public const string DESCRIPTION = "Triggered when your ship docks at a station or outpost";
-        public const string SAMPLE = @"{ ""timestamp"":""2016-11-16T09:28:19Z"", ""event"":""Docked"", ""StationName"":""Jameson Memorial"", ""StationType"":""Orbis"", ""StarSystem"":""Shinrarta Dezhra"", ""StationFaction"":""The Pilots Federation"", ""FactionState"":""Retreat"", ""StationGovernment"":""$government_Democracy;"", ""StationGovernment_Localised"":""Democracy"", ""StationEconomy"":""$economy_HighTech;"", ""StationEconomy_Localised"":""High tech"" }";
+        public const string SAMPLE = @"{ ""timestamp"":""2017-08-18T10:52:26Z"", ""event"":""Docked"", ""StationName"":""Goddard Hub"", ""StationType"":""Coriolis"", ""StarSystem"":""HR 3499"", ""StationFaction"":""Labour of HR 3499"", ""StationGovernment"":""$government_Democracy;"", ""StationGovernment_Localised"":""Democracy"", ""StationAllegiance"":""Federation"", ""StationServices"":[ ""Dock"", ""Autodock"", ""BlackMarket"", ""Commodities"", ""Contacts"", ""Exploration"", ""Missions"", ""Outfitting"", ""CrewLounge"", ""Rearm"", ""Refuel"", ""Repair"", ""Shipyard"", ""Tuning"", ""MissionsGenerated"", ""FlightController"", ""StationOperations"", ""Powerplay"", ""SearchAndRescue"" ], ""StationEconomy"":""$economy_Industrial;"", ""StationEconomy_Localised"":""Industrial"", ""DistFromStarLS"":129.454132 }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
@@ -27,6 +27,7 @@ namespace EddiEvents
             VARIABLES.Add("government", "The government of the station at which the commander has docked");
             VARIABLES.Add("security", "The security of the station at which the commander has docked");
             VARIABLES.Add("distancefromstar", "The distance of this station from the star (light seconds)");
+            VARIABLES.Add("stationservices", "A list of possible station services: Dock, Autodock, BlackMarket, Commodities, Contacts, Exploration, Initiatives, Missions, Outfitting, CrewLounge, Rearm, Refuel, Repair, Shipyard, Tuning, Workshop, MissionsGenerated, Facilitator, Research, FlightController, StationOperations, OnDockMission, Powerplay, SearchAndRescue");
         }
 
         public string system { get; private set; }
@@ -45,7 +46,9 @@ namespace EddiEvents
 
         public decimal? distancefromstar { get; private set; }
 
-        public DockedEvent(DateTime timestamp, string system, string station, string model, string faction, State factionstate, Economy economy, Government government, decimal? distancefromstar) : base(timestamp, NAME)
+        public List<string> stationservices { get; private set; }
+
+        public DockedEvent(DateTime timestamp, string system, string station, string model, string faction, State factionstate, Economy economy, Government government, decimal? distancefromstar, List<string> stationservices) : base(timestamp, NAME)
         {
             this.system = system;
             this.station = station;
@@ -55,6 +58,7 @@ namespace EddiEvents
             this.economy = (economy == null ? Economy.None.name : economy.name);
             this.government = (government == null ? Government.None.name : government.name);
             this.distancefromstar = distancefromstar;
+            this.stationservices = stationservices;
         }
     }
 }
