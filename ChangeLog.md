@@ -4,6 +4,7 @@
 	* Add new roles to the Ship Monitor
 	* Add material type information to the Material Monitor
 	* Changed the format for calling ring composition. Was 'composition.name', is 'composition'
+	* Stellar belt clusters are now included in the definition of rings.
 	* Update Variables.md to include information available for rings in 'Body scanned' and 'Star scanned' events
   * Events
     * Add 'AFMU repairs' event
