@@ -557,6 +557,12 @@ namespace Eddi
             await Task.Factory.StartNew(() => uploadLog(progress), TaskCreationOptions.LongRunning);
         }
 
+        private void ChangeLog_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeLogWindow changeLog = new ChangeLogWindow();
+            changeLog.Show();
+        }
+
         public static void uploadLog(IProgress<string> progress)
         {
             using (WebClient client = new WebClient())
