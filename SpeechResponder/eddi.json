@@ -389,7 +389,16 @@
       "name": "Data voucher redeemed",
       "description": "Triggered when you redeem a data voucher"
     },
-    "Died": {
+    "Datalink message": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Datalink message",
+      "description": "Triggered upon completion of Datalink scan"
+    },
+      "Died": {
       "enabled": true,
       "priority": 3,
       "responder": true,

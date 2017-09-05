@@ -9,6 +9,7 @@
     * Add 'AFMU repairs' event
     * Add 'Data scanned' event when some type of datalinks (Data Links, Data Posts, Abandoned Data Logs, Listerning Posts, Wrecked Ships) are scanned
     * Add 'Data voucher awarded' event when you are awarded a data voucher
+	* Add 'Datalink message' event when a Datalink scan is completed
 	* Add 'Friends status' event when a friendly commander changes status
 	* Add 'Mission redirected' event
 	* Add 'Nav beacon scan' event

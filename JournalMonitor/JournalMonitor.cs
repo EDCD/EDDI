@@ -624,6 +624,13 @@ namespace EddiJournalMonitor
                                 }
                             }
                             break;
+                        case "DatalinkScan":
+                            {
+                                string message = getString(data, "Message");
+                                events.Add(new DatalinkMessageEvent(timestamp, message) { raw = line });
+                            }
+                            handled = true;
+                            break;
                         case "DataScanned":
                             {
                                 DataScan datalinktype = DataScan.FromEDName(getString(data, "Type"));
