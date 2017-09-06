@@ -98,8 +98,8 @@ namespace EddiDataDefinitions
         public static readonly Material StrangeWakeSolutions = new Material("wakesolutions", "Data", "Strange Wake Solutions", Rarity.Standard);
         public static readonly Material UnexpectedEmissionData = new Material("emissiondata", "Data", "Unexpected Emission Data", Rarity.Standard);
         public static readonly Material UntypicalShieldScans = new Material("shielddensityreports", "Data", "Untypical Shield Scans", Rarity.Standard);
-        public static readonly Material UnknownShipSignature = new Material("unknownshipsignature", "Data", "Unknown Ship Signature", Rarity.Standard);
-        public static readonly Material UnknownWakeScan = new Material("unknownwakedata", "Data", "Unknown Wake Data", Rarity.Standard);
+        public static readonly Material UnknownShipSignature = new Material("unknownshipsignature", "Data", "Thargoid Ship Signature", Rarity.Standard);
+        public static readonly Material UnknownWakeScan = new Material("unknownwakedata", "Data", "Thargoid Wake Data", Rarity.Standard);
 
         public static readonly Material AberrantShieldPatternAnalysis = new Material("shieldpatternanalysis", "Data", "Aberrant Shield Pattern Analysis", Rarity.Rare);
         public static readonly Material AtypicalEncryptionArchives = new Material("encryptionarchives", "Data", "Atypical Encryption Archives", Rarity.Rare);
@@ -176,15 +176,15 @@ namespace EddiDataDefinitions
         public static readonly Material AncientLanguageData = new Material("ancientlanguagedata", "Data", "Ancient Language Data", Rarity.Common);
         public static readonly Material AncientTechnologicalData = new Material("ancienttechnologicaldata", "Data", "Ancient Technological Data", Rarity.Common);
 
-        //public static readonly Material UnknownCarapace = new Material("unknowncarapace", "Manufactured", "Unknown Carapace", Rarity.Common);
-        //public static readonly Material UnknownEnergyCell = new Material("unknownenergycell", "Manufactured", "Unknown Energy Cell", Rarity.Standard);
-        //public static readonly Material UnknownTechnologyComponents = new Material("unknowntechnologycomponents", "Manufactured", "Unknown Technology Components", Rarity.Rare);
-        //public static readonly Material UnknownFragment = new Material("unknownenergysource", "Manufactured", "Unknown Fragment", Rarity.VeryRare);
-        //public static readonly Material UnknownOrganicCircuitry = new Material("unknownorganiccircuitry", "Manufactured", "Unknown Organic Circuitry", Rarity.VeryRare);
+        public static readonly Material UnknownCarapace = new Material("unknowncarapace", "Manufactured", "Thargoid Carapace", Rarity.Common);
+        public static readonly Material UnknownEnergyCell = new Material("unknownenergycell", "Manufactured", "Thargoid Energy Cell", Rarity.Standard);
+        public static readonly Material UnknownTechnologyComponents = new Material("unknowntechnologycomponents", "Manufactured", "Thargoid Technology Components", Rarity.Rare);
+        public static readonly Material UnknownEnergySource = new Material("unknownenergysource", "Manufactured", "Sensor Fragment", Rarity.VeryRare);
+        public static readonly Material UnknownOrganicCircuitry = new Material("unknownorganiccircuitry", "Manufactured", "Thargoid Organic Circuitry", Rarity.VeryRare);
 
-        //public static readonly Material Tg_StructuralData = new Material("tg_structuraldata", "Data", "Thargoid Structural Data", Rarity.Common);
-        //public static readonly Material Tg_CompositionData = new Material("tg_compositiondata", "Data", "Thargoid Material Composition Data", Rarity.Standard);
-        //public static readonly Material Tg_ResidueData = new Material("tg_residuedata", "Data", "Thargoid Residue Data Analysis", Rarity.Rare);
+        public static readonly Material Tg_StructuralData = new Material("tg_structuraldata", "Data", "Thargoid Structural Data", Rarity.Common);
+        public static readonly Material Tg_CompositionData = new Material("tg_compositiondata", "Data", "Thargoid Material Composition Data", Rarity.Standard);
+        public static readonly Material Tg_ResidueData = new Material("tg_residuedata", "Data", "Thargoid Residue Data", Rarity.Rare);
 
         public static Material FromName(string from)
         {
