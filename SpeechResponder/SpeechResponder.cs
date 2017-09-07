@@ -138,25 +138,22 @@ namespace EddiSpeechResponder
 
             IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
             object val;
-            data.TryGetValue("event", out val);
-            string edType = (string)val;
-            if (edType == "NavBeaconScan")
+
+            if (theEvent is NavBeaconScanEvent)
             {
                 data.TryGetValue("NumBodies", out val);
                 beaconScanCount = (int)(long)val;
                 Logging.Debug("beaconScanCount = " + beaconScanCount.ToString());
             }
-            else if (edType == "Scan")
+            else if (theEvent is BodyScannedEvent || theEvent is BeltScannedEvent)
             {
                 if (beaconScanCount > 0)
                 {
-                    beaconScanCount -= 1;
+                    beaconScanCount--;
                     Logging.Debug("beaconScanCount = " + beaconScanCount.ToString());
                     return;
                 }
-                data.TryGetValue("BodyName", out val);
-                string name = (string)val;
-                if (name.Contains("Belt Cluster"))
+                if (theEvent is BeltScannedEvent)
                 {
                     // We ignore belt clusters
                     return;

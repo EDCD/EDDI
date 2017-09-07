@@ -730,6 +730,10 @@ namespace Eddi
                     {
                         passEvent = eventFighterDocked((FighterDockedEvent)journalEvent);
                     }
+                    else if (journalEvent is BeltScannedEvent)
+                    {
+                        passEvent = eventBeltScanned((BeltScannedEvent)journalEvent);
+                    }
                     else if (journalEvent is StarScannedEvent)
                     {
                         passEvent = eventStarScanned((StarScannedEvent)journalEvent);
@@ -1173,6 +1177,35 @@ namespace Eddi
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;
             return true;
+        }
+
+        private bool eventBeltScanned(BeltScannedEvent theEvent)
+        {
+            // We just scanned a star.  We can only proceed if we know our current star system
+            if (CurrentStarSystem != null)
+            {
+                Body belt = CurrentStarSystem.bodies?.FirstOrDefault(b => b.name == theEvent.name);
+                if (belt == null)
+                {
+                    Logging.Debug("Scanned belt " + theEvent.name + " is new - creating");
+                    // A new item - set it up
+                    belt = new Body();
+                    belt.EDDBID = -1;
+                    belt.type = "Star";
+                    belt.name = theEvent.name;
+                    belt.systemname = CurrentStarSystem?.name;
+                    CurrentStarSystem.bodies?.Add(belt);
+                }
+
+                // Update with the information we have
+
+                belt.distance = (long?)theEvent.distancefromarrival;
+
+                CurrentStarSystem.bodies?.Add(belt);
+                Logging.Debug("Saving data for scanned belt " + theEvent.name);
+                StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+            }
+            return CurrentStarSystem != null;
         }
 
         private bool eventStarScanned(StarScannedEvent theEvent)
