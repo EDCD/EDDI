@@ -147,7 +147,7 @@ namespace EddiJournalMonitor
                                 Economy economy = Economy.FromEDName(getString(data, "SystemEconomy"));
                                 Government government = Government.FromEDName(getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
-                                long? population = getLong(data, "Population");
+                                long? population = getOptionalLong(data, "Population");
 
                                 events.Add(new JumpedEvent(timestamp, systemName, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security, population) { raw = line });
                             }
@@ -179,7 +179,7 @@ namespace EddiJournalMonitor
                                 Economy economy = Economy.FromEDName(getString(data, "SystemEconomy"));
                                 Government government = Government.FromEDName(getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
-                                long? population = getLong(data, "Population");
+                                long? population = getOptionalLong(data, "Population");
 
                                 string station = getString(data, "StationName");
                                 string stationtype = getString(data, "StationType");
@@ -520,7 +520,6 @@ namespace EddiJournalMonitor
                         case "Scan":
                             {
                                 object val;
-                                // Common items
                                 string name = getString(data, "BodyName");
                                 decimal distancefromarrival = getDecimal(data, "DistanceFromArrivalLS");
 
@@ -533,6 +532,7 @@ namespace EddiJournalMonitor
                                     break;
                                 }
 
+                                // Common items
                                 decimal radius = getDecimal(data, "Radius");
                                 decimal? orbitalperiod = getOptionalDecimal(data, "OrbitalPeriod");
                                 decimal rotationperiod = getDecimal(data, "RotationPeriod");
