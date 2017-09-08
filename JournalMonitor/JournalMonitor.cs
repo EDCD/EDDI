@@ -520,9 +520,19 @@ namespace EddiJournalMonitor
                         case "Scan":
                             {
                                 object val;
-                                // Common items
                                 string name = getString(data, "BodyName");
                                 decimal distancefromarrival = getDecimal(data, "DistanceFromArrivalLS");
+
+                                // Belt
+                                if (name.Contains("Belt Cluster"))
+                                {
+
+                                    events.Add(new BeltScannedEvent(timestamp, name, distancefromarrival) { raw = line });
+                                    handled = true;
+                                    break;
+                                }
+
+                                // Common items
                                 decimal radius = getDecimal(data, "Radius");
                                 decimal? orbitalperiod = getOptionalDecimal(data, "OrbitalPeriod");
                                 decimal rotationperiod = getDecimal(data, "RotationPeriod");
