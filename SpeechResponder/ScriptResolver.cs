@@ -205,6 +205,35 @@ namespace EddiSpeechResponder
                 return Translations.Humanize(values[0].AsNumber);
             }, 1);
 
+            store["List"] = new NativeFunction((values) =>
+            {
+                List<Cottle.Value> listItems = (List<Cottle.Value>)values;
+                if (listItems.Count() == 0)
+                { return ""; }
+
+                string output = "";
+                string article = "";
+                int cur = 0;
+                while (cur < (listItems.Count()))
+                {
+                    if (cur == 0)
+                    {
+                        // do nothing
+                    }
+                    else if (cur < (listItems.Count() - 1))
+                    {
+                        article = ",";
+                    }
+                    else
+                    {
+                        article = "and";
+                    }
+                    output = string.Concat(output, article, listItems[cur]);
+                    cur = cur + 1;
+                }
+                return output;
+            }, 1);
+
             store["Pause"] = new NativeFunction((values) =>
             {
                 return @"<break time=""" + values[0].AsNumber + @"ms"" />";
