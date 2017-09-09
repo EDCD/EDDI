@@ -14,7 +14,9 @@
                     <DockPanel LastChildFill="True" Background="#FFE5E5E5" DockPanel.Dock="Bottom" Margin="5">
                         <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="EDDI Status: "/>
                         <TextBlock x:Name="versionText" VerticalAlignment="Center" DockPanel.Dock="Right"/>
-                        <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Text="Version: "/>
+                        <Label Height="28" Margin="0,0,0,0" Name="Version" DockPanel.Dock="Right" VerticalAlignment="Center">
+                            <Hyperlink Click="ChangeLog_Click">Version:</Hyperlink>
+                        </Label>
                         <Button x:Name="upgradeButton" VerticalAlignment="Center" DockPanel.Dock="Left" Visibility="Collapsed" Margin="10,0,10,0" Foreground="Orange" Click="upgradeClicked">Upgrade EDDI</Button>
                         <TextBlock x:Name="statusText" VerticalAlignment="Center" DockPanel.Dock="Left" Text="Operational"/>
                     </DockPanel>

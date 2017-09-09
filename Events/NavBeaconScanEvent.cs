@@ -22,8 +22,6 @@ namespace EddiEvents
         [JsonProperty("numbodies")]
         public int numbodies { get; private set; }
 
-        public bool navbeaconscan = true;
-
         public NavBeaconScanEvent(DateTime timestamp, int numbodies) : base(timestamp, NAME)
         {
             this.numbodies = numbodies;
