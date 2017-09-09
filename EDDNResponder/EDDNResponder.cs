@@ -131,7 +131,7 @@ namespace EDDNResponder
             // Can only proceed if we know our current system
 
             // Need to add StarSystem to scan events - can only do so if we have the data
-            if (theEvent is StarScannedEvent || theEvent is BodyScannedEvent)
+            if (theEvent is BeltScannedEvent || theEvent is StarScannedEvent || theEvent is BodyScannedEvent)
             {
                 if (systemName == null || systemX == null || systemY == null || systemZ == null)
                 {
