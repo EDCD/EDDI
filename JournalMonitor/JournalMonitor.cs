@@ -914,24 +914,23 @@ namespace EddiJournalMonitor
                                 {
                                     // This is NPC speech.  What's the source?
                                     string source;
-                                    if (from.Contains("ShipName_Police"))
+                                    if (from.Contains("npc_name_decorate"))
                                     {
-                                        source = "Police";
-                                        from = getString(data, "From_Localised");
+                                        source = npcSpeechBy(from, message);
+                                        from = from.Replace("$npc_name_decorate:#name=", "").Replace(";", "");
                                     }
                                     else if (from.Contains("ShipName_"))
                                     {
-                                        source = from.Replace("$ShipName_", "").Replace("_", " ").Replace(";", "");
+                                        source = npcSpeechBy(from, message);
                                         from = getString(data, "From_Localised");
                                     }
-                                    else if (from.Contains("npc_name_decorate"))
+                                    else if ((message.Contains("STATION_")) || message.Contains("$Docking"))
                                     {
-                                        source = "NPC";
-                                        from = from.Replace("$npc_name_decorate:#name=", "").Replace(";", "");
+                                        source = "Station";
                                     }
                                     else
                                     {
-                                        source = "Station";
+                                        source = "NPC";
                                     }
                                     events.Add(new MessageReceivedEvent(timestamp, from, source, false, channel, getString(data, "Message_Localised")));
                                     // See if we want to spawn a specific event as well
@@ -2275,6 +2274,10 @@ namespace EddiJournalMonitor
             else if (message.StartsWith("$ConvoyWedding"))
             {
                 by = "Wedding convoy";
+            }
+            else if (message.StartsWith("$Hitman"))
+            {
+                by = "Hitman";
             }
             else if (message.StartsWith("$CruiseLiner"))
             {

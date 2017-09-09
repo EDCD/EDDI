@@ -22,6 +22,7 @@
 	* Add 'Ship sold on rebuy' event when when you sell a ship to raise funds on the insurance / rebuy screen
 	* Clarified "channel" in 'Message received' to include 'npc' 
 	* Update 'Body scanned' event to check whether BodyDetails successfully located the body
+	* Update 'Message received' event, EDDI now distinguishes between a larger variety of message sources
 	* Update 'Bond redeemed', 'Bounty redeemed', 'Fine paid', 'Data voucher redeemed', and 'Trade voucher redeemed' events to add Broker Percentage when redeemed via broker
 	* Update 'Mission accepted' event to correct a bug preventing wanted passengers from being detected
 	* Update 'Jumped' and 'Location' events to include system population, when present
