@@ -103,7 +103,7 @@ StartsWithVowel() takes one argument: the string that may or may not start with 
 
 Common usage of this is to select the word that should proceed the string (e.g. **a** Adaptive Encryptors Capture vs **an** Adaptive Encryptors Capture).
    
-   {if StartWithVowel(Value): an |else: a } {event.name}
+   {if StartWithVowel(event.name): an |else: a } {event.name}
 
 ### Play()
 
