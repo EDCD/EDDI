@@ -29,6 +29,8 @@ namespace EddiSpeechResponder
 
         private bool subtitlesOnly;
 
+        private int beaconScanCount = 0;
+
         public string ResponderName()
         {
             return "Speech responder";
@@ -134,6 +136,29 @@ namespace EddiSpeechResponder
                 }
             }
 
+            IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
+            object val;
+
+            if (theEvent is NavBeaconScanEvent)
+            {
+                data.TryGetValue("NumBodies", out val);
+                beaconScanCount = (int)(long)val;
+                Logging.Debug("beaconScanCount = " + beaconScanCount.ToString());
+            }
+            else if (theEvent is BodyScannedEvent || theEvent is BeltScannedEvent)
+            {
+                if (beaconScanCount > 0)
+                {
+                    beaconScanCount--;
+                    Logging.Debug("beaconScanCount = " + beaconScanCount.ToString());
+                    return;
+                }
+                if (theEvent is BeltScannedEvent)
+                {
+                    // We ignore belt clusters
+                    return;
+                }
+            }
             Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), theEvent.type, theEvent, null, null, null, sayOutLoud);
         }
 
