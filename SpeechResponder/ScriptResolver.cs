@@ -205,6 +205,16 @@ namespace EddiSpeechResponder
                 return Translations.Humanize(values[0].AsNumber);
             }, 1);
 
+            store["Pause"] = new NativeFunction((values) =>
+            {
+                return @"<break time=""" + values[0].AsNumber + @"ms"" />";
+            }, 1);
+
+            store["Play"] = new NativeFunction((values) =>
+            {
+                return @"<audio src=""" + values[0].AsString + @""" />";
+            }, 1);
+
             store["Spacialise"] = new NativeFunction((values) =>
             {
                 string Entree = values[0].AsString;
@@ -221,14 +231,18 @@ namespace EddiSpeechResponder
 
             }, 1);
 
-            store["Pause"] = new NativeFunction((values) =>
+            store["StartsWithVowel"] = new NativeFunction((values) =>
             {
-                return @"<break time=""" + values[0].AsNumber + @"ms"" />";
-            }, 1);
+                string Entree = values[0].AsString;
+                if (Entree == "")
+                { return ""; }
 
-            store["Play"] = new NativeFunction((values) =>
-            {
-                return @"<audio src=""" + values[0].AsString + @""" />";
+                char[] vowels = { 'a', 'à', 'â', 'ä', 'e', 'ê', 'é', 'è', 'ë', 'i', 'î', 'ï', 'o', 'ô', 'ö', 'u', 'ù', 'û', 'ü', 'œ', 'y' };
+                char firstCharacter = Entree.ToLower().ToCharArray().ElementAt(0);
+                Boolean result = vowels.Contains(firstCharacter);
+
+                return result;
+
             }, 1);
 
             //

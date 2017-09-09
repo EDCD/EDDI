@@ -33,6 +33,7 @@
 	* Update 'Star scanned' event to add luminosity class property
   * Speech Responder
     * Add Spacialise() Cottle function.  Details on how to use this are in the SpeechResponder documentation
+	* Add StartsWithVowel() Cottle function. Details on how to use this are in the SpeechResponder documentation
 	* Script changes:
 	  * 'AFMU repairs' - new script
 	  * 'Community goal' - new script'

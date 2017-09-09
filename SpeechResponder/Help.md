@@ -95,6 +95,16 @@ Common usage of this is to provide a more human-sounding reading of a string of 
 
    Star luminosity class: {Spacialise(event.luminosityclass)}.
 
+### StartsWithVowel()
+
+This function returns true or false depending on whether the first letter in a string is a vowel.
+
+StartsWithVowel() takes one argument: the string that may or may not start with a vowel.
+
+Common usage of this is to select the word that should proceed the string (e.g. **a** Adaptive Encryptors Capture vs **an** Adaptive Encryptors Capture).
+   
+   {if StartWithVowel(Value): an |else: a } {event.name}
+
 ### Play()
 
 This function will play an audio file as supplied in the argument.  If this is in the result of a template then all other text is removed; it is not possible for EDDI to both play an audio file and speak in the same response.
