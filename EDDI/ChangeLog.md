@@ -23,6 +23,7 @@
 	* Clarified "channel" in 'Message received' to include 'npc' 
 	* Update 'Body scanned' event to check whether BodyDetails successfully located the body
 	* Update 'Bond redeemed', 'Bounty redeemed', 'Fine paid', 'Data voucher redeemed', and 'Trade voucher redeemed' events to add Broker Percentage when redeemed via broker
+	* Update 'Docked' event, now includes a list of station services under 'stationservices'
 	* Update 'Mission accepted' event to correct a bug preventing wanted passengers from being detected
 	* Update 'Jumped' and 'Location' events to include system population, when present
     * Update 'Screenshot' event, now contains longitude & latitude, when appropriate
