@@ -11,6 +11,7 @@
 	* Update Variables.md to include information available for rings in 'Body scanned' and 'Star scanned' events
   * Events
     * Add 'AFMU repairs' event
+	* Add 'Community goal' event
     * Add 'Data scanned' event when some type of datalinks (Data Links, Data Posts, Abandoned Data Logs, Listerning Posts, Wrecked Ships) are scanned
     * Add 'Data voucher awarded' event when you are awarded a data voucher
 	* Add 'Friends status' event when a friendly commander changes status
@@ -34,6 +35,7 @@
     * Add Spacialise() Cottle function.  Details on how to use this are in the SpeechResponder documentation
 	* Script changes:
 	  * 'AFMU repairs' - new script
+	  * 'Community goal' - new script'
 	  * 'Bond redeemed' - revised to correctly get faction names and faction amounts
 	  * 'Data scanned' - new script
 	  * 'Data voucher awarded' - new script

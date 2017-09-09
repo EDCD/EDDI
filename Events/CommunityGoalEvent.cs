@@ -33,43 +33,37 @@ namespace EddiEvents
             VARIABLES.Add("tierreward", "The reward on offer for the current tier");
         }
 
-        /*
-        [JsonProperty("goals")]
-        public List<Goal> goals { get; private set; }
-        */
+        public List<long> cgid { get; private set; }
 
-        public long cgid { get; private set; }
+        public List<string> name { get; private set; }
 
-        public string name { get; private set; }
+        public List<string> system { get; private set; }
 
-        public string system { get; private set; }
+        public List<string> station { get; private set; }
 
-        public string station { get; private set; }
+        public List<DateTime> expiry { get; private set; }
 
-        public DateTime expiry { get; private set; }
+        public List<bool> iscomplete { get; private set; }
 
-        public bool iscomplete { get; private set; }
+        public List<int> total { get; private set; }
 
-        public int total { get; private set; }
+        public List<int> contribution { get; private set; }
 
-        public int contribution { get; private set; }
+        public List<int> contributors { get; private set; }
 
-        public int contributors { get; private set; }
+        public List<decimal> percentileband { get; private set; }
 
-        public decimal percentileband { get; private set; }
+        public List<int?> topranksize { get; private set; }
 
-        public int? topranksize { get; private set; }
+        public List<bool?> toprank { get; private set; }
 
-        public bool? toprank { get; private set; }
+        public List<string> tier { get; private set; }
 
-        public string tier { get; private set; }
+        public List<long?> tierreward { get; private set; }
 
-        public long? tierreward { get; private set; }
+        public CommunityGoalEvent(DateTime timestamp, List<long> cgid, List<string> name, List<string> system, List<string> station, List<DateTime> expiry, List<bool> iscomplete, List<int> total, List<int> contribution, List<int> contributors, List<decimal> percentileband, List<int?> topranksize, List<bool?> toprank, List<string> tier, List<long?> tierreward) : base(timestamp, NAME)
 
-        public CommunityGoalEvent(DateTime timestamp, long cgid, string name, string system, string station, DateTime expiry, bool iscomplete, int total, int contribution, int contributors, decimal percentileband, int? topranksize, bool? toprank, string tier, long? tierreward) : base(timestamp, NAME)
         {
-            //this.goals = goals;
-
             this.cgid = cgid;
             this.name = name;
             this.system = system;
@@ -85,56 +79,5 @@ namespace EddiEvents
             this.tier = tier;
             this.tierreward = tierreward;
         }
-
-        /*
-        public class Goal
-        {
-            public long cgid { get; private set; }
-
-            public string name { get; private set; }
-
-            public string system { get; private set; }
-
-            public string station { get; private set; }
-
-            public DateTime expiry { get; private set; }
-
-            public bool iscomplete { get; private set; }
-
-            public int total { get; private set; }
-
-            public int contribution { get; private set; }
-
-            public int contributors { get; private set; }
-
-            public decimal percentileband { get; private set; }
-
-            public int? topranksize { get; private set; }
-
-            public bool? toprank { get; private set; }
-
-            public string tier { get; private set; }
-
-            public long? tierreward { get; private set; }
-
-            public Goal(long cgid, string name, string system, string station, DateTime expiry, bool iscomplete, int total, int contribution, int contributors, decimal percentileband, int? topranksize, bool? toprank, string tier, long? tierreward)
-            {
-                this.cgid = cgid;
-                this.name = name;
-                this.system = system;
-                this.station = station;
-                this.expiry = expiry;
-                this.iscomplete = iscomplete;
-                this.total = total;
-                this.contribution = contribution;
-                this.contributors = contributors;
-                this.percentileband = percentileband;
-                this.topranksize = topranksize;
-                this.toprank = toprank;
-                this.tier = tier;
-                this.tierreward = tierreward;
-            }
-        }    
-        */
     }
 }

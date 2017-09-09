@@ -72,6 +72,7 @@ namespace EddiJournalMonitor
                     {
                         case "Docked":
                             {
+                                object val;
                                 string systemName = getString(data, "StarSystem");
                                 string stationName = getString(data, "StationName");
                                 string stationModel = getString(data, "StationType");
@@ -82,7 +83,48 @@ namespace EddiJournalMonitor
                                 Government government = Government.FromEDName(getString(data, "StationGovernment"));
                                 decimal? distancefromstar = getOptionalDecimal(data, "DistFromStarLS");
 
-                                events.Add(new DockedEvent(timestamp, systemName, stationName, stationModel, faction, factionState, economy, government, distancefromstar) { raw = line });
+                                // Get station services data
+                                data.TryGetValue("StationServices", out val);
+                                List<string> stationservices = ((List<object>)val).Cast<string>().ToList();
+
+                                // Update the local station object (not entirely sure this is necessary, but we have the data)
+                                if (stationservices != null)
+                                {
+                                    Station Station = new Station();                                    
+                                    foreach (var service in stationservices)
+                                    {
+                                        if (service == "Refuel")
+                                        {
+                                            Station.hasrefuel = (bool?)true;
+                                        }
+                                        else if (service == "Rearm")
+                                        {
+                                            Station.hasrearm = (bool?)true;
+                                        }
+                                        else if (service == "Repair")
+                                        {
+                                            Station.hasrepair = (bool?)true;
+                                        }
+                                        else if (service == "Outfitting")
+                                        {
+                                            Station.hasoutfitting = (bool?)true;
+                                        }
+                                        else if (service == "Shipyard")
+                                        {
+                                            Station.hasshipyard = (bool?)true;
+                                        }
+                                        else if (service == "Commodities")
+                                        {
+                                            Station.hasmarket = (bool?)true;
+                                        }
+                                        else if (service == "BlackMarket")
+                                        {
+                                            Station.hasblackmarket = (bool?)true;
+                                        }
+                                    }
+                                }
+
+                                events.Add(new DockedEvent(timestamp, systemName, stationName, stationModel, faction, factionState, economy, government, distancefromstar, stationservices) { raw = line });
                             }
                             handled = true;
                             break;
@@ -1657,11 +1699,13 @@ namespace EddiJournalMonitor
                             }
                         case "CommunityGoal":
                             {
-                                /*
                                 object val;
 
-                                // Create empty lists
+                                // There may be multiple goals in each event. We add them all to lists
+                                data.TryGetValue("CurrentGoals", out val);
+                                List<object> goalsdata = (List<object>)val;
 
+                                // Create empty lists
                                 List<long> cgid = new List<long>();
                                 List<string> name = new List<string>();
                                 List<string> system = new List<string>();
@@ -1679,82 +1723,34 @@ namespace EddiJournalMonitor
                                 List<string> tier = new List<string>();
                                 List<long?> tierreward = new List<long?>();
 
-                                // There may be multiple goals in each event. We add them all to lists
-                                data.TryGetValue("CurrentGoals", out val);
-                                List<object> goalsdata = (List<object>)val;
-
+                                // Fill the lists
                                 foreach (IDictionary<string, object> goaldata in goalsdata)
                                 {
-                                    cgid.Add(getLong(data, "CGID"));
-                                    name.Add(getString(data, "Title"));
-                                    system.Add(getString(data, "SystemName"));
-                                    station.Add(getString(data, "MarketName"));
-                                    data.TryGetValue("Expiry", out val);
+                                    cgid.Add(getLong(goaldata, "CGID"));
+                                    name.Add(getString(goaldata, "Title"));
+                                    system.Add(getString(goaldata, "SystemName"));
+                                    station.Add(getString(goaldata, "MarketName"));
+                                    goaldata.TryGetValue("Expiry", out val);
                                     expiry.Add((DateTime)val);
-                                    iscomplete.Add(getBool(data, "IsComplete"));
-                                    total.Add(getInt(data, "CurrentTotal"));
-                                    contribution.Add(getInt(data, "PlayerContribution"));
-                                    contributors.Add(getInt(data, "NumContributors"));
-                                    percentileband.Add(getDecimal(data, "PlayerPercentileBand"));
+                                    iscomplete.Add(getBool(goaldata, "IsComplete"));
+                                    total.Add(getInt(goaldata, "CurrentTotal"));
+                                    contribution.Add(getInt(goaldata, "PlayerContribution"));
+                                    contributors.Add(getInt(goaldata, "NumContributors"));
+                                    percentileband.Add(getDecimal(goaldata, "PlayerPercentileBand"));
 
                                     // If the community goal is constructed with a fixed-size top rank (ie max reward for top 10 players)
 
-                                    topranksize.Add(getOptionalInt(data, "TopRankSize"));
-                                    toprank.Add(getOptionalBool(data, "PlayerInTopRank"));
+                                    topranksize.Add(getOptionalInt(goaldata, "TopRankSize"));
+                                    toprank.Add(getOptionalBool(goaldata, "PlayerInTopRank"));
 
                                     // If the community goal has reached the first success tier
 
-                                    data.TryGetValue("TierReached", out val);
+                                    goaldata.TryGetValue("TierReached", out val);
                                     tier.Add((string)val);
-                                    tierreward.Add(getOptionalLong(data, "Bonus"));
+                                    tierreward.Add(getOptionalLong(goaldata, "Bonus"));
 
-                                    //events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line });
+                                    events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line });
                                 }
-
-                                events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line });
-                                */
-
-                                // An alternate method, though with its own problems
-                                /*
-                                List<Goal> goals = new List<Goal>();
-
-                                // There may be multiple goals in each event. We add them all to lists
-                                data.TryGetValue("CurrentGoals", out val);
-                                List<object> goalsdata = (List<object>)val;
-                                if (goalsData != null)
-                                {
-                                    foreach (IDictionary<string, object> goaldata in goalsdata)
-                                    {
-                                        long cgid = getLong(goaldata, "CGID");
-                                        string name = getString(goaldata, "Title");
-                                        string system = getString(goaldata, "SystemName");
-                                        string station = getString(goaldata, "MarketName");
-                                        goaldata.TryGetValue("Expiry", out val);
-                                        DateTime expiry = (DateTime)val;
-                                        bool iscomplete = getBool(goaldata, "IsComplete");
-                                        int total = getInt(goaldata, "CurrentTotal");
-                                        int contribution = getInt(goaldata, "PlayerContribution");
-                                        int contributors = getInt(goaldata, "NumContributors");
-                                        decimal percentileband = getDecimal(goaldata, "PlayerPercentileBand");
-
-                                        // If the community goal is constructed with a fixed-size top rank (ie max reward for top 10 players)
-                                        int? topranksize = getOptionalInt(goaldata, "TopRankSize");
-                                        bool? toprank = getOptionalBool(goaldata, "PlayerInTopRank");
-
-                                        // If the community goal has reached the first success tier
-                                        goaldata.TryGetValue("TierReached", out val);
-                                        string tier = (string)val;
-                                        long? tierreward = getOptionalLong(goaldata, "Bonus");
-
-                                        goals.Add(new Goal(timestamp, cgid, name, system, station, expiry, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line });
-                                    }
-                                }
-
-                                //events.Add(new CommunityGoalEvent(timestamp, goals));
-                                */
-
-                                //events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line });
-
                                 handled = true;
                                 break;
                             }
