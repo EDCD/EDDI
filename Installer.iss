@@ -2,9 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "EDDI"
-#define MyAppVersion "2.3.0"
-#define MyAppPublisher "Cmdr McDonald"
-#define MyAppURL "https://github.com/cmdrmcdonald/EliteDangerousDataProvider/"
+#define MyAppVersion "2.3.1"
+#define MyAppPublisher "Elite Dangerous Community Developers (EDCD)"
+#define MyAppURL "http://github.com/EDCD/EDDI"
 #define MyAppExeName "EDDI.exe"
 
 [Setup]
