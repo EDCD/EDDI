@@ -2261,11 +2261,11 @@ namespace EddiJournalMonitor
             }
             else if (message.StartsWith("$CargoHunter"))
             {
-                by = "Cargo hunter";
+                by = "Cargo hunter"; // Mission specific
             }
             else if (message.StartsWith("$Commuter"))
             {
-                by = "Commuter";
+                by = "Civilian pilot"; 
             }
             else if (message.StartsWith("$ConvoyExplorers"))
             {
@@ -2301,7 +2301,7 @@ namespace EddiJournalMonitor
             }
             else if (message.StartsWith("$PassengerHunter"))
             {
-                by = "Passenger hunter";
+                by = "Passenger hunter"; // Mission specific
             }
             else if (message.StartsWith("$PassengerLiner"))
             {
@@ -2325,15 +2325,15 @@ namespace EddiJournalMonitor
             }
             else if (message.StartsWith("$PowersAssassin"))
             {
-                by = "Rival power assassin";
+                by = "Rival power's agent"; // Power play specific
             }
             else if (message.StartsWith("$PowersPirate"))
             {
-                by = "Rival power pirate";
+                by = "Rival power's agent"; // Power play specific
             }
             else if (message.StartsWith("$PowersSecurity"))
             {
-                by = "Rival power security";
+                by = "Rival power's agent"; // Power play specific
             }
             else if (message.StartsWith("$Propagandist"))
             {
@@ -2349,11 +2349,19 @@ namespace EddiJournalMonitor
             }
             else if (message.StartsWith("$Smuggler"))
             {
-                by = "Smuggler";
+                by = "Civilian pilot";  // We shouldn't recognize a smuggler without a cargo scan
             }
             else if (message.StartsWith("$StarshipOne"))
             {
                 by = "Starship One";
+            }
+            else if (message.Contains("_SearchandRescue_"))
+            {
+                by = "Search and rescue";
+            }
+            else
+            {
+                by = "NPC";
             }
             return by;
         }
