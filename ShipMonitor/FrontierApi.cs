@@ -13,7 +13,7 @@ namespace EddiShipMonitor
     {
         private static List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
 
-        // Translations from the internal names used by Frontier to clean human-readable
+        // Translations from the internal names used by Frontier to clean human-readable - Legacy code, not used.
         private static Dictionary<string, string> shipTranslations = new Dictionary<string, string>()
         {
             { "Adder" , "Adder"},
