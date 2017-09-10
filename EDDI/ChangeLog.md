@@ -5,9 +5,12 @@
     * Add 'DataScan' definition for types of datalink scans
 	* Add new roles to the Ship Monitor
 	* Add material type information to the Material Monitor
+    * Add hyperlinks to EDDI.exe, linking to readme.md & the EDDI wiki
 	* Change Log incorporated via hyperlink in the main window - no more need to check the forums when something changes
 	* Changed the format for calling ring composition. Was 'composition.name', is 'composition'
 	* Stellar belt clusters are now included in the definition of rings.
+    * Update Readme.md to use revised hyperlinks pointing to the new project page.
+    * Update Troubleshooting.md to use revised hyperlinks pointing to the new project page.
 	* Update Variables.md to include information available for rings in 'Body scanned' and 'Star scanned' events
   * Events
     * Add 'AFMU repairs' event

@@ -1,7 +1,5 @@
 # EDDI: The Elite Dangerous Data Interface
 
-Current version: 2.3.0
-
 EDDI is a companion application for Elite: Dangerous, providing responses to events that occur in-game using data from the game as well as various third-party tools.
 
 EDDI reads data from a variety of sources to provide players with additional information whilst in-game, and also with events that can trigger such things as spoken responses or VoiceAttack actions.  The basic flow of EDDI is shown below:
@@ -22,19 +20,19 @@ EDDI can be installed standalone or as a VoiceAttack plugin.
 
 Download the EDDI installer from [http://www.mcdee.net/elite/EDDI.exe](http://www.mcdee.net/elite/EDDI.exe).  By default it will install in C:\Program Files (x86)\VoiceAttack\Apps\EDDI, which is fine regardless of if you have VoiceAttack or not, but of course you can change it if you wish (although note that if the installation is not in a subdirectory of your VoiceAttack's Apps directory then it will not be able to be used as a VoiceAttack plugin).
 
-Alternatively you can compile EDDI from the sources at [https://github.com/cmdrmcdonald/EliteDangerousDataProvider](https://github.com/cmdrmcdonald/EliteDangerousDataProvider).
+Alternatively you can compile EDDI from the sources at [https://github.com/EDCD/EDDI](https://github.com/EDCD/EDDI).
 
 When you start EDDI it will bring up a window with a number of tabs.  Each tab explains its function and how to configure it, so you will be best served to read each tab and set it up according to your liking.
 
 ## Using EDDI with VoiceAttack
 
-Initial EDDI integration with VoiceAttack is automatic, but there is a lot that you can do to integrate EDDI with your own VoiceAttack scripts.  Full details of what you can do with EDDI and VoiceAttack are on the [VoiceAttack EDDI page](https://github.com/cmdrmcdonald/EliteDangerousDataProvider/blob/master/VoiceAttack.md#using-eddi-with-voiceattack).
+Initial EDDI integration with VoiceAttack is automatic, but there is a lot that you can do to integrate EDDI with your own VoiceAttack scripts.  Full details of what you can do with EDDI and VoiceAttack are on the [VoiceAttack EDDI page](https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration).
 
 ## Upgrading EDDI
 
 If you are upgrading from EDDI 1 EDDI it is recommended that you uninstall your existing version of EDDI and remove your %APPDATA%\EDDI directory prior to upgrading to the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
 
-If you used EDDI 1 with VoiceAttack then please follow the instructions at [https://github.com/cmdrmcdonald/EliteDangerousDataProvider/blob/master/VoiceAttack.md#upgrading-from-eddi-1x](https://github.com/cmdrmcdonald/EliteDangerousDataProvider/blob/master/VoiceAttack.md#upgrading-from-eddi-1x).
+If you used EDDI 1 with VoiceAttack then please follow the instructions at [https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration](https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration).
 
 If you are upgrading from another version of EDDI 2 the installer will take care of changes so you just need to run it.
 
@@ -44,12 +42,12 @@ EDDI uses the standard Windows TTS (text-to-speech) voices.  To be eligible for 
 
 # Troubleshooting
 
-If you are experiencing problems with EDDI then your first port of call should be the [troubleshooting page](https://github.com/cmdrmcdonald/EliteDangerousDataProvider/blob/master/TROUBLESHOOTING.md#troubleshooting).  If this does not fix your problem then please check the Known issues below:
+If you are experiencing problems with EDDI then your first port of call should be the [troubleshooting page](https://github.com/EDCD/EDDI/blob/master/TROUBLESHOOTING.md).  If this does not fix your problem then please check the Known issues below:
 
   * EDDI relies on the Elite: Dangerous companion app API for a lot of its information.  Sometimes EDDI loses connection to the API and needs to re-authenticate.  If you think that this is a problem you can re-run the 'EDDI.exe' and if the connection is bad it will ask for re-authentication
   * EDDI is unable to know for sure if you have provided the correct path to the Logs directory.  The only way of knowing this for sure is to jump and see if EDDI tells you about your destination when you make a jump
 
-If you have an issue with EDDI then please report it at https://github.com/cmdrmcdonald/EliteDangerousDataProvider/issues  If you have encountered a problem then please provide the output of the error report (shift-control-alt-e) to aid in fixing the issue.
+If you have an issue with EDDI then please report it at https://github.com/EDCD/EDDI/issues  If you have encountered a problem then please provide the output of the error report (shift-control-alt-e) to aid in fixing the issue.
 
 # Uninstalling EDDI
 

@@ -16,12 +16,13 @@ namespace EddiVoiceAttackResponder
 
         private void VAExampleClicked(object sender, RoutedEventArgs e)
         {
+            // TODO: Add links to a youtube playlist?
             Process.Start("https://youtube.com/");
         }
 
         private void VAVariablesClicked(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://github.com/cmdrmcdonald/EliteDangerousDataProvider/blob/master/VoiceAttack.md");
+            Process.Start("https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration");
         }
     }
 }
