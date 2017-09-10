@@ -20,10 +20,27 @@
                         <Button x:Name="upgradeButton" VerticalAlignment="Center" DockPanel.Dock="Left" Visibility="Collapsed" Margin="10,0,10,0" Foreground="Orange" Click="upgradeClicked">Upgrade EDDI</Button>
                         <TextBlock x:Name="statusText" VerticalAlignment="Center" DockPanel.Dock="Left" Text="Operational"/>
                     </DockPanel>
-                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="EDDI has a number of features that can be configured separately.  There are three different types of item." VerticalAlignment="Top"/>
-                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="The first group obtain and manage the basic information used by EDDI.  These are the 'Commander Details', 'Frontier API' and 'Text-to-Speech' tabs.  You should go through each of these and configure them so that EDDI has full access to your Elite: Dangerous information." VerticalAlignment="Top"/>
-                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="The second group obtain event information.  These are the tabs that end in 'monitor'.  They obtain events from different places, and require minimal configuration but need to be completed before they will work." VerticalAlignment="Top"/>
-                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="The third group respond to events.  These are the tabs that end in 'responder'.  These come with varying degrees of configuration, but will work out of the box." VerticalAlignment="Top"/>
+                    <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
+                        <FlowDocument Background="#FFE5E5E5">
+                            <Paragraph>
+                                <Hyperlink Click="EDDIClicked">EDDI</Hyperlink>
+                                has a number of features that can be configured separately.  There are three different types of items.
+                            </Paragraph>
+                            <Paragraph>
+                                The first group obtain and manage the basic information used by EDDI.  These are the 'Commander Details', 'Frontier API' and 'Text-to-Speech' tabs.  You should go through each of these and configure them so that EDDI has full access to your Elite: Dangerous information.
+                            </Paragraph>
+                            <Paragraph>
+                                The second group obtain event information.  These are the tabs that end in 'monitor'.  They obtain events from different places, and require minimal configuration but need to be completed before they will work.
+                            </Paragraph>
+                            <Paragraph>
+                                The third group respond to events.  These are the tabs that end in 'responder'.  These come with varying degrees of configuration, but will work out of the box.
+                            </Paragraph>
+                            <Paragraph>
+                                You can read more about how EDDI functions on the
+                                <Hyperlink Click="WikiClicked">project wiki</Hyperlink> .
+                            </Paragraph>
+                        </FlowDocument>
+                    </RichTextBox>
                     <Grid DockPanel.Dock="Bottom">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
