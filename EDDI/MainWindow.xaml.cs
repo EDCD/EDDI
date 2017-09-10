@@ -3,6 +3,7 @@ using EddiDataDefinitions;
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -592,6 +593,14 @@ namespace Eddi
         private void upgradeClicked(object sender, RoutedEventArgs e)
         {
             EDDI.Instance.Upgrade();
+        }
+        private void EDDIClicked(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/EDCD/EDDI/blob/master/README.md");
+        }
+        private void WikiClicked(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/EDCD/EDDI/wiki");
         }
     }
 }

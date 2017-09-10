@@ -16,9 +16,9 @@ namespace EddiEvents
 
         static MessageReceivedEvent()
         {
-            VARIABLES.Add("from", "The name of the pilot who sent the message");
+            VARIABLES.Add("from", "The name of the source who sent the message");
             VARIABLES.Add("player", "True if the sender is a player");
-            VARIABLES.Add("source", "The source of the transmission (NPC, Police, Station, Crew member, Commander)");
+            VARIABLES.Add("source", "The source of the transmission");
             VARIABLES.Add("channel", "The channel in which the message came (e.g. direct, local, wing, npc)");
             VARIABLES.Add("message", "The message");
         }
