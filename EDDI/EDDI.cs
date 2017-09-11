@@ -254,7 +254,7 @@ namespace Eddi
 
             try
             {
-                ServerInfo updateServerInfo = ServerInfo.FromServer("http://api.eddp.co/");
+                ServerInfo updateServerInfo = ServerInfo.FromServer("http://edcd.github.io/EDDP/");
                 if (updateServerInfo == null)
                 {
                     Logging.Warn("Failed to contact update server");
