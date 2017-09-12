@@ -974,6 +974,51 @@
       "name": "Modification crafted",
       "description": "Triggered when you craft a modification to a module"
     },
+    "Module purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Module purchased",
+      "description": "Triggered when you purchase a module in outfitting"
+    },
+    "Module retrieved": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Module retrieved",
+      "description": "Triggered when you fetch a previously stored module"
+    },
+    "Module sold": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Module sold",
+      "description": "Triggered when you sell a module to outfitting"
+    },
+    "Module stored": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Module stored",
+      "description": "Triggered when you store a module"
+    },
+    "Module swapped": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Module swapped",
+      "description": "Triggered when a module is moved to a different slot on the ship"
+    },
     "Music": {
       "enabled": true,
       "priority": 3,
