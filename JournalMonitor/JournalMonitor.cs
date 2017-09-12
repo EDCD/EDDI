@@ -785,9 +785,87 @@ namespace EddiJournalMonitor
                                 long time = (long)val;
 
                                 events.Add(new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price, time) { raw = line });
-
-                                handled = true;
                             }
+                            handled = true;
+                            break;
+                        case "ModuleBuy":
+                            {
+                                object val;
+                                string slot = getString(data, "Slot");
+                                string item = getString(data, "BuyItem");
+                                data.TryGetValue("BuyPrice", out val);
+                                long price = (long)val;
+                                string soldItem = getString(data, "SellItem");
+                                data.TryGetValue("SellPrice", out val);
+                                long? soldPrice = (long?)val;
+                                string storedItem = getString(data, "StoredItem");
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                events.Add(new ModulePurchasedEvent(timestamp, slot, item, price, soldItem, soldPrice, storedItem, ship, shipId) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "ModuleRetrieve":
+                        case "ModuleStore":
+                            {
+                                object val;
+                                string slot = getString(data, "Slot");
+                                string modifications = getString(data, "EngineerModifications");
+                                data.TryGetValue("Cost", out val);
+                                long? cost = getOptionalLong(data, "Cost");
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                if (data.ContainsKey("RetrievedItem"))
+                                {
+                                    string item = getString(data, "RetrievedItem");
+                                    string swapOutItem = getString(data, "SwapOutItem");
+                                    events.Add(new ModuleRetrievedEvent(timestamp, slot, ship, shipId, item, modifications, swapOutItem, cost) { raw = line });
+                                }
+                                else
+                                {
+                                    string item = getString(data, "StoredItem");
+                                    string replacementItem = getString(data, "ReplacementItem");
+                                    events.Add(new ModuleStoredEvent(timestamp, slot, ship, shipId, item, modifications, replacementItem, cost) { raw = line });
+                                }
+                            }
+                            handled = true;
+                            break;
+                        case "ModuleSell":
+                            {
+                                object val;
+                                string slot = getString(data, "Slot");
+                                string item = getString(data, "SellItem");
+                                long price = getLong(data, "SellPrice");
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                events.Add(new ModuleSoldEvent(timestamp, slot, item, price, ship, shipId) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "ModuleSwap":
+                            {
+                                object val;
+                                string fromSlot = getString(data, "FromSlot");
+                                string toSlot = getString(data, "ToSlot");
+                                string fromItem = getString(data, "FromItem");
+                                string toItem = getString(data, "ToItem");
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                events.Add(new ModuleSwappedEvent(timestamp, fromSlot, toSlot, fromItem, toItem, ship, shipId) { raw = line });
+                            }
+                            handled = true;
                             break;
                         case "SetUserShipName":
                             {
@@ -956,23 +1034,24 @@ namespace EddiJournalMonitor
                                 {
                                     // This is NPC speech.  What's the source?
                                     string source;
-                                    if (from.Contains("npc_name_decorate"))
+                                    if (from.Contains("ShipName_Police"))
                                     {
-                                        source = npcSpeechBy(from, message);
-                                        from = from.Replace("$npc_name_decorate:#name=", "").Replace(";", "");
+                                        source = "Police";
+                                        from = getString(data, "From_Localised");
                                     }
                                     else if (from.Contains("ShipName_"))
                                     {
-                                        source = npcSpeechBy(from, message);
+                                        source = from.Replace("$ShipName_", "").Replace("_", " ").Replace(";", "");
                                         from = getString(data, "From_Localised");
                                     }
-                                    else if ((message.Contains("STATION_")) || message.Contains("$Docking"))
+                                    else if (from.Contains("npc_name_decorate"))
                                     {
-                                        source = "Station";
+                                        source = "NPC";
+                                        from = from.Replace("$npc_name_decorate:#name=", "").Replace(";", "");
                                     }
                                     else
                                     {
-                                        source = "NPC";
+                                        source = "Station";
                                     }
                                     events.Add(new MessageReceivedEvent(timestamp, from, source, false, channel, getString(data, "Message_Localised")));
                                     // See if we want to spawn a specific event as well
@@ -2257,11 +2336,11 @@ namespace EddiJournalMonitor
             }
             else if (message.StartsWith("$CargoHunter"))
             {
-                by = "Cargo hunter"; // Mission specific
+                by = "Cargo hunter";
             }
             else if (message.StartsWith("$Commuter"))
             {
-                by = "Civilian pilot"; 
+                by = "Commuter";
             }
             else if (message.StartsWith("$ConvoyExplorers"))
             {
@@ -2270,10 +2349,6 @@ namespace EddiJournalMonitor
             else if (message.StartsWith("$ConvoyWedding"))
             {
                 by = "Wedding convoy";
-            }
-            else if (message.StartsWith("$Hitman"))
-            {
-                by = "Hitman";
             }
             else if (message.StartsWith("$CruiseLiner"))
             {
@@ -2297,7 +2372,7 @@ namespace EddiJournalMonitor
             }
             else if (message.StartsWith("$PassengerHunter"))
             {
-                by = "Passenger hunter"; // Mission specific
+                by = "Passenger hunter";
             }
             else if (message.StartsWith("$PassengerLiner"))
             {
@@ -2321,15 +2396,15 @@ namespace EddiJournalMonitor
             }
             else if (message.StartsWith("$PowersAssassin"))
             {
-                by = "Rival power's agent"; // Power play specific
+                by = "Rival power assassin";
             }
             else if (message.StartsWith("$PowersPirate"))
             {
-                by = "Rival power's agent"; // Power play specific
+                by = "Rival power pirate";
             }
             else if (message.StartsWith("$PowersSecurity"))
             {
-                by = "Rival power's agent"; // Power play specific
+                by = "Rival power security";
             }
             else if (message.StartsWith("$Propagandist"))
             {
@@ -2345,19 +2420,11 @@ namespace EddiJournalMonitor
             }
             else if (message.StartsWith("$Smuggler"))
             {
-                by = "Civilian pilot";  // We shouldn't recognize a smuggler without a cargo scan
+                by = "Smuggler";
             }
             else if (message.StartsWith("$StarshipOne"))
             {
                 by = "Starship One";
-            }
-            else if (message.Contains("_SearchandRescue_"))
-            {
-                by = "Search and rescue";
-            }
-            else
-            {
-                by = "NPC";
             }
             return by;
         }

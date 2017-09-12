@@ -154,10 +154,27 @@ namespace EddiShipMonitor
             {
                 handleLimpetSoldEvent((LimpetSoldEvent)@event);
             }
-            // TODO ModulePurchasedEvent
-            // TODO ModuleSoldEvent
-            // TODO ModuleStoredEvent
-            // TODO ModuleRetrievedEvent
+            else if (@event is ModulePurchasedEvent)
+            {
+                handleModulePurchasedEvent((ModulePurchasedEvent)@event);
+            }
+            else if (@event is ModuleRetrievedEvent)
+            {
+                handleModuleRetrievedEvent((ModuleRetrievedEvent)@event);
+            }
+            else if (@event is ModuleSoldEvent)
+            {
+                handleModuleSoldEvent((ModuleSoldEvent)@event);
+            }
+            else if (@event is ModuleStoredEvent)
+            {
+                handleModuleStoredEvent((ModuleStoredEvent)@event);
+            }
+            else if (@event is ModuleSwappedEvent)
+            {
+                handleModuleSwappedEvent((ModuleSwappedEvent)@event);
+            }
+
             // TODO ModulesSwappedEvent
             // TODO ModulesStoredEvent
         }
@@ -496,6 +513,28 @@ namespace EddiShipMonitor
         private void handleShipRepurchasedEvent(ShipRepurchasedEvent @event)
         {
             // We don't do anything here as this is followed by a full ship loadout event
+        }
+
+        private void handleModulePurchasedEvent(ModulePurchasedEvent @event)
+        {
+            // TODO
+        }
+
+        private void handleModuleRetrievedEvent(ModuleRetrievedEvent @event)
+        {
+            // TODO
+        }
+        private void handleModuleSoldEvent(ModuleSoldEvent @event)
+        {
+            // TODO
+        }
+        private void handleModuleStoredEvent(ModuleStoredEvent @event)
+        {
+            // TODO
+        }
+        private void handleModuleSwappedEvent(ModuleSwappedEvent @event)
+        {
+            // TODO
         }
 
         public void PostHandle(Event @event)
