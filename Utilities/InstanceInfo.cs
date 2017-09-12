@@ -18,9 +18,9 @@ namespace Utilities
         public string version { get;  set; }
 
         /// <summary>
-        /// The json URL for the current version of the product
+        /// The URL for the current version of the product
         /// </summary>
-        public string json { get;  set; }
+        public string url { get;  set; }
 
         /// <summary>
         /// The minimum supported version of the product

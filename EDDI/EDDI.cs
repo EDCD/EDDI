@@ -277,7 +277,7 @@ namespace Eddi
                             SpeechService.Instance.Say(null, "Mandatory Eddi upgrade to " + info.version.Replace(".", " point ") + " is required.", false);
                         }
                         UpgradeRequired = true;
-                        UpgradeLocation = info.json;
+                        UpgradeLocation = info.url;
                         UpgradeVersion = info.version;
                     }
 
@@ -289,7 +289,7 @@ namespace Eddi
                             SpeechService.Instance.Say(null, "Eddi version " + info.version.Replace(".", " point ") + " is now available.", false);
                         }
                         UpgradeAvailable = true;
-                        UpgradeLocation = info.json;
+                        UpgradeLocation = info.url;
                         UpgradeVersion = info.version;
                     }
                 }
@@ -320,10 +320,10 @@ namespace Eddi
                     Motd = info.motd;
                     if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
-                        Logging.Warn("This version of Eddi is too old to operate; please upgrade at " + info.json);
+                        Logging.Warn("This version of Eddi is too old to operate; please upgrade at " + info.url);
                         SpeechService.Instance.Say(null, "This version of Eddi is too old to operate; please upgrade.", true);
                         UpgradeRequired = true;
-                        UpgradeLocation = info.json;
+                        UpgradeLocation = info.url;
                         UpgradeVersion = info.version;
                         //SpeechService.Instance.Say(null, "EDDI requires an update.  Downloading.", true);
                         //// We are too old to run - update
@@ -346,7 +346,7 @@ namespace Eddi
                         // There is an update available
                         SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", true);
                         UpgradeAvailable = true;
-                        UpgradeLocation = info.json;
+                        UpgradeLocation = info.url;
                         UpgradeVersion = info.version;
                         //SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.  Downloading.", true);
                         //string updateFile = Net.DownloadFile(info.url, @"EDDI-update.exe");
@@ -373,7 +373,7 @@ namespace Eddi
             catch (Exception ex)
             {
                 SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
-                Logging.Warn("Failed to access api.eddp.co", ex);
+                Logging.Warn("Failed to access http://edcd.github.io/EDDP/", ex);
             }
             return true;
         }
