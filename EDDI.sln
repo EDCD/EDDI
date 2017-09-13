@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCompanionAppService", "CompanionAppService\EddiCompanionAppService.csproj", "{462ED721-1C9C-43FA-8A3F-4C1644363A5A}"
 EndProject
@@ -20,6 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Contributors.md = Contributors.md
 		images\Directory.jpg = images\Directory.jpg
 		EDDI\EDDI.ico = EDDI\EDDI.ico
+		EDDI\bin\Debug\EDDI.vap = EDDI\bin\Debug\EDDI.vap
 		Installer.iss = Installer.iss
 		LICENSE.md = LICENSE.md
 		images\MainOptions.jpg = images\MainOptions.jpg
@@ -148,5 +149,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BE37D68F-FAEC-48E0-8470-517ACE933CD2}
 	EndGlobalSection
 EndGlobal

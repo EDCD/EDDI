@@ -84,24 +84,6 @@ Source: "{#SourcePath}EDDI\bin\Debug\Variables.md"; DestDir: "{app}"; Flags: ign
 Source: "{#SourcePath}EDDI\bin\Debug\EDDI.vap"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
-Source: "{#SourcePath}EDDI\bin\Debug\Newtonsoft.Json.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\CommonMark.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\Exceptionless.Wpf.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\Exceptionless.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\MathNet.Numerics.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\System.Data.SQLite.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\SimpleFeedReader.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\CSCore.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\RestSharp.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\EntityFramework.SqlServer.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\EntityFramework.xml"; DestDir: "{app}"; Flags: ignoreversion
-
-Source: "{#SourcePath}EDDI\bin\Debug\EddiDataProviderService.dll.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\EDDI.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\EddiVoiceAttackResponder.dll.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\EddiGalnetMonitor.dll.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "{#SourcePath}EDDI\bin\Debug\System.Data.SQLite.dll.config"; DestDir: "{app}"; Flags: ignoreversion
-
 ; Remove outdated files
 
 [InstallDelete]
