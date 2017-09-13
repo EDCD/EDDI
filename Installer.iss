@@ -3,8 +3,13 @@
 
 #define MyAppName "EDDI"
 #define MyAppVersion "2.3.1"
+<<<<<<< HEAD
 #define MyAppPublisher "Elite Dangerous Community Developers (EDCD)"
 #define MyAppURL "http://github.com/EDCD/EDDI"
+=======
+#define MyAppPublisher "EDCD"
+#define MyAppURL "https://github.com/EDCD/EDDI/"
+>>>>>>> bbd6216... Update installer URL, version and publisher
 #define MyAppExeName "EDDI.exe"
 
 [Setup]
