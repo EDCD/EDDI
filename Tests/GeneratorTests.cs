@@ -152,7 +152,8 @@ namespace Tests
                     }
                 }
                 output.Add("");
-                File.WriteAllLines(@"C:\Users\jgm\Desktop\Wiki\events\" + entry.Key.Replace(" ", "-") + "-event.md", output);
+                Directory.CreateDirectory(@"Wiki\events\");
+                File.WriteAllLines(@"Wiki\events\" + entry.Key.Replace(" ", "-") + "-event.md", output);
             }
         }
 
