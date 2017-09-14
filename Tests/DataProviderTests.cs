@@ -58,7 +58,7 @@ namespace Tests
             Assert.AreEqual("Star", sol.type);
             Assert.IsNull(sol.volcanism);
 
-            Body mercury = starSystem.bodies[1];
+            Body mercury = starSystem.bodies.Find(n => n.name.Equals("Mercury"));
             Assert.IsNull(mercury.age);
             Assert.AreEqual("No atmosphere", mercury.atmosphere);
             Assert.AreEqual(180, mercury.distance);
