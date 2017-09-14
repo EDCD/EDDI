@@ -112,8 +112,7 @@ namespace Tests
 
             DockedEvent theEvent = (DockedEvent)events[0];
 
-            Assert.AreEqual(1, theEvent.stationservices.Count);
-            Assert.AreEqual("Refuel", theEvent.stationservices[0]);
+            Assert.AreEqual("AsteroidBase", theEvent.model);
         }
 
         [TestMethod]
@@ -126,6 +125,8 @@ namespace Tests
             DockedEvent theEvent = (DockedEvent)events[0];
 
             Assert.AreEqual("AsteroidBase", theEvent.model);
+            Assert.AreEqual(1, theEvent.stationservices.Count);
+            Assert.AreEqual("Refuel", theEvent.stationservices[0]);
         }
 
         [TestMethod]
