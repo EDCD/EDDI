@@ -72,7 +72,6 @@ namespace EddiJournalMonitor
                     {
                         case "Docked":
                             {
-                                object val;
                                 string systemName = getString(data, "StarSystem");
                                 string stationName = getString(data, "StationName");
                                 string stationModel = getString(data, "StationType");
@@ -84,8 +83,9 @@ namespace EddiJournalMonitor
                                 decimal? distancefromstar = getOptionalDecimal(data, "DistFromStarLS");
 
                                 // Get station services data
+                                object val;
                                 data.TryGetValue("StationServices", out val);
-                                List<string> stationservices = ((List<object>)val)?.Cast<string>()?.ToList();
+                                List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList();
 
                                 // Update the local station object (not entirely sure this is necessary, but we have the data)
                                 if (stationservices != null)
