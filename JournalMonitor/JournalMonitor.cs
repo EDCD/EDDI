@@ -85,7 +85,7 @@ namespace EddiJournalMonitor
 
                                 // Get station services data
                                 data.TryGetValue("StationServices", out val);
-                                List<string> stationservices = ((List<object>)val).Cast<string>().ToList();
+                                List<string> stationservices = ((List<object>)val)?.Cast<string>()?.ToList();
 
                                 // Update the local station object (not entirely sure this is necessary, but we have the data)
                                 if (stationservices != null)
