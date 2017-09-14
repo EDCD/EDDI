@@ -17,7 +17,7 @@ namespace Tests
             using (var subscriber = new SubscriberSocket())
             {
                 int i = 0;
-                subscriber.Connect("tcp://eddn-relay.elite-markets.net:9500");
+                subscriber.Connect("tcp://eddn.edcd.io:9500");
                 subscriber.Subscribe("");
                 while (i < 10)
                 {
