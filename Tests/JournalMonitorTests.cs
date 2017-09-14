@@ -141,7 +141,7 @@ namespace Tests
             MessageReceivedEvent event1 = (MessageReceivedEvent)events[0];
 
             Assert.IsFalse(event1.player);
-            Assert.AreEqual("NPC", event1.source);
+            Assert.AreEqual("Pirate", event1.source);
             Assert.AreEqual("Jonathan Dallard", event1.from);
 
             NPCCargoScanCommencedEvent event2 = (NPCCargoScanCommencedEvent)events[1];
