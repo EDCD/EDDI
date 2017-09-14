@@ -43,7 +43,7 @@ namespace Tests
         [TestMethod]
         public void TestGetLogs()
         {
-            StarMapService service = new StarMapService("secret", "McDonald", "http://beta.edsm.net:8000/");
+            StarMapService service = new StarMapService("secret", "McDonald", "http://beta.edsm.net:8080/");
             Dictionary<string, StarMapLogInfo> logs = service.getStarMapLog();
             Assert.AreEqual(1, logs.Count);
         }
