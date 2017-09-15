@@ -47,6 +47,7 @@
 	  * 'Died' - new script
 	  * 'Docking granted' script revised to recognize asteroid bases
  	  * 'Friends status' - new script
+      * 'Galnet news published' script revised to only ready out the titles & content of interesting articles
 	  * 'Limpet purchased' - new script
 	  * 'Limpet sold' - new script
       * 'Mission redirected' - new script
