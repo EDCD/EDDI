@@ -1,1 +1,0 @@
-Deprecated and moved. Please see the ChangeLog.md in the EDDI folder.
