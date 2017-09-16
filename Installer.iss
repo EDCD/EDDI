@@ -3,7 +3,7 @@
 
 #define MyAppName "EDDI"
 #define MyAppVersion "2.4.0-b1"
-#define MyAppPublisher "EDCD"
+#define MyAppPublisher "Elite Dangerous Community Developers (EDCD)"
 #define MyAppURL "https://github.com/EDCD/EDDI/"
 #define MyAppExeName "EDDI.exe"
 
@@ -44,13 +44,13 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 [Files]
 Source: "EDDI.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "x86\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs replacesameversion
-Source: "x64\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs replacesameversion
 Source: "AsyncIO.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CommonMark.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Cottle.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CredentialManagement.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CSCore.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "eddi.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "EddiCargoMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiCompanionAppService.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiDataDefinitions.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiDataProviderService.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -61,10 +61,12 @@ Source: "EddiEvents.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiGalnetMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiJournalMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiMaterialMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "EddiShipMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiSpeechResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiSpeechService.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiShipMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiStarMapService.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "EddiVoiceAttackResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EntityFramework.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EntityFramework.SqlServer.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Exceptionless.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -83,6 +85,24 @@ Source: "Variables.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EDDI.vap"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiVoiceAttackResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+
+Source: "Newtonsoft.Json.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "CommonMark.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Exceptionless.Wpf.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Exceptionless.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "MathNet.Numerics.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "System.Data.SQLite.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "SimpleFeedReader.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "CSCore.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "RestSharp.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "EntityFramework.SqlServer.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "EntityFramework.xml"; DestDir: "{app}"; Flags: ignoreversion
+
+Source: "EddiDataProviderService.dll.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "EDDI.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "EddiVoiceAttackResponder.dll.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "EddiGalnetMonitor.dll.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "System.Data.SQLite.dll.config"; DestDir: "{app}"; Flags: ignoreversion
 
 ; Remove outdated files
 [InstallDelete]
