@@ -19,7 +19,11 @@ namespace EddiJournalMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$");
 
-        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result => ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
+        //Regex betaTest = new Regex(@"^JournalBeta\.[0-9\.]+\.log$");
+        //public JournalMonitor(): betaTest.IsMatch(journal) EDDI.Instance.inBeta = true : EDDI.Instance.inBeta = false);
+
+        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result =>
+        ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
 
         public static void ForwardJournalEntry(string line, Action<Event> callback)
         {

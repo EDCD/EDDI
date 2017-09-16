@@ -993,7 +993,7 @@ namespace Eddi
 
         private bool eventFileHeader(FileHeaderEvent @event)
         {
-            // If we don't recognise the build number then assume we're in beta
+            // If we don't recognise the build number from the player journal then assume we're in beta
             if (ProductionBuilds.Contains(@event.build))
             {
                 inBeta = false;
