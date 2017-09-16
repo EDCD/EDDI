@@ -254,7 +254,7 @@ namespace Eddi
 
             try
             {
-                ServerInfo updateServerInfo = ServerInfo.FromServer("http://api.eddp.co/");
+                ServerInfo updateServerInfo = ServerInfo.FromServer("http://edcd.github.io/EDDP/");
                 if (updateServerInfo == null)
                 {
                     Logging.Warn("Failed to contact update server");
@@ -308,7 +308,7 @@ namespace Eddi
         {
             try
             {
-                ServerInfo updateServerInfo = ServerInfo.FromServer("http://api.eddp.co/");
+                ServerInfo updateServerInfo = ServerInfo.FromServer("http://edcd.github.io/EDDP/");
                 if (updateServerInfo == null)
                 {
                     Logging.Warn("Failed to contact update server");
@@ -321,7 +321,7 @@ namespace Eddi
                     if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
                         Logging.Warn("This version of Eddi is too old to operate; please upgrade at " + info.url);
-                        SpeechService.Instance.Say(null, "This version of Eddiis too old to operate; please upgrade.", true);
+                        SpeechService.Instance.Say(null, "This version of Eddi is too old to operate; please upgrade.", true);
                         UpgradeRequired = true;
                         UpgradeLocation = info.url;
                         UpgradeVersion = info.version;
@@ -373,7 +373,7 @@ namespace Eddi
             catch (Exception ex)
             {
                 SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
-                Logging.Warn("Failed to access api.eddp.co", ex);
+                Logging.Warn("Failed to access http://edcd.github.io/EDDP/", ex);
             }
             return true;
         }
