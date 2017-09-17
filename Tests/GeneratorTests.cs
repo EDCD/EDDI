@@ -5,6 +5,7 @@ using EddiEvents;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using CSCore.DMO;
 
 namespace Tests
 {
@@ -160,11 +161,23 @@ namespace Tests
         [TestMethod]
         public void TestGenerateWikiEventsList()
         {
+
+            List<string> output = new List<string>();
+
+            // This is the header row for the index of events
+            output.Add(
+                "EDDI generates a large number of events, triggered from changes in-game as well as from a number of external sources (e.g. Galnet RSS feed).  " +
+                "A brief description of all available events is below, along with a link to more detailed information about each event:");
+            output.Add("");
+
+            // This is the list of events in markdown format
             foreach (KeyValuePair<string, Type> entry in Events.TYPES.OrderBy(i => i.Key))
             {
-                Console.WriteLine("## [" + entry.Key + "](" + entry.Key.Replace(" ", "-") + "-event)");
-                Console.WriteLine(Events.DESCRIPTIONS[entry.Key] + ".");
-                Console.WriteLine();
+                output.Add("## [" + entry.Key + "](" + entry.Key.Replace(" ", "-") + "-event)");
+                output.Add(Events.DESCRIPTIONS[entry.Key] + ".");
+                output.Add("");
+                Directory.CreateDirectory(@"Wiki\");
+                File.WriteAllLines(@"Wiki\Events.md", output);
             }
         }
     }
