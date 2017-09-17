@@ -43,13 +43,14 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: "EDDI.exe"; DestDir: "{app}"; Flags: ignoreversion
+
 Source: "x86\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs replacesameversion
+
 Source: "AsyncIO.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CommonMark.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Cottle.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CredentialManagement.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CSCore.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "eddi.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiCargoMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiCompanionAppService.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiDataDefinitions.dll"; DestDir: "{app}"; Flags: ignoreversion
@@ -81,10 +82,15 @@ Source: "System.Data.SQLite.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "System.Data.SQLite.EF6.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "System.Data.SQLite.Linq.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Utilities.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Variables.md"; DestDir: "{app}"; Flags: ignoreversion
-Source: "EDDI.vap"; DestDir: "{app}"; Flags: ignoreversion
-Source: "EddiVoiceAttackResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+
+Source: "eddi.json"; DestDir: "{app}"; Flags: ignoreversion
+
+Source: "ChangeLog.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Help.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Variables.md"; DestDir: "{app}"; Flags: ignoreversion
+
+Source: "EDDI.vap"; DestDir: "{app}"; Flags: ignoreversion
 
 Source: "Newtonsoft.Json.xml"; DestDir: "{app}"; Flags: ignoreversion
 Source: "CommonMark.xml"; DestDir: "{app}"; Flags: ignoreversion
