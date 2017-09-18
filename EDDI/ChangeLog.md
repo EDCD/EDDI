@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+### 2.4.0-b2
+  * Installer
+    * Fixed: the installer was missing some of the documentation files. This was causing the app to pine for the fjords. And the documentation files.
+
 ### 2.4.0-b1
   * Core
     * Add 'DataScan' definition for types of datalink scans
