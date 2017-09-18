@@ -520,7 +520,7 @@ namespace EddiShipMonitor
 
         private void handleModulePurchasedEvent(ModulePurchasedEvent @event)
         {
-            AddModule(@event.shipid, @event.slot, @event.module);
+            AddModule(@event.shipid, @event.slot, @event.buymodule);
         }
 
         private void handleModuleRetrievedEvent(ModuleRetrievedEvent @event)
