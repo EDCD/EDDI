@@ -812,6 +812,40 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
+                        case "ModuleMassStore":
+                            {
+                                object val;
+                                data.TryGetValue("Items", out val);
+                                List<object> items = (List<object>)val;
+
+                                List<string> slots = new List<string>();
+                                List<Module> modules = new List<Module>();
+                                
+                                Module module = new Module();
+                                if (items != null)
+                                {
+
+                                    foreach (Dictionary<string, object>item in items)
+                                    {
+                                        string slot = getString(data, "Slot");
+                                        slots.Add(slot);
+
+                                        string name = getString(data, "Name");
+                                        string cleanedName = name.Replace("$int_", "");
+                                        module = ModuleDefinitions.fromEDName(cleanedName);
+                                        module.modified = getString(data, "EngineerModifications") != null;
+                                        modules.Add(module);
+                                    }
+                                }
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                events.Add(new ModulesStoredEvent(timestamp, slots, modules, ship, shipId) { raw = line });
+                            }
+                            handled = true;
+                            break;
                         case "ModuleRetrieve":
                             {
                                 object val;

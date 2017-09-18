@@ -173,13 +173,17 @@ namespace EddiShipMonitor
             {
                 handleModuleStoredEvent((ModuleStoredEvent)@event);
             }
+            else if (@event is ModulesStoredEvent)
+            {
+                handleModulesStoredEvent((ModulesStoredEvent)@event);
+            }
             else if (@event is ModuleSwappedEvent)
             {
                 handleModuleSwappedEvent((ModuleSwappedEvent)@event);
             }
 
             // TODO ModulesSwappedEvent
-            // TODO ModulesStoredEvent
+
         }
 
         // Set the ship name conditionally, avoiding filtered names
@@ -535,6 +539,11 @@ namespace EddiShipMonitor
         private void handleModuleStoredEvent(ModuleStoredEvent @event)
         {
             RemoveModule(@event.shipid, @event.slot, @event.replacement);
+        }
+        private void handleModulesStoredEvent(ModulesStoredEvent @event)
+        {
+            foreach (string slot in @event.slots)
+                RemoveModule(@event.shipid, slot);
         }
         private void handleModuleSwappedEvent(ModuleSwappedEvent @event)
         {
@@ -946,7 +955,7 @@ namespace EddiShipMonitor
 
         public void AddModule(int shipid, string slot, Module module)
         {
-            Ship ship = GetCurrentShip();
+            Ship ship = GetShip(shipid);
 
             switch (slot)
             {
@@ -1071,7 +1080,7 @@ namespace EddiShipMonitor
 
         public void RemoveModule(int shipid, string slot, Module replacement = null)
         {
-            Ship ship = GetCurrentShip();
+            Ship ship = GetShip(shipid);
 
             if (replacement != null)
             {
