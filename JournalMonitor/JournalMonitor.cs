@@ -792,22 +792,23 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 string slot = getString(data, "Slot");
-                                Module module = ModuleDefinitions.fromEDName(getString(data, "BuyItem"));
+                                Module buyModule = ModuleDefinitions.fromEDName(getString(data, "BuyItem"));
                                 data.TryGetValue("BuyPrice", out val);
-                                long price = (long)val;
-                                module.price = price;
+                                long buyPrice = (long)val;
+                                buyModule.price = buyPrice;
+                                buyModule.enabled = true;
+                                buyModule.priority = 1;
+                                buyModule.health = 100;
+                                buyModule.modified = false;
 
-                                // Set purchased module defaults
-                                module.enabled = true;
-                                module.priority = 1;
-                                module.health = 100;
-                                module.modified = false;
+                                Module sellModule = ModuleDefinitions.fromEDName(getString(data, "SellItem"));
+                                long? sellPrice = getOptionalLong(data, "SellPrice");
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-                                events.Add(new ModulePurchasedEvent(timestamp, slot, module, price, ship, shipId) { raw = line });
+                                events.Add(new ModulePurchasedEvent(timestamp, slot, buyModule, buyPrice, sellModule, sellPrice, ship, shipId) { raw = line });
                             }
                             handled = true;
                             break;
