@@ -13,6 +13,7 @@ namespace Utilities
     {
         public const string EDDI_NAME = "EDDI";
         public const string EDDI_VERSION = "2.4.0-b2";
+        public const string EDDI_SERVER_URL = "http://edcd.github.io/EDDP/";
         public static readonly string DATA_DIR = Environment.GetEnvironmentVariable("AppData") + "\\" + EDDI_NAME;
 
         public const string ENVIRONMENT_WITCH_SPACE = "Witch space";

@@ -254,7 +254,7 @@ namespace Eddi
 
             try
             {
-                ServerInfo updateServerInfo = ServerInfo.FromServer("http://edcd.github.io/EDDP/");
+                ServerInfo updateServerInfo = ServerInfo.FromServer(Constants.EDDI_SERVER_URL);
                 if (updateServerInfo == null)
                 {
                     Logging.Warn("Failed to contact update server");
@@ -308,7 +308,7 @@ namespace Eddi
         {
             try
             {
-                ServerInfo updateServerInfo = ServerInfo.FromServer("http://edcd.github.io/EDDP/");
+                ServerInfo updateServerInfo = ServerInfo.FromServer(Constants.EDDI_SERVER_URL);
                 if (updateServerInfo == null)
                 {
                     Logging.Warn("Failed to contact update server");
@@ -373,7 +373,7 @@ namespace Eddi
             catch (Exception ex)
             {
                 SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
-                Logging.Warn("Failed to access http://edcd.github.io/EDDP/", ex);
+                Logging.Warn("Failed to access " + Constants.EDDI_SERVER_URL, ex);
             }
             return true;
         }
