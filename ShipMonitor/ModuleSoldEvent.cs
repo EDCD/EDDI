@@ -19,31 +19,22 @@ namespace EddiShipMonitor
         static ModuleSoldEvent()
         {
             VARIABLES.Add("slot", "The outfitting slot");
-            VARIABLES.Add("item", "The item being sold");
-            VARIABLES.Add("price", "The price of the item being sold");
-            VARIABLES.Add("ship", "The ship from which the item was sold");
-            VARIABLES.Add("shipid", "The ID of the ship from which the item was sold");
-
+            VARIABLES.Add("module", "The module being sold");
+            VARIABLES.Add("price", "The price of the module being sold");
+            VARIABLES.Add("ship", "The ship from which the module was sold");
+            VARIABLES.Add("shipid", "The ID of the ship from which the module was sold");
         }
-        [JsonProperty("slot")]
+
         public string slot { get; private set; }
-
-        [JsonProperty("item")]
-        public string item { get; private set; }
-
-        [JsonProperty("price")]
+        public Module module { get; private set; }
         public long price { get; private set; }
-
-        [JsonProperty("ship")]
         public string ship { get; private set; }
+        public int shipid { get; private set; }
 
-        [JsonProperty("shipid")]
-        public int? shipid { get; private set; }
-
-        public ModuleSoldEvent(DateTime timestamp, string slot, string item, long price, string ship, int? shipid) : base(timestamp, NAME)
+        public ModuleSoldEvent(DateTime timestamp, string slot, Module module, long price, string ship, int shipid) : base(timestamp, NAME)
         {
             this.slot = slot;
-            this.item = item;
+            this.module = module;
             this.price = price;
             this.ship = ship;
             this.shipid = shipid;

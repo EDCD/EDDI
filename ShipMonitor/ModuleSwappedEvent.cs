@@ -19,39 +19,28 @@ namespace EddiShipMonitor
         static ModuleSwappedEvent()
         {
             VARIABLES.Add("fromslot", "The slot from which the swap was initiated");
+            VARIABLES.Add("frommodule", "The item from which the swap was initiated");
             VARIABLES.Add("toslot", "The slot to which the swap was finalised");
-            VARIABLES.Add("fromitem", "The item from which the swap was initiated");
-            VARIABLES.Add("toitem", "The item to which the swap was finalised");
+            VARIABLES.Add("tomodule", "The modlue to which the swap was finalised");
             VARIABLES.Add("ship", "The ship for which the module was swapped");
             VARIABLES.Add("shipid", "The ID of the ship for which the module was swapped");
         }
-        [JsonProperty("fromslot")]
+
         public string fromslot { get; private set; }
-
-        [JsonProperty("toslot")]
+        public Module frommodule { get; private set; }
         public string toslot { get; private set; }
-
-        [JsonProperty("fromitem")]
-        public string fromitem { get; private set; }
-
-        [JsonProperty("toitem")]
-        public string toitem { get; private set; }
-
-        [JsonProperty("ship")]
+        public Module tomodule { get; private set; }
         public string ship { get; private set; }
+        public int shipid { get; private set; }
 
-        [JsonProperty("shipid")]
-        public int? shipid { get; private set; }
-
-        public ModuleSwappedEvent(DateTime timestamp, string fromslot, string toslot, string fromitem, string toitem, string ship, int? shipid) : base(timestamp, NAME)
+        public ModuleSwappedEvent(DateTime timestamp, string fromslot, Module frommodule, string toslot, Module tomodule, string ship, int shipid) : base(timestamp, NAME)
         {
             this.fromslot = fromslot;
+            this.frommodule = frommodule;
             this.toslot = toslot;
-            this.fromitem = fromitem;
-            this.toitem = toitem;
+            this.tomodule = tomodule;
             this.ship = ship;
             this.shipid = shipid;
-
         }
     }
 }

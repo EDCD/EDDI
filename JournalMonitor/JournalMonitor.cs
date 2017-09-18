@@ -792,47 +792,46 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 string slot = getString(data, "Slot");
-                                string item = getString(data, "BuyItem");
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "BuyItem"));
                                 data.TryGetValue("BuyPrice", out val);
                                 long price = (long)val;
-                                string soldItem = getString(data, "SellItem");
-                                data.TryGetValue("SellPrice", out val);
-                                long? soldPrice = (long?)val;
-                                string storedItem = getString(data, "StoredItem");
+                                module.price = price;
+
+                                // Set purchased module defaults
+                                module.enabled = true;
+                                module.priority = 1;
+                                module.health = 100;
+                                module.modified = false;
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-                                events.Add(new ModulePurchasedEvent(timestamp, slot, item, price, soldItem, soldPrice, storedItem, ship, shipId) { raw = line });
+                                events.Add(new ModulePurchasedEvent(timestamp, slot, module, price, ship, shipId) { raw = line });
                             }
                             handled = true;
                             break;
                         case "ModuleRetrieve":
-                        case "ModuleStore":
                             {
                                 object val;
                                 string slot = getString(data, "Slot");
-                                string modifications = getString(data, "EngineerModifications");
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "RetrievedItem"));
                                 data.TryGetValue("Cost", out val);
                                 long? cost = getOptionalLong(data, "Cost");
+                                Module swapout = ModuleDefinitions.fromEDName(getString(data, "SwapOutItem"));
+
+                                // Set retrieved module defaults
+                                module.price = module.value;
+                                module.enabled = true;
+                                module.priority = 1;
+                                module.health = 100;
+                                module.modified = getString(data, "EngineerModifications") != null;
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-                                if (data.ContainsKey("RetrievedItem"))
-                                {
-                                    string item = getString(data, "RetrievedItem");
-                                    string swapOutItem = getString(data, "SwapOutItem");
-                                    events.Add(new ModuleRetrievedEvent(timestamp, slot, ship, shipId, item, modifications, swapOutItem, cost) { raw = line });
-                                }
-                                else
-                                {
-                                    string item = getString(data, "StoredItem");
-                                    string replacementItem = getString(data, "ReplacementItem");
-                                    events.Add(new ModuleStoredEvent(timestamp, slot, ship, shipId, item, modifications, replacementItem, cost) { raw = line });
-                                }
+                                events.Add(new ModuleRetrievedEvent(timestamp, slot, module, cost, swapout, ship, shipId) { raw = line });
                             }
                             handled = true;
                             break;
@@ -840,14 +839,42 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 string slot = getString(data, "Slot");
-                                string item = getString(data, "SellItem");
-                                long price = getLong(data, "SellPrice");
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "SellItem"));
+                                data.TryGetValue("SellPrice", out val);
+                                long price = (long)val;
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                events.Add(new ModuleSoldEvent(timestamp, slot, module, price, ship, shipId) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "ModuleStore":
+                            {
+                                object val;
+                                string slot = getString(data, "Slot");
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "StoredItem"));
+                                module.modified = getString(data, "EngineerModifications") != null;
+                                data.TryGetValue("Cost", out val);
+                                long? cost = getOptionalLong(data, "Cost");
+
+
+                                Module replacement = ModuleDefinitions.fromEDName(getString(data, "ReplacementItem"));
+                                if (replacement != null)
+                                {
+                                    replacement.price = replacement.value;
+                                    replacement.enabled = true;
+                                    replacement.priority = 1;
+                                    replacement.health = 100;
+                                    replacement.modified = false;
+                                }
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-                                events.Add(new ModuleSoldEvent(timestamp, slot, item, price, ship, shipId) { raw = line });
+                                events.Add(new ModuleStoredEvent(timestamp, slot, module, cost, replacement, ship, shipId) { raw = line });
                             }
                             handled = true;
                             break;
@@ -855,15 +882,14 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 string fromSlot = getString(data, "FromSlot");
+                                Module fromModule = ModuleDefinitions.fromEDName(getString(data, "FromItem"));
                                 string toSlot = getString(data, "ToSlot");
-                                string fromItem = getString(data, "FromItem");
-                                string toItem = getString(data, "ToItem");
-
+                                Module toModule = ModuleDefinitions.fromEDName(getString(data, "ToItem"));
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-                                events.Add(new ModuleSwappedEvent(timestamp, fromSlot, toSlot, fromItem, toItem, ship, shipId) { raw = line });
+                                events.Add(new ModuleSwappedEvent(timestamp, fromSlot, fromModule, toSlot, toModule, ship, shipId) { raw = line });
                             }
                             handled = true;
                             break;
