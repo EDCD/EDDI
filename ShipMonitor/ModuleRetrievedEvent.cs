@@ -19,44 +19,28 @@ namespace EddiShipMonitor
         static ModuleRetrievedEvent()
         {
             VARIABLES.Add("slot", "The outfitting slot");
+            VARIABLES.Add("module", "The retrieved module");
+            VARIABLES.Add("cost", "The cost of retrieval");
+            VARIABLES.Add("swapout", "The swapped out module");
             VARIABLES.Add("ship", "The ship for which the module was retrieved");
             VARIABLES.Add("shipid", "The ID of the ship for which the module was retrieved");
-            VARIABLES.Add("item", "The item being retrieved");
-            VARIABLES.Add("modifications", "The name of Engineer modifications, if any");
-            VARIABLES.Add("swapoutitem", "The item being swapped out (if the slot was not empty)");
-            VARIABLES.Add("cost", "The cost of retrieval");
-
         }
-        [JsonProperty("slot")]
+
         public string slot { get; private set; }
-
-        [JsonProperty("ship")]
-        public string ship { get; private set; }
-
-        [JsonProperty("shipid")]
-        public int? shipid { get; private set; }
-
-        [JsonProperty("item")]
-        public string item { get; private set; }
-
-        [JsonProperty("modifications")]
-        public string modifications { get; private set; }
-
-        [JsonProperty("swapoutitem")]
-        public string swapoutitem { get; private set; }
-
-        [JsonProperty("cost")]
+        public Module module { get; private set; }
         public long? cost { get; private set; }
+        public Module swapout { get; private set; }
+        public string ship { get; private set; }
+        public int shipid { get; private set; }
 
-        public ModuleRetrievedEvent(DateTime timestamp, string slot, string ship, int? shipid, string item, string modifications, string swapoutitem, long? cost) : base(timestamp, NAME)
+        public ModuleRetrievedEvent(DateTime timestamp, string slot, Module module, long? cost, Module swapout, string ship, int shipid) : base(timestamp, NAME)
         {
             this.slot = slot;
+            this.module = module;
+            this.cost = cost;
+            this.swapout = swapout;
             this.ship = ship;
             this.shipid = shipid;
-            this.item = item;
-            this.modifications = modifications;
-            this.swapoutitem = swapoutitem;
-            this.cost = cost;
         }
     }
 }

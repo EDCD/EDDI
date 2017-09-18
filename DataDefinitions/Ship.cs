@@ -32,6 +32,9 @@ namespace EddiDataDefinitions
         /// <summary>the size of this ship</summary>
         [JsonIgnore]
         public string size { get; set; }
+        /// <summary>the size of the military compartment slots</summary>
+        [JsonIgnore]
+        public int? militarysize { get; set; }
         /// <summary>the total tonnage cargo capacity</summary>
         public int cargocapacity { get; set; }
         /// <summary>the current tonnage cargo carried</summary>
@@ -216,7 +219,7 @@ namespace EddiDataDefinitions
             cargo = new List<Cargo>();
         }
 
-        public Ship(long EDID, string EDName, string Manufacturer, List<Translation> PhoneticManufacturer, string Model, List<Translation> PhoneticModel, string Size)
+        public Ship(long EDID, string EDName, string Manufacturer, List<Translation> PhoneticManufacturer, string Model, List<Translation> PhoneticModel, string Size, int? MilitarySize)
         {
             this.EDID = EDID;
             this.EDName = EDName;
@@ -225,6 +228,7 @@ namespace EddiDataDefinitions
             model = Model;
             phoneticmodel = PhoneticModel;
             size = Size;
+            militarysize = MilitarySize;
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
         }
@@ -330,6 +334,7 @@ namespace EddiDataDefinitions
                 phoneticmanufacturer = template.phoneticmanufacturer;
                 phoneticmodel = template.phoneticmodel;
                 size = template.size;
+                militarysize = template.militarysize;
                 if (role == null)
                 {
                     role = EddiDataDefinitions.Role.MultiPurpose;
