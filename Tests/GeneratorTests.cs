@@ -170,15 +170,16 @@ namespace Tests
                 "A brief description of all available events is below, along with a link to more detailed information about each event:");
             output.Add("");
 
+            Directory.CreateDirectory(@"Wiki\");
+
             // This is the list of events in markdown format
             foreach (KeyValuePair<string, Type> entry in Events.TYPES.OrderBy(i => i.Key))
             {
                 output.Add("## [" + entry.Key + "](" + entry.Key.Replace(" ", "-") + "-event)");
                 output.Add(Events.DESCRIPTIONS[entry.Key] + ".");
                 output.Add("");
-                Directory.CreateDirectory(@"Wiki\");
-                File.WriteAllLines(@"Wiki\Events.md", output);
             }
+            File.WriteAllLines(@"Wiki\Events.md", output);
         }
     }
 }
