@@ -351,6 +351,7 @@ namespace EddiMaterialMonitor
 
         private void populateMaterialBlueprints()
         {
+            // TODO: Transfer this function to a new server
             string data = Net.DownloadString("http://api.eddp.co/_materialuses");
             if (data != null)
             {
@@ -368,6 +369,7 @@ namespace EddiMaterialMonitor
 
         private void populateMaterialLocations()
         {
+            // TODO: Transfer this function to a new server
             string data = Net.DownloadString("http://api.eddp.co/_materiallocations");
             if (data != null)
             {
