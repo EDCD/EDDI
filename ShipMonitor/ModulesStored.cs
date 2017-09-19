@@ -18,23 +18,23 @@ namespace EddiShipMonitor
 
         static ModulesStoredEvent()
         {
-            VARIABLES.Add("slots", "The outfitting slots");
-            VARIABLES.Add("modules", "The stored modules");
             VARIABLES.Add("ship", "The ship from which the modules were stored");
             VARIABLES.Add("shipid", "The ID of the ship from which the module were stored");
+            VARIABLES.Add("slots", "The outfitting slots");
+            VARIABLES.Add("modules", "The stored modules (object)");
         }
 
-        public List<string> slots { get; private set; }
-        public List<Module> modules { get; private set; }
         public string ship { get; private set; }
         public int shipid { get; private set; }
+        public List<string> slots { get; private set; }
+        public List<Module> modules { get; private set; }
 
-        public ModulesStoredEvent(DateTime timestamp, List<string> slots, List<Module> modules, string ship, int shipid) : base(timestamp, NAME)
+        public ModulesStoredEvent(DateTime timestamp, string ship, int shipid, List<string> slots, List<Module> modules ) : base(timestamp, NAME)
         {
-            this.slots = slots;
-            this.modules = modules;
             this.ship = ship;
             this.shipid = shipid;
+            this.slots = slots;
+            this.modules = modules;
         }
     }
 }

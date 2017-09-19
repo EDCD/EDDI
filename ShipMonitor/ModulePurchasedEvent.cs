@@ -18,32 +18,35 @@ namespace EddiShipMonitor
 
         static ModulePurchasedEvent()
         {
-            VARIABLES.Add("slot", "The outfitting slot");
-            VARIABLES.Add("buymodule", "The module being purchased");
-            VARIABLES.Add("buyprice", "The price of the module being purchased");
-            VARIABLES.Add("sellmodule", "The sold module (if any)");
-            VARIABLES.Add("sellprice", "The price of the sold module (if any)");
             VARIABLES.Add("ship", "The ship for which the module was purchased");
             VARIABLES.Add("shipid", "The ID of the ship for which the module was purchased");
+            VARIABLES.Add("slot", "The outfitting slot");
+            VARIABLES.Add("buymodule", "The module (object) purchased");
+            VARIABLES.Add("buyprice", "The price of the module being purchased");
+            VARIABLES.Add("sellmodule", "The module (object) being sold (if replacing an existing module)");
+            VARIABLES.Add("sellprice", "The price of the sold module (if replacing an existing module)");
+            VARIABLES.Add("storedmodule", "The module (object) being stored (if existing module stored)");
         }
 
+        public string ship { get; private set; }
+        public int shipid { get; private set; }
         public string slot { get; private set; }
         public Module buymodule { get; private set; }
         public long buyprice { get; private set; }
         public Module sellmodule { get; private set; }
         public long? sellprice { get; private set; }
-        public string ship { get; private set; }
-        public int shipid { get; private set; }
+        public Module storedmodule { get; private set; }
 
-        public ModulePurchasedEvent(DateTime timestamp, string slot, Module buymodule, long buyprice, Module sellmodule, long? sellprice, string ship, int shipid) : base(timestamp, NAME)
+        public ModulePurchasedEvent(DateTime timestamp, string ship, int shipid, string slot, Module buymodule, long buyprice, Module sellmodule, long? sellprice, Module storedmodule) : base(timestamp, NAME)
         {
+            this.ship = ship;
+            this.shipid = shipid;
             this.slot = slot;
             this.buymodule = buymodule;
             this.buyprice = buyprice;
             this.sellmodule = sellmodule;
             this.sellprice = sellprice;
-            this.ship = ship;
-            this.shipid = shipid;
+            this.storedmodule = storedmodule;
         }
     }
 }

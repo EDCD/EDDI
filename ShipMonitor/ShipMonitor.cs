@@ -538,7 +538,7 @@ namespace EddiShipMonitor
         }
         private void handleModuleStoredEvent(ModuleStoredEvent @event)
         {
-            RemoveModule(@event.shipid, @event.slot, @event.replacement);
+            RemoveModule(@event.shipid, @event.slot, @event.replacementmodule);
         }
         private void handleModulesStoredEvent(ModulesStoredEvent @event)
         {
