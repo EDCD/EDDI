@@ -788,9 +788,43 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
+                        case "MassModuleStore":
+                            {
+                                object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                data.TryGetValue("Items", out val);
+                                List<object> items = (List<object>)val;
+
+                                List<string> slots = new List<string>();
+                                List<Module> modules = new List<Module>();
+
+                                Module module = new Module();
+                                if (items != null)
+                                {
+
+                                    foreach (Dictionary<string, object> item in items)
+                                    {
+                                        string slot = getString(item, "Slot");
+                                        slots.Add(slot);
+
+                                        module = ModuleDefinitions.fromEDName(getString(item, "Name"));
+                                        module.modified = getString(item, "EngineerModifications") != null;
+                                        modules.Add(module);
+                                    }
+                                }
+
+                                events.Add(new ModulesStoredEvent(timestamp, slots, modules, ship, shipId) { raw = line });
+                            }
+                            handled = true;
+                            break;
                         case "ModuleBuy":
                             {
                                 object val;
+
                                 string slot = getString(data, "Slot");
                                 Module buyModule = ModuleDefinitions.fromEDName(getString(data, "BuyItem"));
                                 data.TryGetValue("BuyPrice", out val);
@@ -809,40 +843,6 @@ namespace EddiJournalMonitor
                                 string ship = getString(data, "Ship");
 
                                 events.Add(new ModulePurchasedEvent(timestamp, slot, buyModule, buyPrice, sellModule, sellPrice, ship, shipId) { raw = line });
-                            }
-                            handled = true;
-                            break;
-                        case "ModuleMassStore":
-                            {
-                                object val;
-                                data.TryGetValue("Items", out val);
-                                List<object> items = (List<object>)val;
-
-                                List<string> slots = new List<string>();
-                                List<Module> modules = new List<Module>();
-                                
-                                Module module = new Module();
-                                if (items != null)
-                                {
-
-                                    foreach (Dictionary<string, object>item in items)
-                                    {
-                                        string slot = getString(data, "Slot");
-                                        slots.Add(slot);
-
-                                        string name = getString(data, "Name");
-                                        string cleanedName = name.Replace("$int_", "");
-                                        module = ModuleDefinitions.fromEDName(cleanedName);
-                                        module.modified = getString(data, "EngineerModifications") != null;
-                                        modules.Add(module);
-                                    }
-                                }
-
-                                data.TryGetValue("ShipID", out val);
-                                int shipId = (int)(long)val;
-                                string ship = getString(data, "Ship");
-
-                                events.Add(new ModulesStoredEvent(timestamp, slots, modules, ship, shipId) { raw = line });
                             }
                             handled = true;
                             break;
