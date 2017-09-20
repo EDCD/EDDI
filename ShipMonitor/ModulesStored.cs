@@ -24,9 +24,16 @@ namespace EddiShipMonitor
             VARIABLES.Add("modules", "The stored modules (object)");
         }
 
+        [JsonProperty("ship")]
         public string ship { get; private set; }
+
+        [JsonProperty("shipid")]
         public int? shipid { get; private set; }
+
+        [JsonProperty("slots")]
         public List<string> slots { get; private set; }
+
+        [JsonProperty("modules")]
         public List<Module> modules { get; private set; }
 
         public ModulesStoredEvent(DateTime timestamp, string ship, int? shipid, List<string> slots, List<Module> modules ) : base(timestamp, NAME)

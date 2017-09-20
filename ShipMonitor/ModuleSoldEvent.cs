@@ -25,10 +25,19 @@ namespace EddiShipMonitor
             VARIABLES.Add("price", "The price of the module being sold");
         }
 
+        [JsonProperty("ship")]
         public string ship { get; private set; }
+
+        [JsonProperty("shipid")]
         public int? shipid { get; private set; }
+
+        [JsonProperty("slot")]
         public string slot { get; private set; }
+
+        [JsonProperty("module")]
         public Module module { get; private set; }
+
+        [JsonProperty("price")]
         public long price { get; private set; }
 
         public ModuleSoldEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long price) : base(timestamp, NAME)

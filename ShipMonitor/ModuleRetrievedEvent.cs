@@ -27,12 +27,25 @@ namespace EddiShipMonitor
             VARIABLES.Add("swapoutmodule", "The module (object) swapped out (if the slot was not empty)");
         }
 
+        [JsonProperty("ship")]
         public string ship { get; private set; }
+
+        [JsonProperty("shipid")]
         public int? shipid { get; private set; }
+
+        [JsonProperty("slot")]
         public string slot { get; private set; }
+
+        [JsonProperty("module")]
         public Module module { get; private set; }
+
+        [JsonProperty("cost")]
         public long? cost { get; private set; }
+
+        [JsonProperty("engineermodifications")]
         public string engineermodifications { get; private set; }
+
+        [JsonProperty("swapoutmodule")]
         public Module swapoutmodule { get; private set; }
 
         public ModuleRetrievedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long? cost, string engineermodifications, Module swapoutmodule) : base(timestamp, NAME)

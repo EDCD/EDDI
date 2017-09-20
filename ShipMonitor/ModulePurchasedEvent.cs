@@ -28,13 +28,28 @@ namespace EddiShipMonitor
             VARIABLES.Add("storedmodule", "The module (object) being stored (if existing module stored)");
         }
 
+        [JsonProperty("ship")]
         public string ship { get; private set; }
+
+        [JsonProperty("shipid")]
         public int? shipid { get; private set; }
+
+        [JsonProperty("slot")]
         public string slot { get; private set; }
+
+        [JsonProperty("buymodule")]
         public Module buymodule { get; private set; }
+
+        [JsonProperty("buyprice")]
         public long buyprice { get; private set; }
+
+        [JsonProperty("sellmodule")]
         public Module sellmodule { get; private set; }
+
+        [JsonProperty("sellprice")]
         public long? sellprice { get; private set; }
+
+        [JsonProperty("storedmodule")]
         public Module storedmodule { get; private set; }
 
         public ModulePurchasedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module buymodule, long buyprice, Module sellmodule, long? sellprice, Module storedmodule) : base(timestamp, NAME)
