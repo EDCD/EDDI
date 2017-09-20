@@ -999,7 +999,16 @@
       "script": "You have sold a {event.module.class}-{event.module.grade},\r\n\r\n{if type(event.module.mount) != \"void\":\r\n    {for index, value in event.module.mount: {set mount to value}}\r\n    {if mount = 0:\r\n        fixed\r\n    |elif mount = 1:\r\n        giimballed\r\n    |elif mount = 2:\r\n        turreted\r\n    }\r\n}\r\n\r\n{event.module.name} for {event.price} credits.",
       "default": true,
       "name": "Module sold",
-      "description": "Triggered when you sell a module to outfitting"
+      "description": "Triggered when selling a module to outfitting"
+	},
+    "Module sold remote": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have sold a {event.module.class}-{event.module.grade},\r\n\r\n{if type(event.module.mount) != \"void\":\r\n    {for index, value in event.module.mount: {set mount to value}}\r\n    {if mount = 0:\r\n        fixed\r\n    |elif mount = 1:\r\n        giimballed\r\n    |elif mount = 2:\r\n        turreted\r\n    }\r\n}\r\n\r\n{event.module.name} from your stores for {event.price} credits.",
+      "default": true,
+      "name": "Module sold remote",
+      "description": "Triggered when selling a module in storage at another station"
     },
     "Module stored": {
       "enabled": true,
@@ -1027,6 +1036,15 @@
       "default": true,
       "name": "Modules stored",
       "description": "Triggered when you store multiple modules"
+    },
+    "Module transfer": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have transferred a {event.module.class}-{event.module.grade},\r\n\r\n{if type(event.module.mount) != \"void\":\r\n    {for index, value in event.module.mount: {set mount to value}}\r\n    {if mount = 0:\r\n        fixed\r\n    |elif mount = 1:\r\n        giimballed\r\n    |elif mount = 2:\r\n        turreted\r\n    }\r\n}\r\n\r\n{event.module.name} \r\n\r\n{if type(event.transfercost) != \"void\": for a cost of {event.transfercost} credits.}\r\n\r\n{set t_remaining to event.transfertime}\r\n\r\n{if t_remaining:\r\n\r\n   {Pause(1000)}\r\n   Expected arrival in:\r\n\r\n   {if t_remaining > (60*60*24):\r\n      {set t_days to floor(t_remaining/(60*60*24) )}\r\n      {t_days} days,\r\n      {set t_remaining to (t_remaining)-floor(t_remaining/(60*60*24)) }\r\n   }\r\n\r\n   {if t_remaining > (60*60):\r\n      {set t_hours to floor( t_remaining/(60*60)) }\r\n      {t_hours} hours,\r\n      {set t_remaining to (t_remaining)-floor(t_remaining/(60*60)) }\r\n   }\r\n\r\n   {if t_remaining > (60):\r\n      {if t_days || t_hours: and}\r\n      {set t_minutes to round(t_remaining/(60),0)}\r\n      {t_minutes} minutes.\r\n   }\r\n}",
+      "default": true,
+      "name": "Module transfer",
+      "description": "Triggered when you transfer a module from storage at another station"
     },
     "Music": {
       "enabled": true,

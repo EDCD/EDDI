@@ -788,6 +788,29 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
+                        case "FetchRemoteModule":
+                            {
+                                object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "StoredItem"));
+                                data.TryGetValue("TransferCost", out val);
+                                long transferCost = (long)val;
+                                long? transferTime = getOptionalLong(data, "TransferTime");
+
+                                // Probably not useful. We'll get these but we won't tell the end user about them
+                                data.TryGetValue("StorageSlot", out val);
+                                int storageSlot = (int)(long)val;
+                                data.TryGetValue("ServerId", out val);
+                                long serverId = (long)val;
+
+                                events.Add(new ModuleTransferEvent(timestamp, ship, shipId, storageSlot, serverId, module, transferCost, transferTime) { raw = line });
+                            }
+                            handled = true;
+                            break;
                         case "MassModuleStore":
                             {
                                 object val;
@@ -891,6 +914,28 @@ namespace EddiJournalMonitor
 
 
                                 events.Add(new ModuleSoldEvent(timestamp, ship, shipId, slot, module, price ) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "ModuleSellRemote":
+                            {
+                                object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "SellItem"));
+                                data.TryGetValue("SellPrice", out val);
+                                long price = (long)val;
+
+                                // Probably not useful. We'll get these but we won't tell the end user about them
+                                data.TryGetValue("StorageSlot", out val);
+                                int storageSlot = (int)(long)val;
+                                data.TryGetValue("ServerId", out val);
+                                long serverId = (long)val;
+
+                                events.Add(new ModuleSoldRemoteEvent(timestamp, ship, shipId, storageSlot, serverId, module, price) { raw = line });
                             }
                             handled = true;
                             break;

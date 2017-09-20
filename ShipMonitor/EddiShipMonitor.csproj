@@ -66,12 +66,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModuleSoldRemoteEvent.cs" />
     <Compile Include="ModulesStored.cs" />
     <Compile Include="ModulePurchasedEvent.cs" />
     <Compile Include="ModuleRetrievedEvent.cs" />
     <Compile Include="ModuleSoldEvent.cs" />
     <Compile Include="ModuleStoredEvent.cs" />
     <Compile Include="ModuleSwappedEvent.cs" />
+    <Compile Include="ModuleTransferEvent.cs" />
     <Compile Include="ShipAfmuRepairedEvent.cs" />
     <Compile Include="ShipRepairDroneEvent.cs" />
     <Compile Include="ConfigurationWindow.xaml.cs">

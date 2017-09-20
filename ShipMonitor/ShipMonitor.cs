@@ -169,6 +169,10 @@ namespace EddiShipMonitor
             {
                 handleModuleSoldEvent((ModuleSoldEvent)@event);
             }
+            else if (@event is ModuleSoldRemoteEvent)
+            {
+                handleModuleSoldRemoteEvent((ModuleSoldRemoteEvent)@event);
+            }
             else if (@event is ModuleStoredEvent)
             {
                 handleModuleStoredEvent((ModuleStoredEvent)@event);
@@ -180,6 +184,10 @@ namespace EddiShipMonitor
             else if (@event is ModuleSwappedEvent)
             {
                 handleModuleSwappedEvent((ModuleSwappedEvent)@event);
+            }
+            else if (@event is ModuleTransferEvent)
+            {
+                handleModuleTransferEvent((ModuleTransferEvent)@event);
             }
 
             // TODO ModulesSwappedEvent
@@ -536,15 +544,23 @@ namespace EddiShipMonitor
         {
             RemoveModule((int)@event.shipid, @event.slot);
         }
+
+        private void handleModuleSoldRemoteEvent(ModuleSoldRemoteEvent @event)
+        {
+            // We don't do anything here as the ship object is unaffected
+        }
+
         private void handleModuleStoredEvent(ModuleStoredEvent @event)
         {
             RemoveModule((int)@event.shipid, @event.slot, @event.replacementmodule);
         }
+
         private void handleModulesStoredEvent(ModulesStoredEvent @event)
         {
             foreach (string slot in @event.slots)
                 RemoveModule((int)@event.shipid, slot);
         }
+
         private void handleModuleSwappedEvent(ModuleSwappedEvent @event)
         {
             Ship ship = GetShip(@event.shipid);
@@ -563,7 +579,7 @@ namespace EddiShipMonitor
                 {
                     if (hpt.name == fromSlot)
                         hpt.name = toSlot;
-                    else if (hpt.name == toSlot)
+                    if (hpt.name == toSlot)
                         hpt.name = fromSlot;
 
                     hardpoints.Add(hpt.name, hpt);
@@ -594,7 +610,7 @@ namespace EddiShipMonitor
                 {
                     if (cpt.name == fromSlot)
                         cpt.name = toSlot;
-                    else if (cpt.name == toSlot)
+                    if (cpt.name == toSlot)
                         cpt.name = fromSlot;
 
                     compartments.Add(cpt.name, cpt);
@@ -619,6 +635,11 @@ namespace EddiShipMonitor
                         ship.compartments.Add(cpt);
                 }
             }
+        }
+
+        private void handleModuleTransferEvent(ModuleTransferEvent @event)
+        {
+            // We don't do anything here as the ship object is unaffected
         }
 
         public void PostHandle(Event @event)

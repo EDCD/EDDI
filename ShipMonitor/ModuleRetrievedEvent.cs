@@ -23,7 +23,7 @@ namespace EddiShipMonitor
             VARIABLES.Add("slot", "The outfitting slot");
             VARIABLES.Add("module", "The module (object) retrieved from storage");
             VARIABLES.Add("cost", "The cost of retrieval");
-            VARIABLES.Add("engineermodificaiotns", "The name of the modification blueprint");
+            VARIABLES.Add("engineermodifications", "The name of the modification blueprint");
             VARIABLES.Add("swapoutmodule", "The module (object) swapped out (if the slot was not empty)");
         }
 
