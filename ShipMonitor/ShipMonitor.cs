@@ -524,30 +524,30 @@ namespace EddiShipMonitor
 
         private void handleModulePurchasedEvent(ModulePurchasedEvent @event)
         {
-            AddModule(@event.shipid, @event.slot, @event.buymodule);
+            AddModule((int)@event.shipid, @event.slot, @event.buymodule);
         }
 
         private void handleModuleRetrievedEvent(ModuleRetrievedEvent @event)
         {
-            AddModule(@event.shipid, @event.slot, @event.module);
+            AddModule((int)@event.shipid, @event.slot, @event.module);
         }
 
         private void handleModuleSoldEvent(ModuleSoldEvent @event)
         {
-            RemoveModule(@event.shipid, @event.slot);
+            RemoveModule((int)@event.shipid, @event.slot);
         }
         private void handleModuleStoredEvent(ModuleStoredEvent @event)
         {
-            RemoveModule(@event.shipid, @event.slot, @event.replacementmodule);
+            RemoveModule((int)@event.shipid, @event.slot, @event.replacementmodule);
         }
         private void handleModulesStoredEvent(ModulesStoredEvent @event)
         {
             foreach (string slot in @event.slots)
-                RemoveModule(@event.shipid, slot);
+                RemoveModule((int)@event.shipid, slot);
         }
         private void handleModuleSwappedEvent(ModuleSwappedEvent @event)
         {
-            Ship ship = GetShip(@event.shipid);
+            Ship ship = GetCurrentShip();
 
             string fromSlot = @event.fromslot;
             string toSlot = @event.toslot;
@@ -955,7 +955,7 @@ namespace EddiShipMonitor
 
         public void AddModule(int shipid, string slot, Module module)
         {
-            Ship ship = GetShip(shipid);
+            Ship ship = GetCurrentShip();
 
             switch (slot)
             {
@@ -1080,7 +1080,7 @@ namespace EddiShipMonitor
 
         public void RemoveModule(int shipid, string slot, Module replacement = null)
         {
-            Ship ship = GetShip(shipid);
+            Ship ship = GetCurrentShip();
 
             if (replacement != null)
             {

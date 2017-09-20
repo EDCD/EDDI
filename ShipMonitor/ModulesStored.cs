@@ -25,11 +25,11 @@ namespace EddiShipMonitor
         }
 
         public string ship { get; private set; }
-        public int shipid { get; private set; }
+        public int? shipid { get; private set; }
         public List<string> slots { get; private set; }
         public List<Module> modules { get; private set; }
 
-        public ModulesStoredEvent(DateTime timestamp, string ship, int shipid, List<string> slots, List<Module> modules ) : base(timestamp, NAME)
+        public ModulesStoredEvent(DateTime timestamp, string ship, int? shipid, List<string> slots, List<Module> modules ) : base(timestamp, NAME)
         {
             this.ship = ship;
             this.shipid = shipid;

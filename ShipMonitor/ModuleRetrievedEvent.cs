@@ -28,14 +28,14 @@ namespace EddiShipMonitor
         }
 
         public string ship { get; private set; }
-        public int shipid { get; private set; }
+        public int? shipid { get; private set; }
         public string slot { get; private set; }
         public Module module { get; private set; }
         public long? cost { get; private set; }
         public string engineermodifications { get; private set; }
         public Module swapoutmodule { get; private set; }
 
-        public ModuleRetrievedEvent(DateTime timestamp, string ship, int shipid, string slot, Module module, long? cost, string engineermodifications, Module swapoutmodule) : base(timestamp, NAME)
+        public ModuleRetrievedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long? cost, string engineermodifications, Module swapoutmodule) : base(timestamp, NAME)
         {
             this.ship = ship;
             this.shipid = shipid;

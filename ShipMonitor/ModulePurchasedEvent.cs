@@ -29,7 +29,7 @@ namespace EddiShipMonitor
         }
 
         public string ship { get; private set; }
-        public int shipid { get; private set; }
+        public int? shipid { get; private set; }
         public string slot { get; private set; }
         public Module buymodule { get; private set; }
         public long buyprice { get; private set; }
@@ -37,7 +37,7 @@ namespace EddiShipMonitor
         public long? sellprice { get; private set; }
         public Module storedmodule { get; private set; }
 
-        public ModulePurchasedEvent(DateTime timestamp, string ship, int shipid, string slot, Module buymodule, long buyprice, Module sellmodule, long? sellprice, Module storedmodule) : base(timestamp, NAME)
+        public ModulePurchasedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module buymodule, long buyprice, Module sellmodule, long? sellprice, Module storedmodule) : base(timestamp, NAME)
         {
             this.ship = ship;
             this.shipid = shipid;
