@@ -328,9 +328,11 @@ namespace EddiShipMonitor
             if (ship == null)
             {
                 // The ship is unknown - create it
+                Logging.Debug("Unknown ship ID " + @event.shipid);
                 ship = ShipDefinitions.FromEDModel(@event.ship);
                 ship.LocalId = (int)@event.shipid;
                 ship.role = Role.MultiPurpose;
+                Logging.Debug("Created ship model " + @event.ship + "; " + JsonConvert.SerializeObject(ship));
                 AddShip(ship);
             }
 
@@ -426,6 +428,7 @@ namespace EddiShipMonitor
             // Cargo capacity
             ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.name.EndsWith("Cargo Rack")).Sum(c => Math.Pow(2, c.module.@class));
 
+            Logging.Debug("Updated ship loadout; " + JsonConvert.SerializeObject(ship));
             writeShips();
         }
 
@@ -943,7 +946,7 @@ namespace EddiShipMonitor
                         ship.role = Role.MultiPurpose;
                         AddShip(ship);
                         currentShipId = ship.LocalId;
-                        Logging.Debug("Created ship ID " + localId);
+                        Logging.Debug("Created ship ID " + localId + ";  " + JsonConvert.SerializeObject(ship));
                     }
                     else
                     {
