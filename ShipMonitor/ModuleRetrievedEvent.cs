@@ -18,29 +18,45 @@ namespace EddiShipMonitor
 
         static ModuleRetrievedEvent()
         {
-            VARIABLES.Add("slot", "The outfitting slot");
-            VARIABLES.Add("module", "The retrieved module");
-            VARIABLES.Add("cost", "The cost of retrieval");
-            VARIABLES.Add("swapout", "The swapped out module");
             VARIABLES.Add("ship", "The ship for which the module was retrieved");
             VARIABLES.Add("shipid", "The ID of the ship for which the module was retrieved");
+            VARIABLES.Add("slot", "The outfitting slot");
+            VARIABLES.Add("module", "The module (object) retrieved from storage");
+            VARIABLES.Add("cost", "The cost of retrieval");
+            VARIABLES.Add("engineermodifications", "The name of the modification blueprint");
+            VARIABLES.Add("swapoutmodule", "The module (object) swapped out (if the slot was not empty)");
         }
 
-        public string slot { get; private set; }
-        public Module module { get; private set; }
-        public long? cost { get; private set; }
-        public Module swapout { get; private set; }
+        [JsonProperty("ship")]
         public string ship { get; private set; }
-        public int shipid { get; private set; }
 
-        public ModuleRetrievedEvent(DateTime timestamp, string slot, Module module, long? cost, Module swapout, string ship, int shipid) : base(timestamp, NAME)
+        [JsonProperty("shipid")]
+        public int? shipid { get; private set; }
+
+        [JsonProperty("slot")]
+        public string slot { get; private set; }
+
+        [JsonProperty("module")]
+        public Module module { get; private set; }
+
+        [JsonProperty("cost")]
+        public long? cost { get; private set; }
+
+        [JsonProperty("engineermodifications")]
+        public string engineermodifications { get; private set; }
+
+        [JsonProperty("swapoutmodule")]
+        public Module swapoutmodule { get; private set; }
+
+        public ModuleRetrievedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long? cost, string engineermodifications, Module swapoutmodule) : base(timestamp, NAME)
         {
+            this.ship = ship;
+            this.shipid = shipid;
             this.slot = slot;
             this.module = module;
             this.cost = cost;
-            this.swapout = swapout;
-            this.ship = ship;
-            this.shipid = shipid;
+            this.engineermodifications = engineermodifications;
+            this.swapoutmodule = swapoutmodule;
         }
     }
 }

@@ -169,17 +169,29 @@ namespace EddiShipMonitor
             {
                 handleModuleSoldEvent((ModuleSoldEvent)@event);
             }
+            else if (@event is ModuleSoldRemoteEvent)
+            {
+                handleModuleSoldRemoteEvent((ModuleSoldRemoteEvent)@event);
+            }
             else if (@event is ModuleStoredEvent)
             {
                 handleModuleStoredEvent((ModuleStoredEvent)@event);
+            }
+            else if (@event is ModulesStoredEvent)
+            {
+                handleModulesStoredEvent((ModulesStoredEvent)@event);
             }
             else if (@event is ModuleSwappedEvent)
             {
                 handleModuleSwappedEvent((ModuleSwappedEvent)@event);
             }
+            else if (@event is ModuleTransferEvent)
+            {
+                handleModuleTransferEvent((ModuleTransferEvent)@event);
+            }
 
             // TODO ModulesSwappedEvent
-            // TODO ModulesStoredEvent
+
         }
 
         // Set the ship name conditionally, avoiding filtered names
@@ -520,22 +532,35 @@ namespace EddiShipMonitor
 
         private void handleModulePurchasedEvent(ModulePurchasedEvent @event)
         {
-            AddModule(@event.shipid, @event.slot, @event.module);
+            AddModule((int)@event.shipid, @event.slot, @event.buymodule);
         }
 
         private void handleModuleRetrievedEvent(ModuleRetrievedEvent @event)
         {
-            AddModule(@event.shipid, @event.slot, @event.module);
+            AddModule((int)@event.shipid, @event.slot, @event.module);
         }
 
         private void handleModuleSoldEvent(ModuleSoldEvent @event)
         {
-            RemoveModule(@event.shipid, @event.slot);
+            RemoveModule((int)@event.shipid, @event.slot);
         }
+
+        private void handleModuleSoldRemoteEvent(ModuleSoldRemoteEvent @event)
+        {
+            // We don't do anything here as the ship object is unaffected
+        }
+
         private void handleModuleStoredEvent(ModuleStoredEvent @event)
         {
-            RemoveModule(@event.shipid, @event.slot, @event.replacement);
+            RemoveModule((int)@event.shipid, @event.slot, @event.replacementmodule);
         }
+
+        private void handleModulesStoredEvent(ModulesStoredEvent @event)
+        {
+            foreach (string slot in @event.slots)
+                RemoveModule((int)@event.shipid, slot);
+        }
+
         private void handleModuleSwappedEvent(ModuleSwappedEvent @event)
         {
             Ship ship = GetShip(@event.shipid);
@@ -549,25 +574,16 @@ namespace EddiShipMonitor
                 // Build new dictionary of ship hardpoints, excepting the swapped hardpoints
                 // Save ship hardpoints which match the 'From' and 'To' slots
                 Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
-                Hardpoint fromHardpoint = new Hardpoint();
-                Hardpoint toHardpoint = new Hardpoint();
 
                 foreach (Hardpoint hpt in ship.hardpoints)
                 {
-                    if (hpt.name != fromSlot || hpt.name != toSlot)
-                        hardpoints.Add(hpt.name, hpt);
-                    else if (hpt.name == fromSlot)
-                        fromHardpoint = hpt;
-                    else
-                       toHardpoint = hpt;
-                }
+                    if (hpt.name == fromSlot)
+                        hpt.name = toSlot;
+                    if (hpt.name == toSlot)
+                        hpt.name = fromSlot;
 
-                // Swap just the slots between the 'From' and 'To' hardpoints and add them to the dictionary
-                string temp = fromHardpoint.name;
-                fromHardpoint.name = toHardpoint.name;
-                toHardpoint.name = temp;
-                hardpoints.Add(fromHardpoint.name, fromHardpoint);
-                hardpoints.Add(toHardpoint.name, toHardpoint);
+                    hardpoints.Add(hpt.name, hpt);
+                }
 
                 // Clear ship hardpoints and repopulate in correct order
                 ship.hardpoints.Clear();
@@ -589,25 +605,16 @@ namespace EddiShipMonitor
                 // Build new dictionary of ship compartments, excepting the swapped compartments
                 // Save ship compartments which match the 'From' and 'To' slots
                 Dictionary<string, Compartment> compartments = new Dictionary<string, Compartment>();
-                Compartment fromCompartment = new Compartment();
-                Compartment toCompartment = new Compartment();
 
                 foreach (Compartment cpt in ship.compartments)
                 {
-                    if (cpt.name != fromSlot || cpt.name != toSlot)
-                        compartments.Add(cpt.name, cpt);
-                    else if (cpt.name == fromSlot)
-                        fromCompartment = cpt;
-                    else
-                        toCompartment = cpt;
-                }
+                    if (cpt.name == fromSlot)
+                        cpt.name = toSlot;
+                    if (cpt.name == toSlot)
+                        cpt.name = fromSlot;
 
-                // Swap just the slots between the 'From' and 'To' compartments and add them to the dictionary
-                string temp = fromCompartment.name;
-                fromCompartment.name = toCompartment.name;
-                toCompartment.name = temp;
-                compartments.Add(fromCompartment.name, fromCompartment);
-                compartments.Add(toCompartment.name, toCompartment);
+                    compartments.Add(cpt.name, cpt);
+                }
 
                 // Clear ship compartments and repopulate in correct order
                 ship.compartments.Clear();
@@ -628,6 +635,11 @@ namespace EddiShipMonitor
                         ship.compartments.Add(cpt);
                 }
             }
+        }
+
+        private void handleModuleTransferEvent(ModuleTransferEvent @event)
+        {
+            // We don't do anything here as the ship object is unaffected
         }
 
         public void PostHandle(Event @event)
@@ -946,7 +958,7 @@ namespace EddiShipMonitor
 
         public void AddModule(int shipid, string slot, Module module)
         {
-            Ship ship = GetCurrentShip();
+            Ship ship = GetShip(shipid);
 
             switch (slot)
             {
@@ -1071,7 +1083,7 @@ namespace EddiShipMonitor
 
         public void RemoveModule(int shipid, string slot, Module replacement = null)
         {
-            Ship ship = GetCurrentShip();
+            Ship ship = GetShip(shipid);
 
             if (replacement != null)
             {

@@ -18,29 +18,33 @@ namespace EddiShipMonitor
 
         static ModuleStoredEvent()
         {
-            VARIABLES.Add("slot", "The outfitting slot");
-            VARIABLES.Add("module", "The stored module");
-            VARIABLES.Add("cost", "The cost of storage (if any)");
-            VARIABLES.Add("replacement", "The replacement module (if a core module)");
             VARIABLES.Add("ship", "The ship from which the module was stored");
             VARIABLES.Add("shipid", "The ID of the ship from which the module was stored");
+            VARIABLES.Add("slot", "The outfitting slot");
+            VARIABLES.Add("module", "The module (object) being stored");
+            VARIABLES.Add("cost", "The cost of storage (if any)");
+            VARIABLES.Add("engineermodificaiotns", "The name of the modification blueprint");
+            VARIABLES.Add("replacementmodule", "The module (object) replacement (if a core module)");
         }
 
+        public string ship { get; private set; }
+        public int? shipid { get; private set; }
         public string slot { get; private set; }
         public Module module { get; private set; }
         public long? cost { get; private set; }
-        public Module replacement { get; private set; }
-        public string ship { get; private set; }
-        public int shipid { get; private set; }
+        public string engineermodifications { get; private set; }
+        public Module replacementmodule { get; private set; }
 
-        public ModuleStoredEvent(DateTime timestamp, string slot, Module module, long? cost, Module replacement, string ship, int shipid) : base(timestamp, NAME)
+
+        public ModuleStoredEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long? cost, string engineermodifications, Module replacementmodule) : base(timestamp, NAME)
         {
+            this.ship = ship;
+            this.shipid = shipid;
             this.slot = slot;
             this.module = module;
             this.cost = cost;
-            this.replacement = replacement;
-            this.ship = ship;
-            this.shipid = shipid;
+            this.engineermodifications = engineermodifications;
+            this.replacementmodule = replacementmodule;
         }
     }
 }

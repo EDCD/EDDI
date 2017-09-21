@@ -18,26 +18,50 @@ namespace EddiShipMonitor
 
         static ModulePurchasedEvent()
         {
-            VARIABLES.Add("slot", "The outfitting slot");
-            VARIABLES.Add("module", "The module being purchased");
-            VARIABLES.Add("price", "The price of the module being purchased");
             VARIABLES.Add("ship", "The ship for which the module was purchased");
             VARIABLES.Add("shipid", "The ID of the ship for which the module was purchased");
+            VARIABLES.Add("slot", "The outfitting slot");
+            VARIABLES.Add("buymodule", "The module (object) purchased");
+            VARIABLES.Add("buyprice", "The price of the module being purchased");
+            VARIABLES.Add("sellmodule", "The module (object) being sold (if replacing an existing module)");
+            VARIABLES.Add("sellprice", "The price of the sold module (if replacing an existing module)");
+            VARIABLES.Add("storedmodule", "The module (object) being stored (if existing module stored)");
         }
 
-        public string slot { get; private set; }
-        public Module module { get; private set; }
-        public long price { get; private set; }
+        [JsonProperty("ship")]
         public string ship { get; private set; }
-        public int shipid { get; private set; }
 
-        public ModulePurchasedEvent(DateTime timestamp, string slot, Module module, long price, string ship, int shipid) : base(timestamp, NAME)
+        [JsonProperty("shipid")]
+        public int? shipid { get; private set; }
+
+        [JsonProperty("slot")]
+        public string slot { get; private set; }
+
+        [JsonProperty("buymodule")]
+        public Module buymodule { get; private set; }
+
+        [JsonProperty("buyprice")]
+        public long buyprice { get; private set; }
+
+        [JsonProperty("sellmodule")]
+        public Module sellmodule { get; private set; }
+
+        [JsonProperty("sellprice")]
+        public long? sellprice { get; private set; }
+
+        [JsonProperty("storedmodule")]
+        public Module storedmodule { get; private set; }
+
+        public ModulePurchasedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module buymodule, long buyprice, Module sellmodule, long? sellprice, Module storedmodule) : base(timestamp, NAME)
         {
-            this.slot = slot;
-            this.module = module;
-            this.price = price;
             this.ship = ship;
             this.shipid = shipid;
+            this.slot = slot;
+            this.buymodule = buymodule;
+            this.buyprice = buyprice;
+            this.sellmodule = sellmodule;
+            this.sellprice = sellprice;
+            this.storedmodule = storedmodule;
         }
     }
 }
