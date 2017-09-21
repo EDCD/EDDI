@@ -169,9 +169,9 @@ namespace EddiShipMonitor
             {
                 handleModuleSoldEvent((ModuleSoldEvent)@event);
             }
-            else if (@event is ModuleSoldRemoteEvent)
+            else if (@event is ModuleSoldFromStorageEvent)
             {
-                handleModuleSoldRemoteEvent((ModuleSoldRemoteEvent)@event);
+                handleModuleSoldFromStorageEvent((ModuleSoldFromStorageEvent)@event);
             }
             else if (@event is ModuleStoredEvent)
             {
@@ -533,19 +533,22 @@ namespace EddiShipMonitor
         private void handleModulePurchasedEvent(ModulePurchasedEvent @event)
         {
             AddModule((int)@event.shipid, @event.slot, @event.buymodule);
+            writeShips();
         }
 
         private void handleModuleRetrievedEvent(ModuleRetrievedEvent @event)
         {
             AddModule((int)@event.shipid, @event.slot, @event.module);
+            writeShips();
         }
 
         private void handleModuleSoldEvent(ModuleSoldEvent @event)
         {
             RemoveModule((int)@event.shipid, @event.slot);
+            writeShips();
         }
 
-        private void handleModuleSoldRemoteEvent(ModuleSoldRemoteEvent @event)
+        private void handleModuleSoldFromStorageEvent(ModuleSoldFromStorageEvent @event)
         {
             // We don't do anything here as the ship object is unaffected
         }
@@ -553,12 +556,14 @@ namespace EddiShipMonitor
         private void handleModuleStoredEvent(ModuleStoredEvent @event)
         {
             RemoveModule((int)@event.shipid, @event.slot, @event.replacementmodule);
+            writeShips();
         }
 
         private void handleModulesStoredEvent(ModulesStoredEvent @event)
         {
             foreach (string slot in @event.slots)
                 RemoveModule((int)@event.shipid, slot);
+            writeShips();
         }
 
         private void handleModuleSwappedEvent(ModuleSwappedEvent @event)
@@ -635,6 +640,7 @@ namespace EddiShipMonitor
                         ship.compartments.Add(cpt);
                 }
             }
+            writeShips();
         }
 
         private void handleModuleTransferEvent(ModuleTransferEvent @event)

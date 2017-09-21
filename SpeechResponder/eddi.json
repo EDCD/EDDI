@@ -1001,13 +1001,13 @@
       "name": "Module sold",
       "description": "Triggered when selling a module to outfitting"
 	},
-    "Module sold remote": {
+    "Module sold from storage": {
       "enabled": true,
       "priority": 3,
       "responder": true,
       "script": "You have sold a {event.module.class}-{event.module.grade},\r\n\r\n{if type(event.module.mount) != \"void\":\r\n    {for index, value in event.module.mount: {set mount to value}}\r\n    {if mount = 0:\r\n        fixed\r\n    |elif mount = 1:\r\n        giimballed\r\n    |elif mount = 2:\r\n        turreted\r\n    }\r\n}\r\n\r\n{event.module.name} from your stores for {event.price} credits.",
       "default": true,
-      "name": "Module sold remote",
+      "name": "Module sold from storage",
       "description": "Triggered when selling a module in storage at another station"
     },
     "Module stored": {

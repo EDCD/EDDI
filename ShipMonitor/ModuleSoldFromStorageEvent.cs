@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace EddiShipMonitor
 {
-    public class ModuleSoldRemoteEvent : Event
+    public class ModuleSoldFromStorageEvent : Event
     {
-        public const string NAME = "Module sold remote";
-        public const string DESCRIPTION = "Triggered when selling a module in storage at another station";
+        public const string NAME = "Module sold from storage";
+        public const string DESCRIPTION = "Triggered when selling a module in storage";
         public const string SAMPLE = "{ \"timestamp\":\"2017-09-20T02:28:37Z\", \"event\":\"ModuleSellRemote\", \"StorageSlot\":10, \"SellItem\":\"$int_fueltank_size4_class3_name;\", \"SellItem_Localised\":\"Fuel Tank\", \"ServerId\":128064349, \"SellPrice\":24116, \"Ship\":\"diamondbackxl\", \"ShipID\":38 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
-        static ModuleSoldRemoteEvent()
+        static ModuleSoldFromStorageEvent()
         {
             VARIABLES.Add("ship", "The ship from which the module was sold");
             VARIABLES.Add("shipid", "The ID of the ship from which the module was sold");
@@ -33,7 +33,7 @@ namespace EddiShipMonitor
         public Module module { get; private set; }
         public long price { get; private set; }
 
-        public ModuleSoldRemoteEvent(DateTime timestamp, string ship, int? shipid, int storageslot, long serverid, Module module, long price) : base(timestamp, NAME)
+        public ModuleSoldFromStorageEvent(DateTime timestamp, string ship, int? shipid, int storageslot, long serverid, Module module, long price) : base(timestamp, NAME)
         {
             this.ship = ship;
             this.shipid = shipid;
