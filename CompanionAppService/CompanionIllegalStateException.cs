@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace EddiCompanionAppService
 {
     /// <summary>Exceptions thrown due to illegal service state</summary>
+    [Serializable]
     public class EliteDangerousCompanionAppIllegalStateException : EliteDangerousCompanionAppException
     {
         public EliteDangerousCompanionAppIllegalStateException() : base() { }
