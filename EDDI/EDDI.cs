@@ -1685,7 +1685,7 @@ namespace Eddi
         }
 
         // Required to restart app after upgrade
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
         static extern uint RegisterApplicationRestart(string pwzCommandLine, RestartFlags dwFlags);
 
         // Flags for upgrade
