@@ -6,7 +6,19 @@
     * Module events now update the ship object
 	* Internal clean-up: now 100% green on unit tests, compiler warnings and code analyser issues
   * Events
+    * Add 'Module sold remote' event
+    * Add 'Module transfer' event
+    * Add 'Modules stored' event
     * Revised variable names for module events
+  * Speech Responder
+    * 'Module purchased' event - new script
+    * 'Module retrieved' event - new script
+    * 'Module sold' event - new script
+    * 'Module sold remote' event - new script
+    * 'Module stored' event - new script
+    * 'Module swapped' event - new script
+    * 'Module transfer' event new script
+    * 'Modules stored' event - new script
 
 ### 2.4.0-b2
   * Installer
