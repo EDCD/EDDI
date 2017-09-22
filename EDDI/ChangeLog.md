@@ -2,8 +2,9 @@
 
 ### 2.4.0-b3
   * Core
-    * EDDI's version number is now listed in the application's title bar
+    * EDDI's version number is now shown in the application's title bar
     * Module events now update the ship object
+	* Internal clean-up: now 100% green on unit tests, compiler warnings and code analyser issues
   * Events
     * Revised variable names for module events
 
