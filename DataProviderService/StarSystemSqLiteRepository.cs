@@ -173,7 +173,6 @@ namespace EddiDataProviderService
                             }
                         }
                     }
-                    con.Close();
                 }
                 if (needToUpdate)
                 {
@@ -231,7 +230,6 @@ namespace EddiDataProviderService
                     using (var con = SimpleDbConnection())
                     {
                         con.Open();
-
                         using (var cmd = new SQLiteCommand(con))
                         {
                             cmd.CommandText = INSERT_SQL;
@@ -243,7 +241,6 @@ namespace EddiDataProviderService
                             cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
                             cmd.ExecuteNonQuery();
                         }
-                        con.Close();
                     }
                 }
             }
@@ -254,7 +251,6 @@ namespace EddiDataProviderService
             using (var con = SimpleDbConnection())
             {
                 con.Open();
-
                 using (var cmd = new SQLiteCommand(con))
                 {
                     cmd.CommandText = UPDATE_SQL;
@@ -266,7 +262,6 @@ namespace EddiDataProviderService
                     cmd.Parameters.AddWithValue("@name", system.name);
                     cmd.ExecuteNonQuery();
                 }
-                con.Close();
             }
         }
 
@@ -275,7 +270,6 @@ namespace EddiDataProviderService
             using (var con = SimpleDbConnection())
             {
                 con.Open();
-
                 using (var cmd = new SQLiteCommand(con))
                 {
                     cmd.CommandText = DELETE_SQL;
@@ -283,7 +277,6 @@ namespace EddiDataProviderService
                     cmd.Parameters.AddWithValue("@name", system.name);
                     cmd.ExecuteNonQuery();
                 }
-                con.Close();
             }
         }
 
@@ -292,7 +285,6 @@ namespace EddiDataProviderService
             using (var con = SimpleDbConnection())
             {
                 con.Open();
-
                 using (var cmd = new SQLiteCommand(CREATE_SQL, con))
                 {
                     Logging.Debug("Creating starsystem repository");
@@ -330,8 +322,6 @@ namespace EddiDataProviderService
                         cmd.ExecuteNonQuery();
                     }
                 }
-
-                con.Close();
             }
             Logging.Debug("Created starsystem repository");
         }
