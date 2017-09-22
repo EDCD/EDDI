@@ -125,7 +125,6 @@ namespace GalnetMonitor
                             }
                         }
                     }
-                    con.Close();
                 }
             }
             catch (Exception ex)
@@ -173,7 +172,6 @@ namespace GalnetMonitor
                             }
                         }
                     }
-                    con.Close();
                 }
             }
             catch (Exception ex)
@@ -223,7 +221,6 @@ namespace GalnetMonitor
                                 Logging.Warn("Failed to insert news", sle);
                             }
                         }
-                        con.Close();
                     }
                 }
             }
@@ -240,7 +237,6 @@ namespace GalnetMonitor
                     cmd.Prepare();
                     cmd.ExecuteNonQuery();
                 }
-                con.Close();
             }
         }
 
@@ -256,7 +252,6 @@ namespace GalnetMonitor
                     cmd.Parameters.AddWithValue("@uuid", news.id);
                     cmd.ExecuteNonQuery();
                 }
-                con.Close();
             }
         }
 
@@ -273,7 +268,6 @@ namespace GalnetMonitor
                     cmd.Parameters.AddWithValue("@uuid", news.id);
                     cmd.ExecuteNonQuery();
                 }
-                con.Close();
             }
         }
 
@@ -290,7 +284,6 @@ namespace GalnetMonitor
                     cmd.Parameters.AddWithValue("@uuid", news.id);
                     cmd.ExecuteNonQuery();
                 }
-                con.Close();
             }
         }
 
@@ -312,8 +305,6 @@ namespace GalnetMonitor
                     Logging.Debug("Creating galnet index");
                     cmd.ExecuteNonQuery();
                 }
-
-                con.Close();
             }
             Logging.Debug("Created galnet repository");
         }
