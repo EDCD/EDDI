@@ -325,14 +325,15 @@ namespace EddiShipMonitor
         {
             // Obtain the ship to which this loadout refers
             Ship ship = GetShip(@event.shipid);
+            Ship template = ShipDefinitions.FromEDModel(@event.ship);
+
             if (ship == null)
             {
                 // The ship is unknown - create it
                 Logging.Debug("Unknown ship ID " + @event.shipid);
                 ship = ShipDefinitions.FromEDModel(@event.ship);
                 ship.LocalId = (int)@event.shipid;
-                ship.role = Role.MultiPurpose;
-                Logging.Debug("Created ship model " + @event.ship + "; " + JsonConvert.SerializeObject(ship));
+
                 AddShip(ship);
             }
 
@@ -343,10 +344,11 @@ namespace EddiShipMonitor
             ship.paintjob = @event.paintjob;
 
             // Augment the ship info if required
-            if (ship.model == null)
+            if (ship.model != template.model)
             {
-                ship.model = @event.ship;
+                ship.model = template.model;
                 ship.Augment();
+                ship.value = 0;
             }
 
             // Set the standard modules
@@ -428,7 +430,6 @@ namespace EddiShipMonitor
             // Cargo capacity
             ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.name.EndsWith("Cargo Rack")).Sum(c => Math.Pow(2, c.module.@class));
 
-            Logging.Debug("Updated ship loadout; " + JsonConvert.SerializeObject(ship));
             writeShips();
         }
 

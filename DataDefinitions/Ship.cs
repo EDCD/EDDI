@@ -24,8 +24,6 @@ namespace EddiDataDefinitions
         /// <summary>the spoken manufacturer of the ship (Lakon, CoreDynamics etc.)</summary>
         [JsonIgnore]
         public List<Translation> phoneticmanufacturer { get; set; }
-        /// <summary>the model of the ship (Python, Anaconda, etc.)</summary>
-        public string model { get; set; }
         /// <summary>the spoken model of the ship (Python, Anaconda, etc.)</summary>
         [JsonIgnore]
         public List<Translation> phoneticmodel { get; set; }
@@ -77,6 +75,24 @@ namespace EddiDataDefinitions
                 {
                     _name = value;
                     NotifyPropertyChanged("name");
+                }
+            }
+        }
+
+        private string _model;
+        /// <summary>the model of the ship (Python, Anaconda, etc.)</summary>
+        public string model
+        {
+            get
+            {
+                return _model;
+            }
+            set
+            {
+                if (_model != value)
+                {
+                    _model = value;
+                    NotifyPropertyChanged("model");
                 }
             }
         }
