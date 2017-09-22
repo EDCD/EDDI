@@ -173,9 +173,9 @@ namespace Eddi
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
 
             return context.data.str;
@@ -330,9 +330,9 @@ namespace Eddi
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -421,9 +421,9 @@ namespace Eddi
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
 
             return output + (char)(current + 32);
@@ -516,9 +516,9 @@ namespace Eddi
                     i++;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
 
             return decompress(output);
@@ -614,9 +614,9 @@ namespace Eddi
                     output = output + _keyStr[enc1] + _keyStr[enc2] + _keyStr[enc3] + _keyStr[enc4];
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
 
             return output;

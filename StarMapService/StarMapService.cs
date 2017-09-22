@@ -663,29 +663,26 @@ namespace EddiStarMapService
 
         public string RootElement { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
         public string Serialize(object obj)
         {
             using (var stringWriter = new StringWriter())
+            using (var jsonTextWriter = new JsonTextWriter(stringWriter))
             {
-                using (var jsonTextWriter = new JsonTextWriter(stringWriter))
-                {
-                    serializer.Serialize(jsonTextWriter, obj);
-
-                    return stringWriter.ToString();
-                }
+                serializer.Serialize(jsonTextWriter, obj);
+                return stringWriter.ToString();
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
         public T Deserialize<T>(RestSharp.IRestResponse response)
         {
             var content = response.Content;
 
             using (var stringReader = new StringReader(content))
+            using (var jsonTextReader = new JsonTextReader(stringReader))
             {
-                using (var jsonTextReader = new JsonTextReader(stringReader))
-                {
-                    return serializer.Deserialize<T>(jsonTextReader);
-                }
+                return serializer.Deserialize<T>(jsonTextReader);
             }
         }
 

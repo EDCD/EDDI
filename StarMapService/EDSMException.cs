@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace EddiStarMapService
 {
+    [Serializable]
     public class EDSMException : Exception
     {
         public EDSMException()
