@@ -28,6 +28,11 @@
     * Add 'Data scanned' event when some type of datalinks (Data Links, Data Posts, Abandoned Data Logs, Listerning Posts, Wrecked Ships) are scanned
     * Add 'Data voucher awarded' event when you are awarded a data voucher
 	* Add 'Friends status' event when a friendly commander changes status
+    * Add 'Module purchased' event
+    * Add 'Module retrieved' event
+    * Add 'Module sold' event
+    * Add 'Module stored' event
+    * Add 'Module swapped' event
 	* Add 'Mission redirected' event
 	* Add 'Nav beacon scan' event
 	* Add 'Music' event (triggered when the game music 'mood' changes)
