@@ -9,17 +9,17 @@ namespace EddiDataProviderService
 {
     public class StarSystemSqLiteRepository : SqLiteBaseRepository, StarSystemRepository
     {
-        private static string CREATE_SQL = @"
+        private const string CREATE_SQL = @"
                     CREATE TABLE IF NOT EXISTS starsystems(
                      name TEXT NOT NULL
                      ,totalvisits INT NOT NULL
                      ,lastvisit DATETIME NOT NULL
                      ,starsystem TEXT NOT NULL
                      ,starsystemlastupdated DATETIME NOT NULL)";
-        private static string CREATE_INDEX_SQL = @"
+        private const string CREATE_INDEX_SQL = @"
                     CREATE INDEX IF NOT EXISTS starsystems_idx_1
                     ON starsystems(name)";
-        private static string INSERT_SQL = @"
+        private const string INSERT_SQL = @"
                     INSERT INTO starsystems(
                        name
                      , totalvisits
@@ -27,17 +27,17 @@ namespace EddiDataProviderService
                      , starsystem
                      , starsystemlastupdated)
                     VALUES(@name, @totalvisits, @lastvisit, @starsystem, @starsystemlastupdated)";
-        private static string UPDATE_SQL = @"
+        private const string UPDATE_SQL = @"
                     UPDATE starsystems
                     SET totalvisits = @totalvisits
                        ,lastvisit = @lastvisit
                        ,starsystem = @starsystem
                        ,starsystemlastupdated = @starsystemlastupdated
                     WHERE name = @name";
-        private static string DELETE_SQL = @"
+        private const string DELETE_SQL = @"
                     DELETE FROM starsystems
                     WHERE name = @name";
-        private static string SELECT_BY_NAME_SQL = @"
+        private const string SELECT_BY_NAME_SQL = @"
                     SELECT totalvisits,
                            lastvisit,
                            starsystem,
@@ -45,8 +45,8 @@ namespace EddiDataProviderService
                            comment
                     FROM starsystems
                     WHERE name = @name";
-        private static string TABLE_SQL = @"PRAGMA table_info(starsystems)";
-        private static string ALTER_ADD_COMMENT_SQL = @"ALTER TABLE starsystems ADD COLUMN comment TEXT";
+        private const string TABLE_SQL = @"PRAGMA table_info(starsystems)";
+        private const string ALTER_ADD_COMMENT_SQL = @"ALTER TABLE starsystems ADD COLUMN comment TEXT";
 
         private static StarSystemSqLiteRepository instance;
 
