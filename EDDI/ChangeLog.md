@@ -2,6 +2,7 @@
 
 ### 2.4.0-b3
   * Core
+    * EDDI's version number is now listed in the application's title bar
     * Module events now update the ship object
   * Events
     * Revised variable names for module events
