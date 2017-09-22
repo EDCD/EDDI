@@ -18,33 +18,15 @@ namespace EddiShipMonitor
 
         static ModulePurchasedEvent()
         {
+            VARIABLES.Add("ship", "The ship for which the module was purchased");
+            VARIABLES.Add("shipid", "The ID of the ship for which the module was purchased");
             VARIABLES.Add("slot", "The outfitting slot");
-            VARIABLES.Add("item", "The item being purchased");
-            VARIABLES.Add("price", "The price of the item being purchased");
-            VARIABLES.Add("solditem", "The item being sold");
-            VARIABLES.Add("soldprice", "The price of the item being sold");
-            VARIABLES.Add("storeditem", "The item being stored");
-            VARIABLES.Add("ship", "The ship for which the item was purchased");
-            VARIABLES.Add("shipid", "The ID of the ship for which the item was purchased");
-
+            VARIABLES.Add("buymodule", "The module (object) purchased");
+            VARIABLES.Add("buyprice", "The price of the module being purchased");
+            VARIABLES.Add("sellmodule", "The module (object) being sold (if replacing an existing module)");
+            VARIABLES.Add("sellprice", "The price of the sold module (if replacing an existing module)");
+            VARIABLES.Add("storedmodule", "The module (object) being stored (if existing module stored)");
         }
-        [JsonProperty("slot")]
-        public string slot { get; private set; }
-
-        [JsonProperty("item")]
-        public string item { get; private set; }
-
-        [JsonProperty("price")]
-        public long price { get; private set; }
-
-        [JsonProperty("solditem")]
-        public string solditem { get; private set; }
-
-        [JsonProperty("soldprice")]
-        public long? soldprice { get; private set; }
-
-        [JsonProperty("storeditem")]
-        public string storeditem { get; private set; }
 
         [JsonProperty("ship")]
         public string ship { get; private set; }
@@ -52,16 +34,34 @@ namespace EddiShipMonitor
         [JsonProperty("shipid")]
         public int? shipid { get; private set; }
 
-        public ModulePurchasedEvent(DateTime timestamp, string slot, string item, long price, string solditem, long? soldprice, string storeditem, string ship, int? shipid) : base(timestamp, NAME)
+        [JsonProperty("slot")]
+        public string slot { get; private set; }
+
+        [JsonProperty("buymodule")]
+        public Module buymodule { get; private set; }
+
+        [JsonProperty("buyprice")]
+        public long buyprice { get; private set; }
+
+        [JsonProperty("sellmodule")]
+        public Module sellmodule { get; private set; }
+
+        [JsonProperty("sellprice")]
+        public long? sellprice { get; private set; }
+
+        [JsonProperty("storedmodule")]
+        public Module storedmodule { get; private set; }
+
+        public ModulePurchasedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module buymodule, long buyprice, Module sellmodule, long? sellprice, Module storedmodule) : base(timestamp, NAME)
         {
-            this.slot = slot;
-            this.item = item;
-            this.price = price;
-            this.solditem = solditem;
-            this.soldprice = soldprice;
-            this.storeditem = storeditem;
             this.ship = ship;
             this.shipid = shipid;
+            this.slot = slot;
+            this.buymodule = buymodule;
+            this.buyprice = buyprice;
+            this.sellmodule = sellmodule;
+            this.sellprice = sellprice;
+            this.storedmodule = storedmodule;
         }
     }
 }

@@ -788,82 +788,201 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
-                        case "ModuleBuy":
+                        case "FetchRemoteModule":
                             {
                                 object val;
-                                string slot = getString(data, "Slot");
-                                string item = getString(data, "BuyItem");
-                                data.TryGetValue("BuyPrice", out val);
-                                long price = (long)val;
-                                string soldItem = getString(data, "SellItem");
-                                data.TryGetValue("SellPrice", out val);
-                                long? soldPrice = (long?)val;
-                                string storedItem = getString(data, "StoredItem");
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-                                events.Add(new ModulePurchasedEvent(timestamp, slot, item, price, soldItem, soldPrice, storedItem, ship, shipId) { raw = line });
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "StoredItem"));
+                                data.TryGetValue("TransferCost", out val);
+                                long transferCost = (long)val;
+                                long? transferTime = getOptionalLong(data, "TransferTime");
+
+                                // Probably not useful. We'll get these but we won't tell the end user about them
+                                data.TryGetValue("StorageSlot", out val);
+                                int storageSlot = (int)(long)val;
+                                data.TryGetValue("ServerId", out val);
+                                long serverId = (long)val;
+
+                                events.Add(new ModuleTransferEvent(timestamp, ship, shipId, storageSlot, serverId, module, transferCost, transferTime) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "MassModuleStore":
+                            {
+                                object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                data.TryGetValue("Items", out val);
+                                List<object> items = (List<object>)val;
+
+                                List<string> slots = new List<string>();
+                                List<Module> modules = new List<Module>();
+
+                                Module module = new Module();
+                                if (items != null)
+                                {
+
+                                    foreach (Dictionary<string, object> item in items)
+                                    {
+                                        string slot = getString(item, "Slot");
+                                        slots.Add(slot);
+
+                                        module = ModuleDefinitions.fromEDName(getString(item, "Name"));
+                                        module.modified = getString(item, "EngineerModifications") != null;
+                                        modules.Add(module);
+                                    }
+                                }
+
+                                events.Add(new ModulesStoredEvent(timestamp, ship, shipId, slots, modules) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "ModuleBuy":
+                            {
+                                object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                string slot = getString(data, "Slot");
+                                Module buyModule = ModuleDefinitions.fromEDName(getString(data, "BuyItem"));
+                                data.TryGetValue("BuyPrice", out val);
+                                long buyPrice = (long)val;
+                                buyModule.price = buyPrice;
+
+                                // Set retrieved module defaults
+                                buyModule.enabled = true;
+                                buyModule.priority = 1;
+                                buyModule.health = 100;
+                                buyModule.modified = false;
+
+                                Module sellModule = ModuleDefinitions.fromEDName(getString(data, "SellItem"));
+                                long? sellPrice = getOptionalLong(data, "SellPrice");
+                                Module storedModule = ModuleDefinitions.fromEDName(getString(data, "StoredItem"));
+
+                                events.Add(new ModulePurchasedEvent(timestamp, ship, shipId, slot, buyModule, buyPrice, sellModule, sellPrice, storedModule) { raw = line });
                             }
                             handled = true;
                             break;
                         case "ModuleRetrieve":
-                        case "ModuleStore":
                             {
                                 object val;
-                                string slot = getString(data, "Slot");
-                                string modifications = getString(data, "EngineerModifications");
-                                data.TryGetValue("Cost", out val);
-                                long? cost = getOptionalLong(data, "Cost");
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-                                if (data.ContainsKey("RetrievedItem"))
-                                {
-                                    string item = getString(data, "RetrievedItem");
-                                    string swapOutItem = getString(data, "SwapOutItem");
-                                    events.Add(new ModuleRetrievedEvent(timestamp, slot, ship, shipId, item, modifications, swapOutItem, cost) { raw = line });
-                                }
-                                else
-                                {
-                                    string item = getString(data, "StoredItem");
-                                    string replacementItem = getString(data, "ReplacementItem");
-                                    events.Add(new ModuleStoredEvent(timestamp, slot, ship, shipId, item, modifications, replacementItem, cost) { raw = line });
-                                }
+                                string slot = getString(data, "Slot");
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "RetrievedItem"));
+                                data.TryGetValue("Cost", out val);
+                                long? cost = getOptionalLong(data, "Cost");
+                                string engineerModifications = getString(data, "EngineerModifications");
+                                module.modified = engineerModifications != null;
+
+                                // Set retrieved module defaults
+                                module.price = module.value;
+                                module.enabled = true;
+                                module.priority = 1;
+                                module.health = 100;
+
+                                Module swapoutModule = ModuleDefinitions.fromEDName(getString(data, "SwapOutItem"));
+
+                                events.Add(new ModuleRetrievedEvent(timestamp, ship, shipId, slot, module, cost, engineerModifications, swapoutModule) { raw = line });
                             }
                             handled = true;
                             break;
                         case "ModuleSell":
                             {
                                 object val;
-                                string slot = getString(data, "Slot");
-                                string item = getString(data, "SellItem");
-                                long price = getLong(data, "SellPrice");
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-                                events.Add(new ModuleSoldEvent(timestamp, slot, item, price, ship, shipId) { raw = line });
+                                string slot = getString(data, "Slot");
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "SellItem"));
+                                data.TryGetValue("SellPrice", out val);
+                                long price = (long)val;
+
+
+                                events.Add(new ModuleSoldEvent(timestamp, ship, shipId, slot, module, price ) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "ModuleSellRemote":
+                            {
+                                object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "SellItem"));
+                                data.TryGetValue("SellPrice", out val);
+                                long price = (long)val;
+
+                                // Probably not useful. We'll get these but we won't tell the end user about them
+                                data.TryGetValue("StorageSlot", out val);
+                                int storageSlot = (int)(long)val;
+                                data.TryGetValue("ServerId", out val);
+                                long serverId = (long)val;
+
+                                events.Add(new ModuleSoldRemoteEvent(timestamp, ship, shipId, storageSlot, serverId, module, price) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "ModuleStore":
+                            {
+                                object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                string slot = getString(data, "Slot");
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "StoredItem"));
+                                string engineerModifications = getString(data, "EngineerModifications");
+                                module.modified = engineerModifications != null;
+                                data.TryGetValue("Cost", out val);
+                                long? cost = getOptionalLong(data, "Cost");
+
+
+                                Module replacementModule = ModuleDefinitions.fromEDName(getString(data, "ReplacementItem"));
+                                if (replacementModule != null)
+                                {
+                                    replacementModule.price = replacementModule.value;
+                                    replacementModule.enabled = true;
+                                    replacementModule.priority = 1;
+                                    replacementModule.health = 100;
+                                    replacementModule.modified = false;
+                                }
+
+                                events.Add(new ModuleStoredEvent(timestamp, ship, shipId, slot, module, cost, engineerModifications, replacementModule) { raw = line });
                             }
                             handled = true;
                             break;
                         case "ModuleSwap":
                             {
                                 object val;
-                                string fromSlot = getString(data, "FromSlot");
-                                string toSlot = getString(data, "ToSlot");
-                                string fromItem = getString(data, "FromItem");
-                                string toItem = getString(data, "ToItem");
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-                                events.Add(new ModuleSwappedEvent(timestamp, fromSlot, toSlot, fromItem, toItem, ship, shipId) { raw = line });
+                                string fromSlot = getString(data, "FromSlot");
+                                Module fromModule = ModuleDefinitions.fromEDName(getString(data, "FromItem"));
+                                string toSlot = getString(data, "ToSlot");
+                                Module toModule = ModuleDefinitions.fromEDName(getString(data, "ToItem"));
+
+                                events.Add(new ModuleSwappedEvent(timestamp, ship, shipId, fromSlot, fromModule, toSlot, toModule) { raw = line });
                             }
                             handled = true;
                             break;

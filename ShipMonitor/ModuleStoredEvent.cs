@@ -18,45 +18,33 @@ namespace EddiShipMonitor
 
         static ModuleStoredEvent()
         {
-            VARIABLES.Add("slot", "The outfitting slot");
             VARIABLES.Add("ship", "The ship from which the module was stored");
             VARIABLES.Add("shipid", "The ID of the ship from which the module was stored");
-            VARIABLES.Add("item", "The item being stored");
-            VARIABLES.Add("modifications", "The name of Engineer modifications (if any)");
-            VARIABLES.Add("replacementitem", "The item being replaced (if a core module)");
+            VARIABLES.Add("slot", "The outfitting slot");
+            VARIABLES.Add("module", "The module (object) being stored");
             VARIABLES.Add("cost", "The cost of storage (if any)");
-
+            VARIABLES.Add("engineermodificaiotns", "The name of the modification blueprint");
+            VARIABLES.Add("replacementmodule", "The module (object) replacement (if a core module)");
         }
-        [JsonProperty("slot")]
-        public string slot { get; private set; }
 
-        [JsonProperty("ship")]
         public string ship { get; private set; }
-
-        [JsonProperty("shipid")]
         public int? shipid { get; private set; }
-
-        [JsonProperty("item")]
-        public string item { get; private set; }
-
-        [JsonProperty("modifications")]
-        public string modifications { get; private set; }
-
-        [JsonProperty("replacementitem")]
-        public string swapoutitem { get; private set; }
-
-        [JsonProperty("cost")]
+        public string slot { get; private set; }
+        public Module module { get; private set; }
         public long? cost { get; private set; }
+        public string engineermodifications { get; private set; }
+        public Module replacementmodule { get; private set; }
 
-        public ModuleStoredEvent(DateTime timestamp, string slot, string ship, int? shipid, string item, string modifications, string replacementitem, long? cost) : base(timestamp, NAME)
+
+        public ModuleStoredEvent(DateTime timestamp, string ship, int? shipid, string slot, Module module, long? cost, string engineermodifications, Module replacementmodule) : base(timestamp, NAME)
         {
-            this.slot = slot;
             this.ship = ship;
             this.shipid = shipid;
-            this.item = item;
-            this.modifications = modifications;
-            this.swapoutitem = swapoutitem;
+            this.slot = slot;
+            this.module = module;
             this.cost = cost;
+            this.engineermodifications = engineermodifications;
+            this.replacementmodule = replacementmodule;
         }
     }
 }
