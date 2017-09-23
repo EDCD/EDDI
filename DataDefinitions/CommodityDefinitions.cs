@@ -32,6 +32,7 @@ namespace EddiDataDefinitions
         };
 
         private static Dictionary<long, Commodity> CommoditiesByEliteID = new Dictionary<long, Commodity>
+        // 2xxxxxxxx & 3xxxxxxxx series Frontier IDs are placeholders, to use until an actual Frontier ID is identified
         {
             {128049204, new Commodity(1, "Explosives", "Explosives", "Chemicals", 261, false) },
             {128049202, new Commodity(2, "HydrogenFuel", "Hydrogen Fuel", "Chemicals", 110, false) },
@@ -42,7 +43,7 @@ namespace EddiDataDefinitions
             {128049238, new Commodity(7, "DomesticAppliances", "Domestic Appliances", "Consumer Items", 487, false) },
             {128049214, new Commodity(8, "Beer", "Beer", "Legal Drugs", 186, false) },
             {128049216, new Commodity(9, "Liquor", "Liquor", "Legal Drugs", 587, false) },
-            {128049212, new Commodity(10, "BasicNarcotics", "Narcotics", "Legal Drugs", 9966, false) }, // Was EDName: "Basic Narcotics"
+            {128049212, new Commodity(10, "Basic Narcotics", "Narcotics", "Legal Drugs", 9966, false) },
             {128049213, new Commodity(11, "Tobacco", "Tobacco", "Legal Drugs", 5035, false) },
             {128049215, new Commodity(12, "Wine", "Wine", "Legal Drugs", 260, false) },
             {128049177, new Commodity(13, "Algae", "Algae", "Foods", 137, false) },
@@ -57,14 +58,14 @@ namespace EddiDataDefinitions
             {128049197, new Commodity(22, "Polymers", "Polymers", "Industrial Materials", 171, false) },
             {128049199, new Commodity(23, "Semiconductors", "Semiconductors", "Industrial Materials", 967, false) },
             {128049200, new Commodity(24, "Superconductors", "Superconductors", "Industrial Materials", 6609, false) },
-            {128064028, new Commodity(25, "AtmosphericExtractors", "Atmospheric Processors", "Machinery", 357, false) }, // Was EDName: "Atmospheric Extractors"
+            {128064028, new Commodity(25, "Atmospheric Extractors", "Atmospheric Processors", "Machinery", 357, false) },
             {128049222, new Commodity(26, "CropHarvesters", "Crop Harvesters", "Machinery", 2021, false) },
-            {128049223, new Commodity(27, "MarineSupplies", "Marine Equipment", "Machinery", 3916, false) }, // Was EDName: "Marine Supplies"
-            {128049220, new Commodity(28, "HeliostaticFurnaces", "Microbial Furnaces", "Machinery", 236, false) }, // Was EDName: "Heliostatic Furnaces"
+            {128049223, new Commodity(27, "Marine Supplies", "Marine Equipment", "Machinery", 3916, false) },
+            {128049220, new Commodity(28, "Heliostatic Furnaces", "Microbial Furnaces", "Machinery", 236, false) },
             {128049221, new Commodity(29, "MineralExtractors", "Mineral Extractors", "Machinery", 443, false) },
             {128049217, new Commodity(30, "PowerGenerators", "Power Generators", "Machinery", 458, false) },
             {128049218, new Commodity(31, "WaterPurifiers", "Water Purifiers", "Machinery", 258, false) },
-            {128049208, new Commodity(32, "AgriculturalMedicines", "Agri-Medicines", "Medicines", 1038, false) }, // Was EDName: "Agricultural Medicines", Name: "Agri-Medicines"
+            {128049208, new Commodity(32, "Agricultural Medicines", "Agri-Medicines", "Medicines", 1038, false) },
             {128049210, new Commodity(33, "BasicMedicines", "Basic Medicines", "Medicines", 279, false) },
             {128049670, new Commodity(34, "CombatStabilisers", "Combat Stabilisers", "Medicines", 3505, false) },
             {128049209, new Commodity(35, "PerformanceEnhancers", "Performance Enhancers", "Medicines", 6816, false) },
@@ -96,11 +97,11 @@ namespace EddiDataDefinitions
             {128049231, new Commodity(61, "AdvancedCatalysers", "Advanced Catalysers", "Technology", 2947, false) },
             {128049229, new Commodity(62, "AnimalMonitors", "Animal Monitors", "Technology", 324, false) },
             {128049230, new Commodity(63, "AquaponicSystems", "Aquaponic Systems", "Technology", 314, false) },
-            {128049228, new Commodity(64, "AutoFabricators", "Auto-Fabricators", "Technology", 3734, false) }, // Was EDName: "Auto Fabricators"
-            {128049672, new Commodity(65, "BioReducingLichen", "Bioreducing Lichen", "Technology", 998, false) }, // Was EDName: "Bio Reducing Lichen"
+            {128049228, new Commodity(64, "Auto Fabricators", "Auto-Fabricators", "Technology", 3734, false) },
+            {128049672, new Commodity(65, "Bio Reducing Lichen", "Bioreducing Lichen", "Technology", 998, false) },
             {128049225, new Commodity(66, "ComputerComponents", "Computer Components", "Technology", 513, false) },
-            {128049226, new Commodity(67, "HazardousEnvironmentSuits", "H.E. Suits", "Technology", 340, false) }, // Was EDName: "Hazardous Environment Suits"
-            {128049232, new Commodity(68, "TerrainEnrichmentSystems", "Land Enrichment Systems", "Technology", 4887, false) }, // Was EDName: "Terrain Enrichment Systems"
+            {128049226, new Commodity(67, "Hazardous Environment Suits", "H.E. Suits", "Technology", 340, false) },
+            {128049232, new Commodity(68, "Terrain Enrichment Systems", "Land Enrichment Systems", "Technology", 4887, false) },
             {128049671, new Commodity(69, "ResonatingSeparators", "Resonating Separators", "Technology", 5958, false) },
             {128049227, new Commodity(70, "Robotics", "Robotics", "Technology", 1856, false) },
             {128049190, new Commodity(72, "Leather", "Leather", "Textiles", 205, false) },
@@ -109,13 +110,13 @@ namespace EddiDataDefinitions
             {128049244, new Commodity(75, "Biowaste", "Biowaste", "Waste", 63, false) },
             {128049246, new Commodity(76, "ChemicalWaste", "Chemical Waste", "Waste", 131, false) },
             {128049248, new Commodity(77, "Scrap", "Scrap", "Waste", 48, false) },
-            {128049236, new Commodity(78, "NonLethalWeapons", "Non-lethal Weapons", "Weapons", 1837, false) }, // Was EDName: "Non Lethal Weapons"
+            {128049236, new Commodity(78, "Non Lethal Weapons", "Non-lethal Weapons", "Weapons", 1837, false) },
             {128049233, new Commodity(79, "PersonalWeapons", "Personal Weapons", "Weapons", 4632, false) },
             {128049235, new Commodity(80, "ReactiveArmour", "Reactive Armour", "Weapons", 2113, false) },
             {128049234, new Commodity(81, "BattleWeapons", "Battle Weapons", "Weapons", 7259, false) },
             {128049245, new Commodity(82, "ToxicWaste", "Toxic Waste", "Waste", 287, false) },
             {128668550, new Commodity(83, "Painite", "Painite", "Minerals", 40508, false) },
-            {128066403, new Commodity(84, "Drones", "Limpet", "NonMarketable", 101, false) }, // Was lowercase EDName
+            {128066403, new Commodity(84, "Drones", "Limpet", "NonMarketable", 101, false) },
             {300000001, new Commodity(85, "Eranin Pearl Whiskey", "Legal Drugs", 9040, true) },
             {300000002, new Commodity(86, "Kamorin Historic Weapons", "Weapons", 9766, true) },
             {300000003, new Commodity(87, "Lucan Onion Head", "Legal Drugs", 8472, true) },
@@ -129,11 +130,11 @@ namespace EddiDataDefinitions
             {128668548, new Commodity(95, "Ai Relics", "Ai Relics", "Salvage", 138613, false) },
             {128668551, new Commodity(96, "Antiquities", "Antiquities", "Salvage", 115511, false) },
             {128671118, new Commodity(97, "Osmium", "Osmium", "Metals", 7591, false) },
-            {128671443, new Commodity(98, "SAP8CoreContainer", "Sap 8 Core Container", "Salvage", 59196, false) }, // Was EDName: "S A P8 Core Container"
-            {128671444, new Commodity(99, "TrinketsOfFortune", "Trinkets Of Hidden Fortune", "Salvage", 1428, false) }, // Was EDName: "Trinkets Of Fortune"
-            {128666754, new Commodity(100, "USSCargoTradeData", "Trade Data", "Salvage", 2790, false) }, // Was EDName: "U S S Cargo Trade Data"
+            {128671443, new Commodity(98, "S A P8 Core Container", "Sap 8 Core Container", "Salvage", 59196, false) },
+            {128671444, new Commodity(99, "Trinkets Of Fortune", "Trinkets Of Hidden Fortune", "Salvage", 1428, false) },
+            {128666754, new Commodity(100, "U S S Cargo Trade Data", "Trade Data", "Salvage", 2790, false) },
             {128672308, new Commodity(101, "ThermalCoolingUnits", "Thermal Cooling Units", "Machinery", 256, false) },
-            {128672313, new Commodity(102, "SkimerComponents", "Skimmer Components", "Machinery", 859, false) }, // Was EDName: "Skimer Components"
+            {128672313, new Commodity(102, "Skimer Components", "Skimmer Components", "Machinery", 859, false) },
             {128672307, new Commodity(103, "GeologicalEquipment", "Geological Equipment", "Machinery", 1661, false) },
             {128672311, new Commodity(104, "StructuralRegulators", "Structural Regulators", "Technology", 1791, false) },
             {128672297, new Commodity(105, "Pyrophyllite", "Pyrophyllite", "Minerals", 1565, false) },
@@ -154,16 +155,16 @@ namespace EddiDataDefinitions
             {128672312, new Commodity(121, "Landmines", "Landmines", "Weapons", 4602, false) },
             {128672304, new Commodity(122, "NerveAgents", "Nerve Agents", "Chemicals", 13526, false) },
             {128672125, new Commodity(123, "OccupiedCryoPod", "Occupied CryoPod", "Salvage", 5132, false) },
-            {128672310, new Commodity(124, "MuTomImager", "Muon Imager", "Technology", 6353, false) }, // Was lowercase EDName
+            {128672310, new Commodity(124, "MuTomImager", "Muon Imager", "Technology", 6353, false) },
             {310000001, new Commodity(125, "Lavian Brandy", "Legal Drugs", 10365, true) },
-            {128666752, new Commodity(126, "USSCargoBlackBox", "Black Box", "Salvage", 6995, false) }, // Was lowercase EDName
-            {128666755, new Commodity(127, "USSCargoMilitaryPlans", "Military Plans", "Salvage", 9413, false) }, // Was lowercase EDName
-            {128666756, new Commodity(128, "USSCargoAncientArtefact", "Ancient Artefact", "Salvage", 8183, false) }, // Was lowercase EDName
-            {128666757, new Commodity(129, "USSCargoRareArtwork", "Rare Artwork", "Salvage", 7774, false) }, // Was lowercase EDName
-            {128666758, new Commodity(130, "USSCargoExperimentalChemicals", "Experimental Chemicals", "Salvage", 3524, false) }, // Was lowercase EDName
-            {128666759, new Commodity(131, "USSCargoRebelTransmissions", "Rebel Transmissions", "Salvage", 4068, false) }, // Was lowercase EDName
-            {128666760, new Commodity(132, "USSCargoPrototypeTech", "Prototype Tech", "Salvage", 10696, false) }, // Was lowercase EDName
-            {128666761, new Commodity(133, "USSCargoTechnicalBlueprints", "Technical Blueprints", "Salvage", 6333, false) }, // Was lowercase EDName
+            {128666752, new Commodity(126, "USSCargoBlackBox", "Black Box", "Salvage", 6995, false) },
+            {128666755, new Commodity(127, "USSCargoMilitaryPlans", "Military Plans", "Salvage", 9413, false) },
+            {128666756, new Commodity(128, "USSCargoAncientArtefact", "Ancient Artefact", "Salvage", 8183, false) },
+            {128666757, new Commodity(129, "USSCargoRareArtwork", "Rare Artwork", "Salvage", 7774, false) },
+            {128666758, new Commodity(130, "USSCargoExperimentalChemicals", "Experimental Chemicals", "Salvage", 3524, false) },
+            {128666759, new Commodity(131, "USSCargoRebelTransmissions", "Rebel Transmissions", "Salvage", 4068, false) },
+            {128666760, new Commodity(132, "USSCargoPrototypeTech", "Prototype Tech", "Salvage", 10696, false) },
+            {128666761, new Commodity(133, "USSCargoTechnicalBlueprints", "Technical Blueprints", "Salvage", 6333, false) },
             {300000013, new Commodity(134, "HIP 10175 Bush Meat", "Foods", 9382, true) },
             {300000014, new Commodity(135, "Albino Quechua Mammoth", "Foods", 9687, true) },
             {300000015, new Commodity(136, "Utgaroar Millennial Eggs", "Foods", 9163, true) },
@@ -276,13 +277,13 @@ namespace EddiDataDefinitions
             {300000122, new Commodity(243, "Vidavantian Lace", "Consumer Items", 12615, true) },
             {300000123, new Commodity(244, "Jaques Quinentian Still", "consumer Items", 2108, true) },
             {300000124, new Commodity(245, "Soontill Relics", "Consumer Items", 19885, true) },
-            {128668547, new Commodity(246, "unknownartifact", "Thargoid Sensor", "Salvage", 290190, false) },
+            {128668547, new Commodity(246, "Unknown Artifact", "Thargoid Sensor", "Salvage", 290190, false) },
             {128668549, new Commodity(247, "Hafnium178", "Hafnium 178", "Metals", 69098, false) },
             {128668552, new Commodity(248, "MilitaryIntelligence", "Military Intelligence", "Salvage", 55527, false) },
             {300000128, new Commodity(249, "The Hutton Mug", "Consumer Items", 7986, true) },
             {300000129, new Commodity(250, "Sothis Crystalline Gold", "metals", 19112, true) },
-            {128672123, new Commodity(251, "WreckageComponents", "Salvageable Wreckage", "Salvage", 394, false) }, // Was lowercase EDName
-            {128672124, new Commodity(252, "EncriptedDataStorage", "Encrypted Data Storage", "Salvage", 806, false) }, // Was lowercase EDName
+            {128672123, new Commodity(251, "WreckageComponents", "Salvageable Wreckage", "Salvage", 394, false) },
+            {128672124, new Commodity(252, "EncriptedDataStorage", "Encrypted Data Storage", "Salvage", 806, false) },
             {128672126, new Commodity(253, "PersonalEffects", "Personal Effects", "Salvage", 379, false) },
             {128672127, new Commodity(254, "ComercialSamples", "Commercial Samples", "Salvage", 361, false) },
             {128672128, new Commodity(255, "TacticalData", "Tactical Data", "Salvage", 457, false) },
@@ -300,7 +301,7 @@ namespace EddiDataDefinitions
             {128672776, new Commodity(267, "Jadeite", "Jadeite", "Minerals", 13474, false) },
             {128672810, new Commodity(268, "UnstableDataCore", "Unstable Data Core", "Salvage", 2427, false) },
             {300000148, new Commodity(269, "Onionhead Alpha Strain", "Legal Drugs", 8437, true) },
-            {128672811, new Commodity(270, "DamagedEscapePod", "Occupied Escape Pod", "Salvage", 4474, false) }, // Was lowercase EDName
+            {128672811, new Commodity(270, "DamagedEscapePod", "Occupied Escape Pod", "Salvage", 4474, false) },
             {128049166, new Commodity(271, "Water", "Water", "Chemicals", 120, false) },
             {300000150, new Commodity(272, "Onionhead Beta Strain", "Legal Drugs", 8437, true) },
             {128673845, new Commodity(273, "Praseodymium", "Praseodymium", "Metals", 7156, false) },
@@ -309,18 +310,18 @@ namespace EddiDataDefinitions
             {128673848, new Commodity(276, "LowTemperatureDiamond", "Low Temperature Diamond", "Minerals", 57445, false) },
             {128673850, new Commodity(277, "HydrogenPeroxide", "Hydrogen Peroxide", "Chemicals", 917, false) },
             {128673851, new Commodity(278, "LiquidOxygen", "Liquid Oxygen", "Chemicals", 263, false) },
-            {128673852, new Commodity(279, "MethanolMonohydrateCrystals", "Methanol Monohydrate", "Minerals", 2282, false) }, // Was lowercase EDName
+            {128673852, new Commodity(279, "MethanolMonohydrateCrystals", "Methanol Monohydrate", "Minerals", 2282, false) },
             {128673853, new Commodity(280, "LithiumHydroxide", "Lithium Hydroxide", "Minerals", 5646, false) },
             {128673854, new Commodity(281, "MethaneClathrate", "Methane Clathrate", "Minerals", 629, false) },
             {128673855, new Commodity(282, "InsulatingMembrane", "Insulating Membrane", "Industrial Materials", 7837, false) },
-            {128673856, new Commodity(283, "CMMComposite", "CMM Composite", "Industrial Materials", 3132, false) }, // Was EDName: "C M M Composite"
-            {128673857, new Commodity(284, "CoolingHoses", "Micro-Weave Cooling Hoses", "Industrial Materials", 403, false) }, // Was EDName: "Cooling Hoses"
+            {128673856, new Commodity(283, "C M M Composite", "CMM Composite", "Industrial Materials", 3132, false) },
+            {128673857, new Commodity(284, "Cooling Hoses", "Micro-Weave Cooling Hoses", "Industrial Materials", 403, false) },
             {128673858, new Commodity(285, "NeofabricInsulation", "Neofabric Insulation", "Industrial Materials", 2769, false) },
             {128673859, new Commodity(286, "ArticulationMotors", "Articulation Motors", "Machinery", 4997, false) },
-            {128673860, new Commodity(287, "HNShockMount", "HN Shock Mount", "Machinery", 406, false) }, // Was EDName: "H N Shock Mount"
+            {128673860, new Commodity(287, "H N Shock Mount", "HN Shock Mount", "Machinery", 406, false) },
             {128673861, new Commodity(288, "EmergencyPowerCells", "Emergency Power Cells", "Machinery", 1011, false) },
             {128673862, new Commodity(289, "PowerConverter", "Power Converter", "Machinery", 246, false) },
-            {128673863, new Commodity(290, "PowerGridAssembly", "Energy Grid Assembly", "Machinery", 1684, false) }, // Was lowercase EDName
+            {128673863, new Commodity(290, "PowerGridAssembly", "Energy Grid Assembly", "Machinery", 1684, false) },
             {128673864, new Commodity(291, "PowerTransferConduits", "Power Transfer Conduits", "Machinery", 857, false) },
             {128673865, new Commodity(292, "RadiationBaffle", "Radiation Baffle", "Machinery", 383, false) },
             {128673866, new Commodity(293, "ExhaustManifold", "Exhaust Manifold", "Machinery", 479, false) },
@@ -345,9 +346,9 @@ namespace EddiDataDefinitions
             {128682053, new Commodity(312, "AntimatterContainmentUnit", "Antimatter Containment Unit", "Salvage", 26608, false) },
             {128682054, new Commodity(313, "SpacePioneerRelics", "Space Pioneer Relics", "Salvage", 7342, false) },
             {128682055, new Commodity(314, "FossilRemnants", "Fossil Remnants", "Salvage", 9927, false) },
-            {300000158, new Commodity(315, "Thargoid Probe", "Salvage", 411003, false) },
+            {300000158, new Commodity(315, "Unknown Probe", "Thargoid Probe", "Salvage", 411003, false) },
             {128672160, new Commodity(316, "PreciousGems", "Precious Gems", "Salvage", 109641, false) },
-            {300000160, new Commodity(317, "Thargoid Link", "Salvage", 31350, false) },
+            {300000160, new Commodity(317, "Unknown Link", "Thargoid Link", "Salvage", 31350, false) },
             {300000161, new Commodity(318, "Thargoid Biological Matter", "Salvage", 25479, false) },
             {300000162, new Commodity(319, "Thargoid Resin", "Salvage", 18652, false) },
             {300000163, new Commodity(320, "Thargoid Technology Samples", "Salvage", 22551, false) },
@@ -358,9 +359,9 @@ namespace EddiDataDefinitions
             {128732185, new Commodity(10004, "AncientCasket", "Ancient Casket", "Ancient Artifacts", 0, false) },
             {128732183, new Commodity(10005, "AncientRelic", "Ancient Relic", "Ancient Artifacts", 0, false) },
             {128732188, new Commodity(10006, "AncientTotem", "Ancient Totem", "Ancient Artifacts", 0, false) },
-            {128672137, new Commodity(10007, "SmallExplorationDataCash", "Small Exploration Data Cache", "Salvage", 0, false) }, // Was lowercase EDName
-            {128672136, new Commodity(10010, "LargeExplorationDataCash", "Large Exploration Data Cache", "Salvage", 0, false) }, // Was lowercase EDName
-            {128673876, new Commodity(10011, "UnknownArtifact2", "Unknown Artefact (2)", "Salvage", 0, false) }, // Was lowercase EDName
+            {128672137, new Commodity(10007, "SmallExplorationDataCash", "Small Exploration Data Cache", "Salvage", 0, false) },
+            {128672136, new Commodity(10010, "LargeExplorationDataCash", "Large Exploration Data Cache", "Salvage", 0, false) },
+            {128673876, new Commodity(10011, "UnknownArtifact2", "Unknown Artefact (2)", "Salvage", 0, false) },
             {200000012, new Commodity(10012, "siriuscommercialcontracts", "Sirius Commerical Contracts", "Powerplay", 0, false) },
             {200000013, new Commodity(10013, "siriusindustrialequipment", "Sirius Inustrial Equipment", "Powerplay", 0, false) },
             {200000014, new Commodity(10014, "siriusfranchisepackage", "Sirius Franchise Package", "Powerplay", 0, false) },
@@ -369,9 +370,9 @@ namespace EddiDataDefinitions
             {128672161, new Commodity(10017, "EarthRelics", "Earth Relics", "Salvage", 0, false) },
             {128672162, new Commodity(10018, "GeneBank", "Gene Bank", "Salvage", 0, false) },
             {128672163, new Commodity(10019, "TimeCapsule", "Time Capsule", "Salvage", 0, false) },
-            {128672701, new Commodity(10020, "MetaAlloys", "MetaAlloys", "Industrial Materials", 0, false) },
         };
 
+        // Builds dictionaries for Name & EDName, converting to lower case and removing all spaces, dashes, and dots from the names
         private static Dictionary<string, Commodity> CommoditiesByName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.name.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
         private static Dictionary<string, Commodity> CommoditiesByEDName = CommoditiesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
 
