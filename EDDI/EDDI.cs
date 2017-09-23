@@ -929,31 +929,31 @@ namespace Eddi
                 {
                     if (service == "Refuel")
                     {
-                        station.hasrefuel = (bool?)true;
+                        station.hasrefuel = true;
                     }
                     else if (service == "Rearm")
                     {
-                        station.hasrearm = (bool?)true;
+                        station.hasrearm = true;
                     }
                     else if (service == "Repair")
                     {
-                        station.hasrepair = (bool?)true;
+                        station.hasrepair = true;
                     }
                     else if (service == "Outfitting")
                     {
-                        station.hasoutfitting = (bool?)true;
+                        station.hasoutfitting = true;
                     }
                     else if (service == "Shipyard")
                     {
-                        station.hasshipyard = (bool?)true;
+                        station.hasshipyard = true;
                     }
                     else if (service == "Commodities")
                     {
-                        station.hasmarket = (bool?)true;
+                        station.hasmarket = true;
                     }
                     else if (service == "BlackMarket")
                     {
-                        station.hasblackmarket = (bool?)true;
+                        station.hasblackmarket = true;
                     }
                 }
             }
