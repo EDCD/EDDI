@@ -846,6 +846,12 @@ namespace Eddi
             CurrentStarSystem.z = theEvent.z;
             setSystemDistanceFromHome(CurrentStarSystem);
 
+            // Update the system population from the journal
+            if (theEvent.population != null)
+            {
+                CurrentStarSystem.population = theEvent.population;
+            }
+
             if (theEvent.docked == true)
             {
                 // In this case body === station
@@ -1065,6 +1071,10 @@ namespace Eddi
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
                 CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+                if (theEvent.population != null)
+                {
+                    CurrentStarSystem.population = theEvent.population;
+                }
 
                 CurrentStarSystem.visits++;
                 // We don't update lastvisit because we do that when we leave
