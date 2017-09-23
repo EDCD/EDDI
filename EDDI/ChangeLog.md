@@ -1,5 +1,8 @@
 # CHANGE LOG
 
+### 2.4.0-b4
+
+
 ### 2.4.0-b3
   * Core
     * EDDI's version number is now shown in the application's title bar
