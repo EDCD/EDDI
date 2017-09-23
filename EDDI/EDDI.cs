@@ -923,6 +923,41 @@ namespace Eddi
             station.faction = theEvent.faction;
             station.government = theEvent.government;
 
+            if (theEvent.stationservices != null)
+            {
+                foreach (var service in theEvent.stationservices)
+                {
+                    if (service == "Refuel")
+                    {
+                        station.hasrefuel = true;
+                    }
+                    else if (service == "Rearm")
+                    {
+                        station.hasrearm = true;
+                    }
+                    else if (service == "Repair")
+                    {
+                        station.hasrepair = true;
+                    }
+                    else if (service == "Outfitting")
+                    {
+                        station.hasoutfitting = true;
+                    }
+                    else if (service == "Shipyard")
+                    {
+                        station.hasshipyard = true;
+                    }
+                    else if (service == "Commodities")
+                    {
+                        station.hasmarket = true;
+                    }
+                    else if (service == "BlackMarket")
+                    {
+                        station.hasblackmarket = true;
+                    }
+                }
+            }
+
             CurrentStation = station;
 
             // Kick off the profile refresh if the companion API is available

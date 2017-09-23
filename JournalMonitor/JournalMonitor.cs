@@ -87,43 +87,6 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("StationServices", out val);
                                 List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList();
 
-                                // Update the local station object (not entirely sure this is necessary, but we have the data)
-                                if (stationservices != null)
-                                {
-                                    Station Station = new Station();                                    
-                                    foreach (var service in stationservices)
-                                    {
-                                        if (service == "Refuel")
-                                        {
-                                            Station.hasrefuel = (bool?)true;
-                                        }
-                                        else if (service == "Rearm")
-                                        {
-                                            Station.hasrearm = (bool?)true;
-                                        }
-                                        else if (service == "Repair")
-                                        {
-                                            Station.hasrepair = (bool?)true;
-                                        }
-                                        else if (service == "Outfitting")
-                                        {
-                                            Station.hasoutfitting = (bool?)true;
-                                        }
-                                        else if (service == "Shipyard")
-                                        {
-                                            Station.hasshipyard = (bool?)true;
-                                        }
-                                        else if (service == "Commodities")
-                                        {
-                                            Station.hasmarket = (bool?)true;
-                                        }
-                                        else if (service == "BlackMarket")
-                                        {
-                                            Station.hasblackmarket = (bool?)true;
-                                        }
-                                    }
-                                }
-
                                 events.Add(new DockedEvent(timestamp, systemName, stationName, stationModel, faction, factionState, economy, government, distancefromstar, stationservices) { raw = line });
                             }
                             handled = true;
