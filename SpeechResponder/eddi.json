@@ -1401,7 +1401,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{ShipName(event.shipid, event.ship)} {OneOf(\"on its way\",\"being transferred\", \"transfer initiated\", \"being transported\", \"being transferred\")} from {P(event.system)}.",
+      "script": "{ShipName(event.shipid, event.ship)} {OneOf(\"on its way\",\"being transferred\", \"transfer initiated\", \"being transported\", \"being transferred\")} from {P(event.system)}\r\n\r\n{if event.transfercost: for a cost of {event.price} credits.}\r\n\r\n{set t_remaining to event.time}\r\n\r\n{if t_remaining:\r\n\r\n   {Pause(1000)}\r\n   Expected arrival in:\r\n\r\n   {if t_remaining > (60*60*24):\r\n      {set t_days to floor(t_remaining/(60*60*24))}\r\n      {t_days} days,\r\n      {set t_remaining to t_remaining-(t_days*(60*60*24))}\r\n   }\r\n\r\n   {if t_remaining > 3600:\r\n      {set t_hours to floor(t_remaining/3600)}\r\n      {t_hours} hours,\r\n      {set t_remaining to t_remaining-(t_hours*(60*60))}\r\n   }\r\n\r\n   {if t_remaining > 60:\r\n      {if t_days || t_hours: and}\r\n      {set t_minutes to round(t_remaining/(60),0)}\r\n      {t_minutes} minutes.\r\n   }\r\n}",
       "default": true,
       "name": "Ship transfer initiated",
       "description": "Triggered when you initiate a ship transfer"

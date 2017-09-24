@@ -1,7 +1,12 @@
 # CHANGE LOG
 
 ### 2.4.0-b4
-
+  * Core
+    * Revised EDDI's methods for detecting in-game betas
+  * Events
+    * Fixed a bug that would cause the 'Ship transfer initiated' event to be silent
+  * Speech Responder
+    * 'Ship transfer initiated' event - revised to include both the transfer cost and the time to arrival
 
 ### 2.4.0-b3
   * Core
@@ -65,7 +70,7 @@
 	* Update 'Jumped' and 'Location' events to include system population, when present
     * Update 'Screenshot' event, now contains longitude & latitude, when appropriate
 	* Update 'Ship sold' event, now contains a value for the system where the ship was sold
-	* Update 'Shipyard transfer' event, now includes transfer time
+	* Update 'Ship transfer initiated' event, now includes transfer time
 	* Update 'Star scanned' event to add luminosity class property
   * Speech Responder
     * Add Spacialise() Cottle function.  Details on how to use this are in the SpeechResponder documentation
