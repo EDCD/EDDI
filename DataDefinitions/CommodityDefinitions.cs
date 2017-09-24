@@ -346,12 +346,12 @@ namespace EddiDataDefinitions
             {128682053, new Commodity(312, "AntimatterContainmentUnit", "Antimatter Containment Unit", "Salvage", 26608, false) },
             {128682054, new Commodity(313, "SpacePioneerRelics", "Space Pioneer Relics", "Salvage", 7342, false) },
             {128682055, new Commodity(314, "FossilRemnants", "Fossil Remnants", "Salvage", 9927, false) },
-            {300000158, new Commodity(315, "Unknown Probe", "Thargoid Probe", "Salvage", 411003, false) },
+            {128673876, new Commodity(315, "UnknownArtifact2", "Thargoid Probe", "Salvage", 411003, false) },
             {128672160, new Commodity(316, "PreciousGems", "Precious Gems", "Salvage", 109641, false) },
-            {300000160, new Commodity(317, "Unknown Link", "Thargoid Link", "Salvage", 31350, false) },
-            {300000161, new Commodity(318, "Thargoid Biological Matter", "Salvage", 25479, false) },
-            {300000162, new Commodity(319, "Thargoid Resin", "Salvage", 18652, false) },
-            {300000163, new Commodity(320, "Thargoid Technology Samples", "Salvage", 22551, false) },
+            {300000160, new Commodity(317, "UnknownArtifact3", "Thargoid Link", "Salvage", 31350, false) },
+            {300000161, new Commodity(318, "Unknown Biological Matter", "Thargoid Biological Matter", "Salvage", 25479, false) },
+            {300000162, new Commodity(319, "Unknown Resin", "Thargoid Resin", "Salvage", 18652, false) },
+            {300000163, new Commodity(320, "Unknown Technology Samples", "Thargoid Technology Samples", "Salvage", 22551, false) },
             // Items for which we do not have EDDB IDs
             {128732184, new Commodity(10001, "AncientOrb", "Ancient Orb", "Ancient Artifacts", 0, false) },
             {128732187, new Commodity(10002, "AncientUrn", "Ancient Urn", "Ancient Artifacts", 0, false) },
@@ -361,7 +361,6 @@ namespace EddiDataDefinitions
             {128732188, new Commodity(10006, "AncientTotem", "Ancient Totem", "Ancient Artifacts", 0, false) },
             {128672137, new Commodity(10007, "SmallExplorationDataCash", "Small Exploration Data Cache", "Salvage", 0, false) },
             {128672136, new Commodity(10010, "LargeExplorationDataCash", "Large Exploration Data Cache", "Salvage", 0, false) },
-            {128673876, new Commodity(10011, "UnknownArtifact2", "Unknown Artefact (2)", "Salvage", 0, false) },
             {200000012, new Commodity(10012, "siriuscommercialcontracts", "Sirius Commerical Contracts", "Powerplay", 0, false) },
             {200000013, new Commodity(10013, "siriusindustrialequipment", "Sirius Inustrial Equipment", "Powerplay", 0, false) },
             {200000014, new Commodity(10014, "siriusfranchisepackage", "Sirius Franchise Package", "Powerplay", 0, false) },
@@ -369,7 +368,7 @@ namespace EddiDataDefinitions
             {128672159, new Commodity(10016, "AntiqueJewellery", "Antique Jewellery", "Salvage", 0, false) },
             {128672161, new Commodity(10017, "EarthRelics", "Earth Relics", "Salvage", 0, false) },
             {128672162, new Commodity(10018, "GeneBank", "Gene Bank", "Salvage", 0, false) },
-            {128672163, new Commodity(10019, "TimeCapsule", "Time Capsule", "Salvage", 0, false) },
+            {128672163, new Commodity(10019, "TimeCapsule", "Time Capsule", "Salvage", 0, false) },        
         };
 
         // Builds dictionaries for Name & EDName, converting to lower case and removing all spaces, dashes, and dots from the names
