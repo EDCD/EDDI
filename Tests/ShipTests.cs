@@ -59,7 +59,7 @@ namespace Tests
             Ship courier;
 
             // Set ourselves as in beta to stop sending data to remote systems
-            EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.Now, "beta", "beta"));
+            EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
             Logging.Verbose = true;
 
             // Start a ship monitor

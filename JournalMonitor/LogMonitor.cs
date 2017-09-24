@@ -16,6 +16,7 @@ namespace EddiJournalMonitor
         public string Directory;
         public Regex Filter;
         public Action<string> Callback;
+        public static string journalFileName = null;
 
         // Keep track of status
         private bool running;
@@ -56,6 +57,7 @@ namespace EddiJournalMonitor
             {
                 lastSize = fileInfo.Length;
                 lastName = fileInfo.Name;
+                journalFileName = lastName;
 
                 // Elite-specific: start off by grabbing the first line so that we know if we're in beta or live
                 using (FileStream fs = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -79,9 +81,11 @@ namespace EddiJournalMonitor
                 {
                     lastName = fileInfo == null ? null : fileInfo.Name;
                     lastSize = 0;
+                    journalFileName = fileInfo.Name;
                 }
                 else
                 {
+                    journalFileName = fileInfo.Name;
                     long thisSize = fileInfo.Length;
                     long seekPos = 0;
                     int readLen = 0;

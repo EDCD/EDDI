@@ -1034,15 +1034,20 @@ namespace Eddi
 
         private bool eventFileHeader(FileHeaderEvent @event)
         {
-            // If we don't recognise the build number then assume we're in beta
-            if (ProductionBuilds.Contains(@event.build))
-            {
-                inBeta = false;
-            }
-            else
-            {
-                inBeta = true;
-            }
+            // Test whether we're in beta by checking the filename, version described by the header, 
+            // and certain version / build combinations
+            inBeta = 
+                (
+                    @event.filename.Contains("Beta") ||
+                    @event.version.Contains("Beta") ||
+                    (
+                        @event.version.Contains("2.2") &&
+                        (
+                            @event.build.Contains("r121645/r0") ||
+                            @event.build.Contains("r129516/r0")
+                        )
+                    )
+                );
             Logging.Info(inBeta ? "On beta" : "On live");
             EliteConfiguration config = EliteConfiguration.FromFile();
             config.Beta = inBeta;
