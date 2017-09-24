@@ -117,6 +117,9 @@ namespace EddiDataDefinitions
         // materials
         public List<MaterialPresence> materials;
 
+        // The reserve level
+        public string reserves;
+
         /// <summary>
         /// Convert gravity in m/s to g
         /// </summary>
