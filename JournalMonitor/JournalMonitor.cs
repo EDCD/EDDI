@@ -19,9 +19,6 @@ namespace EddiJournalMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$");
 
-        //Regex betaTest = new Regex(@"^JournalBeta\.[0-9\.]+\.log$");
-        //public JournalMonitor(): betaTest.IsMatch(journal) EDDI.Instance.inBeta = true : EDDI.Instance.inBeta = false);
-
         public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result =>
         ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
 
@@ -2299,9 +2296,11 @@ namespace EddiJournalMonitor
                             }
                         case "Fileheader":
                             {
+                                string filename = journalFileName;
                                 string version = getString(data, "gameversion");
                                 string build = getString(data, "build").Replace(" ", "");
-                                events.Add(new FileHeaderEvent(timestamp, version, build) { raw = line });
+
+                                events.Add(new FileHeaderEvent(timestamp, filename, version, build) { raw = line });
                                 handled = true;
                                 break;
                             }
