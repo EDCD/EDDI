@@ -995,24 +995,18 @@ namespace Eddi
         {
             // Test whether we're in beta by checking the filename, version described by the header, 
             // and certain version / build combinations
-            if (
-                    @event.filename.Contains("Beta") || 
-                    @event.version.Contains("Beta") || 
+            inBeta = 
+                (
+                    @event.filename.Contains("Beta") ||
+                    @event.version.Contains("Beta") ||
                     (
-                        @event.version.Contains("2.2") && 
+                        @event.version.Contains("2.2") &&
                         (
-                            @event.build.Contains("r121645/r0") || 
+                            @event.build.Contains("r121645/r0") ||
                             @event.build.Contains("r129516/r0")
                         )
                     )
-                )
-            {
-                inBeta = true;
-            }
-            else
-            {
-                inBeta = false;
-            }
+                );
             Logging.Info(inBeta ? "On beta" : "On live");
             EliteConfiguration config = EliteConfiguration.FromFile();
             config.Beta = inBeta;
