@@ -10,4 +10,4 @@
 [describe what happened instead]
 
 ## Investigation
-[any invesitation you have done, regression tests against earlier versions, etc]
+[any investigation you have done, regression tests against earlier versions, etc]
