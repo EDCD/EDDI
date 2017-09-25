@@ -899,7 +899,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("ServerId", out val);
                                 long serverId = (long)val;
 
-                                events.Add(new ModuleSoldRemoteEvent(timestamp, ship, shipId, storageSlot, serverId, module, price) { raw = line });
+                                events.Add(new ModuleSoldFromStorage(timestamp, ship, shipId, storageSlot, serverId, module, price) { raw = line });
                             }
                             handled = true;
                             break;
