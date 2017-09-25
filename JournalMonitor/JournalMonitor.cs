@@ -2739,13 +2739,14 @@ namespace EddiJournalMonitor
         private static bool? getOptionalBool(IDictionary<string, object> data, string key)
         {
             object val;
-            data.TryGetValue(key, out val);
-            return getOptionalBool(key, val);
-        }
-
-        private static bool? getOptionalBool(string key, object val)
-        {
-            return (bool?)val;
+            if (data.TryGetValue(key, out val))
+            {
+                return val as bool?;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private static string getString(IDictionary<string, object> data, string key)
