@@ -1350,6 +1350,7 @@ namespace Eddi
                 {
                     body.materials.Add(new MaterialPresence(presence.definition, presence.percentage));
                 }
+                body.reserves = theEvent.reserves;
                 body.rings = theEvent.rings;
 
                 Logging.Debug("Saving data for scanned body " + theEvent.name);
