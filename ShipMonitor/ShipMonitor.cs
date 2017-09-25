@@ -738,6 +738,38 @@ namespace EddiShipMonitor
                 }
             }
 
+            // Prune ships from the Shipyard that are not found in the Profile Shipyard
+            foreach (Ship ship in shipyard)
+            {
+                Ship profileShip = profileShipyard.FirstOrDefault(s => s.LocalId == ship.LocalId);
+                if (profileShip == null)
+                    RemoveShip(ship.LocalId);
+            }
+
+            // Add ships from the Profile Shipyard that are not found in the Shipyard
+            // Update name, ident and value of ships in the Shipyard
+            foreach (Ship profileShip in profileShipyard)
+            {
+                Ship ship = GetShip(profileShip.LocalId);
+                if (ship == null)
+                {
+                    ship = profileShip;
+                    ship.Augment();
+                    AddShip(ship);
+                }
+                else
+                {
+                    if (profileShip.name != null)
+                        ship.name = profileShip.name;
+                    if (profileShip.ident != null)
+                        ship.ident = profileShip.ident;
+                    ship.model = profileShip.model;
+                    ship.value = profileShip.value;
+                    ship.starsystem = profileShip.starsystem;
+                    ship.station = profileShip.station;
+                }
+            }
+
             // As of 2.3.0 Frontier no longer supplies module information for ships other than the active ship, so we
             // keep around the oldest information that we have available
             //foreach (Ship profileShip in profileShipyard)
@@ -956,7 +988,7 @@ namespace EddiShipMonitor
             }
         }
 
-        public void AddModule(int shipid, string slot, Module module)
+        private void AddModule(int shipid, string slot, Module module)
         {
             Ship ship = GetShip(shipid);
 
@@ -1081,7 +1113,7 @@ namespace EddiShipMonitor
             }
         }
 
-        public void RemoveModule(int shipid, string slot, Module replacement = null)
+        private void RemoveModule(int shipid, string slot, Module replacement = null)
         {
             Ship ship = GetShip(shipid);
 
