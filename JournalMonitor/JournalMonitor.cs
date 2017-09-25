@@ -743,10 +743,8 @@ namespace EddiJournalMonitor
 
                                 string system = getString(data, "System");
                                 decimal distance = getDecimal(data, "Distance");
-                                data.TryGetValue("TransferPrice", out val);
-                                long price = (long)val;
-                                data.TryGetValue("TransferTime", out val);
-                                long time = (long)val;
+                                long? price = getOptionalLong(data, "TransferPrice");
+                                long? time = getOptionalLong(data, "TransferTime");
 
                                 events.Add(new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price, time) { raw = line });
                             }
