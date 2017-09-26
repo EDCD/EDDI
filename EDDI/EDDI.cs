@@ -34,7 +34,7 @@ namespace Eddi
     /// </summary>
     public class EDDI
     {
-        private static EDDI instance;
+        private static EDDI instance; 
 
         // True if we have been started by VoiceAttack
         public static bool FromVA = false;
