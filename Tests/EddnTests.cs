@@ -11,6 +11,7 @@ namespace Tests
     [TestClass]
     public class EddnTests
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
         [TestMethod]
         public void TestListen()
         {
