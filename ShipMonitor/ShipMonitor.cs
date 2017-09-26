@@ -331,25 +331,18 @@ namespace EddiShipMonitor
             {
                 // The ship is unknown - create it
                 Logging.Debug("Unknown ship ID " + @event.shipid);
-                ship = ShipDefinitions.FromEDModel(@event.ship);
+                ship = template;
                 ship.LocalId = (int)@event.shipid;
-
-                AddShip(ship);
+                ship.role = Role.MultiPurpose;
             }
 
             // Update name and ident if required
             setShipName(ship, @event.shipname);
             setShipIdent(ship, @event.shipident);
+            ship.model = template.model;
+            ship.Augment();
 
             ship.paintjob = @event.paintjob;
-
-            // Augment the ship info if required
-            if (ship.model != template.model)
-            {
-                ship.model = template.model;
-                ship.Augment();
-                ship.value = 0;
-            }
 
             // Set the standard modules
             Compartment compartment = @event.compartments.FirstOrDefault(c => c.name == "Armour");
@@ -430,6 +423,7 @@ namespace EddiShipMonitor
             // Cargo capacity
             ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.name.EndsWith("Cargo Rack")).Sum(c => Math.Pow(2, c.module.@class));
 
+            AddShip(ship);
             writeShips();
         }
 
@@ -745,6 +739,39 @@ namespace EddiShipMonitor
                     JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
                     parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
                     ship.raw = parsedRaw.ToString(Formatting.None);
+                }
+            }
+
+            // Prune ships from the Shipyard that are not found in the Profile Shipyard 
+            foreach (Ship ship in shipyard)
+            {
+                Ship profileShip = profileShipyard.FirstOrDefault(s => s.LocalId == ship.LocalId);
+                if (profileShip == null)
+                    RemoveShip(ship.LocalId);
+            }
+
+            // Add ships from the Profile Shipyard that are not found in the Shipyard 
+            // Update name, ident and value of ships in the Shipyard 
+            foreach (Ship profileShip in profileShipyard)
+            {
+                Ship ship = GetShip(profileShip.LocalId);
+                if (ship == null)
+                {
+                    ship = profileShip;
+                    ship.Augment();
+                    ship.role = Role.MultiPurpose;
+                    AddShip(ship);
+                }
+                else
+                {
+                    if (profileShip.name != null)
+                        ship.name = profileShip.name;
+                    if (profileShip.ident != null)
+                        ship.ident = profileShip.ident;
+                    ship.model = profileShip.model;
+                    ship.value = profileShip.value;
+                    ship.starsystem = profileShip.starsystem;
+                    ship.station = profileShip.station;
                 }
             }
 
