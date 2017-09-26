@@ -286,6 +286,7 @@ namespace Eddi
         private void setStatusInfo()
         {
             versionText.Text = Constants.EDDI_VERSION;
+            Title = "EDDI v." + Constants.EDDI_VERSION;
 
             if (EDDI.Instance.UpgradeVersion != null)
             {
