@@ -1,4 +1,4 @@
-﻿using Eddi;
+using Eddi;
 using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -88,6 +88,43 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("StationServices", out val);
                                 List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList();
 
+																															  
+															
+								 
+																										
+																			
+									 
+																
+										 
+																			
+										 
+																	
+										 
+																		   
+										 
+																	 
+										 
+																			
+										 
+																		 
+										 
+																				
+										 
+																	   
+										 
+																			  
+										 
+																		  
+										 
+																			
+										 
+																		  
+										 
+																				 
+										 
+									 
+								 
+
                                 events.Add(new DockedEvent(timestamp, systemName, stationName, stationModel, faction, factionState, economy, government, distancefromstar, stationservices) { raw = line });
                             }
                             handled = true;
@@ -154,8 +191,34 @@ namespace EddiJournalMonitor
                                 Government government = Government.FromEDName(getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
                                 long? population = getOptionalLong(data, "Population");
+                                
+                                //string PowerPlayName = getString(data, "Powers");
+                                data.TryGetValue("Powers", out val);
+                                string PowerPlayName = "";
+                                string PowerPlayState = "";
+                                List <object> PPMasters = (List<object>)val;
+                                if (PPMasters != null)
+                                {
+                                    /* I don't know really what do about that actually,
+                                     * perhabs later we will see many ppmaster in one system?
+                                     * political wedding?
+                                     * 
+                                     * foreach (object PPMaster in PPMasters)
+                                     {
+                                         //Logging.Info("PowerPlayName : " + (string)PPMaster);
+                                         string PowerPlayName = (string)PPMaster;
+                                     }
+                                     *
+                                     */
 
-                                events.Add(new JumpedEvent(timestamp, systemName, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security, population) { raw = line });
+                                    PowerPlayName = (string)PPMasters[0];
+                                    PowerPlayState = getString(data, "PowerplayState");
+                                }
+
+                                // Logging.Info("PowerPlayName : " + PowerPlayName);
+                                // Logging.Info("PowerplayState : " + PowerplayState);
+
+                                events.Add(new JumpedEvent(timestamp, systemName, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security, population, PowerPlayName, PowerPlayState) { raw = line });
                             }
                             handled = true;
                             break;
@@ -745,6 +808,8 @@ namespace EddiJournalMonitor
                                 decimal distance = getDecimal(data, "Distance");
                                 long? price = getOptionalLong(data, "TransferPrice");
                                 long? time = getOptionalLong(data, "TransferTime");
+																		  
+													  
 
                                 events.Add(new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price, time) { raw = line });
                             }
@@ -809,6 +874,14 @@ namespace EddiJournalMonitor
                         case "ModuleBuy":
                             {
                                 object val;
+																	  
+																		 
+																	  
+													   
+																			  
+																	   
+															 
+																				  
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
@@ -835,6 +908,7 @@ namespace EddiJournalMonitor
                             handled = true;
                             break;
                         case "ModuleRetrieve":
+										   
                             {
                                 object val;
 
@@ -869,19 +943,27 @@ namespace EddiJournalMonitor
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
+																	  
+								 
                                 string slot = getString(data, "Slot");
                                 Module module = ModuleDefinitions.fromEDName(getString(data, "SellItem"));
                                 data.TryGetValue("SellPrice", out val);
                                 long price = (long)val;
 
 
+																				
+																								
                                 events.Add(new ModuleSoldEvent(timestamp, ship, shipId, slot, module, price ) { raw = line });
+								 
                             }
                             handled = true;
                             break;
                         case "ModuleSellRemote":
                             {
                                 object val;
+																	  
+																		  
+																		
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
@@ -934,6 +1016,10 @@ namespace EddiJournalMonitor
                         case "ModuleSwap":
                             {
                                 object val;
+																			  
+																		  
+																			  
+																		  
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
@@ -2280,6 +2366,8 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+										   
+								  
                         case "PowerplayLeave":
                             {
                                 string power = getString(data, "Power");
