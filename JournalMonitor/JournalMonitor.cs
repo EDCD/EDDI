@@ -19,7 +19,8 @@ namespace EddiJournalMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$");
 
-        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result => ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
+        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result =>
+        ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
 
         public static void ForwardJournalEntry(string line, Action<Event> callback)
         {
@@ -86,43 +87,6 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("StationServices", out val);
                                 List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList();
-
-                                // Update the local station object (not entirely sure this is necessary, but we have the data)
-                                if (stationservices != null)
-                                {
-                                    Station Station = new Station();                                    
-                                    foreach (var service in stationservices)
-                                    {
-                                        if (service == "Refuel")
-                                        {
-                                            Station.hasrefuel = (bool?)true;
-                                        }
-                                        else if (service == "Rearm")
-                                        {
-                                            Station.hasrearm = (bool?)true;
-                                        }
-                                        else if (service == "Repair")
-                                        {
-                                            Station.hasrepair = (bool?)true;
-                                        }
-                                        else if (service == "Outfitting")
-                                        {
-                                            Station.hasoutfitting = (bool?)true;
-                                        }
-                                        else if (service == "Shipyard")
-                                        {
-                                            Station.hasshipyard = (bool?)true;
-                                        }
-                                        else if (service == "Commodities")
-                                        {
-                                            Station.hasmarket = (bool?)true;
-                                        }
-                                        else if (service == "BlackMarket")
-                                        {
-                                            Station.hasblackmarket = (bool?)true;
-                                        }
-                                    }
-                                }
 
                                 events.Add(new DockedEvent(timestamp, systemName, stationName, stationModel, faction, factionState, economy, government, distancefromstar, stationservices) { raw = line });
                             }
@@ -2414,9 +2378,11 @@ namespace EddiJournalMonitor
                             }
                         case "Fileheader":
                             {
+                                string filename = journalFileName;
                                 string version = getString(data, "gameversion");
                                 string build = getString(data, "build").Replace(" ", "");
-                                events.Add(new FileHeaderEvent(timestamp, version, build) { raw = line });
+
+                                events.Add(new FileHeaderEvent(timestamp, filename, version, build) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2610,7 +2576,7 @@ namespace EddiJournalMonitor
         private static string GetSavedGamesDir()
         {
             IntPtr path;
-            int result = SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out path);
+            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out path);
             if (result >= 0)
             {
                 return Marshal.PtrToStringUni(path) + @"\Frontier Developments\Elite Dangerous";
@@ -2621,8 +2587,11 @@ namespace EddiJournalMonitor
             }
         }
 
-        [DllImport("Shell32.dll")]
-        private static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)]Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
+        internal class NativeMethods
+        {
+            [DllImport("Shell32.dll")]
+            internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)]Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
+        }
 
         // Helpers for parsing json
         private static decimal getDecimal(IDictionary<string, object> data, string key)

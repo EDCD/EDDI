@@ -70,7 +70,6 @@
     <Compile Include="EDDNBody.cs" />
     <Compile Include="EDDNCommodity.cs" />
     <Compile Include="EDDNHeader.cs" />
-    <Compile Include="EDDNMessage.cs" />
     <Compile Include="EDDNResponder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

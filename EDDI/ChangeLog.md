@@ -1,10 +1,27 @@
 # CHANGE LOG
 
+### 2.4.0-b4
+
+
 ### 2.4.0-b3
   * Core
+    * EDDI's version number is now shown in the application's title bar
     * Module events now update the ship object
+	* Internal clean-up: now 100% green on unit tests, compiler warnings and code analyser issues
   * Events
+    * Add 'Module sold remote' event
+    * Add 'Module transfer' event
+    * Add 'Modules stored' event
     * Revised variable names for module events
+  * Speech Responder
+    * 'Module purchased' event - new script
+    * 'Module retrieved' event - new script
+    * 'Module sold' event - new script
+    * 'Module sold remote' event - new script
+    * 'Module stored' event - new script
+    * 'Module swapped' event - new script
+    * 'Module transfer' event new script
+    * 'Modules stored' event - new script
 
 ### 2.4.0-b2
   * Installer
@@ -28,6 +45,11 @@
     * Add 'Data scanned' event when some type of datalinks (Data Links, Data Posts, Abandoned Data Logs, Listerning Posts, Wrecked Ships) are scanned
     * Add 'Data voucher awarded' event when you are awarded a data voucher
 	* Add 'Friends status' event when a friendly commander changes status
+    * Add 'Module purchased' event
+    * Add 'Module retrieved' event
+    * Add 'Module sold' event
+    * Add 'Module stored' event
+    * Add 'Module swapped' event
 	* Add 'Mission redirected' event
 	* Add 'Nav beacon scan' event
 	* Add 'Music' event (triggered when the game music 'mood' changes)

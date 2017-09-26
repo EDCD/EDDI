@@ -18,7 +18,7 @@ Monitors and responders can be configured from the EDDI UI, and can be individua
 
 EDDI can be installed standalone or as a VoiceAttack plugin.
 
-Download the EDDI installer from [http://www.mcdee.net/elite/EDDI.exe](http://www.mcdee.net/elite/EDDI.exe).  By default it will install in C:\Program Files (x86)\VoiceAttack\Apps\EDDI, which is fine regardless of if you have VoiceAttack or not, but of course you can change it if you wish (although note that if the installation is not in a subdirectory of your VoiceAttack's Apps directory then it will not be able to be used as a VoiceAttack plugin).
+Download the EDDI installer from [https://github.com/EDCD/EDDI/releases](https://github.com/EDCD/EDDI/releases).  By default it will install in C:\Program Files (x86)\VoiceAttack\Apps\EDDI, which is fine regardless of if you have VoiceAttack or not, but of course you can change it if you wish (although note that if the installation is not in a subdirectory of your VoiceAttack's Apps directory then it will not be able to be used as a VoiceAttack plugin).
 
 Alternatively you can compile EDDI from the sources at [https://github.com/EDCD/EDDI](https://github.com/EDCD/EDDI).
 

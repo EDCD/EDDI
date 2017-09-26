@@ -15,6 +15,7 @@ namespace EddiDataProviderService
     /// <summary>Access to EDDP data<summary>
     public class DataProviderService
     {
+        //TODO: Change this to use an EDCD server or other established data service (EDSM?)
         private const string BASE = "http://api.eddp.co/";
 
         public static StarSystem GetSystemData(string system, decimal? x, decimal?y, decimal? z)

@@ -18,7 +18,7 @@ namespace Utilities
     /// <typeparam name="TKey">Specifies the type of the keys in this collection.</typeparam>
     /// <typeparam name="TValue">Specifies the type of the values in this collection.</typeparam>
     [DebuggerDisplay("Count={Count}")]
-    public class ObservableConcurrentDictionary<TKey, TValue> :
+    public sealed class ObservableConcurrentDictionary<TKey, TValue> :
         ICollection<KeyValuePair<TKey, TValue>>, IDictionary<TKey, TValue>,
         INotifyCollectionChanged, INotifyPropertyChanged
     {

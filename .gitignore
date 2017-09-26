@@ -211,5 +211,5 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 
-# Inno Setup output
-Output/
+# Inno Setup
+*.~is
