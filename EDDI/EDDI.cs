@@ -1,4 +1,4 @@
-﻿using EddiCompanionAppService;
+using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -34,7 +34,7 @@ namespace Eddi
     /// </summary>
     public class EDDI
     {
-        private static EDDI instance; 
+        private static EDDI instance;
 
         // True if we have been started by VoiceAttack
         public static bool FromVA = false;
@@ -95,7 +95,7 @@ namespace Eddi
         private List<EDDIResponder> activeResponders = new List<EDDIResponder>();
 
         // Information obtained from the companion app service
-        public Commander Cmdr { get; private set; }
+        public Commander Cmdr { get; set; }
         //public ObservableCollection<Ship> Shipyard { get; private set; } = new ObservableCollection<Ship>();
         public Station CurrentStation { get; private set; }
 
@@ -194,6 +194,8 @@ namespace Eddi
                 }
 
                 Cmdr.insurance = configuration.Insurance;
+                Cmdr.gender = configuration.Gender;
+				Cmdr.powerplay = configuration.PowerPlayObedience;
                 if (Cmdr.name != null)
                 {
                     Logging.Info("EDDI access to the companion app is enabled");
@@ -1036,6 +1038,7 @@ namespace Eddi
         {
             // Test whether we're in beta by checking the filename, version described by the header, 
             // and certain version / build combinations
+			 
             inBeta = 
                 (
                     @event.filename.Contains("Beta") ||
@@ -1078,6 +1081,7 @@ namespace Eddi
                 CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                 if (theEvent.population != null)
                 {
+														   
                     CurrentStarSystem.population = theEvent.population;
                 }
 
@@ -1104,6 +1108,10 @@ namespace Eddi
                 CurrentStarSystem.primaryeconomy = theEvent.economy;
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
+
+                // information comming from ED about PowerPlay
+                CurrentStarSystem.ppname = theEvent.ppname;
+                CurrentStarSystem.ppstate = theEvent.ppstate;
                 CurrentStarSystem.updatedat = (long)theEvent.timestamp.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                 StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
                 setCommanderTitle();
@@ -1123,6 +1131,10 @@ namespace Eddi
                 CurrentStarSystem.primaryeconomy = theEvent.economy;
                 CurrentStarSystem.government = theEvent.government;
                 CurrentStarSystem.security = theEvent.security;
+
+                // information comming from ED about PowerPlay
+                CurrentStarSystem.ppname = theEvent.ppname;
+                CurrentStarSystem.ppstate = theEvent.ppstate;
 
                 CurrentStarSystem.visits++;
                 // We don't update lastvisit because we do that when we leave
@@ -1366,7 +1378,7 @@ namespace Eddi
             if (CompanionAppService.Instance?.CurrentState == CompanionAppService.State.READY)
             {
                 try
-                {
+                { 
                     long profileTime = (long)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                     Profile profile = CompanionAppService.Instance.Profile();
                     if (profile != null)
@@ -1379,6 +1391,8 @@ namespace Eddi
                         if (configuration != null)
                         {
                             Cmdr.insurance = configuration.Insurance;
+                            Cmdr.gender = configuration.Gender;
+							Cmdr.powerplay = configuration.PowerPlayObedience;
                         }
 
                         bool updatedCurrentStarSystem = false;
@@ -1678,6 +1692,8 @@ namespace Eddi
                         if (configuration != null)
                         {
                             Cmdr.insurance = configuration.Insurance;
+                            Cmdr.gender = configuration.Gender;
+							Cmdr.powerplay = configuration.PowerPlayObedience;
                         }
 
                         // See if it is up-to-date regarding our requirements
