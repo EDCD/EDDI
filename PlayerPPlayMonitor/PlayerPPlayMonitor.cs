@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using System.Threading;
 using System.Collections.Generic;
 using System.Windows.Controls;
+
 namespace EddiPlayerPPlayMonitor
 {
     public class PlayerPPlayMonitor : EDDIMonitor
