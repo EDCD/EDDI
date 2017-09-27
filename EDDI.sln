@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCompanionAppService", "CompanionAppService\EddiCompanionAppService.csproj", "{462ED721-1C9C-43FA-8A3F-4C1644363A5A}"
 EndProject
@@ -16,7 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiDataDefinitions", "Data
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{21887F65-3357-4D63-890C-CDDBDDD9DB14}"
 	ProjectSection(SolutionItems) = preProject
-		ChangeLog.md = ChangeLog.md
 		Contributors.md = Contributors.md
 		images\Directory.jpg = images\Directory.jpg
 		EDDI\EDDI.ico = EDDI\EDDI.ico
@@ -63,8 +62,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiShipMonitor", "ShipMoni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCargoMonitor", "CargoMonitor\EddiCargoMonitor.csproj", "{C1D256BA-68B9-437A-8907-599C3A388C37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiPlayerPPlayMonitor", "PlayerPPlayMonitor\EddiPlayerPPlayMonitor.csproj", "{57005D14-8E73-4A64-8CF8-9E69C73B38A6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildInstaller", "BuildInstaller\BuildInstaller.csproj", "{482C4303-056C-47BE-95A8-48C47E31E7AD}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0C845B02-E283-43D8-91A7-205AD3397371} = {0C845B02-E283-43D8-91A7-205AD3397371}
@@ -86,6 +83,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildInstaller", "BuildInst
 		{C9A4F3E1-5152-4648-A409-368576975ACE} = {C9A4F3E1-5152-4648-A409-368576975ACE}
 		{B164BAEC-9D66-4846-B152-2F8914406B89} = {B164BAEC-9D66-4846-B152-2F8914406B89}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiPlayerPPlayMonitor", "PlayerPPlayMonitor\EddiPlayerPPlayMonitor.csproj", "{57005D14-8E73-4A64-8CF8-9E69C73B38A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
