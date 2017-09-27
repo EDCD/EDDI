@@ -5,9 +5,11 @@
     * Revised EDDI's methods for detecting in-game betas
   * Events
     * Fixed a bug that would cause the 'Ship transfer initiated' event to be silent
+  	* 'Community goal' event - refined the default script, it'll (probably) be coherent now :-)
   * Speech Responder
+    * 'Community goal' event - fixed a bug that was causing EDDI to describe every goal twice
     * 'Ship transfer initiated' event - revised to include both the transfer cost and the time to arrival
-	* Script changes:
+	* Script changes
 	  * 'Module swapped event' - revised script to better handle swapping to an empty slot
 
 ### 2.4.0-b3

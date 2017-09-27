@@ -1906,9 +1906,9 @@ namespace EddiJournalMonitor
                                     goaldata.TryGetValue("TierReached", out val);
                                     tier.Add((string)val);
                                     tierreward.Add(getOptionalLong(goaldata, "Bonus"));
-
-                                    events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line });
                                 }
+
+                                events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line });
                                 handled = true;
                                 break;
                             }
