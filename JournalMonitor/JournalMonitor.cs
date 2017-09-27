@@ -88,43 +88,6 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("StationServices", out val);
                                 List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList();
 
-																															  
-															
-								 
-																										
-																			
-									 
-																
-										 
-																			
-										 
-																	
-										 
-																		   
-										 
-																	 
-										 
-																			
-										 
-																		 
-										 
-																				
-										 
-																	   
-										 
-																			  
-										 
-																		  
-										 
-																			
-										 
-																		  
-										 
-																				 
-										 
-									 
-								 
-
                                 events.Add(new DockedEvent(timestamp, systemName, stationName, stationModel, faction, factionState, economy, government, distancefromstar, stationservices) { raw = line });
                             }
                             handled = true;
@@ -808,8 +771,6 @@ namespace EddiJournalMonitor
                                 decimal distance = getDecimal(data, "Distance");
                                 long? price = getOptionalLong(data, "TransferPrice");
                                 long? time = getOptionalLong(data, "TransferTime");
-																		  
-													  
 
                                 events.Add(new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price, time) { raw = line });
                             }
@@ -874,14 +835,6 @@ namespace EddiJournalMonitor
                         case "ModuleBuy":
                             {
                                 object val;
-																	  
-																		 
-																	  
-													   
-																			  
-																	   
-															 
-																				  
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
@@ -908,7 +861,6 @@ namespace EddiJournalMonitor
                             handled = true;
                             break;
                         case "ModuleRetrieve":
-										   
                             {
                                 object val;
 
@@ -943,27 +895,19 @@ namespace EddiJournalMonitor
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-																	  
-								 
                                 string slot = getString(data, "Slot");
                                 Module module = ModuleDefinitions.fromEDName(getString(data, "SellItem"));
                                 data.TryGetValue("SellPrice", out val);
                                 long price = (long)val;
 
 
-																				
-																								
                                 events.Add(new ModuleSoldEvent(timestamp, ship, shipId, slot, module, price ) { raw = line });
-								 
                             }
                             handled = true;
                             break;
                         case "ModuleSellRemote":
                             {
                                 object val;
-																	  
-																		  
-																		
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
@@ -1016,10 +960,6 @@ namespace EddiJournalMonitor
                         case "ModuleSwap":
                             {
                                 object val;
-																			  
-																		  
-																			  
-																		  
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
@@ -2366,8 +2306,6 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
-										   
-								  
                         case "PowerplayLeave":
                             {
                                 string power = getString(data, "Power");
