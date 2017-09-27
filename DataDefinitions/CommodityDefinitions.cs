@@ -364,7 +364,7 @@ namespace EddiDataDefinitions
             {200000012, new Commodity(10012, "siriuscommercialcontracts", "Sirius Commerical Contracts", "Powerplay", 0, false) },
             {200000013, new Commodity(10013, "siriusindustrialequipment", "Sirius Inustrial Equipment", "Powerplay", 0, false) },
             {200000014, new Commodity(10014, "siriusfranchisepackage", "Sirius Franchise Package", "Powerplay", 0, false) },
-            {200000015, new Commodity(10015, "republicangarisonsupplies", "Repiblic Garrison Supplies", "Powerplay", 0, false) },
+            {200000015, new Commodity(10015, "republicangarisonsupplies", "Republic Garrison Supplies", "Powerplay", 0, false) },
             {128672159, new Commodity(10016, "AntiqueJewellery", "Antique Jewellery", "Salvage", 0, false) },
             {128672161, new Commodity(10017, "EarthRelics", "Earth Relics", "Salvage", 0, false) },
             {128672162, new Commodity(10018, "GeneBank", "Gene Bank", "Salvage", 0, false) },
