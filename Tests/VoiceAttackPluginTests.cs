@@ -117,7 +117,7 @@ namespace Tests
             Assert.IsNotNull(europa.volcanism);
             Assert.AreEqual("Magma", europa.volcanism.type);
             Assert.AreEqual("Water", europa.volcanism.composition);
-            Assert.IsNull(europa.volcanism.amount);
+            Assert.AreEqual("Major", europa.volcanism.amount);
         }
 
         [TestMethod]
