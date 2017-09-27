@@ -5,10 +5,10 @@
     * Revised EDDI's methods for detecting in-game betas
   * Events
     * Fixed a bug that would cause the 'Ship transfer initiated' event to be silent
-	* Fixed a bug whereby scanning a landable body without a DSS would default the "landable" value to "false" rather than "null"
   * Speech Responder
     * 'Ship transfer initiated' event - revised to include both the transfer cost and the time to arrival
-	* Updated the 'Body Report' script to account for the possibility of the "landable" property being void
+	* Script changes
+	  * If you scan without a DSS, the 'Body Report' script no longer falsely claims that all bodies are unsuitable for landing.
 
 ### 2.4.0-b3
   * Core
