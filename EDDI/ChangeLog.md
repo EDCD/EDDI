@@ -6,7 +6,10 @@
   * Events
     * Fixed a bug that would cause the 'Ship transfer initiated' event to be silent
   * Speech Responder
+    * 'Community goal' event - fixed a bug that was causing EDDI to speak describe every goal twice
     * 'Ship transfer initiated' event - revised to include both the transfer cost and the time to arrival
+  * Events
+	* 'Community goal' event - refined the default script, it'll (probably) be coherent now :-)
 
 ### 2.4.0-b3
   * Core
