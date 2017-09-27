@@ -71,6 +71,7 @@
     <Compile Include="Blueprint.cs" />
     <Compile Include="DataScan.cs" />
     <Compile Include="MaterialAmount.cs" />
+    <Compile Include="PowerPlay.cs" />
     <Compile Include="Ring.cs" />
     <Compile Include="Cargo.cs" />
     <Compile Include="CQCRating.cs" />
@@ -107,7 +108,6 @@
     <Compile Include="Superpower.cs" />
     <Compile Include="State.cs" />
     <Compile Include="Station.cs" />
-    <Compile Include="PowerPlay.cs" />	
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
