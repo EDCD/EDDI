@@ -1,4 +1,4 @@
-﻿using Eddi;
+using Eddi;
 using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -19,7 +19,8 @@ namespace EddiJournalMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$");
 
-        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result => ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
+        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result =>
+        ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
 
         public static void ForwardJournalEntry(string line, Action<Event> callback)
         {
@@ -87,43 +88,6 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("StationServices", out val);
                                 List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList();
 
-                                // Update the local station object (not entirely sure this is necessary, but we have the data)
-                                if (stationservices != null)
-                                {
-                                    Station Station = new Station();                                    
-                                    foreach (var service in stationservices)
-                                    {
-                                        if (service == "Refuel")
-                                        {
-                                            Station.hasrefuel = (bool?)true;
-                                        }
-                                        else if (service == "Rearm")
-                                        {
-                                            Station.hasrearm = (bool?)true;
-                                        }
-                                        else if (service == "Repair")
-                                        {
-                                            Station.hasrepair = (bool?)true;
-                                        }
-                                        else if (service == "Outfitting")
-                                        {
-                                            Station.hasoutfitting = (bool?)true;
-                                        }
-                                        else if (service == "Shipyard")
-                                        {
-                                            Station.hasshipyard = (bool?)true;
-                                        }
-                                        else if (service == "Commodities")
-                                        {
-                                            Station.hasmarket = (bool?)true;
-                                        }
-                                        else if (service == "BlackMarket")
-                                        {
-                                            Station.hasblackmarket = (bool?)true;
-                                        }
-                                    }
-                                }
-
                                 events.Add(new DockedEvent(timestamp, systemName, stationName, stationModel, faction, factionState, economy, government, distancefromstar, stationservices) { raw = line });
                             }
                             handled = true;
@@ -190,8 +154,34 @@ namespace EddiJournalMonitor
                                 Government government = Government.FromEDName(getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
                                 long? population = getOptionalLong(data, "Population");
+                                
+                                //string PowerPlayName = getString(data, "Powers");
+                                data.TryGetValue("Powers", out val);
+                                string PowerPlayName = "";
+                                string PowerPlayState = "";
+                                List <object> PPMasters = (List<object>)val;
+                                if (PPMasters != null)
+                                {
+                                    /* I don't know really what do about that actually,
+                                     * perhabs later we will see many ppmaster in one system?
+                                     * political wedding?
+                                     * 
+                                     * foreach (object PPMaster in PPMasters)
+                                     {
+                                         //Logging.Info("PowerPlayName : " + (string)PPMaster);
+                                         string PowerPlayName = (string)PPMaster;
+                                     }
+                                     *
+                                     */
 
-                                events.Add(new JumpedEvent(timestamp, systemName, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security, population) { raw = line });
+                                    PowerPlayName = (string)PPMasters[0];
+                                    PowerPlayState = getString(data, "PowerplayState");
+                                }
+
+                                // Logging.Info("PowerPlayName : " + PowerPlayName);
+                                // Logging.Info("PowerplayState : " + PowerplayState);
+
+                                events.Add(new JumpedEvent(timestamp, systemName, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security, population, PowerPlayName, PowerPlayState) { raw = line });
                             }
                             handled = true;
                             break;
@@ -779,117 +769,208 @@ namespace EddiJournalMonitor
 
                                 string system = getString(data, "System");
                                 decimal distance = getDecimal(data, "Distance");
-                                data.TryGetValue("TransferPrice", out val);
-                                long price = (long)val;
-                                data.TryGetValue("TransferTime", out val);
-                                long time = (long)val;
+                                long? price = getOptionalLong(data, "TransferPrice");
+                                long? time = getOptionalLong(data, "TransferTime");
 
                                 events.Add(new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price, time) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "FetchRemoteModule":
+                            {
+                                object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "StoredItem"));
+                                data.TryGetValue("TransferCost", out val);
+                                long transferCost = (long)val;
+                                long? transferTime = getOptionalLong(data, "TransferTime");
+
+                                // Probably not useful. We'll get these but we won't tell the end user about them
+                                data.TryGetValue("StorageSlot", out val);
+                                int storageSlot = (int)(long)val;
+                                data.TryGetValue("ServerId", out val);
+                                long serverId = (long)val;
+
+                                events.Add(new ModuleTransferEvent(timestamp, ship, shipId, storageSlot, serverId, module, transferCost, transferTime) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "MassModuleStore":
+                            {
+                                object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                data.TryGetValue("Items", out val);
+                                List<object> items = (List<object>)val;
+
+                                List<string> slots = new List<string>();
+                                List<Module> modules = new List<Module>();
+
+                                Module module = new Module();
+                                if (items != null)
+                                {
+
+                                    foreach (Dictionary<string, object> item in items)
+                                    {
+                                        string slot = getString(item, "Slot");
+                                        slots.Add(slot);
+
+                                        module = ModuleDefinitions.fromEDName(getString(item, "Name"));
+                                        module.modified = getString(item, "EngineerModifications") != null;
+                                        modules.Add(module);
+                                    }
+                                }
+
+                                events.Add(new ModulesStoredEvent(timestamp, ship, shipId, slots, modules) { raw = line });
                             }
                             handled = true;
                             break;
                         case "ModuleBuy":
                             {
                                 object val;
-                                string slot = getString(data, "Slot");
-                                Module module = ModuleDefinitions.fromEDName(getString(data, "BuyItem"));
-                                data.TryGetValue("BuyPrice", out val);
-                                long price = (long)val;
-                                module.price = price;
-
-                                // Set purchased module defaults
-                                module.enabled = true;
-                                module.priority = 1;
-                                module.health = 100;
-                                module.modified = false;
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-                                events.Add(new ModulePurchasedEvent(timestamp, slot, module, price, ship, shipId) { raw = line });
+                                string slot = getString(data, "Slot");
+                                Module buyModule = ModuleDefinitions.fromEDName(getString(data, "BuyItem"));
+                                data.TryGetValue("BuyPrice", out val);
+                                long buyPrice = (long)val;
+                                buyModule.price = buyPrice;
+
+                                // Set retrieved module defaults
+                                buyModule.enabled = true;
+                                buyModule.priority = 1;
+                                buyModule.health = 100;
+                                buyModule.modified = false;
+
+                                Module sellModule = ModuleDefinitions.fromEDName(getString(data, "SellItem"));
+                                long? sellPrice = getOptionalLong(data, "SellPrice");
+                                Module storedModule = ModuleDefinitions.fromEDName(getString(data, "StoredItem"));
+
+                                events.Add(new ModulePurchasedEvent(timestamp, ship, shipId, slot, buyModule, buyPrice, sellModule, sellPrice, storedModule) { raw = line });
                             }
                             handled = true;
                             break;
                         case "ModuleRetrieve":
                             {
                                 object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
                                 string slot = getString(data, "Slot");
                                 Module module = ModuleDefinitions.fromEDName(getString(data, "RetrievedItem"));
                                 data.TryGetValue("Cost", out val);
                                 long? cost = getOptionalLong(data, "Cost");
-                                Module swapout = ModuleDefinitions.fromEDName(getString(data, "SwapOutItem"));
+                                string engineerModifications = getString(data, "EngineerModifications");
+                                module.modified = engineerModifications != null;
 
                                 // Set retrieved module defaults
                                 module.price = module.value;
                                 module.enabled = true;
                                 module.priority = 1;
                                 module.health = 100;
-                                module.modified = getString(data, "EngineerModifications") != null;
 
-                                data.TryGetValue("ShipID", out val);
-                                int shipId = (int)(long)val;
-                                string ship = getString(data, "Ship");
+                                Module swapoutModule = ModuleDefinitions.fromEDName(getString(data, "SwapOutItem"));
 
-                                events.Add(new ModuleRetrievedEvent(timestamp, slot, module, cost, swapout, ship, shipId) { raw = line });
+                                events.Add(new ModuleRetrievedEvent(timestamp, ship, shipId, slot, module, cost, engineerModifications, swapoutModule) { raw = line });
                             }
                             handled = true;
                             break;
                         case "ModuleSell":
                             {
                                 object val;
-                                string slot = getString(data, "Slot");
-                                Module module = ModuleDefinitions.fromEDName(getString(data, "SellItem"));
-                                data.TryGetValue("SellPrice", out val);
-                                long price = (long)val;
+
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-                                events.Add(new ModuleSoldEvent(timestamp, slot, module, price, ship, shipId) { raw = line });
+                                string slot = getString(data, "Slot");
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "SellItem"));
+                                data.TryGetValue("SellPrice", out val);
+                                long price = (long)val;
+
+
+                                events.Add(new ModuleSoldEvent(timestamp, ship, shipId, slot, module, price ) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "ModuleSellRemote":
+                            {
+                                object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "SellItem"));
+                                data.TryGetValue("SellPrice", out val);
+                                long price = (long)val;
+
+                                // Probably not useful. We'll get these but we won't tell the end user about them
+                                data.TryGetValue("StorageSlot", out val);
+                                int storageSlot = (int)(long)val;
+                                data.TryGetValue("ServerId", out val);
+                                long serverId = (long)val;
+
+                                events.Add(new ModuleSoldFromStorage(timestamp, ship, shipId, storageSlot, serverId, module, price) { raw = line });
                             }
                             handled = true;
                             break;
                         case "ModuleStore":
                             {
                                 object val;
-                                string slot = getString(data, "Slot");
-                                Module module = ModuleDefinitions.fromEDName(getString(data, "StoredItem"));
-                                module.modified = getString(data, "EngineerModifications") != null;
-                                data.TryGetValue("Cost", out val);
-                                long? cost = getOptionalLong(data, "Cost");
-
-
-                                Module replacement = ModuleDefinitions.fromEDName(getString(data, "ReplacementItem"));
-                                if (replacement != null)
-                                {
-                                    replacement.price = replacement.value;
-                                    replacement.enabled = true;
-                                    replacement.priority = 1;
-                                    replacement.health = 100;
-                                    replacement.modified = false;
-                                }
 
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-                                events.Add(new ModuleStoredEvent(timestamp, slot, module, cost, replacement, ship, shipId) { raw = line });
+                                string slot = getString(data, "Slot");
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "StoredItem"));
+                                string engineerModifications = getString(data, "EngineerModifications");
+                                module.modified = engineerModifications != null;
+                                data.TryGetValue("Cost", out val);
+                                long? cost = getOptionalLong(data, "Cost");
+
+
+                                Module replacementModule = ModuleDefinitions.fromEDName(getString(data, "ReplacementItem"));
+                                if (replacementModule != null)
+                                {
+                                    replacementModule.price = replacementModule.value;
+                                    replacementModule.enabled = true;
+                                    replacementModule.priority = 1;
+                                    replacementModule.health = 100;
+                                    replacementModule.modified = false;
+                                }
+
+                                events.Add(new ModuleStoredEvent(timestamp, ship, shipId, slot, module, cost, engineerModifications, replacementModule) { raw = line });
                             }
                             handled = true;
                             break;
                         case "ModuleSwap":
                             {
                                 object val;
-                                string fromSlot = getString(data, "FromSlot");
-                                Module fromModule = ModuleDefinitions.fromEDName(getString(data, "FromItem"));
-                                string toSlot = getString(data, "ToSlot");
-                                Module toModule = ModuleDefinitions.fromEDName(getString(data, "ToItem"));
+
                                 data.TryGetValue("ShipID", out val);
                                 int shipId = (int)(long)val;
                                 string ship = getString(data, "Ship");
 
-                                events.Add(new ModuleSwappedEvent(timestamp, fromSlot, fromModule, toSlot, toModule, ship, shipId) { raw = line });
+                                string fromSlot = getString(data, "FromSlot");
+                                Module fromModule = ModuleDefinitions.fromEDName(getString(data, "FromItem"));
+                                string toSlot = getString(data, "ToSlot");
+                                Module toModule = ModuleDefinitions.fromEDName(getString(data, "ToItem"));
+
+                                events.Add(new ModuleSwappedEvent(timestamp, ship, shipId, fromSlot, fromModule, toSlot, toModule) { raw = line });
                             }
                             handled = true;
                             break;
@@ -2321,9 +2402,11 @@ namespace EddiJournalMonitor
                             }
                         case "Fileheader":
                             {
+                                string filename = journalFileName;
                                 string version = getString(data, "gameversion");
                                 string build = getString(data, "build").Replace(" ", "");
-                                events.Add(new FileHeaderEvent(timestamp, version, build) { raw = line });
+
+                                events.Add(new FileHeaderEvent(timestamp, filename, version, build) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2517,7 +2600,7 @@ namespace EddiJournalMonitor
         private static string GetSavedGamesDir()
         {
             IntPtr path;
-            int result = SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out path);
+            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out path);
             if (result >= 0)
             {
                 return Marshal.PtrToStringUni(path) + @"\Frontier Developments\Elite Dangerous";
@@ -2528,8 +2611,11 @@ namespace EddiJournalMonitor
             }
         }
 
-        [DllImport("Shell32.dll")]
-        private static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)]Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
+        internal class NativeMethods
+        {
+            [DllImport("Shell32.dll")]
+            internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)]Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
+        }
 
         // Helpers for parsing json
         private static decimal getDecimal(IDictionary<string, object> data, string key)
