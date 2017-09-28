@@ -19,7 +19,8 @@ namespace EddiJournalMonitor
     {
         private static Regex JsonRegex = new Regex(@"^{.*}$");
 
-        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result => ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
+        public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result =>
+        ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }
 
         public static void ForwardJournalEntry(string line, Action<Event> callback)
         {
@@ -742,10 +743,8 @@ namespace EddiJournalMonitor
 
                                 string system = getString(data, "System");
                                 decimal distance = getDecimal(data, "Distance");
-                                data.TryGetValue("TransferPrice", out val);
-                                long price = (long)val;
-                                data.TryGetValue("TransferTime", out val);
-                                long time = (long)val;
+                                long? price = getOptionalLong(data, "TransferPrice");
+                                long? time = getOptionalLong(data, "TransferTime");
 
                                 events.Add(new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price, time) { raw = line });
                             }
@@ -898,7 +897,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("ServerId", out val);
                                 long serverId = (long)val;
 
-                                events.Add(new ModuleSoldRemoteEvent(timestamp, ship, shipId, storageSlot, serverId, module, price) { raw = line });
+                                events.Add(new ModuleSoldFromStorage(timestamp, ship, shipId, storageSlot, serverId, module, price) { raw = line });
                             }
                             handled = true;
                             break;
@@ -1907,9 +1906,9 @@ namespace EddiJournalMonitor
                                     goaldata.TryGetValue("TierReached", out val);
                                     tier.Add((string)val);
                                     tierreward.Add(getOptionalLong(goaldata, "Bonus"));
-
-                                    events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line });
                                 }
+
+                                events.Add(new CommunityGoalEvent(timestamp, cgid, name, system, station, expiry, iscomplete, total, contribution, contributors, percentileband, topranksize, toprank, tier, tierreward) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2377,9 +2376,11 @@ namespace EddiJournalMonitor
                             }
                         case "Fileheader":
                             {
+                                string filename = journalFileName;
                                 string version = getString(data, "gameversion");
                                 string build = getString(data, "build").Replace(" ", "");
-                                events.Add(new FileHeaderEvent(timestamp, version, build) { raw = line });
+
+                                events.Add(new FileHeaderEvent(timestamp, filename, version, build) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2738,13 +2739,14 @@ namespace EddiJournalMonitor
         private static bool? getOptionalBool(IDictionary<string, object> data, string key)
         {
             object val;
-            data.TryGetValue(key, out val);
-            return getOptionalBool(key, val);
-        }
-
-        private static bool? getOptionalBool(string key, object val)
-        {
-            return (bool?)val;
+            if (data.TryGetValue(key, out val))
+            {
+                return val as bool?;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private static string getString(IDictionary<string, object> data, string key)

@@ -169,9 +169,9 @@ namespace EddiShipMonitor
             {
                 handleModuleSoldEvent((ModuleSoldEvent)@event);
             }
-            else if (@event is ModuleSoldRemoteEvent)
+            else if (@event is ModuleSoldFromStorage)
             {
-                handleModuleSoldRemoteEvent((ModuleSoldRemoteEvent)@event);
+                handleModuleSoldFromStorageEvent((ModuleSoldFromStorage)@event);
             }
             else if (@event is ModuleStoredEvent)
             {
@@ -545,7 +545,7 @@ namespace EddiShipMonitor
             RemoveModule((int)@event.shipid, @event.slot);
         }
 
-        private void handleModuleSoldRemoteEvent(ModuleSoldRemoteEvent @event)
+        private void handleModuleSoldFromStorageEvent(ModuleSoldFromStorage @event)
         {
             // We don't do anything here as the ship object is unaffected
         }

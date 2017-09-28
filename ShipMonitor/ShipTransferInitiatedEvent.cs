@@ -14,6 +14,7 @@ namespace EddiShipMonitor
         public const string NAME = "Ship transfer initiated";
         public const string DESCRIPTION = "Triggered when you initiate a ship transfer";
         public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ShipyardTransfer\",\"ShipType\":\"Adder\",\"ShipID\":1,\"System\":\"Eranin\",\"Distance\":85.639145,\"TransferPrice\":580,\"TransferTime\":600}";
+        //public const string SAMPLE = "{ \"timestamp\":\"2017-09-24T12:31:38Z\", \"event\":\"ShipyardTransfer\", \"ShipType\":\"Asp\", \"ShipID\":2, \"System\":\"CD-34 9020\", \"Distance\":145.314835, \"TransferPrice\":127713 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static ShipTransferInitiatedEvent()
@@ -39,12 +40,12 @@ namespace EddiShipMonitor
         public decimal distance { get; private set; }
 
         [JsonProperty("price")]
-        public long price { get; private set; }
+        public long? price { get; private set; }
 
         [JsonProperty("time")]
-        public long time { get; private set; }
+        public long? time { get; private set; }
 
-        public ShipTransferInitiatedEvent(DateTime timestamp, string ship, int? shipid, string system, decimal distance, long price, long time) : base(timestamp, NAME)
+        public ShipTransferInitiatedEvent(DateTime timestamp, string ship, int? shipid, string system, decimal distance, long? price, long? time) : base(timestamp, NAME)
         {
             this.ship = ship;
             this.shipid = shipid;
