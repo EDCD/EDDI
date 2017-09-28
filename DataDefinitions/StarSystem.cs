@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +29,12 @@ namespace EddiDataDefinitions
         public decimal? y { get; set; }
         /// <summary>Z co-ordinate for this system</summary>
         public decimal? z { get; set; }
+
+
+        /// <summary>The PowerPlay master of the system given by ED</summary>
+        public string ppname { get; set; }
+        /// <summary>the power play state given by ED</summary>
+        public string ppstate { get; set; }
 
         /// <summary>Details of stations</summary>
         public List<Station> stations { get; set; }
