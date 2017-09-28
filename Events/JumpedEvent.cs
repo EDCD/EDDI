@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,6 +31,8 @@ namespace EddiEvents
             VARIABLES.Add("government", "The government of the system to which the commander has jumped");
             VARIABLES.Add("security", "The security of the system to which the commander has jumped");
             VARIABLES.Add("population", "The population of the system to which the commander has jumped");
+            VARIABLES.Add("ppname", "The name of the PowerPlay leader of the system (if exist)");
+            VARIABLES.Add("ppstate", "The state of the system in a PowerPlay point of vue (if exist)");
         }
 
         public string system { get; private set; }
@@ -61,7 +63,11 @@ namespace EddiEvents
 
         public long? population { get; private set; }
 
-        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security, long? population) : base(timestamp, NAME)
+        public string ppname { get; private set; }
+
+        public string ppstate { get; private set; }
+
+        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security, long? population, string ppmame, string ppstate) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
@@ -77,6 +83,8 @@ namespace EddiEvents
             this.government = (government == null ? Government.None.name : government.name);
             this.security = (security == null ? SecurityLevel.None.name : security.name);
             this.population = population;
+            this.ppname = ppname;
+            this.ppstate = ppstate;
         }
     }
 }
