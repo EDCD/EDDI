@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{57005D14-8E73-4A64-8CF8-9E69C73B38A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlayerPPlayMonitor</RootNamespace>
+    <AssemblyName>PlayerPPlayMonitor</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference> 
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PlayerPPlayMonitor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BuildInstaller\BuildInstaller.csproj">
+      <Project>{482c4303-056c-47be-95a8-48c47e31e7ad}</Project>
+      <Name>BuildInstaller</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
+      <Project>{462ed721-1c9c-43fa-8a3f-4c1644363a5a}</Project>
+      <Name>EddiCompanionAppService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
+      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
+      <Name>EddiDataDefinitions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataProviderService\EddiDataProviderService.csproj">
+      <Project>{c5f48807-921b-456d-a9e4-a0282e5e8cf1}</Project>
+      <Name>EddiDataProviderService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EDDI\Eddi.csproj">
+      <Project>{ec7ba042-a370-447f-8c3e-241358cebcbb}</Project>
+      <Name>Eddi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Events\EddiEvents.csproj">
+      <Project>{2bb41c51-9be0-49c9-91fd-c4e444994ece}</Project>
+      <Name>EddiEvents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JournalMonitor\EddiJournalMonitor.csproj">
+      <Project>{72b6f41d-0107-4d3a-8603-c3edda1c5243}</Project>
+      <Name>EddiJournalMonitor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tests\Tests.csproj">
+      <Project>{28758371-6b62-47b6-b2cb-7103833beecf}</Project>
+      <Name>Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{cd71dd2a-86ac-44a8-959b-e1c3069966bd}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
+
