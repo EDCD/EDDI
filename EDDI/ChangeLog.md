@@ -1,5 +1,7 @@
 # CHANGE LOG
 
+### 2.4.0-b5
+
 ### 2.4.0-b4
   * Core
     * Revised EDDI's methods for detecting in-game betas
