@@ -2055,7 +2055,7 @@ namespace EddiJournalMonitor
                                 Commodity commodity = CommodityDefinitions.FromName(getString(data, "Name"));
                                 if (commodity == null)
                                 {
-                                    Logging.Error("Failed to map collectcargo type " + commodityName + " to commodity");
+                                    Logging.Error("Failed to map SearchAndRescue commodity type " + commodityName + " to commodity");
                                 }
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
