@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ### 2.4.0-b5
+  * Speech Responder
+	* Script changes
+	  * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing
 
 ### 2.4.0-b4
   * Core
