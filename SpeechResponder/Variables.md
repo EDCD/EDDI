@@ -159,6 +159,24 @@ A material.
     - rarity the rarity of the material
     - uses the blueprints for which the material is used
 
+## Commodity
+
+A commodity.
+
+    - name the name of the commodity (e.g. Tea)
+    - category the category of the commodity (e.g. Foods, Machinery, Technology)
+    - rare the rarity of the commodity (boolean true or false)
+
+Additional properties may become available in station, via station.commodities.[property]  
+(see Commodity sale check and Commodity purchase check for sample usages).
+
+    - buyprice the price to purchase the commodity from the market
+    - sellprice the price being offered for the commodity in the market
+    - avgprice the average price offered for this commodity in a legal market
+    - stock the amount of the commodity available from the market 
+    - demand the demand for the commodity from the market
+    - EDDBID the unique id number assigned to represent the commodity in EDDB
+
 ## Rarity
 
 A rarity rating.
