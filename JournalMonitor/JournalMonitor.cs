@@ -2051,12 +2051,17 @@ namespace EddiJournalMonitor
                         case "SearchAndRescue":
                             {
                                 object val;
-                                string name = getString(data, "Name");
+                                string commodityName = getString(data, "Name");
+                                Commodity commodity = CommodityDefinitions.FromName(getString(data, "Name"));
+                                if (commodity == null)
+                                {
+                                    Logging.Error("Failed to map collectcargo type " + commodityName + " to commodity");
+                                }
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
                                 data.TryGetValue("Reward", out val);
                                 long reward = (val == null ? 0 : (long)val);                                
-                                events.Add(new SearchAndRescueEvent(timestamp, name, amount, reward) { raw = line });
+                                events.Add(new SearchAndRescueEvent(timestamp, commodity, amount, reward) { raw = line });
                                 handled = true;
                                 break;
                             }
