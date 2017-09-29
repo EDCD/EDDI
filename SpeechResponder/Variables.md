@@ -60,7 +60,7 @@ Any values might be missing, depending on EDDI's configuration.
 
 ## Current starsystem
 
-Information about your current starsystem is avaialble under the `system` object.
+Information about your current starsystem is available under the `system` object.
 
 Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
 
