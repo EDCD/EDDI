@@ -1,7 +1,10 @@
 # CHANGE LOG
 
 ### 2.4.0-b5
+  * Core
+    * Clarified & modified Help.md to clearly state which functions use SSML tags (like phonetic speech).
   * Speech Responder
+    * Fixed a bug that was preventing the Play() function from working properly
 	* Script changes
 	  * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing
 
