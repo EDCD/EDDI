@@ -1,6 +1,8 @@
 # CHANGE LOG
 
 ### 2.4.0-b5
+  * Events
+    * Revised 'Community goal' event - event expiry is now given in seconds rather than obscure DateTime format.
   * Speech Responder
 	* Script changes
 	  * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing

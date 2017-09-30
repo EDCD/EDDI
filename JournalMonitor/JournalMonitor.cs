@@ -1868,7 +1868,7 @@ namespace EddiJournalMonitor
                                 List<string> name = new List<string>();
                                 List<string> system = new List<string>();
                                 List<string> station = new List<string>();
-                                List<DateTime> expiry = new List<DateTime>();
+                                List<long> expiry = new List<long>();
                                 List<bool> iscomplete = new List<bool>();
                                 List<int> total = new List<int>();
                                 List<int> contribution = new List<int>();
@@ -1888,8 +1888,9 @@ namespace EddiJournalMonitor
                                     name.Add(getString(goaldata, "Title"));
                                     system.Add(getString(goaldata, "SystemName"));
                                     station.Add(getString(goaldata, "MarketName"));
-                                    goaldata.TryGetValue("Expiry", out val);
-                                    expiry.Add((DateTime)val);
+                                    DateTime expiryDateTime = ((DateTime)goaldata["Expiry"]).ToUniversalTime();
+                                    long expiryseconds = (long)(expiryDateTime - timestamp).TotalSeconds;
+                                    expiry.Add(expiryseconds);
                                     iscomplete.Add(getBool(goaldata, "IsComplete"));
                                     total.Add(getInt(goaldata, "CurrentTotal"));
                                     contribution.Add(getInt(goaldata, "PlayerContribution"));
