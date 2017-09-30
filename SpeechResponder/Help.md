@@ -25,7 +25,7 @@ In addition to the basic Cottle features EDDI has a number of features that prov
 
 ### P()
 
-This function will attempt to provide phonetic pronunciation for the supplied text.
+This function will attempt to provide phonetic pronunciation for the supplied text. This function uses SSML tags.
 
 P() takes a single argument of the string for which to alter the pronunciation.
 
@@ -57,7 +57,7 @@ Note that Occasionally() works on random numbers rather than counters, so in the
 
 ### Pause()
 
-This function will pause the speech for a given amount of time.
+This function will pause the speech for a given amount of time. This function uses SSML tags.
 
 Pause() takes one argument: the number of milliseconds to pause.
 
@@ -107,7 +107,7 @@ Common usage of this is to select the word that should proceed the string (e.g. 
 
 ### Play()
 
-This function will play an audio file as supplied in the argument.  If this is in the result of a template then all other text is removed; it is not possible for EDDI to both play an audio file and speak in the same response.
+This function will play an audio file as supplied in the argument.  If this is in the result of a template then all other text is removed; it is not possible for EDDI to both play an audio file and speak in the same response. This function uses SSML tags.
 
 Play() takes one argument: the path to the file to play.  This file must be a '.wav' file.  Any backslashes for path separators must be escaped, so '\\' must be written as '\\\\'
 
@@ -129,7 +129,7 @@ Common usage of this is to provide clear callsigns and idents for ships, for exa
 
 This function will provide the name of your ship.
 
-If you have set up a phonetic name for your ship it will return that, otherwise if you have set up a name for your ship it will return that.
+If you have set up a phonetic name for your ship it will return that, otherwise if you have set up a name for your ship it will return that. The phonetic name uses SSML tags.
 
 ShipName() takes an optional ship ID for which to provide the name. If no argument is supplied then it provides the name for your current ship.
 
