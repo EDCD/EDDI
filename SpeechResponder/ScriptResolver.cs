@@ -231,6 +231,21 @@ namespace EddiSpeechResponder
 
             }, 1);
 
+            store["SpeechRate"] = new NativeFunction((values) =>
+            {
+                string text = values[0].AsString;
+                string rate = "medium";
+                if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
+                {
+                    return text;
+                }
+                else
+                {
+                    rate = values[1].AsString;
+                    return @"<prosody rate=""" + rate + @""">" + text + "</prosody>";
+                }
+            }, 1, 2);
+
             store["StartsWithVowel"] = new NativeFunction((values) =>
             {
                 string Entree = values[0].AsString;

@@ -95,6 +95,17 @@ Common usage of this is to provide a more human-sounding reading of a string of 
 
    Star luminosity class: {Spacialise(event.luminosityclass)}.
 
+### SpeechRate()
+
+This function allows you to dynamically adjust the rate of the spoken speech.
+
+SpeechRate() takes two mandatory arguments: the text to speak and the speech rate at which to speak it (legal values for the speech rate include "x-slow", "slow", "medium", "fast", "x-fast", "default", or empty).
+
+Common usage of this is to provide a more human-sounding reading of a string of letters with variation in speech rate:
+
+   {SpeechRate('The quick brown fox', 'x-slow')}
+   {SpeechRate('jumped over the lazy dog', 'fast')}.
+
 ### StartsWithVowel()
 
 This function returns true or false depending on whether the first letter in a string is a vowel.
