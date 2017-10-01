@@ -446,7 +446,7 @@ namespace EddiSpeechService
              // We need to make sure file names for the play function include a "/" (e.g. C:/)
             result = Regex.Replace(result, "(<.+?src=\")(.:)(.*?" + @"\/>)", "$1" + "$2SSSSS" + "$3");
             
-            // Our valid SSML elements are audio, break, play, phoneme, & prosody so encode these differently for now
+            // Our valid SSML elements are audio, break, emphasis, play, phoneme, & prosody so encode these differently for now
             // Also escape any double quotes inside the elements
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
@@ -470,8 +470,6 @@ namespace EddiSpeechService
             result = Regex.Replace(result, "YYYYY", ">");
             result = Regex.Replace(result, "ZZZZZ", "\"");
             result = Regex.Replace(result, "SSSSS", @"\");
-
-            Logging.Debug("Escaped SSML string: " + result);
             return result;
         }
 
