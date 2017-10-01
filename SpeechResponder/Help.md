@@ -82,7 +82,7 @@ This function allows you to give emphasis to specific words (to the extent suppo
 Emphasize() takes one mandatory argument: the text to speak with emphasis. If no secondary argument is specified, it shall default to a strong emphasis.
 Emphasize() also takes one optional argument: the degreee of emphasis to place on the text (legal values for the degree of emphasis include "strong", "moderate", "none" and "reduced").
 
-Common usage of this is to provide a more human-sounding reading of a string of letters by allowing the application of emphasis:
+Common usage of this is to provide a more human-sounding reading of text by allowing the application of emphasis:
 
    That is a {Emphasize('beautiful', 'strong')} ship you have there.
 
@@ -92,7 +92,7 @@ This function will turn its argument into a more human number, for example turni
 
 Humanise() takes one argument: the number to humanise.
 
-Common usage of this is to provide human-sounding numbers when speacking rather than saying every digit, for example:
+Common usage of this is to provide human-sounding numbers when speaking rather than saying every digit, for example:
 
    You have {Humanise(cmdr.credits)} credits.
 
@@ -110,9 +110,9 @@ Common usage of this is to provide a more human-sounding reading of a string of 
 
 This function allows you to dynamically adjust the rate of the spoken speech. This function uses SSML tags.
 
-SpeechRate() takes two mandatory arguments: the text to speak and the speech rate at which to speak it (legal values for the speech rate include "x-slow", "slow", "medium", "fast", "x-fast", or "default").
+SpeechRate() takes two mandatory arguments: the text to speak and the speech rate at which to speak it (legal values for the speech rate include "x-slow", "slow", "medium", "fast", "x-fast", "default", as well as percentage values like "-20%").
 
-Common usage of this is to provide a more human-sounding reading of a string of letters with variation in speech rate:
+Common usage of this is to provide a more human-sounding reading of text with variation in the speech rate:
 
    {SpeechRate('The quick brown fox', 'x-slow')}
    {SpeechRate('jumped over the lazy dog', 'fast')}.
@@ -121,9 +121,11 @@ Common usage of this is to provide a more human-sounding reading of a string of 
 
 This function allows you to dynamically adjust the volume of the spoken speech. This function uses SSML tags.
 
-SpeechRate() takes two mandatory arguments: the text to speak and the valume at which to speak it (legal values for the speech volume include "silent", "x-soft", "soft", "medium", "loud", "x-loud", or "default").
+##### Please take care with decibel values. If accidentally you blow out your speakers, that's totally on you. 
+SpeechRate() takes two mandatory arguments: the text to speak and the valume at which to speak it (legal values for the speech volume include "silent", "x-soft", "soft", "medium", "loud", "x-loud", "default", as well as relative decibel values like "-6dB").
+A value of "+0dB" means no change of volume, "+6dB" means approximately twice the current amplitude, "-6dB" means approximately half the current amplitude.
 
-Common usage of this is to provide a more human-sounding reading of a string of letters with variation in speech volume:
+Common usage of this is to provide a more human-sounding reading of text with variation in speech volume:
 
    {SpeechVolume('The quick brown fox', 'loud')}
    {SpeechVolume('jumped over the lazy dog', 'x-soft')}.
