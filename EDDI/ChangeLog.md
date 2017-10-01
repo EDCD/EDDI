@@ -5,6 +5,7 @@
     * Clarified & modified Help.md to clearly state which functions use SSML tags (like phonetic speech).
   * Speech Responder
     * Add SpeechRate() Cottle function. Details on how to use this are in the SpeechResponder documentation
+    * Add SpeechVolume() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Fixed a bug that was preventing the Play() function from working properly
 	* Script changes
 	  * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing

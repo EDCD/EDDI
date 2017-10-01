@@ -99,12 +99,23 @@ Common usage of this is to provide a more human-sounding reading of a string of 
 
 This function allows you to dynamically adjust the rate of the spoken speech.
 
-SpeechRate() takes two mandatory arguments: the text to speak and the speech rate at which to speak it (legal values for the speech rate include "x-slow", "slow", "medium", "fast", "x-fast", "default", or empty).
+SpeechRate() takes two mandatory arguments: the text to speak and the speech rate at which to speak it (legal values for the speech rate include "x-slow", "slow", "medium", "fast", "x-fast", or "default").
 
 Common usage of this is to provide a more human-sounding reading of a string of letters with variation in speech rate:
 
    {SpeechRate('The quick brown fox', 'x-slow')}
    {SpeechRate('jumped over the lazy dog', 'fast')}.
+
+### SpeechVolume()
+
+This function allows you to dynamically adjust the volume of the spoken speech.
+
+SpeechRate() takes two mandatory arguments: the text to speak and the valume at which to speak it (legal values for the speech volume include "silent", "x-soft", "soft", "medium", "loud", "x-loud", or "default").
+
+Common usage of this is to provide a more human-sounding reading of a string of letters with variation in speech volume:
+
+   {SpeechVolume('The quick brown fox', 'loud')}
+   {SpeechVolume('jumped over the lazy dog', 'x-soft')}.
 
 ### StartsWithVowel()
 
