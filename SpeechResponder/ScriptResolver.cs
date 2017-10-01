@@ -247,6 +247,25 @@ namespace EddiSpeechResponder
                 }
             }, 1, 2);
 
+            store["SpeechPitch"] = new NativeFunction((values) =>
+            {
+                string text = values[0].AsString;
+                string pitch = "default";
+                if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
+                {
+                    return text;
+                }
+                else if (values.Count == 2)
+                {
+                    pitch = values[1].AsString;
+                    return @"<prosody pitch=""" + pitch + @""">" + text + "</prosody>";
+                }
+                else
+                {
+                    return "The SpeechPitch function is used improperly. Please review the documentation for correct usage.";
+                }
+            }, 1, 2);
+
             store["SpeechRate"] = new NativeFunction((values) =>
             {
                 string text = values[0].AsString;

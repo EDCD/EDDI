@@ -106,11 +106,24 @@ Common usage of this is to provide a more human-sounding reading of a string of 
 
    Star luminosity class: {Spacialise(event.luminosityclass)}.
 
+### SpeechPitch()
+
+This function allows you to dynamically adjust the pitch of the spoken speech. This function uses SSML tags.
+
+SpeechPitch() takes two mandatory arguments: the text to speak and the pitch at which to speak it (legal values for the pitch include "x-low", "low", "medium", "high", "x-high", "default", as well as percentage values like "-20%" or "+10%").
+
+Common usage of this is to provide a more human-sounding reading of text with variation in the speech pitch:
+
+   {SpeechPitch('Ok, who added helium to the life support unit?', 'high')}
+   {Pause(1000)}
+   {SpeechPitch('Countering with sodium hexa-flouride.', 'x-low')}
+   Equilibrium restored.
+
 ### SpeechRate()
 
 This function allows you to dynamically adjust the rate of the spoken speech. This function uses SSML tags.
 
-SpeechRate() takes two mandatory arguments: the text to speak and the speech rate at which to speak it (legal values for the speech rate include "x-slow", "slow", "medium", "fast", "x-fast", "default", as well as percentage values like "-20%").
+SpeechRate() takes two mandatory arguments: the text to speak and the speech rate at which to speak it (legal values for the speech rate include "x-slow", "slow", "medium", "fast", "x-fast", "default", as well as percentage values like "-20%" or "+20%").
 
 Common usage of this is to provide a more human-sounding reading of text with variation in the speech rate:
 
