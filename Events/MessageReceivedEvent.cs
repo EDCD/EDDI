@@ -11,7 +11,8 @@ namespace EddiEvents
     {
         public const string NAME = "Message received";
         public const string DESCRIPTION = "Triggered when you receive a message";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ReceiveText\",\"From\":\"$cmdr_decorate:#name=HRC1;\",\"Message\":\"Hello\"}";
+        //public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ReceiveText\",\"From\":\"$cmdr_decorate:#name=HRC1;\",\"Message\":\"Hello\"}";
+        public const string SAMPLE = "{\"timestamp\":\"2017-10-01T18:51:52Z\", \"event\":\"ReceiveText\", \"From\":\"Minoo Minou\", \"Message\":\"u're welcome\", \"Channel\":\"player\"}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static MessageReceivedEvent()

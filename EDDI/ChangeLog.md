@@ -1,6 +1,8 @@
 # CHANGE LOG
 
 ### 2.4.0-b5
+  * Events
+    * Update 'Message received' event for Frontier's (undocumented) changes to player message entries
   * Speech Responder
 	* Script changes
 	  * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing
