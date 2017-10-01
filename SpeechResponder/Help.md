@@ -75,6 +75,17 @@ Common usage of this is to keep track of the cumulative or persistent informatio
 
     {SetState("distance_travelled_today", state.distance_travelled_today + event.distance)}
 
+### Emphasize()
+
+This function allows you to give emphasis to specific words (to the extent supported by the voice you are using - your mileage may vary). This function uses SSML tags.
+
+Emphasize() takes one mandatory argument: the text to speak with emphasis. If no secondary argument is specified, it shall default to a strong emphasis.
+Emphasize() also takes one optional argument: the degreee of emphasis to place on the text (legal values for the degree of emphasis include "strong", "moderate", "none" and "reduced").
+
+Common usage of this is to provide a more human-sounding reading of a string of letters by allowing the application of emphasis:
+
+   That is a {Emphasize('beautiful', 'strong')} ship you have there.
+
 ### Humanise()
 
 This function will turn its argument into a more human number, for example turning 31245 in to "just over thirty thousand".
@@ -97,7 +108,7 @@ Common usage of this is to provide a more human-sounding reading of a string of 
 
 ### SpeechRate()
 
-This function allows you to dynamically adjust the rate of the spoken speech.
+This function allows you to dynamically adjust the rate of the spoken speech. This function uses SSML tags.
 
 SpeechRate() takes two mandatory arguments: the text to speak and the speech rate at which to speak it (legal values for the speech rate include "x-slow", "slow", "medium", "fast", "x-fast", or "default").
 
@@ -108,7 +119,7 @@ Common usage of this is to provide a more human-sounding reading of a string of 
 
 ### SpeechVolume()
 
-This function allows you to dynamically adjust the volume of the spoken speech.
+This function allows you to dynamically adjust the volume of the spoken speech. This function uses SSML tags.
 
 SpeechRate() takes two mandatory arguments: the text to speak and the valume at which to speak it (legal values for the speech volume include "silent", "x-soft", "soft", "medium", "loud", "x-loud", or "default").
 

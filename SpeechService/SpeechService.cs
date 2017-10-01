@@ -459,6 +459,8 @@ namespace EddiSpeechService
             result = Regex.Replace(result, "<(/phoneme)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(prosody.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(/prosody)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(emphasis.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(/emphasis)>", "XXXXX$1YYYYY");
 
             // Now escape anything that is still present
             result = SecurityElement.Escape(result);
