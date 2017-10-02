@@ -1,6 +1,8 @@
 # CHANGE LOG
 
 ### 2.4.0-b5
+  * Events
+    * 'Location' event & 'Jumped' event - fixed a bug that would cause some high population systems to report negative populations.
   * Speech Responder
 	* Script changes
 	  * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing

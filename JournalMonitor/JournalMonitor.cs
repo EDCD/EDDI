@@ -153,7 +153,8 @@ namespace EddiJournalMonitor
                                 Economy economy = Economy.FromEDName(getString(data, "SystemEconomy"));
                                 Government government = Government.FromEDName(getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
-                                long? population = getOptionalLong(data, "Population");
+                                data.TryGetValue("Population", out val);
+                                long? population = (long)val;
 
                                 events.Add(new JumpedEvent(timestamp, systemName, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security, population) { raw = line });
                             }
@@ -185,7 +186,8 @@ namespace EddiJournalMonitor
                                 Economy economy = Economy.FromEDName(getString(data, "SystemEconomy"));
                                 Government government = Government.FromEDName(getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
-                                long? population = getOptionalLong(data, "Population");
+                                data.TryGetValue("Population", out val);
+                                long? population = (long)val;
 
                                 string station = getString(data, "StationName");
                                 string stationtype = getString(data, "StationType");
@@ -2717,6 +2719,7 @@ namespace EddiJournalMonitor
             {
                 return (int?)(long?)val;
             }
+            Logging.Debug("Unparseable value for " + key);
             throw new ArgumentException("Unparseable value for " + key);
         }
 
