@@ -153,8 +153,7 @@ namespace EddiJournalMonitor
                                 Economy economy = Economy.FromEDName(getString(data, "SystemEconomy"));
                                 Government government = Government.FromEDName(getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
-                                data.TryGetValue("Population", out val);
-                                long? population = (long)val;
+                                long? population = getOptionalLong(data, "Population");
 
                                 events.Add(new JumpedEvent(timestamp, systemName, x, y, z, distance, fuelUsed, fuelRemaining, allegiance, faction, factionState, economy, government, security, population) { raw = line });
                             }
@@ -186,8 +185,7 @@ namespace EddiJournalMonitor
                                 Economy economy = Economy.FromEDName(getString(data, "SystemEconomy"));
                                 Government government = Government.FromEDName(getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(getString(data, "SystemSecurity"));
-                                data.TryGetValue("Population", out val);
-                                long? population = (long)val;
+                                long? population = getOptionalLong(data, "Population");
 
                                 string station = getString(data, "StationName");
                                 string stationtype = getString(data, "StationType");
