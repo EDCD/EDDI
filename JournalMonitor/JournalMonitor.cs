@@ -2706,11 +2706,6 @@ namespace EddiJournalMonitor
         {
             object val;
             data.TryGetValue(key, out val);
-            return getOptionalLong(key, val);
-        }
-
-        private static long? getOptionalLong(string key, object val)
-        {
             if (val == null)
             {
                 return null;
