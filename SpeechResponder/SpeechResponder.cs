@@ -139,7 +139,7 @@ namespace EddiSpeechResponder
             if (theEvent is NavBeaconScanEvent)
             {
                 beaconScanCount = ((NavBeaconScanEvent)theEvent).numbodies;
-                Logging.Debug("beaconScanCount = " + beaconScanCount.ToString());
+                Logging.Debug($"beaconScanCount = {beaconScanCount}");
             }
             else if (theEvent is StarScannedEvent || theEvent is BodyScannedEvent || theEvent is BeltScannedEvent)
             {
