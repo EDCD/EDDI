@@ -2712,7 +2712,7 @@ namespace EddiJournalMonitor
             }
             else if (val is long)
             {
-                return (int?)(long?)val;
+                return (long?)val;
             }
             Logging.Debug("Unparseable value for " + key);
             throw new ArgumentException("Unparseable value for " + key);
