@@ -2704,20 +2704,16 @@ namespace EddiJournalMonitor
         {
             object val;
             data.TryGetValue(key, out val);
-            return getOptionalLong(key, val);
-        }
-
-        private static long? getOptionalLong(string key, object val)
-        {
             if (val == null)
             {
                 return null;
             }
             else if (val is long)
             {
-                return (int?)(long?)val;
+                return (long?)val;
             }
-            throw new ArgumentException("Unparseable value for " + key);
+
+            throw new ArgumentException($"Expected value of type long for key {key}, instead got value of type {data.GetType().FullName}");
         }
 
         private static bool getBool(IDictionary<string, object> data, string key)
