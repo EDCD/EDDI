@@ -2712,8 +2712,8 @@ namespace EddiJournalMonitor
             {
                 return (long?)val;
             }
-            Logging.Debug("Unparseable value for " + key);
-            throw new ArgumentException("Unparseable value for " + key);
+
+            throw new ArgumentException($"Expected value of type long for key {key}, instead got value of type {data.GetType().FullName}");
         }
 
         private static bool getBool(IDictionary<string, object> data, string key)
