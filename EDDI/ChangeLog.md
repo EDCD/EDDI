@@ -3,9 +3,11 @@
 ### 2.4.0-b5
   * Events
     * Revised 'Community goal' event - event expiry is now given in seconds rather than obscure DateTime format.
+    * Update 'Message received' event for Frontier's (undocumented) changes to player message entries
+    * 'Location' event & 'Jumped' event - fixed a bug that would cause some high population systems to report negative populations.
   * Speech Responder
-	* Script changes
-	  * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing
+	  * Script changes
+	    * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing, the script is also now aware of the time remaining in the community goal
 
 ### 2.4.0-b4
   * Core
