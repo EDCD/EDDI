@@ -4,10 +4,14 @@
   * Core
     * Updated Variables.md to include a description of commodities objects and their available properties
   * Events
+    * Update 'Message received' event for Frontier's (undocumented) changes to player message entries
+    * 'Location' event & 'Jumped' event - fixed a bug that would cause some high population systems to report negative populations.
     * 'Search and rescue event' - the commodity is now a commodity object with all applicable commodity information included
   * Speech Responder
     * 'Search and rescue event' event - revised script to use commodity object variables 
       (beta users, please refresh the default script)
+  	* Script changes
+	    * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing
 
 ### 2.4.0-b4
   * Core
