@@ -169,9 +169,9 @@ namespace EddiShipMonitor
             {
                 handleModuleSoldEvent((ModuleSoldEvent)@event);
             }
-            else if (@event is ModuleSoldFromStorage)
+            else if (@event is ModuleSoldFromStorageEvent)
             {
-                handleModuleSoldFromStorageEvent((ModuleSoldFromStorage)@event);
+                handleModuleSoldFromStorageEvent((ModuleSoldFromStorageEvent)@event);
             }
             else if (@event is ModuleStoredEvent)
             {
@@ -325,27 +325,24 @@ namespace EddiShipMonitor
         {
             // Obtain the ship to which this loadout refers
             Ship ship = GetShip(@event.shipid);
+            Ship template = ShipDefinitions.FromEDModel(@event.ship);
+
             if (ship == null)
             {
                 // The ship is unknown - create it
-                ship = ShipDefinitions.FromEDModel(@event.ship);
+                Logging.Debug("Unknown ship ID " + @event.shipid);
+                ship = template;
                 ship.LocalId = (int)@event.shipid;
                 ship.role = Role.MultiPurpose;
-                AddShip(ship);
             }
 
             // Update name and ident if required
             setShipName(ship, @event.shipname);
             setShipIdent(ship, @event.shipident);
+            ship.model = template.model;
+            ship.Augment();
 
             ship.paintjob = @event.paintjob;
-
-            // Augment the ship info if required
-            if (ship.model == null)
-            {
-                ship.model = @event.ship;
-                ship.Augment();
-            }
 
             // Set the standard modules
             Compartment compartment = @event.compartments.FirstOrDefault(c => c.name == "Armour");
@@ -426,6 +423,7 @@ namespace EddiShipMonitor
             // Cargo capacity
             ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.name.EndsWith("Cargo Rack")).Sum(c => Math.Pow(2, c.module.@class));
 
+            AddShip(ship);
             writeShips();
         }
 
@@ -533,19 +531,22 @@ namespace EddiShipMonitor
         private void handleModulePurchasedEvent(ModulePurchasedEvent @event)
         {
             AddModule((int)@event.shipid, @event.slot, @event.buymodule);
+            writeShips();
         }
 
         private void handleModuleRetrievedEvent(ModuleRetrievedEvent @event)
         {
             AddModule((int)@event.shipid, @event.slot, @event.module);
+            writeShips();
         }
 
         private void handleModuleSoldEvent(ModuleSoldEvent @event)
         {
             RemoveModule((int)@event.shipid, @event.slot);
+            writeShips();
         }
 
-        private void handleModuleSoldFromStorageEvent(ModuleSoldFromStorage @event)
+        private void handleModuleSoldFromStorageEvent(ModuleSoldFromStorageEvent @event)
         {
             // We don't do anything here as the ship object is unaffected
         }
@@ -553,12 +554,14 @@ namespace EddiShipMonitor
         private void handleModuleStoredEvent(ModuleStoredEvent @event)
         {
             RemoveModule((int)@event.shipid, @event.slot, @event.replacementmodule);
+            writeShips();
         }
 
         private void handleModulesStoredEvent(ModulesStoredEvent @event)
         {
             foreach (string slot in @event.slots)
                 RemoveModule((int)@event.shipid, slot);
+            writeShips();
         }
 
         private void handleModuleSwappedEvent(ModuleSwappedEvent @event)
@@ -635,6 +638,7 @@ namespace EddiShipMonitor
                         ship.compartments.Add(cpt);
                 }
             }
+            writeShips();
         }
 
         private void handleModuleTransferEvent(ModuleTransferEvent @event)
@@ -735,6 +739,39 @@ namespace EddiShipMonitor
                     JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
                     parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
                     ship.raw = parsedRaw.ToString(Formatting.None);
+                }
+            }
+
+            // Prune ships from the Shipyard that are not found in the Profile Shipyard 
+            foreach (Ship ship in shipyard)
+            {
+                Ship profileShip = profileShipyard.FirstOrDefault(s => s.LocalId == ship.LocalId);
+                if (profileShip == null)
+                    RemoveShip(ship.LocalId);
+            }
+
+            // Add ships from the Profile Shipyard that are not found in the Shipyard 
+            // Update name, ident and value of ships in the Shipyard 
+            foreach (Ship profileShip in profileShipyard)
+            {
+                Ship ship = GetShip(profileShip.LocalId);
+                if (ship == null)
+                {
+                    ship = profileShip;
+                    ship.Augment();
+                    ship.role = Role.MultiPurpose;
+                    AddShip(ship);
+                }
+                else
+                {
+                    if (profileShip.name != null)
+                        ship.name = profileShip.name;
+                    if (profileShip.ident != null)
+                        ship.ident = profileShip.ident;
+                    ship.model = profileShip.model;
+                    ship.value = profileShip.value;
+                    ship.starsystem = profileShip.starsystem;
+                    ship.station = profileShip.station;
                 }
             }
 
@@ -937,7 +974,7 @@ namespace EddiShipMonitor
                         ship.role = Role.MultiPurpose;
                         AddShip(ship);
                         currentShipId = ship.LocalId;
-                        Logging.Debug("Created ship ID " + localId);
+                        Logging.Debug("Created ship ID " + localId + ";  " + JsonConvert.SerializeObject(ship));
                     }
                     else
                     {

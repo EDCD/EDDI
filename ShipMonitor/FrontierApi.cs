@@ -99,6 +99,8 @@ namespace EddiShipMonitor
             {
                 Ship.raw = json.ToString(Formatting.None);
                 Ship.LocalId = json.GetValue("id").Value<int>();
+                Ship.name = (string)json.GetValue("shipName");
+                Ship.ident = (string)json.GetValue("shipID");
 
                 Ship.value = (long)(json["value"]?["hull"] ?? 0) + (long)(json["value"]?["modules"] ?? 0);
                 Ship.cargocapacity = (int)(json["cargo"]?["capacity"] ?? 0);
