@@ -21,7 +21,7 @@ namespace EddiEvents
             VARIABLES.Add("name", "The description of the goal (this is a list if participating in multiple goals)");
             VARIABLES.Add("system", "The system where the goal is located (this is a list if participating in multiple goals)");
             VARIABLES.Add("station", "The station where the goal is located (this is a list if participating in multiple goals)");
-            VARIABLES.Add("expiry", "The expiration time and date for the goal (this is a list if participating in multiple goals)");
+            VARIABLES.Add("expiry", "The expiration time for the goal in seconds (this is a list if participating in multiple goals)");
             VARIABLES.Add("iscomplete", "The completion status of the goal (true/false) (this is a list if participating in multiple goals)");
             VARIABLES.Add("total", "The community's current total contributions (this is a list if participating in multiple goals)");
             VARIABLES.Add("contribution", "The commander's contribution (this is a list if participating in multiple goals)");
@@ -41,7 +41,7 @@ namespace EddiEvents
 
         public List<string> station { get; private set; }
 
-        public List<DateTime> expiry { get; private set; }
+        public List<long> expiry { get; private set; }
 
         public List<bool> iscomplete { get; private set; }
 
@@ -61,7 +61,7 @@ namespace EddiEvents
 
         public List<long?> tierreward { get; private set; }
 
-        public CommunityGoalEvent(DateTime timestamp, List<long> cgid, List<string> name, List<string> system, List<string> station, List<DateTime> expiry, List<bool> iscomplete, List<int> total, List<int> contribution, List<int> contributors, List<decimal> percentileband, List<int?> topranksize, List<bool?> toprank, List<string> tier, List<long?> tierreward) : base(timestamp, NAME)
+        public CommunityGoalEvent(DateTime timestamp, List<long> cgid, List<string> name, List<string> system, List<string> station, List<long> expiry, List<bool> iscomplete, List<int> total, List<int> contribution, List<int> contributors, List<decimal> percentileband, List<int?> topranksize, List<bool?> toprank, List<string> tier, List<long?> tierreward) : base(timestamp, NAME)
 
         {
             this.cgid = cgid;
