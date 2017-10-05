@@ -136,16 +136,12 @@ namespace EddiSpeechResponder
                 }
             }
 
-            IDictionary<string, object> data = Deserializtion.DeserializeData(theEvent.raw);
-            object val;
-
             if (theEvent is NavBeaconScanEvent)
             {
-                data.TryGetValue("NumBodies", out val);
-                beaconScanCount = (int)(long)val;
-                Logging.Debug("beaconScanCount = " + beaconScanCount.ToString());
+                beaconScanCount = ((NavBeaconScanEvent)theEvent).numbodies;
+                Logging.Debug($"beaconScanCount = {beaconScanCount}");
             }
-            else if (theEvent is BodyScannedEvent || theEvent is BeltScannedEvent)
+            else if (theEvent is StarScannedEvent || theEvent is BodyScannedEvent || theEvent is BeltScannedEvent)
             {
                 if (beaconScanCount > 0)
                 {

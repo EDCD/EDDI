@@ -882,6 +882,12 @@ namespace EddiDataDefinitions
                 {128777345, new Module(128777345, "Int_DroneControl_Repair_Size7_Class4", 1612, "Repair Limpet Controller", 7, "B", 3499200) },
                 {128777346, new Module(128777346, "Int_DroneControl_Repair_Size7_Class5", 1613, "Repair Limpet Controller", 7, "A", 6998400) }, 
 
+                // 2.4 Update modules
+                {128788699, new Module(128788699, "Hpt_ATDumbfireMissile_Fixed_Medium", 1614, "AX Missile Rack", 2, "B", 540900, Module.ModuleMount.Fixed) },
+                {128788704, new Module(128788704, "Hpt_ATDumbfireMissile_Turret_Medium", 1615, "AX Missile Rack", 2, "B", 2022700, Module.ModuleMount.Turreted) },
+                {128793115, new Module(128793115, "Hpt_XenoScanner_Basic_Tiny", 1616, "Xeno Scanner", 0, "E", 365700) },
+                {128793116, new Module(128793116, "Int_DroneControl_UnkVesselResearch", 1617, "Research Limpet Controller", 1, "E", 600) },
+
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },
                 {128666642, new Module(128666642, "Int_StellarBodyDiscoveryScanner_Standard_free", -1, "Basic Discovery Scanner", -1, "F", 0) },
