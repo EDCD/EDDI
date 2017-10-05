@@ -1110,7 +1110,7 @@ namespace EddiJournalMonitor
                                 string from = getString(data, "From");
                                 string channel = getString(data, "Channel");
                                 string message = getString(data, "Message");
-                                string source = null;
+                                string source;
 
                                 if ((channel == "player") || (from.StartsWith("$cmdr") || (!from.Contains("$RolePanel") && channel == "wing")))
                                 {
