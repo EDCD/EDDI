@@ -363,7 +363,7 @@ namespace Eddi
                 }
                 catch (Exception)
                 {
-                    companionAppText.Text = "Unable to log in.  This is usually a temporary issue with Frontier's servvice; please try again later";
+                    companionAppText.Text = "Unable to log in.  This is usually a temporary issue with Frontier's service; please try again later";
                 }
             }
             else if (companionAppCodeText.Visibility == Visibility.Visible)
@@ -391,7 +391,7 @@ namespace Eddi
                 }
                 catch (Exception)
                 {
-                    setUpCompanionAppStage1("Unable to log in.  This is usually a temporary issue with Frontier's servvice; please try again later");
+                    setUpCompanionAppStage1("Unable to log in.  This is usually a temporary issue with Frontier's service; please try again later");
                 }
             }
         }
