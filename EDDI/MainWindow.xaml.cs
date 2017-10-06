@@ -574,13 +574,16 @@ namespace Eddi
                     progress.Report("");
                     client.UploadFile("http://api.eddp.co/log", Constants.DATA_DIR + @"\\eddi.log");
                     progress.Report("done");
-                    try
+                    if (false) // temporarily disabled while we fix #91
                     {
-                        File.Delete(Constants.DATA_DIR + @"\\eddi.log");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Error("Failed to delete file after upload", ex);
+                        try
+                        {
+                            File.Delete(Constants.DATA_DIR + @"\\eddi.log");
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Error("Failed to delete file after upload", ex);
+                        }
                     }
                 }
                 catch (Exception ex)
