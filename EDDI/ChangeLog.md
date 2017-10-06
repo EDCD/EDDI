@@ -12,6 +12,7 @@
   	* Script changes
 	    * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing, the script is also now aware of the time remaining in the community goal
         * 'Search and rescue' event - revised script to use commodity object variables (beta users, please refresh the default script)
+        * 'Touchdown' event - latitude & longitude are only written to the journal when the ship is player controlled, script revised to not give erroneous information if the ship isn't player controlled
       
 ### 2.4.0-b4
   * Core
