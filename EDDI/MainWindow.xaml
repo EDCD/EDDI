@@ -1,10 +1,12 @@
-﻿<Window x:Class="Eddi.MainWindow"
+<Window x:Class="Eddi.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:eddi="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
+        xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
         mc:Ignorable="d"
         Title="EDDI" Height="600"  Width="800">
     <DockPanel LastChildFill="True">
@@ -66,6 +68,9 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
+
+
+
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -85,6 +90,14 @@
                         <TextBlock x:Name ="eddi3Text" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5" Text="Your insurance excess is the % of your ship's value you have to pay if your ship is destroyed.  This will usually be 5 but could be less if you are an early backer of Elite with alpha backers being 2.5 and beta backers being 3.75.  If you aren't sure then leave it at 5" VerticalAlignment="Top"/>
                         <Label x:Name ="eddiInsuranceLabel" Grid.Row="4" Grid.Column="0" Margin="5" Content="Insurance excess (%):"/>
                         <TextBox x:Name="eddiInsuranceDecimal" Grid.Row="4" Grid.Column="1" Margin="5" PreviewTextInput="EnsureValidDecimal" TextChanged="insuranceChanged" TextAlignment="Right"/>
+                        <TextBlock x:Name ="eddiPPtext" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5" TextWrapping="Wrap" Margin="7,14,3,0" Text="If you have already chose a PowerPlay to follow, take it with the combobox under,or else, it will be auto activate when you choose one" VerticalAlignment="Top" Height="26"/>
+                        <ComboBox x:Name="eddipowerplaylist" Margin="33,44,481,0" RenderTransformOrigin="-0.748,3.809" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="272" Height="34" Grid.Row="6" SelectedItem="{Binding Path=powerplay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static eddi:PowerPlay.PPlay}}" SelectionChanged="eddipowerplaylist_SelectionChanged" Grid.ColumnSpan="2"/>
+                        <TextBox x:Name ="eddiPowerPlayObedience" Grid.Row="6" Margin="209,46,28,52" TextChanged="PowerPlayChanged" Grid.Column="1" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Center" Width="418" Height="30"/>
+                        <RadioButton x:Name ="eddiisMale" Content="Male" HorizontalAlignment="Left" Height="24" Margin="17,129,0,-20" Grid.Row="6" VerticalAlignment="Top" Width="210" Checked="isMale_Checked" Grid.Column="1"/>
+                        <RadioButton x:Name ="eddiisFemale" Content="Female" HorizontalAlignment="Left" Height="33" Margin="18,158,0,-60" Grid.Row="6" VerticalAlignment="Top" Width="210" Checked="isFemale_Checked" RenderTransformOrigin="0.0,2.4" Grid.Column="1"/>
+                        <Label Grid.ColumnSpan="4" Content="Select if your Cmd is Male or Female" HorizontalAlignment="Left" Height="32" Margin="2,94,0,-7" Grid.Row="6" VerticalAlignment="Top" Width="396" Grid.Column="1"/>
+                        <TextBox x:Name ="eddiGender" Grid.ColumnSpan="3" Grid.Column="1" HorizontalAlignment="Left" Height="46" Margin="28,173,0,-114" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Top" Width="190" IsHitTestVisible="False" AllowDrop="False" Focusable="False" Visibility="Hidden"/>
+
                     </Grid>
                 </DockPanel>
             </TabItem>
