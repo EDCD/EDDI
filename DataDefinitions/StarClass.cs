@@ -1,4 +1,4 @@
-﻿using MathNet.Numerics.Distributions;
+using MathNet.Numerics.Distributions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +18,8 @@ namespace EddiDataDefinitions
         public string edname { get; private set; }
 
         public string name { get; private set; }
+
+        public string luminosityclass { get; private set; }
 
         public string chromaticity { get; private set; }
 
