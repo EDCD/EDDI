@@ -253,27 +253,31 @@ namespace EddiEddpMonitor
                     continue;
                 }
 
-                if (watch.MaxDistanceFromShip != null)
+                if (EDDI.Instance.CurrentStarSystem != null)
                 {
-                    // Calculate the distance of the system from the ship
-                    decimal distance = (decimal)Math.Sqrt(Math.Pow((double)(EDDI.Instance.CurrentStarSystem.x - x), 2)
-                                                 + Math.Pow((double)(EDDI.Instance.CurrentStarSystem.y - y), 2)
-                                                 + Math.Pow((double)(EDDI.Instance.CurrentStarSystem.z - z), 2));
-                    if (distance > watch.MaxDistanceFromShip)
-                    {
-                        continue;
-                    }
-                }
 
-                if (watch.MaxDistanceFromHome != null)
-                {
-                    // Calculate the distance of the system from the home system
-                    decimal distance = (decimal)Math.Sqrt(Math.Pow((double)(EDDI.Instance.HomeStarSystem.x - x), 2)
-                                                 + Math.Pow((double)(EDDI.Instance.HomeStarSystem.y - y), 2)
-                                                 + Math.Pow((double)(EDDI.Instance.HomeStarSystem.z - z), 2));
-                    if (distance > watch.MaxDistanceFromHome)
+                    if (watch.MaxDistanceFromShip != null)
                     {
-                        continue;
+                        // Calculate the distance of the system from the ship
+                        decimal distance = (decimal)Math.Sqrt(Math.Pow((double)(EDDI.Instance.CurrentStarSystem.x - x), 2)
+                                                     + Math.Pow((double)(EDDI.Instance.CurrentStarSystem.y - y), 2)
+                                                     + Math.Pow((double)(EDDI.Instance.CurrentStarSystem.z - z), 2));
+                        if (distance > watch.MaxDistanceFromShip)
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (watch.MaxDistanceFromHome != null)
+                    {
+                        // Calculate the distance of the system from the home system
+                        decimal distance = (decimal)Math.Sqrt(Math.Pow((double)(EDDI.Instance.HomeStarSystem.x - x), 2)
+                                                     + Math.Pow((double)(EDDI.Instance.HomeStarSystem.y - y), 2)
+                                                     + Math.Pow((double)(EDDI.Instance.HomeStarSystem.z - z), 2));
+                        if (distance > watch.MaxDistanceFromHome)
+                        {
+                            continue;
+                        }
                     }
                 }
 
