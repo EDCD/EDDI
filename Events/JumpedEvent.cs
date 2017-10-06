@@ -65,6 +65,8 @@ namespace EddiEvents
 
         public string ppname { get; private set; }
 
+
+
         public string ppstate { get; private set; }
 
         public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security, long? population, string ppmame, string ppstate) : base(timestamp, NAME)
@@ -76,7 +78,7 @@ namespace EddiEvents
             this.distance = distance;
             this.fuelused = fuelused;
             this.fuelremaining = fuelremaining;
-            this.allegiance = (allegiance == null ? Superpower.None.name : allegiance.name) ;
+            this.allegiance = (allegiance == null ? Superpower.None.name : allegiance.name);
             this.faction = faction;
             this.factionstate = (factionstate == null ? State.None.name : factionstate.name);
             this.economy = (economy == null ? Economy.None.name : economy.name);
