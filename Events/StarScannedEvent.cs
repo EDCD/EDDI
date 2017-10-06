@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ namespace EddiEvents
             VARIABLES.Add("radiusprobability", "The probablility of finding a star of this class with this radius");
             VARIABLES.Add("absolutemagnitude", "The absolute magnitude of the star that has been scanned");
             VARIABLES.Add("luminosity", "The luminosity of the star that has been scanned");
-            VARIABLES.Add("luminosityclass", "The luminosity class of the star that has been scanned");            
+            VARIABLES.Add("luminosityclass", "The luminosity class of the star that has been scanned");
             VARIABLES.Add("tempprobability", "The probablility of finding a star of this class with this temperature");
             VARIABLES.Add("age", "The age of the star that has been scanned, in years (rounded to millions of years)");
             VARIABLES.Add("ageprobability", "The probablility of finding a star of this class with this age");
@@ -48,6 +48,82 @@ namespace EddiEvents
         public string name { get; private set; }
 
         public string stellarclass { get; private set; }
+
+        public decimal solarmass{ get; private set; }
+
+        public decimal massprobability { get; private set; }
+
+        public decimal radius { get; private set; }
+
+        public decimal solarradius { get; private set; }
+
+        public decimal radiusprobability { get; private set; }
+
+        public decimal absolutemagnitude { get; private set; }
+
+        public decimal luminosity { get; private set; }
+        
+        public string luminosityclass { get; private set; }
+
+        public decimal tempprobability { get; private set; }
+
+        public long age { get; private set; }
+
+        public decimal ageprobability { get; private set; }
+
+        public decimal temperature { get; private set; }
+
+        public string chromaticity { get; private set; }
+
+        public decimal distancefromarrival { get; private set; }
+
+        public decimal? orbitalperiod { get; private set; }
+
+        public decimal rotationperiod { get; private set; }
+
+        public decimal? semimajoraxis { get; private set; }
+
+        public decimal? eccentricity { get; private set; }
+
+        public decimal? orbitalinclination { get; private set; }
+
+        public decimal? periapsis { get; private set; }
+
+        public List<Ring> rings { get; private set; }
+
+        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings) : base(timestamp, NAME)
+        {
+            this.name = name;
+            this.stellarclass = stellarclass;
+            this.solarmass = solarmass;
+            this.radius = radius;
+            this.absolutemagnitude = absolutemagnitude;
+            this.luminosityclass = luminosityclass;         
+            this.age = age;
+            this.temperature = temperature;
+            this.distancefromarrival = distancefromarrival;
+            this.orbitalperiod = orbitalperiod;
+            this.rotationperiod = rotationperiod;
+            this.semimajoraxis = semimajoraxis;
+            this.eccentricity = eccentricity;
+            this.orbitalinclination = orbitalinclination;
+            this.periapsis = periapsis;
+            this.rings = rings;
+            solarradius = StarClass.solarradius(radius);
+            luminosity = StarClass.luminosity(absolutemagnitude);        
+            StarClass starClass = StarClass.FromName(this.stellarclass);
+            if (starClass != null)
+            {
+                massprobability = StarClass.sanitiseCP(starClass.stellarMassCP(solarmass));
+                radiusprobability = StarClass.sanitiseCP(starClass.stellarRadiusCP(this.solarradius));
+                tempprobability = StarClass.sanitiseCP(starClass.tempCP(this.temperature));
+                ageprobability = StarClass.sanitiseCP(starClass.ageCP(this.age));
+                chromaticity = starClass.chromaticity;
+            }
+        }
+    }
+}
+
 
         public decimal solarmass{ get; private set; }
 
