@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,6 +21,10 @@ namespace Eddi
         public decimal Insurance { get; set; }
         [JsonProperty("plugins")]
         public IDictionary<string, bool> Plugins { get; set; }
+        [JsonProperty("PowerPlayObedience")]
+        public string PowerPlayObedience { get; set; }
+        [JsonProperty("Gender")]
+        public string Gender { get; set; }
 
         [JsonIgnore]
         private string dataPath;
@@ -37,7 +41,7 @@ namespace Eddi
         /// Obtain configuration from a file.  If the file name is not supplied the the default
         /// path of Constants.Data_DIR\eddi.json is used
         /// </summary>
-        public static EDDIConfiguration FromFile(string filename=null)
+        public static EDDIConfiguration FromFile(string filename = null)
         {
             if (filename == null)
             {
@@ -79,7 +83,7 @@ namespace Eddi
         /// when reading in the configuration will be used, or the default path of 
         /// Constants.Data_DIR\eddi.json will be used
         /// </summary>
-        public void ToFile(string filename=null)
+        public void ToFile(string filename = null)
         {
             if (filename == null)
             {
@@ -89,7 +93,8 @@ namespace Eddi
             {
                 filename = Constants.DATA_DIR + @"\eddi.json";
             }
-
+            if (PowerPlayObedience == null) { PowerPlayObedience = "None"; }
+            if (Gender == null) { Gender = "Male"; }
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
             Files.Write(filename, json);
         }
