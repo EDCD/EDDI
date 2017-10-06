@@ -887,6 +887,8 @@ namespace EddiDataDefinitions
                 {128788704, new Module(128788704, "Hpt_ATDumbfireMissile_Turret_Medium", 1615, "AX Missile Rack", 2, "B", 2022700, Module.ModuleMount.Turreted) },
                 {128793115, new Module(128793115, "Hpt_XenoScanner_Basic_Tiny", 1616, "Xeno Scanner", 0, "E", 365700) },
                 {128793116, new Module(128793116, "Int_DroneControl_UnkVesselResearch", 1617, "Research Limpet Controller", 1, "E", 600) },
+                {128788701, new Module(128788701, "Hpt_ATMultiCannon_Fixed_Medium", 1618, "AX Multi-Cannon", 2, "E", 379000, Module.ModuleMount.Fixed) },
+                {128793059, new Module(128793059, "Hpt_ATMultiCannon_Turret_Medium", 1619, "AX Multi-Cannon", 2, "F", 1826500, Module.ModuleMount.Turreted) },
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },
