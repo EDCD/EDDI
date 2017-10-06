@@ -1670,6 +1670,7 @@ namespace Eddi
                         }
 
                         // We do need to fetch an updated profile; do so
+                        ApiTimeStamp = DateTime.UtcNow;
                         long profileTime = (long)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                         Logging.Debug("Fetching profile");
                         Profile profile = CompanionAppService.Instance.Profile(true);
