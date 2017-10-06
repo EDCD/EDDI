@@ -96,6 +96,7 @@ namespace Eddi
 
         // Information obtained from the companion app service
         public Commander Cmdr { get; private set; }
+        public DateTime ApiTimeStamp { get; private set; }
         //public ObservableCollection<Ship> Shipyard { get; private set; } = new ObservableCollection<Ship>();
         public Station CurrentStation { get; private set; }
 
@@ -1367,6 +1368,9 @@ namespace Eddi
             {
                 try
                 {
+                    // Save a timestamp when the API refreshes, so that we can compare whether events are more or less recent
+                    ApiTimeStamp = DateTime.UtcNow;
+
                     long profileTime = (long)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                     Profile profile = CompanionAppService.Instance.Profile();
                     if (profile != null)
@@ -1666,6 +1670,7 @@ namespace Eddi
                         }
 
                         // We do need to fetch an updated profile; do so
+                        ApiTimeStamp = DateTime.UtcNow;
                         long profileTime = (long)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                         Logging.Debug("Fetching profile");
                         Profile profile = CompanionAppService.Instance.Profile(true);
