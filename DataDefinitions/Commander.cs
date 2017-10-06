@@ -1,14 +1,21 @@
-﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
     /// <summary>
     /// Details about a commander
     /// </summary>
-    public class Commander
+    public class Commander : INotifyPropertyChanged
     {
         /// <summary>The commander's name</summary>
-        public string name { get; set;  }
+        public string name { get; set; }
         /// <summary>The commander's name as spoken</summary>
         public string phoneticname { get; set; }
 
@@ -20,7 +27,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The commander's trade rating</summary>
         public TradeRating traderating { get; set; }
-        
+
         /// <summary>The commander's exploration rating</summary>
         public ExplorationRating explorationrating { get; set; }
 
@@ -39,6 +46,45 @@ namespace EddiDataDefinitions
         public long debt { get; set; }
 
         /// <summary>The insurance excess percentage the commander has to pay</summary>
-        public decimal? insurance { get; set;  }
+        public decimal? insurance { get; set; }
+
+
+        private string _PPObedience;
+        /// <summary>The PowerPlay Master choosen by the player</summary>
+        public string powerplay
+        {
+            get
+            {
+                if (_PPObedience != null)
+                {
+                    //Logging.Info("Obedience" + _PPObedience);
+                    return _PPObedience;
+                }
+                else
+                {
+
+                    //Logging.Info("Obedience" + "None");
+                    return "None";
+                }
+            }
+            set
+            {
+                if (_PPObedience != value)
+                {
+                    _PPObedience = value;
+                    NotifyPropertyChanged("powerplay");
+                }
+            }
+        }
+
+        /// <summary>The commander's name</summary>
+        public string gender { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
     }
 }
