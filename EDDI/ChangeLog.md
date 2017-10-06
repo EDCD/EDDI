@@ -2,6 +2,7 @@
 
 ### 2.4.0-b5
   * Core
+    * EDDI will now capture a timestamp that can be used internally by EDDI to compare journal and API data.
     * Updated Variables.md to include a description of commodities objects and their available properties
   * Events
     * Revised 'Community goal' event - event expiry is now given in seconds rather than obscure DateTime format.
