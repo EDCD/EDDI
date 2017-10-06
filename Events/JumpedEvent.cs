@@ -88,5 +88,5 @@ namespace EddiEvents
             this.ppname = ppname;
             this.ppstate = ppstate;
         }
-    }
+    } 
 }
