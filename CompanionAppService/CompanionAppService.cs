@@ -23,6 +23,8 @@ namespace EddiCompanionAppService
         private static string LOGIN_URL = "/user/login";
         private static string CONFIRM_URL = "/user/confirm";
         private static string PROFILE_URL = "/profile";
+        private static string MARKET_URL = "/market";
+        private static string SHIPYARD_URL = "/shipyard";
 
         // We cache the profile to avoid spamming the service
         private Profile cachedProfile;
@@ -206,9 +208,11 @@ namespace EddiCompanionAppService
                 return cachedProfile;
             }
 
-            string data = obtainProfile();
+            string data = obtainProfile(BASE_URL + PROFILE_URL);
+            string market = obtainProfile(BASE_URL + MARKET_URL);
+            string shipyard = obtainProfile(BASE_URL + SHIPYARD_URL);
 
-            if (data == null || data == "Profile unavailable")
+            if (data == null || data == "Profile unavailable" || market == null || shipyard == null)
             {
                 // Happens if there is a problem with the API.  Logging in again might clear this...
                 relogin();
@@ -221,8 +225,12 @@ namespace EddiCompanionAppService
                 else
                 {
                     // Looks like login worked; try again
-                    data = obtainProfile();
-                    if (data == null || data == "Profile unavailable")
+                    data = obtainProfile(BASE_URL + PROFILE_URL);
+                    market = obtainProfile(BASE_URL + MARKET_URL);
+                    shipyard = obtainProfile(BASE_URL + SHIPYARD_URL);
+
+                    if (data == null || data == "Profile unavailable" || market == null || shipyard == null)
+
                     {
                         // No luck with a relogin; give up
                         SpeechService.Instance.Say(null, "Access to Frontier API has been lost.  Please update your information in Eddi's Frontier API tab to re-establish the connection.", false);
@@ -234,6 +242,13 @@ namespace EddiCompanionAppService
 
             try
             {
+                JObject json = JObject.Parse(data);
+                market = "{\"lastStarport\":" + market + "}";
+                shipyard = "{\"lastStarport\":" + shipyard + "}";
+                json.Merge(JObject.Parse(market), new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Concat });
+                json.Merge(JObject.Parse(shipyard), new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Concat });
+                data = JsonConvert.SerializeObject(json);
+
                 cachedProfile = ProfileFromJson(data);
             }
             catch (JsonException ex)
@@ -252,9 +267,9 @@ namespace EddiCompanionAppService
             return cachedProfile;
         }
 
-        private string obtainProfile()
+        private string obtainProfile(string url)
         {
-            HttpWebRequest request = GetRequest(BASE_URL + PROFILE_URL);
+            HttpWebRequest request = GetRequest(url);
             using (HttpWebResponse response = GetResponse(request))
             {
                 if (response == null)
