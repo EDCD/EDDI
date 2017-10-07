@@ -331,6 +331,21 @@ namespace EddiJournalMonitor
                                     events.Add(new ExplorationPromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
+                                else if (data.ContainsKey("Federation"))
+                                {
+                                    Superpower superpower = Superpower.FromName("Federation");
+                                    data.TryGetValue("Federation", out val);
+                                    FederationRating rating = FederationRating.FromRank((int)(long)val);
+                                    events.Add(new FederationPromotionEvent(timestamp, rating) { raw = line });
+                                    handled = true;
+                                }
+                                else if (data.ContainsKey("Empire"))
+                                {
+                                    data.TryGetValue("Empire", out val);
+                                    EmpireRating rating = EmpireRating.FromRank((int)(long)val);
+                                    events.Add(new EmpirePromotionEvent(timestamp, rating) { raw = line });
+                                    handled = true;
+                                }
                             }
                             break;
                         case "CollectCargo":

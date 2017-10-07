@@ -398,7 +398,7 @@
       "name": "Datalink message",
       "description": "Triggered upon completion of Datalink scan"
     },
-      "Died": {
+    "Died": {
       "enabled": true,
       "priority": 3,
       "responder": true,
@@ -460,6 +460,14 @@
       "default": true,
       "name": "Docking timed out",
       "description": "Triggered when your docking request times out"
+    },
+    "Empire promotion": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "\"{if event.rank = \\\"Knight\\\":\\r\\n    sir\\r\\n|elif event.rank = \\\"Lord\\\":\\r\\n    my lord\\r\\n|elif event.rank = \\\"Baron\\\":\\r\\n    my lord\\r\\n|elif event.rank = \\\"Viscount\\\":\\r\\n    my lord\\r\\n|elif event.rank = \\\"Count\\\":\\r\\n    my lord\\r\\n|elif event.rank = \\\"Earl\\\":\\r\\n    my lord\\r\\n|elif event.rank = \\\"Marquis\\\":\\r\\n    my lord\\r\\n|elif event.rank = \\\"Duke\\\":\\r\\n    your grace\\r\\n|elif event.rank = \\\"Prince\\\":\\r\\n    your royal highness\\r\\n|elif event.rank = \\\"King\\\":\\r\\n    your majesty\\r\\n|else:\\r\\n    commander\\r\\n},\\r\\nthe Empirial Navy has \\r\\n{OneOf(\\\"granted you a promotion\\\", \\\"promoted you\\\", \\\"advanced you\\\", \\\"named you\\\")}\\r\\nto the rank of\\r\\n{event.rank}\\r\\n{Occasionally(2, \\\"for your service to the Empire\\\")}.      \"default\": true,",
+      "name": "Empire promotion",
+      "description": "Triggered when your rank increases with the Empire"
     },
     "Engineer progressed": {
       "enabled": true,
@@ -532,6 +540,15 @@
       "default": true,
       "name": "Exploration promotion",
       "description": "Triggered when your exploration rank increases"
+    },
+    "Federation promotion": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "The Federation Navy has \r\n{OneOf(\"granted you a promotion\", \"promoted you\", \"advanced you\")}\r\nto the rank of\r\n{event.rank}\r\n{Occasionally(2, \"for your service to the Federation\")}.",
+      "default": true,
+      "name": "Federation promotion",
+      "description": "Triggered when your rank increases with the Federation"
     },
     "Fighter docked": {
       "enabled": true,
@@ -1000,7 +1017,7 @@
       "default": true,
       "name": "Module sold",
       "description": "Triggered when selling a module to outfitting"
-	},
+    },
     "Module sold from storage": {
       "enabled": true,
       "priority": 3,

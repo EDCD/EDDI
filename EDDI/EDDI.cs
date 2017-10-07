@@ -698,9 +698,29 @@ namespace Eddi
                     {
                         passEvent = eventCommanderContinued((CommanderContinuedEvent)journalEvent);
                     }
+                    else if (journalEvent is CommanderRatingsEvent)
+                    {
+                        passEvent = eventCommanderRatings((CommanderRatingsEvent)journalEvent);
+                    }
                     else if (journalEvent is CombatPromotionEvent)
                     {
                         passEvent = eventCombatPromotion((CombatPromotionEvent)journalEvent);
+                    }
+                    else if (journalEvent is TradePromotionEvent)
+                    {
+                        passEvent = eventTradePromotion((TradePromotionEvent)journalEvent);
+                    }
+                    else if (journalEvent is ExplorationPromotionEvent)
+                    {
+                        passEvent = eventExplorationPromotion((ExplorationPromotionEvent)journalEvent);
+                    }
+                    else if (journalEvent is FederationPromotionEvent)
+                    {
+                        passEvent = eventFederationPromotion((FederationPromotionEvent)journalEvent);
+                    }
+                    else if (journalEvent is EmpirePromotionEvent)
+                    {
+                        passEvent = eventEmpirePromotion((EmpirePromotionEvent)journalEvent);
                     }
                     else if (journalEvent is CrewJoinedEvent)
                     {
@@ -1178,12 +1198,79 @@ namespace Eddi
             return true;
         }
 
+        private bool eventCommanderRatings(CommanderRatingsEvent theEvent)
+        {
+            // Capture commander ratings and add them to the commander object
+            if (Cmdr != null)
+            {
+                Cmdr.combatrating = theEvent.combat;
+                Cmdr.traderating = theEvent.trade;
+                Cmdr.explorationrating = theEvent.exploration;
+                Cmdr.cqcrating = theEvent.cqc;
+                Cmdr.empirerating = theEvent.empire;
+                Cmdr.federationrating = theEvent.federation;
+            }
+            return true;
+        }
+
         private bool eventCombatPromotion(CombatPromotionEvent theEvent)
         {
             // There is a bug with the journal where it reports superpower increases in rank as combat increases
             // Hence we check to see if this is a real event by comparing our known combat rating to the promoted rating
+            if ((Cmdr == null || Cmdr.combatrating == null) || theEvent.rating != Cmdr.combatrating.name)
+            {
+                // Real event. Capture commander ratings and add them to the commander object
+                if (Cmdr != null)
+                {
+                    Cmdr.combatrating = CombatRating.FromName(theEvent.rating);
+                }
+                return true;
+            }
+            else
+            {
+                // False event
+                return false;
+            }
+        }
 
-            return (Cmdr == null || Cmdr.combatrating == null) || theEvent.rating != Cmdr.combatrating.name;
+        private bool eventTradePromotion(TradePromotionEvent theEvent)
+        {
+            // Capture commander ratings and add them to the commander object
+            if (Cmdr != null)
+            {
+                Cmdr.traderating = TradeRating.FromName(theEvent.rating);
+            }
+            return true;
+        }
+
+        private bool eventExplorationPromotion(ExplorationPromotionEvent theEvent)
+        {
+            // Capture commander ratings and add them to the commander object
+            if (Cmdr != null)
+            {
+                Cmdr.explorationrating = ExplorationRating.FromName(theEvent.rating);
+            }
+            return true;
+        }
+
+        private bool eventFederationPromotion(FederationPromotionEvent theEvent)
+        {
+            // Capture commander ratings and add them to the commander object
+            if (Cmdr != null)
+            {
+                Cmdr.federationrating = FederationRating.FromName(theEvent.rank);
+            }
+            return true;
+        }
+
+        private bool eventEmpirePromotion(EmpirePromotionEvent theEvent)
+        {
+            // Capture commander ratings and add them to the commander object
+            if (Cmdr != null)
+            {
+                Cmdr.empirerating = EmpireRating.FromName(theEvent.rank);
+            }
+            return true;
         }
 
         private bool eventEnteredCQC(EnteredCQCEvent theEvent)
