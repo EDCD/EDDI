@@ -736,9 +736,23 @@ namespace EddiShipMonitor
                     {
                         { "module", cargoHatchModule }
                     };
-                    JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
-                    parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
-                    ship.raw = parsedRaw.ToString(Formatting.None);
+                    /// If the information for the ship is missing a health value, it is the incomplete data written by the API
+                    /// when the ship is not the current ship. Any raw stored in the shipyard cannot be exported successfully
+                    /// and should be purged
+                    if ((ship.raw).Contains("health"))
+                    {
+                        // This is complete data, keep it
+                        JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
+                        parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
+                        ship.raw = parsedRaw.ToString(Formatting.None);
+                    }
+                    /*
+                    else
+                    {
+                        // This is incomplete data, discard it
+                        ship.raw = null;
+                    }
+                    */
                 }
             }
 
