@@ -1,5 +1,7 @@
 # CHANGE LOG
 
+### 2.4.0-b6
+
 ### 2.4.0-b5
   * Core
     * Updated Variables.md to include a description of commodities objects and their available properties
