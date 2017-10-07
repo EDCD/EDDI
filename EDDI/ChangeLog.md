@@ -4,9 +4,12 @@
 
 ### 2.4.0-b5
   * Core
-    * Updated Variables.md to include a description of commodities objects and their available properties
+	* EDDI can once again track how many limpets you have (and there was much rejoicing).
+	* The shipyard should now be populated correctly.
+    * Updated Variables.md to include a description of commodities objects and their available properties.
+    * EDDI will now capture a timestamp that can be used internally by EDDI to compare journal and API data.
   * Events
-    * Revised 'Community goal' event - event expiry is now given in seconds rather than obscure DateTime format.
+    * Revised 'Community goal' event - event expiry is now given in seconds from now.
     * Update 'Message received' event for Frontier's (undocumented) changes to player message entries
     * 'Location' event & 'Jumped' event - fixed a bug that would cause some high population systems to report negative populations.
     * 'Search and rescue' event - the commodity is now a commodity object with all applicable commodity information included
