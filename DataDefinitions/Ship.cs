@@ -164,7 +164,27 @@ namespace EddiDataDefinitions
         /// <summary>
         /// The raw JSON from the companion API for this ship
         /// </summary>
-        public string raw { get; set; }
+        private string _raw;
+        public string raw {
+            get
+            {
+                return _raw;
+            }
+            set
+            {
+                if (_raw != value)
+                { 
+                    _raw = value;
+                    NotifyPropertyChanged("RawIsNotNull");
+                }
+            }
+        }
+
+        public bool RawIsNotNull
+        {
+            get { return !string.IsNullOrEmpty(_raw); }
+        }
+
 
         /// <summary>the name of the system in which this ship is stored; null if the commander is in this ship</summary>
         private string _starsystem;

@@ -60,7 +60,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="exportShip">Export to Coriolis</Button>
+                            <Button IsEnabled="{Binding RawIsNotNull, UpdateSourceTrigger=PropertyChanged}" Click="exportShip">Export to Coriolis</Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
