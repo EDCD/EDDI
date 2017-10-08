@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -648,6 +649,21 @@ namespace EddiShipMonitor
 
         public void PostHandle(Event @event)
         {
+            if (@event is ShipSwappedEvent)
+            {
+                posthandleShipSwappedEvent((ShipSwappedEvent)@event);
+            }
+        }
+
+        private void posthandleShipSwappedEvent(ShipSwappedEvent @event)
+        {
+            /// The ship may have engineering data, request a profile refresh from the Frontier API once per minute until ship id's match
+            /// Wait a bit, then loop, wait, and check again until the profile ship id matches the swapped ship id.
+            int? newshipid = @event.shipid;
+            do
+            {
+                refreshProfileDelayed(30);
+            } while (currentShipId != newshipid);
         }
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
@@ -736,23 +752,14 @@ namespace EddiShipMonitor
                     {
                         { "module", cargoHatchModule }
                     };
-                    /// If the information for the ship is missing a health value, it is the incomplete data written by the API
-                    /// when the ship is not the current ship. Any raw stored in the shipyard cannot be exported successfully
-                    /// and should be purged
-                    if ((ship.raw).Contains("health"))
+                    JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
+                    parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
+                    ship.raw = parsedRaw.ToString(Formatting.None);
+                    /// As of 2.3.0 Frontier no longer supplies module information for ships other than the active ship. 'Health' is only given in the complete un-summarized json.
+                    if (!(ship.raw).Contains("health"))
                     {
-                        // This is complete data, keep it
-                        JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
-                        parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
-                        ship.raw = parsedRaw.ToString(Formatting.None);
-                    }
-                    /*
-                    else
-                    {
-                        // This is incomplete data, discard it
                         ship.raw = null;
                     }
-                    */
                 }
             }
 
@@ -771,6 +778,7 @@ namespace EddiShipMonitor
                 Ship ship = GetShip(profileShip.LocalId);
                 if (ship == null)
                 {
+                    // This is a new ship, add it to the shipyard
                     ship = profileShip;
                     ship.Augment();
                     ship.role = Role.MultiPurpose;
@@ -778,6 +786,7 @@ namespace EddiShipMonitor
                 }
                 else
                 {
+                    // This ship is already in the shipyard
                     if (profileShip.name != null)
                         ship.name = profileShip.name;
                     if (profileShip.ident != null)
@@ -788,25 +797,6 @@ namespace EddiShipMonitor
                     ship.station = profileShip.station;
                 }
             }
-
-            // As of 2.3.0 Frontier no longer supplies module information for ships other than the active ship, so we
-            // keep around the oldest information that we have available
-            //foreach (Ship profileShip in profileShipyard)
-            //{
-            //    Ship ship = GetShip(profileShip.LocalId);
-            //    if (ship != null)
-            //    {
-            //        ship.raw = profileShip.raw;
-            //        if (ship.model == null)
-            //        {
-            //            // We don't know this ship's model but can fill it from the info we have
-            //            ship.model = profileShip.model;
-            //            ship.Augment();
-            //        }
-            //        // Obtain items that we can't obtain from the journal
-            //        ship.value = profileShip.value;
-            //    }
-            //}
 
             writeShips();
         }
@@ -1208,6 +1198,12 @@ namespace EddiShipMonitor
         private bool inFighterOrBuggy(string model)
         {
             return (model == "Empire_Fighter" || model == "Federation_Fighter" || model == "Independent_Fighter" || model == "TestBuggy");
+        }
+
+        static async void refreshProfileDelayed(int n)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(n));
+            EDDI.Instance.refreshProfile();
         }
     }
 }
