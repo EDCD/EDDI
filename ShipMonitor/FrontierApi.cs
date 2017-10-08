@@ -98,6 +98,14 @@ namespace EddiShipMonitor
             try
             {
                 Ship.raw = json.ToString(Formatting.None);
+                /// As of 2.3.0 Frontier no longer supplies module information for ships other than the active ship. 
+                /// 'Health' is only given in the complete un-summarized json.
+                /// Get the raw only if it is complete.
+                if (!(Ship.raw).Contains("health"))
+                {
+                    Ship.raw = null;
+                }
+
                 Ship.LocalId = json.GetValue("id").Value<int>();
                 Ship.name = (string)json.GetValue("shipName");
                 Ship.ident = (string)json.GetValue("shipID");

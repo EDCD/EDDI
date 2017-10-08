@@ -755,11 +755,6 @@ namespace EddiShipMonitor
                     JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
                     parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
                     ship.raw = parsedRaw.ToString(Formatting.None);
-                    /// As of 2.3.0 Frontier no longer supplies module information for ships other than the active ship. 'Health' is only given in the complete un-summarized json.
-                    if (!(ship.raw).Contains("health"))
-                    {
-                        ship.raw = null;
-                    }
                 }
             }
 

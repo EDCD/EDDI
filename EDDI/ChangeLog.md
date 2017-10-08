@@ -1,6 +1,9 @@
 # CHANGE LOG
 
 ### 2.4.0-b6
+  * Core
+	* Fixed a bug that was preventing EDDI from retaining full data from the API and mucking up exports to Coriolis
+    * The 'Export to Coriolis' button will now be enabled only when EDDI thinks it has enough information to send the ship to Coriolis
 
 ### 2.4.0-b5
   * Core
