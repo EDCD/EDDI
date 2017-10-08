@@ -639,7 +639,19 @@ namespace EddiCompanionAppService
         {
             List<Ship> Ships = new List<Ship>();
 
-            // This information is not available at current from the companion app JSON so leave it empty
+            if (json["lastStarport"] != null && json["lastStarport"]["ships"] != null)
+            {
+                foreach (dynamic shipJson in json["lastStarport"]["ships"]["shipyard_list"])
+                {
+                    dynamic ship = shipJson.Value;
+                    Ship Ship = ShipDefinitions.FromEliteID((long)ship["id"]);
+                    if (Ship.EDName != null)
+                    {
+                        Ship.value = (long)ship["basevalue"];
+                        Ships.Add(Ship);
+                    }
+                }
+            }
 
             return Ships;
         }
