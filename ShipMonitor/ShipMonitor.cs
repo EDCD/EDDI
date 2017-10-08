@@ -657,13 +657,8 @@ namespace EddiShipMonitor
 
         private void posthandleShipSwappedEvent(ShipSwappedEvent @event)
         {
-            /// The ship may have engineering data, request a profile refresh from the Frontier API once per minute until ship id's match
-            /// Wait a bit, then loop, wait, and check again until the profile ship id matches the swapped ship id.
-            int? newshipid = @event.shipid;
-            do
-            {
-                refreshProfileDelayed(30);
-            } while (currentShipId != newshipid);
+            /// The ship may have engineering data, request a profile refresh from the Frontier API a minute after switching
+            refreshProfileDelayed(60);
         }
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
@@ -712,8 +707,11 @@ namespace EddiShipMonitor
                 if (profileCurrentShip != null)
                 {
                     SetCurrentShip(profileCurrentShip.LocalId, profileCurrentShip.model);
+                    int profilecurrentshipid = profileCurrentShip.LocalId;
                 }
             }
+
+            int profileshipid = profileCurrentShip.LocalId;
 
             // Add the raw JSON for each known ship provided in the profile
             // TODO Rationalise companion API data - munge the JSON according to the compartment information, removing anything that is out-of-sync
