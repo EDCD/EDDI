@@ -19,7 +19,7 @@
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="Please note that if you have not configured access to the Frontier API then some of the data below will be inaccurate or unavailable.  Also, if you had multiple ships prior to installing EDDI you will need to swap to them as your primary ship before full information for them will be available." VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="Please note that if you have not configured access to the Frontier API then some of the data below will be inaccurate or unavailable.  Also, if you had multiple ships prior to installing EDDI you will need to swap to them as your primary ship and wait a few moments before full information for them will be available." VerticalAlignment="Top"/>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="shipData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="shipsUpdated">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Path=name}"></DataGridTextColumn>
@@ -60,7 +60,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="exportShip">Export to Coriolis</Button>
+                            <Button IsEnabled="{Binding RawIsNotNull, UpdateSourceTrigger=PropertyChanged}" Click="exportShip">Export to Coriolis</Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -4,6 +4,9 @@
   * Core
     * EDDI will now take commander ratings/rankings from the journal in addition to from the API.
     * Updated Variables.md to include a description of commodities objects and their available properties
+  * Coriolis Export
+    * Fixed a bug that was preventing EDDI from retaining full data from the API, thus mucking up exports to Coriolis.
+    * The 'Export to Coriolis' button is now disabled when EDDI doesn't have the necessary information about the ship in question.
   * Events
     * 'Empire promotion' event added
     * 'Federation promotion' event added
@@ -26,6 +29,7 @@
   * Speech Responder
     * Script changes
     * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing, the script is also now aware of the time remaining in the community goal
+      * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing, the script is also now aware of the time remaining in the community goal
       * 'Search and rescue' event - revised script to use commodity object variables (beta users, please refresh the default script)
       * 'Touchdown' event - latitude & longitude are only written to the journal when the ship is player controlled, script revised to not give erroneous information if the ship isn't player controlled
       
