@@ -1,21 +1,31 @@
 # CHANGE LOG
 
-### 2.4.0-b5
+### 2.4.0-b6
   * Core
     * EDDI will now take commander ratings/rankings from the journal in addition to from the API.
     * Updated Variables.md to include a description of commodities objects and their available properties
   * Events
-    * Revised 'Community goal' event - event expiry is now given in seconds rather than obscure DateTime format.
-    * Update 'Message received' event for Frontier's (undocumented) changes to player message entries
     * 'Empire promotion' event added
     * 'Federation promotion' event added
+  * Speech Responder
+  	* Script changes
+      * 'Empire promotion' - new script
+      * 'Federation promotion' - new script
+
+### 2.4.0-b5
+  * Core
+    * EDDI can once again track how many limpets you have (and there was much rejoicing).
+    * The shipyard should now be populated correctly.
+    * Updated Variables.md to include a description of commodities objects and their available properties.
+    * EDDI will now capture a timestamp that can be used internally by EDDI to compare journal and API data.
+  * Events
+    * Revised 'Community goal' event - event expiry is now given in seconds from now.
+    * Update 'Message received' event for Frontier's (undocumented) changes to player message entries
     * 'Location' event & 'Jumped' event - fixed a bug that would cause some high population systems to report negative populations.
     * 'Search and rescue' event - the commodity is now a commodity object with all applicable commodity information included
   * Speech Responder
   	* Script changes
 	    * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing, the script is also now aware of the time remaining in the community goal
-        * 'Empire promotion' - new script
-        * 'Federation promotion' - new script
         * 'Search and rescue' event - revised script to use commodity object variables (beta users, please refresh the default script)
         * 'Touchdown' event - latitude & longitude are only written to the journal when the ship is player controlled, script revised to not give erroneous information if the ship isn't player controlled
       
