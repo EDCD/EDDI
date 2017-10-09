@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Utilities;
 
 namespace EddiCompanionAppService
@@ -250,6 +251,17 @@ namespace EddiCompanionAppService
                 data = JsonConvert.SerializeObject(json);
 
                 cachedProfile = ProfileFromJson(data);
+
+                if ((bool)cachedProfile.LastStation.hasshipyard)
+                {
+                    Thread.Sleep(5000);
+                    shipyard = obtainProfile(BASE_URL + SHIPYARD_URL);
+                    shipyard = "{\"lastStarport\":" + shipyard + "}";
+                    JObject shipyardJson = JObject.Parse(shipyard);
+                    cachedProfile.LastStation.shipyard = ShipyardFromProfile(shipyardJson);
+                }
+
+
             }
             catch (JsonException ex)
             {
