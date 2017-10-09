@@ -263,8 +263,6 @@ namespace EddiCompanionAppService
                     json2.Merge(shipyardJson, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Concat });
                     cachedProfile.json = json2;
                 }
-
-
             }
             catch (JsonException ex)
             {
