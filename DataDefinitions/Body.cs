@@ -51,7 +51,7 @@ namespace EddiDataDefinitions
         public string stellarclass;
 
         /// <summary>The Luminosity Class of the Star (since 2.4)</summary>
-        public string luminosityClass { get; set; }
+        public string luminosityclass { get; set; }
 
         /// <summary>The solar mass of the star</summary>
         public decimal? solarmass;
