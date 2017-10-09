@@ -707,11 +707,8 @@ namespace EddiShipMonitor
                 if (profileCurrentShip != null)
                 {
                     SetCurrentShip(profileCurrentShip.LocalId, profileCurrentShip.model);
-                    int profilecurrentshipid = profileCurrentShip.LocalId;
                 }
             }
-
-            int profileshipid = profileCurrentShip.LocalId;
 
             // Add the raw JSON for each known ship provided in the profile
             // TODO Rationalise companion API data - munge the JSON according to the compartment information, removing anything that is out-of-sync
