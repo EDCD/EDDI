@@ -247,6 +247,7 @@ namespace EddiCompanionAppService
                 market = "{\"lastStarport\":" + market + "}";
                 shipyard = "{\"lastStarport\":" + shipyard + "}";
                 json.Merge(JObject.Parse(market), new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Concat });
+                JObject json2 = json;
                 json.Merge(JObject.Parse(shipyard), new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Concat });
                 data = JsonConvert.SerializeObject(json);
 
@@ -259,6 +260,8 @@ namespace EddiCompanionAppService
                     shipyard = "{\"lastStarport\":" + shipyard + "}";
                     JObject shipyardJson = JObject.Parse(shipyard);
                     cachedProfile.LastStation.shipyard = ShipyardFromProfile(shipyardJson);
+                    json2.Merge(shipyardJson, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Concat });
+                    cachedProfile.json = json2;
                 }
 
 
@@ -552,7 +555,6 @@ namespace EddiCompanionAppService
                     Profile.LastStation.systemname = Profile.CurrentStarSystem.name;
                     Profile.LastStation.outfitting = OutfittingFromProfile(json);
                     Profile.LastStation.commodities = CommoditiesFromProfile(json);
-                    Profile.LastStation.shipyard = ShipyardFromProfile(json);
                 }
             }
 
@@ -589,7 +591,7 @@ namespace EddiCompanionAppService
                 {
                     dynamic module = moduleJson.Value;
                     // Not interested in paintjobs, decals, ...
-                    if (module["category"] == "weapon" || module["category"] == "module")
+                    if (module["category"] == "weapon" || module["category"] == "module" || module["category"] == "utility")
                     {
                         Module Module = ModuleDefinitions.ModuleFromEliteID((long)module["id"]);
                         if (Module.name == null)
@@ -661,6 +663,17 @@ namespace EddiCompanionAppService
                     {
                         Ship.value = (long)ship["basevalue"];
                         Ships.Add(Ship);
+                    }
+                }
+
+                foreach (dynamic ship in json["lastStarport"]["ships"]["unavailable_list"])
+                {
+                    dynamic shipJson = ship.Value;
+                    Ship Ship2 = ShipDefinitions.FromEliteID((long)ship["id"]);
+                    if (Ship2.EDName != null)
+                    {
+                        Ship2.value = (long)ship["basevalue"];
+                        Ships.Add(Ship2);
                     }
                 }
             }
