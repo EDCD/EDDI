@@ -8,7 +8,7 @@
     * 'Empire promotion' event added
     * 'Federation promotion' event added
   * Speech Responder
-  	* Script changes
+    * Script changes
       * 'Empire promotion' - new script
       * 'Federation promotion' - new script
 
@@ -24,29 +24,29 @@
     * 'Location' event & 'Jumped' event - fixed a bug that would cause some high population systems to report negative populations.
     * 'Search and rescue' event - the commodity is now a commodity object with all applicable commodity information included
   * Speech Responder
-  	* Script changes
-	    * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing, the script is also now aware of the time remaining in the community goal
-        * 'Search and rescue' event - revised script to use commodity object variables (beta users, please refresh the default script)
-        * 'Touchdown' event - latitude & longitude are only written to the journal when the ship is player controlled, script revised to not give erroneous information if the ship isn't player controlled
+    * Script changes
+    * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing, the script is also now aware of the time remaining in the community goal
+      * 'Search and rescue' event - revised script to use commodity object variables (beta users, please refresh the default script)
+      * 'Touchdown' event - latitude & longitude are only written to the journal when the ship is player controlled, script revised to not give erroneous information if the ship isn't player controlled
       
 ### 2.4.0-b4
   * Core
     * Revised EDDI's methods for detecting in-game betas
   * Events
     * Fixed a bug that would cause the 'Ship transfer initiated' event to be silent
-  	* 'Community goal' event - refined the default script, it'll (probably) be coherent now :-)
+    * 'Community goal' event - refined the default script, it'll (probably) be coherent now :-)
   * Speech Responder
     * 'Community goal' event - fixed a bug that was causing EDDI to describe every goal twice
     * 'Ship transfer initiated' event - revised to include both the transfer cost and the time to arrival
-	* Script changes
-	  * If you scan without a DSS, the 'Body Report' script no longer falsely claims that all bodies are unsuitable for landing
-	  * 'Module swapped' event - revised script to better handle swapping to an empty slot
+    * Script changes
+      * If you scan without a DSS, the 'Body Report' script no longer falsely claims that all bodies are unsuitable for landing
+      * 'Module swapped' event - revised script to better handle swapping to an empty slot
 
 ### 2.4.0-b3
   * Core
     * EDDI's version number is now shown in the application's title bar
     * Module events now update the ship object
-	* Internal clean-up: now 100% green on unit tests, compiler warnings and code analyser issues
+    * Internal clean-up: now 100% green on unit tests, compiler warnings and code analyser issues
   * Events
     * Add 'Module sold remote' event
     * Add 'Module transfer' event
@@ -69,66 +69,66 @@
 ### 2.4.0-b1
   * Core
     * Add 'DataScan' definition for types of datalink scans
-	* Add new roles to the Ship Monitor
-	* Add material type information to the Material Monitor
+    * Add new roles to the Ship Monitor
+    * Add material type information to the Material Monitor
     * Add hyperlinks to EDDI.exe, linking to readme.md & the EDDI wiki
-	* Change Log incorporated via hyperlink in the main window - no more need to check the forums when something changes
-	* Changed the format for calling ring composition. Was 'composition.name', is 'composition'
-	* Stellar belt clusters are now included in the definition of rings.
+    * Change Log incorporated via hyperlink in the main window - no more need to check the forums when something changes
+    * Changed the format for calling ring composition. Was 'composition.name', is 'composition'
+    * Stellar belt clusters are now included in the definition of rings.
     * Update Readme.md to use revised hyperlinks pointing to the new project page.
     * Update Troubleshooting.md to use revised hyperlinks pointing to the new project page.
-	* Update Variables.md to include information available for rings in 'Body scanned' and 'Star scanned' events
+    * Update Variables.md to include information available for rings in 'Body scanned' and 'Star scanned' events
   * Events
     * Add 'AFMU repairs' event
-	* Add 'Community goal' event
+    * Add 'Community goal' event
     * Add 'Data scanned' event when some type of datalinks (Data Links, Data Posts, Abandoned Data Logs, Listerning Posts, Wrecked Ships) are scanned
     * Add 'Data voucher awarded' event when you are awarded a data voucher
-	* Add 'Friends status' event when a friendly commander changes status
+    * Add 'Friends status' event when a friendly commander changes status
     * Add 'Module purchased' event
     * Add 'Module retrieved' event
     * Add 'Module sold' event
     * Add 'Module stored' event
     * Add 'Module swapped' event
-	* Add 'Mission redirected' event
-	* Add 'Nav beacon scan' event
-	* Add 'Music' event (triggered when the game music 'mood' changes)
-	* Add 'Repair drone' event
-	* Add 'Search and rescue' event when delivering items to a Search and Rescue contact
-	* Add 'Ship sold on rebuy' event when when you sell a ship to raise funds on the insurance / rebuy screen
-	* Clarified "channel" in 'Message received' to include 'npc' 
-	* Update 'Body scanned' event to check whether BodyDetails successfully located the body
-	* Update 'Message received' event, EDDI now distinguishes between a larger variety of message sources
-	* Update 'Bond redeemed', 'Bounty redeemed', 'Fine paid', 'Data voucher redeemed', and 'Trade voucher redeemed' events to add Broker Percentage when redeemed via broker
-	* Update 'Docked' event, now includes a list of station services under 'stationservices'
-	* Update 'Mission accepted' event to correct a bug preventing wanted passengers from being detected
-	* Update 'Jumped' and 'Location' events to include system population, when present
+    * Add 'Mission redirected' event
+    * Add 'Nav beacon scan' event
+    * Add 'Music' event (triggered when the game music 'mood' changes)
+    * Add 'Repair drone' event
+    * Add 'Search and rescue' event when delivering items to a Search and Rescue contact
+    * Add 'Ship sold on rebuy' event when when you sell a ship to raise funds on the insurance / rebuy screen
+    * Clarified "channel" in 'Message received' to include 'npc' 
+    * Update 'Body scanned' event to check whether BodyDetails successfully located the body
+    * Update 'Message received' event, EDDI now distinguishes between a larger variety of message sources
+    * Update 'Bond redeemed', 'Bounty redeemed', 'Fine paid', 'Data voucher redeemed', and 'Trade voucher redeemed' events to add Broker Percentage when redeemed via broker
+    * Update 'Docked' event, now includes a list of station services under 'stationservices'
+    * Update 'Mission accepted' event to correct a bug preventing wanted passengers from being detected
+    * Update 'Jumped' and 'Location' events to include system population, when present
     * Update 'Screenshot' event, now contains longitude & latitude, when appropriate
-	* Update 'Ship sold' event, now contains a value for the system where the ship was sold
-	* Update 'Ship transfer initiated' event, now includes transfer time
-	* Update 'Star scanned' event to add luminosity class property
+    * Update 'Ship sold' event, now contains a value for the system where the ship was sold
+    * Update 'Ship transfer initiated' event, now includes transfer time
+    * Update 'Star scanned' event to add luminosity class property
   * Speech Responder
     * Add Spacialise() Cottle function.  Details on how to use this are in the SpeechResponder documentation
-	* Add StartsWithVowel() Cottle function. Details on how to use this are in the SpeechResponder documentation
-	* Script changes:
-	  * 'AFMU repairs' - new script
-	  * 'Community goal' - new script'
-	  * 'Bond redeemed' - revised to correctly get faction names and faction amounts
-	  * 'Data scanned' - new script
-	  * 'Data voucher awarded' - new script
-	  * 'Died' - new script
-	  * 'Docking granted' script revised to recognize asteroid bases
- 	  * 'Friends status' - new script
+    * Add StartsWithVowel() Cottle function. Details on how to use this are in the SpeechResponder documentation
+    * Script changes:
+      * 'AFMU repairs' - new script
+      * 'Community goal' - new script'
+      * 'Bond redeemed' - revised to correctly get faction names and faction amounts
+      * 'Data scanned' - new script
+      * 'Data voucher awarded' - new script
+      * 'Died' - new script
+      * 'Docking granted' script revised to recognize asteroid bases
+      * 'Friends status' - new script
       * 'Galnet news published' script revised to only ready out the titles & content of interesting articles
-	  * 'Limpet purchased' - new script
-	  * 'Limpet sold' - new script
+      * 'Limpet purchased' - new script
+      * 'Limpet sold' - new script
       * 'Mission redirected' - new script
-	  * 'Music' - new script
+      * 'Music' - new script
       * 'Nav beacon scan' - new script
-	  * 'Power expansion vote cast' - new script
- 	  * 'Repair drone' - new script
-	  * 'Search and rescue' - new script
+      * 'Power expansion vote cast' - new script
+      * 'Repair drone' - new script
+      * 'Search and rescue' - new script
       * 'Ship sold' - revised to include location for ships sold remotely
-	  * 'Sold ship on rebuy' - new script
+      * 'Sold ship on rebuy' - new script
 
 ## 2.3.0
   * Core
@@ -136,16 +136,16 @@
     * Do not send data to EDSM or EDDN if in a multicrew session
     * Better handling of unknown commodities
     * Attempt to handle messages coming from unknown ships with the prefix "$ShipName_" 
-	* Update internal list of commodities
+    * Update internal list of commodities
     * Update internal list of commodities to include all known items
     * Fix error when caching starsystem information
-	* Fix potential crash when comparing current and future star systems
-	* Fix typo in test event for 'Commander continued'
-	* Ignore nameplates when obtaining modules from journal
-	* Add 'Enable ICAO' option on text-to-speech tab.  When enabled, planets and starsystems with alphanumeric qualifiers (e.g. the "AB 1" in "Shinrarta Dezhra AB 1") will be spoken phonetically (e.g. "Alpha Bravo One")
-	* Catch corner cases where ship name could come back empty
-	* Fix issue where 'Test script' button would not activate with custom scripts
-	* Changing verbose logging checkbox updates immediately
+    * Fix potential crash when comparing current and future star systems
+    * Fix typo in test event for 'Commander continued'
+    * Ignore nameplates when obtaining modules from journal
+    * Add 'Enable ICAO' option on text-to-speech tab.  When enabled, planets and starsystems with alphanumeric qualifiers (e.g. the "AB 1" in "Shinrarta Dezhra AB 1") will be spoken phonetically (e.g. "Alpha Bravo One")
+    * Catch corner cases where ship name could come back empty
+    * Fix issue where 'Test script' button would not activate with custom scripts
+    * Changing verbose logging checkbox updates immediately
     * Better updating of ship information from combined journal and API data sources
     * Add ship role 'Taxi'
     * Rename 'Companion App' tab to 'Frontier API' and update relevant text to clarify its use and operation
@@ -154,117 +154,117 @@
     * Add ship value 'ident' which is the user-defined identification string for a ship
     * Allow monitors to handle events, and generate their own events in turn
     * New monitor: Material monitor.  This allows you to set minimum/desired/maximum limits for materials and generate events when the limits are exceeded.  Materials are tracked automatically in EDDI.  Full details of the material monitor operations are available at https://github.com/cmdrmcdonald/EliteDangerousDataProvider/wiki/Material-monitor
-	* Remove the Netlog monitor.  This was only used to obtain destination system when jumping and is no longer required due to additional information made available in the journal for this purpose
+    * Remove the Netlog monitor.  This was only used to obtain destination system when jumping and is no longer required due to additional information made available in the journal for this purpose
     * Fix exploration role 'Trailblazer' to have correct name (was showing up as 'Explorer')
-	* Add reset button to Frontier API configuration panel
+    * Add reset button to Frontier API configuration panel
   * EDDN Responder
-	* Migrate to new EDDN endpoint
+    * Migrate to new EDDN endpoint
     * Avoid use of data from Frontier API when setting starsystem information
   * EDSM Responder
     * Provide error message when attempt to obtain logs fails
-	* Provide numeirc progress information rather than system name when syncing logs
+    * Provide numeirc progress information rather than system name when syncing logs
     * Add upload of materials, ship, etc.
   * Events
-	* Update 'Body scanned' event - added axial tilt.  Added earth mass, radius and information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
-	* Update 'Bond awarded' event to provide details of the awarding faction
-	* Add 'Bond redeemed' event when a combat bond is redeemed
-	* Add 'Bounty redeemed' event when a bounty voucher is redeemed
-	* Update 'Commander continued' event - added fuel level of current ship
-	* Add 'Crew joined' event when you join a crew
-	* Add 'Crew left' event when you leave a crew
-	* Add 'Crew member joined' event when someone joins your crew
-	* Add 'Crew member left' event when someone leaves your crew
-	* Add 'Crew member launched' event when a crewmember launches a fighter
-	* Add 'Crew member removed' event when you remove someone from your crew
-	* Add 'Crew member role changed' event when a crewmember changes their role
-	* Add 'Crew role changed' event when your role on someone's crew changes
-	* Add 'Data voucher redeemed' event when a data voucher is redeemed
-	* Updated 'Docked' event to include distance from start
-	* Add 'File Header' event when a new journal file is found.  This is usually just for internal use
-	* Add 'FSD engaged' event when the FSD is engaged to jump to supercruise or hyperspace.  This replaces the 'Jumping' event and has a similar script
-	* Deprecate 'Jumping' event.  This is part of the netlog monitor, which is no longer required.  The functionality has been replaced by the 'FSD engaged' event
-	* Update 'Liftoff' event to record if the ship lifting off is player controlled or not
-	* Update 'Location' event to add longitude and latitude if the location is on the ground
-	* Add 'Material inventory' event when material information is supplied
-	* Add 'Material threshold' event when a threshold set in the material monitor is breached
+    * Update 'Body scanned' event - added axial tilt.  Added earth mass, radius and information on reserve level of rings.  Made a number of items optional as they are no longer present if a DSS is not used to scan the body
+    * Update 'Bond awarded' event to provide details of the awarding faction
+    * Add 'Bond redeemed' event when a combat bond is redeemed
+    * Add 'Bounty redeemed' event when a bounty voucher is redeemed
+    * Update 'Commander continued' event - added fuel level of current ship
+    * Add 'Crew joined' event when you join a crew
+    * Add 'Crew left' event when you leave a crew
+    * Add 'Crew member joined' event when someone joins your crew
+    * Add 'Crew member left' event when someone leaves your crew
+    * Add 'Crew member launched' event when a crewmember launches a fighter
+    * Add 'Crew member removed' event when you remove someone from your crew
+    * Add 'Crew member role changed' event when a crewmember changes their role
+    * Add 'Crew role changed' event when your role on someone's crew changes
+    * Add 'Data voucher redeemed' event when a data voucher is redeemed
+    * Updated 'Docked' event to include distance from start
+    * Add 'File Header' event when a new journal file is found.  This is usually just for internal use
+    * Add 'FSD engaged' event when the FSD is engaged to jump to supercruise or hyperspace.  This replaces the 'Jumping' event and has a similar script
+    * Deprecate 'Jumping' event.  This is part of the netlog monitor, which is no longer required.  The functionality has been replaced by the 'FSD engaged' event
+    * Update 'Liftoff' event to record if the ship lifting off is player controlled or not
+    * Update 'Location' event to add longitude and latitude if the location is on the ground
+    * Add 'Material inventory' event when material information is supplied
+    * Add 'Material threshold' event when a threshold set in the material monitor is breached
     * Update 'Message received' event to include NPC messages.  Additional field 'Source' provides more details about the source of the message
-	* Update 'Mission accepted' event to include the number of kills for massacre missions
+    * Update 'Mission accepted' event to include the number of kills for massacre missions
     * Add 'Settlement approached' event
-	* Add 'Ship renamed' event to record when ship names and idents are changed
+    * Add 'Ship renamed' event to record when ship names and idents are changed
     * Add 'Ship repurchased' event to record when player resurrects with their existing ship
-	* Update 'System state report' to say nothing if the system is not in any particular state
-	* Update 'Touchdown' event to record if the ship touching down is player controlled or not
-	* Add 'Trade voucher redeemed' event when a trade voucher is redeemed
+    * Update 'System state report' to say nothing if the system is not in any particular state
+    * Update 'Touchdown' event to record if the ship touching down is player controlled or not
+    * Add 'Trade voucher redeemed' event when a trade voucher is redeemed
   * Galnet Monitor
     * Galnet monitor now categories and stores news articles
   * Material Monitor
-	* Update locking conditions for inventory
+    * Update locking conditions for inventory
   * Ship monitor
-	* Track cargo using loadout event.  This only gives a rough idea of cargo as it only triggers with certain events (docking, swapping ship etc.)
-	* Track limpets.  This gives an approximation of how many limpets are on board and is useful when docked but does not track limpets as they are used
-	* Update locking conditions for shipyard
+    * Track cargo using loadout event.  This only gives a rough idea of cargo as it only triggers with certain events (docking, swapping ship etc.)
+    * Track limpets.  This gives an approximation of how many limpets are on board and is useful when docked but does not track limpets as they are used
+    * Update locking conditions for shipyard
     * Lock updates to ship monitor data structures to prevent corruption
-	* Do not update ship name or ident if it contains filtered sequences (***)
+    * Do not update ship name or ident if it contains filtered sequences (***)
   * Speech Responder
-	* Script changes:
-	  * 'Blueprint make report' - new script to report how many of a blueprint can be made
-	  * 'Blueprint material report' - new script to report which materials are required for a blueprint
-	  * 'Body report' - add details of volcanism; handle retrograde rotation
-	  * 'Body scanned' - remove name of body so that it is not repeated in following report
-	  * 'Bond redeemed' - new script
-	  * 'Bounty redeemed' - new script
-	  * 'Commodity sale check' - various updates to give more reliable results
-	  * 'Commodity collected' - fix bug where 'cargo' was used instead of 'commodity'
-	  * 'Commodity sold' - do not report profit when purchase price is 0 (mined/stolen/mission commodities)
-	  * 'Crew fired' - add context
-	  * 'Crew hired' - add context
-	  * 'Crew member joined' - new script
-	  * 'Crew member left' - new script
-	  * 'Crew member launched' - new script
-	  * 'Crew member removed' - new script
-	  * 'Crew member role changed' - new script
-	  * 'Crew role changed' - new script
-	  * 'Crew joined' - new script
-	  * 'Crew left' - new script
-	  * 'Data voucher redeemed' - new script
-	  * 'Docked' - moved information messages to the 'Market information updated' script to trigger at a better time
-	  * 'Entered normal space' - add context
-	  * 'Entered supercruise' - add context
-	  * 'FSD engaged' - new script
-	  * 'Galnet news' - new script
-	  * 'Galnet news published' - updated script to only report on latest non-status news reports; by default does not read contents
-	  * 'Galnet latest news' - new script
-	  * 'Galnet oldest news' - new script
-	  * 'Galnet unread report' - new script
-	  * 'Jumped' - call system security report here rather than in 'Jumping' to guarantee up-to-date information
-	  * 'Liftoff' - change speech depending on if player is controlling ship or not
-	  * 'Limpet check' - correctly select singular or plural of limpet
-	  * 'Location' - add context
-	  * 'Market information updated' - new script taken from the end of the previous 'Docked' script
-	  * 'Material discard report' - new script to report how much of a particular material can be discarded (as per the material monitor settings)
-	  * 'Material inventory report' - new script to report how much of a particular material as defined by state or context is on board
-	  * 'Material location report' - new script to report where to obtain a particular material as defined by state or context
-	  * 'Material required report' - new script to report how much of a particular material as defined by state or context is required (as per the material monitor settings)
-	  * 'Material use report' - new script to the blueprint uses of a particular material as defined by state or context
-	  * 'Materials discard report' - new script to report which materials can be discarded (as per the material monitor settings)
-	  * 'Materials required report' - new script to report which materials can be discarded (as per the material monitor settings)
-	  * 'Message received' - updated to only respond to player messages, and to use appropriate source
-	  * 'Settlement approached' - new script
-	  * 'Ship refuelled' - state when ship is fully refuelled from scooping
-	  * 'Ship renamed' - new script
-	  * 'Ship swapped' - add reminders for limpets and crew if appropriate
-	  * 'Star scanned' - remove name of star so that it is not repeated in following report
-	  * 'System state report' - fixed a couple of typos
-	  * 'Touchdown' - change speech depending on if player is controlling ship or not.  Name body on which the ship has touched down
-	  * 'Trade voucher redeemed' - new script
+    * Script changes:
+      * 'Blueprint make report' - new script to report how many of a blueprint can be made
+      * 'Blueprint material report' - new script to report which materials are required for a blueprint
+      * 'Body report' - add details of volcanism; handle retrograde rotation
+      * 'Body scanned' - remove name of body so that it is not repeated in following report
+      * 'Bond redeemed' - new script
+      * 'Bounty redeemed' - new script
+      * 'Commodity sale check' - various updates to give more reliable results
+      * 'Commodity collected' - fix bug where 'cargo' was used instead of 'commodity'
+      * 'Commodity sold' - do not report profit when purchase price is 0 (mined/stolen/mission commodities)
+      * 'Crew fired' - add context
+      * 'Crew hired' - add context
+      * 'Crew member joined' - new script
+      * 'Crew member left' - new script
+      * 'Crew member launched' - new script
+      * 'Crew member removed' - new script
+      * 'Crew member role changed' - new script
+      * 'Crew role changed' - new script
+      * 'Crew joined' - new script
+      * 'Crew left' - new script
+      * 'Data voucher redeemed' - new script
+      * 'Docked' - moved information messages to the 'Market information updated' script to trigger at a better time
+      * 'Entered normal space' - add context
+      * 'Entered supercruise' - add context
+      * 'FSD engaged' - new script
+      * 'Galnet news' - new script
+      * 'Galnet news published' - updated script to only report on latest non-status news reports; by default does not read contents
+      * 'Galnet latest news' - new script
+      * 'Galnet oldest news' - new script
+      * 'Galnet unread report' - new script
+      * 'Jumped' - call system security report here rather than in 'Jumping' to guarantee up-to-date information
+      * 'Liftoff' - change speech depending on if player is controlling ship or not
+      * 'Limpet check' - correctly select singular or plural of limpet
+      * 'Location' - add context
+      * 'Market information updated' - new script taken from the end of the previous 'Docked' script
+      * 'Material discard report' - new script to report how much of a particular material can be discarded (as per the material monitor settings)
+      * 'Material inventory report' - new script to report how much of a particular material as defined by state or context is on board
+      * 'Material location report' - new script to report where to obtain a particular material as defined by state or context
+      * 'Material required report' - new script to report how much of a particular material as defined by state or context is required (as per the material monitor settings)
+      * 'Material use report' - new script to the blueprint uses of a particular material as defined by state or context
+      * 'Materials discard report' - new script to report which materials can be discarded (as per the material monitor settings)
+      * 'Materials required report' - new script to report which materials can be discarded (as per the material monitor settings)
+      * 'Message received' - updated to only respond to player messages, and to use appropriate source
+      * 'Settlement approached' - new script
+      * 'Ship refuelled' - state when ship is fully refuelled from scooping
+      * 'Ship renamed' - new script
+      * 'Ship swapped' - add reminders for limpets and crew if appropriate
+      * 'Star scanned' - remove name of star so that it is not repeated in following report
+      * 'System state report' - fixed a couple of typos
+      * 'Touchdown' - change speech depending on if player is controlling ship or not.  Name body on which the ship has touched down
+      * 'Trade voucher redeemed' - new script
     * Fix crash when showing "Changes from default" window
     * Handle additional conditions for "changes from default" windows when editing templates in the speech responder
     * When renaming scripts ensure that they are renamed not copied
     * Update default templates to current latest version when reading in a custom personality
-	* Attempt to ignore invalid system names if presented in BodyDetails()
+    * Attempt to ignore invalid system names if presented in BodyDetails()
     * Add "Log" function to write information to EDDI's log.  This is an aid when debugging templates
-	* Fix issue where new templates might show up in custom personalities blank rather than with the contents of the default template
-	* Change edit window's "Show default" button to "Compare to default"; allowing diff-style comparison between the current and default scripts for templates
+    * Fix issue where new templates might show up in custom personalities blank rather than with the contents of the default template
+    * Change edit window's "Show default" button to "Compare to default"; allowing diff-style comparison between the current and default scripts for templates
     * Added 'ICAO' function to allow ICAO-style speech of ship identifiers, sector names etc.
     * Added 'Play' function to play an audio file instead of a speech
   * VoiceAttack Responder
@@ -284,25 +284,25 @@
       * 'Which materials can I discard' - Find out how many units of materials can be discarded due to being above your maximum or desired level as set in the material monitor
       * 'Which materials do I need' - Find out how many units of materials are still required due to being below your minimum or desired level as set in the material monitor
     * Add VoiceAttack commands for the Galnet monitor:
-	  * 'Is there any news?' - Report the number of unread articles
-	  * 'Read the latest community goal [news;]' - Read the latest community goal article
-	  * 'Read the latest conflict [news;report]' - Read the latest weekly conflict report
-	  * 'Read the latest democracy [news;report]' - Read the latest weekly democracy report
-	  * 'Read the latest economy [news;report]' - Read the latest weekly economy report
-	  * 'Read the latest expansion [news;report]' - Read the latest weekly expansion report
-	  * 'Read the latest health [news;report]' - Read the latest weekly health report
-	  * 'Read the latest news' - Read the latest news article
-	  * 'Read the latest security [news;report]' - Read the latest weekly security report
-	  * 'Read the latest starport status [news;report]' - Read the latest starport status update
-	  * 'Read the latest community goal [news;]' - Read the latest community goal article
-	  * 'Read the [next;oldest] conflict [news;report]' - Read the oldest weekly conflict report
-	  * 'Read the [next;oldest] democracy [news;report]' - Read the oldest weekly democracy report
-	  * 'Read the [next;oldest] economy [news;report]' - Read the oldest weekly economy report
-	  * 'Read the [next;oldest] expansion [news;report]' - Read the oldest weekly expansion report
-	  * 'Read the [next;oldest] health [news;report]' - Read the oldest weekly health report
-	  * 'Read the [next;oldest] news' - Read the oldest news article
-	  * 'Read the [next;oldest] security [news;report]' - Read the oldest weekly security report
-	  * 'Read the [next;oldest] starport status [news;report]' - Read the oldest starport status update
+      * 'Is there any news?' - Report the number of unread articles
+      * 'Read the latest community goal [news;]' - Read the latest community goal article
+      * 'Read the latest conflict [news;report]' - Read the latest weekly conflict report
+      * 'Read the latest democracy [news;report]' - Read the latest weekly democracy report
+      * 'Read the latest economy [news;report]' - Read the latest weekly economy report
+      * 'Read the latest expansion [news;report]' - Read the latest weekly expansion report
+      * 'Read the latest health [news;report]' - Read the latest weekly health report
+      * 'Read the latest news' - Read the latest news article
+      * 'Read the latest security [news;report]' - Read the latest weekly security report
+      * 'Read the latest starport status [news;report]' - Read the latest starport status update
+      * 'Read the latest community goal [news;]' - Read the latest community goal article
+      * 'Read the [next;oldest] conflict [news;report]' - Read the oldest weekly conflict report
+      * 'Read the [next;oldest] democracy [news;report]' - Read the oldest weekly democracy report
+      * 'Read the [next;oldest] economy [news;report]' - Read the oldest weekly economy report
+      * 'Read the [next;oldest] expansion [news;report]' - Read the oldest weekly expansion report
+      * 'Read the [next;oldest] health [news;report]' - Read the oldest weekly health report
+      * 'Read the [next;oldest] news' - Read the oldest news article
+      * 'Read the [next;oldest] security [news;report]' - Read the oldest weekly security report
+      * 'Read the [next;oldest] starport status [news;report]' - Read the oldest starport status update
     * Add other VoiceAttack commands
       * 'What do I need for <blueprint>' - Find out the materials required for a particular blueprint
       * 'How many <blueprint> can I make' - Find out how many of a particular blueprint you can make with your current inventory
@@ -336,45 +336,45 @@
     * Attempting to copy a personality over an existing personality will no longer succeed
   * Events
     * Add 'Mission failed' event
-	* Add 'System faction changed' and 'System state changed' EDDP events
+    * Add 'System faction changed' and 'System state changed' EDDP events
   * EDDP monitor
     * Add EDDP monitor.  This monitor watches EDDP for state and ownership information about systems and generates events when changes are spotted.  See the 'EDDP monitor' tab for more information
   * Speech Responder
     * Add 'View' button for all scripts
     * Add speech responder function 'BodyDetails' to obtain body details.  Details of this function are in the SpeechResponder help documentation
-	* Script changes:
-	  * 'Body report' - new script that uses context information to report on a body
-	  * 'Body scanned' - added context information.  Call new function 'Body report' to provide body details
-	  * 'Bounty awarded' - added context information
-	  * 'Bounty incurred' - added context information
-	  * 'Cleared save' - added context information
-	  * 'Cockpit breached' - added context information
-	  * 'Combat promotion' - added context information
-	  * 'Commodity collected' - added context information
-	  * 'Commodity ejected' - added context information
+    * Script changes:
+      * 'Body report' - new script that uses context information to report on a body
+      * 'Body scanned' - added context information.  Call new function 'Body report' to provide body details
+      * 'Bounty awarded' - added context information
+      * 'Bounty incurred' - added context information
+      * 'Cleared save' - added context information
+      * 'Cockpit breached' - added context information
+      * 'Combat promotion' - added context information
+      * 'Commodity collected' - added context information
+      * 'Commodity ejected' - added context information
       * 'Commodity refined' - added context information
-	  * 'Commodity sale check' - avoid overly-long response if there are lots of commodities that can be sold
-	  * 'Commodity sold' - added context information
-	  * 'Docked' - do not pause just to find out that there is no commodity/swapout/limpet check result
-	  * 'Docking granted' - added context information.  Call new function 'Landing pad report' to provide pad details
-	  * 'Fine incurred' - added context information
-	  * 'Jumping' - added context information
-	  * 'Landing pad report' - use context information to report on a landing pad
-	  * 'Material collected' - added context information
-	  * 'Material discarded' - added context information
-	  * 'Material discovered' - added context information
-	  * 'Material donated' - added context information
-	  * 'Message received' - added context information
-	  * 'Message sent' - added context information
-	  * 'Repeat last speech' - new script that repeats the last speech
-	  * 'Star report' - new script that uses context information to report on a star
-	  * 'Star scanned' - added context information.  Call new function 'Star report' to provide body details
-	  * 'System distance report' - use context information to report on the distance to a system
-	  * 'System faction changed' - new script triggered when there is a change in the controlling faction of a system
-	  * 'System report' - use context information to report on a system
-	  * 'System state changed' - new script triggered when there is a change in the controlling faction of a system
-	  * 'System state report' - use context information to report on the state of a system
-	  * 'Undocked' - do not pause just to find out that there is no limpet check result
+      * 'Commodity sale check' - avoid overly-long response if there are lots of commodities that can be sold
+      * 'Commodity sold' - added context information
+      * 'Docked' - do not pause just to find out that there is no commodity/swapout/limpet check result
+      * 'Docking granted' - added context information.  Call new function 'Landing pad report' to provide pad details
+      * 'Fine incurred' - added context information
+      * 'Jumping' - added context information
+      * 'Landing pad report' - use context information to report on a landing pad
+      * 'Material collected' - added context information
+      * 'Material discarded' - added context information
+      * 'Material discovered' - added context information
+      * 'Material donated' - added context information
+      * 'Message received' - added context information
+      * 'Message sent' - added context information
+      * 'Repeat last speech' - new script that repeats the last speech
+      * 'Star report' - new script that uses context information to report on a star
+      * 'Star scanned' - added context information.  Call new function 'Star report' to provide body details
+      * 'System distance report' - use context information to report on the distance to a system
+      * 'System faction changed' - new script triggered when there is a change in the controlling faction of a system
+      * 'System report' - use context information to report on a system
+      * 'System state changed' - new script triggered when there is a change in the controlling faction of a system
+      * 'System state report' - use context information to report on the state of a system
+      * 'Undocked' - do not pause just to find out that there is no limpet check result
   * VoiceAttack Responder
     * Ensure that state changes are picked up by VoiceAttack plugin immediately
     * Update VoiceAttack with context-related commands:
@@ -430,20 +430,20 @@
   * Speech Responder scripts
     * Update Commodity sale check' script to not suggest that stolen goods or mission-specific goods can be sold
     * Added 'Synthesised' script
-	* Fix 'Mission completed' script to correctly provide information about commodities received as mission rewards
-	* Update 'Hull damaged' script to only report damage if the player is in the vehicle that is damaged
-	* Update 'Docking granted' script to provide clearer information on the location of pads
-	* Update 'Touchdown' script to use "coordinates" rather than "co-ordinates" as the latter can cause problems with some TTS voices
-	* Update 'Swapout check' script to use modules' modified flag to see if a module has modifications
-	* Update 'Commodity sale check' script to ensure that a commodity is in demand at the target station before reporting on a sale
+    * Fix 'Mission completed' script to correctly provide information about commodities received as mission rewards
+    * Update 'Hull damaged' script to only report damage if the player is in the vehicle that is damaged
+    * Update 'Docking granted' script to provide clearer information on the location of pads
+    * Update 'Touchdown' script to use "coordinates" rather than "co-ordinates" as the latter can cause problems with some TTS voices
+    * Update 'Swapout check' script to use modules' modified flag to see if a module has modifications
+    * Update 'Commodity sale check' script to ensure that a commodity is in demand at the target station before reporting on a sale
     * Add scripts for new events 'Entered CQC', 'Power commodity fast tracked', 'Power commodity delivered', 'Power commodity obtained', 'Power salary claimed', 'Power expansion vote cast', 'Power defected', 'Power left', and 'Power joined'
-	* Update script for 'Mission completed' event to provide more detail on the accepting faction and reward
-	* Update script for 'Mission accepted' event to provide a warning about illegal passengers
-	* Update script for 'Jumping' event to recognise when last system's allegiance is null (as opposed to empty)
-	* Update 'Docking denied' script to provide info on the reason
-	* Update 'Location' script to provide correct information when docked at ground stations
-	* Update 'Body scanned' script to provide additional information about rotation period of the planetary
-	* Update 'Galnet news published' script to read full contents of interesting items
+    * Update script for 'Mission completed' event to provide more detail on the accepting faction and reward
+    * Update script for 'Mission accepted' event to provide a warning about illegal passengers
+    * Update script for 'Jumping' event to recognise when last system's allegiance is null (as opposed to empty)
+    * Update 'Docking denied' script to provide info on the reason
+    * Update 'Location' script to provide correct information when docked at ground stations
+    * Update 'Body scanned' script to provide additional information about rotation period of the planetary
+    * Update 'Galnet news published' script to read full contents of interesting items
   * VocieAtack integration
     * Add 'Voice' parameter for VoiceAttack's 'say' and 'speech' commands to allow individual over-rides of default Voice
     * Add VoiceAttack 'setspeechresponderpersonality' context to change the speech responder's personality.  Details on this is in the VoiceAttack documentation
