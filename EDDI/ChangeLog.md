@@ -10,6 +10,7 @@
   * Events
     * 'Empire promotion' event added
     * 'Federation promotion' event added
+    * 'Star scanned' event now reports the star's luminosity class and any rings that it has.
   * Speech Responder
     * Script changes
       * 'Empire promotion' - new script
