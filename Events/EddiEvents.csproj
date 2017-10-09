@@ -83,6 +83,8 @@
     <Compile Include="MaterialInventoryEvent.cs" />
     <Compile Include="FSDEngagedEvent.cs" />
     <Compile Include="BondRedeemedEvent.cs" />
+    <Compile Include="EmpirePromotionEvent.cs" />
+    <Compile Include="FederationPromotionEvent.cs" />
     <Compile Include="TradeVoucherRedeemedEvent.cs" />
     <Compile Include="BountyRedeemedEvent.cs" />
     <Compile Include="SettlementApproachedEvent.cs" />

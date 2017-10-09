@@ -313,22 +313,37 @@ namespace EddiJournalMonitor
                                 if (data.ContainsKey("Combat"))
                                 {
                                     data.TryGetValue("Combat", out val);
-                                    CombatRating rating = CombatRating.FromRank((int)(long)val);
+                                    CombatRating rating = CombatRating.FromRank((int)val);
                                     events.Add(new CombatPromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
                                 else if (data.ContainsKey("Trade"))
                                 {
                                     data.TryGetValue("Trade", out val);
-                                    TradeRating rating = TradeRating.FromRank((int)(long)val);
+                                    TradeRating rating = TradeRating.FromRank((int)val);
                                     events.Add(new TradePromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
                                 else if (data.ContainsKey("Explore"))
                                 {
                                     data.TryGetValue("Explore", out val);
-                                    ExplorationRating rating = ExplorationRating.FromRank((int)(long)val);
+                                    ExplorationRating rating = ExplorationRating.FromRank((int)val);
                                     events.Add(new ExplorationPromotionEvent(timestamp, rating) { raw = line });
+                                    handled = true;
+                                }
+                                else if (data.ContainsKey("Federation"))
+                                {
+                                    Superpower superpower = Superpower.FromName("Federation");
+                                    data.TryGetValue("Federation", out val);
+                                    FederationRating rating = FederationRating.FromRank((int)val);
+                                    events.Add(new FederationPromotionEvent(timestamp, rating) { raw = line });
+                                    handled = true;
+                                }
+                                else if (data.ContainsKey("Empire"))
+                                {
+                                    data.TryGetValue("Empire", out val);
+                                    EmpireRating rating = EmpireRating.FromRank((int)val);
+                                    events.Add(new EmpirePromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
                             }
@@ -1015,7 +1030,7 @@ namespace EddiJournalMonitor
                                 string interdictor = getString(data, "Interdictor");
                                 bool iscommander = getBool(data, "IsPlayer");
                                 data.TryGetValue("CombatRank", out val);
-                                CombatRating rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
+                                CombatRating rating = (val == null ? null : CombatRating.FromRank((int)val));
                                 string faction = getFaction(data, "Faction");
                                 string power = getString(data, "Power");
 
@@ -1039,7 +1054,7 @@ namespace EddiJournalMonitor
                                 string interdictee = getString(data, "Interdicted");
                                 bool iscommander = getBool(data, "IsPlayer");
                                 data.TryGetValue("CombatRank", out val);
-                                CombatRating rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
+                                CombatRating rating = (val == null ? null : CombatRating.FromRank((int)val));
                                 string faction = getFaction(data, "Faction");
                                 string power = getString(data, "Power");
 
@@ -1052,7 +1067,7 @@ namespace EddiJournalMonitor
                                 object val;
                                 string victim = getString(data, "Victim");
                                 data.TryGetValue("CombatRank", out val);
-                                CombatRating rating = (val == null ? null : CombatRating.FromRank((int)(long)val));
+                                CombatRating rating = (val == null ? null : CombatRating.FromRank((int)val));
 
                                 events.Add(new KilledEvent(timestamp, victim, rating) { raw = line });
                                 handled = true;
@@ -1540,7 +1555,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
                                 data.TryGetValue("CombatRank", out val);
-                                CombatRating rating = CombatRating.FromRank((int)(long)val);
+                                CombatRating rating = CombatRating.FromRank((int)val);
                                 events.Add(new CrewHiredEvent(timestamp, name, faction, price, rating) { raw = line });
                                 handled = true;
                                 break;
