@@ -253,7 +253,7 @@ namespace EddiCompanionAppService
 
                 cachedProfile = ProfileFromJson(data);
 
-                if ((bool)cachedProfile.LastStation.hasshipyard)
+                if (cachedProfile.LastStation.hasshipyard ?? false)
                 {
                     Thread.Sleep(5000);
                     shipyard = obtainProfile(BASE_URL + SHIPYARD_URL);
