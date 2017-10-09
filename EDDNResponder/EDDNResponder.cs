@@ -170,6 +170,7 @@ namespace EDDNResponder
             // When we dock we have access to commodity and outfitting information
             sendCommodityInformation();
             sendOutfittingInformation();
+            sendShipyardInformation();
         }
 
         private void handleMarketInformationUpdatedEvent(MarketInformationUpdatedEvent theEvent)
@@ -177,6 +178,7 @@ namespace EDDNResponder
             // When we dock we have access to commodity and outfitting information
             sendCommodityInformation();
             sendOutfittingInformation();
+            sendShipyardInformation();
         }
 
         private void sendCommodityInformation()
@@ -261,6 +263,36 @@ namespace EDDNResponder
                 }
             }
         }
+
+        private void sendShipyardInformation()
+        {
+            if (EDDI.Instance.CurrentStation != null && EDDI.Instance.CurrentStation.shipyard != null)
+            {
+                List<string> eddnShips = new List<string>();
+                foreach (Ship ship in EDDI.Instance.CurrentStation.shipyard)
+                {
+                        eddnShips.Add(ship.EDName);
+                }
+
+                // Only send the message if we have ships
+                if (eddnShips.Count > 0)
+                {
+                    IDictionary<string, object> data = new Dictionary<string, object>();
+                    data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
+                    data.Add("systemName", EDDI.Instance.CurrentStation.systemname);
+                    data.Add("stationName", EDDI.Instance.CurrentStation.name);
+                    data.Add("ships", eddnShips);
+
+                    EDDNBody body = new EDDNBody();
+                    body.header = generateHeader();
+                    body.schemaRef = "https://eddn.edcd.io/schemas/shipyard/2" + (EDDI.Instance.inBeta ? "/test" : "");
+                    body.message = data;
+
+                    sendMessage(body);
+                }
+            }
+        }
+
 
         private static string generateUploaderId()
         {
