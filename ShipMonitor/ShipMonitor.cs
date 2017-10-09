@@ -649,13 +649,13 @@ namespace EddiShipMonitor
 
         public void PostHandle(Event @event)
         {
-            if (@event is ShipSwappedEvent)
+            if (@event is ShipLoadoutEvent)
             {
-                posthandleShipSwappedEvent((ShipSwappedEvent)@event);
+                posthandleShipLoadoutEvent((ShipLoadoutEvent)@event);
             }
         }
 
-        private void posthandleShipSwappedEvent(ShipSwappedEvent @event)
+        private void posthandleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
             /// The ship may have engineering data, request a profile refresh from the Frontier API a minute after switching
             refreshProfileDelayed(60);
