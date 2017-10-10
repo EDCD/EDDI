@@ -238,6 +238,8 @@ namespace EddiDataDefinitions
         public decimal? fueltanktotalcapacity { get; set; } // Capacity including additional tanks
         public List<Hardpoint> hardpoints { get; set; }
         public List<Compartment> compartments { get; set; }
+        public List<LaunchBay> launchbays { get; set; }
+
         public string paintjob { get; set; }
 
         // Admin
@@ -252,6 +254,7 @@ namespace EddiDataDefinitions
         {
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
+            launchbays = new List<LaunchBay>();
             cargo = new List<Cargo>();
         }
 
@@ -267,6 +270,7 @@ namespace EddiDataDefinitions
             militarysize = MilitarySize;
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
+            launchbays = new List<LaunchBay>();
         }
 
         public string SpokenName(string defaultname = null)

@@ -83,6 +83,7 @@
     <Compile Include="EmpireRating.cs" />
     <Compile Include="ExplorationRating.cs" />
     <Compile Include="Role.cs" />
+    <Compile Include="Vehicle.cs" />
     <Compile Include="Volcanism.cs" />
     <Compile Include="VolcanismConverter.cs" />
     <Compile Include="Voucher.cs" />

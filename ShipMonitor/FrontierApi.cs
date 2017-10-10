@@ -174,6 +174,18 @@ namespace EddiShipMonitor
                     }
                 }
 
+                // Obtain the launchbays
+                if (json["launchBays"] != null)
+                {
+                    foreach (dynamic launchbay in json["launchBays"])
+                    {
+                        if (launchbay.Name.Contains("Slot"))
+                        {
+                            Ship.launchbays.Add(LaunchBayFromJson(launchbay, Ship));
+                        }
+                    }
+
+                }
 
                 // Obtain the cargo
                 if (json["cargo"] != null && json["cargo"]["items"] != null)
@@ -211,7 +223,7 @@ namespace EddiShipMonitor
 
         public static Hardpoint HardpointFromJson(dynamic json)
         {
-            Hardpoint Hardpoint = new Hardpoint();
+            Hardpoint Hardpoint = new Hardpoint() { name = json.Name };
 
             string name = json.Name;
             if (name.StartsWith("Huge"))
@@ -249,7 +261,7 @@ namespace EddiShipMonitor
 
         public static Compartment CompartmentFromJson(dynamic json)
         {
-            Compartment Compartment = new Compartment();
+            Compartment Compartment = new Compartment() { name = json.Name };
 
             // Compartments have name of form "Slotnn_Sizenn"
             Match matches = Regex.Match((string)json.Name, @"Size([0-9]+)");
@@ -300,6 +312,57 @@ namespace EddiShipMonitor
             }
 
             return module;
+        }
+
+        public static LaunchBay LaunchBayFromJson(dynamic json, Ship ship)
+        {
+            LaunchBay launchbay = new LaunchBay() { name = json.Name };
+
+            foreach (Compartment cpt in ship.compartments)
+            {
+                if (cpt.name == launchbay.name)
+                {
+                    if (cpt.module.name == "Planetary Vehicle Hangar")
+                        launchbay.type = "SRV";
+                    else if (cpt.module.name == "Fighter Hangar")
+                        launchbay.type = "Fighter";
+                }
+            }
+
+            // Launchbays have name of form "Slotnn_Sizenn", like compartments
+            Match matches = Regex.Match((string)json.Name, @"Size([0-9]+)");
+            if (matches.Success)
+            {
+                launchbay.size = Int32.Parse(matches.Groups[1].Value);
+
+                if (json.Value is JObject)
+                {
+                    JToken value;
+                    for (int i = 0; i <= 4; i++)
+                    {
+                        if (json.Value.TryGetValue("SubSlot" + i, out value))
+                        {
+                            launchbay.vehicles.Add(VehicleFromJson(i, value));
+                        }
+                    }
+                }
+            }
+
+            return launchbay;
+        }
+
+        public static Vehicle VehicleFromJson(int subslot, dynamic json)
+        {
+            Vehicle vehicle = new Vehicle();
+
+            vehicle.subslot = subslot;
+            vehicle.EDName = (string)json["name"];
+            vehicle.name = (string)json["locName"];
+            vehicle.rebuilds = (int)json["rebuilds"];
+            vehicle.loadout = (string)json["loadoutName"];
+            vehicle.loadout = vehicle.loadout.Replace("&NBSP;", " ");
+
+            return vehicle;
         }
     }
 }

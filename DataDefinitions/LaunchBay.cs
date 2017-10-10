@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.Collections.Generic;
 
 namespace EddiDataDefinitions
 {
@@ -16,7 +11,13 @@ namespace EddiDataDefinitions
         public int size { get; set; }
         // The type of the launchbay ("SRV" or "Fighter")
         public string type { get; set; }
-        /// <summary>The module residing in the launchbay (can be null)</summary>
-        public List <Vehicle> vehicles { get; set; }
+
+        /// <summary>The vehicles residing in the launchbay (can be null)</summary>
+        public List<Vehicle> vehicles { get; set; }
+
+        public LaunchBay()
+        {
+            vehicles = new List<Vehicle>();
+        }
     }
 }
