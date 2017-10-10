@@ -71,6 +71,7 @@
     <Compile Include="Blueprint.cs" />
     <Compile Include="DataScan.cs" />
     <Compile Include="Engineer.cs" />
+    <Compile Include="LaunchBay.cs" />
     <Compile Include="MaterialAmount.cs" />
     <Compile Include="Ring.cs" />
     <Compile Include="Cargo.cs" />
