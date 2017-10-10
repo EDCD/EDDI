@@ -3,7 +3,7 @@
 ### 2.4.0-b6
   * Core
     * EDDI will now take commander ratings/rankings from the journal in addition to from the API.
-	* EDDN market and outfitting updating restored, accomodating 2.4 cAPI changes. Bonus - now sending shipyard data to EDDN!
+    * EDDN market and outfitting updating restored, accomodating 2.4 cAPI changes. Bonus - now sending shipyard data to EDDN!
     * Updated Variables.md to include a description of commodities objects and their available properties.
   * Coriolis Export
     * Fixed a bug that was preventing EDDI from retaining full data from the API, thus mucking up exports to Coriolis.
