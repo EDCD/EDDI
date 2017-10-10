@@ -1045,15 +1045,6 @@
       "name": "Module swapped",
       "description": "Triggered when modules are swapped between slots on the ship"
     },
-    "Modules stored": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "You have stored the following modules:\r\n\r\n{for module in event.modules:\r\n\r\n    {module.class}-{module.grade},\r\n\r\n    {if type(module.mount) != \"void\":\r\n        {for index, value in module.mount: {set mount to value}}\r\n        {if mount = 0:\r\n            fixed\r\n        |elif mount = 1:\r\n            giimballed\r\n        |elif mount = 2:\r\n            turreted\r\n        }\r\n    }\r\n    {module.name}\r\n    {Pause(400)}\r\n}\r\n\r\n\r\n",
-      "default": true,
-      "name": "Modules stored",
-      "description": "Triggered when you store multiple modules"
-    },
     "Module transfer": {
       "enabled": true,
       "priority": 3,
@@ -1062,6 +1053,15 @@
       "default": true,
       "name": "Module transfer",
       "description": "Triggered when you transfer a module from storage at another station"
+    },
+    "Modules stored": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have stored the following modules:\r\n\r\n{for module in event.modules:\r\n\r\n    {module.class}-{module.grade},\r\n\r\n    {if type(module.mount) != \"void\":\r\n        {for index, value in module.mount: {set mount to value}}\r\n        {if mount = 0:\r\n            fixed\r\n        |elif mount = 1:\r\n            giimballed\r\n        |elif mount = 2:\r\n            turreted\r\n        }\r\n    }\r\n    {module.name}\r\n    {Pause(400)}\r\n}\r\n\r\n\r\n",
+      "default": true,
+      "name": "Modules stored",
+      "description": "Triggered when you store multiple modules"
     },
     "Music": {
       "enabled": true,
