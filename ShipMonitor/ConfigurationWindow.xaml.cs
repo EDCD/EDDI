@@ -37,6 +37,13 @@ namespace EddiShipMonitor
             shipData.ItemsSource = monitor.shipyard;
         }
 
+        private void onExportTargetChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string exporttarget = (string)((ComboBox)e.Source).SelectedValue;
+            Ship ship = new Ship();
+            ship.exporttarget = exporttarget;
+        }
+
         private void ipaClicked(object sender, RoutedEventArgs e)
         {
             Process.Start("https://en.wikipedia.org/wiki/International_Phonetic_Alphabet");
@@ -60,8 +67,17 @@ namespace EddiShipMonitor
         private void exportShip(object sender, RoutedEventArgs e)
         {
             Ship ship = (Ship)((Button)e.Source).DataContext;
+
+            // Coriolis is the default export target
             string uri = ship.CoriolisUri();
-            Logging.Debug("URI is " + uri);
+
+            // Support EDShipyard as well.
+            if (ship.exporttarget == "EDShipyard")
+            {
+                uri = ship.EDShipyardUri();
+            }
+
+            Logging.Debug("Export target is " + ship.exporttarget + ", URI is " + uri);
 
             // URI can be very long so we can't use a simple Process.Start(), as that fails
             try

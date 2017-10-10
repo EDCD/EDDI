@@ -161,6 +161,24 @@ namespace EddiDataDefinitions
             }
         }
 
+        private string _exporttarget;
+        /// <summary>the current export target for the shipyard</summary>
+        public string exporttarget
+        {
+            get
+            {
+                return _exporttarget;
+            }
+            set
+            {
+                if (_exporttarget != value)
+                {
+                    _exporttarget = value;
+                    NotifyPropertyChanged("exporttarget");
+                }
+            }
+        }
+
         /// <summary>
         /// The raw JSON from the companion API for this ship
         /// </summary>
@@ -351,6 +369,44 @@ namespace EddiDataDefinitions
                     bn = name;
                 }
                 uri += "&bn=" + Uri.EscapeDataString(bn);
+
+                return uri;
+            }
+            return null;
+        }
+
+        public string EDShipyardUri()
+        {
+            if (raw != null)
+            {
+                // Generate an EDShipyard import URI to retain as much information as possible
+                
+                string uri = "http://www.edshipyard.com/";
+
+                // Take the ship's JSON, gzip it, then turn it in to base64 and attach it to the base uri
+                string unescapedraw = raw.Replace(@"\""", @"""");
+                var bytes = Encoding.UTF8.GetBytes(unescapedraw);
+                using (var streamIn = new MemoryStream(bytes))
+                using (var streamOut = new MemoryStream())
+                {
+                    using (var gzipStream = new GZipStream(streamOut, CompressionLevel.Optimal, true))
+                    {
+                        streamIn.CopyTo(gzipStream);
+                    }
+                    uri += "#/I=" + Uri.EscapeDataString(Convert.ToBase64String(streamOut.ToArray()));
+                }
+
+                // Add the ship's name
+                string bn;
+                if (name == null)
+                {
+                    bn = role + " " + model;
+                }
+                else
+                {
+                    bn = name;
+                }
+                //uri += "&bn=" + Uri.EscapeDataString(bn);
 
                 return uri;
             }
