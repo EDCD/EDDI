@@ -5,9 +5,10 @@
     * EDDI will now take commander ratings/rankings from the journal in addition to from the API.
     * EDDN market and outfitting updating restored, accomodating 2.4 cAPI changes. Bonus - now sending shipyard data to EDDN!
     * Updated Variables.md to include a description of commodities objects and their available properties.
-  * Coriolis Export
-    * Fixed a bug that was preventing EDDI from retaining full data from the API, thus mucking up exports to Coriolis.
-    * The 'Export to Coriolis' button is now disabled when EDDI doesn't have the necessary information about the ship in question.
+  * Shipyard
+    * Export to both Coriolis and EDShipyard is now supported.
+    * Fixed a bug that was preventing EDDI from retaining full data from the API, thus mucking up exports to 3rd party services.
+    * The 'Export' button is now disabled when EDDI doesn't have the necessary information about the ship in question.
   * Events
     * 'Empire promotion' event added
     * 'Federation promotion' event added
