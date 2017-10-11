@@ -32,9 +32,13 @@ namespace EddiShipMonitor
         public ConfigurationWindow()
         {
             InitializeComponent();
-
             monitor = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"));
             shipData.ItemsSource = monitor.shipyard;
+
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            string exporttarget = eddiConfiguration.exporttarget;
+            Logging.Debug("Export target from configuration: " + exporttarget);
+            exportComboBox.Text = exporttarget == null ? "Coriolis" : exporttarget;
         }
 
         private void onExportTargetChanged(object sender, SelectionChangedEventArgs e)
