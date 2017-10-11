@@ -9,6 +9,7 @@
     * Export to both Coriolis and EDShipyard is now supported.
     * Fixed a bug that was preventing EDDI from retaining full data from the API, thus mucking up exports to 3rd party services.
     * The 'Export' button is now disabled when EDDI doesn't have the necessary information about the ship in question.
+    * Information about engineer modifications will be exported provided you have used the ship at least once in ED 2.4 or later.
   * Events
     * 'Empire promotion' event added
     * 'Federation promotion' event added
