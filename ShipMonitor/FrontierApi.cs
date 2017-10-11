@@ -338,11 +338,11 @@ namespace EddiShipMonitor
                 if (json.Value is JObject)
                 {
                     JToken value;
-                    for (int i = 0; i <= 4; i++)
+                    for (int subslot = 0; subslot <= 5; subslot++)
                     {
-                        if (json.Value.TryGetValue("SubSlot" + i, out value))
+                        if (json.Value.TryGetValue("SubSlot" + subslot, out value))
                         {
-                            launchbay.vehicles.Add(VehicleFromJson(i, value));
+                            launchbay.vehicles.Add(VehicleFromJson(subslot, value));
                         }
                     }
                 }
@@ -360,7 +360,7 @@ namespace EddiShipMonitor
             vehicle.name = (string)json["locName"];
             vehicle.rebuilds = (int)json["rebuilds"];
             vehicle.loadout = (string)json["loadoutName"];
-            vehicle.loadout = vehicle.loadout.Replace("&NBSP;", " ");
+            vehicle.loadout = vehicle.loadout.Replace("(", "").Replace("&NBSP;", " ").Replace(")", "");
 
             return vehicle;
         }

@@ -715,9 +715,9 @@ namespace EddiShipMonitor
             if (profileCurrentShip != null)
             {
                 Ship ship = GetShip(profileCurrentShip.LocalId);
-                if (ship == null)
+                if (ship == null || !(ship.raw.Equals(profileCurrentShip.raw, StringComparison.Ordinal)))
                 {
-                    // This means that we haven't seen the ship in the profile before.  Add it to the shipyard
+                    // Either we haven't seen the ship in the profile before or the ship has changed.  Add it to the shipyard
                     ship = profileCurrentShip;
                     AddShip(ship);
 
