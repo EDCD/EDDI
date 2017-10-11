@@ -378,18 +378,6 @@ namespace EddiDataDefinitions
                     uri += "#/I=" + Uri.EscapeDataString(Convert.ToBase64String(streamOut.ToArray()));
                 }
 
-                // Add the ship's name
-                string bn;
-                if (name == null)
-                {
-                    bn = role + " " + model;
-                }
-                else
-                {
-                    bn = name;
-                }
-                //uri += "&bn=" + Uri.EscapeDataString(bn);
-
                 return uri;
             }
             return null;
