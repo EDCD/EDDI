@@ -161,24 +161,6 @@ namespace EddiDataDefinitions
             }
         }
 
-        private string _exporttarget;
-        /// <summary>the current export target for the shipyard</summary>
-        public string exporttarget
-        {
-            get
-            {
-                return _exporttarget;
-            }
-            set
-            {
-                if (_exporttarget != value)
-                {
-                    _exporttarget = value;
-                    NotifyPropertyChanged("exporttarget");
-                }
-            }
-        }
-
         /// <summary>
         /// The raw JSON from the companion API for this ship
         /// </summary>
