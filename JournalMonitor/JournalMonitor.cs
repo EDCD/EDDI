@@ -1127,12 +1127,17 @@ namespace EddiJournalMonitor
                                 string message = getString(data, "Message");
                                 string source;
 
-                                if ((channel == "player") || (from.StartsWith("$cmdr") || (!from.Contains("$RolePanel") && channel == "wing")))
+                                if (
+                                    !from.Contains("$RolePanel") && 
+                                    (
+                                        channel == "player" ||
+                                        channel == "wing" ||
+                                        channel == "local"
+                                    )
+                                )
                                 {
                                     // Give priority to player messages
                                     source = "Commander";
-                                    from = from.Replace("$cmdr_decorate:#name=", "").Replace("&", "");
-                                    from = from.Replace(";", "");
                                     events.Add(new MessageReceivedEvent(timestamp, from, source, true, channel, message) { raw = line });
                                 }
                                 else if (from.Contains("$RolePanel"))
@@ -1207,7 +1212,6 @@ namespace EddiJournalMonitor
                         case "SendText":
                             {
                                 string to = getString(data, "To");
-                                to = to.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
                                 string message = getString(data, "Message");
                                 events.Add(new MessageSentEvent(timestamp, to, message) { raw = line });
                             }
