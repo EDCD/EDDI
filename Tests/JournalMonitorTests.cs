@@ -164,9 +164,9 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestJournalMessageReceivedPlayer()
+        public void TestJournalPlayerDirectMessage()
         {
-            string line = @"{""timestamp"":""2016-06-10T14:32:03Z"",""event"":""ReceiveText"",""From"":""$cmdr_decorate:#name=HRC1;"",""Message"":""Hello""}";
+            string line = "{ \"timestamp\":\"2017-10-12T19:58:46Z\", \"event\":\"ReceiveText\", \"From\":\"SlowIce\", \"Message\":\"good luck\", \"Channel\":\"player\" }";
 
             List<Event> events = JournalMonitor.ParseJournalEntry(line);
             Assert.IsTrue(events.Count == 1);
@@ -175,8 +175,8 @@ namespace Tests
 
             Assert.IsTrue(event1.player);
             Assert.AreEqual("Commander", event1.source);
-            Assert.AreEqual("HRC1", event1.from);
-            Assert.AreEqual("Hello", event1.message);
+            Assert.AreEqual("SlowIce", event1.from);
+            Assert.AreEqual("good luck", event1.message);
         }
 
         [TestMethod]
