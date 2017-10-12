@@ -357,6 +357,7 @@ namespace EddiDataDefinitions
             return null;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
         public string EDShipyardUri()
         {
             if (raw != null)
