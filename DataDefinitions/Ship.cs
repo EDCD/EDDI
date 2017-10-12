@@ -18,23 +18,30 @@ namespace EddiDataDefinitions
 
         /// <summary>the ID of this ship for this commander</summary>
         public int LocalId { get; set; }
+
         /// <summary>the manufacturer of the ship (Lakon, CoreDynamics etc.)</summary>
         [JsonIgnore]
         public string manufacturer { get; set; }
+
         /// <summary>the spoken manufacturer of the ship (Lakon, CoreDynamics etc.)</summary>
         [JsonIgnore]
         public List<Translation> phoneticmanufacturer { get; set; }
+
         /// <summary>the spoken model of the ship (Python, Anaconda, etc.)</summary>
         [JsonIgnore]
         public List<Translation> phoneticmodel { get; set; }
+
         /// <summary>the size of this ship</summary>
         [JsonIgnore]
         public string size { get; set; }
+
         /// <summary>the size of the military compartment slots</summary>
         [JsonIgnore]
         public int? militarysize { get; set; }
+
         /// <summary>the total tonnage cargo capacity</summary>
         public int cargocapacity { get; set; }
+
         /// <summary>the current tonnage cargo carried</summary>
         [JsonIgnore]
         public int cargocarried { get; set; }

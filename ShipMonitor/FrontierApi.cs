@@ -111,7 +111,7 @@ namespace EddiShipMonitor
                 Ship.ident = (string)json.GetValue("shipID");
 
                 Ship.value = (long)(json["value"]?["hull"] ?? 0) + (long)(json["value"]?["modules"] ?? 0);
-                Ship.cargocapacity = (int)(json["cargo"]?["capacity"] ?? 0);
+                Ship.cargocapacity = 0;
                 Ship.cargocarried = (int)(json["cargo"]?["qty"] ?? 0);
 
                 // Be sensible with health - round it unless it's very low
@@ -140,7 +140,7 @@ namespace EddiShipMonitor
                     {
                         Ship.fueltankcapacity = (decimal)Math.Pow(2, Ship.fueltank.@class);
                     }
-                    Ship.fueltanktotalcapacity = (decimal?)json["fuel"]?["main"]?["capacity"];
+                    Ship.fueltanktotalcapacity = Ship.fueltankcapacity;
 
                     // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
                     Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
@@ -169,7 +169,13 @@ namespace EddiShipMonitor
                     {
                         if (module.Name.Contains("Slot"))
                         {
-                            Ship.compartments.Add(CompartmentFromJson(module));
+                            Compartment compartment = CompartmentFromJson(module);
+                            if (compartment.module.name == "Fuel Tank")
+                                Ship.fueltanktotalcapacity += (decimal)Math.Pow(2, compartment.module.@class);
+                            if (compartment.module.name == "Cargo Rack")
+                                Ship.cargocapacity += (int)Math.Pow(2, compartment.module.@class);
+
+                            Ship.compartments.Add(compartment);
                         }
                     }
                 }
@@ -359,9 +365,15 @@ namespace EddiShipMonitor
             vehicle.EDName = (string)json["name"];
             vehicle.name = (string)json["locName"];
             vehicle.rebuilds = (int)json["rebuilds"];
-            vehicle.loadout = (string)json["loadoutName"];
-            vehicle.loadout = vehicle.loadout.Replace("(", "").Replace("&NBSP;", " ").Replace(")", "");
 
+            string loadout = (string)json["loadoutName"];
+            loadout = loadout.Replace("(", "").Replace("&NBSP", "").Replace(")", "");
+            string[] loadoutParts = loadout.Split(';');
+            vehicle.loadout = loadoutParts[0];
+            if (loadoutParts.Length > 1)
+                vehicle.mount = loadoutParts[1];
+            else
+                vehicle.mount = "";
             return vehicle;
         }
     }

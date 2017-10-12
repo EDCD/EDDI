@@ -696,6 +696,7 @@ namespace EddiShipMonitor
         {
             // Obtain the current ship from the profile
             Ship profileCurrentShip = FrontierApi.ShipFromJson((JObject)profile["ship"]);
+            Logging.Debug("Profile Current Ship is: " + JsonConvert.SerializeObject(profileCurrentShip));
 
             // Obtain the shipyard from the profile
             List<Ship> profileShipyard = FrontierApi.ShipyardFromJson(profileCurrentShip, profile);
@@ -730,6 +731,7 @@ namespace EddiShipMonitor
                 }
                 // Obtain items that we can't obtain from the journal
                 ship.value = profileCurrentShip.value;
+                ship.launchbays = profileCurrentShip.launchbays;
                 if (ship.cargohatch != null)
                 {
                     // Engineering info for each module isn't in the journal, but we only use this to pass on to Coriolis so don't
