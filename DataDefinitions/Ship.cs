@@ -369,13 +369,13 @@ namespace EddiDataDefinitions
                 string unescapedraw = raw.Replace(@"\""", @"""");
                 var bytes = Encoding.UTF8.GetBytes(unescapedraw);
                 using (var streamIn = new MemoryStream(bytes))
+                using (var streamOut = new MemoryStream())
                 {
-                    var streamOut = new MemoryStream();
                     using (var gzipStream = new GZipStream(streamOut, CompressionLevel.Optimal, true))
                     {
                         streamIn.CopyTo(gzipStream);
-                        uri += "#/I=" + Uri.EscapeDataString(Convert.ToBase64String(streamOut.ToArray()));
                     }
+                    uri += "#/I=" + Uri.EscapeDataString(Convert.ToBase64String(streamOut.ToArray()));
                 }
 
                 return uri;
