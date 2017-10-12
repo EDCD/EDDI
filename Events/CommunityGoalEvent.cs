@@ -27,7 +27,7 @@ namespace EddiEvents
             VARIABLES.Add("contribution", "The commander's contribution (this is a list if participating in multiple goals)");
             VARIABLES.Add("contributors", "The number of commanders participating (this is a list if participating in multiple goals)");
             VARIABLES.Add("percentileband", "the commander's current rewards percentile (this is a list if participating in multiple goals)");
-            VARIABLES.Add("topranksize", "The number of commanders in the top tank (only for goals with a fixed size top rank) (this is a list if participating in multiple goals)");
+            VARIABLES.Add("topranksize", "The number of commanders in the top rank (only for goals with a fixed size top rank) (this is a list if participating in multiple goals)");
             VARIABLES.Add("toprank", "Whether the commander is currently in the top rank (true/false) (only for goals with a fixed size top rank) (this is a list if participating in multiple goals)");
             VARIABLES.Add("tier", "The current tier of the goal (only once the 1st tier is reached) (this is a list if participating in multiple goals)");
             VARIABLES.Add("tierreward", "The reward on offer for the current tier");
