@@ -22,6 +22,10 @@ namespace Eddi
         [JsonProperty("plugins")]
         public IDictionary<string, bool> Plugins { get; set; }
 
+        /// <summary>the current export target for the shipyard</summary>
+        [JsonProperty("exporttarget")]
+        public string exporttarget { get; set; }
+
         [JsonIgnore]
         private string dataPath;
 
@@ -31,6 +35,7 @@ namespace Eddi
             Beta = false;
             Insurance = 5;
             Plugins = new Dictionary<string, bool>();
+            exporttarget = "Coriolis";
         }
 
         /// <summary>

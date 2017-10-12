@@ -35,6 +35,7 @@ namespace EddiDataDefinitions
 
         /// <summary>The number of credits the commander holds</summary>
         public long credits { get; set; }
+
         /// <summary>The amount of debt the commander owes</summary>
         public long debt { get; set; }
 

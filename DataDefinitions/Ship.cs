@@ -357,6 +357,32 @@ namespace EddiDataDefinitions
             return null;
         }
 
+        public string EDShipyardUri()
+        {
+            if (raw != null)
+            {
+                // Generate an EDShipyard import URI to retain as much information as possible
+                
+                string uri = "http://www.edshipyard.com/";
+
+                // Take the ship's JSON, gzip it, then turn it in to base64 and attach it to the base uri
+                string unescapedraw = raw.Replace(@"\""", @"""");
+                var bytes = Encoding.UTF8.GetBytes(unescapedraw);
+                using (var streamIn = new MemoryStream(bytes))
+                {
+                    var streamOut = new MemoryStream();
+                    using (var gzipStream = new GZipStream(streamOut, CompressionLevel.Optimal, true))
+                    {
+                        streamIn.CopyTo(gzipStream);
+                        uri += "#/I=" + Uri.EscapeDataString(Convert.ToBase64String(streamOut.ToArray()));
+                    }
+                }
+
+                return uri;
+            }
+            return null;
+        }
+
         /// <summary>
         /// Augment the ship's information from the model
         /// </summary>
