@@ -1133,12 +1133,14 @@ namespace EddiJournalMonitor
                                     (
                                         channel == "player" ||
                                         channel == "wing" ||
+                                        channel == "friend" ||
+                                        channel == "voicechat" ||
                                         channel == "local"
                                     )
                                 )
                                 {
                                     // Give priority to player messages
-                                    source = "Commander";
+                                    source = channel == "wing" ? "Wing mate" : "Commander";
                                     events.Add(new MessageReceivedEvent(timestamp, from, source, true, channel, message) { raw = line });
                                 }
                                 else if (isCrew)
