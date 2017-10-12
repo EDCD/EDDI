@@ -1125,10 +1125,11 @@ namespace EddiJournalMonitor
                                 string from = getString(data, "From");
                                 string channel = getString(data, "Channel");
                                 string message = getString(data, "Message");
-                                string source;
+                                string source = "";
+                                bool isCrew = from.Contains("$RolePanel");
 
                                 if (
-                                    !from.Contains("$RolePanel") && 
+                                    !isCrew && 
                                     (
                                         channel == "player" ||
                                         channel == "wing" ||
@@ -1140,7 +1141,7 @@ namespace EddiJournalMonitor
                                     source = "Commander";
                                     events.Add(new MessageReceivedEvent(timestamp, from, source, true, channel, message) { raw = line });
                                 }
-                                else if (from.Contains("$RolePanel"))
+                                else if (isCrew)
                                 {
                                     // NPC crew members
                                     source = "Crew member";
