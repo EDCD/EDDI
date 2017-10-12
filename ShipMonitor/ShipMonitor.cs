@@ -337,12 +337,9 @@ namespace EddiShipMonitor
                 ship.role = Role.MultiPurpose;
             }
 
-            // Update name and ident if required
+            // Update name, ident & paintjob if required
             setShipName(ship, @event.shipname);
             setShipIdent(ship, @event.shipident);
-            ship.model = template.model;
-            ship.Augment();
-
             ship.paintjob = @event.paintjob;
 
             // Set the standard modules

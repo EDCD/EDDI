@@ -112,7 +112,6 @@ namespace EddiShipMonitor
 
                 Ship.value = (long)(json["value"]?["hull"] ?? 0) + (long)(json["value"]?["modules"] ?? 0);
                 Ship.cargocapacity = 0;
-                Ship.cargocarried = (int)(json["cargo"]?["qty"] ?? 0);
 
                 // Be sensible with health - round it unless it's very low
                 decimal Health = (decimal)(json["health"]?["hull"] ?? 0) / 10000;
@@ -141,6 +140,7 @@ namespace EddiShipMonitor
                         Ship.fueltankcapacity = (decimal)Math.Pow(2, Ship.fueltank.@class);
                     }
                     Ship.fueltanktotalcapacity = Ship.fueltankcapacity;
+                    Ship.paintjob = (string)(json["modules"]?["PaintJob"]?[ "name"] ?? "");
 
                     // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
                     Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();
@@ -297,6 +297,7 @@ namespace EddiShipMonitor
                 Logging.Error("No definition for ship module", json["module"].ToString(Formatting.None));
             }
 
+            module.EDID = id;
             module.price = (long)json["module"]["value"];
             module.enabled = (bool)json["module"]["on"];
             module.priority = (int)json["module"]["priority"];
