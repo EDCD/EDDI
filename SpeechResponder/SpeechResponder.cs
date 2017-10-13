@@ -118,7 +118,7 @@ namespace EddiSpeechResponder
             scriptResolver = new ScriptResolver(personality.Scripts);
             subtitles = configuration.Subtitles;
             subtitlesOnly = configuration.SubtitlesOnly;
-            Logging.Info("Reloaded " + ResponderName() + " " + ResponderVersion());
+            Logging.Debug("Reloaded " + ResponderName() + " " + ResponderVersion());
         }
 
         public void Handle(Event theEvent)

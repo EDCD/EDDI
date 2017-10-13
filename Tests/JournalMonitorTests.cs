@@ -164,6 +164,52 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestJournalPlayerDirectMessage()
+        {
+            string line = "{ \"timestamp\":\"2017-10-12T19:58:46Z\", \"event\":\"ReceiveText\", \"From\":\"SlowIce\", \"Message\":\"good luck\", \"Channel\":\"player\" }";
+
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            MessageReceivedEvent event1 = (MessageReceivedEvent)events[0];
+
+            Assert.IsTrue(event1.player);
+            Assert.AreEqual("Commander", event1.source);
+            Assert.AreEqual("SlowIce", event1.from);
+            Assert.AreEqual("good luck", event1.message);
+        }
+
+        [TestMethod]
+        public void TestJournalPlayerLocalChat()
+        {
+           string line = @"{ ""timestamp"":""2017 - 10 - 12T20: 39:25Z"", ""event"":""ReceiveText"", ""From"":""Rebecca Lansing"", ""Message"":""Hi there"", ""Channel"":""local"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            MessageReceivedEvent event1 = (MessageReceivedEvent)events[0];
+
+            Assert.IsTrue(event1.player);
+            Assert.AreEqual("Commander", event1.source);
+            Assert.AreEqual("Rebecca Lansing", event1.from);
+            Assert.AreEqual("Hi there", event1.message);
+        }
+
+        [TestMethod]
+        public void TestJournalPlayerWingChat()
+        {
+            string line = @"{ ""timestamp"":""2017-10-12T21:11:10Z"", ""event"":""ReceiveText"", ""From"":""SlowIce"", ""Message"":""hello"", ""Channel"":""wing"" }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.IsTrue(events.Count == 1);
+
+            MessageReceivedEvent event1 = (MessageReceivedEvent)events[0];
+
+            Assert.IsTrue(event1.player);
+            Assert.AreEqual("Wing mate", event1.source);
+            Assert.AreEqual("SlowIce", event1.from);
+            Assert.AreEqual("hello", event1.message);
+        }
+
+        [TestMethod]
         public void TestJournalMissionAccepted1()
         {
             string line = @"{ ""timestamp"":""2017-05-05T16:07:37Z"", ""event"":""MissionAccepted"", ""Faction"":""Chick Ek Partnership"", ""Name"":""Mission_Sightseeing_Criminal_BOOM"", ""Commodity"":""$Wine_Name;"", ""Commodity_Localised"":""Wine"", ""Count"":3, ""DestinationSystem"":""HR 7221$MISSIONUTIL_MULTIPLE_FINAL_SEPARATOR;Tupa"", ""Expiry"":""2017-05-06T04:31:24Z"", ""Influence"":""Low"", ""Reputation"":""Med"", ""PassengerCount"":7, ""PassengerVIPs"":true, ""PassengerWanted"":true, ""PassengerType"":""Criminal"", ""MissionID"":134724902 }";
