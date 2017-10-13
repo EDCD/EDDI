@@ -155,6 +155,13 @@ namespace EddiSpeechResponder
                     return;
                 }
             }
+
+            // Disable speech from the community goal event for the time being.
+            if (theEvent is CommunityGoalEvent)
+            {
+                return;
+            }
+
             Say(scriptResolver, ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), theEvent.type, theEvent, null, null, null, sayOutLoud);
         }
 
