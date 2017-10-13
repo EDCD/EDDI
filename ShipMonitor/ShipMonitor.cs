@@ -326,13 +326,12 @@ namespace EddiShipMonitor
         {
             // Obtain the ship to which this loadout refers
             Ship ship = GetShip(@event.shipid);
-            Ship template = ShipDefinitions.FromEDModel(@event.ship);
 
             if (ship == null)
             {
                 // The ship is unknown - create it
                 Logging.Debug("Unknown ship ID " + @event.shipid);
-                ship = template;
+                ship = ShipDefinitions.FromEDModel(@event.ship);
                 ship.LocalId = (int)@event.shipid;
                 ship.role = Role.MultiPurpose;
             }
@@ -713,43 +712,14 @@ namespace EddiShipMonitor
             if (profileCurrentShip != null)
             {
                 Ship ship = GetShip(profileCurrentShip.LocalId);
-                if (ship == null || !(ship.raw.Equals(profileCurrentShip.raw, StringComparison.Ordinal)))
+                if (ship == null || ship.raw == null)
                 {
-                    // Either we haven't seen the ship in the profile before or the ship has changed.  Add it to the shipyard
+                    // Either we haven't seen the ship in the profile before or the ship hasn't been active.  Add it to the shipyard
                     ship = profileCurrentShip;
                     AddShip(ship);
-
                 }
-                if (ship.model == null)
-                {
-                    // We don't know this ship's model but can fill it from the info we have
-                    ship.model = profileCurrentShip.model;
-                    ship.Augment();
-                }
-                // Obtain items that we can't obtain from the journal
-                ship.value = profileCurrentShip.value;
-                ship.launchbays = profileCurrentShip.launchbays;
-                if (ship.cargohatch != null)
-                {
-                    // Engineering info for each module isn't in the journal, but we only use this to pass on to Coriolis so don't
-                    // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
-                    // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
-                    JObject cargoHatchModule = new JObject
-                    {
-                        { "on", ship.cargohatch.enabled },
-                        { "priority", ship.cargohatch.priority },
-                        { "value", ship.cargohatch.price },
-                        { "health", ship.cargohatch.health },
-                        { "name", "ModularCargoBayDoor" }
-                    };
-                    JObject cargoHatchSlot = new JObject
-                    {
-                        { "module", cargoHatchModule }
-                    };
-                    JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
-                    parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
-                    ship.raw = parsedRaw.ToString(Formatting.None);
-                }
+                else
+                    ship = UpdateShip(ship, profileCurrentShip);
             }
 
             // Prune ships from the Shipyard that are not found in the Profile Shipyard 
@@ -929,6 +899,41 @@ namespace EddiShipMonitor
             }
         }
 
+        private Ship UpdateShip(Ship ship, Ship update)
+        {
+
+            ship.value = update.value;
+
+
+
+            if (ship.cargohatch != null)
+            {
+                // Engineering info for each module isn't in the journal, but we only use this to pass on to Coriolis so don't
+                // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
+                // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
+                JObject cargoHatchModule = new JObject
+                    {
+                        { "on", ship.cargohatch.enabled },
+                        { "priority", ship.cargohatch.priority },
+                        { "value", ship.cargohatch.price },
+                        { "health", ship.cargohatch.health },
+                        { "name", "ModularCargoBayDoor" }
+                    };
+                JObject cargoHatchSlot = new JObject
+                    {
+                        { "module", cargoHatchModule }
+                    };
+                JObject parsedRaw = JObject.Parse(update.raw);
+                parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
+                ship.raw = parsedRaw.ToString(Formatting.None);
+            }
+
+
+            ship.launchbays = update.launchbays;
+
+            return ship;
+        }
+
         /// <summary>
         /// Obtain the current ship
         /// </summary>
@@ -986,7 +991,7 @@ namespace EddiShipMonitor
             }
         }
 
-        public void AddModule(int shipid, string slot, Module module)
+        private void AddModule(int shipid, string slot, Module module)
         {
             Ship ship = GetShip(shipid);
 
@@ -1111,7 +1116,7 @@ namespace EddiShipMonitor
             }
         }
 
-        public void RemoveModule(int shipid, string slot, Module replacement = null)
+        private void RemoveModule(int shipid, string slot, Module replacement = null)
         {
             Ship ship = GetShip(shipid);
 
