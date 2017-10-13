@@ -140,7 +140,7 @@ namespace EddiShipMonitor
                         Ship.fueltankcapacity = (decimal)Math.Pow(2, Ship.fueltank.@class);
                     }
                     Ship.fueltanktotalcapacity = Ship.fueltankcapacity;
-                    Ship.paintjob = (string)(json["modules"]?["PaintJob"]?[ "name"] ?? null);
+                    Ship.paintjob = (string)(json["modules"]?["PaintJob"]?["name"] ?? null);
 
                     // Obtain the hardpoints.  Hardpoints can come in any order so first parse them then second put them in the correct order
                     Dictionary<string, Hardpoint> hardpoints = new Dictionary<string, Hardpoint>();

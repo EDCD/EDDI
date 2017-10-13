@@ -707,8 +707,7 @@ namespace EddiShipMonitor
                 }
             }
 
-            // Add the raw JSON for each known ship provided in the profile
-            // TODO Rationalise companion API data - munge the JSON according to the compartment information, removing anything that is out-of-sync
+            // Build / Update the active ship
             if (profileCurrentShip != null)
             {
                 Ship ship = GetShip(profileCurrentShip.LocalId);
@@ -716,10 +715,103 @@ namespace EddiShipMonitor
                 {
                     // Either we haven't seen the ship in the profile before or the ship hasn't been active.  Add it to the shipyard
                     ship = profileCurrentShip;
-                    AddShip(ship);
                 }
                 else
-                    ship = UpdateShip(ship, profileCurrentShip);
+                {
+                    // Update ship model info
+                    if (ship.model != profileCurrentShip.model)
+                    {
+                        ship.model = profileCurrentShip.model;
+                        ship.Augment();
+                    }
+
+                    // Update the internals
+                    ship.bulkheads = profileCurrentShip.bulkheads;
+                    ship.powerplant = profileCurrentShip.powerplant;
+                    ship.thrusters = profileCurrentShip.thrusters;
+                    ship.frameshiftdrive = profileCurrentShip.frameshiftdrive;
+                    ship.lifesupport = profileCurrentShip.lifesupport;
+                    ship.powerdistributor = profileCurrentShip.powerdistributor;
+                    ship.sensors = profileCurrentShip.sensors;
+                    ship.fueltank = profileCurrentShip.fueltank;
+                    ship.fueltankcapacity = (decimal)Math.Pow(2, ship.fueltank.@class);
+
+                    // Update hardpoints to reflect profile data
+                    List<Hardpoint> hardpoints = new List<Hardpoint>();
+
+                    foreach (string size in HARDPOINT_SIZES)
+                    {
+                        for (int i = 1; i <= 12; i++)
+                        {
+                            string hpName = size + "Hardpoint" + i;
+
+                            Hardpoint profileHardpoint = profileCurrentShip.hardpoints.Find(h => h.name == hpName);
+                            Hardpoint shipHardpoint = ship.hardpoints.Find(h => h.name == hpName);
+
+                            if (profileHardpoint != null)
+                                hardpoints.Add(profileHardpoint);
+                            else if (shipHardpoint != null)
+                                hardpoints.Add(shipHardpoint);
+                        }
+                    }
+                    ship.hardpoints = hardpoints;
+
+                    // Update compartments to reflect profile data
+                    List<Compartment> compartments = new List<Compartment>();
+
+                    for (int i = 1; i <= 12; i++)
+                        for (int j = 1; j <= 8; j++)
+                        {
+                            string cptName = "Slot" + i.ToString("00") + "_Size" + j;
+
+                            Compartment profileCompartment = profileCurrentShip.compartments.Find(h => h.name == cptName);
+                            Compartment shipCompartment = profileCurrentShip.compartments.Find(h => h.name == cptName);
+
+                            if (profileCompartment != null)
+                                compartments.Add(profileCompartment);
+                            else if (shipCompartment != null)
+                                compartments.Add(shipCompartment);
+                        }
+
+                    for (int i = 1; i <= 3; i++)
+                    {
+                        string cptName = "Military" + i.ToString("00");
+
+                        Compartment profileCompartment = profileCurrentShip.compartments.Find(h => h.name == cptName);
+                        Compartment shipCompartment = profileCurrentShip.compartments.Find(h => h.name == cptName);
+
+                        if (profileCompartment != null)
+                            compartments.Add(profileCompartment);
+                        else if (shipCompartment != null)
+                            compartments.Add(shipCompartment);
+                    }
+                    ship.compartments = compartments;
+
+                    if (ship.cargohatch != null)
+                    {
+                        // Engineering info for each module isn't in the journal, but we only use this to pass on to Coriolis so don't
+                        // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
+                        // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
+                        JObject cargoHatchModule = new JObject
+                    {
+                        { "on", ship.cargohatch.enabled },
+                        { "priority", ship.cargohatch.priority },
+                        { "value", ship.cargohatch.price },
+                        { "health", ship.cargohatch.health },
+                        { "name", "ModularCargoBayDoor" }
+                    };
+                        JObject cargoHatchSlot = new JObject
+                    {
+                        { "module", cargoHatchModule }
+                    };
+                        JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
+                        parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
+                        ship.raw = parsedRaw.ToString(Formatting.None);
+                    }
+                    ship.launchbays = profileCurrentShip.launchbays;
+                }
+                Logging.Debug("Updated Current Ship is: " + JsonConvert.SerializeObject(ship));
+                AddShip(ship);
             }
 
             // Prune ships from the Shipyard that are not found in the Profile Shipyard 
@@ -740,7 +832,6 @@ namespace EddiShipMonitor
                     // This is a new ship, add it to the shipyard
                     ship = profileShip;
                     ship.Augment();
-                    ship.role = Role.MultiPurpose;
                     AddShip(ship);
                 }
                 else
@@ -750,7 +841,6 @@ namespace EddiShipMonitor
                         ship.name = profileShip.name;
                     if (profileShip.ident != null)
                         ship.ident = profileShip.ident;
-                    ship.model = profileShip.model;
                     ship.value = profileShip.value;
                     ship.starsystem = profileShip.starsystem;
                     ship.station = profileShip.station;
@@ -897,41 +987,6 @@ namespace EddiShipMonitor
                     }
                 }
             }
-        }
-
-        private Ship UpdateShip(Ship ship, Ship update)
-        {
-
-            ship.value = update.value;
-
-
-
-            if (ship.cargohatch != null)
-            {
-                // Engineering info for each module isn't in the journal, but we only use this to pass on to Coriolis so don't
-                // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
-                // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
-                JObject cargoHatchModule = new JObject
-                    {
-                        { "on", ship.cargohatch.enabled },
-                        { "priority", ship.cargohatch.priority },
-                        { "value", ship.cargohatch.price },
-                        { "health", ship.cargohatch.health },
-                        { "name", "ModularCargoBayDoor" }
-                    };
-                JObject cargoHatchSlot = new JObject
-                    {
-                        { "module", cargoHatchModule }
-                    };
-                JObject parsedRaw = JObject.Parse(update.raw);
-                parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
-                ship.raw = parsedRaw.ToString(Formatting.None);
-            }
-
-
-            ship.launchbays = update.launchbays;
-
-            return ship;
         }
 
         /// <summary>
