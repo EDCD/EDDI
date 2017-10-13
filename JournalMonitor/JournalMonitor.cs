@@ -1126,31 +1126,17 @@ namespace EddiJournalMonitor
                                 string channel = getString(data, "Channel");
                                 string message = getString(data, "Message");
                                 string source = "";
-                                bool isCrew = from.Contains("$RolePanel");
 
                                 if (
-                                    !isCrew && 
-                                    (
-                                        channel == "player" ||
-                                        channel == "wing" ||
-                                        channel == "friend" ||
-                                        channel == "voicechat" ||
-                                        channel == "local"
-                                    )
+                                    channel == "player" ||
+                                    channel == "wing" ||
+                                    channel == "friend" ||
+                                    channel == "voicechat" ||
+                                    channel == "local"
                                 )
                                 {
                                     // Give priority to player messages
                                     source = channel == "wing" ? "Wing mate" : "Commander";
-                                    events.Add(new MessageReceivedEvent(timestamp, from, source, true, channel, message) { raw = line });
-                                }
-                                else if (isCrew)
-                                {
-                                    // NPC crew members
-                                    source = "Crew member";
-                                    from = from.Replace("$RolePanel1_crew; $cmdr_decorate:#name=", "Crew member ");
-                                    from = from.Replace("$RolePanel1_unmanned; $cmdr_decorate:#name=", "Crew member ");
-                                    from = from.Replace("$RolePanel2_crew; $cmdr_decorate:#name=", "Crew member ");
-                                    from = from.Replace("$RolePanel2_unmanned; $cmdr_decorate:#name=", "Crew member ");
                                     events.Add(new MessageReceivedEvent(timestamp, from, source, true, channel, message) { raw = line });
                                 }
                                 else
@@ -1166,7 +1152,7 @@ namespace EddiJournalMonitor
                                         source = npcSpeechBy(from, message);
                                         from = getString(data, "From_Localised");
                                     }
-                                    else if ((message.Contains("STATION_")) || message.Contains("$Docking"))
+                                    else if ((message.StartsWith("$STATION_")) || message.Contains("$Docking"))
                                     {
                                         source = "Station";
                                     }
