@@ -466,6 +466,7 @@
       "priority": 3,
       "responder": true,
       "script": "{if event.rank = \"Knight\":\r\n    sir\r\n|elif event.rank = \"Lord\":\r\n    my lord\r\n|elif event.rank = \"Baron\":\r\n    my lord\r\n|elif event.rank = \"Viscount\":\r\n    my lord\r\n|elif event.rank = \"Count\":\r\n    my lord\r\n|elif event.rank = \"Earl\":\r\n    my lord\r\n|elif event.rank = \"Marquis\":\r\n    my lord\r\n|elif event.rank = \"Duke\":\r\n    your grace\r\n|elif event.rank = \"Prince\":\r\n    your royal highness\r\n|elif event.rank = \"King\":\r\n    your majesty\r\n|else:\r\n    commander\r\n},\r\nthe Empirial Navy has \r\n{OneOf(\"granted you a promotion\", \"promoted you\", \"advanced you\", \"named you\")}\r\nto the rank of\r\n{event.rank}\r\n{Occasionally(2, \"for your service to the Empire\")}.",
+      "default": true,
       "name": "Empire promotion",
       "description": "Triggered when your rank increases with the Empire"
     },
@@ -914,7 +915,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'message')}\r\n{SetState('eddi_context_last_action', 'receive')}\r\n{SetState('eddi_context_message_name', event.from)}\r\n{SetState('eddi_context_message_content', event.message)}\r\n\r\n{if event.player = true:\r\n    {if event.message = \"o7\":\r\n        {event.from} salutes\r\n        {if event.channel = \"player\":\r\n            you\r\n        }.\r\n    |else:\r\n        Message received from {event.source} {event.from}.  Message reads: {event.message}.\r\n    }\r\n}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'message')}\r\n{SetState('eddi_context_last_action', 'receive')}\r\n{SetState('eddi_context_message_name', event.from)}\r\n{SetState('eddi_context_message_content', event.message)}\r\n\r\n{if event.player = true:\r\n    {if event.message = \"o7\":\r\n        {event.from} salutes\r\n        {if event.channel = \"player\":\r\n            you\r\n        }.\r\n    |else:\r\n        Message received from {event.source} {event.from}.  Message reads: {event.message}.\r\n    }\r\n|elif event.source != \"Station\":\r\n    Message received from {event.source} {event.from}.  Message reads: {event.message}.\r\n}\r\n",
       "default": true,
       "name": "Message received",
       "description": "Triggered when you receive a message"

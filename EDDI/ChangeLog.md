@@ -15,7 +15,8 @@
     * 'Federation promotion' event added
     * 'Star scanned' event now reports the star's luminosity class and any rings that it has.
   * Speech Responder
-    * Disabled speech for the 'Community goal' event to prevent cg spam (the event still triggers, but it'll be silent until we rework the code for it)
+    * Disabled speech for the 'Community goal' event to prevent cg spam (the event still triggers, but it'll be silent until we rework the code for it).
+    * Fixed the 'Message Received' event for the new 2.4 journal format. EDDI now reads direct messages, local chat and wing comms again.
     * Script changes
       * 'Empire promotion' - new script
       * 'Federation promotion' - new script
