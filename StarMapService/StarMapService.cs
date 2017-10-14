@@ -263,10 +263,15 @@ namespace EddiStarMapService
             {
                 try
                 {
-                    Logging.Debug("Sending data to EDSM: " + client.BuildUri(request).AbsoluteUri);
+                    Logging.Debug("Sending ship data to EDSM: " + client.BuildUri(request).AbsoluteUri);
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
-                    StarMapLogResponse response = clientResponse.Data;
                     Logging.Debug("Data sent to EDSM");
+                    StarMapLogResponse response = clientResponse.Data;
+                    if (response == null)
+                    {
+                        Logging.Warn($"EDSM rejected ship data with {clientResponse.ErrorMessage}");
+                        return;
+                    }
                     if (response.msgnum != 100)
                     {
                         Logging.Warn("EDSM responded with " + response.msg);
