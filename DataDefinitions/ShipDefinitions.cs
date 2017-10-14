@@ -48,7 +48,7 @@ namespace EddiDataDefinitions
             { 999999902, new Ship(999999902, "Panther", "Zorgon Peterson", null, "Panther Clipper", null, "Large", null) },
             { 999999903, new Ship(999999903, "AspMkII", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Asp Mk. II", null, "Medium", null) },
             { 999999904, new Ship(999999904, "Krait", "Faulcon DeLacy", null, "Krait", null, "Small", null) },
-            { 999999905, new Ship(999999905, "Cheiftain", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Cheiftain", null, null, null) },
+            { 999999905, new Ship(999999905, "Chieftain", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Chieftain", null, null, null) },
         };
 
         public static List<string> ShipModels = ShipsByEliteID.Select(kp => kp.Value.model).ToList();
