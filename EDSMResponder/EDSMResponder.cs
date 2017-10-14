@@ -161,7 +161,6 @@ namespace EddiEdsmResponder
                         starMapService.sendShipSwapped((int)shipDeliveredEvent.shipid);
                     }
                 }
-
                 else if (theEvent is CommanderProgressEvent)
                 {
                     CommanderProgressEvent progressEvent = (CommanderProgressEvent)theEvent;
