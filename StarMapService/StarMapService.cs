@@ -86,7 +86,7 @@ namespace EddiStarMapService
         public void sendCredits(decimal credits, decimal loan)
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-commander-v1/set-credits");
+            var request = new RestRequest("api-commander-v1/set-credits", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("balance", credits);
@@ -129,7 +129,7 @@ namespace EddiStarMapService
             int empire, int empireProgress)
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-commander-v1/set-ranks");
+            var request = new RestRequest("api-commander-v1/set-ranks", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("Combat", combat + ";" + combatProgress);
@@ -171,7 +171,7 @@ namespace EddiStarMapService
         public void sendMaterials(Dictionary<string, int> materials)
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-commander-v1/set-materials");
+            var request = new RestRequest("api-commander-v1/set-materials", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("type", "materials");
@@ -209,7 +209,7 @@ namespace EddiStarMapService
         public void sendData(Dictionary<string, int> data)
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-commander-v1/set-materials");
+            var request = new RestRequest("api-commander-v1/set-materials", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("type", "data");
@@ -247,15 +247,9 @@ namespace EddiStarMapService
         public void sendShip(Ship ship)
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-commander-v1/update-ship");
+            var request = new RestRequest("api-commander-v1/update-ship", Method.POST);
             string coriolis_uri = ship.CoriolisUri();
-
-            // EDSM may reject the data if the Coriolis URI is too long. 
-            // Testing seems to put the maximum length at around 8192 characters
-            if (coriolis_uri.Length > 8192)
-            {
-                coriolis_uri = null;
-            }
+            string edshipyard_uri = ship.EDShipyardUri();
 
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
@@ -266,8 +260,9 @@ namespace EddiStarMapService
             request.AddParameter("paintJob", ship.paintjob);
             request.AddParameter("cargoQty", ship.cargocarried);
             request.AddParameter("cargoCapacity", ship.cargocapacity);
+            request.AddParameter("linkToEDShipyard", edshipyard_uri);
             request.AddParameter("linkToCoriolis", coriolis_uri);
-
+            
             Thread thread = new Thread(() =>
             {
                 try
@@ -279,12 +274,11 @@ namespace EddiStarMapService
                     if (response == null)
                     {
                         Logging.Warn($"EDSM rejected ship data with {clientResponse.ErrorMessage}");
-                        Logging.Debug("Coriolis URI length: " + coriolis_uri.Length);
                         return;
                     }
-                    if (response.msgnum != 100)
+                    else
                     {
-                        Logging.Warn("EDSM responded with " + response.msg);
+                        Logging.Debug($"EDSM response {response.msgnum}: " + response.msg);
                     }
                 }
                 catch (ThreadAbortException)
@@ -304,7 +298,7 @@ namespace EddiStarMapService
         public void sendShipSwapped(int shipId)
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-commander-v1/set-ship-id");
+            var request = new RestRequest("api-commander-v1/set-ship-id", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("shipId", shipId);
@@ -339,7 +333,7 @@ namespace EddiStarMapService
         public void sendShipSold(int shipId)
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-commander-v1/sell-ship");
+            var request = new RestRequest("api-commander-v1/sell-ship", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("shipId", shipId);
@@ -374,7 +368,7 @@ namespace EddiStarMapService
         public void sendStarMapComment(string systemName, string comment)
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-logs-v1/set-comment");
+            var request = new RestRequest("api-logs-v1/set-comment", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("systemName", systemName);
@@ -408,7 +402,7 @@ namespace EddiStarMapService
         public string getStarMapComment(string systemName)
         {
             var client = new RestClient(baseUrl);
-            var commentRequest = new RestRequest("api-logs-v1/get-comment");
+            var commentRequest = new RestRequest("api-logs-v1/get-comment", Method.POST);
             commentRequest.AddParameter("apiKey", apiKey);
             commentRequest.AddParameter("commanderName", commanderName);
             commentRequest.AddParameter("systemName", systemName);
@@ -422,7 +416,7 @@ namespace EddiStarMapService
             var client = new RestClient(baseUrl);
 
             // First fetch the data itself
-            var logRequest = new RestRequest("api-logs-v1/get-logs");
+            var logRequest = new RestRequest("api-logs-v1/get-logs", Method.POST);
             logRequest.AddParameter("apiKey", apiKey);
             logRequest.AddParameter("commanderName", commanderName);
             logRequest.AddParameter("systemName", systemName);
@@ -434,7 +428,7 @@ namespace EddiStarMapService
             }
 
             // Also grab any comment that might be present
-            var commentRequest = new RestRequest("api-logs-v1/get-comment");
+            var commentRequest = new RestRequest("api-logs-v1/get-comment", Method.POST);
             commentRequest.AddParameter("apiKey", apiKey);
             commentRequest.AddParameter("commanderName", commanderName);
             commentRequest.AddParameter("systemName", systemName);
@@ -473,7 +467,7 @@ namespace EddiStarMapService
         public Dictionary<string, string> getStarMapComments()
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-logs-v1/get-comments");
+            var request = new RestRequest("api-logs-v1/get-comments", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             var starMapCommentResponse = client.Execute<StarMapCommentResponse>(request);
@@ -497,7 +491,7 @@ namespace EddiStarMapService
         public Dictionary<string, StarMapLogInfo> getStarMapLog(DateTime? since = null)
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-logs-v1/get-logs");
+            var request = new RestRequest("api-logs-v1/get-logs", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("fullSync", 1);
