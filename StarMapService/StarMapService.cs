@@ -249,7 +249,7 @@ namespace EddiStarMapService
             var client = new RestClient(baseUrl);
             var request = new RestRequest("api-commander-v1/update-ship", Method.POST);
             string coriolis_uri = ship.CoriolisUri();
-
+            string edshipyard_uri = ship.EDShipyardUri();
 
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
@@ -260,8 +260,9 @@ namespace EddiStarMapService
             request.AddParameter("paintJob", ship.paintjob);
             request.AddParameter("cargoQty", ship.cargocarried);
             request.AddParameter("cargoCapacity", ship.cargocapacity);
+            request.AddParameter("linkToEDShipyard", edshipyard_uri);
             request.AddParameter("linkToCoriolis", coriolis_uri);
-
+            
             Thread thread = new Thread(() =>
             {
                 try
@@ -275,9 +276,9 @@ namespace EddiStarMapService
                         Logging.Warn($"EDSM rejected ship data with {clientResponse.ErrorMessage}");
                         return;
                     }
-                    if (response.msgnum != 100)
+                    else
                     {
-                        Logging.Warn("EDSM responded with " + response.msg);
+                        Logging.Debug($"EDSM response {response.msgnum}: " + response.msg);
                     }
                 }
                 catch (ThreadAbortException)
