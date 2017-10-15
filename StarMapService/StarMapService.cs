@@ -248,6 +248,15 @@ namespace EddiStarMapService
         {
             var client = new RestClient(baseUrl);
             var request = new RestRequest("api-commander-v1/update-ship");
+            string coriolis_uri = ship.CoriolisUri();
+
+            // EDSM may reject the data if the Coriolis URI is too long. 
+            // Testing seems to put the maximum length at around 8192 characters
+            if (coriolis_uri.Length > 8192)
+            {
+                coriolis_uri = null;
+            }
+
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("shipId", ship.LocalId);
@@ -257,7 +266,7 @@ namespace EddiStarMapService
             request.AddParameter("paintJob", ship.paintjob);
             request.AddParameter("cargoQty", ship.cargocarried);
             request.AddParameter("cargoCapacity", ship.cargocapacity);
-            request.AddParameter("linkToCoriolis", ship.CoriolisUri());
+            request.AddParameter("linkToCoriolis", coriolis_uri);
 
             Thread thread = new Thread(() =>
             {
@@ -270,6 +279,7 @@ namespace EddiStarMapService
                     if (response == null)
                     {
                         Logging.Warn($"EDSM rejected ship data with {clientResponse.ErrorMessage}");
+                        Logging.Debug("Coriolis URI length: " + coriolis_uri.Length);
                         return;
                     }
                     if (response.msgnum != 100)
