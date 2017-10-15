@@ -776,6 +776,15 @@
       "name": "Limpet sold",
       "description": "Triggered when you sell limpets to a station"
     },
+    "List launchbays": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{for launchbay in ship.launchbays:\r\n    You have a size {launchbay.size} {launchbay.type} hangar.\r\n    {for vehicle in launchbay.vehicles:\r\n        It has a {P(vehicle.name)} with {vehicle.loadout} load out\r\n\r\n        {if type(vehicle.mount) != null:\r\n            {if vehicle.mount = 'F':\r\n                , and fixed weapons\r\n            |elif vehicle.mount = 'G':\r\n                , and ghim balled weapons\r\n            }\r\n        }\r\n        .{_ full stop}\r\n\r\n        {if vehicle.rebuilds != null:\r\n            {if vehicle.rebuilds = 1:\r\n                It has one rebuild remaining.\r\n            |elif vehicle.rebuilds = 0:\r\n                It has no rebuilds remaining.\r\n            |else:\r\n                It has {vehicle.rebuilds} rebuilds remaining.\r\n            }\r\n        }\r\n\r\n        {Pause(500)}\r\n    }\r\n}\r\n",
+      "default": false,
+      "name": "List launchbays",
+      "description": "Describes the contents of each launchbay in the ship"
+    },
     "Location": {
       "enabled": true,
       "priority": 3,
@@ -1410,7 +1419,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.storedship:\r\n    {OneOf(\"Storing\", \"Mothballing\", \"Parking\")} {ShipName(event.storedshipid, event.storedship)} and\r\n|elif event.soldship:\r\n    Selling {ShipName(event.soldshipid, event.soldship)} and\r\n}\r\n{OneOf(\"swapping\",\"moving\",\"transferring\")} to {ShipName(event.shipid, event.ship)}.\r\n\r\n{set fighterhangar to false}\r\n{for compartment in ship.compartments:\r\n    {if find(compartment.module.name, \"Fighter Hangar\") != -1:\r\n        {set fighterhangar to true}\r\n    }\r\n}\r\n{if fighterhangar = true:\r\n    Reminder: you need to assign a crew member to active duty.\r\n}\r\n\r\n{F(\"Limpet check\")}",
+      "script": "{if event.storedship:\r\n    {OneOf(\"Storing\", \"Mothballing\", \"Parking\")} {ShipName(event.storedshipid, event.storedship)} and\r\n|elif event.soldship:\r\n    Selling {ShipName(event.soldshipid, event.soldship)} and\r\n}\r\n{OneOf(\"swapping\",\"moving\",\"transferring\")} to {ShipName(event.shipid, event.ship)}.\r\n\r\n{F(\"Limpet check\")}\r\n{F(\"List launchbays\")}\r\n\r\n{set fighterhangar to false}\r\n{for compartment in ship.compartments:\r\n    {if find(compartment.module.name, \"Fighter Hangar\") != -1:\r\n        {set fighterhangar to true}\r\n    }\r\n}\r\n{if fighterhangar = true:\r\n    Reminder: you need to assign a crew member to active duty.\r\n}\r\n",
       "default": true,
       "name": "Ship swapped",
       "description": "Triggered when you swap a ship"
