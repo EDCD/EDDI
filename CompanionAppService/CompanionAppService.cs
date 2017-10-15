@@ -244,6 +244,7 @@ namespace EddiCompanionAppService
 
                 if (cachedProfile.LastStation.hasmarket ?? false)
                 {
+                    Logging.Debug("Getting station market data");
                     string market = obtainProfile(BASE_URL + MARKET_URL);
                     market = "{\"lastStarport\":" + market + "}";
                     JObject marketJson = JObject.Parse(market);
@@ -253,6 +254,7 @@ namespace EddiCompanionAppService
 
                 if (cachedProfile.LastStation.hasoutfitting ?? false)
                 {
+                    Logging.Debug("Getting station outfitting data");
                     string outfitting = obtainProfile(BASE_URL + SHIPYARD_URL);
                     outfitting = "{\"lastStarport\":" + outfitting + "}";
                     JObject outfittingJson = JObject.Parse(outfitting);
@@ -262,6 +264,7 @@ namespace EddiCompanionAppService
 
                 if (cachedProfile.LastStation.hasshipyard ?? false)
                 {
+                    Logging.Debug("Getting station shipyard data");
                     Thread.Sleep(5000);
                     string shipyard = obtainProfile(BASE_URL + SHIPYARD_URL);
                     shipyard = "{\"lastStarport\":" + shipyard + "}";

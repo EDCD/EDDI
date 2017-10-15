@@ -297,7 +297,6 @@ namespace EddiShipMonitor
                 Logging.Error("No definition for ship module", json["module"].ToString(Formatting.None));
             }
 
-            module.EDID = id;
             module.price = (long)json["module"]["value"];
             module.enabled = (bool)json["module"]["on"];
             module.priority = (int)json["module"]["priority"];

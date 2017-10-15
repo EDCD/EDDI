@@ -25,6 +25,7 @@ namespace EddiShipMonitor
         public ObservableCollection<Ship> shipyard = new ObservableCollection<Ship>();
         // The ID of the current ship; can be null
         private int? currentShipId;
+        private int? currentProfileId;
         private static readonly object shipyardLock = new object();
 
         public string MonitorName()
@@ -325,6 +326,7 @@ namespace EddiShipMonitor
         private void handleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
             // Obtain the ship to which this loadout refers
+            Logging.Debug("Current Ship Id is: " + currentShipId + ", Loadout Ship Id is " + @event.shipid);
             Ship ship = GetShip(@event.shipid);
 
             if (ship == null)
@@ -654,7 +656,7 @@ namespace EddiShipMonitor
         private void posthandleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
             /// The ship may have engineering data, request a profile refresh from the Frontier API a minute after switching
-            refreshProfileDelayed(60);
+            refreshProfileDelayed(@event.shipid, currentProfileId);
         }
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
@@ -692,126 +694,59 @@ namespace EddiShipMonitor
         {
             // Obtain the current ship from the profile
             Ship profileCurrentShip = FrontierApi.ShipFromJson((JObject)profile["ship"]);
-            Logging.Debug("Profile Current Ship is: " + JsonConvert.SerializeObject(profileCurrentShip));
 
             // Obtain the shipyard from the profile
             List<Ship> profileShipyard = FrontierApi.ShipyardFromJson(profileCurrentShip, profile);
 
-            // Information from the Frontier API can be out-of-date so we only use it to set our ship if we don't know what it already is
-            if (currentShipId == null)
-            {
-                // This means that we don't have any info so far; set our active ship
-                if (profileCurrentShip != null)
-                {
-                    SetCurrentShip(profileCurrentShip.LocalId, profileCurrentShip.model);
-                }
-            }
-
-            // Build / Update the active ship
             if (profileCurrentShip != null)
             {
-                Ship ship = GetShip(profileCurrentShip.LocalId);
-                if (ship == null || ship.raw == null)
+                currentProfileId = profileCurrentShip.LocalId;
+                if (currentShipId == null)
                 {
-                    // Either we haven't seen the ship in the profile before or the ship hasn't been active.  Add it to the shipyard
-                    ship = profileCurrentShip;
+                    // This means that we don't have any info so far; set our active ship
+                    currentShipId = profileCurrentShip.LocalId;
                 }
-                else
+                Logging.Debug("Current Ship Id is: " + currentShipId + ", Profile Ship Id is: " + profileCurrentShip.LocalId);
+
+                if (currentShipId == profileCurrentShip.LocalId)
                 {
-                    // Update ship model info
-                    if (ship.model != profileCurrentShip.model)
+                    Ship ship = GetShip(currentShipId);
+                    if (ship == null)
                     {
-                        ship.model = profileCurrentShip.model;
-                        ship.Augment();
+                        // Information from the Frontier API can be out-of-date, use it to set our ship if we don't know what it already is
+                        ship = profileCurrentShip;
+                        AddShip(ship);
                     }
-
-                    // Update the internals
-                    ship.bulkheads = profileCurrentShip.bulkheads;
-                    ship.powerplant = profileCurrentShip.powerplant;
-                    ship.thrusters = profileCurrentShip.thrusters;
-                    ship.frameshiftdrive = profileCurrentShip.frameshiftdrive;
-                    ship.lifesupport = profileCurrentShip.lifesupport;
-                    ship.powerdistributor = profileCurrentShip.powerdistributor;
-                    ship.sensors = profileCurrentShip.sensors;
-                    ship.fueltank = profileCurrentShip.fueltank;
-                    ship.fueltankcapacity = (decimal)Math.Pow(2, ship.fueltank.@class);
-
-                    // Update hardpoints to reflect profile data
-                    List<Hardpoint> hardpoints = new List<Hardpoint>();
-
-                    foreach (string size in HARDPOINT_SIZES)
+                    else
                     {
-                        for (int i = 1; i <= 12; i++)
+                        ship.raw = profileCurrentShip.raw;
+                        ship.launchbays = profileCurrentShip.launchbays;
+                        ship.paintjob = profileCurrentShip.paintjob;
+
+                        if (ship.cargohatch != null)
                         {
-                            string hpName = size + "Hardpoint" + i;
-
-                            Hardpoint profileHardpoint = profileCurrentShip.hardpoints.Find(h => h.name == hpName);
-                            Hardpoint shipHardpoint = ship.hardpoints.Find(h => h.name == hpName);
-
-                            if (profileHardpoint != null)
-                                hardpoints.Add(profileHardpoint);
-                            else if (shipHardpoint != null)
-                                hardpoints.Add(shipHardpoint);
+                            // Engineering info for each module isn't in the journal, but we only use this to pass on to Coriolis so don't
+                            // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
+                            // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
+                            JObject cargoHatchModule = new JObject
+                        {
+                            { "on", ship.cargohatch.enabled },
+                            { "priority", ship.cargohatch.priority },
+                            { "value", ship.cargohatch.price },
+                            { "health", ship.cargohatch.health },
+                            { "name", "ModularCargoBayDoor" }
+                        };
+                            JObject cargoHatchSlot = new JObject
+                        {
+                            { "module", cargoHatchModule }
+                        };
+                            JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
+                            parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
+                            ship.raw = parsedRaw.ToString(Formatting.None);
                         }
                     }
-                    ship.hardpoints = hardpoints;
-
-                    // Update compartments to reflect profile data
-                    List<Compartment> compartments = new List<Compartment>();
-
-                    for (int i = 1; i <= 12; i++)
-                        for (int j = 1; j <= 8; j++)
-                        {
-                            string cptName = "Slot" + i.ToString("00") + "_Size" + j;
-
-                            Compartment profileCompartment = profileCurrentShip.compartments.Find(h => h.name == cptName);
-                            Compartment shipCompartment = profileCurrentShip.compartments.Find(h => h.name == cptName);
-
-                            if (profileCompartment != null)
-                                compartments.Add(profileCompartment);
-                            else if (shipCompartment != null)
-                                compartments.Add(shipCompartment);
-                        }
-
-                    for (int i = 1; i <= 3; i++)
-                    {
-                        string cptName = "Military" + i.ToString("00");
-
-                        Compartment profileCompartment = profileCurrentShip.compartments.Find(h => h.name == cptName);
-                        Compartment shipCompartment = profileCurrentShip.compartments.Find(h => h.name == cptName);
-
-                        if (profileCompartment != null)
-                            compartments.Add(profileCompartment);
-                        else if (shipCompartment != null)
-                            compartments.Add(shipCompartment);
-                    }
-                    ship.compartments = compartments;
-
-                    if (ship.cargohatch != null)
-                    {
-                        // Engineering info for each module isn't in the journal, but we only use this to pass on to Coriolis so don't
-                        // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
-                        // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
-                        JObject cargoHatchModule = new JObject
-                    {
-                        { "on", ship.cargohatch.enabled },
-                        { "priority", ship.cargohatch.priority },
-                        { "value", ship.cargohatch.price },
-                        { "health", ship.cargohatch.health },
-                        { "name", "ModularCargoBayDoor" }
-                    };
-                        JObject cargoHatchSlot = new JObject
-                    {
-                        { "module", cargoHatchModule }
-                    };
-                        JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
-                        parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
-                        ship.raw = parsedRaw.ToString(Formatting.None);
-                    }
-                    ship.launchbays = profileCurrentShip.launchbays;
+                    Logging.Debug("Ship is: " + JsonConvert.SerializeObject(ship));
                 }
-                Logging.Debug("Updated Current Ship is: " + JsonConvert.SerializeObject(ship));
-                AddShip(ship);
             }
 
             // Prune ships from the Shipyard that are not found in the Profile Shipyard 
@@ -831,22 +766,9 @@ namespace EddiShipMonitor
                 {
                     // This is a new ship, add it to the shipyard
                     ship = profileShip;
-                    ship.Augment();
                     AddShip(ship);
                 }
-                else
-                {
-                    // This ship is already in the shipyard
-                    if (profileShip.name != null)
-                        ship.name = profileShip.name;
-                    if (profileShip.ident != null)
-                        ship.ident = profileShip.ident;
-                    ship.value = profileShip.value;
-                    ship.starsystem = profileShip.starsystem;
-                    ship.station = profileShip.station;
-                }
             }
-
             writeShips();
         }
 
@@ -1249,10 +1171,14 @@ namespace EddiShipMonitor
             return (model == "Empire_Fighter" || model == "Federation_Fighter" || model == "Independent_Fighter" || model == "TestBuggy");
         }
 
-        static async void refreshProfileDelayed(int n)
+        static async void refreshProfileDelayed(int? shipId, int? profileId)
         {
-            await Task.Delay(TimeSpan.FromSeconds(n));
-            EDDI.Instance.refreshProfile();
+            do
+            {
+                await Task.Delay(TimeSpan.FromSeconds(20));
+                EDDI.Instance.refreshProfile();
+            } while (shipId != profileId);
+            Logging.Debug("Current Ship Id is: " + shipId + ", Profile Ship Id is " + profileId);
         }
     }
 }
