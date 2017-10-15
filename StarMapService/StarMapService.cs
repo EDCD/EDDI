@@ -246,6 +246,11 @@ namespace EddiStarMapService
 
         public void sendShip(Ship ship)
         {
+            if (ship == null)
+            {
+                return;
+            }
+
             var client = new RestClient(baseUrl);
             var request = new RestRequest("api-commander-v1/update-ship", Method.POST);
             string coriolis_uri = ship.CoriolisUri();
