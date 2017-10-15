@@ -1,6 +1,6 @@
 # CHANGE LOG
 
-### 2.4.0-b6
+### 2.4.0-rc1
   * Core
     * EDDI will now take commander ratings/rankings from the journal in addition to from the API.
     * EDDN market and outfitting updating restored, accomodating 2.4 cAPI changes. Bonus - now sending shipyard data to EDDN!
