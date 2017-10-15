@@ -36,7 +36,7 @@ namespace EddiStarMapService
         public void sendStarMapLog(DateTime timestamp, string systemName, decimal? x, decimal? y, decimal? z)
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-logs-v1/set-log");
+            var request = new RestRequest("api-logs-v1/set-log", Method.POST);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("systemName", systemName);
