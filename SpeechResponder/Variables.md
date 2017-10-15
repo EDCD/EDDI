@@ -57,6 +57,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `fueltanktotalcapacity` the capacity of the main fuel tank plus all secondary fuel tanks
     - `hardpoints` the ship's hardpoints (this is an array of HardPoint objects)
     - `compartments` the ship's internal compartments (this is an array of Compartment objects)
+    - `launchbays` the ship's internal hangars, containing SRV or Fighter 'vehicles' (this is an array of launchbay objects) 
 
 ## Current starsystem
 
@@ -149,6 +150,23 @@ A compartment, which may or may not contain a module.
 
     - `size` the numeric size of the compartment, from 1 to 8
     - `module` the module in the compartment
+
+## Vehicle
+
+An SRV or Fighter, within an associated launchbay.
+
+    - `name` the name of the vehicle, for example 'F63 Condor'
+    - `loadout` the loadout of the vehicle, for example 'Starter' for SRV or 'Gelid' for Fighter
+    - `mount` only for Fighters, this defines the type of mount ('F' = fixed, 'G' = gimballed)
+    - `rebuilds` the number of rebuilds remaining for the vehicle
+
+## Launchbay
+
+An SRV or Fighter hangar.
+
+    - `type` the of launchbay, 'SRV' of 'Fighter'
+    - `size` the numeric size of the launchbay
+    - `vehicles` the vehicles within the launchbay (this is an array of vehicle objects)
 
 ## Material
 
