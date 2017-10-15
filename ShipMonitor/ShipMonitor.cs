@@ -25,6 +25,7 @@ namespace EddiShipMonitor
         public ObservableCollection<Ship> shipyard = new ObservableCollection<Ship>();
         // The ID of the current ship; can be null
         private int? currentShipId;
+        private int? currentProfileId;
         private static readonly object shipyardLock = new object();
 
         public string MonitorName()
@@ -325,24 +326,21 @@ namespace EddiShipMonitor
         private void handleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
             // Obtain the ship to which this loadout refers
+            Logging.Debug("Current Ship Id is: " + currentShipId + ", Loadout Ship Id is " + @event.shipid);
             Ship ship = GetShip(@event.shipid);
-            Ship template = ShipDefinitions.FromEDModel(@event.ship);
 
             if (ship == null)
             {
                 // The ship is unknown - create it
                 Logging.Debug("Unknown ship ID " + @event.shipid);
-                ship = template;
+                ship = ShipDefinitions.FromEDModel(@event.ship);
                 ship.LocalId = (int)@event.shipid;
                 ship.role = Role.MultiPurpose;
             }
 
-            // Update name and ident if required
+            // Update name, ident & paintjob if required
             setShipName(ship, @event.shipname);
             setShipIdent(ship, @event.shipident);
-            ship.model = template.model;
-            ship.Augment();
-
             ship.paintjob = @event.paintjob;
 
             // Set the standard modules
@@ -658,7 +656,7 @@ namespace EddiShipMonitor
         private void posthandleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
             /// The ship may have engineering data, request a profile refresh from the Frontier API a minute after switching
-            refreshProfileDelayed(60);
+            refreshProfileDelayed(@event.shipid, currentProfileId);
         }
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
@@ -700,56 +698,54 @@ namespace EddiShipMonitor
             // Obtain the shipyard from the profile
             List<Ship> profileShipyard = FrontierApi.ShipyardFromJson(profileCurrentShip, profile);
 
-            // Information from the Frontier API can be out-of-date so we only use it to set our ship if we don't know what it already is
-            if (currentShipId == null)
-            {
-                // This means that we don't have any info so far; set our active ship
-                if (profileCurrentShip != null)
-                {
-                    SetCurrentShip(profileCurrentShip.LocalId, profileCurrentShip.model);
-                }
-            }
-
-            // Add the raw JSON for each known ship provided in the profile
-            // TODO Rationalise companion API data - munge the JSON according to the compartment information, removing anything that is out-of-sync
             if (profileCurrentShip != null)
             {
-                Ship ship = GetShip(profileCurrentShip.LocalId);
-                if (ship == null)
+                currentProfileId = profileCurrentShip.LocalId;
+                if (currentShipId == null)
                 {
-                    // This means that we haven't seen the ship in the profile before.  Add it to the shipyard
-                    ship = profileCurrentShip;
-                    AddShip(ship);
+                    // This means that we don't have any info so far; set our active ship
+                    currentShipId = profileCurrentShip.LocalId;
+                }
+                Logging.Debug("Current Ship Id is: " + currentShipId + ", Profile Ship Id is: " + profileCurrentShip.LocalId);
 
-                }
-                if (ship.model == null)
+                if (currentShipId == profileCurrentShip.LocalId)
                 {
-                    // We don't know this ship's model but can fill it from the info we have
-                    ship.model = profileCurrentShip.model;
-                    ship.Augment();
-                }
-                // Obtain items that we can't obtain from the journal
-                ship.value = profileCurrentShip.value;
-                if (ship.cargohatch != null)
-                {
-                    // Engineering info for each module isn't in the journal, but we only use this to pass on to Coriolis so don't
-                    // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
-                    // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
-                    JObject cargoHatchModule = new JObject
+                    Ship ship = GetShip(currentShipId);
+                    if (ship == null)
                     {
-                        { "on", ship.cargohatch.enabled },
-                        { "priority", ship.cargohatch.priority },
-                        { "value", ship.cargohatch.price },
-                        { "health", ship.cargohatch.health },
-                        { "name", "ModularCargoBayDoor" }
-                    };
-                    JObject cargoHatchSlot = new JObject
+                        // Information from the Frontier API can be out-of-date, use it to set our ship if we don't know what it already is
+                        ship = profileCurrentShip;
+                        AddShip(ship);
+                    }
+                    else
                     {
-                        { "module", cargoHatchModule }
-                    };
-                    JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
-                    parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
-                    ship.raw = parsedRaw.ToString(Formatting.None);
+                        ship.raw = profileCurrentShip.raw;
+                        ship.launchbays = profileCurrentShip.launchbays;
+                        ship.paintjob = profileCurrentShip.paintjob;
+
+                        if (ship.cargohatch != null)
+                        {
+                            // Engineering info for each module isn't in the journal, but we only use this to pass on to Coriolis so don't
+                            // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
+                            // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
+                            JObject cargoHatchModule = new JObject
+                        {
+                            { "on", ship.cargohatch.enabled },
+                            { "priority", ship.cargohatch.priority },
+                            { "value", ship.cargohatch.price },
+                            { "health", ship.cargohatch.health },
+                            { "name", "ModularCargoBayDoor" }
+                        };
+                            JObject cargoHatchSlot = new JObject
+                        {
+                            { "module", cargoHatchModule }
+                        };
+                            JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
+                            parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
+                            ship.raw = parsedRaw.ToString(Formatting.None);
+                        }
+                    }
+                    Logging.Debug("Ship is: " + JsonConvert.SerializeObject(ship));
                 }
             }
 
@@ -770,24 +766,9 @@ namespace EddiShipMonitor
                 {
                     // This is a new ship, add it to the shipyard
                     ship = profileShip;
-                    ship.Augment();
-                    ship.role = Role.MultiPurpose;
                     AddShip(ship);
                 }
-                else
-                {
-                    // This ship is already in the shipyard
-                    if (profileShip.name != null)
-                        ship.name = profileShip.name;
-                    if (profileShip.ident != null)
-                        ship.ident = profileShip.ident;
-                    ship.model = profileShip.model;
-                    ship.value = profileShip.value;
-                    ship.starsystem = profileShip.starsystem;
-                    ship.station = profileShip.station;
-                }
             }
-
             writeShips();
         }
 
@@ -987,7 +968,7 @@ namespace EddiShipMonitor
             }
         }
 
-        public void AddModule(int shipid, string slot, Module module)
+        private void AddModule(int shipid, string slot, Module module)
         {
             Ship ship = GetShip(shipid);
 
@@ -1112,7 +1093,7 @@ namespace EddiShipMonitor
             }
         }
 
-        public void RemoveModule(int shipid, string slot, Module replacement = null)
+        private void RemoveModule(int shipid, string slot, Module replacement = null)
         {
             Ship ship = GetShip(shipid);
 
@@ -1190,10 +1171,14 @@ namespace EddiShipMonitor
             return (model == "Empire_Fighter" || model == "Federation_Fighter" || model == "Independent_Fighter" || model == "TestBuggy");
         }
 
-        static async void refreshProfileDelayed(int n)
+        static async void refreshProfileDelayed(int? shipId, int? profileId)
         {
-            await Task.Delay(TimeSpan.FromSeconds(n));
-            EDDI.Instance.refreshProfile();
+            do
+            {
+                await Task.Delay(TimeSpan.FromSeconds(20));
+                EDDI.Instance.refreshProfile();
+            } while (shipId != profileId);
+            Logging.Debug("Current Ship Id is: " + shipId + ", Profile Ship Id is " + profileId);
         }
     }
 }

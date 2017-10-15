@@ -1003,6 +1003,7 @@ namespace EddiDataDefinitions
             Module Template;
             if (ModulesByEliteID.TryGetValue(id, out Template))
             {
+                Module.EDID = Template.EDID;
                 Module.EDName = Template.EDName;
                 Module.EDDBID = Template.EDDBID;
                 Module.name = Template.name;

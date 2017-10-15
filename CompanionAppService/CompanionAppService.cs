@@ -210,10 +210,8 @@ namespace EddiCompanionAppService
             }
 
             string data = obtainProfile(BASE_URL + PROFILE_URL);
-            string market = obtainProfile(BASE_URL + MARKET_URL);
-            string shipyard = obtainProfile(BASE_URL + SHIPYARD_URL);
 
-            if (data == null || data == "Profile unavailable" || market == null || shipyard == null)
+            if (data == null || data == "Profile unavailable")
             {
                 // Happens if there is a problem with the API.  Logging in again might clear this...
                 relogin();
@@ -227,10 +225,8 @@ namespace EddiCompanionAppService
                 {
                     // Looks like login worked; try again
                     data = obtainProfile(BASE_URL + PROFILE_URL);
-                    market = obtainProfile(BASE_URL + MARKET_URL);
-                    shipyard = obtainProfile(BASE_URL + SHIPYARD_URL);
 
-                    if (data == null || data == "Profile unavailable" || market == null || shipyard == null)
+                    if (data == null || data == "Profile unavailable")
 
                     {
                         // No luck with a relogin; give up
@@ -244,25 +240,39 @@ namespace EddiCompanionAppService
             try
             {
                 JObject json = JObject.Parse(data);
-                market = "{\"lastStarport\":" + market + "}";
-                shipyard = "{\"lastStarport\":" + shipyard + "}";
-                json.Merge(JObject.Parse(market), new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Concat });
-                JObject json2 = json;
-                json.Merge(JObject.Parse(shipyard), new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Concat });
-                data = JsonConvert.SerializeObject(json);
-
                 cachedProfile = ProfileFromJson(data);
+
+                if (cachedProfile.LastStation.hasmarket ?? false)
+                {
+                    Logging.Debug("Getting station market data");
+                    string market = obtainProfile(BASE_URL + MARKET_URL);
+                    market = "{\"lastStarport\":" + market + "}";
+                    JObject marketJson = JObject.Parse(market);
+                    cachedProfile.LastStation.commodities = CommoditiesFromProfile(marketJson);
+                    json.Merge(marketJson, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Union });
+                }
+
+                if (cachedProfile.LastStation.hasoutfitting ?? false)
+                {
+                    Logging.Debug("Getting station outfitting data");
+                    string outfitting = obtainProfile(BASE_URL + SHIPYARD_URL);
+                    outfitting = "{\"lastStarport\":" + outfitting + "}";
+                    JObject outfittingJson = JObject.Parse(outfitting);
+                    cachedProfile.LastStation.outfitting = OutfittingFromProfile(outfittingJson);
+                    json.Merge(outfittingJson, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Union });
+                }
 
                 if (cachedProfile.LastStation.hasshipyard ?? false)
                 {
+                    Logging.Debug("Getting station shipyard data");
                     Thread.Sleep(5000);
-                    shipyard = obtainProfile(BASE_URL + SHIPYARD_URL);
+                    string shipyard = obtainProfile(BASE_URL + SHIPYARD_URL);
                     shipyard = "{\"lastStarport\":" + shipyard + "}";
                     JObject shipyardJson = JObject.Parse(shipyard);
                     cachedProfile.LastStation.shipyard = ShipyardFromProfile(shipyardJson);
-                    json2.Merge(shipyardJson, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Concat });
-                    cachedProfile.json = json2;
+                    json.Merge(shipyardJson, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Union });
                 }
+                cachedProfile.json = json;
             }
             catch (JsonException ex)
             {
@@ -551,8 +561,6 @@ namespace EddiCompanionAppService
                     }
 
                     Profile.LastStation.systemname = Profile.CurrentStarSystem.name;
-                    Profile.LastStation.outfitting = OutfittingFromProfile(json);
-                    Profile.LastStation.commodities = CommoditiesFromProfile(json);
                 }
             }
 

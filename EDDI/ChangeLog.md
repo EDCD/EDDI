@@ -11,6 +11,10 @@
     * Fixed a bug that was preventing EDDI from retaining full data from the API, thus mucking up exports to 3rd party services.
     * The 'Export' button is now disabled when EDDI doesn't have the necessary information about the ship in question.
     * Information about engineer modifications will be exported provided you have used the ship at least once in ED 2.4 or later.
+    * EDDI can now tell you what's in a ship's fighter bays and vehicle hangars.
+  * Coriolis Export
+    * Fixed a bug that was preventing EDDI from retaining full data from the API, thus mucking up exports to Coriolis.
+    * The 'Export to Coriolis' button is now disabled when EDDI doesn't have the necessary information about the ship in question.
   * Events
     * 'Empire promotion' event added
     * 'Federation promotion' event added
