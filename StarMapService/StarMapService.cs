@@ -26,7 +26,7 @@ namespace EddiStarMapService
         private string apiKey;
         private string baseUrl;
 
-        public StarMapService(string apiKey, string commanderName, string baseUrl="http://www.edsm.net/")
+        public StarMapService(string apiKey, string commanderName, string baseUrl="https://www.edsm.net/")
         {
             this.apiKey = apiKey;
             this.commanderName = commanderName;
