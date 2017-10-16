@@ -4,6 +4,7 @@
   * Core
     * EDDI will now take commander ratings/rankings from the journal in addition to from the API.
     * EDDN market and outfitting updating restored, accomodating 2.4 cAPI changes. Bonus - now sending shipyard data to EDDN!
+    * Revised error reporting. The 'Send EDDI log to developers' button is now called 'Report an Issue' and routes users to our Github issues page. If verbose logging is enabled, a zipped and truncated log file is placed on the desktop so that it may be attached to the Github issue.
     * Updated Variables.md to include a description of commodities objects and their available properties.
     * Fixed a bug where some commanders weren't receiving updates to their EDSM profiles (by suppressing sending Coriolis links that were too long to EDSM). 
   * Shipyard
