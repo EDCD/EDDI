@@ -7,7 +7,8 @@ namespace EddiDataDefinitions
     {
         private static Dictionary<long, Module> ModulesByEliteID = new Dictionary<long, Module>
         {
-                //Module(long EDID, string EDName, long EDDBID, string Name, int Class, string Grade, long Value, int ShipID)
+                // Module(long EDID, string EDName, long EDDBID, string Name, int Class, string Grade, long Value, int ShipID)
+                // Check https://eddb.io/archive/v5/modules.json for any undefined EDDBID's
                 {128049250, new Module(128049250, "SideWinder_Armour_Grade1", 738, "Lightweight Alloy", 1, "I", 0, 128049249) },
                 {128049251, new Module(128049251, "SideWinder_Armour_Grade2", 739, "Reinforced Alloy", 1, "I", 25600, 128049249) },
                 {128049252, new Module(128049252, "SideWinder_Armour_Grade3", 740, "Military Grade Composite", 1, "I", 80320, 128049249) },
