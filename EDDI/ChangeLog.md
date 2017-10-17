@@ -6,7 +6,7 @@
   * Speech Responder
     * Script changes
       * 'FSD engaged' 
-        * Amended test for white dwarf arrival stars, courtesy of CMDR J. Calvert (Joshua).
+        * Amended test for white dwarf arrival stars to match all subtypes, courtesy of CMDR J. Calvert (Joshua).
         * Simplified logic for testing for scoopable stars.
       * 'Market information updated'
         * Delay 4.5 seconds before speaking market data on docking.
