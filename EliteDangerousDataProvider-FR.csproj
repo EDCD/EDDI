@@ -137,7 +137,6 @@
     <None Include=".git\refs\tags\2.2.2" />
     <None Include=".git\refs\tags\2.2.3" />
     <None Include=".git\refs\tags\2.3.0" />
-    <None Include="app.config" />
     <None Include="CargoMonitor\packages.config" />
     <None Include="ChangeLog.md" />
     <None Include="CompanionAppService\packages.config" />
@@ -160,7 +159,6 @@
     <None Include="LICENSE.md" />
     <None Include="MaterialMonitor\packages.config" />
     <None Include="MaterialMonitor\Properties\Settings.settings" />
-    <None Include="packages.config" />
     <None Include="README.md" />
     <None Include="ShipMonitor\packages.config" />
     <None Include="SpeechResponder\eddi.json" />
