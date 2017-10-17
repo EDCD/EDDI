@@ -907,11 +907,16 @@ namespace Eddi
                 // Kick off the profile refresh if the companion API is available
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
                 {
-                    profileUpdateNeeded = true;
-                    profileStationRequired = CurrentStation.name;
-                    Thread updateThread = new Thread(() => conditionallyRefreshProfile());
-                    updateThread.IsBackground = true;
-                    updateThread.Start();
+                    // Refresh commander, ships, system and station data
+                    if (refreshProfile())
+                    {
+                        // Refresh station data
+                        profileUpdateNeeded = true;
+                        profileStationRequired = CurrentStation.name;
+                        Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+                        updateThread.IsBackground = true;
+                        updateThread.Start();
+                    }
                 }
             }
             else
@@ -990,12 +995,16 @@ namespace Eddi
             // Kick off the profile refresh if the companion API is available
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
             {
-                // Kick off the profile refresh
-                profileUpdateNeeded = true;
-                profileStationRequired = CurrentStation.name;
-                Thread updateThread = new Thread(() => conditionallyRefreshProfile());
-                updateThread.IsBackground = true;
-                updateThread.Start();
+                // Refresh commander, ships, system and station data
+                if (refreshProfile())
+                {
+                    // Refresh station data
+                    profileUpdateNeeded = true;
+                    profileStationRequired = CurrentStation.name;
+                    Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+                    updateThread.IsBackground = true;
+                    updateThread.Start();
+                }
             }
             else
             {
@@ -1451,8 +1460,9 @@ namespace Eddi
         }
 
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
-        public void refreshProfile()
+        public bool refreshProfile()
         {
+            bool success = true;
             if (CompanionAppService.Instance?.CurrentState == CompanionAppService.State.READY)
             {
                 try
@@ -1495,29 +1505,6 @@ namespace Eddi
                                 }
                             }
                         }
-                        else
-                        {
-                            if (profile.LastStation != null && CurrentStation != null && CurrentStation.systemname == profile.LastStation.systemname && CurrentStation.name == profile.LastStation.name)
-                            {
-                                // Match for our expected station with the information returned from the profile
-                                Logging.Debug("Current station matches profile information; updating info");
-
-                                // Update the outfitting, commodities and shipyard with the data obtained from the profile
-                                if (CurrentStation != null)
-                                {
-                                    CurrentStation.outfitting = profile.LastStation.outfitting;
-                                    CurrentStation.updatedat = profileTime;
-                                    CurrentStation.commodities = profile.LastStation.commodities;
-                                    CurrentStation.commoditiesupdatedat = profileTime;
-                                    CurrentStation.shipyard = profile.LastStation.shipyard;
-                                    updatedCurrentStarSystem = true;
-                                }
-                            }
-                            else
-                            {
-                                Logging.Debug("Current station does not match profile information; ignoring");
-                            }
-                        }
 
                         setCommanderTitle();
 
@@ -1550,10 +1537,12 @@ namespace Eddi
                             {
                                 Thread.ResetAbort();
                                 Logging.Error(JsonConvert.SerializeObject(profile), tax);
+                                success = false;
                             }
                             catch (Exception ex)
                             {
                                 Logging.Error(JsonConvert.SerializeObject(profile), ex);
+                                success = false;
                             }
                         }
                     }
@@ -1561,8 +1550,10 @@ namespace Eddi
                 catch (Exception ex)
                 {
                     Logging.Error("Exception obtaining profile", ex);
+                    success = false;
                 }
             }
+            return success;
         }
 
         private void setSystemDistanceFromHome(StarSystem system)
@@ -1761,24 +1752,16 @@ namespace Eddi
                         // We do need to fetch an updated profile; do so
                         ApiTimeStamp = DateTime.UtcNow;
                         long profileTime = (long)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-                        Logging.Debug("Fetching profile");
-                        Profile profile = CompanionAppService.Instance.Profile(true);
-
-                        // Use the profile as primary information for our commander and shipyard
-                        Cmdr = profile.Cmdr;
-
-                        // Reinstate insurance
-                        EDDIConfiguration configuration = EDDIConfiguration.FromFile();
-                        if (configuration != null)
-                        {
-                            Cmdr.insurance = configuration.Insurance;
-                        }
+                        Logging.Debug("Fetching station profile");
+                        Profile profile = CompanionAppService.Instance.Station();
 
                         // See if it is up-to-date regarding our requirements
                         Logging.Debug("profileStationRequired is " + profileStationRequired + ", profile station is " + profile.LastStation.name);
+
                         if (profileStationRequired != null && profileStationRequired == profile.LastStation.name)
                         {
                             // We have the required station information
+                            Logging.Debug("Current station matches profile information; updating info");
                             CurrentStation.outfitting = profile.LastStation.outfitting;
                             CurrentStation.updatedat = profileTime;
                             CurrentStation.commodities = profile.LastStation.commodities;
