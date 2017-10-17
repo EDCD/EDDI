@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCompanionAppService", "CompanionAppService\EddiCompanionAppService.csproj", "{462ED721-1C9C-43FA-8A3F-4C1644363A5A}"
 EndProject
@@ -148,5 +148,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F3301BB7-E806-4675-862E-6C08F6C75A52}
 	EndGlobalSection
 EndGlobal
