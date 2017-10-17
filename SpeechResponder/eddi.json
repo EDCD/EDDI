@@ -6,7 +6,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{event.item} \r\n{if event.repairedfully:\r\n    fully repaired\r\n|else:\r\n    partially repaired \r\n    {Occasionally(2, cat(\r\n        OneOf(\"to\", \"at\"), \" \",\r\n        Humanise(event.health*100), \" \",\r\n        \"percent functionality\"\r\n    ))}\r\n}\r\n\r\n{Occasionally(2, \r\n    cat(OneOf(\", \", \"and is\"), \" \", \"ready for re-activation\")\r\n)}.",
+      "script": "{event.item} \r\n{if event.repairedfully:\r\n    fully repaired\r\n|else:\r\n    partially repaired \r\n    {Occasionally(2, cat(\r\n        OneOf(\"to \", \"at \"),\r\n        Humanise(event.health * 100),\r\n        \" percent functionality\"\r\n    ))}\r\n}\r\n\r\n{Occasionally(2, \r\n    cat(OneOf(\", \", \"and is\"), \" ready for re-activation\")\r\n)}.",
       "default": true,
       "name": "AFMU repairs",
       "description": "Triggered when repairing modules using the Auto Field Maintenance Unit (AFMU)"
