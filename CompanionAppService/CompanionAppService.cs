@@ -241,38 +241,7 @@ namespace EddiCompanionAppService
             {
                 JObject json = JObject.Parse(data);
                 cachedProfile = ProfileFromJson(data);
-
-                if (cachedProfile.LastStation.hasmarket ?? false)
-                {
-                    Logging.Debug("Getting station market data");
-                    string market = obtainProfile(BASE_URL + MARKET_URL);
-                    market = "{\"lastStarport\":" + market + "}";
-                    JObject marketJson = JObject.Parse(market);
-                    cachedProfile.LastStation.commodities = CommoditiesFromProfile(marketJson);
-                    json.Merge(marketJson, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Union });
-                }
-
-                if (cachedProfile.LastStation.hasoutfitting ?? false)
-                {
-                    Logging.Debug("Getting station outfitting data");
-                    string outfitting = obtainProfile(BASE_URL + SHIPYARD_URL);
-                    outfitting = "{\"lastStarport\":" + outfitting + "}";
-                    JObject outfittingJson = JObject.Parse(outfitting);
-                    cachedProfile.LastStation.outfitting = OutfittingFromProfile(outfittingJson);
-                    json.Merge(outfittingJson, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Union });
-                }
-
-                if (cachedProfile.LastStation.hasshipyard ?? false)
-                {
-                    Logging.Debug("Getting station shipyard data");
-                    Thread.Sleep(5000);
-                    string shipyard = obtainProfile(BASE_URL + SHIPYARD_URL);
-                    shipyard = "{\"lastStarport\":" + shipyard + "}";
-                    JObject shipyardJson = JObject.Parse(shipyard);
-                    cachedProfile.LastStation.shipyard = ShipyardFromProfile(shipyardJson);
-                    json.Merge(shipyardJson, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Union });
-                }
-                cachedProfile.json = json;
+				
             }
             catch (JsonException ex)
             {
@@ -289,6 +258,58 @@ namespace EddiCompanionAppService
             Logging.Debug("Leaving");
             return cachedProfile;
         }
+
+        public Profile Station()
+        {
+            Logging.Debug("Entered");
+            if (CurrentState != State.READY)
+            {
+                // Shouldn't be here
+                Logging.Debug("Service in incorrect state to provide station data (" + CurrentState + ")");
+                Logging.Debug("Leaving");
+                throw new EliteDangerousCompanionAppIllegalStateException("Service in incorrect state to provide station data (" + CurrentState + ")");
+            }
+
+            try
+            {
+                if (cachedProfile.LastStation.hasmarket ?? false)
+                {
+                    Logging.Debug("Getting station market data");
+                    string market = obtainProfile(BASE_URL + MARKET_URL);
+                    market = "{\"lastStarport\":" + market + "}";
+                    JObject marketJson = JObject.Parse(market);
+                    cachedProfile.LastStation.commodities = CommoditiesFromProfile(marketJson);
+                }
+
+                if (cachedProfile.LastStation.hasoutfitting ?? false)
+                {
+                    Logging.Debug("Getting station outfitting data");
+                    string outfitting = obtainProfile(BASE_URL + SHIPYARD_URL);
+                    outfitting = "{\"lastStarport\":" + outfitting + "}";
+                    JObject outfittingJson = JObject.Parse(outfitting);
+                    cachedProfile.LastStation.outfitting = OutfittingFromProfile(outfittingJson);
+                }
+
+                if (cachedProfile.LastStation.hasshipyard ?? false)
+                {
+                    Logging.Debug("Getting station shipyard data");
+                    Thread.Sleep(5000);
+                    string shipyard = obtainProfile(BASE_URL + SHIPYARD_URL);
+                    shipyard = "{\"lastStarport\":" + shipyard + "}";
+                    JObject shipyardJson = JObject.Parse(shipyard);
+                    cachedProfile.LastStation.shipyard = ShipyardFromProfile(shipyardJson);
+                }
+            }
+            catch (JsonException ex)
+            {
+                Logging.Error("Failed to parse companion station data", ex);
+            }
+
+            Logging.Debug("Station is " + JsonConvert.SerializeObject(cachedProfile));
+            Logging.Debug("Leaving");
+            return cachedProfile;
+        }
+
 
         private string obtainProfile(string url)
         {
