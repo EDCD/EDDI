@@ -280,6 +280,7 @@ namespace Eddi
                         UpgradeRequired = true;
                         UpgradeLocation = info.url;
                         UpgradeVersion = info.version;
+                        return;
                     }
 
                     if (Versioning.Compare(info.version, Constants.EDDI_VERSION) == 1)
