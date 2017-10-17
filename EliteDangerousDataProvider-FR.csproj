@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -6,8 +6,9 @@
     <OutputType>WinExe</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
     <AssemblyName>WindowsApplication</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -19,6 +20,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>pdbonly</DebugType>
@@ -28,19 +30,23 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <RootNamespace>EliteDangerousDataProvider_FR</RootNamespace>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>EDDI\EDDI.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Exceptionless.Extras, Version=3.5.1738.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Exceptionless.Windows.3.5.1738\lib\net40\Exceptionless.Extras.dll</HintPath>
+    <Reference Include="Exceptionless, Version=4.0.1955.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Exceptionless.4.0.1955\lib\net45\Exceptionless.dll</HintPath>
     </Reference>
-    <Reference Include="Exceptionless.Portable, Version=3.5.1738.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Exceptionless.Portable.3.5.1738\lib\net40\Exceptionless.Portable.dll</HintPath>
+    <Reference Include="Exceptionless.Portable, Version=4.0.1955.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Exceptionless.Portable.4.0.1955\lib\net45\Exceptionless.Portable.dll</HintPath>
     </Reference>
-    <Reference Include="Exceptionless.Windows, Version=3.5.1738.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Exceptionless.Windows.3.5.1738\lib\net40\Exceptionless.Windows.dll</HintPath>
+    <Reference Include="Exceptionless.Windows, Version=4.0.1955.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Exceptionless.Windows.4.0.1955\lib\net45\Exceptionless.Windows.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.10.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -131,6 +137,7 @@
     <None Include=".git\refs\tags\2.2.2" />
     <None Include=".git\refs\tags\2.2.3" />
     <None Include=".git\refs\tags\2.3.0" />
+    <None Include="app.config" />
     <None Include="CargoMonitor\packages.config" />
     <None Include="ChangeLog.md" />
     <None Include="CompanionAppService\packages.config" />
