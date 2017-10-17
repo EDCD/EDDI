@@ -326,20 +326,6 @@ namespace Eddi
                         UpgradeRequired = true;
                         UpgradeLocation = info.url;
                         UpgradeVersion = info.version;
-                        //SpeechService.Instance.Say(null, "EDDI requires an update.  Downloading.", true);
-                        //// We are too old to run - update
-                        //string updateFile = Net.DownloadFile(info.url, @"EDDI-update.exe");
-                        //if (updateFile == null)
-                        //{
-                        //    SpeechService.Instance.Say(null, "Download failed.  Please try again later.", true);
-                        //}
-                        //else
-                        //{
-                        //    Logging.Info("Downloaded to " + updateFile);
-                        //    SpeechService.Instance.Say(null, "Download complete.  Please restart EDDI once upgrade has finished.", true);
-                        //    Process.Start(updateFile, @"/silent /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
-                        //}
-                        //System.Environment.Exit(1);
                     }
 
                     if (Versioning.Compare(info.version, Constants.EDDI_VERSION) == 1)
@@ -349,19 +335,6 @@ namespace Eddi
                         UpgradeAvailable = true;
                         UpgradeLocation = info.url;
                         UpgradeVersion = info.version;
-                        //SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.  Downloading.", true);
-                        //string updateFile = Net.DownloadFile(info.url, @"EDDI-update.exe");
-                        //if (updateFile == null)
-                        //{
-                        //    SpeechService.Instance.Say(null, "Download failed.  EDDI will try again next time.", true);
-                        //}
-                        //else
-                        //{
-                        //    Logging.Info("Downloaded to " + updateFile);
-                        //    SpeechService.Instance.Say(null, "Download complete.  Please restart EDDI once upgrade has finished.", true);
-                        //    Process.Start(updateFile, @"/silent /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
-                        //    System.Environment.Exit(1);
-                        //}
                     }
 
                     if (info.motd != null)
