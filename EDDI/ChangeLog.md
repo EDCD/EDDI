@@ -1,5 +1,14 @@
 # CHANGE LOG
 
+### 2.4.0-rc2
+  * Core
+    * Eliminated the delay on app startup that was introduced in rc1.
+  * Speech Responder
+    * Script changes
+      * 'FSD engaged' 
+        * Amended test for white dwarf arrival stars, courtesy of CMDR J. Calvert (Joshua).
+        * Simplified logic for testing for scoopable stars.
+
 ### 2.4.0-rc1
   * Core
     * EDDI will now take commander ratings/rankings from the journal in addition to from the API.
