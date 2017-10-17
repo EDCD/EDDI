@@ -2,12 +2,14 @@
 
 ### 2.4.0-rc2
   * Core
-    * Eliminated the delay on app startup that was introduced in rc1.
+    * Eliminated the approx 7 second delay on app startup that was introduced in rc1.
   * Speech Responder
     * Script changes
       * 'FSD engaged' 
         * Amended test for white dwarf arrival stars, courtesy of CMDR J. Calvert (Joshua).
         * Simplified logic for testing for scoopable stars.
+      * 'Market information updated'
+        * Delay 4.5 seconds before speaking market data on docking.
 
 ### 2.4.0-rc1
   * Core
