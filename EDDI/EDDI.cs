@@ -129,7 +129,7 @@ namespace Eddi
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
 
                 // Exception handling
-                ExceptionlessClient.Default.Startup("vJW9HtWB2NHiQb7AwVQsBQM6hjWN1sKzHf5PCpW1");
+                ExceptionlessClient.Default.Startup("5orGylhGeOmBmPnRcoQDIrQY3T8SHIvGvSi2NUzb");
                 ExceptionlessClient.Default.Configuration.SetVersion(Constants.EDDI_VERSION);
 
                 // Start by fetching information from the update server, and handling appropriately
