@@ -580,24 +580,24 @@ namespace Eddi
         {
             try
             {
-                string IssueLogDir = Constants.DATA_DIR + @"\logexport\";
-                string IssueLogFile = IssueLogDir + @"eddi_issue.log";
-                string DesktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\eddi_issue.zip";
+                string issueLogDir = Constants.DATA_DIR + @"\logexport\";
+                string issueLogFile = issueLogDir + @"eddi_issue.log";
+                string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\eddi_issue.zip";
 
                 lock (logLock)
                 {
                     progress.Report("");
 
                     // Create a temporary issue log file, delete any remnants from prior issue reporting
-                    Directory.CreateDirectory(IssueLogDir);
-                    File.Create(IssueLogFile);
-                    File.Delete(DesktopPath);
+                    Directory.CreateDirectory(issueLogDir);
+                    File.Create(issueLogFile);
+                    File.Delete(desktopPath);
 
                     // Use regex to isolate DateTimes from the string
                     Regex recentLogsRegex = new Regex(@"^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})");
 
                     var log = File.ReadAllLines(Constants.DATA_DIR + @"\\eddi.log");
-                    double elapsed_time = 0;
+                    double elapsedTime = 0;
 
                     foreach (string line in log)
                     {
@@ -606,12 +606,12 @@ namespace Eddi
                             // Parse log file lines so that we can examine DateTimes
                             string linedatestring = recentLogsRegex.Match(line).Value;
                             DateTime linedate = DateTime.Parse(linedatestring);
-                            elapsed_time = (DateTime.UtcNow - linedate).TotalHours;
+                            elapsedTime = (DateTime.UtcNow - linedate).TotalHours;
 
                             // Fill the issue log with log lines from the most recent hour only
-                            if (elapsed_time < 1)
+                            if (elapsedTime < 1)
                             {
-                                using (StreamWriter file = new StreamWriter(IssueLogFile, true))
+                                using (StreamWriter file = new StreamWriter(issueLogFile, true))
                                 {
                                     file.WriteLine(line);
                                 }
@@ -624,11 +624,11 @@ namespace Eddi
                     }
                 }
                 // Copy the issue log & zip it to the desktop so that it can be added to the Github issue
-                ZipFile.CreateFromDirectory(IssueLogDir, DesktopPath);
+                ZipFile.CreateFromDirectory(issueLogDir, desktopPath);
 
                 // Clear the temporary issue log file & directory
-                File.Delete(IssueLogFile);
-                Directory.Delete(IssueLogDir);
+                File.Delete(issueLogFile);
+                Directory.Delete(issueLogDir);
 
                 progress.Report("done");
             }
