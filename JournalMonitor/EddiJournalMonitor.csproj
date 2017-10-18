@@ -68,6 +68,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">
+      <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
+      <Name>EddiCargoMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CompanionAppService\EddiCompanionAppService.csproj">
       <Project>{462ED721-1C9C-43FA-8A3F-4C1644363A5A}</Project>
       <Name>EddiCompanionAppService</Name>

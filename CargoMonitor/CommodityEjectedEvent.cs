@@ -1,4 +1,5 @@
 ﻿using EddiDataDefinitions;
+using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EddiEvents
+namespace EddiCargoMonitor
 {
     public class CommodityEjectedEvent : Event
     {
@@ -23,7 +24,7 @@ namespace EddiEvents
         }
 
         [JsonProperty("commodity")]
-        public string commodity { get; private set; }
+        public Commodity commodity { get; private set; }
 
         [JsonProperty("amount")]
         public int amount { get; private set; }
@@ -33,7 +34,7 @@ namespace EddiEvents
 
         public CommodityEjectedEvent(DateTime timestamp, Commodity commodity , int amount, bool abandoned) : base(timestamp, NAME)
         {
-            this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
+            this.commodity = commodity;
             this.amount = amount;
             this.abandoned = abandoned;
         }

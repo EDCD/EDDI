@@ -93,11 +93,11 @@ namespace EddiCargoMonitor
             }
             else if (@event is CommodityCollectedEvent)
             {
-
+                handleCommodityCollectedEvent((CommodityCollectedEvent)@event);
             }
             else if (@event is CommodityEjectedEvent)
             {
-
+                handleCommodityEjectedEvent((CommodityEjectedEvent)@event);
             }
             else if (@event is CommodityPurchasedEvent)
             {
@@ -148,29 +148,46 @@ namespace EddiCargoMonitor
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
         {
-            //// CargoInventoryEvent does not contain stolen, missionid, or cost information so merge it here
-            //foreach (Cargo cargo in @event.inventory)
-            //{
-            //    bool added = false;
-            //    foreach (Cargo inventoryCargo in inventory)
-            //    {
-            //        if (inventoryCargo.commodity == cargo.commodity)
-            //        {
-            //            // Match of commodity
-            //            added = true;
-            //        }
-            //    }
-            //    if (!added)
-            //    {
-            //        // We haven't heard of this cargo so add it to the inventory directly
-            //        AddCargo(cargo);
-            //    }
-            //}
-            //inventory.Clear();
-            //foreach (Cargo cargo in @event.inventory)
-            //{
-            //    inventory.Add(cargo);
-            //}
+            // CargoInventoryEvent does not contain stolen, missionid, or cost information so merge it here
+            foreach (Cargo cargo in @event.inventory)
+            {
+                bool added = false;
+                foreach (Cargo inventoryCargo in inventory)
+                {
+                    if (inventoryCargo.commodity == cargo.commodity)
+                    {
+                        // Match of commodity
+                        added = true;
+                    }
+                }
+                if (!added)
+                {
+                    // We haven't heard of this cargo so add it to the inventory directly
+                    AddCargo(cargo);
+                }
+            }
+            inventory.Clear();
+            foreach (Cargo cargo in @event.inventory)
+            {
+                inventory.Add(cargo);
+            }
+        }
+
+        private void handleCommodityCollectedEvent(CommodityCollectedEvent @event)
+        {
+            Cargo cargo = new Cargo();
+            cargo.commodity = @event.commodity;
+            cargo.amount = 1;
+            cargo.stolen = @event.stolen;
+            AddCargo(cargo);
+        }
+
+        private void handleCommodityEjectedEvent(CommodityEjectedEvent @event)
+        {
+            Cargo cargo = new Cargo();
+            cargo.commodity = @event.commodity;
+            cargo.amount = @event.amount;
+            RemoveCargo(cargo);
         }
 
         public IDictionary<string, object> GetVariables()

@@ -65,6 +65,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CargoMonitor.cs" />
+    <Compile Include="CommodityCollectedEvent.cs" />
+    <Compile Include="CommodityEjectedEvent.cs" />
+    <Compile Include="CommodityPurchasedEvent.cs" />
+    <Compile Include="CommodityRefinedEvent.cs" />
+    <Compile Include="CommoditySoldEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
