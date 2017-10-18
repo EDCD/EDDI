@@ -1,6 +1,9 @@
 # CHANGE LOG
 
-### 2.4.0-rc2
+### 2.4.1
+  * We just needed to bump the version number to flush out 2.4.0 builds that didn't understand that 'rc' means 'release candidate'. (Because it's a computer and, guess what, we have to tell it stuff like that.)
+
+### 2.4.0
   * Core
     * Eliminated the approx 7 second delay on app startup that was introduced in rc1.
   * Speech Responder
