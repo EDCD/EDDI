@@ -34,6 +34,7 @@ namespace Eddi
     /// </summary>
     public class EDDI
     {
+
         private static EDDI instance;
 
         // True if we have been started by VoiceAttack
@@ -126,6 +127,11 @@ namespace Eddi
         {
             try
             {
+                CultureInfo installedUIC = CultureInfo.InstalledUICulture;
+                String langCode = installedUIC.Name;
+                langCode = langCode.Split('-')[0];
+                Logging.Info("Language : {0}"+langCode);
+                
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
 
                 // Exception handling
