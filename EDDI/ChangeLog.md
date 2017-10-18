@@ -1,5 +1,8 @@
 # CHANGE LOG
 
+### 2.4.2-b1
+  * placeholder
+
 ### 2.4.1
   * We just needed to bump the version number to flush out 2.4.0 builds that didn't understand that 'rc' means 'release candidate'. (Because it's a computer and, guess what, we have to tell it stuff like that.)
 
