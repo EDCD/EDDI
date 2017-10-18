@@ -699,7 +699,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{set insurance to round(ship.value * cmdr.insurance / 100)}\r\n\r\n{set covereds to round((cmdr.credits / insurance) - 0.5)}\r\n\r\n{if covereds = 0:\r\n  Danger: you do not have enough credits to cover your insurance excess.\r\n|elif covereds = 1:\r\n  Caution: you onlt have enough credits to cover a single insurance excess.\r\n|elif covereds < 4:\r\n  Note: you only have enough credits to cover {covereds} insurance excesses.\r\n}\r\n",
+      "script": "{set insurance to round(ship.value * cmdr.insurance / 100)}\r\n\r\n{set covereds to round((cmdr.credits / insurance) - 0.5)}\r\n\r\n{if covereds = 0:\r\n  Danger: you do not have enough credits to cover your insurance excess.\r\n|elif covereds = 1:\r\n  Caution: you only have enough credits to cover a single insurance excess.\r\n|elif covereds < 4:\r\n  Note: you only have enough credits to cover {covereds} insurance excesses.\r\n}\r\n",
       "default": true,
       "name": "Insurance check",
       "description": "Check for enough credits to cover your insurance"
