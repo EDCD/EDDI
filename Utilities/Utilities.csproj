@@ -55,11 +55,23 @@
     <Compile Include="Deserializtion.cs" />
     <Compile Include="Diff.cs" />
     <Compile Include="Files.cs" />
+    <Compile Include="lang\en.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>en.resx</DependentUpon>
+    </Compile>
+    <Compile Include="lang\fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>fr.resx</DependentUpon>
+    </Compile>
     <Compile Include="Logging.cs" />
     <Compile Include="Net.cs" />
     <Compile Include="ObservableConcurrentDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InstanceInfo.cs" />
+    <Compile Include="Properties\en.Designer.cs" />
+    <Compile Include="Properties\fr.Designer.cs" />
     <Compile Include="Translation.cs" />
     <Compile Include="ServerInfo.cs" />
     <Compile Include="Versioning.cs" />
@@ -68,7 +80,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\lang-en.resx" />
+    <EmbeddedResource Include="lang\en.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="lang\fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\en.resx" />
+    <EmbeddedResource Include="Properties\fr.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
