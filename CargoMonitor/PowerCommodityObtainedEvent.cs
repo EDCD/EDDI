@@ -26,11 +26,11 @@ namespace EddiCargoMonitor
 
         public string power { get; private set; }
 
-        public string commodity { get; private set; }
+        public Commodity commodity { get; private set; }
 
         public int amount { get; private set; }
 
-        public PowerCommodityObtainedEvent(DateTime timestamp, string power, string commodity, int amount) : base(timestamp, NAME)
+        public PowerCommodityObtainedEvent(DateTime timestamp, string power, Commodity commodity, int amount) : base(timestamp, NAME)
         {
             this.power = power;
             this.commodity = commodity;

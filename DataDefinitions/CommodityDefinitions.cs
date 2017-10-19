@@ -437,8 +437,8 @@ namespace EddiDataDefinitions
                 Commodity.EDName = Template?.EDName ?? Commodity.EDName;
                 Commodity.name = Template?.name ?? Commodity.name;
                 Commodity.category = Template?.category ?? Commodity.category;
-                Commodity.rare = Template?.rare ?? Commodity.rare;
                 Commodity.avgprice = Template?.avgprice ?? Commodity.avgprice;
+                Commodity.rare = Template?.rare ?? Commodity.rare;
             }
             else
             {

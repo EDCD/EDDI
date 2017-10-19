@@ -2338,8 +2338,8 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 string power = getString(data, "Power");
-                                // Currently using localised information as we don't have commodity definitions for all powerplay commodities
-                                string commodity = getString(data, "Type_Localised");
+                                string commodityName = getString(data, "Type");
+                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
 
@@ -2351,8 +2351,8 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 string power = getString(data, "Power");
-                                // Currently using localised information as we don't have commodity definitions for all powerplay commodities
-                                string commodity = getString(data, "Type_Localised");
+                                string commodityName = getString(data, "Type");
+                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
 

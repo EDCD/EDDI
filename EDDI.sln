@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.15
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCompanionAppService", "CompanionAppService\EddiCompanionAppService.csproj", "{462ED721-1C9C-43FA-8A3F-4C1644363A5A}"
 EndProject
@@ -59,6 +59,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiMaterialMonitor", "MaterialMonitor\EddiMaterialMonitor.csproj", "{A2401E3A-586A-41FF-8237-3FB598C5FCF9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiShipMonitor", "ShipMonitor\EddiShipMonitor.csproj", "{5294706E-E600-4EA1-B904-66A41561E852}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C1D256BA-68B9-437A-8907-599C3A388C37} = {C1D256BA-68B9-437A-8907-599C3A388C37}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EddiCargoMonitor", "CargoMonitor\EddiCargoMonitor.csproj", "{C1D256BA-68B9-437A-8907-599C3A388C37}"
 EndProject

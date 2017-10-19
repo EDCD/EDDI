@@ -116,8 +116,6 @@
     <Compile Include="MissionRedirectedEvent.cs" />
     <Compile Include="SearchAndRescueEvent.cs" />
     <Compile Include="JumpingEvent.cs" />
-    <Compile Include="LimpetSoldEvent.cs" />
-    <Compile Include="LimpetPurchasedEvent.cs" />
     <Compile Include="ExplorationDataSoldEvent.cs" />
     <Compile Include="ExplorationDataPurchasedEvent.cs" />
     <Compile Include="MaterialDiscoveredEvent.cs" />

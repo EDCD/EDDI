@@ -121,11 +121,11 @@ namespace EddiCargoMonitor
             }
             else if (@event is LimpetPurchasedEvent)
             {
-
+                handleLimpetPurchasedEvent((LimpetPurchasedEvent)@event);
             }
             else if (@event is LimpetSoldEvent)
             {
-
+                handleLimpetSoldEvent((LimpetSoldEvent)@event);
             }
             else if (@event is MissionAbandonedEvent)
             {
@@ -134,6 +134,7 @@ namespace EddiCargoMonitor
             else if (@event is MissionAcceptedEvent)
             {
                 // Check to see if this is a cargo mission and update our inventory accordingly
+                handleMissionAcceptedEvent((MissionAcceptedEvent)@event);
             }
             else if (@event is MissionCompletedEvent)
             {
@@ -249,14 +250,71 @@ namespace EddiCargoMonitor
 
         private void handlePowerCommodityObtainedEvent(PowerCommodityObtainedEvent @event)
         {
+            if (@event.commodity != null)
+            {
+                Cargo cargo = new Cargo();
 
+                cargo.commodity = @event.commodity;
+                cargo.amount = @event.amount;
+
+                AddCargo(cargo);
+            }
         }
 
 
         private void handlePowerCommodityDeliveredEvent(PowerCommodityDeliveredEvent @event)
         {
+            if (@event.commodity != null)
+            {
+                Cargo cargo = new Cargo();
 
+                cargo.commodity = @event.commodity;
+                cargo.amount = @event.amount;
+
+                RemoveCargo(cargo);
+            }
         }
+
+        private void handleLimpetPurchasedEvent(LimpetPurchasedEvent @event)
+        {
+            Commodity limpet = CommodityDefinitions.FromName("Limpet");
+            Cargo cargo = new Cargo();
+
+            cargo.commodity = limpet;
+            cargo.amount = @event.amount;
+            cargo.price = @event.price;
+
+            AddCargo(cargo);
+        }
+
+
+        private void handleLimpetSoldEvent(LimpetSoldEvent @event)
+        {
+            Commodity limpet = CommodityDefinitions.FromName("Limpet");
+            Cargo cargo = new Cargo();
+
+            cargo.commodity = limpet;
+            cargo.amount = @event.amount;
+            cargo.price = @event.price;
+
+            RemoveCargo(cargo);
+        }
+
+        private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
+        {
+            if (@event.commodity != null)
+            {
+                Cargo cargo = new Cargo();
+
+                cargo.commodity = @event.commodity;
+                cargo.missionid = @event.missionid;
+                cargo.amount = (int)@event.amount;
+                cargo.price = 0;
+
+                AddCargo(cargo);
+            }
+        }
+
 
         public IDictionary<string, object> GetVariables()
         {

@@ -41,7 +41,7 @@ namespace EddiEvents
 
         public string faction { get; private set; }
 
-        public string commodity { get; private set; }
+        public Commodity commodity { get; private set; }
 
         public int? amount { get; private set; }
 
@@ -74,7 +74,7 @@ namespace EddiEvents
             this.faction = faction;
             this.destinationsystem = destinationsystem;
             this.destinationstation = destinationstation;
-            this.commodity = (commodity == null ? null : commodity.name);
+            this.commodity = commodity;
             this.amount = amount;
             this.passengertype = passengertype;
             this.passengerswanted = passengerswanted;
