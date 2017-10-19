@@ -70,8 +70,6 @@
     <Compile Include="ObservableConcurrentDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InstanceInfo.cs" />
-    <Compile Include="Properties\en.Designer.cs" />
-    <Compile Include="Properties\fr.Designer.cs" />
     <Compile Include="Translation.cs" />
     <Compile Include="ServerInfo.cs" />
     <Compile Include="Versioning.cs" />
@@ -88,8 +86,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\en.resx" />
-    <EmbeddedResource Include="Properties\fr.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
