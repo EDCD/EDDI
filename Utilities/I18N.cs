@@ -12,47 +12,35 @@ namespace Utilities
 {
     public class I18N
     {
-        private static ResourceManager i18nManager = new ResourceManager("", Assembly.GetExecutingAssembly());
-        private static string langCode = getSystemLangCode();
+        private static I18NBundle langsBundle = I18NBundle.GetInstance();
+        private static string langCode = GetSystemLangCode();
 
-        public static string getSystemLangCode()
+        public static string GetSystemLangCode()
         {
             return CultureInfo.CurrentUICulture.Name.Split('-')[0];
         }
 
-        public static string getCurrentLangCode()
+        public static string GetCurrentLangCode()
         {
             return langCode;
         }
 
-        public static string getString(string code)
+        public static string GetString(string code)
         {
-            return getString(code, getCurrentLangCode());
+            return GetString(code, GetCurrentLangCode());
         }
 
-        public static string getString(string code, string lang)
+        public static string GetString(string code, string lang)
         {
-            return i18nManager.GetString(code, CultureInfo.CreateSpecificCulture(lang));
+            return langsBundle.GetString(code);
         }
 
-        public static List<string> getAvailableLang()
+        public static List<string> GetAvailableLang()
         {
-            //TODO get resources correctly
-            List<string> files = Directory.GetFiles(getLangPath(), "*.resx").ToList<string>();
-            List<string> langs = new List<string>();
-            string suffix = ".resx";
-            foreach(string file in files)
-            {
-                if (file.EndsWith(".resx"))
-                {
-                    string lang = file.Substring(0, file.Length - suffix.Length);
-                    langs.Add(lang);
-                }
-            }
-            return langs;
+            return langsBundle.GetAvailableLangs();
         }
 
-        public static string getLangPath()
+        public static string GetLangPath()
         {
             string path =  Path.Combine(Environment.CurrentDirectory, @"lang\");
             return path;
