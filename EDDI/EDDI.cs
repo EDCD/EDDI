@@ -1621,13 +1621,13 @@ namespace Eddi
                 }
                 catch (FileLoadException flex)
                 {
-                    string msg = "Failed to load monitor.  Please ensure that " + dir.FullName + " is not on a network share, or itself shared";
+                    string msg = "Failed to load monitor. Please ensure that " + dir.FullName + " is not on a network share, or itself shared";
                     Logging.Error(msg, flex);
                     SpeechService.Instance.Say(null, msg, false);
                 }
                 catch (Exception ex)
                 {
-                    string msg = "Failed to load monitor: " + ex.Message;
+                    string msg = $"Failed to load monitor: {file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}";
                     Logging.Error(msg, ex);
                     SpeechService.Instance.Say(null, msg, false);
                 }
