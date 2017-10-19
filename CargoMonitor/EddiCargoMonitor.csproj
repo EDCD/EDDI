@@ -70,6 +70,8 @@
     <Compile Include="CommodityPurchasedEvent.cs" />
     <Compile Include="CommodityRefinedEvent.cs" />
     <Compile Include="CommoditySoldEvent.cs" />
+    <Compile Include="PowerCommodityDeliveredEvent.cs" />
+    <Compile Include="PowerCommodityObtainedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

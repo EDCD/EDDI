@@ -101,23 +101,23 @@ namespace EddiCargoMonitor
             }
             else if (@event is CommodityPurchasedEvent)
             {
-
+                handleCommodityPurchasedEvent((CommodityPurchasedEvent)@event);
             }
             else if (@event is CommodityRefinedEvent)
             {
-
+                handleCommodityRefinedEvent((CommodityRefinedEvent)@event);
             }
             else if (@event is CommoditySoldEvent)
             {
-
+                handleCommoditySoldEvent((CommoditySoldEvent)@event);
             }
             else if (@event is PowerCommodityObtainedEvent)
             {
-
+                handlePowerCommodityObtainedEvent((PowerCommodityObtainedEvent)@event);
             }
             else if (@event is PowerCommodityDeliveredEvent)
             {
-
+                handlePowerCommodityDeliveredEvent((PowerCommodityDeliveredEvent)@event);
             }
             else if (@event is LimpetPurchasedEvent)
             {
@@ -175,19 +175,87 @@ namespace EddiCargoMonitor
 
         private void handleCommodityCollectedEvent(CommodityCollectedEvent @event)
         {
-            Cargo cargo = new Cargo();
-            cargo.commodity = @event.commodity;
-            cargo.amount = 1;
-            cargo.stolen = @event.stolen;
-            AddCargo(cargo);
+            if (@event.commodity != null)
+            {
+                Cargo cargo = new Cargo();
+
+                cargo.commodity = @event.commodity;
+                cargo.amount = 1;
+                cargo.price = 0;
+                cargo.stolen = @event.stolen;
+
+                AddCargo(cargo);
+            }
         }
 
         private void handleCommodityEjectedEvent(CommodityEjectedEvent @event)
         {
-            Cargo cargo = new Cargo();
-            cargo.commodity = @event.commodity;
-            cargo.amount = @event.amount;
-            RemoveCargo(cargo);
+            if (@event.commodity != null)
+            {
+                Cargo cargo = new Cargo();
+
+                cargo.commodity = @event.commodity;
+                cargo.amount = @event.amount;
+
+                RemoveCargo(cargo);
+            }
+        }
+
+        private void handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
+        {
+            if (@event.commodity != null)
+            {
+                Cargo cargo = new Cargo();
+
+                cargo.commodity = @event.commodity;
+                cargo.amount = @event.amount;
+                cargo.price = @event.price;
+
+                AddCargo(cargo);
+            }
+        }
+
+        private void handleCommodityRefinedEvent(CommodityRefinedEvent @event)
+        {
+            if (@event.commodity != null)
+            {
+                Cargo cargo = new Cargo();
+
+                cargo.commodity = @event.commodity;
+                cargo.amount = 1;
+                cargo.price = 0;
+
+                AddCargo(cargo);
+            }
+        }
+
+        private void handleCommoditySoldEvent(CommoditySoldEvent @event)
+        {
+            if (@event.commodity != null)
+            {
+                Cargo cargo = new Cargo();
+
+                cargo.commodity = @event.commodity;
+                cargo.amount = @event.amount;
+                if (@event.stolen)
+                    cargo.price = @event.profit;
+                else
+                    cargo.price = @event.price;
+                cargo.stolen = @event.stolen;
+
+                RemoveCargo(cargo);
+            }
+        }
+
+        private void handlePowerCommodityObtainedEvent(PowerCommodityObtainedEvent @event)
+        {
+
+        }
+
+
+        private void handlePowerCommodityDeliveredEvent(PowerCommodityDeliveredEvent @event)
+        {
+
         }
 
         public IDictionary<string, object> GetVariables()

@@ -97,8 +97,6 @@
     <Compile Include="StationNoFireZoneExitedEvent.cs" />
     <Compile Include="StationNoFireZoneEnteredEvent.cs" />
     <Compile Include="PowerCommodityFastTrackedEvent.cs" />
-    <Compile Include="PowerCommodityDeliveredEvent.cs" />
-    <Compile Include="PowerCommodityObtainedEvent.cs" />
     <Compile Include="PowerSalaryClaimedEvent.cs" />
     <Compile Include="PowerPerparationVoteCastEvent.cs" />
     <Compile Include="PowerDefectedEvent.cs" />
