@@ -1,49 +1,153 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Resources;
-using System.Reflection;
-using System.Globalization;
-using System.IO;
 
 namespace Utilities
 {
     public class I18N
     {
-        private static I18NBundle langsBundle = I18NBundle.GetInstance();
-        private static string langCode = GetSystemLangCode();
+        private const string defaultLang = "en";
+        private string currentLang;
+        private Dictionary<string, ResourceManager> rmDictionnary;
+        private List<String> rmFiles;
+        private static I18N instance = new I18N();
+        private string langRoot;
+
+        private I18N()
+        {
+            Init();
+        }
+
+        private void Init()
+        {
+            langRoot = "Utilities.lang";
+            currentLang = defaultLang;
+            rmDictionnary = new Dictionary<string, ResourceManager>();
+            rmFiles = new List<string>();
+            UpdateResources();
+            UpdateResourceManagers();
+        }
+
+        public static I18N ResetInstance()
+        {
+            instance.Init();
+            return instance;
+        }
 
         public static string GetSystemLangCode()
         {
             return CultureInfo.CurrentUICulture.Name.Split('-')[0];
         }
 
-        public static string GetCurrentLangCode()
+        public string GetLang()
         {
-            return langCode;
+            return currentLang;
         }
 
-        public static string GetString(string code)
+        public bool SetLang(string lang)
         {
-            return GetString(code, GetCurrentLangCode());
+            if (IsAvailableLang(lang))
+            {
+                currentLang = lang;
+                return true;
+            }
+            return false;
         }
 
-        public static string GetString(string code, string lang)
+        public void FallbackLang()
         {
-            return langsBundle.GetString(code);
+            currentLang = defaultLang;
         }
 
-        public static List<string> GetAvailableLang()
+        public bool IsAvailableLang(string lang)
         {
-            return langsBundle.GetAvailableLangs();
+            return rmFiles.Contains(lang);
         }
 
-        public static string GetLangPath()
+        public bool SetLangOrFallback(string lang)
         {
-            string path =  Path.Combine(Environment.CurrentDirectory, @"lang\");
-            return path;
+            if (SetLang(lang))
+            {
+                return true;
+            }
+            else
+            {
+                FallbackLang();
+                return false;
+            }
+        }
+
+        public void UpdateResources()
+        {
+            List<Type> types = Assembly
+                        .GetExecutingAssembly()
+                        .GetTypes()
+                        .Where(t => t.Namespace.StartsWith(langRoot))
+                        .ToList<Type>();
+            foreach(Type t in types)
+            {
+                AddResourceFile(t.Name);
+            }
+        }
+
+        public List<string> GetAvailableLangs()
+        {
+            return rmFiles;
+        }
+
+        public static I18N GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new I18N();
+            }
+
+            return instance;
+        }
+
+        private void AddResourceFile(string filename)
+        {
+            rmDictionnary.Add(filename, null);
+            rmFiles.Add(filename);
+        }
+
+        public string GetString(string stringCode)
+        {
+            return GetString(stringCode, currentLang);
+        }
+
+        public string GetString(string stringCode, string lang)
+        {
+            ResourceManager rm = rmDictionnary[lang];
+            if(rm == null)
+            {
+                rm = rmDictionnary[defaultLang];
+            }
+            return rm.GetString(stringCode);
+        }
+
+        private void UpdateResourceManagers()
+        {
+            if (rmDictionnary.Count == 0)
+                throw new Exception("No resources added in the bundle");
+
+            string basename = langRoot;
+            foreach (string key in rmFiles)
+            {//key is filename
+                string type = basename + "." + key;
+                //set a new ResourceManager to match current locale
+                ResourceManager rm = rmDictionnary[key];
+                if (rm != null)
+                    rm.ReleaseAllResources();
+                rmDictionnary[key] = null;
+                rm = new ResourceManager(type, Assembly.GetExecutingAssembly());
+                rmDictionnary[key] = rm;
+            }
         }
     }
 }
