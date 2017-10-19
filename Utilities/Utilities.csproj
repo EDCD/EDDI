@@ -48,6 +48,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="I18NBundle.cs" />
     <Compile Include="I18N.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DataGridNumericColumn.cs" />
