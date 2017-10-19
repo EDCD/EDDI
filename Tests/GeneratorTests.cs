@@ -64,34 +64,6 @@ namespace Tests
         }
 
         [TestMethod]
-        public void TestGenerateCottle()
-        {
-            foreach (KeyValuePair<string, Type> entry in Events.TYPES.OrderBy(i => i.Key))
-            {
-                Console.WriteLine("# " + entry.Key + " event");
-                Console.WriteLine(Events.DESCRIPTIONS[entry.Key] + ".");
-
-                IDictionary<string, string> variables;
-                if (Events.VARIABLES.TryGetValue(entry.Key, out variables))
-                {
-                    if (variables.Count == 0)
-                    {
-                        Console.WriteLine("This event has no variables.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Information about this event is available under the `event` object.\n\n");
-                        foreach (KeyValuePair<string, string> variable in Events.VARIABLES[entry.Key])
-                        {
-                            Console.WriteLine("  * `" + variable.Key + "` " + variable.Value + "\n");
-                        }
-                    }
-                }
-                Console.WriteLine();
-            }
-        }
-
-        [TestMethod]
         public void TestGenerateWikiEvents()
         {
             foreach (KeyValuePair<string, Type> entry in Events.TYPES.OrderBy(i => i.Key))
