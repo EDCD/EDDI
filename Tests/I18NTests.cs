@@ -12,14 +12,14 @@ using Utilities;
 namespace Tests
 {
     [TestClass]
-    public class I18NBundleTest
+    public class I18NTests
     {
-        I18NBundle bundle;
+        private Utilities.I18N bundle;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            bundle = I18NBundle.ResetInstance();
+            bundle = Utilities.I18N.ResetInstance();
         }
 
         [TestMethod]
