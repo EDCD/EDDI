@@ -278,7 +278,9 @@ namespace EddiCompanionAppService
                     string market = obtainProfile(BASE_URL + MARKET_URL);
                     market = "{\"lastStarport\":" + market + "}";
                     JObject marketJson = JObject.Parse(market);
+                    cachedProfile.LastStation.economies = EconomiesFromProfile(marketJson);
                     cachedProfile.LastStation.commodities = CommoditiesFromProfile(marketJson);
+                    cachedProfile.LastStation.prohibited = ProhibitedCommoditiesFromProfile(marketJson);
                 }
 
                 if (cachedProfile.LastStation.hasoutfitting ?? false)
@@ -635,6 +637,47 @@ namespace EddiCompanionAppService
             }
 
             return Modules;
+        }
+
+        // Obtain the list of station economies from the profile
+        public static List<Economy> EconomiesFromProfile(dynamic json)
+        {
+            List<Economy> Economies = new List<Economy>();
+
+            if (json["lastStarport"] != null && json["lastStarport"]["economies"] != null)
+            {
+                foreach (dynamic id in json["lastStarport"]["economies"])
+                    foreach (dynamic economyJson in id.Value)
+                    {
+                        dynamic economy = economyJson.Value;
+                        String econ = (string)economy["name"];
+                        Economy Economy = Economy.FromEDName("$economy_" + econ);
+                        Economy.proportion = (decimal)economy["proportion"];
+                        Economies.Add(Economy);
+                    }
+            }
+
+            Logging.Debug("Economies are " + JsonConvert.SerializeObject(Economies));
+            return Economies;
+        }
+
+        // Obtain the list of prohibited commodities from the profile
+        public static List<String> ProhibitedCommoditiesFromProfile(dynamic json)
+        {
+            List<String> ProhibitedCommodities = new List<String>();
+
+            if (json["lastStarport"] != null && json["lastStarport"]["prohibited"] != null)
+            {
+                foreach (dynamic prohibitedcommodity in json["lastStarport"]["prohibitied"])
+                {
+                    String pc = (string)prohibitedcommodity.Value;
+                    if (pc != null)
+                        ProhibitedCommodities.Add(pc);
+                }
+            }
+
+            Logging.Debug("Prohibited Commodities are " + JsonConvert.SerializeObject(ProhibitedCommodities));
+            return ProhibitedCommodities;
         }
 
         // Obtain the list of commodities from the profile
