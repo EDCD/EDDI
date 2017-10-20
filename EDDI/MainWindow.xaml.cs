@@ -588,6 +588,8 @@ namespace Eddi
                 {
                     log = File.ReadAllLines(Constants.DATA_DIR + @"\eddi.log");
                 }
+                if (log.Length == 0) { return; }
+
                 progress.Report("");
                 List<string> outputLines = new List<string>();
                 // Use regex to isolate DateTimes from the string
