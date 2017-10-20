@@ -647,13 +647,12 @@ namespace EddiCompanionAppService
                 foreach (dynamic commodity in json["lastStarport"]["commodities"])
                 {
                     dynamic commodityJson = commodity.Value;
-                    Commodity Commodity = CommodityDefinitions.CommodityFromEliteID((long)commodity["id"]);
-                    if (Commodity == null || Commodity.name == null)
-                    {
-                        Commodity = new Commodity();
-                        Commodity.EDName = (string)commodity["name"];
-                        Commodity.category = (string)commodity["categoryName"];
-                    }
+                    Commodity Commodity = new Commodity();
+                    Commodity eddiCommodity = CommodityDefinitions.CommodityFromEliteID((long)commodity["id"]);
+
+                    Commodity.EDName = (string)commodity["name"];
+                    Commodity.name = (string)commodity["locName"];
+                    Commodity.category = (string)commodity["categoryName"];
                     Commodity.avgprice = (int)commodity["meanPrice"];
                     Commodity.buyprice = (int)commodity["buyPrice"];
                     Commodity.stock = (int)commodity["stock"];
@@ -669,6 +668,17 @@ namespace EddiCompanionAppService
                     }
                     Commodity.StatusFlags = StatusFlags;
                     Commodities.Add(Commodity);
+
+                    if (eddiCommodity == null)
+                    {
+                        Logging.Warn("Unknown Commodity: " + JsonConvert.SerializeObject(Commodity));
+                        SpeechService.Instance.Say(null, "A-P-I commodity unknown to E-D-D-I.  Please forward your log to developers.", false);
+                    }
+                    else if (eddiCommodity.EDName != Commodity.EDName || eddiCommodity.name != Commodity.name || eddiCommodity.category != Commodity.category)
+                    {
+                        Logging.Warn("Commodity out-of-sync: " + JsonConvert.SerializeObject(Commodity));
+                        SpeechService.Instance.Say(null, "E-D-D-I out of sync with A-P-I commodity.  Please forward your log to developers.", false);
+                    }
                 }
             }
 
