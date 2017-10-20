@@ -580,52 +580,47 @@ namespace Eddi
             try
             {
                 string issueLogDir = Constants.DATA_DIR + @"\logexport\";
-                string issueLogFile = issueLogDir + @"eddi_issue.log";
+                string issueLogFile = issueLogDir + "eddi_issue.log";
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\eddi_issue.zip";
 
+                string[] log;
                 lock (logLock)
                 {
-                    progress.Report("");
+                    log = File.ReadAllLines(Constants.DATA_DIR + @"\eddi.log");
+                }
+                progress.Report("");
+                List<string> outputLines = new List<string>();
+                // Use regex to isolate DateTimes from the string
+                Regex recentLogsRegex = new Regex(@"^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})");
 
-                    // Create a temporary issue log file, delete any remnants from prior issue reporting
-                    Directory.CreateDirectory(issueLogDir);
-                    File.Create(issueLogFile);
-                    File.Delete(desktopPath);
-
-                    // Use regex to isolate DateTimes from the string
-                    Regex recentLogsRegex = new Regex(@"^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})");
-
-                    var log = File.ReadAllLines(Constants.DATA_DIR + @"\\eddi.log");
-                    double elapsedTime = 0;
-
-                    foreach (string line in log)
+                foreach (string line in log)
+                {
+                    try
                     {
-                        try
+                        // Parse log file lines so that we can examine DateTimes
+                        string linedatestring = recentLogsRegex.Match(line).Value;
+                        string formatString = "s"; // i.e. DateTimeFormatInfo.SortableDateTimePattern
+                        if (DateTime.TryParseExact(linedatestring, formatString, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out DateTime linedate))
                         {
-                            // Parse log file lines so that we can examine DateTimes
-                            string linedatestring = recentLogsRegex.Match(line).Value;
-                            DateTime linedate = DateTime.SpecifyKind(DateTime.Parse(linedatestring, CultureInfo.InvariantCulture), DateTimeKind.Utc);
-                            elapsedTime = (DateTime.UtcNow - linedate).TotalHours;
-
+                            double elapsedHours = (DateTime.UtcNow - linedate).TotalHours;
                             // Fill the issue log with log lines from the most recent hour only
-                            if (elapsedTime < 1)
+                            if (elapsedHours < 1.0)
                             {
-                                using (StreamWriter file = new StreamWriter(issueLogFile, true))
-                                {
-                                    file.WriteLine(line);
-                                }
+                                outputLines.Add(line);
                             }
-
-                        }
-                        catch (Exception)
-                        {
-                            // Do nothing, adding to the debug log creates a feedback loop
                         }
                     }
-
+                    catch (Exception)
+                    {
+                        // Do nothing, adding to the debug log creates a feedback loop
+                    }
                 }
+                // Create a temporary issue log file, delete any remnants from prior issue reporting
+                Directory.CreateDirectory(issueLogDir);
+                File.WriteAllLines(issueLogFile, outputLines);
 
                 // Copy the issue log & zip it to the desktop so that it can be added to the Github issue
+                File.Delete(desktopPath);
                 ZipFile.CreateFromDirectory(issueLogDir, desktopPath);
 
                 // Clear the temporary issue log file & directory
