@@ -198,7 +198,7 @@ namespace EddiDataDefinitions
             if (result == null)
             {
                 Logging.Report("Unknown material name " + from);
-                result = new Material(tidiedFrom, "Unknown", from, Rarity.Unknown);
+                result = new Material(null, "Unknown", from, Rarity.Unknown);
             }
             return result;
         }
