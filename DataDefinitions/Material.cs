@@ -116,8 +116,8 @@ namespace EddiDataDefinitions
         public static readonly Material PeculiarShieldFrequencyData = new Material("shieldfrequencydata", "Data", "Peculiar Shield Frequency Data", Rarity.VeryRare);
 
         public static readonly Material BasicConductors = new Material("basicconductors", "Manufactured", "Basic Conductors", Rarity.VeryCommon);
-        public static readonly Material ChemicalStorageUnits = new Material("", "Manufactured", "Chemical Storage Units", Rarity.VeryCommon);
-        public static readonly Material CompactComposites = new Material("", "Manufactured", "Compact Composites", Rarity.VeryCommon);
+        public static readonly Material ChemicalStorageUnits = new Material("chemicalstorageunits", "Manufactured", "Chemical Storage Units", Rarity.VeryCommon);
+        public static readonly Material CompactComposites = new Material("compactcomposites", "Manufactured", "Compact Composites", Rarity.VeryCommon);
         public static readonly Material CrystalShards = new Material("crystalshards", "Manufactured", "Crystal Shards", Rarity.VeryCommon);
         public static readonly Material GridResistors = new Material("gridresistors", "Manufactured", "Grid Resistors", Rarity.VeryCommon);
         public static readonly Material HeatConductionWiring = new Material("heatconductionwiring", "Manufactured", "Heat Conduction Wiring", Rarity.VeryCommon);
@@ -128,7 +128,7 @@ namespace EddiDataDefinitions
 
         public static readonly Material ChemicalProcessors = new Material("chemicalprocessors", "Manufactured", "Chemical Processors", Rarity.Common);
         public static readonly Material ConductiveComponents = new Material("conductivecomponents", "Manufactured", "Conductive Components", Rarity.Common);
-        public static readonly Material FilamentComposites = new Material("", "Manufactured", "Filament Composites", Rarity.Common);
+        public static readonly Material FilamentComposites = new Material("filamentcomposites", "Manufactured", "Filament Composites", Rarity.Common);
         public static readonly Material FlawedFocusCrystals = new Material("uncutfocuscrystals", "Manufactured", "Flawed Focus Crystals", Rarity.Common);
         public static readonly Material GalvanisingAlloys = new Material("galvanisingalloys", "Manufactured", "Galvanising Alloys", Rarity.Common);
         public static readonly Material HeatDispersionPlate = new Material("heatdispersionplate", "Manufactured", "Heat Dispersion Plate", Rarity.Common);
@@ -228,6 +228,31 @@ namespace EddiDataDefinitions
                 Logging.Report("Unknown material symbol " + from);
             }
             return result;
+        }
+
+        public static bool DeprecatedMaterials(string name)
+        {
+            // These material names have been replaced / are no longer in use. Listed for reference so that they won't be retained by the material monitor.
+            if (name == null)
+            {
+                return false;
+            }
+            List<string> deprecatedMaterialsList = new List<string>
+            {
+                {"Thargoid Residue Data Analysis"},
+                {"Unknown Ship Signature"},
+                {"Unknown Wake Data"},
+                {"Unknown Fragment"},
+            };
+
+            if (deprecatedMaterialsList.Contains(name.Trim()))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
