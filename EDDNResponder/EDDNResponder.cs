@@ -188,6 +188,18 @@ namespace EDDNResponder
             // API and should be reported
             if (EDDI.Instance.CurrentStation != null && EDDI.Instance.CurrentStation.commodities != null && EDDI.Instance.CurrentStation.commodities.Count > 0 && EDDI.Instance.CurrentStation.commodities[0].avgprice != null)
             {
+                List<EDDNEconomy> eddnEconomies = new List<EDDNEconomy>();
+                if (EDDI.Instance.CurrentStation.economies != null)
+                {
+                    foreach (CompanionAppEconomy economy in EDDI.Instance.CurrentStation.economies)
+                    {
+                        EDDNEconomy eddnEconomy = new EDDNEconomy();
+                        eddnEconomy.name = economy.name;
+                        eddnEconomy.proportion = economy.proportion;
+                        eddnEconomies.Add(eddnEconomy);
+                    }
+                }
+
                 List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
                 foreach (Commodity commodity in EDDI.Instance.CurrentStation.commodities)
                 {
@@ -218,13 +230,18 @@ namespace EDDNResponder
                     data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
                     data.Add("systemName", systemName);
                     data.Add("stationName", EDDI.Instance.CurrentStation.name);
+                    if (eddnEconomies != null)
+                        data.Add("economies", eddnEconomies);
                     data.Add("commodities", eddnCommodities);
+                    if (EDDI.Instance.CurrentStation.prohibited != null)
+                        data.Add("prohibited", EDDI.Instance.CurrentStation.prohibited);
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();
                     body.schemaRef = "https://eddn.edcd.io/schemas/commodity/3" + (EDDI.Instance.inBeta ? "/test" : "");
                     body.message = data;
 
+                    Logging.Debug("EDDN message is: " + JsonConvert.SerializeObject(body));
                     sendMessage(body);
                 }
             }
@@ -320,7 +337,6 @@ namespace EDDNResponder
 
         private static void sendMessage(EDDNBody body)
         {
-            Logging.Debug(JsonConvert.SerializeObject(body));
             var client = new RestClient("https://eddn.edcd.io:4430/");
             var request = new RestRequest("upload/", Method.POST);
             request.AddParameter("application/json", JsonConvert.SerializeObject(body), ParameterType.RequestBody);

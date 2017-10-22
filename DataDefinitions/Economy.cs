@@ -18,13 +18,10 @@ namespace EddiDataDefinitions
 
         public string edname { get; private set; }
 
-        public decimal proportion { get; set; }
-
-        private Economy(string edname, string name, decimal proportion = 1)
+        private Economy(string edname, string name)
         {
             this.edname = edname;
             this.name = name;
-            this.proportion = proportion;
 
             ECONOMIES.Add(this);
         }

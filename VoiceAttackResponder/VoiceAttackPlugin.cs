@@ -403,7 +403,7 @@ namespace EddiVoiceAttackResponder
         /// <summary>Force-update EDDI's information</summary>
         private static void InvokeUpdateProfile(ref dynamic vaProxy)
         {
-            EDDI.Instance.refreshProfile();
+            EDDI.Instance.refreshProfile(true);
             setValues(ref vaProxy);
         }
 

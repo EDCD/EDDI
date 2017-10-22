@@ -73,7 +73,7 @@ namespace EddiDataDefinitions
         }
 
         /// <summary>What are the economies at the station</summary>
-        public List<Economy> economies { get; set; }
+        public List<CompanionAppEconomy> economies { get; set; }
 
         /// <summary>Which commodities are bought/sold by the station</summary>
         public List<Commodity> commodities { get; set; }
