@@ -10,7 +10,27 @@ namespace EddiDataDefinitions
 {
     public class MaterialAmount : INotifyPropertyChanged
     {
-        public string material { get; private set; }
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        [DefaultValue(null)]
+        public string edname { get; private set; }
+
+        [JsonIgnore]
+        private string _material;
+        public string material
+        {
+            get
+            {
+                return _material;
+            }
+            set
+            {
+                if (_material != value)
+                {
+                    _material = value;
+                    NotifyPropertyChanged("material");
+                }
+            }
+        }
 
         [JsonIgnore]
         private int _amount;
@@ -101,17 +121,19 @@ namespace EddiDataDefinitions
 
         public MaterialAmount(Material material, int amount)
         {
-            Material My_material = Material.FromName(material.name);
-            this.material = material.name;
+            Material My_material = Material.FromEDName(material.EDName);
+            this.material = My_material.name;
+            this.edname = My_material.EDName;
             this.amount = amount;
             this.Category = My_material.category;
         }
 
-        public MaterialAmount(Material material, int? minimum, int? desired, int? maximum)
+        public MaterialAmount(Material material, int amount, int? minimum, int? desired, int? maximum)
         {
-            Material My_material = Material.FromName(material.name);
-            this.material = material.name;
-            amount = 0;
+            Material My_material = Material.FromEDName(material.EDName);
+            this.material = My_material.name;
+            this.edname = My_material.EDName;
+            this.amount = amount;
             this.minimum = minimum;
             this.desired = desired;
             this.maximum = maximum;
@@ -123,6 +145,7 @@ namespace EddiDataDefinitions
         {
             Material My_material = Material.FromName(material);
             this.material = material;
+            this.edname = My_material.EDName;
             this.amount = amount;
             this.minimum = minimum;
             this.desired = desired;

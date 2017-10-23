@@ -4,6 +4,8 @@
   * Core
     * Revised EDDN updating for naming changes in ED 2.4.
     * Revised error reporting. The 'Send EDDI log to developers' button is now called 'Report an Issue' and routes users to our Github issues page. If verbose logging is enabled, a zipped and truncated log file is placed on the desktop so that it may be attached to the Github issue.
+  * Material Monitor
+    * Fixed a bug that prevented EDDI from recognizing and removing old versions of some data from the Material Monitor.
 
 ### 2.4.1
   * We just needed to bump the version number to flush out 2.4.0 builds that didn't understand that 'rc' means 'release candidate'. (Because it's a computer and, guess what, we have to tell it stuff like that.)

@@ -28,10 +28,15 @@ namespace EddiEvents
         [JsonProperty("amount")]
         public int amount { get; private set; }
 
+        // Admin
+        [JsonProperty("edname")]
+        public string edname { get; private set; }
+
         public MaterialCollectedEvent(DateTime timestamp, Material material, int amount) : base(timestamp, NAME)
         {
-            this.name = (material == null ? null : material.name);
+            this.name = material?.name;
             this.amount = amount;
+            this.edname = material?.EDName;
         }
     }
 }

@@ -54,16 +54,6 @@ namespace EddiMaterialMonitor
                 configuration = new MaterialMonitorConfiguration();
             }
 
-            //// We fully populate the list with all known materials
-            //foreach (Material material in Material.MATERIALS)
-            //{
-            //    Limits cur;
-            //    if (!configuration.limits.TryGetValue(material.EDName, out cur))
-            //    {
-            //        configuration.limits[material.EDName] = new Limits(null, null, null);
-            //    }
-            //}
-
             configuration.dataPath = filename;
             return configuration;
         }
