@@ -1,5 +1,7 @@
 ﻿using EddiDataProviderService;
 using EddiDataDefinitions;
+using EddiCargoMonitor;
+using EddiShipMonitor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +18,7 @@ using EddiSpeechResponder;
 using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using EddiShipMonitor;
+
 using System.Collections.ObjectModel;
 
 namespace EddiVoiceAttackResponder
@@ -338,6 +340,9 @@ namespace EddiVoiceAttackResponder
                     case "profile":
                         InvokeUpdateProfile(ref vaProxy);
                         break;
+                    case "limpetused":
+                        InvokeLimpetUsed(ref vaProxy);
+                        break;
                     case "say":
                         InvokeSay(ref vaProxy);
                         break;
@@ -558,6 +563,20 @@ namespace EddiVoiceAttackResponder
             vaProxy.SetDecimal("Ship " + name + " station cost", (decimal?)null);
             vaProxy.SetDecimal("Ship " + name + " station discount", (decimal?)null);
             vaProxy.SetText("Ship " + name + " station discount (spoken)", (string)null);
+        }
+
+        /// <summary>Say something inside the cockpit with text-to-speech</summary>
+        public static void InvokeLimpetUsed(ref dynamic vaProxy)
+        {
+            try
+            {
+                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).LimpetUsed();
+
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to run internal speech system", e);
+            }
         }
 
         /// <summary>Say something inside the cockpit with text-to-speech</summary>

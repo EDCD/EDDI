@@ -77,6 +77,10 @@
     <Compile Include="VoiceAttackResponder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CargoMonitor\EddiCargoMonitor.csproj">
+      <Project>{c1d256ba-68b9-437a-8907-599c3a388c37}</Project>
+      <Name>EddiCargoMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EDDI\Eddi.csproj">
       <Project>{EC7BA042-A370-447F-8C3E-241358CEBCBB}</Project>
       <Name>Eddi</Name>

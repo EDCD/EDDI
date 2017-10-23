@@ -47,12 +47,12 @@ namespace EddiEvents
 
     public class CommodityAmount
     {
-        public string commodity { get; private set; }
+        public Commodity commodity { get; private set; }
         public int amount { get; private set; }
 
         public CommodityAmount(Commodity commodity, int amount)
         {
-            this.commodity = commodity.name;
+            this.commodity = commodity;
             this.amount = amount;
         }
     }

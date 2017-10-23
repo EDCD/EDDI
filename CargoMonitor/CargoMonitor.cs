@@ -130,6 +130,8 @@ namespace EddiCargoMonitor
             else if (@event is MissionAbandonedEvent)
             {
                 // If we abandon a mission with cargo it becomes stolen
+                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
+
             }
             else if (@event is MissionAcceptedEvent)
             {
@@ -139,10 +141,12 @@ namespace EddiCargoMonitor
             else if (@event is MissionCompletedEvent)
             {
                 // Check to see if this is a cargo mission and update our inventory accordingly
+                handleMissionCompletedEvent((MissionCompletedEvent)@event);
             }
             else if (@event is MissionFailedEvent)
             {
                 // If we fail a mission with cargo it becomes stolen
+                handleMissionFailedEvent((MissionFailedEvent)@event);
             }
             // TODO Powerplay events
         }
@@ -300,6 +304,15 @@ namespace EddiCargoMonitor
             RemoveCargo(cargo);
         }
 
+        private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        {
+            foreach (Cargo inventoryCargo in inventory)
+            {
+                if (inventoryCargo.missionid == @event.missionid)
+                    inventoryCargo.stolen = true;
+            }
+        }
+
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
             if (@event.commodity != null)
@@ -315,6 +328,40 @@ namespace EddiCargoMonitor
             }
         }
 
+        private void handleMissionCompletedEvent(MissionCompletedEvent @event)
+        {
+            if (@event.commodity != null)
+            {
+                Cargo cargo = new Cargo();
+
+                cargo.commodity = @event.commodity;
+                cargo.missionid = @event.missionid;
+                cargo.amount = (int)@event.amount;
+
+                RemoveCargo(cargo);
+            }
+            if (@event.commodityrewards != null)
+            {
+                foreach (CommodityAmount reward in @event.commodityrewards)
+                {
+                    Cargo cargo = new Cargo();
+
+                    cargo.commodity = reward.commodity;
+                    cargo.amount = reward.amount;
+
+                    AddCargo(cargo);
+                }
+            }
+        }
+
+        private void handleMissionFailedEvent(MissionFailedEvent @event)
+        {
+            foreach (Cargo inventoryCargo in inventory)
+            {
+                if (inventoryCargo.missionid == @event.missionid)
+                    inventoryCargo.stolen = true;
+            }
+        }
 
         public IDictionary<string, object> GetVariables()
         {
@@ -373,7 +420,7 @@ namespace EddiCargoMonitor
         {
             foreach (Cargo inventoryCargo in inventory)
             {
-                if (inventoryCargo.commodity == cargo.commodity)
+                if (inventoryCargo.commodity.name == cargo.commodity.name)
                 {
                     // Matching commodity; see if the details match
                     if (inventoryCargo.missionid != null)
@@ -410,7 +457,7 @@ namespace EddiCargoMonitor
             for (int i = 0; i < inventory.Count; i++)
             {
                 Cargo inventoryCargo = inventory[i];
-                if (inventoryCargo.commodity == cargo.commodity)
+                if (inventoryCargo.commodity.name == cargo.commodity.name)
                 {
                     // Matching commodity; see if the details match
                     if (inventoryCargo.missionid != null)
@@ -456,6 +503,18 @@ namespace EddiCargoMonitor
             }
             // No matching cargo - ignore
             Logging.Debug("Did not find match for cargo " + JsonConvert.SerializeObject(cargo));
+        }
+
+        public void LimpetUsed()
+        {
+            Commodity limpet = CommodityDefinitions.FromName("Limpet");
+
+            foreach (Cargo inventoryCargo in inventory)
+            {
+                if (inventoryCargo.commodity.name == "Limpet" && inventoryCargo.amount > 0)
+                    inventoryCargo.amount--;
+                inventoryCargo.price -= (long)limpet.sellprice;
+            }
         }
     }
 }
