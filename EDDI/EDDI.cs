@@ -881,16 +881,12 @@ namespace Eddi
                 // Kick off the profile refresh if the companion API is available
                 if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
                 {
-                    // Refresh commander, ships, system and station data
-                    if (refreshProfile())
-                    {
-                        // Refresh station data
-                        profileUpdateNeeded = true;
-                        profileStationRequired = CurrentStation.name;
-                        Thread updateThread = new Thread(() => conditionallyRefreshProfile());
-                        updateThread.IsBackground = true;
-                        updateThread.Start();
-                    }
+                    // Refresh station data
+                    profileUpdateNeeded = true;
+                    profileStationRequired = CurrentStation.name;
+                    Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+                    updateThread.IsBackground = true;
+                    updateThread.Start();
                 }
             }
             else
@@ -969,16 +965,12 @@ namespace Eddi
             // Kick off the profile refresh if the companion API is available
             if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
             {
-                // Refresh commander, ships, system and station data
-                if (refreshProfile())
-                {
-                    // Refresh station data
-                    profileUpdateNeeded = true;
-                    profileStationRequired = CurrentStation.name;
-                    Thread updateThread = new Thread(() => conditionallyRefreshProfile());
-                    updateThread.IsBackground = true;
-                    updateThread.Start();
-                }
+                // Refresh station data
+                profileUpdateNeeded = true;
+                profileStationRequired = CurrentStation.name;
+                Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+                updateThread.IsBackground = true;
+                updateThread.Start();
             }
             else
             {
@@ -1434,7 +1426,7 @@ namespace Eddi
         }
 
         /// <summary>Obtain information from the companion API and use it to refresh our own data</summary>
-        public bool refreshProfile()
+        public bool refreshProfile(bool refreshStation = false)
         {
             bool success = true;
             if (CompanionAppService.Instance?.CurrentState == CompanionAppService.State.READY)
@@ -1478,6 +1470,16 @@ namespace Eddi
                                     updatedCurrentStarSystem = true;
                                 }
                             }
+                        }
+
+                        if (refreshStation && CurrentStation != null)
+                        {
+                            // Refresh station data
+                            profileUpdateNeeded = true;
+                            profileStationRequired = CurrentStation.name;
+                            Thread updateThread = new Thread(() => conditionallyRefreshProfile());
+                            updateThread.IsBackground = true;
+                            updateThread.Start();
                         }
 
                         setCommanderTitle();
@@ -1727,7 +1729,7 @@ namespace Eddi
                         ApiTimeStamp = DateTime.UtcNow;
                         long profileTime = (long)DateTime.Now.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
                         Logging.Debug("Fetching station profile");
-                        Profile profile = CompanionAppService.Instance.Station();
+                        Profile profile = CompanionAppService.Instance.Station(CurrentStarSystem.name);
 
                         // See if it is up-to-date regarding our requirements
                         Logging.Debug("profileStationRequired is " + profileStationRequired + ", profile station is " + profile.LastStation.name);
@@ -1736,11 +1738,13 @@ namespace Eddi
                         {
                             // We have the required station information
                             Logging.Debug("Current station matches profile information; updating info");
-                            CurrentStation.outfitting = profile.LastStation.outfitting;
-                            CurrentStation.updatedat = profileTime;
                             CurrentStation.commodities = profile.LastStation.commodities;
+                            CurrentStation.economies = profile.LastStation.economies;
+                            CurrentStation.prohibited = profile.LastStation.prohibited;
                             CurrentStation.commoditiesupdatedat = profileTime;
+                            CurrentStation.outfitting = profile.LastStation.outfitting;
                             CurrentStation.shipyard = profile.LastStation.shipyard;
+                            CurrentStation.updatedat = profileTime;
 
                             // Update the current station information in our backend DB
                             Logging.Debug("Star system information updated from remote server; updating local copy");

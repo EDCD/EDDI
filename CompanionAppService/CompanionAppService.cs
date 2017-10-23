@@ -259,7 +259,7 @@ namespace EddiCompanionAppService
             return cachedProfile;
         }
 
-        public Profile Station()
+        public Profile Station(string systemName)
         {
             Logging.Debug("Entered");
             if (CurrentState != State.READY)
@@ -272,13 +272,27 @@ namespace EddiCompanionAppService
 
             try
             {
+                Logging.Debug("Getting station market data");
+                string market = obtainProfile(BASE_URL + MARKET_URL);
+                market = "{\"lastStarport\":" + market + "}";
+                JObject marketJson = JObject.Parse(market);
+                string lastStarport = (string)marketJson["lastStarport"]["name"];
+
+                cachedProfile.CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(systemName);
+                cachedProfile.LastStation = cachedProfile.CurrentStarSystem.stations.Find(s => s.name == lastStarport);
+                if (cachedProfile.LastStation == null)
+                {
+                    // Don't have a station so make one up
+                    cachedProfile.LastStation = new Station();
+                    cachedProfile.LastStation.name = lastStarport;
+                }
+                cachedProfile.LastStation.systemname = systemName;
+
                 if (cachedProfile.LastStation.hasmarket ?? false)
                 {
-                    Logging.Debug("Getting station market data");
-                    string market = obtainProfile(BASE_URL + MARKET_URL);
-                    market = "{\"lastStarport\":" + market + "}";
-                    JObject marketJson = JObject.Parse(market);
+                    cachedProfile.LastStation.economies = EconomiesFromProfile(marketJson);
                     cachedProfile.LastStation.commodities = CommoditiesFromProfile(marketJson);
+                    cachedProfile.LastStation.prohibited = ProhibitedCommoditiesFromProfile(marketJson);
                 }
 
                 if (cachedProfile.LastStation.hasoutfitting ?? false)
@@ -637,6 +651,49 @@ namespace EddiCompanionAppService
             return Modules;
         }
 
+        // Obtain the list of station economies from the profile
+        public static List<CompanionAppEconomy> EconomiesFromProfile(dynamic json)
+        {
+            List<CompanionAppEconomy> Economies = new List<CompanionAppEconomy>();
+
+            if (json["lastStarport"] != null && json["lastStarport"]["economies"] != null)
+            {
+                foreach (dynamic economyJson in json["lastStarport"]["economies"])
+                {
+                    dynamic economy = economyJson.Value;
+                    CompanionAppEconomy Economy = new CompanionAppEconomy();
+
+                    Economy.name = (string)economy["name"];
+                    Economy.proportion = (decimal)economy["proportion"];
+                    Economies.Add(Economy);
+                }
+            }
+
+            Logging.Debug("Economies are " + JsonConvert.SerializeObject(Economies));
+            return Economies;
+        }
+
+        // Obtain the list of prohibited commodities from the profile
+        public static List<String> ProhibitedCommoditiesFromProfile(dynamic json)
+        {
+            List<String> ProhibitedCommodities = new List<String>();
+
+            if (json["lastStarport"] != null && json["lastStarport"]["prohibited"] != null)
+            {
+                foreach (dynamic prohibitedcommodity in json["lastStarport"]["prohibited"])
+                {
+                    String pc = (string)prohibitedcommodity.Value;
+                    if (pc != null)
+                    {
+                        ProhibitedCommodities.Add(pc);
+                    }
+                }
+            }
+
+            Logging.Debug("Prohibited Commodities are " + JsonConvert.SerializeObject(ProhibitedCommodities));
+            return ProhibitedCommodities;
+        }
+
         // Obtain the list of commodities from the profile
         public static List<Commodity> CommoditiesFromProfile(dynamic json)
         {
@@ -644,16 +701,16 @@ namespace EddiCompanionAppService
 
             if (json["lastStarport"] != null && json["lastStarport"]["commodities"] != null)
             {
+                List<Commodity> commodityErrors = new List<Commodity>();
                 foreach (dynamic commodity in json["lastStarport"]["commodities"])
                 {
                     dynamic commodityJson = commodity.Value;
-                    Commodity Commodity = CommodityDefinitions.CommodityFromEliteID((long)commodity["id"]);
-                    if (Commodity == null || Commodity.name == null)
-                    {
-                        Commodity = new Commodity();
-                        Commodity.EDName = (string)commodity["name"];
-                        Commodity.category = (string)commodity["categoryName"];
-                    }
+                    Commodity Commodity = new Commodity();
+                    Commodity eddiCommodity = CommodityDefinitions.CommodityFromEliteID((long)commodity["id"]);
+
+                    Commodity.EDName = (string)commodity["name"];
+                    Commodity.name = (string)commodity["locName"];
+                    Commodity.category = ((string)commodity["categoryname"]).Trim();
                     Commodity.avgprice = (int)commodity["meanPrice"];
                     Commodity.buyprice = (int)commodity["buyPrice"];
                     Commodity.stock = (int)commodity["stock"];
@@ -669,6 +726,21 @@ namespace EddiCompanionAppService
                     }
                     Commodity.StatusFlags = StatusFlags;
                     Commodities.Add(Commodity);
+
+                    if (eddiCommodity == null || eddiCommodity.EDName != Commodity.EDName || eddiCommodity.name != Commodity.name
+                        || eddiCommodity.category != Commodity.category)
+                    {
+                        if (eddiCommodity.name != "Limpet")
+                        {
+                            commodityErrors.Add(Commodity);
+                        }
+                    }
+                }
+
+                if (commodityErrors.Count() > 0)
+                {
+                    Logging.Warn("Commodity definition errors: " + JsonConvert.SerializeObject(commodityErrors));
+                    SpeechService.Instance.Say(null, "E-D-D-I commodity definition errors found.  Please forward your log to developers.", false);
                 }
             }
 

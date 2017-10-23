@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="EDDNBody.cs" />
     <Compile Include="EDDNCommodity.cs" />
+    <Compile Include="EDDNEconomy.cs" />
     <Compile Include="EDDNHeader.cs" />
     <Compile Include="EDDNResponder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
