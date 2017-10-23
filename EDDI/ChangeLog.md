@@ -1,7 +1,8 @@
 # CHANGE LOG
 
-### 2.4.2-b1
+### 2.4.2
   * Core
+    * Revised EDDN updating for naming changes in ED 2.4.
     * Revised error reporting. The 'Send EDDI log to developers' button is now called 'Report an Issue' and routes users to our Github issues page. If verbose logging is enabled, a zipped and truncated log file is placed on the desktop so that it may be attached to the Github issue.
 
 ### 2.4.1
