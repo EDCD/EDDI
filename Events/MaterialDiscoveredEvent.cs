@@ -25,7 +25,7 @@ namespace EddiEvents
 
         public MaterialDiscoveredEvent(DateTime timestamp, Material material) : base(timestamp, NAME)
         {
-            this.name = (material == null ? null : material.name);
+            this.name = material?.name;
         }
     }
 }

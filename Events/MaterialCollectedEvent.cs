@@ -34,9 +34,9 @@ namespace EddiEvents
 
         public MaterialCollectedEvent(DateTime timestamp, Material material, int amount) : base(timestamp, NAME)
         {
-            this.name = (material == null ? null : material.name);
+            this.name = material?.name;
             this.amount = amount;
-            this.edname = (material == null ? null : material.EDName);
+            this.edname = material?.EDName;
         }
     }
 }
