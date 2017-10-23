@@ -1472,7 +1472,7 @@ namespace Eddi
                             }
                         }
 
-                        if (refreshStation)
+                        if (refreshStation && CurrentStation != null)
                         {
                             // Refresh station data
                             profileUpdateNeeded = true;

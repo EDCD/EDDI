@@ -230,10 +230,10 @@ namespace EDDNResponder
                     data.Add("timestamp", DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"));
                     data.Add("systemName", systemName);
                     data.Add("stationName", EDDI.Instance.CurrentStation.name);
-                    if (eddnEconomies != null)
+                    if (eddnEconomies.Count > 0)
                         data.Add("economies", eddnEconomies);
                     data.Add("commodities", eddnCommodities);
-                    if (EDDI.Instance.CurrentStation.prohibited != null)
+                    if (EDDI.Instance.CurrentStation.prohibited.Count > 0)
                         data.Add("prohibited", EDDI.Instance.CurrentStation.prohibited);
 
                     EDDNBody body = new EDDNBody();
