@@ -2,7 +2,7 @@
 
 ### 2.4.2
   * Core
-    * Revised EDDN updating for naming changes in ED 2.4.
+    * Revised EDDN updating for naming changes in ED 2.4. This makes EDDI 2.4.2 a mandatory update.
     * Revised error reporting. The 'Send EDDI log to developers' button is now called 'Report an Issue' and routes users to our Github issues page. If verbose logging is enabled, a zipped and truncated log file is placed on the desktop so that it may be attached to the Github issue.
   * Material Monitor
     * Fixed a bug that prevented EDDI from recognizing and removing old versions of some data from the Material Monitor.
