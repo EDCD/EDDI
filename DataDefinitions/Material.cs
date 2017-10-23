@@ -239,20 +239,13 @@ namespace EddiDataDefinitions
             }
             List<string> deprecatedMaterialsList = new List<string>
             {
-                {"Thargoid Residue Data Analysis"},
-                {"Unknown Ship Signature"},
-                {"Unknown Wake Data"},
-                {"Unknown Fragment"},
+                "Thargoid Residue Data Analysis",
+                "Unknown Ship Signature",
+                "Unknown Wake Data",
+                "Unknown Fragment",
             };
 
-            if (deprecatedMaterialsList.Contains(name.Trim()))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return deprecatedMaterialsList.Contains(name.Trim());
         }
     }
 }
