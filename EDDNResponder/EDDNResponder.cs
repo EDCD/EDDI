@@ -231,10 +231,14 @@ namespace EDDNResponder
                     data.Add("systemName", systemName);
                     data.Add("stationName", EDDI.Instance.CurrentStation.name);
                     if (eddnEconomies.Count > 0)
+                    {
                         data.Add("economies", eddnEconomies);
+                    }
                     data.Add("commodities", eddnCommodities);
                     if (EDDI.Instance.CurrentStation.prohibited.Count > 0)
+                    {
                         data.Add("prohibited", EDDI.Instance.CurrentStation.prohibited);
+                    }
 
                     EDDNBody body = new EDDNBody();
                     body.header = generateHeader();

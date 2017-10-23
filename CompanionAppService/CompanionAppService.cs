@@ -684,7 +684,9 @@ namespace EddiCompanionAppService
                 {
                     String pc = (string)prohibitedcommodity.Value;
                     if (pc != null)
+                    {
                         ProhibitedCommodities.Add(pc);
+                    }
                 }
             }
 
@@ -729,7 +731,9 @@ namespace EddiCompanionAppService
                         || eddiCommodity.category != Commodity.category)
                     {
                         if (eddiCommodity.name != "Limpet")
+                        {
                             commodityErrors.Add(Commodity);
+                        }
                     }
                 }
 
