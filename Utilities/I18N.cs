@@ -12,18 +12,17 @@ namespace Utilities
     public class I18N
     {
         private const string defaultLang = "en";
-        private string currentLang;
-        private Dictionary<string, ResourceManager> rmDictionnary;
-        private List<String> rmFiles;
-        private static I18N instance = new I18N();
-        private string langRoot;
+        private static string currentLang;
+        private static Dictionary<string, ResourceManager> rmDictionnary;
+        private static List<String> rmFiles;
+        private static string langRoot;
 
-        private I18N()
+        static I18N()
         {
             Init();
         }
 
-        private void Init()
+        private static void Init()
         {
             langRoot = "Utilities.lang";
             currentLang = defaultLang;
@@ -33,10 +32,9 @@ namespace Utilities
             UpdateResourceManagers();
         }
 
-        public static I18N ResetInstance()
+        public static void Reset()
         {
-            instance.Init();
-            return instance;
+            Init();
         }
 
         public static string GetSystemLangCode()
@@ -44,12 +42,12 @@ namespace Utilities
             return CultureInfo.CurrentUICulture.Name.Split('-')[0];
         }
 
-        public string GetLang()
+        public static string GetLang()
         {
             return currentLang;
         }
 
-        public bool SetLang(string lang)
+        public static bool SetLang(string lang)
         {
             if (IsAvailableLang(lang))
             {
@@ -59,17 +57,17 @@ namespace Utilities
             return false;
         }
 
-        public void FallbackLang()
+        public static void FallbackLang()
         {
             currentLang = defaultLang;
         }
 
-        public bool IsAvailableLang(string lang)
+        public static bool IsAvailableLang(string lang)
         {
             return rmFiles.Contains(lang);
         }
 
-        public bool SetLangOrFallback(string lang)
+        public static bool SetLangOrFallback(string lang)
         {
             if (SetLang(lang))
             {
@@ -82,7 +80,7 @@ namespace Utilities
             }
         }
 
-        public void UpdateResources()
+        public static void UpdateResources()
         {
             List<Type> types = Assembly
                         .GetExecutingAssembly()
@@ -95,43 +93,50 @@ namespace Utilities
             }
         }
 
-        public List<string> GetAvailableLangs()
+        public static List<string> GetAvailableLangs()
         {
             return rmFiles;
         }
 
-        public static I18N GetInstance()
-        {
-            if (instance == null)
-            {
-                instance = new I18N();
-            }
-
-            return instance;
-        }
-
-        private void AddResourceFile(string filename)
+        private static void AddResourceFile(string filename)
         {
             rmDictionnary.Add(filename, null);
             rmFiles.Add(filename);
         }
 
-        public string GetString(string stringCode)
+        public static string GetString(string stringCode)
         {
             return GetString(stringCode, currentLang);
         }
 
-        public string GetString(string stringCode, string lang)
+        public static string GetString(string stringCode, string lang)
         {
-            ResourceManager rm = rmDictionnary[lang];
-            if(rm == null)
+            if (IsAvailableLang(lang))
             {
-                rm = rmDictionnary[defaultLang];
+                return rmDictionnary[lang].GetString(stringCode);
             }
-            return rm.GetString(stringCode);
+            else
+            {
+                return rmDictionnary[defaultLang].GetString(stringCode);
+            }
         }
 
-        private void UpdateResourceManagers()
+        public static string GetStringWithArgs(string stringCode, string[] args)
+        {
+            return GetStringWithArgs(stringCode, currentLang, args);
+        }
+
+        public static string GetStringWithArgs(string stringCode, string langCode, string[] args)
+        {
+            string s = GetString(stringCode, langCode);
+            for(int i=0; i<args.Length; i++)
+            {
+                s = s.Replace("{"+i+"}", args[i]);
+            }
+            return s;
+        }
+
+        private static void UpdateResourceManagers()
         {
             if (rmDictionnary.Count == 0)
                 throw new Exception("No resources added in the bundle");
