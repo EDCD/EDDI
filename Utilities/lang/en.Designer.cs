@@ -106,11 +106,29 @@ namespace Utilities.lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Fighter.
+        /// </summary>
+        internal static string fighter {
+            get {
+                return ResourceManager.GetString("fighter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Mandatory Eddi upgrade to {0} is required..
         /// </summary>
         internal static string mandatory_upgrade {
             get {
                 return ResourceManager.GetString("mandatory_upgrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Normal Space.
+        /// </summary>
+        internal static string normal_space {
+            get {
+                return ResourceManager.GetString("normal_space", resourceCulture);
             }
         }
         
@@ -160,11 +178,38 @@ namespace Utilities.lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ship.
+        /// </summary>
+        internal static string ship {
+            get {
+                return ResourceManager.GetString("ship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à SRV.
+        /// </summary>
+        internal static string srv {
+            get {
+                return ResourceManager.GetString("srv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Starting upgrade..
         /// </summary>
         internal static string starting_upgrade {
             get {
                 return ResourceManager.GetString("starting_upgrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Supercruise.
+        /// </summary>
+        internal static string supercruise {
+            get {
+                return ResourceManager.GetString("supercruise", resourceCulture);
             }
         }
         
@@ -210,6 +255,15 @@ namespace Utilities.lang {
         internal static string version_available {
             get {
                 return ResourceManager.GetString("version_available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Witch Space.
+        /// </summary>
+        internal static string witch_space {
+            get {
+                return ResourceManager.GetString("witch_space", resourceCulture);
             }
         }
     }

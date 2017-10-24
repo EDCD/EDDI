@@ -168,4 +168,22 @@
   <data name="version_available" xml:space="preserve">
     <value>Eddi version {0} is now available.</value>
   </data>
+  <data name="fighter" xml:space="preserve">
+    <value>Fighter</value>
+  </data>
+  <data name="normal_space" xml:space="preserve">
+    <value>Normal Space</value>
+  </data>
+  <data name="ship" xml:space="preserve">
+    <value>Ship</value>
+  </data>
+  <data name="srv" xml:space="preserve">
+    <value>SRV</value>
+  </data>
+  <data name="supercruise" xml:space="preserve">
+    <value>Supercruise</value>
+  </data>
+  <data name="witch_space" xml:space="preserve">
+    <value>Witch Space</value>
+  </data>
 </root>

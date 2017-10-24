@@ -25,7 +25,8 @@ namespace Utilities
         private static void Init()
         {
             langRoot = "Utilities.lang";
-            currentLang = defaultLang;
+            //currentLang = defaultLang;
+            currentLang = GetSystemLangCode();
             rmDictionnary = new Dictionary<string, ResourceManager>();
             rmFiles = new List<string>();
             UpdateResources();

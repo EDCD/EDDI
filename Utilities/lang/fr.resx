@@ -117,6 +117,57 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="commander" xml:space="preserve">
+    <value>Commandeur</value>
+  </data>
+  <data name="downloading_upgrade" xml:space="preserve">
+    <value>Téléchargement de ma mise à jour.</value>
+  </data>
+  <data name="download_failed" xml:space="preserve">
+    <value>Échec du téléchargement.  Veuillez réessayer ultérieurement.</value>
+  </data>
+  <data name="empire" xml:space="preserve">
+    <value>Empire</value>
+  </data>
+  <data name="federation" xml:space="preserve">
+    <value>Fédération</value>
+  </data>
+  <data name="fighter" xml:space="preserve">
+    <value>Chasseur</value>
+  </data>
+  <data name="mandatory_upgrade" xml:space="preserve">
+    <value>Mise à jour obligatoire d'Eddi vers {0} requise.</value>
+  </data>
+  <data name="normal_space" xml:space="preserve">
+    <value>Espace normal</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>point</value>
+  </data>
+  <data name="problem_external_data_services" xml:space="preserve">
+    <value>Un problème est survenue lors de la connexion aux services de données externes; certaine fonctionnalités peuvent être temporairement indisponibles.</value>
+  </data>
+  <data name="problem_load_monitor" xml:space="preserve">
+    <value>Échec du chargement du moniteur: {0}</value>
+  </data>
+  <data name="problem_load_monitor_file" xml:space="preserve">
+    <value>Échec du chargement du moniteur.  Veuillez vous assurer que {0} n'est partagé sur le réseau.</value>
+  </data>
+  <data name="problem_old_version" xml:space="preserve">
+    <value>Cette version d'Eddi est obsolète; veuillez mettre à jour Eddi.</value>
+  </data>
+  <data name="ship" xml:space="preserve">
+    <value>Vaisseau</value>
+  </data>
+  <data name="srv" xml:space="preserve">
+    <value>SRV</value>
+  </data>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>Lancement de la mise à jour.</value>
+  </data>
+  <data name="supercruise" xml:space="preserve">
+    <value>Super navigation</value>
+  </data>
   <data name="test_string" xml:space="preserve">
     <value>it works (fr)</value>
   </data>
@@ -125,5 +176,14 @@
   </data>
   <data name="test_string_args_lang" xml:space="preserve">
     <value>arg0:{0} arg1:{1} (fr)</value>
+  </data>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>Mise à jour échouée.  Veuillez réessayer ultérieurement.</value>
+  </data>
+  <data name="version_available" xml:space="preserve">
+    <value>Eddi version {0}, est maintenant disponible.</value>
+  </data>
+  <data name="witch_space" xml:space="preserve">
+    <value>Hyper espace</value>
   </data>
 </root>

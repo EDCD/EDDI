@@ -61,6 +61,159 @@ namespace Utilities.lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Commandeur.
+        /// </summary>
+        internal static string commander {
+            get {
+                return ResourceManager.GetString("commander", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Échec du téléchargement.  Veuillez réessayer ultérieurement..
+        /// </summary>
+        internal static string download_failed {
+            get {
+                return ResourceManager.GetString("download_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Téléchargement de ma mise à jour..
+        /// </summary>
+        internal static string downloading_upgrade {
+            get {
+                return ResourceManager.GetString("downloading_upgrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Empire.
+        /// </summary>
+        internal static string empire {
+            get {
+                return ResourceManager.GetString("empire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Fédération.
+        /// </summary>
+        internal static string federation {
+            get {
+                return ResourceManager.GetString("federation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Chasseur.
+        /// </summary>
+        internal static string fighter {
+            get {
+                return ResourceManager.GetString("fighter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Mise à jour obligatoire d&apos;Eddi vers {0} requise..
+        /// </summary>
+        internal static string mandatory_upgrade {
+            get {
+                return ResourceManager.GetString("mandatory_upgrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Espace normal.
+        /// </summary>
+        internal static string normal_space {
+            get {
+                return ResourceManager.GetString("normal_space", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à point.
+        /// </summary>
+        internal static string point {
+            get {
+                return ResourceManager.GetString("point", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Un problème est survenue lors de la connexion aux services de données externes; certaine fonctionnalités peuvent être temporairement indisponibles..
+        /// </summary>
+        internal static string problem_external_data_services {
+            get {
+                return ResourceManager.GetString("problem_external_data_services", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Échec du chargement du moniteur: {0}.
+        /// </summary>
+        internal static string problem_load_monitor {
+            get {
+                return ResourceManager.GetString("problem_load_monitor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Échec du chargement du moniteur.  Veuillez vous assurer que {0} n&apos;est partagé sur le réseau..
+        /// </summary>
+        internal static string problem_load_monitor_file {
+            get {
+                return ResourceManager.GetString("problem_load_monitor_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Cette version d&apos;Eddi est obsolète; veuillez mettre à jour Eddi..
+        /// </summary>
+        internal static string problem_old_version {
+            get {
+                return ResourceManager.GetString("problem_old_version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Vaisseau.
+        /// </summary>
+        internal static string ship {
+            get {
+                return ResourceManager.GetString("ship", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à SRV.
+        /// </summary>
+        internal static string srv {
+            get {
+                return ResourceManager.GetString("srv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Lancement de la mise à jour..
+        /// </summary>
+        internal static string starting_upgrade {
+            get {
+                return ResourceManager.GetString("starting_upgrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Super navigation.
+        /// </summary>
+        internal static string supercruise {
+            get {
+                return ResourceManager.GetString("supercruise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à it works (fr).
         /// </summary>
         internal static string test_string {
@@ -84,6 +237,33 @@ namespace Utilities.lang {
         internal static string test_string_args_lang {
             get {
                 return ResourceManager.GetString("test_string_args_lang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Mise à jour échouée.  Veuillez réessayer ultérieurement..
+        /// </summary>
+        internal static string upgrade_failed {
+            get {
+                return ResourceManager.GetString("upgrade_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Eddi version {0}, est maintenant disponible..
+        /// </summary>
+        internal static string version_available {
+            get {
+                return ResourceManager.GetString("version_available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Hyper espace.
+        /// </summary>
+        internal static string witch_space {
+            get {
+                return ResourceManager.GetString("witch_space", resourceCulture);
             }
         }
     }
