@@ -287,7 +287,7 @@ namespace Eddi
                         // There is an update available
                         if (!FromVA)
                         {
-                            SpeechService.Instance.Say(null, I18N.GetStringWithArgs("version_available", new string[]{info.version.Replace(".", " " + I18N.GetString("point") + " ") }), false);
+                            SpeechService.Instance.Say(null, I18N.GetStringWithArgs("update_available", new string[]{info.version.Replace(".", " " + I18N.GetString("point") + " ") }), false);
                         }
                         UpgradeAvailable = true;
                         UpgradeLocation = info.url;

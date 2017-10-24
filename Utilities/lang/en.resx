@@ -165,14 +165,59 @@
   <data name="upgrade_failed" xml:space="preserve">
     <value>Upgrade failed.  Please try again later.</value>
   </data>
-  <data name="version_available" xml:space="preserve">
+  <data name="update_available" xml:space="preserve">
     <value>Eddi version {0} is now available.</value>
+  </data>
+  <data name="change_affect_va" xml:space="preserve">
+    <value>Any changes made here will take effect automatically in VoiceAttack.  You can close this window when you have finished.</value>
+  </data>
+  <data name="complete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>done</value>
+  </data>
+  <data name="failed" xml:space="preserve">
+    <value>failed</value>
   </data>
   <data name="fighter" xml:space="preserve">
     <value>Fighter</value>
   </data>
+  <data name="frontier_api_nok" xml:space="preserve">
+    <value>Frontier API connection not operational</value>
+  </data>
+  <data name="frontier_api_no_logins" xml:space="preserve">
+    <value>You do not have a connection to the Frontier API at this time.  Please enter your Elite: Dangerous email address and password below</value>
+  </data>
+  <data name="frontier_api_ok" xml:space="preserve">
+    <value>Your connection to the Frontier API is operational, Commander {0}.</value>
+  </data>
+  <data name="frontier_api_temp_nok" xml:space="preserve">
+    <value>Your connection to the Frontier API is good but experiencing temporary issues.  Your information should be available soon</value>
+  </data>
+  <data name="frontier_api_verification_code" xml:space="preserve">
+    <value>Please enter the verification code that should have been sent to your email address</value>
+  </data>
+  <data name="if_using_va" xml:space="preserve">
+    <value>If you are using VoiceAttack then please close this window before you start VoiceAttack for your changes to take effect.  You can access this window from VoiceAttack with the 'Configure EDDI' command.</value>
+  </data>
+  <data name="login_nok_frontier_service" xml:space="preserve">
+    <value>Unable to log in. This is usually a temporary issue with Frontier's service; please try again later</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="log_upload" xml:space="preserve">
+    <value>Uploading log... </value>
+  </data>
+  <data name="next" xml:space="preserve">
+    <value>Next</value>
+  </data>
   <data name="normal_space" xml:space="preserve">
     <value>Normal Space</value>
+  </data>
+  <data name="operational" xml:space="preserve">
+    <value>Operational</value>
   </data>
   <data name="ship" xml:space="preserve">
     <value>Ship</value>
@@ -182,6 +227,15 @@
   </data>
   <data name="supercruise" xml:space="preserve">
     <value>Supercruise</value>
+  </data>
+  <data name="update_message" xml:space="preserve">
+    <value>Version {0} is available</value>
+  </data>
+  <data name="voice_test_damage" xml:space="preserve">
+    <value>Severe damage to your {0}.</value>
+  </data>
+  <data name="voice_test_ship" xml:space="preserve">
+    <value>This is how I will sound in your {0}.</value>
   </data>
   <data name="witch_space" xml:space="preserve">
     <value>Witch Space</value>

@@ -15,12 +15,12 @@ namespace Utilities
         public const string EDDI_VERSION = "2.3.0";
         public static readonly string DATA_DIR = Environment.GetEnvironmentVariable("AppData") + "\\" + EDDI_NAME;
 
-        public readonly string ENVIRONMENT_WITCH_SPACE = I18N.GetString("wicth_space");
-        public readonly string ENVIRONMENT_SUPERCRUISE = I18N.GetString("supercruise");
-        public readonly string ENVIRONMENT_NORMAL_SPACE = I18N.GetString("normal_space");
+        public static readonly string ENVIRONMENT_WITCH_SPACE = I18N.GetString("wicth_space");
+        public static readonly string ENVIRONMENT_SUPERCRUISE = I18N.GetString("supercruise");
+        public static readonly string ENVIRONMENT_NORMAL_SPACE = I18N.GetString("normal_space");
 
-        public readonly string VEHICLE_SHIP = I18N.GetString("ship");
-        public readonly string VEHICLE_SRV = I18N.GetString("srv");
-        public readonly string VEHICLE_FIGHTER = I18N.GetString("fighter");
+        public static readonly string VEHICLE_SHIP = I18N.GetString("ship");
+        public static readonly string VEHICLE_SRV = I18N.GetString("srv");
+        public static readonly string VEHICLE_FIGHTER = I18N.GetString("fighter");
     }
 }

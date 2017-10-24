@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="change_affect_va" xml:space="preserve">
+    <value>Chaque changement effectués ici prendra automatiquement effet dans VoiceAttack. Vous pouvez fermer cette fenêtre une fois terminé.</value>
+  </data>
   <data name="commander" xml:space="preserve">
-    <value>Commandeur</value>
+    <value>Commandant</value>
+  </data>
+  <data name="complete" xml:space="preserve">
+    <value>Terminer</value>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>terminé</value>
   </data>
   <data name="downloading_upgrade" xml:space="preserve">
     <value>Téléchargement de ma mise à jour.</value>
@@ -129,17 +138,53 @@
   <data name="empire" xml:space="preserve">
     <value>Empire</value>
   </data>
+  <data name="failed" xml:space="preserve">
+    <value>échec</value>
+  </data>
   <data name="federation" xml:space="preserve">
     <value>Fédération</value>
   </data>
   <data name="fighter" xml:space="preserve">
     <value>Chasseur</value>
   </data>
+  <data name="frontier_api_nok" xml:space="preserve">
+    <value>Connexion à l'API Frontier non opérationnelle</value>
+  </data>
+  <data name="frontier_api_no_logins" xml:space="preserve">
+    <value>Vous n'avez pas de connexion à l'API Frontier pour le moment. veuillez enter votre adresse mail et mot de passe d'Elite: Dangerous ci-dessous</value>
+  </data>
+  <data name="frontier_api_ok" xml:space="preserve">
+    <value>Votre connexion à l'API Frontier est operationnelle, Commandant {0}.</value>
+  </data>
+  <data name="frontier_api_temp_nok" xml:space="preserve">
+    <value>Votre connexion à l'API Frontier est correcte mais rencontre des problèmes temporaires.  Vos informations devraient êtres disponibles sous peu.</value>
+  </data>
+  <data name="frontier_api_verification_code" xml:space="preserve">
+    <value>Veuillez entrer le code de vérification qui à due être envoyé à votre adresse mail</value>
+  </data>
+  <data name="if_using_va" xml:space="preserve">
+    <value>Si vous utilisez VoiceAttack, fermez cette fenêtre avant de démarrer VoiceAttack pour que vos changements soient effectifs. Vous pouvez accéder à cette fenêtre depuis VoiceAttack avec la commande 'Configure EDDI'.</value>
+  </data>
+  <data name="login_nok_frontier_service" xml:space="preserve">
+    <value>Impossible de se connecter. Ceci est généralement due à un problème temporaire avec les serveur de Frontier; Veuillez réessayer ultérieurement</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>Déconnexion</value>
+  </data>
+  <data name="log_upload" xml:space="preserve">
+    <value>Envoi du log... </value>
+  </data>
   <data name="mandatory_upgrade" xml:space="preserve">
     <value>Mise à jour obligatoire d'Eddi vers {0} requise.</value>
   </data>
+  <data name="next" xml:space="preserve">
+    <value>Suivant</value>
+  </data>
   <data name="normal_space" xml:space="preserve">
     <value>Espace normal</value>
+  </data>
+  <data name="operational" xml:space="preserve">
+    <value>Opérationnel</value>
   </data>
   <data name="point" xml:space="preserve">
     <value>point</value>
@@ -177,11 +222,20 @@
   <data name="test_string_args_lang" xml:space="preserve">
     <value>arg0:{0} arg1:{1} (fr)</value>
   </data>
+  <data name="update_available" xml:space="preserve">
+    <value>Eddi version {0}, est maintenant disponible.</value>
+  </data>
+  <data name="update_message" xml:space="preserve">
+    <value>Version {0} disponible</value>
+  </data>
   <data name="upgrade_failed" xml:space="preserve">
     <value>Mise à jour échouée.  Veuillez réessayer ultérieurement.</value>
   </data>
-  <data name="version_available" xml:space="preserve">
-    <value>Eddi version {0}, est maintenant disponible.</value>
+  <data name="voice_test_damage" xml:space="preserve">
+    <value>Dommage sévère à votre {0}.</value>
+  </data>
+  <data name="voice_test_ship" xml:space="preserve">
+    <value>Voici comment je parlerai dans votre {0}.</value>
   </data>
   <data name="witch_space" xml:space="preserve">
     <value>Hyper espace</value>

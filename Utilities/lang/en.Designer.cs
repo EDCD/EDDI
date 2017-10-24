@@ -61,11 +61,38 @@ namespace Utilities.lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Any changes made here will take effect automatically in VoiceAttack.  You can close this window when you have finished..
+        /// </summary>
+        internal static string change_affect_va {
+            get {
+                return ResourceManager.GetString("change_affect_va", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Commander.
         /// </summary>
         internal static string commander {
             get {
                 return ResourceManager.GetString("commander", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Complete.
+        /// </summary>
+        internal static string complete {
+            get {
+                return ResourceManager.GetString("complete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à done.
+        /// </summary>
+        internal static string done {
+            get {
+                return ResourceManager.GetString("done", resourceCulture);
             }
         }
         
@@ -97,6 +124,15 @@ namespace Utilities.lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à failed.
+        /// </summary>
+        internal static string failed {
+            get {
+                return ResourceManager.GetString("failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Federation.
         /// </summary>
         internal static string federation {
@@ -115,6 +151,87 @@ namespace Utilities.lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à You do not have a connection to the Frontier API at this time.  Please enter your Elite: Dangerous email address and password below.
+        /// </summary>
+        internal static string frontier_api_no_logins {
+            get {
+                return ResourceManager.GetString("frontier_api_no_logins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Frontier API connection not operational.
+        /// </summary>
+        internal static string frontier_api_nok {
+            get {
+                return ResourceManager.GetString("frontier_api_nok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Your connection to the Frontier API is operational, Commander {0}..
+        /// </summary>
+        internal static string frontier_api_ok {
+            get {
+                return ResourceManager.GetString("frontier_api_ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Your connection to the Frontier API is good but experiencing temporary issues.  Your information should be available soon.
+        /// </summary>
+        internal static string frontier_api_temp_nok {
+            get {
+                return ResourceManager.GetString("frontier_api_temp_nok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Please enter the verification code that should have been sent to your email address.
+        /// </summary>
+        internal static string frontier_api_verification_code {
+            get {
+                return ResourceManager.GetString("frontier_api_verification_code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à If you are using VoiceAttack then please close this window before you start VoiceAttack for your changes to take effect.  You can access this window from VoiceAttack with the &apos;Configure EDDI&apos; command..
+        /// </summary>
+        internal static string if_using_va {
+            get {
+                return ResourceManager.GetString("if_using_va", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Uploading log... .
+        /// </summary>
+        internal static string log_upload {
+            get {
+                return ResourceManager.GetString("log_upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Unable to log in. This is usually a temporary issue with Frontier&apos;s service; please try again later.
+        /// </summary>
+        internal static string login_nok_frontier_service {
+            get {
+                return ResourceManager.GetString("login_nok_frontier_service", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Log out.
+        /// </summary>
+        internal static string logout {
+            get {
+                return ResourceManager.GetString("logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Mandatory Eddi upgrade to {0} is required..
         /// </summary>
         internal static string mandatory_upgrade {
@@ -124,11 +241,29 @@ namespace Utilities.lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Next.
+        /// </summary>
+        internal static string next {
+            get {
+                return ResourceManager.GetString("next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Normal Space.
         /// </summary>
         internal static string normal_space {
             get {
                 return ResourceManager.GetString("normal_space", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Operational.
+        /// </summary>
+        internal static string operational {
+            get {
+                return ResourceManager.GetString("operational", resourceCulture);
             }
         }
         
@@ -241,6 +376,24 @@ namespace Utilities.lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Eddi version {0} is now available..
+        /// </summary>
+        internal static string update_available {
+            get {
+                return ResourceManager.GetString("update_available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Version {0} is available.
+        /// </summary>
+        internal static string update_message {
+            get {
+                return ResourceManager.GetString("update_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Upgrade failed.  Please try again later..
         /// </summary>
         internal static string upgrade_failed {
@@ -250,11 +403,20 @@ namespace Utilities.lang {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Eddi version {0} is now available..
+        ///   Recherche une chaîne localisée semblable à Severe damage to your {0}..
         /// </summary>
-        internal static string version_available {
+        internal static string voice_test_damage {
             get {
-                return ResourceManager.GetString("version_available", resourceCulture);
+                return ResourceManager.GetString("voice_test_damage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à This is how I will sound in your {0}..
+        /// </summary>
+        internal static string voice_test_ship {
+            get {
+                return ResourceManager.GetString("voice_test_ship", resourceCulture);
             }
         }
         
