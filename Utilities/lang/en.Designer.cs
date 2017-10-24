@@ -61,11 +61,47 @@ namespace Utilities.lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Mandatory Eddi upgrade to {0} is required..
+        /// </summary>
+        internal static string mandatory_upgrade {
+            get {
+                return ResourceManager.GetString("mandatory_upgrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à point.
+        /// </summary>
+        internal static string point {
+            get {
+                return ResourceManager.GetString("point", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à it works (en).
         /// </summary>
         internal static string test_string {
             get {
                 return ResourceManager.GetString("test_string", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à arg0:{0} arg1:{1}.
+        /// </summary>
+        internal static string test_string_args {
+            get {
+                return ResourceManager.GetString("test_string_args", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à arg0:{0} arg1:{1} (en).
+        /// </summary>
+        internal static string test_string_args_lang {
+            get {
+                return ResourceManager.GetString("test_string_args_lang", resourceCulture);
             }
         }
     }

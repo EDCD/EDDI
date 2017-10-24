@@ -275,7 +275,7 @@ namespace Eddi
                         // There is a mandatory update available
                         if (!FromVA)
                         {
-                            SpeechService.Instance.Say(null, "Mandatory Eddi upgrade to " + info.version.Replace(".", " point ") + " is required.", false);
+                            SpeechService.Instance.Say(null, I18N.GetStringWithArgs("mandatory_upgrade", new string[] { info.version.Replace(".", " " + I18N.GetString("point") + " ") }), false);
                         }
                         UpgradeRequired = true;
                         UpgradeLocation = info.url;

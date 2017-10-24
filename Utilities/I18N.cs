@@ -119,6 +119,21 @@ namespace Utilities
             return rm.GetString(stringCode);
         }
 
+        public static string GetStringWithArgs(string stringCode, string[] args)
+        {
+            return GetStringWithArgs(stringCode, currentLang, args);
+        }
+
+        public static string GetStringWithArgs(string stringCode, string langCode, string[] args)
+        {
+            string s = GetString(stringCode, langCode);
+            for(int i=0; i<args.Length; i++)
+            {
+                s = s.Replace("{"+i+"}", args[i]);
+            }
+            return s;
+        }
+
         private static void UpdateResourceManagers()
         {
             if (rmDictionnary.Count == 0)

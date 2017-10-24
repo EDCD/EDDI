@@ -68,5 +68,23 @@ namespace Utilities.lang {
                 return ResourceManager.GetString("test_string", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à arg0:{0} arg1:{1}.
+        /// </summary>
+        internal static string test_string_args {
+            get {
+                return ResourceManager.GetString("test_string_args", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à arg0:{0} arg1:{1} (fr).
+        /// </summary>
+        internal static string test_string_args_lang {
+            get {
+                return ResourceManager.GetString("test_string_args_lang", resourceCulture);
+            }
+        }
     }
 }

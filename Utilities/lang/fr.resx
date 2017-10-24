@@ -120,4 +120,10 @@
   <data name="test_string" xml:space="preserve">
     <value>it works (fr)</value>
   </data>
+  <data name="test_string_args" xml:space="preserve">
+    <value>arg0:{0} arg1:{1}</value>
+  </data>
+  <data name="test_string_args_lang" xml:space="preserve">
+    <value>arg0:{0} arg1:{1} (fr)</value>
+  </data>
 </root>

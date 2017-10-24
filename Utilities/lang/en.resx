@@ -117,7 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="mandatory_upgrade" xml:space="preserve">
+    <value>Mandatory Eddi upgrade to {0} is required.</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>point</value>
+  </data>
   <data name="test_string" xml:space="preserve">
     <value>it works (en)</value>
+  </data>
+  <data name="test_string_args" xml:space="preserve">
+    <value>arg0:{0} arg1:{1}</value>
+  </data>
+  <data name="test_string_args_lang" xml:space="preserve">
+    <value>arg0:{0} arg1:{1} (en)</value>
   </data>
 </root>
