@@ -1,0 +1,1 @@
+<Playlist Version="1.0"><Add Test="Tests.I18NTests.GetStringWithLangChanges" /><Add Test="Tests.I18NTests.GetStringFallbackEn" /><Add Test="Tests.I18NTests.GetStringWithSpecifiedLangTest" /><Add Test="Tests.I18NTests.GetAvailableLangsTest" /><Add Test="Tests.I18NTests.GetStringDefault" /><Add Test="Tests.I18NTests.SetLangOrFallbackTest" /></Playlist>

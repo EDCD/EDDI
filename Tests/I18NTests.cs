@@ -14,72 +14,64 @@ namespace Tests
     [TestClass]
     public class I18NTests
     {
-        private Utilities.I18N bundle;
-
         [TestInitialize]
         public void TestInitialize()
         {
-            bundle = Utilities.I18N.ResetInstance();
-        }
-
-        [TestMethod]
-        public void GetInstanceTest()
-        {
-            Assert.IsNotNull(bundle);
+            I18N.Reset();
         }
 
         [TestMethod]
         public void GetAvailableLangsTest()
         {
-            List<string> langs = bundle.GetAvailableLangs();
+            List<string> langs = I18N.GetAvailableLangs();
             Assert.IsTrue(langs.Count > 0);
             Assert.IsTrue(langs.Contains("en"));
             Assert.IsFalse(langs.Contains("IDontExist"));
 
-            Assert.IsTrue(bundle.IsAvailableLang("en"));
-            Assert.IsTrue(bundle.IsAvailableLang("fr"));
-            Assert.IsFalse(bundle.IsAvailableLang("IDontExist"));
+            Assert.IsTrue(I18N.IsAvailableLang("en"));
+            Assert.IsTrue(I18N.IsAvailableLang("fr"));
+            Assert.IsFalse(I18N.IsAvailableLang("IDontExist"));
         }
 
         [TestMethod]
         public void GetStringDefault()
         {
-            Assert.AreEqual("it works (en)", bundle.GetString("test_string"));
+            Assert.AreEqual("it works (en)", I18N.GetString("test_string"));
         }
 
         [TestMethod]
         public void GetStringWithSpecifiedLangTest()
         {
-            List<string> langs = bundle.GetAvailableLangs();
+            List<string> langs = I18N.GetAvailableLangs();
             foreach (string lang in langs)
             {
-                Assert.AreEqual("it works ("+lang+")", bundle.GetString("test_string", lang));
+                Assert.AreEqual("it works ("+lang+")", I18N.GetString("test_string", lang));
             }
         }
 
         [TestMethod]
         public void GetStringFallbackEn()
         {
-            Assert.AreEqual("it works (en)", bundle.GetString("test_string"), "IDontExist");
+            Assert.AreEqual("it works (en)", I18N.GetString("test_string"), "IDontExist");
         }
 
         [TestMethod]
         public void GetStringWithLangChanges()
         {
-            List<string> langs = bundle.GetAvailableLangs();
+            List<string> langs = I18N.GetAvailableLangs();
             foreach(string lang in langs)
             {
-                Assert.IsTrue(bundle.SetLang(lang));
-                Assert.AreEqual("it works (" + lang + ")", bundle.GetString("test_string"));
+                Assert.IsTrue(I18N.SetLang(lang));
+                Assert.AreEqual("it works (" + lang + ")", I18N.GetString("test_string"));
             }
         }
 
         [TestMethod]
         public void SetLangOrFallbackTest()
         {
-            Assert.IsTrue(bundle.SetLangOrFallback("fr"));
-            Assert.IsFalse(bundle.SetLangOrFallback("IDontExist"));
-            Assert.AreEqual("en", bundle.GetLang());
+            Assert.IsTrue(I18N.SetLangOrFallback("fr"));
+            Assert.IsFalse(I18N.SetLangOrFallback("IDontExist"));
+            Assert.AreEqual("en", I18N.GetLang());
         }
     }
 }
