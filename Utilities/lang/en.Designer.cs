@@ -61,6 +61,51 @@ namespace Utilities.lang {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Commander.
+        /// </summary>
+        internal static string commander {
+            get {
+                return ResourceManager.GetString("commander", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Download failed.  Please try again later..
+        /// </summary>
+        internal static string download_failed {
+            get {
+                return ResourceManager.GetString("download_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Downloading upgrade..
+        /// </summary>
+        internal static string downloading_upgrade {
+            get {
+                return ResourceManager.GetString("downloading_upgrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Empire.
+        /// </summary>
+        internal static string empire {
+            get {
+                return ResourceManager.GetString("empire", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Federation.
+        /// </summary>
+        internal static string federation {
+            get {
+                return ResourceManager.GetString("federation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Mandatory Eddi upgrade to {0} is required..
         /// </summary>
         internal static string mandatory_upgrade {
@@ -75,6 +120,51 @@ namespace Utilities.lang {
         internal static string point {
             get {
                 return ResourceManager.GetString("point", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à There was a problem connecting to external data services; some features may be temporarily unavailable..
+        /// </summary>
+        internal static string problem_external_data_services {
+            get {
+                return ResourceManager.GetString("problem_external_data_services", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Failed to load monitor: {0}.
+        /// </summary>
+        internal static string problem_load_monitor {
+            get {
+                return ResourceManager.GetString("problem_load_monitor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Failed to load monitor.  Please ensure that {0} is not on a network share, or itself shared..
+        /// </summary>
+        internal static string problem_load_monitor_file {
+            get {
+                return ResourceManager.GetString("problem_load_monitor_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à This version of Eddi is too old to operate; please upgrade..
+        /// </summary>
+        internal static string problem_old_version {
+            get {
+                return ResourceManager.GetString("problem_old_version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Starting upgrade..
+        /// </summary>
+        internal static string starting_upgrade {
+            get {
+                return ResourceManager.GetString("starting_upgrade", resourceCulture);
             }
         }
         
@@ -102,6 +192,24 @@ namespace Utilities.lang {
         internal static string test_string_args_lang {
             get {
                 return ResourceManager.GetString("test_string_args_lang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Upgrade failed.  Please try again later..
+        /// </summary>
+        internal static string upgrade_failed {
+            get {
+                return ResourceManager.GetString("upgrade_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Eddi version {0} is now available..
+        /// </summary>
+        internal static string version_available {
+            get {
+                return ResourceManager.GetString("version_available", resourceCulture);
             }
         }
     }

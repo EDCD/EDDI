@@ -117,11 +117,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="commander" xml:space="preserve">
+    <value>Commander</value>
+  </data>
+  <data name="downloading_upgrade" xml:space="preserve">
+    <value>Downloading upgrade.</value>
+  </data>
+  <data name="download_failed" xml:space="preserve">
+    <value>Download failed.  Please try again later.</value>
+  </data>
+  <data name="empire" xml:space="preserve">
+    <value>Empire</value>
+  </data>
+  <data name="federation" xml:space="preserve">
+    <value>Federation</value>
+  </data>
   <data name="mandatory_upgrade" xml:space="preserve">
     <value>Mandatory Eddi upgrade to {0} is required.</value>
   </data>
   <data name="point" xml:space="preserve">
     <value>point</value>
+  </data>
+  <data name="problem_external_data_services" xml:space="preserve">
+    <value>There was a problem connecting to external data services; some features may be temporarily unavailable.</value>
+  </data>
+  <data name="problem_load_monitor" xml:space="preserve">
+    <value>Failed to load monitor: {0}</value>
+  </data>
+  <data name="problem_load_monitor_file" xml:space="preserve">
+    <value>Failed to load monitor.  Please ensure that {0} is not on a network share, or itself shared.</value>
+  </data>
+  <data name="problem_old_version" xml:space="preserve">
+    <value>This version of Eddi is too old to operate; please upgrade.</value>
+  </data>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>Starting upgrade.</value>
   </data>
   <data name="test_string" xml:space="preserve">
     <value>it works (en)</value>
@@ -131,5 +161,11 @@
   </data>
   <data name="test_string_args_lang" xml:space="preserve">
     <value>arg0:{0} arg1:{1} (en)</value>
+  </data>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>Upgrade failed.  Please try again later.</value>
+  </data>
+  <data name="version_available" xml:space="preserve">
+    <value>Eddi version {0} is now available.</value>
   </data>
 </root>
