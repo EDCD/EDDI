@@ -111,12 +111,14 @@ namespace Utilities
 
         public static string GetString(string stringCode, string lang)
         {
-            ResourceManager rm = rmDictionnary[lang];
-            if(rm == null)
+            if (IsAvailableLang(lang))
             {
-                rm = rmDictionnary[defaultLang];
+                return rmDictionnary[lang].GetString(stringCode);
             }
-            return rm.GetString(stringCode);
+            else
+            {
+                return rmDictionnary[defaultLang].GetString(stringCode);
+            }
         }
 
         public static string GetStringWithArgs(string stringCode, string[] args)
