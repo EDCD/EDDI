@@ -2276,7 +2276,8 @@ namespace EddiJournalMonitor
                                     foreach (Dictionary<string, object> cargoJson in inventoryJson)
                                     {
                                         Cargo cargo = new Cargo();
-                                        cargo.commodity = CommodityDefinitions.FromName(getString(cargoJson, "Name"));
+                                        Commodity commodity = CommodityDefinitions.FromName(getString(cargoJson, "Name"));
+                                        cargo.name = commodity.name;
                                         cargo.amount = getInt(cargoJson, "Count");
                                         inventory.Add(cargo);
                                     }

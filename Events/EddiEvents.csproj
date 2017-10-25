@@ -79,7 +79,6 @@
     <Compile Include="CrewLeftEvent.cs" />
     <Compile Include="CrewJoinedEvent.cs" />
     <Compile Include="DataVoucherRedeemedEvent.cs" />
-    <Compile Include="CargoInventoryEvent.cs" />
     <Compile Include="MaterialInventoryEvent.cs" />
     <Compile Include="FSDEngagedEvent.cs" />
     <Compile Include="BondRedeemedEvent.cs" />
