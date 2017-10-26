@@ -25,6 +25,7 @@ namespace EddiCargoMonitor
     {
         // Observable collection for us to handle changes
         public ObservableCollection<Cargo> inventory = new ObservableCollection<Cargo>();
+        private static readonly object inventoryLock = new object();
 
         public string MonitorName()
         {
@@ -152,24 +153,36 @@ namespace EddiCargoMonitor
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
         {
-            // CargoInventoryEvent does not contain stolen, missionid, or cost information so merge it here
+            // CargoInventoryEvent does not contain stolen, missionid, or cost information so fill in gaps here
             foreach (Cargo cargo in @event.inventory)
             {
-                bool added = false;
+                bool found = false;
                 int totalAmount = 0;
                 foreach (Cargo inventoryCargo in inventory)
                 {
                     if (inventoryCargo.commodity.name == cargo.commodity.name)
                     {
                         // Match of commodity
-                        added = true;
+                        found = true;
                         totalAmount += cargo.amount;
                     }
                 }
-                if (!added || totalAmount != cargo.amount)
+                if (!found)
                 {
                     // We haven't heard of this cargo so add it to the inventory directly
                     AddCargo(cargo);
+                }
+                else if (totalAmount < cargo.amount)
+                {
+                    // Inventory has not enough of this comodity
+                    cargo.amount = cargo.amount - totalAmount;
+                    AddCargo(cargo);
+                }
+                else if (totalAmount > cargo.amount)
+                {
+                    // Inventory has too much of this comodity
+                    cargo.amount = totalAmount - cargo.amount;
+                    RemoveCargo(cargo);
                 }
             }
 
@@ -223,6 +236,7 @@ namespace EddiCargoMonitor
                 cargo.commodity = @event.commodity;
                 cargo.amount = @event.amount;
                 cargo.price = @event.price;
+                cargo.stolen = false;
                 AddCargo(cargo);
             }
         }
@@ -235,6 +249,7 @@ namespace EddiCargoMonitor
                 cargo.commodity = @event.commodity;
                 cargo.amount = 1;
                 cargo.price = 0;
+                cargo.stolen = false;
                 AddCargo(cargo);
             }
         }
@@ -246,6 +261,7 @@ namespace EddiCargoMonitor
                 Cargo cargo = new Cargo();
                 cargo.commodity = @event.commodity;
                 cargo.amount = @event.amount;
+                cargo.stolen = @event.stolen;
                 if (@event.stolen)
                 {
                     cargo.price = @event.profit;
@@ -266,6 +282,7 @@ namespace EddiCargoMonitor
                 Cargo cargo = new Cargo();
                 cargo.commodity = @event.commodity;
                 cargo.amount = @event.amount;
+                cargo.stolen = false;
                 AddCargo(cargo);
             }
         }
@@ -278,6 +295,7 @@ namespace EddiCargoMonitor
                 Cargo cargo = new Cargo();
                 cargo.commodity = @event.commodity;
                 cargo.amount = @event.amount;
+                cargo.stolen = false;
                 RemoveCargo(cargo);
             }
         }
@@ -289,6 +307,7 @@ namespace EddiCargoMonitor
             cargo.commodity = limpet;
             cargo.amount = @event.amount;
             cargo.price = @event.price;
+            cargo.stolen = false;
             AddCargo(cargo);
         }
 
@@ -300,6 +319,7 @@ namespace EddiCargoMonitor
             cargo.commodity = limpet;
             cargo.amount = @event.amount;
             cargo.price = @event.price;
+            cargo.stolen = false;
             RemoveCargo(cargo);
         }
 
@@ -309,7 +329,16 @@ namespace EddiCargoMonitor
             {
                 if (inventoryCargo.missionid == @event.missionid)
                 {
-                    inventoryCargo.stolen = true;
+                    Cargo cargo = new Cargo();
+                    cargo.commodity = inventoryCargo.commodity;
+                    cargo.missionid = inventoryCargo.missionid;
+                    cargo.amount = inventoryCargo.amount;
+                    RemoveCargo(cargo);
+
+                    cargo.missionid = null;
+                    cargo.price = 0;
+                    cargo.stolen = true;
+                    AddCargo(cargo);
                 }
             }
         }
@@ -323,6 +352,7 @@ namespace EddiCargoMonitor
                 cargo.missionid = @event.missionid;
                 cargo.amount = (int)@event.amount;
                 cargo.price = 0;
+                cargo.stolen = false;
                 AddCargo(cargo);
             }
         }
@@ -344,6 +374,8 @@ namespace EddiCargoMonitor
                     Cargo cargo = new Cargo();
                     cargo.commodity = reward.commodity;
                     cargo.amount = reward.amount;
+                    cargo.price = 0;
+                    cargo.stolen = false;
                     AddCargo(cargo);
                 }
             }
@@ -355,7 +387,16 @@ namespace EddiCargoMonitor
             {
                 if (inventoryCargo.missionid == @event.missionid)
                 {
-                    inventoryCargo.stolen = true;
+                    Cargo cargo = new Cargo();
+                    cargo.commodity = inventoryCargo.commodity;
+                    cargo.missionid = inventoryCargo.missionid;
+                    cargo.amount = inventoryCargo.amount;
+                    RemoveCargo(cargo);
+
+                    cargo.missionid = null;
+                    cargo.price = 0;
+                    cargo.stolen = true;
+                    AddCargo(cargo);
                 }
             }
         }
@@ -451,51 +492,67 @@ namespace EddiCargoMonitor
 
         private void removeCargo(Cargo cargo)
         {
-            for (int i = 0; i < inventory.Count; i++)
+            while (cargo.amount > 0)
             {
-                Cargo inventoryCargo = inventory[i];
-                if (inventoryCargo.commodity.name == cargo.commodity.name)
+                for (int i = 0; i < inventory.Count; i++)
                 {
-                    // Matching commodity; see if the details match
-                    if (inventoryCargo.missionid != null)
+                    Cargo inventoryCargo = inventory[i];
+                    if (inventoryCargo.commodity.name == cargo.commodity.name)
                     {
-                        // Mission-specific cargo
-                        if (inventoryCargo.missionid == cargo.missionid)
+                        // Matching commodity; see if the details match
+                        if (inventoryCargo.missionid != null)
                         {
-                            // Both for the same mission - remove from this
-                            if (inventoryCargo.amount == cargo.amount)
+                            // Mission-specific cargo
+                            if (inventoryCargo.missionid == cargo.missionid)
                             {
-                                inventory.RemoveAt(i);
-                                return;
+                                // Both for the same mission - remove from this
+                                if (inventoryCargo.amount == cargo.amount)
+                                {
+                                    inventory.RemoveAt(i);
+                                    return;
+                                }
+                                else if (inventoryCargo.amount < cargo.amount)
+                                {
+                                    inventoryCargo.amount = 0;
+                                    cargo.amount -= inventoryCargo.amount;
+                                }
+                                else
+                                {
+                                    inventoryCargo.amount -= cargo.amount;
+                                    return;
+                                }
                             }
-                            else
-                            {
-                                inventoryCargo.amount -= cargo.amount;
-                            }
-                            return;
+                            // Different mission; skip
+                            continue;
                         }
-                        // Different mission; skip
-                        continue;
-                    }
 
-                    if (inventoryCargo.stolen == cargo.stolen)
-                    {
-                        // Both of the same legality
-                        if (inventoryCargo.price == cargo.price)
+                        if (inventoryCargo.stolen == cargo.stolen)
                         {
-                            // Same cost basis - remove from this
+                           // Both of the same legality - remove from this
                             if (inventoryCargo.amount == cargo.amount)
                             {
                                 inventory.RemoveAt(i);
                                 return;
                             }
+                            else if (inventoryCargo.amount < cargo.amount)
+                            {
+                                inventoryCargo.amount = 0;
+                                cargo.amount -= inventoryCargo.amount;
+                            }
                             else
                             {
                                 inventoryCargo.amount -= cargo.amount;
+                                return;
                             }
-                            return;
+                            // Different legality; skip
+                            continue;
                         }
                     }
+                }
+                if (cargo.missionid != null || cargo.stolen)
+                {
+                    cargo.missionid = null;
+                    cargo.stolen = false;
                 }
             }
             // No matching cargo - ignore
