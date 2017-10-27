@@ -1,4 +1,4 @@
-﻿using EddiEvents;
+using EddiEvents;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,7 +33,7 @@ namespace EddiSpeechResponder
             try
             {
                 DirectoryInfo dir = new DirectoryInfo(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                markdown = Files.Read(dir.FullName + @"\Variables.md");
+                markdown = File.ReadAllText(dir.FullName + @"\Variables.md");
             }
             catch (Exception ex)
             {
@@ -65,6 +65,7 @@ namespace EddiSpeechResponder
             }
 
             string html = CommonMark.CommonMarkConverter.Convert(markdown);
+            html = "<head>  <meta charset=\"UTF-8\"> </head> " + html;
 
             // Insert the HTML
             textBrowser.NavigateToString(html);
