@@ -28,6 +28,7 @@ namespace EddiSpeechResponder
                 markdown = "";
             }
             string html = CommonMark.CommonMarkConverter.Convert(markdown);
+            html = "<head>  <meta charset=\"UTF-8\"> </head> " + html;
 
             // Insert the HTML
             textBrowser.NavigateToString(html);
