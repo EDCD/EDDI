@@ -1,6 +1,6 @@
 # CHANGE LOG
 
-### 2.4.2.1
+### 2.4.3
   * Core
     * Fixed a bug that was causing the "Report an issue" button to export empty log files.
 
