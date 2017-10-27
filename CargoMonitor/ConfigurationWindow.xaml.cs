@@ -16,12 +16,12 @@ namespace EddiCargoMonitor
             InitializeComponent();
 
             monitor = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor"));
-           cargoData.ItemsSource = monitor.inventory;
+            cargoData.ItemsSource = monitor.inventory;
         }
 
         private void cargoUpdated(object sender, DataTransferEventArgs e)
         {
-            // Update the material monitor's information
+            // Update the cargo monitor's information
             monitor.writeCargo();
         }
     }

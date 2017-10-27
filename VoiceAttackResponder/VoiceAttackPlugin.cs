@@ -1141,7 +1141,7 @@ namespace EddiVoiceAttackResponder
                     int limpets = 0;
                     foreach (Cargo cargo in ship.cargo)
                     {
-                        if (cargo.commodity.name == "Limpet")
+                        if (cargo.commodity == "Limpet")
                         {
                             limpets += cargo.amount;
                         }

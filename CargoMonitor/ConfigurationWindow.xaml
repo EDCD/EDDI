@@ -9,13 +9,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Below is a list of all known materials.  You can set values for the minimum, desired and maximum levels of each and EDDI will generate events when you move beyond the levels."></TextBlock>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Below is a list of all cargo stored within installed Cargo Bays."></TextBlock>
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated."></TextBlock>
-        <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="materialsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="cargoUpdated">
+        <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="cargoData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="cargoUpdated">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Path=material}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Type" Width="100" IsReadOnly="True" Binding="{Binding Path=Category}"></DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="Inventory" IsReadOnly="True" Binding="{Binding Path=amount}">
+                <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Path=commodity}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Type" Width="120" IsReadOnly="True" Binding="{Binding Path=Category}"></DataGridTextColumn>
+                <utility:DataGridNumericColumn Header="Amount" Width="80" IsReadOnly="True" Binding="{Binding Path=amount}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
@@ -23,7 +28,12 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="Minimum" Binding="{Binding Path=minimum, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="Price/Unit" Width="80" IsReadOnly="True" Binding="{Binding Path=price}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
@@ -31,16 +41,12 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="Desired" Binding="{Binding Path=desired, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Right" />
-                            <Setter Property="Margin" Value="5, 0" />
+                <utility:DataGridNumericColumn Header="Mission ID" Width="80" IsReadOnly="True" Binding="{Binding Path=missionid}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
-                    </DataGridTextColumn.ElementStyle>
-
-                </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="Maximum" Binding="{Binding Path=maximum, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                    </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
@@ -48,6 +54,19 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
+                <DataGridTextColumn Header="Stolen" Width="80" IsReadOnly="True" Binding="{Binding Path=stolen}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Right" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

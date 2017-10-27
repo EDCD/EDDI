@@ -52,15 +52,19 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -83,7 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataDefinitions\EddiDataDefinitions.csproj">
-      <Project>{0C845B02-E283-43D8-91A7-205AD3397371}</Project>
+      <Project>{0c845b02-e283-43d8-91a7-205ad3397371}</Project>
       <Name>EddiDataDefinitions</Name>
     </ProjectReference>
     <ProjectReference Include="..\EDDI\Eddi.csproj">
