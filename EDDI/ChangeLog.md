@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+### 2.4.2.1
+  * Core
+    * Fixed a bug that was causing the "Report an issue" button to export empty log files.
+
 ### 2.4.2
   * Core
     * Revised EDDN updating for naming changes in ED 2.4. This makes EDDI 2.4.2 a mandatory update.
