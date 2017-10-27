@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -17,10 +17,11 @@ namespace EddiSpeechResponder
 
             // Read Markdown and convert it to HTML
             string markdown;
+            string blabla = "";
             try
             {
                 DirectoryInfo dir = new DirectoryInfo(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                markdown = Files.Read(dir.FullName + @"\Help.md");
+                markdown = File.ReadAllText(dir.FullName + @"\Help.md"); //Files.Read(dir.FullName + @"\Help.md");
             }
             catch (Exception ex)
             {
@@ -28,6 +29,7 @@ namespace EddiSpeechResponder
                 markdown = "";
             }
             string html = CommonMark.CommonMarkConverter.Convert(markdown);
+            html = "<head>  <meta charset=\"UTF-8\"> </head> " + html;
 
             // Insert the HTML
             textBrowser.NavigateToString(html);
