@@ -13,9 +13,42 @@ namespace EddiDataDefinitions
     /// </summary>
     public class Cargo : INotifyPropertyChanged
     {
-        public Commodity commodity; // The commodity
+        // The commodity name
+        private string _commodity;
+        public string commodity
+        {
+            get
+            {
+                return _commodity;
+            }
+            set
+            {
+                if (_commodity != value)
+                {
+                    _commodity = value;
+                    NotifyPropertyChanged("commodity");
+                }
+            }
+        }
 
-        [JsonIgnore]
+        // The commodity catagory
+        private string _catagory;
+        public string catagory
+        {
+            get
+            {
+                return _catagory;
+            }
+            set
+            {
+                if (_catagory != value)
+                {
+                    _catagory = value;
+                    NotifyPropertyChanged("catagory");
+                }
+            }
+        }
+
         // The number of items
         private int _amount;
         public int amount
@@ -34,7 +67,6 @@ namespace EddiDataDefinitions
             }
         }
 
-        [JsonIgnore]
         // How much we actually paid for it (per unit)
         private long _price;
         public long price
@@ -53,7 +85,6 @@ namespace EddiDataDefinitions
             }
         }
 
-        [JsonIgnore]
         // If the cargo is stolen
         private bool _stolen;
         public bool stolen
@@ -72,7 +103,6 @@ namespace EddiDataDefinitions
             }
         }
 
-        [JsonIgnore]
         // The mission ID to which the cargo relates
         private long? _missionid;
         public long? missionid

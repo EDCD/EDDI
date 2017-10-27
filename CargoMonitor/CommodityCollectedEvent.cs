@@ -23,12 +23,12 @@ namespace EddiCargoMonitor
         }
 
         [JsonProperty("commodity")]
-        public Commodity commodity { get; private set; }
+        public string commodity { get; private set; }
 
         [JsonProperty("stolen")]
         public bool stolen { get; private set; }
 
-        public CommodityCollectedEvent(DateTime timestamp, Commodity commodity, bool stolen) : base(timestamp, NAME)
+        public CommodityCollectedEvent(DateTime timestamp, string commodity, bool stolen) : base(timestamp, NAME)
         {
             this.commodity = commodity;
             this.stolen = stolen;

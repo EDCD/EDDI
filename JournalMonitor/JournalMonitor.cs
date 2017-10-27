@@ -358,7 +358,7 @@ namespace EddiJournalMonitor
                                     Logging.Error("Failed to map collectcargo type " + commodityName + " to commodity");
                                 }
                                 bool stolen = getBool(data, "Stolen");
-                                events.Add(new CommodityCollectedEvent(timestamp, commodity, stolen) { raw = line });
+                                events.Add(new CommodityCollectedEvent(timestamp, commodity.name, stolen) { raw = line });
                                 handled = true;
                             }
                             handled = true;
@@ -375,7 +375,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 bool abandoned = getBool(data, "Abandoned");
-                                events.Add(new CommodityEjectedEvent(timestamp, commodity, amount, abandoned) { raw = line });
+                                events.Add(new CommodityEjectedEvent(timestamp, commodity.name, amount, abandoned) { raw = line });
                             }
                             handled = true;
                             break;
@@ -1255,7 +1255,7 @@ namespace EddiJournalMonitor
                                 {
                                     Logging.Error("Failed to map commodityrefined type " + commodityName + " to commodity");
                                 }
-                                events.Add(new CommodityRefinedEvent(timestamp, commodity) { raw = line });
+                                events.Add(new CommodityRefinedEvent(timestamp, commodity.name) { raw = line });
                             }
                             handled = true;
                             break;
@@ -1399,7 +1399,7 @@ namespace EddiJournalMonitor
                                 int amount = (int)(long)val;
                                 data.TryGetValue("BuyPrice", out val);
                                 long price = (long)val;
-                                events.Add(new CommodityPurchasedEvent(timestamp, commodity, amount, price) { raw = line });
+                                events.Add(new CommodityPurchasedEvent(timestamp, commodity.name, amount, price) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -1426,7 +1426,7 @@ namespace EddiJournalMonitor
                                 bool stolen = tmp.HasValue ? (bool)tmp : false;
                                 tmp = getOptionalBool(data, "BlackMarket");
                                 bool blackmarket = tmp.HasValue ? (bool)tmp : false;
-                                events.Add(new CommoditySoldEvent(timestamp, commodity, amount, price, profit, illegal, stolen, blackmarket) { raw = line });
+                                events.Add(new CommoditySoldEvent(timestamp, commodity.name, amount, price, profit, illegal, stolen, blackmarket) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -1453,7 +1453,7 @@ namespace EddiJournalMonitor
                                             if (commodity.category != null)
                                             {
                                                 // This is a real commodity
-                                                commodities.Add(new CommodityAmount(commodity, (int)(long)used.Value));
+                                                commodities.Add(new CommodityAmount(commodity.name, (int)(long)used.Value));
                                             }
                                             else
                                             {
@@ -1984,7 +1984,7 @@ namespace EddiJournalMonitor
                                 string influence = getString(data, "Influence");
                                 string reputation = getString(data, "Reputation");
 
-                                events.Add(new MissionAcceptedEvent(timestamp, missionid, name, faction, destinationsystem, destinationstation, commodity, amount, passengertype, passengerswanted, target, targettype, targetfaction, false, expiry, influence, reputation) { raw = line });
+                                events.Add(new MissionAcceptedEvent(timestamp, missionid, name, faction, destinationsystem, destinationstation, commodity.name, amount, passengertype, passengerswanted, target, targettype, targetfaction, false, expiry, influence, reputation) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2015,11 +2015,11 @@ namespace EddiJournalMonitor
                                         Commodity rewardCommodity = CommodityDefinitions.FromName(getString(commodityRewardData, "Name"));
                                         commodityRewardData.TryGetValue("Count", out val);
                                         int count = (int)(long)val;
-                                        commodityrewards.Add(new CommodityAmount(rewardCommodity, count));
+                                        commodityrewards.Add(new CommodityAmount(rewardCommodity.name, count));
                                     }
                                 }
 
-                                events.Add(new MissionCompletedEvent(timestamp, missionid, name, faction, commodity, amount, false, reward, commodityrewards, donation) { raw = line });
+                                events.Add(new MissionCompletedEvent(timestamp, missionid, name, faction, commodity.name, amount, false, reward, commodityrewards, donation) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2277,8 +2277,13 @@ namespace EddiJournalMonitor
                                     {
                                         Cargo cargo = new Cargo();
                                         Commodity commodity = CommodityDefinitions.FromName(getString(cargoJson, "Name"));
-                                        cargo.name = commodity.name;
+                                        cargo.commodity = commodity.name;
+                                        cargo.catagory = commodity.category;
                                         cargo.amount = getInt(cargoJson, "Count");
+                                        if (commodity.avgprice != null)
+                                        {
+                                            cargo.price = (long)commodity.avgprice;
+                                        }
                                         inventory.Add(cargo);
                                     }
                                 }
@@ -2344,7 +2349,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
 
-                                events.Add(new PowerCommodityObtainedEvent(timestamp, power, commodity, amount) { raw = line });
+                                events.Add(new PowerCommodityObtainedEvent(timestamp, power, commodity.name, amount) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2357,7 +2362,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
 
-                                events.Add(new PowerCommodityDeliveredEvent(timestamp, power, commodity, amount) { raw = line });
+                                events.Add(new PowerCommodityDeliveredEvent(timestamp, power, commodity.name, amount) { raw = line });
                                 handled = true;
                                 break;
                             }

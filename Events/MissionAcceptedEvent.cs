@@ -41,7 +41,7 @@ namespace EddiEvents
 
         public string faction { get; private set; }
 
-        public Commodity commodity { get; private set; }
+        public string commodity { get; private set; }
 
         public int? amount { get; private set; }
 
@@ -67,7 +67,7 @@ namespace EddiEvents
 
         public string reputation { get; private set; }
 
-        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string faction, string destinationsystem, string destinationstation, Commodity commodity, int? amount, string passengertype, bool? passengerswanted, string target, string targettype, string targetfaction, bool communal, DateTime? expiry, string influence, string reputation) : base(timestamp, NAME)
+        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string faction, string destinationsystem, string destinationstation, string commodity, int? amount, string passengertype, bool? passengerswanted, string target, string targettype, string targetfaction, bool communal, DateTime? expiry, string influence, string reputation) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;

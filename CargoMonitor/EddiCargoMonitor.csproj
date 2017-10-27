@@ -71,8 +71,12 @@
     <Compile Include="CommodityPurchasedEvent.cs" />
     <Compile Include="CommodityRefinedEvent.cs" />
     <Compile Include="CommoditySoldEvent.cs" />
+    <Compile Include="ConfigurationWindow.xaml.cs">
+      <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LimpetPurchasedEvent.cs" />
     <Compile Include="LimpetSoldEvent.cs" />
+    <Compile Include="CargoMonitorConfiguration.cs" />
     <Compile Include="PowerCommodityDeliveredEvent.cs" />
     <Compile Include="PowerCommodityObtainedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -97,6 +101,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ConfigurationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

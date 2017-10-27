@@ -35,7 +35,7 @@ namespace EddiEvents
 
         public string faction { get; private set; }
 
-        public Commodity commodity { get; private set; }
+        public string commodity { get; private set; }
 
         public int? amount { get; private set; }
 
@@ -47,7 +47,7 @@ namespace EddiEvents
 
         public long donation { get; private set; }
 
-        public MissionCompletedEvent(DateTime timestamp, long? missionid, string name, string faction, Commodity commodity, int? amount, bool communal, long reward, List<CommodityAmount> commodityrewards, long donation) : base(timestamp, NAME)
+        public MissionCompletedEvent(DateTime timestamp, long? missionid, string name, string faction, string commodity, int? amount, bool communal, long reward, List<CommodityAmount> commodityrewards, long donation) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;
