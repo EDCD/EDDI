@@ -243,8 +243,14 @@
   <data name="frontier_api_lost" xml:space="preserve">
     <value>L'accès à l'API Frontier à été perdus.  Veuillez mettre à jour vos informations dans l'onglet  API Frontier d'Eddi pour ré-établir la connexion.</value>
   </data>
+  <data name="msg_from_eddi" xml:space="preserve">
+    <value>Message d'Eddi: {0}</value>
+  </data>
   <data name="preparing_log" xml:space="preserve">
     <value>Préparation du log... </value>
+  </data>
+  <data name="run_eddi_standalone" xml:space="preserve">
+    <value>Veuillez fermer VoiceAttack et lancer Eddi seul afin de le mettre à jour.</value>
   </data>
   <data name="ship_ready" xml:space="preserve">
     <value>{0} est prêt.</value>

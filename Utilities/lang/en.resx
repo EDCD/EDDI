@@ -246,6 +246,12 @@
   <data name="frontier_api_lost" xml:space="preserve">
     <value>Access to Frontier API has been lost.  Please update your information in Eddi's Frontier API tab to re-establish the connection.</value>
   </data>
+  <data name="msg_from_eddi" xml:space="preserve">
+    <value>Message from Eddi: {0}</value>
+  </data>
+  <data name="run_eddi_standalone" xml:space="preserve">
+    <value>Please shut down VoiceAttack and run Eddi standalone to upgrade</value>
+  </data>
   <data name="ship_ready" xml:space="preserve">
     <value>{0} stands ready.</value>
   </data>
