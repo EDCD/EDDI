@@ -246,4 +246,7 @@
   <data name="frontier_api_lost" xml:space="preserve">
     <value>Access to Frontier API has been lost.  Please update your information in Eddi's Frontier API tab to re-establish the connection.</value>
   </data>
+  <data name="ship_ready" xml:space="preserve">
+    <value>{0} stands ready.</value>
+  </data>
 </root>

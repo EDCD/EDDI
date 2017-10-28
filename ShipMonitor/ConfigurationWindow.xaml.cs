@@ -63,11 +63,12 @@ namespace EddiShipMonitor
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             if (string.IsNullOrEmpty(ship.phoneticname))
             {
-                SpeechService.Instance.Say(ship, ship.name + " stands ready.", false);
+                SpeechService.Instance.Say(ship, I18N.GetStringWithArgs("ship_ready", new string[] { ship.name }), false);
             }
             else
             {
-                SpeechService.Instance.Say(ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>" + " stands ready.", false);
+                string phoneme = "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>";
+                SpeechService.Instance.Say(ship, I18N.GetStringWithArgs("ship_ready", new string[] { phoneme }), false);
             }
         }
 

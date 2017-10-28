@@ -246,4 +246,7 @@
   <data name="preparing_log" xml:space="preserve">
     <value>Préparation du log... </value>
   </data>
+  <data name="ship_ready" xml:space="preserve">
+    <value>{0} est prêt.</value>
+  </data>
 </root>
