@@ -237,6 +237,12 @@
   <data name="witch_space" xml:space="preserve">
     <value>Hyper espace</value>
   </data>
+  <data name="eddi_commodity_def_error" xml:space="preserve">
+    <value>Erreur de définition de commodité d'E-D-D-I trouvée.  Veuillez faire suivre votre log aux développeurs.</value>
+  </data>
+  <data name="frontier_api_lost" xml:space="preserve">
+    <value>L'accès à l'API Frontier à été perdus.  Veuillez mettre à jour vos informations dans l'onglet  API Frontier d'Eddi pour ré-établir la connexion.</value>
+  </data>
   <data name="preparing_log" xml:space="preserve">
     <value>Préparation du log... </value>
   </data>

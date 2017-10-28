@@ -218,7 +218,7 @@ namespace EddiCompanionAppService
                 if (CurrentState != State.READY)
                 {
                     // No luck; give up
-                    SpeechService.Instance.Say(null, "Access to Frontier API has been lost.  Please update your information in Eddi's Frontier API tab to re-establish the connection.", false);
+                    SpeechService.Instance.Say(null, I18N.GetString("frontier_api_lost"), false);
                     Logout();
                 }
                 else
@@ -230,7 +230,7 @@ namespace EddiCompanionAppService
 
                     {
                         // No luck with a relogin; give up
-                        SpeechService.Instance.Say(null, "Access to Frontier API has been lost.  Please update your information in Eddi's Frontier API tab to re-establish the connection.", false);
+                        SpeechService.Instance.Say(null, I18N.GetString("frontier_api_lost"), false);
                         Logout();
                         throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
                     }
@@ -740,7 +740,7 @@ namespace EddiCompanionAppService
                 if (commodityErrors.Count() > 0)
                 {
                     Logging.Warn("Commodity definition errors: " + JsonConvert.SerializeObject(commodityErrors));
-                    SpeechService.Instance.Say(null, "E-D-D-I commodity definition errors found.  Please forward your log to developers.", false);
+                    SpeechService.Instance.Say(null, I18N.GetString("eddi_commodity_def_error"), false);
                 }
             }
 
