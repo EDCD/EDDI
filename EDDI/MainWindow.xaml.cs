@@ -51,11 +51,11 @@ namespace Eddi
             //// Need to set up the correct information in the hero text depending on from where we were started
             if (fromVA)
             {
-                heroText.Text = "Any changes made here will take effect automatically in VoiceAttack.  You can close this window when you have finished.";
+                heroText.Text = I18N.GetString("change_affect_va");
             }
             else
             {
-                heroText.Text = "If you are using VoiceAttack then please close this window before you start VoiceAttack for your changes to take effect.  You can access this window from VoiceAttack with the \"Configure EDDI\" command.";
+                heroText.Text = I18N.GetString("if_using_va");
             }
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
@@ -76,11 +76,11 @@ namespace Eddi
                 profile = CompanionAppService.Instance.Profile();
                 if (profile == null)
                 {
-                    setUpCompanionAppComplete("Your connection to the Frontier API is good but experiencing temporary issues.  Your information should be available soon");
+                    setUpCompanionAppComplete(I18N.GetString("frontier_api_temp_nok"));
                 }
                 else
                 {
-                    setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
+                    setUpCompanionAppComplete(I18N.GetStringWithArgs("frontier_api_ok", new string[]{profile.Cmdr.name}));
                 }
             }
             catch (Exception)
@@ -293,7 +293,7 @@ namespace Eddi
 
             if (EDDI.Instance.UpgradeVersion != null)
             {
-                statusText.Text = "Version " + EDDI.Instance.UpgradeVersion + " is available";
+                statusText.Text = I18N.GetStringWithArgs("update_message", new string[] { EDDI.Instance.UpgradeVersion });
                 // Do not show upgrade button if EDDI is started from VA
                 upgradeButton.Visibility = EDDI.FromVA ? Visibility.Collapsed : Visibility.Visible;
             }
@@ -302,11 +302,11 @@ namespace Eddi
                 upgradeButton.Visibility = Visibility.Collapsed;
                 if (CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
                 {
-                    statusText.Text = "Frontier API connection not operational";
+                    statusText.Text = I18N.GetString("frontier_api_nok");
                 }
                 else
                 {
-                    statusText.Text = "Operational";
+                    statusText.Text = I18N.GetString("operational");
                 }
             }
         }
@@ -347,11 +347,11 @@ namespace Eddi
                         }
                         if (profile == null)
                         {
-                            setUpCompanionAppComplete("Your connection to the Frontier API is good but experiencing temporary issues.  Your information should be available soon");
+                            setUpCompanionAppComplete(I18N.GetString("frontier_api_temp_nok"));
                         }
                         else
                         {
-                            setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
+                            setUpCompanionAppComplete(I18N.GetStringWithArgs("frontier_api_ok", new string[] { profile.Cmdr.name }));
                             //setShipyardFromConfiguration();
                         }
                     }
@@ -366,7 +366,7 @@ namespace Eddi
                 }
                 catch (Exception)
                 {
-                    companionAppText.Text = "Unable to log in.  This is usually a temporary issue with Frontier's service; please try again later";
+                    companionAppText.Text = I18N.GetString("login_nok_frontier_service");
                 }
             }
             else if (companionAppCodeText.Visibility == Visibility.Visible)
@@ -380,7 +380,7 @@ namespace Eddi
                     profile = CompanionAppService.Instance.Profile();
                     if (profile != null)
                     {
-                        setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
+                        setUpCompanionAppComplete(I18N.GetStringWithArgs("frontier_api_ok", new string[] { profile.Cmdr.name }));
                         //setShipyardFromConfiguration();
                     }
                 }
@@ -394,7 +394,7 @@ namespace Eddi
                 }
                 catch (Exception)
                 {
-                    setUpCompanionAppStage1("Unable to log in.  This is usually a temporary issue with Frontier's service; please try again later");
+                    setUpCompanionAppStage1(I18N.GetString("login_nok_frontier_service"));
                 }
             }
         }
@@ -403,7 +403,7 @@ namespace Eddi
         {
             if (message == null)
             {
-                companionAppText.Text = "You do not have a connection to the Frontier API at this time.  Please enter your Elite: Dangerous email address and password below";
+                companionAppText.Text = I18N.GetString("frontier_api_no_logins");
             }
             else
             {
@@ -426,7 +426,7 @@ namespace Eddi
         {
             if (message == null)
             {
-                companionAppText.Text = "Please enter the verification code that should have been sent to your email address";
+                companionAppText.Text = I18N.GetString("frontier_api_verification_code");
             }
             else
             {
@@ -440,14 +440,14 @@ namespace Eddi
             companionAppPasswordText.Visibility = Visibility.Hidden;
             companionAppCodeLabel.Visibility = Visibility.Visible;
             companionAppCodeText.Visibility = Visibility.Visible;
-            companionAppNextButton.Content = "Next";
+            companionAppNextButton.Content = I18N.GetString("next");
         }
 
         private void setUpCompanionAppComplete(string message = null)
         {
             if (message == null)
             {
-                companionAppText.Text = "Complete";
+                companionAppText.Text = I18N.GetString("complete");
             }
             else
             {
@@ -462,7 +462,7 @@ namespace Eddi
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
-            companionAppNextButton.Content = "Log out";
+            companionAppNextButton.Content = I18N.GetString("logout");
         }
 
         // Handle Text-to-speech tab
@@ -496,14 +496,14 @@ namespace Eddi
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 100;
-            SpeechService.Instance.Say(testShip, "This is how I will sound in your " + ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() + ".", false);
+            SpeechService.Instance.Say(testShip, I18N.GetStringWithArgs("voice_test_ship", new string[] { ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel()}), false);
         }
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 20;
-            SpeechService.Instance.Say(testShip, "Severe damage to your " + ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() + ".", false);
+            SpeechService.Instance.Say(testShip, I18N.GetStringWithArgs("voice_test_damage", new string[] { ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() }), false);
         }
 
         private void disableSsmlUpdated(object sender, RoutedEventArgs e)
@@ -562,7 +562,7 @@ namespace Eddi
             // Prepare a truncated log file for export if verbose logging is enabled
             if (eddiVerboseLogging.IsChecked.Value)
             {
-                var progress = new Progress<string>(s => githubIssueButton.Content = "Preparing log..." + s);
+                var progress = new Progress<string>(s => githubIssueButton.Content = I18N.GetString("preparing_log") + s);
                 await Task.Factory.StartNew(() => prepareLog(progress), TaskCreationOptions.LongRunning);
             }
             
@@ -629,11 +629,11 @@ namespace Eddi
                 File.Delete(issueLogFile);
                 Directory.Delete(issueLogDir);
 
-                progress.Report("done");
+                progress.Report(I18N.GetString("done"));
             }
             catch (Exception ex)
             {
-                progress.Report("failed");
+                progress.Report(I18N.GetString("failed"));
                 Logging.Error("Failed to upload log", ex);
 
             }

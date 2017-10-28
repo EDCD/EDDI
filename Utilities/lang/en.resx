@@ -207,8 +207,8 @@
   <data name="logout" xml:space="preserve">
     <value>Log out</value>
   </data>
-  <data name="log_upload" xml:space="preserve">
-    <value>Uploading log... </value>
+  <data name="preparing_log" xml:space="preserve">
+    <value>Preparing log... </value>
   </data>
   <data name="next" xml:space="preserve">
     <value>Next</value>

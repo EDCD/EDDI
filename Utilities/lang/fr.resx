@@ -171,9 +171,6 @@
   <data name="logout" xml:space="preserve">
     <value>Déconnexion</value>
   </data>
-  <data name="log_upload" xml:space="preserve">
-    <value>Envoi du log... </value>
-  </data>
   <data name="mandatory_upgrade" xml:space="preserve">
     <value>Mise à jour obligatoire d'Eddi vers {0} requise.</value>
   </data>
@@ -239,5 +236,8 @@
   </data>
   <data name="witch_space" xml:space="preserve">
     <value>Hyper espace</value>
+  </data>
+  <data name="preparing_log" xml:space="preserve">
+    <value>Préparation du log... </value>
   </data>
 </root>
