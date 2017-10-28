@@ -137,6 +137,7 @@
     <Compile Include="EddnTests.cs" />
     <Compile Include="DataDefinitionTests.cs" />
     <Compile Include="GeneratorTests.cs" />
+    <Compile Include="I18NTests.cs" />
     <Compile Include="JournalMonitorTests.cs" />
     <Compile Include="BodyScanTests.cs" />
     <Compile Include="ShipTests.cs" />
