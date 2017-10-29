@@ -1,0 +1,189 @@
+{
+    "langs": ["en", "fr"],
+    "translations": {
+      "change_affect_va": {
+        "en": "Any changes made here will take effect automatically in VoiceAttack.  You can close this window when you have finished.",
+        "fr": "Chaque changement effectués ici prendra automatiquement effet dans VoiceAttack. Vous pouvez fermer cette fenêtre une fois terminé."
+      },
+      "commander": {
+        "en": "Commander",
+        "fr": "Commandant"
+      },
+      "complete": {
+        "en": "Complete",
+        "fr": "Terminer"
+      },
+      "done": {
+        "en": "done",
+        "fr": "terminé"
+      },
+      "download_failed": {
+        "en": "Download failed.  Please try again later.",
+        "fr": "Échec du téléchargement.  Veuillez réessayer ultérieurement."
+      },
+      "downloading_upgrade": {
+        "en": "Downloading upgrade.",
+        "fr": "Téléchargement de la mise à jour."
+      },
+      "eddi_commodity_def_error": {
+        "en": "E-D-D-I commodity definition errors found.  Please forward your log to developers.",
+        "fr": "Erreur de définition de commodité d'E-D-D-I trouvée.  Veuillez faire suivre votre log aux développeurs."
+      },
+      "empire": {
+        "en": "Empire",
+        "fr": "Empire"
+      },
+      "failed": {
+        "en": "failed",
+        "fr": "échec"
+      },
+      "federation": {
+        "en": "Federation",
+        "fr": "Fédération"
+      },
+      "fighter": {
+        "en": "Fighter",
+        "fr": "Chasseur"
+      },
+      "frontier_api_lost": {
+        "en": "Access to Frontier API has been lost.  Please update your information in Eddi's Frontier API tab to re-establish the connection.",
+        "fr": "L'accès à l'API Frontier à été perdus.  Veuillez mettre à jour vos informations dans l'onglet  API Frontier d'Eddi pour ré-établir la connexion."
+      },
+      "frontier_api_no_logins": {
+        "en": "You do not have a connection to the Frontier API at this time.  Please enter your Elite: Dangerous email address and password below",
+        "fr": "Vous n'avez pas de connexion à l'API Frontier pour le moment. veuillez enter votre adresse mail et mot de passe d'Elite: Dangerous ci-dessous"
+      },
+      "frontier_api_nok": {
+        "en": "Frontier API connection not operational",
+        "fr": "Connexion à l'API Frontier non opérationnelle"
+      },
+      "frontier_api_ok": {
+        "en": "Your connection to the Frontier API is operational, Commander {0}.",
+        "fr": "Votre connexion à l'API Frontier est operationnelle, Commandant {0}."
+      },
+      "frontier_api_temp_nok": {
+        "en": "Your connection to the Frontier API is good but experiencing temporary issues.  Your information should be available soon",
+        "fr": "Votre connexion à l'API Frontier est correcte mais rencontre des problèmes temporaires.  Vos informations devraient êtres disponibles sous peu."
+      },
+      "frontier_api_verification_code": {
+        "en": "Please enter the verification code that should have been sent to your email address",
+        "fr": "Veuillez entrer le code de vérification qui à due être envoyé à votre adresse mail"
+      },
+      "if_using_va": {
+        "en": "If you are using VoiceAttack then please close this window before you start VoiceAttack for your changes to take effect.  You can access this window from VoiceAttack with the 'Configure EDDI' command.",
+        "fr": "Si vous utilisez VoiceAttack, fermez cette fenêtre avant de démarrer VoiceAttack pour que vos changements soient effectifs. Vous pouvez accéder à cette fenêtre depuis VoiceAttack avec la commande 'Configure EDDI'."
+      },
+      "login_nok_frontier_service": {
+        "en": "Unable to log in. This is usually a temporary issue with Frontier's service; please try again later",
+        "fr": "Impossible de se connecter. Ceci est généralement due à un problème temporaire avec les serveur de Frontier; Veuillez réessayer ultérieurement"
+      },
+      "logout": {
+        "en": "Log out",
+        "fr": "Déconnexion"
+      },
+      "mandatory_upgrade": {
+        "en": "Mandatory Eddi upgrade to {0} is required.",
+        "fr": "Mise à jour obligatoire d'Eddi vers {0} requise."
+      },
+      "msg_from_eddi": {
+        "en": "Message from Eddi: {0}",
+        "fr": "Message d'Eddi: {0}"
+      },
+      "next": {
+        "en": "Next",
+        "fr": "Suivant"
+      },
+      "normal_space": {
+        "en": "Normal Space",
+        "fr": "Espace normal"
+      },
+      "operational": {
+        "en": "Operational",
+        "fr": "Opérationnel"
+      },
+      "point": {
+        "en": "point",
+        "fr": "point"
+      },
+      "preparing_log": {
+        "en": "Preparing log... ",
+        "fr": "Préparation du log... "
+      },
+      "problem_external_data_services": {
+        "en": "There was a problem connecting to external data services; some features may be temporarily unavailable.",
+        "fr": "Un problème est survenue lors de la connexion aux services de données externes; certaine fonctionnalités peuvent être temporairement indisponibles."
+      },
+      "problem_load_monitor": {
+        "en": "Failed to load monitor: {0}",
+        "fr": "Échec du chargement du moniteur: {0}"
+      },
+      "problem_load_monitor_file": {
+        "en": "Failed to load monitor.  Please ensure that {0} is not on a network share, or itself shared.",
+        "fr": "Échec du chargement du moniteur.  Veuillez vous assurer que {0} n'est partagé sur le réseau."
+      },
+      "problem_old_version": {
+        "en": "This version of Eddi is too old to operate; please upgrade.",
+        "fr": "Cette version d'Eddi est obsolète; veuillez mettre à jour Eddi."
+      },
+      "run_eddi_standalone": {
+        "en": "Please shut down VoiceAttack and run Eddi standalone to upgrade",
+        "fr": "Veuillez fermer VoiceAttack et lancer Eddi seul afin de le mettre à jour."
+      },
+      "ship": {
+        "en": "Ship",
+        "fr": "Vaisseau"
+      },
+      "ship_ready": {
+        "en": "{0} stands ready.",
+        "fr": "{0} est prêt."
+      },
+      "srv": {
+        "en": "SRV",
+        "fr": "SRV"
+      },
+      "starting_upgrade": {
+        "en": "Starting upgrade.",
+        "fr": "Lancement de la mise à jour."
+      },
+      "supercruise": {
+        "en": "Supercruise",
+        "fr": "Super navigation"
+      },
+      "test_string": {
+        "en": "it works (en)",
+        "fr": "it works (fr)"
+      },
+      "test_string_args": {
+        "en": "arg0:{0} arg1:{1}",
+        "fr": "arg0:{0} arg1:{1}"
+      },
+      "test_string_args_lang": {
+        "en": "arg0:{0} arg1:{1} (en)",
+        "fr": "arg0:{0} arg1:{1} (fr)"
+      },
+      "update_available": {
+        "en": "Eddi version {0} is now available.",
+        "fr": "Eddi version {0}, est maintenant disponible."
+      },
+      "update_message": {
+        "en": "Version {0} is available",
+        "fr": "Version {0} disponible"
+      },
+      "upgrade_failed": {
+        "en": "Upgrade failed.  Please try again later.",
+        "fr": "Échec de la mise à jour. Veuillez réessayer ultérieurement."
+      },
+      "voice_test_damage": {
+        "en": "Severe damage to your {0}.",
+        "fr": "Dommage sévère à votre {0}."
+      },
+      "voice_test_ship": {
+        "en": "This is how I will sound in your {0}.",
+        "fr": "Voici comment je parlerai dans votre {0}."
+      },
+      "witch_space": {
+        "en": "Witch Space",
+        "fr": "Hyper espace"
+      }
+  }
+}
