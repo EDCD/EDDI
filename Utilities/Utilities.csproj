@@ -73,8 +73,6 @@
     <Compile Include="Diff.cs" />
     <Compile Include="Files.cs" />
     <Compile Include="I18N.cs" />
-    <Compile Include="lang\en.Designer.cs" />
-    <Compile Include="lang\fr.Designer.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Net.cs" />
     <Compile Include="ObservableConcurrentDictionary.cs" />
@@ -89,10 +87,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="lang\en.resx" />
-    <EmbeddedResource Include="lang\fr.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
