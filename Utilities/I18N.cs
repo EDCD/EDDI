@@ -3,26 +3,28 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Resources;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Utilities
 {
     // Simple internationalization helper class
     public class I18N
     {
-        // default langCode if getString() fail with currentLang
+        // default langCode, used if getString() fail with currentLang
         private const string defaultLang = "en";
         // current langCode
         private static string currentLang;
-        // contains a ResourceManager for each resources files in Utilities.lang
-        // key is the langCode, value is the ResourceManager
-        private static Dictionary<string, ResourceManager> rmDictionnary;
-        // contains each resource file's paths
-        private static List<String> rmFiles;
-        // lang directory basename to reach each resources in UpdateResourceManagers()
-        private static readonly string langRoot = "Utilities.lang";
+        // contains a I18NString for each internationalized string in langs.json
+        // key is the langCode, value is internationalized string
+        // to access a string use translations[stringCode][langCode]
+        private static Dictionary<string, I18NString> translations;
+        // contains each langs defined in langs.json
+        private static List<String> availableLangs;
+        // JSON filename
+        private static readonly string langsFile = "langs.json";
 
         static I18N()
         {
@@ -32,13 +34,32 @@ namespace Utilities
         // Set all values to their defaults
         private static void Init()
         {
-            rmDictionnary = new Dictionary<string, ResourceManager>();
-            rmFiles = new List<string>();
-            UpdateResources();
-            UpdateResourceManagers();
+            translations = new Dictionary<string, I18NString>();
+            availableLangs = new List<string>();
             currentLang = defaultLang;
+            UpdateResources();
         }
 
+        // Read the .json file and store all resources
+        public static void UpdateResources()
+        {
+            JObject json = JObject.Parse(File.ReadAllText(langsFile));
+            availableLangs = json["langs"].ToObject<List<string>>();
+            foreach(JProperty translation in json["translations"])
+            {
+                I18NString i18ns = new I18NString();
+                //Console.WriteLine(translation.Name+":");
+                foreach(JProperty pair in json["translations"][translation.Name])
+                {
+                    //Console.WriteLine("\t"+pair);
+                    //Console.WriteLine($"\t'{pair.Name}': '{pair.Value.ToString()}'");
+                    i18ns.Add(pair.Name, pair.Value.ToString());
+                }
+                translations[translation.Name] = i18ns;
+            }
+        }
+
+        // Reset all values to default by calling Init()
         public static void Reset()
         {
             Init();
@@ -74,10 +95,10 @@ namespace Utilities
             currentLang = defaultLang;
         }
 
-        // Returns true if lang is a file in the files list obtained with UpdateResources()
+        // Returns true if lang is defined in langs.json
         public static bool IsAvailableLang(string lang)
         {
-            return rmFiles.Contains(lang);
+            return availableLangs.Contains(lang);
         }
 
         // Set lang with given langCode if available, call FallbackLang() otherwise
@@ -94,31 +115,10 @@ namespace Utilities
             }
         }
 
-        // Call AddResourceFile() with all available files in Utilities.lang
-        public static void UpdateResources()
-        {
-            List<Type> types = Assembly
-                        .GetExecutingAssembly()
-                        .GetTypes()
-                        .Where(t => t.Namespace.StartsWith(langRoot))
-                        .ToList<Type>();
-            foreach(Type t in types)
-            {
-                AddResourceFile(t.Name);
-            }
-        }
-
         // returns files list as it contains every usable langCode
         public static List<string> GetAvailableLangs()
         {
-            return rmFiles;
-        }
-
-        // Add given filename to the files list and init an entry in the ResourceManagers dictionnary with null value
-        private static void AddResourceFile(string filename)
-        {
-            rmDictionnary.Add(filename, null);
-            rmFiles.Add(filename);
+            return availableLangs;
         }
 
         // Returns the string value corresponding to the given key
@@ -131,14 +131,16 @@ namespace Utilities
         // Returns the string value corresponding to the given key and lang
         public static string GetString(string stringCode, string lang)
         {
-            if (IsAvailableLang(lang))
+            string s = "";
+            try
             {
-                return rmDictionnary[lang].GetString(stringCode);
+                s = IsAvailableLang(lang) ? translations[stringCode][lang] : translations[stringCode][defaultLang];
             }
-            else
+            catch (KeyNotFoundException)
             {
-                return rmDictionnary[defaultLang].GetString(stringCode);
+                Console.WriteLine($"Unable to find string '{stringCode}' in lang '{lang}'");
             }
+            return s;
         }
 
         // Returns the string value corresponding to the given key
@@ -161,28 +163,6 @@ namespace Utilities
                 s = s.Replace("{"+i+"}", args[i]);
             }
             return s;
-        }
-
-        // Instanciate every usable ResourceManagers with their corresponding files in Utilities.lang
-        private static void UpdateResourceManagers()
-        {
-            if (rmDictionnary.Count == 0)
-                throw new Exception("No resources added in the bundle");
-
-            string basename = langRoot;
-            foreach (string key in rmFiles)//key is resource filename
-            {
-                string type = basename + "." + key; // string like Utilities.lang.en
-
-                ResourceManager rm = rmDictionnary[key];
-                if (rm != null) // release resources if already exists
-                {
-                    rm.ReleaseAllResources();
-                }
-                rmDictionnary[key] = null; // just to be sure
-                rm = new ResourceManager(type, Assembly.GetExecutingAssembly());
-                rmDictionnary[key] = rm;
-            }
         }
     }
 }
