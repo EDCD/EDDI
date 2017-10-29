@@ -675,10 +675,10 @@ namespace EddiShipMonitor
                 limpets = new Cargo();
                 limpets.commodity = "Limpet";
                 limpets.price = @event.price;
-                limpets.amount = 0;
+                limpets.total = 0;
                 GetCurrentShip().cargo.Add(limpets);
             }
-            limpets.amount += @event.amount;
+            limpets.total += @event.amount;
         }
 
         private void handleLimpetSoldEvent(LimpetSoldEvent @event)
@@ -686,8 +686,8 @@ namespace EddiShipMonitor
             Cargo limpets = GetCurrentShip().cargo.Find(c => c.commodity == "Limpet");
             if (limpets != null)
             {
-                limpets.amount -= @event.amount;
-                if (limpets.amount < 0) limpets.amount = 0;
+                limpets.total -= @event.amount;
+                if (limpets.total < 0) limpets.total = 0;
             }
         }
 

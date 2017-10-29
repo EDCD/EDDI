@@ -403,6 +403,7 @@ namespace EddiDataDefinitions
             Commodity Commodity = new Commodity();
 
             string cleanedName = name.ToLowerInvariant()
+                .Replace(" ", "")
                 .Replace("$", "") // Header for types from mining and mission events
                 .Replace("_name;", "") // Trailer for types from mining and mission events
                 ;

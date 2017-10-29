@@ -5557,7 +5557,7 @@ namespace Tests
             {
                 if (cargo.commodity == "Limpet")
                 {
-                    limpets += cargo.amount;
+                    limpets += cargo.total;
                 }
             }
             Assert.AreEqual(4, limpets);

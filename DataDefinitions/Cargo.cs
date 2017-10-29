@@ -32,37 +32,37 @@ namespace EddiDataDefinitions
         }
 
         // The commodity catagory
-        private string _catagory;
-        public string catagory
+        private string _category;
+        public string category
         {
             get
             {
-                return _catagory;
+                return _category;
             }
             set
             {
-                if (_catagory != value)
+                if (_category != value)
                 {
-                    _catagory = value;
-                    NotifyPropertyChanged("catagory");
+                    _category = value;
+                    NotifyPropertyChanged("category");
                 }
             }
         }
 
         // The number of items
-        private int _amount;
-        public int amount
+        private int _total;
+        public int total
         {
             get
             {
-                return _amount;
+                return _total;
             }
             set
             {
-                if (_amount != value)
+                if (_total != value)
                 {
-                    _amount = value;
-                    NotifyPropertyChanged("amount");
+                    _total = value;
+                    NotifyPropertyChanged("total");
                 }
             }
         }
@@ -86,8 +86,8 @@ namespace EddiDataDefinitions
         }
 
         // If the cargo is stolen
-        private bool _stolen;
-        public bool stolen
+        private int _stolen;
+        public int stolen
         {
             get
             {
@@ -104,22 +104,24 @@ namespace EddiDataDefinitions
         }
 
         // The mission ID to which the cargo relates
-        private long? _missionid;
-        public long? missionid
+        private long? _haulage;
+        public long? haulage
         {
             get
             {
-                return _missionid;
+                return _haulage;
             }
             set
             {
-                if (_missionid != value)
+                if (_haulage != value)
                 {
-                    _missionid = value;
+                    _haulage = value;
                     NotifyPropertyChanged("missionid");
                 }
             }
         }
+
+        public List<HaulageAmount> haulageamounts { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

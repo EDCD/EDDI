@@ -1143,7 +1143,7 @@ namespace EddiVoiceAttackResponder
                     {
                         if (cargo.commodity == "Limpet")
                         {
-                            limpets += cargo.amount;
+                            limpets += cargo.total;
                         }
                     }
                     vaProxy.SetInt(prefix + " limpets carried", limpets);

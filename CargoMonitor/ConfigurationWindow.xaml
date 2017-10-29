@@ -13,9 +13,14 @@
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated."></TextBlock>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="cargoData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="cargoUpdated">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Path=commodity}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Type" Width="120" IsReadOnly="True" Binding="{Binding Path=Category}"></DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="Amount" Width="80" IsReadOnly="True" Binding="{Binding Path=amount}">
+                <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Path=commodity}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Type" Width="*" IsReadOnly="True" Binding="{Binding Path=category}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -23,11 +28,11 @@
                     </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Right" />
+                            <Setter Property="TextAlignment" Value="Center" />
                             <Setter Property="Margin" Value="5, 0" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
-                </utility:DataGridNumericColumn>
+                </DataGridTextColumn>
                 <utility:DataGridNumericColumn Header="Price/Unit" Width="80" IsReadOnly="True" Binding="{Binding Path=price}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -36,12 +41,12 @@
                     </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Right" />
+                            <Setter Property="TextAlignment" Value="Center" />
                             <Setter Property="Margin" Value="5, 0" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="Mission ID" Width="80" IsReadOnly="True" Binding="{Binding Path=missionid}">
+                <utility:DataGridNumericColumn Header="Haulage" Width="80" IsReadOnly="True" Binding="{Binding Path=haulage}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -49,12 +54,12 @@
                     </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Right" />
+                            <Setter Property="TextAlignment" Value="Center" />
                             <Setter Property="Margin" Value="5, 0" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <DataGridTextColumn Header="Stolen" Width="80" IsReadOnly="True" Binding="{Binding Path=stolen}">
+                <utility:DataGridNumericColumn Header="Stolen" Width="80" IsReadOnly="True" Binding="{Binding Path=stolen}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -62,11 +67,24 @@
                     </DataGridTextColumn.HeaderStyle>
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
-                            <Setter Property="TextAlignment" Value="Right" />
+                            <Setter Property="TextAlignment" Value="Center" />
                             <Setter Property="Margin" Value="5, 0" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                </utility:DataGridNumericColumn>
+                <utility:DataGridNumericColumn Header="Total" Width="80" IsReadOnly="True" Binding="{Binding Path=total}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </utility:DataGridNumericColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

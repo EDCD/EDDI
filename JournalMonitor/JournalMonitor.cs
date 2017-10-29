@@ -2278,8 +2278,8 @@ namespace EddiJournalMonitor
                                         Cargo cargo = new Cargo();
                                         Commodity commodity = CommodityDefinitions.FromName(getString(cargoJson, "Name"));
                                         cargo.commodity = commodity.name;
-                                        cargo.catagory = commodity.category;
-                                        cargo.amount = getInt(cargoJson, "Count");
+                                        cargo.category = commodity.category;
+                                        cargo.total = getInt(cargoJson, "Count");
                                         if (commodity.avgprice != null)
                                         {
                                             cargo.price = (long)commodity.avgprice;
