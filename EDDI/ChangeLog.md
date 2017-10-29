@@ -1,5 +1,11 @@
 # CHANGE LOG
 
+### 2.4.3
+  * EDSM
+    * Fixed a bug that was preventing EDSM comments from being updated and read.
+  * Speech Responder
+    * 'FSD jump' event - reduced the pause between jumping and speaking.
+
 ### 2.4.2
   * Core
     * Revised EDDN updating for naming changes in ED 2.4. This makes EDDI 2.4.2 a mandatory update.
