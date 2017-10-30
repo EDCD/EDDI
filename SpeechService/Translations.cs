@@ -57,7 +57,8 @@ namespace EddiSpeechService
         // Fixes to avoid issues with some of the more strangely-named factions
         private static Dictionary<string, string> FACTION_FIXES = new Dictionary<string, string>()
         {
-            { "SCORPIONS ORDER", "Scorpions Order" } // Stop it being treated as a sector
+            { "SCORPIONS ORDER", "Scorpions Order" }, // Stop it being treated as a sector
+            { "Federation Unite!", "Federation Unite"} // Stop pausing at the end of Unite!
         };
 
         private static Dictionary<string, string[]> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string[]>()
