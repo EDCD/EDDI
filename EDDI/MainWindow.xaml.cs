@@ -580,7 +580,9 @@ namespace Eddi
             // Prepare a truncated log file for export if verbose logging is enabled
             if (eddiVerboseLogging.IsChecked.Value)
             {
+                Logging.Debug("Preparing log for export.");
                 var progress = new Progress<string>(s => githubIssueButton.Content = I18N.GetString("preparing_log") + s);
+                
                 await Task.Factory.StartNew(() => prepareLog(progress), TaskCreationOptions.LongRunning);
             }
             
@@ -622,6 +624,7 @@ namespace Eddi
                         string formatString = "s"; // i.e. DateTimeFormatInfo.SortableDateTimePattern
                         if (DateTime.TryParseExact(linedatestring, formatString, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out DateTime linedate))
                         {
+                            linedate = linedate.ToUniversalTime();
                             double elapsedHours = (DateTime.UtcNow - linedate).TotalHours;
                             // Fill the issue log with log lines from the most recent hour only
                             if (elapsedHours < 1.0)
@@ -635,6 +638,12 @@ namespace Eddi
                         // Do nothing, adding to the debug log creates a feedback loop
                     }
                 }
+                if (outputLines.Count == 0)
+                {
+                    Logging.Error("Error parsing log. Algorithm failed to return any matches.");
+                    return;
+                }
+
                 // Create a temporary issue log file, delete any remnants from prior issue reporting
                 Directory.CreateDirectory(issueLogDir);
                 File.WriteAllLines(issueLogFile, outputLines);
@@ -651,6 +660,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
+
                 progress.Report(I18N.GetString("failed"));
                 Logging.Error("Failed to upload log", ex);
 
