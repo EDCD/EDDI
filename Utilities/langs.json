@@ -184,6 +184,10 @@
       "witch_space": {
         "en": "Witch Space",
         "fr": "Hyper espace"
+      },
+      "plugin_enabled": {
+        "en": "Plugin enabled",
+        "fr": "Plugin activé"
       }
   }
 }

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Utilities;
 
 namespace Eddi
 {
@@ -26,6 +27,7 @@ namespace Eddi
         {
             InitializeComponent();
             this.pluginName = pluginName;
+            pluginenabledText.Text = I18N.GetString("plugin_enabled");
         }
 
         private void pluginenabled_Checked(object sender, RoutedEventArgs e)

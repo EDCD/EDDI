@@ -10,7 +10,7 @@
         <TextBlock DockPanel.Dock="Top" x:Name="plugindescription" TextWrapping="Wrap" Margin="5" />
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="5">
             <CheckBox x:Name="pluginenabled" Checked="pluginenabled_Checked" Unchecked="pluginenabled_Unchecked"></CheckBox>
-            <TextBlock Margin="5,0">Plugin enabled</TextBlock>
+            <TextBlock Margin="5,0" x:Name="pluginenabledText"/>
         </StackPanel>
     </DockPanel>
 </UserControl>
