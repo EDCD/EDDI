@@ -17,7 +17,7 @@ namespace Utilities
 
         public static readonly string DATA_DIR = Environment.GetEnvironmentVariable("AppData") + "\\" + EDDI_NAME;
 
-        public static readonly string ENVIRONMENT_WITCH_SPACE = I18N.GetString("wicth_space");
+        public static readonly string ENVIRONMENT_WITCH_SPACE = I18N.GetString("witch_space");
         public static readonly string ENVIRONMENT_SUPERCRUISE = I18N.GetString("supercruise");
         public static readonly string ENVIRONMENT_NORMAL_SPACE = I18N.GetString("normal_space");
 
