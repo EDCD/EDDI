@@ -1,8 +1,6 @@
 ﻿# CHANGE LOG
 
 ### 2.4.3
-  * Core
-    * Clarified & modified Help.md to clearly state which functions use SSML tags (like phonetic speech).
   * Speech Responder
     * Add Emphasize() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Add SpeechPitch() Cottle function. Details on how to use this are in the SpeechResponder documentation
