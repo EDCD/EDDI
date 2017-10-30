@@ -8,16 +8,35 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Resources;
 using Utilities;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace Tests
 {
     [TestClass]
     public class I18NTests
     {
+        private static JObject json = JObject.Parse(File.ReadAllText(I18N.langsFile));
+
         [TestInitialize]
         public void TestInitialize()
         {
             I18N.Reset();
+            I18N.FallbackLang(); //for tests to works properly, lang needs to by defaultLang (en)
+        }
+
+        [TestMethod]
+        public void TestInitIsCorrect()
+        {
+            List<string> langs = I18N.GetAvailableLangs();
+            foreach(string lang in langs)
+            {
+                Assert.IsTrue(I18N.GetString("test_string").StartsWith("it works"));
+            }
+            Assert.AreNotEqual(I18N.GetString("test_string", "en"), I18N.GetString("test_string", "fr"));
+            Assert.AreEqual(langs.Count, json["langs"].ToObject<List<string>>().Count);
+            Assert.AreEqual(I18N.GetKeys().Count, json["translations"].ToList().Count);
+            Assert.IsNull(I18N.GetString("test_null"));
         }
 
         [TestMethod]

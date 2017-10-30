@@ -24,7 +24,7 @@ namespace Utilities
         // contains each langs defined in langs.json
         private static List<String> availableLangs;
         // JSON filename
-        private static readonly string langsFile = "langs.json";
+        public static readonly string langsFile = "langs.json";
 
         static I18N()
         {
@@ -36,8 +36,19 @@ namespace Utilities
         {
             translations = new Dictionary<string, I18NString>();
             availableLangs = new List<string>();
-            currentLang = defaultLang;
+            currentLang = GetSystemLangCode();
             UpdateResources();
+        }
+
+        // Reset all values to default by calling Init()
+        public static void Reset()
+        {
+            Init();
+        }
+
+        public static List<string> GetKeys()
+        {
+            return translations.Keys.ToList<string>();
         }
 
         // Read the .json file and store all resources
@@ -53,16 +64,12 @@ namespace Utilities
                 {
                     //Console.WriteLine("\t"+pair);
                     //Console.WriteLine($"\t'{pair.Name}': '{pair.Value.ToString()}'");
-                    i18ns.Add(pair.Name, pair.Value.ToString());
+                    string value = pair.Value.Type == JTokenType.Null ? null : pair.Value.ToObject<string>();
+                    if(pair.Name == "test_null") Console.WriteLine(pair.Value);
+                    i18ns.Add(pair.Name, value);
                 }
                 translations[translation.Name] = i18ns;
             }
-        }
-
-        // Reset all values to default by calling Init()
-        public static void Reset()
-        {
-            Init();
         }
 
         // returns the OS langCode
@@ -129,16 +136,45 @@ namespace Utilities
         }
 
         // Returns the string value corresponding to the given key and lang
+        // Tries to return the string with defaultLang if it's not defined in given lang
+        // Return null if it fails
+        // or if KeyNotFoundException was thrown
         public static string GetString(string stringCode, string lang)
         {
-            string s = "";
+            string s = null;
+            // Console.WriteLine($"searching for string '{stringCode}' in lang '{lang}' in file '{langsFile}'");
             try
             {
-                s = IsAvailableLang(lang) ? translations[stringCode][lang] : translations[stringCode][defaultLang];
+                if (translations.ContainsKey(stringCode)) // if stringCode does not exists then return ""
+                {
+                    if (IsAvailableLang(lang))
+                    {
+                        // if lang is undefined for this langCode then throw KeyNotFoundException
+                        // if result is null then returns the same string with defaultLang
+                        s = translations[stringCode][lang];
+                        // if(stringCode == "pres_par0") Console.WriteLine("===================\n"+s+"\n===================");
+                        if (s == null) // 
+                        {
+                            Console.WriteLine($"string {stringCode} is not defined in lang '{lang}', returning with default lang '{defaultLang}'");
+                            s = translations[stringCode][defaultLang]; // if also null returns ""
+                        }
+                    }
+                    else // lang is not available, meaning it is not in 'langs' property in langs.json
+                    {
+                        Console.WriteLine($"lang '{lang}' is not available in {langsFile}, returning with default lang '{defaultLang}'");
+                        // if null then return "", if defaultLang is undefined for this langCode then throw KeyNotFoundException
+                        s = translations[stringCode][defaultLang];
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"string '{stringCode}' does not exists in {langsFile}");
+                }
             }
             catch (KeyNotFoundException)
             {
-                Console.WriteLine($"Unable to find string '{stringCode}' in lang '{lang}'");
+                Console.WriteLine($"Unable to find string '{stringCode}' in lang '{lang}' in '{langsFile}'");
+                s = null; // Just to be sure of what is returned in this case
             }
             return s;
         }
