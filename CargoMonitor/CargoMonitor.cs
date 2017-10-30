@@ -169,6 +169,12 @@ namespace EddiCargoMonitor
                 else
                 {
                     // We haven't heard of this cargo so add it to the inventory directly
+                    Commodity commodity = CommodityDefinitions.FromName(cargo.commodity);
+                    cargo.category = commodity.category;
+                    cargo.price = (long)(commodity.avgprice ?? 0);
+
+                    cargo.haulage = 0;
+                    cargo.stolen = 0;
                     AddCargo(cargo);
                 }
             }
@@ -201,10 +207,12 @@ namespace EddiCargoMonitor
             {
                 Cargo newCargo = new Cargo();
                 Commodity commodity = CommodityDefinitions.FromName(@event.commodity);
-                newCargo.commodity = @event.commodity;
                 newCargo.category = commodity.category;
-                newCargo.price = (long)commodity.avgprice;
+                newCargo.price = (long)(commodity.avgprice ?? 0);
+                newCargo.commodity = @event.commodity;
                 newCargo.total = 1;
+                newCargo.haulage = 0;
+                newCargo.stolen = 0;
                 if (@event.stolen)
                 {
                     newCargo.stolen = 1;
@@ -241,10 +249,12 @@ namespace EddiCargoMonitor
             {
                 Cargo newCargo = new Cargo();
                 Commodity commodity = CommodityDefinitions.FromName(@event.commodity);
-                newCargo.commodity = @event.commodity;
                 newCargo.category = commodity.category;
+                newCargo.commodity = @event.commodity;
                 newCargo.price = @event.price;
                 newCargo.total = @event.amount;
+                newCargo.haulage = 0;
+                newCargo.stolen = 0;
                 AddCargo(newCargo);
             }
 
@@ -262,10 +272,13 @@ namespace EddiCargoMonitor
             {
                 Cargo newCargo = new Cargo();
                 Commodity commodity = CommodityDefinitions.FromName(@event.commodity);
-                newCargo.commodity = @event.commodity;
                 newCargo.category = commodity.category;
-                newCargo.price = (long)commodity.avgprice;
+                newCargo.price = (long)(commodity.avgprice ?? 0);
+
+                newCargo.commodity = @event.commodity;
                 newCargo.total = 1;
+                newCargo.haulage = 0;
+                newCargo.stolen = 0;
                 AddCargo(newCargo);
             }
 
@@ -302,9 +315,11 @@ namespace EddiCargoMonitor
             {
                 Cargo newCargo = new Cargo();
                 Commodity commodity = CommodityDefinitions.FromName(@event.commodity);
-                newCargo.commodity = @event.commodity;
                 newCargo.category = commodity.category;
+                newCargo.commodity = @event.commodity;
                 newCargo.total = @event.amount;
+                newCargo.haulage = 0;
+                newCargo.stolen = 0;
                 AddCargo(newCargo);
             }
 
@@ -338,10 +353,12 @@ namespace EddiCargoMonitor
             {
                 Cargo newCargo = new Cargo();
                 Commodity commodity = CommodityDefinitions.FromName("Limpet");
-                newCargo.commodity ="Limpet";
                 newCargo.category = commodity.category;
+                newCargo.commodity ="Limpet";
                 newCargo.price = @event.price;
                 newCargo.total = @event.amount;
+                newCargo.haulage = 0;
+                newCargo.stolen = 0;
                 AddCargo(newCargo);
             }
 
@@ -399,10 +416,11 @@ namespace EddiCargoMonitor
                 {
                     Cargo newCargo = new Cargo();
                     Commodity commodity = CommodityDefinitions.FromName(@event.commodity);
-                    newCargo.commodity = @event.commodity;
                     newCargo.category = commodity.category;
+                    newCargo.commodity = @event.commodity;
                     newCargo.total = @event.amount ?? 0;
                     newCargo.haulage = @event.amount ?? 0;
+                    newCargo.stolen = 0;
                     newCargo.haulageamounts.Add(haulageAmount);
                     AddCargo(newCargo);
                 }
@@ -442,10 +460,12 @@ namespace EddiCargoMonitor
                     {
                         Cargo newCargo = new Cargo();
                         Commodity commodity = CommodityDefinitions.FromName(commodityReward.commodity);
-                        newCargo.commodity = commodityReward.commodity;
                         newCargo.category = commodity.category;
+                        newCargo.price = (long)(commodity.avgprice ?? 0);
+                        newCargo.commodity = commodityReward.commodity;
                         newCargo.total = commodityReward.amount;
-                        newCargo.price = (long)commodity.avgprice;
+                        newCargo.haulage = 0;
+                        newCargo.stolen = 0;
                         AddCargo(newCargo);
                     }
                 }

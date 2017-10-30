@@ -49,24 +49,6 @@ namespace EddiDataDefinitions
             }
         }
 
-        // The number of items
-        private int _total;
-        public int total
-        {
-            get
-            {
-                return _total;
-            }
-            set
-            {
-                if (_total != value)
-                {
-                    _total = value;
-                    NotifyPropertyChanged("total");
-                }
-            }
-        }
-
         // How much we actually paid for it (per unit)
         private long _price;
         public long price
@@ -85,7 +67,25 @@ namespace EddiDataDefinitions
             }
         }
 
-        // If the cargo is stolen
+        // The number of items
+        private int _total;
+        public int total
+        {
+            get
+            {
+                return _total;
+            }
+            set
+            {
+                if (_total != value)
+                {
+                    _total = value;
+                    NotifyPropertyChanged("total");
+                }
+            }
+        }
+
+        // The number of stolen items
         private int _stolen;
         public int stolen
         {
@@ -103,9 +103,9 @@ namespace EddiDataDefinitions
             }
         }
 
-        // The mission ID to which the cargo relates
-        private long? _haulage;
-        public long? haulage
+        // The number of items related to a mission
+        private int _haulage;
+        public int haulage
         {
             get
             {
@@ -116,12 +116,29 @@ namespace EddiDataDefinitions
                 if (_haulage != value)
                 {
                     _haulage = value;
-                    NotifyPropertyChanged("missionid");
+                    NotifyPropertyChanged("haulage");
                 }
             }
         }
 
         public List<HaulageAmount> haulageamounts { get; set; }
+
+        public Cargo()
+        {
+            haulageamounts = new List<HaulageAmount>();
+        }
+
+        public Cargo(string commodity, string category, long price, int total, int stolen, int haulage, List<HaulageAmount> haulageamounts)
+        {
+            this.commodity = commodity;
+            this.category = category;
+            this.price = price;
+            this.total = total;
+            this.stolen = stolen;
+            this.haulage = haulage;
+            haulageamounts = new List<HaulageAmount>();
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
