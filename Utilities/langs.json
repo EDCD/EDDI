@@ -206,12 +206,48 @@
       "fr": "Statut d'EDDI: "
     },
     "pres_par0": {
-      "en": "has a number of features that can be configured separately.  There are three different types of items.",
-      "fr": null
+      "en": "has a number of features that can be configured separately. There are three different types of items.",
+      "fr": "à de nombreuses fonctionnalités configurables séparément. Il y à trois différents types d'items"
     },
     "pres_par1": {
-      "en": "The first group obtain and manage the basic information used by EDDI.  These are the 'Commander Details', 'Frontier API' and 'Text-to-Speech' tabs.  You should go through each of these and configure them so that EDDI has full access to your Elite: Dangerous information.",
-      "fr": null
+      "en": "The first group obtain and manage the basic information used by EDDI. These are the 'Commander Details', 'Frontier API' and 'Text-to-Speech' tabs. You should go through each of these and configure them so that EDDI has full access to your Elite: Dangerous information.",
+      "fr": "Le premier groupe obtient et gère les informations basiques utilisé par EDDI. Ce sont les onglets 'Détails du Commandants', 'API Frontier' et 'Text-to-Speech'. Vous devriez parcourir chacun de ces onglets pour les configurer afin qu'EDDI obtienne un accès total à vos information d'Elite: Dangerous."
+    },
+    "pres_par2": {
+      "en": "The second group obtain event information. These are the tabs that end in 'monitor'. They obtain events from different places, and require minimal configuration but need to be completed before they will work.",
+      "fr": "Le second groupe obtient les informations des événements. Ce sont les onglets finissant par 'moniteur'. Ils obtiennes les événements depuis différrentes source, et nécéssitent une configuration minime mais qui doit être faite avant qu'ils ne fonctionnent."
+    },
+    "pres_par3": {
+      "en": "The third group respond to events. These are the tabs that end in 'responder'. These come with varying degrees of configuration, but will work out of the box.",
+      "fr": "Le troisième groupe réponds aux événements. Ce sont les onglets finissant par 'répondeur'. Ces derniers ont chacun un degré de configuration varié mais fonctionneront directement."
+    },
+    "pres_par4": {
+      "en": "You can read more about how EDDI functions on the",
+      "fr": "Vous pouvez en lire plus à propos d'EDDI sur le"
+    },
+    "wiki_hyperlink": {
+      "en": "project wiki",
+      "fr": "wiki du projet"
+    },
+    "verbose_logging": {
+      "en": "Enable verbose logging (only if you have been requested to do so by EDDI developers)",
+      "fr": "Activer le logging verbeux (uniquement si demandé par les développeurs d'EDDI)"
+    },
+    "log_explaination": {
+      "en": "If verbose logging is enabled, EDDI will prepare a truncated version of your log from the past hour and place it on your desktop. You may paste this log file into the Github Issue report. No personal information is sent in the log.",
+      "fr": "Si le logging verbeux est activé, EDDI préparera un version tronquée de votre log contenant la dernière heure et le placera sur votre bureau. Vous devrez coller ce fichier log dans votre rapport de problème GitHub (Github Issue report). Aucune information personnelle n'est collectée dans le log."
+    },
+    "report_issue": {
+      "en": "Report an Issue",
+      "fr": "Signaler un Problème"
+    },
+    "access_beta": {
+      "en": "Access beta versions of EDDI",
+      "fr": "Accèder aux version beta d'EDDI"
+    },
+    "tab_cmd_details_header": {
+      "en": "Commander Details",
+      "fr": "Détails du Commandant"
     }
   }
 }

@@ -38,7 +38,7 @@ namespace Eddi
         public MainWindow(bool fromVA = false)
         {
             InitializeComponent();
-
+            I18NForComponents();
             this.fromVA = fromVA;
 
             // Start the EDDI instance
@@ -204,6 +204,24 @@ namespace Eddi
             }
 
             EDDI.Instance.Start();
+        }
+
+        private void I18NForComponents()
+        {
+            versionHyperlinkText.Text = I18N.GetString("version_hyperlink");
+            upgradeButton.Content = I18N.GetString("upgrade_button");
+            statusPreText.Text = I18N.GetString("status_pre_text");
+            par0.Text = I18N.GetString("pres_par0");
+            par1.Text = I18N.GetString("pres_par1");
+            par2.Text = I18N.GetString("pres_par2");
+            par3.Text = I18N.GetString("pres_par3");
+            par4.Text = I18N.GetString("pres_par4");
+            wikiHyperLink.Text = I18N.GetString("wiki_hyperlink");
+            verboseLoggingText.Text = I18N.GetString("verbose_logging");
+            logExplaination.Text = I18N.GetString("log_explaination");
+            githubIssueButton.Content = I18N.GetString("report_issue");
+            accessBetaText.Text = I18N.GetString("access_beta");
+            cmdDetailsTab.Header = I18N.GetString("tab_cmd_details_header");
         }
 
         // Handle changes to the eddi tab

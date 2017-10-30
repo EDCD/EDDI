@@ -12,32 +12,36 @@
             <TabItem Header="EDDI">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <DockPanel LastChildFill="True" Background="#FFE5E5E5" DockPanel.Dock="Bottom" Margin="5">
-                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="EDDI Status: "/>
+                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" x:Name="statusPreText"/>
                         <TextBlock x:Name="versionText" VerticalAlignment="Center" DockPanel.Dock="Right"/>
                         <Label Height="28" Margin="0,0,0,0" Name="Version" DockPanel.Dock="Right" VerticalAlignment="Center">
-                            <Hyperlink Click="ChangeLog_Click">Version:</Hyperlink>
+                            <Hyperlink Click="ChangeLog_Click">
+                                <TextBlock x:Name="versionHyperlinkText"/>
+                            </Hyperlink>
                         </Label>
-                        <Button x:Name="upgradeButton" VerticalAlignment="Center" DockPanel.Dock="Left" Visibility="Collapsed" Margin="10,0,10,0" Foreground="Orange" Click="upgradeClicked">Upgrade EDDI</Button>
-                        <TextBlock x:Name="statusText" VerticalAlignment="Center" DockPanel.Dock="Left" Text="Operational"/>
+                        <Button x:Name="upgradeButton" VerticalAlignment="Center" DockPanel.Dock="Left" Visibility="Collapsed" Margin="10,0,10,0" Foreground="Orange" Click="upgradeClicked"/>
+                        <TextBlock x:Name="statusText" VerticalAlignment="Center" DockPanel.Dock="Left"/>
                     </DockPanel>
                     <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
                         <FlowDocument Background="#FFE5E5E5">
                             <Paragraph>
                                 <Hyperlink Click="EDDIClicked">EDDI</Hyperlink>
-                                has a number of features that can be configured separately.  There are three different types of items.
+                                <TextBlock x:Name="par0" TextWrapping="Wrap"/>
                             </Paragraph>
                             <Paragraph>
-                                The first group obtain and manage the basic information used by EDDI.  These are the 'Commander Details', 'Frontier API' and 'Text-to-Speech' tabs.  You should go through each of these and configure them so that EDDI has full access to your Elite: Dangerous information.
+                                <TextBlock x:Name="par1" TextWrapping="Wrap"/>
                             </Paragraph>
                             <Paragraph>
-                                The second group obtain event information.  These are the tabs that end in 'monitor'.  They obtain events from different places, and require minimal configuration but need to be completed before they will work.
+                                <TextBlock x:Name="par2" TextWrapping="Wrap"/>
                             </Paragraph>
                             <Paragraph>
-                                The third group respond to events.  These are the tabs that end in 'responder'.  These come with varying degrees of configuration, but will work out of the box.
+                                <TextBlock x:Name="par3" TextWrapping="Wrap"/>
                             </Paragraph>
                             <Paragraph>
-                                You can read more about how EDDI functions on the
-                                <Hyperlink Click="WikiClicked">project wiki</Hyperlink> .
+                                <TextBlock x:Name="par4" TextWrapping="Wrap"/>
+                                <Hyperlink Click="WikiClicked">
+                                    <TextBlock x:Name="wikiHyperLink"/>
+                                </Hyperlink> .
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>
@@ -51,17 +55,17 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="Enable verbose logging (only if you have been requested to do so by EDDI developers)" VerticalAlignment="Top"/>
+                        <TextBlock x:Name="verboseLoggingText" Grid.Row="0" Grid.Column="0" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
                         <CheckBox x:Name="eddiVerboseLogging" Grid.Row="0" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="If verbose logging is enabled, EDDI will prepare a truncated version of your log from the past hour and place it on your desktop. You may paste this log file into the Github Issue report. No personal information is sent in the log."/>
-                        <Button  x:Name="githubIssueButton" Grid.Row="1" Grid.Column="2" Content="Report an Issue" Margin="5" Width="110" Click="createGithubIssueClicked"/>
-                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="Access beta versions of EDDI" VerticalAlignment="Top"/>
+                        <TextBlock x:Name="logExplaination" Grid.Row="1" Grid.Column="0" Margin="5" TextWrapping="Wrap"/>
+                        <Button  x:Name="githubIssueButton" Grid.Row="1" Grid.Column="2" Margin="5" Width="110" Click="createGithubIssueClicked"/>
+                        <TextBlock x:Name="accessBetaText" Grid.Row="2" Grid.Column="0" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
                         <CheckBox x:Name="eddiBetaProgramme" Grid.Row="2" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
                     </Grid>
                     <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" FontSize="20" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center" TextAlignment="Center"/>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Commander Details">
+            <TabItem x:Name="cmdDetailsTab">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <Grid>
                         <Grid.ColumnDefinitions>
