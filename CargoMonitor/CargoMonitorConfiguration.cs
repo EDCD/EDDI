@@ -14,12 +14,34 @@ namespace EddiCargoMonitor
     {
         public ObservableCollection<Cargo> cargo { get; set; }
 
+        public int cargocarried { get; set; }
+
         [JsonIgnore]
         private string dataPath;
 
         public CargoMonitorConfiguration()
         {
             cargo = new ObservableCollection<Cargo>();
+        }
+
+        /// <summary>
+        /// Obtain cargo configuration from a json.
+        /// </summary>
+        public static CargoMonitorConfiguration FromJson(dynamic json)
+        {
+            CargoMonitorConfiguration configuration = new CargoMonitorConfiguration();
+            if (json != null)
+            {
+                try
+                {
+                    configuration = JsonConvert.DeserializeObject<CargoMonitorConfiguration>(json);
+                }
+                catch (Exception ex)
+                {
+                    Logging.Debug("Failed to obtain cargo configuration", ex);
+                }
+            }
+            return configuration;
         }
 
         /// <summary>

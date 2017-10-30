@@ -1130,23 +1130,19 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " value (spoken)", Translations.Humanize(ship?.value));
                 vaProxy.SetDecimal(prefix + " health", ship?.health);
                 vaProxy.SetInt(prefix + " cargo capacity", ship?.cargocapacity);
-                vaProxy.SetInt(prefix + " cargo carried", ship?.cargocarried);
+
+                int cargocarried = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetCargoCarried();
+                vaProxy.SetInt(prefix + " cargo carried", cargocarried);
+
                 // Add number of limpets carried
-                if (ship == null || ship.cargo == null)
+                Cargo limpets = ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).GetCargo("Limpets");
+                if (limpets == null)
                 {
                     vaProxy.SetInt(prefix + " limpets carried", null);
                 }
                 else
                 {
-                    int limpets = 0;
-                    foreach (Cargo cargo in ship.cargo)
-                    {
-                        if (cargo.commodity == "Limpet")
-                        {
-                            limpets += cargo.total;
-                        }
-                    }
-                    vaProxy.SetInt(prefix + " limpets carried", limpets);
+                    vaProxy.SetInt(prefix + " limpets carried", limpets.total);
                 }
 
                 setShipModuleValues(ship?.bulkheads, prefix + " bulkheads", ref vaProxy);

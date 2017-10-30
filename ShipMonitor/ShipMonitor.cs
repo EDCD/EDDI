@@ -1,5 +1,5 @@
 ﻿using Eddi;
-using EddiCargoMonitor;
+
 using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
@@ -147,18 +147,6 @@ namespace EddiShipMonitor
             else if (@event is ShipRestockedEvent)
             {
                 handleShipRestockedEvent((ShipRestockedEvent)@event);
-            }
-            else if (@event is CargoInventoryEvent)
-            {
-                handleCargoInventoryEvent((CargoInventoryEvent)@event);
-            }
-            else if (@event is LimpetPurchasedEvent)
-            {
-                handleLimpetPurchasedEvent((LimpetPurchasedEvent)@event);
-            }
-            else if (@event is LimpetSoldEvent)
-            {
-                handleLimpetSoldEvent((LimpetSoldEvent)@event);
             }
             else if (@event is ModulePurchasedEvent)
             {
@@ -658,37 +646,6 @@ namespace EddiShipMonitor
         {
             /// The ship may have engineering data, request a profile refresh from the Frontier API a minute after switching
             refreshProfileDelayed(@event.shipid, currentProfileId);
-        }
-
-        private void handleCargoInventoryEvent(CargoInventoryEvent @event)
-        {
-            Ship ship = GetCurrentShip();
-            ship.cargo = @event.inventory;
-        }
-
-        private void handleLimpetPurchasedEvent(LimpetPurchasedEvent @event)
-        {
-            Cargo limpets = GetCurrentShip().cargo.Find(c => c.commodity == "Limpet");
-            if (limpets == null)
-            {
-                // No limpets so create an entry
-                limpets = new Cargo();
-                limpets.commodity = "Limpet";
-                limpets.price = @event.price;
-                limpets.total = 0;
-                GetCurrentShip().cargo.Add(limpets);
-            }
-            limpets.total += @event.amount;
-        }
-
-        private void handleLimpetSoldEvent(LimpetSoldEvent @event)
-        {
-            Cargo limpets = GetCurrentShip().cargo.Find(c => c.commodity == "Limpet");
-            if (limpets != null)
-            {
-                limpets.total -= @event.amount;
-                if (limpets.total < 0) limpets.total = 0;
-            }
         }
 
         public void HandleProfile(JObject profile)

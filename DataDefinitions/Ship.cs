@@ -46,10 +46,6 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public int cargocarried { get; set; }
 
-        /// <summary>the specific cargo carried</summary>
-        [JsonIgnore]
-        public List<Cargo> cargo { get; set; }
-
         private long _value;
         /// <summary>the value of the ship without cargo, in credits</summary>
         public long value
@@ -262,7 +258,6 @@ namespace EddiDataDefinitions
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
             launchbays = new List<LaunchBay>();
-            cargo = new List<Cargo>();
         }
 
         public Ship(long EDID, string EDName, string Manufacturer, List<Translation> PhoneticManufacturer, string Model, List<Translation> PhoneticModel, string Size, int? MilitarySize)

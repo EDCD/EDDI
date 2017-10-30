@@ -480,6 +480,12 @@ namespace EddiSpeechResponder
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);
 
+            store["CommodityDetails"] = new NativeFunction((values) =>
+            {
+                Commodity result = CommodityDefinitions.FromName(values[0].AsString);
+                return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
+            }, 1);
+
             store["MaterialDetails"] = new NativeFunction((values) =>
             {
                 if (string.IsNullOrEmpty(values[0].AsString))

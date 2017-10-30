@@ -25,6 +25,10 @@ namespace EddiCargoMonitor
     {
         // Observable collection for us to handle changes
         public ObservableCollection<Cargo> inventory = new ObservableCollection<Cargo>();
+
+        // Total cargo carried
+        public int cargocarried;
+
         private static readonly object inventoryLock = new object();
 
         public string MonitorName()
@@ -157,9 +161,13 @@ namespace EddiCargoMonitor
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
         {
+            cargocarried = 0;
+
             // CargoInventoryEvent does not contain stolen, missionid, or cost information so fill in gaps here
             foreach (Cargo cargo in @event.inventory)
             {
+                cargocarried += cargo.total;
+
                 Cargo inventoryCargo = inventory.FirstOrDefault(c => c.commodity == cargo.commodity);
                 if (inventoryCargo != null)
                 {
@@ -187,7 +195,6 @@ namespace EddiCargoMonitor
                     RemoveCargo(inventoryCargo.commodity);
                 }
             }
-
             writeCargo();
         }
 
@@ -219,7 +226,7 @@ namespace EddiCargoMonitor
                 }
                 AddCargo(newCargo);
             }
-
+            cargocarried++;
             writeCargo();
         }
 
@@ -233,9 +240,9 @@ namespace EddiCargoMonitor
                 {
                     RemoveCargo(cargo.commodity);
                 }
-
-                writeCargo();
             }
+            cargocarried--;
+            writeCargo();
         }
 
         private void handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
@@ -257,7 +264,7 @@ namespace EddiCargoMonitor
                 newCargo.stolen = 0;
                 AddCargo(newCargo);
             }
-
+            cargocarried += @event.amount;
             writeCargo();
         }
 
@@ -266,7 +273,7 @@ namespace EddiCargoMonitor
             Cargo cargo = GetCargo(@event.commodity);
             if (cargo != null)
             {
-                cargo.total += 1;
+                cargo.total ++;
             }
             else
             {
@@ -281,7 +288,7 @@ namespace EddiCargoMonitor
                 newCargo.stolen = 0;
                 AddCargo(newCargo);
             }
-
+            cargocarried++;
             writeCargo();
         }
 
@@ -299,9 +306,9 @@ namespace EddiCargoMonitor
                 {
                     RemoveCargo(cargo.commodity);
                 }
-
-                writeCargo();
             }
+            cargocarried -= @event.amount;
+            writeCargo();
         }
 
         private void handlePowerCommodityObtainedEvent(PowerCommodityObtainedEvent @event)
@@ -322,7 +329,7 @@ namespace EddiCargoMonitor
                 newCargo.stolen = 0;
                 AddCargo(newCargo);
             }
-
+            cargocarried += @event.amount;
             writeCargo();
         }
 
@@ -337,9 +344,9 @@ namespace EddiCargoMonitor
                 {
                     RemoveCargo(cargo.commodity);
                 }
-
-                writeCargo();
             }
+            cargocarried -= @event.amount;
+            writeCargo();
         }
 
         private void handleLimpetPurchasedEvent(LimpetPurchasedEvent @event)
@@ -361,7 +368,7 @@ namespace EddiCargoMonitor
                 newCargo.stolen = 0;
                 AddCargo(newCargo);
             }
-
+            cargocarried += @event.amount;
             writeCargo();
         }
 
@@ -376,9 +383,9 @@ namespace EddiCargoMonitor
                 {
                     RemoveCargo(cargo.commodity);
                 }
-
-                writeCargo();
             }
+            cargocarried -= @event.amount;
+            writeCargo();
         }
 
         private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
@@ -393,7 +400,6 @@ namespace EddiCargoMonitor
                     break;
                 }
             }
-
             writeCargo();
         }
 
@@ -424,9 +430,9 @@ namespace EddiCargoMonitor
                     newCargo.haulageamounts.Add(haulageAmount);
                     AddCargo(newCargo);
                 }
-
-                writeCargo();
             }
+            cargocarried += @event.amount ?? 0;
+            writeCargo();
         }
 
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
@@ -448,30 +454,31 @@ namespace EddiCargoMonitor
                         cargo.haulageamounts.Remove(haulageAmount);
                     }
                 }
-
-                foreach (CommodityAmount commodityReward in @event.commodityrewards)
-                {
-                    Cargo cargoReward = GetCargo(commodityReward.commodity);
-                    if (cargoReward != null)
-                    {
-                        cargoReward.total += commodityReward.amount;
-                    }
-                    else
-                    {
-                        Cargo newCargo = new Cargo();
-                        Commodity commodity = CommodityDefinitions.FromName(commodityReward.commodity);
-                        newCargo.category = commodity.category;
-                        newCargo.price = (long)(commodity.avgprice ?? 0);
-                        newCargo.commodity = commodityReward.commodity;
-                        newCargo.total = commodityReward.amount;
-                        newCargo.haulage = 0;
-                        newCargo.stolen = 0;
-                        AddCargo(newCargo);
-                    }
-                }
-
-                writeCargo();
             }
+
+            foreach (CommodityAmount commodityReward in @event.commodityrewards)
+            {
+                Cargo cargoReward = GetCargo(commodityReward.commodity);
+                if (cargoReward != null)
+                {
+                    cargoReward.total += commodityReward.amount;
+                }
+                else
+                {
+                    Cargo newCargo = new Cargo();
+                    Commodity commodity = CommodityDefinitions.FromName(commodityReward.commodity);
+                    newCargo.category = commodity.category;
+                    newCargo.price = (long)(commodity.avgprice ?? 0);
+                    newCargo.commodity = commodityReward.commodity;
+                    newCargo.total = commodityReward.amount;
+                    newCargo.haulage = 0;
+                    newCargo.stolen = 0;
+                    AddCargo(newCargo);
+                }
+                cargocarried += commodityReward.amount;
+            }
+            cargocarried -= @event.amount ?? 0;
+            writeCargo();
         }
 
         private void handleMissionFailedEvent(MissionFailedEvent @event)
@@ -486,7 +493,6 @@ namespace EddiCargoMonitor
                     break;
                 }
             }
-
             writeCargo();
         }
 
@@ -494,7 +500,7 @@ namespace EddiCargoMonitor
         {
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
-                ["cargo"] = new List<Cargo>(inventory)
+                ["inventory"] = new List<Cargo>(inventory)
             };
             return variables;
         }
@@ -506,6 +512,7 @@ namespace EddiCargoMonitor
                 // Write material configuration with current inventory
                 CargoMonitorConfiguration configuration = new CargoMonitorConfiguration();
                 configuration.cargo = inventory;
+                configuration.cargocarried = cargocarried;
                 configuration.ToFile();
             }
         }
@@ -516,6 +523,7 @@ namespace EddiCargoMonitor
             {
                 // Obtain current inventory from  configuration
                 CargoMonitorConfiguration configuration = CargoMonitorConfiguration.FromFile();
+                cargocarried = configuration.cargocarried;
 
                 // Build a new inventory
                 List<Cargo> newInventory = new List<Cargo>();
@@ -590,7 +598,6 @@ namespace EddiCargoMonitor
                 {
                     inventory.Add(newCargo);
                 }
-
                 writeCargo();
             }
         }
@@ -631,7 +638,6 @@ namespace EddiCargoMonitor
                             break;
                         }
                     }
-
                     writeCargo();
                 }
             }
@@ -646,6 +652,11 @@ namespace EddiCargoMonitor
             return inventory.FirstOrDefault(c => c.commodity == commodity);
         }
 
+        public int GetCargoCarried()
+        {
+            return cargocarried;
+        }
+
         public void LimpetUsed()
         {
             Cargo cargo = GetCargo("Limpet");
@@ -656,9 +667,9 @@ namespace EddiCargoMonitor
                 {
                     RemoveCargo(cargo.commodity);
                 }
-
-                writeCargo();
             }
+            cargocarried--;
+            writeCargo();
         }
     }
 }
