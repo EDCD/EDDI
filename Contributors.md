@@ -1,4 +1,4 @@
-#Contributors
+﻿#Contributors
 
 
   * [Cmdr McDonald](https://github.com/cmdrmcdonald)
