@@ -231,6 +231,79 @@ namespace EddiSpeechResponder
 
             }, 1);
 
+            store["Emphasize"] = new NativeFunction((values) =>
+            {
+                if (values.Count == 1)
+                {
+                    return @"<emphasis level =""strong"">" + values[0].AsString + @"</emphasis>";
+                }
+                else if (values.Count == 2)
+                {
+                    return @"<emphasis level =""" + values[1].AsString + @""">" + values[0].AsString + @"</emphasis>";
+                }
+                else
+                {
+                    return "The Emphasize function is used improperly. Please review the documentation for correct usage.";
+                }
+            }, 1, 2);
+
+            store["SpeechPitch"] = new NativeFunction((values) =>
+            {
+                string text = values[0].AsString;
+                string pitch = "default";
+                if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
+                {
+                    return text;
+                }
+                else if (values.Count == 2)
+                {
+                    pitch = values[1].AsString;
+                    return @"<prosody pitch=""" + pitch + @""">" + text + "</prosody>";
+                }
+                else
+                {
+                    return "The SpeechPitch function is used improperly. Please review the documentation for correct usage.";
+                }
+            }, 1, 2);
+
+            store["SpeechRate"] = new NativeFunction((values) =>
+            {
+                string text = values[0].AsString;
+                string rate = "default";
+                if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
+                {
+                    return text;
+                }
+                else if (values.Count == 2)
+                {
+                    rate = values[1].AsString;
+                    return @"<prosody rate=""" + rate + @""">" + text + "</prosody>";
+                }
+                else
+                {
+                    return "The SpeechRate function is used improperly. Please review the documentation for correct usage.";
+                }
+            }, 1, 2);
+
+            store["SpeechVolume"] = new NativeFunction((values) =>
+            {
+                string text = values[0].AsString;
+                string volume = "default";
+                if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
+                {
+                    return text;
+                }
+                else if (values.Count == 2)
+                {
+                    volume = values[1].AsString;
+                    return @"<prosody volume=""" + volume + @""">" + text + "</prosody>";
+                }
+                else
+                {
+                    return "The SpeechVolume function is used improperly. Please review the documentation for correct usage.";
+                }
+            }, 1, 2);
+
             store["StartsWithVowel"] = new NativeFunction((values) =>
             {
                 string Entree = values[0].AsString;
