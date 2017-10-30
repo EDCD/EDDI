@@ -619,7 +619,11 @@ namespace Eddi
                         // Do nothing, adding to the debug log creates a feedback loop
                     }
                 }
-                if (outputLines.Count == 0) { Logging.Error("Error parsing log. Algorithm failed to return any matches."); return; }
+                if (outputLines.Count == 0)
+                {
+                    Logging.Error("Error parsing log. Algorithm failed to return any matches.");
+                    return;
+                }
 
                 // Create a temporary issue log file, delete any remnants from prior issue reporting
                 Directory.CreateDirectory(issueLogDir);
