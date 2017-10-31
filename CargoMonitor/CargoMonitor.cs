@@ -261,7 +261,7 @@ namespace EddiCargoMonitor
                 Cargo newCargo = new Cargo();
                 newCargo.name = @event.commodity.name;
                 newCargo.category = @event.commodity.category;
-                newCargo.price = (long)(@event.commodity.avgprice ?? 0);
+                newCargo.price = @event.price;
                 newCargo.commodity = @event.commodity;
                 newCargo.amount = @event.amount;
                 newCargo.haulage = 0;
@@ -301,13 +301,42 @@ namespace EddiCargoMonitor
             if (cargo != null)
             {
                 cargo.amount -= @event.amount;
-                if (@event.stolen)
-                {
-                    cargo.stolen -= @event.amount;
-                }
+                int remainingAmount = @event.amount ;
                 if (cargo.amount < 1)
                 {
                     RemoveCargo(cargo.name);
+                }
+
+                else if (@event.stolen)
+                {
+                    if (@event.amount > cargo.stolen)
+                    {
+                        remainingAmount -= cargo.stolen;
+                        cargo.stolen = 0;
+                    }
+                    else
+                    {
+                        cargo.stolen -= @event.amount;
+                        remainingAmount = 0;
+                    }
+                }
+
+                else if (@event.blackmarket && remainingAmount > 0)
+                {
+                    cargo.haulage -= remainingAmount;
+                    foreach (HaulageAmount ha in cargo.haulageamounts)
+                    {
+                        if (ha.amount > remainingAmount)
+                        {
+                            ha.amount -= remainingAmount;
+                            break;
+                        }
+                        else
+                        {
+                            remainingAmount -= ha.amount;
+                            cargo.haulageamounts.Remove(ha);
+                        }
+                    }
                 }
             }
             cargocarried -= @event.amount;
