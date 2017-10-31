@@ -14,19 +14,19 @@ namespace EddiDataDefinitions
     public class Cargo : INotifyPropertyChanged
     {
         // The commodity name
-        private string _commodity;
-        public string commodity
+        private string _name;
+        public string name
         {
             get
             {
-                return _commodity;
+                return _name;
             }
             set
             {
-                if (_commodity != value)
+                if (_name != value)
                 {
-                    _commodity = value;
-                    NotifyPropertyChanged("commodity");
+                    _name = value;
+                    NotifyPropertyChanged("name");
                 }
             }
         }
@@ -68,19 +68,19 @@ namespace EddiDataDefinitions
         }
 
         // The number of items
-        private int _total;
-        public int total
+        private int _amount;
+        public int amount
         {
             get
             {
-                return _total;
+                return _amount;
             }
             set
             {
-                if (_total != value)
+                if (_amount != value)
                 {
-                    _total = value;
-                    NotifyPropertyChanged("total");
+                    _amount = value;
+                    NotifyPropertyChanged("amount");
                 }
             }
         }
@@ -120,20 +120,23 @@ namespace EddiDataDefinitions
                 }
             }
         }
+        public Commodity commodity { get; set; }
 
         public List<HaulageAmount> haulageamounts { get; set; }
 
         public Cargo()
         {
+            Commodity commodity = new Commodity();
             haulageamounts = new List<HaulageAmount>();
         }
 
-        public Cargo(string commodity, string category, long price, int total, int stolen, int haulage, List<HaulageAmount> haulageamounts)
+        public Cargo(string name, string category, Commodity commodity, long price, int amount, int stolen, int haulage, List<HaulageAmount> haulageamounts)
         {
+            this.name = name;
             this.commodity = commodity;
             this.category = category;
             this.price = price;
-            this.total = total;
+            this.amount = amount;
             this.stolen = stolen;
             this.haulage = haulage;
             haulageamounts = new List<HaulageAmount>();

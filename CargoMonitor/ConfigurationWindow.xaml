@@ -13,7 +13,7 @@
         <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated."></TextBlock>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="cargoData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="cargoUpdated">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Path=commodity}">
+                <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Path=name}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -72,7 +72,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="Total" Width="80" IsReadOnly="True" Binding="{Binding Path=total}">
+                <utility:DataGridNumericColumn Header="Total" Width="80" IsReadOnly="True" Binding="{Binding Path=amount}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

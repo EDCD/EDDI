@@ -27,7 +27,7 @@ namespace EddiCargoMonitor
             VARIABLES.Add("blackmarket", "True if the commodity was sold to a black market");
         }
 
-        public string commodity { get; private set; }
+        public Commodity commodity { get; private set; }
         public int amount { get; private set; }
         public long price { get; private set; }
         public long profit { get; private set; }
@@ -35,7 +35,7 @@ namespace EddiCargoMonitor
         public bool stolen { get; private set; }
         public bool blackmarket { get; private set; }
 
-        public CommoditySoldEvent(DateTime timestamp, string commodity, int amount, long price, long profit, bool illegal, bool stolen, bool blackmarket) : base(timestamp, NAME)
+        public CommoditySoldEvent(DateTime timestamp, Commodity commodity, int amount, long price, long profit, bool illegal, bool stolen, bool blackmarket) : base(timestamp, NAME)
         {
             this.commodity = commodity;
             this.amount = amount;

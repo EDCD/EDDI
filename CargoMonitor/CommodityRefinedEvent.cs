@@ -22,9 +22,9 @@ namespace EddiCargoMonitor
         }
 
         [JsonProperty("commodity")]
-        public string commodity { get; private set; }
+        public Commodity commodity { get; private set; }
 
-        public CommodityRefinedEvent(DateTime timestamp, string commodity) : base(timestamp, NAME)
+        public CommodityRefinedEvent(DateTime timestamp, Commodity commodity) : base(timestamp, NAME)
         {
             this.commodity = commodity;
         }
