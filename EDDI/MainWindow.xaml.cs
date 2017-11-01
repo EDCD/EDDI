@@ -222,6 +222,11 @@ namespace Eddi
             githubIssueButton.Content = I18N.GetString("report_issue");
             accessBetaText.Text = I18N.GetString("access_beta");
             cmdDetailsTab.Header = I18N.GetString("tab_cmd_details_header");
+            eddi2Text.Text = I18N.GetString("tab_cmd_par1");
+            eddi3Text.Text = I18N.GetString("tab_cmd_par2");
+            eddiHomeSystemLabel.Content = I18N.GetString("tab_cmd_system");
+            eddiHomeStationLabel.Content = I18N.GetString("tab_cmd_station");
+            eddiInsuranceLabel.Content = I18N.GetString("tab_cmd_insurance");
         }
 
         // Handle changes to the eddi tab

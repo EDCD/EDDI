@@ -227,7 +227,7 @@
     },
     "wiki_hyperlink": {
       "en": "project wiki",
-      "fr": "wiki du projet"
+      "fr": "wiki du projet (anglais)"
     },
     "verbose_logging": {
       "en": "Enable verbose logging (only if you have been requested to do so by EDDI developers)",
@@ -248,6 +248,26 @@
     "tab_cmd_details_header": {
       "en": "Commander Details",
       "fr": "Détails du Commandant"
+    },
+    "tab_cmd_par1": {
+      "en": "You can provide the name of a particular system you consider home, and also a station inside that system. If you do then the information about this system and station will be made available to EDDI's responders.",
+      "fr": "Vous pouvez indiquer le nom d'un système particulier que vous considérez comme principal, ainsi qu'une station dans ce système. Si vous le faites, leurs informations seras disponible pour les répondeurs d'EDDI."
+    },
+    "tab_cmd_par2": {
+      "en": "Your insurance excess is the % of your ship's value you have to pay if your ship is destroyed. This will usually be 5 but could be less if you are an early backer of Elite with alpha backers being 2.5 and beta backers being 3.75. If you aren't sure then leave it at 5",
+      "fr": "Votre excès d'assurance est le pourcentage de la valeur de votre vaisseau à payé s'il est détruit. C'est en général 5 mais peut être moins si vous êtes un supporter anticipé d'Elite sachant que les supporters alpha sont à 2.5 et beta à 3.75. Si vous n'êtes pas sur, laissez 5"
+    },
+    "tab_cmd_system": {
+      "en": "Home system:",
+      "fr": "Système principal:"
+    },
+    "tab_cmd_station": {
+      "en": "Home station:",
+      "fr": "Station principal:"
+    },
+    "tab_cmd_insurance": {
+      "en": "Insurance excess (%):",
+      "fr": "Excès de l'assurance (%):"
     }
   }
 }
