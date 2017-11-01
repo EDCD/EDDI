@@ -239,7 +239,7 @@
     },
     "report_issue": {
       "en": "Report an Issue",
-      "fr": "Signaler un Problème"
+      "fr": "Signaler Problème"
     },
     "access_beta": {
       "en": "Access beta versions of EDDI",
@@ -356,6 +356,10 @@
     "tts_tab_test_desc": {
       "en": "You can test how the voice will sound below. Note that if the voice is incompatible it will use the default voice instead.",
       "fr": "Vous pouvez tester la voix ci-dessous. À noter que si la voix est incompatible, la voix par défaut seras utilisée."
+    },
+    "choose_lang_label": {
+      "en": "Choose EDDI's language (needs reboot):",
+      "fr":  "Choisissez la langue d'EDDI (redémarrage requis):"
     }
   }
 }

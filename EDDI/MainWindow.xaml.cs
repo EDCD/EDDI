@@ -38,7 +38,6 @@ namespace Eddi
         public MainWindow(bool fromVA = false)
         {
             InitializeComponent();
-            I18NForComponents();
             this.fromVA = fromVA;
 
             // Start the EDDI instance
@@ -202,7 +201,8 @@ namespace Eddi
                 item.Content = skeleton;
                 tabControl.Items.Add(item);
             }
-
+            chooseLanguageDropDown.ItemsSource = I18N.GetAvailableLangs();
+            chooseLanguageDropDown.SelectedItem = I18N.GetLang();
             EDDI.Instance.Start();
         }
 
@@ -252,6 +252,13 @@ namespace Eddi
             ICAODesc.Text = I18N.GetString("tts_tab_icao_desc");
             enableIcaoLabel.Content = I18N.GetString("tts_tab_icao_label");
             ttsTestDesc.Text = I18N.GetString("tts_tab_test_desc");
+            chooseLanguageText.Text = I18N.GetString("choose_lang_label");
+        }
+
+        private void languageUpdate(object sender, SelectionChangedEventArgs e)
+        {
+            I18N.SetLang(chooseLanguageDropDown.SelectedValue.ToString());
+            I18NForComponents();
         }
 
         // Handle changes to the eddi tab
