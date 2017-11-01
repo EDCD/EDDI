@@ -72,7 +72,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="Total" Width="80" IsReadOnly="True" Binding="{Binding Path=amount}">
+                <utility:DataGridNumericColumn Header="Other" Width="80" IsReadOnly="True" Binding="{Binding Path=other}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

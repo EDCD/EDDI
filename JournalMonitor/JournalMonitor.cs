@@ -1397,7 +1397,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("BuyPrice", out val);
-                                long price = (long)val;
+                                int price = (int)val;
                                 events.Add(new CommodityPurchasedEvent(timestamp, commodity, amount, price) { raw = line });
                                 handled = true;
                                 break;
@@ -1650,7 +1650,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("BuyPrice", out val);
-                                long price = (long)val;
+                                int price = (int)val;
                                 events.Add(new LimpetPurchasedEvent(timestamp, amount, price) { raw = line });
                                 handled = true;
                                 break;
@@ -2274,17 +2274,12 @@ namespace EddiJournalMonitor
                                     List<object> inventoryJson = (List<object>)val;
                                     foreach (Dictionary<string, object> cargoJson in inventoryJson)
                                     {
-                                        Cargo cargo = new Cargo();
-                                        cargo.commodity = CommodityDefinitions.FromName(getString(cargoJson, "Name"));
-                                        cargo.name = cargo.commodity.name;
-                                        cargo.category = cargo.commodity.category;
-                                        cargo.amount = getInt(cargoJson, "Count");
-                                        if (cargo.commodity.avgprice != null)
-                                        {
-                                            cargo.price = (long)cargo.commodity.avgprice;
-                                        }
+                                        Commodity commodity = CommodityDefinitions.FromName(getString(cargoJson, "Name"));
+                                        int amount = getInt(cargoJson, "Count");
+                                        Cargo cargo = new Cargo(commodity, commodity.avgprice ?? 0, amount);
                                         cargo.haulage = 0;
                                         cargo.stolen = 0;
+                                        cargo.other = amount;
                                         inventory.Add(cargo);
                                     }
                                 }

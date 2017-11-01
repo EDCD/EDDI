@@ -23,9 +23,9 @@ namespace EddiCargoMonitor
         }
 
         public int amount { get; private set; }
-        public long price { get; private set; }
+        public int price { get; private set; }
 
-        public LimpetPurchasedEvent(DateTime timestamp, int amount, long price) : base(timestamp, NAME)
+        public LimpetPurchasedEvent(DateTime timestamp, int amount, int price) : base(timestamp, NAME)
         {
             this.amount = amount;
             this.price = price;
