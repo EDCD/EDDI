@@ -57,6 +57,7 @@ namespace Eddi
             // Use invariant culture to ensure that we use . rather than , for our separator when writing out decimals
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+            InitI18N();
         }
 
         private static readonly object instanceLock = new object();
@@ -76,6 +77,21 @@ namespace Eddi
                     }
                 }
                 return instance;
+            }
+        }
+
+        private static void InitI18N()
+        {
+            EDDIConfiguration conf = EDDIConfiguration.FromFile();
+            if (conf.Lang == null)
+            {
+                I18N.FallbackLang();
+                conf.Lang = I18N.GetLang();
+                conf.ToFile();
+            }
+            else
+            {
+                I18N.SetLang(conf.Lang);
             }
         }
 

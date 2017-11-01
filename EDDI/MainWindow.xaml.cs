@@ -38,7 +38,6 @@ namespace Eddi
         public MainWindow(bool fromVA = false)
         {
             InitializeComponent();
-            InitLanguage();
             this.fromVA = fromVA;
 
             // Start the EDDI instance
@@ -202,25 +201,12 @@ namespace Eddi
                 item.Content = skeleton;
                 tabControl.Items.Add(item);
             }
-            EDDI.Instance.Start();
-        }
-
-        private void InitLanguage()
-        {
             chooseLanguageDropDown.ItemsSource = I18N.GetAvailableLangs();
-            EDDIConfiguration conf = EDDIConfiguration.FromFile();
-            if (conf.Lang == null)
-            {
-                I18N.FallbackLang();
-                conf.Lang = I18N.GetLang();
-                conf.ToFile();
-            }
-            else
-            {
-                I18N.SetLang(conf.Lang);
-            }
             chooseLanguageDropDown.SelectedItem = I18N.GetLang();
+            // Calling I18NForComponents() because changing SelectedItem manually doesn't
             I18NForComponents();
+
+            EDDI.Instance.Start();
         }
 
         private void I18NForComponents()
