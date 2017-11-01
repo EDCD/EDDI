@@ -358,8 +358,8 @@
       "fr": "Vous pouvez tester la voix ci-dessous. À noter que si la voix est incompatible, la voix par défaut seras utilisée."
     },
     "choose_lang_label": {
-      "en": "Choose EDDI's language (needs reboot):",
-      "fr":  "Choisissez la langue d'EDDI (redémarrage requis):"
+      "en": "Choose EDDI's language (will restart EDDI):",
+      "fr":  "Choisissez la langue d'EDDI (va relancer EDDI):"
     }
   }
 }

@@ -63,7 +63,7 @@
                         <TextBlock x:Name="accessBetaText" Grid.Row="2" Grid.Column="0" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
                         <CheckBox x:Name="eddiBetaProgramme" Grid.Row="2" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
                         <TextBlock x:Name="chooseLanguageText" Grid.Row="3" Grid.Column="0" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top"/>
-                        <ComboBox x:Name="chooseLanguageDropDown" Grid.Row="3" Grid.Column="1" Margin="5" VerticalAlignment="Center" SelectionChanged="languageUpdate"/>
+                        <ComboBox x:Name="chooseLanguageDropDown" Grid.Row="3" Grid.Column="1" Margin="5" VerticalAlignment="Center"/>
                     </Grid>
                     <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" FontSize="20" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center" TextAlignment="Center"/>
                 </DockPanel>

@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
+using System.Reflection;
 using System.Speech.Synthesis;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -201,9 +202,19 @@ namespace Eddi
                 item.Content = skeleton;
                 tabControl.Items.Add(item);
             }
+
             chooseLanguageDropDown.ItemsSource = I18N.GetAvailableLangs();
             chooseLanguageDropDown.SelectedItem = I18N.GetLang();
-            // Calling I18NForComponents() because changing SelectedItem manually doesn't
+            // Setting the handler there to avoid EDDI to restart indefinitely
+            chooseLanguageDropDown.SelectionChanged += (sender, e) =>
+            {
+                EDDIConfiguration conf = EDDIConfiguration.FromFile();
+                conf.Lang = chooseLanguageDropDown.SelectedValue.ToString();
+                conf.ToFile();
+                // Restarting EDDI
+                Process.Start(Application.ResourceAssembly.Location);
+                Application.Current.Shutdown();
+            };
             I18NForComponents();
 
             EDDI.Instance.Start();
@@ -256,13 +267,6 @@ namespace Eddi
             enableIcaoLabel.Content = I18N.GetString("tts_tab_icao_label");
             ttsTestDesc.Text = I18N.GetString("tts_tab_test_desc");
             chooseLanguageText.Text = I18N.GetString("choose_lang_label");
-        }
-
-        private void languageUpdate(object sender, SelectionChangedEventArgs e)
-        {
-            EDDIConfiguration conf = EDDIConfiguration.FromFile();
-            conf.Lang = chooseLanguageDropDown.SelectedValue.ToString();
-            conf.ToFile();
         }
 
         // Handle changes to the eddi tab
