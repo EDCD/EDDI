@@ -92,9 +92,9 @@
                     </Grid>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Frontier API">
+            <TabItem x:Name="frontierAPITab">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="Frontier has an API that allows EDDI to obtain information on your ships, the current station's market, and various other items.  This data is not available elsewhere.  If you want EDDI to obtain and use this information you need to enter your Frontier in-game email address and password below." VerticalAlignment="Top"/>
+                    <TextBlock x:Name="frontierAPITabDesc" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
                     <Grid DockPanel.Dock="Bottom">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -103,8 +103,8 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock x:Name ="companionAppResetText" Visibility="Visible" Grid.Row="0" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" Text="If you are experiencing problems with your connection you can reset it and log back in again, which can clear the problem"/>
-                        <Button x:Name="companionAppResetButton" Grid.Row="1" Grid.Column="0" Content="Reset" Margin="5" Click="companionAppResetClicked"/>
+                        <TextBlock x:Name="companionAppResetText" Visibility="Visible" Grid.Row="0" Grid.Column="0" Margin="5" Grid.ColumnSpan="2"/>
+                        <Button x:Name="companionAppResetButton" Grid.Row="1" Grid.Column="0" Margin="5" Click="companionAppResetClicked"/>
                     </Grid>
                     <Grid DockPanel.Dock="Top">
                         <Grid.ColumnDefinitions>
@@ -117,13 +117,13 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock x:Name ="companionAppText" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5"  Text="You do not have a connection to the Frontier app at this time.  Please enter your Elite: Dangerous email address and password below" VerticalAlignment="Top"/>
-                        <Label x:Name ="companionAppEmailLabel" Grid.Row="1" Grid.Column="0" Margin="5" Content="Email:"/>
+                        <TextBlock x:Name ="companionAppText" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
+                        <Label x:Name ="companionAppEmailLabel" Grid.Row="1" Grid.Column="0" Margin="5"/>
                         <TextBox x:Name ="companionAppEmailText" Grid.Row="1" Grid.Column="1" Margin="5" />
-                        <Label x:Name ="companionAppPasswordLabel" Grid.Row="2" Grid.Column="0" Margin="5" Content="Password:"/>
-                        <PasswordBox x:Name ="companionAppPasswordText" Grid.Row="2" Grid.Column="1" Margin="5" />
-                        <Button  x:Name="companionAppNextButton" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Next" Margin="5" Click="companionAppNextClicked"/>
-                        <Label x:Name ="companionAppCodeLabel" Visibility="Hidden" Grid.Row="1" Grid.Column="0" Margin="5" Content="Code:"/>
+                        <Label x:Name ="companionAppPasswordLabel" Grid.Row="2" Grid.Column="0" Margin="5"/>
+                        <PasswordBox x:Name ="companionAppPasswordText" Grid.Row="2" Grid.Column="1" Margin="5"/>
+                        <Button  x:Name="companionAppNextButton" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Click="companionAppNextClicked"/>
+                        <Label x:Name ="companionAppCodeLabel" Visibility="Hidden" Grid.Row="1" Grid.Column="0" Margin="5"/>
                         <TextBox x:Name ="companionAppCodeText" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Margin="5" />
                     </Grid>
                 </DockPanel>

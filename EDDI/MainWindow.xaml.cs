@@ -227,6 +227,15 @@ namespace Eddi
             eddiHomeSystemLabel.Content = I18N.GetString("tab_cmd_system");
             eddiHomeStationLabel.Content = I18N.GetString("tab_cmd_station");
             eddiInsuranceLabel.Content = I18N.GetString("tab_cmd_insurance");
+            frontierAPITab.Header = I18N.GetString("tab_frontier_header");
+            frontierAPITabDesc.Text = I18N.GetString("tab_frontier_desc");
+            companionAppResetText.Text = I18N.GetString("tab_frontier_reset_desc");
+            companionAppResetButton.Content = I18N.GetString("next");
+            companionAppText.Text = I18N.GetString("frontier_api_no_logins");
+            companionAppEmailLabel.Content = I18N.GetString("label_email");
+            companionAppPasswordLabel.Content = I18N.GetString("label_password");
+            companionAppNextButton.Content = I18N.GetString("next");
+            companionAppCodeLabel.Content = I18N.GetString("label_code");
         }
 
         // Handle changes to the eddi tab

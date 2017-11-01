@@ -268,6 +268,30 @@
     "tab_cmd_insurance": {
       "en": "Insurance excess (%):",
       "fr": "Excès de l'assurance (%):"
+    },
+    "tab_frontier_header": {
+      "en": "Frontier API",
+      "fr": "API Frontier"
+    },
+    "tab_frontier_desc": {
+      "en": "Frontier has an API that allows EDDI to obtain information on your ships, the current station's market, and various other items. This data is not available elsewhere. If you want EDDI to obtain and use this information you need to enter your Frontier in-game email address and password below.",
+      "fr": "Frontier à une API permettant à EDDI d'obtenir des informations sur votre vaisseau, le marché de la station actuelle, et divers autres choses. Ces données ne sont pas disponibles ailleurs. Si vous voulez qu'EDDI puisse obternir et utiliser ces informations, vous devez entrez votre adresse mail et mot de passe Frontier ci-dessous."
+    },
+    "tab_frontier_reset_desc": {
+      "en": "If you are experiencing problems with your connection you can reset it and log back in again, which can clear the problem",
+      "fr": "Si vous rencontrez des problèmes avec votre connexion, vous pouvez la réinitialiser et vous reconnectez, ce qui peut résoudre le problème"
+    },
+    "label_email": {
+      "en": "Email:",
+      "fr": "Email:"
+    },
+    "label_password": {
+      "en": "Password:",
+      "fr": "Mot de Passe:"
+    },
+    "label_code": {
+      "en": "Code:",
+      "fr": "Code:"
     }
   }
 }
