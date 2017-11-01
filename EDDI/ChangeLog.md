@@ -9,6 +9,9 @@
     * Add SpeechRate() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Add SpeechVolume() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Fixed a bug that was preventing the Play() function from working properly
+    * Script changes
+      * 'Entered signal source' 
+        * Throughly re-written to better report both human and Thargoid signal sources
 
 ### 2.4.2
   * Core
