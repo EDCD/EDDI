@@ -353,6 +353,7 @@ namespace EddiSpeechService
 
                         synth.SetOutputToWaveStream(stream);
 
+                        // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
                         if (speech.Contains("<"))
                         {
                             Logging.Debug("Obtaining best guess culture");
