@@ -236,6 +236,22 @@ namespace Eddi
             companionAppPasswordLabel.Content = I18N.GetString("label_password");
             companionAppNextButton.Content = I18N.GetString("next");
             companionAppCodeLabel.Content = I18N.GetString("label_code");
+            ttsTab.Header = I18N.GetString("tab_tts_header");
+            ttsText.Text = I18N.GetString("tab_tts_desc");
+            ttsVoiceLabel.Content = I18N.GetString("tab_tts_voice_label");
+            ttsVolumeLabel.Content = I18N.GetString("tab_tts_volume_label");
+            ttsRateLabel.Content = I18N.GetString("tab_tts_rate_label");
+            ttsEffectsLevelLabel.Content = I18N.GetString("tab_tts_level_label");
+            ttsDistortLabel.Content = I18N.GetString("tab_tts_distort_label");
+            ttsTestShipLabel.Content = I18N.GetString("tab_tts_test_ship_label");
+            ttsTestButton.Content = I18N.GetString("tab_tts_test_button");
+            ttsTestDamagedButton.Content = I18N.GetString("tab_tts_test_damaged_button");
+            ttsPhoneticSpeechDesc.Text = I18N.GetString("tab_tts_phonetic_speech_desc");
+            disableSsmltLabel.Content = I18N.GetString("tts_tab_disable_phonetic_speech_label");
+            SSmlnote.Content = I18N.GetString("tts_tab_disable_phonetic_speech_note");
+            ICAODesc.Text = I18N.GetString("tts_tab_icao_desc");
+            enableIcaoLabel.Content = I18N.GetString("tts_tab_icao_label");
+            ttsTestDesc.Text = I18N.GetString("tts_tab_test_desc");
         }
 
         // Handle changes to the eddi tab
