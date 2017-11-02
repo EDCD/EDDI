@@ -323,7 +323,7 @@ L'usage courant de ceci est de fournir de plus amples informations sur un matér
 	
 ### SuperpowerDetails()
 
-Cette fonction fournira des informations complètes pour une superpuissance fonction de son nom.
+Cette fonction fournira des informations complètes pour une superpuissance en fonction de son nom.
 
 SuperpowerDetails() utilise pour seul argument le nom de la superpuissance.
 
@@ -331,7 +331,7 @@ SuperpowerDetails() utilise pour seul argument le nom de la superpuissance.
 
 ### StateDetails()
 
-Cette fonction fournira des informations complètes pour un état fonction de son nom.
+Cette fonction fournira des informations complètes pour un état en fonction de son nom.
 
 StateDetails() prend un seul argument de l'état pour lequel vous voulez plus d'informations.
 
@@ -339,31 +339,27 @@ A l'heure actuelle, cela n'a pas beaucoup d'utilité car l'objet state ne contie
 
 ### EconomyDetails()
 
-This function will provide full information for an economy given its name.
+Cette fonction fournira des informations complètes pour une économie en fonction de son nom.
 
-EconomyDetails() takes a single argument of the economy for which you want more information.
+EconomyDetails() prend pour seul argument l'économie pour laquelle vous voulez plus d'informations.
 
-At current this does not have a lot of use as the economy object only contains its name, but expect it to be expanded in future.
+A l'heure actuelle, cela n'a pas beaucoup d'utilité car l'objet state ne contient que son nom, mais on peut espérer qu'il soit développé à l'avenir.
 
 ### GovernmentDetails()
 
-Voir ci dessus...
+Cette fonction fournira des informations complètes pour un gouvernement en fonction de son nom.
 
-This function will provide full information for a government given its name.
+GovernmentDetails() prend pour seul argument le gouvernement pour lequel vous voulez plus d'informations.
 
-GovernmentDetails() takes a single argument of the government for which you want more information.
-
-At current this does not have a lot of use as the government object only contains its name, but expect it to be expanded in future.
+A l'heure actuelle, cela n'a pas beaucoup d'utilité car l'objet state ne contient que son nom, mais on peut espérer qu'il soit développé à l'avenir.
 
 ### SecurityLevelDetails()
 
-Voir ci dessus...
+Cette fonction fournira des informations complètes pour un niveau de sécurité en fonction de son nom.
 
-This function will provide full information for a security level given its name.
+SecurityLevelDetails() prend pour seul argument le niveau de sécurité pour lequel vous voulez plus d'informations.
 
-SecurityLevelDetails() takes a single argument of the security level for which you want more information.
-
-At current this does not have a lot of use as the security level object only contains its name, but expect it to be expanded in future.
+A l'heure actuelle, cela n'a pas beaucoup d'utilité car l'objet state ne contient que son nom, mais on peut espérer qu'il soit développé à l'avenir.
 
 
 ### Log()
