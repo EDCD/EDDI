@@ -157,6 +157,7 @@ namespace EddiDataDefinitions
 
         public void NotifyPropertyChanged(string propName)
         {
+            this.amount = this.stolen + this.haulage + this.other;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
