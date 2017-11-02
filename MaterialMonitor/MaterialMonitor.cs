@@ -32,7 +32,7 @@ namespace EddiMaterialMonitor
 
         public string MonitorName()
         {
-            return "Material monitor";
+            return I18N.GetString("material_monitor_name");
         }
 
         public string MonitorVersion()
@@ -42,7 +42,7 @@ namespace EddiMaterialMonitor
 
         public string MonitorDescription()
         {
-            return "Track the amount of materials and generate events when limits are reached.";
+            return I18N.GetString("material_monitor_desc");
         }
 
         public bool IsRequired()

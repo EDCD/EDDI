@@ -25,6 +25,14 @@
       "en": "Track information on your cargo.",
       "fr": "Receuil des informations sur votre soute."
     },
+    "material_monitor_name": {
+      "en": "Material monitor",
+      "fr": "Moniteur Matériel"
+    },
+    "material_monitor_desc": {
+      "en": "Track the amount of materials and generate events when limits are reached.",
+      "fr": "Receuil le nombre de matériaux et génère des événements lorsque les limites sont atteintes."
+    },
     "change_affect_va": {
       "en": "Any changes made here will take effect automatically in VoiceAttack.  You can close this window when you have finished.",
       "fr": "Chaque changement effectués ici prendra automatiquement effet dans VoiceAttack. Vous pouvez fermer cette fenêtre une fois terminé."
@@ -367,771 +375,771 @@
     },
     "choose_lang_label": {
       "en": "Choose EDDI's language (will restart EDDI):",
-      "fr":  "Choisissez la langue d'EDDI (va relancer EDDI):"
+      "fr": "Choisissez la langue d'EDDI (va relancer EDDI):"
     },
-	"trans_andahalf": {
-	   "en": " and a half ",
-	   "fr": " et demi "
-	},
-	"trans_around": {
-	  "en": "around ",
-	  "fr": "autour de "
-	},
-	"trans_nearly": {
-	  "en": "nearly ",
-	  "fr": "près de "
-	},
-	"trans_onthewayto": {
-	   "en": "on the way to ",
-	   "fr": "vers les "
-	},
-	"trans_wellover": {
-	   "en": "well over ",
-	   "fr": "largement au delà de "
-	},
-	"trans_justover": {
-	  "en": "just over ",
-	  "fr": "juste au dessus de "
-	},
-	"trans_over": {
-	  "en": "over ",
-	  "fr": "au-delà de "
-	},
-	"trans_thousand": {
-	  "en": "thousand",
-	  "fr": "Millier"
-	},
-	"trans_million": {
-	  "en": "million",
-	  "fr": "million"
-	},
-	"trans_billion": {
-	  "en": "billion",
-	  "fr": "milliard"
-	},
-	"trans_trillion": {
-	  "en": "trillion",
-	  "fr": "trillion"
-	},
-	"trans_quadrillion": {
-	  "en": "quadrillion",
-	  "fr": "quadrillion"
-	},
-	"trans_zero": {
-	   "en": "zero",
-	   "fr": "zéro"
-	},
-	"trans_plus": {
-	   "en": " plus ",
-	   "fr": " plus "
-	},
-	"trans_minus": {
-	   "en": " minus ",
-	   "fr": " moins "
-	},
-	"trans_point": {
-	   "en": " point ",
-	   "fr": " point "
-	},
-	"trans_dash": {
-	   "en": " dash ",
-	   "fr": " tiret "
-	},
-	"phonetic_archon": {
-	   "en": "ˈɑːkɒn",
-	   "fr": "aʁkɔ̃ "
-	},
-	"phonetic_delaine": {
-	   "en": "dəˈleɪn",
-	   "fr": "delɛn"
-	},
-	"phonetic_aisling": {
-	   "en": "ˈæʃlɪŋ",
-	   "fr": "ɛsliŋ"
-	},
-	"phonetic_duval": {
-	   "en": "duːˈvæl",
-	   "fr": "dyval"
-	},
-	"phonetic_arissa": {
-	   "en": "əˈrɪsə",
-	   "fr": "aʁisa"
-	},
-	"phonetic_lavigny": {
-	   "en": "ləˈviːniː",
-	   "fr": "laviɲi"
-	},
-	"phonetic_denton": {
-	   "en": "ˈdɛntən",
-	   "fr": "ˈdɛntən"
-	},
-	"phonetic_patreus": {
-	   "en": "pətˈreɪəs",
-	   "fr": "patʁeys"
-	},
-	"phonetic_edmund": {
-	   "en": "ˈɛdmənd",
-	   "fr": "ɛdmund"
-	},
-	"phonetic_mahon": {
-	   "en": "ˈmɑːn",
-	   "fr": "maɔ̃ "
-	},
-	"phonetic_felicia": {
-	   "en": "fəˈlɪʃɪə",
-	   "fr": "felisja"
-	},
-	"phonetic_winters": {
-	   "en": "ˈwɪntəs",
-	   "fr": "ˈwɪntəs"
-	},
-	"phonetic_pranav": {
-	   "en": "pɜːnʌv",
-	   "fr": "pʁanav"
-	},
-	"phonetic_antal": {
-	   "en": "ˌænˈtæl",
-	   "fr": "a~tal"
-	},
-	"phonetic_zachary": {
-	   "en": "ˈzækərɪ",
-	   "fr": "zakaʁi"
-	},
-	"phonetic_hudson": {
-	   "en": "ˈhʌdsən",
-	   "fr": "ydsɔ~"
-	},
-	"phonetic_zemina": {
-	   "en": "zəˈmiːnə",
-	   "fr": "zəˈmiːnə"
-	},
-	"phonetic_torval": {
-	   "en": "tɔːˈvæl",
-	   "fr": "tɔʁval"
-	},
-	"phonetic_li": {
-	   "en": "liː",
-	   "fr": "li:"
-	},
-	"phonetic_yong": {
-	   "en": "ˈjɒŋ",
-	   "fr": "jɔ~ɡ"
-	},
-	"phonetic_rui": {
-	   "en": "reɪ",
-	   "fr": "ʁɥi"
-	},
-	"phonetic_yuri": {
-	   "en": "jʊəˈriː",
-	   "fr": "juʁi"
-	},
-	"phonetic_grom": {
-	   "en": "ˈɡrɒm",
-	   "fr": "ɡʁɔm"
-	},
-	"phonetic_achenar": {
-	   "en": "ˈakɜːnɑ",
-	   "fr": "akenaʁ"
-	},
-	"phonetic_acihault": {
-	   "en": "əˈsɪhɔːt",
-	   "fr": "asiol"
-	},
-	"phonetic_adan": {
-	   "en": "ˈædən",
-	   "fr": "adɑ~"
-	},
-	"phonetic_alcyone": {
-	   "en": "ælˈsaɪəniː",
-	   "fr": "alsjɔn"
-	},
-	"phonetic_aldebaran": {
-	   "en": "alˈdɛbəɹən",
-	   "fr": "aldebaʁɑ̃"
-	},
-	"phonetic_anemoi": {
-	   "en": "æˈniːmɔɪ",
-	   "fr": "æˈniːmɔɪ"
-	},
-	"phonetic_apoyota": {
-	   "en": "æˈpɔɪəʊtə",
-	   "fr": "apwajɔta"
-	},
-	"phonetic_arque": {
-	   "en": "ɑːrk",
-	   "fr": "aʁk"
-	},
-	"phonetic_asterope": {
-	   "en": "əˈstɛroʊpiː",
-	   "fr": "asteʁɔp"
-	},
-	"phonetic_atlas": {
-	   "en": "ˈætləs",
-	   "fr": "atlas"
-	},
-	"phonetic_aulin": {
-	   "en": "ˈɔːlɪn",
-	   "fr": "olɛ~"
-	},
-	"phonetic_bunda": {
-	   "en": "ˈbuːndə",
-	   "fr": "bynda"
-	},
-	"phonetic_cayutorme": {
-	   "en": "ˈkaɪətɔːm",
-	   "fr": "kɛjytɔʁm"
-	},
-	"phonetic_celaeno": {
-	   "en": "sᵻˈliːnoʊ",
-	   "fr": "səlaeno"
-	},
-	"phonetic_ceos": {
-	   "en": "ˈkeɪɒs",
-	   "fr": "seos"
-	},
-	"phonetic_cygnus": {
-	   "en": "ˈsɪɡnəs",
-	   "fr": "siɲy"
-	},
-	"phonetic_deciat": {
-	   "en": "ˈdɛsiːæt",
-	   "fr": "desja"
-	},
-	"phonetic_diso": {
-	   "en": "ˈdiːsəʊ",
-	   "fr": "dizo"
-	},
-	"phonetic_djiwal": {
-	   "en": "ˈdʒɪwæl",
-	   "fr": "dʒiwal"
-	},
-	"phonetic_dvorsi": {
-	   "en": "ˈdvɔːsiː",
-	   "fr": "dvɔʁsi"
-	},
-	"phonetic_electra": {
-	   "en": "ᵻˈlɛktrə",
-	   "fr": "elɛktʁa"
-	},
-	"phonetic_eravate": {
-	   "en": "ɛrəˈvɑːtˌeɪ",
-	   "fr": "eʁavat"
-	},
-	"phonetic_eranin": {
-	   "en": "ˈɛrənin",
-	   "fr": "eʁanɛ̃"
-	},
-	"phonetic_frigaha": {
-	   "en": "frɪɡˈɑːhɑːr",
-	   "fr": "fʁiɡaa"
-	},
-	"phonetic_grandmort": {
-	   "en": "ˈɡʀɒdˌmɔʀ",
-	   "fr": "ɡʁɑ̃dmɔʁ"
-	},
-	"phonetic_hecate": {
-	   "en": "ˈhɛkətɪ",
-	   "fr": "ekat"
-	},
-	"phonetic_hotas": {
-	   "en": "həʊtæs",
-	   "fr": "ɔtas"
-	},
-	"phonetic_isleta": {
-	   "en": "aɪlˈetə",
-	   "fr": "isleta"
-	},
-	"phonetic_ibootis_i": {
-	   "en": "aɪ",
-	   "fr": "i"
-	},
-	"phonetic_ibootis_bootis": {
-	   "en": "bəʊˈəʊtɪs",
-	   "fr": "butis"
-	},
-	"phonetic_lave": {
-	   "en": "leɪv",
-	   "fr": "lav"
-	},
-	"phonetic_kaiabajaja_kaia": {
-	   "en": "ˈkaɪə",
-	   "fr": "kɛa"
-	},
-	"phonetic_kaiabajaja_bajaja": {
-	   "en": "ˈbɑːhɑːhɑː",
-	   "fr": "baʒaʒa"
-	},
-	"phonetic_kigana": {
-	   "en": "kiːˈɡɑːnə",
-	   "fr": "kiɡana"
-	},
-	"phonetic_kini": {
-	   "en": "ˈkiːniː",
-	   "fr": "kini"
-	},
-	"phonetic_kremainn": {
-	   "en": "krəˈmeɪn",
-	   "fr": "kʁemɛ̃n"
-	},
-	"phonetic_laksak": {
-	   "en": "ˈlæks.æk",
-	   "fr": "laksak"
-	},
-	"phonetic_leesti": {
-	   "en": "ˈliːstiː",
-	   "fr": "listi"
-	},
-	"phonetic_leucos": {
-	   "en": "ˈluːkɒs",
-	   "fr": "løko"
-	},
-	"phonetic_luytens": {
-	   "en": "ˈlaʊ.təns",
-	   "fr": "ˈlaʊ.təns"
-	},
-	"phonetic_star": {
-	   "en": "stɑː",
-	   "fr": "stɑː"
-	},
-	"phonetic_maia": {
-	   "en": "ˈmaɪ.ə",
-	   "fr": "Maïa"
-	},
-	"phonetic_mata": {
-	   "en": "ˈmɑː.tʌ",
-	   "fr": "mata"
-	},
-	"phonetic_merope": {
-	   "en": "ˈmɛrəpiː",
-	   "fr": "meʁɔp"
-	},
-	"phonetic_mukoji_mu": {
-	   "en": "mjuː",
-	   "fr": "my"
-	},
-	"phonetic_mukoji_koji": {
-	   "en": "ˈkəʊdʒiː",
-	   "fr": "kɔʒi"
-	},
-	"phonetic_nuenets": {
-	   "en": "ˈnjuːənɛts",
-	   "fr": "nɥenɛ"
-	},
-	"phonetic_okinura": {
-	   "en": "ɒkɪˈnjʊrə",
-	   "fr": "ɔkinuʁa"
-	},
-	"phonetic_orrere": {
-	   "en": "ɒrˈɪər",
-	   "fr": "ɔʁeʁe"
-	},
-	"phonetic_paiszu_pai": {
-	   "en": "paɪ",
-	   "fr": "pɛ"
-	},
-	"phonetic_paiszu_szu": {
-	   "en": "ʃuː",
-	   "fr": "szu"
-	},
-	"phonetic_pleione": {
-	   "en": "ˈplaɪəniː",
-	   "fr": "plejɔn"
-	},
-	"phonetic_procyon": {
-	   "en": "ˈprəʊˌsɪən",
-	   "fr": "pʁɔsjɔ̃"
-	},
-	"phonetic_potriti": {
-	   "en": "pəˈtriːtɪ",
-	   "fr": "pɔtʁiti"
-	},
-	"phonetic_reorte": {
-	   "en": "ˌriːˈɔːt",
-	   "fr": "ʁeɔʁt"
-	},
-	"phonetic_sakti": {
-	   "en": "ˈsæk.tiː",
-	   "fr": "sakti"
-	},
-	"phonetic_shinrartadezhra_shinrarta": {
-	   "en": "ʃɪnˈrɑːrtə",
-	   "fr": "ʃinʁaʁta"
-	},
-	"phonetic_shinrartadezhra_dezhra": {
-	   "en": "ˈdezɦrə",
-	   "fr": "dɛzʁa"
-	},
-	"phonetic_surya": {
-	   "en": "ˈsuːˈrɪːˈɛr",
-	   "fr": "syʁja"
-	},
-	"phonetic_taygeta": {
-	   "en": "teɪˈɪdʒᵻtə",
-	   "fr": "tɛʒta"
-	},
-	"phonetic_tse": {
-	   "en": "ʃjɛ",
-	   "fr": "tse"
-	},
-	"phonetic_xihe": {
-	   "en": "ʃiː.hər",
-	   "fr": "ksie"
-	},
-	"phonetic_xinca": {
-	   "en": "ˈʃɛnkə",
-	   "fr": "ksinka"
-	},
-	"phonetic_yakabugai": {
-	   "en": "ˈjækəbuːɡaɪ",
-	   "fr": "jakabuɡɛj"
-	},
-	"phonetic_zaonce": {
-	   "en": "ˈzeɪɒns",
-	   "fr": "zaɔ̃s"
-	},
-	"phonetic_zhangfei_zhang": {
-	   "en": "ʈʂáŋ",
-	   "fr": "ʈʂáŋ"
-	},
-	"phonetic_zhangfei_fei": {
-	   "en": "feɪ",
-	   "fr": "feɪ"
-	},
-	"phonetic_Alrai": {
-	   "en": "ˈalraɪ",
-	   "fr": "alʁai"
-	},
-	"phonetic_Antliae": {
-	   "en": "ˈæntlɪˌiː",
-	   "fr": "ɑ̃tlijae"
-	},
-	"phonetic_Aquarii": {
-	   "en": "əˈkwɛərɪˌaɪ",
-	   "fr": "vɛʁso"
-	},
-	"phonetic_Arietis": {
-	   "en": "əˈraɪɪtɪs",
-	   "fr": "belje"
-	},
-	"phonetic_BeiDou_Bei": {
-	   "en": "beɪ",
-	   "fr": "bɛ"
-	},
-	"phonetic_BeiDou_Dou": {
-	   "en": "ˈduː",
-	   "fr": "du"
-	},
-	"phonetic_Blanco": {
-	   "en": "blæŋkˌəʊ",
-	   "fr": "blɑ̃ko"
-	},
-	"phonetic_BleaeThaa_Bleae": {
-	   "en": "bliːiː",
-	   "fr": "bləa"
-	},
-	"phonetic_BleaeThaa_Thaa": {
-	   "en": "θɑː",
-	   "fr": "taa"
-	},
-	"phonetic_phonetic_BleaeThua_Thua": {
-	   "en": "θuːə",
-	   "fr": "tɥa"
-	},
-	"phonetic_Capricorni": {
-	   "en": "ˌkæprɪˈkɔːnaɪ",
-	   "fr": "kapʁikɔʁn"
-	},
-	"phonetic_Cepheus": {
-	   "en": "ˈsiːfjuːs",
-	   "fr": "seføs"
-	},
-	"phonetic_Cephei": {
-	   "en": "ˈsiːfɪˌaɪ",
-	   "fr": "sefəi"
-	},
-	"phonetic_Ceti": {
-	   "en": "ˈsiːtaɪ",
-	   "fr": "seti"
-	},
-	"phonetic_ChiPersei_Chi": {
-	   "en": "kaɪ",
-	   "fr": "ʃi"
-	},
-	"phonetic_ChiPersei_Persei": {
-	   "en": "ˈpɜːsɪˌaɪ",
-	   "fr": "pɛʁsei"
-	},
-	"phonetic_Crucis": {
-	   "en": "ˈkruːsɪs",
-	   "fr": "kʁwadysyd"
-	},
-	"phonetic_Cygni": {
-	   "en": "ˈsɪɡnaɪ",
-	   "fr": "siɲ"
-	},
-	"phonetic_EtaCarina_Eta": {
-	   "en": "kəˈriːnə",
-	   "fr": "eta"
-	},
-	"phonetic_EtaCarina_Carina": {
-	   "en": "eta",
-	   "fr": "kaʁina"
-	},
-	"phonetic_Fornacis": {
-	   "en": "fɔːˈneɪsɪs",
-	   "fr": "fɔʁnasist"
-	},
-	"phonetic_Herculis": {
-	   "en": "hɜːkjʊˈlɪs",
-	   "fr": "ɛʁkyl"
-	},
-	"phonetic_Hyades": {
-	   "en": "ˈhaɪəˌdiːz",
-	   "fr": "jad"
-	},
-	"phonetic_Hydrae": {
-	   "en": "ˈhaɪdriː",
-	   "fr": "idʁ"
-	},
-	"phonetic_Lupus": {
-	   "en": "ˈluːpəs",
-	   "fr": "lu"
-	},
-	"phonetic_Lyncis": {
-	   "en": "ˈlɪnsɪs",
-	   "fr": "lɛ̃ks"
-	},
-	"phonetic_Omega": {
-	   "en": "ˈəʊmɪɡə",
-	   "fr": "ɔmeɡa"
-	},
-	"phonetic_Ophiuchus": {
-	   "en": "ɒˈfjuːkəs",
-	   "fr": "ɒˈfjuːkəs"
-	},
-	"phonetic_Pegasi": {
-	   "en": "ˈpɛɡəˌsaɪ",
-	   "fr": "peɡaz"
-	},
-	"phonetic_Persei": {
-	   "en": "ˈpɜːsɪˌaɪ",
-	   "fr": "pɛʁse"
-	},
-	"phonetic_Piscium": {
-	   "en": "ˈpaɪsɪəm",
-	   "fr": "pwasɔ~"
-	},
-	"phonetic_Pleiades": {
-	   "en": "ˈplaɪədiːz",
-	   "fr": "plejad"
-	},
-	"phonetic_Puppis": {
-	   "en": "ˈpʌpɪs",
-	   "fr": "pup"
-	},
-	"phonetic_PruEuq_Pru": {
-	   "en": "pruː",
-	   "fr": "pʁy"
-	},
-	"phonetic_PruEuq_Euq": {
-	   "en": "juːk",
-	   "fr": "øk"
-	},
-	"phonetic_RhoOphiuchi_Rho": {
-	   "en": "rəʊ",
-	   "fr": "ʁo"
-	},
-	"phonetic_RhoOphiuchi_Ophiuchi": {
-	   "en": "ɒˈfjuːkaɪ",
-	   "fr": "ɔfjyʃy"
-	},
-	"phonetic_Sagittarius": {
-	   "en": "ˌsædʒˈtɛəriəs",
-	   "fr": "saʒitɛʁ"
-	},
-	"phonetic_Scorpii": {
-	   "en": "ˈskɔːpɪˌaɪ",
-	   "fr": "skɔʁpjɔ̃"
-	},
-	"phonetic_ShuiWei_Shui": {
-	   "en": "ˈʃuːi",
-	   "fr": "ˈʃuːi"
-	},
-	"phonetic_ShuiWei_Wei": {
-	   "en": "weɪ",
-	   "fr": "weɪ"
-	},
-	"phonetic_TauCeti_Tau": {
-	   "en": "taʊ",
-	   "fr": "to"
-	},
-	"phonetic_TauCeti_Ceti": {
-	   "en": "ˈsiːtaɪ",
-	   "fr": "seti"
-	},
-	"phonetic_Tascheter": {
-	   "en": "ˈtɑːʃətɜː",
-	   "fr": "ˈtɑːʃətɜː"
-	},
-	"phonetic_Trianguli": {
-	   "en": "traɪˈæŋˌɡjʊˌlaɪ",
-	   "fr": "tʁijɑ̃ɡl"
-	},
-	"phonetic_Trifid": {
-	   "en": "ˈtraɪfɪd",
-	   "fr": "ˈtraɪfɪd"
-	},
-	"phonetic_Tucanae": {
-	   "en": "tuːˈkɑːniː",
-	   "fr": "tykana"
-	},
-	"phonetic_Wredguia": {
-	   "en": "ˈredɡaɪə",
-	   "fr": "wʁedɡja"
-	},
-	"ICAO_A": {
-	   "en": "ˈælfə",
-	   "fr": "alfa"
-	},
-	"ICAO_B": {
-	   "en": "ˈbrɑːˈvo",
-	   "fr": "bʁavo"
-	},
-	"ICAO_C": {
-	   "en": "ˈtʃɑːli",
-	   "fr": "ʃaʁli"
-	},
-	"ICAO_D": {
-	   "en": "ˈdɛltə",
-	   "fr": "dɛlta"
-	},
-	"ICAO_E": {
-	   "en": "ˈeko",
-	   "fr": "eko"
-	},
-	"ICAO_F": {
-	   "en": "ˈfɒkstrɒt",
-	   "fr": "fɔkstʁɔt"
-	},
-	"ICAO_G": {
-	   "en": "ɡɒlf",
-	   "fr": "ɡɔlf"
-	},
-	"ICAO_H": {
-	   "en": "hoːˈtel",
-	   "fr": "ɔtɛl"
-	},
-	"ICAO_I": {
-	   "en": "ˈindiˑɑ",
-	   "fr": "indja"
-	},
-	"ICAO_J": {
-	   "en": "ˈdʒuːliˑˈet",
-	   "fr": "ʒyljɛt"
-	},
-	"ICAO_K": {
-	   "en": "ˈkiːlo",
-	   "fr": "kilo"
-	},
-	"ICAO_L": {
-	   "en": "ˈliːmɑ",
-	   "fr": "lima"
-	},
-	"ICAO_M": {
-	   "en": "maɪk",
-	   "fr": "maɪk"
-	},
-	"ICAO_N": {
-	   "en": "noˈvembə",
-	   "fr": "nɔvɑ̃bʁ"
-	},
-	"ICAO_O": {
-	   "en": "ˈɒskə",
-	   "fr": "ɔskaʁ"
-	},
-	"ICAO_P": {
-	   "en": "pəˈpɑ",
-	   "fr": "papa"
-	},
-	"ICAO_Q": {
-	   "en": "keˈbek",
-	   "fr": "kebɛk"
-	},
-	"ICAO_R": {
-	   "en": "ˈroːmiˑo",
-	   "fr": "ʁɔmeo"
-	},
-	"ICAO_S": {
-	   "en": "siˈerə",
-	   "fr": "sjeʁa"
-	},
-	"ICAO_T": {
-	   "en": "ˈtænɡo",
-	   "fr": "tɑ̃ɡo"
-	},
-	"ICAO_U": {
-	   "en": "ˈjuːnifɔːm",
-	   "fr": "ynifɔʁm"
-	},
-	"ICAO_V": {
-	   "en": "ˈvɪktə",
-	   "fr": "viktɔʁ"
-	},
-	"ICAO_W": {
-	   "en": "ˈwiski",
-	   "fr": "wiski"
-	},
-	"ICAO_X": {
-	   "en": "ˈeksˈrei",
-	   "fr": "ksʁɛ"
-	},
-	"ICAO_Y": {
-	   "en": "ˈjænki",
-	   "fr": "jɑ̃ki"
-	},
-	"ICAO_Z": {
-	   "en": "ˈzuːluː",
-	   "fr": "zulu"
-	},
-	"ICAO_0": {
-	   "en": "ˈzɪərəʊ",
-	   "fr": "zəʁo"
-	},
-	"ICAO_1": {
-	   "en": "ˈwʌn",
-	   "fr": "ɛ̃"
-	},
-	"ICAO_2": {
-	   "en": "ˈtuː",
-	   "fr": "dø"
-	},
-	"ICAO_3": {
-	   "en": "ˈtriː",
-	   "fr": "tʁwa"
-	},
-	"ICAO_4": {
-	   "en": "ˈfoʊ.ər",
-	   "fr": "katʁ"
-	},
-	"ICAO_5": {
-	   "en": "ˈfaɪf",
-	   "fr": "sɛ̃k"
-	},
-	"ICAO_6": {
-	   "en": "ˈsɪks",
-	   "fr": "sis"
-	},
-	"ICAO_7": {
-	   "en": "ˈsɛvɛn",
-	   "fr": "sɛt"
-	},
-	"ICAO_8": {
-	   "en": "ˈeɪt",
-	   "fr": "ɥit"
-	},
-	"ICAO_9": {
-	   "en": "ˈnaɪnər",
-	   "fr": "nœf"
-	}
+    "trans_andahalf": {
+      "en": " and a half ",
+      "fr": " et demi "
+    },
+    "trans_around": {
+      "en": "around ",
+      "fr": "autour de "
+    },
+    "trans_nearly": {
+      "en": "nearly ",
+      "fr": "près de "
+    },
+    "trans_onthewayto": {
+      "en": "on the way to ",
+      "fr": "vers les "
+    },
+    "trans_wellover": {
+      "en": "well over ",
+      "fr": "largement au delà de "
+    },
+    "trans_justover": {
+      "en": "just over ",
+      "fr": "juste au dessus de "
+    },
+    "trans_over": {
+      "en": "over ",
+      "fr": "au-delà de "
+    },
+    "trans_thousand": {
+      "en": "thousand",
+      "fr": "Millier"
+    },
+    "trans_million": {
+      "en": "million",
+      "fr": "million"
+    },
+    "trans_billion": {
+      "en": "billion",
+      "fr": "milliard"
+    },
+    "trans_trillion": {
+      "en": "trillion",
+      "fr": "trillion"
+    },
+    "trans_quadrillion": {
+      "en": "quadrillion",
+      "fr": "quadrillion"
+    },
+    "trans_zero": {
+      "en": "zero",
+      "fr": "zéro"
+    },
+    "trans_plus": {
+      "en": " plus ",
+      "fr": " plus "
+    },
+    "trans_minus": {
+      "en": " minus ",
+      "fr": " moins "
+    },
+    "trans_point": {
+      "en": " point ",
+      "fr": " point "
+    },
+    "trans_dash": {
+      "en": " dash ",
+      "fr": " tiret "
+    },
+    "phonetic_archon": {
+      "en": "ˈɑːkɒn",
+      "fr": "aʁkɔ̃ "
+    },
+    "phonetic_delaine": {
+      "en": "dəˈleɪn",
+      "fr": "delɛn"
+    },
+    "phonetic_aisling": {
+      "en": "ˈæʃlɪŋ",
+      "fr": "ɛsliŋ"
+    },
+    "phonetic_duval": {
+      "en": "duːˈvæl",
+      "fr": "dyval"
+    },
+    "phonetic_arissa": {
+      "en": "əˈrɪsə",
+      "fr": "aʁisa"
+    },
+    "phonetic_lavigny": {
+      "en": "ləˈviːniː",
+      "fr": "laviɲi"
+    },
+    "phonetic_denton": {
+      "en": "ˈdɛntən",
+      "fr": "ˈdɛntən"
+    },
+    "phonetic_patreus": {
+      "en": "pətˈreɪəs",
+      "fr": "patʁeys"
+    },
+    "phonetic_edmund": {
+      "en": "ˈɛdmənd",
+      "fr": "ɛdmund"
+    },
+    "phonetic_mahon": {
+      "en": "ˈmɑːn",
+      "fr": "maɔ̃ "
+    },
+    "phonetic_felicia": {
+      "en": "fəˈlɪʃɪə",
+      "fr": "felisja"
+    },
+    "phonetic_winters": {
+      "en": "ˈwɪntəs",
+      "fr": "ˈwɪntəs"
+    },
+    "phonetic_pranav": {
+      "en": "pɜːnʌv",
+      "fr": "pʁanav"
+    },
+    "phonetic_antal": {
+      "en": "ˌænˈtæl",
+      "fr": "a~tal"
+    },
+    "phonetic_zachary": {
+      "en": "ˈzækərɪ",
+      "fr": "zakaʁi"
+    },
+    "phonetic_hudson": {
+      "en": "ˈhʌdsən",
+      "fr": "ydsɔ~"
+    },
+    "phonetic_zemina": {
+      "en": "zəˈmiːnə",
+      "fr": "zəˈmiːnə"
+    },
+    "phonetic_torval": {
+      "en": "tɔːˈvæl",
+      "fr": "tɔʁval"
+    },
+    "phonetic_li": {
+      "en": "liː",
+      "fr": "li:"
+    },
+    "phonetic_yong": {
+      "en": "ˈjɒŋ",
+      "fr": "jɔ~ɡ"
+    },
+    "phonetic_rui": {
+      "en": "reɪ",
+      "fr": "ʁɥi"
+    },
+    "phonetic_yuri": {
+      "en": "jʊəˈriː",
+      "fr": "juʁi"
+    },
+    "phonetic_grom": {
+      "en": "ˈɡrɒm",
+      "fr": "ɡʁɔm"
+    },
+    "phonetic_achenar": {
+      "en": "ˈakɜːnɑ",
+      "fr": "akenaʁ"
+    },
+    "phonetic_acihault": {
+      "en": "əˈsɪhɔːt",
+      "fr": "asiol"
+    },
+    "phonetic_adan": {
+      "en": "ˈædən",
+      "fr": "adɑ~"
+    },
+    "phonetic_alcyone": {
+      "en": "ælˈsaɪəniː",
+      "fr": "alsjɔn"
+    },
+    "phonetic_aldebaran": {
+      "en": "alˈdɛbəɹən",
+      "fr": "aldebaʁɑ̃"
+    },
+    "phonetic_anemoi": {
+      "en": "æˈniːmɔɪ",
+      "fr": "æˈniːmɔɪ"
+    },
+    "phonetic_apoyota": {
+      "en": "æˈpɔɪəʊtə",
+      "fr": "apwajɔta"
+    },
+    "phonetic_arque": {
+      "en": "ɑːrk",
+      "fr": "aʁk"
+    },
+    "phonetic_asterope": {
+      "en": "əˈstɛroʊpiː",
+      "fr": "asteʁɔp"
+    },
+    "phonetic_atlas": {
+      "en": "ˈætləs",
+      "fr": "atlas"
+    },
+    "phonetic_aulin": {
+      "en": "ˈɔːlɪn",
+      "fr": "olɛ~"
+    },
+    "phonetic_bunda": {
+      "en": "ˈbuːndə",
+      "fr": "bynda"
+    },
+    "phonetic_cayutorme": {
+      "en": "ˈkaɪətɔːm",
+      "fr": "kɛjytɔʁm"
+    },
+    "phonetic_celaeno": {
+      "en": "sᵻˈliːnoʊ",
+      "fr": "səlaeno"
+    },
+    "phonetic_ceos": {
+      "en": "ˈkeɪɒs",
+      "fr": "seos"
+    },
+    "phonetic_cygnus": {
+      "en": "ˈsɪɡnəs",
+      "fr": "siɲy"
+    },
+    "phonetic_deciat": {
+      "en": "ˈdɛsiːæt",
+      "fr": "desja"
+    },
+    "phonetic_diso": {
+      "en": "ˈdiːsəʊ",
+      "fr": "dizo"
+    },
+    "phonetic_djiwal": {
+      "en": "ˈdʒɪwæl",
+      "fr": "dʒiwal"
+    },
+    "phonetic_dvorsi": {
+      "en": "ˈdvɔːsiː",
+      "fr": "dvɔʁsi"
+    },
+    "phonetic_electra": {
+      "en": "ᵻˈlɛktrə",
+      "fr": "elɛktʁa"
+    },
+    "phonetic_eravate": {
+      "en": "ɛrəˈvɑːtˌeɪ",
+      "fr": "eʁavat"
+    },
+    "phonetic_eranin": {
+      "en": "ˈɛrənin",
+      "fr": "eʁanɛ̃"
+    },
+    "phonetic_frigaha": {
+      "en": "frɪɡˈɑːhɑːr",
+      "fr": "fʁiɡaa"
+    },
+    "phonetic_grandmort": {
+      "en": "ˈɡʀɒdˌmɔʀ",
+      "fr": "ɡʁɑ̃dmɔʁ"
+    },
+    "phonetic_hecate": {
+      "en": "ˈhɛkətɪ",
+      "fr": "ekat"
+    },
+    "phonetic_hotas": {
+      "en": "həʊtæs",
+      "fr": "ɔtas"
+    },
+    "phonetic_isleta": {
+      "en": "aɪlˈetə",
+      "fr": "isleta"
+    },
+    "phonetic_ibootis_i": {
+      "en": "aɪ",
+      "fr": "i"
+    },
+    "phonetic_ibootis_bootis": {
+      "en": "bəʊˈəʊtɪs",
+      "fr": "butis"
+    },
+    "phonetic_lave": {
+      "en": "leɪv",
+      "fr": "lav"
+    },
+    "phonetic_kaiabajaja_kaia": {
+      "en": "ˈkaɪə",
+      "fr": "kɛa"
+    },
+    "phonetic_kaiabajaja_bajaja": {
+      "en": "ˈbɑːhɑːhɑː",
+      "fr": "baʒaʒa"
+    },
+    "phonetic_kigana": {
+      "en": "kiːˈɡɑːnə",
+      "fr": "kiɡana"
+    },
+    "phonetic_kini": {
+      "en": "ˈkiːniː",
+      "fr": "kini"
+    },
+    "phonetic_kremainn": {
+      "en": "krəˈmeɪn",
+      "fr": "kʁemɛ̃n"
+    },
+    "phonetic_laksak": {
+      "en": "ˈlæks.æk",
+      "fr": "laksak"
+    },
+    "phonetic_leesti": {
+      "en": "ˈliːstiː",
+      "fr": "listi"
+    },
+    "phonetic_leucos": {
+      "en": "ˈluːkɒs",
+      "fr": "løko"
+    },
+    "phonetic_luytens": {
+      "en": "ˈlaʊ.təns",
+      "fr": "ˈlaʊ.təns"
+    },
+    "phonetic_star": {
+      "en": "stɑː",
+      "fr": "stɑː"
+    },
+    "phonetic_maia": {
+      "en": "ˈmaɪ.ə",
+      "fr": "Maïa"
+    },
+    "phonetic_mata": {
+      "en": "ˈmɑː.tʌ",
+      "fr": "mata"
+    },
+    "phonetic_merope": {
+      "en": "ˈmɛrəpiː",
+      "fr": "meʁɔp"
+    },
+    "phonetic_mukoji_mu": {
+      "en": "mjuː",
+      "fr": "my"
+    },
+    "phonetic_mukoji_koji": {
+      "en": "ˈkəʊdʒiː",
+      "fr": "kɔʒi"
+    },
+    "phonetic_nuenets": {
+      "en": "ˈnjuːənɛts",
+      "fr": "nɥenɛ"
+    },
+    "phonetic_okinura": {
+      "en": "ɒkɪˈnjʊrə",
+      "fr": "ɔkinuʁa"
+    },
+    "phonetic_orrere": {
+      "en": "ɒrˈɪər",
+      "fr": "ɔʁeʁe"
+    },
+    "phonetic_paiszu_pai": {
+      "en": "paɪ",
+      "fr": "pɛ"
+    },
+    "phonetic_paiszu_szu": {
+      "en": "ʃuː",
+      "fr": "szu"
+    },
+    "phonetic_pleione": {
+      "en": "ˈplaɪəniː",
+      "fr": "plejɔn"
+    },
+    "phonetic_procyon": {
+      "en": "ˈprəʊˌsɪən",
+      "fr": "pʁɔsjɔ̃"
+    },
+    "phonetic_potriti": {
+      "en": "pəˈtriːtɪ",
+      "fr": "pɔtʁiti"
+    },
+    "phonetic_reorte": {
+      "en": "ˌriːˈɔːt",
+      "fr": "ʁeɔʁt"
+    },
+    "phonetic_sakti": {
+      "en": "ˈsæk.tiː",
+      "fr": "sakti"
+    },
+    "phonetic_shinrartadezhra_shinrarta": {
+      "en": "ʃɪnˈrɑːrtə",
+      "fr": "ʃinʁaʁta"
+    },
+    "phonetic_shinrartadezhra_dezhra": {
+      "en": "ˈdezɦrə",
+      "fr": "dɛzʁa"
+    },
+    "phonetic_surya": {
+      "en": "ˈsuːˈrɪːˈɛr",
+      "fr": "syʁja"
+    },
+    "phonetic_taygeta": {
+      "en": "teɪˈɪdʒᵻtə",
+      "fr": "tɛʒta"
+    },
+    "phonetic_tse": {
+      "en": "ʃjɛ",
+      "fr": "tse"
+    },
+    "phonetic_xihe": {
+      "en": "ʃiː.hər",
+      "fr": "ksie"
+    },
+    "phonetic_xinca": {
+      "en": "ˈʃɛnkə",
+      "fr": "ksinka"
+    },
+    "phonetic_yakabugai": {
+      "en": "ˈjækəbuːɡaɪ",
+      "fr": "jakabuɡɛj"
+    },
+    "phonetic_zaonce": {
+      "en": "ˈzeɪɒns",
+      "fr": "zaɔ̃s"
+    },
+    "phonetic_zhangfei_zhang": {
+      "en": "ʈʂáŋ",
+      "fr": "ʈʂáŋ"
+    },
+    "phonetic_zhangfei_fei": {
+      "en": "feɪ",
+      "fr": "feɪ"
+    },
+    "phonetic_Alrai": {
+      "en": "ˈalraɪ",
+      "fr": "alʁai"
+    },
+    "phonetic_Antliae": {
+      "en": "ˈæntlɪˌiː",
+      "fr": "ɑ̃tlijae"
+    },
+    "phonetic_Aquarii": {
+      "en": "əˈkwɛərɪˌaɪ",
+      "fr": "vɛʁso"
+    },
+    "phonetic_Arietis": {
+      "en": "əˈraɪɪtɪs",
+      "fr": "belje"
+    },
+    "phonetic_BeiDou_Bei": {
+      "en": "beɪ",
+      "fr": "bɛ"
+    },
+    "phonetic_BeiDou_Dou": {
+      "en": "ˈduː",
+      "fr": "du"
+    },
+    "phonetic_Blanco": {
+      "en": "blæŋkˌəʊ",
+      "fr": "blɑ̃ko"
+    },
+    "phonetic_BleaeThaa_Bleae": {
+      "en": "bliːiː",
+      "fr": "bləa"
+    },
+    "phonetic_BleaeThaa_Thaa": {
+      "en": "θɑː",
+      "fr": "taa"
+    },
+    "phonetic_phonetic_BleaeThua_Thua": {
+      "en": "θuːə",
+      "fr": "tɥa"
+    },
+    "phonetic_Capricorni": {
+      "en": "ˌkæprɪˈkɔːnaɪ",
+      "fr": "kapʁikɔʁn"
+    },
+    "phonetic_Cepheus": {
+      "en": "ˈsiːfjuːs",
+      "fr": "seføs"
+    },
+    "phonetic_Cephei": {
+      "en": "ˈsiːfɪˌaɪ",
+      "fr": "sefəi"
+    },
+    "phonetic_Ceti": {
+      "en": "ˈsiːtaɪ",
+      "fr": "seti"
+    },
+    "phonetic_ChiPersei_Chi": {
+      "en": "kaɪ",
+      "fr": "ʃi"
+    },
+    "phonetic_ChiPersei_Persei": {
+      "en": "ˈpɜːsɪˌaɪ",
+      "fr": "pɛʁsei"
+    },
+    "phonetic_Crucis": {
+      "en": "ˈkruːsɪs",
+      "fr": "kʁwadysyd"
+    },
+    "phonetic_Cygni": {
+      "en": "ˈsɪɡnaɪ",
+      "fr": "siɲ"
+    },
+    "phonetic_EtaCarina_Eta": {
+      "en": "kəˈriːnə",
+      "fr": "eta"
+    },
+    "phonetic_EtaCarina_Carina": {
+      "en": "eta",
+      "fr": "kaʁina"
+    },
+    "phonetic_Fornacis": {
+      "en": "fɔːˈneɪsɪs",
+      "fr": "fɔʁnasist"
+    },
+    "phonetic_Herculis": {
+      "en": "hɜːkjʊˈlɪs",
+      "fr": "ɛʁkyl"
+    },
+    "phonetic_Hyades": {
+      "en": "ˈhaɪəˌdiːz",
+      "fr": "jad"
+    },
+    "phonetic_Hydrae": {
+      "en": "ˈhaɪdriː",
+      "fr": "idʁ"
+    },
+    "phonetic_Lupus": {
+      "en": "ˈluːpəs",
+      "fr": "lu"
+    },
+    "phonetic_Lyncis": {
+      "en": "ˈlɪnsɪs",
+      "fr": "lɛ̃ks"
+    },
+    "phonetic_Omega": {
+      "en": "ˈəʊmɪɡə",
+      "fr": "ɔmeɡa"
+    },
+    "phonetic_Ophiuchus": {
+      "en": "ɒˈfjuːkəs",
+      "fr": "ɒˈfjuːkəs"
+    },
+    "phonetic_Pegasi": {
+      "en": "ˈpɛɡəˌsaɪ",
+      "fr": "peɡaz"
+    },
+    "phonetic_Persei": {
+      "en": "ˈpɜːsɪˌaɪ",
+      "fr": "pɛʁse"
+    },
+    "phonetic_Piscium": {
+      "en": "ˈpaɪsɪəm",
+      "fr": "pwasɔ~"
+    },
+    "phonetic_Pleiades": {
+      "en": "ˈplaɪədiːz",
+      "fr": "plejad"
+    },
+    "phonetic_Puppis": {
+      "en": "ˈpʌpɪs",
+      "fr": "pup"
+    },
+    "phonetic_PruEuq_Pru": {
+      "en": "pruː",
+      "fr": "pʁy"
+    },
+    "phonetic_PruEuq_Euq": {
+      "en": "juːk",
+      "fr": "øk"
+    },
+    "phonetic_RhoOphiuchi_Rho": {
+      "en": "rəʊ",
+      "fr": "ʁo"
+    },
+    "phonetic_RhoOphiuchi_Ophiuchi": {
+      "en": "ɒˈfjuːkaɪ",
+      "fr": "ɔfjyʃy"
+    },
+    "phonetic_Sagittarius": {
+      "en": "ˌsædʒˈtɛəriəs",
+      "fr": "saʒitɛʁ"
+    },
+    "phonetic_Scorpii": {
+      "en": "ˈskɔːpɪˌaɪ",
+      "fr": "skɔʁpjɔ̃"
+    },
+    "phonetic_ShuiWei_Shui": {
+      "en": "ˈʃuːi",
+      "fr": "ˈʃuːi"
+    },
+    "phonetic_ShuiWei_Wei": {
+      "en": "weɪ",
+      "fr": "weɪ"
+    },
+    "phonetic_TauCeti_Tau": {
+      "en": "taʊ",
+      "fr": "to"
+    },
+    "phonetic_TauCeti_Ceti": {
+      "en": "ˈsiːtaɪ",
+      "fr": "seti"
+    },
+    "phonetic_Tascheter": {
+      "en": "ˈtɑːʃətɜː",
+      "fr": "ˈtɑːʃətɜː"
+    },
+    "phonetic_Trianguli": {
+      "en": "traɪˈæŋˌɡjʊˌlaɪ",
+      "fr": "tʁijɑ̃ɡl"
+    },
+    "phonetic_Trifid": {
+      "en": "ˈtraɪfɪd",
+      "fr": "ˈtraɪfɪd"
+    },
+    "phonetic_Tucanae": {
+      "en": "tuːˈkɑːniː",
+      "fr": "tykana"
+    },
+    "phonetic_Wredguia": {
+      "en": "ˈredɡaɪə",
+      "fr": "wʁedɡja"
+    },
+    "ICAO_A": {
+      "en": "ˈælfə",
+      "fr": "alfa"
+    },
+    "ICAO_B": {
+      "en": "ˈbrɑːˈvo",
+      "fr": "bʁavo"
+    },
+    "ICAO_C": {
+      "en": "ˈtʃɑːli",
+      "fr": "ʃaʁli"
+    },
+    "ICAO_D": {
+      "en": "ˈdɛltə",
+      "fr": "dɛlta"
+    },
+    "ICAO_E": {
+      "en": "ˈeko",
+      "fr": "eko"
+    },
+    "ICAO_F": {
+      "en": "ˈfɒkstrɒt",
+      "fr": "fɔkstʁɔt"
+    },
+    "ICAO_G": {
+      "en": "ɡɒlf",
+      "fr": "ɡɔlf"
+    },
+    "ICAO_H": {
+      "en": "hoːˈtel",
+      "fr": "ɔtɛl"
+    },
+    "ICAO_I": {
+      "en": "ˈindiˑɑ",
+      "fr": "indja"
+    },
+    "ICAO_J": {
+      "en": "ˈdʒuːliˑˈet",
+      "fr": "ʒyljɛt"
+    },
+    "ICAO_K": {
+      "en": "ˈkiːlo",
+      "fr": "kilo"
+    },
+    "ICAO_L": {
+      "en": "ˈliːmɑ",
+      "fr": "lima"
+    },
+    "ICAO_M": {
+      "en": "maɪk",
+      "fr": "maɪk"
+    },
+    "ICAO_N": {
+      "en": "noˈvembə",
+      "fr": "nɔvɑ̃bʁ"
+    },
+    "ICAO_O": {
+      "en": "ˈɒskə",
+      "fr": "ɔskaʁ"
+    },
+    "ICAO_P": {
+      "en": "pəˈpɑ",
+      "fr": "papa"
+    },
+    "ICAO_Q": {
+      "en": "keˈbek",
+      "fr": "kebɛk"
+    },
+    "ICAO_R": {
+      "en": "ˈroːmiˑo",
+      "fr": "ʁɔmeo"
+    },
+    "ICAO_S": {
+      "en": "siˈerə",
+      "fr": "sjeʁa"
+    },
+    "ICAO_T": {
+      "en": "ˈtænɡo",
+      "fr": "tɑ̃ɡo"
+    },
+    "ICAO_U": {
+      "en": "ˈjuːnifɔːm",
+      "fr": "ynifɔʁm"
+    },
+    "ICAO_V": {
+      "en": "ˈvɪktə",
+      "fr": "viktɔʁ"
+    },
+    "ICAO_W": {
+      "en": "ˈwiski",
+      "fr": "wiski"
+    },
+    "ICAO_X": {
+      "en": "ˈeksˈrei",
+      "fr": "ksʁɛ"
+    },
+    "ICAO_Y": {
+      "en": "ˈjænki",
+      "fr": "jɑ̃ki"
+    },
+    "ICAO_Z": {
+      "en": "ˈzuːluː",
+      "fr": "zulu"
+    },
+    "ICAO_0": {
+      "en": "ˈzɪərəʊ",
+      "fr": "zəʁo"
+    },
+    "ICAO_1": {
+      "en": "ˈwʌn",
+      "fr": "ɛ̃"
+    },
+    "ICAO_2": {
+      "en": "ˈtuː",
+      "fr": "dø"
+    },
+    "ICAO_3": {
+      "en": "ˈtriː",
+      "fr": "tʁwa"
+    },
+    "ICAO_4": {
+      "en": "ˈfoʊ.ər",
+      "fr": "katʁ"
+    },
+    "ICAO_5": {
+      "en": "ˈfaɪf",
+      "fr": "sɛ̃k"
+    },
+    "ICAO_6": {
+      "en": "ˈsɪks",
+      "fr": "sis"
+    },
+    "ICAO_7": {
+      "en": "ˈsɛvɛn",
+      "fr": "sɛt"
+    },
+    "ICAO_8": {
+      "en": "ˈeɪt",
+      "fr": "ɥit"
+    },
+    "ICAO_9": {
+      "en": "ˈnaɪnər",
+      "fr": "nœf"
+    }
   }
 }
