@@ -100,6 +100,7 @@ namespace EddiCargoMonitor
             }
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            Logging.Debug("Configuration to file: " + json);
             Files.Write(filename, json);
         }
     }

@@ -31,42 +31,6 @@ namespace EddiDataDefinitions
             }
         }
 
-        // The commodity catagory
-        private string _category;
-        public string category
-        {
-            get
-            {
-                return _category;
-            }
-            set
-            {
-                if (_category != value)
-                {
-                    _category = value;
-                    NotifyPropertyChanged("category");
-                }
-            }
-        }
-
-        // How much we actually paid for it (per unit)
-        private int _price;
-        public int price
-        {
-            get
-            {
-                return _price;
-            }
-            set
-            {
-                if (_price != value)
-                {
-                    _price = value;
-                    NotifyPropertyChanged("price");
-                }
-            }
-        }
-
         // The number of stolen items
         private int _stolen;
         public int stolen
@@ -121,7 +85,14 @@ namespace EddiDataDefinitions
             }
         }
 
-        public int amount { get; set; }
+        // Total amount of the commodity
+        public int total { get; set; }
+
+        // How much we actually paid for it (per unit)
+        public int price { get; set; }
+
+        // The commodity catagory
+        public string category { get; set; }
 
         public Commodity commodity { get; set; }
 
@@ -133,23 +104,23 @@ namespace EddiDataDefinitions
             haulageamounts = new List<HaulageAmount>();
         }
 
-        public Cargo(string name, int amount)
+        public Cargo(string name, int total)
         {
             this.name = name;
             this.commodity = CommodityDefinitions.FromName(name);
             this.category = commodity.category;
             this.price = commodity.avgprice ?? 0;
-            this.amount = amount;
+            this.total = total;
             haulageamounts = new List<HaulageAmount>();
         }
 
-        public Cargo(Commodity commodity, int price, int amount)
+        public Cargo(Commodity commodity, int price, int total)
         {
             this.commodity = commodity;
             this.name = commodity.name;
             this.category = commodity.category;
             this.price = price;
-            this.amount = amount;
+            this.total = total;
             haulageamounts = new List<HaulageAmount>();
         }
 
@@ -157,7 +128,7 @@ namespace EddiDataDefinitions
 
         public void NotifyPropertyChanged(string propName)
         {
-            this.amount = this.stolen + this.haulage + this.other;
+            this.total = this.stolen + this.haulage + this.other;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }

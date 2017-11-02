@@ -1142,7 +1142,7 @@ namespace EddiVoiceAttackResponder
                 }
                 else
                 {
-                    vaProxy.SetInt(prefix + " limpets carried", limpets.amount);
+                    vaProxy.SetInt(prefix + " limpets carried", limpets.total);
                 }
 
                 setShipModuleValues(ship?.bulkheads, prefix + " bulkheads", ref vaProxy);

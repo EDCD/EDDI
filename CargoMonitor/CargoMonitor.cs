@@ -170,19 +170,16 @@ namespace EddiCargoMonitor
             }
 
             lock (inventoryLock)
-            cargocarried = 0;
 
             // CargoInventoryEvent does not contain stolen, missionid, or cost information so fill in gaps here
             foreach (Cargo cargo in @event.inventory)
             {
-                cargocarried += cargo.amount;
-
                 Cargo inventoryCargo = inventory.FirstOrDefault(c => c.name == cargo.name);
                 if (inventoryCargo != null)
                 {
                     // Match of commodity
-                    inventoryCargo.amount = cargo.amount;
-                    cargo.other = cargo.amount - cargo.stolen - cargo.haulage;
+                    inventoryCargo.total = cargo.total;
+                    cargo.other = cargo.total - cargo.stolen - cargo.haulage;
                 }
                 else
                 {
@@ -204,11 +201,10 @@ namespace EddiCargoMonitor
 
         private void handleCommodityCollectedEvent(CommodityCollectedEvent @event)
         {
-            cargocarried++;
             Cargo cargo = GetCargo(@event.commodity.name);
             if (cargo != null)
             {
-                cargo.amount++;
+                cargo.total++;
                 if (@event.stolen)
                 {
                     cargo.stolen++;
@@ -217,12 +213,12 @@ namespace EddiCargoMonitor
                 {
                     cargo.other++;
                 }
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
             }
 
             else
             {
                 Cargo newCargo = new Cargo(@event.commodity, @event.commodity.avgprice ?? 0, 1);
-                newCargo.amount = 1;
                 newCargo.haulage = 0;
                 if (@event.stolen)
                 {
@@ -239,18 +235,9 @@ namespace EddiCargoMonitor
 
         private void handleCommodityEjectedEvent(CommodityEjectedEvent @event)
         {
-            cargocarried -= @event.amount;
             Cargo cargo = GetCargo(@event.commodity.name);
             if (cargo != null)
             {
-                cargo.amount -= @event.amount;
-                if (cargo.amount < 1)
-                {
-                    RemoveCargo(cargo.name);
-                    writeCargo();
-                    return;
-                }
-
                 if (@event.amount == cargo.stolen || @event.amount > cargo.other)
                 {
                     cargo.stolen -= @event.amount;
@@ -259,18 +246,23 @@ namespace EddiCargoMonitor
                 {
                     cargo.other -= @event.amount;
                 }
+
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                if (cargo.total < 1)
+                {
+                    RemoveCargo(cargo.name);
+                }
             }
             writeCargo();
         }
 
         private void handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
         {
-            cargocarried += @event.amount;
             Cargo cargo = GetCargo(@event.commodity.name);
             if (cargo != null)
             {
-                cargo.amount += @event.amount;
                 cargo.other += @event.amount;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
             }
             else
             {
@@ -285,12 +277,11 @@ namespace EddiCargoMonitor
 
         private void handleCommodityRefinedEvent(CommodityRefinedEvent @event)
         {
-            cargocarried++;
             Cargo cargo = GetCargo(@event.commodity.name);
             if (cargo != null)
             {
-                cargo.amount ++;
-                cargo.other++;
+                cargo.other ++;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
             }
             else
             {
@@ -305,20 +296,9 @@ namespace EddiCargoMonitor
 
         private void handleCommoditySoldEvent(CommoditySoldEvent @event)
         {
-            cargocarried -= @event.amount;
-
             Cargo cargo = GetCargo(@event.commodity.name);
             if (cargo != null)
             {
-                cargo.amount -= @event.amount;
-                if (cargo.amount < 1)
-                {
-                    // All of the commodity was sold
-                    RemoveCargo(cargo.name);
-                    writeCargo();
-                    return;
-                }
-
                 if (@event.stolen)
                 {
                     // Cargo is stolen
@@ -342,18 +322,24 @@ namespace EddiCargoMonitor
                     // Cargo is generic
                     cargo.other -= @event.amount;
                 }
+
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                if (cargo.total < 1)
+                {
+                    // All of the commodity was sold
+                    RemoveCargo(cargo.name);
+                }
             }
             writeCargo();
         }
 
         private void handlePowerCommodityObtainedEvent(PowerCommodityObtainedEvent @event)
         {
-            cargocarried += @event.amount;
             Cargo cargo = GetCargo(@event.commodity.name);
             if (cargo != null)
             {
-                cargo.amount += @event.amount;
                 cargo.other += @event.amount;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
             }
             else
             {
@@ -369,18 +355,15 @@ namespace EddiCargoMonitor
 
         private void handlePowerCommodityDeliveredEvent(PowerCommodityDeliveredEvent @event)
         {
-            cargocarried -= @event.amount;
             Cargo cargo = GetCargo(@event.commodity.name);
             if (cargo != null)
             {
-                cargo.amount -= @event.amount;
-                if (cargo.amount < 1)
+                cargo.other -= @event.amount;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+
+                if (cargo.total < 1)
                 {
                     RemoveCargo(cargo.name);
-                }
-                else
-                {
-                    cargo.other -= @event.amount;
                 }
             }
             writeCargo();
@@ -388,12 +371,11 @@ namespace EddiCargoMonitor
 
         private void handleLimpetPurchasedEvent(LimpetPurchasedEvent @event)
         {
-            cargocarried += @event.amount;
             Cargo cargo = GetCargo("Limpet");
             if (cargo != null)
             {
-                cargo.amount += @event.amount;
                 cargo.other += @event.amount;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
             }
             else
             {
@@ -409,18 +391,15 @@ namespace EddiCargoMonitor
 
         private void handleLimpetSoldEvent(LimpetSoldEvent @event)
         {
-            cargocarried -= @event.amount;
             Cargo cargo = GetCargo("Limpet");
             if (cargo != null)
             {
-                cargo.amount -= @event.amount;
-                if (cargo.amount < 1)
+                cargo.other -= @event.amount;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+
+                if (cargo.total < 1)
                 {
                     RemoveCargo(cargo.name);
-                }
-                else
-                {
-                    cargo.other -= @event.amount;
                 }
             }
             writeCargo();
@@ -444,7 +423,6 @@ namespace EddiCargoMonitor
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            cargocarried += @event.amount ?? 0;
             if (@event.commodity.name != null)
             {
                 HaulageAmount haulageAmount = new HaulageAmount();
@@ -454,8 +432,8 @@ namespace EddiCargoMonitor
                 Cargo cargo = GetCargo(@event.commodity.name);
                 if (cargo != null)
                 {
-                    cargo.amount += @event.amount ?? 0;
                     cargo.haulage += @event.amount ?? 0;
+                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
                     cargo.haulageamounts.Add(haulageAmount);
                 }
                 else
@@ -473,33 +451,30 @@ namespace EddiCargoMonitor
 
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
-            cargocarried -= @event.amount ?? 0;
             Cargo cargo = GetCargo(@event.commodity.name);
             if (cargo != null)
             {
-                cargo.amount -= @event.amount ?? 0;
-                if (cargo.amount < 1)
+                cargo.haulage -= @event.amount ?? 0;
+                HaulageAmount haulageAmount = cargo.haulageamounts.FirstOrDefault(ha => ha.missionid == @event.missionid);
+                if (haulageAmount != null)
+                {
+                    cargo.haulageamounts.Remove(haulageAmount);
+                }
+
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                if (cargo.total < 1)
                 {
                     RemoveCargo(cargo.name);
-                }
-                else
-                {
-                    HaulageAmount haulageAmount = cargo.haulageamounts.FirstOrDefault(ha => ha.missionid == @event.missionid);
-                    if (haulageAmount != null)
-                    {
-                        cargo.haulage -= haulageAmount.amount;
-                        cargo.haulageamounts.Remove(haulageAmount);
-                    }
                 }
             }
 
             foreach (CommodityAmount commodityReward in @event.commodityrewards)
             {
-                cargocarried += commodityReward.amount;
                 Cargo cargoReward = GetCargo(commodityReward.commodity);
                 if (cargoReward != null)
                 {
-                    cargoReward.amount += commodityReward.amount;
+                    cargoReward.other += commodityReward.amount;
+                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
                 }
                 else
                 {
@@ -544,6 +519,12 @@ namespace EddiCargoMonitor
             {
                 // Write material configuration with current inventory
                 CargoMonitorConfiguration configuration = new CargoMonitorConfiguration();
+                cargocarried = 0;
+                foreach (Cargo cargo in inventory)
+                {
+                    cargocarried += cargo.total;
+                }
+
                 configuration.cargo = inventory;
                 configuration.cargocarried = cargocarried;
                 configuration.ToFile();
@@ -631,7 +612,6 @@ namespace EddiCargoMonitor
                 {
                     inventory.Add(newCargo);
                 }
-                writeCargo();
             }
         }
 
@@ -671,7 +651,6 @@ namespace EddiCargoMonitor
                             break;
                         }
                     }
-                    writeCargo();
                 }
             }
         }
@@ -695,13 +674,13 @@ namespace EddiCargoMonitor
             Cargo cargo = GetCargo("Limpet");
             if (cargo != null)
             {
-                cargo.amount--;
-                if (cargo.amount < 1)
+                cargo.other--;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                if (cargo.total < 1)
                 {
                     RemoveCargo(cargo.name);
                 }
             }
-            cargocarried--;
             writeCargo();
         }
     }
