@@ -1397,7 +1397,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("BuyPrice", out val);
-                                int price = (int)val;
+                                int price = (int)(long)val;
                                 events.Add(new CommodityPurchasedEvent(timestamp, commodity, amount, price) { raw = line });
                                 handled = true;
                                 break;
@@ -1650,7 +1650,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("BuyPrice", out val);
-                                int price = (int)val;
+                                int price = (int)(long)val;
                                 events.Add(new LimpetPurchasedEvent(timestamp, amount, price) { raw = line });
                                 handled = true;
                                 break;
