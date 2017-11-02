@@ -17,6 +17,14 @@
       "en": null,
       "fr": null
     },
+    "cargo_monitor_name": {
+      "en": "Cargo Monitor",
+      "fr": "Moniteur Soute"
+    },
+    "cargo_monitor_desc": {
+      "en": "Track information on your cargo.",
+      "fr": "Receuil des informations sur votre soute."
+    },
     "change_affect_va": {
       "en": "Any changes made here will take effect automatically in VoiceAttack.  You can close this window when you have finished.",
       "fr": "Chaque changement effectués ici prendra automatiquement effet dans VoiceAttack. Vous pouvez fermer cette fenêtre une fois terminé."

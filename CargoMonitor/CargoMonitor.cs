@@ -28,7 +28,7 @@ namespace EddiCargoMonitor
 
         public string MonitorName()
         {
-            return "Cargo monitor";
+            return I18N.GetString("cargo_monitor_name");
         }
 
         public string MonitorVersion()
@@ -38,7 +38,7 @@ namespace EddiCargoMonitor
 
         public string MonitorDescription()
         {
-            return "Track information on your cargo.";
+            return I18N.GetString("cargo_monitor_desc");
         }
 
         public bool IsRequired()
