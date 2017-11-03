@@ -28,7 +28,12 @@ namespace EddiCargoMonitor
 
         public string MonitorName()
         {
-            return I18N.GetString("cargo_monitor_name");
+            return "Cargo monitor";
+        }
+
+        public string MonitorLocalName()
+        {
+            return I18N.GetString("eddp_monitor_name");
         }
 
         public string MonitorVersion()

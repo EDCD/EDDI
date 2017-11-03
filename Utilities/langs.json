@@ -18,15 +18,15 @@
       "fr": null
     },
     "eddp_monitor_name": {
-      "en": "EDDP Monitor",
+      "en": "EDDP monitor",
       "fr": "Moniteur EDDP"
     },
     "eddp_monitor_desc": {
       "en": "Monitor EDDP for changes in system control and state, and generate events that match the watch list.",
       "fr": null
-    }
+    },
     "journal_monitor_name": {
-      "en": "Journal Monitor",
+      "en": "Journal monitor",
       "fr": "Moniteur Journal"
     },
     "journal_monitor_desc": {
@@ -34,7 +34,7 @@
       "fr": null
     },
     "galnet_monitor_name": {
-      "en": "Galnet Monitor",
+      "en": "Galnet monitor",
       "fr": "Moniteur Galnet"
     },
     "galnet_monitor_desc": {
@@ -42,7 +42,7 @@
       "fr": null
     },
     "ship_monitor_name": {
-      "en": "Ship Monitor",
+      "en": "Ship monitor",
       "fr": "Moniteur Vaisseau"
     },
     "ship_monitor_desc": {
@@ -50,7 +50,7 @@
       "fr": null
     },
     "cargo_monitor_name": {
-      "en": "Cargo Monitor",
+      "en": "Cargo monitor",
       "fr": "Moniteur Soute"
     },
     "cargo_monitor_desc": {
@@ -58,7 +58,7 @@
       "fr": "Receuil des informations sur votre soute."
     },
     "material_monitor_name": {
-      "en": "Material Monitor",
+      "en": "Material monitor",
       "fr": "Moniteur Matériel"
     },
     "material_monitor_desc": {

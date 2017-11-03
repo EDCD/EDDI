@@ -32,6 +32,11 @@ namespace EddiMaterialMonitor
 
         public string MonitorName()
         {
+            return "Material monitor";
+        }
+
+        public string MonitorLocalName()
+        {
             return I18N.GetString("material_monitor_name");
         }
 
