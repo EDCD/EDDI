@@ -547,7 +547,7 @@ namespace EddiSpeechService
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_3") + "\">tree</phoneme>");
                         break;
                     case '4':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_4") + ".ər\">fawer</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_4") + "\">fawer</phoneme>");
                         break;
                     case '5':
                         elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_5") + "\">fife</phoneme>");
