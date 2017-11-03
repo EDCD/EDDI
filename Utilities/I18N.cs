@@ -23,8 +23,10 @@ namespace Utilities
         private static Dictionary<string, I18NString> translations;
         // contains each langs defined in langs.json
         private static List<String> availableLangs;
-        // JSON filename
-        public static readonly string langsFile = "langs.json";
+        // Can't use Utilities.Constants there because of cyclic dependecies
+        private static string dataDir = Environment.GetEnvironmentVariable("AppData") + @"\EDDI\";
+        // JSON filename, copy langs.json to EDDI DATA_DIR to use tests
+        public static readonly string langsFile = File.Exists(dataDir + "langs.json") ? dataDir + "langs.json" : "langs.json";
 
         static I18N()
         {
@@ -34,6 +36,7 @@ namespace Utilities
         // Set all values to their defaults
         private static void Init()
         {
+            //Logging.Info($"I18N reading '{langsFile}'");
             translations = new Dictionary<string, I18NString>();
             availableLangs = new List<string>();
             currentLang = GetSystemLangCode();

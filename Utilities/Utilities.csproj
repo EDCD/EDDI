@@ -84,7 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="langs.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
