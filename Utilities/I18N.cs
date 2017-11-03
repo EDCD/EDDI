@@ -108,7 +108,7 @@ namespace Utilities
         // Returns true if lang is defined in langs.json
         public static bool IsAvailableLang(string lang)
         {
-            return availableLangs.Contains(lang);
+            return lang == null ? false : availableLangs.Contains(lang);
         }
 
         // Set lang with given langCode if available, call FallbackLang() otherwise
@@ -144,6 +144,8 @@ namespace Utilities
         // or if KeyNotFoundException was thrown
         public static string GetString(string stringCode, string lang)
         {
+            if (stringCode == null)
+                return null;
             string s = null;
             // Console.WriteLine($"searching for string '{stringCode}' in lang '{lang}' in file '{langsFile}'");
             try
