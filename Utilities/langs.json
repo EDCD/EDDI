@@ -23,7 +23,7 @@
     },
     "eddp_monitor_desc": {
       "en": "Monitor EDDP for changes in system control and state, and generate events that match the watch list.",
-      "fr": null
+      "fr": "Gère EDDP pour tout changement d'un système "
     },
     "journal_monitor_name": {
       "en": "Journal monitor",
