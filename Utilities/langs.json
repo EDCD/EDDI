@@ -30,8 +30,8 @@
       "fr": "Moniteur Journal"
     },
     "journal_monitor_desc": {
-      "en": "Monitor Elite: Dangerous' journal.log for many common events.  This should not be disabled unless you are sure you know what you are doing, as it will result in many functions inside EDDI no longer working",
-      "fr": null
+      "en": "Monitor Elite: Dangerous' journal.log for many common events. This should not be disabled unless you are sure you know what you are doing, as it will result in many functions inside EDDI no longer working",
+      "fr": "Gère le fichier journal.log d'Elite: Dangerous pour beaucoup d'événements communs. Cecic ne devrait pas être désactivé sauf si vous êtes sûr de ce que vous faites, éant donné que beaucoup de fonctions à l'intérieur d'EDDI ne fonctonneront plus"
     },
     "galnet_monitor_name": {
       "en": "Galnet monitor",
@@ -39,7 +39,7 @@
     },
     "galnet_monitor_desc": {
       "en": "Monitor Galnet for new news items and generate a \"Galnet news published\" event when new items are posted",
-      "fr": null
+      "fr": "Gère les nouveaux articles Galnet et génère un événement \"Galnet news published\" lorsque que nouveaux articles sont postés"
     },
     "ship_monitor_name": {
       "en": "Ship monitor",
@@ -47,7 +47,7 @@
     },
     "ship_monitor_desc": {
       "en": "Track information on your ships.",
-      "fr": null
+      "fr": "Receuil des informations sur vos vaisseaux."
     },
     "cargo_monitor_name": {
       "en": "Cargo monitor",
@@ -64,6 +64,38 @@
     "material_monitor_desc": {
       "en": "Track the amount of materials and generate events when limits are reached.",
       "fr": "Receuil le nombre de matériaux et génère des événements lorsque les limites sont atteintes."
+    },
+    "material_monitor_p1": {
+      "en": "Below is a list of all known materials. You can set values for the minimum, desired and maximum levels of each and EDDI will generate events when you move beyond the levels.",
+      "fr": "Ci-dessous une liste des tout les matériaux connus. Vous pouvez définir des valeurs pour le nombre minimum, désiré et maximum de chaque et EDDI générera des événements lorsque vous atteindrez ces niveaux."
+    },
+    "material_monitor_p2": {
+      "en": "Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated.",
+      "fr": "À noter que si votre inventaire est incorrect, vous aurez besoin de démarrer ou redémarrer Elite afin que ces informations soient mises à jour."
+    },
+    "material_monitor_name_header": {
+      "en": "Name",
+      "fr": "Nom"
+    },
+    "material_monitor_type_header": {
+      "en": "Type",
+      "fr": "Type"
+    },
+    "material_monitor_inventory_header": {
+      "en": "Inventory",
+      "fr": "Inventaire"
+    },
+    "material_monitor_min_header": {
+      "en": "Minimum",
+      "fr": "Minimum"
+    },
+    "material_monitor_desired_header": {
+      "en": "Desired",
+      "fr": "Desiré"
+    },
+    "material_monitor_max_header": {
+      "en": "Maximum",
+      "fr": "Maximum"
     },
     "change_affect_va": {
       "en": "Any changes made here will take effect automatically in VoiceAttack.  You can close this window when you have finished.",
