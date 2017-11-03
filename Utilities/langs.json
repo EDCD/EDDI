@@ -17,6 +17,38 @@
       "en": null,
       "fr": null
     },
+    "eddp_monitor_name": {
+      "en": "EDDP Monitor",
+      "fr": "Moniteur EDDP"
+    },
+    "eddp_monitor_desc": {
+      "en": "Monitor EDDP for changes in system control and state, and generate events that match the watch list.",
+      "fr": null
+    }
+    "journal_monitor_name": {
+      "en": "Journal Monitor",
+      "fr": "Moniteur Journal"
+    },
+    "journal_monitor_desc": {
+      "en": "Monitor Elite: Dangerous' journal.log for many common events.  This should not be disabled unless you are sure you know what you are doing, as it will result in many functions inside EDDI no longer working",
+      "fr": null
+    },
+    "galnet_monitor_name": {
+      "en": "Galnet Monitor",
+      "fr": "Moniteur Galnet"
+    },
+    "galnet_monitor_desc": {
+      "en": "Monitor Galnet for new news items and generate a \"Galnet news published\" event when new items are posted",
+      "fr": null
+    },
+    "ship_monitor_name": {
+      "en": "Ship Monitor",
+      "fr": "Moniteur Vaisseau"
+    },
+    "ship_monitor_desc": {
+      "en": "Track information on your ships.",
+      "fr": null
+    },
     "cargo_monitor_name": {
       "en": "Cargo Monitor",
       "fr": "Moniteur Soute"
@@ -26,7 +58,7 @@
       "fr": "Receuil des informations sur votre soute."
     },
     "material_monitor_name": {
-      "en": "Material monitor",
+      "en": "Material Monitor",
       "fr": "Moniteur Matériel"
     },
     "material_monitor_desc": {
