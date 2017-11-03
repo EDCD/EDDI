@@ -25,11 +25,17 @@ namespace Utilities
         private static List<String> availableLangs;
         // Can't use Utilities.Constants there because of cyclic dependecies
         private static string dataDir = Environment.GetEnvironmentVariable("AppData") + @"\EDDI\";
-        // JSON filename, copy langs.json to EDDI DATA_DIR to use tests
-        public static readonly string langsFile = File.Exists(dataDir + "langs.json") ? dataDir + "langs.json" : "langs.json";
+        // JSON filename, copy langs.json to EDDI DATA_DIR in order to use unit tests
+        public static readonly string langsFile;
 
         static I18N()
         {
+            if (File.Exists("langs.json"))
+                langsFile = "langs.json";
+            else if (File.Exists(dataDir + "langs.json"))
+                langsFile = dataDir + "langs.json";
+            else
+                throw new Exception("Utilities.I18N : Unable to reach 'langs.json' file");
             Init();
         }
 
