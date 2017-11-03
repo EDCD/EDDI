@@ -1140,6 +1140,486 @@
     "ICAO_9": {
       "en": "ˈnaɪnər",
       "fr": "nœf"
+    },
+    "shieldpatternanalysis": {
+      "en": "Aberrant Shield Pattern Analysis",
+      "fr": "Analyse de modèle de bouclier aberrante"
+    },
+    "compactemissionsdata": {
+      "en": "Abnormal Compact Emission Data",
+      "fr": "Données d'émissions compactes anormales"
+    },
+    "adaptiveencryptors": {
+      "en": "Adaptive Encryptors Capture",
+      "fr": "Capture de cryptage évolutif"
+    },
+    "ancientbiologicaldata": {
+      "en": "Ancient Biological Data",
+      "fr": "Ancient Biological Data"
+    },
+    "ancientculturaldata": {
+      "en": "Ancient Cultural Data",
+      "fr": "Ancient Cultural Data"
+    },
+    "ancienthistoricaldata": {
+      "en": "Ancient Historical Data",
+      "fr": "Ancient Historical Data"
+    },
+    "ancientlanguagedata": {
+      "en": "Ancient Language Data",
+      "fr": "Ancient Language Data"
+    },
+    "ancienttechnologicaldata": {
+      "en": "Ancient Technological Data",
+      "fr": "Ancient Technological Data"
+    },
+    "bulkscandata": {
+      "en": "Anomalous Bulk Scan Data",
+      "fr": "Fichier volumineux d'analyse anormal"
+    },
+    "fsdtelemetry": {
+      "en": "Anomalous FSD Telemetry",
+      "fr": "Télémétrie FSD anormale"
+    },
+    "antimony": {
+      "en": "Antimony",
+      "fr": "Antimoine"
+    },
+    "arsenic": {
+      "en": "Arsenic",
+      "fr": "Arsenic"
+    },
+    "disruptedwakeechoes": {
+      "en": "Atypical Disrupted Wake Echoes",
+      "fr": "Echos de sillages perturbés atypiques"
+    },
+    "encryptionarchives": {
+      "en": "Atypical Encryption Archives",
+      "fr": "Archives cryptées atypiques"
+    },
+    "basicconductors": {
+      "en": "Basic Conductors",
+      "fr": "conducteurs simples"
+    },
+    "biotechconductors": {
+      "en": "Biotech Conductors",
+      "fr": "Conducteurs biotechniques"
+    },
+    "cadmium": {
+      "en": "Cadmium",
+      "fr": "Cadmium"
+    },
+    "carbon": {
+      "en": "Carbon",
+      "fr": "Carbone"
+    },
+    "chemicaldistillery": {
+      "en": "Chemical Distillery",
+      "fr": "Distilerie chimique"
+    },
+    "chemicalmanipulators": {
+      "en": "Chemical Manipulators",
+      "fr": "Manipulateurs chimiques"
+    },
+    "chemicalprocessors": {
+      "en": "Chemical Processors",
+      "fr": "Processeurs chimiques"
+    },
+    "chemicalstorageunits": {
+      "en": "Chemical Storage Units",
+      "fr": "Unités de stockage chimique"
+    },
+    "chromium": {
+      "en": "Chromium",
+      "fr": "Chrome"
+    },
+    "scandatabanks": {
+      "en": "Classified Scan Databanks",
+      "fr": "Banques de données d'analyse classifiées"
+    },
+    "classifiedscandata": {
+      "en": "Classified Scan Fragment",
+      "fr": "Données d'analyse classifiées parcellaires"
+    },
+    "compactcomposites": {
+      "en": "Compact Composites",
+      "fr": "Composites compacts"
+    },
+    "compoundshielding": {
+      "en": "Compound Shielding",
+      "fr": "Protection Composite"
+    },
+    "conductiveceramics": {
+      "en": "Conductive Ceramics",
+      "fr": "Conducteurs en céramique"
+    },
+    "conductivecomponents": {
+      "en": "Conductive Components",
+      "fr": "Composants conducteurs"
+    },
+    "conductivepolymers": {
+      "en": "Conductive Polymers",
+      "fr": "Conducteurs en polymères"
+    },
+    "configurablecomponents": {
+      "en": "Configurable Components",
+      "fr": "Composant paramétrables"
+    },
+    "fedcorecomposites": {
+      "en": "Core Dynamics Composites",
+      "fr": "Composites Core Dynamics"
+    },
+    "industrialfirmware": {
+      "en": "Cracked Industrial Firmware",
+      "fr": "Micrologiciel industriel piraté"
+    },
+    "crystalshards": {
+      "en": "Crystal Shards",
+      "fr": "Éclat de cristal"
+    },
+    "dataminedwake": {
+      "en": "Datamined Wake Exceptions",
+      "fr": "Exploration de données de sillage anormales"
+    },
+    "decodedemissiondata": {
+      "en": "Decoded Emission Data",
+      "fr": "Données d'émissions décodées"
+    },
+    "shieldcyclerecordings": {
+      "en": "Distorted Shield Cycle Recordings",
+      "fr": "Enregistrements de cycles de bouclier déformés"
+    },
+    "encodedscandata": {
+      "en": "Divergent Scan Data",
+      "fr": "Données d'analyse divergentes"
+    },
+    "hyperspacetrajectories": {
+      "en": "Eccentric Hyperspace Trajectories",
+      "fr": "Trajectoires hyperespace exentriques"
+    },
+    "electrochemicalarrays": {
+      "en": "Electrochemical Arrays",
+      "fr": "Réseaux électrochimiques"
+    },
+    "scrambledemissiondata": {
+      "en": "Exceptional Scrambled Emission Data",
+      "fr": "Données d'émissions brouillées exceptionnelles"
+    },
+    "exquisitefocuscrystals": {
+      "en": "Exquisite Focus Crystals",
+      "fr": "Cristaux de focalisation sans défaut"
+    },
+    "filamentcomposites": {
+      "en": "Filament Composites",
+      "fr": "Filament composite"
+    },
+    "uncutfocuscrystals": {
+      "en": "Flawed Focus Crystals",
+      "fr": "Cristaux de focalisation imparfaits"
+    },
+    "focuscrystals": {
+      "en": "Focus Crystals",
+      "fr": "Cristaux de focalisation"
+    },
+    "galvanisingalloys": {
+      "en": "Galvanising Alloys",
+      "fr": "Alliage galvanique"
+    },
+    "germanium": {
+      "en": "Germanium",
+      "fr": "Germanium"
+    },
+    "gridresistors": {
+      "en": "Grid Resistors",
+      "fr": "Résistance à grille"
+    },
+    "heatconductionwiring": {
+      "en": "Heat Conduction Wiring",
+      "fr": "Câblage de conduction thermique"
+    },
+    "heatdispersionplate": {
+      "en": "Heat Dispersion Plate",
+      "fr": "Plaque de dissipation thermique"
+    },
+    "heatexchangers": {
+      "en": "Heat Exchangers",
+      "fr": "Echangeurs de chaleur"
+    },
+    "heatresistantceramics": {
+      "en": "Heat Resistant Ceramics",
+      "fr": "Céramiques résistantes à la chaleur"
+    },
+    "heatvanes": {
+      "en": "Heat Vanes",
+      "fr": "Vannes thermiques"
+    },
+    "highdensitycomposites": {
+      "en": "High Density Composites",
+      "fr": "Composites à haute densité"
+    },
+    "hybridcapacitors": {
+      "en": "Hybrid Capacitors",
+      "fr": "Condensateurs hybrides"
+    },
+    "imperialshielding": {
+      "en": "Imperial Shielding",
+      "fr": "Protection impériale"
+    },
+    "improvisedcomponents": {
+      "en": "Improvised Components",
+      "fr": "Composants improvisés"
+    },
+    "shieldsoakanalysis": {
+      "en": "Inconsistent Shield Soak Analysis",
+      "fr": "Analyse d'absorption de bouclier incohérente"
+    },
+    "iron": {
+      "en": "Iron",
+      "fr": "Fer"
+    },
+    "archivedemissiondata": {
+      "en": "Irregular Emission Data",
+      "fr": "Données d'émissions aberrantes"
+    },
+    "manganese": {
+      "en": "Manganese",
+      "fr": "Manganèse"
+    },
+    "mechanicalcomponents": {
+      "en": "Mechanical Components",
+      "fr": "Composants mécaniques"
+    },
+    "mechanicalequipment": {
+      "en": "Mechanical Equipment",
+      "fr": "Equipement mécanique"
+    },
+    "mechanicalscrap": {
+      "en": "Mechanical Scrap",
+      "fr": "Ferraille mécanique"
+    },
+    "mercury": {
+      "en": "Mercury",
+      "fr": "Mercure"
+    },
+    "militarygradealloys": {
+      "en": "Military Grade Alloys",
+      "fr": "Alliages militaires"
+    },
+    "militarysupercapacitors": {
+      "en": "Military Supercapacitors",
+      "fr": "Supercondensateurs militaires"
+    },
+    "consumerfirmware": {
+      "en": "Modified Consumer Firmware",
+      "fr": "Micrologiciel consommateur modifié"
+    },
+    "embeddedfirmware": {
+      "en": "Modified Embedded Firmware",
+      "fr": "Micrologiciel intégré modifié"
+    },
+    "molybdenum": {
+      "en": "Molybdenum",
+      "fr": "Molybdène"
+    },
+    "nickel": {
+      "en": "Nickel",
+      "fr": "Nickel"
+    },
+    "niobium": {
+      "en": "Niobium",
+      "fr": "Niobium"
+    },
+    "symmetrickeys": {
+      "en": "Open Symmetric Keys",
+      "fr": "clés symétriques ouvertes"
+    },
+    "shieldfrequencydata": {
+      "en": "Peculiar Shield Frequency Data",
+      "fr": "Données de Fréquences de bouclier Singulières"
+    },
+    "pharmaceuticalisolators": {
+      "en": "Pharmaceutical Isolators",
+      "fr": "Isolants pharmaceutiques"
+    },
+    "phasealloys": {
+      "en": "Phase Alloys",
+      "fr": "Alliages de phase"
+    },
+    "phosphorus": {
+      "en": "Phosphorus",
+      "fr": "Phosphore"
+    },
+    "polonium": {
+      "en": "Polonium",
+      "fr": "Polonium"
+    },
+    "polymercapacitors": {
+      "en": "Polymer Capacitors",
+      "fr": "Condensateurs en polymères"
+    },
+    "precipitatedalloys": {
+      "en": "Precipitated Alloys",
+      "fr": "Alliages précipités"
+    },
+    "fedproprietarycomposites": {
+      "en": "Proprietary Composites",
+      "fr": "Composites brevetés"
+    },
+    "protoheatradiators": {
+      "en": "Proto Heat Radiators",
+      "fr": "Proto-radiateurs"
+    },
+    "protolightalloys": {
+      "en": "Proto Light Alloys",
+      "fr": "Proto-alliages légers"
+    },
+    "protoradiolicalloys": {
+      "en": "Proto Radiolic Alloys",
+      "fr": "Proto-alliages radiologiques"
+    },
+    "refinedfocuscrystals": {
+      "en": "Refined Focus Crystals",
+      "fr": "Cristaux de focalisation raffinés"
+    },
+    "ruthenium": {
+      "en": "Ruthenium",
+      "fr": "Ruthénium"
+    },
+    "salvagedalloys": {
+      "en": "Salvaged Alloys",
+      "fr": "Alliages récupérés"
+    },
+    "securityfirmware": {
+      "en": "Security Firmware Patch",
+      "fr": "Mise à jour de micrologiciel de sécurité"
+    },
+    "selenium": {
+      "en": "Selenium",
+      "fr": "Sélénium"
+    },
+    "unknownenergysource": {
+      "en": "Sensor Fragment",
+      "fr": "Fragment de capteur"
+    },
+    "shieldemitters": {
+      "en": "Shield Emitters",
+      "fr": "Analyses de bouclier atypiques"
+    },
+    "shieldingsensors": {
+      "en": "Shielding Sensors",
+      "fr": "Capteurs de bouclier"
+    },
+    "legacyfirmware": {
+      "en": "Specialised Legacy Firmware",
+      "fr": "Micrologiciel spécialisé périmé"
+    },
+    "wakesolutions": {
+      "en": "Strange Wake Solutions",
+      "fr": "Solutions de sillages anormales"
+    },
+    "sulphur": {
+      "en": "Sulphur",
+      "fr": "Souffre"
+    },
+    "encryptioncodes": {
+      "en": "Tagged Encryption Codes",
+      "fr": "Clés de cryptage balisées"
+    },
+    "technetium": {
+      "en": "Technetium",
+      "fr": "Technétium"
+    },
+    "tellurium": {
+      "en": "Tellurium",
+      "fr": "Tellurium"
+    },
+    "temperedalloys": {
+      "en": "Tempered Alloys",
+      "fr": "Alliages trempés"
+    },
+    "unknowncarapace": {
+      "en": "Thargoid Carapace",
+      "fr": "Carapace Thargoïde"
+    },
+    "unknownenergycell": {
+      "en": "Thargoid Energy Cell",
+      "fr": "Cellule d'Énergie Thargoïde"
+    },
+    "tg_compositiondata": {
+      "en": "Thargoid Material Composition Data",
+      "fr": "Données de composition de matériaux Thargoïdes"
+    },
+    "unknownorganiccircuitry": {
+      "en": "Thargoid Organic Circuitry",
+      "fr": "Circuit Organique Thargoïde"
+    },
+    "tg_residuedata": {
+      "en": "Thargoid Residue Data",
+      "fr": "Résidus de Données Thargoïde"
+    },
+    "unknownshipsignature": {
+      "en": "Thargoid Ship Signature",
+      "fr": "Signature de Vaisseau Thargoïde"
+    },
+    "tg_structuraldata": {
+      "en": "Thargoid Structural Data",
+      "fr": "Données Structurelles Thargoïdes"
+    },
+    "unknowntechnologycomponents": {
+      "en": "Thargoid Technology Components",
+      "fr": "Composants technologiques Thargoïdes"
+    },
+    "unknownwakedata": {
+      "en": "Thargoid Wake Data",
+      "fr": "Donnée de Sillage Thargoïde"
+    },
+    "thermicalloys": {
+      "en": "Thermic Alloys",
+      "fr": "Alliages thermiques"
+    },
+    "tin": {
+      "en": "Tin",
+      "fr": "Étain"
+    },
+    "tungsten": {
+      "en": "Tungsten",
+      "fr": "Tungstène"
+    },
+    "emissiondata": {
+      "en": "Unexpected Emission Data",
+      "fr": "Données d'émissions inattendues"
+    },
+    "scanarchives": {
+      "en": "Unidentified Scan Archives",
+      "fr": "Données d'analyse archivées non identifiées"
+    },
+    "shielddensityreports": {
+      "en": "Untypical Shield Scans",
+      "fr": "Analyses de bouclier atypiques"
+    },
+    "encryptedfiles": {
+      "en": "Unusual Encrypted Files",
+      "fr": "Fichiers cryptés inhabituels"
+    },
+    "vanadium": {
+      "en": "Vanadium",
+      "fr": "Vanadium"
+    },
+    "wornshieldemitters": {
+      "en": "Worn Shield Emitters",
+      "fr": "Émetteurs de bouclier usé"
+    },
+    "yttrium": {
+      "en": "Yttrium",
+      "fr": "Yttrium"
+    },
+    "zinc": {
+      "en": "Zinc",
+      "fr": "Zinc"
+    },
+    "zirconium": {
+      "en": "Zirconium",
+      "fr": "Zirconium"
     }
   }
 }
