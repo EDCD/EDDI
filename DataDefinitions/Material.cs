@@ -18,6 +18,14 @@ namespace EddiDataDefinitions
 
         public string EDName { get; private set; }
 
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(EDName) ?? EDName;
+            }
+        }
+
         public Rarity rarity { get; private set; }
 
         public string name { get; private set; }

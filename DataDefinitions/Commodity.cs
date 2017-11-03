@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -24,6 +25,14 @@ namespace EddiDataDefinitions
         // Admin
         public long EDDBID { get; set; }
         public string EDName { get; set; }
+
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(EDName) ?? EDName;
+            }
+        }
 
         public Commodity() { }
 

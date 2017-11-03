@@ -19,6 +19,14 @@ namespace EddiDataDefinitions
 
         public string edname { get; private set; }
 
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(edname) ?? edname;
+            }
+        }
+
         private Superpower(string edname, string name)
         {
             this.edname = edname;

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -13,6 +14,15 @@ namespace EddiDataDefinitions
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         [DefaultValue(null)]
         public string edname { get; private set; }
+
+        [JsonIgnore]
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(edname) ?? edname;
+            }
+        }
 
         [JsonIgnore]
         private string _material;
