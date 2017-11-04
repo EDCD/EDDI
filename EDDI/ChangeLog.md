@@ -10,6 +10,7 @@
     * Add SpeechPitch() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Add SpeechRate() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Add SpeechVolume() Cottle function. Details on how to use this are in the SpeechResponder documentation
+    * Worked around non-compliance of CereProc voices with industry standards that would cause EDDI to revert to a system default voice.
     * Fixed a bug that was preventing the Play() function from working properly
     * 'FSD jump' event - reduced the pause between jumping and speaking.
     * Script changes
