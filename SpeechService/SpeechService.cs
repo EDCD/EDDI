@@ -358,8 +358,12 @@ namespace EddiSpeechService
                         {
                             Logging.Debug("Obtaining best guess culture");
                             string culture = bestGuessCulture(synth);
+                            if (culture.Length > 0)
+                            {
+                                culture = " xml:lang = " + bestGuessCulture(synth);
+                            }
                             Logging.Debug("Best guess culture is " + culture);
-                            speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis"" xml:lang=""" + bestGuessCulture(synth) + @""">" + escapeSsml(speech) + @"</speak>";
+                            speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
                             Logging.Debug("Feeding SSML to synthesizer: " + speech);
                             synth.SpeakSsml(speech);
                         }
@@ -395,14 +399,8 @@ namespace EddiSpeechService
                 {
                     if (synth.Voice.Name.Contains("CereVoice"))
                     {
-                        // Cereproc voices don't have the correct local so we need to set it manually
-                        if (synth.Voice.Name.Contains("Scotland") ||
-                            synth.Voice.Name.Contains("England") ||
-                            synth.Voice.Name.Contains("Ireland") ||
-                            synth.Voice.Name.Contains("Wales"))
-                        {
-                            guess = "en-GB";
-                        }
+                        // Cereproc voices do not support the xml:lang attribute, so no language code should be applied
+                        guess = string.Empty;
                     }
                     else
                     {
