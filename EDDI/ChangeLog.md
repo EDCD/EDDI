@@ -1,16 +1,21 @@
 ﻿# CHANGE LOG
 
 ### 2.4.3
+  * Core
+    * Fixed a bug that was causing the "Report an issue" button to export empty log files.
   * Speech Responder
     * Add Emphasize() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Add SpeechPitch() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Add SpeechRate() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Add SpeechVolume() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Fixed a bug that was preventing the Play() function from working properly
-
-### 2.4.3
-  * Core
-    * Fixed a bug that was causing the "Report an issue" button to export empty log files.
+    * Script changes
+      * 'Star report' 
+        * Amended the age calculations for the fact that age is reported in millions of years, not years.
+        * Amended reporting of stars less than a million years old.
+        * Amended the test for Herbig-Haro objects.
+        * Enhanced the reporting of Wolf-Rayet stars.
+        * Sundry punctuation tweaks to make the speech more natural.
 
 ### 2.4.2
   * Core
