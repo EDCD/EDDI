@@ -1,6 +1,8 @@
 ﻿# CHANGE LOG
 
 ### 2.4.3
+  * Core
+    * We will no longer ask users to send logs for commodity definition errors. 
   * Speech Responder
     * Add Emphasize() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Add SpeechPitch() Cottle function. Details on how to use this are in the SpeechResponder documentation
