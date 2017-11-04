@@ -12,6 +12,8 @@ namespace EddiStarMapService
         public string apiKey { get; set; }
         [JsonProperty("commanderName")]
         public string commanderName { get; set; }
+        [JsonProperty("lastSync")]
+        public DateTime lastSync { get; set; }
 
         [JsonIgnore]
         private string dataPath;
@@ -59,6 +61,7 @@ namespace EddiStarMapService
         {
             apiKey = null;
             commanderName = null;
+            lastSync = DateTime.MinValue;
         }
 
         /// <summary>
