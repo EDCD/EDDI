@@ -16,6 +16,8 @@
         * Amended the test for Herbig-Haro objects.
         * Enhanced the reporting of Wolf-Rayet stars.
         * Sundry punctuation tweaks to make the speech more natural.
+      * 'Entered signal source' 
+        * Throughly re-written to better report both human and Thargoid signal sources
 
 ### 2.4.2
   * Core
