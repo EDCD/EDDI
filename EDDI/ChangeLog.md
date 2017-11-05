@@ -7,10 +7,11 @@
   * EDSM
     * Fixed a bug that was preventing EDSM comments from being updated and read.
   * Speech Responder
-    * Added Emphasize() Cottle function. Details on how to use this are in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md).
-    * Added SpeechPitch() Cottle function. Details on how to use this are in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md).
-    * Added SpeechRate() Cottle function. Details on how to use this are in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md).
-    * Added SpeechVolume() Cottle function. Details on how to use this are in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md).
+    * Added the following Cottle functions, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
+      * `Emphasize()`
+      * `SpeechPitch()`
+      * `SpeechRate()`
+      * `SpeechVolume()`
     * Worked around non-compliance of CereProc voices with industry standards that would cause EDDI to revert to a system default voice.
     * Fixed a bug that was preventing the Play() function from working properly
     * 'FSD jump' event - reduced the pause between jumping and speaking.
