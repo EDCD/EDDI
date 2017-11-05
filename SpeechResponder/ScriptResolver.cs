@@ -208,59 +208,26 @@ namespace EddiSpeechResponder
 
             store["List"] = new NativeFunction((values) =>
             {
-                if (values.Count() == 0)
-                { return ""; }
-
-                // List values as strings
-
-                List<string> valuelist = new List<string>();
-
-                int listcount = Convert.ToInt16(values[1].AsNumber);  // Convert 'values[1].AsNumber' from decimal to integer
-                for (int i = 0; i < listcount; i++)
+                string output = String.Empty;
+                if (values.Count == 1)
                 {
-                    Logging.Debug("Inspecting element: " + i);
-                    valuelist.Add(values[0].AsString);
-                }
-
-                // Proceed if the list is not empty
-                if (valuelist != null)
-                {
-                    string output = "";
-                    string article = "";
-                    int cur = 0;
-
-                    Logging.Debug("Objects to index = " + valuelist.Count());
-
-                    // Set the article for each item from the list & concatonate
-                    do
+                    foreach (KeyValuePair<Cottle.Value, Cottle.Value> value in values[0].Fields)
                     {
-                        // Debugging
-                        Logging.Debug("Indexing cur = " + cur + ", value = " + valuelist[cur]);
-
-                        if (cur == 0)
+                        if (value.Key == 0)
                         {
-                            // do nothing
+                            output = value.Value.ToString();
                         }
-                        else if (cur < (values.Count() - 1))
+                        else if (value.Key < (values[0].Fields.Count - 1))
                         {
-                            article = ", ";
+                            output = output + ", " + value.Value.ToString();
                         }
                         else
                         {
-                            article = "and ";
+                            output = output + ", and " + value.Value.ToString();
                         }
-
-                        // Get value from list
-                        string value = valuelist[cur];
-
-                        // Concatonate the output
-                        output = string.Concat(output, article, value);
-                        cur = cur + 1;
-                    } while (cur < valuelist.Count());
-                    return output;
+                    }
                 }
-
-                return null;
+                return output;
             }, 1);
 
             store["Pause"] = new NativeFunction((values) =>

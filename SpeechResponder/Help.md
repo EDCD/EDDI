@@ -343,6 +343,17 @@ SecurityLevelDetails() takes a single argument of the security level for which y
 
 At current this does not have a lot of use as the security level object only contains its name, but expect it to be expanded in future.
 
+### List()
+
+This function will return a humanised list of items from an array (e.g. this, that, and the other thing).
+
+List() takes a single argument, the array variable with items you want listed.
+
+Common usage is to convert an array to a list, for example:
+
+    {set systemsrepaired to ['the hull', 'the cockpit', 'corroded systems']}
+    The limpet has repaired {List(systemsrepaired)}.
+
 ### Log()
 
 This function will write the supplied text to EDDI's log.

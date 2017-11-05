@@ -1,5 +1,10 @@
 ﻿# CHANGE LOG
 
+### 2.4.4
+  * Speech Responder
+    * Added the following Cottle functions, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
+      * `List()`
+
 ### 2.4.3
   * Core
     * We will no longer ask users to send logs for commodity definition errors (and there was much rejoicing). 
