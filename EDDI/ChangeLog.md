@@ -3,7 +3,7 @@
 ### 2.4.4
   * Speech Responder
     * Fixed a bug that was causing some SSML related functions (e.g. Pause()) to not render correctly.
-    * Fixed our fix. Star scans should no longer report every star as "one of the oldest".
+    * Fixed unit conversion of the star's age in star scans. They should no longer report every star as "one of the oldest".
 
 ### 2.4.3
   * Core
