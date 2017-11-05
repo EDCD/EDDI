@@ -1,5 +1,9 @@
 ﻿# CHANGE LOG
 
+### 2.4.4
+  * Speech Responder
+    * Fixed our fix. Star scans should no longer report every star as "one of the oldest".
+
 ### 2.4.3
   * Core
     * We will no longer ask users to send logs for commodity definition errors (and there was much rejoicing). 
