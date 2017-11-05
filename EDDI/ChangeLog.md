@@ -12,8 +12,6 @@
       * `SpeechPitch()`
       * `SpeechRate()`
       * `SpeechVolume()`
-    * Worked around non-compliance of CereProc voices with industry standards that would cause EDDI to revert to a system default voice.
-    * Fixed a bug that was preventing the Play() function from working properly
     * 'FSD jump' event - reduced the pause between jumping and speaking.
     * Script changes
       * 'Star report' 
@@ -24,6 +22,8 @@
         * Sundry punctuation tweaks to make the speech more natural.
       * 'Entered signal source' 
         * Thoroughly re-written to better report both human and Thargoid signal sources.
+    * Worked around non-compliance of CereProc voices with industry standards that would cause EDDI to revert to a system default voice.
+    * Fixed a bug that was preventing the Play() function from working properly
 
 ### 2.4.2
   * Core
