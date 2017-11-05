@@ -32,7 +32,7 @@ namespace EddiEvents
             VARIABLES.Add("luminosity", "The luminosity of the star that has been scanned");
             VARIABLES.Add("luminosityclass", "The luminosity class of the star that has been scanned");            
             VARIABLES.Add("tempprobability", "The probablility of finding a star of this class with this temperature");
-            VARIABLES.Add("age", "The age of the star that has been scanned, in years (rounded to millions of years)");
+            VARIABLES.Add("age", "The age of the star that has been scanned, in millions of years");
             VARIABLES.Add("ageprobability", "The probablility of finding a star of this class with this age");
             VARIABLES.Add("temperature", "The temperature of the star that has been scanned");
             VARIABLES.Add("distancefromarrival", "The distance in LS from the main star");

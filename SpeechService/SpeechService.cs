@@ -360,9 +360,13 @@ namespace EddiSpeechService
                             string culture = bestGuessCulture(synth);
                             if (culture.Length > 0)
                             {
-                                culture = " xml:lang = " + bestGuessCulture(synth);
+                                culture = @" xml:lang=""" + bestGuessCulture(synth) + @"""";
+                                Logging.Debug("Best guess culture is " + culture);
                             }
-                            Logging.Debug("Best guess culture is " + culture);
+                            else
+                            {
+                                Logging.Debug("SSML attribute xml:lang not applicable for Cereproc voices, no culture applies (not standards compliant).");
+                            }
                             speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
                             Logging.Debug("Feeding SSML to synthesizer: " + speech);
                             synth.SpeakSsml(speech);

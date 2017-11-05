@@ -1,5 +1,10 @@
 ﻿# CHANGE LOG
 
+### 2.4.4
+  * Speech Responder
+    * Fixed a bug that was causing some SSML related functions (e.g. Pause()) to not render correctly.
+    * Fixed unit conversion of the star's age in star scans. They should no longer report every star as "one of the oldest".
+
 ### 2.4.3
   * Core
     * We will no longer ask users to send logs for commodity definition errors (and there was much rejoicing). 
