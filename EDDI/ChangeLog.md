@@ -2,14 +2,15 @@
 
 ### 2.4.3
   * Core
-    * Fixed a bug that was causing the "Report an issue" button to export empty log files.
+    * We will no longer ask users to send logs for commodity definition errors (and there was much rejoicing). 
+    * Fixed a time zone snafu that was causing the "Report an issue" button to export empty log files for west of GMT locales.
   * EDSM
     * Fixed a bug that was preventing EDSM comments from being updated and read.
   * Speech Responder
-    * Add Emphasize() Cottle function. Details on how to use this are in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md).
-    * Add SpeechPitch() Cottle function. Details on how to use this are in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md).
-    * Add SpeechRate() Cottle function. Details on how to use this are in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md).
-    * Add SpeechVolume() Cottle function. Details on how to use this are in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md).
+    * Added Emphasize() Cottle function. Details on how to use this are in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md).
+    * Added SpeechPitch() Cottle function. Details on how to use this are in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md).
+    * Added SpeechRate() Cottle function. Details on how to use this are in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md).
+    * Added SpeechVolume() Cottle function. Details on how to use this are in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md).
     * Worked around non-compliance of CereProc voices with industry standards that would cause EDDI to revert to a system default voice.
     * Fixed a bug that was preventing the Play() function from working properly
     * 'FSD jump' event - reduced the pause between jumping and speaking.
@@ -21,7 +22,7 @@
         * Enhanced the reporting of Wolf-Rayet stars.
         * Sundry punctuation tweaks to make the speech more natural.
       * 'Entered signal source' 
-        * Throughly re-written to better report both human and Thargoid signal sources.
+        * Thoroughly re-written to better report both human and Thargoid signal sources.
 
 ### 2.4.2
   * Core

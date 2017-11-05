@@ -707,6 +707,11 @@ namespace EddiCompanionAppService
                     dynamic commodityJson = commodity.Value;
                     Commodity Commodity = new Commodity();
                     Commodity eddiCommodity = CommodityDefinitions.CommodityFromEliteID((long)commodity["id"]);
+                    if (eddiCommodity == null)
+                    {
+                        // If we fail to identify the commodity by EDID, try using the EDName.
+                        eddiCommodity = CommodityDefinitions.FromName((string)commodity["name"]);
+                    }
 
                     Commodity.EDName = (string)commodity["name"];
                     Commodity.name = (string)commodity["locName"];
@@ -740,7 +745,6 @@ namespace EddiCompanionAppService
                 if (commodityErrors.Count() > 0)
                 {
                     Logging.Warn("Commodity definition errors: " + JsonConvert.SerializeObject(commodityErrors));
-                    SpeechService.Instance.Say(null, "E-D-D-I commodity definition errors found.  Please forward your log to developers.", false);
                 }
             }
 
