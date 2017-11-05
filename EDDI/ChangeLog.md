@@ -1,5 +1,9 @@
 ﻿# CHANGE LOG
 
+### 2.4.4
+  * Speech Responder
+    * Fixed a bug that was causing some SSML related functions (e.g. Pause()) to not render correctly.
+
 ### 2.4.3
   * Core
     * We will no longer ask users to send logs for commodity definition errors (and there was much rejoicing). 
