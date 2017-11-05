@@ -3,16 +3,13 @@
 ### 2.4.3
   * Core
     * We will no longer ask users to send logs for commodity definition errors. 
+    * Fixed a bug that was causing the "Report an issue" button to export empty log files.
   * Speech Responder
     * Add Emphasize() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Add SpeechPitch() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Add SpeechRate() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Add SpeechVolume() Cottle function. Details on how to use this are in the SpeechResponder documentation
     * Fixed a bug that was preventing the Play() function from working properly
-
-### 2.4.3
-  * Core
-    * Fixed a bug that was causing the "Report an issue" button to export empty log files.
 
 ### 2.4.2
   * Core
