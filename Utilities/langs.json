@@ -25,6 +25,46 @@
       "en": "Monitor EDDP for changes in system control and state, and generate events that match the watch list.",
       "fr": "Gère EDDP pour tout changement d'un système "
     },
+    "eddp_monitor_p1": {
+      "en": "You can create, edit and delete watches below.  When EDDI receives information about a change somewhere in the galaxy it will compare it to each of the watches in turn.  If the information matches all of the selected criteria for a given watch then it will trigger an event.  Please be aware that this relies on information coming from EDDN, which in turn comes from commanders running programs like EDDI, so will only report changes of which the network is aware.",
+      "fr": "Vous pouvez créer, éditer et supprimer les observateurs ci-dessous. Lorsque EDDI recois des informations à propos d'un changement quelque part dans la galaxie il les compareras à chacun des observateur actifs. Si les informations concordent avec tout les critères sélectionnés pour un observateur donné, un événement seras déclenché. Prenez en compte que ceci repose sur les informations venant de EDDN, qui viennent de commandeurs utilisant des programmes comme EDDI, donc seuls les changements dont le réseau à connaissance seront rapportés."
+    },
+    "eddp_monitor_name_header": {
+      "en": "Name",
+      "fr": "Nom"
+    },
+    "eddp_monitor_system_header": {
+      "en": "System",
+      "fr": "Système"
+    },
+    "eddp_monitor_faction_header": {
+      "en": "Faction",
+      "fr": "Faction"
+    },
+    "eddp_monitor_state_header": {
+      "en": "State",
+      "fr": "État"
+    },
+    "eddp_monitor_max_dist_ship_header": {
+      "en": "Max distance from ship",
+      "fr": "Distance max au vaisseau"
+    },
+    "eddp_monitor_max_dist_home_header": {
+      "en": "Max distance from home",
+      "fr": "Distance max au système principal"
+    },
+    "eddp_monitor_new_watch": {
+      "en": "New Watch",
+      "fr": "Nouvel Observateur"
+    },
+    "eddp_monitor_anything": {
+      "en": "(anything)",
+      "fr": "(n'importe quoi)"
+    },
+    "eddp_monitor_delete_btn": {
+      "en": "Delete",
+      "fr": "Supprimer"
+    },
     "journal_monitor_name": {
       "en": "Journal monitor",
       "fr": "Moniteur Journal"
