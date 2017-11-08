@@ -128,6 +128,15 @@ namespace EddiDataDefinitions
             return (decimal)Math.Pow(((double)luminosity * solLuminosity) / (4 * Math.PI * Math.Pow((double)radius, 2) * stefanBoltzmann), 0.25);
         }
 
+        public static decimal HabitableZone(double targetTemp, double radius, double temperature)
+        {
+            double top = Math.Pow(radius, 2.0) * Math.Pow(temperature, 4.0);
+            double bottom = 4.0 * Math.Pow(targetTemp, 4.0);
+            double radiusMeters = Math.Pow(top / bottom, 0.5);
+            double radiusls = ( radiusMeters ) / 299792458; // convert result from meters to lightseconds by divinding by the speed of light
+            return Convert.ToDecimal(radiusls);
+        }
+
         public static decimal sanitiseCP(decimal cp)
         {
             // Trim decimal places appropriately

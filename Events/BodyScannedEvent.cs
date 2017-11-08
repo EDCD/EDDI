@@ -41,6 +41,7 @@ namespace EddiEvents
             VARIABLES.Add("materials", "A list of materials present on the body that has been scanned");
             VARIABLES.Add("terraformstate", "Whether the body can be, is in the process of, or has been terraformed (only available if DSS equipped)");
             VARIABLES.Add("axialtilt", "Axial tilt for the body (only available if DSS equipped)");
+            VARIABLES.Add("estimatedvalue", "The estimated value of the current scan");
         }
 
         public string name { get; private set; }
@@ -89,7 +90,9 @@ namespace EddiEvents
 
         public decimal? axialtilt { get; private set; }
 
-        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal? earthmass, decimal? radius, decimal gravity, decimal? temperature, decimal? pressure, bool? tidallylocked, bool? landable, string atmosphere, Volcanism volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, string reserves, List<MaterialPresence> materials, string terraformstate, decimal? axialtilt) : base(timestamp, NAME)
+        public long? estimatedvalue { get; private set; }
+        
+        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal? earthmass, decimal? radius, decimal gravity, decimal? temperature, decimal? pressure, bool? tidallylocked, bool? landable, string atmosphere, Volcanism volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, string reserves, List<MaterialPresence> materials, string terraformstate, decimal? axialtilt, bool? dssequipped) : base(timestamp, NAME)
         {
             this.name = name;
             this.distancefromarrival = distancefromarrival;
@@ -114,6 +117,7 @@ namespace EddiEvents
             this.materials = materials;
             this.terraformstate = terraformstate;
             this.axialtilt = axialtilt;
+            this.estimatedvalue = estimatevalue(dssequipped);
         }
 
         private decimal sanitiseCP(decimal cp)
@@ -135,6 +139,85 @@ namespace EddiEvents
             {
                 return Math.Round(cp * 100);
             }
+        }
+
+        private long? estimatevalue(bool? dssequipped)
+        {
+            int bodydataconstant = 720;
+            int terraconstant = 0;
+            bool terraformable = false;
+            double value;
+            double basevalue;
+            double terrabonusvalue;
+
+            // Override constants for specific types of bodies
+            if ( (terraformstate == "Terraformable") || (terraformstate == "Candidate for terraforming") )
+            {
+                terraformable = true;
+            }
+            if ( bodyclass == "Ammonia world")
+            {
+                // Ammonia worlds
+                bodydataconstant = 232619;
+            }
+            else if ( bodyclass == "Earthlike body" )
+            {
+                // Earth-like worlds
+                bodydataconstant = 155581;
+                terraconstant = 279088;
+            }
+            else if (bodyclass == "Water world" )
+            {
+                // Water worlds
+                bodydataconstant = 155581;
+                if (terraformable)
+                {
+                    terraconstant = 279088;
+                }
+            }
+            else if (bodyclass == "Metal rich body")
+            {
+                // Metal rich worlds
+                bodydataconstant = 52292;
+            }
+            else if (bodyclass == "High metal content body")
+            {
+                // High metal content worlds
+                bodydataconstant = 23168;
+                if (terraformable)
+                {
+                    terraconstant = 241607;
+                }
+            }
+            else if (bodyclass == "Rocky body")
+            {
+                // Rocky worlds
+                if (terraformable)
+                {
+                    terraconstant = 223971;
+                }
+            }
+            else if (bodyclass == "Sudarsky class I gas giant")
+            {
+                // Class I gas giants
+                bodydataconstant = 3974;
+            }
+            else if (bodyclass == "Sudarsky class II gas giant")
+            {
+                // Class II gas giants
+                bodydataconstant = 23168;
+            }
+
+            // Calculate exploration scan values
+            basevalue = bodydataconstant + (3 * bodydataconstant * Math.Pow((double)earthmass, 0.199977) / 5.3);
+            terrabonusvalue = terraconstant + (3 * terraconstant * Math.Pow((double)earthmass, 0.199977) / 5.3);
+            value = basevalue + terrabonusvalue;
+
+            if ((dssequipped == false) || (dssequipped == null))
+            {
+                value = value / 2.4;
+            }
+            return (long?)Math.Round(value, 0);
         }
     }
 }

@@ -562,6 +562,18 @@ namespace EddiJournalMonitor
                                 decimal? orbitalinclination = getOptionalDecimal(data, "OrbitalInclination");
                                 decimal? periapsis = getOptionalDecimal(data, "Periapsis");
 
+                                // Check whether we have a detailed discovery scanner on board the current ship
+                                bool? dssequipped = false;
+                                Ship ship = EDDI.Instance.CurrentShip;
+                                foreach (Compartment compartment in ship.compartments)
+                                {
+                                    if ((compartment.module.name == "Detailed Surface Scanner") && (compartment.module.enabled))
+                                    {
+                                        dssequipped = true;
+                                    }
+                                }
+
+                                // Rings
                                 data.TryGetValue("Rings", out val);
                                 List<object> ringsData = (List<object>)val;
                                 List<Ring> rings = new List<Ring>();
@@ -590,7 +602,7 @@ namespace EddiJournalMonitor
                                     long ageMegaYears = (long)val;
                                     decimal temperature = getDecimal(data, "SurfaceTemperature");
 
-                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, luminosityClass, ageMegaYears, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings) { raw = line });
+                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, luminosityClass, ageMegaYears, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, dssequipped) { raw = line });
                                     handled = true;
                                 }
                                 else
@@ -650,7 +662,7 @@ namespace EddiJournalMonitor
                                     string atmosphere = getString(data, "Atmosphere");
                                     Volcanism volcanism = Volcanism.FromName(getString(data, "Volcanism"));
 
-                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radius, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState, axialTilt) { raw = line });
+                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radius, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState, axialTilt, dssequipped) { raw = line });
                                     handled = true;
                                 }
                             }

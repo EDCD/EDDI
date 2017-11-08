@@ -114,6 +114,7 @@ namespace Eddi
 
         // Current vehicle of player
         public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
+        public Ship CurrentShip { get; set; }
 
         // Session state
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
