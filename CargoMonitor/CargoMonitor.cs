@@ -156,6 +156,11 @@ namespace EddiCargoMonitor
                 // If we fail a mission with cargo it becomes stolen
                 handleMissionFailedEvent((MissionFailedEvent)@event);
             }
+            else if (@event is SynthesisedEvent)
+            {
+                handleSynthesisedEvent((SynthesisedEvent)@event);
+            }
+
             // TODO Powerplay events
         }
 
@@ -270,7 +275,7 @@ namespace EddiCargoMonitor
             Cargo cargo = GetCargo(@event.commodity.name);
             if (cargo != null)
             {
-                cargo.other ++;
+                cargo.other++;
                 cargo.total = cargo.haulage + cargo.stolen + cargo.other;
             }
             else
@@ -492,6 +497,29 @@ namespace EddiCargoMonitor
                 }
             }
             writeCargo();
+        }
+
+        private void handleSynthesisedEvent(SynthesisedEvent @event)
+        {
+            if (@event.synthesis == "Limpet")
+            {
+                Cargo cargo = GetCargo("Limpet");
+                if (cargo != null)
+                {
+                    cargo.other += 4;
+                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                }
+                else
+                {
+                    Commodity commodity = CommodityDefinitions.FromName("Limpet");
+                    Cargo newCargo = new Cargo(commodity, commodity.buyprice ?? 0, 4);
+                    newCargo.haulage = 0;
+                    newCargo.stolen = 0;
+                    newCargo.other = 4;
+                    AddCargo(newCargo);
+                }
+                writeCargo();
+            }
         }
 
         public IDictionary<string, object> GetVariables()
