@@ -67,7 +67,7 @@ namespace EddiDataDefinitions
             }
         }
 
-        // The number of items
+        // The number of collected/purchased items
         private int _other;
         public int other
         {

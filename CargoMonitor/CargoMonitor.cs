@@ -28,7 +28,6 @@ namespace EddiCargoMonitor
 
         // Total cargo carried
         public int cargocarried;
-        bool cargoinitialized = false;
 
         private static readonly object inventoryLock = new object();
 
@@ -56,7 +55,6 @@ namespace EddiCargoMonitor
         {
             readCargo();
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
-            cargoinitialized = true;
         }
 
         public bool NeedsStart()
@@ -163,14 +161,6 @@ namespace EddiCargoMonitor
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
         {
-            if (!cargoinitialized)
-            {
-                readCargo();
-                cargoinitialized = true;
-            }
-
-            lock (inventoryLock)
-
             // CargoInventoryEvent does not contain stolen, missionid, or cost information so fill in gaps here
             foreach (Cargo cargo in @event.inventory)
             {
@@ -517,7 +507,7 @@ namespace EddiCargoMonitor
         {
             lock (inventoryLock)
             {
-                // Write material configuration with current inventory
+                // Write cargo configuration with current inventory
                 CargoMonitorConfiguration configuration = new CargoMonitorConfiguration();
                 cargocarried = 0;
                 foreach (Cargo cargo in inventory)
@@ -535,7 +525,7 @@ namespace EddiCargoMonitor
         {
             lock (inventoryLock)
             {
-                // Obtain current inventory from  configuration
+                // Obtain current cargo inventory from configuration
                 CargoMonitorConfiguration configuration = CargoMonitorConfiguration.FromFile();
                 cargocarried = configuration.cargocarried;
 
@@ -560,29 +550,7 @@ namespace EddiCargoMonitor
             }
         }
 
-        public void AddCargo(Cargo cargo)
-        {
-            // If we were started from VoiceAttack then we might not have an application; check here and create if it doesn't exist
-            if (Application.Current == null)
-            {
-                new Application();
-            }
-
-            // Run this on the dispatcher to ensure that we can update it whilst reflecting changes in the UI
-            if (Application.Current.Dispatcher.CheckAccess())
-            {
-                _AddCargo(cargo);
-            }
-            else
-            {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                {
-                    _AddCargo(cargo);
-                }));
-            }
-        }
-
-        private void _AddCargo(Cargo cargo)
+        private void AddCargo(Cargo cargo)
         {
             lock (inventoryLock)
             {
@@ -590,54 +558,11 @@ namespace EddiCargoMonitor
                 {
                     return;
                 }
-                // Remove the ship first (just in case we are trying to add a ship that already exists)
-                RemoveCargo(cargo.name);
                 inventory.Add(cargo);
-
-                // Build a new inventory
-                List<Cargo> newInventory = new List<Cargo>();
-
-                // Start with the materials we have in the log
-                foreach (Cargo inventoryCargo in inventory)
-                {
-                    newInventory.Add(inventoryCargo);
-                }
-
-                // Now order the list by name
-                newInventory = newInventory.OrderBy(c => c.name).ToList();
-
-                // Update the inventory 
-                inventory.Clear();
-                foreach (Cargo newCargo in newInventory)
-                {
-                    inventory.Add(newCargo);
-                }
             }
         }
 
-        public void RemoveCargo(string commodityName)
-        {
-            // If we were started from VoiceAttack then we might not have an application; check here and create if it doesn't exist
-            if (Application.Current == null)
-            {
-                new Application();
-            }
-
-            // Run this on the dispatcher to ensure that we can update it whilst reflecting changes in the UI
-            if (Application.Current.Dispatcher.CheckAccess())
-            {
-                _RemoveCargo(commodityName);
-            }
-            else
-            {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                {
-                    _RemoveCargo(commodityName);
-                }));
-            }
-        }
-
-        private void _RemoveCargo(string commodityName)
+        private void RemoveCargo(string commodityName)
         {
             lock (inventoryLock)
             {
