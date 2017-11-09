@@ -42,7 +42,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'body')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_body_system', system.name)}\r\n{SetState('eddi_context_body_name', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan {Occasionally(3,  \"of body\")} {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Body report\")}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'body')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_body_system', system.name)}\r\n{SetState('eddi_context_body_name', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan {Occasionally(3,  \"of body\")} {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Body report\")}\r\n\r\n{if event.estimatedvalue:\r\n   Estimated scan value: {event.estimatedvalue} credits\r\n}",
       "default": true,
       "name": "Body scanned",
       "description": "Triggered when you complete a scan of a planetary body"
@@ -1464,7 +1464,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'star')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_star_system', system.name)}\r\n{SetState('eddi_context_star_star', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan of {event.stellarclass}-class star {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Star report\")}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'star')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_star_system', system.name)}\r\n{SetState('eddi_context_star_star', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan of {event.stellarclass}-class star {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Star report\")}\r\n\r\n{if event.estimatedvalue:\r\n   Estimated scan value: {Humanise(event.estimatedvalue)} credits.\r\n}\r\n\r\n{if (event.estimatedhabzoneinner && event.estimatedhabzoneouter) && \r\n (event.estimatedhabzoneinner > 0 && event.estimatedhabzoneouter> 0):\r\n   Habitable zone\r\n   {Occasionally(2, OneOf(\"calculated at\", \"calculated to fall from\"))}: \r\n   {Humanise(event.estimatedhabzoneinner)} \r\n   to {Humanise(event.estimatedhabzoneouter)} \r\n   lightseconds.\r\n|elif event.estimatedhabzoneouter && event.estimatedhabzoneouter > 0:\r\n   Habitable zone\r\n   {Occasionally(2, OneOf(\"calculated at\", \"calculated to fall from\"))}: \r\n   {Humanise(event.estimatedhabzoneouter)} \r\n   lightseconds maximum.\r\n}",
       "default": true,
       "name": "Star scanned",
       "description": "Triggered when you complete a scan of a stellar body"
