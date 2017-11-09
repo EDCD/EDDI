@@ -3,7 +3,7 @@
 ### 2.4.5
   * Speech Responder
     * 'Body scanned' and 'Star scanned' events - added new calculated variable "estimatedvalue". 
-    * 'Star scanned' event - added new calculated variables "estimatedhabzoneinner" and "estimatedhabzoneouter" to provide calculated values for the habitable zone of the scanned star. Calculations are most accurate for star systems containing a single star (multiple close proximity stars will make these calculations less accurate).
+    * 'Star scanned' event - added new calculated variables "estimatedhabzoneinner" and "estimatedhabzoneouter" to provide calculated values for the habitable zone of a scanned star. Note: calculations are most accurate for star systems containing a single star (multiple close proximity stars will make these calculations less reliable).
 
 ### 2.4.4
   * Speech Responder
