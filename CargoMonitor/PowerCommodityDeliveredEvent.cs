@@ -20,17 +20,17 @@ namespace EddiCargoMonitor
         static PowerCommodityDeliveredEvent()
         {
             VARIABLES.Add("power", "The name of the power for which the commander is delivering the commodity");
-            VARIABLES.Add("commodity", "The commodity the commander is delivering");
+            VARIABLES.Add("commodity", "The name of the commodity the commander is delivering");
             VARIABLES.Add("amount", "The amount of the commodity the commander is delivering");
         }
 
         public string power { get; private set; }
 
-        public Commodity commodity { get; private set; }
+        public string commodity { get; private set; }
 
         public int amount { get; private set; }
 
-        public PowerCommodityDeliveredEvent(DateTime timestamp, string power, Commodity commodity, int amount) : base(timestamp, NAME)
+        public PowerCommodityDeliveredEvent(DateTime timestamp, string power, string commodity, int amount) : base(timestamp, NAME)
         {
             this.power = power;
             this.commodity = commodity;

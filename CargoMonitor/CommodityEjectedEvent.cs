@@ -24,7 +24,7 @@ namespace EddiCargoMonitor
         }
 
         [JsonProperty("commodity")]
-        public Commodity commodity { get; private set; }
+        public string commodity { get; private set; }
 
         [JsonProperty("amount")]
         public int amount { get; private set; }
@@ -34,7 +34,7 @@ namespace EddiCargoMonitor
 
         public CommodityEjectedEvent(DateTime timestamp, Commodity commodity , int amount, bool abandoned) : base(timestamp, NAME)
         {
-            this.commodity = commodity;
+            this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
             this.amount = amount;
             this.abandoned = abandoned;
         }

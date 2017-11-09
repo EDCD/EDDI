@@ -2274,9 +2274,9 @@ namespace EddiJournalMonitor
                                     List<object> inventoryJson = (List<object>)val;
                                     foreach (Dictionary<string, object> cargoJson in inventoryJson)
                                     {
-                                        Commodity commodity = CommodityDefinitions.FromName(getString(cargoJson, "Name"));
+                                        string commodityName = getString(cargoJson, "Name");
                                         int amount = getInt(cargoJson, "Count");
-                                        Cargo cargo = new Cargo(commodity, commodity.avgprice ?? 0, amount);
+                                        Cargo cargo = new Cargo(commodityName, amount);
                                         cargo.haulage = 0;
                                         cargo.stolen = 0;
                                         cargo.other = amount;
@@ -2340,8 +2340,7 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 string power = getString(data, "Power");
-                                string commodityName = getString(data, "Type");
-                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
+                                string commodity = getString(data, "Type");
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
 
@@ -2353,8 +2352,7 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 string power = getString(data, "Power");
-                                string commodityName = getString(data, "Type");
-                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
+                                string commodity = getString(data, "Type");
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
 

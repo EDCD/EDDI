@@ -104,22 +104,13 @@ namespace EddiDataDefinitions
             haulageamounts = new List<HaulageAmount>();
         }
 
-        public Cargo(string name, int total)
+        public Cargo(string name, int total, int? price = null)
         {
+            Commodity commodity = CommodityDefinitions.FromName(name);
             this.name = name;
-            this.commodity = CommodityDefinitions.FromName(name);
-            this.category = commodity.category;
-            this.price = commodity.avgprice ?? 0;
-            this.total = total;
-            haulageamounts = new List<HaulageAmount>();
-        }
-
-        public Cargo(Commodity commodity, int price, int total)
-        {
             this.commodity = commodity;
-            this.name = commodity.name;
             this.category = commodity.category;
-            this.price = price;
+            this.price = (price != null ? price ?? 0 : commodity.avgprice ?? 0);
             this.total = total;
             haulageamounts = new List<HaulageAmount>();
         }

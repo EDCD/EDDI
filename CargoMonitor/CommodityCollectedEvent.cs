@@ -18,19 +18,19 @@ namespace EddiCargoMonitor
 
         static CommodityCollectedEvent()
         {
-            VARIABLES.Add("commodity", "The commodity collected");
+            VARIABLES.Add("commodity", "The name of the commodity collected");
             VARIABLES.Add("stolen", "If the cargo is stolen");
         }
 
         [JsonProperty("commodity")]
-        public Commodity commodity { get; private set; }
+        public string commodity { get; private set; }
 
         [JsonProperty("stolen")]
         public bool stolen { get; private set; }
 
         public CommodityCollectedEvent(DateTime timestamp, Commodity commodity, bool stolen) : base(timestamp, NAME)
         {
-            this.commodity = commodity;
+            this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
             this.stolen = stolen;
         }
     }

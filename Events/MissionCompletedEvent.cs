@@ -22,7 +22,7 @@ namespace EddiEvents
             VARIABLES.Add("name", "The name of the mission");
             VARIABLES.Add("faction", "The faction receiving the mission");
             VARIABLES.Add("communal", "True if the mission is a community goal");
-            VARIABLES.Add("commodity", "The commodity involved in the mission (if applicable)");
+            VARIABLES.Add("commodity", "The name of the commodity involved in the mission (if applicable)");
             VARIABLES.Add("amount", "The amount of the commodity involved in the mission (if applicable)");
             VARIABLES.Add("reward", "The monetary reward for completing the mission");
             VARIABLES.Add("commodityrewards", "The commodity rewards for completing the mission");
@@ -35,7 +35,7 @@ namespace EddiEvents
 
         public string faction { get; private set; }
 
-        public Commodity commodity { get; private set; }
+        public string commodity { get; private set; }
 
         public int? amount { get; private set; }
 
@@ -52,7 +52,7 @@ namespace EddiEvents
             this.missionid = missionid;
             this.name = name;
             this.faction = faction;
-            this.commodity = commodity;
+            this.commodity = (commodity == null ? null : commodity.name);
             this.amount = amount;
             this.communal = communal;
             this.reward = reward;

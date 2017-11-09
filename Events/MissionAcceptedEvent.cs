@@ -22,7 +22,7 @@ namespace EddiEvents
             VARIABLES.Add("faction", "The faction issuing the mission");
             VARIABLES.Add("destinationsystem", "The destination system for the mission (if applicable)");
             VARIABLES.Add("destinationstation", "The destination station for the mission (if applicable)");
-            VARIABLES.Add("commodity", "The commodity involved in the mission (if applicable)");
+            VARIABLES.Add("commodity", "The name of the commodity involved in the mission (if applicable)");
             VARIABLES.Add("amount", "The amount of the commodity,  passengers or targets involved in the mission (if applicable)");
             VARIABLES.Add("passengertype", "The type of passengers in the mission (if applicable)");
             VARIABLES.Add("passengerswanted", "True if the passengers are wanted (if applicable)");
@@ -41,7 +41,7 @@ namespace EddiEvents
 
         public string faction { get; private set; }
 
-        public Commodity commodity { get; private set; }
+        public string commodity { get; private set; }
 
         public int? amount { get; private set; }
 
@@ -74,7 +74,7 @@ namespace EddiEvents
             this.faction = faction;
             this.destinationsystem = destinationsystem;
             this.destinationstation = destinationstation;
-            this.commodity = commodity;
+            this.commodity = (commodity == null ? null : commodity.name);
             this.amount = amount;
             this.passengertype = passengertype;
             this.passengerswanted = passengerswanted;
