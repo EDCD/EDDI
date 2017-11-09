@@ -1,5 +1,11 @@
 ﻿# CHANGE LOG
 
+### 2.4.5
+  * Script changes
+    * Added new script 'Fuel check'.
+    * Updated 'Jumped' event and 'Ship refueled' event to address a bug (feature?) in the player journal that would cause EDDI to repeat the 'Ship refueled' script for every 5T refueled. With the new 'Fuel check' script, 'Ship refueled' will no longer repeat for every 5T refueled.
+
+
 ### 2.4.4
   * Speech Responder
     * Fixed a bug that was causing some SSML related functions (e.g. Pause()) to not render correctly.
