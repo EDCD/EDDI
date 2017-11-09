@@ -614,6 +614,15 @@
       "name": "FSD engaged",
       "description": "Triggered when your FSD has engaged"
     },
+    "Fuel check": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fuel Check _}\r\n{_ Report fuel level _}\r\n\r\n{if ship.name = state.eddi_fuelcheck_shipname:\r\n    {if state.eddi_context_fuel_used > state.eddi_fuelcheck_maxfuel:\r\n        {SetState('eddi_fuelcheck_maxfuel', state.eddi_context_fuel_used)}\r\n    }\r\n|else:\r\n    {SetState('eddi_fuelcheck_maxfuel', state.eddi_context_fuel_used)}\r\n    {SetState('eddi_fuelcheck_shipname', ship.name)}\r\n}\r\n\r\n{set maxfuel to state.eddi_fuelcheck_maxfuel}\r\n{set fuelremaining to state.eddi_context_fuel_remaining}\r\n{set maxjump to fuelremaining/maxfuel}\r\n{set currentfuel to round(fuelremaining / ship.fueltanktotalcapacity * 100, 1)}\r\n{if find(currentfuel, \".0\") > -1:\r\n   {set currentfuel to round(currentfuel, 0)}\r\n}\r\n{set shipsfuel to:\r\n   {Occasionally(2, \"{P(ShipName())}'s\" )} Fuel\r\n   {OneOf(\"levels\", \"tanks\", \"reserves\")} {Occasionally(2, \"are\")} {Occasionally(2, \"now\")}\r\n}\r\n{set currentpercent to: \r\n   at {currentfuel} percent {Occasionally(2, \"capacity\")}\r\n}\r\n\r\n{if maxjump < 0.5:\r\n   Danger!\r\n   {shipsfuel} depleted!\r\n   {Pause(500)}\r\n   Running on reserves. Shutdown of non-essential systems is advised!\r\n   {Pause(500)}\r\n   Emergency transponder standing by\r\n|elif maxjump < 1.25:\r\n   {OneOf(\"Warning:\", \"Caution:\", \"Danger:\", \"Attention:\")}\r\n   {shipsfuel} {OneOf(\"dangerously low\", \"almost depleted\")}.\r\n   {OneOf(\"Please refuel\", \"Refueling is strongly recommended\")}\r\n|elif currentfuel < 25:\r\n   {OneOf(\"Warning:\", \"Caution:\", \"Danger:\", \"Attention:\")}\r\n   {shipsfuel} {OneOf(\"below 25%\", \"{currentpercent}\" )}\r\n|elif currentfuel < 50:\r\n   {shipsfuel} {OneOf(\"below 50%\", \"{currentpercent}\" )}\r\n|elif currentfuel < 100:\r\n   {shipsfuel} {currentpercent}\r\n|else:\r\n   {shipsfuel} {OneOf(currentpercent, \"at maximum\")}\r\n}\r\n{Occasionally(3,\", {F('Honorific')}\")}.",
+      "default": false,
+      "name": "Fuel check",
+      "description": "Report on fuel levels"
+    },
     "Galnet latest news": {
       "enabled": true,
       "priority": 3,
@@ -708,7 +717,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n\r\n{set statereport to F(\"System state report\")}\r\n{if statereport:\r\n    {Pause(2000)}\r\n    Information:  {statereport}\r\n}",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n{SetState('eddi_context_fuel_remaining', event.fuelremaining)}\r\n{SetState('eddi_context_fuel_used', event.fuelused)}\r\n\r\n{F('Fuel Check')}\r\n{Pause(2000)}\r\n\r\n{set statereport to F(\"System state report\")}\r\n{if statereport:\r\n    {Pause(2000)}\r\n    Information:  {statereport}\r\n}",
       "default": true,
       "name": "Jumped",
       "description": "Triggered when you complete a jump to another system"
@@ -1347,7 +1356,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(2000)}\r\n\r\n{ShipName()} {if ship.fueltanktotalcapacity = event.total: fully} refuelled.",
+      "script": "{if event.total:\r\n   {SetState('eddi_context_fuel_remaining', event.total)}\r\n|else:\r\n   {SetState('eddi_context_fuel_remaining', state.eddi_context_fuel_remaining + event.amount)}\r\n}\r\n\r\n{Pause(2000)}\r\n{if event.total = ship.fueltanktotalcapacity || event.price:\r\n   {set refueled_desc to OneOf(\"fully refuelled\", \"at maximum fuel capacity\",\"at 100% fuel capacity\")}\r\n   {OneOf(\"Refueled\", \"Fuel at maximum\", \"Maximum fuel\", \"{P(ShipName())} is now {refueled_desc}\" )}\r\n|else:\r\n   {if event.amount <= 5.0000:\r\n      {F('Fuel check')}\r\n   }\r\n}",
       "default": true,
       "name": "Ship refuelled",
       "description": "Triggered when you refuel your ship"
