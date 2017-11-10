@@ -625,15 +625,37 @@ namespace EddiCargoMonitor
             }
         }
 
-        private void RemoveCargo(string commodityName)
+        private void RemoveCargo(string commodity)
+        {
+            if (EDDI.FromVA)
+            {
+                _RemoveCargo(commodity);
+            }
+            else
+            {
+                if (Application.Current.Dispatcher.CheckAccess())
+                {
+                    _RemoveCargo(commodity);
+                }
+                else
+                {
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                    {
+                        _RemoveCargo(commodity);
+                    }));
+                }
+            }
+        }
+
+        private void _RemoveCargo(string commodity)
         {
             lock (inventoryLock)
             {
-                if (commodityName != null)
+                if (commodity != null)
                 {
                     for (int i = 0; i < inventory.Count; i++)
                     {
-                        if (inventory[i].name == commodityName)
+                        if (inventory[i].name == commodity)
                         {
                             inventory.RemoveAt(i);
                             break;
@@ -643,13 +665,13 @@ namespace EddiCargoMonitor
             }
         }
 
-        public Cargo GetCargo(string commodityName)
+        public Cargo GetCargo(string commodity)
         {
-            if (commodityName == null)
+            if (commodity == null)
             {
                 return null;
             }
-            return inventory.FirstOrDefault(c => c.name == commodityName);
+            return inventory.FirstOrDefault(c => c.name == commodity);
         }
 
         public int GetCargoCarried()
