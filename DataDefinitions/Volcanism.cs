@@ -35,9 +35,9 @@ namespace EddiDataDefinitions
 
         public Volcanism(string type, string composition, string amount)
         {
-            this.type = type;
-            this.composition = composition;
-            this.amount = amount;
+            this.type = I18N.GetString(type);           //type;
+            this.composition = I18N.GetString(composition);    //composition;
+            this.amount = I18N.GetString(amount);         //amount;
         }
 
         /// <summary>

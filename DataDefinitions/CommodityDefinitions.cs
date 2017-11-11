@@ -363,7 +363,7 @@ namespace EddiDataDefinitions
             {128672161, new Commodity(330, "EarthRelics", "Earth Relics", "Salvage", 0, false) },
 
             // Items for which we do not have EDDB IDs
-            {200000012, new Commodity(10012, "siriuscommercialcontracts", "Sirius Commerical Contracts", "Powerplay", 0, false) },
+            {200000012, new Commodity(10012, "siriuscommercialcontracts", "Sirius Commercial Contracts", "Powerplay", 0, false) },
             {200000013, new Commodity(10013, "siriusindustrialequipment", "Sirius Inustrial Equipment", "Powerplay", 0, false) },
             {200000014, new Commodity(10014, "siriusfranchisepackage", "Sirius Franchise Package", "Powerplay", 0, false) },
             {200000015, new Commodity(10015, "republicangarisonsupplies", "Republic Garrison Supplies", "Powerplay", 0, false) },

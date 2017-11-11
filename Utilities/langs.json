@@ -5352,6 +5352,2346 @@
     "Hpt_AntiUnknownShutdown_Tiny": {
       "en": "Shutdown Field Neutraliser",
       "fr": "Shutdown Field Neutraliser"
+    },
+    "eRingClass_Icy": {
+      "en": "Icy",
+      "fr": "Glaces"
+    },
+    "eRingClass_Rocky": {
+      "en": "Rocky",
+      "fr": "Rôcheux"
+    },
+    "eRingClass_Metalic": {
+      "en": "Metallic",
+      "fr": "Métallique"
+    },
+    "eRingClass_MetalRich": {
+      "en": "Metal-rich",
+      "fr": "Riche en métaux"
+    },
+    "Retreat": {
+      "en": "Retreat",
+      "fr": "Retraite"
+    },
+    "War": {
+      "en": "War",
+      "fr": "Guerre"
+    },
+    "Lockdown": {
+      "en": "Lockdown",
+      "fr": "Loi Martiale"
+    },
+    "CivilUnrest": {
+      "en": "Civil Unrest",
+      "fr": "Émeute"
+    },
+    "CivilWar": {
+      "en": "Civil War",
+      "fr": "Guerre civile"
+    },
+    "Boom": {
+      "en": "Boom",
+      "fr": "Éssor Économique"
+    },
+    "Expansion": {
+      "en": "Expansion",
+      "fr": "Politique expensionniste"
+    },
+    "Bust": {
+      "en": "Bust",
+      "fr": "Faillite"
+    },
+    "Outbreak": {
+      "en": "Outbreak",
+      "fr": "Épidémie"
+    },
+    "Famine": {
+      "en": "Famine",
+      "fr": "Famine"
+    },
+    "Election": {
+      "en": "Election",
+      "fr": "Élections"
+    },
+    "Investment": {
+      "en": "Investment",
+      "fr": "Investissements"
+    },
+    "Outsider": {
+      "en": "Outsider",
+      "fr": "Étranger"
+    },
+    "Serf": {
+      "en": "Serf",
+      "fr": "Serrf"
+    },
+    "Master": {
+      "en": "Master",
+      "fr": "Vilain"
+    },
+    "Squire": {
+      "en": "Squire",
+      "fr": "Écuyer"
+    },
+    "Knight": {
+      "en": "Knight",
+      "fr": "Chevalier"
+    },
+    "Lord": {
+      "en": "Lord",
+      "fr": "Banneret"
+    },
+    "Baron": {
+      "en": "Baron",
+      "fr": "Baron"
+    },
+    "Viscount": {
+      "en": "Viscount",
+      "fr": "Vicomte"
+    },
+    "Count": {
+      "en": "Count",
+      "fr": "Comte"
+    },
+    "Earl": {
+      "en": "Earl",
+      "fr": "Marquis"
+    },
+    "Marquis": {
+      "en": "Marquis",
+      "fr": "Marquis"
+    },
+    "Duke": {
+      "en": "Duke",
+      "fr": "Duc"
+    },
+    "Prince": {
+      "en": "Prince",
+      "fr": "Prince"
+    },
+    "King": {
+      "en": "King",
+      "fr": "Roi"
+    },
+    "Recruit": {
+      "en": "Recruit",
+      "fr": "Recrue"
+    },
+    "Cadet": {
+      "en": "Cadet",
+      "fr": "Mousse"
+    },
+    "Midshipman": {
+      "en": "Midshipman",
+      "fr": "Matelot"
+    },
+    "PettyOfficer": {
+      "en": "Petty Officer",
+      "fr": "Second maitre"
+    },
+    "ChiefPettyOfficer": {
+      "en": "Chief Petty Officer",
+      "fr": "Premier maître"
+    },
+    "WarrantOfficer": {
+      "en": "Warrant Officer",
+      "fr": "Major"
+    },
+    "Ensign": {
+      "en": "Ensign",
+      "fr": "Enseigne"
+    },
+    "Lieutenant": {
+      "en": "Lieutenant",
+      "fr": "Lieutenant"
+    },
+    "LieutenantCommander": {
+      "en": "Lieutenant Commander",
+      "fr": "Capitaine de corvette"
+    },
+    "PostCommander": {
+      "en": "Post Commander",
+      "fr": "Capitaine de frégatte"
+    },
+    "PostCaptain": {
+      "en": "Post Captain",
+      "fr": "Capitaine de vaisseau"
+    },
+    "RearAdmiral": {
+      "en": "Rear Admiral",
+      "fr": "Contre amiral"
+    },
+    "ViceAdmiral": {
+      "en": "Vice Admiral",
+      "fr": "Vice amiral"
+    },
+    "Admiral": {
+      "en": "Admiral",
+      "fr": "Amiral"
+    },
+    "Open": {
+      "en": "Open",
+      "fr": "Ouvert"
+    },
+    "Group": {
+      "en": "Group",
+      "fr": "Groupe"
+    },
+    "Solo": {
+      "en": "Solo",
+      "fr": "Aucun"
+    },
+    "$government_None": {
+      "en": "None",
+      "fr": "Aucun Gouvernement"
+    },
+    "$government_Anarchy": {
+      "en": "Anarchy",
+      "fr": "Anarchie"
+    },
+    "$government_Colony": {
+      "en": "Colony",
+      "fr": "colonie"
+    },
+    "$government_Communism": {
+      "en": "Communism",
+      "fr": "Société Communiste"
+    },
+    "$government_Confederacy": {
+      "en": "Confederacy",
+      "fr": "Confédération"
+    },
+    "$government_Cooperative": {
+      "en": "Cooperative",
+      "fr": "Cooperative"
+    },
+    "$government_Corporate": {
+      "en": "Corporate",
+      "fr": "Corporation"
+    },
+    "$government_Democracy": {
+      "en": "Democracy",
+      "fr": "Démocratie"
+    },
+    "$government_Dictatorship": {
+      "en": "Dictatorship",
+      "fr": "Dictature"
+    },
+    "$government_Feudal": {
+      "en": "Feudal",
+      "fr": "Féodal"
+    },
+    "$government_Imperial": {
+      "en": "Imperial",
+      "fr": "Impérial"
+    },
+    "$government_Patronage": {
+      "en": "Patronage",
+      "fr": "Sociéte clientéliste"
+    },
+    "$government_PrisonColony": {
+      "en": "Prison Colony",
+      "fr": "Colonie pénitencière"
+    },
+    "$government_Theocracy": {
+      "en": "Theocracy",
+      "fr": "Théocratie"
+    },
+    "$government_Workshop": {
+      "en": "Workshop",
+      "fr": "Atelier"
+    },
+    "$government_engineer": {
+      "en": "Engineer",
+      "fr": "Ingénieur"
+    },
+    "Geysers": {
+      "en": "Geysers",
+      "fr": "Gésers"
+    },
+    "Magma": {
+      "en": "Magma",
+      "fr": "Magma"
+    },
+    "Major": {
+      "en": "Major",
+      "fr": "Major"
+    },
+    "Minor": {
+      "en": "Minor",
+      "fr": "Minor"
+    },
+    "Ammonia": {
+      "en": "Ammonia",
+      "fr": "Ammoniaque"
+    },
+    "Carbon dioxide": {
+      "en": "Carbon dioxide",
+      "fr": "Dioxide de carbone"
+    },
+    "Methane": {
+      "en": "Methane",
+      "fr": "Méthane"
+    },
+    "Nitrogen": {
+      "en": "Nitrogen",
+      "fr": "Azote"
+    },
+    "Silicate": {
+      "en": "Silicate",
+      "fr": "Rôche"
+    },
+    "Silicate vapour": {
+      "en": "Silicate vapour",
+      "fr": "Vapeur de silicate"
+    },
+    "Water": {
+      "en": "Water",
+      "fr": "Eau"
+    },
+    "Aimless": {
+      "en": "Aimless",
+      "fr": "Vagabond"
+    },
+    "MostlyAimless": {
+      "en": "Mostly Aimless",
+      "fr": "Touriste"
+    },
+    "Scout": {
+      "en": "Scout",
+      "fr": "Voyageur"
+    },
+    "Surveyor": {
+      "en": "Surveyor",
+      "fr": "Éclaireur"
+    },
+    "Trailblazer": {
+      "en": "Trailblazer",
+      "fr": "Prospecteur"
+    },
+    "Pathfinder": {
+      "en": "Pathfinder",
+      "fr": "Découvreur"
+    },
+    "Ranger": {
+      "en": "Ranger",
+      "fr": "Navigateur"
+    },
+    "Pioneer": {
+      "en": "Pioneer",
+      "fr": "Pionnier"
+    },
+    "Elite": {
+      "en": "Elite",
+      "fr": "Élite"
+    },
+    "Harmless": {
+      "en": "Harmless",
+      "fr": "Inoffensif"
+    },
+    "MostlyHarmless": {
+      "en": "Mostly Harmless",
+      "fr": "Touriste"
+    },
+    "Novice": {
+      "en": "Novice",
+      "fr": "Novice"
+    },
+    "Competent": {
+      "en": "Competent",
+      "fr": "Compétent"
+    },
+    "Expert": {
+      "en": "Expert",
+      "fr": "Expert"
+    },
+    "Master": {
+      "en": "Master",
+      "fr": "Maître"
+    },
+    "Dangerous": {
+      "en": "Dangerous",
+      "fr": "Vétéran"
+    },
+    "Deadly": {
+      "en": "Deadly",
+      "fr": "Létal"
+    },
+    "Penniless": {
+      "en": "Penniless",
+      "fr": "sans-le-sou"
+    },
+    "MostlyPenniless": {
+      "en": "Mostly Penniless",
+      "fr": "Mendiant"
+    },
+    "Peddler": {
+      "en": "Peddler",
+      "fr": "Boutiquier"
+    },
+    "Dealer": {
+      "en": "Dealer",
+      "fr": "Revendeur"
+    },
+    "Merchant": {
+      "en": "Merchant",
+      "fr": "Marchand"
+    },
+    "Broker": {
+      "en": "Broker",
+      "fr": "Courtier"
+    },
+    "Entrepreneur": {
+      "en": "Entrepreneur",
+      "fr": "Entrepreneur"
+    },
+    "Tycoon": {
+      "en": "Tycoon",
+      "fr": "Magnat"
+    },
+    "Helpless": {
+      "en": "Helpless",
+      "fr": "Inoffensif"
+    },
+    "MostlyHelpless": {
+      "en": "Mostly Helpless",
+      "fr": "Bleu"
+    },
+    "Amateur": {
+      "en": "Amateur",
+      "fr": "Amateur"
+    },
+    "SemiProfessional": {
+      "en": "Semi-professional",
+      "fr": "Semi-professionel"
+    },
+    "Professional": {
+      "en": "Professional",
+      "fr": "Professionel"
+    },
+    "Champion": {
+      "en": "Champion",
+      "fr": "Champion"
+    },
+    "Hero": {
+      "en": "Hero",
+      "fr": "Héro"
+    },
+    "Legend": {
+      "en": "Legend",
+      "fr": "Légende"
+    },
+    "blue": {
+      "en": "blue",
+      "fr": "bleue"
+    },
+    "blue-white": {
+      "en": "blue-white",
+      "fr": "Blanc-bleue"
+    },
+    "white": {
+      "en": "white",
+      "fr": "Blanche"
+    },
+    "yellow-white": {
+      "en": "yellow-white",
+      "fr": "blanc-jaune"
+    },
+    "yellow-orange": {
+      "en": "yellow-orange",
+      "fr": "jaune-orangée"
+    },
+    "orange-red": {
+      "en": "orange-red",
+      "fr": "rouge-orangéé"
+    },
+    "$GAlAXY_MAP_INFO_state_anarchy;": {
+      "en": "None",
+      "fr": "Aucun"
+    },
+    "$GALAXY_MAP_INFO_state_lawless;": {
+      "en": "None",
+      "fr": "Aucun"
+    },
+    "$SYSTEM_SECURITY_none;": {
+      "en": "None",
+      "fr": "Aucun"
+    },
+    "$SYSTEM_SECURITY_low;": {
+      "en": "None",
+      "fr": "Aucun"
+    },
+    "$SYSTEM_SECURITY_low;": {
+      "en": "Low",
+      "fr": "Faible"
+    },
+    "$SYSTEM_SECURITY_medium;": {
+      "en": "Medium",
+      "fr": "Intermédiaire"
+    },
+    "$SYSTEM_SECURITY_high;": {
+      "en": "High",
+      "fr": "Haute"
+    },
+    "$SYSTEM_SECURITY_high_anarchy;": {
+      "en": "High",
+      "fr": "Haute"
+    },
+    "Role_Assassination": {
+      "en": "Assassination",
+      "fr": "Assassinat"
+    },
+    "Role_Bountyhunting": {
+      "en": "Bounty hunting",
+      "fr": "Chasse à Prime"
+    },
+    "Role_Combat": {
+      "en": "Combat",
+      "fr": "Combat"
+    },
+    "Role_Combatsupport": {
+      "en": "Combat support",
+      "fr": "Soutien au combat"
+    },
+    "Role_Exploration": {
+      "en": "Exploration",
+      "fr": "Exploration"
+    },
+    "Role_Journalism": {
+      "en": "Journalism",
+      "fr": "Journalisme"
+    },
+    "Role_Mining": {
+      "en": "Mining",
+      "fr": "Exploitation minière"
+    },
+    "Role_MultiCrew": {
+      "en": "MultiCrew",
+      "fr": "MultiCrew"
+    },
+    "Role_Multipurpose": {
+      "en": "Multipurpose",
+      "fr": "Généraliste"
+    },
+    "Role_Piracy": {
+      "en": "Piracy",
+      "fr": "Piraterie"
+    },
+    "Role_Racing": {
+      "en": "Racing",
+      "fr": "Course"
+    },
+    "Role_Refueling": {
+      "en": "Refueling",
+      "fr": "Ravitaillement"
+    },
+    "Role_Science": {
+      "en": "Science",
+      "fr": "Recherche scientifique"
+    },
+    "Role_Searchandrescue": {
+      "en": "Search and Rescue",
+      "fr": "Sauvetage"
+    },
+    "Role_Smuggling": {
+      "en": "Smuggling",
+      "fr": "Contrebande"
+    },
+    "Role_Trading": {
+      "en": "Trading",
+      "fr": "Commerce"
+    },
+    "Role_Taxi": {
+      "en": "Taxi",
+      "fr": "Taxi"
+    },
+    "Role_Repair": {
+      "en": "Repair",
+      "fr": "Réparation"
+    },
+    "Role_Brothel": {
+      "en": "Brothel",
+      "fr": "Lupanard de luxe"
+    },
+    "unknown": {
+      "en": "unknown",
+      "fr": "inconnu"
+    },
+    "verycommon": {
+      "en": "very common",
+      "fr": "trés commum"
+    },
+    "common": {
+      "en": "common",
+      "fr": "commum"
+    },
+    "standard": {
+      "en": "standard",
+      "fr": "standard"
+    },
+    "rare": {
+      "en": "rare",
+      "fr": "rare"
+    },
+    "veryrare": {
+      "en": "very rare",
+      "fr": "rarissime"
+    },
+    "$faction_none;": {
+      "en": "None",
+      "fr": "Aucune"
+    },
+    "$faction_Federation;": {
+      "en": "Federation",
+      "fr": "Fédération"
+    },
+    "$faction_Alliance;": {
+      "en": "Alliance",
+      "fr": "Alliance"
+    },
+    "$faction_Empire;": {
+      "en": "Empire",
+      "fr": "Empire"
+    },
+    "$faction_Independent;": {
+      "en": "Independent",
+      "fr": "Indépendant"
+    },
+    "$faction_Pirate;": {
+      "en": "Pirate",
+      "fr": "Pirate"
+    },
+    "DataLink": {
+      "en": "Data Link",
+      "fr": "Liaison de données"
+    },
+    "DataPoint": {
+      "en": "Data Point",
+      "fr": "Point de données"
+    },
+    "ListeningPost": {
+      "en": "Listening Post",
+      "fr": "Poste d'écoute"
+    },
+    "AbandonedDataLog": {
+      "en": "Abandoned Data Log",
+      "fr": "Journal de données abandonné"
+    },
+    "WreckedShip": {
+      "en": "Wrecked Ship",
+      "fr": "Épave de vaisseau"
+    },
+    "assault": {
+      "en": "Assault",
+      "fr": "Assault"
+    },
+    "murder": {
+      "en": "Murder",
+      "fr": "Meurtre"
+    },
+    "piracy": {
+      "en": "Piracy",
+      "fr": "Piraterie"
+    },
+    "interdiction": {
+      "en": "Interdicting",
+      "fr": "Interdiction"
+    },
+    "illegalCargo": {
+      "en": "Carrying illegal cargo",
+      "fr": "Transport de cargaisonn  Illégale"
+    },
+    "disobeyPolice": {
+      "en": "Disobeying police",
+      "fr": "Désobéissance aux forces de police"
+    },
+    "fireInNoFireZone": {
+      "en": "Firing in a no-fire zone",
+      "fr": "Tir dans une zone interdite"
+    },
+    "fireInStation": {
+      "en": "Firing in a station",
+      "fr": "Tir dans une une station"
+    },
+    "dumpingDangerous": {
+      "en": "Dumping dangerous cargo",
+      "fr": "Dépot de cargaison dangereuse"
+    },
+    "dumpingNearStation": {
+      "en": "Dumping cargo near a station",
+      "fr": "Cargaison larguée à proximité d'une station"
+    },
+    "dockingMinonBlockingAirlock": {
+      "en": "Blocking an airlock",
+      "fr": "Bloquer un sas"
+    },
+    "dockingMajorBlockingAirlock": {
+      "en": "Blocking an airlock",
+      "fr": "Bloquer un sas"
+    },
+    "dockingMinorBlockingLandingPad": {
+      "en": "Blocking a landing pad",
+      "fr": "Bloquer une aire d'atterrissage"
+    },
+    "dockingMajorBlockingLandingPad": {
+      "en": "Blocking a landing pad",
+      "fr": "Bloquer une aire d'atterrissage"
+    },
+    "dockingMinorTrespass": {
+      "en": "Trespass",
+      "fr": "intrusion"
+    },
+    "collidedAtSpeedInNoFireZone": {
+      "en": "Collision",
+      "fr": "Collision"
+    },
+    "collidedAtSpeedInNoFireZone_hulldamage": {
+      "en": "Collision resulting in damage",
+      "fr": "Collision entraînant des dommages"
+    },
+    "Explosives": {
+      "en": "Explosives",
+      "fr": "Explosifs"
+    },
+    "HydrogenFuel": {
+      "en": "Hydrogen Fuel",
+      "fr": "Carburant à base dhydrogène"
+    },
+    "MineralOil": {
+      "en": "Mineral Oil",
+      "fr": "Huile minérale"
+    },
+    "Pesticides": {
+      "en": "Pesticides",
+      "fr": "Pesticides"
+    },
+    "Clothing": {
+      "en": "Clothing",
+      "fr": "Vêtements"
+    },
+    "ConsumerTechnology": {
+      "en": "Consumer Technology",
+      "fr": "Électronique grand public"
+    },
+    "DomesticAppliances": {
+      "en": "Domestic Appliances",
+      "fr": "Équipements ménagers"
+    },
+    "Beer": {
+      "en": "Beer",
+      "fr": "Bière"
+    },
+    "Liquor": {
+      "en": "Liquor",
+      "fr": "Alcool"
+    },
+    "BasicNarcotics": {
+      "en": "Narcotics",
+      "fr": "Narcotiques"
+    },
+    "Tobacco": {
+      "en": "Tobacco",
+      "fr": "Tabac"
+    },
+    "Wine": {
+      "en": "Wine",
+      "fr": "Vin"
+    },
+    "Algae": {
+      "en": "Algae",
+      "fr": "Algues"
+    },
+    "Animalmeat": {
+      "en": "Animal Meat",
+      "fr": "Viande Animale"
+    },
+    "Coffee": {
+      "en": "Coffee",
+      "fr": "Café"
+    },
+    "Fish": {
+      "en": "Fish",
+      "fr": "Poisson"
+    },
+    "FoodCartridges": {
+      "en": "Food Cartridges",
+      "fr": "Cartouches alimentaires"
+    },
+    "FruitAndVegetables": {
+      "en": "Fruit and Vegetables",
+      "fr": "Fruits et légumes"
+    },
+    "Grain": {
+      "en": "Grain",
+      "fr": "Céréales"
+    },
+    "SyntheticMeat": {
+      "en": "Synthetic Meat",
+      "fr": "Viande synthétique"
+    },
+    "Tea": {
+      "en": "Tea",
+      "fr": "Thé"
+    },
+    "Polymers": {
+      "en": "Polymers",
+      "fr": "Polymères"
+    },
+    "Semiconductors": {
+      "en": "Semiconductors",
+      "fr": "Semiconducteurs"
+    },
+    "Superconductors": {
+      "en": "Superconductors",
+      "fr": "Supraconducteurs"
+    },
+    "AtmosphericExtractors": {
+      "en": "Atmospheric Processors",
+      "fr": "Processeur atmosphériques"
+    },
+    "CropHarvesters": {
+      "en": "Crop Harvesters",
+      "fr": "Moissoneuses"
+    },
+    "MarineSupplies": {
+      "en": "Marine Equipment",
+      "fr": "Équipement Aquatiques"
+    },
+    "HeliostaticFurnaces": {
+      "en": "Microbial Furnaces",
+      "fr": "Hauts fourneaux microbiens"
+    },
+    "MineralExtractors": {
+      "en": "Mineral Extractors",
+      "fr": "Extracteur de minerai"
+    },
+    "PowerGenerators": {
+      "en": "Power Generators",
+      "fr": "Générateurs"
+    },
+    "WaterPurifiers": {
+      "en": "Water Purifiers",
+      "fr": "Purificateur d'eau"
+    },
+    "AgriculturalMedicines": {
+      "en": "Agri-Medicines",
+      "fr": "Agro-médicaments"
+    },
+    "BasicMedicines": {
+      "en": "Basic Medicines",
+      "fr": "Médicaments Simples"
+    },
+    "CombatStabilisers": {
+      "en": "Combat Stabilisers",
+      "fr": "Stabilisateurs de combat"
+    },
+    "PerformanceEnhancers": {
+      "en": "Performance Enhancers",
+      "fr": "Produits dopants"
+    },
+    "ProgenitorCells": {
+      "en": "Progenitor Cells",
+      "fr": "Cellules souches"
+    },
+    "Aluminium": {
+      "en": "Aluminium",
+      "fr": "Aluminium"
+    },
+    "Beryllium": {
+      "en": "Beryllium",
+      "fr": "Béryllium"
+    },
+    "Cobalt": {
+      "en": "Cobalt",
+      "fr": "Cobalt"
+    },
+    "Copper": {
+      "en": "Copper",
+      "fr": "Cuivre"
+    },
+    "Gallium": {
+      "en": "Gallium",
+      "fr": "Gallium"
+    },
+    "Gold": {
+      "en": "Gold",
+      "fr": "Or"
+    },
+    "Indium": {
+      "en": "Indium",
+      "fr": "Indium"
+    },
+    "Lithium": {
+      "en": "Lithium",
+      "fr": "Lithium"
+    },
+    "Palladium": {
+      "en": "Palladium",
+      "fr": "Palladium"
+    },
+    "Platinum": {
+      "en": "Platinum",
+      "fr": "Platine"
+    },
+    "Silver": {
+      "en": "Silver",
+      "fr": "Argent"
+    },
+    "Tantalum": {
+      "en": "Tantalum",
+      "fr": "Tantale"
+    },
+    "Titanium": {
+      "en": "Titanium",
+      "fr": "Titane"
+    },
+    "Uranium": {
+      "en": "Uranium",
+      "fr": "Uranium"
+    },
+    "Bauxite": {
+      "en": "Bauxite",
+      "fr": "Bauxite"
+    },
+    "Bertrandite": {
+      "en": "Bertrandite",
+      "fr": "Bertrandite"
+    },
+    "Coltan": {
+      "en": "Coltan",
+      "fr": "Coltan"
+    },
+    "Gallite": {
+      "en": "Gallite",
+      "fr": "Gallite"
+    },
+    "Indite": {
+      "en": "Indite",
+      "fr": "Indite"
+    },
+    "Lepidolite": {
+      "en": "Lepidolite",
+      "fr": "Lépidolite"
+    },
+    "Rutile": {
+      "en": "Rutile",
+      "fr": "Rutile"
+    },
+    "Uraninite": {
+      "en": "Uraninite",
+      "fr": "Uraninite"
+    },
+    "ImperialSlaves": {
+      "en": "Imperial Slaves",
+      "fr": "Esclaves impériaux"
+    },
+    "Slaves": {
+      "en": "Slaves",
+      "fr": "Esclaves"
+    },
+    "AdvancedCatalysers": {
+      "en": "Advanced Catalysers",
+      "fr": "Catalyseurs complexes"
+    },
+    "AnimalMonitors": {
+      "en": "Animal Monitors",
+      "fr": "Système de surveillance animale"
+    },
+    "AquaponicSystems": {
+      "en": "Aquaponic Systems",
+      "fr": "Systèmes aquaponiques"
+    },
+    "Uraninite": {
+      "en": "Uraninite",
+      "fr": "Uraninite"
+    },
+    "AutoFabricators": {
+      "en": "Auto-Fabricators",
+      "fr": "Dispositif d'auto-fabrication"
+    },
+    "BioReducingLichen": {
+      "en": "Bioreducing Lichen",
+      "fr": "Lichen bioréducteur"
+    },
+    "ComputerComponents": {
+      "en": "Computer Components",
+      "fr": "Composants d'ordinateur"
+    },
+    "HazardousEnvironmentSuits": {
+      "en": "H.E. Suits",
+      "fr": "Combinaison de protection"
+    },
+    "TerrainEnrichmentSystems": {
+      "en": "Land Enrichment Systems",
+      "fr": "Systèmes d'enrichissement des sols"
+    },
+    "ResonatingSeparators": {
+      "en": "Resonating Separators",
+      "fr": "Séparateurs à résonance"
+    },
+    "Robotics": {
+      "en": "Robotics",
+      "fr": "Robots"
+    },
+    "Leather": {
+      "en": "Leather",
+      "fr": "Cuir"
+    },
+    "NaturalFabrics": {
+      "en": "Natural Fabrics",
+      "fr": "Tissus naturels"
+    },
+    "SyntheticFabrics": {
+      "en": "Synthetic Fabrics",
+      "fr": "Tissus synthétiques"
+    },
+    "Biowaste": {
+      "en": "Biowaste",
+      "fr": "Biodéchets"
+    },
+    "ChemicalWaste": {
+      "en": "Chemical Waste",
+      "fr": "Déchets chimiques"
+    },
+    "Scrap": {
+      "en": "Scrap",
+      "fr": "Féraille"
+    },
+    "NonLethalWeapons": {
+      "en": "Non-Lethal Weapons",
+      "fr": "Armes non léthales"
+    },
+    "PersonalWeapons": {
+      "en": "Personal Weapons",
+      "fr": "Armes de poing"
+    },
+    "ReactiveArmour": {
+      "en": "Reactive Armour",
+      "fr": "Protection réactive"
+    },
+    "BattleWeapons": {
+      "en": "Battle Weapons",
+      "fr": "Armes Militaires"
+    },
+    "ToxicWaste": {
+      "en": "Toxic Waste",
+      "fr": "Déchets Toxiques"
+    },
+    "Painite": {
+      "en": "Painite",
+      "fr": "Painite"
+    },
+    "Drones": {
+      "en": "Limpet",
+      "fr": "Drones"
+    },
+    "EraninPearlWhisky": {
+      "en": "Eranin Pearl Whisky",
+      "fr": "Eranin Pearl Whisky"
+    },
+    "KamorinHistoricWeapons": {
+      "en": "Kamorin Historic Weapons",
+      "fr": "Armes historiques de Kamorin"
+    },
+    "LucanOnionHead": {
+      "en": "Lucan Onion Head",
+      "fr": "Tête d'oignon Lucan"
+    },
+    "MotronaExperienceJelly": {
+      "en": "Motrona Experience Jelly",
+      "fr": "Motrona Experience Jelly"
+    },
+    "OnionHead": {
+      "en": "Onion Head",
+      "fr": "Tête d'oignon"
+    },
+    "RusaniOldSmokey": {
+      "en": "Rusani Old Smokey",
+      "fr": "Rusani Old Smokey"
+    },
+    "TarachSpice": {
+      "en": "Tarach Spice",
+      "fr": "Tarach Spice"
+    },
+    "TerraMaterBloodBores": {
+      "en": "Terra Mater Blood Bores",
+      "fr": "Terra Mater Blood Bores"
+    },
+    "WolfFesh": {
+      "en": "Wolf Fesh",
+      "fr": "Wolf Fesh"
+    },
+    "WuthieloKuFroth": {
+      "en": "Wuthielo Ku Froth",
+      "fr": "Wuthielo Ku Froth"
+    },
+    "AiRelics": {
+      "en": "Ai Relics",
+      "fr": "Reliques Ai"
+    },
+    "Antiquities": {
+      "en": "Antiquities",
+      "fr": "Antiquités"
+    },
+    "Osmium": {
+      "en": "Osmium",
+      "fr": "Osmium"
+    },
+    "SAP8CoreContainer": {
+      "en": "Sap 8 Core Container",
+      "fr": "Sap 8 Core Container"
+    },
+    "TrinketsOfFortune": {
+      "en": "Trinkets Of Hidden Fortune",
+      "fr": "Trinkets Of Hidden Fortune"
+    },
+    "USSCargoTradeData": {
+      "en": "Trade Data",
+      "fr": "Données commerciales"
+    },
+    "ThermalCoolingUnits": {
+      "en": "Thermal Cooling Units",
+      "fr": "Unités de refroidissement"
+    },
+    "SkimerComponents": {
+      "en": "Skimmer Components",
+      "fr": "Composants de protecteurs"
+    },
+    "GeologicalEquipment": {
+      "en": "Geological Equipment",
+      "fr": "équipement géologique"
+    },
+    "StructuralRegulators": {
+      "en": "Structural Regulators",
+      "fr": "Régulateurs struturels"
+    },
+    "Pyrophyllite": {
+      "en": "Pyrophyllite",
+      "fr": "Pyrophyllite"
+    },
+    "Moissanite": {
+      "en": "Moissanite",
+      "fr": "Moissanite"
+    },
+    "Goslarite": {
+      "en": "Goslarite",
+      "fr": "Goslarite"
+    },
+    "Cryolite": {
+      "en": "Cryolite",
+      "fr": "Cryolite"
+    },
+    "Thorium": {
+      "en": "Thorium",
+      "fr": "Thorium"
+    },
+    "Thallium": {
+      "en": "Thallium",
+      "fr": "Thallium"
+    },
+    "Lanthanum": {
+      "en": "Lanthanum",
+      "fr": "Lanthanum"
+    },
+    "Bismuth": {
+      "en": "Bismuth",
+      "fr": "Bismuth"
+    },
+    "BootlegLiquor": {
+      "en": "Bootleg Liquor",
+      "fr": "Liqueur de contrebande"
+    },
+    "MetaAlloys": {
+      "en": "Meta-Alloys",
+      "fr": "Méta-alliage"
+    },
+    "CeramicComposites": {
+      "en": "Ceramic Composites",
+      "fr": "Composites céramiques"
+    },
+    "EvacuationShelter": {
+      "en": "Evacuation Shelter",
+      "fr": "Abri d'évacuation"
+    },
+    "SyntheticReagents": {
+      "en": "Synthetic Reagents",
+      "fr": "Réactifs synthétiques"
+    },
+    "SurfaceStabilisers": {
+      "en": "Surface Stabilisers",
+      "fr": "Stabilisateurs de surface"
+    },
+    "BuildingFabricators": {
+      "en": "Building Fabricators",
+      "fr": "Auto-batisseurs"
+    },
+    "Landmines": {
+      "en": "Landmines",
+      "fr": "Mines terrestres"
+    },
+    "NerveAgents": {
+      "en": "Nerve Agents",
+      "fr": "Agents neurotoxiques"
+    },
+    "MuTomImager": {
+      "en": "Muon Imager",
+      "fr": "dispositif d'imagerie muonique"
+    },
+    "LavianBrandy": {
+      "en": "Lavian Brandy",
+      "fr": "Lavian Brandy"
+    },
+    "USSCargoBlackBox": {
+      "en": "Black Box",
+      "fr": "Boîte noire"
+    },
+    "USSCargoMilitaryPlans": {
+      "en": "Military Plans",
+      "fr": "Plans militaires"
+    },
+    "USSCargoAncientArtefact": {
+      "en": "Ancient Artefact",
+      "fr": "Artefact antique"
+    },
+    "USSCargoRareArtwork": {
+      "en": "Rare Artwork",
+      "fr": "œuvres d'art"
+    },
+    "USSCargoExperimentalChemicals": {
+      "en": "Experimental Chemicals",
+      "fr": "Produits chimiques expérimentaux"
+    },
+    "USSCargoRebelTransmissions": {
+      "en": "Rebel Transmissions",
+      "fr": "Transmissions rebelles"
+    },
+    "USSCargoPrototypeTech": {
+      "en": "Prototype Tech",
+      "fr": "Technologie prototype"
+    },
+    "USSCargoTechnicalBlueprints": {
+      "en": "Technical Blueprints",
+      "fr": "Plans techniques"
+    },
+    "HIP10175BushMeat": {
+      "en": "HIP 10175 Bush Meat",
+      "fr": "Viande de brousse de HIP 10175"
+    },
+    "AlbinoQuechuaMammoth": {
+      "en": "Albino Quechua Mammoth",
+      "fr": "Mammouth albinos quechua"
+    },
+    "UtgaroarMillennialEggs": {
+      "en": "Utgaroar Millennial Eggs",
+      "fr": "Œufs millénaires d'Utgaroar"
+    },
+    "WitchhaulKobeBeef": {
+      "en": "Witchhaul Kobe Beef",
+      "fr": "Bœuf Witchhaul Kobe"
+    },
+    "KarsukiLocusts": {
+      "en": "Karsuki Locusts",
+      "fr": "Criquets de Karsuki"
+    },
+    "GiantIrukamaSnails": {
+      "en": "Giant Irukama Snails",
+      "fr": "Escargots Irukama géants"
+    },
+    "BaltahSineVacuumKrill": {
+      "en": "Baltah Sine Vacuum Krill",
+      "fr": "Baltah Sine Vacuum Krill"
+    },
+    "CetiRabbits": {
+      "en": "Ceti Rabbits",
+      "fr": "Lapins de Ceti"
+    },
+    "KachiriginFilterLeeches": {
+      "en": "Kachirigin Filter Leeches",
+      "fr": "Kachirigin Filter Leeches"
+    },
+    "LyraeWeed": {
+      "en": "Lyrae Weed",
+      "fr": "Lyrae Weed"
+    },
+    "BorasetaniPathogenetics": {
+      "en": "Borasetani Pathogenetics",
+      "fr": "Borasetani Pathogenetics"
+    },
+    "HIP118311Swarm": {
+      "en": "HIP 118311 Swarm",
+      "fr": "Essaim de HIP 118311"
+    },
+    "KonggaAle": {
+      "en": "Kongga Ale",
+      "fr": "Kongga Ale"
+    },
+    "AlacarakmoSkinArt": {
+      "en": "Alacarakmo Skin Art",
+      "fr": "Alacarakmo Skin Art"
+    },
+    "EleuThermals": {
+      "en": "Eleu Thermals",
+      "fr": "Eleu Thermals"
+    },
+    "EshuUmbrellas": {
+      "en": "Eshu Umbrellas",
+      "fr": "Parapluies d'Eshu"
+    },
+    "KaretiiCouture": {
+      "en": "Karetii Couture",
+      "fr": "Karetii Couture"
+    },
+    "NjangariSaddles": {
+      "en": "Njangari Saddles",
+      "fr": "Selles de Njangari"
+    },
+    "AnyNaCoffee": {
+      "en": "Any Na Coffee",
+      "fr": "Any Na Coffee"
+    },
+    "CD-75KittenBrandCoffee": {
+      "en": "CD-75 Kitten Brand Coffee",
+      "fr": "CD-75 Kitten Brand Coffee"
+    },
+    "GomanYauponCoffee": {
+      "en": "Goman Yaupon Coffee",
+      "fr": "Goman Yaupon Coffee"
+    },
+    "VolkhabBeeDrones": {
+      "en": "Volkhab Bee Drones",
+      "fr": "Volkhab Bee Drones"
+    },
+    "KinagoViolins": {
+      "en": "Kinago Violins",
+      "fr": "Violons Kinago"
+    },
+    "NgunaModernAntiques": {
+      "en": "Nguna Modern Antiques",
+      "fr": "Nguna Modern Antiques"
+    },
+    "RajukruMulti-Stoves": {
+      "en": "Rajukru Multi-Stoves",
+      "fr": "Rajukru Multi-Stoves"
+    },
+    "TiolceWaste2PasteUnits": {
+      "en": "Tiolce Waste2Paste Units",
+      "fr": "Tiolce Waste2Paste Units"
+    },
+    "ChiEridaniMarinePaste": {
+      "en": "Chi Eridani Marine Paste",
+      "fr": "Chi Eridani Marine Paste"
+    },
+    "EsusekuCaviar": {
+      "en": "Esuseku Caviar",
+      "fr": "Esuseku Caviar"
+    },
+    "LiveHecateSeaWorms": {
+      "en": "Live Hecate Sea Worms",
+      "fr": "Live Hecate Sea Worms"
+    },
+    "HelvetitjPearls": {
+      "en": "Helvetitj Pearls",
+      "fr": "Helvetitj Pearls"
+    },
+    "HIPProto-Squid": {
+      "en": "HIP Proto-Squid",
+      "fr": "HIP Proto-Squid"
+    },
+    "CoquimSpongiformVictuals": {
+      "en": "Coquim Spongiform Victuals",
+      "fr": "Coquim Spongiform Victuals"
+    },
+    "EdenApplesOfAerial": {
+      "en": "Eden Apples Of Aerial",
+      "fr": "Eden Apples Of Aerial"
+    },
+    "NeritusBerries": {
+      "en": "Neritus Berries",
+      "fr": "Baies de Néritus"
+    },
+    "OchoengChillies": {
+      "en": "Ochoeng Chillies",
+      "fr": "Ochoeng Chillies"
+    },
+    "DeuringasTruffles": {
+      "en": "Deuringas Truffles",
+      "fr": "Truffes de Deuringas"
+    },
+    "HR7221Wheat": {
+      "en": "HR 7221 Wheat",
+      "fr": "Blé de HR 7221"
+    },
+    "JarouaRice": {
+      "en": "Jaroua Rice",
+      "fr": "Riz Jaroua"
+    },
+    "BelalansRayLeather": {
+      "en": "Belalans Ray Leather",
+      "fr": "Belalans Ray Leather"
+    },
+    "DamnaCarapaces": {
+      "en": "Damna Carapaces",
+      "fr": "Carapaces Damna"
+    },
+    "RapaBaoSnakeSkins": {
+      "en": "Rapa Bao Snake Skins",
+      "fr": "Rapa Bao Snake Skins"
+    },
+    "VanayequiCeratomorphaFur": {
+      "en": "Vanayequi Ceratomorpha Fur",
+      "fr": "Vanayequi Ceratomorpha Fur"
+    },
+    "BastSnakeGin": {
+      "en": "Bast Snake Gin",
+      "fr": "Bast Snake Gin"
+    },
+    "ThrutisCream": {
+      "en": "Thrutis Cream",
+      "fr": "Thrutis Cream"
+    },
+    "AganippeRush": {
+      "en": "Aganippe Rush",
+      "fr": "Aganippe Rush"
+    },
+    "HolvaDuellingBlades": {
+      "en": "Holva Duelling Blades",
+      "fr": "Holva Duelling Blades"
+    },
+    "GilyaSignatureWeapons": {
+      "en": "Gilya Signature Weapons",
+      "fr": "Gilya Signature Weapons"
+    },
+    "DeltaPhoenicisPalms": {
+      "en": "Delta Phoenicis Palms",
+      "fr": "Delta Phoenicis Palms"
+    },
+    "ToxandjiVirocide": {
+      "en": "Toxandji Virocide",
+      "fr": "Toxandji Virocide"
+    },
+    "xihecompanions": {
+      "en": "Xihe Biomorphic Companions",
+      "fr": "Xihe Biomorphic Companions"
+    },
+    "SanumaDecorativeMeat": {
+      "en": "Sanuma Decorative Meat",
+      "fr": "Sanuma Decorative Meat"
+    },
+    "EthgrezeTeaBuds": {
+      "en": "Ethgreze Tea Buds",
+      "fr": "Ethgreze Tea Buds"
+    },
+    "CeremonialHeikeTea": {
+      "en": "Ceremonial Heike Tea",
+      "fr": "Thé de cérémonie Heike"
+    },
+    "TanmarkTranquilTea": {
+      "en": "Tanmark Tranquil Tea",
+      "fr": "Tanmark Tranquil Tea"
+    },
+    "AzCancriFormula42": {
+      "en": "Az Cancri Formula 42",
+      "fr": "Az Cancri Formula 42"
+    },
+    "KamitraCigars": {
+      "en": "Kamitra Cigars",
+      "fr": "Cigares de Kamitra"
+    },
+    "YasoKondiLeaf": {
+      "en": "Yaso Kondi Leaf",
+      "fr": "Yaso Kondi Leaf"
+    },
+    "ChateauDeAegaeon": {
+      "en": "Chateau De Aegaeon",
+      "fr": "Chateau De Aegaeon"
+    },
+    "WatersOfShintara": {
+      "en": "Waters Of Shintara",
+      "fr": "Eaux de Shintara"
+    },
+    "OphiuchExinoArtefacts": {
+      "en": "Ophiuch Exino Artefacts",
+      "fr": "Ophiuch Exino Artefacts"
+    },
+    "AepyornisEgg": {
+      "en": "Aepyornis Egg",
+      "fr": "Oeuf d'Aepyornis"
+    },
+    "SaxonWine": {
+      "en": "Saxon Wine",
+      "fr": "Vin saxon"
+    },
+    "CentauriMegaGin": {
+      "en": "Centauri Mega Gin",
+      "fr": "Centauri Mega Gin"
+    },
+    "AnduligaFireWorks": {
+      "en": "Anduliga Fire Works",
+      "fr": "Anduliga Fire Works"
+    },
+    "BankiAmphibiousLeather": {
+      "en": "Banki Amphibious Leather",
+      "fr": "Banki Amphibious Leather"
+    },
+    "CherbonesBloodCrystals": {
+      "en": "Cherbones Blood Crystals",
+      "fr": "Cristaux de sang de Cherbones"
+    },
+    "GeawenDanceDust": {
+      "en": "Geawen Dance Dust",
+      "fr": "Geawen Dance Dust"
+    },
+    "GerasianGueuzeBeer": {
+      "en": "Gerasian Gueuze Beer",
+      "fr": "Gueuze gérasienne"
+    },
+    "HaidneBlackBrew": {
+      "en": "Haidne Black Brew",
+      "fr": "Haidne Black Brew"
+    },
+    "HavasupaiDreamCatcher": {
+      "en": "Havasupai Dream Catcher",
+      "fr": "Havasupai Dream Catcher"
+    },
+    "BurnhamBileDistillate": {
+      "en": "Burnham Bile Distillate",
+      "fr": "Burnham Bile Distillate"
+    },
+    "HIPOrganophosphates": {
+      "en": "HIP Organophosphates",
+      "fr": "HIP Organophosphates"
+    },
+    "JaradharrePuzzleBox": {
+      "en": "Jaradharre Puzzle Box",
+      "fr": "Jaradharre Puzzle Box"
+    },
+    "KoroKungPellets": {
+      "en": "Koro Kung Pellets",
+      "fr": "Koro Kung Pellets"
+    },
+    "VoidExtractCoffee": {
+      "en": "Void Extract Coffee",
+      "fr": "Void Extract Coffee"
+    },
+    "HonestyPills": {
+      "en": "Honesty Pills",
+      "fr": "Pilules d'honnêteté"
+    },
+    "NonEuclidianExotanks": {
+      "en": "Non Euclidian Exotanks",
+      "fr": "Exotanks non euclidiens"
+    },
+    "LTTHypersweet": {
+      "en": "LTT Hypersweet",
+      "fr": "LTT Hypersweet"
+    },
+    "MechucosHighTea": {
+      "en": "Mechucos High Tea",
+      "fr": "Mechucos High Tea"
+    },
+    "MedbStarlube": {
+      "en": "Medb Starlube",
+      "fr": "Medb Starlube"
+    },
+    "MokojingBeastFeast": {
+      "en": "Mokojing Beast Feast",
+      "fr": "Mokojing Beast Feast"
+    },
+    "MukusubiiChitin-Os": {
+      "en": "Mukusubii Chitin-Os",
+      "fr": "Mukusubii Chitin-Os"
+    },
+    "MulachiGiantFungus": {
+      "en": "Mulachi Giant Fungus",
+      "fr": "Champignon géant de Mulachi"
+    },
+    "NgadandariFireOpals": {
+      "en": "Ngadandari Fire Opals",
+      "fr": "Opales de feu Ngadandari"
+    },
+    "TiegfriesSynthSilk": {
+      "en": "Tiegfries Synth Silk",
+      "fr": "Tiegfries Synth Silk"
+    },
+    "UzumokuLow-GWings": {
+      "en": "Uzumoku Low-G Wings",
+      "fr": "Uzumoku Low-G Wings"
+    },
+    "VHerculisBodyRub": {
+      "en": "V Herculis Body Rub",
+      "fr": "V Herculis Body Rub"
+    },
+    "WheemeteWheatCakes": {
+      "en": "Wheemete Wheat Cakes",
+      "fr": "Wheemete Wheat Cakes"
+    },
+    "VegaSlimweed": {
+      "en": "Vega Slimweed",
+      "fr": "Vega Slimweed"
+    },
+    "AltairianSkin": {
+      "en": "Altairian Skin",
+      "fr": "Peau d'Altairian"
+    },
+    "PavonisEarGrubs": {
+      "en": "Pavonis Ear Grubs",
+      "fr": "Pavonis Ear Grubs"
+    },
+    "JotunMookah": {
+      "en": "Jotun Mookah",
+      "fr": "Jotun Mookah"
+    },
+    "GiantVerrix": {
+      "en": "Giant Verrix",
+      "fr": "Giant Verrix"
+    },
+    "IndiBourbon": {
+      "en": "Indi Bourbon",
+      "fr": "Indi Bourbon"
+    },
+    "AroucaConventualSweets": {
+      "en": "Arouca Conventual Sweets",
+      "fr": "Arouca Conventual Sweets"
+    },
+    "TauriChimes": {
+      "en": "Tauri Chimes",
+      "fr": "Carillons de Tauri"
+    },
+    "ZeesszeAntGrubGlue": {
+      "en": "Zeessze Ant Grub Glue",
+      "fr": "Zeessze Ant Grub Glue"
+    },
+    "PantaaPrayerSticks": {
+      "en": "Pantaa Prayer Sticks",
+      "fr": "Bâtonnets de prière Pantaa"
+    },
+    "FujinTea": {
+      "en": "Fujin Tea",
+      "fr": "Thé Fujin"
+    },
+    "ChameleonCloth": {
+      "en": "Chameleon Cloth",
+      "fr": "Chameleon Cloth"
+    },
+    "OrrerianViciousBrew": {
+      "en": "Orrerian Vicious Brew",
+      "fr": "Orrerian Vicious Brew"
+    },
+    "UszaianTreeGrub": {
+      "en": "Uszaian Tree Grub",
+      "fr": "Uszaian Tree Grub"
+    },
+    "MomusBogSpaniel": {
+      "en": "Momus Bog Spaniel",
+      "fr": "Momus Bog Spaniel"
+    },
+    "DisoMaCorn": {
+      "en": "Diso Ma Corn",
+      "fr": "Diso Ma Corn"
+    },
+    "LeestianEvilJuice": {
+      "en": "Leestian Evil Juice",
+      "fr": "Leestian Evil Juice"
+    },
+    "bluemilk": {
+      "en": "Azure Milk",
+      "fr": "Azure Milk"
+    },
+    "alieneggs": {
+      "en": "Leathery Eggs",
+      "fr": "Leathery Eggs"
+    },
+    "AlyaBodySoap": {
+      "en": "Alya Body Soap",
+      "fr": "Alya Body Soap"
+    },
+    "VidavantianLace": {
+      "en": "Vidavantian Lace",
+      "fr": "Dentelle Vidavantienne"
+    },
+    "JaquesQuinentianStill": {
+      "en": "Jaques Quinentian Still",
+      "fr": "Jaques Quinentian Still"
+    },
+    "SoontillRelics": {
+      "en": "Soontill Relics",
+      "fr": "Reliques de Soontill"
+    },
+    "UnknownArtifact": {
+      "en": "Thargoid Sensor",
+      "fr": "Capteur Thargoïde"
+    },
+    "Hafnium178": {
+      "en": "Hafnium 178",
+      "fr": "Hafnium 178"
+    },
+    "MilitaryIntelligence": {
+      "en": "Military Intelligence",
+      "fr": "Renseignement militaire"
+    },
+    "TheHuttonMug": {
+      "en": "The Hutton Mug",
+      "fr": "The Hutton Mug"
+    },
+    "SothisCrystallineGold": {
+      "en": "Sothis Crystalline Gold",
+      "fr": "Sothis Crystalline Gold"
+    },
+    "WreckageComponents": {
+      "en": "Salvageable Wreckage",
+      "fr": "Débris récupérables"
+    },
+    "EncriptedDataStorage": {
+      "en": "Encrypted Data Storage",
+      "fr": "Stockage de données cryptées"
+    },
+    "PersonalEffects": {
+      "en": "Personal Effects",
+      "fr": "Effets personnels"
+    },
+    "ComercialSamples": {
+      "en": "Commercial Samples",
+      "fr": "Échantillons commerciaux"
+    },
+    "TacticalData": {
+      "en": "Tactical Data",
+      "fr": "Données tactiques"
+    },
+    "AssaultPlans": {
+      "en": "Assault Plans",
+      "fr": "Plans d'assaut"
+    },
+    "EncryptedCorrespondence": {
+      "en": "Encrypted Correspondence",
+      "fr": "Correspondance cryptée"
+    },
+    "DiplomaticBag": {
+      "en": "Diplomatic Bag",
+      "fr": "Valise diplomatique"
+    },
+    "ScientificResearch": {
+      "en": "Scientific Research",
+      "fr": "Recherche scientifique"
+    },
+    "ScientificSamples": {
+      "en": "Scientific Samples",
+      "fr": "Échantillons scientifiques"
+    },
+    "PoliticalPrisoner": {
+      "en": "Political Prisoner",
+      "fr": "Prisonnier politique"
+    },
+    "Hostage": {
+      "en": "Hostage",
+      "fr": "Otage"
+    },
+    "GeologicalSamples": {
+      "en": "Geological Samples",
+      "fr": "Échantillons géologiques"
+    },
+    "MasterChefs": {
+      "en": "Master Chefs",
+      "fr": "Maître Queux"
+    },
+    "CrystallineSpheres": {
+      "en": "Crystalline Spheres",
+      "fr": "Sphères cristallines"
+    },
+    "Taaffeite": {
+      "en": "Taaffeite",
+      "fr": "Taaffeite"
+    },
+    "Jadeite": {
+      "en": "Jadeite",
+      "fr": "Jadéite"
+    },
+    "UnstableDataCore": {
+      "en": "Unstable Data Core",
+      "fr": "Noyau de données instable"
+    },
+    "OnionheadAlphaStrain": {
+      "en": "Onionhead Alpha Strain",
+      "fr": "Onionhead Alpha Strain"
+    },
+    "OccupiedCryoPod": {
+      "en": "Occupied Escape Pod",
+      "fr": "Nacelle d'évacuation occupé"
+    },
+    "OnionheadBetaStrain": {
+      "en": "Onionhead Beta Strain",
+      "fr": "Onionhead Beta Strain"
+    },
+    "Praseodymium": {
+      "en": "Praseodymium",
+      "fr": "Praséodyme"
+    },
+    "Bromellite": {
+      "en": "Bromellite",
+      "fr": "Bromellite"
+    },
+    "Osmium": {
+      "en": "Osmium",
+      "fr": "Osmium"
+    },
+    "Samarium": {
+      "en": "Samarium",
+      "fr": "Samarium"
+    },
+    "LowTemperatureDiamond": {
+      "en": "Low Temperature Diamonds",
+      "fr": "Diamants à basse température"
+    },
+    "HydrogenPeroxide": {
+      "en": "Hydrogen Peroxide",
+      "fr": "Péroxyde d'hydrogène"
+    },
+    "LiquidOxygen": {
+      "en": "Liquid oxygen",
+      "fr": "Oxygène liquide"
+    },
+    "MethanolMonohydrateCrystals": {
+      "en": "Methanol Monohydrate Crystals",
+      "fr": "Cristaux de monohydrate de méthanol"
+    },
+    "LithiumHydroxide": {
+      "en": "Lithium Hydroxide",
+      "fr": "Hydroxyde de lithium"
+    },
+    "MethaneClathrate": {
+      "en": "Methane Clathrate",
+      "fr": "Clathrate de méthane"
+    },
+    "InsulatingMembrane": {
+      "en": "Insulating Membrane",
+      "fr": "Membrane isolante"
+    },
+    "CMMComposite": {
+      "en": "CMM Composite",
+      "fr": "Composites M M C"
+    },
+    "CoolingHoses": {
+      "en": "Micro-weave Cooling Hoses",
+      "fr": "Tuyaux de refroidissement à microfilaments"
+    },
+    "NeofabricInsulation": {
+      "en": "Neofabric Insulation",
+      "fr": "Isolant en néotextile"
+    },
+    "ArticulationMotors": {
+      "en": "Articulation Motors",
+      "fr": "Moteurs à articulation"
+    },
+    "HNShockMount": {
+      "en": "HN Shock Mount",
+      "fr": "Protection antichoc H P"
+    },
+    "EmergencyPowerCells": {
+      "en": "Emergency Power Cells",
+      "fr": "Cellules d'énergie d'urgence"
+    },
+    "PowerConverter": {
+      "en": "Power Converter",
+      "fr": "Convertisseur de puissance"
+    },
+    "PowerGridAssembly": {
+      "en": "Energy Grid Assembly",
+      "fr": "Grille d'assemblage d'énergie"
+    },
+    "PowerTransferConduits": {
+      "en": "Power Transfer Conduits",
+      "fr": "Bus de transfert d'énergie"
+    },
+    "RadiationBaffle": {
+      "en": "Radiation Baffle",
+      "fr": "Écran anti-radiation"
+    },
+    "ExhaustManifold": {
+      "en": "Exhaust Manifold",
+      "fr": "Collecteur d'échappement"
+    },
+    "ReinforcedMountingPlate": {
+      "en": "Reinforced Mounting Plate",
+      "fr": "Plaque de montage renforcée"
+    },
+    "HeatsinkInterlink": {
+      "en": "Heatsink Interlink",
+      "fr": "Interconnexion de dissipateur"
+    },
+    "MagneticEmitterCoil": {
+      "en": "Magnetic Emitter Coil",
+      "fr": "Bobine d'émission magnétique"
+    },
+    "ModularTerminals": {
+      "en": "Modular Terminals",
+      "fr": "Terminaux modulaires"
+    },
+    "Nanobreakers": {
+      "en": "Nanobreakers",
+      "fr": "Nanodestructeurs"
+    },
+    "TelemetrySuite": {
+      "en": "Telemetry Suite",
+      "fr": "Suite de télémétrie"
+    },
+    "MicroControllers": {
+      "en": "Micro Controllers",
+      "fr": "Microcontrôleurs"
+    },
+    "IonDistributor": {
+      "en": "Ion Distributor",
+      "fr": "Distributeur d'ions"
+    },
+    "DiagnosticSensor": {
+      "en": "Hardware Diagnostic Sensor",
+      "fr": "Capteur de diagnostic matériel"
+    },
+    "ConductiveFabrics": {
+      "en": "Conductive Fabrics",
+      "fr": "Tissus conducteurs"
+    },
+    "MilitaryGradeFabrics": {
+      "en": "Military Grade Fabrics",
+      "fr": "Tissus Militaires"
+    },
+    "AdvancedMedicines": {
+      "en": "Advanced Medicines",
+      "fr": "Médicaments avancés"
+    },
+    "MedicalDiagnosticEquipment": {
+      "en": "Medical Diagnostic Equipment",
+      "fr": "équipement de diagnostic médicaux"
+    },
+    "SurvivalEquipment": {
+      "en": "Survival Equipment",
+      "fr": "équipement de survie"
+    },
+    "DataCore": {
+      "en": "Data Core",
+      "fr": "Base de données"
+    },
+    "GalacticTravelGuide": {
+      "en": "Galactic Travel Guide",
+      "fr": "Guide du Routard Galactique"
+    },
+    "MysteriousIdol": {
+      "en": "Mysterious Idol",
+      "fr": "Idole mystérieuse"
+    },
+    "ProhibitedResearchMaterials": {
+      "en": "Prohibited Research Materials",
+      "fr": "Matériaux de recherche interdits"
+    },
+    "AntimatterContainmentUnit": {
+      "en": "Antimatter Containment Unit",
+      "fr": "Unité de confinement d'antimatière"
+    },
+    "SpacePioneerRelics": {
+      "en": "Space Pioneer Relics",
+      "fr": "Reliques des pionniers de l'espace"
+    },
+    "FossilRemnants": {
+      "en": "Fossil Remnants",
+      "fr": "Restes fossiles"
+    },
+    "UnknownArtifact2": {
+      "en": "Thargoid Probe",
+      "fr": "Sonde thargoïde"
+    },
+    "PreciousGems": {
+      "en": "Precious Gems",
+      "fr": "Gemmes précieuses"
+    },
+    "UnknownArtifact3": {
+      "en": "Thargoid Link",
+      "fr": "Lien Thargoïde"
+    },
+    "UnknownBiological Matter": {
+      "en": "Thargoid Biological Matter",
+      "fr": "Matière Biologique Thargoïde"
+    },
+    "UnknownResin": {
+      "en": "Thargoid Resin",
+      "fr": "Résine thargoïde"
+    },
+    "UnknownTechnologySamples": {
+      "en": "Thargoid Technology Samples",
+      "fr": "Échantillons de technologie thargoïde"
+    },
+    "AncientRelic": {
+      "en": "Ancient Relic",
+      "fr": "Relique antique"
+    },
+    "AncientOrb": {
+      "en": "Ancient Orb",
+      "fr": "Orbe Antique"
+    },
+    "AncientCasket": {
+      "en": "Ancient Casket",
+      "fr": "Ancient Casket"
+    },
+    "AncientTablet": {
+      "en": "Ancient Tablet",
+      "fr": "Ancient Tablet"
+    },
+    "AncientUrn": {
+      "en": "Ancient Urn",
+      "fr": "Ancient Urn"
+    },
+    "AncientTotem": {
+      "en": "Ancient Totem",
+      "fr": "Ancient Totem"
+    },
+    "SmallExplorationDataCash": {
+      "en": "Small Survey Data Cache",
+      "fr": "Small Survey Data Cache"
+    },
+    "LargeExplorationDataCash": {
+      "en": "Large Survey Data Cache",
+      "fr": "Large Survey Data Cache"
+    },
+    "DamagedEscapePod": {
+      "en": "Damaged Escape Pod",
+      "fr": "Nacelle de survie endomagée"
+    },
+    "EarthRelics": {
+      "en": "Earth Relics",
+      "fr": "Reliques de la Terre"
+    },
+    "siriuscommercialcontracts": {
+      "en": "Sirius Commercial Contracts",
+      "fr": "Contrats commerciaux de Sirius"
+    },
+    "siriusindustrialequipment": {
+      "en": "Sirius Inustrial Equipment",
+      "fr": "Équipement Industriel de Sirius"
+    },
+    "siriusfranchisepackage": {
+      "en": "Sirius Franchise Package",
+      "fr": "Sirius Franchise Package"
+    },
+    "republicangarisonsupplies": {
+      "en": "Republic Garrison Supplies",
+      "fr": "Republic Garrison Supplies"
+    },
+    "AntiqueJewellery": {
+      "en": "Antique Jewellery",
+      "fr": "Bijoux Antiques"
+    },
+    "GeneBank": {
+      "en": "Gene Bank",
+      "fr": "Banque de gènes"
+    },
+    "TimeCapsule": {
+      "en": "Time Capsule",
+      "fr": "Capsule temporelle"
+    },
+    "Chemicals": {
+      "en": "Chemicals",
+      "fr": "Produits chimiques"
+    },
+    "Consumer Items": {
+      "en": "Consumer Items",
+      "fr": "Articles de consommation"
+    },
+    "Narcotics": {
+      "en": "Narcotics",
+      "fr": "Narcotiques"
+    },
+    "Foods": {
+      "en": "Foods",
+      "fr": "Nourriture"
+    },
+    "Industrial Materials": {
+      "en": "Industrial Materials",
+      "fr": "Matériaux industriels"
+    },
+    "Machinery": {
+      "en": "Machinery",
+      "fr": "Machines"
+    },
+    "Medicines": {
+      "en": "Medicines",
+      "fr": "Médicaments"
+    },
+    "Metals": {
+      "en": "Metals",
+      "fr": "Métaux"
+    },
+    "Minerals": {
+      "en": "Minerals",
+      "fr": "Minéraux"
+    },
+    "Technology": {
+      "en": "Technology",
+      "fr": "Technologie"
+    },
+    "Textiles": {
+      "en": "Textiles",
+      "fr": "Textiles"
+    },
+    "Waste": {
+      "en": "Waste",
+      "fr": "Déchets"
+    },
+    "Weapons": {
+      "en": "Weapons",
+      "fr": "Armes"
+    },
+    "Salvage": {
+      "en": "Salvage",
+      "fr": "Sauvetage"
+    },
+    "Powerplay": {
+      "en": "Powerplay",
+      "fr": "Powerplay"
+    },
+    "Long range": {
+      "en": "Long range",
+      "fr": "Longue portée"
+    },
+    "Lightweight": {
+      "en": "Lightweight",
+      "fr": "Allégée"
+    },
+    "Low emissions": {
+      "en": "Low emissions",
+      "fr": "Faible émission"
+    },
+    "Blast resistant": {
+      "en": "Blast resistant",
+      "fr": "Anti-explosion"
+    },
+    "Kinetic resistant": {
+      "en": "Kinetic resistant",
+      "fr": "Anti-cinétique"
+    },
+    "Thermal resistant": {
+      "en": "Thermal resistant",
+      "fr": "Anti-thermique"
+    },
+    "Focused": {
+      "en": "Focused",
+      "fr": "Tir Concentré"
+    },
+    "Faster boot sequence": {
+      "en": "Faster boot sequence",
+      "fr": "Démarrage accéléré"
+    },
+    "Overcharged": {
+      "en": "Overcharged",
+      "fr": "surchargé"
+    },
+    "Charge enhanced": {
+      "en": "Charge enhanced",
+      "fr": "capacité de charge augmenté"
+    },
+    "Heavy duty": {
+      "en": "Heavy duty",
+      "fr": "lourd"
+    },
+    "Specialised": {
+      "en": "Specialised",
+      "fr": "Spécialisé"
+    },
+    "High capacity": {
+      "en": "High capacity",
+      "fr": "Grande capacité"
+    },
+    "Wide angle": {
+      "en": "Wide angle",
+      "fr": "Grand angle"
+    },
+    "Clean": {
+      "en": "Clean",
+      "fr": "Optimisation propre"
+    },
+    "Enhanced low power": {
+      "en": "Enhanced low power",
+      "fr": "Faible émission"
+    },
+    "Fast scan": {
+      "en": "Fast scan",
+      "fr": "Rapide"
+    },
+    "Shielded": {
+      "en": "Shielded",
+      "fr": "protégé"
+    },
+    "Reinforced": {
+      "en": "Reinforced",
+      "fr": "Renforcé"
+    },
+    "Efficient": {
+      "en": "Efficient",
+      "fr": "Efficace"
+    },
+    "Double shot": {
+      "en": "Double shot",
+      "fr": "Tir double"
+    },
+    "Armoured": {
+      "en": "Armoured",
+      "fr": "Blindé"
+    },
+    "Increased range": {
+      "en": "Increased range",
+      "fr": "Portée Augmenté"
+    },
+    "Expanded capture arc": {
+      "en": "Expanded capture arc",
+      "fr": "Angle de capture augmenté"
+    },
+    "Sturdy": {
+      "en": "Sturdy",
+      "fr": "solide"
+    },
+    "Resistance augmented": {
+      "en": "Resistance augmented",
+      "fr": "Augmentation résistance"
+    },
+    "Rapid charge": {
+      "en": "Rapid charge",
+      "fr": "rechargement rapide"
+    },
+    "High charge capacity": {
+      "en": "High charge capacity",
+      "fr": "capacité de charge élevée"
+    },
+    "Rapid fire": {
+      "en": "Rapid fire",
+      "fr": "tir rapide"
+    },
+    "Dirty": {
+      "en": "Dirty",
+      "fr": "Optimisation détèriorante"
+    },
+    "Short range": {
+      "en": "Short range",
+      "fr": "Courte portée"
+    },
+    "Ammo capacity": {
+      "en": "Ammo capacity",
+      "fr": "Capacité chargeur munition"
+    },
+    "Bulkheads": {
+      "en": "Bulkheads",
+      "fr": "Coque"
+    },
+    "Weapon": {
+      "en": "Weapon",
+      "fr": "Armement"
+    },
+    "Heat sink launcher": {
+      "en": "Heat sink launcher",
+      "fr": "Dissipateur thermique"
+    },
+    "Chaff launcher": {
+      "en": "Chaff launcher",
+      "fr": "Lanceur de paillettes"
+    },
+    "Frame shift wake scanner": {
+      "en": "Frame shift wake scanner",
+      "fr": "Détecteur de sillage FSD"
+    },
+    "Fuel scoop": {
+      "en": "Fuel scoop",
+      "fr": "Récupérateur de carburant"
+    },
+    "Fuel transfer limpet controller": {
+      "en": "Fuel transfer limpet controller",
+      "fr": "Contrôleur de Drone de ravitaillement"
+    },
+    "Auto field mainentance unit": {
+      "en": "Auto field mainentance unit",
+      "fr": "M T A"
+    },
+    "Cargo scanner": {
+      "en": "Cargo scanner",
+      "fr": "Scanneur de cargaison"
+    },
+    "Collector limpet controller": {
+      "en": "Collector limpet controller",
+      "fr": "Contrôle de drone collecteur"
+    },
+    "Electronic counter measures": {
+      "en": "Electronic counter measures",
+      "fr": "Contre mesure électronique"
+    },
+    "Frame shift drive": {
+      "en": "Frame shift drive",
+      "fr": "Réacteur F S D"
+    },
+    "Hatch breaker limpet controller": {
+      "en": "Hatch breaker limpet controller",
+      "fr": "Contrôleur de drone perce soute"
+    },
+    "Kill warrant scanner": {
+      "en": "Kill warrant scanner",
+      "fr": "Détecteur d'avis de recherche"
+    },
+    "Life support": {
+      "en": "Life support",
+      "fr": "Système de survie"
+    },
+    "Point defence": {
+      "en": "Point defence",
+      "fr": "Défence ponctuelle"
+    },
+    "Power distributor": {
+      "en": "Power distributor",
+      "fr": "Répartiteur de puissance"
+    },
+    "Prospector limpet controller": {
+      "en": "Prospector limpet controller",
+      "fr": "Contrôleur de drone prostecteur"
+    },
+    "Refinery": {
+      "en": "Refinery",
+      "fr": "Rafinerie"
+    },
+    "Thrusters": {
+      "en": "Thrusters",
+      "fr": "Moteurs"
+    },
+    "Power plant": {
+      "en": "Power plant",
+      "fr": "Générateurs"
+    },
+    "Detailed surface scanner": {
+      "en": "Detailed surface scanner",
+      "fr": "Détecteur de surface"
+    },
+    "Detailed surface scanner": {
+      "en": "Detailed surface scanner",
+      "fr": "Détecteur de surface"
+    },
+    "Shield generator": {
+      "en": "Shield generator",
+      "fr": "Générateur de bouclier"
+    },
+    "Wake scanner": {
+      "en": "Wake scanner",
+      "fr": "Détecteur de saut"
+    },
+    "Interdictor": {
+      "en": "Interdictor",
+      "fr": "Intercepteur"
+    },
+    "Sensors": {
+      "en": "Sensors",
+      "fr": "Capteurs"
+    },
+    "Shield booster": {
+      "en": "Shield booster",
+      "fr": "Survolteur de bouclier"
+    },
+    "Shield cell bank": {
+      "en": "Shield cell bank",
+      "fr": "Réserve de cellule d'énergie"
+    },
+    "Frame shift drive interdictor": {
+      "en": "Frame shift drive interdictor",
+      "fr": "Intercepteur F S D"
     }
   }
 }

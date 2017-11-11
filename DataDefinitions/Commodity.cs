@@ -33,6 +33,13 @@ namespace EddiDataDefinitions
                 return I18N.GetString(EDName) ?? EDName;
             }
         }
+        public string LocalCategory
+        {
+            get
+            {
+                return I18N.GetString(category) ?? category;
+            }
+        }
 
         public Commodity() { }
 
