@@ -81,6 +81,14 @@
       "en": "Monitor Galnet for new news items and generate a \"Galnet news published\" event when new items are posted",
       "fr": "Gère les nouveaux articles Galnet et génère un événement \"Galnet news published\" lorsque que nouveaux articles sont postés"
     },
+    "galnet_monitor_language_label": {
+      "en": "Galnet article language",
+      "fr": "Language article Galnet"
+    },
+    "galnet_monitor_p1": {
+      "en": "Please note that after changing language it can take up to 2 minutes for new Galnet articles to be available",
+      "fr": "Veuillez notez qu'après le changement de la langue, cela peut prendre jusqu'à 2 minutes pour que les nouveaux articles Galnet soient disponibles"
+    },
     "ship_monitor_name": {
       "en": "Ship monitor",
       "fr": "Moniteur Vaisseau"
