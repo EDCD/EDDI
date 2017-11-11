@@ -58,6 +58,7 @@ namespace EddiJournalMonitor
                     {
                         Logging.Warn("Event without timestamp; using current time");
                     }
+                    EDDI.Instance.JournalTimeStamp = timestamp;
 
                     // Every event has an event field
                     if (!data.ContainsKey("event"))

@@ -112,6 +112,9 @@ namespace Eddi
         public StarSystem CurrentStarSystem { get; private set; }
         public StarSystem LastStarSystem { get; private set; }
 
+        // Information obtained from the player journal
+        public DateTime? JournalTimeStamp { get; set; } = null;
+
         // Current vehicle of player
         public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
 
@@ -1170,6 +1173,7 @@ namespace Eddi
             // If we see this it means that we aren't in CQC
             inCQC = false;
 
+            // Set our commander name
             if (Cmdr.name == null)
             {
                 Cmdr.name = theEvent.commander;

@@ -1,5 +1,8 @@
 ﻿# CHANGE LOG
 
+### 2.4.5
+  * The Galnet monitor will now check the player journal for recent activity prior to updating - VoiceAttack users rejoice!
+
 ### 2.4.4
   * Speech Responder
     * Fixed a bug that was causing some SSML related functions (e.g. Pause()) to not render correctly.
