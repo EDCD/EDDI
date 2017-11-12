@@ -482,7 +482,7 @@ namespace Eddi
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
-            companionAppNextButton.Content = "Next";
+            companionAppNextButton.Content = I18N.GetString("next");
         }
 
         private void setUpCompanionAppStage2(string message = null)
