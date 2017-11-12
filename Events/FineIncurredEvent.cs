@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace EddiEvents
         static FineIncurredEvent()
         {
             VARIABLES.Add("crimetype", "The type of crime committed");
+            VARIABLES.Add("crimedescription", "The decription of the crime committed");
             VARIABLES.Add("victim", "The name of the victim of the crime");
             VARIABLES.Add("faction", "The name of the faction issuing the fine");
             VARIABLES.Add("bounty", "The number of credits issued as the fine");
@@ -24,6 +26,8 @@ namespace EddiEvents
 
         [JsonProperty("crimetype")]
         public string crimetype { get; private set; }
+
+        public string crime { get; private set; }
 
         [JsonProperty("victim")]
         public string victim { get; private set; }
@@ -37,6 +41,7 @@ namespace EddiEvents
         public FineIncurredEvent(DateTime timestamp, string crimetype, string faction, string victim, long fine) : base(timestamp, NAME)
         {
             this.crimetype = crimetype;
+            this.crime = Crime.FromEDName(crimetype).name;
             this.faction = faction;
             this.victim = victim;
             this.fine = fine;

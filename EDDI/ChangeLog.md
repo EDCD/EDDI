@@ -1,5 +1,13 @@
 ﻿# CHANGE LOG
 
+### 2.4.5
+  * Speech Responder
+    * 'Bounty incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
+    * 'Fine incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
+    * Script changes
+      * Updated 'Bounty incurred' to describe your crimes with the new 'crime' variable.
+      * Updated 'Fine incurred' to describe your crimes with the new 'crime' variable.
+
 ### 2.4.4
   * Speech Responder
     * Fixed a bug that was causing some SSML related functions (e.g. Pause()) to not render correctly.
