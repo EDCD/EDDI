@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +19,15 @@ namespace EddiDataDefinitions
 
         /// <summary>The government</summary>
         public string government { get; set; }
+
+        public string LocalGovernment
+        {
+            get
+            {
+                Government gov = Government.FromName(government);
+                return gov.LocalName;
+            }
+        }
 
         /// <summary>The faction</summary>
         public string faction { get; set; }

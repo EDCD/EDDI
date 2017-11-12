@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +22,15 @@ namespace EddiDataDefinitions
         public string security { get; set; }
         public string power { get; set; }
         public string powerstate { get; set; }
+
+        public string LocalGovernment
+        {
+            get
+            {
+                Government gov = Government.FromName(government);
+                return gov.LocalName;
+            }
+        }
 
         /// <summary>X co-ordinate for this system</summary>
         public decimal? x { get; set; }
