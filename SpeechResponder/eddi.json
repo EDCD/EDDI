@@ -704,6 +704,15 @@
       "name": "Insurance check",
       "description": "Check for enough credits to cover your insurance"
     },
+    "Jet cone damage": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Jet cone damage",
+      "description": "Triggered when passing through the jet cone from a white dwarf or neutron star has caused damage to a ship module"
+    },
     "Jumped": {
       "enabled": true,
       "priority": 3,
