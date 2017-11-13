@@ -1,5 +1,11 @@
 ﻿# CHANGE LOG
 
+### 2.4.5
+  * Speech Responder
+    * Added 'Jet cone boost' event
+    * Script changes
+      * Added new script 'Jet cone boost'
+
 ### 2.4.4
   * Speech Responder
     * Fixed a bug that was causing some SSML related functions (e.g. Pause()) to not render correctly.

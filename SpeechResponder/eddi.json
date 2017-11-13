@@ -704,6 +704,15 @@
       "name": "Insurance check",
       "description": "Check for enough credits to cover your insurance"
     },
+    "Jet cone boost": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Pause(1000)}\r\nFrame shift drive boosted by {Humanise(event.boost * 100)} percent.",
+      "default": true,
+      "name": "Jet cone boost",
+      "description": "Triggered when enough material has been collected from a solar jet cone (at a white dwarf or neutron star) for a jump boost"
+    },
     "Jumped": {
       "enabled": true,
       "priority": 3,
