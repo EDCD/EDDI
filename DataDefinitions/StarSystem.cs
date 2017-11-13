@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -16,21 +17,61 @@ namespace EddiDataDefinitions
         public long? population { get; set; }
         public string allegiance { get; set; }
         public string government { get; set; }
-        public string faction { get; set; }
-        public string primaryeconomy { get; set; }
-        public string state { get; set; }
-        public string security { get; set; }
-        public string power { get; set; }
-        public string powerstate { get; set; }
-
+        
         public string LocalGovernment
         {
             get
             {
-                Government gov = Government.FromName(government);
-                return gov.LocalName;
+                if (government != null && government != "")
+                {
+                    return Government.FromName(government).LocalName;
+                }
+                else return null;
             }
         }
+        public string faction { get; set; }
+        public string primaryeconomy { get; set; }
+        
+        public string LocalEconomy
+        {
+            get
+            {
+                if (primaryeconomy != null && primaryeconomy != "")
+                {
+                    return Economy.FromName(primaryeconomy).LocalName;
+                }
+                else return null;
+            }
+        }
+        public string state { get; set; }
+        
+        public string LocalState
+        {
+            get
+            {
+                if (state != null && state != "")
+                {
+                    return State.FromName(state).LocalName;
+                }
+                else return null;
+            }
+        }
+        public string security { get; set; }
+        
+        public string LocalSecurity
+        {
+            get
+            {
+                if (security != null && security != "")
+                {
+                    return SecurityLevel.FromName(security).LocalName;
+                }
+                else return null;
+            }
+        }
+        public string power { get; set; }
+        public string powerstate { get; set; }
+
 
         /// <summary>X co-ordinate for this system</summary>
         public decimal? x { get; set; }
