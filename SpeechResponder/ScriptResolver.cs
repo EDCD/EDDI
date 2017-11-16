@@ -596,7 +596,7 @@ namespace EddiSpeechResponder
                 else if (values.Count == 2)
                 {
                     // Obtain all news of a given category
-                    results = GalnetSqLiteRepository.Instance.GetArticles(values[0].AsString, false);
+                    results = GalnetSqLiteRepository.Instance.GetArticles(values[0].AsString, values[1].AsBoolean);
                 }
                 return (results == null ? new ReflectionValue(new List<News>()) : new ReflectionValue(results));
             }, 0, 2);
