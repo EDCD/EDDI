@@ -1,5 +1,14 @@
 ﻿# CHANGE LOG
 
+### 2.4.5
+  * Events
+    * Added new 'Module arrived' event
+    * Added new 'Ship arrived' event
+  * Speech Responder
+    * Script changes
+      * Added new 'Module arrived' script
+      * Added new 'Ship arrived' script
+
 ### 2.4.4
   * Speech Responder
     * Fixed a bug that was causing some SSML related functions (e.g. Pause()) to not render correctly.

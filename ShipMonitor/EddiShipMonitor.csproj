@@ -73,6 +73,7 @@
     <Compile Include="ModuleSoldEvent.cs" />
     <Compile Include="ModuleStoredEvent.cs" />
     <Compile Include="ModuleSwappedEvent.cs" />
+    <Compile Include="ModuleArrivedEvent.cs" />
     <Compile Include="ModuleTransferEvent.cs" />
     <Compile Include="ShipAfmuRepairedEvent.cs" />
     <Compile Include="ShipRepairDroneEvent.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="ShipSoldEvent.cs" />
     <Compile Include="ShipSoldOnRebuyEvent.cs" />
     <Compile Include="ShipSwappedEvent.cs" />
+    <Compile Include="ShipArrivedEvent.cs" />
     <Compile Include="ShipTransferInitiatedEvent.cs" />
   </ItemGroup>
   <ItemGroup>

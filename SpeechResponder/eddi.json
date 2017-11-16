@@ -1001,6 +1001,15 @@
       "name": "Modification crafted",
       "description": "Triggered when you craft a modification to a module"
     },
+    "Module arrived": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.module.name} has\r\n\r\n{OneOf('arrived {if event.system && event.station: \\'at\\')}', \r\n       'completed its transfer {if event.system && event.station: \\'to\\')}')}\r\n\r\n{if event.sytem != system.name && len(event.system) > 0 && len(event.station) > 0:\r\n   {event.station} in the {event.system} system\r\n|elif event.station != station.name && len(event.station) > 0:\r\n   {event.station}\r\n}.",
+      "default": true,
+      "name": "Module arrived",
+      "description": "Triggered when you complete a module transfer"
+    },
     "Module purchased": {
       "enabled": true,
       "priority": 3,
@@ -1288,6 +1297,15 @@
       "default": true,
       "name": "Shields up",
       "description": "Triggered when your ship's shields come online"
+    },
+    "Ship arrived": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.ship} has \r\n\r\n{OneOf('arrived {if event.system && event.station: \\'at\\')}', \r\n       'completed its transfer {if event.system && event.station: \\'to\\')}')}\r\n\r\n{if event.sytem != system.name && len(event.system) > 0 && len(event.station) > 0:\r\n   {event.station} in the {event.system} system\r\n|elif event.station != station.name && len(event.station) > 0:\r\n   {event.station}\r\n}.",
+      "default": true,
+      "name": "Ship arrived",
+      "description": "Triggered when you complete a ship transfer"
     },
     "Ship delivered": {
       "enabled": true,
