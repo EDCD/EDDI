@@ -52,6 +52,16 @@ namespace GalnetMonitor
                     FROM galnet
                     WHERE read = 0
                     ORDER BY published DESC";
+        private const string SELECT_ALL_SQL = @"
+                    SELECT uuid,
+                           category,
+                           title,
+                           content,
+                           published,
+                           read
+                    FROM galnet
+                    WHERE read >= 0
+                    ORDER BY published DESC";
         private const string SELECT_CATEGORY_UNREAD_SQL = @"
                     SELECT uuid,
                            category,
@@ -137,7 +147,7 @@ namespace GalnetMonitor
         public List<News> GetArticles(string category = null, bool incRead = false)
         {
             if (!File.Exists(DbFile)) return null;
-
+            if (String.Equals(category, "All", StringComparison.Ordinal)) { category = null; }
             List<News> result = null;
             try
             {
@@ -159,7 +169,14 @@ namespace GalnetMonitor
                         }
                         else
                         {
-                            cmd.CommandText = SELECT_ALL_UNREAD_SQL;
+                            if (incRead)
+                            {
+                                cmd.CommandText = SELECT_ALL_SQL;
+                            }
+                            else
+                            {
+                                cmd.CommandText = SELECT_ALL_UNREAD_SQL;
+                            } 
                         }
                         cmd.Prepare();
                         cmd.Parameters.AddWithValue("@category", category);
