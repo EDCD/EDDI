@@ -620,7 +620,17 @@ namespace EddiSpeechResponder
                 }
                 return "";
             }, 1);
-
+            
+            store["GalnetNewsDelete"] = new NativeFunction((values) =>
+            {
+                News result = GalnetSqLiteRepository.Instance.GetArticle(values[0].AsString);
+                if (result != null)
+                {
+                    GalnetSqLiteRepository.Instance.DeleteNews(result);
+                }
+                return "";
+            }, 1);
+            
             store["Distance"] = new NativeFunction((values) =>
             {
                 return (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(values[0].AsNumber - values[3].AsNumber), 2)
