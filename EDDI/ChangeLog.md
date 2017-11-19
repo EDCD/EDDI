@@ -2,6 +2,13 @@
 
 ### 2.4.5
   * The Galnet monitor will now check the player journal for recent activity prior to updating - VoiceAttack users rejoice!
+  * Speech Responder
+    * Script changes
+      * Added new script 'Galnet mark read' to allow users to bulk mark news articles as read.
+      * Revised script 'Galnet news' to mark the article as read after reading.
+      * Revised script 'Galnet news published' to mark all articles summariezed by this script as read.
+  * VoiceAttack
+    * Updated EDDI.VAP to include a new command for marking Galnet article categories as read (documented in [the Galnet Monitor documentation](https://github.com/EDCD/EDDI/wiki/Galnet-Monitor).
 
 ### 2.4.4
   * Speech Responder
