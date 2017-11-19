@@ -1,9 +1,11 @@
+{_ Fetch article category and boolean include read articles from state }
 {set spokenmonth to ["January","February","March","April","May","June","July","August","September", "October","November","December"]}
 
-{_ State variable; category = Article,Community Goal, All, etc.
-{_ State variable; markitem = true, false - retrieve previously marked read items if true
-{set unread to eq(state.markitem,"true")}
-{set articles to GalnetNewsArticles(state.category,unread)}
+{_ SetState("category", "All")}
+{_ SetState("inc_read", "true")}
+
+{set unread to eq(state.inc_read,"true")}
+{set articles to GalnetNewsArticles("All",true)}
 
 {if len(articles) = 0:
     There is no news
@@ -15,18 +17,18 @@ Gal net News
 Your galaxy in focus
 {Pause(150)}
 These are the headlines for {spokenmonth[lastdate.Month-1]} {lastdate.Day}
-{Pause(150)}
-There are {len(articles)} news items available.
 {Pause(800)}
 {set index to 0}
 {for news in articles:
- {set index to index + 1}
- {set item to split(news.title, ":")}
- item {index} 
- {Pause(150)}
- {if ne(news.category,"Article"): {item[0]} {Pause(150)}}
- {item[1]}
- {Pause(1000)}
+  {set index to index + 1}
+  {if (ne(news.read,true) || unread) && eq(news.category,state.category):
+    {set item to split(news.title, ":")}
+    item {index} 
+    {Pause(150)}
+    {if ne(news.category,"Article"): {item[0]} {Pause(150)}}
+    {item[1]}
+    {Pause(1000)}
+  }
 }
 End of Stream
 {Pause(500)}
