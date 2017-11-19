@@ -297,7 +297,7 @@ namespace GalnetMonitor
                 {
                     cmd.CommandText = MARK_READ_SQL;
                     cmd.Prepare();
-                    cmd.Parameters.AddWithValue("@read", 1);
+                    cmd.Parameters.AddWithValue("@read", 0);
                     cmd.Parameters.AddWithValue("@uuid", news.id);
                     cmd.ExecuteNonQuery();
                 }
