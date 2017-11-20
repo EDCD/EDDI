@@ -1,10 +1,11 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
+using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -19,6 +20,7 @@ namespace EddiDataDefinitions
 
         public string edname { get; private set; }
 
+        [JsonIgnore]
         public string LocalName
         {
             get

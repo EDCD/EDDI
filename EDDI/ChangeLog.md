@@ -1,16 +1,34 @@
-﻿# CHANGE LOG
+# CHANGE LOG
 
-### 2.4.3
+### 2.4.4
   * Speech Responder
-    * Add Emphasize() Cottle function. Details on how to use this are in the SpeechResponder documentation
-    * Add SpeechPitch() Cottle function. Details on how to use this are in the SpeechResponder documentation
-    * Add SpeechRate() Cottle function. Details on how to use this are in the SpeechResponder documentation
-    * Add SpeechVolume() Cottle function. Details on how to use this are in the SpeechResponder documentation
-    * Fixed a bug that was preventing the Play() function from working properly
+    * Fixed a bug that was causing some SSML related functions (e.g. Pause()) to not render correctly.
+    * Fixed unit conversion of the star's age in star scans. They should no longer report every star as "one of the oldest".
 
 ### 2.4.3
   * Core
-    * Fixed a bug that was causing the "Report an issue" button to export empty log files.
+    * We will no longer ask users to send logs for commodity definition errors (and there was much rejoicing). 
+    * Fixed a time zone snafu that was causing the "Report an issue" button to export empty log files for west of GMT locales.
+  * EDSM
+    * Fixed a bug that was preventing EDSM comments from being updated and read.
+  * Speech Responder
+    * Added the following Cottle functions, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
+      * `Emphasize()`
+      * `SpeechPitch()`
+      * `SpeechRate()`
+      * `SpeechVolume()`
+    * 'FSD jump' event - reduced the pause between jumping and speaking.
+    * Script changes
+      * 'Star report' 
+        * Amended the age calculations for the fact that age is reported in millions of years, not years.
+        * Amended reporting of stars less than a million years old.
+        * Amended the test for Herbig-Haro objects.
+        * Enhanced the reporting of Wolf-Rayet stars.
+        * Sundry punctuation tweaks to make the speech more natural.
+      * 'Entered signal source' 
+        * Thoroughly re-written to better report both human and Thargoid signal sources.
+    * Worked around non-compliance of CereProc voices with industry standards that would cause EDDI to revert to a system default voice.
+    * Fixed a bug that was preventing the Play() function from working properly
 
 ### 2.4.2
   * Core

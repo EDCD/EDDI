@@ -17,7 +17,8 @@ namespace EddiDataDefinitions
         public long? population { get; set; }
         public string allegiance { get; set; }
         public string government { get; set; }
-        
+
+        [JsonIgnore]
         public string LocalGovernment
         {
             get
@@ -31,7 +32,8 @@ namespace EddiDataDefinitions
         }
         public string faction { get; set; }
         public string primaryeconomy { get; set; }
-        
+
+        [JsonIgnore]
         public string LocalEconomy
         {
             get
@@ -44,7 +46,8 @@ namespace EddiDataDefinitions
             }
         }
         public string state { get; set; }
-        
+
+        [JsonIgnore]
         public string LocalState
         {
             get
@@ -56,8 +59,10 @@ namespace EddiDataDefinitions
                 else return null;
             }
         }
+
         public string security { get; set; }
-        
+
+        [JsonIgnore]
         public string LocalSecurity
         {
             get
@@ -69,9 +74,9 @@ namespace EddiDataDefinitions
                 else return null;
             }
         }
+
         public string power { get; set; }
         public string powerstate { get; set; }
-
 
         /// <summary>X co-ordinate for this system</summary>
         public decimal? x { get; set; }
