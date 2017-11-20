@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +16,7 @@ namespace EddiDataDefinitions
     {
         public string modulename { get; private set; }
 
+        [JsonIgnore]
         public string LocalModuleName
         {
             get
@@ -26,6 +27,7 @@ namespace EddiDataDefinitions
 
         public string name { get; private set; }
 
+        [JsonIgnore]
         public string LocalName
         {
             get
