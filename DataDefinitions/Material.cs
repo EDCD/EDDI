@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
+using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -18,6 +19,7 @@ namespace EddiDataDefinitions
 
         public string EDName { get; private set; }
 
+        [JsonIgnore]
         public string LocalName
         {
             get
