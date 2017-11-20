@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Utilities;
+using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -31,6 +32,7 @@ namespace EddiDataDefinitions
         // The ID in eddb.io
         public long EDDBID { get; set; }
 
+        [JsonIgnore]
         public string LocalName
         {
             get
