@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,8 +17,14 @@ namespace EddiDataDefinitions
         public string edname { get; private set; }
 
         public string name { get; private set; }
-
-        public string LocalName { get; private set; }
+		
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(edname) ?? edname;
+            }
+        }
 
         public int rank { get; private set; }
 
@@ -27,7 +33,6 @@ namespace EddiDataDefinitions
             this.edname = edname;
             this.rank = rank;
             this.name = name;
-            this.LocalName = I18N.GetString(edname);
 
             RATINGS.Add(this);
         }
