@@ -241,7 +241,7 @@ namespace Eddi
                         Logging.Info("EDDI access to EDSM is enabled");
                     }
                     // Spin off a thread to download & sync EDSM flight logs & system comments in the background
-                    Logging.Info("Lancement du Sync dans EDDI.cs");
+                    
                     Thread updateThread = new Thread(() => starMapService.Sync(starMapCredentials.lastSync));
                     updateThread.IsBackground = true;
                     updateThread.Start();
