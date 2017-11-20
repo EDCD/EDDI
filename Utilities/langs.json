@@ -89,6 +89,66 @@
       "en": "Track information on your ships.",
       "fr": "Receuil des informations sur vos vaisseaux."
     },
+    "ship_monitor_p1": {
+      "en": "This allows you to see your ships and give them individual roles. The information is made available to responders and is used in scripts to tailor actions.",
+      "fr": "Ceci vous permet de voir vos vaisseaux et de leurs donner des rôles individuels. Ces informations sont rendus disponibles aux répondeurs et sont utilisés dans les scripts pour adapter les actions."
+    },
+    "ship_monitor_p2": {
+      "en": "If the name of your ship is hard for EDDI to pronounce then you can add a spoken version of the ship using the",
+      "fr": "Si le nom de vos vaisseaux sont difficle à prononcer pour EDDI vous pouvez ajouter une version phonétique de celui-ci en utilisant"
+    },
+    "ship_monitor_link_ipa": {
+      "en": "International Phonetic Alphabet",
+      "fr": "l'Alphabet Phonétique International"
+    },
+    "ship_monitor_p3": {
+      "en": "For example, if your ship was called 'Pride of Achenar' then your spoken name would be 'praɪdɒvˈakɜːnɑ' (note no spaces in the phonetic version).",
+      "fr": "Par exemple, si votre vaisseau était appelé 'Pride of Achenar', alors le nom phonétique devrais être 'praɪdɒvˈakɜːnɑ' (remarquez qu'il n'y a pas d'espace dans la version phonétique)."
+    },
+    "ship_monitor_p4": {
+      "en": "Please note that if you have not configured access to the Frontier API then some of the data below will be inaccurate or unavailable. Also, if you had multiple ships prior to installing EDDI you will need to swap to them as your primary ship and wait a few moments before full information for them will be available.",
+      "fr": "Veuillez noter que si vous n'avez pas configuré d'accès à l'API Frontier certaines données ci-dessous seront imprécises ou inisponible. Aussi, si vous aviez plusieurs vaisseaux avant d'installer EDDI vous devrez les changer en tant que vaisseaux principaux et attendre un peu avant que leurs informations complètes ne deviennent disponibles."
+    },
+    "ship_monitor_p5": {
+      "en": "EDDI can send an export of your ship's data to Coriolis or EDShipyard (3rd Party tools). Select the tool you prefer.",
+      "fr": "EDDI peut envoyer un export des données de votre vaisseaux à Coriolis ou EDShipyard (outils tierce partie). Sélectionnez l'outil que vous préférez."
+    },
+    "ship_monitor_header_name": {
+      "en": "Name",
+      "fr": "Nom"
+    },
+    "ship_monitor_header_model": {
+      "en": "Model",
+      "fr": "Modèle"
+    },
+    "ship_monitor_header_indent": {
+      "en": "Indent",
+      "fr": "Indent"
+    },
+    "ship_monitor_header_value": {
+      "en": "Value",
+      "fr": "Valeur"
+    },
+    "ship_monitor_header_location": {
+      "en": "Location",
+      "fr": "Localisation"
+    },
+    "ship_monitor_header_role": {
+      "en": "Role",
+      "fr": "Rôle"
+    },
+    "ship_monitor_header_spoken_name": {
+      "en": "Name (spoken)",
+      "fr": "Nom (phonétique)"
+    },
+    "ship_monitor_hear_it_button": {
+      "en": "Hear it",
+      "fr": "Écouter"
+    },
+    "ship_monitor_export_it_button": {
+      "en": "Export it",
+      "fr": "Exporter"
+    },
     "cargo_monitor_name": {
       "en": "Cargo monitor",
       "fr": "Moniteur Soute"
