@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
+using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -20,7 +21,9 @@ namespace EddiDataDefinitions
 
         /// <summary>The government</summary>
         public string government { get; set; }
-        
+
+        /// <summary>The Local-ized Government</summary>
+        [JsonIgnore]
         public string LocalGovernment
         {
             get
@@ -41,7 +44,9 @@ namespace EddiDataDefinitions
 
         /// <summary>The state of the system</summary>
         public string state { get; set; }
-        
+
+        /// <summary>The Local-ized State of the system</summary>
+        [JsonIgnore]
         public string LocalState
         {
             get
@@ -56,7 +61,9 @@ namespace EddiDataDefinitions
 
         /// <summary>The primary economy of the station</summary>
         public string primaryeconomy { get; set; }
-        
+
+        /// <summary>The Local-ized primary Economy of the station</summary>
+        [JsonIgnore]
         public string LocalEconomy
         {   
             get
