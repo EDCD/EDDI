@@ -323,7 +323,6 @@ namespace Eddi
                 else
                 {
                     InstanceInfo info = Constants.EDDI_VERSION.Contains("b") ? updateServerInfo.beta : updateServerInfo.production;
-                    Motd = info.motd;
                     if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
                         Logging.Warn("This version of Eddi is too old to operate; please upgrade at " + info.url);
