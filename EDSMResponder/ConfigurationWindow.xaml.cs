@@ -1,4 +1,4 @@
-﻿using Eddi;
+using Eddi;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiStarMapService;

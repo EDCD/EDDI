@@ -18,6 +18,7 @@ namespace EddiEvents
         static CommoditySoldEvent()
         {
             VARIABLES.Add("commodity", "The name of the commodity sold");
+            VARIABLES.Add("LocalCommodity", "The translation of the commodity into the chosen language");
             VARIABLES.Add("amount", "The amount of the commodity sold");
             VARIABLES.Add("price", "The price obtained per unit of the commodity sold");
             VARIABLES.Add("profit", "The number of credits profit per unit of the commodity sold");
@@ -27,6 +28,18 @@ namespace EddiEvents
         }
 
         public string commodity { get; private set; }
+
+        public string LocalCommodity
+        {
+            get
+            {
+                if (commodity != null && commodity != "")
+                {
+                    return CommodityDefinitions.FromName(commodity).LocalName;
+                }
+                else return null;
+            }
+        }
         public int amount { get; private set; }
         public long price { get; private set; }
         public long profit { get; private set; }

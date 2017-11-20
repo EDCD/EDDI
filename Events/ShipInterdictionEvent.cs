@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,8 @@ namespace EddiEvents
             VARIABLES.Add("succeeded", "If the interdiction attempt was successful");
             VARIABLES.Add("iscommander", "If the player being interdicted is a commander (as opposed to an NPC)");
             VARIABLES.Add("interdictee", "The name of the commander being interdicted");
-            VARIABLES.Add("rating", "The combat rating of the commander being interdicted");
+            VARIABLES.Add("rating", "The combat rating of the commander or NPC carrying out the interdiction"); 
+            VARIABLES.Add("LocalRating", "The translation of the combat rating into the chosen language");
             VARIABLES.Add("faction", "The faction of the commander being interdicted");
             VARIABLES.Add("power", "The power of the commander being interdicted");
         }
@@ -36,6 +37,19 @@ namespace EddiEvents
 
         [JsonProperty("rating")]
         public string rating { get; private set; }
+
+        [JsonProperty("LocalRating")]
+        public string LocalRating
+        {
+            get
+            {
+                if (rating != null && rating != "")
+                {
+                    return CombatRating.FromName(rating).LocalName;
+                }
+                else return null;
+            }
+        }
 
         [JsonProperty("faction")]
         public string faction { get; private set; }

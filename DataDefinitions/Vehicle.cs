@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -7,6 +7,15 @@ namespace EddiDataDefinitions
     {
         // Definition of the vehicle
         public string EDName { get; set; }
+        
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(EDName) ?? EDName;
+            }
+        }
+
         public string name { get; set; }
         public string loadout { get; set; }
         public string  mount{ get; set; }

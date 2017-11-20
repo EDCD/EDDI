@@ -20,7 +20,15 @@ namespace EddiSpeechResponder
             try
             {
                 DirectoryInfo dir = new DirectoryInfo(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-                markdown = Files.Read(dir.FullName + @"\Help.md");
+                string helpfile = $@"\Help{(I18N.GetLang() == "en" ? "" : $"_{I18N.GetLang()}")}.md"; // choose help file in the current language if it exists
+                if(File.Exists(dir.FullName + helpfile))
+                {
+                    markdown = Files.Read(dir.FullName + helpfile);
+                }
+                else
+                {
+                    markdown = Files.Read(dir.FullName + @"\Help.md");
+                }
             }
             catch (Exception ex)
             {

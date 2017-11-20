@@ -1,4 +1,4 @@
-﻿# CHANGE LOG
+# CHANGE LOG
 
 ### 2.4.4
   * Speech Responder

@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
+using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -18,6 +19,16 @@ namespace EddiDataDefinitions
         public string type { get; set; } // Geysers/Magma
 
         public string composition { get; set; } // Iron, Silicate, etc.
+
+        /// <summary>The Local-ized Volcanism composition</summary>
+        [JsonIgnore]
+        public string LocalComposition
+        {
+            get
+            {
+                return I18N.GetString(composition) ?? composition;
+            }
+        }
 
         public string amount { get; set; } // Minor, Major, null (for normal)
 
@@ -35,9 +46,9 @@ namespace EddiDataDefinitions
 
         public Volcanism(string type, string composition, string amount)
         {
-            this.type = type;
-            this.composition = composition;
-            this.amount = amount;
+            this.type = I18N.GetString(type);           //type;
+            this.composition = I18N.GetString(composition);    //composition;
+            this.amount = I18N.GetString(amount);         //amount;
         }
 
         /// <summary>
