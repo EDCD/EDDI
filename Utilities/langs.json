@@ -17,6 +17,14 @@
       "en": null,
       "fr": null
     },
+    "edsm_responder_name": {
+      "en": "EDSM responder",
+      "fr": "Répondeur EDSM"
+    },
+    "edsm_responder_desc": {
+      "en": "Send details of your travels to EDSM.  EDSM is a third-party tool that provides information on the locations of star systems and keeps a log of the star systems you have visited.  It uses the data provided to crowd-source a map of the galaxy",
+      "fr": null
+    },
     "eddp_monitor_name": {
       "en": "EDDP monitor",
       "fr": "Moniteur EDDP"

@@ -29,11 +29,17 @@ namespace EddiEdsmResponder
         public ConfigurationWindow()
         {
             InitializeComponent();
+            I18NForComponents();
 
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
             edsmApiKeyTextBox.Text = starMapConfiguration.apiKey;
             edsmCommanderNameTextBox.Text = starMapConfiguration.commanderName;
             edsmFetchLogsButton.Content = String.IsNullOrEmpty(edsmApiKeyTextBox.Text) ? "Please enter EDSM API key  to obtain log" : "Obtain log";
+        }
+
+        private void I18NForComponents()
+        {
+            
         }
 
         private void edsmCommanderNameChanged(object sender, TextChangedEventArgs e)
