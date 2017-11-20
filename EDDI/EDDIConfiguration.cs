@@ -24,7 +24,7 @@ namespace Eddi
 
         /// <summary>the current export target for the shipyard</summary>
         [JsonProperty("exporttarget")]
-        public string exporttarget { get; set; }
+        public string exporttarget { get; set; } = "Coriolis";
 
         [JsonIgnore]
         private string dataPath;

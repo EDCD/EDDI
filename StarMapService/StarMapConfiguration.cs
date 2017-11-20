@@ -13,7 +13,7 @@ namespace EddiStarMapService
         [JsonProperty("commanderName")]
         public string commanderName { get; set; }
         [JsonProperty("lastSync")]
-        public DateTime lastSync { get; set; }
+        public DateTime lastSync { get; set; } = DateTime.MinValue;
 
         [JsonIgnore]
         private string dataPath;
