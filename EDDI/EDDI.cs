@@ -1,4 +1,4 @@
-﻿using EddiCompanionAppService;
+using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -240,6 +240,11 @@ namespace Eddi
                         starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
                         Logging.Info("EDDI access to EDSM is enabled");
                     }
+                    // Spin off a thread to download & sync EDSM flight logs & system comments in the background
+                    Logging.Info("Lancement du Sync dans EDDI.cs");
+                    Thread updateThread = new Thread(() => starMapService.Sync(starMapCredentials.lastSync));
+                    updateThread.IsBackground = true;
+                    updateThread.Start();
                 }
                 if (starMapService == null)
                 {
@@ -364,7 +369,7 @@ namespace Eddi
             catch (Exception ex)
             {
                 SpeechService.Instance.Say(null, I18N.GetString("problem_external_data_services"), false);
-                Logging.Warn("Failed to access api.eddp.co", ex);
+                Logging.Warn("Failed to access " + Constants.EDDI_SERVER_URL, ex);
             }
             return true;
         }
@@ -1645,7 +1650,7 @@ namespace Eddi
                 }
                 catch (Exception ex)
                 {
-                    string msg = $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}";
+                    string msg = $"Failed to load monitor: {file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}";
                     Logging.Error(msg, ex);
                     SpeechService.Instance.Say(null, I18N.GetStringWithArgs("problem_load_monitor", new string[] { msg }), false);
                 }
@@ -1738,6 +1743,12 @@ namespace Eddi
                             Logging.Debug("No longer at requested station; giving up on update");
                             profileUpdateNeeded = false;
                             profileStationRequired = null;
+                            break;
+                        }
+
+                        // Make sure we know where we are
+                        if (CurrentStarSystem.name.Length < 0)
+                        {
                             break;
                         }
 
