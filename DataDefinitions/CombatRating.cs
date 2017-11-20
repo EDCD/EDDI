@@ -18,6 +18,8 @@ namespace EddiDataDefinitions
 
         public string name { get; private set; }
 
+        public string LocalName { get; private set; }
+
         public int rank { get; private set; }
 
         private CombatRating(string edname, int rank, string name)
@@ -25,6 +27,7 @@ namespace EddiDataDefinitions
             this.edname = edname;
             this.rank = rank;
             this.name = name;
+            this.LocalName = I18N.GetString(edname);
 
             RATINGS.Add(this);
         }
