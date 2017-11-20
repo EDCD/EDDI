@@ -1,6 +1,9 @@
 ﻿# CHANGE LOG
 
 ### 2.4.6-b1
+  * Speech Responder
+    * Added the following Cottle functions, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
+      * `List()`: returns a humanised list of items from an array (e.g. "this, that, and the other thing").
 
 ### 2.4.5
   * Core

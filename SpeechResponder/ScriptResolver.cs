@@ -11,6 +11,7 @@ using EddiShipMonitor;
 using EddiSpeechService;
 using GalnetMonitor;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -202,6 +203,32 @@ namespace EddiSpeechResponder
             store["Humanise"] = new NativeFunction((values) =>
             {
                 return Translations.Humanize(values[0].AsNumber);
+            }, 1);
+
+            store["List"] = new NativeFunction((values) =>
+            {
+                string output = String.Empty;
+                const string localisedAnd = "and";
+                if (values.Count == 1)
+                {
+                    foreach (KeyValuePair<Cottle.Value, Cottle.Value> value in values[0].Fields)
+                    {
+                        string valueString = value.Value.ToString();
+                        if (value.Key == 0)
+                        {
+                            output = valueString;
+                        }
+                        else if (value.Key < (values[0].Fields.Count - 1))
+                        {
+                            output = $"{output}, {valueString}";
+                        }
+                        else
+                        {
+                            output = $"{output}, {localisedAnd} {valueString}";
+                        }
+                    }
+                }
+                return output;
             }, 1);
 
             store["Pause"] = new NativeFunction((values) =>
