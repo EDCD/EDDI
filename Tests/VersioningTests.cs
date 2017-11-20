@@ -1,8 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiDataDefinitions;
-using System;
-using MathNet.Numerics.Distributions;
-using EddiEvents;
 using Utilities;
 
 namespace Tests

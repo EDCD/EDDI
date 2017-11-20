@@ -1,14 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiVoiceAttackResponder;
 using System.Collections.Generic;
-using System;
 using System.Speech.Synthesis;
 using System.IO;
-using System.Speech.AudioFormat;
 using System.Threading;
-using System.Globalization;
-using System.Collections.ObjectModel;
-using System.Linq;
 using EddiSpeechService;
 using CSCore;
 using CSCore.Codecs.WAV;

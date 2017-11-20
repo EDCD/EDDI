@@ -17,7 +17,6 @@ using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using EddiShipMonitor;
-using System.Collections.ObjectModel;
 
 namespace EddiVoiceAttackResponder
 {

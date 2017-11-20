@@ -10,7 +10,6 @@ using EddiDataProviderService;
 using EddiShipMonitor;
 using EddiSpeechService;
 using GalnetMonitor;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;

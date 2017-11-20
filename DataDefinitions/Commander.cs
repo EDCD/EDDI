@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     /// <summary>
     /// Details about a commander

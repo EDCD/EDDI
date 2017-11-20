@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiCompanionAppService;
 using EddiDataDefinitions;
-using System.Collections.Generic;
 using EddiDataProviderService;
 
 namespace Tests

@@ -1,16 +1,12 @@
 ﻿using Cottle.Documents;
 using Cottle.Functions;
 using Cottle.Stores;
-using Eddi;
 using EddiSpeechResponder;
 using EddiSpeechService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Tests
 {

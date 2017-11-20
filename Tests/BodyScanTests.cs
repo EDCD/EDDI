@@ -1,6 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiDataDefinitions;
-using EddiDataProviderService;
 using EddiEvents;
 using System.Collections.Generic;
 
