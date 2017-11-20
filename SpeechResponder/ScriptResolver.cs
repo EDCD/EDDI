@@ -209,6 +209,7 @@ namespace EddiSpeechResponder
             store["List"] = new NativeFunction((values) =>
             {
                 string output = String.Empty;
+                const string localisedAnd = "and";
                 if (values.Count == 1)
                 {
                     foreach (KeyValuePair<Cottle.Value, Cottle.Value> value in values[0].Fields)
@@ -224,7 +225,7 @@ namespace EddiSpeechResponder
                         }
                         else
                         {
-                            output = $"{output}, and {valueString}";
+                            output = $"{output}, {localisedAnd} {valueString}";
                         }
                     }
                 }
