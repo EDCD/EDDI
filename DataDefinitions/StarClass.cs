@@ -1,10 +1,11 @@
-﻿using MathNet.Numerics.Distributions;
+using MathNet.Numerics.Distributions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
+using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -17,6 +18,7 @@ namespace EddiDataDefinitions
 
         public string edname { get; private set; }
 
+        [JsonIgnore]
         public string LocalName
         {
             get
@@ -28,6 +30,15 @@ namespace EddiDataDefinitions
         public string name { get; private set; }
 
         public string chromaticity { get; private set; }
+
+        [JsonIgnore]
+        public string LocalChromaticity
+        {
+            get
+            {
+                return I18N.GetString(chromaticity) ?? chromaticity;
+            }
+        }
 
         public decimal percentage { get; private set; }
 
