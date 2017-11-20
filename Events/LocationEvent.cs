@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -30,9 +30,13 @@ namespace EddiEvents
             VARIABLES.Add("allegiance", "The allegiance of the system in which the commander resides");
             VARIABLES.Add("faction", "The faction controlling the system in which the commander resides");
             VARIABLES.Add("factionstate", "The state of the faction controlling the system in which the commander resides");
+            VARIABLES.Add("LocalFactionState", "The translation of the state of the faction into the chosen language");
             VARIABLES.Add("economy", "The economy of the system in which the commander resides");
+            VARIABLES.Add("LocalEconomy", "The translation of the economy type into the chosen language");
             VARIABLES.Add("government", "The government of the system in which the commander resides");
+            VARIABLES.Add("LocalGovernment", "The government translated into the chosen language");
             VARIABLES.Add("security", "The security of the system in which the commander resides");
+            VARIABLES.Add("LocalSecurity", "The security translated into the chosen language");
             VARIABLES.Add("longitude", "The longitude of the commander (if on the ground)");
             VARIABLES.Add("latitude", "The latitude of the commander (if on the ground)");
             VARIABLES.Add("population", "The population of the system to which the commander has jumped");
@@ -62,9 +66,45 @@ namespace EddiEvents
 
         public string economy { get; private set; }
 
+        public string LocalEconomy
+        {
+            get
+            {
+                if (economy != null && economy != "")
+                {
+                    return Economy.FromName(economy).LocalName;
+                }
+                else return null;
+            }
+        }
+
         public string government { get; private set; }
 
+        public string LocalGovernment
+        {
+            get
+            {
+                if (government != null && government != "")
+                {
+                    return Government.FromName(government).LocalName;
+                }
+                else return null;
+            }
+        }
+
         public string security { get; private set; }
+
+        public string LocalSecurity
+        {
+            get
+            {
+                if (security != null && security != "")
+                {
+                    return SecurityLevel.FromName(security).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public long? population { get; private set; }
 

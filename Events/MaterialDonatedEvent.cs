@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,6 +19,7 @@ namespace EddiEvents
         static MaterialDonatedEvent()
         {
             VARIABLES.Add("name", "The name of the donated material");
+            VARIABLES.Add("LocalName", "The translated name of the donated material into the chosen language");
             VARIABLES.Add("amount", "The amount of the donated material");
         }
 
@@ -31,6 +32,19 @@ namespace EddiEvents
         // Admin
         [JsonProperty("edname")]
         public string edname { get; private set; }
+
+        [JsonProperty("LocalName")]
+        public string LocalName
+        {
+            get
+            {
+                if (edname != null && edname != "")
+                {
+                    return Material.FromEDName(edname).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public MaterialDonatedEvent(DateTime timestamp, Material material, int amount) : base(timestamp, NAME)
         {
