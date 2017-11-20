@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,6 +38,7 @@ namespace EddiDataDefinitions
         {
             ROLES.Add(Assassination);
             ROLES.Add(BountyHunting);
+            ROLES.Add(Brothel);
             ROLES.Add(Combat);
             ROLES.Add(CombatSupport);
             ROLES.Add(Exploration);
@@ -48,6 +49,7 @@ namespace EddiDataDefinitions
             ROLES.Add(Piracy);
             ROLES.Add(Racing);
             ROLES.Add(Refueling);
+            ROLES.Add(Repair);
             ROLES.Add(Science);
             ROLES.Add(SearchAndRescue);
             ROLES.Add(Smuggling);
