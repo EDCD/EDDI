@@ -740,7 +740,6 @@ namespace EddiCompanionAppService
                 if (commodityErrors.Count() > 0)
                 {
                     Logging.Warn("Commodity definition errors: " + JsonConvert.SerializeObject(commodityErrors));
-                    SpeechService.Instance.Say(null, I18N.GetString("eddi_commodity_def_error"), false);
                 }
             }
 
