@@ -213,17 +213,18 @@ namespace EddiSpeechResponder
                 {
                     foreach (KeyValuePair<Cottle.Value, Cottle.Value> value in values[0].Fields)
                     {
+                        string valueString = value.Value.ToString();
                         if (value.Key == 0)
                         {
-                            output = value.Value.ToString();
+                            output = valueString;
                         }
                         else if (value.Key < (values[0].Fields.Count - 1))
                         {
-                            output = output + ", " + value.Value.ToString();
+                            output = output + ", " + valueString;
                         }
                         else
                         {
-                            output = output + ", and " + value.Value.ToString();
+                            output = output + ", and " + valueString;
                         }
                     }
                 }
