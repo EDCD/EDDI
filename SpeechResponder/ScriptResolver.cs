@@ -220,11 +220,11 @@ namespace EddiSpeechResponder
                         }
                         else if (value.Key < (values[0].Fields.Count - 1))
                         {
-                            output = output + ", " + valueString;
+                            output = $"{output}, {valueString}";
                         }
                         else
                         {
-                            output = output + ", and " + valueString;
+                            output = $"{output}, and {valueString}";
                         }
                     }
                 }
