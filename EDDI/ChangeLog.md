@@ -1,5 +1,7 @@
 ﻿# CHANGE LOG
 
+### 2.4.6-b1
+
 ### 2.4.5
   * Core
     * Added defensive coding so that EDDI will not crash on startup if it has trouble reading the configuration files.
