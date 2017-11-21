@@ -78,7 +78,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_bounty_name', event.victim)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.bounty)}\r\n\r\n{P(event.faction)} just put a bounty of {event.bounty} credits on your head.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_bounty_name', event.victim)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.bounty)}\r\n\r\n{P(event.faction)} just put a bounty of {event.bounty} credits on your head for {event.crime}.",
       "default": true,
       "name": "Bounty incurred",
       "description": "Triggered when you incur a bounty"
@@ -582,7 +582,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fine')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_fine_name', event.victim)}\r\n{SetState('eddi_context_fine_faction', event.faction)}\r\n{SetState('eddi_context_fine_amount', event.fine)}\r\n\r\nYou owe {P(event.faction)} {Humanise(event.fine)} credits for that.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fine')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_fine_name', event.victim)}\r\n{SetState('eddi_context_fine_faction', event.faction)}\r\n{SetState('eddi_context_fine_amount', event.fine)}\r\n\r\nYou owe {P(event.faction)} {Humanise(event.fine)} credits for {event.crime}.",
       "default": true,
       "name": "Fine incurred",
       "description": "Triggered when your incur a fine"

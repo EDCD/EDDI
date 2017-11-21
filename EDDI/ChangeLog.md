@@ -2,6 +2,11 @@
 
 ### 2.4.6-b1
   * Speech Responder
+    * 'Bounty incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
+    * 'Fine incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
+    * Script changes
+      * Updated 'Bounty incurred' to describe your crimes with the new 'crime' variable.
+      * Updated 'Fine incurred' to describe your crimes with the new 'crime' variable.
     * Added the following Cottle functions, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
       * `List()`: returns a humanised list of items from an array (e.g. "this, that, and the other thing").
 
