@@ -20,6 +20,8 @@
       * 'Star scanned' - revised to report estimated scan value and calculated habitable zone 
       * Updated 'Bounty incurred' to describe your crimes with the new 'crime' variable.
       * Updated 'Fine incurred' to describe your crimes with the new 'crime' variable.
+      * Added new script 'Fuel check'.
+      * Updated 'Jumped' event and 'Ship refueled' event. With the new 'Fuel check' script, 'Ship refueled' will no longer repeat for every 5T refueled.
       * Added new script 'Jet cone boost'
       * Added new script 'Module arrived'
       * Added new script 'Ship arrived'
