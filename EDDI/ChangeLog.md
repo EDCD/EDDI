@@ -1,5 +1,12 @@
 ﻿# CHANGE LOG
 
+### 2.4.5
+  * Core
+    * Added defensive coding so that EDDI will not crash on startup if it has trouble reading the configuration files.
+  * Material Monitor
+    * Added definitions for some previously unknown materials found at crash sites.
+    * Added defensive coding so that EDDI will not crash when unknown materials are encountered in future.
+
 ### 2.4.4
   * Speech Responder
     * Fixed a bug that was causing some SSML related functions (e.g. Pause()) to not render correctly.

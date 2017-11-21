@@ -30,17 +30,17 @@ namespace GalnetMonitor
             GalnetConfiguration configuration = new GalnetConfiguration();
             if (File.Exists(filename))
             {
-                string data = Files.Read(filename);
-                if (data != null)
+                try
                 {
-                    try
+                    string data = Files.Read(filename);
+                    if (data != null)
                     {
                         configuration = JsonConvert.DeserializeObject<GalnetConfiguration>(data);
                     }
-                    catch (Exception ex)
-                    {
-                        Logging.Debug("Failed to read Galnet monitor configuration", ex);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Debug("Failed to read Galnet monitor configuration", ex);
                 }
             }
             if (configuration == null)

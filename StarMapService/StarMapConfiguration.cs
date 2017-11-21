@@ -13,7 +13,7 @@ namespace EddiStarMapService
         [JsonProperty("commanderName")]
         public string commanderName { get; set; }
         [JsonProperty("lastSync")]
-        public DateTime lastSync { get; set; }
+        public DateTime lastSync { get; set; } = DateTime.MinValue;
 
         [JsonIgnore]
         private string dataPath;
@@ -32,17 +32,18 @@ namespace EddiStarMapService
             StarMapConfiguration configuration = new StarMapConfiguration();
             if (File.Exists(filename))
             {
-                string data = Files.Read(filename);
-                if (data != null)
+                try
                 {
-                    try
+                    string data = Files.Read(filename);
+                    if (data != null)
                     {
                         configuration = JsonConvert.DeserializeObject<StarMapConfiguration>(data);
+
                     }
-                    catch (Exception ex)
-                    {
-                        Logging.Debug("Failed to read starmap configuration", ex);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Debug("Failed to read starmap configuration", ex);
                 }
             }
             if (configuration == null)
