@@ -566,11 +566,14 @@ namespace EddiJournalMonitor
                                 // Check whether we have a detailed discovery scanner on board the current ship
                                 bool dssEquipped = false;
                                 Ship ship = EDDI.Instance.CurrentShip;
-                                foreach (Compartment compartment in ship.compartments)
+                                if (ship != null)
                                 {
-                                    if ((compartment.module.name == "Detailed Surface Scanner") && (compartment.module.enabled))
+                                    foreach (Compartment compartment in ship.compartments)
                                     {
-                                        dssEquipped = true;
+                                        if ((compartment.module.name == "Detailed Surface Scanner") && (compartment.module.enabled))
+                                        {
+                                            dssEquipped = true;
+                                        }
                                     }
                                 }
 
