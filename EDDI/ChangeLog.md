@@ -1,6 +1,6 @@
 ﻿# CHANGE LOG
 
-### 2.4.5
+### 2.4.6
   * Speech Responder
     * 'Bounty incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
     * 'Fine incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
