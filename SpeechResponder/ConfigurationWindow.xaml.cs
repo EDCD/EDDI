@@ -70,6 +70,7 @@ namespace EddiSpeechResponder
                 if (personality.Name == configuration.Personality)
                 {
                     Personality = personality;
+                    personalityDefaultTxt(personality);
                     break;
                 }
             }
@@ -179,6 +180,7 @@ namespace EddiSpeechResponder
         {
             if (Personality != null)
             {
+                personalityDefaultTxt(Personality);
                 SpeechResponderConfiguration configuration = SpeechResponderConfiguration.FromFile();
                 configuration.Personality = Personality.Name;
                 configuration.ToFile();
@@ -272,6 +274,24 @@ namespace EddiSpeechResponder
             configuration.SubtitlesOnly = false;
             configuration.ToFile();
             EDDI.Instance.Reload("Speech responder");
+        }
+
+        private void personalityDefaultTxt(Personality personality)
+        {
+            if (personality.IsDefault)
+            {
+                defaultText.Text = "The default personality may not be modified. If you wish to make changes, create a copy.";
+                defaultText.FontWeight = FontWeights.Bold;
+                defaultText.FontStyle = FontStyles.Italic;
+                defaultText.FontSize = 13;
+            }
+            else
+            {
+                defaultText.Text = "Scripts which are triggered by an event may be disabled but may not be deleted.";
+                defaultText.FontWeight = FontWeights.Normal;
+                defaultText.FontStyle = FontStyles.Italic;
+                defaultText.FontSize = 13;
+            }
         }
     }
 }
