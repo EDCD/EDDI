@@ -1,11 +1,17 @@
 ﻿# CHANGE LOG
 
 ### 2.4.6-b1
+  * The Galnet monitor will now check the player journal for recent activity prior to updating - VoiceAttack users rejoice!
+  * VoiceAttack
+    * Updated EDDI.VAP to include a new command for marking Galnet article categories as read (documented in [the Galnet Monitor documentation](https://github.com/EDCD/EDDI/wiki/Galnet-Monitor).
   * Speech Responder
     * 'Bounty incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
     * 'Fine incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
     * Added 'Jet cone boost' event
     * Script changes
+      * Added new script 'Galnet mark read' to allow users to bulk mark news articles as read.
+      * Revised script 'Galnet news' to mark the article as read after reading.
+      * Revised script 'Galnet news published' to mark all articles summariezed by this script as read.
       * Updated 'Bounty incurred' to describe your crimes with the new 'crime' variable.
       * Updated 'Fine incurred' to describe your crimes with the new 'crime' variable.
       * Added new script 'Jet cone boost'
