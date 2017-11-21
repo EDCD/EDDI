@@ -24,5 +24,12 @@ namespace Utilities
         public const string VEHICLE_SHIP = "Ship";
         public const string VEHICLE_SRV = "SRV";
         public const string VEHICLE_FIGHTER = "Fighter";
+
+        // Physical Constants
+        public const int lightSpeedMetersPerSecond = 299792458;
+        public const int solarRadiusMeters = 695500000;
+        public const double solAbsoluteMagnitude = 4.83;
+        public const double solLuminosity = 3.846e26;
+        public const double stefanBoltzmann = 5.670367e-8;
     }
 }

@@ -15,6 +15,14 @@ namespace EddiEvents
         public const string DESCRIPTION = "Triggered when you complete a scan of a stellar body";
         public static string SAMPLE = "{ \"timestamp\":\"2017-08-28T01:06:03Z\", \"event\":\"Scan\", \"BodyName\":\"LFT 926 B\", \"DistanceFromArrivalLS\":353.886200, \"StarType\":\"L\", \"StellarMass\":0.121094, \"Radius\":202889536.000000, \"AbsoluteMagnitude\":12.913437, \"Age_MY\":9828, \"SurfaceTemperature\":1664.000000, \"Luminosity\":\"V\", \"SemiMajorAxis\":78877065216.000000, \"Eccentricity\":0.037499, \"OrbitalInclination\":33.005280, \"Periapsis\":338.539429, \"OrbitalPeriod\":30585052.000000, \"RotationPeriod\":91694.914063, \"AxialTilt\":0.000000, \"Rings\":[ { \"Name\":\"LFT 926 B A Belt\", \"RingClass\":\"eRingClass_MetalRich\", \"MassMT\":1.4034e+13, \"InnerRad\":3.24e+08, \"OuterRad\":1.1938e+09 } ] }";
 
+        // Scan value calculation constants
+        public const double dssDivider = 2.4;
+        public const double scanDivider = 66.25;
+
+        // Scan habitable zone constants
+        public const double maxHabitableTempKelvin = 315;
+        public const double minHabitableTempKelvin = 223.15;
+
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static StarScannedEvent()
@@ -99,7 +107,7 @@ namespace EddiEvents
 
         public long? estimatedvalue { get; private set; }
 
-        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, bool? dssequipped) : base(timestamp, NAME)
+        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, bool dssEquipped) : base(timestamp, NAME)
         {
             this.name = name;
             this.stellarclass = stellarclass;
@@ -130,40 +138,42 @@ namespace EddiEvents
                 if (radius != 0 && temperature != 0)
                 {
                     // Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less)
-                    estimatedhabzoneinner = StarClass.HabitableZone(315, Convert.ToDouble(radius), Convert.ToDouble(temperature));
+                    estimatedhabzoneinner = StarClass.DistanceFromStarForTemperature(maxHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
                     this.estimatedhabzoneinner = estimatedhabzoneinner;
 
                     // Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more)
-                    estimatedhabzoneouter = StarClass.HabitableZone(223.15, Convert.ToDouble(radius), Convert.ToDouble(temperature));
+                    estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
                     this.estimatedhabzoneouter = estimatedhabzoneouter;
                 }
             }
-            this.estimatedvalue = estimatevalue(dssequipped);
+            this.estimatedvalue = estimateValue(dssEquipped);
         }
 
-        private long? estimatevalue(bool? dssequipped)
+        private long? estimateValue(bool dssEquipped)
         {
-            int bodydataconstant = 2880;
+            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
+            // 'bodyDataConstant' is a derived constant from MattG's thread for calculating scan values.
+            int baseValue = 2880;
             double value;
 
             // Override constants for specific types of bodies
             if ((stellarclass == "H") || (stellarclass == "N"))
             {
                 // Black holes and Neutron stars
-                bodydataconstant = 54309;
+                baseValue = 54309;
             }
             else if (stellarclass.StartsWith("D") && (stellarclass.Length <= 3))
             {
                 // White dwarves
-                bodydataconstant = 33737;
+                baseValue = 33737;
             }
 
             // Calculate exploration scan values
-            value = bodydataconstant + ((double)solarmass * bodydataconstant / 66.25);
+            value = baseValue + ((double)solarmass * baseValue / scanDivider);
 
-            if ((dssequipped == false) || (dssequipped == null) )
+            if (dssEquipped == false)
             {
-                value = value / 2.4;
+                value = value / dssDivider;
             }
             
             return (long?)Math.Round(value, 0);

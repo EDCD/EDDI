@@ -107,7 +107,7 @@ namespace EddiDataDefinitions
         /// </summary>
         public static decimal solarradius(decimal radius)
         {
-            return radius / 695500000;
+            return radius / Constants.solarRadiusMeters;
         }
 
         /// <summary>
@@ -115,26 +115,23 @@ namespace EddiDataDefinitions
         /// </summary>
         public static decimal luminosity(decimal absoluteMagnitude)
         {
-            double solAbsoluteMagnitude = 4.83;
-
-            return (decimal)Math.Pow(Math.Pow(100, 0.2), (solAbsoluteMagnitude - (double)absoluteMagnitude));
+            return (decimal)Math.Pow(Math.Pow(100, 0.2), (Constants.solAbsoluteMagnitude - (double)absoluteMagnitude));
         }
 
         public static decimal temperature(decimal luminosity, decimal radius)
         {
-            double solLuminosity = 3.846e26;
-            double stefanBoltzmann = 5.670367e-8;
-
-            return (decimal)Math.Pow(((double)luminosity * solLuminosity) / (4 * Math.PI * Math.Pow((double)radius, 2) * stefanBoltzmann), 0.25);
+            return (decimal)Math.Pow(((double)luminosity * Constants.solLuminosity) / 
+                (4 * Math.PI * Math.Pow((double)radius, 2) * Constants.stefanBoltzmann), 0.25);
         }
 
-        public static decimal HabitableZone(double targetTemp, double radius, double temperature)
+        public static decimal DistanceFromStarForTemperature(double targetTempKelvin, double stellarRadiusMeters, double stellarTemperatureKelvin)
         {
-            double top = Math.Pow(radius, 2.0) * Math.Pow(temperature, 4.0);
-            double bottom = 4.0 * Math.Pow(targetTemp, 4.0);
-            double radiusMeters = Math.Pow(top / bottom, 0.5);
-            double radiusls = ( radiusMeters ) / 299792458; // convert result from meters to lightseconds by divinding by the speed of light
-            return Convert.ToDecimal(radiusls);
+            // Derived from Jackie Silver's Habitable Zone Calculator (https://forums.frontier.co.uk/showthread.php?t=127522&highlight=), used with permission
+            double top = Math.Pow(stellarRadiusMeters, 2.0) * Math.Pow(stellarTemperatureKelvin, 4.0);
+            double bottom = 4.0 * Math.Pow(targetTempKelvin, 4.0);
+            double distanceMeters = Math.Pow(top / bottom, 0.5);
+            double distancels = ( distanceMeters ) / Constants.lightSpeedMetersPerSecond; 
+            return Convert.ToDecimal(distancels);
         }
 
         public static decimal sanitiseCP(decimal cp)

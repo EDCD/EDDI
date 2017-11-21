@@ -563,13 +563,13 @@ namespace EddiJournalMonitor
                                 decimal? periapsis = getOptionalDecimal(data, "Periapsis");
 
                                 // Check whether we have a detailed discovery scanner on board the current ship
-                                bool? dssequipped = false;
+                                bool dssEquipped = false;
                                 Ship ship = EDDI.Instance.CurrentShip;
                                 foreach (Compartment compartment in ship.compartments)
                                 {
                                     if ((compartment.module.name == "Detailed Surface Scanner") && (compartment.module.enabled))
                                     {
-                                        dssequipped = true;
+                                        dssEquipped = true;
                                     }
                                 }
 
@@ -602,7 +602,7 @@ namespace EddiJournalMonitor
                                     long ageMegaYears = (long)val;
                                     decimal temperature = getDecimal(data, "SurfaceTemperature");
 
-                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, luminosityClass, ageMegaYears, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, dssequipped) { raw = line });
+                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, luminosityClass, ageMegaYears, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, dssEquipped) { raw = line });
                                     handled = true;
                                 }
                                 else
@@ -662,7 +662,7 @@ namespace EddiJournalMonitor
                                     string atmosphere = getString(data, "Atmosphere");
                                     Volcanism volcanism = Volcanism.FromName(getString(data, "Volcanism"));
 
-                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radius, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState, axialTilt, dssequipped) { raw = line });
+                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radius, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState, axialTilt, dssEquipped) { raw = line });
                                     handled = true;
                                 }
                             }
