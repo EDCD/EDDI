@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Eddi;
 using System.IO;
 using System.IO.Compression;
 using NetMQ;

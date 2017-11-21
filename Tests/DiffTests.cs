@@ -1,11 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Eddi;
-using EddiDataDefinitions;
 using Utilities;
 using static Utilities.Diff;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace Tests
 {

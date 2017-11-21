@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Utilities
 {
@@ -12,7 +8,7 @@ namespace Utilities
     public class Constants
     {
         public const string EDDI_NAME = "EDDI";
-        public const string EDDI_VERSION = "2.4.5";
+        public const string EDDI_VERSION = "2.4.6-b1";
         public const string EDDI_SERVER_URL = "http://edcd.github.io/EDDP/";
 
         public static readonly string DATA_DIR = Environment.GetEnvironmentVariable("AppData") + "\\" + EDDI_NAME;

@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Net;
-using System.Threading;
 using Utilities;
 
 namespace Eddi

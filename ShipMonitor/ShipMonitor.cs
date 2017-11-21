@@ -1,5 +1,4 @@
 ﻿using Eddi;
-using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;

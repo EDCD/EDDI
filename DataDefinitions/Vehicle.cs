@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     public class Vehicle
     {

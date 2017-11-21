@@ -1,10 +1,5 @@
-﻿using EddiEvents;
-using EddiJournalMonitor;
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Windows;
-using Utilities;
 
 namespace EddiSpeechResponder
 {

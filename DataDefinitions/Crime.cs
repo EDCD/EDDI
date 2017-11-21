@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -30,7 +27,7 @@ namespace EddiDataDefinitions
         public static readonly Crime Assault = new Crime("assault", "Assault");
         public static readonly Crime Murder = new Crime("murder", "Murder");
         public static readonly Crime Piracy = new Crime("piracy", "Piracy");
-        public static readonly Crime Interdiction = new Crime("interdiction", "Interdicting");
+        public static readonly Crime Interdiction = new Crime("interdiction", "Interdicting a clean ship");
         public static readonly Crime IllegalCargo = new Crime("illegalCargo", "Carrying illegal cargo");
         public static readonly Crime DisobeyPolice = new Crime("disobeyPolice", "Disobeying police");
         public static readonly Crime FireInNoFireZone = new Crime("fireInNoFireZone", "Firing in a no-fire zone");
@@ -41,10 +38,10 @@ namespace EddiDataDefinitions
         public static readonly Crime BlockingAirlockMajor = new Crime("dockingMajorBlockingAirlock", "Blocking an airlock");
         public static readonly Crime BlockingLandingPadMinor = new Crime("dockingMinorBlockingLandingPad", "Blocking a landing pad");
         public static readonly Crime BlockingLandingPadMajor = new Crime("dockingMajorBlockingLandingPad", "Blocking a landing pad");
-        public static readonly Crime TrespassMinor = new Crime("dockingMinorTrespass", "Trespass");
-        public static readonly Crime TrespassMajor = new Crime("dockingMajorTrespass", "Trespass");
-        public static readonly Crime Collided = new Crime("collidedAtSpeedInNoFireZone", "Collision");
-        public static readonly Crime CollidedWithDamage = new Crime("collidedAtSpeedInNoFireZone_hulldamage", "Collision resulting in damage");
+        public static readonly Crime TrespassMinor = new Crime("dockingMinorTrespass", "Trespassing");
+        public static readonly Crime TrespassMajor = new Crime("dockingMajorTrespass", "Trespassing");
+        public static readonly Crime Collided = new Crime("collidedAtSpeedInNoFireZone", "Colliding with another ship");
+        public static readonly Crime CollidedWithDamage = new Crime("collidedAtSpeedInNoFireZone_hulldamage", "Colliding with another ship, resulting in damage");
 
         public static Crime FromName(string from)
         {
