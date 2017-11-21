@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Text;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 
 namespace EddiDataDefinitions
 {
@@ -43,7 +44,12 @@ namespace EddiDataDefinitions
 
         /// <summary>the current tonnage cargo carried</summary>
         [JsonIgnore]
-        public int cargocarried { get; set; }
+        public int cargocarried {
+            get
+            {
+                return cargo.Sum(item => item.amount);
+            }
+        }
 
         /// <summary>the specific cargo carried</summary>
         [JsonIgnore]
