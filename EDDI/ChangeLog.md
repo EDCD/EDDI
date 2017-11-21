@@ -1,14 +1,29 @@
 ﻿# CHANGE LOG
 
-### 2.4.5
+### 2.4.6-b1
   * The Galnet monitor will now check the player journal for recent activity prior to updating - VoiceAttack users rejoice!
+  * VoiceAttack
+    * Updated EDDI.VAP to include a new command for marking Galnet article categories as read (documented in [the Galnet Monitor documentation](https://github.com/EDCD/EDDI/wiki/Galnet-Monitor).
   * Speech Responder
+    * 'Bounty incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
+    * 'Fine incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
+    * Added 'Jet cone boost' event
     * Script changes
       * Added new script 'Galnet mark read' to allow users to bulk mark news articles as read.
       * Revised script 'Galnet news' to mark the article as read after reading.
       * Revised script 'Galnet news published' to mark all articles summariezed by this script as read.
-  * VoiceAttack
-    * Updated EDDI.VAP to include a new command for marking Galnet article categories as read (documented in [the Galnet Monitor documentation](https://github.com/EDCD/EDDI/wiki/Galnet-Monitor).
+      * Updated 'Bounty incurred' to describe your crimes with the new 'crime' variable.
+      * Updated 'Fine incurred' to describe your crimes with the new 'crime' variable.
+      * Added new script 'Jet cone boost'
+    * Added the following Cottle functions, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
+      * `List()`: returns a humanised list of items from an array (e.g. "this, that, and the other thing").
+
+### 2.4.5
+  * Core
+    * Added defensive coding so that EDDI will not crash on startup if it has trouble reading the configuration files.
+  * Material Monitor
+    * Added definitions for some previously unknown materials found at crash sites.
+    * Added defensive coding so that EDDI will not crash when unknown materials are encountered in future.
 
 ### 2.4.4
   * Speech Responder

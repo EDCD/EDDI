@@ -1,5 +1,4 @@
 ﻿using Eddi;
-using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiShipMonitor;
@@ -1812,7 +1811,15 @@ namespace EddiJournalMonitor
                                 events.Add(new FriendsEvent(timestamp, status, friend) { raw = line });
                                 handled = true;
                                 break;
-                            }                            
+                            }
+                        case "JetConeBoost":
+                            {
+                                decimal boost = getDecimal(data, "BoostValue");
+
+                                events.Add(new JetConeBoostEvent(timestamp, boost) { raw = line });
+                                handled = true;
+                                break;
+                            }
                         case "RedeemVoucher":
                             {
                                 object val;

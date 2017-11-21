@@ -1,21 +1,13 @@
 ﻿using Eddi;
-using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using NetMQ;
 using NetMQ.Sockets;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using Utilities;
 
 namespace EddiEddpMonitor

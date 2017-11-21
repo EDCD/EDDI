@@ -1,11 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiVoiceAttackResponder;
 using System;
 using EddiEvents;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-using CSCore.DMO;
 
 namespace Tests
 {

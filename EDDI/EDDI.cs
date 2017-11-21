@@ -6,24 +6,17 @@ using EddiSpeechService;
 using EddiStarMapService;
 using Exceptionless;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Forms;
 using Utilities;
 
 namespace Eddi
@@ -326,7 +319,6 @@ namespace Eddi
                 else
                 {
                     InstanceInfo info = Constants.EDDI_VERSION.Contains("b") ? updateServerInfo.beta : updateServerInfo.production;
-                    Motd = info.motd;
                     if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
                         Logging.Warn("This version of Eddi is too old to operate; please upgrade at " + info.url);

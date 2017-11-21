@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Eddi;
+﻿using Eddi;
 using Utilities;
 using EddiEvents;
 using Newtonsoft.Json;

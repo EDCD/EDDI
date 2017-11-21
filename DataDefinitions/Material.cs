@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -185,6 +182,13 @@ namespace EddiDataDefinitions
         public static readonly Material Tg_StructuralData = new Material("tg_structuraldata", "Data", "Thargoid Structural Data", Rarity.Common);
         public static readonly Material Tg_CompositionData = new Material("tg_compositiondata", "Data", "Thargoid Material Composition Data", Rarity.Standard);
         public static readonly Material Tg_ResidueData = new Material("tg_residuedata", "Data", "Thargoid Residue Data", Rarity.Rare);
+        public static readonly Material Tg_ShipFlightData = new Material("tg_shipflightdata", "Data", "Ship Flight Data", Rarity.Rare);
+        public static readonly Material Tg_ShipSystemData = new Material("tg_shipsystemdata", "Data", "Ship System Data", Rarity.Rare);
+
+        public static readonly Material Tg_WreckageComponents = new Material("tg_wreckagecomponents", "Manufactured", "Wreckage Components", Rarity.Standard);
+        public static readonly Material Tg_BiomechanicalConduits = new Material("tg_biomechanicalconduits", "Manufactured", "Bio-Mechanical Conduits", Rarity.Standard);
+        public static readonly Material Tg_WeaponParts = new Material("tg_weaponparts", "Manufactured", "Weapon Parts", Rarity.Rare);
+        public static readonly Material Tg_PropulsionElement = new Material("tg_propulsionelement", "Manufactured", "Propulsion Elements", Rarity.VeryRare);
 
         public static Material FromName(string from)
         {
@@ -197,8 +201,13 @@ namespace EddiDataDefinitions
             Material result = MATERIALS.FirstOrDefault(v => v.name.ToLowerInvariant().Replace(" ", "") == tidiedFrom);
             if (result == null)
             {
+                // Fall back to the edname if searching by name fails.
+                result = MATERIALS.FirstOrDefault(v => v.EDName.ToLowerInvariant() == tidiedFrom);
+            }
+            if (result == null)
+            {
                 Logging.Report("Unknown material name " + from);
-                result = new Material(null, "Unknown", from, Rarity.Unknown);
+                result = new Material(tidiedFrom, "Unknown", from, Rarity.Unknown);
             }
             return result;
         }

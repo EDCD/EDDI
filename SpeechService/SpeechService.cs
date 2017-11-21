@@ -1,5 +1,4 @@
 ﻿using CSCore;
-using CSCore.Codecs;
 using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
 using CSCore.Streams.Effects;

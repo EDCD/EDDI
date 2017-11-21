@@ -1,9 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Utilities;
 
@@ -53,17 +49,17 @@ namespace EddiSpeechService
             SpeechServiceConfiguration configuration = new SpeechServiceConfiguration();
             if (File.Exists(filename))
             {
-                string data = Files.Read(filename);
-                if (data != null)
+                try
                 {
-                    try
+                    string data = Files.Read(filename);
+                    if (data != null)
                     {
                         configuration = JsonConvert.DeserializeObject<SpeechServiceConfiguration>(data);
                     }
-                    catch (Exception ex)
-                    {
-                        Logging.Debug("Failed to read speech service configuration", ex);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Debug("Failed to read speech service configuration", ex);
                 }
             }
             if (configuration == null)

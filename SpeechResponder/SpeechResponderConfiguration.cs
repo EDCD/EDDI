@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using Utilities;
 
 namespace EddiSpeechResponder
@@ -36,17 +34,17 @@ namespace EddiSpeechResponder
             SpeechResponderConfiguration configuration = new SpeechResponderConfiguration();
             if (File.Exists(filename))
             {
-                string data = Files.Read(filename);
-                if (data != null)
+                try
                 {
-                    try
+                    string data = Files.Read(filename);
+                    if (data != null)
                     {
                         configuration = JsonConvert.DeserializeObject<SpeechResponderConfiguration>(data);
                     }
-                    catch (Exception ex)
-                    {
-                        Logging.Debug("Failed to read speech responder configuration", ex);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Debug("Failed to read speech responder configuration", ex);
                 }
             }
             if (configuration == null)
