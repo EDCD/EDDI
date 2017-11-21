@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -741,6 +742,21 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
+                        case "ShipyardArrived":
+                            {
+                                object val;
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "ShipType");
+                                string system = getString(data, "System");
+                                decimal distance = getDecimal(data, "Distance");
+                                long? price = getOptionalLong(data, "TransferPrice");
+                                long? time = getOptionalLong(data, "TransferTime");
+                                string station = getString(data, "Station");
+                                events.Add(new ShipArrivedEvent(timestamp, ship, shipId, system, distance, price, time, station) { raw = line });
+                            }
+                            handled = true;
+                            break;
                         case "ShipyardSwap":
                             {
                                 object val;
@@ -774,6 +790,23 @@ namespace EddiJournalMonitor
                                 long? time = getOptionalLong(data, "TransferTime");
 
                                 events.Add(new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price, time) { raw = line });
+
+                                // Generate secondary event when the ship is arriving
+                                if (time.HasValue)
+                                {
+                                    ShipArrived();
+                                    async void ShipArrived()
+                                    {
+                                        // Add a bit of context
+                                        string station = EDDI.Instance.CurrentStation.name;
+
+                                        await Task.Delay((int)time * 1000);
+                                        line = line.Replace("ShipyardTransfer", "ShipyardArrived");
+                                        line = line.Replace(timestamp.ToString("s", System.Globalization.CultureInfo.InvariantCulture), timestamp.AddSeconds((double)time).ToUniversalTime().ToString());
+                                        line = line.Replace("}", ",\"Station\":\"" + station + "\"}"); // Include the station from which the transfer was requested
+                                        ForwardJournalEntry(line, EDDI.Instance.eventHandler);
+                                    }
+                                }
                             }
                             handled = true;
                             break;
@@ -797,6 +830,26 @@ namespace EddiJournalMonitor
                                 long serverId = (long)val;
 
                                 events.Add(new ModuleTransferEvent(timestamp, ship, shipId, storageSlot, serverId, module, transferCost, transferTime) { raw = line });
+
+                                // Generate a secondary event when the module is arriving
+
+                                if (transferTime.HasValue)
+                                {
+                                    ModuleArrived();
+                                    async void ModuleArrived()
+                                    {
+                                        // Add a bit of context
+                                        string system = EDDI.Instance.CurrentStarSystem.name;
+                                        string station = EDDI.Instance.CurrentStation.name;
+
+                                        await Task.Delay((int)transferTime * 1000);
+                                        line = line.Replace("FetchRemoteModule", "ModuleArrived");
+                                        line = line.Replace(timestamp.ToString("s", System.Globalization.CultureInfo.InvariantCulture), timestamp.AddSeconds((double)transferTime).ToUniversalTime().ToString());
+                                        line = line.Replace("}", ",\"System\":\"" + system + "\"}"); // Include the system from which the transfer was requested
+                                        line = line.Replace("}", ",\"Station\":\"" + station + "\"}"); // Include the station from which the transfer was requested
+                                        ForwardJournalEntry(line, EDDI.Instance.eventHandler);
+                                    }
+                                }
                             }
                             handled = true;
                             break;
@@ -830,6 +883,32 @@ namespace EddiJournalMonitor
                                 }
 
                                 events.Add(new ModulesStoredEvent(timestamp, ship, shipId, slots, modules) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "ModuleArrived":
+                            {
+                                object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "StoredItem"));
+                                data.TryGetValue("TransferCost", out val);
+                                long transferCost = (long)val;
+                                long? transferTime = getOptionalLong(data, "TransferTime");
+
+                                // Probably not useful. We'll get these but we won't tell the end user about them
+                                data.TryGetValue("StorageSlot", out val);
+                                int storageSlot = (int)(long)val;
+                                data.TryGetValue("ServerId", out val);
+                                long serverId = (long)val;
+
+                                string system = getString(data, "System");
+                                string station = getString(data, "Station");
+
+                                events.Add(new ModuleArrivedEvent(timestamp, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, system, station) { raw = line });
                             }
                             handled = true;
                             break;

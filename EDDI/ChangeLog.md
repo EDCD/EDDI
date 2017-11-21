@@ -9,7 +9,9 @@
     * 'Star scanned' event - added new calculated variables "estimatedhabzoneinner" and "estimatedhabzoneouter" to provide calculated values for the habitable zone of a scanned star. Note: calculations are most accurate for star systems containing a single star (multiple close proximity stars will make these calculations less reliable).
     * 'Bounty incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
     * 'Fine incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
-    * Added 'Jet cone boost' event
+    * Added new 'Jet cone boost' event
+    * Added new 'Module arrived' event
+    * Added new 'Ship arrived' event
     * Script changes
       * Added new script 'Galnet mark read' to allow users to bulk mark news articles as read.
       * Revised script 'Galnet news' to mark the article as read after reading.
@@ -19,6 +21,8 @@
       * Updated 'Bounty incurred' to describe your crimes with the new 'crime' variable.
       * Updated 'Fine incurred' to describe your crimes with the new 'crime' variable.
       * Added new script 'Jet cone boost'
+      * Added new script 'Module arrived'
+      * Added new script 'Ship arrived'
     * Added the following Cottle functions, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
       * `List()`: returns a humanised list of items from an array (e.g. "this, that, and the other thing").
 
