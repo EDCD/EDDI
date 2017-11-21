@@ -5,6 +5,9 @@
     * 'Bounty incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
     * 'Fine incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
     * Added 'Jet cone boost' event
+    * Revised speech responder UI to clarify for users of the default personality that a new personality must be generated via the 'Copy personality' prior to editing. 
+    * Revised speech responder UI to clarify for clarify for users of custom personalities when a script can be disabled and/or deleted. 
+    * The 'Enabled' checkbox in the Speech responder UI shall now be enabled only for scripts which are triggered by events, not for scripts which are only triggered by other scripts.
     * Script changes
       * Updated 'Bounty incurred' to describe your crimes with the new 'crime' variable.
       * Updated 'Fine incurred' to describe your crimes with the new 'crime' variable.
