@@ -23,7 +23,7 @@
                 </StackPanel>
 
             </StackPanel>
-            <TextBlock x:Name="defaultText" VerticalAlignment="Top" DockPanel.Dock="Left" Grid.Column="1" TextWrapping="Wrap" Width="Auto" Text="The default personality may not be modified. If you wish to make changes, create a copy."/>
+            <TextBlock x:Name="defaultText" VerticalAlignment="Top" DockPanel.Dock="Left" Grid.Column="1" TextWrapping="Wrap" Width="Auto" Text="The default personality cannot be modified. If you wish to make changes, create a copy."/>
         </Grid>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5, 0">
             <TextBlock VerticalAlignment="Center" Text="Active personality"></TextBlock>

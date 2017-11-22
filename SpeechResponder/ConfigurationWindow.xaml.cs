@@ -280,14 +280,14 @@ namespace EddiSpeechResponder
         {
             if (personality.IsDefault)
             {
-                defaultText.Text = "The default personality may not be modified. If you wish to make changes, create a copy.";
+                defaultText.Text = "The default personality cannot be modified. If you wish to make changes, create a copy.";
                 defaultText.FontWeight = FontWeights.Bold;
                 defaultText.FontStyle = FontStyles.Italic;
                 defaultText.FontSize = 13;
             }
             else
             {
-                defaultText.Text = "Scripts which are triggered by an event may be disabled but may not be deleted.";
+                defaultText.Text = "Scripts which are triggered by an event can be disabled but not deleted.";
                 defaultText.FontWeight = FontWeights.Normal;
                 defaultText.FontStyle = FontStyles.Italic;
                 defaultText.FontSize = 13;
