@@ -5,22 +5,22 @@
   * VoiceAttack
     * Updated EDDI.VAP to include a new command for marking Galnet article categories as read (documented in [the Galnet Monitor documentation](https://github.com/EDCD/EDDI/wiki/Galnet-Monitor).
   * Speech Responder
-    * 'Body scanned' and 'Star scanned' events - added new calculated variable "estimatedvalue".
+    * 'Body scanned' and 'Star scanned' events - added new calculated variable "estimatedvalue". 
     * 'Star scanned' event - added new calculated variables "estimatedhabzoneinner" and "estimatedhabzoneouter" to provide calculated values for the habitable zone of a scanned star. Note: calculations are most accurate for star systems containing a single star (multiple close proximity stars will make these calculations less reliable).
     * 'Bounty incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
     * 'Fine incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
     * Added new 'Jet cone boost' event
     * Added new 'Module arrived' event
     * Added new 'Ship arrived' event
-    * Revised speech responder UI to clarify that the default personality is read-only and a new personality must be generated via the 'Copy personality' prior to editing.
-    * Revised speech responder UI to clarify for users of custom personalities when a script can be disabled and/or deleted.
+    * Revised speech responder UI to clarify that the default personality is read-only and a new personality must be generated via the 'Copy personality' prior to editing. 
+    * Revised speech responder UI to clarify for users of custom personalities when a script can be disabled and/or deleted. 
     * The 'Enabled' checkbox in the Speech responder UI shall now be enabled only for scripts which are triggered by events, not for scripts which are only triggered by other scripts.
     * Script changes
       * Added new script 'Galnet mark read' to allow users to bulk mark news articles as read.
       * Revised script 'Galnet news' to mark the article as read after reading.
       * Revised script 'Galnet news published' to mark all articles summarized by this script as read.
       * 'Body scanned' - revised to report estimated scan value
-      * 'Star scanned' - revised to report estimated scan value and calculated habitable zone
+      * 'Star scanned' - revised to report estimated scan value and calculated habitable zone 
       * Updated 'Bounty incurred' to describe your crimes with the new 'crime' variable.
       * Updated 'Fine incurred' to describe your crimes with the new 'crime' variable.
       * Added new script 'Fuel check'.
@@ -45,7 +45,7 @@
 
 ### 2.4.3
   * Core
-    * We will no longer ask users to send logs for commodity definition errors (and there was much rejoicing).
+    * We will no longer ask users to send logs for commodity definition errors (and there was much rejoicing). 
     * Fixed a time zone snafu that was causing the "Report an issue" button to export empty log files for west of GMT locales.
   * EDSM
     * Fixed a bug that was preventing EDSM comments from being updated and read.
@@ -57,13 +57,13 @@
       * `SpeechVolume()`
     * 'FSD jump' event - reduced the pause between jumping and speaking.
     * Script changes
-      * 'Star report'
+      * 'Star report' 
         * Amended the age calculations for the fact that age is reported in millions of years, not years.
         * Amended reporting of stars less than a million years old.
         * Amended the test for Herbig-Haro objects.
         * Enhanced the reporting of Wolf-Rayet stars.
         * Sundry punctuation tweaks to make the speech more natural.
-      * 'Entered signal source'
+      * 'Entered signal source' 
         * Thoroughly re-written to better report both human and Thargoid signal sources.
     * Worked around non-compliance of CereProc voices with industry standards that would cause EDDI to revert to a system default voice.
     * Fixed a bug that was preventing the Play() function from working properly
@@ -83,7 +83,7 @@
     * Eliminated the approx 7 second delay on app startup that was introduced in rc1.
   * Speech Responder
     * Script changes
-      * 'FSD engaged'
+      * 'FSD engaged' 
         * Amended test for white dwarf arrival stars to match all subtypes, courtesy of CMDR J. Calvert (Joshua).
         * Simplified logic for testing for scoopable stars.
       * 'Market information updated'
@@ -94,7 +94,7 @@
     * EDDI will now take commander ratings/rankings from the journal in addition to from the API.
     * EDDN market and outfitting updating restored, accomodating 2.4 cAPI changes. Bonus - now sending shipyard data to EDDN!
     * Updated Variables.md to include a description of commodities objects and their available properties.
-    * Fixed a bug where some commanders weren't receiving updates to their EDSM profiles.
+    * Fixed a bug where some commanders weren't receiving updates to their EDSM profiles. 
   * Shipyard
     * Export to both Coriolis and EDShipyard is now supported.
     * Fixed a bug that was preventing EDDI from retaining full data from the API, thus mucking up exports to 3rd party services.
@@ -132,7 +132,7 @@
       * 'Community goal' - fixed a bug that would claim you could expect a reward without contributing, the script is also now aware of the time remaining in the community goal
       * 'Search and rescue' event - revised script to use commodity object variables (beta users, please refresh the default script)
       * 'Touchdown' event - latitude & longitude are only written to the journal when the ship is player controlled, script revised to not give erroneous information if the ship isn't player controlled
-
+      
 ### 2.4.0-b4
   * Core
     * Revised EDDI's methods for detecting in-game betas
@@ -199,7 +199,7 @@
     * Add 'Repair drone' event
     * Add 'Search and rescue' event when delivering items to a Search and Rescue contact
     * Add 'Ship sold on rebuy' event when when you sell a ship to raise funds on the insurance / rebuy screen
-    * Clarified "channel" in 'Message received' to include 'npc'
+    * Clarified "channel" in 'Message received' to include 'npc' 
     * Update 'Body scanned' event to check whether BodyDetails successfully located the body
     * Update 'Message received' event, EDDI now distinguishes between a larger variety of message sources
     * Update 'Bond redeemed', 'Bounty redeemed', 'Fine paid', 'Data voucher redeemed', and 'Trade voucher redeemed' events to add Broker Percentage when redeemed via broker
@@ -239,7 +239,7 @@
     * Tidy ups for reading from and writing to files to catch potential exceptions
     * Do not send data to EDSM or EDDN if in a multicrew session
     * Better handling of unknown commodities
-    * Attempt to handle messages coming from unknown ships with the prefix "$ShipName_"
+    * Attempt to handle messages coming from unknown ships with the prefix "$ShipName_" 
     * Update internal list of commodities
     * Update internal list of commodities to include all known items
     * Fix error when caching starsystem information
@@ -666,7 +666,7 @@
   * EDDI no longer dependent on VoiceAttack for spoken responses to events
   * Use Frontier journal in addition to netlog to provide more events
   * Plugin architecture for monitors (that provide events) and responders (that act on events)
-  * Introduction of personalities - bundles of responses for the speech responder
+  * Introduction of personalities - bundles of responses for the speech responder 
   * Fix issue with text-to-speech engines mispronouncing sector names with two-letter phrases such as DR and NY
 
 ## 1.4.0
@@ -798,7 +798,7 @@
 
 ## 0.9.0
   * Fix issue where setting a home system caused scripts not to report system information
-  * Do not create 'system change' or 'location change' events when in CQC
+  * Do not create 'system change' or 'location change' events when in CQC 
 
 ## 0.8.9
   * Provide starsystem information even if profile is not available
