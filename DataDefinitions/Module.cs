@@ -1,4 +1,7 @@
-﻿namespace EddiDataDefinitions
+﻿using Newtonsoft.Json;
+using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class Module
     {

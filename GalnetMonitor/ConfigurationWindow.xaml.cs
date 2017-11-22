@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using System.Windows.Controls;
+using Utilities;
 
 namespace GalnetMonitor
 {

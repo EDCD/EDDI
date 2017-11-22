@@ -1,4 +1,6 @@
-﻿namespace EddiDataDefinitions
+﻿using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class Vehicle
     {
