@@ -16,6 +16,8 @@ namespace EddiEvents
         {
             VARIABLES.Add("crimetype", "The type of crime committed");
             VARIABLES.Add("LocalCrimeType", "The translation of the crime into the chosen language");
+            VARIABLES.Add("crimedescription", "The decription of the crime committed");
+            VARIABLES.Add("LocalCrime", "The localized decription of the crime committed");
             VARIABLES.Add("victim", "The name of the victim of the crime");
             VARIABLES.Add("faction", "The name of the faction issuing the fine");
             VARIABLES.Add("bounty", "The number of credits issued as the fine");
@@ -23,6 +25,19 @@ namespace EddiEvents
 
         [JsonProperty("crimetype")]
         public string crimetype { get; private set; }
+
+        
+        public string LocalCrime
+        {
+            get
+            {
+                if (crimetype != null && crimetype != "")
+                {
+                    return Crime.FromEDName(crimetype).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public string crime { get; private set; }
 

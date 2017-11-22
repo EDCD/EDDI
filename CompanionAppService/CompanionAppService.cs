@@ -240,7 +240,6 @@ namespace EddiCompanionAppService
             {
                 JObject json = JObject.Parse(data);
                 cachedProfile = ProfileFromJson(data);
-				
             }
             catch (JsonException ex)
             {

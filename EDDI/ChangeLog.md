@@ -12,14 +12,19 @@
     * Added new 'Jet cone boost' event
     * Added new 'Module arrived' event
     * Added new 'Ship arrived' event
+    * Revised speech responder UI to clarify that the default personality is read-only and a new personality must be generated via the 'Copy personality' prior to editing. 
+    * Revised speech responder UI to clarify for users of custom personalities when a script can be disabled and/or deleted. 
+    * The 'Enabled' checkbox in the Speech responder UI shall now be enabled only for scripts which are triggered by events, not for scripts which are only triggered by other scripts.
     * Script changes
       * Added new script 'Galnet mark read' to allow users to bulk mark news articles as read.
       * Revised script 'Galnet news' to mark the article as read after reading.
-      * Revised script 'Galnet news published' to mark all articles summariezed by this script as read.
+      * Revised script 'Galnet news published' to mark all articles summarized by this script as read.
       * 'Body scanned' - revised to report estimated scan value
       * 'Star scanned' - revised to report estimated scan value and calculated habitable zone 
       * Updated 'Bounty incurred' to describe your crimes with the new 'crime' variable.
       * Updated 'Fine incurred' to describe your crimes with the new 'crime' variable.
+      * Added new script 'Fuel check'.
+      * Updated 'Jumped' event and 'Ship refueled' event. With the new 'Fuel check' script, 'Ship refueled' will no longer repeat for every 5T refueled.
       * Added new script 'Jet cone boost'
       * Added new script 'Module arrived'
       * Added new script 'Ship arrived'

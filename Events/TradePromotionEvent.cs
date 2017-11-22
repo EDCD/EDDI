@@ -22,7 +22,6 @@ namespace EddiEvents
         [JsonProperty("rating")]
         public string rating{ get; private set; }
 
-        [JsonProperty("LocalRating")]
         public string LocalRating
         {
             get

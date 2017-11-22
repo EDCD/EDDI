@@ -36,7 +36,7 @@ namespace EddiDataDefinitions
 
         public decimal? greatpctbody { get; private set; }
 
-        // Blueprints for the material; 
+        // Blueprints for the material;
         public List<Blueprint> blueprints { get; set; }
 
         // Location of the material

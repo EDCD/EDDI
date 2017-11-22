@@ -193,7 +193,7 @@ namespace EddiSpeechService
             {
                 faction = FACTION_FIXES[faction];
             }
-            
+
             // Faction names can contain system names; hunt them down and change them
             foreach (var pronunciation in STAR_SYSTEM_PRONUNCIATIONS)
             {

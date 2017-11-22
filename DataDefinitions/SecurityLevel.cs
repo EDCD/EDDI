@@ -29,7 +29,6 @@ namespace EddiDataDefinitions
         {
             this.edname = edname;
             this.name = name;
-            
             SECURITYLEVELS.Add(this);
         }
 

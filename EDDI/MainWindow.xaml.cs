@@ -627,7 +627,6 @@ namespace Eddi
                 
                 await Task.Factory.StartNew(() => prepareLog(progress), TaskCreationOptions.LongRunning);
             }
-            
             createGithubIssue();
         }
 

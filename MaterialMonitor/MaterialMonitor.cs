@@ -324,7 +324,7 @@ namespace EddiMaterialMonitor
                 // Start with the materials we have in the log
                 foreach (MaterialAmount ma in configuration.materials)
                 {
-                    // Fix up & add any materials that are not deprecated material names 
+                    // Fix up & add any materials that are not deprecated material names
                     if (Material.DeprecatedMaterials(ma.material) == false)
                     {
                         bool addToInv = false;
@@ -338,7 +338,7 @@ namespace EddiMaterialMonitor
                         {
                             addToInv = true;
                         }
-                        /// if the EDNAME IS NOT UNIQUE to the collection, the MATERIAL NAME IS UNIQUE, & THE EDNAME DOESN'T MATCH THE MATERIAL NAME 
+                        /// if the EDNAME IS NOT UNIQUE to the collection, the MATERIAL NAME IS UNIQUE, & THE EDNAME DOESN'T MATCH THE MATERIAL NAME
                         /// (once an EDName is established, this will identify & "heal" any duplicate entries having the same EDName in the materialmonitor)
                         else if ((configuration.materials.Any(item => item.edname == ma.edname) == true) &&
                             (configuration.materials.Any(item => item.material == ma.material) == true) &&
@@ -374,7 +374,7 @@ namespace EddiMaterialMonitor
                 // Now order the list by name
                 newInventory = newInventory.OrderBy(m => m.material).ToList();
 
-                // Update the inventory 
+                // Update the inventory
                 inventory.Clear();
                 foreach (MaterialAmount ma in newInventory)
                 {

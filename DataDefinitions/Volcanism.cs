@@ -9,7 +9,7 @@ namespace EddiDataDefinitions
     /// </summary>
     public class Volcanism
     {
-        // Translation of composition of volcanism 
+        // Translation of composition of volcanism
         private static readonly IDictionary<string, string> COMPOSITIONS = new Dictionary<string, string>();
 
         public string type { get; set; } // Geysers/Magma
