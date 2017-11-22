@@ -18,7 +18,7 @@
     * Script changes
       * Added new script 'Galnet mark read' to allow users to bulk mark news articles as read.
       * Revised script 'Galnet news' to mark the article as read after reading.
-      * Revised script 'Galnet news published' to mark all articles summariezed by this script as read.
+      * Revised script 'Galnet news published' to mark all articles summarized by this script as read.
       * 'Body scanned' - revised to report estimated scan value
       * 'Star scanned' - revised to report estimated scan value and calculated habitable zone 
       * Updated 'Bounty incurred' to describe your crimes with the new 'crime' variable.
