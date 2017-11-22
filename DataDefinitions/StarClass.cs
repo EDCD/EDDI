@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
+using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -15,9 +16,27 @@ namespace EddiDataDefinitions
 
         public string edname { get; private set; }
 
+        [JsonIgnore]
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(edname) ?? edname;
+            }
+        }
+
         public string name { get; private set; }
 
         public string chromaticity { get; private set; }
+
+        [JsonIgnore]
+        public string LocalChromaticity
+        {
+            get
+            {
+                return I18N.GetString(chromaticity) ?? chromaticity;
+            }
+        }
 
         public decimal percentage { get; private set; }
 

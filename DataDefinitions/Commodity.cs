@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Utilities;
+using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -24,6 +26,15 @@ namespace EddiDataDefinitions
         // Admin
         public long EDDBID { get; set; }
         public string EDName { get; set; }
+
+        [JsonIgnore]
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(EDName) ?? EDName;
+            }
+        }
 
         public Commodity() { }
 

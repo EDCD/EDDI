@@ -16,6 +16,11 @@ namespace Eddi
         string MonitorName();
 
         /// <summary>
+        /// The localized name for the monitor
+        /// </summary>
+        string MonitorLocalName();
+
+        /// <summary>
         /// The version of the monitor
         /// </summary>
         string MonitorVersion();

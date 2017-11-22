@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using System.Windows.Controls;
+using Utilities;
 
 namespace GalnetMonitor
 {
@@ -13,11 +14,18 @@ namespace GalnetMonitor
         public ConfigurationWindow()
         {
             InitializeComponent();
+            I18NForComponents();
 
             monitor = ((GalnetMonitor)EDDI.Instance.ObtainMonitor("Galnet monitor"));
 
             GalnetConfiguration configuration = GalnetConfiguration.FromFile();
             languageComboBox.SelectedValue = configuration.language;
+        }
+
+        private void I18NForComponents()
+        {
+            languageLabel.Text = I18N.GetString("galnet_monitor_language_label");
+            p1.Text = I18N.GetString("galnet_monitor_p1");
         }
 
         private void onLanguageChanged(object sender, SelectionChangedEventArgs e)

@@ -2,14 +2,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:j="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              xmlns:local="clr-namespace:EddiEddpMonitor"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="You can create, edit and delete watches below.  When EDDI receives information about a change somewhere in the galaxy it will compare it to each of the watches in turn.  If the information matches all of the selected criteria for a given watch then it will trigger an event.  Please be aware that this relies on information coming from EDDN, which in turn comes from commanders running programs like EDDI, so will only report changes of which the network is aware." VerticalAlignment="Top"/>
+        <TextBlock x:Name="par1" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" VerticalAlignment="Top"/>
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0,5">
             <Button Margin="10" HorizontalAlignment="Center" Click="eddpAddWatch">Create new watch</Button>
         </UniformGrid>
@@ -36,7 +36,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="eddpDeleteWatch">Delete</Button>
+                            <Button Content="{Binding Source={x:Static local:ConfigurationWindow.DeleteBtnText}}" Click="eddpDeleteWatch"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

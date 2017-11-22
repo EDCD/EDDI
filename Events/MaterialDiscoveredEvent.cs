@@ -15,10 +15,24 @@ namespace EddiEvents
         static MaterialDiscoveredEvent()
         {
             VARIABLES.Add("name", "The name of the discovered material");
+            VARIABLES.Add("LocalName", "The translated name of the discovered material into the chosen language");
         }
 
         [JsonProperty("name")]
         public string name { get; private set; }
+
+        [JsonProperty("LocalName")]
+        public string LocalName
+        {
+            get
+            {
+                if (name != null && name != "")
+                {
+                    return Material.FromName(name).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public MaterialDiscoveredEvent(DateTime timestamp, Material material) : base(timestamp, NAME)
         {

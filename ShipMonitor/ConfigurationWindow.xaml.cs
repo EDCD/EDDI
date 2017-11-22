@@ -18,10 +18,13 @@ namespace EddiShipMonitor
     public partial class ConfigurationWindow : UserControl
     {
         ShipMonitor monitor;
+        public static string HearItBtnText { get { return I18N.GetString("ship_monitor_hear_it_button"); } }
+        public static string ExportItBtnText { get { return I18N.GetString("ship_monitor_export_it_button"); } }
 
         public ConfigurationWindow()
         {
             InitializeComponent();
+            I18NForComponents();
             monitor = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor"));
             shipData.ItemsSource = monitor.shipyard;
 
@@ -29,6 +32,23 @@ namespace EddiShipMonitor
             string exporttarget = eddiConfiguration.exporttarget;
             Logging.Debug("Export target from configuration: " + exporttarget);
             exportComboBox.Text = exporttarget == null ? "Coriolis" : exporttarget;
+        }
+
+        private void I18NForComponents()
+        {
+            p1.Text = I18N.GetString("ship_monitor_p1");
+            p2.Text = I18N.GetString("ship_monitor_p2");
+            linkIPAText.Text = I18N.GetString("ship_monitor_link_ipa");
+            p3.Text = I18N.GetString("ship_monitor_p3");
+            p4.Text = I18N.GetString("ship_monitor_p4");
+            p5.Text = I18N.GetString("ship_monitor_p5");
+            shipData.Columns[0].Header = I18N.GetString("ship_monitor_header_name");
+            shipData.Columns[1].Header = I18N.GetString("ship_monitor_header_model");
+            shipData.Columns[2].Header = I18N.GetString("ship_monitor_header_indent");
+            shipData.Columns[3].Header = I18N.GetString("ship_monitor_header_value");
+            shipData.Columns[4].Header = I18N.GetString("ship_monitor_header_location");
+            shipData.Columns[5].Header = I18N.GetString("ship_monitor_header_role");
+            shipData.Columns[6].Header = I18N.GetString("ship_monitor_header_spoken_name");
         }
 
         private void onExportTargetChanged(object sender, SelectionChangedEventArgs e)
@@ -53,11 +73,12 @@ namespace EddiShipMonitor
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
             if (string.IsNullOrEmpty(ship.phoneticname))
             {
-                SpeechService.Instance.Say(ship, ship.name + " stands ready.", false);
+                SpeechService.Instance.Say(ship, I18N.GetStringWithArgs("ship_ready", new string[] { ship.name }), false);
             }
             else
             {
-                SpeechService.Instance.Say(ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>" + " stands ready.", false);
+                string phoneme = "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>";
+                SpeechService.Instance.Say(ship, I18N.GetStringWithArgs("ship_ready", new string[] { phoneme }), false);
             }
         }
 

@@ -16,6 +16,7 @@ namespace EddiEvents
         {
             VARIABLES.Add("victim", "The name of the player killed");
             VARIABLES.Add("rating", "The combat rating of the player killed");
+            VARIABLES.Add("LocalRating", "The combat rating of the player killed translated into the chosen language");
         }
 
         [JsonProperty("victim")]
@@ -23,6 +24,19 @@ namespace EddiEvents
 
         [JsonProperty("rating")]
         public string rating { get; private set; }
+
+        [JsonProperty("LocalRating")]
+        public string LocalRating
+        {
+            get
+            {
+                if (rating != null && rating != "")
+                {
+                    return CombatRating.FromName(rating).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public KilledEvent(DateTime timestamp, string victim, CombatRating rating) : base(timestamp, NAME)
         {

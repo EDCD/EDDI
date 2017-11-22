@@ -15,6 +15,14 @@ namespace EddiDataDefinitions
 
         public string name { get; private set; }
 
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(edname) ?? edname;
+            }
+        }
+
         public int rank { get; private set; }
 
         private CombatRating(string edname, int rank, string name)

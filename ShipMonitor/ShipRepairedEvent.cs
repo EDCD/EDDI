@@ -1,4 +1,5 @@
-﻿using EddiEvents;
+﻿using EddiDataDefinitions;
+using EddiEvents;
 using System;
 using System.Collections.Generic;
 
@@ -13,10 +14,22 @@ namespace EddiShipMonitor
         static ShipRepairedEvent()
         {
             VARIABLES.Add("item", "The item repaired, if repairing a specific item");
+            VARIABLES.Add("LocalItem", "The Local-ized Item repaired, if repairing a specific item");
             VARIABLES.Add("price", "The price of the repair");
         }
 
         public string item { get; private set; }
+        public string LocalItem
+        {
+            get
+            {
+                if (item != null && item != "")
+                {
+                    return CombatRating.FromName(item).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public long price { get; private set; }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Utilities;
 
 namespace EddiSpeechService
 {
@@ -20,27 +21,27 @@ namespace EddiSpeechService
             switch (power)
             {
                 case "Archon Delaine":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈɑːkɒn\">Archon</phoneme> <phoneme alphabet=\"ipa\" ph=\"dəˈleɪn\">Delaine</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_archon") + "\">Archon</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_delaine") + "\">Delaine</phoneme>";
                 case "Aisling Duval":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈæʃlɪŋ\">Aisling</phoneme> <phoneme alphabet=\"ipa\" ph=\"duːˈvæl\">Duval</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_aisling") + "\">Aisling</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_duval") + "\">Duval</phoneme>";
                 case "Arissa Lavigny-Duval":
-                    return "<phoneme alphabet=\"ipa\" ph=\"əˈrɪsə\">Arissa</phoneme> <phoneme alphabet=\"ipa\" ph=\"ləˈviːniː\">Lavigny</phoneme> <phoneme alphabet=\"ipa\" ph=\"duːˈvæl\">Duval</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_arissa") + "\">Arissa</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_lavigny") +"\">Lavigny</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_duval") + "\">Duval</phoneme>";
                 case "Denton Patreus":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈdɛntən\">Denton</phoneme> <phoneme alphabet=\"ipa\" ph=\"pətˈreɪəs\">Patreus</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_denton") + "\">Denton</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_patreus") + "\">Patreus</phoneme>";
                 case "Edmund Mahon":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈɛdmənd\">Edmund</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈmɑːn\">Mahon</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_edmund") + "\">Edmund</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_mahon") + "\">Mahon</phoneme>";
                 case "Felicia Winters":
-                    return "<phoneme alphabet=\"ipa\" ph=\"fəˈlɪʃɪə\">Felicia</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈwɪntəs\">Winters</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_felicia") + "\">Felicia</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_winters") + "\">Winters</phoneme>";
                 case "Pranav Antal":
-                    return "<phoneme alphabet=\"ipa\" ph=\"pɜːnʌv\">Pranav</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˌænˈtæl\">Antal</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_pranav") + "\">Pranav</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_antal") + "\">Antal</phoneme>";
                 case "Zachary Hudson":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈzækərɪ\">Zachary</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈhʌdsən\">Hudson</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_zachary") + "\">Zachary</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_hudson") + "\">Hudson</phoneme>";
                 case "Zemina Torval":
-                    return "<phoneme alphabet=\"ipa\" ph=\"zəˈmiːnə\">Zemina</phoneme> <phoneme alphabet=\"ipa\" ph=\"tɔːˈvæl\">Torval</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_zemina") + "\">Zemina</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_torval") + "\">Torval</phoneme>";
                 case "Li Yong-Rui":
-                    return "<phoneme alphabet=\"ipa\" ph=\"liː\">Li</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈjɒŋ\">Yong</phoneme> <phoneme alphabet=\"ipa\" ph=\"reɪ\">Rui</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_li") + "\">Li</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_yong") + "\">Yong</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_rui") + "\">Rui</phoneme>";
                 case "Yuri Grom":
-                    return "<phoneme alphabet=\"ipa\" ph=\"jʊəˈriː\">Yuri</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈɡrɒm\">Grom</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_yuri") + "\">Yuri</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("phonetic_grom") + "\">Grom</phoneme>";
                 default:
                     return power;
             }
@@ -55,115 +56,115 @@ namespace EddiSpeechService
         // Fixes to avoid issues with some of the more strangely-named factions
         private static Dictionary<string, string> FACTION_FIXES = new Dictionary<string, string>()
         {
-            { "SCORPIONS ORDER", "Scorpions Order" } // Stop it being treated as a sector
+            { "SCORPIONS ORDER", "Scorpions Order" }, // Stop it being treated as a sector
         };
 
         private static Dictionary<string, string[]> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
-            { "Achenar", new string[] { "ˈakɜːnɑ" } },
-            { "Acihault", new string[] { "əˈsɪhɔːt" } },
-            { "Adan", new string[] { "ˈædən" } },
-            { "Alcyone", new string[] { "ælˈsaɪəniː" } },
-            { "Aldebaran", new string[] { "alˈdɛbəɹən" } },
-            { "Anemoi", new string[] { "æˈniːmɔɪ" } },
-            { "Apoyota", new string[] { "æˈpɔɪəʊtə" } },
-            { "Arque", new string[] { "ɑːrk" } },
-            { "Asterope", new string[] { "əˈstɛroʊpiː" } },
-            { "Atlas", new string[] {  "ˈætləs" } },
-            { "Aulin", new string[] { "ˈɔːlɪn" } },
-            { "Bunda", new string[] { "ˈbuːndə" } },
-            { "Cayutorme", new string[] { "ˈkaɪətɔːm" }  },
-            { "Celaeno", new string[] {  "sᵻˈliːnoʊ" }  },
-            { "Ceos", new string[] { "ˈkeɪɒs" }  },
-            { "Cygnus", new string[] { "ˈsɪɡnəs" }  },
-            { "Deciat", new string[] { "ˈdɛsiːæt" } },
-            { "Diso ", new string[] { "ˈdiːsəʊ" } },
-            { "Djiwal", new string[] { "ˈdʒɪwæl" } },
-            { "Dvorsi", new string[] { "ˈdvɔːsiː" } },
-            { "Electra", new string[] { "ᵻˈlɛktrə" } },
-            { "Eravate" , new string[] { "ɛrəˈvɑːtˌeɪ" } },
-            { "Eranin" , new string[] { "ˈɛrənin" } },
-            { "Frigaha", new string[] { "frɪɡˈɑːhɑːr" } },
-            { "Grandmort" , new string[] { "ˈɡʀɒdˌmɔʀ" } },
-            { "Hecate" , new string[] { "ˈhɛkətɪ" } },
-            { "Hotas" , new string[] { "həʊtæs" } },
-            { "Isleta" , new string[] { "aɪlˈetə" } },
-            { "i Bootis" , new string[] { "aɪ", "bəʊˈəʊtɪs" } },
-            { "Lave", new string[] { "leɪv" } },
-            { "Kaia Bajaja", new string[] { "ˈkaɪə", "ˈbɑːhɑːhɑː" } },
-            { "Kigana", new string[] { "kiːˈɡɑːnə" } },
-            { "Kini", new string[] { "ˈkiːniː" } },
-            { "Kremainn", new string[] { "krəˈmeɪn" } },
-            { "Laksak", new string[] { "ˈlæks.æk" } },
-            { "Leesti", new string[] { "ˈliːstiː" } },
-            { "Leucos", new string[] { "ˈluːkɒs" } },
-            { "Luyten's Star", new string[] { "ˈlaʊ.təns", "stɑː" } },
-            { "Maia", new string[] { "ˈmaɪ.ə" } },
-            { "Mata", new string[] { "ˈmɑː.tʌ" } },
-            { "Merope", new string[] { "ˈmɛrəpiː" } },
-            { "Mu Koji", new string[] { "mjuː", "ˈkəʊdʒiː" } },
-            { "Nuenets", new string[] { "ˈnjuːənɛts" } },
-            { "Okinura", new string[] { "ɒkɪˈnjʊrə" } },
-            { "Orrere", new string[] { "ɒrˈɪər" } },
-            { "Pai Szu", new string[] { "paɪ", "ʃuː" } },
-            { "Pleione", new string[] { "ˈplaɪəniː" } },
-            { "Procyon", new string[] { "ˈprəʊˌsɪən" } },
-            { "Potriti", new string[] { "pəˈtriːtɪ" } },
-            { "Reorte", new string[] { "ˌriːˈɔːt" } },
-            { "Sakti", new string[] { "ˈsæk.tiː" } },
-            { "Shinrarta Dezhra", new string[] { "ʃɪnˈrɑːrtə", "ˈdezɦrə" } },
-            { "Surya", new string[] { "ˈsuːˈrɪːˈɛr" } },
-            { "Taygeta", new string[] { "teɪˈɪdʒᵻtə" } },
-            { "Tse", new string[] { "ʃjɛ" } },
-            { "Xihe", new string[] { "ʃiː.hər" } },
-            { "Xinca", new string[] { "ˈʃɛnkə" } },
-            { "Yakabugai", new string[] { "ˈjækəbuːɡaɪ" } },
-            { "Zaonce", new string[] { "ˈzeɪɒns" } },
-            { "Zhang Fei", new string[] { "ʈʂáŋ", "feɪ" } },
+            { "Achenar", new string[] { I18N.GetString("phonetic_achenar") } },
+            { "Acihault", new string[] { I18N.GetString("phonetic_acihault") } },
+            { "Adan", new string[] { I18N.GetString("phonetic_adan") } },
+            { "Alcyone", new string[] { I18N.GetString("phonetic_alcyone") } },
+            { "Aldebaran", new string[] { I18N.GetString("phonetic_aldebaran") } },
+            { "Anemoi", new string[] { I18N.GetString("phonetic_anemoi") } },
+            { "Apoyota", new string[] { I18N.GetString("phonetic_apoyota") } },
+            { "Arque", new string[] { I18N.GetString("phonetic_arque") } },
+            { "Asterope", new string[] { I18N.GetString("phonetic_asterope") } },
+            { "Atlas", new string[] { I18N.GetString("phonetic_atlas") } },
+            { "Aulin", new string[] { I18N.GetString("phonetic_aulin") } },
+            { "Bunda", new string[] { I18N.GetString("phonetic_bunda") } },
+            { "Cayutorme", new string[] { I18N.GetString("phonetic_cayutorme") } },
+            { "Celaeno", new string[] { I18N.GetString("phonetic_celaeno") } },
+            { "Ceos", new string[] { I18N.GetString("phonetic_ceos") } },
+            { "Cygnus", new string[] { I18N.GetString("phonetic_cygnus") } },
+            { "Deciat", new string[] { I18N.GetString("phonetic_deciat") } },
+            { "Diso ", new string[] { I18N.GetString("phonetic_diso") } },
+            { "Djiwal", new string[] { I18N.GetString("phonetic_djiwal") } },
+            { "Dvorsi", new string[] { I18N.GetString("phonetic_dvorsi") } },
+            { "Electra", new string[] { I18N.GetString("phonetic_electra") } },
+            { "Eravate" , new string[] { I18N.GetString("phonetic_eravate") } },
+            { "Eranin" , new string[] { I18N.GetString("phonetic_eranin") } },
+            { "Frigaha", new string[] { I18N.GetString("phonetic_frigaha") } },
+            { "Grandmort" , new string[] { I18N.GetString("phonetic_grandmort") } },
+            { "Hecate" , new string[] { I18N.GetString("phonetic_hecate") } },
+            { "Hotas" , new string[] { I18N.GetString("phonetic_hotas") } },
+            { "Isleta" , new string[] { I18N.GetString("phonetic_hotas") } },
+            { "i Bootis" , new string[] { I18N.GetString("phonetic_ibootis_i"), I18N.GetString("phonetic_ibootis_bootis") } },
+            { "Lave", new string[] { I18N.GetString("phonetic_lave") } },
+            { "Kaia Bajaja", new string[] { I18N.GetString("phonetic_kaiabajaja_kaia"), I18N.GetString("phonetic_kaiabajaja_bajaja") } },
+            { "Kigana", new string[] { I18N.GetString("phonetic_kigana") } },
+            { "Kini", new string[] { I18N.GetString("phonetic_kini") } },
+            { "Kremainn", new string[] { I18N.GetString("phonetic_kremainn") } },
+            { "Laksak", new string[] { I18N.GetString("phonetic_laksak") } },
+            { "Leesti", new string[] { I18N.GetString("phonetic_leesti") } },
+            { "Leucos", new string[] { I18N.GetString("phonetic_leucos") } },
+            { "Luyten's Star", new string[] { I18N.GetString("phonetic_luytens"), I18N.GetString("phonetic_star") } },
+            { "Maia", new string[] { I18N.GetString("phonetic_maia") } },
+            { "Mata", new string[] { I18N.GetString("phonetic_mata") } },
+            { "Merope", new string[] { I18N.GetString("phonetic_merope") } },
+            { "Mu Koji", new string[] { I18N.GetString("phonetic_mukoji_mu"), I18N.GetString("phonetic_mukoji_koji") } },
+            { "Nuenets", new string[] { I18N.GetString("phonetic_nuenets") } },
+            { "Okinura", new string[] { I18N.GetString("phonetic_okinura") } },
+            { "Orrere", new string[] { I18N.GetString("phonetic_orrere") } },
+            { "Pai Szu", new string[] { I18N.GetString("phonetic_paiszu_pai"), I18N.GetString("phonetic_paiszu_szu") } },
+            { "Pleione", new string[] { I18N.GetString("phonetic_pleione") } },
+            { "Procyon", new string[] { I18N.GetString("phonetic_procyon") } },
+            { "Potriti", new string[] { I18N.GetString("phonetic_potriti") } },
+            { "Reorte", new string[] { I18N.GetString("phonetic_reorte") } },
+            { "Sakti", new string[] { I18N.GetString("phonetic_sakti") } },
+            { "Shinrarta Dezhra", new string[] { I18N.GetString("phonetic_shinrartadezhra_shinrarta"), I18N.GetString("phonetic_shinrartadezhra_dezhra") } },
+            { "Surya", new string[] { I18N.GetString("phonetic_surya") } },
+            { "Taygeta", new string[] { I18N.GetString("phonetic_taygeta") } },
+            { "Tse", new string[] { I18N.GetString("phonetic_tse") } },
+            { "Xihe", new string[] { I18N.GetString("phonetic_xihe") } },
+            { "Xinca", new string[] { I18N.GetString("phonetic_xinca") } },
+            { "Yakabugai", new string[] { I18N.GetString("phonetic_yakabugai") } },
+            { "Zaonce", new string[] { I18N.GetString("phonetic_zaonce") } },
+            { "Zhang Fei", new string[] { I18N.GetString("phonetic_zhangfei_zhang"), I18N.GetString("phonetic_zhangfei_fei") } },
         };
 
         private static Dictionary<string, string[]> CONSTELLATION_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
-            { "Alrai" , new string[] { "ˈalraɪ" } },
-            { "Antliae" , new string[] { "ˈæntlɪˌiː" } },
-            { "Aquarii" , new string[] { "əˈkwɛərɪˌaɪ" } },
-            { "Arietis" , new string[] { "əˈraɪɪtɪs" } },
-            { "Bei Dou" , new string[] { "beɪ", "ˈduː" } },
-            { "Blanco" , new string[] { "blæŋkˌəʊ" } },
-            { "Bleae Thaa" , new string[] { "bliːiː", "θɑː" } },
-            { "Bleae Thua" , new string[] { "bliːiː", "θuːə" } },
-            { "Capricorni" , new string[] { "ˌkæprɪˈkɔːnaɪ" } },
-            { "Cepheus" , new string[] { "ˈsiːfjuːs" } },
-            { "Cephei" , new string[] { "ˈsiːfɪˌaɪ" } },
-            { "Ceti" , new string[] { "ˈsiːtaɪ" } },
-            { "Chi Persei" , new string[] { "kaɪ", "ˈpɜːsɪˌaɪ" } },
-            { "Crucis" , new string[] { "ˈkruːsɪs" } },
-            { "Cygni" , new string[] { "ˈsɪɡnaɪ" } },
-            { "Eta Carina" , new string[] { "ˈiːtə", "kəˈriːnə" } },
-            { "Fornacis" , new string[] { "fɔːˈneɪsɪs" } },
-            { "Herculis" , new string[] { "hɜːkjʊˈlɪs" } },
-            { "Hyades" , new string[] { "ˈhaɪəˌdiːz" } },
-            { "Hydrae" , new string[] { "ˈhaɪdriː" } },
-            { "Lupus" , new string[] { "ˈluːpəs" } },
-            { "Lyncis" , new string[] { "ˈlɪnsɪs" } },
-            { "Omega" , new string[] { "ˈəʊmɪɡə" } },
-            { "Ophiuchus" , new string[] { "ɒˈfjuːkəs" } },
-            { "Pegasi" , new string[] { "ˈpɛɡəˌsaɪ" } },
-            { "Persei" , new string[] { "ˈpɜːsɪˌaɪ" } },
-            { "Piscium" , new string[] { "ˈpaɪsɪəm" } },
-            { "Pleiades" , new string[] { "ˈplaɪədiːz" } },
-            { "Puppis" , new string[] { "ˈpʌpɪs" } },
-            { "Pru Euq" , new string[] { "pruː", "juːk"} },
-            { "Rho Ophiuchi" , new string[] { "rəʊ", "ɒˈfjuːkaɪ" } },
-            { "Sagittarius", new string[] { "ˌsædʒˈtɛəriəs" } },
-            { "Scorpii", new string[] { "ˈskɔːpɪˌaɪ" } },
-            { "Shui Wei", new string[] { "ˈʃuːi", "weɪ" } },
-            { "Tau Ceti" , new string[] { "taʊ", "ˈsiːtaɪ" } },
-            { "Tascheter", new string[] { "ˈtɑːʃətɜː" } },
-            { "Trianguli", new string[] { "traɪˈæŋˌɡjʊˌlaɪ" } },
-            { "Trifid", new string[] { "ˈtraɪfɪd" } },
-            { "Tucanae", new string[] { "tuːˈkɑːniː" } },
-            { "Wredguia", new string[] { "ˈredɡaɪə" } },
+            { "Alrai" , new string[] { I18N.GetString("phonetic_Alrai") } },
+            { "Antliae" , new string[] { I18N.GetString("phonetic_Antliae") } },
+            { "Aquarii" , new string[] { I18N.GetString("phonetic_Aquarii") } },
+            { "Arietis" , new string[] { I18N.GetString("phonetic_Arietis") } },
+            { "Bei Dou" , new string[] { I18N.GetString("phonetic_Bei"), I18N.GetString("phonetic_Dou") } },
+            { "Blanco" , new string[] { I18N.GetString("phonetic_Blanco") } },
+            { "Bleae Thaa" , new string[] { I18N.GetString("phonetic_BleaeThaa_Bleae"), I18N.GetString("phonetic_BleaeThaa_Thaa") } },
+            { "Bleae Thua" , new string[] { I18N.GetString("phonetic_BleaeThaa_Bleae"), I18N.GetString("phonetic_phonetic_BleaeThua_Thua") } },
+            { "Capricorni" , new string[] { I18N.GetString("phonetic_Capricorni") } },
+            { "Cepheus" , new string[] { I18N.GetString("phonetic_Cepheus") } },
+            { "Cephei" , new string[] { I18N.GetString("phonetic_Cephei") } },
+            { "Ceti" , new string[] { I18N.GetString("phonetic_Ceti") } },
+            { "Chi Persei" , new string[] { I18N.GetString("phonetic_ChiPersei_Chi"), I18N.GetString("phonetic_ChiPersei_Persei") } },
+            { "Crucis" , new string[] { I18N.GetString("phonetic_Crucis") } },
+            { "Cygni" , new string[] { I18N.GetString("phonetic_Cygni") } },
+            { "Eta Carina" , new string[] { I18N.GetString("phonetic_EtaCarina_Eta"), I18N.GetString("phonetic_EtaCarina_Carina") } },
+            { "Fornacis" , new string[] { I18N.GetString("phonetic_Fornacis") } },
+            { "Herculis" , new string[] { I18N.GetString("phonetic_Herculis") } },
+            { "Hyades" , new string[] { I18N.GetString("phonetic_Hyades") } },
+            { "Hydrae" , new string[] { I18N.GetString("phonetic_Hydrae") } },
+            { "Lupus" , new string[] { I18N.GetString("phonetic_Lupus") } },
+            { "Lyncis" , new string[] { I18N.GetString("phonetic_Lyncis") } },
+            { "Omega" , new string[] { I18N.GetString("phonetic_Omega") } },
+            { "Ophiuchus" , new string[] { I18N.GetString("phonetic_Ophiuchus") } },
+            { "Pegasi" , new string[] { I18N.GetString("phonetic_Pegasi") } },
+            { "Persei" , new string[] { I18N.GetString("phonetic_Persei") } },
+            { "Piscium" , new string[] { I18N.GetString("phonetic_Piscium") } },
+            { "Pleiades" , new string[] { I18N.GetString("phonetic_Pleiades") } },
+            { "Puppis" , new string[] { I18N.GetString("phonetic_Puppis") } },
+            { "Pru Euq" , new string[] { I18N.GetString("phonetic_PruEuq_Pru"), I18N.GetString("phonetic_PruEuq_Euq") } },
+            { "Rho Ophiuchi" , new string[] { I18N.GetString("phonetic_RhoOphiuchi_Rho"), I18N.GetString("phonetic_RhoOphiuchi_Ophiuchi") } },
+            { "Sagittarius", new string[] { I18N.GetString("phonetic_Sagittarius") } },
+            { "Scorpii", new string[] { I18N.GetString("phonetic_Scorpii") } },
+            { "Shui Wei", new string[] { I18N.GetString("phonetic_ShuiWei_Shui"), I18N.GetString("phonetic_ShuiWei_Wei") } },
+            { "Tau Ceti" , new string[] { I18N.GetString("phonetic_TauCeti_Tau"), I18N.GetString("phonetic_TauCeti_Ceti") } },
+            { "Tascheter", new string[] { I18N.GetString("phonetic_Tascheter") } },
+            { "Trianguli", new string[] { I18N.GetString("phonetic_Trianguli") } },
+            { "Trifid", new string[] { I18N.GetString("phonetic_Trifid")} },
+            { "Tucanae", new string[] { I18N.GetString("phonetic_Tucanae") } },
+            { "Wredguia", new string[] { I18N.GetString("phonetic_Wredguia") } },
         };
 
         // Various handy regexes so we don't keep recreating them
@@ -191,7 +192,7 @@ namespace EddiSpeechService
             {
                 faction = FACTION_FIXES[faction];
             }
-            
+
             // Faction names can contain system names; hunt them down and change them
             foreach (var pronunciation in STAR_SYSTEM_PRONUNCIATIONS)
             {
@@ -231,7 +232,7 @@ namespace EddiSpeechService
                 {
                     for (int j = 0; j < match.Groups[i].Captures.Count; j++)
                     {
-Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Captures[j].Value.Trim()+ "*");
+						Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Captures[j].Value.Trim()+ "*");
                         string part = match.Groups[i].Captures[j].Value.Trim();
 
                         if (DIGIT.IsMatch(part))
@@ -314,11 +315,11 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
                 || starSystem.StartsWith("HD ")
                 )
             {
-                starSystem = starSystem.Replace("-", " dash ");
+                starSystem = starSystem.Replace("-", I18N.GetString("trans_dash"));
             }
             else if (starSystem.StartsWith("Gliese "))
             {
-                starSystem = starSystem.Replace(".", " point ");
+                starSystem = starSystem.Replace(".", I18N.GetString("trans_point"));
             }
             else if (SECTOR.IsMatch(starSystem))
             {
@@ -388,9 +389,9 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
                 starSystem = starSystem.Replace("Csi ", "CSI ")
                                        .Replace("WISE ", "Wise ")
                                        .Replace("2MASS ", "2 mass ")
-                                       .Replace("+", " plus ")
-                                       .Replace("-", " minus ")
-                                       .Replace(".", " point ");
+                                       .Replace("+", I18N.GetString("trans_plus"))
+                                       .Replace("-", I18N.GetString("trans_minus"))
+                                       .Replace(".", I18N.GetString("trans_point"));
             }
             else
             {
@@ -453,112 +454,112 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
                 switch (c)
                 {
                     case 'A':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈælfə\">alpha</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_A") + "\">alpha</phoneme>");
                         break;
                     case 'B':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈbrɑːˈvo\">bravo</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_B") + "\">bravo</phoneme>");
                         break;
                     case 'C':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtʃɑːli\">charlie</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_C") + "\">charlie</phoneme>");
                         break;
                     case 'D':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈdɛltə\">delta</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_D") + "\">delta</phoneme>");
                         break;
                     case 'E':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈeko\">echo</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_E") + "\">echo</phoneme>");
                         break;
                     case 'F':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈfɒkstrɒt\">foxtrot</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_F") + "\">foxtrot</phoneme>");
                         break;
                     case 'G':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ɡɒlf\">golf</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_G") + "\">golf</phoneme>");
                         break;
                     case 'H':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"hoːˈtel\">hotel</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_H") + "\">hotel</phoneme>");
                         break;
                     case 'I':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈindiˑɑ\">india</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_I") + "\">india</phoneme>");
                         break;
                     case 'J':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈdʒuːliˑˈet\">juliet</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_J") + "\">juliet</phoneme>");
                         break;
                     case 'K':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈkiːlo\">kilo</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_K") + "\">kilo</phoneme>");
                         break;
                     case 'L':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈliːmɑ\">lima</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_L") + "\">lima</phoneme>");
                         break;
                     case 'M':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"maɪk\">mike</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_M") + "\">mike</phoneme>");
                         break;
                     case 'N':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"noˈvembə\">november</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_N") + "\">november</phoneme>");
                         break;
                     case 'O':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈɒskə\">oscar</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_O") + "\">oscar</phoneme>");
                         break;
                     case 'P':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"pəˈpɑ\">papa</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_P") + "\">papa</phoneme>");
                         break;
                     case 'Q':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"keˈbek\">quebec</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_Q") + "\">quebec</phoneme>");
                         break;
                     case 'R':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈroːmiˑo\">romeo</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_R") + "\">romeo</phoneme>");
                         break;
                     case 'S':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"siˈerə\">sierra</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_S") + "\">sierra</phoneme>");
                         break;
                     case 'T':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtænɡo\">tango</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_T") + "\">tango</phoneme>");
                         break;
                     case 'U':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈjuːnifɔːm\">uniform</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_U") + "\">uniform</phoneme>");
                         break;
                     case 'V':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈvɪktə\">victor</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_V") + "\">victor</phoneme>");
                         break;
                     case 'W':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈwiski\">whiskey</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_W") + "\">whiskey</phoneme>");
                         break;
                     case 'X':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈeksˈrei\">x-ray</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_X") + "\">x-ray</phoneme>");
                         break;
                     case 'Y':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈjænki\">yankee</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_Y") + "\">yankee</phoneme>");
                         break;
                     case 'Z':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈzuːluː\">zulu</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_Z") + "\">zulu</phoneme>");
                         break;
                     case '0':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈzɪərəʊ\">zero</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_0") + "\">zero</phoneme>");
                         break;
                     case '1':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈwʌn\">one</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_1") + "\">one</phoneme>");
                         break;
                     case '2':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtuː\">two</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_2") + "\">two</phoneme>");
                         break;
                     case '3':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈtriː\">tree</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_3") + "\">tree</phoneme>");
                         break;
                     case '4':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈfoʊ.ər\">fawer</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_4") + "\">fawer</phoneme>");
                         break;
                     case '5':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈfaɪf\">fife</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_5") + "\">fife</phoneme>");
                         break;
                     case '6':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈsɪks\">six</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_6") + "\">six</phoneme>");
                         break;
                     case '7':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈsɛvɛn\">seven</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_7") + "\">seven</phoneme>");
                         break;
                     case '8':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈeɪt\">eight</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_8") + "\">eight</phoneme>");
                         break;
                     case '9':
-                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"ˈnaɪnər\">niner</phoneme>");
+                        elements.Add("<phoneme alphabet=\"ipa\" ph=\"" + I18N.GetString("ICAO_9") + "\">niner</phoneme>");
                         break;
                     case '-':
                         if (passDash) elements.Add("-");
@@ -584,7 +585,7 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
 
             if (value == 0)
             {
-                return "zero";
+                return I18N.GetString("trans_zero");
             }
 
             if (value < 10)
@@ -616,35 +617,35 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
             {
                 // Thousands
                 number = (int)(value / 1000);
-                order = "thousand";
+                order = I18N.GetString("trans_thousand");
                 nextDigit = (((int)value) - (number * 1000)) / 100;
             }
             else if (digits < 9)
             {
                 // Millions
                 number = (int)(value / 1000000);
-                order = "million";
+                order = I18N.GetString("trans_million");
                 nextDigit = (((int)value) - (number * 1000000)) / 100000;
             }
             else if (digits < 12)
             {
                 // Billions
                 number = (int)(value / 1000000000);
-                order = "billion";
+                order = I18N.GetString("trans_billion");
                 nextDigit = (int)(((long)value) - ((long)number * 1000000000)) / 100000000;
             }
             else if (digits < 15)
             {
                 // Trillions
                 number = (int)(value / 1000000000000);
-                order = "trillion";
+                order = I18N.GetString("trans_trillion");
                 nextDigit = (int)(((long)value) - (int)((number * 1000000000000)) / 100000000000);
             }
             else
             {
                 // Quadrillions
                 number = (int)(value / 1000000000000000);
-                order = "quadrillion";
+                order = I18N.GetString("trans_quadrillion");
                 nextDigit = (int)(((long)value) - (int)((number * 1000000000000000)) / 100000000000000);
             }
 
@@ -663,37 +664,37 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
                 {
                     if (nextDigit < 6)
                     {
-                        return "Over " + number + " " + order;
+                        return I18N.GetString("trans_over") + number + " " + order;
                     }
                     else
                     {
-                        return "Nearly " + (number + 1) + " " + order;
+                        return I18N.GetString("trans_nearly") + (number + 1) + " " + order;
                     }
                 }
                 switch (nextDigit)
                 {
                     case 0:
-                        return "just over " + number + " " + order;
+                        return I18N.GetString("trans_justover") + number + " " + order;
                     case 1:
-                        return "over " + number + " " + order;
+                        return I18N.GetString("trans_over") + number + " " + order;
                     case 2:
-                        return "well over " + number + " " + order;
+                        return I18N.GetString("trans_wellover") + number + " " + order;
                     case 3:
-                        return "on the way to " + number + " and a half " + order;
+                        return I18N.GetString("trans_onthewayto") + number + I18N.GetString("trans_andahalf") + order;
                     case 4:
-                        return "nearly " + number + " and a half " + order;
+                        return I18N.GetString("trans_nearly") + number + I18N.GetString("trans_andahalf") + order;
                     case 5:
-                        return "around " + number + " and a half " + order;
+                        return I18N.GetString("trans_around") + number + I18N.GetString("trans_andahalf") + order;
                     case 6:
-                        return "just over " + number + " and a half " + order;
+                        return I18N.GetString("trans_justover") + number + I18N.GetString("trans_andahalf") + order;
                     case 7:
-                        return "well over " + number + " and a half " + order;
+                        return I18N.GetString("trans_wellover") + number + I18N.GetString("trans_andahalf") + order;
                     case 8:
-                        return "on the way to " + (number + 1) + " " + order;
+                        return I18N.GetString("trans_onthewayto") + (number + 1) + " " + order;
                     case 9:
-                        return "nearly " + (number + 1) + " " + order;
+                        return I18N.GetString("trans_nearly") + (number + 1) + " " + order;
                     default:
-                        return "around " + number + " " + order;
+                        return I18N.GetString("trans_around") + number + " " + order;
                 }
             }
 

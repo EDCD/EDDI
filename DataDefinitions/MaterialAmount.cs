@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -8,6 +9,15 @@ namespace EddiDataDefinitions
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         [DefaultValue(null)]
         public string edname { get; private set; }
+
+        [JsonIgnore]
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(edname) ?? edname;
+            }
+        }
 
         [JsonIgnore]
         private string _material;

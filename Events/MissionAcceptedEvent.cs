@@ -19,6 +19,7 @@ namespace EddiEvents
             VARIABLES.Add("destinationsystem", "The destination system for the mission (if applicable)");
             VARIABLES.Add("destinationstation", "The destination station for the mission (if applicable)");
             VARIABLES.Add("commodity", "The commodity involved in the mission (if applicable)");
+            VARIABLES.Add("LocalCommodity", "The translation of the commodity into the chosen language (if applicable)");
             VARIABLES.Add("amount", "The amount of the commodity,  passengers or targets involved in the mission (if applicable)");
             VARIABLES.Add("passengertype", "The type of passengers in the mission (if applicable)");
             VARIABLES.Add("passengerswanted", "True if the passengers are wanted (if applicable)");
@@ -38,6 +39,18 @@ namespace EddiEvents
         public string faction { get; private set; }
 
         public string commodity { get; private set; }
+
+        public string LocalCommodity
+        {
+            get
+            {
+                if (commodity != null && commodity != "")
+                {
+                    return CommodityDefinitions.FromName(commodity).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public int? amount { get; private set; }
 

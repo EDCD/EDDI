@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using Utilities;
 
 namespace Eddi
 {
@@ -14,6 +15,7 @@ namespace Eddi
         {
             InitializeComponent();
             this.pluginName = pluginName;
+            pluginenabledText.Text = I18N.GetString("plugin_enabled");
         }
 
         private void pluginenabled_Checked(object sender, RoutedEventArgs e)

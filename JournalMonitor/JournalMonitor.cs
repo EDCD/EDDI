@@ -2646,6 +2646,11 @@ namespace EddiJournalMonitor
             return "Journal monitor";
         }
 
+        public string MonitorLocalName()
+        {
+            return I18N.GetString("journal_monitor_name");
+        }
+
         public string MonitorVersion()
         {
             return "1.0.0";
@@ -2653,7 +2658,7 @@ namespace EddiJournalMonitor
 
         public string MonitorDescription()
         {
-            return "Monitor Elite: Dangerous' journal.log for many common events.  This should not be disabled unless you are sure you know what you are doing, as it will result in many functions inside EDDI no longer working";
+            return I18N.GetString("journal_monitor_desc");
         }
 
         public bool IsRequired()

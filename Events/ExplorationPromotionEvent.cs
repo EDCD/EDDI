@@ -15,10 +15,24 @@ namespace EddiEvents
         static ExplorationPromotionEvent()
         {
             VARIABLES.Add("rating", "The commander's new exploration rating");
+            VARIABLES.Add("LocalRating", "The commander's new exploration rating translated into the chosen labguage");
         }
 
         [JsonProperty("rating")]
         public string rating{ get; private set; }
+
+        [JsonProperty("LocalRating")]
+        public string LocalRating
+        {
+            get
+            {
+                if (rating != null && rating != "")
+                {
+                    return ExplorationRating.FromName(rating).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public ExplorationPromotionEvent(DateTime timestamp, ExplorationRating rating) : base(timestamp, NAME)
         {

@@ -56,19 +56,19 @@ namespace EddiVoiceAttackResponder
                 // Display instance information if available
                 if (EDDI.Instance.UpgradeRequired)
                 {
-                    string msg = "Please shut down VoiceAttack and run Eddi standalone to upgrade";
+                    string msg = I18N.GetString("run_eddi_standalone");
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
                 else if (EDDI.Instance.UpgradeAvailable)
                 {
-                    string msg = "Please shut down VoiceAttack and run Eddi standalone to upgrade";
+                    string msg = I18N.GetString("run_eddi_standalone");
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
                 if (EDDI.Instance.Motd != null)
                 {
-                    string msg = "Message from Eddi: " + EDDI.Instance.Motd;
+                    string msg = I18N.GetStringWithArgs("msg_from_eddi", new string[] { EDDI.Instance.Motd });
                     vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
