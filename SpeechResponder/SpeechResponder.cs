@@ -42,7 +42,7 @@ namespace EddiSpeechResponder
 
         public string ResponderDescription()
         {
-            return "Respond to events with pre-scripted responses using the information available.  Not all events have scripted responses by default; those that do not have the 'Test' button disabled.  The default personality can be copied, which allows existing scripts to be modified or disabled, and new scripts to be written, to suit your preferences.";
+            return "Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its 'Test' and 'View' buttons are disabled.";
         }
 
         public SpeechResponder()

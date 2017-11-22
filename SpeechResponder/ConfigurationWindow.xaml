@@ -6,19 +6,29 @@
              xmlns:local="clr-namespace:EddiSpeechResponder"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-    <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-            <TextBlock TextWrapping="Wrap" Text="Write text copies of speech to the file %APPDATA%\EDDI\speechresponder.out"></TextBlock>
-            <CheckBox x:Name="subtitlesCheckbox" VerticalAlignment="Center" Checked="subtitlesEnabled" Unchecked="subtitlesDisabled"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,5">
-            <TextBlock Margin="0,5" TextWrapping="Wrap" Text="Do not speak out loud when text is written to the file as above"></TextBlock>
-            <CheckBox x:Name="subtitlesOnlyCheckbox" Margin="5" VerticalAlignment="Center" Checked="subtitlesOnlyEnabled" Unchecked="subtitlesOnlyDisabled"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0">
-            <TextBlock Margin="0,5" Text="Active personality"></TextBlock>
-            <ComboBox Margin="5" ItemsSource="{Binding Personalities}" SelectedValue="{Binding Personality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectionChanged="personalityChanged" />
-            <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top" Text="{Binding Personality.Description}"/>
+    <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0, 5, 0, 0">
+        <Grid DockPanel.Dock="Top" Margin="5, 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="285"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical" Grid.Column="0" DockPanel.Dock="Top" >
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                    <TextBlock Margin="0, 0, 0, 5" TextWrapping="Wrap" Text="Write text copies of speech to the file %APPDATA%\EDDI\speechresponder.out"></TextBlock>
+                    <CheckBox x:Name="subtitlesCheckbox" VerticalAlignment="Center" Margin="5, 0" Checked="subtitlesEnabled" Unchecked="subtitlesDisabled"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" >
+                    <TextBlock Margin="0,5" TextWrapping="Wrap" Text="Do not speak out loud when text is written to the file as above"></TextBlock>
+                    <CheckBox x:Name="subtitlesOnlyCheckbox" Margin="5, 0" VerticalAlignment="Center" Checked="subtitlesOnlyEnabled" Unchecked="subtitlesOnlyDisabled"/>
+                </StackPanel>
+
+            </StackPanel>
+            <TextBlock x:Name="defaultText" VerticalAlignment="Top" DockPanel.Dock="Left" Grid.Column="1" TextWrapping="Wrap" Width="Auto" Text="The default personality cannot be modified. If you wish to make changes, create a copy."/>
+        </Grid>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5, 0">
+            <TextBlock VerticalAlignment="Center" Text="Active personality"></TextBlock>
+            <ComboBox Margin="5,0" ItemsSource="{Binding Personalities}" SelectedValue="{Binding Personality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectionChanged="personalityChanged" />
+            <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding Personality.Description}"/>
         </StackPanel>
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0,5">
             <Button Margin="10" HorizontalAlignment="Center" Click="newScriptClicked" IsEnabled="{Binding Path=Personality.IsEditable}">Create new script</Button>
@@ -31,7 +41,9 @@
                 <DataGridTemplateColumn Header="Enabled">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Checked="eddiScriptsUpdated" Unchecked="eddiScriptsUpdated" IsHitTestVisible="{Binding Path=Value.Responder}" />
+                            <Border IsEnabled="{Binding Path=Value.Responder}">
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Value.Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Checked="eddiScriptsUpdated" Unchecked="eddiScriptsUpdated" />
+                            </Border>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

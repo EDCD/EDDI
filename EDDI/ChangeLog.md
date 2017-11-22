@@ -12,6 +12,9 @@
     * Added new 'Jet cone boost' event
     * Added new 'Module arrived' event
     * Added new 'Ship arrived' event
+    * Revised speech responder UI to clarify that the default personality is read-only and a new personality must be generated via the 'Copy personality' prior to editing. 
+    * Revised speech responder UI to clarify for users of custom personalities when a script can be disabled and/or deleted. 
+    * The 'Enabled' checkbox in the Speech responder UI shall now be enabled only for scripts which are triggered by events, not for scripts which are only triggered by other scripts.
     * Script changes
       * Added new script 'Galnet mark read' to allow users to bulk mark news articles as read.
       * Revised script 'Galnet news' to mark the article as read after reading.
