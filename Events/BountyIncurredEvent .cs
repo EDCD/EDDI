@@ -24,19 +24,8 @@ namespace EddiEvents
 
         [JsonProperty("crimetype")]
         public string crimetype { get; private set; }
-        public string LocalCrimeType
-        {
-            get
-            {
-                if (crimetype != null && crimetype != "")
-                {
-                    return Crime.FromName(crimetype).LocalName;
-                }
-                else return null;
-            }
-        }
 
-		[JsonIgnore]
+	[JsonIgnore]
         public string LocalCrime
         {
             get
