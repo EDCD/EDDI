@@ -1,5 +1,4 @@
 ﻿using CSCore;
-using CSCore.Codecs;
 using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
 using CSCore.Streams.Effects;
@@ -353,12 +352,21 @@ namespace EddiSpeechService
 
                         synth.SetOutputToWaveStream(stream);
 
+                        // Keep XML version at 1.0. Version 1.1 is not recommended for general use. https://en.wikipedia.org/wiki/XML#Versions
                         if (speech.Contains("<"))
                         {
                             Logging.Debug("Obtaining best guess culture");
                             string culture = bestGuessCulture(synth);
-                            Logging.Debug("Best guess culture is " + culture);
-                            speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis"" xml:lang=""" + bestGuessCulture(synth) + @""">" + escapeSsml(speech) + @"</speak>";
+                            if (culture.Length > 0)
+                            {
+                                culture = @" xml:lang=""" + bestGuessCulture(synth) + @"""";
+                                Logging.Debug("Best guess culture is " + culture);
+                            }
+                            else
+                            {
+                                Logging.Debug("SSML attribute xml:lang not applicable for Cereproc voices, no culture applies (not standards compliant).");
+                            }
+                            speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
                             Logging.Debug("Feeding SSML to synthesizer: " + speech);
                             synth.SpeakSsml(speech);
                         }
@@ -394,14 +402,8 @@ namespace EddiSpeechService
                 {
                     if (synth.Voice.Name.Contains("CereVoice"))
                     {
-                        // Cereproc voices don't have the correct local so we need to set it manually
-                        if (synth.Voice.Name.Contains("Scotland") ||
-                            synth.Voice.Name.Contains("England") ||
-                            synth.Voice.Name.Contains("Ireland") ||
-                            synth.Voice.Name.Contains("Wales"))
-                        {
-                            guess = "en-GB";
-                        }
+                        // Cereproc voices do not support the xml:lang attribute, so no language code should be applied
+                        guess = string.Empty;
                     }
                     else
                     {
@@ -441,17 +443,26 @@ namespace EddiSpeechService
         private string escapeSsml(string text)
         {
             // Our input text might have SSML elements in it but the rest needs escaping
-            // Our valid SSML elements are break, play and phoneme, so encode these differently for now
-            // Also escape any double quotes inside the elements
             string result = text;
+
+             // We need to make sure file names for the play function include a "/" (e.g. C:/)
+            result = Regex.Replace(result, "(<.+?src=\")(.:)(.*?" + @"\/>)", "$1" + "$2SSSSS" + "$3");
+            
+            // Our valid SSML elements are audio, break, emphasis, play, phoneme, & prosody so encode these differently for now
+            // Also escape any double quotes inside the elements
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
             result = Regex.Replace(result, "(<[^>]*)\"", "$1ZZZZZ");
+            result = Regex.Replace(result, "<(audio.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(break.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(play.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(phoneme.*?)>", "XXXXX$1YYYYY");
             result = Regex.Replace(result, "<(/phoneme)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(prosody.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(/prosody)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(emphasis.*?)>", "XXXXX$1YYYYY");
+            result = Regex.Replace(result, "<(/emphasis)>", "XXXXX$1YYYYY");
 
             // Now escape anything that is still present
             result = SecurityElement.Escape(result);
@@ -460,6 +471,7 @@ namespace EddiSpeechService
             result = Regex.Replace(result, "XXXXX", "<");
             result = Regex.Replace(result, "YYYYY", ">");
             result = Regex.Replace(result, "ZZZZZ", "\"");
+            result = Regex.Replace(result, "SSSSS", @"\");
             return result;
         }
 

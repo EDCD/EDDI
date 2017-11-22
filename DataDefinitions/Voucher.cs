@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -17,6 +14,14 @@ namespace EddiDataDefinitions
         public string name { get; private set; }
 
         public string edname { get; private set; }
+
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(edname) ?? edname;
+            }
+        }
 
         private Voucher(string edname, string name)
         {

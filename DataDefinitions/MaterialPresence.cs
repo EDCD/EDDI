@@ -1,10 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -23,6 +17,9 @@ namespace EddiDataDefinitions
         public string name { get; private set; }
 
         [JsonIgnore]
+        public string LocalName { get; private set; }
+
+        [JsonIgnore]
         public Rarity rarity { get; private set; }
 
         public decimal percentage { get; private set; }
@@ -34,6 +31,9 @@ namespace EddiDataDefinitions
             this.material = definition.name;
             this.rarity= definition.rarity;
             this.percentage = percentage;
+
+            //Add to help for other langages
+            this.LocalName = definition.LocalName;
         }
 
         [JsonConstructor]
@@ -46,6 +46,9 @@ namespace EddiDataDefinitions
                 this.name = definition.name;
                 this.material = definition.name;
                 this.rarity = definition.rarity;
+
+                //Add to help for other langages
+                this.LocalName = definition.LocalName;
             }
             this.percentage = percentage;
         }

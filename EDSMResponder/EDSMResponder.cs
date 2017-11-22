@@ -3,12 +3,7 @@ using EddiDataDefinitions;
 using EddiEvents;
 using EddiShipMonitor;
 using EddiStarMapService;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -24,6 +19,12 @@ namespace EddiEdsmResponder
             return "EDSM responder";
         }
 
+
+        public string ResponderLocalName()
+        {
+            return I18N.GetString("edsm_responder_name");
+        }
+
         public string ResponderVersion()
         {
             return "1.0.0";
@@ -31,7 +32,7 @@ namespace EddiEdsmResponder
 
         public string ResponderDescription()
         {
-            return "Send details of your travels to EDSM.  EDSM is a third-party tool that provides information on the locations of star systems and keeps a log of the star systems you have visited.  It uses the data provided to crowd-source a map of the galaxy";
+            return I18N.GetString("edsm_responder_desc");
         }
 
         public EDSMResponder()

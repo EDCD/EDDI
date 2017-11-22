@@ -2,9 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EddiEvents
 {
@@ -18,10 +15,24 @@ namespace EddiEvents
         static EmpirePromotionEvent()
         {
             VARIABLES.Add("rank", "The commander's new Empire rank");
+            VARIABLES.Add("LocalRank", "The commander's new Empire rank translated into the chosen language");
         }
 
         [JsonProperty("rating")]
         public string rank { get; private set; }
+
+        [JsonProperty("LocalRank")]
+        public string LocalRank
+        {
+            get
+            {
+                if (rank != null && rank != "")
+                {
+                    return EmpireRating.FromName(rank).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public EmpirePromotionEvent(DateTime timestamp, EmpireRating rating) : base(timestamp, NAME)
         {

@@ -1,10 +1,6 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EddiEvents
 {
@@ -27,7 +23,7 @@ namespace EddiEvents
 
         public string engineer { get; private set; }
 
-        public string blueprint{ get; private set; }
+        public string blueprint { get; private set; }
 
         public int level { get; private set; }
 
@@ -48,11 +44,15 @@ namespace EddiEvents
     public class CommodityAmount
     {
         public string commodity { get; private set; }
+
+        public string LocalCommodity { get; private set; }
+
         public int amount { get; private set; }
 
         public CommodityAmount(Commodity commodity, int amount)
         {
             this.commodity = commodity.name;
+            this.LocalCommodity = commodity.LocalName;
             this.amount = amount;
         }
     }

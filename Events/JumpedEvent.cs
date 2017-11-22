@@ -1,10 +1,6 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EddiEvents
 {
@@ -52,12 +48,56 @@ namespace EddiEvents
         public string faction { get; private set; }
 
         public string factionstate { get; private set; }
+        public string LocalFactionState
+        {
+            get
+            {
+                if (factionstate != null && factionstate != "")
+                {
+                    return State.FromName(factionstate).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public string economy { get; private set; }
+        public string LocalEconomy
+        {
+            get
+            {
+                if (economy != null && economy != "")
+                {
+                    return Economy.FromName(economy).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public string government { get; private set; }
+        public string LocalGovernment
+        {
+            get
+            {
+                if (government != null && government != "")
+                {
+                    return Government.FromName(government).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public string security { get; private set; }
+        public string LocalSecurity
+        {
+            get
+            {
+                if (security != null && security != "")
+                {
+                    return SecurityLevel.FromName(security).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public long? population { get; private set; }
 

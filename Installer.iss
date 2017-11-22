@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "EDDI"
-#define MyAppVersion "2.4.2"
+#define MyAppVersion "2.4.6-b1"
 #define MyAppPublisher "Elite Dangerous Community Developers (EDCD)"
 #define MyAppURL "https://github.com/EDCD/EDDI/"
 #define MyAppExeName "EDDI.exe"
@@ -85,9 +85,11 @@ Source: "Utilities.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 Source: "eddi.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "langs.json"; DestDir: "{app}"; Flags: ignoreversion
 
 Source: "ChangeLog.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Help.md"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Help_fr.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Variables.md"; DestDir: "{app}"; Flags: ignoreversion
 
 Source: "EDDI.vap"; DestDir: "{app}"; Flags: ignoreversion

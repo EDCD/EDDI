@@ -1,11 +1,6 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Utilities;
 
 namespace EddiEvents
 {
@@ -15,6 +10,12 @@ namespace EddiEvents
         public const string DESCRIPTION = "Triggered when you complete a scan of a planetary body";
         public const string SAMPLE = @"{ ""timestamp"":""2016-10-05T10:28:04Z"", ""event"":""Scan"", ""BodyName"":""Dagutii ABC 1 b"", ""DistanceFromArrivalLS"":644.074463, ""TidalLock"":true, ""TerraformState"":"""", ""PlanetClass"":""Icy body"", ""Atmosphere"":"""", ""Volcanism"":""carbon dioxide geysers volcanism"", ""MassEM"":0.001305, ""Radius"":964000.375000, ""SurfaceGravity"":0.559799, ""SurfaceTemperature"":89.839241, ""SurfacePressure"":0.000000, ""Landable"":true, ""Materials"":{ ""sulphur"":26.8, ""carbon"":22.5, ""phosphorus"":14.4, ""iron"":12.1, ""nickel"":9.2, ""chromium"":5.4, ""selenium"":4.2, ""vanadium"":3.0, ""niobium"":0.8, ""molybdenum"":0.8, ""ruthenium"":0.7 }, ""SemiMajorAxis"":739982912.000000, ""Eccentricity"":0.000102, ""OrbitalInclination"":-0.614765, ""Periapsis"":233.420425, ""OrbitalPeriod"":242733.156250, ""RotationPeriod"":242735.265625, ""Rings"":[ { ""Name"":""Maia B 3 A Ring"", ""RingClass"":""eRingClass_Rocky"", ""MassMT"":4.9509e+12, ""InnerRad"":1.3006e+08, ""OuterRad"":5.0982e+08 } ], ""ReserveLevel"":""PristineResources"" }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
+
+        // Scan value calculation constants
+        public const double dssDivider = 2.4;
+        public const double scanDivider = 5.3;
+        public const double scanMultiplier = 3;
+        public const double scanPower = 0.199977;
 
         static BodyScannedEvent()
         {
@@ -41,6 +42,7 @@ namespace EddiEvents
             VARIABLES.Add("materials", "A list of materials present on the body that has been scanned");
             VARIABLES.Add("terraformstate", "Whether the body can be, is in the process of, or has been terraformed (only available if DSS equipped)");
             VARIABLES.Add("axialtilt", "Axial tilt for the body (only available if DSS equipped)");
+            VARIABLES.Add("estimatedvalue", "The estimated value of the current scan");
         }
 
         public string name { get; private set; }
@@ -89,7 +91,9 @@ namespace EddiEvents
 
         public decimal? axialtilt { get; private set; }
 
-        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal? earthmass, decimal? radius, decimal gravity, decimal? temperature, decimal? pressure, bool? tidallylocked, bool? landable, string atmosphere, Volcanism volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, string reserves, List<MaterialPresence> materials, string terraformstate, decimal? axialtilt) : base(timestamp, NAME)
+        public long? estimatedvalue { get; private set; }
+        
+        public BodyScannedEvent(DateTime timestamp, string name, string bodyclass, decimal? earthmass, decimal? radius, decimal gravity, decimal? temperature, decimal? pressure, bool? tidallylocked, bool? landable, string atmosphere, Volcanism volcanism, decimal distancefromarrival, decimal orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, string reserves, List<MaterialPresence> materials, string terraformstate, decimal? axialtilt, bool dssEquipped) : base(timestamp, NAME)
         {
             this.name = name;
             this.distancefromarrival = distancefromarrival;
@@ -114,6 +118,7 @@ namespace EddiEvents
             this.materials = materials;
             this.terraformstate = terraformstate;
             this.axialtilt = axialtilt;
+            this.estimatedvalue = estimateValue(dssEquipped);
         }
 
         private decimal sanitiseCP(decimal cp)
@@ -135,6 +140,83 @@ namespace EddiEvents
             {
                 return Math.Round(cp * 100);
             }
+        }
+
+        private long? estimateValue(bool dssEquipped)
+        {
+            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
+            int baseTypeValue = 720;
+            int terraValue = 0;
+            bool terraformable = false;
+
+            // Override constants for specific types of bodies
+            if ( (terraformstate == "Terraformable") || (terraformstate == "Candidate for terraforming") )
+            {
+                terraformable = true;
+            }
+            if ( bodyclass == "Ammonia world")
+            {
+                // Ammonia worlds
+                baseTypeValue = 232619;
+            }
+            else if ( bodyclass == "Earthlike body" )
+            {
+                // Earth-like worlds
+                baseTypeValue = 155581;
+                terraValue = 279088;
+            }
+            else if (bodyclass == "Water world" )
+            {
+                // Water worlds
+                baseTypeValue = 155581;
+                if (terraformable)
+                {
+                    terraValue = 279088;
+                }
+            }
+            else if (bodyclass == "Metal rich body")
+            {
+                // Metal rich worlds
+                baseTypeValue = 52292;
+            }
+            else if (bodyclass == "High metal content body")
+            {
+                // High metal content worlds
+                baseTypeValue = 23168;
+                if (terraformable)
+                {
+                    terraValue = 241607;
+                }
+            }
+            else if (bodyclass == "Rocky body")
+            {
+                // Rocky worlds
+                if (terraformable)
+                {
+                    terraValue = 223971;
+                }
+            }
+            else if (bodyclass == "Sudarsky class I gas giant")
+            {
+                // Class I gas giants
+                baseTypeValue = 3974;
+            }
+            else if (bodyclass == "Sudarsky class II gas giant")
+            {
+                // Class II gas giants
+                baseTypeValue = 23168;
+            }
+
+            // Calculate exploration scan values
+            double baseValue = baseTypeValue + (scanMultiplier * baseTypeValue * Math.Pow((double)earthmass, scanPower) / scanDivider);
+            double terraBonusValue = terraValue + (scanMultiplier * terraValue * Math.Pow((double)earthmass, scanPower) / scanDivider);
+            double value = baseValue + terraBonusValue;
+
+            if (dssEquipped == false)
+            {
+                value = value / dssDivider;
+            }
+            return (long?)Math.Round(value, 0);
         }
     }
 }

@@ -2,9 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EddiEvents
 {
@@ -18,10 +15,24 @@ namespace EddiEvents
         static FederationPromotionEvent()
         {
             VARIABLES.Add("rank", "The commander's new Federation rank");
+            VARIABLES.Add("LocalRank", "The commander's new Federation rank translated into the chosen labguage");
         }
 
         [JsonProperty("rating")]
         public string rank { get; private set; }
+
+        [JsonProperty("LocalRank")]
+        public string LocalRank
+        {
+            get
+            {
+                if (rank != null && rank != "")
+                {
+                    return FederationRating.FromName(rank).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public FederationPromotionEvent(DateTime timestamp, FederationRating rating) : base(timestamp, NAME)
         {

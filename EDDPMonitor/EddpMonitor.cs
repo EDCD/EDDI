@@ -1,21 +1,13 @@
 ﻿using Eddi;
-using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
 using NetMQ;
 using NetMQ.Sockets;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using Utilities;
 
 namespace EddiEddpMonitor
@@ -38,6 +30,11 @@ namespace EddiEddpMonitor
             return "EDDP monitor";
         }
 
+        public string MonitorLocalName()
+        {
+            return I18N.GetString("eddp_monitor_name");
+        }
+
         /// <summary>
         /// The version of the monitor; shows up in EDDI's logs
         /// </summary>
@@ -51,7 +48,7 @@ namespace EddiEddpMonitor
         /// </summary>
         public string MonitorDescription()
         {
-            return @"Monitor EDDP for changes in system control and state, and generate events that match the watch list.";
+            return I18N.GetString("eddp_monitor_desc");
         }
 
         public bool IsRequired()

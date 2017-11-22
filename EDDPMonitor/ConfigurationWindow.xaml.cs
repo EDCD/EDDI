@@ -1,6 +1,5 @@
 ﻿using Eddi;
 using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,7 +7,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using Utilities;
 
 namespace EddiEddpMonitor
@@ -18,6 +16,12 @@ namespace EddiEddpMonitor
     /// </summary>
     public partial class ConfigurationWindow : UserControl, INotifyPropertyChanged
     {
+        // localized text for delete button template
+        public static string DeleteBtnText
+        {
+            get { return I18N.GetString("eddp_monitor_delete_btn"); }
+        }
+
         private EddpConfiguration configuration;
 
         public List<KeyValuePair<string, string>> StatesPlusNone { get; set; }
@@ -38,14 +42,26 @@ namespace EddiEddpMonitor
         public ConfigurationWindow()
         {
             InitializeComponent();
+            I18NForComponents();
             DataContext = this;
 
             // Make a list of states plus a (anything) state that maps to NULL
             StatesPlusNone = new List<KeyValuePair<string, string>>();
-            StatesPlusNone.Add(new KeyValuePair<string, string>("(anything)", null));
+            StatesPlusNone.Add(new KeyValuePair<string, string>(I18N.GetString("eddp_monitor_anything"), null));
             StatesPlusNone.AddRange(State.STATES.Select(x => new KeyValuePair<string, string>(x.name, x.name)));
 
             configurationFromFile();
+        }
+
+        private void I18NForComponents()
+        {
+            par1.Text = I18N.GetString("eddp_monitor_p1");
+            watchData.Columns[0].Header = I18N.GetString("eddp_monitor_name_header");
+            watchData.Columns[1].Header = I18N.GetString("eddp_monitor_system_header");
+            watchData.Columns[2].Header = I18N.GetString("eddp_monitor_faction_header");
+            watchData.Columns[3].Header = I18N.GetString("eddp_monitor_state_header");
+            watchData.Columns[4].Header = I18N.GetString("eddp_monitor_max_dist_ship_header");
+            watchData.Columns[5].Header = I18N.GetString("eddp_monitor_max_dist_home_header");
         }
 
         private void configurationFromFile()
@@ -77,7 +93,7 @@ namespace EddiEddpMonitor
         private void eddpAddWatch(object sender, RoutedEventArgs e)
         {
             Watch watch = new Watch();
-            watch.Name = "New watch";
+            watch.Name = I18N.GetString("eddp_monitor_new_watch");
 
             configuration.watches.Add(watch);
             updateWatchesConfiguration();

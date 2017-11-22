@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -15,6 +12,14 @@ namespace EddiDataDefinitions
         private static readonly List<ExplorationRating> RATINGS = new List<ExplorationRating>();
 
         public string edname { get; private set; }
+
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(edname) ?? edname;
+            }
+        }
 
         public string name { get; private set; }
 

@@ -2,9 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities;
+using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -17,9 +16,27 @@ namespace EddiDataDefinitions
 
         public string edname { get; private set; }
 
+        [JsonIgnore]
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(edname) ?? edname;
+            }
+        }
+
         public string name { get; private set; }
 
         public string chromaticity { get; private set; }
+
+        [JsonIgnore]
+        public string LocalChromaticity
+        {
+            get
+            {
+                return I18N.GetString(chromaticity) ?? chromaticity;
+            }
+        }
 
         public decimal percentage { get; private set; }
 
@@ -107,7 +124,7 @@ namespace EddiDataDefinitions
         /// </summary>
         public static decimal solarradius(decimal radius)
         {
-            return radius / 695500000;
+            return radius / Constants.solarRadiusMeters;
         }
 
         /// <summary>
@@ -115,17 +132,23 @@ namespace EddiDataDefinitions
         /// </summary>
         public static decimal luminosity(decimal absoluteMagnitude)
         {
-            double solAbsoluteMagnitude = 4.83;
-
-            return (decimal)Math.Pow(Math.Pow(100, 0.2), (solAbsoluteMagnitude - (double)absoluteMagnitude));
+            return (decimal)Math.Pow(Math.Pow(100, 0.2), (Constants.solAbsoluteMagnitude - (double)absoluteMagnitude));
         }
 
         public static decimal temperature(decimal luminosity, decimal radius)
         {
-            double solLuminosity = 3.846e26;
-            double stefanBoltzmann = 5.670367e-8;
+            return (decimal)Math.Pow(((double)luminosity * Constants.solLuminosity) / 
+                (4 * Math.PI * Math.Pow((double)radius, 2) * Constants.stefanBoltzmann), 0.25);
+        }
 
-            return (decimal)Math.Pow(((double)luminosity * solLuminosity) / (4 * Math.PI * Math.Pow((double)radius, 2) * stefanBoltzmann), 0.25);
+        public static decimal DistanceFromStarForTemperature(double targetTempKelvin, double stellarRadiusMeters, double stellarTemperatureKelvin)
+        {
+            // Derived from Jackie Silver's Habitable Zone Calculator (https://forums.frontier.co.uk/showthread.php?t=127522&highlight=), used with permission
+            double top = Math.Pow(stellarRadiusMeters, 2.0) * Math.Pow(stellarTemperatureKelvin, 4.0);
+            double bottom = 4.0 * Math.Pow(targetTempKelvin, 4.0);
+            double distanceMeters = Math.Pow(top / bottom, 0.5);
+            double distancels = ( distanceMeters ) / Constants.lightSpeedMetersPerSecond; 
+            return Convert.ToDecimal(distancels);
         }
 
         public static decimal sanitiseCP(decimal cp)

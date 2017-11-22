@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Utilities;
+using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -18,11 +16,19 @@ namespace EddiDataDefinitions
 
         public string edname { get; private set; }
 
+        [JsonIgnore]
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(edname) ?? edname;
+            }
+        }
+
         private SecurityLevel(string edname, string name)
         {
             this.edname = edname;
             this.name = name;
-            
             SECURITYLEVELS.Add(this);
         }
 

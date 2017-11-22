@@ -1,16 +1,12 @@
 ﻿using EddiDataDefinitions;
+using EddiDataProviderService;
 using Newtonsoft.Json;
 using RestSharp;
-using RestSharp.Deserializers;
 using RestSharp.Serializers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading;
 using Utilities;
 
@@ -519,7 +515,6 @@ namespace EddiStarMapService
             {
                 foreach (StarMapResponseLogEntry entry in response.logs)
                 {
-                    Logging.Debug("Log entry found for " + entry.system);
                     if (vals.ContainsKey(entry.system))
                     {
                         vals[entry.system].visits = vals[entry.system].visits + 1;
@@ -544,8 +539,38 @@ namespace EddiStarMapService
             }
             return vals;
         }
-    }
 
+        public void Sync(DateTime? since = null)
+        {
+            Logging.Info("Syncing with EDSM");
+            try
+            {
+                Dictionary<string, StarMapLogInfo> systems = getStarMapLog(since);
+                Dictionary<string, string> comments = getStarMapComments();
+                int total = systems.Count;
+                foreach (string system in systems.Keys)
+                {
+                    StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
+                    CurrentStarSystem.visits = systems[system].visits;
+                    CurrentStarSystem.lastvisit = systems[system].lastVisit;
+                    if (comments.ContainsKey(system))
+                    {
+                        CurrentStarSystem.comment = comments[system];
+                    }
+                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                }
+                StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
+                starMapConfiguration.lastSync = DateTime.UtcNow;
+                starMapConfiguration.ToFile();
+                Logging.Info("EDSM sync completed");
+            }
+            catch (EDSMException edsme)
+            {
+                Logging.Debug("EDSM error received: " + edsme.Message);
+            }
+        }
+    }
+    
     // response from the Star Map distance API
     class StarMapDistanceResponse
     {

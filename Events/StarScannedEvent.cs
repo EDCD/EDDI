@@ -1,11 +1,6 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Utilities;
 
 namespace EddiEvents
 {
@@ -13,8 +8,15 @@ namespace EddiEvents
     {
         public const string NAME = "Star scanned";
         public const string DESCRIPTION = "Triggered when you complete a scan of a stellar body";
-        // public static string SAMPLE = "{ \"timestamp\":\"2016-10-05T10:13:55Z\", \"event\":\"Scan\", \"BodyName\":\"Col 285 Sector RS-K c8-5 A\", \"DistanceFromArrivalLS\":0.000000, \"StarType\":\"TTS\", \"StellarMass\":0.449219, \"Radius\":458926400.000000, \"AbsoluteMagnitude\":8.287720, \"Age_MY\":51, \"SurfaceTemperature\":3209.000000, \"Luminosity\":\"Va\", \"SemiMajorAxis\":352032544.000000, \"Eccentricity\":0.027010, \"OrbitalInclination\":74.195038, \"Periapsis\":330.750244, \"OrbitalPeriod\":36441.519531, \"RotationPeriod\":203102.843750 }";
         public static string SAMPLE = "{ \"timestamp\":\"2017-08-28T01:06:03Z\", \"event\":\"Scan\", \"BodyName\":\"LFT 926 B\", \"DistanceFromArrivalLS\":353.886200, \"StarType\":\"L\", \"StellarMass\":0.121094, \"Radius\":202889536.000000, \"AbsoluteMagnitude\":12.913437, \"Age_MY\":9828, \"SurfaceTemperature\":1664.000000, \"Luminosity\":\"V\", \"SemiMajorAxis\":78877065216.000000, \"Eccentricity\":0.037499, \"OrbitalInclination\":33.005280, \"Periapsis\":338.539429, \"OrbitalPeriod\":30585052.000000, \"RotationPeriod\":91694.914063, \"AxialTilt\":0.000000, \"Rings\":[ { \"Name\":\"LFT 926 B A Belt\", \"RingClass\":\"eRingClass_MetalRich\", \"MassMT\":1.4034e+13, \"InnerRad\":3.24e+08, \"OuterRad\":1.1938e+09 } ] }";
+
+        // Scan value calculation constants
+        public const double dssDivider = 2.4;
+        public const double scanDivider = 66.25;
+
+        // Scan habitable zone constants
+        public const double maxHabitableTempKelvin = 315;
+        public const double minHabitableTempKelvin = 223.15;
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
@@ -28,11 +30,11 @@ namespace EddiEvents
             VARIABLES.Add("radius", "The radius of the star that has been scanned, in metres");
             VARIABLES.Add("solarradius", "The radius of the star that has been scanned, compared to Sol");
             VARIABLES.Add("radiusprobability", "The probablility of finding a star of this class with this radius");
-            VARIABLES.Add("absolutemagnitude", "The absolute magnitude of the star that has been scanned");
+            VARIABLES.Add("absolutemagnitude", "The absolute (bolometric) magnitude of the star that has been scanned");
             VARIABLES.Add("luminosity", "The luminosity of the star that has been scanned");
             VARIABLES.Add("luminosityclass", "The luminosity class of the star that has been scanned");            
             VARIABLES.Add("tempprobability", "The probablility of finding a star of this class with this temperature");
-            VARIABLES.Add("age", "The age of the star that has been scanned, in years (rounded to millions of years)");
+            VARIABLES.Add("age", "The age of the star that has been scanned, in millions of years");
             VARIABLES.Add("ageprobability", "The probablility of finding a star of this class with this age");
             VARIABLES.Add("temperature", "The temperature of the star that has been scanned");
             VARIABLES.Add("distancefromarrival", "The distance in LS from the main star");
@@ -43,6 +45,9 @@ namespace EddiEvents
             VARIABLES.Add("orbitalinclination", "");
             VARIABLES.Add("periapsis", "");
             VARIABLES.Add("rings", "The star's rings");
+            VARIABLES.Add("estimatedvalue", "The estimated value of the current scan");
+            VARIABLES.Add("estimatedhabzoneinner", "The estimated inner radius of the habitable zone of the scanned star, in light seconds, not considering other stars in the system");
+            VARIABLES.Add("estimatedhabzoneouter", "The estimated outer radius of the habitable zone of the scanned star, in light seconds, not considering other stars in the system");
         }
 
         public string name { get; private set; }
@@ -91,7 +96,13 @@ namespace EddiEvents
 
         public List<Ring> rings { get; private set; }
 
-        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings) : base(timestamp, NAME)
+        public decimal? estimatedhabzoneinner { get; private set; }
+
+        public decimal? estimatedhabzoneouter { get; private set; }
+
+        public long? estimatedvalue { get; private set; }
+
+        public StarScannedEvent(DateTime timestamp, string name, string stellarclass, decimal solarmass, decimal radius, decimal absolutemagnitude, string luminosityclass, long age, decimal temperature, decimal distancefromarrival, decimal? orbitalperiod, decimal rotationperiod, decimal? semimajoraxis, decimal? eccentricity, decimal? orbitalinclination, decimal? periapsis, List<Ring> rings, bool dssEquipped) : base(timestamp, NAME)
         {
             this.name = name;
             this.stellarclass = stellarclass;
@@ -119,7 +130,48 @@ namespace EddiEvents
                 tempprobability = StarClass.sanitiseCP(starClass.tempCP(this.temperature));
                 ageprobability = StarClass.sanitiseCP(starClass.ageCP(this.age));
                 chromaticity = starClass.chromaticity;
+                if (radius != 0 && temperature != 0)
+                {
+                    // Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less)
+                    estimatedhabzoneinner = StarClass.DistanceFromStarForTemperature(maxHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
+                    this.estimatedhabzoneinner = estimatedhabzoneinner;
+
+                    // Maximum estimated single-star habitable zone (target black body temperature of 223.15°K / -50°C / -58°F or more)
+                    estimatedhabzoneouter = StarClass.DistanceFromStarForTemperature(minHabitableTempKelvin, Convert.ToDouble(radius), Convert.ToDouble(temperature));
+                    this.estimatedhabzoneouter = estimatedhabzoneouter;
+                }
             }
+            this.estimatedvalue = estimateValue(dssEquipped);
+        }
+
+        private long? estimateValue(bool dssEquipped)
+        {
+            // Credit to MattG's thread at https://forums.frontier.co.uk/showthread.php/232000-Exploration-value-formulae for scan value formulas
+            // 'bodyDataConstant' is a derived constant from MattG's thread for calculating scan values.
+            int baseValue = 2880;
+            double value;
+
+            // Override constants for specific types of bodies
+            if ((stellarclass == "H") || (stellarclass == "N"))
+            {
+                // Black holes and Neutron stars
+                baseValue = 54309;
+            }
+            else if (stellarclass.StartsWith("D") && (stellarclass.Length <= 3))
+            {
+                // White dwarves
+                baseValue = 33737;
+            }
+
+            // Calculate exploration scan values
+            value = baseValue + ((double)solarmass * baseValue / scanDivider);
+
+            if (dssEquipped == false)
+            {
+                value = value / dssDivider;
+            }
+            
+            return (long?)Math.Round(value, 0);
         }
     }
 }

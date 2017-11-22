@@ -1,7 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Utilities;
 using System.ComponentModel;
@@ -256,6 +255,15 @@ namespace EddiDataDefinitions
         // The name in Elite: Dangerous' database
         [JsonIgnore]
         public string EDName { get; set; }
+
+        [JsonIgnore]
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(EDName) ?? EDName;
+            }
+        }
 
         public Ship()
         {

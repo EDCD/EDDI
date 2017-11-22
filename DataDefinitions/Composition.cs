@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -15,6 +13,15 @@ namespace EddiDataDefinitions
         private static readonly List<Composition> COMPOSITIONS = new List<Composition>();
 
         public string edname { get; private set; }
+
+        [JsonIgnore]
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(edname) ?? edname;
+            }
+        }
 
         public string name { get; private set; }
 

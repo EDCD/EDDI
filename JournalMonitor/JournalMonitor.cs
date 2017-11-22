@@ -1,5 +1,4 @@
 ﻿using Eddi;
-using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiShipMonitor;
@@ -10,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Utilities;
 
@@ -58,6 +58,7 @@ namespace EddiJournalMonitor
                     {
                         Logging.Warn("Event without timestamp; using current time");
                     }
+                    EDDI.Instance.JournalTimeStamp = timestamp;
 
                     // Every event has an event field
                     if (!data.ContainsKey("event"))
@@ -562,6 +563,18 @@ namespace EddiJournalMonitor
                                 decimal? orbitalinclination = getOptionalDecimal(data, "OrbitalInclination");
                                 decimal? periapsis = getOptionalDecimal(data, "Periapsis");
 
+                                // Check whether we have a detailed discovery scanner on board the current ship
+                                bool dssEquipped = false;
+                                Ship ship = EDDI.Instance.CurrentShip;
+                                foreach (Compartment compartment in ship.compartments)
+                                {
+                                    if ((compartment.module.name == "Detailed Surface Scanner") && (compartment.module.enabled))
+                                    {
+                                        dssEquipped = true;
+                                    }
+                                }
+
+                                // Rings
                                 data.TryGetValue("Rings", out val);
                                 List<object> ringsData = (List<object>)val;
                                 List<Ring> rings = new List<Ring>();
@@ -587,10 +600,10 @@ namespace EddiJournalMonitor
                                     decimal absoluteMagnitude = getDecimal(data, "AbsoluteMagnitude");
                                     string luminosityClass = getString(data, "Luminosity");
                                     data.TryGetValue("Age_MY", out val);
-                                    long age = (long)val * 1000000;
+                                    long ageMegaYears = (long)val;
                                     decimal temperature = getDecimal(data, "SurfaceTemperature");
 
-                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, luminosityClass, age, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings) { raw = line });
+                                    events.Add(new StarScannedEvent(timestamp, name, starType, stellarMass, radius, absoluteMagnitude, luminosityClass, ageMegaYears, temperature, distancefromarrival, orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, dssEquipped) { raw = line });
                                     handled = true;
                                 }
                                 else
@@ -650,7 +663,7 @@ namespace EddiJournalMonitor
                                     string atmosphere = getString(data, "Atmosphere");
                                     Volcanism volcanism = Volcanism.FromName(getString(data, "Volcanism"));
 
-                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radius, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState, axialTilt) { raw = line });
+                                    events.Add(new BodyScannedEvent(timestamp, name, bodyClass, earthMass, radius, gravity, temperature, pressure, tidallyLocked, landable, atmosphere, volcanism, distancefromarrival, (decimal)orbitalperiod, rotationperiod, semimajoraxis, eccentricity, orbitalinclination, periapsis, rings, reserves, materials, terraformState, axialTilt, dssEquipped) { raw = line });
                                     handled = true;
                                 }
                             }
@@ -729,6 +742,21 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
+                        case "ShipyardArrived":
+                            {
+                                object val;
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "ShipType");
+                                string system = getString(data, "System");
+                                decimal distance = getDecimal(data, "Distance");
+                                long? price = getOptionalLong(data, "TransferPrice");
+                                long? time = getOptionalLong(data, "TransferTime");
+                                string station = getString(data, "Station");
+                                events.Add(new ShipArrivedEvent(timestamp, ship, shipId, system, distance, price, time, station) { raw = line });
+                            }
+                            handled = true;
+                            break;
                         case "ShipyardSwap":
                             {
                                 object val;
@@ -762,6 +790,23 @@ namespace EddiJournalMonitor
                                 long? time = getOptionalLong(data, "TransferTime");
 
                                 events.Add(new ShipTransferInitiatedEvent(timestamp, ship, shipId, system, distance, price, time) { raw = line });
+
+                                // Generate secondary event when the ship is arriving
+                                if (time.HasValue)
+                                {
+                                    ShipArrived();
+                                    async void ShipArrived()
+                                    {
+                                        // Add a bit of context
+                                        string station = EDDI.Instance.CurrentStation.name;
+
+                                        await Task.Delay((int)time * 1000);
+                                        line = line.Replace("ShipyardTransfer", "ShipyardArrived");
+                                        line = line.Replace(timestamp.ToString("s", System.Globalization.CultureInfo.InvariantCulture), timestamp.AddSeconds((double)time).ToUniversalTime().ToString());
+                                        line = line.Replace("}", ",\"Station\":\"" + station + "\"}"); // Include the station from which the transfer was requested
+                                        ForwardJournalEntry(line, EDDI.Instance.eventHandler);
+                                    }
+                                }
                             }
                             handled = true;
                             break;
@@ -785,6 +830,26 @@ namespace EddiJournalMonitor
                                 long serverId = (long)val;
 
                                 events.Add(new ModuleTransferEvent(timestamp, ship, shipId, storageSlot, serverId, module, transferCost, transferTime) { raw = line });
+
+                                // Generate a secondary event when the module is arriving
+
+                                if (transferTime.HasValue)
+                                {
+                                    ModuleArrived();
+                                    async void ModuleArrived()
+                                    {
+                                        // Add a bit of context
+                                        string system = EDDI.Instance.CurrentStarSystem.name;
+                                        string station = EDDI.Instance.CurrentStation.name;
+
+                                        await Task.Delay((int)transferTime * 1000);
+                                        line = line.Replace("FetchRemoteModule", "ModuleArrived");
+                                        line = line.Replace(timestamp.ToString("s", System.Globalization.CultureInfo.InvariantCulture), timestamp.AddSeconds((double)transferTime).ToUniversalTime().ToString());
+                                        line = line.Replace("}", ",\"System\":\"" + system + "\"}"); // Include the system from which the transfer was requested
+                                        line = line.Replace("}", ",\"Station\":\"" + station + "\"}"); // Include the station from which the transfer was requested
+                                        ForwardJournalEntry(line, EDDI.Instance.eventHandler);
+                                    }
+                                }
                             }
                             handled = true;
                             break;
@@ -818,6 +883,32 @@ namespace EddiJournalMonitor
                                 }
 
                                 events.Add(new ModulesStoredEvent(timestamp, ship, shipId, slots, modules) { raw = line });
+                            }
+                            handled = true;
+                            break;
+                        case "ModuleArrived":
+                            {
+                                object val;
+
+                                data.TryGetValue("ShipID", out val);
+                                int shipId = (int)(long)val;
+                                string ship = getString(data, "Ship");
+
+                                Module module = ModuleDefinitions.fromEDName(getString(data, "StoredItem"));
+                                data.TryGetValue("TransferCost", out val);
+                                long transferCost = (long)val;
+                                long? transferTime = getOptionalLong(data, "TransferTime");
+
+                                // Probably not useful. We'll get these but we won't tell the end user about them
+                                data.TryGetValue("StorageSlot", out val);
+                                int storageSlot = (int)(long)val;
+                                data.TryGetValue("ServerId", out val);
+                                long serverId = (long)val;
+
+                                string system = getString(data, "System");
+                                string station = getString(data, "Station");
+
+                                events.Add(new ModuleArrivedEvent(timestamp, ship, shipId, storageSlot, serverId, module, transferCost, transferTime, system, station) { raw = line });
                             }
                             handled = true;
                             break;
@@ -1811,7 +1902,15 @@ namespace EddiJournalMonitor
                                 events.Add(new FriendsEvent(timestamp, status, friend) { raw = line });
                                 handled = true;
                                 break;
-                            }                            
+                            }
+                        case "JetConeBoost":
+                            {
+                                decimal boost = getDecimal(data, "BoostValue");
+
+                                events.Add(new JetConeBoostEvent(timestamp, boost) { raw = line });
+                                handled = true;
+                                break;
+                            }
                         case "RedeemVoucher":
                             {
                                 object val;
@@ -2547,6 +2646,11 @@ namespace EddiJournalMonitor
             return "Journal monitor";
         }
 
+        public string MonitorLocalName()
+        {
+            return I18N.GetString("journal_monitor_name");
+        }
+
         public string MonitorVersion()
         {
             return "1.0.0";
@@ -2554,7 +2658,7 @@ namespace EddiJournalMonitor
 
         public string MonitorDescription()
         {
-            return "Monitor Elite: Dangerous' journal.log for many common events.  This should not be disabled unless you are sure you know what you are doing, as it will result in many functions inside EDDI no longer working";
+            return I18N.GetString("journal_monitor_desc");
         }
 
         public bool IsRequired()

@@ -2,9 +2,7 @@
 using EddiEvents;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Utilities;
 
 namespace EddiEddpMonitor
 {
@@ -20,7 +18,9 @@ namespace EddiEddpMonitor
             VARIABLES.Add("match", "The name of the pattern that this event matched");
             VARIABLES.Add("system", "The name of the system");
             VARIABLES.Add("oldstate", "The old state of the system");
+            VARIABLES.Add("LocalOldState", "The Localized old state of the system");
             VARIABLES.Add("newstate", "The new state of the system");
+            VARIABLES.Add("LocalNewState", "The Localized new state of the system");
         }
 
         public string match { get; private set; }
@@ -28,8 +28,22 @@ namespace EddiEddpMonitor
         public string system { get; private set; }
 
         public string oldstate { get; private set; }
+        public string LocalOldState
+        {
+            get
+            {
+                return I18N.GetString(oldstate) ?? oldstate;
+            }
+        }
 
         public string newstate { get; private set; }
+        public string LocalNewState
+        {
+            get
+            {
+                return I18N.GetString(newstate) ?? newstate;
+            }
+        }
 
         public SystemStateChangedEvent(DateTime timestamp, string match, string system, string oldstate, string newstate) : base(timestamp, NAME)
         {

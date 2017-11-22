@@ -1,12 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiSpeechService;
-using EddiVoiceAttackResponder;
 using System.Collections.Generic;
 using System;
-using Eddi;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using Newtonsoft.Json;
+using Utilities;
 
 namespace Tests
 {
@@ -36,6 +35,12 @@ namespace Tests
         //    VoiceAttackPlugin.updateSystem("LFT 926");
         //    VoiceAttackPlugin.VA_Invoke1("system", ref state, ref shortIntValues, ref textValues, ref intValues, ref decimalValues, ref booleanValues, ref dateTimeValues, ref extendedValues);
         //}
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            I18N.SetLang("en"); //for tests to works properly, lang needs to by defaultLang (en)
+        }
 
         [TestMethod]
         public void TestOutfittingCosts()

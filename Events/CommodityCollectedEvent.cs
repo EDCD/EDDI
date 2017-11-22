@@ -2,9 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EddiEvents
 {
@@ -18,11 +15,27 @@ namespace EddiEvents
         static CommodityCollectedEvent()
         {
             VARIABLES.Add("commodity", "The name of the commodity collected");
+            VARIABLES.Add("LocalCommodity", "The translation of the commodity into the chosen language");
             VARIABLES.Add("stolen", "If the cargo is stolen");
         }
 
         [JsonProperty("commodity")]
         public string commodity { get; private set; }
+
+        [JsonProperty("LocalCommodity")]
+        public string LocalCommodity
+        {
+            get
+            {
+                if (commodity != null && commodity != "")
+                {
+                    return CommodityDefinitions.FromName(commodity).LocalName;
+                }
+                else return null;
+            }
+        }
+
+
 
         [JsonProperty("stolen")]
         public bool stolen { get; private set; }

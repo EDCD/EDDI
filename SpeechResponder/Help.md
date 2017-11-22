@@ -25,7 +25,7 @@ In addition to the basic Cottle features EDDI has a number of features that prov
 
 ### P()
 
-This function will attempt to provide phonetic pronunciation for the supplied text.
+This function will attempt to provide phonetic pronunciation for the supplied text. This function uses SSML tags.
 
 P() takes a single argument of the string for which to alter the pronunciation.
 
@@ -57,7 +57,7 @@ Note that Occasionally() works on random numbers rather than counters, so in the
 
 ### Pause()
 
-This function will pause the speech for a given amount of time.
+This function will pause the speech for a given amount of time. This function uses SSML tags.
 
 Pause() takes one argument: the number of milliseconds to pause.
 
@@ -75,13 +75,24 @@ Common usage of this is to keep track of the cumulative or persistent informatio
 
     {SetState("distance_travelled_today", state.distance_travelled_today + event.distance)}
 
+### Emphasize()
+
+This function allows you to give emphasis to specific words (to the extent supported by the voice you are using - your mileage may vary). This function uses SSML tags.
+
+Emphasize() takes one mandatory argument: the text to speak with emphasis. If no secondary argument is specified, it shall default to a strong emphasis.
+Emphasize() also takes one optional argument: the degreee of emphasis to place on the text (legal values for the degree of emphasis include "strong", "moderate", "none" and "reduced").
+
+Common usage of this is to provide a more human-sounding reading of text by allowing the application of emphasis:
+
+   That is a {Emphasize('beautiful', 'strong')} ship you have there.
+
 ### Humanise()
 
 This function will turn its argument into a more human number, for example turning 31245 in to "just over thirty thousand".
 
 Humanise() takes one argument: the number to humanise.
 
-Common usage of this is to provide human-sounding numbers when speacking rather than saying every digit, for example:
+Common usage of this is to provide human-sounding numbers when speaking rather than saying every digit, for example:
 
    You have {Humanise(cmdr.credits)} credits.
 
@@ -95,6 +106,43 @@ Common usage of this is to provide a more human-sounding reading of a string of 
 
    Star luminosity class: {Spacialise(event.luminosityclass)}.
 
+### SpeechPitch()
+
+This function allows you to dynamically adjust the pitch of the spoken speech. This function uses SSML tags.
+
+SpeechPitch() takes two mandatory arguments: the text to speak and the pitch at which to speak it (legal values for the pitch include "x-low", "low", "medium", "high", "x-high", "default", as well as percentage values like "-20%" or "+10%").
+
+Common usage of this is to provide a more human-sounding reading of text with variation in the speech pitch:
+
+   {SpeechPitch('Ok, who added helium to the life support unit?', 'high')}
+   {Pause(1000)}
+   {SpeechPitch('Countering with sodium hexa-flouride.', 'x-low')}
+   Equilibrium restored.
+
+### SpeechRate()
+
+This function allows you to dynamically adjust the rate of the spoken speech. This function uses SSML tags.
+
+SpeechRate() takes two mandatory arguments: the text to speak and the speech rate at which to speak it (legal values for the speech rate include "x-slow", "slow", "medium", "fast", "x-fast", "default", as well as percentage values like "-20%" or "+20%").
+
+Common usage of this is to provide a more human-sounding reading of text with variation in the speech rate:
+
+   {SpeechRate('The quick brown fox', 'x-slow')}
+   {SpeechRate('jumped over the lazy dog', 'fast')}.
+
+### SpeechVolume()
+
+This function allows you to dynamically adjust the volume of the spoken speech. This function uses SSML tags.
+
+##### Please take care with decibel values. If accidentally you blow out your speakers, that's totally on you. 
+SpeechRate() takes two mandatory arguments: the text to speak and the valume at which to speak it (legal values for the speech volume include "silent", "x-soft", "soft", "medium", "loud", "x-loud", "default", as well as relative decibel values like "-6dB").
+A value of "+0dB" means no change of volume, "+6dB" means approximately twice the current amplitude, "-6dB" means approximately half the current amplitude.
+
+Common usage of this is to provide a more human-sounding reading of text with variation in speech volume:
+
+   {SpeechVolume('The quick brown fox', 'loud')}
+   {SpeechVolume('jumped over the lazy dog', 'x-soft')}.
+
 ### StartsWithVowel()
 
 This function returns true or false depending on whether the first letter in a string is a vowel.
@@ -107,7 +155,7 @@ Common usage of this is to select the word that should proceed the string (e.g. 
 
 ### Play()
 
-This function will play an audio file as supplied in the argument.  If this is in the result of a template then all other text is removed; it is not possible for EDDI to both play an audio file and speak in the same response.
+This function will play an audio file as supplied in the argument.  If this is in the result of a template then all other text is removed; it is not possible for EDDI to both play an audio file and speak in the same response. This function uses SSML tags.
 
 Play() takes one argument: the path to the file to play.  This file must be a '.wav' file.  Any backslashes for path separators must be escaped, so '\\' must be written as '\\\\'
 
@@ -129,7 +177,7 @@ Common usage of this is to provide clear callsigns and idents for ships, for exa
 
 This function will provide the name of your ship.
 
-If you have set up a phonetic name for your ship it will return that, otherwise if you have set up a name for your ship it will return that.
+If you have set up a phonetic name for your ship it will return that, otherwise if you have set up a name for your ship it will return that. The phonetic name uses SSML tags.
 
 ShipName() takes an optional ship ID for which to provide the name. If no argument is supplied then it provides the name for your current ship.
 
@@ -294,6 +342,17 @@ This function will provide full information for a security level given its name.
 SecurityLevelDetails() takes a single argument of the security level for which you want more information.
 
 At current this does not have a lot of use as the security level object only contains its name, but expect it to be expanded in future.
+
+### List()
+
+This function will return a humanised list of items from an array (e.g. this, that, and the other thing).
+
+List() takes a single argument, the array variable with items you want listed.
+
+Common usage is to convert an array to a list, for example:
+
+    {set systemsrepaired to ['the hull', 'the cockpit', 'corroded systems']}
+    The limpet has repaired {List(systemsrepaired)}.
 
 ### Log()
 

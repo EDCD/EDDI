@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -15,10 +13,24 @@ namespace EddiDataDefinitions
         public long EDDBID { get; set; }
 
         /// <summary>The name</summary>
-        public string name { get; set;  }
+        public string name { get; set; }
 
         /// <summary>The government</summary>
         public string government { get; set; }
+
+        /// <summary>The Local-ized Government</summary>
+        [JsonIgnore]
+        public string LocalGovernment
+        {
+            get
+            {
+                if (government != null && government != "")
+                {
+                    return Government.FromName(government).LocalName;
+                }
+                else return null;
+            }
+        }
 
         /// <summary>The faction</summary>
         public string faction { get; set; }
@@ -29,8 +41,36 @@ namespace EddiDataDefinitions
         /// <summary>The state of the system</summary>
         public string state { get; set; }
 
+        /// <summary>The Local-ized State of the system</summary>
+        [JsonIgnore]
+        public string LocalState
+        {
+            get
+            {
+                if (state != null && state != "")
+                {
+                    return State.FromName(state).LocalName;
+                }
+                else return null;
+            }
+        }
+
         /// <summary>The primary economy of the station</summary>
         public string primaryeconomy { get; set; }
+
+        /// <summary>The Local-ized primary Economy of the station</summary>
+        [JsonIgnore]
+        public string LocalEconomy
+        {
+            get
+            {
+                if (primaryeconomy != null && primaryeconomy != "")
+                {
+                    return Economy.FromName(primaryeconomy).LocalName;
+                }
+                else return null;
+             }
+        }
 
         /// <summary>How far this is from the star</summary>
         public long? distancefromstar { get; set; }

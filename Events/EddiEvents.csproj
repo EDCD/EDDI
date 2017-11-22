@@ -66,6 +66,7 @@
     <Compile Include="DatalinkMessageEvent.cs" />
     <Compile Include="CommunityGoalEvent.cs" />
     <Compile Include="DataVoucherAwardedEvent.cs" />
+    <Compile Include="JetConeBoostEvent.cs" />
     <Compile Include="NavBeaconScanEvent.cs" />
     <Compile Include="CrewMemberRoleChangedEvent.cs" />
     <Compile Include="CrewMemberLaunchedEvent.cs" />

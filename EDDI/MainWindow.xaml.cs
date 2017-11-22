@@ -7,14 +7,12 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
-using System.Net;
 using System.Speech.Synthesis;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using Utilities;
 
@@ -38,7 +36,6 @@ namespace Eddi
         public MainWindow(bool fromVA = false)
         {
             InitializeComponent();
-
             this.fromVA = fromVA;
 
             // Start the EDDI instance
@@ -51,11 +48,11 @@ namespace Eddi
             //// Need to set up the correct information in the hero text depending on from where we were started
             if (fromVA)
             {
-                heroText.Text = "Any changes made here will take effect automatically in VoiceAttack.  You can close this window when you have finished.";
+                heroText.Text = I18N.GetString("change_affect_va");
             }
             else
             {
-                heroText.Text = "If you are using VoiceAttack then please close this window before you start VoiceAttack for your changes to take effect.  You can access this window from VoiceAttack with the \"Configure EDDI\" command.";
+                heroText.Text = I18N.GetString("if_using_va");
             }
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
@@ -76,11 +73,11 @@ namespace Eddi
                 profile = CompanionAppService.Instance.Profile();
                 if (profile == null)
                 {
-                    setUpCompanionAppComplete("Your connection to the Frontier API is good but experiencing temporary issues.  Your information should be available soon");
+                    setUpCompanionAppComplete(I18N.GetString("frontier_api_temp_nok"));
                 }
                 else
                 {
-                    setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
+                    setUpCompanionAppComplete(I18N.GetStringWithArgs("frontier_api_ok", new string[]{profile.Cmdr.name}));
                 }
             }
             catch (Exception)
@@ -165,7 +162,7 @@ namespace Eddi
                         skeleton.panel.Children.Add(monitorConfiguration);
                     }
 
-                    TabItem item = new TabItem { Header = monitor.MonitorName() };
+                    TabItem item = new TabItem { Header = monitor.MonitorLocalName() };
                     item.Content = skeleton;
                     tabControl.Items.Add(item);
                 }
@@ -203,7 +200,70 @@ namespace Eddi
                 tabControl.Items.Add(item);
             }
 
+            chooseLanguageDropDown.ItemsSource = I18N.GetAvailableLangs();
+            chooseLanguageDropDown.SelectedItem = I18N.GetLang();
+            // Setting the handler there to avoid EDDI to restart indefinitely
+            chooseLanguageDropDown.SelectionChanged += (sender, e) =>
+            {
+                EDDIConfiguration conf = EDDIConfiguration.FromFile();
+                conf.Lang = chooseLanguageDropDown.SelectedValue.ToString();
+                conf.ToFile();
+                // Restarting EDDI
+                Process.Start(Application.ResourceAssembly.Location);
+                Application.Current.Shutdown();
+            };
+            I18NForComponents();
+
             EDDI.Instance.Start();
+        }
+
+        private void I18NForComponents()
+        {
+            versionHyperlinkText.Text = I18N.GetString("version_hyperlink");
+            upgradeButton.Content = I18N.GetString("upgrade_button");
+            statusPreText.Text = I18N.GetString("status_pre_text");
+            par0.Text = I18N.GetString("pres_par0");
+            par1.Text = I18N.GetString("pres_par1");
+            par2.Text = I18N.GetString("pres_par2");
+            par3.Text = I18N.GetString("pres_par3");
+            par4.Text = I18N.GetString("pres_par4");
+            wikiHyperLink.Text = I18N.GetString("wiki_hyperlink");
+            verboseLoggingText.Text = I18N.GetString("verbose_logging");
+            logExplaination.Text = I18N.GetString("log_explaination");
+            githubIssueButton.Content = I18N.GetString("report_issue");
+            accessBetaText.Text = I18N.GetString("access_beta");
+            cmdDetailsTab.Header = I18N.GetString("tab_cmd_details_header");
+            eddi2Text.Text = I18N.GetString("tab_cmd_par1");
+            eddi3Text.Text = I18N.GetString("tab_cmd_par2");
+            eddiHomeSystemLabel.Content = I18N.GetString("tab_cmd_system");
+            eddiHomeStationLabel.Content = I18N.GetString("tab_cmd_station");
+            eddiInsuranceLabel.Content = I18N.GetString("tab_cmd_insurance");
+            frontierAPITab.Header = I18N.GetString("tab_frontier_header");
+            frontierAPITabDesc.Text = I18N.GetString("tab_frontier_desc");
+            companionAppResetText.Text = I18N.GetString("tab_frontier_reset_desc");
+            companionAppResetButton.Content = I18N.GetString("next");
+            companionAppText.Text = I18N.GetString("frontier_api_no_logins");
+            companionAppEmailLabel.Content = I18N.GetString("label_email");
+            companionAppPasswordLabel.Content = I18N.GetString("label_password");
+            companionAppNextButton.Content = I18N.GetString("next");
+            companionAppCodeLabel.Content = I18N.GetString("label_code");
+            ttsTab.Header = I18N.GetString("tab_tts_header");
+            ttsText.Text = I18N.GetString("tab_tts_desc");
+            ttsVoiceLabel.Content = I18N.GetString("tab_tts_voice_label");
+            ttsVolumeLabel.Content = I18N.GetString("tab_tts_volume_label");
+            ttsRateLabel.Content = I18N.GetString("tab_tts_rate_label");
+            ttsEffectsLevelLabel.Content = I18N.GetString("tab_tts_level_label");
+            ttsDistortLabel.Content = I18N.GetString("tab_tts_distort_label");
+            ttsTestShipLabel.Content = I18N.GetString("tab_tts_test_ship_label");
+            ttsTestButton.Content = I18N.GetString("tab_tts_test_button");
+            ttsTestDamagedButton.Content = I18N.GetString("tab_tts_test_damaged_button");
+            ttsPhoneticSpeechDesc.Text = I18N.GetString("tab_tts_phonetic_speech_desc");
+            disableSsmltLabel.Content = I18N.GetString("tts_tab_disable_phonetic_speech_label");
+            SSmlnote.Content = I18N.GetString("tts_tab_disable_phonetic_speech_note");
+            ICAODesc.Text = I18N.GetString("tts_tab_icao_desc");
+            enableIcaoLabel.Content = I18N.GetString("tts_tab_icao_label");
+            ttsTestDesc.Text = I18N.GetString("tts_tab_test_desc");
+            chooseLanguageText.Text = I18N.GetString("choose_lang_label");
         }
 
         // Handle changes to the eddi tab
@@ -293,7 +353,7 @@ namespace Eddi
 
             if (EDDI.Instance.UpgradeVersion != null)
             {
-                statusText.Text = "Version " + EDDI.Instance.UpgradeVersion + " is available";
+                statusText.Text = I18N.GetStringWithArgs("update_message", new string[] { EDDI.Instance.UpgradeVersion });
                 // Do not show upgrade button if EDDI is started from VA
                 upgradeButton.Visibility = EDDI.FromVA ? Visibility.Collapsed : Visibility.Visible;
             }
@@ -302,11 +362,11 @@ namespace Eddi
                 upgradeButton.Visibility = Visibility.Collapsed;
                 if (CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
                 {
-                    statusText.Text = "Frontier API connection not operational";
+                    statusText.Text = I18N.GetString("frontier_api_nok");
                 }
                 else
                 {
-                    statusText.Text = "Operational";
+                    statusText.Text = I18N.GetString("operational");
                 }
             }
         }
@@ -347,11 +407,11 @@ namespace Eddi
                         }
                         if (profile == null)
                         {
-                            setUpCompanionAppComplete("Your connection to the Frontier API is good but experiencing temporary issues.  Your information should be available soon");
+                            setUpCompanionAppComplete(I18N.GetString("frontier_api_temp_nok"));
                         }
                         else
                         {
-                            setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
+                            setUpCompanionAppComplete(I18N.GetStringWithArgs("frontier_api_ok", new string[] { profile.Cmdr.name }));
                             //setShipyardFromConfiguration();
                         }
                     }
@@ -366,7 +426,7 @@ namespace Eddi
                 }
                 catch (Exception)
                 {
-                    companionAppText.Text = "Unable to log in.  This is usually a temporary issue with Frontier's service; please try again later";
+                    companionAppText.Text = I18N.GetString("login_nok_frontier_service");
                 }
             }
             else if (companionAppCodeText.Visibility == Visibility.Visible)
@@ -380,7 +440,7 @@ namespace Eddi
                     profile = CompanionAppService.Instance.Profile();
                     if (profile != null)
                     {
-                        setUpCompanionAppComplete("Your connection to the Frontier API is operational, Commander " + profile.Cmdr.name);
+                        setUpCompanionAppComplete(I18N.GetStringWithArgs("frontier_api_ok", new string[] { profile.Cmdr.name }));
                         //setShipyardFromConfiguration();
                     }
                 }
@@ -394,7 +454,7 @@ namespace Eddi
                 }
                 catch (Exception)
                 {
-                    setUpCompanionAppStage1("Unable to log in.  This is usually a temporary issue with Frontier's service; please try again later");
+                    setUpCompanionAppStage1(I18N.GetString("login_nok_frontier_service"));
                 }
             }
         }
@@ -403,7 +463,7 @@ namespace Eddi
         {
             if (message == null)
             {
-                companionAppText.Text = "You do not have a connection to the Frontier API at this time.  Please enter your Elite: Dangerous email address and password below";
+                companionAppText.Text = I18N.GetString("frontier_api_no_logins");
             }
             else
             {
@@ -419,14 +479,14 @@ namespace Eddi
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
-            companionAppNextButton.Content = "Next";
+            companionAppNextButton.Content = I18N.GetString("next");
         }
 
         private void setUpCompanionAppStage2(string message = null)
         {
             if (message == null)
             {
-                companionAppText.Text = "Please enter the verification code that should have been sent to your email address";
+                companionAppText.Text = I18N.GetString("frontier_api_verification_code");
             }
             else
             {
@@ -440,14 +500,14 @@ namespace Eddi
             companionAppPasswordText.Visibility = Visibility.Hidden;
             companionAppCodeLabel.Visibility = Visibility.Visible;
             companionAppCodeText.Visibility = Visibility.Visible;
-            companionAppNextButton.Content = "Next";
+            companionAppNextButton.Content = I18N.GetString("next");
         }
 
         private void setUpCompanionAppComplete(string message = null)
         {
             if (message == null)
             {
-                companionAppText.Text = "Complete";
+                companionAppText.Text = I18N.GetString("complete");
             }
             else
             {
@@ -462,7 +522,7 @@ namespace Eddi
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
-            companionAppNextButton.Content = "Log out";
+            companionAppNextButton.Content = I18N.GetString("logout");
         }
 
         // Handle Text-to-speech tab
@@ -496,14 +556,14 @@ namespace Eddi
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 100;
-            SpeechService.Instance.Say(testShip, "This is how I will sound in your " + ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() + ".", false);
+            SpeechService.Instance.Say(testShip, I18N.GetStringWithArgs("voice_test_ship", new string[] { ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel()}), false);
         }
 
         private void ttsTestDamagedVoiceButtonClicked(object sender, RoutedEventArgs e)
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 20;
-            SpeechService.Instance.Say(testShip, "Severe damage to your " + ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() + ".", false);
+            SpeechService.Instance.Say(testShip, I18N.GetStringWithArgs("voice_test_damage", new string[] { ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel() }), false);
         }
 
         private void disableSsmlUpdated(object sender, RoutedEventArgs e)
@@ -562,10 +622,10 @@ namespace Eddi
             // Prepare a truncated log file for export if verbose logging is enabled
             if (eddiVerboseLogging.IsChecked.Value)
             {
-                var progress = new Progress<string>(s => githubIssueButton.Content = "Preparing log..." + s);
+                Logging.Debug("Preparing log for export.");
+                var progress = new Progress<string>(s => githubIssueButton.Content = I18N.GetString("preparing_log") + s);
                 await Task.Factory.StartNew(() => prepareLog(progress), TaskCreationOptions.LongRunning);
             }
-            
             createGithubIssue();
         }
 
@@ -604,6 +664,7 @@ namespace Eddi
                         string formatString = "s"; // i.e. DateTimeFormatInfo.SortableDateTimePattern
                         if (DateTime.TryParseExact(linedatestring, formatString, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out DateTime linedate))
                         {
+                            linedate = linedate.ToUniversalTime();
                             double elapsedHours = (DateTime.UtcNow - linedate).TotalHours;
                             // Fill the issue log with log lines from the most recent hour only
                             if (elapsedHours < 1.0)
@@ -617,6 +678,12 @@ namespace Eddi
                         // Do nothing, adding to the debug log creates a feedback loop
                     }
                 }
+                if (outputLines.Count == 0)
+                {
+                    Logging.Error("Error parsing log. Algorithm failed to return any matches.");
+                    return;
+                }
+
                 // Create a temporary issue log file, delete any remnants from prior issue reporting
                 Directory.CreateDirectory(issueLogDir);
                 File.WriteAllLines(issueLogFile, outputLines);
@@ -629,11 +696,12 @@ namespace Eddi
                 File.Delete(issueLogFile);
                 Directory.Delete(issueLogDir);
 
-                progress.Report("done");
+                progress.Report(I18N.GetString("done"));
             }
             catch (Exception ex)
             {
-                progress.Report("failed");
+
+                progress.Report(I18N.GetString("failed"));
                 Logging.Error("Failed to upload log", ex);
 
             }

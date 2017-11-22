@@ -2,22 +2,11 @@
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiStarMapService;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Utilities;
 
 namespace EddiEdsmResponder
 {
@@ -29,11 +18,17 @@ namespace EddiEdsmResponder
         public ConfigurationWindow()
         {
             InitializeComponent();
+            I18NForComponents();
 
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
             edsmApiKeyTextBox.Text = starMapConfiguration.apiKey;
             edsmCommanderNameTextBox.Text = starMapConfiguration.commanderName;
             edsmFetchLogsButton.Content = String.IsNullOrEmpty(edsmApiKeyTextBox.Text) ? "Please enter EDSM API key  to obtain log" : "Obtain log";
+        }
+
+        private void I18NForComponents()
+        {
+
         }
 
         private void edsmCommanderNameChanged(object sender, TextChangedEventArgs e)
@@ -52,7 +47,7 @@ namespace EddiEdsmResponder
 
         private void updateEdsmConfiguration()
         {
-            StarMapConfiguration edsmConfiguration = new StarMapConfiguration();
+            StarMapConfiguration edsmConfiguration = StarMapConfiguration.FromFile();
             if (!string.IsNullOrWhiteSpace(edsmApiKeyTextBox.Text))
             {
                 edsmConfiguration.apiKey = edsmApiKeyTextBox.Text.Trim();
@@ -106,6 +101,9 @@ namespace EddiEdsmResponder
             var progress = new Progress<string>(s => edsmFetchLogsButton.Content = s);
             await Task.Factory.StartNew(() => obtainEdsmLogs(starMapConfiguration, commanderName, progress),
                                             TaskCreationOptions.LongRunning);
+
+            starMapConfiguration.lastSync = DateTime.UtcNow;
+            starMapConfiguration.ToFile();
         }
 
         public static void obtainEdsmLogs(StarMapConfiguration starMapConfiguration, string commanderName, IProgress<string> progress)

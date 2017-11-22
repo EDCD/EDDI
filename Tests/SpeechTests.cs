@@ -1,14 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiVoiceAttackResponder;
 using System.Collections.Generic;
-using System;
 using System.Speech.Synthesis;
 using System.IO;
-using System.Speech.AudioFormat;
 using System.Threading;
-using System.Globalization;
-using System.Collections.ObjectModel;
-using System.Linq;
 using EddiSpeechService;
 using CSCore;
 using CSCore.Codecs.WAV;
@@ -22,7 +17,13 @@ namespace Tests
     [TestClass]
     public class SpeechTests
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct    
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            I18N.SetLang("en"); //for tests to works properly, lang needs to by defaultLang (en)
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
         [TestMethod]
         public void TestPhonemes()
         {

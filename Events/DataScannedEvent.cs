@@ -2,9 +2,6 @@ using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EddiEvents
 {
@@ -18,10 +15,24 @@ namespace EddiEvents
         static DataScannedEvent()
         {
             VARIABLES.Add("datalinktype", "The type of Data Link scanned");
+            VARIABLES.Add("LocalDatalinkType", "The translation of the Data Link into the chosen language");
         }
 
         [JsonProperty("datalinktype")]
         public string datalinktype { get; private set; }
+
+        [JsonProperty("LocalDatalinkType")]
+        public string LocalDatalinkType
+        {
+            get
+            {
+                if (datalinktype != null && datalinktype != "")
+                {
+                    return DataScan.FromName(datalinktype).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public DataScannedEvent(DateTime timestamp, DataScan datalinktype) : base(timestamp, NAME)
         {

@@ -1,10 +1,6 @@
 ﻿using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EddiEvents
 {
@@ -23,8 +19,11 @@ namespace EddiEvents
             VARIABLES.Add("model", "The model of the station at which the commander has docked (Orbis, Coriolis, etc)");
             VARIABLES.Add("faction", "The faction controlling the station at which the commander has docked");
             VARIABLES.Add("factionstate", "The state of the faction controlling the station at which the commander has docked");
+            VARIABLES.Add("LocalFactionState", "The translation of the state of the faction controlling the station into the chosen language");
             VARIABLES.Add("economy", "The economy of the station at which the commander has docked");
+            VARIABLES.Add("LocalEconomy", "The translation of the economy type into the chosen language");
             VARIABLES.Add("government", "The government of the station at which the commander has docked");
+            VARIABLES.Add("LocalGovernment", "The government of the station translated into the chosen language");
             VARIABLES.Add("security", "The security of the station at which the commander has docked");
             VARIABLES.Add("distancefromstar", "The distance of this station from the star (light seconds)");
             VARIABLES.Add("stationservices", "A list of possible station services: Dock, Autodock, BlackMarket, Commodities, Contacts, Exploration, Initiatives, Missions, Outfitting, CrewLounge, Rearm, Refuel, Repair, Shipyard, Tuning, Workshop, MissionsGenerated, Facilitator, Research, FlightController, StationOperations, OnDockMission, Powerplay, SearchAndRescue");
@@ -40,9 +39,45 @@ namespace EddiEvents
 
         public string factionstate { get; private set; }
 
+        public string LocalFactionState
+        {
+            get
+            {
+                if (factionstate != null && factionstate != "")
+                {
+                    return State.FromName(factionstate).LocalName;
+                }
+                else return null;
+            }
+        }
+
         public string economy { get; private set; }
 
+        public string LocalEconomy
+        {
+            get
+            {
+                if (economy != null && economy != "")
+                {
+                    return Economy.FromName(economy).LocalName;
+                }
+                else return null;
+            }
+        }
+
         public string government { get; private set; }
+
+        public string LocalGovernment
+        {
+            get
+            {
+                if (government != null && government != "")
+                {
+                    return Government.FromName(government).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public decimal? distancefromstar { get; private set; }
 

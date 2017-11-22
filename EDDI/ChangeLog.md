@@ -1,5 +1,73 @@
 # CHANGE LOG
 
+### 2.4.6-b1
+  * The Galnet monitor will now check the player journal for recent activity prior to updating - VoiceAttack users rejoice!
+  * VoiceAttack
+    * Updated EDDI.VAP to include a new command for marking Galnet article categories as read (documented in [the Galnet Monitor documentation](https://github.com/EDCD/EDDI/wiki/Galnet-Monitor).
+  * Speech Responder
+    * 'Body scanned' and 'Star scanned' events - added new calculated variable "estimatedvalue". 
+    * 'Star scanned' event - added new calculated variables "estimatedhabzoneinner" and "estimatedhabzoneouter" to provide calculated values for the habitable zone of a scanned star. Note: calculations are most accurate for star systems containing a single star (multiple close proximity stars will make these calculations less reliable).
+    * 'Bounty incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
+    * 'Fine incurred' event - added new variable 'crime' with a more humanized description of the crime committed.
+    * Added new 'Jet cone boost' event
+    * Added new 'Module arrived' event
+    * Added new 'Ship arrived' event
+    * Revised speech responder UI to clarify that the default personality is read-only and a new personality must be generated via the 'Copy personality' prior to editing. 
+    * Revised speech responder UI to clarify for users of custom personalities when a script can be disabled and/or deleted. 
+    * The 'Enabled' checkbox in the Speech responder UI shall now be enabled only for scripts which are triggered by events, not for scripts which are only triggered by other scripts.
+    * Script changes
+      * Added new script 'Galnet mark read' to allow users to bulk mark news articles as read.
+      * Revised script 'Galnet news' to mark the article as read after reading.
+      * Revised script 'Galnet news published' to mark all articles summarized by this script as read.
+      * 'Body scanned' - revised to report estimated scan value
+      * 'Star scanned' - revised to report estimated scan value and calculated habitable zone 
+      * Updated 'Bounty incurred' to describe your crimes with the new 'crime' variable.
+      * Updated 'Fine incurred' to describe your crimes with the new 'crime' variable.
+      * Added new script 'Fuel check'.
+      * Updated 'Jumped' event and 'Ship refueled' event. With the new 'Fuel check' script, 'Ship refueled' will no longer repeat for every 5T refueled.
+      * Added new script 'Jet cone boost'
+      * Added new script 'Module arrived'
+      * Added new script 'Ship arrived'
+    * Added the following Cottle functions, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
+      * `List()`: returns a humanised list of items from an array (e.g. "this, that, and the other thing").
+
+### 2.4.5
+  * Core
+    * Added defensive coding so that EDDI will not crash on startup if it has trouble reading the configuration files.
+  * Material Monitor
+    * Added definitions for some previously unknown materials found at crash sites.
+    * Added defensive coding so that EDDI will not crash when unknown materials are encountered in future.
+
+### 2.4.4
+  * Speech Responder
+    * Fixed a bug that was causing some SSML related functions (e.g. Pause()) to not render correctly.
+    * Fixed unit conversion of the star's age in star scans. They should no longer report every star as "one of the oldest".
+
+### 2.4.3
+  * Core
+    * We will no longer ask users to send logs for commodity definition errors (and there was much rejoicing). 
+    * Fixed a time zone snafu that was causing the "Report an issue" button to export empty log files for west of GMT locales.
+  * EDSM
+    * Fixed a bug that was preventing EDSM comments from being updated and read.
+  * Speech Responder
+    * Added the following Cottle functions, documented in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md):
+      * `Emphasize()`
+      * `SpeechPitch()`
+      * `SpeechRate()`
+      * `SpeechVolume()`
+    * 'FSD jump' event - reduced the pause between jumping and speaking.
+    * Script changes
+      * 'Star report' 
+        * Amended the age calculations for the fact that age is reported in millions of years, not years.
+        * Amended reporting of stars less than a million years old.
+        * Amended the test for Herbig-Haro objects.
+        * Enhanced the reporting of Wolf-Rayet stars.
+        * Sundry punctuation tweaks to make the speech more natural.
+      * 'Entered signal source' 
+        * Thoroughly re-written to better report both human and Thargoid signal sources.
+    * Worked around non-compliance of CereProc voices with industry standards that would cause EDDI to revert to a system default voice.
+    * Fixed a bug that was preventing the Play() function from working properly
+
 ### 2.4.2
   * Core
     * Revised EDDN updating for naming changes in ED 2.4. This makes EDDI 2.4.2 a mandatory update.

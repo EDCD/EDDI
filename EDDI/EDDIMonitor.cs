@@ -1,7 +1,6 @@
 ﻿using System.Windows.Controls;
 using EddiEvents;
 using System.Collections.Generic;
-using EddiCompanionAppService;
 using Newtonsoft.Json.Linq;
 
 namespace Eddi
@@ -15,6 +14,11 @@ namespace Eddi
         /// A short name for the monitor
         /// </summary>
         string MonitorName();
+
+        /// <summary>
+        /// The localized name for the monitor
+        /// </summary>
+        string MonitorLocalName();
 
         /// <summary>
         /// The version of the monitor

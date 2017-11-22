@@ -6,9 +6,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -31,6 +28,11 @@ namespace EddiCargoMonitor
             return "Cargo monitor";
         }
 
+        public string MonitorLocalName()
+        {
+            return I18N.GetString("eddp_monitor_name");
+        }
+
         public string MonitorVersion()
         {
             return "1.0.0";
@@ -38,7 +40,7 @@ namespace EddiCargoMonitor
 
         public string MonitorDescription()
         {
-            return "Track information on your cargo.";
+            return I18N.GetString("cargo_monitor_desc");
         }
 
         public bool IsRequired()

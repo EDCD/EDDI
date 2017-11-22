@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -61,6 +58,16 @@ namespace EddiDataDefinitions
 
         // Additional information
         public string chromaticity;
+
+        [JsonIgnore]
+        public string LocalChromaticity
+        {
+            get
+            {
+                return I18N.GetString(chromaticity) ?? chromaticity;
+            }
+        }
+
         public decimal? radiusprobability;
         public decimal? massprobability;
         public decimal? tempprobability;
