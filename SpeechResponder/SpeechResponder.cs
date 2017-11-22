@@ -11,7 +11,6 @@ using System.Text.RegularExpressions;
 using System.IO;
 using EddiDataDefinitions;
 using EddiShipMonitor;
-using Cottle;
 
 namespace EddiSpeechResponder
 {

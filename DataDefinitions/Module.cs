@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using Utilities;
-using Newtonsoft.Json;
-
-namespace EddiDataDefinitions
+﻿namespace EddiDataDefinitions
 {
     public class Module
     {

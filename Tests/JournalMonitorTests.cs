@@ -1,6 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using Newtonsoft.Json;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;

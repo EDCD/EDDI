@@ -1,12 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiCompanionAppService;
 using EddiDataDefinitions;
-using EddiVoiceAttackResponder;
-using Eddi;
-using System;
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json.Linq;
 using EddiShipMonitor;
 

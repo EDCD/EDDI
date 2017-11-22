@@ -1,9 +1,5 @@
 ﻿using Eddi;
-using Newtonsoft.Json;
-using System.Reflection;
-using System.Windows;
 using System.Windows.Controls;
-using Utilities;
 
 namespace GalnetMonitor
 {

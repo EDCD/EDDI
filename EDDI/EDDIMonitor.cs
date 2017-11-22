@@ -1,7 +1,6 @@
 ﻿using System.Windows.Controls;
 using EddiEvents;
 using System.Collections.Generic;
-using EddiCompanionAppService;
 using Newtonsoft.Json.Linq;
 
 namespace Eddi

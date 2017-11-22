@@ -1,5 +1,4 @@
 ﻿using Eddi;
-using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
@@ -426,6 +425,9 @@ namespace EddiShipMonitor
 
             // Cargo capacity
             ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.name.EndsWith("Cargo Rack")).Sum(c => Math.Pow(2, c.module.@class));
+
+            // Update the global variable
+            EDDI.Instance.CurrentShip = ship;
 
             AddShip(ship);
             writeShips();
@@ -921,6 +923,7 @@ namespace EddiShipMonitor
         /// </summary>
         public Ship GetCurrentShip()
         {
+            EDDI.Instance.CurrentShip = GetShip(currentShipId);
             return GetShip(currentShipId);
         }
 
@@ -969,6 +972,7 @@ namespace EddiShipMonitor
                     // Location for the current ship is always null, as it's with us
                     ship.starsystem = null;
                     ship.station = null;
+                    EDDI.Instance.CurrentShip = ship;
                 }
             }
         }

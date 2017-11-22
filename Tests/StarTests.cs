@@ -2,7 +2,6 @@
 using EddiDataDefinitions;
 using System;
 using MathNet.Numerics.Distributions;
-using EddiEvents;
 
 namespace Tests
 {

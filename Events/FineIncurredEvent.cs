@@ -2,9 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EddiEvents
 {
@@ -26,6 +23,8 @@ namespace EddiEvents
 
         [JsonProperty("crimetype")]
         public string crimetype { get; private set; }
+
+        public string crime { get; private set; }
 
         [JsonProperty("LocalCrimeType")]
         public string LocalCrimeType
@@ -52,6 +51,7 @@ namespace EddiEvents
         public FineIncurredEvent(DateTime timestamp, string crimetype, string faction, string victim, long fine) : base(timestamp, NAME)
         {
             this.crimetype = crimetype;
+            this.crime = Crime.FromEDName(crimetype).name;
             this.faction = faction;
             this.victim = victim;
             this.fine = fine;

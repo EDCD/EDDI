@@ -1,9 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiSpeechService;
-using EddiVoiceAttackResponder;
 using System.Collections.Generic;
 using System;
-using Eddi;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using Newtonsoft.Json;

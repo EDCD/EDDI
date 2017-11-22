@@ -42,7 +42,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'body')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_body_system', system.name)}\r\n{SetState('eddi_context_body_name', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan {Occasionally(3,  \"of body\")} {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Body report\")}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'body')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_body_system', system.name)}\r\n{SetState('eddi_context_body_name', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan {Occasionally(3,  \"of body\")} {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Body report\")}\r\n\r\n{if event.estimatedvalue:\r\n   Estimated scan value: {event.estimatedvalue} credits\r\n}",
       "default": true,
       "name": "Body scanned",
       "description": "Triggered when you complete a scan of a planetary body"
@@ -78,7 +78,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_bounty_name', event.victim)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.bounty)}\r\n\r\n{P(event.faction)} just put a bounty of {event.bounty} credits on your head.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_bounty_name', event.victim)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.bounty)}\r\n\r\n{P(event.faction)} just put a bounty of {event.bounty} credits on your head for {event.crime}.",
       "default": true,
       "name": "Bounty incurred",
       "description": "Triggered when you incur a bounty"
@@ -582,7 +582,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fine')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_fine_name', event.victim)}\r\n{SetState('eddi_context_fine_faction', event.faction)}\r\n{SetState('eddi_context_fine_amount', event.fine)}\r\n\r\nYou owe {P(event.faction)} {Humanise(event.fine)} credits for that.",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fine')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_fine_name', event.victim)}\r\n{SetState('eddi_context_fine_faction', event.faction)}\r\n{SetState('eddi_context_fine_amount', event.fine)}\r\n\r\nYou owe {P(event.faction)} {Humanise(event.fine)} credits for {event.crime}.",
       "default": true,
       "name": "Fine incurred",
       "description": "Triggered when your incur a fine"
@@ -623,11 +623,20 @@
       "name": "Galnet latest news",
       "description": "Read the latest unread news in a given category"
     },
+    "Galnet mark read": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch category from state }\r\n{set articlecategory to state.article_category}\r\n\r\n{if articlecategory:\r\n    {set articles to GalnetNewsArticles(articlecategory)}\r\n|else:\r\n    {set articles to GalnetNewsArticles('Article')}\r\n}\r\n\r\n{if len(articles) = 0:\r\n    There is no unread news \r\n    {if articlecategory: 'in that category' }\r\n|else:\r\n    {set item to 0}\r\n    {while item < len(articles):\r\n        {GalnetNewsMarkRead(articles[item].id)}\r\n        {set item to (item + 1)}\r\n    }\r\n    {len(articles)} news {OneOf('articles', 'items')} marked as red\r\n}.\r\n",
+      "default": true,
+      "name": "Galnet mark read",
+      "description": "Mark news articles as read"
+    },
     "Galnet news": {
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{_ Fetch article from state }\r\n{set articleid to state.articleid}\r\n{if articleid:\r\n    {set article to GalnetNews(articleid)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'news')}\r\n    {SetState('eddi_context_galnet_news_id', articleid)}\r\n}\r\n\r\n{if !article:\r\n    {_ Fetch from context }\r\n    {set article to GalnetNews(state.eddi_context_galnet_news_id)}\r\n}\r\n\r\n{if article:\r\n    {article.title}: {article.content}\r\n|else:\r\n    I don't have any information about that article\r\n}.\r\n\r\n",
+      "script": "{_ Fetch article from state }\r\n{set articleid to state.articleid}\r\n{if articleid:\r\n    {set article to GalnetNews(articleid)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'news')}\r\n    {SetState('eddi_context_galnet_news_id', articleid)}\r\n}\r\n\r\n{if !article:\r\n    {_ Fetch from context }\r\n    {set article to GalnetNews(state.eddi_context_galnet_news_id)}\r\n}\r\n\r\n{if article:\r\n    {article.title}: {article.content}\r\n    {GalnetNewsMarkRead(article.id)}\r\n|else:\r\n    I don't have any information about that article\r\n}.",
       "default": true,
       "name": "Galnet news",
       "description": "Read a particular news article"
@@ -636,7 +645,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{set statustitle to \"^(Galactic News: ((Weekly .*)|(Starport Status Update)))|(Powerplay: Incoming Update)\"}\r\n\r\n{set interesting_news_title to []}\r\n{set interesting_news_content to []}\r\n{set not_interesting_news_title to []}\r\n{set not_interesting_news_content to []}\r\n\r\n{set item to 0}\r\n{while item < len(event.items):\r\n    {if !match(event.items[item].title, statustitle):\r\n        {set interesting_news_title to cat(interesting_news_title, [event.items[item].title])}\r\n        {set interesting_news_content to cat(interesting_news_content, [event.items[item].content])}\r\n    |else:\r\n        {set not_interesting_news_title to cat(not_interesting_news_title, [event.items[item].title])}\r\n        {set not_interesting_news_content to cat(not_interesting_news_content, [event.items[item].content])}\r\n    }\r\n    {set item to (item + 1)}\r\n}\r\n{if len(event.items) = len(interesting_news_title): \r\n    {set allinteresting to 1} \r\n}\r\n\r\n{if len(interesting_news_title) > 0:\r\n    {if len(interesting_news_title) = 1:\r\n        {set remarkable to OneOf('A noteworthy', 'A remarkable', 'An interesting', 'An intriguing', 'An unusual')}\r\n        {OneOf('A', '{remarkable}' )}\r\n        new Galnet article has been published, entitled {interesting_news_title[0]}.\r\n    |elif len(event.items) > 1:\r\n        {len(event.items)} \r\n        {if allinteresting: \r\n             {OneOf(\"noteworthy\", \"interesting\", \"intriguing\", \"remarkable\", \"unusual\")}}\r\n        new Galnet articles have been published\r\n        {if !allinteresting:\r\n             , including {len(interesting_news_title)} \r\n             {OneOf('of interest.', 'of note.', 'worthy of remark.')}\r\n        }.\r\n    }\r\n|elif len(event.items) != ( len(interesting_news_title) + len(not_interesting_news_title) ):\r\n    {len(event.items)} new Galnet articles have been published, but I wasn't able to determine whether \r\n    any were of interest to you, {F('Honorific')}. \r\n|elif len(interesting_news_title) = 0:\r\n    Galnet news has been updated, but there is nothing noteworthy to report, {F('Honorific')}.\r\n}\r\n\r\n{if len(interesting_news_title) > 0:\r\n    {if len(interesting_news_title) = 1:\r\n        It reads: {interesting_news_content[0]}.\r\n    |elif len(interesting_news_title) > 1:\r\n        {set item to 0}\r\n        {while item < len(interesting_news_title):\r\n            {if item = 0:\r\n                The first \r\n                is entitled {interesting_news_title[item]},\r\n                and reads: {interesting_news_content[item]}.\r\n            |elif item = 1:\r\n                The second\r\n                is entitled {interesting_news_title[item]},\r\n                and reads: {interesting_news_content[item]}.\r\n            |elif item = len(event.items) - 1:\r\n                The last\r\n                is entitled {interesting_news_title[item]},\r\n                and reads: {interesting_news_content[item]}.\r\n            |else:\r\n                The next\r\n                is entitled {interesting_news_title[item]},\r\n                and reads: {interesting_news_content[item]}.\r\n            }\r\n            {set item to item + 1}\r\n            {Pause(1000)}\r\n        }\r\n    }\r\n}",
+      "script": "{set statustitle to \"^(Galactic News: ((Weekly .*)|(Starport Status Update)))|(Powerplay: Incoming Update)\"}\r\n\r\n{set interesting_news_title to []}\r\n{set interesting_news_content to []}\r\n{set not_interesting_news_title to []}\r\n{set not_interesting_news_content to []}\r\n\r\n{set item to 0}\r\n{while item < len(event.items):\r\n    {if !match(event.items[item].title, statustitle):\r\n        {set interesting_news_title to cat(interesting_news_title, [event.items[item].title])}\r\n        {set interesting_news_content to cat(interesting_news_content, [event.items[item].content])}\r\n    |else:\r\n        {set not_interesting_news_title to cat(not_interesting_news_title, [event.items[item].title])}\r\n        {set not_interesting_news_content to cat(not_interesting_news_content, [event.items[item].content])}\r\n    }\r\n    {GalnetNewsMarkRead(event.items[item].content.id)}\r\n    {set item to (item + 1)}\r\n}\r\n{if len(event.items) = len(interesting_news_title): \r\n    {set allinteresting to 1} \r\n}\r\n\r\n{if len(interesting_news_title) > 0:\r\n    {if len(interesting_news_title) = 1:\r\n        {set remarkable to OneOf('A noteworthy', 'A remarkable', 'An interesting', 'An intriguing', 'An unusual')}\r\n        {OneOf('A', '{remarkable}' )}\r\n        new Galnet article has been published, entitled {interesting_news_title[0]}.\r\n    |elif len(event.items) > 1:\r\n        {len(event.items)} \r\n        {if allinteresting: \r\n             {OneOf(\"noteworthy\", \"interesting\", \"intriguing\", \"remarkable\", \"unusual\")}\r\n        }\r\n        new Galnet articles have been published\r\n        {if !allinteresting:\r\n             , including {len(interesting_news_title)} \r\n             {OneOf('of interest.', 'of note.', 'worthy of remark.')}\r\n        }.\r\n    }\r\n|elif len(event.items) != ( len(interesting_news_title) + len(not_interesting_news_title) ):\r\n    {len(event.items)} new Galnet articles have been published, but I wasn't able to determine whether \r\n    any were of interest to you, {F('Honorific')}. \r\n|elif len(interesting_news_title) = 0:\r\n    Galnet news has been updated, but there is nothing noteworthy to report, {F('Honorific')}.\r\n}\r\n\r\n{if len(interesting_news_title) > 0:\r\n    {if len(interesting_news_title) = 1:\r\n        It reads: {interesting_news_content[0]}.\r\n    |elif len(interesting_news_title) > 1:\r\n        {set item to 0}\r\n        {while item < len(interesting_news_title):\r\n            {if item = 0:\r\n                The first \r\n                is entitled {interesting_news_title[item]},\r\n                and reads: {interesting_news_content[item]}.\r\n            |elif item = 1:\r\n                The second\r\n                is entitled {interesting_news_title[item]},\r\n                and reads: {interesting_news_content[item]}.\r\n            |elif item = len(event.items) - 1:\r\n                The last\r\n                is entitled {interesting_news_title[item]},\r\n                and reads: {interesting_news_content[item]}.\r\n            |else:\r\n                The next\r\n                is entitled {interesting_news_title[item]},\r\n                and reads: {interesting_news_content[item]}.\r\n            }\r\n            {set item to item + 1}\r\n            {Pause(1000)}\r\n        }\r\n    }\r\n}",
       "default": true,
       "name": "Galnet news published",
       "description": "Triggered when news is published on Galnet"
@@ -703,6 +712,15 @@
       "default": true,
       "name": "Insurance check",
       "description": "Check for enough credits to cover your insurance"
+    },
+    "Jet cone boost": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Pause(1000)}\r\nFrame shift drive boosted by {Humanise(event.boost * 100)} percent.",
+      "default": true,
+      "name": "Jet cone boost",
+      "description": "Triggered when enough material has been collected from a solar jet cone (at a white dwarf or neutron star) for a jump boost"
     },
     "Jumped": {
       "enabled": true,
@@ -1001,6 +1019,15 @@
       "name": "Modification crafted",
       "description": "Triggered when you craft a modification to a module"
     },
+    "Module arrived": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.module.name} has\r\n\r\n{OneOf('arrived {if event.system && event.station: \\'at\\')}', \r\n       'completed its transfer {if event.system && event.station: \\'to\\')}')}\r\n\r\n{if event.sytem != system.name && len(event.system) > 0 && len(event.station) > 0:\r\n   {event.station} in the {event.system} system\r\n|elif event.station != station.name && len(event.station) > 0:\r\n   {event.station}\r\n}.",
+      "default": true,
+      "name": "Module arrived",
+      "description": "Triggered when you complete a module transfer"
+    },
     "Module purchased": {
       "enabled": true,
       "priority": 3,
@@ -1289,6 +1316,15 @@
       "name": "Shields up",
       "description": "Triggered when your ship's shields come online"
     },
+    "Ship arrived": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.ship} has \r\n\r\n{OneOf('arrived {if event.system && event.station: \\'at\\')}', \r\n       'completed its transfer {if event.system && event.station: \\'to\\')}')}\r\n\r\n{if event.sytem != system.name && len(event.system) > 0 && len(event.station) > 0:\r\n   {event.station} in the {event.system} system\r\n|elif event.station != station.name && len(event.station) > 0:\r\n   {event.station}\r\n}.",
+      "default": true,
+      "name": "Ship arrived",
+      "description": "Triggered when you complete a ship transfer"
+    },
     "Ship delivered": {
       "enabled": true,
       "priority": 3,
@@ -1464,7 +1500,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'star')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_star_system', system.name)}\r\n{SetState('eddi_context_star_star', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan of {event.stellarclass}-class star {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Star report\")}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'star')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_star_system', system.name)}\r\n{SetState('eddi_context_star_star', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan of {event.stellarclass}-class star {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Star report\")}\r\n\r\n{if event.estimatedvalue:\r\n   Estimated scan value: {Humanise(event.estimatedvalue)} credits.\r\n}\r\n\r\n{if (event.estimatedhabzoneinner && event.estimatedhabzoneouter) && \r\n (event.estimatedhabzoneinner > 0 && event.estimatedhabzoneouter> 0):\r\n   Habitable zone\r\n   {Occasionally(2, OneOf(\"calculated at\", \"calculated to fall from\"))}: \r\n   {Humanise(event.estimatedhabzoneinner)} \r\n   to {Humanise(event.estimatedhabzoneouter)} \r\n   lightseconds.\r\n|elif event.estimatedhabzoneouter && event.estimatedhabzoneouter > 0:\r\n   Habitable zone\r\n   {Occasionally(2, OneOf(\"calculated at\", \"calculated to fall from\"))}: \r\n   {Humanise(event.estimatedhabzoneouter)} \r\n   lightseconds maximum.\r\n}",
       "default": true,
       "name": "Star scanned",
       "description": "Triggered when you complete a scan of a stellar body"

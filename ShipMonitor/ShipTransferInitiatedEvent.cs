@@ -1,11 +1,7 @@
-﻿using EddiDataDefinitions;
-using EddiEvents;
+﻿using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EddiShipMonitor
 {
@@ -13,7 +9,7 @@ namespace EddiShipMonitor
     {
         public const string NAME = "Ship transfer initiated";
         public const string DESCRIPTION = "Triggered when you initiate a ship transfer";
-        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ShipyardTransfer\",\"ShipType\":\"Adder\",\"ShipID\":1,\"System\":\"Eranin\",\"Distance\":85.639145,\"TransferPrice\":580,\"TransferTime\":600}";
+        public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"ShipyardTransfer\",\"ShipType\":\"Adder\",\"ShipID\":1,\"System\":\"Eranin\",\"Distance\":85.639145,\"TransferPrice\":580,\"TransferTime\":120}";
         //public const string SAMPLE = "{ \"timestamp\":\"2017-09-24T12:31:38Z\", \"event\":\"ShipyardTransfer\", \"ShipType\":\"Asp\", \"ShipID\":2, \"System\":\"CD-34 9020\", \"Distance\":145.314835, \"TransferPrice\":127713 }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
