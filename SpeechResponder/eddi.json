@@ -42,7 +42,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'body')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_body_system', system.name)}\r\n{SetState('eddi_context_body_name', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan {Occasionally(3,  \"of body\")} {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Body report\")}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'body')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_body_system', system.name)}\r\n{SetState('eddi_context_body_name', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan {Occasionally(3,  \"of body\")} {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Body report\")}\r\n\r\n{if event.estimatedvalue:\r\n   Estimated scan value: {event.estimatedvalue} credits\r\n}",
       "default": true,
       "name": "Body scanned",
       "description": "Triggered when you complete a scan of a planetary body"
@@ -614,6 +614,15 @@
       "name": "FSD engaged",
       "description": "Triggered when your FSD has engaged"
     },
+    "Fuel check": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fuel Check _}\r\n{_ Report fuel level _}\r\n\r\n{if ship.name = state.eddi_fuelcheck_shipname:\r\n    {if state.eddi_context_fuel_used > state.eddi_fuelcheck_maxfuel:\r\n        {SetState('eddi_fuelcheck_maxfuel', state.eddi_context_fuel_used)}\r\n    }\r\n|else:\r\n    {SetState('eddi_fuelcheck_maxfuel', state.eddi_context_fuel_used)}\r\n    {SetState('eddi_fuelcheck_shipname', ship.name)}\r\n}\r\n\r\n{set maxfuel to state.eddi_fuelcheck_maxfuel}\r\n{set fuelremaining to state.eddi_context_fuel_remaining}\r\n{set maxjump to fuelremaining/maxfuel}\r\n{set currentfuel to round(fuelremaining / ship.fueltanktotalcapacity * 100, 1)}\r\n{if find(currentfuel, \".0\") > -1:\r\n   {set currentfuel to round(currentfuel, 0)}\r\n}\r\n{set shipsfuel to:\r\n   {Occasionally(2, \"{P(ShipName())}'s\" )} Fuel\r\n   {OneOf(\"levels\", \"tanks\", \"reserves\")} {Occasionally(2, \"are\")} {Occasionally(2, \"now\")}\r\n}\r\n{set currentpercent to: \r\n   at {currentfuel} percent {Occasionally(2, \"capacity\")}\r\n}\r\n\r\n{if maxjump < 0.5:\r\n   Danger!\r\n   {shipsfuel} depleted!\r\n   {Pause(500)}\r\n   Running on reserves. Shutdown of non-essential systems is advised!\r\n   {Pause(500)}\r\n   Emergency transponder standing by\r\n|elif maxjump < 1.25:\r\n   {OneOf(\"Warning:\", \"Caution:\", \"Danger:\", \"Attention:\")}\r\n   {shipsfuel} {OneOf(\"dangerously low\", \"almost depleted\")}.\r\n   {OneOf(\"Please refuel\", \"Refueling is strongly recommended\")}\r\n|elif currentfuel < 25:\r\n   {OneOf(\"Warning:\", \"Caution:\", \"Danger:\", \"Attention:\")}\r\n   {shipsfuel} {OneOf(\"below 25%\", \"{currentpercent}\" )}\r\n|elif currentfuel < 50:\r\n   {shipsfuel} {OneOf(\"below 50%\", \"{currentpercent}\" )}\r\n|elif currentfuel < 100:\r\n   {shipsfuel} {currentpercent}\r\n|else:\r\n   {shipsfuel} {OneOf(currentpercent, \"at maximum\")}\r\n}\r\n{Occasionally(3,\", {F('Honorific')}\")}.",
+      "default": false,
+      "name": "Fuel check",
+      "description": "Report on fuel levels"
+    },
     "Galnet cleanup": {
       "enabled": true,
       "priority": 3,
@@ -636,7 +645,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{_ Fetch article category and boolean include read articles from state }\r\n{set spokenmonth to [\"January\",\"February\",\"March\",\"April\",\"May\",\"June\",\"July\",\"August\",\"September\", \"October\",\"November\",\"December\"]}\r\n\r\n{_ SetState(\"category\", \"All\")}\r\n{_ SetState(\"inc_read\", \"true\")}\r\n\r\n{set unread to eq(state.inc_read,\"true\")}\r\n{set articles to GalnetNewsArticles(\"All\",true)}\r\n\r\n{if len(articles) = 0:\r\n    There is no news\r\n|else:\r\n{set lastdate to articles[1].published}\r\n\r\nGal-net News\r\n{Pause(150)}\r\nYour galaxy in focus\r\n{Pause(150)}\r\n\r\n{if eq(state.category,\"Article\"):\r\n   {set topic to \"News\"}\r\n|else: \r\n  {set topic to state.category}\r\n}\r\nThese are the {if !unread:unread} {topic} headlines for {spokenmonth[lastdate.Month-1]} {lastdate.Day}\r\n{Pause(800)}\r\n{set index to 0}\r\n\r\n{for news in articles:\r\n  {set index to index + 1}\r\n  {if (ne(news.read,true) || unread) && (eq(news.category,state.category) || ((eq(news.category,\"Starport Status Update\") || find(news.category,state.category)>0) && eq(state.category,\"Report\"))):\r\n    {set item to split(news.title, \":\")}\r\n    Article {index} \r\n    {Pause(150)}\r\n    {if ne(news.category,\"Article\"): {item[0]} {Pause(150)}}\r\n    {item[1]}\r\n    {Pause(1000)}\r\n  }\r\n}\r\nEnd of Stream\r\n{Pause(500)}\r\n{OneOf(\"Gal-net News Transmissions are sponsored in part by the Bank of Zaoncee. Trust the Bank of Zaoncee with your hard-earned credits!\",\"This news was brought to you by Delacy! Delacy! From Sidewinder to Anaconda: classic ship design to fullfill every wish!\",\"Fast and powerful! These attributes are true for Gal-net News AND for Core Dynamics ships! Gal-net News does neither endorse nor condemn federal policies!\",\"This Gal-net News Transmission brought to you by Zorgon Peterson When real work needs to be done: Zorgon Peterson!\",\"Laykon! When space is not only where you are, but is also what you need! Proudly sponsoring this newscast for you!\",\"Saud Kruger sponsored this newsfeed. Fly an Orca and show the world that elegance and beauty trumps it all!\",\"Gutamayas Imperial Clipper! As smoothly reliable as Gal-net News. Gal-net News does neither endorse nor condemn imperial policies!\",\"Remember to check the Station Service for local news not covered by this feed. Fly safely commanders.\")}\r\n}.",
+      "script": "{_ Fetch article category and boolean include read articles from state }\r\n{set spokenmonth to [\"January\",\"February\",\"March\",\"April\",\"May\",\"June\",\"July\",\"August\",\"September\", \"October\",\"November\",\"December\"]}\r\n\r\n{_ SetState(\"category\", \"All\")}\r\n{_ SetState(\"inc_read\", \"true\")}\r\n\r\n{set unread to eq(state.inc_read,\"true\")}\r\n{set articles to GalnetNewsArticles(\"All\",true)}\r\n{set lastdate to articles[1].published}\r\n\r\nGal-net News\r\n{Pause(150)}\r\nYour galaxy in focus\r\n{Pause(150)}\r\n\r\n{if eq(state.category,\"Article\"):\r\n   {set topic to \"News\"}\r\n|else: \r\n  {set topic to state.category}\r\n}\r\nThese are the {if !unread:unread} {topic} headlines for {spokenmonth[lastdate.Month-1]} {lastdate.Day}\r\n{Pause(800)}\r\n{set index to 0}\r\n\r\n{for news in articles:\r\n  {set index to index + 1}\r\n  {if (ne(news.read,true) || unread) && (eq(news.category,state.category) || ((eq(news.category,\"Starport Status Update\") || find(news.category,state.category)>0) && eq(state.category,\"Report\"))):\r\n    {set item to split(news.title, \":\")}\r\n    Article {index} \r\n    {Pause(150)}\r\n    {if ne(news.category,\"Article\"): {item[0]} {Pause(150)}}\r\n    {item[1]}\r\n    {Pause(1000)}\r\n  }\r\n}\r\nEnd of Stream\r\n{Pause(500)}\r\n{OneOf(\"Gal-net News Transmissions are sponsored in part by the Bank of Zaoncee. Trust the Bank of Zaoncee with your hard-earned credits!\",\"This news was brought to you by Delacy! Delacy! From Sidewinder to Anaconda: classic ship design to fullfill every wish!\",\"Fast and powerful! These attributes are true for Gal-net News AND for Core Dynamics ships! Gal-net News does neither endorse nor condemn federal policies!\",\"This Gal-net News Transmission brought to you by Zorgon Peterson When real work needs to be done: Zorgon Peterson!\",\"Laykon! When space is not only where you are, but is also what you need! Proudly sponsoring this newscast for you!\",\"Saud Kruger sponsored this newsfeed. Fly an Orca and show the world that elegance and beauty trumps it all!\",\"Gutamayas Imperial Clipper! As smoothly reliable as Gal-net News. Gal-net News does neither endorse nor condemn imperial policies!\",\"Remember to check the Station Service for local news not covered by this feed. Fly safely commanders.\")}.",
       "default": false,
       "name": "Galnet list news",
       "description": "List news article titles"
@@ -690,7 +699,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{set articles to GalnetNewsArticles(\"Article\",true)}\r\n{set unread_articles to GalnetNewsArticles(\"Article\",false)}\r\n{set community to GalnetNewsArticles(\"Community Goal\",true)}\r\n{set unread_community to GalnetNewsArticles(\"Community Goal\",false)}\r\n\r\n{set titles to [\"Article\":\"Gal-Net news\",\"Community Goal\":\"Community Goal\",\"All\":\"Weekly Report\"]}\r\n{set total to 0}\r\n{set unread to 0}\r\n{for category, title in titles:\r\n   {title}\r\n   {set articles to GalnetNewsArticles(category,true)}\r\n   {set unread_articles to GalnetNewsArticles(category,false)}\r\n   {if eq(category,\"All\"):\r\n       {set num_unread to len(unread_articles)-unread}\r\n       {set num_total to len(articles)-total}\r\n   |else:\r\n       {set num_unread to len(unread_articles)}\r\n       {set num_total to len(articles)}\r\n   }\r\n    There {if num_unread!=1:are|else:is} {if num_unread=0:no|elif num_unread=1:one|else{num_unread}} unread {title} article{if num_unread!=1:s} of {num_total} article{if num_total!=1:s} total.\r\n{set total to total+len(articles)}  \r\n{set unread to unread+len(unread_articles)}\r\n}.\r\n\r\n\r\n\r\n",
+      "script": "{set titles to [\"Article\":\"Gal-Net news\",\"Community Goal\":\"Community Goal\",\"All\":\"Weekly Report\"]}\r\n{set total to 0}\r\n{set unread to 0}\r\n{for category, title in titles:\r\n   {title}\r\n   {set articles to GalnetNewsArticles(category,true)}\r\n   {set unread_articles to GalnetNewsArticles(category,false)}\r\n   {if eq(category,\"All\"):\r\n       {set num_unread to len(unread_articles)-unread}\r\n       {set num_total to len(articles)-total}\r\n   |else:\r\n       {set num_unread to len(unread_articles)}\r\n       {set num_total to len(articles)}\r\n   }\r\n    There {if num_unread!=1:are|else:is} {if num_unread=0:no|elif num_unread=1:one|else{num_unread}} unread {title} article{if num_unread!=1:s} of {num_total} article{if num_total!=1:s} total.\r\n{set total to total+len(articles)}  \r\n{set unread to unread+len(unread_articles)}\r\n}.\r\n\r\n\r\n\r\n",
       "default": false,
       "name": "Galnet unread report",
       "description": "Report on unread news"
@@ -753,7 +762,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n\r\n{set statereport to F(\"System state report\")}\r\n{if statereport:\r\n    {Pause(2000)}\r\n    Information:  {statereport}\r\n}",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n{SetState('eddi_context_fuel_remaining', event.fuelremaining)}\r\n{SetState('eddi_context_fuel_used', event.fuelused)}\r\n\r\n{F('Fuel Check')}\r\n{Pause(2000)}\r\n\r\n{set statereport to F(\"System state report\")}\r\n{if statereport:\r\n    {Pause(2000)}\r\n    Information:  {statereport}\r\n}",
       "default": true,
       "name": "Jumped",
       "description": "Triggered when you complete a jump to another system"
@@ -1046,6 +1055,15 @@
       "name": "Modification crafted",
       "description": "Triggered when you craft a modification to a module"
     },
+    "Module arrived": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.module.name} has\r\n\r\n{OneOf('arrived {if event.system && event.station: \\'at\\')}', \r\n       'completed its transfer {if event.system && event.station: \\'to\\')}')}\r\n\r\n{if event.sytem != system.name && len(event.system) > 0 && len(event.station) > 0:\r\n   {event.station} in the {event.system} system\r\n|elif event.station != station.name && len(event.station) > 0:\r\n   {event.station}\r\n}.",
+      "default": true,
+      "name": "Module arrived",
+      "description": "Triggered when you complete a module transfer"
+    },
     "Module purchased": {
       "enabled": true,
       "priority": 3,
@@ -1334,6 +1352,15 @@
       "name": "Shields up",
       "description": "Triggered when your ship's shields come online"
     },
+    "Ship arrived": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.ship} has \r\n\r\n{OneOf('arrived {if event.system && event.station: \\'at\\')}', \r\n       'completed its transfer {if event.system && event.station: \\'to\\')}')}\r\n\r\n{if event.sytem != system.name && len(event.system) > 0 && len(event.station) > 0:\r\n   {event.station} in the {event.system} system\r\n|elif event.station != station.name && len(event.station) > 0:\r\n   {event.station}\r\n}.",
+      "default": true,
+      "name": "Ship arrived",
+      "description": "Triggered when you complete a ship transfer"
+    },
     "Ship delivered": {
       "enabled": true,
       "priority": 3,
@@ -1392,7 +1419,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(2000)}\r\n\r\n{ShipName()} {if ship.fueltanktotalcapacity = event.total: fully} refuelled.",
+      "script": "{if event.total:\r\n   {SetState('eddi_context_fuel_remaining', event.total)}\r\n|else:\r\n   {SetState('eddi_context_fuel_remaining', state.eddi_context_fuel_remaining + event.amount)}\r\n}\r\n\r\n{Pause(2000)}\r\n{if event.total = ship.fueltanktotalcapacity || event.price:\r\n   {set refueled_desc to OneOf(\"fully refuelled\", \"at maximum fuel capacity\",\"at 100% fuel capacity\")}\r\n   {OneOf(\"Refueled\", \"Fuel at maximum\", \"Maximum fuel\", \"{P(ShipName())} is now {refueled_desc}\" )}\r\n|else:\r\n   {if event.amount <= 5.0000:\r\n      {F('Fuel check')}\r\n   }\r\n}",
       "default": true,
       "name": "Ship refuelled",
       "description": "Triggered when you refuel your ship"
@@ -1509,7 +1536,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'star')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_star_system', system.name)}\r\n{SetState('eddi_context_star_star', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan of {event.stellarclass}-class star {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Star report\")}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'star')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_star_system', system.name)}\r\n{SetState('eddi_context_star_star', event.name)}\r\n\r\n{Pause(1000)}\r\n\r\nScan of {event.stellarclass}-class star {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Star report\")}\r\n\r\n{if event.estimatedvalue:\r\n   Estimated scan value: {Humanise(event.estimatedvalue)} credits.\r\n}\r\n\r\n{if (event.estimatedhabzoneinner && event.estimatedhabzoneouter) && \r\n (event.estimatedhabzoneinner > 0 && event.estimatedhabzoneouter> 0):\r\n   Habitable zone\r\n   {Occasionally(2, OneOf(\"calculated at\", \"calculated to fall from\"))}: \r\n   {Humanise(event.estimatedhabzoneinner)} \r\n   to {Humanise(event.estimatedhabzoneouter)} \r\n   lightseconds.\r\n|elif event.estimatedhabzoneouter && event.estimatedhabzoneouter > 0:\r\n   Habitable zone\r\n   {Occasionally(2, OneOf(\"calculated at\", \"calculated to fall from\"))}: \r\n   {Humanise(event.estimatedhabzoneouter)} \r\n   lightseconds maximum.\r\n}",
       "default": true,
       "name": "Star scanned",
       "description": "Triggered when you complete a scan of a stellar body"
