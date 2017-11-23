@@ -1,5 +1,7 @@
 ﻿# CHANGE LOG
 
+### 2.4.6-b2
+
 ### 2.4.6-b1
   * The Galnet monitor will now check the player journal for recent activity prior to updating - VoiceAttack users rejoice!
   * VoiceAttack
