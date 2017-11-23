@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace EddiEvents
         static BountyIncurredEvent()
         {
             VARIABLES.Add("crimetype", "The type of crime committed");
-            VARIABLES.Add("crimedescription", "The decription of the crime committed");
+            VARIABLES.Add("crime", "The decription of the crime committed");
             VARIABLES.Add("LocalCrime", "The LOCALIZED decription of crime committed");
             VARIABLES.Add("victim", "The name of the victim of the crime");
             VARIABLES.Add("faction", "The name of the faction issuing the bounty");
@@ -24,17 +24,6 @@ namespace EddiEvents
 
         [JsonProperty("crimetype")]
         public string crimetype { get; private set; }
-        public string LocalCrimeType
-        {
-            get
-            {
-                if (crimetype != null && crimetype != "")
-                {
-                    return Crime.FromName(crimetype).LocalName;
-                }
-                else return null;
-            }
-        }
 
 		[JsonIgnore]
         public string LocalCrime
