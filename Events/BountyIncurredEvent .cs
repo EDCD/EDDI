@@ -15,7 +15,7 @@ namespace EddiEvents
         static BountyIncurredEvent()
         {
             VARIABLES.Add("crimetype", "The type of crime committed");
-            VARIABLES.Add("crimedescription", "The decription of the crime committed");
+            VARIABLES.Add("crime", "The decription of the crime committed");
             VARIABLES.Add("victim", "The name of the victim of the crime");
             VARIABLES.Add("faction", "The name of the faction issuing the bounty");
             VARIABLES.Add("bounty", "The number of credits issued as the bounty");
