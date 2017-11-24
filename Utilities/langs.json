@@ -905,7 +905,15 @@
       "en": "aɪ",
       "fr": "i"
     },
+    "phonetic_i": {
+      "en": "aɪ",
+      "fr": "i"
+    },
     "phonetic_ibootis_bootis": {
+      "en": "bəʊˈəʊtɪs",
+      "fr": "butis"
+    },
+    "phonetic_bootis": {
       "en": "bəʊˈəʊtɪs",
       "fr": "butis"
     },
@@ -917,7 +925,15 @@
       "en": "ˈkaɪə",
       "fr": "kɛa"
     },
+    "phonetic_kaia": {
+      "en": "ˈkaɪə",
+      "fr": "kɛa"
+    },
     "phonetic_kaiabajaja_bajaja": {
+      "en": "ˈbɑːhɑːhɑː",
+      "fr": "baʒaʒa"
+    },
+    "phonetic_bajaja": {
       "en": "ˈbɑːhɑːhɑː",
       "fr": "baʒaʒa"
     },
@@ -969,7 +985,15 @@
       "en": "mjuː",
       "fr": "my"
     },
+    "phonetic_mu": {
+      "en": "mjuː",
+      "fr": "my"
+    },
     "phonetic_mukoji_koji": {
+      "en": "ˈkəʊdʒiː",
+      "fr": "kɔʒi"
+    },
+    "phonetic_koji": {
       "en": "ˈkəʊdʒiː",
       "fr": "kɔʒi"
     },
@@ -989,7 +1013,15 @@
       "en": "paɪ",
       "fr": "pɛ"
     },
+    "phonetic_pai": {
+      "en": "paɪ",
+      "fr": "pɛ"
+    },
     "phonetic_paiszu_szu": {
+      "en": "ʃuː",
+      "fr": "szu"
+    },
+    "phonetic_szu": {
       "en": "ʃuː",
       "fr": "szu"
     },
@@ -1017,7 +1049,15 @@
       "en": "ʃɪnˈrɑːrtə",
       "fr": "ʃinʁaʁta"
     },
+    "phonetic_shinrarta": {
+      "en": "ʃɪnˈrɑːrtə",
+      "fr": "ʃinʁaʁta"
+    },
     "phonetic_shinrartadezhra_dezhra": {
+      "en": "ˈdezɦrə",
+      "fr": "dɛzʁa"
+    },
+    "phonetic_dezhra": {
       "en": "ˈdezɦrə",
       "fr": "dɛzʁa"
     },
@@ -1053,7 +1093,15 @@
       "en": "ʈʂáŋ",
       "fr": "ʈʂáŋ"
     },
+    "phonetic_zhang": {
+      "en": "ʈʂáŋ",
+      "fr": "ʈʂáŋ"
+    },
     "phonetic_zhangfei_fei": {
+      "en": "feɪ",
+      "fr": "feɪ"
+    },
+    "phonetic_fei": {
       "en": "feɪ",
       "fr": "feɪ"
     },
@@ -1077,7 +1125,15 @@
       "en": "beɪ",
       "fr": "bɛ"
     },
+    "phonetic_Bei": {
+      "en": "beɪ",
+      "fr": "bɛ"
+    },
     "phonetic_BeiDou_Dou": {
+      "en": "ˈduː",
+      "fr": "du"
+    },
+    "phonetic_Dou": {
       "en": "ˈduː",
       "fr": "du"
     },
@@ -1089,11 +1145,23 @@
       "en": "bliːiː",
       "fr": "bləa"
     },
+    "phonetic_Bleae": {
+      "en": "bliːiː",
+      "fr": "bləa"
+    },
     "phonetic_BleaeThaa_Thaa": {
       "en": "θɑː",
       "fr": "taa"
     },
-    "phonetic_phonetic_BleaeThua_Thua": {
+    "phonetic_Thaa": {
+      "en": "θɑː",
+      "fr": "taa"
+    },
+    "phonetic_BleaeThua_Thua": {
+      "en": "θuːə",
+      "fr": "tɥa"
+    },
+    "phonetic_Thua": {
       "en": "θuːə",
       "fr": "tɥa"
     },
@@ -1117,7 +1185,15 @@
       "en": "kaɪ",
       "fr": "ʃi"
     },
+    "phonetic_Chi": {
+      "en": "kaɪ",
+      "fr": "ʃi"
+    },
     "phonetic_ChiPersei_Persei": {
+      "en": "ˈpɜːsɪˌaɪ",
+      "fr": "pɛʁsei"
+    },
+    "phonetic_Persei": {
       "en": "ˈpɜːsɪˌaɪ",
       "fr": "pɛʁsei"
     },
@@ -1130,11 +1206,19 @@
       "fr": "siɲ"
     },
     "phonetic_EtaCarina_Eta": {
-      "en": "kəˈriːnə",
+      "en": "\"eta,",
+      "fr": "eta"
+    },
+    "phonetic_Eta": {
+      "en": "eta",
       "fr": "eta"
     },
     "phonetic_EtaCarina_Carina": {
-      "en": "eta",
+      "en": "kəˈriːnə",
+      "fr": "kaʁina"
+    },
+    "phonetic_Carina": {
+      "en": "kəˈriːnə",
       "fr": "kaʁina"
     },
     "phonetic_Fornacis": {
@@ -1193,7 +1277,15 @@
       "en": "pruː",
       "fr": "pʁy"
     },
+    "phonetic_Pru": {
+      "en": "pruː",
+      "fr": "pʁy"
+    },
     "phonetic_PruEuq_Euq": {
+      "en": "juːk",
+      "fr": "øk"
+    },
+    "phonetic_Euq": {
       "en": "juːk",
       "fr": "øk"
     },
@@ -1201,7 +1293,15 @@
       "en": "rəʊ",
       "fr": "ʁo"
     },
+    "phonetic_Rho": {
+      "en": "rəʊ",
+      "fr": "ʁo"
+    },
     "phonetic_RhoOphiuchi_Ophiuchi": {
+      "en": "ɒˈfjuːkaɪ",
+      "fr": "ɔfjyʃy"
+    },
+    "phonetic_Ophiuchi": {
       "en": "ɒˈfjuːkaɪ",
       "fr": "ɔfjyʃy"
     },
@@ -1217,7 +1317,15 @@
       "en": "ˈʃuːi",
       "fr": "ˈʃuːi"
     },
+    "phonetic_Shui": {
+      "en": "ˈʃuːi",
+      "fr": "ˈʃuːi"
+    },
     "phonetic_ShuiWei_Wei": {
+      "en": "weɪ",
+      "fr": "weɪ"
+    },
+    "phonetic_Wei": {
       "en": "weɪ",
       "fr": "weɪ"
     },
@@ -1225,7 +1333,15 @@
       "en": "taʊ",
       "fr": "to"
     },
+    "phonetic_Tau": {
+      "en": "taʊ",
+      "fr": "to"
+    },
     "phonetic_TauCeti_Ceti": {
+      "en": "ˈsiːtaɪ",
+      "fr": "seti"
+    },
+    "phonetic_Ceti": {
       "en": "ˈsiːtaɪ",
       "fr": "seti"
     },
@@ -3640,6 +3756,18 @@
     "Cockpit": {
       "en": "Cockpit Canopy",
       "fr": "Verrière"
+    },
+    "fixed": {
+      "en": "fixed",
+      "fr": "fixe"
+    },
+    "gimballed": {
+      "en": "gimballed",
+      "fr": "rotatif"
+    },
+    "turreted": {
+      "en": "Cargo Hatch",
+      "fr": "Tourelle"
     },
     "ModularCargoBayDoor": {
       "en": "Cargo Hatch",
