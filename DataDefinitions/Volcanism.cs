@@ -14,7 +14,9 @@ namespace EddiDataDefinitions
 
         public string type { get; set; } // Geysers/Magma
 
-        public string composition { get; set; } // Iron, Silicate, etc.
+        public string composition { get; set; } // Iron, Silicate, etc..
+
+        public string amount { get; set; } // Minor, Major, null (for normal)
 
         /// <summary>The Local-ized Volcanism composition</summary>
         [JsonIgnore]
@@ -26,7 +28,25 @@ namespace EddiDataDefinitions
             }
         }
 
-        public string amount { get; set; } // Minor, Major, null (for normal)
+        /// <summary>The Local-ized Volcanism type</summary>
+        [JsonIgnore]
+        public string LocalType
+        {
+            get
+            {
+                return I18N.GetString(type) ?? type;
+            }
+        }
+
+        /// <summary>The Local-ized Volcanism amount</summary>
+        [JsonIgnore]
+        public string LocalAmount
+        {
+            get
+            {
+                return I18N.GetString(amount) ?? amount;
+            }
+        }
 
         static Volcanism()
         {
@@ -42,9 +62,9 @@ namespace EddiDataDefinitions
 
         public Volcanism(string type, string composition, string amount)
         {
-            this.type = I18N.GetString(type);           //type;
-            this.composition = I18N.GetString(composition);    //composition;
-            this.amount = I18N.GetString(amount);         //amount;
+            this.type = type;           //type;
+            this.composition = composition;    //composition;
+            this.amount = amount;         //amount;
         }
 
         /// <summary>
