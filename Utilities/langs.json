@@ -89,6 +89,14 @@
       "en": "Monitor Galnet for new news items and generate a \"Galnet news published\" event when new items are posted",
       "fr": "Gère les nouveaux articles Galnet et génère un événement \"Galnet news published\" lorsque que nouveaux articles sont postés"
     },
+    "galnet_monitor_language_label": {
+      "en": "Galnet article language",
+      "fr": "Langue des articles Galnet"
+    },
+    "galnet_monitor_p1": {
+      "en": "Please note that after changing language it can take up to 2 minutes for new Galnet articles to be available",
+      "fr": "Veuillez prendre en compte qu'après avoir changé la langue les nouveaux articles Galnet pourrons prendre 2 minutes pour être disponibles"
+    },
     "ship_monitor_name": {
       "en": "Ship monitor",
       "fr": "Moniteur Vaisseau"
@@ -7816,6 +7824,14 @@
     "Manufactured": {
       "en": "Manufactured",
       "fr": "Manufacturé"
+    },
+    "federation_fighter": {
+      "en": "F63 Condor",
+      "fr": "F63 Condor"
+    },
+    "testbuggy": {
+      "en": "testbuggy",
+      "fr": "testbuggy"
     }
   }
 }
