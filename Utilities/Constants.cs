@@ -20,11 +20,10 @@ namespace Utilities
         public static readonly string VEHICLE_SHIP = I18N.GetString("ship");
         public static readonly string VEHICLE_SRV = I18N.GetString("srv");
         public static readonly string VEHICLE_FIGHTER = I18N.GetString("fighter");
-
         // Physical Constants
         public const int lightSpeedMetersPerSecond = 299792458;
-        public const int solarRadiusMeters = 695500000;
         public const double solAbsoluteMagnitude = 4.83;
+        public const int solarRadiusMeters = 695500000;
         public const double solLuminosity = 3.846e26;
         public const double stefanBoltzmann = 5.670367e-8;
     }

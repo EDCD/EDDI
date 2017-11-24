@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,12 +16,12 @@ namespace EddiEvents
         {
             VARIABLES.Add("rating", "The commander's new trade rating");
             VARIABLES.Add("LocalRating", "The translation of the trade rating data into the chosen language");
+
         }
 
         [JsonProperty("rating")]
         public string rating{ get; private set; }
 
-        [JsonProperty("LocalRating")]
         public string LocalRating
         {
             get

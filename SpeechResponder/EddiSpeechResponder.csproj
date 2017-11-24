@@ -147,7 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="eddi.json" />
-    <None Include="Help_fr.md" />
+    <None Include="Help_fr.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Variables.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

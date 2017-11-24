@@ -1,4 +1,4 @@
-﻿using Eddi;
+using Eddi;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiStarMapService;
@@ -28,7 +28,7 @@ namespace EddiEdsmResponder
 
         private void I18NForComponents()
         {
-
+            
         }
 
         private void edsmCommanderNameChanged(object sender, TextChangedEventArgs e)

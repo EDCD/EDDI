@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace EddiDataDefinitions
 {
@@ -61,7 +61,7 @@ namespace EddiDataDefinitions
         /// <summary>The Local-ized primary Economy of the station</summary>
         [JsonIgnore]
         public string LocalEconomy
-        {
+        {   
             get
             {
                 if (primaryeconomy != null && primaryeconomy != "")

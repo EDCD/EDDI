@@ -101,7 +101,7 @@ Emphasize () prend également un argument facultatif: le degré d'emphase à pla
 L'utilisation courante de ceci est de fournir une lecture plus humaine du texte en permettant l'application de l'emphase:
 
    C'est un {Emphasize ('beau', 'strong')} vaisseau que vous avez là.
-
+   
 ### Humanise()
 
 Cette fonction transformera son argument en un nombre plus humain, par exemple en transformant 31245 en «un peu plus de trente mille».
@@ -129,7 +129,7 @@ Cette conction teste la première lettre d'un mot et renvoie true (vrai) si le m
 StartsWithVowel() utilise une argumlent : le mot à tester.
 
 L'utilisation courante de ceci est de sélectionner le mot qui devrait procéder à la chaîne (par exemple ** de ** eau comparée à  ** d' ** eau).
-
+   
    il y a des geysers {if StartsWithVowel(reportbody.volcanism.composition): d' |else: de } {reportbody.volcanism.composition}
 
 ### SpeechPitch()
@@ -139,7 +139,7 @@ Cette fonction vous permet d'ajuster dynamiquement la hauteur du discours parlé
 SpeechPitch () utilises deux variables obligatoires: le texte à parler et la hauteur à laquelle parler (les valeurs légales pour la modification incluent "x-low", "low", "medium", "high", "x-high" , "default", ainsi que des pourcentages tels que "-20%" ou "+ 10%").
 
 L'utilisation courante de ceci est de fournir une lecture plus humaine du texte avec une variation dans la hauteur du discours:   
-
+																															  
 
    {SpeechPitch('Ok, who added helium to the life support unit?', 'high')}
    {Pause(1000)}
@@ -165,7 +165,7 @@ Cette fonction vous permet d'ajuster dynamiquement le volume du discours parlé.
 SpeechRate () prend deux variables obligatoires: le texte à dire et le valume à appliquer (les valeurs nominatives pour le volume incluent "silent", "x-soft", "soft", "medium", "loud", "x-loud", "default", ainsi que des valeurs relatives de décibels comme "-6dB").
 Une valeur de "+ 0dB" signifie pas de changement de volume, "+ 6dB" signifie environ deux fois l'amplitude actuelle (on double), "-6dB" signifie environ la moitié de l'amplitude actuelle (on diminue de moitié).
 L'utilisation courante de ceci est de fournir une lecture plus humaine du texte avec une variation du volume de la parole:
-
+   
    {SpeechVolume('The quick brown fox', 'loud')}
    {SpeechVolume('jumped over the lazy dog', 'x-soft')}.
 
@@ -308,7 +308,7 @@ L'usage courant de ceci est de fournir de plus amples informations sur un corps 
 
     {set body to BodyDetails("Earth", "Sol")}
     le Terre est à {body.distancefromstar} années lumière de son étoile, le Soleil.
-
+	
 	Remarquez que les paramètres utilisent les nom anglophones en usage dans le jeu.
 
 ### MaterialDetails()
@@ -320,7 +320,7 @@ MaterialDetails () prend pour seul argument le nom du matériau dont vous voulez
 L'usage courant de ceci est de fournir de plus amples informations sur un matériau, par exemple:
 
     le fer est un materiau {MaterialDetails("Iron").rarity.name}.
-
+	
 ### SuperpowerDetails()
 
 Cette fonction fournira des informations complètes pour une superpuissance en fonction de son nom.
@@ -361,17 +361,6 @@ SecurityLevelDetails() prend pour seul argument le niveau de sécurité pour leq
 
 A l'heure actuelle, cela n'a pas beaucoup d'utilité car l'objet state ne contient que son nom, mais on peut espérer qu'il soit développé à l'avenir.
 
-### List()
-
-ThisCette fonction va renvoyer une liste humainement compréhensible à partir d'un tableau (e.g. ceci, cela, et une autre chose).
-
-List() ne prend qu'un seul argument, le nom de la table à énoncer.
-
-Common usage is to convert an array to a list, for example:
-L'utilisation courante de ceci est de convertir une table un une liste énoncée, par exemple:
-
-    {set systemsrepaired to ['la coque', 'la verrière', 'les corrosions']}
-    Les drônes ont réparé {List(systemsrepaired)}.
 
 ### Log()
 

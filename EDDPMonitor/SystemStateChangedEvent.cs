@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using EddiEvents;
 using System;
 using System.Collections.Generic;

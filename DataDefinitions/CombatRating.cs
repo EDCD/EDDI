@@ -14,7 +14,7 @@ namespace EddiDataDefinitions
         public string edname { get; private set; }
 
         public string name { get; private set; }
-
+		
         public string LocalName
         {
             get

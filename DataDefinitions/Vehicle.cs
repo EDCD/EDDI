@@ -6,7 +6,7 @@ namespace EddiDataDefinitions
     {
         // Definition of the vehicle
         public string EDName { get; set; }
-
+        
         public string LocalName
         {
             get

@@ -14,7 +14,7 @@ namespace EddiEvents
 
         static CommodityEjectedEvent()
         {
-            VARIABLES.Add("commodity", "The name of the commodity ejected");
+            VARIABLES.Add("commodity", "The name of the commodity collected");
             VARIABLES.Add("LocalCommodity", "The translation of the commodity into the chosen language");
             VARIABLES.Add("amount", "The amount of cargo ejected");
             VARIABLES.Add("abandoned", "If the cargo has been abandoned");

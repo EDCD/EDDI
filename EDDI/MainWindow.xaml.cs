@@ -624,6 +624,7 @@ namespace Eddi
             {
                 Logging.Debug("Preparing log for export.");
                 var progress = new Progress<string>(s => githubIssueButton.Content = I18N.GetString("preparing_log") + s);
+                
                 await Task.Factory.StartNew(() => prepareLog(progress), TaskCreationOptions.LongRunning);
             }
             createGithubIssue();
