@@ -195,7 +195,7 @@ namespace Eddi
                     skeleton.panel.Children.Add(monitorConfiguration);
                 }
 
-                TabItem item = new TabItem { Header = responder.ResponderName() };
+                TabItem item = new TabItem { Header = responder.ResponderLocalName() };
                 item.Content = skeleton;
                 tabControl.Items.Add(item);
             }

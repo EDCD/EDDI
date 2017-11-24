@@ -23,7 +23,79 @@
     },
     "edsm_responder_desc": {
       "en": "Send details of your travels to EDSM.  EDSM is a third-party tool that provides information on the locations of star systems and keeps a log of the star systems you have visited.  It uses the data provided to crowd-source a map of the galaxy",
-      "fr": null
+      "fr": "Envoie les détails de vos voyages à EDSM. EDSM est un outil tierce partie apportant des informations sur les emplacements des systèmes et garde une trace de ceux que vous avez visités. Il utilise les données fournies pour construire une carte participative de la galaxy"
+    },
+    "edsm_responder_p1": {
+      "en": "To connect to EDSM you need to have registered an account with them.  Once you have done this you can obtain your API key by clicking on your portrait in the top-right corner of the screen and selecting 'My API Key'",
+      "fr": "Pour vous connecter à EDSM vous devez avoir créé un compte avec eux. Après cela vous pouvez obtenir votre clé API en cliquant sur votre portrait dans le coin supérieur droit de l'écran puis en sélectionnant 'Clé API'"
+    },
+    "edsm_responder_api_key_label": {
+      "en": "EDSM API key",
+      "fr": "Clé API EDSM"
+    },
+    "edsm_responder_p2": {
+      "en": "If you registered a different commander name to your actual one, or you have not enabled the companion app, please enter your commander name below",
+      "fr": "Si vous avez enregistré un nom de commandant différent du véritable, ou si vous n'avez pas activé le companion app, veuillez entrer votre nom de commandant ci-dessous"
+    },
+    "edsm_responder_cmd_name_label": {
+      "en": "EDSM Commander name",
+      "fr": "Nom de commandant EDSM"
+    },
+    "edsm_responder_p3": {
+      "en": "Once you have entered your data above you can pull your existing logs from EDSM so that EDDI knows how many times you have been to each system.  You only need to do this the first time you set up EDSM.  Note that this can take a while to run",
+      "fr": "Une fois que vous avez renseigné vos données ci-dessus vous pouvez récupèrer les logs existants depuis EDSM pour qu'EDDI sache combien de fois vous avez été dans chaque système. Vous n'avez à faire cela que le première fois que vous configurez EDSM. Sachez que ceci peu prendre un peu de temps."
+    },
+    "edsm_responder_log_button": {
+      "en": "Obtain EDSM log",
+      "fr": "Obtenir les logs EDSM"
+    },
+    "edsm_responder_log_button_fetching": {
+      "en": "Obtaining log...",
+      "fr": "Obtention des logs..."
+    },
+    "edsm_responder_log_button_fetching_progress": {
+      "en": "Obtaining log ",
+      "fr": "Obtention des logs "
+    },
+    "edsm_responder_log_button_fetched": {
+      "en": "Obtained log",
+      "fr": "Logs obtenus"
+    },
+    "edsm_responder_log_button_error_received": {
+      "en": "EDSM error received: ",
+      "fr": "Erreur EDSM reçue: "
+    },
+    "edsm_responder_log_button_empty_api_key": {
+      "en": "Please enter EDSM API key to obtain log",
+      "fr": "Veuillez entrer votre clé API EDSM pour obtenir les logs"
+    },
+    "edsm_responder_log_button_companion_unconfigured": {
+      "en": "Companion app not configured and no name supplied; cannot obtain logs",
+      "fr": "Le companion app n'est pas configuré et aucun nom n'a été donné; impossible d'obtenir les logs"
+    },
+    "speech_responder_name": {
+      "en": "Speech Responder",
+      "fr": "Répondeur Vocal"
+    },
+    "speech_responder_desc": {
+      "en": "Respond to events with pre-scripted responses using the information available. Not all events have scripted responses by default; those that do not have the 'Test' button disabled.  The default personality can be copied, which allows existing scripts to be modified or disabled, and new scripts to be written, to suit your preferences.",
+      "fr": "Réponds aux événements avec des réponse pré-scriptée en utilisant les informations disponibles. Tout les événements n'ont pas de réponses scriptées par défaut; ceux qui n'ont pas le bouton 'Test' désactivé. La personnalité par défaut peut être copiée, vous permettant de modifier ou désactiver les scripts existants, et d'en écrire de nouveaux selon vos préférences."
+    },
+    "eddn_responder_name": {
+      "en": "EDDN responder",
+      "fr": "Répondeur EDDN"
+    },
+    "eddn_responder_desc": {
+      "en": "Send station, jump, and scan information to EDDN.  EDDN is a third-party tool that gathers information on systems and markets, and provides data for most trading tools as well as starsystem information tools such as EDDB",
+      "fr": "Envois les information des stations, sauts et scans à EDDN. EDDN est un outil tierce partie qui rassemble les onformations sur les sytèmes et marchés, et fournis des données pour la plupart des outils de commerce ainsi que pour les outils d'informations sur les sytèmes stellaire tel qu'EDDB"
+    },
+    "va_responder_name": {
+      "en": "VoiceAttack responder",
+      "fr": "Répondeur VoiceAttack"
+    },
+    "va_responder_desc": {
+      "en": "A responder that generates a large number of variables within VoiceAttack as well as triggering user-defined actions.",
+      "fr": "Un répondeur qui génère un grand nombre de variables dans VoiceAttack et déclenche des actions définies par l'utilisateur."
     },
     "eddp_monitor_name": {
       "en": "EDDP monitor",
@@ -35,7 +107,7 @@
     },
     "eddp_monitor_p1": {
       "en": "You can create, edit and delete watches below.  When EDDI receives information about a change somewhere in the galaxy it will compare it to each of the watches in turn.  If the information matches all of the selected criteria for a given watch then it will trigger an event.  Please be aware that this relies on information coming from EDDN, which in turn comes from commanders running programs like EDDI, so will only report changes of which the network is aware.",
-      "fr": "Vous pouvez créer, éditer et supprimer les observateurs ci-dessous. Lorsque EDDI recois des informations à propos d'un changement quelque part dans la galaxie il les compareras à chacun des observateur actifs. Si les informations concordent avec tout les critères sélectionnés pour un observateur donné, un événement seras déclenché. Prenez en compte que ceci repose sur les informations venant de EDDN, qui viennent de commandeurs utilisant des programmes comme EDDI, donc seuls les changements dont le réseau à connaissance seront rapportés."
+      "fr": "Vous pouvez créer, éditer et supprimer les observateurs ci-dessous. Lorsque EDDI recois des informations à propos d'un changement quelque part dans la galaxie il les compareras à chacun des observateur actifs. Si les informations concordent avec tout les critères sélectionnés pour un observateur donné, un événement seras déclenché. Prenez en compte que ceci repose sur les informations venant de EDDN, qui viennent de commandants utilisant des programmes comme EDDI, donc seuls les changements dont le réseau à connaissance seront rapportés."
     },
     "eddp_monitor_name_header": {
       "en": "Name",

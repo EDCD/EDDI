@@ -28,6 +28,11 @@ namespace EDDNResponder
             return "EDDN responder";
         }
 
+        public string ResponderLocalName()
+        {
+            return I18N.GetString("eddn_responder_name");
+        }
+
         public string ResponderVersion()
         {
             return "1.0.0";
@@ -35,7 +40,7 @@ namespace EDDNResponder
 
         public string ResponderDescription()
         {
-            return "Send station, jump, and scan information to EDDN.  EDDN is a third-party tool that gathers information on systems and markets, and provides data for most trading tools as well as starsystem information tools such as EDDB";
+            return I18N.GetString("eddn_responder_desc");
         }
 
         public EDDNResponder()

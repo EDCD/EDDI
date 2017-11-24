@@ -35,6 +35,11 @@ namespace EddiSpeechResponder
             return "Speech responder";
         }
 
+        public string ResponderLocalName()
+        {
+            return I18N.GetString("speech_responder_name");
+        }
+
         public string ResponderVersion()
         {
             return "1.0.0";
@@ -42,7 +47,7 @@ namespace EddiSpeechResponder
 
         public string ResponderDescription()
         {
-            return "Respond to events with pre-scripted responses using the information available.  Not all events have scripted responses by default; those that do not have the 'Test' button disabled.  The default personality can be copied, which allows existing scripts to be modified or disabled, and new scripts to be written, to suit your preferences.";
+            return I18N.GetString("speech_responder_desc");
         }
 
         public SpeechResponder()

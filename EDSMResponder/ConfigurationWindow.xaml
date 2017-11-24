@@ -20,14 +20,14 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="To connect to EDSM you need to have registered an account with them.  Once you have done this you can obtain your API key by clicking on your portrait in the top-right corner of the screen and selecting 'My API Key'" VerticalAlignment="Top"/>
-            <Label Grid.Row="1" Grid.Column="0" Margin="10" Content="EDSM API key"/>
+            <TextBlock x:Name="p1" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" VerticalAlignment="Top"/>
+            <Label x:Name="apiKeyLabel" Grid.Row="1" Grid.Column="0" Margin="10"/>
             <TextBox x:Name="edsmApiKeyTextBox" Grid.Row="1" Grid.Column="1" Margin="10" TextChanged="edsmApiKeyChanged"/>
-            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="If you registered a different commander name to your actual one, or you have not enabled the companion app, please enter your commander name below" VerticalAlignment="Top"/>
-            <Label Grid.Row="3" Grid.Column="0" Margin="10" Content="EDSM Commander name"/>
+            <TextBlock x:Name="p2" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" VerticalAlignment="Top"/>
+            <Label x:Name="edsmCmdNameLabel" Grid.Row="3" Grid.Column="0" Margin="10"/>
             <TextBox x:Name="edsmCommanderNameTextBox" Grid.Row="3" Grid.Column="1" Margin="10" TextChanged="edsmCommanderNameChanged"/>
-            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="Once you have entered your data above you can pull your existing logs from EDSM so that EDDI knows how many times you have been to each system.  You only need to do this the first time you set up EDSM.  Note that this can take a while to run" VerticalAlignment="Top"/>
-            <Button x:Name="edsmFetchLogsButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Obtain EDSM log" Margin="10" Click="edsmObtainLogClicked"/>
+            <TextBlock x:Name="p3" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" VerticalAlignment="Top"/>
+            <Button x:Name="edsmFetchLogsButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" Click="edsmObtainLogClicked"/>
         </Grid>
     </DockPanel>
 </UserControl>
