@@ -1,7 +1,8 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using EddiEvents;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiShipMonitor
 {
@@ -14,29 +15,32 @@ namespace EddiShipMonitor
         static ShipRepairedEvent()
         {
             VARIABLES.Add("item", "The item repaired, if repairing a specific item");
-            VARIABLES.Add("LocalItem", "The Local-ized Item repaired, if repairing a specific item");
             VARIABLES.Add("price", "The price of the repair");
+            VARIABLES.Add("name", "The localized name of the item repaired");
+            VARIABLES.Add("@class", "The class of the item repaired");
+            VARIABLES.Add("grade", "The grade of the item repaired");
+            VARIABLES.Add("mount", "The localized type of mount of the item repaired if it is a weapon");
         }
 
         public string item { get; private set; }
-        public string LocalItem
-        {
-            get
-            {
-                if (item != null && item != "")
-                {
-                    return CombatRating.FromName(item).LocalName;
-                }
-                else return null;
-            }
-        }
-
         public long price { get; private set; }
 
-        public ShipRepairedEvent(DateTime timestamp, string item, long price) : base(timestamp, NAME)
+        public string name { get; private set; } = null;
+        public string @class { get; private set; } = null;
+        public string grade { get; private set; } = null;
+        public string mount { get; private set; } = null;
+
+        public ShipRepairedEvent(DateTime timestamp, string item, string mount, Module module, long price) : base(timestamp, NAME)
         {
             this.item = item;
             this.price = price;
+            if (module != null)
+            {
+                this.name = module.LocalName;
+                this.@class = module.@class.ToString();
+                this.grade = module.grade;
+                if (module.mount != null) { this.mount = I18N.GetString(mount); }
+            }
         }
     }
 }

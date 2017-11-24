@@ -15,7 +15,7 @@ namespace EddiEvents
         static FineIncurredEvent()
         {
             VARIABLES.Add("crimetype", "The type of crime committed");
-            VARIABLES.Add("crimedescription", "The decription of the crime committed");
+            VARIABLES.Add("crime", "The decription of the crime committed");
             VARIABLES.Add("LocalCrime", "The localized decription of the crime committed");
             VARIABLES.Add("victim", "The name of the victim of the crime");
             VARIABLES.Add("faction", "The name of the faction issuing the fine");
@@ -24,7 +24,8 @@ namespace EddiEvents
 
         [JsonProperty("crimetype")]
         public string crimetype { get; private set; }
-        
+
+
         public string LocalCrime
         {
             get

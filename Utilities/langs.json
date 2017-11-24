@@ -3641,6 +3641,18 @@
       "en": "Cockpit Canopy",
       "fr": "Verrière"
     },
+    "fixed": {
+      "en": "fixed",
+      "fr": "fixe"
+    },
+    "gimballed": {
+      "en": "gimballed",
+      "fr": "rotatif"
+    },
+    "turreted": {
+      "en": "Cargo Hatch",
+      "fr": "Tourelle"
+    },
     "ModularCargoBayDoor": {
       "en": "Cargo Hatch",
       "fr": "Baie de soute"

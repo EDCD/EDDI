@@ -1,4 +1,6 @@
-﻿using EddiEvents;
+using EddiEvents;
+using EddiDataDefinitions;
+using Utilities;
 using System;
 using System.Collections.Generic;
 
@@ -15,17 +17,29 @@ namespace EddiShipMonitor
             VARIABLES.Add("item", "The module that was repaired");
             VARIABLES.Add("repairedfully", "Whether the module was fully repaired (true/false)");
             VARIABLES.Add("health", "The health of the module (1.000000 = fully repaired)");
+            VARIABLES.Add("name", "The localized name of the item repaired");
+            VARIABLES.Add("@class", "The class of the item repaired");
+            VARIABLES.Add("grade", "The grade of the item repaired");
+            VARIABLES.Add("mount", "The localized type of mount of the item repaired if it is a weapon");
         }
 
         public string item { get; private set; }
         public bool repairedfully { get; private set; }
         public decimal health { get; private set; }
+        public string name { get; private set; }
+        public string @class { get; private set; }
+        public string grade { get; private set; }
+        public string mount { get; private set; } = null;
 
-        public ShipAfmuRepairedEvent(DateTime timestamp, string item, bool repairedfully, decimal health) : base(timestamp, NAME)
+        public ShipAfmuRepairedEvent(DateTime timestamp, string item, string mount, Module module, bool repairedfully, decimal health) : base(timestamp, NAME)
         {
             this.item = item;
             this.repairedfully = repairedfully;
             this.health = health;
+            this.name = module.LocalName;
+            this.@class = module.@class.ToString();
+            this.grade = module.grade;
+            if (module.mount != null) { this.mount = I18N.GetString(mount); }
         }
     }
 }
