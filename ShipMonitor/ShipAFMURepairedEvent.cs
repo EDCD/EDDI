@@ -18,7 +18,7 @@ namespace EddiShipMonitor
             VARIABLES.Add("repairedfully", "Whether the module was fully repaired (true/false)");
             VARIABLES.Add("health", "The health of the module (1.000000 = fully repaired)");
             VARIABLES.Add("name", "The localized name of the item repaired");
-            VARIABLES.Add("@class", "The class of the item repaired");
+            VARIABLES.Add("classn", "The class number of the item repaired");
             VARIABLES.Add("grade", "The grade of the item repaired");
             VARIABLES.Add("mount", "The localized type of mount of the item repaired if it is a weapon");
         }
@@ -27,7 +27,7 @@ namespace EddiShipMonitor
         public bool repairedfully { get; private set; }
         public decimal health { get; private set; }
         public string name { get; private set; }
-        public string @class { get; private set; }
+        public string classn { get; private set; }
         public string grade { get; private set; }
         public string mount { get; private set; } = null;
 
@@ -37,7 +37,7 @@ namespace EddiShipMonitor
             this.repairedfully = repairedfully;
             this.health = health;
             this.name = module.LocalName;
-            this.@class = module.@class.ToString();
+            this.classn = module.@class.ToString();
             this.grade = module.grade;
             if (module.mount != null) { this.mount = I18N.GetString(mount); }
         }
