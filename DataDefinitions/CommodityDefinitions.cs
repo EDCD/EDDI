@@ -119,7 +119,7 @@ namespace EddiDataDefinitions
             {128066403, new Commodity(84, "Drones", "Limpet", "NonMarketable", 101, false) },
             {128666746, new Commodity(85, "EraninPearlWhisky", "Eranin Pearl Whisky", "Narcotics", 9040, true) },
             {128667071, new Commodity(86, "KamorinHistoricWeapons", "Kamorin Historic Weapons", "Weapons", 9766, true) },
-            {128667760, new Commodity(87, "TransgenicOnionHead", "Lucan Onion Head", "Narcotics", 8472, true) },
+            {128667760, new Commodity(87, "TransgenicOnionHead", "Lucan Onionhead", "Narcotics", 8472, true) },
             {128667676, new Commodity(88, "MotronaExperienceJelly", "Motrona Experience Jelly", "Narcotics", 13129, true) },
             {128667029, new Commodity(89, "OnionHead", "Onion Head", "Narcotics", 8437, true) },
             {128667082, new Commodity(90, "RusaniOldSmokey", "Rusani Old Smokey", "Narcotics", 11994, true) },
