@@ -1,10 +1,6 @@
 using EddiDataDefinitions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EddiEvents
 {
@@ -22,7 +18,6 @@ namespace EddiEvents
             VARIABLES.Add("reward", "The monetary reward for completing the search and rescue");
         }
 
-        //public Commodity commodity { get; private set; }
         public string commodity { get; private set; }
         public int? amount { get; private set; }
         public long reward { get; private set; }
