@@ -1,6 +1,7 @@
 ﻿# CHANGE LOG
 
 ### 2.4.6-b2
+  * Further changes to check for recent activity prior to updating the Galnet monitor
   * Speech Responder
     * Script changes
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.

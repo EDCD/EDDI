@@ -106,7 +106,7 @@ namespace Eddi
         public StarSystem LastStarSystem { get; private set; }
 
         // Information obtained from the player journal
-        public DateTime? JournalTimeStamp { get; set; } = null;
+        public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
 
         // Current vehicle of player
         public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
