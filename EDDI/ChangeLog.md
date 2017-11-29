@@ -1,6 +1,8 @@
 ﻿# CHANGE LOG
 
 ### 2.4.6-b2
+  * Speech Responder
+      * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
 
 ### 2.4.6-b1
   * The Galnet monitor will now check the player journal for recent activity prior to updating - VoiceAttack users rejoice!
