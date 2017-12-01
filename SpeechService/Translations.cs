@@ -679,7 +679,7 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
                     case 2:
                         return "well over " + number + " " + order;
                     case 3:
-                        return "about " + number + " and a half " + order;
+                        return "almost " + number + " and a half " + order;
                     case 4:
                         return "nearly " + number + " and a half " + order;
                     case 5:
@@ -689,7 +689,7 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
                     case 7:
                         return "well over " + number + " and a half " + order;
                     case 8:
-                        return "about " + (number + 1) + " " + order;
+                        return "almost " + (number + 1) + " " + order;
                     case 9:
                         return "nearly " + (number + 1) + " " + order;
                     default:
