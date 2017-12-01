@@ -14,7 +14,7 @@ namespace EddiEvents
         static SearchAndRescueEvent()
         {
             VARIABLES.Add("commodity", "The item recovered (this is an object)");
-            VARIABLES.Add("commodityname", "Name of the item recovered");
+            VARIABLES.Add("commodityname", "The name of the item recovered");
             VARIABLES.Add("amount", "The amount of the item recovered");
             VARIABLES.Add("reward", "The monetary reward for completing the search and rescue");
         }
