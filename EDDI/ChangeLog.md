@@ -2,6 +2,7 @@
 
 ### 2.4.6-b2
   * Speech Responder
+    * Script changes
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
       * Updated 'Search and rescue' event to better distinguish between occupied and damaged escape pods, and to fix a bug in handling wreckage commodities.
 
