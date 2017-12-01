@@ -4,6 +4,9 @@
   * Speech Responder
     * Script changes
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
+  * Events
+	* Search and rescue Event
+	  * Added variable commodityname to provide the name of the commodity turned in, free of the commodity object. Accessible to VoiceAttack as {TXT:EDDI search and rescue commodityname} 
 
 ### 2.4.6-b1
   * The Galnet monitor will now check the player journal for recent activity prior to updating - VoiceAttack users rejoice!
