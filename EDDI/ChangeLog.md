@@ -2,7 +2,9 @@
 
 ### 2.4.6-b2
   * Speech Responder
+    * Script changes
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
+      * Updated 'Search and rescue' event to better distinguish between occupied and damaged escape pods, and to fix a bug in handling wreckage commodities.
 
 ### 2.4.6-b1
   * The Galnet monitor will now check the player journal for recent activity prior to updating - VoiceAttack users rejoice!
