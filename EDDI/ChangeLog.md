@@ -1,6 +1,8 @@
 ﻿# CHANGE LOG
 
 ### 2.4.6-b2
+  * Core
+    * Changes to your home system / station will now be honoured immediately rather than after the next app restart.
   * Speech Responder
     * Script changes
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
