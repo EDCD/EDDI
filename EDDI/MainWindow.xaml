@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:eddi="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
+        xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
         mc:Ignorable="d"
         Title="EDDI" Height="600"  Width="800">
     <DockPanel LastChildFill="True">
@@ -67,6 +69,10 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -77,14 +83,17 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5" Text="You can provide the name of a particular system you consider home, and also a station inside that system.  If you do then the information about this system and station will be made available to EDDI's responders." VerticalAlignment="Top"/>
+                        <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Margin="5" Text="You can provide the name of a particular system you consider home, and also a station inside that system.  If you do then the information about this system and station will be made available to EDDI's responders." VerticalAlignment="Top"/>
                         <Label x:Name ="eddiHomeSystemLabel" Grid.Row="1" Grid.Column="0" Margin="5" Content="Home system:" />
-                        <TextBox x:Name ="eddiHomeSystemText" Grid.Row="1" Grid.Column="1" Margin="5" TextChanged="homeSystemChanged"/>
+                        <TextBox x:Name ="eddiHomeSystemText" Grid.Row="1" Grid.Column="1" Margin="5" Grid.ColumnSpan ="6" TextChanged="homeSystemChanged"/>
                         <Label x:Name ="eddiHomeStationLabel" Grid.Row="2" Grid.Column="0" Margin="5" Content="Home station:"/>
-                        <TextBox x:Name ="eddiHomeStationText" Grid.Row="2" Grid.Column="1" Margin="5" TextChanged="homeStationChanged"/>
-                        <TextBlock x:Name ="eddi3Text" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5" Text="Your insurance excess is the % of your ship's value you have to pay if your ship is destroyed.  This will usually be 5 but could be less if you are an early backer of Elite with alpha backers being 2.5 and beta backers being 3.75.  If you aren't sure then leave it at 5" VerticalAlignment="Top"/>
+                        <TextBox x:Name ="eddiHomeStationText" Grid.Row="2" Grid.Column="1" Margin="5" Grid.ColumnSpan ="6" TextChanged="homeStationChanged"/>
+                        <TextBlock x:Name ="eddi3Text" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Margin="5" Text="Your insurance excess is the % of your ship's value you have to pay if your ship is destroyed.  This will usually be 5 but could be less if you are an early backer of Elite with alpha backers being 2.5 and beta backers being 3.75.  If you aren't sure then leave it at 5" VerticalAlignment="Top"/>
                         <Label x:Name ="eddiInsuranceLabel" Grid.Row="4" Grid.Column="0" Margin="5" Content="Insurance excess (%):"/>
-                        <TextBox x:Name="eddiInsuranceDecimal" Grid.Row="4" Grid.Column="1" Margin="5" PreviewTextInput="EnsureValidDecimal" TextChanged="insuranceChanged" TextAlignment="Right"/>
+                        <TextBox x:Name="eddiInsuranceDecimal" Grid.Row="4" Grid.Column="1" Margin="5" Grid.ColumnSpan ="6" PreviewTextInput="EnsureValidDecimal" TextChanged="insuranceChanged" TextAlignment="Right"/>
+                        <Label x:Name ="eddiGenderLabel" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan ="4" Content="Should EDDI address your commander with either male or female gender pronouns and titles?"/>
+                        <RadioButton x:Name ="eddiisMale" Content="Male" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Checked="isMale_Checked" Grid.Column="4"/>
+                        <RadioButton x:Name ="eddiisFemale" Content="Female" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="5" Checked="isFemale_Checked" Grid.Column="5"/>
                     </Grid>
                 </DockPanel>
             </TabItem>
