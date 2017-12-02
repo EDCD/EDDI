@@ -23,7 +23,7 @@ namespace EddiEvents
             VARIABLES.Add("reward", "The monetary reward for completing the mission");
             VARIABLES.Add("commodityrewards", "The commodity rewards for completing the mission");
             VARIABLES.Add("donation", "The monetary donation when completing the mission");
-            VARIABLES.Add("rewardCommodity", "The commodity reward (if applicable)");
+            VARIABLES.Add("rewardCommodity", "The commodity reward name (if applicable)");
             VARIABLES.Add("rewardAmount", "The amount of the commodity reward (if applicable)");
         }
 
