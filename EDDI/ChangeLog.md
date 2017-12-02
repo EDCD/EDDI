@@ -1,8 +1,11 @@
 ﻿# CHANGE LOG
 
 ### 2.4.6-b2
+  * Core
+    * You can now select your commander's gender in EDDI's commander configuration options. 
   * Speech Responder
     * Script changes
+      * Updated 'Honorific' script to respect your chosen gender.
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
 
 ### 2.4.6-b1
