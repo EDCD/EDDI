@@ -28,7 +28,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `federationrating` the current Federation rating of the commander (this is a Rating object)
     - `credits` the number of credits the commander owns
     - `debt` the amount of debt the commander owes
-    - 'gender' the gender of the commander, as selected in EDDI's configuration
+    - `gender` the gender of the commander, as selected in EDDI's configuration (string, either 'Male' or 'Female')
 
 ## Ship
 

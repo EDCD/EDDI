@@ -2,7 +2,7 @@
 
 ### 2.4.6-b2
   * Core
-    * You can now select your commander's gender in EDDI's commander configuration options. 
+    * You can now specify your commander's gender in EDDI's "Commander Details" tab.
   * Speech Responder
     * Script changes
       * Updated 'Honorific' script to respect your chosen gender.
