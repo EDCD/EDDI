@@ -809,12 +809,14 @@ namespace EddiJournalMonitor
                                     async void ShipArrived()
                                     {
                                         // Add a bit of context
-                                        string station = EDDI.Instance.CurrentStation.name;
+                                        string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
+                                        string arrivalSystem = EDDI.Instance.CurrentStarSystem?.name ?? string.Empty;
 
-                                        await Task.Delay((int)time * 1000);
                                         line = line.Replace("ShipyardTransfer", "ShipyardArrived");
                                         line = line.Replace(timestamp.ToString("s", System.Globalization.CultureInfo.InvariantCulture), timestamp.AddSeconds((double)time).ToUniversalTime().ToString());
-                                        line = line.Replace("}", ",\"Station\":\"" + station + "\"}"); // Include the station from which the transfer was requested
+                                        line = line.Replace(",\"System\":\"" + system + "\"", ",\"System\":\"" + arrivalSystem + "\""); // Include the system at which the transfer will arrive
+                                        line = line.Replace("}", ",\"Station\":\"" + arrivalStation + "\"}"); // Include the station at which the transferred ship will arrive
+                                        await Task.Delay((int)time * 1000);
                                         ForwardJournalEntry(line, EDDI.Instance.eventHandler);
                                     }
                                 }
@@ -850,14 +852,14 @@ namespace EddiJournalMonitor
                                     async void ModuleArrived()
                                     {
                                         // Add a bit of context
-                                        string system = EDDI.Instance.CurrentStarSystem.name;
-                                        string station = EDDI.Instance.CurrentStation.name;
+                                        string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
+                                        string arrivalSystem = EDDI.Instance.CurrentStarSystem?.name ?? string.Empty;
 
-                                        await Task.Delay((int)transferTime * 1000);
                                         line = line.Replace("FetchRemoteModule", "ModuleArrived");
                                         line = line.Replace(timestamp.ToString("s", System.Globalization.CultureInfo.InvariantCulture), timestamp.AddSeconds((double)transferTime).ToUniversalTime().ToString());
-                                        line = line.Replace("}", ",\"System\":\"" + system + "\"}"); // Include the system from which the transfer was requested
-                                        line = line.Replace("}", ",\"Station\":\"" + station + "\"}"); // Include the station from which the transfer was requested
+                                        line = line.Replace("}", ",\"System\":\"" + arrivalSystem + "\"}"); // Include the system at which the transfer will arrive
+                                        line = line.Replace("}", ",\"Station\":\"" + arrivalStation + "\"}"); // Include the station at which the transferred module will arrive
+                                        await Task.Delay((int)transferTime * 1000);
                                         ForwardJournalEntry(line, EDDI.Instance.eventHandler);
                                     }
                                 }
