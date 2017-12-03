@@ -6,6 +6,7 @@
     * Clarified the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
     * Fixed a bug that was causing the 'Ship arrived' event to report bad arrival locations.
     * Script changes
+      * Updated 'Data voucher redeemed' event to better handle events where the faction is not defined (such as INRA sites).
       * Remove deprecated 'Jumping' script (replaced by 'FSD engaged' in prior updates)
       * Renamed 'Crew member role change' event to 'Crew member role change***d***' to correct a bug that caused the event to be un-editable. Since the VoiceAttack documentation already indicated to use 'Crew member role changed', there should be no affect on VoiceAttack configurations. 
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
