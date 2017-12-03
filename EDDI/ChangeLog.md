@@ -3,6 +3,7 @@
 ### 2.4.6-b2
   * Speech Responder
     * Script changes
+      * Updated 'Data voucher redeemed' event to better handle events where the faction is not defined (such as INRA sites).
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
 
 ### 2.4.6-b1
