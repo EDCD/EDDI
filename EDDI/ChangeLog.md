@@ -3,6 +3,7 @@
 ### 2.4.6-b2
   * Core
     * Changes to your home system / station will now be honoured immediately rather than after the next app restart.
+    * Hardened EDDI against a crash that could occur if the folder containing player journals doesn't exist.
   * Speech Responder
     * Clarified the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
     * Fixed a bug that was causing the 'Ship arrived' event to report bad arrival locations.
