@@ -222,6 +222,24 @@ namespace EddiSpeechResponder
             }
             if (!personality.IsDefault)
             {
+                // Remove deprecated scripts from the list
+                List<string> scriptHolder = new List<string>();
+                foreach (KeyValuePair<string, Script> kv in fixedScripts)
+                {
+                    if (kv.Key == "Jumping") // Replaced by "FSD engaged" script
+                    {
+                        scriptHolder.Add(kv.Key);
+                    }
+                    else if (kv.Value.Name == "Crew member role change") // This name is mismatched to the key (should be "changed"), 
+                        // so EDDI couldn't match the script name to the .json key correctly. The default script has been corrected.
+                    {
+                        scriptHolder.Add(kv.Key);
+                    }
+                }
+                foreach (string script in scriptHolder)
+                {
+                    fixedScripts.Remove(script);
+                }
                 // Also add any secondary scripts in the default personality that aren't present in the list
                 foreach (KeyValuePair<string, Script> kv in defaultPersonality.Scripts)
                 {
