@@ -1,7 +1,6 @@
 ﻿# CHANGE LOG
 
 ### 2.4.6-b2
-  * Further changes to check for recent activity prior to updating the Galnet monitor
   * Core
     * Changes to your home system / station will now be honoured immediately rather than after the next app restart.
   * Speech Responder
@@ -15,6 +14,8 @@
       * Updated 'Search and rescue' event to better distinguish between occupied and damaged escape pods, and to fix a bug in handling wreckage commodities.
       * Refined script 'Module arrived'
       * Refined script 'Ship arrived'
+  * Galnet monitor
+    * Only update the Galnet monitor if the game has posted a Galnet event in the last ten minutes. This prevents Galnet spam upon starting EDDI.
 
 ### 2.4.6-b1
   * The Galnet monitor will now check the player journal for recent activity prior to updating - VoiceAttack users rejoice!
