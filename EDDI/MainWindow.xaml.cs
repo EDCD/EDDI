@@ -64,11 +64,11 @@ namespace Eddi
             eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
             if (eddiConfiguration.Gender == "Female")
             {
-                eddiisFemale.IsChecked = true;
+                eddiGenderFemale.IsChecked = true;
             }
             else
             {
-                eddiisMale.IsChecked = true;
+                eddiGenderMale.IsChecked = true;
             }
 
             Logging.Verbose = eddiConfiguration.Debug;
