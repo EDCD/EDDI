@@ -1,10 +1,15 @@
 ﻿# CHANGE LOG
 
 ### 2.4.6-b2
+  * Further changes to check for recent activity prior to updating the Galnet monitor
   * Speech Responder
+    * Clarified the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
+    * Fixed a bug that was causing the 'Ship arrived' event to report bad arrival locations.
     * Script changes
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
       * Updated 'Search and rescue' event to better distinguish between occupied and damaged escape pods, and to fix a bug in handling wreckage commodities.
+      * Refined script 'Module arrived'
+      * Refined script 'Ship arrived'
 
 ### 2.4.6-b1
   * The Galnet monitor will now check the player journal for recent activity prior to updating - VoiceAttack users rejoice!
