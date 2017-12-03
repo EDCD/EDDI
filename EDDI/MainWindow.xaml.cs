@@ -210,6 +210,7 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiConfiguration.HomeSystem = string.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
             eddiConfiguration.ToFile();
+            EDDI.Instance.updateHomeSystemStation(eddiConfiguration);
         }
 
         private void homeStationChanged(object sender, TextChangedEventArgs e)
@@ -217,6 +218,7 @@ namespace Eddi
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiConfiguration.HomeStation = string.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
             eddiConfiguration.ToFile();
+            EDDI.Instance.updateHomeSystemStation(eddiConfiguration);
         }
 
         private void insuranceChanged(object sender, TextChangedEventArgs e)

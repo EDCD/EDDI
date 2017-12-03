@@ -149,29 +149,7 @@ namespace Eddi
 
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
-                Logging.Verbose = configuration.Debug;
-                if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
-                {
-                    HomeStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.HomeSystem.Trim());
-                    if (HomeStarSystem != null)
-                    {
-                        Logging.Debug("Home star system is " + HomeStarSystem.name);
-                        if (configuration.HomeStation != null && configuration.HomeStation.Trim().Length > 0)
-                        {
-                            string homeStationName = configuration.HomeStation.Trim();
-                            foreach (Station station in HomeStarSystem.stations)
-                            {
-                                if (station.name == homeStationName)
-                                {
-                                    HomeStation = station;
-                                    Logging.Debug("Home station is " + HomeStation.name);
-                                    break;
-
-                                }
-                            }
-                        }
-                    }
-                }
+                updateHomeSystemStation(configuration);
 
                 // Set up monitors and responders
                 monitors = findMonitors();
@@ -1818,5 +1796,30 @@ namespace Eddi
             RESTART_NO_REBOOT = 64
         }
 
+        public void updateHomeSystemStation(EDDIConfiguration configuration)
+        {
+            Logging.Verbose = configuration.Debug;
+            if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
+            {
+                HomeStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.HomeSystem.Trim());
+                if (HomeStarSystem != null)
+                {
+                    Logging.Debug("Home star system is " + HomeStarSystem.name);
+                    if (configuration.HomeStation != null && configuration.HomeStation.Trim().Length > 0)
+                    {
+                        string homeStationName = configuration.HomeStation.Trim();
+                        foreach (Station station in HomeStarSystem.stations)
+                        {
+                            if (station.name == homeStationName)
+                            {
+                                HomeStation = station;
+                                Logging.Debug("Home station is " + HomeStation.name);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

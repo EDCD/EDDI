@@ -2,6 +2,8 @@
 
 ### 2.4.6-b2
   * Further changes to check for recent activity prior to updating the Galnet monitor
+  * Core
+    * Changes to your home system / station will now be honoured immediately rather than after the next app restart.
   * Speech Responder
     * Clarified the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
     * Fixed a bug that was causing the 'Ship arrived' event to report bad arrival locations.
