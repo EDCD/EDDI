@@ -844,8 +844,8 @@ namespace EddiJournalMonitor
                                     async void ModuleArrived()
                                     {
                                         // Add a bit of context
-                                        string arrivalStation = EDDI.Instance.CurrentStation?.name;
-                                        string arrivalSystem = EDDI.Instance.CurrentStarSystem?.name;
+                                        string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
+                                        string arrivalSystem = EDDI.Instance.CurrentStarSystem?.name ?? string.Empty;
 
                                         line = line.Replace("FetchRemoteModule", "ModuleArrived");
                                         line = line.Replace(timestamp.ToString("s", System.Globalization.CultureInfo.InvariantCulture), timestamp.AddSeconds((double)transferTime).ToUniversalTime().ToString());
