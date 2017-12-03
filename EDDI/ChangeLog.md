@@ -3,6 +3,8 @@
 ### 2.4.6-b2
   * Speech Responder
     * Script changes
+      * Remove deprecated 'Jumping' script (replaced by 'FSD engaged' in prior updates)
+      * Renamed 'Crew member role change' event to 'Crew member role change***d***' to correct a bug that caused the event to be un-editable. Since the VoiceAttack documentation already indicated to use 'Crew member role changed', there should be no affect on VoiceAttack configurations. 
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
 
 ### 2.4.6-b1

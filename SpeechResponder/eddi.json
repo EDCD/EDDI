@@ -341,7 +341,7 @@
       "responder": true,
       "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'role')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n{SetState('eddi_context_crew_role', event.role)}\r\n\r\n{if event.role = 'Idle':\r\n    {event.crew} is no longer manning a position\r\n|elif event.role = 'Fighter':\r\n    {event.crew} is now manning the fighter\r\n|elif event.role = 'Gunner':\r\n    {event.crew} is now manning the guns\r\n}.\r\n",
       "default": true,
-      "name": "Crew member role change",
+      "name": "Crew member role changed",
       "description": "Triggered when a crew member changes their role"
     },
     "Crew role changed": {
@@ -739,15 +739,6 @@
       "default": true,
       "name": "Jumped",
       "description": "Triggered when you complete a jump to another system"
-    },
-    "Jumping": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": null,
-      "default": true,
-      "name": "Jumping",
-      "description": "NO LONGER IN USE"
     },
     "Killed": {
       "enabled": true,
