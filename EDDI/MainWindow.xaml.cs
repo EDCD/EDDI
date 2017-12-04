@@ -248,14 +248,22 @@ namespace Eddi
              eddiConfiguration.ToFile();
              EDDI.Instance.Cmdr.gender = "Male";
           }
- 
-         private void isFemale_Checked(object sender, RoutedEventArgs e)
-         {
+
+        private void isFemale_Checked(object sender, RoutedEventArgs e)
+        {
              EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
              eddiConfiguration.Gender = "Female";
              eddiConfiguration.ToFile();
              EDDI.Instance.Cmdr.gender = "Female";
-         }
+        }
+
+        private void isNeitherGender_Checked(object sender, RoutedEventArgs e)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.Gender = "Neither";
+            eddiConfiguration.ToFile();
+            EDDI.Instance.Cmdr.gender = "Neither";
+        }
 
         private void verboseLoggingEnabled(object sender, RoutedEventArgs e)
         {

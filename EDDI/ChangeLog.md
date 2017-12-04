@@ -2,8 +2,7 @@
 
 ### 2.4.6-b2
   * Core
-    * You can now specify your commander's gender in EDDI's "Commander Details" tab.
-  * Speech Responder
+    * You can now specify your commander's gender in EDDI's "Commander Details" tab. Currently this is only relevant for titles of nobility in the Empire. You can specify "Neither" if you prefer to be addressed as "Commander" in situations where convention would otherwise require a gendered form of address.
     * Script changes
       * Updated 'Honorific' script to respect your chosen gender.
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
