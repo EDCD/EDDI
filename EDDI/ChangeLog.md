@@ -15,9 +15,11 @@
     * Script changes
       * Updated 'Honorific' script to respect your chosen gender.
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
-      * Updated 'Search and rescue' event to better distinguish between occupied and damaged escape pods, and to fix a bug in handling wreckage commodities.
-      * Refined script 'Module arrived'
-      * Refined script 'Ship arrived'
+	* Search and rescue Event
+	  * Added variable commodityname to provide the name of the commodity turned in, free of the commodity object. Accessible to VoiceAttack as {TXT:EDDI search and rescue commodityname} 
+    * Updated 'Search and rescue' event to better distinguish between occupied and damaged escape pods, and to fix a bug in handling wreckage commodities.
+    * Refined script 'Module arrived'
+    * Refined script 'Ship arrived'
   * Galnet monitor
     * Only update the Galnet monitor if the game has posted a Galnet event in the last ten minutes. This prevents Galnet spam upon starting EDDI.
 
