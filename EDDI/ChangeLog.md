@@ -6,20 +6,19 @@
     * You can now specify your commander's gender in the "Commander Details" tab. Currently this is only relevant for titles of nobility in the Empire. You can specify "Neither" if you prefer to be addressed as "Commander" in situations where convention would otherwise require a gendered form of address.
     * Hardened EDDI against a crash that could occur if the folder containing player journals doesn't exist.
   * Speech Responder
-    * Clarified the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
+    * Amended the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
     * Fixed a bug that was causing the 'Ship arrived' event to report bad arrival locations.
+	* 'Search and rescue' event:
+	  * Added variable `commodityname` to provide the name of the commodity turned in, free of the commodity object. Accessible to VoiceAttack as `{TXT:EDDI search and rescue commodityname}` 
+      * Updated 'Search and rescue' event to better distinguish between occupied and damaged escape pods, and to fix a bug in handling wreckage commodities.
     * Script changes
-      * Updated 'Data voucher redeemed' event to better handle events where the faction is not defined (such as INRA sites).
-      * Remove deprecated 'Jumping' script (replaced by 'FSD engaged' in prior updates)
-      * Renamed 'Crew member role change' event to 'Crew member role change***d***' to correct a bug that caused the event to be un-editable. Since the VoiceAttack documentation already indicated to use 'Crew member role changed', there should be no affect on VoiceAttack configurations. 
-    * Script changes
+      * Updated 'Data voucher redeemed' script for events where the faction is not defined (such as INRA sites).
+      * Removed deprecated 'Jumping' script (replaced by 'FSD engaged' in prior updates)
+      * Renamed 'Crew member role change' event to 'Crew member role changed' to correct a bug that caused the event to be un-editable. Since the VoiceAttack documentation already indicated to use 'Crew member role changed', there should be no affect on VoiceAttack configurations. 
       * Updated 'Honorific' script to respect your chosen gender.
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
-	* Search and rescue Event
-	  * Added variable commodityname to provide the name of the commodity turned in, free of the commodity object. Accessible to VoiceAttack as {TXT:EDDI search and rescue commodityname} 
-    * Updated 'Search and rescue' event to better distinguish between occupied and damaged escape pods, and to fix a bug in handling wreckage commodities.
-    * Refined script 'Module arrived'
-    * Refined script 'Ship arrived'
+      * Refined script 'Module arrived'
+      * Refined script 'Ship arrived'
   * Galnet monitor
     * Only update the Galnet monitor if the game has posted a Galnet event in the last ten minutes. This prevents Galnet spam upon starting EDDI.
 
