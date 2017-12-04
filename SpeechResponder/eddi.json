@@ -341,7 +341,7 @@
       "responder": true,
       "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'role')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n{SetState('eddi_context_crew_role', event.role)}\r\n\r\n{if event.role = 'Idle':\r\n    {event.crew} is no longer manning a position\r\n|elif event.role = 'Fighter':\r\n    {event.crew} is now manning the fighter\r\n|elif event.role = 'Gunner':\r\n    {event.crew} is now manning the guns\r\n}.\r\n",
       "default": true,
-      "name": "Crew member role change",
+      "name": "Crew member role changed",
       "description": "Triggered when a crew member changes their role"
     },
     "Crew role changed": {
@@ -384,7 +384,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'data_voucher')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_data_voucher_amount', event.amount)}\r\n\r\nData vouchers for {Humanise(event.amount)} credits redeemed\r\n{Occasionally(2, \"\r\n  {if len(event.rewards) = 1:\r\n    by {P(event.rewards[0].faction)}\r\n  |else:\r\n    by\r\n    {set cur to 0}\r\n    {while cur < len(event.rewards):\r\n        {if cur = 0:\r\n        |elif cur < len(event.rewards) - 1:\r\n            , \r\n        |else:\r\n            and\r\n        }\r\n        {P(event.rewards[cur].faction)}\r\n        {set cur to cur + 1}\r\n    }\r\n  }\r\n\")}.\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'data_voucher')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_data_voucher_amount', event.amount)}\r\n\r\nData \r\n{if len event.rewards > 1: vouchers |else: voucher }\r\nfor {Humanise(event.amount)} credits\r\n{Occasionally(2, OneOf(\"have been\", \"have now been\"))}\r\n{OneOf(\"redeemed\", \"claimed\")}\r\n\r\n{Occasionally(2, \"\r\n  {if len(event.rewards) = 1 && len(event.rewards[0].faction) > 0:\r\n    {OneOf(\"by\", \"courtesy of\")}\r\n    {P(event.rewards[0].faction)}\r\n  |else:\r\n    {if len(event.rewards[0].faction) > 0:\r\n       {OneOf(\"by\", \"courtesy of\")}\r\n       {set cur to 0}\r\n       {while cur < len(event.rewards):\r\n          {if cur = 0:\r\n          |elif cur < len(event.rewards) - 1:\r\n              , \r\n          |else:\r\n              and\r\n          }\r\n          {P(event.rewards[cur].faction)}\r\n          {set cur to cur + 1}\r\n       }\r\n    }\r\n  }\r\n\")}.",
       "default": true,
       "name": "Data voucher redeemed",
       "description": "Triggered when you redeem a data voucher"
@@ -699,7 +699,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{if system.allegiance = \"Empire\":\r\n    {if cmdr.empirerating.rank <= 4:\r\n       commander\r\n    |elif cmdr.empirerating.rank = 5:\r\n        sir\r\n    |elif cmdr.empirerating.rank <= 11:\r\n        my lord\r\n    |elif cmdr.empirerating.rank = 12:\r\n        your grace\r\n    |elif cmdr.empirerating.rank = 13:\r\n        your royal highness\r\n    |elif cmdr.empirerating.rank = 14:\r\n        your majesty\r\n    }\r\n|elif system.allegiance = \"Federation\":\r\n    {if cmdr.federationrating.rank = 0:\r\n        commander\r\n    |else:\r\n        {cmdr.federationrating.name}\r\n    }\r\n|else:\r\n    commander\r\n}\r\n",
+      "script": "{if system.allegiance = \"Empire\":\r\n    {_ Forms of address taken from <https://en.wikipedia.org/wiki/Forms_of_address_in_the_United_Kingdom>}\r\n    {if cmdr.empirerating.rank <= 4: {_ Commoner }\r\n       commander\r\n    |elif cmdr.empirerating.rank = 5: {_ Knight / Dame }\r\n        {if cmdr.gender = \"Male\": \r\n            sir \r\n        |elif cmdr.gender = \"Female\": \r\n            madam\r\n        |else: \r\n            commander\r\n        }\r\n    |elif cmdr.empirerating.rank <= 11: {_ Peer / Peeress }\r\n        {if cmdr.gender = \"Male\": \r\n            OneOf(\"my lord\", \"your lordship\")\r\n        |elif cmdr.gender = \"Female\": \r\n            OneOf(\"my lady\", \"your ladyship\")\r\n        |else: \r\n            commander\r\n        }\r\n    |elif cmdr.empirerating.rank = 12:\r\n        your grace\r\n    |elif cmdr.empirerating.rank = 13:\r\n        your royal highness\r\n    |elif cmdr.empirerating.rank = 14:\r\n        your majesty\r\n    }\r\n|elif system.allegiance = \"Federation\":\r\n    {if cmdr.federationrating.rank = 0:\r\n        commander\r\n    |else:\r\n        {cmdr.federationrating.name}\r\n    }\r\n|else:\r\n    commander\r\n}\r\n",
       "default": true,
       "name": "Honorific",
       "description": "Function to provide a suitable honorific for your commander"
@@ -739,15 +739,6 @@
       "default": true,
       "name": "Jumped",
       "description": "Triggered when you complete a jump to another system"
-    },
-    "Jumping": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": null,
-      "default": true,
-      "name": "Jumping",
-      "description": "NO LONGER IN USE"
     },
     "Killed": {
       "enabled": true,
@@ -1032,7 +1023,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.module.name} has\r\n\r\n{OneOf('arrived {if event.system && event.station: \\'at\\')}', \r\n       'completed its transfer {if event.system && event.station: \\'to\\')}')}\r\n\r\n{if event.sytem != system.name && len(event.system) > 0 && len(event.station) > 0:\r\n   {event.station} in the {event.system} system\r\n|elif event.station != station.name && len(event.station) > 0:\r\n   {event.station}\r\n}.",
+      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.module.name} has\r\n\r\n{OneOf('arrived {if station.name != event.station && event.station: at}', \r\n       'completed its transfer {if station.name != event.station && event.station: to}')}\r\n\r\n{if station.name != event.station && event.station:\r\n   {event.station}\r\n   {if system.name != event.system && event.system:\r\n      in the {event.system} system\r\n   }\r\n}.",
       "default": true,
       "name": "Module arrived",
       "description": "Triggered when you complete a module transfer"
@@ -1275,7 +1266,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{event.amount} \r\n{if event.commodity.rare: rare}\r\n\r\n{if event.commodity.name = \"Black Box\":\r\n   {if event.amount > 1:\r\n      {OneOf(\"flight records\", \"black boxes\")}\r\n   |else: \r\n      {OneOf(\"flight record\", \"black box\")}\r\n   }\r\n\r\n|elif event.commodity.name = \"Occupied CryoPod\":\r\n   {OneOf(\"damaged cryo pod\", \"occupied cryo pod\")}{if event.amount > 1:s}\r\n\r\n|elif event.commodity.name = \"Occupied Escape Pod\":\r\n   {OneOf(\"damaged escape pod\", \"occupied escape pod\")}{if event.amount > 1:s}\r\n\r\n|elif event.commodity.name = \"Personal Effects\":\r\n   {OneOf(\"set\", \"collection\")}{if event.amount > 1:s} of\r\n   {OneOf(\"personal effects\", \"personal belongings\")}\r\n\r\n|elif event.commodity.name = \"Salvageable Wreckage\":\r\n   {set wreakage to OneOf(\"wreckage\", \"debris\")}\r\n   {set fragment to OneOf(\"fragment\", \"bit\", \"piece\", \"part\", \"remnant\")}\r\n   {OneOf(\"{fragment}{if event.amount > 1:s} of {wreckage}\", \r\n          \"{wreckage} {fragment}{if event.amount > 1:s}\")}\r\n\r\n|elif event.commodity.name = \"Hostage\":\r\n   {OneOf(\"hostage\")}{if event.amount > 1:s}\r\n\r\n|else:\r\n   {event.commodity.name}{if event.amount > 1:s}\r\n}\r\n\r\n{OneOf(\"recovered\", \"salvaged\")}\r\n{Occasionally(2, \"in exchange\")}\r\nfor {Humanise(event.reward)} credits\r\n",
+      "script": "{event.amount} \r\n{if event.commodity.rare: rare}\r\n\r\n{if event.commodity.name = \"Black Box\":\r\n   {if event.amount > 1:\r\n      {OneOf(\"flight records\", \"black boxes\")}\r\n   |else: \r\n      {OneOf(\"flight record\", \"black box\")}\r\n   }\r\n\r\n|elif event.commodity.name = \"Damaged Escape Pod\":\r\n   {OneOf(\"damaged cryo pod\", \"damaged escape pod\")}{if event.amount > 1:s}\r\n\r\n|elif event.commodity.name = \"Occupied Escape Pod\":\r\n   {OneOf(\"occupied escape pod\", \"occupied cryo pod\")}{if event.amount > 1:s}\r\n\r\n|elif event.commodity.name = \"Personal Effects\":\r\n   {OneOf(\"set\", \"collection\")}{if event.amount > 1:s} of\r\n   {OneOf(\"personal effects\", \"personal belongings\")}\r\n\r\n|elif event.commodity.name = \"Salvageable Wreckage\":\r\n   {set wreckage to OneOf(\"wreckage\", \"debris\")}\r\n   {set fragment to OneOf(\"fragment\", \"bit\", \"piece\", \"part\", \"remnant\")}\r\n   {OneOf(\"{fragment}{if event.amount > 1:s} of {wreckage}\", \r\n          \"{wreckage} {fragment}{if event.amount > 1:s}\")}\r\n\r\n|elif event.commodity.name = \"Hostage\":\r\n   {OneOf(\"hostage\")}{if event.amount > 1:s}\r\n\r\n|else:\r\n   {event.commodity.name}{if event.amount > 1:s}\r\n}\r\n\r\n{OneOf(\"recovered\", \"salvaged\")}\r\n{Occasionally(2, \"in exchange\")}\r\nfor {Humanise(event.reward)} credits\r\n",
       "default": true,
       "name": "Search and rescue",
       "description": "Triggered when delivering items to a Search and Rescue contact"
@@ -1329,7 +1320,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.ship} has \r\n\r\n{OneOf('arrived {if event.system && event.station: \\'at\\')}', \r\n       'completed its transfer {if event.system && event.station: \\'to\\')}')}\r\n\r\n{if event.sytem != system.name && len(event.system) > 0 && len(event.station) > 0:\r\n   {event.station} in the {event.system} system\r\n|elif event.station != station.name && len(event.station) > 0:\r\n   {event.station}\r\n}.",
+      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.ship} has \r\n\r\n{OneOf('arrived {if station.name != event.station && event.station: at}', \r\n       'completed its transfer {if station.name != event.station && event.station: to}')}\r\n\r\n{if station.name != event.station && event.station:\r\n   {event.station}\r\n   {if system.name != event.system && event.system:\r\n      in the {event.system} system\r\n   }\r\n}.",
       "default": true,
       "name": "Ship arrived",
       "description": "Triggered when you complete a ship transfer"

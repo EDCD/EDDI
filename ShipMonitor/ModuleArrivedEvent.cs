@@ -21,14 +21,11 @@ namespace EddiShipMonitor
         {
             VARIABLES.Add("ship", "The ship you were in when you requested the transfer");
             VARIABLES.Add("shipid", "The ID of the ship you were in when you requested the transfer");
-            // VARIABLES.Add("storageslot", "The storage slot"); // This probably isn't useful to the end user
-            // VARIABLES.Add("serverid", "The frontier ID of the item being sold"); // This probably isn't useful to the end user
             VARIABLES.Add("module", "The module (object) being transferred");
             VARIABLES.Add("transfercost", "The cost for the module transfer");
             VARIABLES.Add("transfertime", "The time elapsed during the transfer (in seconds)");
-            VARIABLES.Add("system", "The system you were in when you requested the transfer");
-            VARIABLES.Add("station", "The station you were in when you requested the transfer");
-
+            VARIABLES.Add("system", "The system at which the module shall arrive");
+            VARIABLES.Add("station", "The station at which the module shall arrive");
         }
 
         public string ship { get; private set; }

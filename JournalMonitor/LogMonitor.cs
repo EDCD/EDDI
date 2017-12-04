@@ -79,7 +79,22 @@ namespace EddiJournalMonitor
                 {
                     lastName = fileInfo == null ? null : fileInfo.Name;
                     lastSize = 0;
-                    journalFileName = fileInfo.Name;
+                    if (fileInfo != null)
+                    {
+                        journalFileName = fileInfo.Name;
+                    }
+                    else
+                    {
+                        // A player journal file could not be found. Sleep until a player journal file is found.
+                        Logging.Info("Error locating Elite Dangerous player journal. Journal monitor is not active. Have you installed and run Elite Dangerous previously? ");
+                        while (fileInfo == null)
+                        {
+                            Thread.Sleep(500);
+                            fileInfo = FindLatestFile(Directory, Filter);
+                        }
+                        Logging.Info("Elite Dangerous player journal found. Journal monitor activated.");
+                        return;
+                    }
                 }
                 else
                 {
