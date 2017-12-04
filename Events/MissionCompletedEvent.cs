@@ -47,7 +47,7 @@ namespace EddiEvents
 
         public string rewardCommodity { get; private set; }
 
-        public int? rewardAmount { get; private set; }
+        public int rewardAmount { get; private set; }
 
         public MissionCompletedEvent(DateTime timestamp, long? missionid, string name, string faction, Commodity commodity, int? amount, bool communal, long reward, List<CommodityAmount> commodityrewards, long donation) : base(timestamp, NAME)
         {
