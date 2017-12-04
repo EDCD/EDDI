@@ -62,6 +62,14 @@ namespace Eddi
             eddiInsuranceDecimal.Text = eddiConfiguration.Insurance.ToString(CultureInfo.InvariantCulture);
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
             eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
+            if (eddiConfiguration.Gender == "Female")
+            {
+                eddiGenderFemale.IsChecked = true;
+            }
+            else
+            {
+                eddiGenderMale.IsChecked = true;
+            }
 
             Logging.Verbose = eddiConfiguration.Debug;
 
@@ -233,6 +241,30 @@ namespace Eddi
             {
                 // Bad user input; ignore it
             }
+        }
+
+        private void isMale_Checked(object sender, RoutedEventArgs e)
+         {
+             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+             eddiConfiguration.Gender = "Male";
+             eddiConfiguration.ToFile();
+             EDDI.Instance.Cmdr.gender = "Male";
+          }
+
+        private void isFemale_Checked(object sender, RoutedEventArgs e)
+        {
+             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+             eddiConfiguration.Gender = "Female";
+             eddiConfiguration.ToFile();
+             EDDI.Instance.Cmdr.gender = "Female";
+        }
+
+        private void isNeitherGender_Checked(object sender, RoutedEventArgs e)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiConfiguration.Gender = "Neither";
+            eddiConfiguration.ToFile();
+            EDDI.Instance.Cmdr.gender = "Neither";
         }
 
         private void verboseLoggingEnabled(object sender, RoutedEventArgs e)

@@ -3,6 +3,7 @@
 ### 2.4.6-b2
   * Core
     * Changes to your home system / station will now be honoured immediately rather than after the next app restart.
+    * You can now specify your commander's gender in the "Commander Details" tab. Currently this is only relevant for titles of nobility in the Empire. You can specify "Neither" if you prefer to be addressed as "Commander" in situations where convention would otherwise require a gendered form of address.
   * Speech Responder
     * Clarified the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
     * Fixed a bug that was causing the 'Ship arrived' event to report bad arrival locations.
@@ -10,6 +11,8 @@
       * Updated 'Data voucher redeemed' event to better handle events where the faction is not defined (such as INRA sites).
       * Remove deprecated 'Jumping' script (replaced by 'FSD engaged' in prior updates)
       * Renamed 'Crew member role change' event to 'Crew member role change***d***' to correct a bug that caused the event to be un-editable. Since the VoiceAttack documentation already indicated to use 'Crew member role changed', there should be no affect on VoiceAttack configurations. 
+    * Script changes
+      * Updated 'Honorific' script to respect your chosen gender.
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
       * Updated 'Search and rescue' event to better distinguish between occupied and damaged escape pods, and to fix a bug in handling wreckage commodities.
       * Refined script 'Module arrived'

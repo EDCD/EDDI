@@ -170,6 +170,7 @@ namespace Eddi
                 }
 
                 Cmdr.insurance = configuration.Insurance;
+                Cmdr.gender = configuration.Gender;
                 if (Cmdr.name != null)
                 {
                     Logging.Info("EDDI access to the companion app is enabled");
@@ -1422,11 +1423,12 @@ namespace Eddi
                         // Use the profile as primary information for our commander and shipyard
                         Cmdr = profile.Cmdr;
 
-                        // Reinstate insurance
+                        // Reinstate information not obtained from the Companion API (insurance & gender settings)
                         EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                         if (configuration != null)
                         {
                             Cmdr.insurance = configuration.Insurance;
+                            Cmdr.gender = configuration.Gender;
                         }
 
                         bool updatedCurrentStarSystem = false;
