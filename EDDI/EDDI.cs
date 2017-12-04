@@ -716,6 +716,10 @@ namespace Eddi
                     {
                         passEvent = eventBodyScanned((BodyScannedEvent)journalEvent);
                     }
+                    else if (journalEvent is VehicleDestroyedEvent)
+                    {
+                        passEvent = eventVehicleDestroyed((VehicleDestroyedEvent)journalEvent);
+                    }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -887,6 +891,9 @@ namespace Eddi
                 Logging.Debug("Already at station " + theEvent.station);
                 return false;
             }
+            
+            // We are in the ship
+            Vehicle = Constants.VEHICLE_SHIP;
 
             // Update the station
             Logging.Debug("Now at station " + theEvent.station);
@@ -1004,6 +1011,9 @@ namespace Eddi
                 Environment = Constants.ENVIRONMENT_WITCH_SPACE;
             }
 
+            // We are in the ship
+            Vehicle = Constants.VEHICLE_SHIP;
+
             return true;
         }
 
@@ -1116,6 +1126,10 @@ namespace Eddi
         {
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
             updateCurrentSystem(theEvent.system);
+
+            // We are in the ship
+            Vehicle = Constants.VEHICLE_SHIP;
+
             return true;
         }
 
@@ -1266,6 +1280,13 @@ namespace Eddi
         }
 
         private bool eventFighterDocked(FighterDockedEvent theEvent)
+        {
+            // We are back in the ship
+            Vehicle = Constants.VEHICLE_SHIP;
+            return true;
+        }
+
+        private bool eventVehicleDestroyed(VehicleDestroyedEvent theEvent)
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;

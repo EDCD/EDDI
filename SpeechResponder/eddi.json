@@ -1639,6 +1639,15 @@
       "default": true,
       "name": "Undocked",
       "description": "Triggered when your ship undocks from a station or outpost"
+    },
+    "Vehicle destroyed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Pause(2000)}\r\n{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {OneOf(\"terminated\", \"disengaged\")}.",
+      "default": true,
+      "name": "Vehicle destroyed",
+      "description": "Triggered when your vehicle is destroyed"
     }
   }
 }
