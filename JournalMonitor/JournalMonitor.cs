@@ -1125,6 +1125,15 @@ namespace EddiJournalMonitor
                                     events.Add(new ControllingShipEvent(timestamp) { raw = line });
                                     handled = true;
                                 }
+                                else if (to == null)
+                                {
+                                    // The variable 'to' may be blank if this event is written after a fighter or SRV is destroyed. In either case, we are back in our ship.
+                                    if (EDDI.Instance.Vehicle == Constants.VEHICLE_FIGHTER || EDDI.Instance.Vehicle == Constants.VEHICLE_SRV)
+                                    {
+                                        events.Add(new VehicleDestroyedEvent(timestamp) { raw = line });
+                                        handled = true;
+                                    }
+                                }
                             }
                             break;
                         case "Interdicted":
