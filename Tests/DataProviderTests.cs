@@ -59,7 +59,7 @@ namespace Tests
             Body mercury = starSystem.bodies.Find(n => n.name.Equals("Mercury"));
             Assert.IsNull(mercury.age);
             Assert.AreEqual("No atmosphere", mercury.atmosphere);
-            Assert.AreEqual(222, mercury.distance);
+            Assert.IsNotNull(mercury.distance);
             Assert.AreEqual(0.055M, mercury.earthmass);
             Assert.AreEqual(0.2056M, mercury.eccentricity);
             Assert.AreEqual(0.38M, mercury.gravity);
