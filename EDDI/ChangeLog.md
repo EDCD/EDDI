@@ -5,9 +5,9 @@
     * Changes to your home system / station will now be honoured immediately rather than after the next app restart.
     * You can now specify your commander's gender in the "Commander Details" tab. Currently this is only relevant for titles of nobility in the Empire. You can specify "Neither" if you prefer to be addressed as "Commander" in situations where convention would otherwise require a gendered form of address.
     * Hardened EDDI against a crash that could occur if the folder containing player journals doesn't exist.
-    * Smarter vehicle state tracking *(it still does not perfectly track vehicle destruction since there are no official player journal events for SRV or fighter destruction)*.
+    * Smarter vehicle state tracking.
   * Speech Responder
-    * Add new event 'Vehicle destroyed'
+    * Add new event 'Vehicle destroyed' *(it does not perfectly track vehicle destruction since there are no official player journal events for SRV or fighter destruction - we have to infer vehicle destruction)*.
     * Amended the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
     * Fixed a bug that was causing the 'Ship arrived' event to report bad arrival locations.
 	* 'Search and rescue' event:
