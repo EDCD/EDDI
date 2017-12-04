@@ -8,6 +8,8 @@
   * Speech Responder
     * Amended the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
     * Fixed a bug that was causing the 'Ship arrived' event to report bad arrival locations.
+    * 'Mission completed' event:
+      * Addded variables `rewardCommodity` and `rewardAmount`. Useful for cargo tracking.
 	* 'Search and rescue' event:
 	  * Added variable `commodityname` to provide the name of the commodity turned in, free of the commodity object. Accessible to VoiceAttack as `{TXT:EDDI search and rescue commodityname}` 
       * Updated 'Search and rescue' event to better distinguish between occupied and damaged escape pods, and to fix a bug in handling wreckage commodities.
