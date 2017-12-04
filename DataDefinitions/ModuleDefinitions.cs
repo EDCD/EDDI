@@ -893,6 +893,10 @@ namespace EddiDataDefinitions
                 {128785626, new Module(128785626, "Hpt_FlakMortar_Fixed_Medium", 1620, "Remote Release Flak Launcher", 2, "B", 255255, Module.ModuleMount.Fixed) },
                 {128793058, new Module(128793058, "Hpt_FlakMortar_Turret_Medium", 1621, "Remote Release Flak Launcher", 2, "B", 1227720, Module.ModuleMount.Turreted) },
                 {128771884, new Module(128771884, "Hpt_AntiUnknownShutdown_Tiny", 1622, "Shutdown Field Neutraliser", 0, "F", 61425) },
+                {128788700, new Module(128788700, "Hpt_ATDumbfireMissile_Fixed_Large", 1623, "AX Missile Rack", 3, "A", 1288780, Module.ModuleMount.Fixed) },
+                {128788705, new Module(128788705, "Hpt_ATDumbfireMissile_Turret_Large", 1624, "AX Missile Rack", 3, "A", 3866338, Module.ModuleMount.Turreted) },
+                {128788702, new Module(128788702, "Hpt_ATMultiCannon_Fixed_Large", 1625, "AX Multi-Cannon", 3, "C", 1126044, Module.ModuleMount.Fixed) },
+                {128793060, new Module(128793060, "Hpt_ATMultiCannon_Turret_Large", 1626, "AX Multi-Cannon", 3, "E", 3642224, Module.ModuleMount.Turreted) },
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },
