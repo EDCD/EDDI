@@ -381,7 +381,7 @@ namespace EddiMaterialMonitor
         private void populateMaterialBlueprints()
         {
             // TODO: Transfer this function to a new server
-            string data = Net.DownloadString("https://raw.githubusercontent.com/EDCD/EDDP/master/materialuses.json");
+            string data = Net.DownloadString(Constants.EDDI_SERVER_URL + "materialuses.json");
             if (data != null)
             {
                 Dictionary<string, List<Blueprint>> blueprints = JsonConvert.DeserializeObject<Dictionary<string, List<Blueprint>>>(data);
@@ -399,7 +399,7 @@ namespace EddiMaterialMonitor
         private void populateMaterialLocations()
         {
             // TODO: Transfer this function to a new server
-            string data = Net.DownloadString("https://raw.githubusercontent.com/EDCD/EDDP/master/materiallocations.json");
+            string data = Net.DownloadString(Constants.EDDI_SERVER_URL + "materiallocations.json");
             if (data != null)
             {
                 Dictionary<string, Dictionary<string, object>> locations= JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(data);
