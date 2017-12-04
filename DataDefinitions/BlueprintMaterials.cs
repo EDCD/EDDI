@@ -20,7 +20,7 @@ namespace EddiDataDefinitions
 
         static BlueprintMaterials()
         {
-            string data = Net.DownloadString("https://raw.githubusercontent.com/EDCD/EDDP/master/blueprintrequirements.json");
+            string data = Net.DownloadString(Constants.EDDI_SERVER_URL + "blueprintrequirements.json");
             if (data != null)
             {
                 Dictionary<string, BlueprintMaterials> blueprints = JsonConvert.DeserializeObject<Dictionary<string, BlueprintMaterials>>(data);
