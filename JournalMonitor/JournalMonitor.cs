@@ -322,21 +322,21 @@ namespace EddiJournalMonitor
                                 if (data.ContainsKey("Combat"))
                                 {
                                     data.TryGetValue("Combat", out val);
-                                    CombatRating rating = CombatRating.FromRank((int)val);
+                                    CombatRating rating = CombatRating.FromRank(Convert.ToInt32(val));
                                     events.Add(new CombatPromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
                                 else if (data.ContainsKey("Trade"))
                                 {
                                     data.TryGetValue("Trade", out val);
-                                    TradeRating rating = TradeRating.FromRank((int)val);
+                                    TradeRating rating = TradeRating.FromRank(Convert.ToInt32(val));
                                     events.Add(new TradePromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
                                 else if (data.ContainsKey("Explore"))
                                 {
                                     data.TryGetValue("Explore", out val);
-                                    ExplorationRating rating = ExplorationRating.FromRank((int)val);
+                                    ExplorationRating rating = ExplorationRating.FromRank(Convert.ToInt32(val));
                                     events.Add(new ExplorationPromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
@@ -344,14 +344,14 @@ namespace EddiJournalMonitor
                                 {
                                     Superpower superpower = Superpower.FromName("Federation");
                                     data.TryGetValue("Federation", out val);
-                                    FederationRating rating = FederationRating.FromRank((int)val);
+                                    FederationRating rating = FederationRating.FromRank(Convert.ToInt32(val));
                                     events.Add(new FederationPromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
                                 else if (data.ContainsKey("Empire"))
                                 {
                                     data.TryGetValue("Empire", out val);
-                                    EmpireRating rating = EmpireRating.FromRank((int)val);
+                                    EmpireRating rating = EmpireRating.FromRank(Convert.ToInt32(val));
                                     events.Add(new EmpirePromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
