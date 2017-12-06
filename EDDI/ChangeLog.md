@@ -24,6 +24,7 @@
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
       * Refined script 'Module arrived'
       * Refined script 'Ship arrived'
+	  * Moved empire honorific logic into script 'Empire honorific'.
   * Galnet monitor
     * Only update the Galnet monitor if the game has posted a Galnet event in the last ten minutes. This prevents Galnet spam upon starting EDDI.
 
