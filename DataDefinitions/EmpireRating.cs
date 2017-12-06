@@ -19,10 +19,10 @@ namespace EddiDataDefinitions
 
         public int rank { get; private set; }
 
-        public EmpireRating(string edname, int rank, string name) : this(edname, rank, name, name)
+        private EmpireRating(string edname, int rank, string name) : this(edname, rank, name, name)
         {}
 
-        public EmpireRating(string edname, int rank, string name, string feminineName)
+        private EmpireRating(string edname, int rank, string name, string feminineName)
         {
             this.edname = edname;
             this.rank = rank;
