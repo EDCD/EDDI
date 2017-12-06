@@ -1,5 +1,5 @@
 ## EDDI version in which issue found
-2.4.6-b2
+[]
 
 ## Steps to reproduce
 
