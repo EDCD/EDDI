@@ -119,8 +119,9 @@ The event that triggered the speech responder.  Information held in here is even
 
 A rating, for example a combat rating or empire rating.
 
-    - `name` the name of the rating, for example 'Harmless'
     - `rank` the numeric rank of the rating, for example 0
+    - `name` the name of the rating, for example 'Harmless'
+    - `feminineName` the feminine name of the rating, for example 'Baroness' if it differs, otherwise the same as `name`
 
 ## Module
 
