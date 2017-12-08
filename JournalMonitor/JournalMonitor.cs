@@ -1245,11 +1245,14 @@ namespace EddiJournalMonitor
                                     channel == "wing" ||
                                     channel == "friend" ||
                                     channel == "voicechat" ||
-                                    channel == "local"
+                                    channel == "local" ||
+                                    channel == null
                                 )
                                 {
                                     // Give priority to player messages
                                     source = channel == "wing" ? "Wing mate" : "Commander";
+                                    source = channel == null ? "Crew mate" : "Commander";
+                                    channel = channel == null ? "multicrew" : channel;
                                     events.Add(new MessageReceivedEvent(timestamp, from, source, true, channel, message) { raw = line });
                                 }
                                 else

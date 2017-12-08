@@ -10,6 +10,9 @@
     * Add new event 'Vehicle destroyed' *(it does not perfectly track vehicle destruction since there are no official player journal events for SRV or fighter destruction - we have to infer vehicle destruction)*.
     * Amended the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
     * Fixed a bug that was causing the 'Ship arrived' event to report bad arrival locations.
+    * 'Message received' event:
+      * Fixed a bug that caused the 'Message received' event to not recognize messages from multicrew commanders as being from players. 
+      * New channel: 'multicrew'. New source: 'Crew mate'.
     * 'Mission completed' event:
       * Addded variables `rewardCommodity` and `rewardAmount`. Useful for cargo tracking.
 	* 'Search and rescue' event:
