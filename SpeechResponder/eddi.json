@@ -474,7 +474,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{F(\"Empire honorific\")},\r\nthe Imperial Navy has \r\n{OneOf(\"granted you a promotion\", \"promoted you\", \"advanced you\", \"named you\")}\r\nto the rank of\r\n{when(cmdr.gender = \"Female\", event.feminineRank, event.rank)}\r\n{Occasionally(2, \"for your service to the Empire\")}.",
+      "script": "{F(\"Empire honorific\")},\r\nthe Imperial Navy has \r\n{OneOf(\"granted you a promotion\", \"promoted you\", \"advanced you\", \"named you\")}\r\nto the rank of\r\n{when(cmdr.gender = \"Female\", event.femininerank, event.rank)}\r\n{Occasionally(2, \"for your service to the Empire\")}.",
       "default": true,
       "name": "Empire promotion",
       "description": "Triggered when your rank increases with the Empire"

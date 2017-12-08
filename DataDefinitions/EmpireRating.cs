@@ -15,19 +15,19 @@ namespace EddiDataDefinitions
 
         public string name { get; private set; }
 
-        public string feminineName { get; private set; }
+        public string femininename { get; private set; }
 
         public int rank { get; private set; }
 
         private EmpireRating(string edname, int rank, string name) : this(edname, rank, name, name)
         {}
 
-        private EmpireRating(string edname, int rank, string name, string feminineName)
+        private EmpireRating(string edname, int rank, string name, string femininename)
         {
             this.edname = edname;
             this.rank = rank;
             this.name = name;
-            this.feminineName = feminineName;
+            this.femininename = femininename;
 
             RATINGS.Add(this);
         }
