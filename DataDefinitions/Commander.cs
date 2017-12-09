@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace EddiDataDefinitions
 {
@@ -44,6 +45,9 @@ namespace EddiDataDefinitions
 
         /// <summary>The insurance excess percentage the commander has to pay</summary>
         public decimal? insurance { get; set; }
+
+        /// <summary>The Commander's friends</summary>
+        public List<Friend> friends = new List<Friend>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 

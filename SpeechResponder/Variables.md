@@ -22,13 +22,14 @@ Any values might be missing, depending on EDDI's configuration.
     - `name` the commander's name
     - `phoneticname` the pronunciation of the commander's name 
     - `combatrating` the current combat rating of the commander (this is a Rating object)
-    - `traderating` the current trad rating of the commander (this is a Rating object)
+    - `traderating` the current trade rating of the commander (this is a Rating object)
     - `explorationrating` the exploration combat rating of the commander (this is a Rating object)
     - `empirerating` the current Empire rating of the commander (this is a Rating object)
     - `federationrating` the current Federation rating of the commander (this is a Rating object)
     - `credits` the number of credits the commander owns
     - `debt` the amount of debt the commander owes
     - `gender` the gender of the commander, as selected in EDDI's configuration (string, either 'Male' or 'Female')
+    - `friends` the commander's friends observed during the play session (this is a Friend object)
 
 ## Ship
 
@@ -195,6 +196,13 @@ Additional properties may become available in station, via station.commodities.[
     - `stock` the amount of the commodity available from the market 
     - `demand` the demand for the commodity from the market
     - `EDDBID` the unique id number assigned to represent the commodity in EDDB
+
+## Friend
+
+A friend.
+
+    - `name` the name of the friend
+    - `status` the status of the friend (one of the following: Requested, Declined, Added, Lost, Offline, Online)
 
 ## Rarity
 
