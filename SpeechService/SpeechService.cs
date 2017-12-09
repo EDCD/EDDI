@@ -356,18 +356,10 @@ namespace EddiSpeechService
                         if (speech.Contains("<"))
                         {
                             Logging.Debug("Obtaining best guess culture");
-                            string culture = bestGuessCulture(synth);
-                            if (culture.Length > 0)
-                            {
-                                culture = @" xml:lang=""" + bestGuessCulture(synth) + @"""";
-                                Logging.Debug("Best guess culture is " + culture);
-                            }
-                            else
-                            {
-                                Logging.Debug("SSML attribute xml:lang not applicable for Cereproc voices, no culture applies (not standards compliant).");
-                            }
+                            string culture = @" xml:lang=""" + bestGuessCulture(synth) + @"""";
+                            Logging.Debug("Best guess culture is " + culture);
                             speech = @"<?xml version=""1.0"" encoding=""UTF-8""?><speak version=""1.0"" xmlns=""http://www.w3.org/2001/10/synthesis""" + culture + ">" + escapeSsml(speech) + @"</speak>";
-                            Logging.Debug("Feeding SSML to synthesizer: " + speech);
+                            Logging.Debug("Feeding SSML to synthesizer: " + escapeSsml(speech));
                             synth.SpeakSsml(speech);
                         }
                         else
@@ -402,12 +394,14 @@ namespace EddiSpeechService
                 {
                     if (synth.Voice.Name.Contains("CereVoice"))
                     {
-                        // Cereproc voices do not support the xml:lang attribute, so no language code should be applied
-                        guess = string.Empty;
+                        /// Cereproc voices do not support the normal xml:lang attribute country/region codes (like EN-GB) 
+                        /// (see https://www.cereproc.com/files/CereVoiceCloudGuide.pdf), 
+                        /// but it does support two letter country codes so we will use those instead
+                        guess = synth.Voice.Culture.Parent.Name;
                     }
                     else
                     {
-                        // Trust the voice's information
+                        // Trust the voice's information (with the complete country/region code)
                         guess = synth.Voice.Culture.Name;
                     }
                 }
