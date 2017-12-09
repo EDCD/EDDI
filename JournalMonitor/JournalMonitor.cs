@@ -1250,8 +1250,7 @@ namespace EddiJournalMonitor
                                 )
                                 {
                                     // Give priority to player messages
-                                    source = channel == "wing" ? "Wing mate" : "Commander";
-                                    source = channel == null ? "Crew mate" : "Commander";
+                                    source = channel == "wing" ? "Wing mate" : (channel == null ? "Crew mate" : "Commander");
                                     channel = channel == null ? "multicrew" : channel;
                                     events.Add(new MessageReceivedEvent(timestamp, from, source, true, channel, message) { raw = line });
                                 }
