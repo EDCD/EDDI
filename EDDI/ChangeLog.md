@@ -22,7 +22,7 @@
       * Updated 'Data voucher redeemed' script for events where the faction is not defined (such as INRA sites).
       * Removed deprecated 'Jumping' script (replaced by 'FSD engaged' in prior updates)
       * Renamed 'Crew member role change' event to 'Crew member role changed' to correct a bug that caused the event to be un-editable. Since the VoiceAttack documentation already indicated to use 'Crew member role changed', there should be no affect on VoiceAttack configurations. 
-      * Updated 'Friends event' to use the new `name` variable.
+      * Updated 'Friends event' to use the new `name` variable. For users of the default script, the default script is now re-enabled.
       * Updated 'Honorific' script to respect your chosen gender.
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
       * Refined script 'Module arrived'
