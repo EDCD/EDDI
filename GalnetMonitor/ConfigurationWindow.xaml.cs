@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace GalnetMonitor
@@ -18,6 +19,7 @@ namespace GalnetMonitor
 
             GalnetConfiguration configuration = GalnetConfiguration.FromFile();
             languageComboBox.SelectedValue = configuration.language;
+            galnetAlwaysOn.IsChecked = configuration.galnetAlwaysOn;
         }
 
         private void onLanguageChanged(object sender, SelectionChangedEventArgs e)
@@ -33,6 +35,22 @@ namespace GalnetMonitor
                 configuration.ToFile();
                 monitor?.Reload();
             }
+        }
+
+        private void galnetAlwaysOnChecked(object sender, RoutedEventArgs e)
+        {
+            GalnetConfiguration configuration = GalnetConfiguration.FromFile();
+            configuration.galnetAlwaysOn = galnetAlwaysOn.IsChecked.Value;
+            configuration.ToFile();
+            monitor.Reload();
+        }
+
+        private void galnetAlwaysOnUnchecked(object sender, RoutedEventArgs e)
+        {
+            GalnetConfiguration configuration = GalnetConfiguration.FromFile();
+            configuration.galnetAlwaysOn = galnetAlwaysOn.IsChecked.Value;
+            configuration.ToFile();
+            monitor.Reload();
         }
     }
 }

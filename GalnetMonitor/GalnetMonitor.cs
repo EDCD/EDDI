@@ -107,13 +107,34 @@ namespace GalnetMonitor
 
         private void monitor()
         {
-            // Wait at least 5 minutes after starting before polling for new articles
-            Thread.Sleep(5000);
+            if (!configuration.galnetAlwaysOn)
+            {
+                // Wait at least 5 minutes after starting before polling for new articles, but only if galnetAlwaysOn is false
+                Thread.Sleep(5000);
+            }
 
             while (running)
             {
-                // We'll update the Galnet Monitor only if a journal event has taken place within the specified number of minutes
-                if ((DateTime.UtcNow - EDDI.Instance.JournalTimeStamp).TotalMinutes < 10)
+                if (configuration.galnetAlwaysOn)
+                {
+                    monitorGalnet();
+                    Thread.Sleep(120000);
+                }
+                else
+                {
+                    // We'll update the Galnet Monitor only if a journal event has taken place within the specified number of minutes
+                    if ((DateTime.UtcNow - EDDI.Instance.JournalTimeStamp).TotalMinutes < 10)
+                    {
+                        monitorGalnet();
+                    }
+                    else
+                    {
+                        Logging.Debug("No in-game activity detected, skipping galnet feed update");
+                    }
+                    Thread.Sleep(30000);
+                }
+
+                void monitorGalnet()
                 {
                     List<News> newsItems = new List<News>();
                     string firstUid = null;
@@ -179,12 +200,6 @@ namespace GalnetMonitor
                         thread.Start();
                     }
                 }
-                else
-                {
-                    Logging.Debug("No in-game activity detected, skipping galnet feed update");
-                }
-
-                Thread.Sleep(30000);
             }
         }
 

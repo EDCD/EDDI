@@ -7,7 +7,7 @@
     * Hardened EDDI against a crash that could occur if the folder containing player journals doesn't exist.
     * Smarter vehicle state tracking.
   * Speech Responder
-    * Add new event 'Vehicle destroyed' *(it does not perfectly track vehicle destruction since there are no official player journal events for SRV or fighter destruction - we have to infer vehicle destruction)*.
+    * Add new event 'Vehicle destroyed' *(it does not perfectly track vehicle destruction since there are no official player journal events for SRV or fighter destruction - we have to infer vehicle destruction. Still, it's better than nothing.)*.
     * Amended the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
     * Fixed a bug that was causing the 'Ship arrived' event to report bad arrival locations.
     * 'Mission completed' event:
@@ -25,7 +25,7 @@
       * Refined script 'Module arrived'
       * Refined script 'Ship arrived'
   * Galnet monitor
-    * Only update the Galnet monitor if the game has posted a Galnet event in the last ten minutes. This prevents Galnet spam upon starting EDDI.
+    * Added a checkbox to the Galnet monitor, to toggle whether the Galnet monitor will update all of the time or only if the game has posted a journal event in the last ten minutes. This option prevents Galnet spam upon starting EDDI.
 
 ### 2.4.6-b1
   * The Galnet monitor will now check the player journal for recent activity prior to updating - VoiceAttack users rejoice!
