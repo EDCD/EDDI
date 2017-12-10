@@ -58,6 +58,8 @@ namespace Eddi
                 WindowState = WindowState.Maximized;
             }
 
+            this.tabControl.SelectedIndex = Eddi.Properties.Settings.Default.SelectedTab;
+
             int centerWindow(int measure, int defaultValue)
             {
                 return (measure / 2 - (measure >= defaultValue ? defaultValue : measure) / 2);
@@ -645,6 +647,9 @@ namespace Eddi
                 Properties.Settings.Default.Maximized = false;
                 Properties.Settings.Default.Minimized = false;
             }
+
+            // Remember which tab we have selected in EDDI
+            Properties.Settings.Default.SelectedTab = this.tabControl.SelectedIndex;
 
             Properties.Settings.Default.Save();
         }
