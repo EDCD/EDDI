@@ -25,7 +25,7 @@
       * Refined script 'Module arrived'
       * Refined script 'Ship arrived'
   * Galnet monitor
-    * Added a checkbox to the Galnet monitor, to toggle whether the Galnet monitor will update all of the time or only if the game has posted a journal event in the last ten minutes. This option prevents Galnet spam upon starting EDDI.
+    * Add a checkbox to the Galnet monitor to toggle whether the Galnet monitor will update all of the time or only if the game has posted a journal event in the last ten minutes. This option prevents Galnet spam upon starting EDDI.
 
 ### 2.4.6-b1
   * The Galnet monitor will now check the player journal for recent activity prior to updating - VoiceAttack users rejoice!
