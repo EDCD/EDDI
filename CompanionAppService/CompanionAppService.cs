@@ -637,7 +637,7 @@ namespace EddiCompanionAppService
                         if (Module.name == null)
                         {
                             // Unknown module; log an error so that we can update the definitions
-                            Logging.Error("No definition for outfitting module", module.ToString(Formatting.None));
+                            Logging.Report("No definition for outfitting module", module.ToString(Formatting.None));
                             // Set the name from the JSON
                             Module.EDName = (string)module["name"];
                         }
@@ -743,7 +743,7 @@ namespace EddiCompanionAppService
 
                 if (commodityErrors.Count() > 0)
                 {
-                    Logging.Warn("Commodity definition errors: " + JsonConvert.SerializeObject(commodityErrors));
+                    Logging.Report("Commodity definition errors: " + JsonConvert.SerializeObject(commodityErrors));
                 }
             }
 

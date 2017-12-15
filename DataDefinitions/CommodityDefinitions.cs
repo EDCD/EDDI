@@ -321,7 +321,7 @@ namespace EddiDataDefinitions
             {128673861, new Commodity(288, "EmergencyPowerCells", "Emergency Power Cells", "Machinery", 1011, false) },
             {128673862, new Commodity(289, "PowerConverter", "Power Converter", "Machinery", 246, false) },
             {128673863, new Commodity(290, "PowerGridAssembly", "Energy Grid Assembly", "Machinery", 1684, false) },
-            {128673864, new Commodity(291, "PowerTransferConduits", "Power Transfer Conduits", "Machinery", 857, false) },
+            {128673864, new Commodity(291, "PowerTransferConduits", "Power Transfer Bus", "Machinery", 857, false) },
             {128673865, new Commodity(292, "RadiationBaffle", "Radiation Baffle", "Machinery", 383, false) },
             {128673866, new Commodity(293, "ExhaustManifold", "Exhaust Manifold", "Machinery", 479, false) },
             {128673867, new Commodity(294, "ReinforcedMountingPlate", "Reinforced Mounting Plate", "Machinery", 1074, false) },
