@@ -606,10 +606,10 @@
       "description": "Triggered when you pay a fine"
     },
     "Friends status": {
-      "enabled": false,
+      "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Set uselist to \"white\" or \"black\", depending on which list you want to use to filter people _}\r\n{_ \"white\" will only allow notifications from people in this list (e.g. \"User1\", \"User2\", & \"User3\") _}\r\n{_ \"black\" will allow all notification EXCEPT those on this list (e.g. \"User4\", \"User5\", & \"User6\") _}\r\n{_ to allow all notifications, you may also use an empty blacklist (i.e. \"set blacklist to []\" _}\r\n\r\n{set uselist to \"black\"}\r\n\r\n{set whitelist to [\"User1\", \"User2\", \"User3\"]}\r\n{set blacklist to [\"User4\", \"User5\", \"User6\"]}\r\n\r\n{if uselist = \"white\":\r\n    {if find(whitelist, event.friend) > -1:\r\n        {event.friend} is now {event.status}.\r\n    }\r\n|elif uselist = \"black\":\r\n    {if find(blacklist, event.friend) = -1:\r\n        {event.friend} is now {event.status}.\r\n    }\r\n}",
+      "script": "{_ Set uselist to \"white\" or \"black\", depending on which list you want to use to filter people _}\r\n{_ \"white\" will only allow notifications from people in this list (e.g. \"User1\", \"User2\", & \"User3\") _}\r\n{_ \"black\" will allow all notification EXCEPT those on this list (e.g. \"User4\", \"User5\", & \"User6\") _}\r\n{_ to allow all notifications, you may also use an empty blacklist (i.e. \"set blacklist to []\" _}\r\n\r\n{set uselist to \"black\"}\r\n\r\n{set whitelist to [\"User1\", \"User2\", \"User3\"]}\r\n{set blacklist to [\"User4\", \"User5\", \"User6\"]}\r\n\r\n{if event.name:\r\n    {if uselist = \"white\":\r\n        {if find(whitelist, event.name) > -1:\r\n            {event.name} is now {event.status}.\r\n        }\r\n    |elif uselist = \"black\":\r\n        {if find(blacklist, event.name) = -1:\r\n            {event.name} is now {event.status}.\r\n        }\r\n    }\r\n|else:\r\n    I don't know who you are talking about.\r\n}",
       "default": true,
       "name": "Friends status",
       "description": "Triggered when a friendly commander changes status"

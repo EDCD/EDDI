@@ -6,10 +6,12 @@
     * You can now specify your commander's gender in the "Commander Details" tab. Currently this is only relevant for titles of nobility in the Empire. You can specify "Neither" if you prefer to be addressed as "Commander" in situations where convention would otherwise require a gendered form of address.
     * Hardened EDDI against a crash that could occur if the folder containing player journals doesn't exist.
     * Smarter vehicle state tracking.
+    * The status of friends observed during your play session is now available under the `cmdr` object.
   * Speech Responder
     * Add new event 'Vehicle destroyed' *(it does not perfectly track vehicle destruction since there are no official player journal events for SRV or fighter destruction - we have to infer vehicle destruction)*.
     * Amended the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
     * Fixed a bug that was causing parsing all promotion events to fail.
+    * Fixed a bug with the 'Friends' event. This event will no longer repeat the status of friends when no change has been observed in their status. Deprecated variable `friend` and replaced with variable `name`.
     * Fixed a bug that was causing the 'Ship arrived' event to report bad arrival locations.
     * 'Message received' event:
       * Fixed a bug that caused the 'Message received' event to not recognize messages from multicrew commanders as being from players. 
@@ -24,6 +26,7 @@
       * Updated 'Data voucher redeemed' script for events where the faction is not defined (such as INRA sites).
       * Removed deprecated 'Jumping' script (replaced by 'FSD engaged' in prior updates)
       * Renamed 'Crew member role change' event to 'Crew member role changed' to correct a bug that caused the event to be un-editable. Since the VoiceAttack documentation already indicated to use 'Crew member role changed', there should be no affect on VoiceAttack configurations. 
+      * Updated 'Friends event' to use the new `name` variable. For users of the default script, the default script is now re-enabled.
       * Updated 'Honorific' script to respect your chosen gender.
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
       * Refined script 'Module arrived'
