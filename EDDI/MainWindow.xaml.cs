@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Math;
 using Utilities;
 
 namespace Eddi
@@ -43,8 +44,8 @@ namespace Eddi
             }
 
             // Restore prior window size & position, or revert to default values if the prior size and position are no longer valid
-            this.Height = validRange(Properties.Settings.Default.Height, defaultHeight / 2, screensHeight) ? Properties.Settings.Default.Height : (screensHeight >= defaultHeight ? defaultHeight : screensHeight);
-            this.Width = validRange(Properties.Settings.Default.Width, defaultWidth / 2, screensWidth) ? Properties.Settings.Default.Width : (screensWidth >= defaultWidth ? defaultWidth : screensWidth);
+            this.Height = validRange(Properties.Settings.Default.Height, defaultHeight / 2, screensHeight) ? Properties.Settings.Default.Height : Math.Min(screensHeight, defaultHeight);
+            this.Width = validRange(Properties.Settings.Default.Width, defaultWidth / 2, screensWidth) ? Properties.Settings.Default.Width : Math.Min(screensWidth, screensWidth);
             this.Top = validRange(Properties.Settings.Default.Top, 0, screensHeight - this.Height) ? Properties.Settings.Default.Top : centerWindow(Screen.PrimaryScreen.Bounds.Height, defaultHeight);
             this.Left = validRange(Properties.Settings.Default.Left, 0, screensWidth - this.Width) ? Properties.Settings.Default.Left : centerWindow(Screen.PrimaryScreen.Bounds.Width, defaultWidth);
 
@@ -62,12 +63,12 @@ namespace Eddi
 
             int centerWindow(int measure, int defaultValue)
             {
-                return (measure / 2 - (measure >= defaultValue ? defaultValue : measure) / 2);
+                return (measure - Math.Min(measure, defaultValue)) / 2;
             }
 
             bool validRange(double numberToCheck, double bottom, double top)
             {
-                return (numberToCheck >= bottom && numberToCheck <= top);
+                return numberToCheck >= bottom && numberToCheck <= top;
             }
         }
 
