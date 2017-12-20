@@ -6,14 +6,27 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel LastChildFill="False" Background="#FFE5E5E5" Margin="0,5">
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Top">
-            <TextBlock Margin="5,0" TextWrapping="Wrap" Text="Galnet article language" VerticalAlignment="Center"/>
-            <ComboBox x:Name="languageComboBox" Background="#FFE5E5E5" SelectionChanged="onLanguageChanged" SelectedValuePath="Content">
-                <ComboBoxItem>English</ComboBoxItem>
-                <ComboBoxItem>Français</ComboBoxItem>
-                <ComboBoxItem>Deutsch</ComboBoxItem>
-            </ComboBox>
-        </StackPanel>
-        <TextBlock Margin="5" TextWrapping="Wrap" Text="Please note that after changing language it can take up to 2 minutes for new Galnet articles to be available" VerticalAlignment="Top"/>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel DockPanel.Dock="Top" Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" VerticalAlignment="Top">
+                <TextBlock Margin="5,0" TextWrapping="Wrap" Text="Galnet article language" VerticalAlignment="Center"/>
+                <ComboBox x:Name="languageComboBox" Background="#FFE5E5E5" SelectionChanged="onLanguageChanged" SelectedValuePath="Content">
+                    <ComboBoxItem>English</ComboBoxItem>
+                    <ComboBoxItem>Français</ComboBoxItem>
+                    <ComboBoxItem>Deutsch</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+            <TextBlock Grid.Row="1"  Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="Please note that after changing language it can take up to 2 minutes for new Galnet articles to be available" VerticalAlignment="Top"/>
+            <TextBlock Grid.Row="2"  Grid.Column="0" Margin="5, 25" TextWrapping="Wrap" Text="The Galnet monitor will normally attempt to provide articles only when you are actually in-game. Check this box if you'd like to receive Galnet articles all of the time, irrespective of whether you are in-game or not." VerticalAlignment="Top"/>
+            <CheckBox x:Name="galnetAlwaysOn" Grid.Row="3"  Grid.Column="2" Margin="5" VerticalAlignment="Center" Checked="galnetAlwaysOnChecked" Unchecked="galnetAlwaysOnUnchecked"/>
+        </Grid>
     </DockPanel>
 </UserControl>
