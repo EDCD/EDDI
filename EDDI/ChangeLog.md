@@ -7,24 +7,32 @@
     * Hardened EDDI against a crash that could occur if the folder containing player journals doesn't exist.
     * Smarter vehicle state tracking.
     * Found a way to improve support for Cereproc voices. These should now support more of the functions described in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md)
+    * The status of friends observed during your play session is now available under the `cmdr` object.
   * Speech Responder
     * Add new event 'Vehicle destroyed' *(it does not perfectly track vehicle destruction since there are no official player journal events for SRV or fighter destruction - we have to infer vehicle destruction)*.
     * Amended the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
+    * Fixed a bug that was causing parsing all promotion events to fail.
+    * Fixed a bug with the 'Friends' event. This event will no longer repeat the status of friends when no change has been observed in their status. Deprecated variable `friend` and replaced with variable `name`.
     * Fixed a bug that was causing the 'Ship arrived' event to report bad arrival locations.
+    * 'Message received' event:
+      * Fixed a bug that caused the 'Message received' event to not recognize messages from multicrew commanders as being from players. 
+      * New channel: 'multicrew'. New source: 'Crew mate'.
     * 'Mission completed' event:
       * Addded variables `rewardCommodity` and `rewardAmount`. Useful for cargo tracking.
-	* 'Search and rescue' event:
-	  * Added variable `commodityname` to provide the name of the commodity turned in, free of the commodity object. Accessible to VoiceAttack as `{TXT:EDDI search and rescue commodityname}` 
+    * 'Search and rescue' event:
+      * Added variable `commodityname` to provide the name of the commodity turned in, free of the commodity object. Accessible to VoiceAttack as `{TXT:EDDI search and rescue commodityname}` 
       * Updated 'Search and rescue' event to better distinguish between occupied and damaged escape pods, and to fix a bug in handling wreckage commodities.
     * Script changes
       * Add new script 'Vehicle destroyed'
       * Updated 'Data voucher redeemed' script for events where the faction is not defined (such as INRA sites).
       * Removed deprecated 'Jumping' script (replaced by 'FSD engaged' in prior updates)
       * Renamed 'Crew member role change' event to 'Crew member role changed' to correct a bug that caused the event to be un-editable. Since the VoiceAttack documentation already indicated to use 'Crew member role changed', there should be no affect on VoiceAttack configurations. 
+      * Updated 'Friends event' to use the new `name` variable. For users of the default script, the default script is now re-enabled.
       * Updated 'Honorific' script to respect your chosen gender.
       * Updated 'Jumped' event to fix a typo that was preventing a call to the new 'Fuel check' script.
       * Refined script 'Module arrived'
       * Refined script 'Ship arrived'
+      * Moved empire honorific logic into new script 'Empire honorific'.
   * Galnet monitor
     * Only update the Galnet monitor if the game has posted a Galnet event in the last ten minutes. This prevents Galnet spam upon starting EDDI.
 

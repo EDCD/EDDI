@@ -66,9 +66,13 @@ namespace Eddi
             {
                 eddiGenderFemale.IsChecked = true;
             }
-            else
+            else if (eddiConfiguration.Gender == "Male")
             {
                 eddiGenderMale.IsChecked = true;
+            }
+            else
+            {
+                eddiGenderNeither.IsChecked = true;
             }
 
             Logging.Verbose = eddiConfiguration.Debug;

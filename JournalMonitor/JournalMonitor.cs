@@ -1245,11 +1245,13 @@ namespace EddiJournalMonitor
                                     channel == "wing" ||
                                     channel == "friend" ||
                                     channel == "voicechat" ||
-                                    channel == "local"
+                                    channel == "local" ||
+                                    channel == null
                                 )
                                 {
                                     // Give priority to player messages
-                                    source = channel == "wing" ? "Wing mate" : "Commander";
+                                    source = channel == "wing" ? "Wing mate" : (channel == null ? "Crew mate" : "Commander");
+                                    channel = channel == null ? "multicrew" : channel;
                                     events.Add(new MessageReceivedEvent(timestamp, from, source, true, channel, message) { raw = line });
                                 }
                                 else
@@ -1918,10 +1920,30 @@ namespace EddiJournalMonitor
                         case "Friends":
                             {
                                 string status = getString(data, "Status");                            
-                                string friend = getString(data, "Name");
-                                friend = friend.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
+                                string name = getString(data, "Name");
+                                name = name.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
 
-                                events.Add(new FriendsEvent(timestamp, status, friend) { raw = line });
+                                Friend cmdr = new Friend();
+                                cmdr.name = name;
+                                cmdr.status = status;
+
+                                /// Does this friend exist in our friends list?
+                                List<Friend> friends = EDDI.Instance.Cmdr.friends;
+                                int index = friends.FindIndex(friend => friend.name == name);
+                                if (index >= 0)
+                                {
+                                    if (friends[index].status != cmdr.status)
+                                    {
+                                        /// This is a known friend: replace in situ (this is more efficient than removing and re-adding).
+                                        friends[index] = cmdr;
+                                    }                                }
+                                else
+                                {
+                                    /// This is a new friend, add them to the list
+                                    friends.Add(cmdr);
+                                    events.Add(new FriendsEvent(timestamp, name, status) { raw = line });
+                                }
+
                                 handled = true;
                                 break;
                             }
