@@ -627,6 +627,11 @@ namespace Eddi
                 System.Windows.Application.Current.Shutdown();
             }
 
+            SaveWindowState();
+        }
+
+        private void SaveWindowState()
+        {
             if (WindowState == WindowState.Maximized)
             {
                 // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
