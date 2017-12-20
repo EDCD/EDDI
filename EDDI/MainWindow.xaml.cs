@@ -30,6 +30,11 @@ namespace Eddi
 
         public MainWindow() : this(false)
         {
+            RestoreWindowState();
+        }
+
+        private void RestoreWindowState()
+        {
             const int defaultHeight = 600;
             const int defaultWidth = 800;
 
