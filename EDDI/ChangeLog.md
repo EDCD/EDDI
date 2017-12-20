@@ -9,7 +9,7 @@
     * Smarter vehicle state tracking.
     * Found a way to improve support for Cereproc voices. These should now support more of the functions described in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md)
     * The status of friends observed during your play session is now available under the `cmdr` object.
-	* Added spporet for the large AX weapons and the Type 10 Defender.
+	* Added support for the large AX weapons and the Type 10 Defender.
   * Speech Responder
     * Add new event 'Vehicle destroyed' *(it does not perfectly track vehicle destruction since there are no official player journal events for SRV or fighter destruction - we have to infer vehicle destruction. Still, it's better than nothing.)*.
     * Amended the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
