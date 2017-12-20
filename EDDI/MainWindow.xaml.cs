@@ -30,8 +30,8 @@ namespace Eddi
 
         public MainWindow() : this(false)
         {
-            int defaultHeight = 600;
-            int defaultWidth = 800;
+            const int defaultHeight = 600;
+            const int defaultWidth = 800;
 
             // Get the current screen resolution, just in case it changes between sessions
             int screensHeight = 0;
