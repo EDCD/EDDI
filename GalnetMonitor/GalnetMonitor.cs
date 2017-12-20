@@ -107,10 +107,14 @@ namespace GalnetMonitor
 
         private void monitor()
         {
+            const int inGameOnlyStartDelayMilliSecs = 5 * 60 * 1000; // 5 mins
+            const int alwaysOnIntervalMilliSecs = 2 * 60 * 1000; // 2 mins
+            const int inGameOnlyIntervalMilliSecs = 30 * 1000; // 30 secs
+
             if (!configuration.galnetAlwaysOn)
             {
                 // Wait at least 5 minutes after starting before polling for new articles, but only if galnetAlwaysOn is false
-                Thread.Sleep(5000);
+                Thread.Sleep(inGameOnlyStartDelayMilliSecs);
             }
 
             while (running)
@@ -118,7 +122,7 @@ namespace GalnetMonitor
                 if (configuration.galnetAlwaysOn)
                 {
                     monitorGalnet();
-                    Thread.Sleep(120000);
+                    Thread.Sleep(alwaysOnIntervalMilliSecs);
                 }
                 else
                 {
@@ -131,7 +135,7 @@ namespace GalnetMonitor
                     {
                         Logging.Debug("No in-game activity detected, skipping galnet feed update");
                     }
-                    Thread.Sleep(30000);
+                    Thread.Sleep(inGameOnlyIntervalMilliSecs);
                 }
 
                 void monitorGalnet()
