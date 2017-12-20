@@ -10,7 +10,7 @@
     * Add new event 'Vehicle destroyed' *(it does not perfectly track vehicle destruction since there are no official player journal events for SRV or fighter destruction - we have to infer vehicle destruction)*.
     * Amended the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
     * Fixed a bug that was causing the 'Ship arrived' event to report bad arrival locations.
-    * Updated 'Docked' event to include new variables 'allegiance' and 'state'. 'State' is a new variable that is currently used to describe damaged stations.
+    * Updated 'Docked' event to include new variables 'allegiance' and 'state'. 'State' is a new variable that is currently used to describe damaged stations and stations under repair.
     * 'Mission completed' event:
       * Addded variables `rewardCommodity` and `rewardAmount`. Useful for cargo tracking.
 	* 'Search and rescue' event:
@@ -19,7 +19,7 @@
     * Script changes
       * Add new script 'Vehicle destroyed'
       * Updated 'Data voucher redeemed' script for events where the faction is not defined (such as INRA sites).
-      * Updated 'Docked' script
+      * Updated 'Docked' script to report emergency docking differently.
       * Removed deprecated 'Jumping' script (replaced by 'FSD engaged' in prior updates)
       * Renamed 'Crew member role change' event to 'Crew member role changed' to correct a bug that caused the event to be un-editable. Since the VoiceAttack documentation already indicated to use 'Crew member role changed', there should be no affect on VoiceAttack configurations. 
       * Updated 'Honorific' script to respect your chosen gender.
