@@ -27,6 +27,8 @@
       * Added variable `commodityname` to provide the name of the commodity turned in, free of the commodity object. Accessible to VoiceAttack as `{TXT:EDDI search and rescue commodityname}` 
       * Updated 'Search and rescue' event to better distinguish between occupied and damaged escape pods, and to fix a bug in handling wreckage commodities.
     * Script changes
+      * New script 'Report last scan value' to report the estimated value of the last scan with variations - used by 'Star scanned' and 'Body scanned'.
+      * 'Body scanned' leaves naming the body in question to 'Body report', which no longer repeats the base system name if it doesn't have to.
       * Add new script 'Vehicle destroyed'
       * Updated 'Data voucher redeemed' script for events where the faction is not defined (such as INRA sites).
       * Updated 'Docked' script to report emergency docking differently.
