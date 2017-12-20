@@ -2,14 +2,14 @@
 
 ### 2.4.6-b2
   * Core
-    * Changes to your home system / station will now be honoured immediately rather than after the next app restart.
+	* Added support for the large AX weapons and the Type 10 Defender.
     * EDDI will now remember and restore its window size and position, the selected tab, and its minimized / maximized status on startup.
     * You can now specify your commander's gender in the "Commander Details" tab. Currently this is only relevant for titles of nobility in the Empire. You can specify "Neither" if you prefer to be addressed as "Commander" in situations where convention would otherwise require a gendered form of address.
+    * Changes to your home system / station will now be honoured immediately rather than after the next app restart.
     * Hardened EDDI against a crash that could occur if the folder containing player journals doesn't exist.
     * Smarter vehicle state tracking.
     * Found a way to improve support for Cereproc voices. These should now support more of the functions described in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md)
     * The status of friends observed during your play session is now available under the `cmdr` object.
-	* Added support for the large AX weapons and the Type 10 Defender.
   * Speech Responder
     * Add new event 'Vehicle destroyed' *(it does not perfectly track vehicle destruction since there are no official player journal events for SRV or fighter destruction - we have to infer vehicle destruction. Still, it's better than nothing.)*.
     * Amended the descriptions for the 'Module arrived' and 'Ship arrived' station and system variables.
