@@ -394,7 +394,7 @@ namespace EddiSpeechService
                 {
                     if (synth.Voice.Name.Contains("CereVoice"))
                     {
-                        /// Cereproc voices do not support the normal xml:lang attribute country/region codes (like EN-GB) 
+                        /// Cereproc voices do not support the normal xml:lang attribute country/region codes (like en-GB) 
                         /// (see https://www.cereproc.com/files/CereVoiceCloudGuide.pdf), 
                         /// but it does support two letter country codes so we will use those instead
                         guess = synth.Voice.Culture.Parent.Name;
