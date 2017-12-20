@@ -1922,38 +1922,23 @@ namespace EddiJournalMonitor
                                 name = name.Replace("$cmdr_decorate:#name=", "Commander ").Replace(";", "").Replace("&", "Commander ");
 
                                 Friend cmdr = new Friend();
-                                int index = -1;
-
+                                cmdr.name = name;
+                                cmdr.status = status;
                                 /// Does this friend exist in our friends list?
-                                for (int i = 0; i < EDDI.Instance.Cmdr.friends.Count; i++)
-                                {
-                                    if (EDDI.Instance.Cmdr.friends[i].name == name)
-                                    {
-                                        cmdr = EDDI.Instance.Cmdr.friends.ElementAt(i);
-                                        index = i;
-                                        break;
-                                    }
-                                }
+                                List<Friend> friends = EDDI.Instance.Cmdr.friends;
+                                int index = friends.FindIndex(friend => friend.name == name);
 
-                                if (cmdr.name != string.Empty)
+                                if (index >= 0)
                                 {
-                                    /// This is a known friend. We'll only react if that friend's status has changed.
-                                    if (cmdr.status != status && index >= 0)
+                                    if (friends[index].status != cmdr.status)
                                     {
-                                        /// This is a known friend with a changed status. First remove them from the list so that we don't duplicate,
-                                        /// then update the status as required, then (re-)add them to the list with their changed status
-                                        EDDI.Instance.Cmdr.friends.RemoveAt(index);
-                                        cmdr.status = status;
-                                        EDDI.Instance.Cmdr.friends.Add(cmdr);
-                                        events.Add(new FriendsEvent(timestamp, name, status) { raw = line });
-                                    }
-                                }
+                                        /// This is a known friend: replace in situ (this is more efficient than removing and re-adding).
+                                        friends[index] = cmdr;
+                                    }                                }
                                 else
                                 {
                                     /// This is a new friend, add them to the list
-                                    cmdr.name = name;
-                                    cmdr.status = status;
-                                    EDDI.Instance.Cmdr.friends.Add(cmdr);
+                                    friends.Add(cmdr);
                                     events.Add(new FriendsEvent(timestamp, name, status) { raw = line });
                                 }
 
