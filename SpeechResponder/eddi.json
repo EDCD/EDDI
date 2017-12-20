@@ -461,11 +461,20 @@
       "name": "Docking timed out",
       "description": "Triggered when your docking request times out"
     },
+    "Empire honorific": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Forms of address taken from <https://en.wikipedia.org/wiki/Forms_of_address_in_the_United_Kingdom>}\r\n{if cmdr.empirerating.rank <= 4: {_ Commoner }\r\n   commander\r\n|elif cmdr.empirerating.rank = 5: {_ Knight / Dame }\r\n    {if cmdr.gender = \"Male\": \r\n        sir \r\n    |elif cmdr.gender = \"Female\": \r\n        madam\r\n    |else: \r\n        commander\r\n    }\r\n|elif cmdr.empirerating.rank <= 11: {_ Peer / Peeress }\r\n    {if cmdr.gender = \"Male\": \r\n        {OneOf(\"my lord\", \"your lordship\")}\r\n    |elif cmdr.gender = \"Female\": \r\n        {OneOf(\"my lady\", \"your ladyship\")}\r\n    |else: \r\n        commander\r\n    }\r\n|elif cmdr.empirerating.rank = 12:\r\n    your grace\r\n|elif cmdr.empirerating.rank = 13:\r\n    your royal highness\r\n|elif cmdr.empirerating.rank = 14:\r\n    your majesty\r\n}\r\n",
+      "default": true,
+      "name": "Empire honorific",
+      "description": "Function to provide a suitable honorific for your commander when in the empire"
+    },
     "Empire promotion": {
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.rank = \"Knight\":\r\n    sir\r\n|elif event.rank = \"Lord\":\r\n    my lord\r\n|elif event.rank = \"Baron\":\r\n    my lord\r\n|elif event.rank = \"Viscount\":\r\n    my lord\r\n|elif event.rank = \"Count\":\r\n    my lord\r\n|elif event.rank = \"Earl\":\r\n    my lord\r\n|elif event.rank = \"Marquis\":\r\n    my lord\r\n|elif event.rank = \"Duke\":\r\n    your grace\r\n|elif event.rank = \"Prince\":\r\n    your royal highness\r\n|elif event.rank = \"King\":\r\n    your majesty\r\n|else:\r\n    commander\r\n},\r\nthe Empirial Navy has \r\n{OneOf(\"granted you a promotion\", \"promoted you\", \"advanced you\", \"named you\")}\r\nto the rank of\r\n{event.rank}\r\n{Occasionally(2, \"for your service to the Empire\")}.",
+      "script": "{F(\"Empire honorific\")},\r\nthe Imperial Navy has \r\n{OneOf(\"granted you a promotion\", \"promoted you\", \"advanced you\", \"named you\")}\r\nto the rank of\r\n{when(cmdr.gender = \"Female\", event.femininerank, event.rank)}\r\n{Occasionally(2, \"for your service to the Empire\")}.",
       "default": true,
       "name": "Empire promotion",
       "description": "Triggered when your rank increases with the Empire"
@@ -699,7 +708,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{if system.allegiance = \"Empire\":\r\n    {_ Forms of address taken from <https://en.wikipedia.org/wiki/Forms_of_address_in_the_United_Kingdom>}\r\n    {if cmdr.empirerating.rank <= 4: {_ Commoner }\r\n       commander\r\n    |elif cmdr.empirerating.rank = 5: {_ Knight / Dame }\r\n        {if cmdr.gender = \"Male\": \r\n            sir \r\n        |elif cmdr.gender = \"Female\": \r\n            madam\r\n        |else: \r\n            commander\r\n        }\r\n    |elif cmdr.empirerating.rank <= 11: {_ Peer / Peeress }\r\n        {if cmdr.gender = \"Male\": \r\n            {OneOf(\"my lord\", \"your lordship\")}\r\n        |elif cmdr.gender = \"Female\": \r\n            {OneOf(\"my lady\", \"your ladyship\")}\r\n        |else: \r\n            commander\r\n        }\r\n    |elif cmdr.empirerating.rank = 12:\r\n        your grace\r\n    |elif cmdr.empirerating.rank = 13:\r\n        your royal highness\r\n    |elif cmdr.empirerating.rank = 14:\r\n        your majesty\r\n    }\r\n|elif system.allegiance = \"Federation\":\r\n    {if cmdr.federationrating.rank = 0:\r\n        commander\r\n    |else:\r\n        {cmdr.federationrating.name}\r\n    }\r\n|else:\r\n    commander\r\n}\r\n",
+      "script": "{if system.allegiance = \"Empire\":\r\n    {F(\"Empire honorific\")}\r\n|elif system.allegiance = \"Federation\":\r\n    {if cmdr.federationrating.rank = 0:\r\n        commander\r\n    |else:\r\n        {cmdr.federationrating.name}\r\n    }\r\n|else:\r\n    commander\r\n}\r\n",
       "default": true,
       "name": "Honorific",
       "description": "Function to provide a suitable honorific for your commander"

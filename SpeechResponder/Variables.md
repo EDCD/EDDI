@@ -28,7 +28,7 @@ Any values might be missing, depending on EDDI's configuration.
     - `federationrating` the current Federation rating of the commander (this is a Rating object)
     - `credits` the number of credits the commander owns
     - `debt` the amount of debt the commander owes
-    - `gender` the gender of the commander, as selected in EDDI's configuration (string, either 'Male' or 'Female')
+    - `gender` the gender of the commander, as selected in EDDI's configuration (string, either 'Male', 'Female' or 'Neither')
 
 ## Ship
 
@@ -119,8 +119,9 @@ The event that triggered the speech responder.  Information held in here is even
 
 A rating, for example a combat rating or empire rating.
 
-    - `name` the name of the rating, for example 'Harmless'
     - `rank` the numeric rank of the rating, for example 0
+    - `name` the name of the rating, for example 'Harmless'
+    - `femininename` the feminine name of the rating, for example 'Baroness' if it differs, otherwise the same as `name`
 
 ## Module
 
