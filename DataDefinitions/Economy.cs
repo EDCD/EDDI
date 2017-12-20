@@ -26,8 +26,10 @@ namespace EddiDataDefinitions
         public static readonly Economy None = new Economy("$economy_None", "None");
         public static readonly Economy Agriculture = new Economy("$economy_Agri", "Agriculture");
         public static readonly Economy Colony = new Economy("$economy_Colony", "Colony");
+        public static readonly Economy Damaged = new Economy("$economy_Damaged", "Damaged");
         public static readonly Economy Extraction = new Economy("$economy_Extraction", "Extraction");
         public static readonly Economy Refinery = new Economy("$economy_Refinery", "Refinery");
+        public static readonly Economy Repair = new Economy("$economy_Repair", "Repairing");
         public static readonly Economy Industrial = new Economy("$economy_Industrial", "Industrial");
         public static readonly Economy Terraforming = new Economy("$economy_Terraforming", "Terraforming");
         public static readonly Economy HighTech = new Economy("$economy_HighTech", "High Tech");

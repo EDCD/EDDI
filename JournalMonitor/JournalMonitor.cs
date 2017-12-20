@@ -84,6 +84,7 @@ namespace EddiJournalMonitor
                             {
                                 string systemName = getString(data, "StarSystem");
                                 string stationName = getString(data, "StationName");
+                                string stationState = getString(data, "StationState") ?? string.Empty;
                                 string stationModel = getString(data, "StationType");
                                 Superpower allegiance = getAllegiance(data, "StationAllegiance");
                                 string faction = getFaction(data, "StationFaction");
@@ -97,7 +98,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("StationServices", out val);
                                 List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList();
 
-                                events.Add(new DockedEvent(timestamp, systemName, stationName, stationModel, faction, factionState, economy, government, distancefromstar, stationservices) { raw = line });
+                                events.Add(new DockedEvent(timestamp, systemName, stationName, stationModel, stationState, allegiance, faction, factionState, economy, government, distancefromstar, stationservices) { raw = line });
                             }
                             handled = true;
                             break;

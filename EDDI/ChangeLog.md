@@ -19,6 +19,8 @@
     * 'Message received' event:
       * Fixed a bug that caused the 'Message received' event to not recognize messages from multicrew commanders as being from players. 
       * New channel: 'multicrew'. New source: 'Crew mate'.
+    * 'Docked' event:
+      * New variables 'allegiance' and 'state'. 'State' is a new variable that is currently used to describe damaged stations and stations under repair.
     * 'Mission completed' event:
       * Addded variables `rewardCommodity` and `rewardAmount`. Useful for cargo tracking.
     * 'Search and rescue' event:
@@ -27,6 +29,7 @@
     * Script changes
       * Add new script 'Vehicle destroyed'
       * Updated 'Data voucher redeemed' script for events where the faction is not defined (such as INRA sites).
+      * Updated 'Docked' script to report emergency docking differently.
       * Removed deprecated 'Jumping' script (replaced by 'FSD engaged' in prior updates)
       * Renamed 'Crew member role change' event to 'Crew member role changed' to correct a bug that caused the event to be un-editable. Since the VoiceAttack documentation already indicated to use 'Crew member role changed', there should be no affect on VoiceAttack configurations. 
       * Updated 'Friends event' to use the new `name` variable. For users of the default script, the default script is now re-enabled.

@@ -411,7 +411,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "Docking complete.\r\n",
+      "script": "{if event.state = \"Damaged\": Emergency}\r\nDocking complete.",
       "default": true,
       "name": "Docked",
       "description": "Triggered when your ship docks at a station or outpost"
