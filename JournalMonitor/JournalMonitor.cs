@@ -1924,10 +1924,10 @@ namespace EddiJournalMonitor
                                 Friend cmdr = new Friend();
                                 cmdr.name = name;
                                 cmdr.status = status;
+
                                 /// Does this friend exist in our friends list?
                                 List<Friend> friends = EDDI.Instance.Cmdr.friends;
                                 int index = friends.FindIndex(friend => friend.name == name);
-
                                 if (index >= 0)
                                 {
                                     if (friends[index].status != cmdr.status)
