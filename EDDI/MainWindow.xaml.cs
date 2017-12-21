@@ -33,6 +33,44 @@ namespace Eddi
             RestoreWindowState();
         }
 
+        private void SaveWindowState()
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
+                Properties.Settings.Default.Top = RestoreBounds.Top;
+                Properties.Settings.Default.Left = RestoreBounds.Left;
+                Properties.Settings.Default.Height = RestoreBounds.Height;
+                Properties.Settings.Default.Width = RestoreBounds.Width;
+                Properties.Settings.Default.Maximized = true;
+                Properties.Settings.Default.Minimized = false;
+            }
+            else if (WindowState == WindowState.Minimized)
+            {
+                // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
+                Properties.Settings.Default.Top = RestoreBounds.Top;
+                Properties.Settings.Default.Left = RestoreBounds.Left;
+                Properties.Settings.Default.Height = RestoreBounds.Height;
+                Properties.Settings.Default.Width = RestoreBounds.Width;
+                Properties.Settings.Default.Maximized = false;
+                Properties.Settings.Default.Minimized = true;
+            }
+            else
+            {
+                Properties.Settings.Default.Top = this.Top;
+                Properties.Settings.Default.Left = this.Left;
+                Properties.Settings.Default.Height = this.Height;
+                Properties.Settings.Default.Width = this.Width;
+                Properties.Settings.Default.Maximized = false;
+                Properties.Settings.Default.Minimized = false;
+            }
+
+            // Remember which tab we have selected in EDDI
+            Properties.Settings.Default.SelectedTab = this.tabControl.SelectedIndex;
+
+            Properties.Settings.Default.Save();
+        }
+
         private void RestoreWindowState()
         {
             const int defaultHeight = 600;
@@ -628,44 +666,6 @@ namespace Eddi
             }
 
             SaveWindowState();
-        }
-
-        private void SaveWindowState()
-        {
-            if (WindowState == WindowState.Maximized)
-            {
-                // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
-                Properties.Settings.Default.Top = RestoreBounds.Top;
-                Properties.Settings.Default.Left = RestoreBounds.Left;
-                Properties.Settings.Default.Height = RestoreBounds.Height;
-                Properties.Settings.Default.Width = RestoreBounds.Width;
-                Properties.Settings.Default.Maximized = true;
-                Properties.Settings.Default.Minimized = false;
-            }
-            else if (WindowState == WindowState.Minimized)
-            {
-                // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
-                Properties.Settings.Default.Top = RestoreBounds.Top;
-                Properties.Settings.Default.Left = RestoreBounds.Left;
-                Properties.Settings.Default.Height = RestoreBounds.Height;
-                Properties.Settings.Default.Width = RestoreBounds.Width;
-                Properties.Settings.Default.Maximized = false;
-                Properties.Settings.Default.Minimized = true;
-            }
-            else
-            {
-                Properties.Settings.Default.Top = this.Top;
-                Properties.Settings.Default.Left = this.Left;
-                Properties.Settings.Default.Height = this.Height;
-                Properties.Settings.Default.Width = this.Width;
-                Properties.Settings.Default.Maximized = false;
-                Properties.Settings.Default.Minimized = false;
-            }
-
-            // Remember which tab we have selected in EDDI
-            Properties.Settings.Default.SelectedTab = this.tabControl.SelectedIndex;
-
-            Properties.Settings.Default.Save();
         }
 
         private void EnsureValidDecimal(object sender, TextCompositionEventArgs e)
