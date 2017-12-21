@@ -956,6 +956,7 @@ namespace EddiDataDefinitions
                 {999999939, new Module(999999939, "Dolphin_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049291) },
                 {999999940, new Module(999999940, "hpt_shipdatalinkscanner", -1, "Data Link Scanner", 1, "I", 0, -1) },
                 {999999941, new Module(999999941, "string_lights_coloured", -1, "Coloured string lights", 1, "I", 0, -1) },
+                {999999942, new Module(999999942, "Type9_Military_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128785619) },
         };
 
         private static Dictionary<string, Module> ModulesByEDName = ModulesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
