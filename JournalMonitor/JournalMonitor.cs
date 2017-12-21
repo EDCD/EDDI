@@ -98,7 +98,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("StationServices", out val);
                                 List<string> stationservices = (val as List<object>)?.Cast<string>()?.ToList();
 
-                                events.Add(new DockedEvent(timestamp, systemName, stationName, stationModel, stationState, allegiance, faction, factionState, economy, government, distancefromstar, stationservices) { raw = line });
+                                events.Add(new DockedEvent(timestamp, systemName, stationName, stationState, stationModel, allegiance, faction, factionState, economy, government, distancefromstar, stationservices) { raw = line });
                             }
                             handled = true;
                             break;
