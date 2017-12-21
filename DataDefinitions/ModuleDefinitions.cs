@@ -900,10 +900,10 @@ namespace EddiDataDefinitions
 
                 // Type 10 Defender armour -- for now, the armour costs are the T9 ones
                 {128785621, new Module(128785621, "Type9_Military_Armour_Grade1", -1, "Lightweight Alloy", 1, "I", 0, 128785619) },
-                {128785622, new Module(128785622, "Type9_Military_Armour_Grade2", -1, "Reinforced Alloy", 1, "I", 30622340, 128785619) },
-                {128785623, new Module(128785623, "Type9_Military_Armour_Grade3", -1, "Military Grade Composite", 1, "I", 68900260, 128785619) },
-                {128785624, new Module(128785624, "Type9_Military_Armour_Mirrored", -1, "Mirrored Surface Composite", 1, "I", 162834280, 128785619) },
-                {128785625, new Module(128785625, "Type9_Military_Armour_Reactive", -1, "Reactive Surface Composite", 1, "I", 180442120, 128785619) },
+                {128785622, new Module(128785622, "Type9_Military_Armour_Grade2", -1, "Reinforced Alloy", 1, "I", 48654583, 128785619) },
+                {128785623, new Module(128785623, "Type9_Military_Armour_Grade3", -1, "Military Grade Composite", 1, "I", 109472813, 128785619) },
+                {128785624, new Module(128785624, "Type9_Military_Armour_Mirrored", -1, "Mirrored Surface Composite", 1, "I", 258720748, 128785619) },
+                {128785625, new Module(128785625, "Type9_Military_Armour_Reactive", -1, "Reactive Surface Composite", 1, "I", 283830162, 128785619) },
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },
