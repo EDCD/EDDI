@@ -25,6 +25,7 @@ namespace EddiShipMonitor
         // The ID of the current ship; can be null
         private int? currentShipId;
         private int? currentProfileId;
+        private int dispatcherTasks = 0;
         private static readonly object shipyardLock = new object();
 
         public string MonitorName()
@@ -756,7 +757,9 @@ namespace EddiShipMonitor
             {
                 Ship profileShip = profileShipyard.FirstOrDefault(s => s.LocalId == ship.LocalId);
                 if (profileShip == null)
+                {
                     RemoveShip(ship.LocalId);
+                }
             }
 
             // Add ships from the Profile Shipyard that are not found in the Shipyard 
@@ -767,8 +770,7 @@ namespace EddiShipMonitor
                 if (ship == null)
                 {
                     // This is a new ship, add it to the shipyard
-                    ship = profileShip;
-                    AddShip(ship);
+                    AddShip(profileShip);
                 }
             }
             writeShips();
@@ -784,8 +786,15 @@ namespace EddiShipMonitor
             return variables;
         }
 
-        public void writeShips()
+        public async void writeShips()
         {
+            do
+            {
+                // Make sure the dispatcher has finished prior to writing the shipyard.
+                await Task.Delay(TimeSpan.FromSeconds(1));
+            }
+            while (dispatcherTasks != 0);
+            Dispatcher.CurrentDispatcher.Hooks.
             lock (shipyardLock)
             {
                 // Write ship configuration with current inventory
@@ -855,7 +864,9 @@ namespace EddiShipMonitor
             {
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                 {
+                    dispatcherTasks += 1;
                     _AddShip(ship);
+                    dispatcherTasks -= 1;
                 }));
             }
         }
@@ -887,7 +898,9 @@ namespace EddiShipMonitor
             {
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                 {
+                    dispatcherTasks += 1;
                     _RemoveShip(localid);
+                    dispatcherTasks -= 1;
                 }));
             }
         }
