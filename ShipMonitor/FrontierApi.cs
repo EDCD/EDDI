@@ -170,9 +170,10 @@ namespace EddiShipMonitor
                         if (module.Name.Contains("Slot"))
                         {
                             Compartment compartment = CompartmentFromJson(module);
-                            if (compartment.module.name == "Fuel Tank")
+                            string moduleName = compartment.module?.name ?? "";
+                            if (moduleName == "Fuel Tank")
                                 Ship.fueltanktotalcapacity += (decimal)Math.Pow(2, compartment.module.@class);
-                            if (compartment.module.name == "Cargo Rack")
+                            if (moduleName == "Cargo Rack")
                                 Ship.cargocapacity += (int)Math.Pow(2, compartment.module.@class);
 
                             Ship.compartments.Add(compartment);

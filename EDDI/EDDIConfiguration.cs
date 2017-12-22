@@ -21,6 +21,8 @@ namespace Eddi
         public decimal Insurance { get; set; }
         [JsonProperty("plugins")]
         public IDictionary<string, bool> Plugins { get; set; }
+        [JsonProperty("Gender")]
+        public string Gender { get; set; } = "Male";
 
         /// <summary>the current export target for the shipyard</summary>
         [JsonProperty("exporttarget")]
@@ -39,6 +41,7 @@ namespace Eddi
             Insurance = 5;
             Plugins = new Dictionary<string, bool>();
             exporttarget = "Coriolis";
+            Gender = "Male";
         }
 
         /// <summary>

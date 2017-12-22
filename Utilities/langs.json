@@ -78,8 +78,8 @@
       "fr": "Répondeur Vocal"
     },
     "speech_responder_desc": {
-      "en": "Respond to events with pre-scripted responses using the information available. Not all events have scripted responses by default; those that do not have the 'Test' button disabled.  The default personality can be copied, which allows existing scripts to be modified or disabled, and new scripts to be written, to suit your preferences.",
-      "fr": "Réponds aux événements avec des réponse pré-scriptée en utilisant les informations disponibles. Tout les événements n'ont pas de réponses scriptées par défaut; ceux qui n'ont pas le bouton 'Test' désactivé. La personnalité par défaut peut être copiée, vous permettant de modifier ou désactiver les scripts existants, et d'en écrire de nouveaux selon vos préférences."
+      "en": "Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its 'Test' and 'View' buttons are disabled.",
+	  "fr": "Répond aux évenements avec un dialogue scripté basé sur les informations de l'évenement. Ils n'ont pas tous de réponses scriptés. Si un script de réponse est vide, les boutons 'Test' et 'Afficher' sont désactivé."
     },
     "eddn_responder_name": {
       "en": "EDDN responder",

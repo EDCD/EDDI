@@ -118,7 +118,7 @@ namespace GalnetMonitor
             while (running)
             {
                 // We'll update the Galnet Monitor only if a journal event has taken place within the specified number of minutes
-                if ((DateTime.UtcNow - EDDI.Instance.JournalTimeStamp).Value.Minutes < 10)
+                if ((DateTime.UtcNow - EDDI.Instance.JournalTimeStamp).TotalMinutes < 10)
                 {
                     List<News> newsItems = new List<News>();
                     string firstUid = null;

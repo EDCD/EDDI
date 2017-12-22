@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:eddi="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
+        xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
         mc:Ignorable="d"
         Title="EDDI" Height="600"  Width="800">
     <DockPanel LastChildFill="True">
@@ -74,6 +76,10 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -92,6 +98,9 @@
                         <TextBlock x:Name ="eddi3Text" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5" VerticalAlignment="Top"/>
                         <Label x:Name ="eddiInsuranceLabel" Grid.Row="4" Grid.Column="0" Margin="5"/>
                         <TextBox x:Name="eddiInsuranceDecimal" Grid.Row="4" Grid.Column="1" Margin="5" PreviewTextInput="EnsureValidDecimal" TextChanged="insuranceChanged" TextAlignment="Right"/>
+                        <RadioButton x:Name ="eddiGenderMale" Content="Male" HorizontalAlignment="Left" VerticalAlignment="Bottom"  Height="Auto" Grid.Row="5" Checked="isMale_Checked" Margin="62,0,0,43" Grid.Column="1" Grid.ColumnSpan="4" Width="409"/>
+                        <RadioButton x:Name ="eddiGenderFemale" Content="Female" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isFemale_Checked" Margin="62,37,0,19" RenderTransformOrigin="0.456,1" Grid.Column="1" Grid.ColumnSpan="4" Width="409"/>
+                        <RadioButton x:Name ="eddiGenderNeither" Content="Neither" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isNeitherGender_Checked" Margin="62,58,0,0" RenderTransformOrigin="0.456,1" Grid.Column="1" Grid.ColumnSpan="4" Width="409"/>
                     </Grid>
                 </DockPanel>
             </TabItem>

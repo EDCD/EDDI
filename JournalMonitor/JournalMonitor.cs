@@ -58,7 +58,6 @@ namespace EddiJournalMonitor
                     {
                         Logging.Warn("Event without timestamp; using current time");
                     }
-                    EDDI.Instance.JournalTimeStamp = timestamp;
 
                     // Every event has an event field
                     if (!data.ContainsKey("event"))
@@ -70,6 +69,15 @@ namespace EddiJournalMonitor
                     bool handled = false;
 
                     string edType = getString(data, "event");
+                    if (edType == "Fileheader")
+                    {
+                        EDDI.Instance.JournalTimeStamp = DateTime.MinValue;
+                    }
+                    else
+                    {
+                        EDDI.Instance.JournalTimeStamp = timestamp;
+                    }
+
                     switch (edType)
                     {
                         case "Docked":
@@ -314,21 +322,21 @@ namespace EddiJournalMonitor
                                 if (data.ContainsKey("Combat"))
                                 {
                                     data.TryGetValue("Combat", out val);
-                                    CombatRating rating = CombatRating.FromRank((int)val);
+                                    CombatRating rating = CombatRating.FromRank(Convert.ToInt32(val));
                                     events.Add(new CombatPromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
                                 else if (data.ContainsKey("Trade"))
                                 {
                                     data.TryGetValue("Trade", out val);
-                                    TradeRating rating = TradeRating.FromRank((int)val);
+                                    TradeRating rating = TradeRating.FromRank(Convert.ToInt32(val));
                                     events.Add(new TradePromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
                                 else if (data.ContainsKey("Explore"))
                                 {
                                     data.TryGetValue("Explore", out val);
-                                    ExplorationRating rating = ExplorationRating.FromRank((int)val);
+                                    ExplorationRating rating = ExplorationRating.FromRank(Convert.ToInt32(val));
                                     events.Add(new ExplorationPromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
@@ -336,14 +344,14 @@ namespace EddiJournalMonitor
                                 {
                                     Superpower superpower = Superpower.FromName("Federation");
                                     data.TryGetValue("Federation", out val);
-                                    FederationRating rating = FederationRating.FromRank((int)val);
+                                    FederationRating rating = FederationRating.FromRank(Convert.ToInt32(val));
                                     events.Add(new FederationPromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
                                 else if (data.ContainsKey("Empire"))
                                 {
                                     data.TryGetValue("Empire", out val);
-                                    EmpireRating rating = EmpireRating.FromRank((int)val);
+                                    EmpireRating rating = EmpireRating.FromRank(Convert.ToInt32(val));
                                     events.Add(new EmpirePromotionEvent(timestamp, rating) { raw = line });
                                     handled = true;
                                 }
@@ -566,11 +574,14 @@ namespace EddiJournalMonitor
                                 // Check whether we have a detailed discovery scanner on board the current ship
                                 bool dssEquipped = false;
                                 Ship ship = EDDI.Instance.CurrentShip;
-                                foreach (Compartment compartment in ship.compartments)
+                                if (ship != null)
                                 {
-                                    if ((compartment.module.name == "Detailed Surface Scanner") && (compartment.module.enabled))
+                                    foreach (Compartment compartment in ship.compartments)
                                     {
-                                        dssEquipped = true;
+                                        if ((compartment.module.name == "Detailed Surface Scanner") && (compartment.module.enabled))
+                                        {
+                                            dssEquipped = true;
+                                        }
                                     }
                                 }
 
@@ -798,12 +809,14 @@ namespace EddiJournalMonitor
                                     async void ShipArrived()
                                     {
                                         // Add a bit of context
-                                        string station = EDDI.Instance.CurrentStation.name;
+                                        string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
+                                        string arrivalSystem = EDDI.Instance.CurrentStarSystem?.name ?? string.Empty;
 
-                                        await Task.Delay((int)time * 1000);
                                         line = line.Replace("ShipyardTransfer", "ShipyardArrived");
                                         line = line.Replace(timestamp.ToString("s", System.Globalization.CultureInfo.InvariantCulture), timestamp.AddSeconds((double)time).ToUniversalTime().ToString());
-                                        line = line.Replace("}", ",\"Station\":\"" + station + "\"}"); // Include the station from which the transfer was requested
+                                        line = line.Replace(",\"System\":\"" + system + "\"", ",\"System\":\"" + arrivalSystem + "\""); // Include the system at which the transfer will arrive
+                                        line = line.Replace("}", ",\"Station\":\"" + arrivalStation + "\"}"); // Include the station at which the transferred ship will arrive
+                                        await Task.Delay((int)time * 1000);
                                         ForwardJournalEntry(line, EDDI.Instance.eventHandler);
                                     }
                                 }
@@ -839,14 +852,14 @@ namespace EddiJournalMonitor
                                     async void ModuleArrived()
                                     {
                                         // Add a bit of context
-                                        string system = EDDI.Instance.CurrentStarSystem.name;
-                                        string station = EDDI.Instance.CurrentStation.name;
+                                        string arrivalStation = EDDI.Instance.CurrentStation?.name ?? string.Empty;
+                                        string arrivalSystem = EDDI.Instance.CurrentStarSystem?.name ?? string.Empty;
 
-                                        await Task.Delay((int)transferTime * 1000);
                                         line = line.Replace("FetchRemoteModule", "ModuleArrived");
                                         line = line.Replace(timestamp.ToString("s", System.Globalization.CultureInfo.InvariantCulture), timestamp.AddSeconds((double)transferTime).ToUniversalTime().ToString());
-                                        line = line.Replace("}", ",\"System\":\"" + system + "\"}"); // Include the system from which the transfer was requested
-                                        line = line.Replace("}", ",\"Station\":\"" + station + "\"}"); // Include the station from which the transfer was requested
+                                        line = line.Replace("}", ",\"System\":\"" + arrivalSystem + "\"}"); // Include the system at which the transfer will arrive
+                                        line = line.Replace("}", ",\"Station\":\"" + arrivalStation + "\"}"); // Include the station at which the transferred module will arrive
+                                        await Task.Delay((int)transferTime * 1000);
                                         ForwardJournalEntry(line, EDDI.Instance.eventHandler);
                                     }
                                 }
@@ -1111,6 +1124,15 @@ namespace EddiJournalMonitor
                                 {
                                     events.Add(new ControllingShipEvent(timestamp) { raw = line });
                                     handled = true;
+                                }
+                                else if (to == null)
+                                {
+                                    // The variable 'to' may be blank if this event is written after a fighter or SRV is destroyed. In either case, we are back in our ship.
+                                    if (EDDI.Instance.Vehicle == Constants.VEHICLE_FIGHTER || EDDI.Instance.Vehicle == Constants.VEHICLE_SRV)
+                                    {
+                                        events.Add(new VehicleDestroyedEvent(timestamp) { raw = line });
+                                        handled = true;
+                                    }
                                 }
                             }
                             break;

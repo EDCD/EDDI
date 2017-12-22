@@ -122,7 +122,7 @@ namespace Eddi
         public StarSystem LastStarSystem { get; private set; }
 
         // Information obtained from the player journal
-        public DateTime? JournalTimeStamp { get; set; } = null;
+        public DateTime JournalTimeStamp { get; set; } = DateTime.MinValue;
 
         // Current vehicle of player
         public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
@@ -165,29 +165,7 @@ namespace Eddi
 
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
-                Logging.Verbose = configuration.Debug;
-                if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
-                {
-                    HomeStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.HomeSystem.Trim());
-                    if (HomeStarSystem != null)
-                    {
-                        Logging.Debug("Home star system is " + HomeStarSystem.name);
-                        if (configuration.HomeStation != null && configuration.HomeStation.Trim().Length > 0)
-                        {
-                            string homeStationName = configuration.HomeStation.Trim();
-                            foreach (Station station in HomeStarSystem.stations)
-                            {
-                                if (station.name == homeStationName)
-                                {
-                                    HomeStation = station;
-                                    Logging.Debug("Home station is " + HomeStation.name);
-                                    break;
-
-                                }
-                            }
-                        }
-                    }
-                }
+                updateHomeSystemStation(configuration);
 
                 // Set up monitors and responders
                 monitors = findMonitors();
@@ -208,6 +186,7 @@ namespace Eddi
                 }
 
                 Cmdr.insurance = configuration.Insurance;
+                Cmdr.gender = configuration.Gender;
                 if (Cmdr.name != null)
                 {
                     Logging.Info("EDDI access to the companion app is enabled");
@@ -753,6 +732,10 @@ namespace Eddi
                     {
                         passEvent = eventBodyScanned((BodyScannedEvent)journalEvent);
                     }
+                    else if (journalEvent is VehicleDestroyedEvent)
+                    {
+                        passEvent = eventVehicleDestroyed((VehicleDestroyedEvent)journalEvent);
+                    }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
@@ -924,6 +907,9 @@ namespace Eddi
                 Logging.Debug("Already at station " + theEvent.station);
                 return false;
             }
+            
+            // We are in the ship
+            Vehicle = Constants.VEHICLE_SHIP;
 
             // Update the station
             Logging.Debug("Now at station " + theEvent.station);
@@ -1041,6 +1027,9 @@ namespace Eddi
                 Environment = Constants.ENVIRONMENT_WITCH_SPACE;
             }
 
+            // We are in the ship
+            Vehicle = Constants.VEHICLE_SHIP;
+
             return true;
         }
 
@@ -1153,6 +1142,10 @@ namespace Eddi
         {
             Environment = Constants.ENVIRONMENT_SUPERCRUISE;
             updateCurrentSystem(theEvent.system);
+
+            // We are in the ship
+            Vehicle = Constants.VEHICLE_SHIP;
+
             return true;
         }
 
@@ -1303,6 +1296,13 @@ namespace Eddi
         }
 
         private bool eventFighterDocked(FighterDockedEvent theEvent)
+        {
+            // We are back in the ship
+            Vehicle = Constants.VEHICLE_SHIP;
+            return true;
+        }
+
+        private bool eventVehicleDestroyed(VehicleDestroyedEvent theEvent)
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;
@@ -1460,11 +1460,12 @@ namespace Eddi
                         // Use the profile as primary information for our commander and shipyard
                         Cmdr = profile.Cmdr;
 
-                        // Reinstate insurance
+                        // Reinstate information not obtained from the Companion API (insurance & gender settings)
                         EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                         if (configuration != null)
                         {
                             Cmdr.insurance = configuration.Insurance;
+                            Cmdr.gender = configuration.Gender;
                         }
 
                         bool updatedCurrentStarSystem = false;
@@ -1834,5 +1835,30 @@ namespace Eddi
             RESTART_NO_REBOOT = 64
         }
 
+        public void updateHomeSystemStation(EDDIConfiguration configuration)
+        {
+            Logging.Verbose = configuration.Debug;
+            if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
+            {
+                HomeStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(configuration.HomeSystem.Trim());
+                if (HomeStarSystem != null)
+                {
+                    Logging.Debug("Home star system is " + HomeStarSystem.name);
+                    if (configuration.HomeStation != null && configuration.HomeStation.Trim().Length > 0)
+                    {
+                        string homeStationName = configuration.HomeStation.Trim();
+                        foreach (Station station in HomeStarSystem.stations)
+                        {
+                            if (station.name == homeStationName)
+                            {
+                                HomeStation = station;
+                                Logging.Debug("Home station is " + HomeStation.name);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -341,7 +341,7 @@
       "responder": true,
       "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'role')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n{SetState('eddi_context_crew_role', event.role)}\r\n\r\n{if event.role = 'Idle':\r\n    {event.crew} is no longer manning a position\r\n|elif event.role = 'Fighter':\r\n    {event.crew} is now manning the fighter\r\n|elif event.role = 'Gunner':\r\n    {event.crew} is now manning the guns\r\n}.\r\n",
       "default": true,
-      "name": "Crew member role change",
+      "name": "Crew member role changed",
       "description": "Triggered when a crew member changes their role"
     },
     "Crew role changed": {
@@ -384,7 +384,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'data_voucher')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_data_voucher_amount', event.amount)}\r\n\r\nData vouchers for {Humanise(event.amount)} credits redeemed\r\n{Occasionally(2, \"\r\n  {if len(event.rewards) = 1:\r\n    by {P(event.rewards[0].faction)}\r\n  |else:\r\n    by\r\n    {set cur to 0}\r\n    {while cur < len(event.rewards):\r\n        {if cur = 0:\r\n        |elif cur < len(event.rewards) - 1:\r\n            , \r\n        |else:\r\n            and\r\n        }\r\n        {P(event.rewards[cur].faction)}\r\n        {set cur to cur + 1}\r\n    }\r\n  }\r\n\")}.\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'data_voucher')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_data_voucher_amount', event.amount)}\r\n\r\nData \r\n{if len event.rewards > 1: vouchers |else: voucher }\r\nfor {Humanise(event.amount)} credits\r\n{Occasionally(2, OneOf(\"have been\", \"have now been\"))}\r\n{OneOf(\"redeemed\", \"claimed\")}\r\n\r\n{Occasionally(2, \"\r\n  {if len(event.rewards) = 1 && len(event.rewards[0].faction) > 0:\r\n    {OneOf(\"by\", \"courtesy of\")}\r\n    {P(event.rewards[0].faction)}\r\n  |else:\r\n    {if len(event.rewards[0].faction) > 0:\r\n       {OneOf(\"by\", \"courtesy of\")}\r\n       {set cur to 0}\r\n       {while cur < len(event.rewards):\r\n          {if cur = 0:\r\n          |elif cur < len(event.rewards) - 1:\r\n              , \r\n          |else:\r\n              and\r\n          }\r\n          {P(event.rewards[cur].faction)}\r\n          {set cur to cur + 1}\r\n       }\r\n    }\r\n  }\r\n\")}.",
       "default": true,
       "name": "Data voucher redeemed",
       "description": "Triggered when you redeem a data voucher"
@@ -614,6 +614,15 @@
       "name": "FSD engaged",
       "description": "Triggered when your FSD has engaged"
     },
+    "Fuel check": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fuel Check _}\r\n{_ Report fuel level _}\r\n\r\n{if ship.name = state.eddi_fuelcheck_shipname:\r\n    {if state.eddi_context_fuel_used > state.eddi_fuelcheck_maxfuel:\r\n        {SetState('eddi_fuelcheck_maxfuel', state.eddi_context_fuel_used)}\r\n    }\r\n|else:\r\n    {SetState('eddi_fuelcheck_maxfuel', state.eddi_context_fuel_used)}\r\n    {SetState('eddi_fuelcheck_shipname', ship.name)}\r\n}\r\n\r\n{set maxfuel to state.eddi_fuelcheck_maxfuel}\r\n{set fuelremaining to state.eddi_context_fuel_remaining}\r\n{set maxjump to fuelremaining/maxfuel}\r\n{set currentfuel to round(fuelremaining / ship.fueltanktotalcapacity * 100, 1)}\r\n{if find(currentfuel, \".0\") > -1:\r\n   {set currentfuel to round(currentfuel, 0)}\r\n}\r\n{set shipsfuel to:\r\n   {Occasionally(2, \"{P(ShipName())}'s\" )} Fuel\r\n   {OneOf(\"levels\", \"tanks\", \"reserves\")} {Occasionally(2, \"are\")} {Occasionally(2, \"now\")}\r\n}\r\n{set currentpercent to: \r\n   at {currentfuel} percent {Occasionally(2, \"capacity\")}\r\n}\r\n\r\n{if maxjump < 0.5:\r\n   Danger!\r\n   {shipsfuel} depleted!\r\n   {Pause(500)}\r\n   Running on reserves. Shutdown of non-essential systems is advised!\r\n   {Pause(500)}\r\n   Emergency transponder standing by\r\n|elif maxjump < 1.25:\r\n   {OneOf(\"Warning:\", \"Caution:\", \"Danger:\", \"Attention:\")}\r\n   {shipsfuel} {OneOf(\"dangerously low\", \"almost depleted\")}.\r\n   {OneOf(\"Please refuel\", \"Refueling is strongly recommended\")}\r\n|elif currentfuel < 25:\r\n   {OneOf(\"Warning:\", \"Caution:\", \"Danger:\", \"Attention:\")}\r\n   {shipsfuel} {OneOf(\"below 25%\", \"{currentpercent}\" )}\r\n|elif currentfuel < 50:\r\n   {shipsfuel} {OneOf(\"below 50%\", \"{currentpercent}\" )}\r\n|elif currentfuel < 100:\r\n   {shipsfuel} {currentpercent}\r\n|else:\r\n   {shipsfuel} {OneOf(currentpercent, \"at maximum\")}\r\n}\r\n{Occasionally(3,\", {F('Honorific')}\")}.",
+      "default": true,
+      "name": "Fuel check",
+      "description": "Report on fuel levels"
+    },
     "Galnet latest news": {
       "enabled": true,
       "priority": 3,
@@ -690,7 +699,7 @@
       "enabled": true,
       "priority": 3,
       "responder": false,
-      "script": "{if system.allegiance = \"Empire\":\r\n    {if cmdr.empirerating.rank <= 4:\r\n       commander\r\n    |elif cmdr.empirerating.rank = 5:\r\n        sir\r\n    |elif cmdr.empirerating.rank <= 11:\r\n        my lord\r\n    |elif cmdr.empirerating.rank = 12:\r\n        your grace\r\n    |elif cmdr.empirerating.rank = 13:\r\n        your royal highness\r\n    |elif cmdr.empirerating.rank = 14:\r\n        your majesty\r\n    }\r\n|elif system.allegiance = \"Federation\":\r\n    {if cmdr.federationrating.rank = 0:\r\n        commander\r\n    |else:\r\n        {cmdr.federationrating.name}\r\n    }\r\n|else:\r\n    commander\r\n}\r\n",
+      "script": "{if system.allegiance = \"Empire\":\r\n    {_ Forms of address taken from <https://en.wikipedia.org/wiki/Forms_of_address_in_the_United_Kingdom>}\r\n    {if cmdr.empirerating.rank <= 4: {_ Commoner }\r\n       commander\r\n    |elif cmdr.empirerating.rank = 5: {_ Knight / Dame }\r\n        {if cmdr.gender = \"Male\": \r\n            sir \r\n        |elif cmdr.gender = \"Female\": \r\n            madam\r\n        |else: \r\n            commander\r\n        }\r\n    |elif cmdr.empirerating.rank <= 11: {_ Peer / Peeress }\r\n        {if cmdr.gender = \"Male\": \r\n            {OneOf(\"my lord\", \"your lordship\")}\r\n        |elif cmdr.gender = \"Female\": \r\n            {OneOf(\"my lady\", \"your ladyship\")}\r\n        |else: \r\n            commander\r\n        }\r\n    |elif cmdr.empirerating.rank = 12:\r\n        your grace\r\n    |elif cmdr.empirerating.rank = 13:\r\n        your royal highness\r\n    |elif cmdr.empirerating.rank = 14:\r\n        your majesty\r\n    }\r\n|elif system.allegiance = \"Federation\":\r\n    {if cmdr.federationrating.rank = 0:\r\n        commander\r\n    |else:\r\n        {cmdr.federationrating.name}\r\n    }\r\n|else:\r\n    commander\r\n}\r\n",
       "default": true,
       "name": "Honorific",
       "description": "Function to provide a suitable honorific for your commander"
@@ -726,19 +735,10 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n\r\n{set statereport to F(\"System state report\")}\r\n{if statereport:\r\n    {Pause(2000)}\r\n    Information:  {statereport}\r\n}",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n{SetState('eddi_context_fuel_remaining', event.fuelremaining)}\r\n{SetState('eddi_context_fuel_used', event.fuelused)}\r\n\r\n{F('Fuel check')}\r\n{Pause(2000)}\r\n\r\n{set statereport to F(\"System state report\")}\r\n{if statereport:\r\n    {Pause(2000)}\r\n    Information:  {statereport}\r\n}",
       "default": true,
       "name": "Jumped",
       "description": "Triggered when you complete a jump to another system"
-    },
-    "Jumping": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": null,
-      "default": true,
-      "name": "Jumping",
-      "description": "NO LONGER IN USE"
     },
     "Killed": {
       "enabled": true,
@@ -1023,7 +1023,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.module.name} has\r\n\r\n{OneOf('arrived {if event.system && event.station: \\'at\\')}', \r\n       'completed its transfer {if event.system && event.station: \\'to\\')}')}\r\n\r\n{if event.sytem != system.name && len(event.system) > 0 && len(event.station) > 0:\r\n   {event.station} in the {event.system} system\r\n|elif event.station != station.name && len(event.station) > 0:\r\n   {event.station}\r\n}.",
+      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.module.name} has\r\n\r\n{OneOf('arrived {if station.name != event.station && event.station: at}', \r\n       'completed its transfer {if station.name != event.station && event.station: to}')}\r\n\r\n{if station.name != event.station && event.station:\r\n   {event.station}\r\n   {if system.name != event.system && event.system:\r\n      in the {event.system} system\r\n   }\r\n}.",
       "default": true,
       "name": "Module arrived",
       "description": "Triggered when you complete a module transfer"
@@ -1266,7 +1266,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{event.amount} \r\n{if event.commodity.rare: rare}\r\n\r\n{if event.commodity.name = \"Black Box\":\r\n   {if event.amount > 1:\r\n      {OneOf(\"flight records\", \"black boxes\")}\r\n   |else: \r\n      {OneOf(\"flight record\", \"black box\")}\r\n   }\r\n\r\n|elif event.commodity.name = \"Occupied CryoPod\":\r\n   {OneOf(\"damaged cryo pod\", \"occupied cryo pod\")}{if event.amount > 1:s}\r\n\r\n|elif event.commodity.name = \"Occupied Escape Pod\":\r\n   {OneOf(\"damaged escape pod\", \"occupied escape pod\")}{if event.amount > 1:s}\r\n\r\n|elif event.commodity.name = \"Personal Effects\":\r\n   {OneOf(\"set\", \"collection\")}{if event.amount > 1:s} of\r\n   {OneOf(\"personal effects\", \"personal belongings\")}\r\n\r\n|elif event.commodity.name = \"Salvageable Wreckage\":\r\n   {set wreakage to OneOf(\"wreckage\", \"debris\")}\r\n   {set fragment to OneOf(\"fragment\", \"bit\", \"piece\", \"part\", \"remnant\")}\r\n   {OneOf(\"{fragment}{if event.amount > 1:s} of {wreckage}\", \r\n          \"{wreckage} {fragment}{if event.amount > 1:s}\")}\r\n\r\n|elif event.commodity.name = \"Hostage\":\r\n   {OneOf(\"hostage\")}{if event.amount > 1:s}\r\n\r\n|else:\r\n   {event.commodity.name}{if event.amount > 1:s}\r\n}\r\n\r\n{OneOf(\"recovered\", \"salvaged\")}\r\n{Occasionally(2, \"in exchange\")}\r\nfor {Humanise(event.reward)} credits\r\n",
+      "script": "{event.amount} \r\n{if event.commodity.rare: rare}\r\n\r\n{if event.commodity.name = \"Black Box\":\r\n   {if event.amount > 1:\r\n      {OneOf(\"flight records\", \"black boxes\")}\r\n   |else: \r\n      {OneOf(\"flight record\", \"black box\")}\r\n   }\r\n\r\n|elif event.commodity.name = \"Damaged Escape Pod\":\r\n   {OneOf(\"damaged cryo pod\", \"damaged escape pod\")}{if event.amount > 1:s}\r\n\r\n|elif event.commodity.name = \"Occupied Escape Pod\":\r\n   {OneOf(\"occupied escape pod\", \"occupied cryo pod\")}{if event.amount > 1:s}\r\n\r\n|elif event.commodity.name = \"Personal Effects\":\r\n   {OneOf(\"set\", \"collection\")}{if event.amount > 1:s} of\r\n   {OneOf(\"personal effects\", \"personal belongings\")}\r\n\r\n|elif event.commodity.name = \"Salvageable Wreckage\":\r\n   {set wreckage to OneOf(\"wreckage\", \"debris\")}\r\n   {set fragment to OneOf(\"fragment\", \"bit\", \"piece\", \"part\", \"remnant\")}\r\n   {OneOf(\"{fragment}{if event.amount > 1:s} of {wreckage}\", \r\n          \"{wreckage} {fragment}{if event.amount > 1:s}\")}\r\n\r\n|elif event.commodity.name = \"Hostage\":\r\n   {OneOf(\"hostage\")}{if event.amount > 1:s}\r\n\r\n|else:\r\n   {event.commodity.name}{if event.amount > 1:s}\r\n}\r\n\r\n{OneOf(\"recovered\", \"salvaged\")}\r\n{Occasionally(2, \"in exchange\")}\r\nfor {Humanise(event.reward)} credits\r\n",
       "default": true,
       "name": "Search and rescue",
       "description": "Triggered when delivering items to a Search and Rescue contact"
@@ -1320,7 +1320,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.ship} has \r\n\r\n{OneOf('arrived {if event.system && event.station: \\'at\\')}', \r\n       'completed its transfer {if event.system && event.station: \\'to\\')}')}\r\n\r\n{if event.sytem != system.name && len(event.system) > 0 && len(event.station) > 0:\r\n   {event.station} in the {event.system} system\r\n|elif event.station != station.name && len(event.station) > 0:\r\n   {event.station}\r\n}.",
+      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.ship} has \r\n\r\n{OneOf('arrived {if station.name != event.station && event.station: at}', \r\n       'completed its transfer {if station.name != event.station && event.station: to}')}\r\n\r\n{if station.name != event.station && event.station:\r\n   {event.station}\r\n   {if system.name != event.system && event.system:\r\n      in the {event.system} system\r\n   }\r\n}.",
       "default": true,
       "name": "Ship arrived",
       "description": "Triggered when you complete a ship transfer"
@@ -1383,7 +1383,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{Pause(2000)}\r\n\r\n{ShipName()} {if ship.fueltanktotalcapacity = event.total: fully} refuelled.",
+      "script": "{if event.total:\r\n   {SetState('eddi_context_fuel_remaining', event.total)}\r\n|else:\r\n   {SetState('eddi_context_fuel_remaining', state.eddi_context_fuel_remaining + event.amount)}\r\n}\r\n\r\n{Pause(2000)}\r\n{if event.total = ship.fueltanktotalcapacity || event.price:\r\n   {set refueled_desc to OneOf(\"fully refuelled\", \"at maximum fuel capacity\",\"at 100% fuel capacity\")}\r\n   {OneOf(\"Refueled\", \"Fuel at maximum\", \"Maximum fuel\", \"{P(ShipName())} is now {refueled_desc}\" )}\r\n|else:\r\n   {if event.amount <= 5.0000:\r\n      {F('Fuel check')}\r\n   }\r\n}",
       "default": true,
       "name": "Ship refuelled",
       "description": "Triggered when you refuel your ship"
@@ -1639,6 +1639,15 @@
       "default": true,
       "name": "Undocked",
       "description": "Triggered when your ship undocks from a station or outpost"
+    },
+    "Vehicle destroyed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Pause(2000)}\r\n{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {OneOf(\"terminated\", \"disengaged\")}.",
+      "default": true,
+      "name": "Vehicle destroyed",
+      "description": "Triggered when your vehicle is destroyed"
     }
   }
 }

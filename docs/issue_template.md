@@ -1,3 +1,6 @@
+## EDDI version in which issue found
+[]
+
 ## Steps to reproduce
 
 1. [give the fullest and most reproducible steps you can]

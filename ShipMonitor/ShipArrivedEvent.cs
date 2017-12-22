@@ -16,8 +16,8 @@ namespace EddiShipMonitor
         {
             VARIABLES.Add("shipid", "The ID of the ship that was transferred");
             VARIABLES.Add("ship", "The ship that was transferred");
-            VARIABLES.Add("station", "The station from which the ship was transferred");
-            VARIABLES.Add("system", "The system from which the ship was transferred");
+            VARIABLES.Add("station", "The station at which the ship shall arrive");
+            VARIABLES.Add("system", "The system at which the ship shall arrive");
             VARIABLES.Add("distance", "The distance that the transferred ship travelled, in light years");
             VARIABLES.Add("price", "The price of transferring the ship");
             VARIABLES.Add("time", "The time elapsed during the transfer (in seconds)");
