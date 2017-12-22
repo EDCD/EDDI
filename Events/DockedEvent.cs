@@ -16,7 +16,9 @@ namespace EddiEvents
         {
             VARIABLES.Add("station", "The station at which the commander has docked");
             VARIABLES.Add("system", "The system at which the commander has docked");
+            VARIABLES.Add("state", "The special state of the station, if applicable (\"Damaged\" for damaged stations for example)");
             VARIABLES.Add("model", "The model of the station at which the commander has docked (Orbis, Coriolis, etc)");
+            VARIABLES.Add("allegiance", "The superpower allegiance of the station at which the commander has docked");
             VARIABLES.Add("faction", "The faction controlling the station at which the commander has docked");
             VARIABLES.Add("factionstate", "The state of the faction controlling the station at which the commander has docked");
             VARIABLES.Add("LocalFactionState", "The translation of the state of the faction controlling the station into the chosen language");
@@ -33,7 +35,11 @@ namespace EddiEvents
 
         public string station { get; private set; }
 
+        public string state { get; private set; }
+
         public string model { get; private set; }
+
+        public Superpower allegiance { get; private set; }
 
         public string faction { get; private set; }
 
@@ -83,11 +89,13 @@ namespace EddiEvents
 
         public List<string> stationservices { get; private set; }
 
-        public DockedEvent(DateTime timestamp, string system, string station, string model, string faction, State factionstate, Economy economy, Government government, decimal? distancefromstar, List<string> stationservices) : base(timestamp, NAME)
+        public DockedEvent(DateTime timestamp, string system, string station, string state, string model, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, decimal? distancefromstar, List<string> stationservices) : base(timestamp, NAME)
         {
             this.system = system;
             this.station = station;
+            this.state = state;
             this.model = model;
+            this.allegiance = allegiance;
             this.faction = faction;
             this.factionstate = (factionstate == null ? State.None.name : factionstate.name);
             this.economy = (economy == null ? Economy.None.name : economy.name);

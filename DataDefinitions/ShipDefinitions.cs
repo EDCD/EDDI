@@ -39,7 +39,7 @@ namespace EddiDataDefinitions
             { 128049273, new Ship(128049273, "Viper", "Faulcon DeLacy", null, "Viper Mk. III", new List<Translation> {new Translation("viper", "ˈvaɪpə"), new Translation("Mk.", "mɑːk"), new Translation("III", "θriː") }, "Small", 3) },
             { 128672255, new Ship(128672255, "Viper_MkIV", "Faulcon DeLacy", null, "Viper Mk. IV", new List<Translation> {new Translation("viper", "ˈvaɪpə"), new Translation("Mk.", "mɑːk"), new Translation("IV", "fɔː") }, "Small", 3) },
             { 128049309, new Ship(128049309, "Vulture", "Core Dynamics", null, "Vulture", new List<Translation> { new Translation("vulture", "ˈvʌltʃə") }, "Small", 5) },
-            { 128785619, new Ship(128785619, "Type9_Military", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Type-10 Defender", null, "Large", null) },
+            { 128785619, new Ship(128785619, "Type9_Military", "Lakon Spaceways", new List<Translation> {new Translation("Lakon", "leɪkɒn") }, "Type-10 Defender", null, "Large", 5) },
 
             // Speculative future ships (replace '9999999xx' with Frontier ID once known)
             { 999999902, new Ship(999999902, "Panther", "Zorgon Peterson", null, "Panther Clipper", null, "Large", null) },

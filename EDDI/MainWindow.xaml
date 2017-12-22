@@ -8,7 +8,7 @@
         xmlns:eddi="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
         xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
         mc:Ignorable="d"
-        Title="EDDI" Height="600"  Width="800">
+        Title="EDDI" Height="{Binding ElementName=defaultHeight, Path=Value}"  Width="{Binding ElementName=defaultWidth, Path=Value}">
     <DockPanel LastChildFill="True">
         <TabControl x:Name="tabControl" DockPanel.Dock="Top">
             <TabItem Header="EDDI">

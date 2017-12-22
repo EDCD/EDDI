@@ -112,13 +112,38 @@ namespace GalnetMonitor
 
         private void monitor()
         {
-            // Wait at least 5 minutes after starting before polling for new articles
-            Thread.Sleep(5000);
+            const int inGameOnlyStartDelayMilliSecs = 5 * 60 * 1000; // 5 mins
+            const int alwaysOnIntervalMilliSecs = 2 * 60 * 1000; // 2 mins
+            const int inGameOnlyIntervalMilliSecs = 30 * 1000; // 30 secs
+
+            if (!configuration.galnetAlwaysOn)
+            {
+                // Wait at least 5 minutes after starting before polling for new articles, but only if galnetAlwaysOn is false
+                Thread.Sleep(inGameOnlyStartDelayMilliSecs);
+            }
 
             while (running)
             {
-                // We'll update the Galnet Monitor only if a journal event has taken place within the specified number of minutes
-                if ((DateTime.UtcNow - EDDI.Instance.JournalTimeStamp).TotalMinutes < 10)
+                if (configuration.galnetAlwaysOn)
+                {
+                    monitorGalnet();
+                    Thread.Sleep(alwaysOnIntervalMilliSecs);
+                }
+                else
+                {
+                    // We'll update the Galnet Monitor only if a journal event has taken place within the specified number of minutes
+                    if ((DateTime.UtcNow - EDDI.Instance.JournalTimeStamp).TotalMinutes < 10)
+                    {
+                        monitorGalnet();
+                    }
+                    else
+                    {
+                        Logging.Debug("No in-game activity detected, skipping galnet feed update");
+                    }
+                    Thread.Sleep(inGameOnlyIntervalMilliSecs);
+                }
+
+                void monitorGalnet()
                 {
                     List<News> newsItems = new List<News>();
                     string firstUid = null;
@@ -184,12 +209,6 @@ namespace GalnetMonitor
                         thread.Start();
                     }
                 }
-                else
-                {
-                    Logging.Debug("No in-game activity detected, skipping galnet feed update");
-                }
-
-                Thread.Sleep(30000);
             }
         }
 

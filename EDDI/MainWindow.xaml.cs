@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Utilities;
 
@@ -27,7 +28,91 @@ namespace Eddi
 
         private bool fromVA;
 
-        public MainWindow() : this(false) { }
+        public MainWindow() : this(false)
+        {
+            RestoreWindowState();
+        }
+
+        private void SaveWindowState()
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
+                Properties.Settings.Default.Top = RestoreBounds.Top;
+                Properties.Settings.Default.Left = RestoreBounds.Left;
+                Properties.Settings.Default.Height = RestoreBounds.Height;
+                Properties.Settings.Default.Width = RestoreBounds.Width;
+                Properties.Settings.Default.Maximized = true;
+                Properties.Settings.Default.Minimized = false;
+            }
+            else if (WindowState == WindowState.Minimized)
+            {
+                // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
+                Properties.Settings.Default.Top = RestoreBounds.Top;
+                Properties.Settings.Default.Left = RestoreBounds.Left;
+                Properties.Settings.Default.Height = RestoreBounds.Height;
+                Properties.Settings.Default.Width = RestoreBounds.Width;
+                Properties.Settings.Default.Maximized = false;
+                Properties.Settings.Default.Minimized = true;
+            }
+            else
+            {
+                Properties.Settings.Default.Top = this.Top;
+                Properties.Settings.Default.Left = this.Left;
+                Properties.Settings.Default.Height = this.Height;
+                Properties.Settings.Default.Width = this.Width;
+                Properties.Settings.Default.Maximized = false;
+                Properties.Settings.Default.Minimized = false;
+            }
+
+            // Remember which tab we have selected in EDDI
+            Properties.Settings.Default.SelectedTab = this.tabControl.SelectedIndex;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void RestoreWindowState()
+        {
+            const int defaultHeight = 600;
+            const int defaultWidth = 800;
+
+            // Get the current screen resolution, just in case it changes between sessions
+            int screensHeight = 0;
+            int screensWidth = 0;
+            foreach (Screen screen in Screen.AllScreens)
+            {
+                screensHeight = screensHeight + screen.Bounds.Height;
+                screensWidth = screensWidth + screen.Bounds.Width;
+            }
+
+            // Restore prior window size & position, or revert to default values if the prior size and position are no longer valid
+            this.Height = validRange(Properties.Settings.Default.Height, defaultHeight / 2, screensHeight) ? Properties.Settings.Default.Height : Math.Min(screensHeight, defaultHeight);
+            this.Width = validRange(Properties.Settings.Default.Width, defaultWidth / 2, screensWidth) ? Properties.Settings.Default.Width : Math.Min(screensWidth, screensWidth);
+            this.Top = validRange(Properties.Settings.Default.Top, 0, screensHeight - this.Height) ? Properties.Settings.Default.Top : centerWindow(Screen.PrimaryScreen.Bounds.Height, defaultHeight);
+            this.Left = validRange(Properties.Settings.Default.Left, 0, screensWidth - this.Width) ? Properties.Settings.Default.Left : centerWindow(Screen.PrimaryScreen.Bounds.Width, defaultWidth);
+
+            // Restore windows maximized or minimized states, if applicable
+            if (Properties.Settings.Default.Minimized)
+            {
+                WindowState = WindowState.Minimized;
+            }
+            else if (Properties.Settings.Default.Maximized)
+            {
+                WindowState = WindowState.Maximized;
+            }
+
+            this.tabControl.SelectedIndex = Eddi.Properties.Settings.Default.SelectedTab;
+
+            int centerWindow(int measure, int defaultValue)
+            {
+                return (measure - Math.Min(measure, defaultValue)) / 2;
+            }
+
+            bool validRange(double numberToCheck, double bottom, double top)
+            {
+                return numberToCheck >= bottom && numberToCheck <= top;
+            }
+        }
 
         private bool runBetaCheck = false;
 
@@ -65,9 +150,13 @@ namespace Eddi
             {
                 eddiGenderFemale.IsChecked = true;
             }
-            else
+            else if (eddiConfiguration.Gender == "Male")
             {
                 eddiGenderMale.IsChecked = true;
+            }
+            else
+            {
+                eddiGenderNeither.IsChecked = true;
             }
 
             Logging.Verbose = eddiConfiguration.Debug;
@@ -145,7 +234,7 @@ namespace Eddi
             {
                 Logging.Debug("Adding configuration tab for " + monitor.MonitorName());
 
-                UserControl monitorConfiguration = monitor.ConfigurationTabItem();
+                System.Windows.Controls.UserControl monitorConfiguration = monitor.ConfigurationTabItem();
                 // Only show a tab if this can be turned off or has configuration elements
                 if (monitorConfiguration != null || !monitor.IsRequired())
                 {
@@ -196,7 +285,7 @@ namespace Eddi
                 }
 
                 // Add responder-specific configuration items
-                UserControl monitorConfiguration = responder.ConfigurationTabItem();
+                System.Windows.Controls.UserControl monitorConfiguration = responder.ConfigurationTabItem();
                 if (monitorConfiguration != null)
                 {
                     monitorConfiguration.Margin = new Thickness(10);
@@ -635,8 +724,10 @@ namespace Eddi
             {
                 SpeechService.Instance.ShutUp();
                 EDDI.Instance.Stop();
-                Application.Current.Shutdown();
+                System.Windows.Application.Current.Shutdown();
             }
+
+            SaveWindowState();
         }
 
         private void EnsureValidDecimal(object sender, TextCompositionEventArgs e)

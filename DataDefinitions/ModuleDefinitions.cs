@@ -881,9 +881,14 @@ namespace EddiDataDefinitions
                 {128777343, new Module(128777343, "Int_DroneControl_Repair_Size7_Class2", 1610, "Repair Limpet Controller", 7, "D", 874800) },
                 {128777344, new Module(128777344, "Int_DroneControl_Repair_Size7_Class3", 1611, "Repair Limpet Controller", 7, "C", 1749600) },
                 {128777345, new Module(128777345, "Int_DroneControl_Repair_Size7_Class4", 1612, "Repair Limpet Controller", 7, "B", 3499200) },
-                {128777346, new Module(128777346, "Int_DroneControl_Repair_Size7_Class5", 1613, "Repair Limpet Controller", 7, "A", 6998400) }, 
+                {128777346, new Module(128777346, "Int_DroneControl_Repair_Size7_Class5", 1613, "Repair Limpet Controller", 7, "A", 6998400) },
+                {128785621, new Module(128785621, "Type9_Military_Armour_Grade1", -1, "Lightweight Alloy", 1, "I", 0, 128785619) },
+                {128785622, new Module(128785622, "Type9_Military_Armour_Grade2", -1, "Reinforced Alloy", 1, "I", 48654583, 128785619) },
+                {128785623, new Module(128785623, "Type9_Military_Armour_Grade3", -1, "Military Grade Composite", 1, "I", 109472813, 128785619) },
+                {128785624, new Module(128785624, "Type9_Military_Armour_Mirrored", -1, "Mirrored Surface Composite", 1, "I", 258720748, 128785619) },
+                {128785625, new Module(128785625, "Type9_Military_Armour_Reactive", -1, "Reactive Surface Composite", 1, "I", 283830162, 128785619) },
 
-                // 2.4 Update modules
+                // 2.4 Update modules. If the EDDB is '-1', an EDDB ID has yet to be assigned. See <https://eddb.io/archive/v5/modules.json>
                 {128788699, new Module(128788699, "Hpt_ATDumbfireMissile_Fixed_Medium", 1614, "AX Missile Rack", 2, "B", 540900, Module.ModuleMount.Fixed) },
                 {128788704, new Module(128788704, "Hpt_ATDumbfireMissile_Turret_Medium", 1615, "AX Missile Rack", 2, "B", 2022700, Module.ModuleMount.Turreted) },
                 {128793115, new Module(128793115, "Hpt_XenoScanner_Basic_Tiny", 1616, "Xeno Scanner", 0, "E", 365700) },
@@ -893,6 +898,10 @@ namespace EddiDataDefinitions
                 {128785626, new Module(128785626, "Hpt_FlakMortar_Fixed_Medium", 1620, "Remote Release Flak Launcher", 2, "B", 255255, Module.ModuleMount.Fixed) },
                 {128793058, new Module(128793058, "Hpt_FlakMortar_Turret_Medium", 1621, "Remote Release Flak Launcher", 2, "B", 1227720, Module.ModuleMount.Turreted) },
                 {128771884, new Module(128771884, "Hpt_AntiUnknownShutdown_Tiny", 1622, "Shutdown Field Neutraliser", 0, "F", 61425) },
+                {128788700, new Module(128788700, "Hpt_ATDumbfireMissile_Fixed_Large", 1623, "AX Missile Rack", 3, "A", 1288780, Module.ModuleMount.Fixed) },
+                {128788705, new Module(128788705, "Hpt_ATDumbfireMissile_Turret_Large", 1624, "AX Missile Rack", 3, "A", 3866338, Module.ModuleMount.Turreted) },
+                {128788702, new Module(128788702, "Hpt_ATMultiCannon_Fixed_Large", 1625, "AX Multi-Cannon", 3, "C", 1126044, Module.ModuleMount.Fixed) },
+                {128793060, new Module(128793060, "Hpt_ATMultiCannon_Turret_Large", 1626, "AX Multi-Cannon", 3, "E", 3642224, Module.ModuleMount.Turreted) },
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },
@@ -945,6 +954,7 @@ namespace EddiDataDefinitions
                 {999999939, new Module(999999939, "Dolphin_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049291) },
                 {999999940, new Module(999999940, "hpt_shipdatalinkscanner", -1, "Data Link Scanner", 1, "I", 0, -1) },
                 {999999941, new Module(999999941, "string_lights_coloured", -1, "Coloured string lights", 1, "I", 0, -1) },
+                {999999942, new Module(999999942, "Type9_Military_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128785619) },
         };
 
         private static Dictionary<string, Module> ModulesByEDName = ModulesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
