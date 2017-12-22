@@ -1,5 +1,8 @@
 ﻿# CHANGE LOG
 
+### 2.4.6-b3
+
+
 ### 2.4.6-b2
   * Core
 	* Added support for the large AX weapons and the Type 10 Defender (export to EDShipyard and Coriolis should be compatible and work just as soon as they are ready).
