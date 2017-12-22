@@ -306,8 +306,8 @@ namespace Eddi
                 conf.Lang = chooseLanguageDropDown.SelectedValue.ToString();
                 conf.ToFile();
                 // Restarting EDDI
-                Process.Start(Application.ResourceAssembly.Location);
-                Application.Current.Shutdown();
+                Process.Start(System.Windows.Application.ResourceAssembly.Location);
+                System.Windows.Application.Current.Shutdown();
             };
             I18NForComponents();
 

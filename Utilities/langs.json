@@ -79,7 +79,7 @@
     },
     "speech_responder_desc": {
       "en": "Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its 'Test' and 'View' buttons are disabled.",
-	  "fr": "Répond aux évenements avec un dialogue scripté basé sur les informations de l'évenement. Ils n'ont pas tous de réponses scriptés. Si un script de réponse est vide, les boutons 'Test' et 'Afficher' sont désactivé."
+      "fr": "Répond aux évenements avec un dialogue scripté basé sur les informations de l'évenement. Ils n'ont pas tous de réponses scriptés. Si un script de réponse est vide, les boutons 'Test' et 'Afficher' sont désactivé."
     },
     "eddn_responder_name": {
       "en": "EDDN responder",
@@ -96,6 +96,34 @@
     "va_responder_desc": {
       "en": "A responder that generates a large number of variables within VoiceAttack as well as triggering user-defined actions.",
       "fr": "Un répondeur qui génère un grand nombre de variables dans VoiceAttack et déclenche des actions définies par l'utilisateur."
+    },
+    "va_responder_p1": {
+      "en": "To integrate EDDI with VoiceAttack EDDI needs to be installed within VoiceAttack's 'Apps' directory.  The default path for this is 'C:\\Program Files (x86)\\VoiceAttack\\Apps', and is where EDDI will be installed by default.",
+      "fr": "Pour intégrer EDDI avec VoiceAttack EDDI nécessite d'être installer dans le répertoire 'Apps' de 'VoiceAttack'. Le chemin par défaut de ce dossier est 'C:\\Program Files (x86)\\VoiceAttack\\Apps', et est l'endroit ou EDDI seras installé par défaut."
+    },
+    "va_responder_p2": {
+      "en": "EDDI will only work with versions of VoiceAttack 1.5.12.22 and higher. Note that this a beta release.",
+      "fr": "EDDI ne fonctionnera qu'avec les versions de VoiceAttack 1.5.12.22 et ultérieur. Attention : ceci est une release beta."
+    },
+    "va_responder_p3": {
+      "en": "Once VoiceAttack is installed you will need to enable plugin support. To do so you must click on the Settings icon (a spanner) in the top-right corner of the VoiceAttack and check the 'Enable plugin support' option and restart VoiceAttack. You should see a message in the VoiceAttack window along the lines of 'Plugin EDDI 2.0.0 initialized'.",
+      "fr": "Une fois que VoiceAttack est installé, vous devrez activé le support des plugin. Pour cela vous devez cliquer sur l'icône des Settings (une clé à molette) dans le coin supérieur droit de VoiceAttack et cocher l'option 'Enable plugin support' et redémarrer VoiceAttack. Vous devriez voir un message dans la fenêtre VoiceAttack 'Plugin EDDI 2.0.0 initialized'."
+    },
+    "va_responder_p4": {
+      "en": "At this point you can integrate EDDI's variables with your own VoiceAttack scripts. For example, your commander's name is stored in the 'Name' text variable so to access it you just use '{TXT:Name}' in your own commands. There are variables for your commander, your ships, the current starsystem and station you are at, and more.  A full list of variables is available ",
+      "fr": "A partir de maintenant vous pouvez intégrer les variable d'EDDI avec vos propre scripts VoiceAttack. Par exemple, votre nom de commandant est stocké dans la variable texte 'Name' pour que vous puissiez y accèder en utilisant '{TXT:Name}' dans vos propre commandes. Il y a des variables pour votre commandant, vos vaisseaux, le système et la station actuelle, et d'autres. Une liste complètes des variables est disponible "
+    },
+    "va_responder_p4_link": {
+      "en": "on the main EDDI site",
+      "fr": "sur le site d'EDDI"
+    },
+    "va_responder_p5": {
+      "en": "In addition to writing scripts that you trigger with voice or keyboard actions you can also write scripts that trigger on events that occur within Elite. For example, if you wanted to trigger a script every time the 'Docked' event occurs then you would write a script called '((EDDI docked))' (note the double brackets around the name to avoid it being called accidentally, and the lower cased 'd' in docked).  A full list of events is also available ",
+      "fr": "En plus d'écrire des scripts que vous déclenchez avec la voix ou le clavier vous pouvez aussi écrire des scripts qui se déclenchent lors d'évenements qui arrive dans Elite. Par example, si vous voulez déclencher un script chaque fois que l'évènement 'Docked' surviens, allors vous devriez écrire un script nommé '((EDDI Docked))' (Attention à mettre les double parenthèses autour du nom afin d'éviter qu'il ne soit appelé par accident, et aussi le 'd' en minuscule dans 'docked'). Une liste complète des évenements est aussi disponible "
+    },
+    "va_responder_p5_link": {
+      "en": "on the main EDDI site",
+      "fr": "sur le site d'EDDI"
     },
     "eddp_monitor_name": {
       "en": "EDDP monitor",
@@ -168,6 +196,10 @@
     "galnet_monitor_p1": {
       "en": "Please note that after changing language it can take up to 2 minutes for new Galnet articles to be available",
       "fr": "Veuillez prendre en compte qu'après avoir changé la langue les nouveaux articles Galnet pourrons prendre 2 minutes pour être disponibles"
+    },
+    "galnet_monitor_p2": {
+      "en": "The Galnet monitor will normally attempt to provide articles only when you are actually in-game. Check this box if you'd like to receive Galnet articles all of the time, irrespective of whether you are in-game or not.",
+      "fr": "Le moniteur Galnet va normalement tenter de fournir des articles seulement quand vous êtes en jeu. Cochez cette boite si vous voulez recevoir des articles Galnet tout le temps, que vous soyez ou non en jeu."
     },
     "ship_monitor_name": {
       "en": "Ship monitor",
