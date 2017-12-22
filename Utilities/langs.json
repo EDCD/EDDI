@@ -85,6 +85,66 @@
       "en": "EDDN responder",
       "fr": "Répondeur EDDN"
     },
+    "speech_responder_subs": {
+      "en": "Write text copies of speech to the file %APPDATA%\\EDDI\\speechresponder.out",
+      "fr": "Copier le texte des dialogues dans le fichier %APPDATA%\\EDDI\\speechresponder.out"
+    },
+    "speech_responder_subs_only": {
+      "en": "Do not speak out loud when text is written to the file as above",
+      "fr": "Ne pas parler lorsque le texte est écris dans le fichier ci-dessus"
+    },
+    "speech_responder_default_text": {
+      "en": "The default personality cannot be modified. If you wish to make changes, create a copy.",
+      "fr": "Le profil par défaut ne peut être modifiée. Si vous voulez faire des changement, créez une copie."
+    },
+    "speech_responder_active_personnality": {
+      "en": "Active personality",
+      "fr": "Profil actif"
+    },
+    "speech_responder_button_new": {
+      "en": "Create new script",
+      "fr": "Créer un nouveau script"
+    },
+    "speech_responder_button_copy": {
+      "en": "Copy personality",
+      "fr": "Copier le profil"
+    },
+    "speech_responder_button_delete": {
+      "en": "Delete personality",
+      "fr": "Supprimer le profil"
+    },
+    "speech_responder_warning_triggered": {
+      "en": "Scripts which are triggered by an event can be disabled but not deleted.",
+      "fr": "Les scripts qui sont déclenché par un évènement peuvent être désactivés mais pas supprimées."
+    },
+    "speech_responder_delete_personality_message": {
+      "en": "Are you sure you want to delete the \"{0}\" personality ?",
+      "fr": "Êtes vous sur de vouloir supprimer le profil \"{0}\" ?"
+    },
+    "speech_responder_delete_personality_caption": {
+      "en": "Delete Personality",
+      "fr": "Supprimer le profil"
+    },
+    "speech_responder_delete_script_message": {
+      "en": "Are you sure you want to delete the \"{0}\" script ?",
+      "fr": "Êtes vous sur de vouloir supprimer le script \"{0}\" ?"
+    },
+    "speech_responder_delete_script_caption": {
+      "en": "Delete script",
+      "fr": "Supprimer le script"
+    },
+    "speech_responder_header_name": {
+      "en": "Name",
+      "fr": "Nom"
+    },
+    "speech_responder_header_enabled": {
+      "en": "Enabled",
+      "fr": "Activé"
+    },
+    "speech_responder_header_description": {
+      "en": "Description",
+      "fr": "Description"
+    },
     "eddn_responder_desc": {
       "en": "Send station, jump, and scan information to EDDN.  EDDN is a third-party tool that gathers information on systems and markets, and provides data for most trading tools as well as starsystem information tools such as EDDB",
       "fr": "Envois les information des stations, sauts et scans à EDDN. EDDN est un outil tierce partie qui rassemble les onformations sur les sytèmes et marchés, et fournis des données pour la plupart des outils de commerce ainsi que pour les outils d'informations sur les sytèmes stellaire tel qu'EDDB"
