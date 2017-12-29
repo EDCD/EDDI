@@ -130,5 +130,17 @@ namespace Eddi.Properties {
                 this["SelectedTab"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("40,40,800,600")]
+        public global::System.Windows.Rect WindowPosition {
+            get {
+                return ((global::System.Windows.Rect)(this["WindowPosition"]));
+            }
+            set {
+                this["WindowPosition"] = value;
+            }
+        }
     }
 }

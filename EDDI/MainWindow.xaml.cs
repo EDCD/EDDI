@@ -4,6 +4,7 @@ using EddiSpeechService;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
@@ -25,42 +26,35 @@ namespace Eddi
     public partial class MainWindow : Window
     {
         private Profile profile;
-
+        private Rect restoreBounds = Rect.Empty;
         private bool fromVA;
 
         public MainWindow() : this(false) { }
 
         private void SaveWindowState()
         {
-            if (WindowState == WindowState.Maximized)
+            Rect savePosition;
+
+            switch (WindowState)
             {
-                // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
-                Properties.Settings.Default.Top = RestoreBounds.Top;
-                Properties.Settings.Default.Left = RestoreBounds.Left;
-                Properties.Settings.Default.Height = RestoreBounds.Height;
-                Properties.Settings.Default.Width = RestoreBounds.Width;
-                Properties.Settings.Default.Maximized = true;
-                Properties.Settings.Default.Minimized = false;
+                case WindowState.Maximized:
+                    savePosition = new Rect(restoreBounds.Left, restoreBounds.Top, restoreBounds.Width, restoreBounds.Height);
+                    Properties.Settings.Default.Maximized = true;
+                    Properties.Settings.Default.Minimized = false;
+                    break;
+                case WindowState.Minimized:
+                    savePosition = new Rect(restoreBounds.Left, restoreBounds.Top, restoreBounds.Width, restoreBounds.Height);
+                    Properties.Settings.Default.Maximized = false;
+                    Properties.Settings.Default.Minimized = true;
+                    break;
+                default:
+                    savePosition = new Rect(Left, Top, Width, Height);
+                    Properties.Settings.Default.Maximized = false;
+                    Properties.Settings.Default.Minimized = false;
+                    break;
             }
-            else if (WindowState == WindowState.Minimized)
-            {
-                // Use the RestoreBounds as the current values will be 0, 0 and the size of the screen
-                Properties.Settings.Default.Top = RestoreBounds.Top;
-                Properties.Settings.Default.Left = RestoreBounds.Left;
-                Properties.Settings.Default.Height = RestoreBounds.Height;
-                Properties.Settings.Default.Width = RestoreBounds.Width;
-                Properties.Settings.Default.Maximized = false;
-                Properties.Settings.Default.Minimized = true;
-            }
-            else
-            {
-                Properties.Settings.Default.Top = this.Top;
-                Properties.Settings.Default.Left = this.Left;
-                Properties.Settings.Default.Height = this.Height;
-                Properties.Settings.Default.Width = this.Width;
-                Properties.Settings.Default.Maximized = false;
-                Properties.Settings.Default.Minimized = false;
-            }
+
+            Properties.Settings.Default.WindowPosition = savePosition;
 
             // Remember which tab we have selected in EDDI
             Properties.Settings.Default.SelectedTab = this.tabControl.SelectedIndex;
@@ -70,44 +64,43 @@ namespace Eddi
 
         private void RestoreWindowState()
         {
-            const int defaultHeight = 600;
-            const int defaultWidth = 800;
+            Rect windowPosition = Properties.Settings.Default.WindowPosition;
+            WindowStartupLocation = WindowStartupLocation.Manual;
+            Loaded += windowLoaded;
 
-            // Get the current screen resolution, just in case it changes between sessions
-            int screensHeight = 0;
-            int screensWidth = 0;
-            foreach (Screen screen in Screen.AllScreens)
+            // Restore prior window size & position, or revert to default values
+            // if the prior size and position are no longer valid
+            if (windowPosition != Rect.Empty && isWindowVisible(windowPosition))
             {
-                screensHeight = screensHeight + screen.Bounds.Height;
-                screensWidth = screensWidth + screen.Bounds.Width;
+                Left = windowPosition.Left;
+                Top = windowPosition.Top;
+                Width = windowPosition.Width;
+                Height = windowPosition.Height;
+            }
+            else
+            {
+                // Pick a default window size and position
+                Left = 40;
+                Top = 40;
+                Width = 800;
+                Height = 600;
             }
 
-            // Restore prior window size & position, or revert to default values if the prior size and position are no longer valid
-            this.Height = validRange(Properties.Settings.Default.Height, defaultHeight / 2, screensHeight) ? Properties.Settings.Default.Height : Math.Min(screensHeight, defaultHeight);
-            this.Width = validRange(Properties.Settings.Default.Width, defaultWidth / 2, screensWidth) ? Properties.Settings.Default.Width : Math.Min(screensWidth, screensWidth);
-            this.Top = validRange(Properties.Settings.Default.Top, 0, screensHeight - this.Height) ? Properties.Settings.Default.Top : centerWindow(Screen.PrimaryScreen.Bounds.Height, defaultHeight);
-            this.Left = validRange(Properties.Settings.Default.Left, 0, screensWidth - this.Width) ? Properties.Settings.Default.Left : centerWindow(Screen.PrimaryScreen.Bounds.Width, defaultWidth);
+            tabControl.SelectedIndex = Eddi.Properties.Settings.Default.SelectedTab;
 
-            // Restore windows maximized or minimized states, if applicable
-            if (Properties.Settings.Default.Minimized)
+            // Check detected monitors to see if the saved window size and location is visible
+            bool isWindowVisible(Rect rect)
             {
-                WindowState = WindowState.Minimized;
-            }
-            else if (Properties.Settings.Default.Maximized)
-            {
-                WindowState = WindowState.Maximized;
-            }
+                // Need to convert to rectangle type used by the Sreen class
+                Rectangle r = new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
 
-            this.tabControl.SelectedIndex = Eddi.Properties.Settings.Default.SelectedTab;
+                foreach (Screen screen in Screen.AllScreens)
+                {
+                    if (screen.Bounds.IntersectsWith(r))
+                        return true;
+                }
 
-            int centerWindow(int measure, int defaultValue)
-            {
-                return (measure - Math.Min(measure, defaultValue)) / 2;
-            }
-
-            bool validRange(double numberToCheck, double bottom, double top)
-            {
-                return numberToCheck >= bottom && numberToCheck <= top;
+                return false;
             }
         }
 
@@ -128,7 +121,7 @@ namespace Eddi
             // Configure the EDDI tab
             setStatusInfo();
 
-            //// Need to set up the correct information in the hero text depending on from where we were started
+            // Need to set up the correct information in the hero text depending on from where we were started
             if (fromVA)
             {
                 heroText.Text = "Any changes made here will take effect automatically in VoiceAttack.  You can close this window when you have finished.";
@@ -297,6 +290,17 @@ namespace Eddi
 
             RestoreWindowState();
             EDDI.Instance.Start();
+        }
+
+        // Hook the Loaded event to handle window maximize at startup 
+        private void windowLoaded(object sender, RoutedEventArgs e)
+        {
+            var senderWindow = sender as Window;
+
+            if (Properties.Settings.Default.Minimized)
+                senderWindow.WindowState = WindowState.Minimized;
+            else if (Properties.Settings.Default.Maximized)
+                senderWindow.WindowState = WindowState.Maximized;
         }
 
         // Handle changes to the eddi tab
@@ -650,6 +654,27 @@ namespace Eddi
             speechConfiguration.EnableIcao = enableIcaoCheckbox.IsChecked.Value;
             speechConfiguration.ToFile();
             SpeechService.Instance.ReloadConfiguration();
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            //if (WindowState == WindowState.Maximized)
+            //{
+            //    Rectangle r = new Rectangle((int)RestoreBounds.X, (int)RestoreBounds.Y,
+            //                                (int)RestoreBounds.Width, (int)RestoreBounds.Height);
+
+            //    foreach (Screen screen in Screen.AllScreens)
+            //    {
+            //        if (screen.Bounds.IntersectsWith(r))
+            //        {
+            //            maximizeBounds = new Rect(screen.WorkingArea.X, screen.WorkingArea.Y,
+            //                                      screen.WorkingArea.Width, screen.WorkingArea.Height);
+            //        }
+            //    }
+            //}
+
+            restoreBounds = RestoreBounds;
+            base.OnStateChanged(e);
         }
 
         protected override void OnClosed(EventArgs e)
