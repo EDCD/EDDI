@@ -675,8 +675,8 @@ namespace Eddi
             {
                 // When in OnClosed(), if the EDDI window was closed while minimized
                 // (under debugger), monitorThread.Join() would block waiting for a
-                // thread to terminate. Strange, because it did not happen when the
-                // window was closed in the normal or maximized state.
+                // thread(s) to terminate. Strange, because it does not block when the
+                // window is closed in the normal or maximized state.
                 EDDI.Instance.Stop();
             }
         }
