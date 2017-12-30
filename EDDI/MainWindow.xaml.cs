@@ -46,7 +46,7 @@ namespace Eddi
                     savePosition = new Rect(RestoreBounds.Left, RestoreBounds.Top, RestoreBounds.Width, RestoreBounds.Height);
                     Properties.Settings.Default.Maximized = false;
 
-                    // If running from VoiceAttack, don't save the minimized state
+                    // If opened from VoiceAttack, don't allow minimized state
                     Properties.Settings.Default.Minimized = fromVA ? false: true;
 
                     break;
