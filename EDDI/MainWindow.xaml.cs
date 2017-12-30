@@ -3,6 +3,7 @@ using EddiDataDefinitions;
 using EddiSpeechService;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
@@ -26,7 +27,6 @@ namespace Eddi
     public partial class MainWindow : Window
     {
         private Profile profile;
-        private Rect restoreBounds = Rect.Empty;
         private bool fromVA;
 
         public MainWindow() : this(false) { }
@@ -38,14 +38,17 @@ namespace Eddi
             switch (WindowState)
             {
                 case WindowState.Maximized:
-                    savePosition = new Rect(restoreBounds.Left, restoreBounds.Top, restoreBounds.Width, restoreBounds.Height);
+                    savePosition = new Rect(RestoreBounds.Left, RestoreBounds.Top, RestoreBounds.Width, RestoreBounds.Height);
                     Properties.Settings.Default.Maximized = true;
                     Properties.Settings.Default.Minimized = false;
                     break;
                 case WindowState.Minimized:
-                    savePosition = new Rect(restoreBounds.Left, restoreBounds.Top, restoreBounds.Width, restoreBounds.Height);
+                    savePosition = new Rect(RestoreBounds.Left, RestoreBounds.Top, RestoreBounds.Width, RestoreBounds.Height);
                     Properties.Settings.Default.Maximized = false;
-                    Properties.Settings.Default.Minimized = true;
+
+                    // If running from VoiceAttack, don't save the minimized state
+                    Properties.Settings.Default.Minimized = fromVA ? false: true;
+
                     break;
                 default:
                     savePosition = new Rect(Left, Top, Width, Height);
@@ -65,33 +68,26 @@ namespace Eddi
         private void RestoreWindowState()
         {
             Rect windowPosition = Properties.Settings.Default.WindowPosition;
-            WindowStartupLocation = WindowStartupLocation.Manual;
-            Loaded += windowLoaded;
 
-            // Restore prior window size & position, or revert to default values
-            // if the prior size and position are no longer valid
             if (windowPosition != Rect.Empty && isWindowVisible(windowPosition))
             {
+                // Hook Loaded event to handle minimized/maximized state restore
+                Loaded += windowLoaded;
+                WindowStartupLocation = WindowStartupLocation.Manual;
+
+                // Restore persisted window size & position
                 Left = windowPosition.Left;
                 Top = windowPosition.Top;
                 Width = windowPosition.Width;
                 Height = windowPosition.Height;
             }
-            else
-            {
-                // Pick a default window size and position
-                Left = 40;
-                Top = 40;
-                Width = 800;
-                Height = 600;
-            }
+            // else leave it up to the OS to use its default startup location & size
 
             tabControl.SelectedIndex = Eddi.Properties.Settings.Default.SelectedTab;
 
             // Check detected monitors to see if the saved window size and location is visible
             bool isWindowVisible(Rect rect)
             {
-                // Need to convert to rectangle type used by the Sreen class
                 Rectangle r = new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
 
                 foreach (Screen screen in Screen.AllScreens)
@@ -292,15 +288,26 @@ namespace Eddi
             EDDI.Instance.Start();
         }
 
-        // Hook the Loaded event to handle window maximize at startup 
+        // Hook the window Loaded event to set minimize/maximize state at startup 
         private void windowLoaded(object sender, RoutedEventArgs e)
         {
             var senderWindow = sender as Window;
 
-            if (Properties.Settings.Default.Minimized)
-                senderWindow.WindowState = WindowState.Minimized;
-            else if (Properties.Settings.Default.Maximized)
-                senderWindow.WindowState = WindowState.Maximized;
+            if (Properties.Settings.Default.Maximized || Properties.Settings.Default.Minimized)
+            {
+                // Hide/show helps reduce window flicker when EDDI is run stand-along,
+                // but it bombs if the UI is called up from VoiceAttack.
+                if (!fromVA)
+                    Visibility = Visibility.Hidden;
+
+                if (Properties.Settings.Default.Minimized)
+                    senderWindow.WindowState = WindowState.Minimized;
+                else if (Properties.Settings.Default.Maximized)
+                    senderWindow.WindowState = WindowState.Maximized;
+
+                if (!fromVA)
+                    Visibility = Visibility.Visible;
+            }
         }
 
         // Handle changes to the eddi tab
@@ -656,25 +663,22 @@ namespace Eddi
             SpeechService.Instance.ReloadConfiguration();
         }
 
-        protected override void OnStateChanged(EventArgs e)
+        protected override void OnClosing(CancelEventArgs e)
         {
-            //if (WindowState == WindowState.Maximized)
-            //{
-            //    Rectangle r = new Rectangle((int)RestoreBounds.X, (int)RestoreBounds.Y,
-            //                                (int)RestoreBounds.Width, (int)RestoreBounds.Height);
+            base.OnClosing(e);
 
-            //    foreach (Screen screen in Screen.AllScreens)
-            //    {
-            //        if (screen.Bounds.IntersectsWith(r))
-            //        {
-            //            maximizeBounds = new Rect(screen.WorkingArea.X, screen.WorkingArea.Y,
-            //                                      screen.WorkingArea.Width, screen.WorkingArea.Height);
-            //        }
-            //    }
-            //}
+            // Save window position here as the RestoreBounds rect gets set
+            // to empty somewhere between here and OnClosed.
+            SaveWindowState();
 
-            restoreBounds = RestoreBounds;
-            base.OnStateChanged(e);
+            if (!fromVA)
+            {
+                // When in OnClosed(), if the EDDI window was closed while minimized
+                // (under debugger), monitorThread.Join() would block waiting for a
+                // thread to terminate. Strange, because it did not happen when the
+                // window was closed in the normal or maximized state.
+                EDDI.Instance.Stop();
+            }
         }
 
         protected override void OnClosed(EventArgs e)
@@ -684,11 +688,8 @@ namespace Eddi
             if (!fromVA)
             {
                 SpeechService.Instance.ShutUp();
-                EDDI.Instance.Stop();
                 System.Windows.Application.Current.Shutdown();
             }
-
-            SaveWindowState();
         }
 
         private void EnsureValidDecimal(object sender, TextCompositionEventArgs e)

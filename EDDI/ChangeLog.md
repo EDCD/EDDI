@@ -1,7 +1,8 @@
 ﻿# CHANGE LOG
 
 ### 2.4.6-b3
-
+  # Core
+    * Save/restore EDDI window size and position (multi-display aware), and activates the last selected tab page. If EDDI is run directly, minimize/maximize state is preserved. If called up from VoiceAttack, only the maximized state is preserved.
 
 ### 2.4.6-b2
   * Core
@@ -25,7 +26,7 @@
     * 'Docked' event:
       * New variables 'allegiance' and 'state'. 'State' is a new variable that is currently used to describe damaged stations and stations under repair.
     * 'Mission completed' event:
-      * Addded variables `rewardCommodity` and `rewardAmount`. Useful for cargo tracking.
+      * Added variables `rewardCommodity` and `rewardAmount`. Useful for cargo tracking.
     * 'Search and rescue' event:
       * Added variable `commodityname` to provide the name of the commodity turned in, free of the commodity object. Accessible to VoiceAttack as `{TXT:EDDI search and rescue commodityname}` 
       * Updated 'Search and rescue' event to better distinguish between occupied and damaged escape pods, and to fix a bug in handling wreckage commodities.
