@@ -295,8 +295,8 @@ namespace Eddi
 
             if (Properties.Settings.Default.Maximized || Properties.Settings.Default.Minimized)
             {
-                // Hide/show helps reduce window flicker when EDDI is run stand-along,
-                // but it bombs if the UI is called up from VoiceAttack.
+                // Hide/show helps reduce window flicker when EDDI is run stand-alone,
+                // but it bombs if the window is started from VoiceAttack.
                 if (!fromVA)
                     Visibility = Visibility.Hidden;
 
