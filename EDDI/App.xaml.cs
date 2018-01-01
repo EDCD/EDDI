@@ -9,19 +9,31 @@ namespace Eddi
     /// </summary>
     public partial class App : Application
     {
-        private static Mutex eddiMutex = new Mutex(true, "{F1F85B96-14B8-45E4-AD19-0B2FCD6F6CF8}");
-        private static MainWindow mainWindow = null;
+        //private static Mutex eddiMutex = new Mutex(true, "{F1F85B96-14B8-45E4-AD19-0B2FCD6F6CF8}");
+        //private static MainWindow mainWindow = null;
 
         [STAThread]
         static void Main()
         {
-            if (eddiMutex.WaitOne(TimeSpan.Zero, true))
+            MainWindow mainWindow = null;
+            bool firstOwner = false;
+            Mutex eddiMutex = new Mutex(true, "{F1F85B96-14B8-45E4-AD19-0B2FCD6F6CF8}", out firstOwner);
+
+            //if (eddiMutex.WaitOne(TimeSpan.Zero, true))
+            if (firstOwner)
             {
                 App app = new App();
                 mainWindow = new MainWindow();
                 app.Run(mainWindow);
                 eddiMutex.ReleaseMutex();
             }
+            else
+            {
+                MessageBox.Show("Please close the EDDI application and re-start VoiceAttack.",
+                                "EDDI application already running",
+                                MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
         }
 
         //private static Mutex eddiMutex = null;

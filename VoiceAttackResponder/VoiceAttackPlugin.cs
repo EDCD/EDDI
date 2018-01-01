@@ -6,6 +6,7 @@ using System.Linq;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Diagnostics;
+using System.Windows;
 using EddiSpeechService;
 using Utilities;
 using Eddi;
@@ -13,7 +14,6 @@ using EddiEvents;
 using System.Text;
 using System.Text.RegularExpressions;
 using EddiSpeechResponder;
-using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using EddiShipMonitor;
@@ -22,6 +22,11 @@ namespace EddiVoiceAttackResponder
 {
     public class VoiceAttackPlugin
     {
+        private static bool configWindow = false;
+        private static bool firstOwner = false;
+        private static Mutex eddiMutex = null;
+
+
         public static string VA_DisplayName()
         {
             return Constants.EDDI_NAME + " " + Constants.EDDI_VERSION;
@@ -46,6 +51,25 @@ namespace EddiVoiceAttackResponder
         {
             Logging.Info("Initialising EDDI VoiceAttack plugin");
 
+            while (!firstOwner)
+            {
+                eddiMutex = new Mutex(true, "{F1F85B96-14B8-45E4-AD19-0B2FCD6F6CF8}", out firstOwner);
+
+                if (!firstOwner)
+                {
+                    vaProxy.WriteToLog("A stand-alone EDDI application is currently running.", "red");
+
+                    MessageBox.Show("Please close the EDDI application and re-start VoiceAttack.",
+                                    "EDDI application already running",
+                                    MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    eddiMutex.ReleaseMutex();
+                    eddiMutex = null;
+                    Thread.Sleep(2000);
+                }
+            }
+
+            // No other instance of EDDI is running, so bring up the config UI.
             try
             {
                 EDDI.Instance.Start();
@@ -66,6 +90,7 @@ namespace EddiVoiceAttackResponder
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
+
                 if (EDDI.Instance.Motd != null)
                 {
                     string msg = "Message from Eddi: " + EDDI.Instance.Motd;
@@ -316,6 +341,13 @@ namespace EddiVoiceAttackResponder
             updaterThread.Abort();
             SpeechService.Instance.ShutUp();
             EDDI.Instance.Stop();
+
+            if (eddiMutex != null)
+            {
+                eddiMutex.ReleaseMutex();
+                eddiMutex = null;
+                firstOwner = false;
+            }
         }
 
         public static void VA_Invoke1(dynamic vaProxy)
@@ -347,7 +379,13 @@ namespace EddiVoiceAttackResponder
                         InvokeStarMapSystemComment(ref vaProxy);
                         break;
                     case "configuration":
-                        InvokeConfiguration(ref vaProxy);
+                        if (!configWindow)
+                        {
+                            configWindow = true;
+                            InvokeConfiguration(ref vaProxy);
+                        }
+                        else
+                            vaProxy.WriteToLog("EDDI configuration window already open.", "red");
                         break;
                     case "shutup":
                         InvokeShutUp(ref vaProxy);
@@ -385,6 +423,7 @@ namespace EddiVoiceAttackResponder
                 {
                     MainWindow window = new MainWindow(true);
                     window.ShowDialog();
+                    configWindow = false;
                 }
                 catch (ThreadAbortException)
                 {
@@ -497,7 +536,7 @@ namespace EddiVoiceAttackResponder
             bool? useClipboard = vaProxy.GetBoolean("EDDI use clipboard");
             if (useClipboard != null && useClipboard == true)
             {
-                Thread thread = new Thread(() => Clipboard.SetText(uri));
+                Thread thread = new Thread(() => System.Windows.Clipboard.SetText(uri));
                 thread.SetApartmentState(ApartmentState.STA);
                 thread.Start();
                 thread.Join();
