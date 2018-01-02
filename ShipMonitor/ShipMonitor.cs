@@ -930,8 +930,9 @@ namespace EddiShipMonitor
         /// </summary>
         public Ship GetCurrentShip()
         {
-            EDDI.Instance.CurrentShip = GetShip(currentShipId);
-            return GetShip(currentShipId);
+            Ship currentShip = GetShip(currentShipId);
+            EDDI.Instance.CurrentShip = currentShip;
+            return currentShip;
         }
 
         /// <summary>
@@ -943,7 +944,12 @@ namespace EddiShipMonitor
             {
                 return null;
             }
-            return shipyard.FirstOrDefault(s => s.LocalId == localId);
+            Ship ship;
+            lock (shipyardLock)
+            {
+                ship = shipyard.FirstOrDefault(s => s.LocalId == localId);
+            }
+            return ship;
         }
 
         public void SetCurrentShip(int? localId, string model = null)
