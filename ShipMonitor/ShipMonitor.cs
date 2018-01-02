@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,6 +27,7 @@ namespace EddiShipMonitor
         private int? currentShipId;
         private int? currentProfileId;
         private static readonly object shipyardLock = new object();
+        SynchronizationContext uiSyncContext;
 
         public string MonitorName()
         {
@@ -49,6 +51,7 @@ namespace EddiShipMonitor
 
         public ShipMonitor()
         {
+            uiSyncContext = SynchronizationContext.Current;
             readShips();
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
         }
@@ -849,30 +852,13 @@ namespace EddiShipMonitor
             }
 
             // Ensure that we have a role for this ship
-
             if (ship.role == null)
             {
                 ship.role = Role.MultiPurpose;
             }
 
-            // If we were started from VoiceAttack then we might not have an application; check here and create if it doesn't exist
-            if (Application.Current == null)
-            {
-                new Application();
-            }
-
-            // Run this on the dispatcher to ensure that we can update it whilst reflecting changes in the UI
-            if (Application.Current.Dispatcher.CheckAccess())
-            {
-                _AddShip(ship);
-            }
-            else
-            {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                {
-                    _AddShip(ship);
-                }));
-            }
+            // Run this on the UI syncContext to ensure that we can update it whilst reflecting changes in the UI
+            uiSyncContext.Post(_ => _AddShip(ship), null);
         }
 
         private void _AddShip(Ship ship)
@@ -894,17 +880,8 @@ namespace EddiShipMonitor
         /// </summary>
         private void RemoveShip(int? localid)
         {
-            if (Application.Current.Dispatcher.CheckAccess())
-            {
-                _RemoveShip(localid);
-            }
-            else
-            {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                {
-                    _RemoveShip(localid);
-                }));
-            }
+            // Run this on the UI syncContext to ensure that we can update it whilst reflecting changes in the UI
+            uiSyncContext.Post(_ => _RemoveShip(localid), null);
         }
 
         /// <summary>
