@@ -748,17 +748,17 @@ namespace EddiShipMonitor
                             // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
                             // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
                             JObject cargoHatchModule = new JObject
-                        {
-                            { "on", ship.cargohatch.enabled },
-                            { "priority", ship.cargohatch.priority },
-                            { "value", ship.cargohatch.price },
-                            { "health", ship.cargohatch.health },
-                            { "name", "ModularCargoBayDoor" }
-                        };
+                            {
+                                { "on", ship.cargohatch.enabled },
+                                { "priority", ship.cargohatch.priority },
+                                { "value", ship.cargohatch.price },
+                                { "health", ship.cargohatch.health },
+                                { "name", "ModularCargoBayDoor" }
+                            };
                             JObject cargoHatchSlot = new JObject
-                        {
-                            { "module", cargoHatchModule }
-                        };
+                            {
+                                { "module", cargoHatchModule }
+                            };
                             JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
                             parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
                             ship.raw = parsedRaw.ToString(Formatting.None);
@@ -789,6 +789,7 @@ namespace EddiShipMonitor
                     AddShip(profileShip);
                 }
             }
+
             writeShips();
         }
 
