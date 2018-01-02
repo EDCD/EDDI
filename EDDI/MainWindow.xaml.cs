@@ -67,9 +67,12 @@ namespace Eddi
 
         private void RestoreWindowState()
         {
+            const int designedHeight = 600;
+            const int designedWidth = 800;
+
             Rect windowPosition = Properties.Settings.Default.WindowPosition;
 
-            if (windowPosition != Rect.Empty && isWindowVisible(windowPosition))
+            if (windowPosition != Rect.Empty && isWindowValid(windowPosition))
             {
                 // Hook Loaded event to handle minimized/maximized state restore
                 Loaded += windowLoaded;
@@ -81,22 +84,41 @@ namespace Eddi
                 Width = windowPosition.Width;
                 Height = windowPosition.Height;
             }
-            // else leave it up to the OS to use its default startup location & size
+            else
+            {
+                // Revert to default values if the prior size and position are no longer valid
+                Left = centerWindow(Screen.PrimaryScreen.Bounds.Width, designedWidth);
+                Top = centerWindow(Screen.PrimaryScreen.Bounds.Height, designedHeight);
+                Width = Math.Min(Screen.PrimaryScreen.Bounds.Width, designedWidth);
+                Height = Math.Min(Screen.PrimaryScreen.Bounds.Height, designedHeight);
+            }
 
             tabControl.SelectedIndex = Eddi.Properties.Settings.Default.SelectedTab;
 
-            // Check detected monitors to see if the saved window size and location is visible
-            bool isWindowVisible(Rect rect)
+            // Check detected monitors to see if the saved window size and location is valid
+            bool isWindowValid(Rect rect)
             {
-                Rectangle r = new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
-
-                foreach (Screen screen in Screen.AllScreens)
+                // Check for minimum window size
+                if ((int)rect.Width < designedWidth || (int)rect.Height < designedHeight)
                 {
-                    if (screen.Bounds.IntersectsWith(r))
-                        return true;
+                    return false;
                 }
 
+                // Check whether the rectangle is completely visible on-screen
+                Rectangle r = new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
+                foreach (Screen screen in Screen.AllScreens)
+                {
+                    if (screen.Bounds.IntersectsWith(r) && screen.Bounds.Width >= rect.X + rect.Width && screen.Bounds.Height >= rect.Y + rect.Height)
+                    {
+                        return true;
+                    }
+                }
                 return false;
+            }
+
+            int centerWindow(int measure, int defaultValue)
+            {
+                return (measure - Math.Min(measure, defaultValue)) / 2;
             }
         }
 

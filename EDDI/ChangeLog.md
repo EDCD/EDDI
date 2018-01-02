@@ -1,8 +1,10 @@
 ﻿# CHANGE LOG
 
 ### 2.4.6-b3
-  # Core
-    * Save/restore EDDI window size and position (multi-display aware), and activates the last selected tab page. If EDDI is run directly, minimize/maximize state is preserved. If called up from VoiceAttack, only the maximized state is preserved.
+  * Core
+    * Improved window size and position handling for multi-display setups. 
+    * Minimum window size refined to match designed window size. 
+    * If EDDI is run directly, minimize/maximize state are preserved. If invoked via the VoiceAttack 'Configure EDDI' command, only the maximized state is preserved.
 
 ### 2.4.6-b2
   * Core
