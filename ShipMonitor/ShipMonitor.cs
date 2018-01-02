@@ -25,7 +25,6 @@ namespace EddiShipMonitor
         // The ID of the current ship; can be null
         private int? currentShipId;
         private int? currentProfileId;
-        private int dispatcherTasks = 0;
         private static readonly object shipyardLock = new object();
 
         public string MonitorName()
@@ -785,15 +784,8 @@ namespace EddiShipMonitor
             return variables;
         }
 
-        public async void writeShips()
+        public void writeShips()
         {
-            do
-            {
-                // Make sure the dispatcher has finished prior to writing the shipyard.
-                await Task.Delay(TimeSpan.FromSeconds(1));
-            }
-            while (dispatcherTasks != 0);
-            Dispatcher.CurrentDispatcher.Hooks.
             lock (shipyardLock)
             {
                 // Write ship configuration with current inventory
@@ -863,9 +855,7 @@ namespace EddiShipMonitor
             {
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                 {
-                    dispatcherTasks += 1;
                     _AddShip(ship);
-                    dispatcherTasks -= 1;
                 }));
             }
         }
@@ -897,9 +887,7 @@ namespace EddiShipMonitor
             {
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                 {
-                    dispatcherTasks += 1;
                     _RemoveShip(localid);
-                    dispatcherTasks -= 1;
                 }));
             }
         }
