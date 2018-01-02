@@ -830,22 +830,10 @@ namespace EddiShipMonitor
                 ShipMonitorConfiguration configuration = ShipMonitorConfiguration.FromFile();
 
                 // Build a new shipyard
-                List<Ship> newShipyard = new List<Ship>();
-                foreach (Ship ship in configuration.shipyard)
-                {
-                    newShipyard.Add(ship);
-                }
-
-                // Now order the list by model
-                newShipyard = newShipyard.OrderBy(s => s.model).ToList();
+                List<Ship> newShiplist = configuration.shipyard.OrderBy(s => s.model).ToList();
 
                 // Update the shipyard
-                shipyard.Clear();
-                foreach (Ship ship in newShipyard)
-                {
-                    AddShip(ship);
-                }
-
+                shipyard = new ObservableCollection<Ship>(newShiplist);
                 currentShipId = configuration.currentshipid;
             }
         }
