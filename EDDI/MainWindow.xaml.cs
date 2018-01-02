@@ -71,6 +71,7 @@ namespace Eddi
             const int designedWidth = 800;
 
             Rect windowPosition = Properties.Settings.Default.WindowPosition;
+            Visibility = Visibility.Collapsed;
 
             if (windowPosition != Rect.Empty && isWindowValid(windowPosition))
             {
@@ -319,16 +320,17 @@ namespace Eddi
             {
                 // Hide/show helps reduce window flicker when EDDI is run stand-alone,
                 // but it bombs if the window is started from VoiceAttack.
-                if (!fromVA)
-                    Visibility = Visibility.Hidden;
+                //if (!fromVA)
+                //    Visibility = Visibility.Hidden;
 
                 if (Properties.Settings.Default.Minimized)
                     senderWindow.WindowState = WindowState.Minimized;
                 else if (Properties.Settings.Default.Maximized)
                     senderWindow.WindowState = WindowState.Maximized;
 
-                if (!fromVA)
-                    Visibility = Visibility.Visible;
+                //if (!fromVA)
+                //    Visibility = Visibility.Visible;
+                Visibility = Visibility.Visible;
             }
         }
 
