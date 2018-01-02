@@ -30,7 +30,6 @@ namespace Eddi
 
         public MainWindow() : this(false)
         {
-            RestoreWindowState();
         }
 
         private void SaveWindowState()
@@ -298,6 +297,7 @@ namespace Eddi
                 tabControl.Items.Add(item);
             }
 
+            RestoreWindowState();
             EDDI.Instance.Start();
         }
 

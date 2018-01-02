@@ -1,7 +1,7 @@
 ﻿# CHANGE LOG
 
 ### 2.4.6-b3
-
+  * Improved EDDI's ability to remember and restore its window size and position when started from VoiceAttack.
 
 ### 2.4.6-b2
   * Core
