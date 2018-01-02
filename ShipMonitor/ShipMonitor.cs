@@ -863,12 +863,12 @@ namespace EddiShipMonitor
 
         private void _AddShip(Ship ship)
         {
+            if (ship == null)
+            {
+                return;
+            }
             lock (shipyardLock)
             {
-                if (ship == null)
-                {
-                    return;
-                }
                 // Remove the ship first (just in case we are trying to add a ship that already exists)
                 RemoveShip(ship.LocalId);
                 shipyard.Add(ship);
@@ -880,6 +880,10 @@ namespace EddiShipMonitor
         /// </summary>
         private void RemoveShip(int? localid)
         {
+            if(localid == null)
+            {
+                return;
+            }
             // Run this on the UI syncContext to ensure that we can update it whilst reflecting changes in the UI
             uiSyncContext.Post(_ => _RemoveShip(localid), null);
         }
@@ -889,17 +893,18 @@ namespace EddiShipMonitor
         /// </summary>
         private void _RemoveShip(int? localid)
         {
+            if (localid == null)
+            {
+                return;
+            }
             lock (shipyardLock)
             {
-                if (localid.HasValue)
+                for (int i = 0; i < shipyard.Count; i++)
                 {
-                    for (int i = 0; i < shipyard.Count; i++)
+                    if (shipyard[i].LocalId == localid)
                     {
-                        if (shipyard[i].LocalId == localid)
-                        {
-                            shipyard.RemoveAt(i);
-                            break;
-                        }
+                        shipyard.RemoveAt(i);
+                        break;
                     }
                 }
             }
