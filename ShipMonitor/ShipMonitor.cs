@@ -583,9 +583,14 @@ namespace EddiShipMonitor
                 foreach (Hardpoint hpt in ship.hardpoints)
                 {
                     if (hpt.name == fromSlot)
+                    {
                         hpt.name = toSlot;
+                    }
+
                     if (hpt.name == toSlot)
+                    {
                         hpt.name = fromSlot;
+                    }
 
                     hardpoints.Add(hpt.name, hpt);
                 }
@@ -596,10 +601,11 @@ namespace EddiShipMonitor
                 {
                     for (int i = 1; i < 12; i++)
                     {
-                        Hardpoint hpt;
-                        hardpoints.TryGetValue(size + "Hardpoint" + i, out hpt);
+                        hardpoints.TryGetValue(size + "Hardpoint" + i, out Hardpoint hpt);
                         if (hpt != null)
+                        {
                             ship.hardpoints.Add(hpt);
+                        }
                     }
                 }
             }
@@ -612,9 +618,14 @@ namespace EddiShipMonitor
                 foreach (Compartment cpt in ship.compartments)
                 {
                     if (cpt.name == fromSlot)
+                    {
                         cpt.name = toSlot;
+                    }
+
                     if (cpt.name == toSlot)
+                    {
                         cpt.name = fromSlot;
+                    }
 
                     compartments.Add(cpt.name, cpt);
                 }
@@ -622,20 +633,24 @@ namespace EddiShipMonitor
                 // Clear ship compartments and repopulate in correct order
                 ship.compartments.Clear();
                 for (int i = 1; i <= 12; i++)
+                {
                     for (int j = 1; j <= 8; j++)
                     {
-                        Compartment cpt;
-                        compartments.TryGetValue("Slot" + i.ToString("00") + "_Size" + j, out cpt);
+                        compartments.TryGetValue("Slot" + i.ToString("00") + "_Size" + j, out Compartment cpt);
                         if (cpt != null)
+                        {
                             ship.compartments.Add(cpt);
+                        }
                     }
+                }
 
                 for (int i = 1; i <= 3; i++)
                 {
-                    Compartment cpt;
-                    compartments.TryGetValue("Military" + i.ToString("00"), out cpt);
+                    compartments.TryGetValue("Military" + i.ToString("00"), out Compartment cpt);
                     if (cpt != null)
+                    {
                         ship.compartments.Add(cpt);
+                    }
                 }
             }
             writeShips();
