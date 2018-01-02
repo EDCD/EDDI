@@ -866,6 +866,7 @@ namespace EddiShipMonitor
                 // Remove the ship first (just in case we are trying to add a ship that already exists)
                 RemoveShip(ship.LocalId);
                 shipyard.Add(ship);
+                writeShips();
             }
         }
 
@@ -898,6 +899,7 @@ namespace EddiShipMonitor
                     if (shipyard[i].LocalId == localid)
                     {
                         shipyard.RemoveAt(i);
+                        writeShips();
                         break;
                     }
                 }
@@ -966,6 +968,7 @@ namespace EddiShipMonitor
                     ship.station = null;
                     EDDI.Instance.CurrentShip = ship;
                 }
+                writeShips();
             }
         }
 
