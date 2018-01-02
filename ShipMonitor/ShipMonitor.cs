@@ -562,7 +562,9 @@ namespace EddiShipMonitor
         private void handleModulesStoredEvent(ModulesStoredEvent @event)
         {
             foreach (string slot in @event.slots)
+            {
                 RemoveModule((int)@event.shipid, slot);
+            }
             writeShips();
         }
 
@@ -573,8 +575,7 @@ namespace EddiShipMonitor
             string fromSlot = @event.fromslot;
             string toSlot = @event.toslot;
 
-            // Module is a hardpoint
-            if (fromSlot.Contains("Hardpoint"))
+            if (fromSlot.Contains("Hardpoint")) // Module is a hardpoint
             {
                 // Build new dictionary of ship hardpoints, excepting the swapped hardpoints
                 // Save ship hardpoints which match the 'From' and 'To' slots
@@ -603,9 +604,7 @@ namespace EddiShipMonitor
                     }
                 }
             }
-
-            //Module is a compartment
-            else
+            else //Module is a compartment
             {
                 // Build new dictionary of ship compartments, excepting the swapped compartments
                 // Save ship compartments which match the 'From' and 'To' slots
@@ -1024,7 +1023,9 @@ namespace EddiShipMonitor
             }
 
             if (slot.Contains("PaintJob"))
+            {
                 ship.paintjob = module.EDName;
+            }
             else if (slot.Contains("Hardpoint"))
             {
                 // This is a hardpoint
