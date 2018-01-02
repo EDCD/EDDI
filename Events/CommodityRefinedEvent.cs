@@ -15,10 +15,24 @@ namespace EddiEvents
         static CommodityRefinedEvent()
         {
             VARIABLES.Add("commodity", "The name of the commodity refined");
+            VARIABLES.Add("LocalCommodity", "The translation of the commodity into the chosen language");
         }
 
         [JsonProperty("commodity")]
         public string commodity { get; private set; }
+
+        [JsonProperty("LocalCommodity")]
+        public string LocalCommodity
+        {
+            get
+            {
+                if (commodity != null && commodity != "")
+                {
+                    return CommodityDefinitions.FromName(commodity).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public CommodityRefinedEvent(DateTime timestamp, Commodity commodity) : base(timestamp, NAME)
         {

@@ -30,6 +30,11 @@ namespace EddiEddpMonitor
             return "EDDP monitor";
         }
 
+        public string MonitorLocalName()
+        {
+            return I18N.GetString("eddp_monitor_name");
+        }
+
         /// <summary>
         /// The version of the monitor; shows up in EDDI's logs
         /// </summary>
@@ -43,7 +48,7 @@ namespace EddiEddpMonitor
         /// </summary>
         public string MonitorDescription()
         {
-            return @"Monitor EDDP for changes in system control and state, and generate events that match the watch list.";
+            return I18N.GetString("eddp_monitor_desc");
         }
 
         public bool IsRequired()

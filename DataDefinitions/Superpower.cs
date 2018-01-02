@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
+using Utilities;
 
 namespace EddiDataDefinitions
 {
@@ -13,6 +15,15 @@ namespace EddiDataDefinitions
         public string name { get; private set; }
 
         public string edname { get; private set; }
+
+        [JsonIgnore]
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(edname) ?? edname;
+            }
+        }
 
         private Superpower(string edname, string name)
         {

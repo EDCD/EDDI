@@ -1,4 +1,4 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using EddiDataProviderService;
 using Newtonsoft.Json;
 using RestSharp;

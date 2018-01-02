@@ -16,6 +16,11 @@ namespace EddiVoiceAttackResponder
             return "VoiceAttack responder";
         }
 
+        public string ResponderLocalName()
+        {
+            return I18N.GetString("va_responder_name");
+        }
+
         public string ResponderVersion()
         {
             return "1.0.0";
@@ -23,7 +28,7 @@ namespace EddiVoiceAttackResponder
 
         public string ResponderDescription()
         {
-            return "A responder that generates a large number of variables within VoiceAttack as well as triggering user-defined actions.";
+            return I18N.GetString("va_responder_desc");
         }
 
         public VoiceAttackResponder()

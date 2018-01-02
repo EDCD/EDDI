@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Utilities;
+using Newtonsoft.Json;
 
 namespace EddiDataDefinitions
 {
@@ -15,6 +16,15 @@ namespace EddiDataDefinitions
 
         public string EDName { get; private set; }
 
+        [JsonIgnore]
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(EDName) ?? EDName;
+            }
+        }
+
         public Rarity rarity { get; private set; }
 
         public string name { get; private set; }
@@ -26,7 +36,7 @@ namespace EddiDataDefinitions
 
         public decimal? greatpctbody { get; private set; }
 
-        // Blueprints for the material; 
+        // Blueprints for the material;
         public List<Blueprint> blueprints { get; set; }
 
         // Location of the material

@@ -14,11 +14,25 @@ namespace EddiEvents
         static CommodityPurchasedEvent()
         {
             VARIABLES.Add("commodity", "The name of the purchased commodity");
+            VARIABLES.Add("LocalCommodity", "The translation of the commodity into the chosen language");
             VARIABLES.Add("amount", "The amount of the purchased commodity");
             VARIABLES.Add("price", "The price paid per unit of the purchased commodity");
         }
 
         public string commodity { get; private set; }
+
+        public string LocalCommodity
+        {
+            get
+            {
+                if (commodity != null && commodity != "")
+                {
+                    return CommodityDefinitions.FromName(commodity).LocalName;
+                }
+                else return null;
+            }
+        }
+
         public int amount { get; private set; }
         public long price { get; private set; }
 

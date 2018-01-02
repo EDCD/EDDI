@@ -1,7 +1,8 @@
-﻿using EddiDataDefinitions;
+using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace EddiEvents
 {
@@ -15,11 +16,17 @@ namespace EddiEvents
         static CommodityCollectedEvent()
         {
             VARIABLES.Add("commodity", "The name of the commodity collected");
+            VARIABLES.Add("LocalCommodity", "The translation of the commodity into the chosen language");
             VARIABLES.Add("stolen", "If the cargo is stolen");
         }
 
         [JsonProperty("commodity")]
         public string commodity { get; private set; }
+
+        [JsonProperty("LocalCommodity")]
+        public string LocalCommodity { get; }
+
+
 
         [JsonProperty("stolen")]
         public bool stolen { get; private set; }
@@ -27,6 +34,7 @@ namespace EddiEvents
         public CommodityCollectedEvent(DateTime timestamp, Commodity commodity, bool stolen) : base(timestamp, NAME)
         {
             this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
+            this.LocalCommodity = (commodity == null ? "unknown commodity" : commodity.LocalName);
             this.stolen = stolen;
         }
     }

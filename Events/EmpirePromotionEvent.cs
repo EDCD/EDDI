@@ -15,12 +15,26 @@ namespace EddiEvents
         static EmpirePromotionEvent()
         {
             VARIABLES.Add("rank", "The commander's new Empire rank");
+            VARIABLES.Add("LocalRank", "The commander's new Empire rank translated into the chosen language");
             VARIABLES.Add("femininerank", "The feminine form of the commander's new Empire rank");
         }
 
         [JsonProperty("rating")]
         public string rank { get; private set; }
         public string femininerank { get; private set; }
+
+        [JsonProperty("LocalRank")]
+        public string LocalRank
+        {
+            get
+            {
+                if (rank != null && rank != "")
+                {
+                    return EmpireRating.FromName(rank).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public EmpirePromotionEvent(DateTime timestamp, EmpireRating rating) : base(timestamp, NAME)
         {

@@ -65,12 +65,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="I18NString.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DataGridNumericColumn.cs" />
     <Compile Include="Dates.cs" />
     <Compile Include="Deserializtion.cs" />
     <Compile Include="Diff.cs" />
     <Compile Include="Files.cs" />
+    <Compile Include="I18N.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Net.cs" />
     <Compile Include="ObservableConcurrentDictionary.cs" />
@@ -81,9 +83,13 @@
     <Compile Include="Versioning.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="langs.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

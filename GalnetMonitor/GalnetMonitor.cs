@@ -48,6 +48,11 @@ namespace GalnetMonitor
             return "Galnet monitor";
         }
 
+        public string MonitorLocalName()
+        {
+            return I18N.GetString("galnet_monitor_name");
+        }
+
         /// <summary>
         /// The version of the monitor; shows up in EDDI's logs
         /// </summary>
@@ -61,7 +66,7 @@ namespace GalnetMonitor
         /// </summary>
         public string MonitorDescription()
         {
-            return @"Monitor Galnet for new news items and generate a ""Galnet news published"" event when new items are posted";
+            return I18N.GetString("galnet_monitor_desc");
         }
 
         public bool IsRequired()

@@ -14,11 +14,11 @@
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Vertical" Grid.Column="0" DockPanel.Dock="Top" >
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                    <TextBlock Margin="0, 0, 0, 5" TextWrapping="Wrap" Text="Write text copies of speech to the file %APPDATA%\EDDI\speechresponder.out"></TextBlock>
+                    <TextBlock x:Name="subsLabel" Margin="0, 0, 0, 5" TextWrapping="Wrap" Text="Write text copies of speech to the file %APPDATA%\EDDI\speechresponder.out"></TextBlock>
                     <CheckBox x:Name="subtitlesCheckbox" VerticalAlignment="Center" Margin="5, 0" Checked="subtitlesEnabled" Unchecked="subtitlesDisabled"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" >
-                    <TextBlock Margin="0,5" TextWrapping="Wrap" Text="Do not speak out loud when text is written to the file as above"></TextBlock>
+                    <TextBlock x:Name="subsOnlyLabel" Margin="0,5" TextWrapping="Wrap" Text="Do not speak out loud when text is written to the file as above"></TextBlock>
                     <CheckBox x:Name="subtitlesOnlyCheckbox" Margin="5, 0" VerticalAlignment="Center" Checked="subtitlesOnlyEnabled" Unchecked="subtitlesOnlyDisabled"/>
                 </StackPanel>
 
@@ -26,14 +26,14 @@
             <TextBlock x:Name="defaultText" VerticalAlignment="Top" DockPanel.Dock="Left" Grid.Column="1" TextWrapping="Wrap" Width="Auto" Text="The default personality cannot be modified. If you wish to make changes, create a copy."/>
         </Grid>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5, 0">
-            <TextBlock VerticalAlignment="Center" Text="Active personality"></TextBlock>
+            <TextBlock x:Name="activeLabel" VerticalAlignment="Center" Text="Active personality"></TextBlock>
             <ComboBox Margin="5,0" ItemsSource="{Binding Personalities}" SelectedValue="{Binding Personality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectionChanged="personalityChanged" />
             <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding Personality.Description}"/>
         </StackPanel>
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0,5">
-            <Button Margin="10" HorizontalAlignment="Center" Click="newScriptClicked" IsEnabled="{Binding Path=Personality.IsEditable}">Create new script</Button>
-            <Button Margin="10" HorizontalAlignment="Center" Click="copyPersonalityClicked" >Copy personality</Button>
-            <Button Margin="10" HorizontalAlignment="Center" Click="deletePersonalityClicked" IsEnabled="{Binding Path=Personality.IsEditable}">Delete personality</Button>
+            <Button x:Name="newBtn" Margin="10" HorizontalAlignment="Center" Click="newScriptClicked" IsEnabled="{Binding Path=Personality.IsEditable}">Create new script</Button>
+            <Button x:Name="copyBtn" Margin="10" HorizontalAlignment="Center" Click="copyPersonalityClicked" >Copy personality</Button>
+            <Button x:Name="deleteBtn" Margin="10" HorizontalAlignment="Center" Click="deletePersonalityClicked" IsEnabled="{Binding Path=Personality.IsEditable}">Delete personality</Button>
         </UniformGrid>
         <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding Personality.Scripts}">
             <DataGrid.Columns>

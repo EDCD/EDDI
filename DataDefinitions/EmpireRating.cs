@@ -13,6 +13,14 @@ namespace EddiDataDefinitions
 
         public string edname { get; private set; }
 
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(edname) ?? edname;
+            }
+        }
+
         public string name { get; private set; }
 
         public string femininename { get; private set; }

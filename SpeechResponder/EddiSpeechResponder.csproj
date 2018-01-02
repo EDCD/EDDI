@@ -147,7 +147,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="eddi.json" />
+    <None Include="Help_fr.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Variables.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Help_fr.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Help.md">
@@ -193,7 +199,7 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy /y "$(ProjectDir)eddi.json" "$(ProjectDir)$(OutDir)"</PostBuildEvent>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

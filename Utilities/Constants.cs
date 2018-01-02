@@ -13,18 +13,17 @@ namespace Utilities
 
         public static readonly string DATA_DIR = Environment.GetEnvironmentVariable("AppData") + "\\" + EDDI_NAME;
 
-        public const string ENVIRONMENT_WITCH_SPACE = "Witch space";
-        public const string ENVIRONMENT_SUPERCRUISE = "Supercruise";
-        public const string ENVIRONMENT_NORMAL_SPACE = "Normal space";
+        public static readonly string ENVIRONMENT_WITCH_SPACE = I18N.GetString("witch_space");
+        public static readonly string ENVIRONMENT_SUPERCRUISE = I18N.GetString("supercruise");
+        public static readonly string ENVIRONMENT_NORMAL_SPACE = I18N.GetString("normal_space");
 
-        public const string VEHICLE_SHIP = "Ship";
-        public const string VEHICLE_SRV = "SRV";
-        public const string VEHICLE_FIGHTER = "Fighter";
-
+        public static readonly string VEHICLE_SHIP = I18N.GetString("ship");
+        public static readonly string VEHICLE_SRV = I18N.GetString("srv");
+        public static readonly string VEHICLE_FIGHTER = I18N.GetString("fighter");
         // Physical Constants
         public const int lightSpeedMetersPerSecond = 299792458;
-        public const int solarRadiusMeters = 695500000;
         public const double solAbsoluteMagnitude = 4.83;
+        public const int solarRadiusMeters = 695500000;
         public const double solLuminosity = 3.846e26;
         public const double stefanBoltzmann = 5.670367e-8;
     }

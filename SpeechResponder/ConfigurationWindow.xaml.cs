@@ -45,6 +45,7 @@ namespace EddiSpeechResponder
         public ConfigurationWindow()
         {
             InitializeComponent();
+            I18NForComponents();
             DataContext = this;
 
             ObservableCollection<Personality> personalities = new ObservableCollection<Personality>();
@@ -74,6 +75,20 @@ namespace EddiSpeechResponder
                     break;
                 }
             }
+        }
+
+        private void I18NForComponents()
+        {
+            subsLabel.Text = I18N.GetString("speech_responder_subs");
+            subsOnlyLabel.Text = I18N.GetString("speech_responder_subs_only");
+            defaultText.Text = I18N.GetString("speech_responder_default_text");
+            activeLabel.Text = I18N.GetString("speech_responder_active_personnality");
+            newBtn.Content = I18N.GetString("speech_responder_button_new");
+            copyBtn.Content = I18N.GetString("speech_responder_button_copy");
+            deleteBtn.Content = I18N.GetString("speech_responder_button_delete");
+            scriptsData.Columns[0].Header = I18N.GetString("speech_responder_header_name");
+            scriptsData.Columns[1].Header = I18N.GetString("speech_responder_header_enabled");
+            scriptsData.Columns[2].Header = I18N.GetString("speech_responder_header_description");
         }
 
         private void eddiScriptsUpdated(object sender, RoutedEventArgs e)
@@ -143,8 +158,8 @@ namespace EddiSpeechResponder
         private void deleteScript(object sender, RoutedEventArgs e)
         {
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
-            string messageBoxText = "Are you sure you want to delete the \"" + script.Name + "\" script?";
-            string caption = "Delete Script";
+            string messageBoxText = I18N.GetStringWithArgs("speech_responder_delete_script_message", new string[]{script.Name});
+            string caption = I18N.GetString("speech_responder_delete_script_caption");
             MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
             switch (result)
             {
@@ -229,8 +244,8 @@ namespace EddiSpeechResponder
 
         private void deletePersonalityClicked(object sender, RoutedEventArgs e)
         {
-            string messageBoxText = "Are you sure you want to delete the \"" + Personality.Name + "\" personality?";
-            string caption = "Delete Personality";
+            string messageBoxText = I18N.GetStringWithArgs("speech_responder_delete_personality_message", new string[] { Personality.Name });
+            string caption = I18N.GetString("speech_responder_delete_personality_caption");
             MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
             switch (result)
             {
@@ -280,14 +295,14 @@ namespace EddiSpeechResponder
         {
             if (personality.IsDefault)
             {
-                defaultText.Text = "The default personality cannot be modified. If you wish to make changes, create a copy.";
+                defaultText.Text = I18N.GetString("speech_responder_default_text");
                 defaultText.FontWeight = FontWeights.Bold;
                 defaultText.FontStyle = FontStyles.Italic;
                 defaultText.FontSize = 13;
             }
             else
             {
-                defaultText.Text = "Scripts which are triggered by an event can be disabled but not deleted.";
+                defaultText.Text = I18N.GetString("speech_responder_warning_triggered");
                 defaultText.FontWeight = FontWeights.Normal;
                 defaultText.FontStyle = FontStyles.Italic;
                 defaultText.FontSize = 13;

@@ -1,11 +1,19 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiSpeechService;
+using Utilities;
 
 namespace Tests
 {
     [TestClass]
     public class TranslationTests
     {
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            I18N.Reset();
+            I18N.FallbackLang(); //for tests to works properly, lang needs to by defaultLang (en)
+        }
+
         [TestMethod]
         public void TestTranslateBody1()
         {

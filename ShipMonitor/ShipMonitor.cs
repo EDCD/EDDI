@@ -32,6 +32,11 @@ namespace EddiShipMonitor
             return "Ship monitor";
         }
 
+        public string MonitorLocalName()
+        {
+            return I18N.GetString("ship_monitor_name");
+        }
+
         public string MonitorVersion()
         {
             return "1.0.0";
@@ -39,7 +44,7 @@ namespace EddiShipMonitor
 
         public string MonitorDescription()
         {
-            return "Track information on your ships.";
+            return I18N.GetString("ship_monitor_desc");
         }
 
         public bool IsRequired()

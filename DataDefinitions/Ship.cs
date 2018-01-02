@@ -262,6 +262,15 @@ namespace EddiDataDefinitions
         [JsonIgnore]
         public string EDName { get; set; }
 
+        [JsonIgnore]
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(EDName) ?? EDName;
+            }
+        }
+
         public Ship()
         {
             hardpoints = new List<Hardpoint>();

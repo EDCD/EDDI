@@ -9,7 +9,7 @@ namespace EddiEvents
         public const string NAME = "Location";
         public const string DESCRIPTION = "Triggered when the commander's location is reported, usually when they reload their game.";
         public const string SAMPLE = "{ \"timestamp\":\"2017-10-01T22:03:04Z\", \"event\":\"Location\", \"Docked\":true, \"StationName\":\"Heyerdahl Hub\", \"StationType\":\"Orbis\", \"StarSystem\":\"Alpha Caeli\", \"StarPos\":[45.219,-43.344,-20.125], \"SystemAllegiance\":\"Federation\", \"SystemEconomy\":\"$economy_Agri;\", \"SystemEconomy_Localised\":\"Agriculture\", \"SystemGovernment\":\"$government_Corporate;\", \"SystemGovernment_Localised\":\"Corporate\", \"SystemSecurity\":\"$SYSTEM_SECURITY_high;\", \"SystemSecurity_Localised\":\"High Security\", \"Population\":16796538233, \"Body\":\"Heyerdahl Hub\", \"BodyType\":\"Station\", \"Factions\":[ { \"Name\":\"Labour of Alpha Caeli\", \"FactionState\":\"Famine\", \"Government\":\"Democracy\", \"Influence\":0.056000, \"Allegiance\":\"Independent\", \"PendingStates\":[ { \"State\":\"Boom\", \"Trend\":0 } ] }, { \"Name\":\"Pilots Federation Local Branch\", \"FactionState\":\"None\", \"Government\":\"Democracy\", \"Influence\":0.000000, \"Allegiance\":\"PilotsFederation\" }, { \"Name\":\"Dangarla Creative Corp.\", \"FactionState\":\"None\", \"Government\":\"Corporate\", \"Influence\":0.081000, \"Allegiance\":\"Federation\", \"PendingStates\":[ { \"State\":\"Boom\", \"Trend\":1 }, { \"State\":\"CivilUnrest\", \"Trend\":1 } ] }, { \"Name\":\"Alpha Caeli Gold Organisation\", \"FactionState\":\"Boom\", \"Government\":\"Corporate\", \"Influence\":0.252000, \"Allegiance\":\"Federation\" }, { \"Name\":\"Alpha Caeli Freedom Party\", \"FactionState\":\"None\", \"Government\":\"Dictatorship\", \"Influence\":0.056000, \"Allegiance\":\"Independent\" }, { \"Name\":\"Blue Natural Holdings\", \"FactionState\":\"None\", \"Government\":\"Corporate\", \"Influence\":0.438000, \"Allegiance\":\"Federation\", \"PendingStates\":[ { \"State\":\"Boom\", \"Trend\":1 } ] }, { \"Name\":\"Alpha Caeli Hand Gang\", \"FactionState\":\"Boom\", \"Government\":\"Anarchy\", \"Influence\":0.046000, \"Allegiance\":\"Independent\" }, { \"Name\":\"Aurora\", \"FactionState\":\"Boom\", \"Government\":\"Corporate\", \"Influence\":0.071000, \"Allegiance\":\"Independent\" } ], \"SystemFaction\":\"Blue Natural Holdings\" }";
-        
+
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static LocationEvent()
@@ -26,9 +26,13 @@ namespace EddiEvents
             VARIABLES.Add("allegiance", "The allegiance of the system in which the commander resides");
             VARIABLES.Add("faction", "The faction controlling the system in which the commander resides");
             VARIABLES.Add("factionstate", "The state of the faction controlling the system in which the commander resides");
+            VARIABLES.Add("LocalFactionState", "The translation of the state of the faction into the chosen language");
             VARIABLES.Add("economy", "The economy of the system in which the commander resides");
+            VARIABLES.Add("LocalEconomy", "The translation of the economy type into the chosen language");
             VARIABLES.Add("government", "The government of the system in which the commander resides");
+            VARIABLES.Add("LocalGovernment", "The government translated into the chosen language");
             VARIABLES.Add("security", "The security of the system in which the commander resides");
+            VARIABLES.Add("LocalSecurity", "The security translated into the chosen language");
             VARIABLES.Add("longitude", "The longitude of the commander (if on the ground)");
             VARIABLES.Add("latitude", "The latitude of the commander (if on the ground)");
             VARIABLES.Add("population", "The population of the system to which the commander has jumped");
@@ -58,9 +62,45 @@ namespace EddiEvents
 
         public string economy { get; private set; }
 
+        public string LocalEconomy
+        {
+            get
+            {
+                if (economy != null && economy != "")
+                {
+                    return Economy.FromName(economy).LocalName;
+                }
+                else return null;
+            }
+        }
+
         public string government { get; private set; }
 
+        public string LocalGovernment
+        {
+            get
+            {
+                if (government != null && government != "")
+                {
+                    return Government.FromName(government).LocalName;
+                }
+                else return null;
+            }
+        }
+
         public string security { get; private set; }
+
+        public string LocalSecurity
+        {
+            get
+            {
+                if (security != null && security != "")
+                {
+                    return SecurityLevel.FromName(security).LocalName;
+                }
+                else return null;
+            }
+        }
 
         public long? population { get; private set; }
 

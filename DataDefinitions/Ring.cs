@@ -1,4 +1,7 @@
-﻿namespace EddiDataDefinitions
+﻿using Newtonsoft.Json;
+using Utilities;
+
+namespace EddiDataDefinitions
 {
     /// <summary>
     /// A stellar or planetary ring
@@ -10,6 +13,17 @@
 
         /// <summary>The composition of the ring</summary>
         public string composition { get; set; }
+
+        /// <summary>The composition of the ring translated in chosen language</summary>
+        [JsonIgnore]
+        public string LocalComposition
+        {
+            get
+            {
+                return I18N.GetString(composition) ?? composition;
+            }
+        }
+
 
         /// <summary>The mass of the ring, in megatonnes</summary>
         public decimal mass { get; set; }

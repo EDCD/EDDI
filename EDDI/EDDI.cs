@@ -1,4 +1,4 @@
-﻿using EddiCompanionAppService;
+using EddiCompanionAppService;
 using EddiDataDefinitions;
 using EddiDataProviderService;
 using EddiEvents;
@@ -50,6 +50,7 @@ namespace Eddi
             // Use invariant culture to ensure that we use . rather than , for our separator when writing out decimals
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+            InitI18N();
         }
 
         private static readonly object instanceLock = new object();
@@ -69,6 +70,21 @@ namespace Eddi
                     }
                 }
                 return instance;
+            }
+        }
+
+        private static void InitI18N()
+        {
+            EDDIConfiguration conf = EDDIConfiguration.FromFile();
+            if (conf.Lang == null)
+            {
+                I18N.FallbackLang();
+                conf.Lang = I18N.GetLang();
+                conf.ToFile();
+            }
+            else
+            {
+                I18N.SetLang(conf.Lang);
             }
         }
 
@@ -255,7 +271,7 @@ namespace Eddi
                         // There is a mandatory update available
                         if (!FromVA)
                         {
-                            SpeechService.Instance.Say(null, "Mandatory Eddi upgrade to " + info.version.Replace(".", " point ") + " is required.", false);
+                            SpeechService.Instance.Say(null, I18N.GetStringWithArgs("mandatory_upgrade", new string[] { info.version.Replace(".", " " + I18N.GetString("point") + " ") }), false);
                         }
                         UpgradeRequired = true;
                         UpgradeLocation = info.url;
@@ -268,7 +284,7 @@ namespace Eddi
                         // There is an update available
                         if (!FromVA)
                         {
-                            SpeechService.Instance.Say(null, "Eddi version " + info.version.Replace(".", " point ") + " is now available.", false);
+                            SpeechService.Instance.Say(null, I18N.GetStringWithArgs("update_available", new string[]{info.version.Replace(".", " " + I18N.GetString("point") + " ") }), false);
                         }
                         UpgradeAvailable = true;
                         UpgradeLocation = info.url;
@@ -278,7 +294,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
+                SpeechService.Instance.Say(null, I18N.GetString("problem_external_data_services"), false);
                 Logging.Warn("Failed to access api.eddp.co", ex);
             }
         }
@@ -302,7 +318,7 @@ namespace Eddi
                     if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
                     {
                         Logging.Warn("This version of Eddi is too old to operate; please upgrade at " + info.url);
-                        SpeechService.Instance.Say(null, "This version of Eddi is too old to operate; please upgrade.", true);
+                        SpeechService.Instance.Say(null, I18N.GetString("problem_old_version"), true);
                         UpgradeRequired = true;
                         UpgradeLocation = info.url;
                         UpgradeVersion = info.version;
@@ -311,7 +327,7 @@ namespace Eddi
                     if (Versioning.Compare(info.version, Constants.EDDI_VERSION) == 1)
                     {
                         // There is an update available
-                        SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", true);
+                        SpeechService.Instance.Say(null, I18N.GetStringWithArgs("version_available", new string[] { info.version.Replace(".", " "+I18N.GetString("point")+" ") }), true);
                         UpgradeAvailable = true;
                         UpgradeLocation = info.url;
                         UpgradeVersion = info.version;
@@ -326,7 +342,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
+                SpeechService.Instance.Say(null, I18N.GetString("problem_external_data_services"), false);
                 Logging.Warn("Failed to access " + Constants.EDDI_SERVER_URL, ex);
             }
             return true;
@@ -341,11 +357,11 @@ namespace Eddi
                 if (UpgradeLocation != null)
                 {
                     Logging.Info("Downloading upgrade from " + UpgradeLocation);
-                    SpeechService.Instance.Say(null, "Downloading upgrade.", true);
+                    SpeechService.Instance.Say(null, I18N.GetString("downloading_upgrade"), true);
                     string updateFile = Net.DownloadFile(UpgradeLocation, @"EDDI-update.exe");
                     if (updateFile == null)
                     {
-                        SpeechService.Instance.Say(null, "Download failed.  Please try again later.", true);
+                        SpeechService.Instance.Say(null, I18N.GetString("download_failed"), true);
                     }
                     else
                     {
@@ -355,7 +371,7 @@ namespace Eddi
                         Logging.Info("Downloaded update to " + updateFile);
                         Logging.Info("Path is " + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                         File.SetAttributes(updateFile, FileAttributes.Normal);
-                        SpeechService.Instance.Say(null, "Starting upgrade.", true);
+                        SpeechService.Instance.Say(null, I18N.GetString("starting_upgrade"), true);
                         Logging.Info("Starting upgrade.");
 
                         Process.Start(updateFile, @"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
@@ -364,7 +380,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, "Upgrade failed.  Please try again later.", true);
+                SpeechService.Instance.Say(null, I18N.GetString("upgrade_failed"), true);
                 Logging.Error("Upgrade failed", ex);
             }
         }
@@ -1552,7 +1568,7 @@ namespace Eddi
         {
             if (Cmdr != null)
             {
-                Cmdr.title = "Commander";
+                Cmdr.title = I18N.GetString("commander");
                 if (CurrentStarSystem != null)
                 {
                     if (CurrentStarSystem.allegiance == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
@@ -1625,7 +1641,7 @@ namespace Eddi
                 }
                 catch (FileLoadException flex)
                 {
-                    string msg = "Failed to load monitor. Please ensure that " + dir.FullName + " is not on a network share, or itself shared";
+                    string msg = I18N.GetStringWithArgs("problem_load_monitor_file", new string[] {dir.FullName});
                     Logging.Error(msg, flex);
                     SpeechService.Instance.Say(null, msg, false);
                 }
@@ -1633,7 +1649,7 @@ namespace Eddi
                 {
                     string msg = $"Failed to load monitor: {file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}";
                     Logging.Error(msg, ex);
-                    SpeechService.Instance.Say(null, msg, false);
+                    SpeechService.Instance.Say(null, I18N.GetStringWithArgs("problem_load_monitor", new string[] { msg }), false);
                 }
             }
             return monitors;

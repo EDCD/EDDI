@@ -1,4 +1,4 @@
-﻿using Eddi;
+using Eddi;
 using EddiDataDefinitions;
 using EddiEvents;
 using EddiShipMonitor;
@@ -2219,12 +2219,12 @@ namespace EddiJournalMonitor
                                 string item = getString(data, "Module");
                                 // Item might be a module
                                 Module module = ModuleDefinitions.fromEDName(item);
+                                string mount = null;
                                 if (module != null)
                                 {
                                     if (module.mount != null)
                                     {
                                         // This is a weapon so provide a bit more information
-                                        string mount;
                                         if (module.mount == Module.ModuleMount.Fixed)
                                         {
                                             mount = "fixed";
@@ -2248,7 +2248,7 @@ namespace EddiJournalMonitor
                                 bool repairedfully = getBool(data, "FullyRepaired");
                                 decimal health = getDecimal(data, "Health");
 
-                                events.Add(new ShipAfmuRepairedEvent(timestamp, item, repairedfully, health) { raw = line });
+                                events.Add(new ShipAfmuRepairedEvent(timestamp, item, mount, module, repairedfully, health) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2258,12 +2258,12 @@ namespace EddiJournalMonitor
                                 string item = getString(data, "Item");
                                 // Item might be a module
                                 Module module = ModuleDefinitions.fromEDName(item);
+                                string mount = null;
                                 if (module != null)
                                 {
                                     if (module.mount != null)
                                     {
                                         // This is a weapon so provide a bit more information
-                                        string mount;
                                         if (module.mount == Module.ModuleMount.Fixed)
                                         {
                                             mount = "fixed";
@@ -2285,7 +2285,7 @@ namespace EddiJournalMonitor
                                 }
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
-                                events.Add(new ShipRepairedEvent(timestamp, item, price) { raw = line });
+                                events.Add(new ShipRepairedEvent(timestamp, item, mount, module, price) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2304,7 +2304,7 @@ namespace EddiJournalMonitor
                                 object val;
                                 data.TryGetValue("Cost", out val);
                                 long price = (long)val;
-                                events.Add(new ShipRepairedEvent(timestamp, null, price) { raw = line });
+                                events.Add(new ShipRepairedEvent(timestamp, null, null, null, price) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2688,6 +2688,11 @@ namespace EddiJournalMonitor
             return "Journal monitor";
         }
 
+        public string MonitorLocalName()
+        {
+            return I18N.GetString("journal_monitor_name");
+        }
+
         public string MonitorVersion()
         {
             return "1.0.0";
@@ -2695,7 +2700,7 @@ namespace EddiJournalMonitor
 
         public string MonitorDescription()
         {
-            return "Monitor Elite: Dangerous' journal.log for many common events.  This should not be disabled unless you are sure you know what you are doing, as it will result in many functions inside EDDI no longer working";
+            return I18N.GetString("journal_monitor_desc");
         }
 
         public bool IsRequired()

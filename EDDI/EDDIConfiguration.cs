@@ -28,6 +28,9 @@ namespace Eddi
         [JsonProperty("exporttarget")]
         public string exporttarget { get; set; } = "Coriolis";
 
+        [JsonProperty("lang")]
+        public string Lang { get; set; }
+
         [JsonIgnore]
         private string dataPath;
 

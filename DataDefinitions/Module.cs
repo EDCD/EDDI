@@ -1,4 +1,7 @@
-﻿namespace EddiDataDefinitions
+﻿using Newtonsoft.Json;
+using Utilities;
+
+namespace EddiDataDefinitions
 {
     public class Module
     {
@@ -27,6 +30,15 @@
         public string EDName { get; set; }
         // The ID in eddb.io
         public long EDDBID { get; set; }
+
+        [JsonIgnore]
+        public string LocalName
+        {
+            get
+            {
+                return I18N.GetString(EDName) ?? EDName;
+            }
+        }
 
         public Module() { }
 
