@@ -109,13 +109,13 @@ namespace EddiShipMonitor
         private void shipsUpdated(object sender, DataTransferEventArgs e)
         {
             // Update the ship monitor's information
-            monitor.writeShips();
+            monitor.Save();
         }
 
         private void shipsUpdated(object sender, SelectionChangedEventArgs e)
         {
             // Update the ship monitor's information
-            monitor.writeShips();
+            monitor.Save();
         }
     }
 

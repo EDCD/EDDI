@@ -81,6 +81,11 @@ namespace EddiShipMonitor
             return new ConfigurationWindow();
         }
 
+        public void Save()
+        {
+            uiSyncContext.Post(_ => writeShips(), null);
+        }
+
         /// <summary>
         /// We pre-handle the events to ensure that the data is up-to-date when it hits the responders
         /// </summary>
@@ -803,7 +808,7 @@ namespace EddiShipMonitor
             return variables;
         }
 
-        public void writeShips()
+        private void writeShips()
         {
             lock (shipyardLock)
             {
