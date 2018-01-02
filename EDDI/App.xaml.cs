@@ -27,13 +27,12 @@ namespace Eddi
                 app.Run(mainWindow);
                 eddiMutex.ReleaseMutex();
             }
-            else
-            {
-                MessageBox.Show("Please close the EDDI application and re-start VoiceAttack.",
-                                "EDDI application already running",
-                                MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-
+            //else
+            //{
+            //    MessageBox.Show("Please close the EDDI application and re-start VoiceAttack.",
+            //                    "EDDI application already running",
+            //                    MessageBoxButton.OK, MessageBoxImage.Information);
+            //}
         }
 
         //private static Mutex eddiMutex = null;

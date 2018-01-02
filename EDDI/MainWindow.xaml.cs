@@ -25,9 +25,7 @@ namespace Eddi
     public partial class MainWindow : Window
     {
         private Profile profile;
-
         private bool fromVA;
-
         public MainWindow() : this(false) { }
 
         private void SaveWindowState()
@@ -650,6 +648,19 @@ namespace Eddi
             speechConfiguration.EnableIcao = enableIcaoCheckbox.IsChecked.Value;
             speechConfiguration.ToFile();
             SpeechService.Instance.ReloadConfiguration();
+        }
+
+        public bool MinimizeCheck()
+        {
+            bool wasMinimized = false;
+
+            if (WindowState == WindowState.Minimized)
+            {
+                WindowState = WindowState.Normal;
+                wasMinimized = true;
+            }
+
+            return wasMinimized;
         }
 
         protected override void OnClosed(EventArgs e)
