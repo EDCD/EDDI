@@ -12,6 +12,7 @@ namespace Utilities
         public const string EDDI_SERVER_URL = "http://edcd.github.io/EDDP/";
 
         public static readonly string DATA_DIR = Environment.GetEnvironmentVariable("AppData") + "\\" + EDDI_NAME;
+        public static readonly string USER_CONCURRENCY_TOKEN = EDDI_SERVER_URL + "/EDDI/" + Environment.GetEnvironmentVariable("UserName");
 
         public const string ENVIRONMENT_WITCH_SPACE = "Witch space";
         public const string ENVIRONMENT_SUPERCRUISE = "Supercruise";
