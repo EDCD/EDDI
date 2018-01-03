@@ -1,7 +1,7 @@
 ﻿# CHANGE LOG
 
 ### 2.4.6-b3
-
+  * Fixed a bug that would cause EDDI to write to the shipyard before it had finished processing shipyard related actions (adding and removing ships)
 
 ### 2.4.6-b2
   * Core
