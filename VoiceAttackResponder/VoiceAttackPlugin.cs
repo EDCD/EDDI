@@ -55,8 +55,9 @@ namespace EddiVoiceAttackResponder
                 {
                     vaProxy.WriteToLog("An instance of the EDDI application is already running.", "red");
 
-                    MessageBox.Show("Close the open EDDI application and click OK.",
-                                    "EDDI Instance Running",
+                    MessageBox.Show("An instance of EDDI is already running. Please close\r\n" +
+                                    "the open EDDI application and click OK to continue.",
+                                    "EDDI Instance Exists",
                                     MessageBoxButton.OK, MessageBoxImage.Information);
 
                     eddiMutex.Close();
@@ -351,7 +352,7 @@ namespace EddiVoiceAttackResponder
             SpeechService.Instance.ShutUp();
             EDDI.Instance.Stop();
 
-            if (eddiMutex != null)
+            if (null != eddiMutex)
             {
                 eddiMutex.ReleaseMutex();
                 eddiMutex = null;
@@ -423,14 +424,14 @@ namespace EddiVoiceAttackResponder
         private static Mutex eddiMutex = null;
         private static MainWindow configWindow = null;
         private static bool configWinRunning = false;
-        private static Thread thread;
+        private static Thread configThread = null;
 
         private static void InvokeConfiguration(ref dynamic vaProxy)
         {
             // Make sure there's only one instance of the configuration UI
             if (!configWinRunning)
             {
-                thread = new Thread(() =>
+                configThread = new Thread(() =>
                 {
                     try
                     {
@@ -449,9 +450,9 @@ namespace EddiVoiceAttackResponder
                     }
                     configWindow = null;
                 });
-                thread.SetApartmentState(ApartmentState.STA);
-                thread.IsBackground = true;
-                thread.Start();
+                configThread.SetApartmentState(ApartmentState.STA);
+                configThread.IsBackground = true;
+                configThread.Start();
                 configWinRunning = true;
             }
             else
@@ -471,7 +472,7 @@ namespace EddiVoiceAttackResponder
         private static void configClosed(object sender, EventArgs e)
         {
             configWinRunning = false;
-            Dispatcher.FromThread(thread).InvokeShutdown();
+            Dispatcher.FromThread(configThread).InvokeShutdown();
         }
 
         /// <summary>Force-update EDDI's information</summary>
