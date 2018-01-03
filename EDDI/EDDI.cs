@@ -42,6 +42,10 @@ namespace Eddi
 
         public bool inBeta { get; private set; } = false;
 
+        private Mutex perUserMutex; // to stop VA and standalone instances of EDDI fighting over the data files
+        const string localisedMultipleInstanceAlertTitle = "EDDI is already running";
+        const string localisedMultipleInstanceAlertText = "It looks like EDDI is already running, perhaps in VoiceAttack.\r\n\r\nClose the other instance and try again.";
+
         static EDDI()
         {
             // Set up our app directory
@@ -124,6 +128,15 @@ namespace Eddi
         {
             try
             {
+                string mutexName = Utilities.Constants.USER_CONCURRENCY_TOKEN;
+                perUserMutex = new Mutex(false, mutexName);
+                if (!perUserMutex.WaitOne(0))
+                {
+                    Logging.Warn("Duplicate per-user instance of EDDI launched, bailing out.");
+                    System.Windows.MessageBox.Show(localisedMultipleInstanceAlertText, localisedMultipleInstanceAlertTitle);
+                    System.Environment.Exit(0); // exit with extreme prejudice
+                }
+
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
 
                 // Exception handling

@@ -2,10 +2,13 @@
 
 ### 2.4.6-b3
   * Core
+    * Running multiple instances of EDDI (e.g. both standalone and VoiceAttack) for the same Windows user has been found to mess up your EDDI's storage directory, so EDDI will now politely warn and exit if you try to do that.
+  * Layout
     * Improved window size and position handling for multi-display setups. 
     * Minimum window size refined to match designed window size. 
     * If EDDI is run as a standalone app, its entire window state is preserved. If EDDI is invoked via the VoiceAttack 'Configure EDDI' command, only the maximized state is preserved.
-  * Fixed a bug that would cause EDDI to write to the shipyard before it had finished processing shipyard related actions (adding and removing ships).
+  * Shipyard
+    * Speculative fix for a bug that would cause EDDI to write to the shipyard before it had finished processing shipyard related actions (adding and removing ships). Probably the above fix that bars multiple instances will prevent it.
 
 ### 2.4.6-b2
   * Core
