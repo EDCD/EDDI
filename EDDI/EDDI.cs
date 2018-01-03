@@ -155,31 +155,7 @@ namespace Eddi
                 monitors = findMonitors();
                 responders = findResponders();
 
-                // Set up the app service
-                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
-                {
-                    // Carry out initial population of profile
-                    try
-                    {
-                        refreshProfile();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Debug("Failed to obtain profile: " + ex);
-                    }
-                }
-
-                Cmdr.insurance = configuration.Insurance;
-                Cmdr.gender = configuration.Gender;
-                if (Cmdr.name != null)
-                {
-                    Logging.Info("EDDI access to the companion app is enabled");
-                }
-                else
-                {
-                    // If InvokeUpdatePlugin failed then it will have have left an error message, but this once we ignore it
-                    Logging.Info("EDDI access to the companion app is disabled");
-                }
+                SetupCompanionAPI(configuration);
 
                 SetupEDSM();
 
@@ -191,6 +167,35 @@ namespace Eddi
             catch (Exception ex)
             {
                 Logging.Error("Failed to initialise", ex);
+            }
+        }
+
+        private void SetupCompanionAPI(EDDIConfiguration configuration)
+        {
+            // Set up the companion app service
+            if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+            {
+                // Carry out initial population of profile
+                try
+                {
+                    refreshProfile();
+                }
+                catch (Exception ex)
+                {
+                    Logging.Debug("Failed to obtain profile: " + ex);
+                }
+            }
+
+            Cmdr.insurance = configuration.Insurance;
+            Cmdr.gender = configuration.Gender;
+            if (Cmdr.name != null)
+            {
+                Logging.Info("EDDI access to the companion app is enabled");
+            }
+            else
+            {
+                // If InvokeUpdatePlugin failed then it will have have left an error message, but this once we ignore it
+                Logging.Info("EDDI access to the companion app is disabled");
             }
         }
 
