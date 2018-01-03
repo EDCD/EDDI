@@ -43,26 +43,23 @@ namespace EddiVoiceAttackResponder
         public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
         public static Thread updaterThread = null;
 
-        // Allow only one instance of the EDDI configuration UI
-        private static bool firstOwner = false;
-        private static Mutex eddiMutex = null;
-
         public static void VA_Init1(dynamic vaProxy)
         {
             Logging.Info("Initialising EDDI VoiceAttack plugin");
 
             while (!firstOwner)
             {
-                eddiMutex = new Mutex(true, "{F1F85B96-14B8-45E4-AD19-0B2FCD6F6CF8}", out firstOwner);
+                eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out firstOwner);
 
                 if (!firstOwner)
                 {
-                    vaProxy.WriteToLog("A stand-alone EDDI application is currently running.", "red");
+                    vaProxy.WriteToLog("An instance of the EDDI application is already running.", "red");
 
-                    MessageBox.Show("Please close the EDDI application and re-start VoiceAttack.",
-                                    "EDDI application already running",
+                    MessageBox.Show("Close the open EDDI application and click OK.",
+                                    "EDDI Instance Running",
                                     MessageBoxButton.OK, MessageBoxImage.Information);
 
+                    eddiMutex.Close();
                     eddiMutex = null;
                     Thread.Sleep(2000);
                 }
@@ -337,21 +334,22 @@ namespace EddiVoiceAttackResponder
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
 
-            if(1 == Interlocked.Exchange(ref running, 0))
+            if(configWinRunning)
             {
                 try
                 {
                     configWindow.Dispatcher.BeginInvoke((Action)configWindow.Close);
 
                     while (!configWindow.Dispatcher.HasShutdownFinished)
-                        Thread.Sleep(500);
+                        Thread.Sleep(50);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Logging.Debug("EDDI configuration UI close from VA failed." + e.Message + ".");
+                    Logging.Debug("EDDI configuration UI close from VA failed." + ex + ".");
                 }
             }
 
+            configWinRunning = false;
             updaterThread.Abort();
             SpeechService.Instance.ShutUp();
             EDDI.Instance.Stop();
@@ -393,37 +391,7 @@ namespace EddiVoiceAttackResponder
                         InvokeStarMapSystemComment(ref vaProxy);
                         break;
                     case "configuration":
-                        // Zero indicates that the EDDI configure UI is not running
-                        if (0 == Interlocked.Exchange(ref running, 1))
-                        {
-                            thread = new Thread(() =>
-                            {
-                                try
-                                {
-                                    configWindow = new MainWindow(true);
-                                    configWindow.Closed += configClosed;
-                                    configWindow.Show();
-                                    Dispatcher.Run();
-                                }
-                                catch (ThreadAbortException)
-                                {
-                                    Logging.Debug("Thread aborted");
-                                }
-                                catch (Exception ex)
-                                {
-                                    Logging.Warn("Show configuration window failed", ex);
-                                }
-                                configWindow = null;
-                            });
-                            thread.SetApartmentState(ApartmentState.STA);
-                            thread.IsBackground = true;
-                            thread.Start();
-                        }
-                        else
-                        {
-                            vaProxy.WriteToLog("EDDI configuration window already open.", "red");
-                            configWindow.Dispatcher.Invoke(configWindow.MinimizeCheck);
-                        }
+                        InvokeConfiguration(ref vaProxy);
                         break;
                     case "shutup":
                         InvokeShutUp(ref vaProxy);
@@ -453,11 +421,47 @@ namespace EddiVoiceAttackResponder
         {
         }
 
+        // Allow only one instance of the EDDI configuration UI
+        private static bool firstOwner = false;
+        private static Mutex eddiMutex = null;
         private static MainWindow configWindow = null;
-        private static int running = 0;
+        private static bool configWinRunning = false;
         private static Thread thread;
+
         private static void InvokeConfiguration(ref dynamic vaProxy)
         {
+            // Zero indicates that the EDDI configure UI is not running
+            if (!configWinRunning)
+            {
+                thread = new Thread(() =>
+                {
+                    try
+                    {
+                        configWindow = new MainWindow(true);
+                        configWindow.Closed += configClosed;
+                        configWindow.Show();
+                        Dispatcher.Run();
+                    }
+                    catch (ThreadAbortException)
+                    {
+                        Logging.Debug("Thread aborted");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Warn("Show configuration window failed", ex);
+                    }
+                    configWindow = null;
+                });
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.IsBackground = true;
+                thread.Start();
+                configWinRunning = true;
+            }
+            else
+            {
+                vaProxy.WriteToLog("EDDI configuration window already open.", "red");
+                configWindow.Dispatcher.Invoke(configWindow.MinimizeCheck);
+            }
         }
 
         private static void configMinimizeCheck(object sender, bool wasMinimized)
@@ -468,7 +472,7 @@ namespace EddiVoiceAttackResponder
 
         private static void configClosed(object sender, EventArgs e)
         {
-            running = 0;
+            configWinRunning = false;
             Dispatcher.FromThread(thread).InvokeShutdown();
         }
 
