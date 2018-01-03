@@ -106,13 +106,22 @@ namespace Eddi
                 }
 
                 // Check whether the rectangle is completely visible on-screen
-                Rectangle r = new Rectangle((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height);
+                bool testUpperLeft = false;
+                bool testLowerRight = false;
                 foreach (Screen screen in Screen.AllScreens)
                 {
-                    if (screen.Bounds.IntersectsWith(r) && screen.Bounds.Width >= rect.X + rect.Width && screen.Bounds.Height >= rect.Y + rect.Height)
+                    if (rect.X >= screen.Bounds.X && rect.Y >= screen.Bounds.Y) // The upper and left bounds fall on a valid screen
                     {
-                        return true;
+                        testUpperLeft = true;
                     }
+                    if (screen.Bounds.Width >= rect.X + rect.Width && screen.Bounds.Height >= rect.Y + rect.Height) // The lower and right bounds fall on a valid screen 
+                    {
+                        testLowerRight = true;
+                    }
+                }
+                if (testUpperLeft && testLowerRight)
+                {
+                    return true;
                 }
                 return false;
             }
