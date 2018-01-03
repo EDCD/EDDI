@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,6 +27,7 @@ namespace EddiShipMonitor
         private int? currentShipId;
         private int? currentProfileId;
         private static readonly object shipyardLock = new object();
+        SynchronizationContext uiSyncContext;
 
         public string MonitorName()
         {
@@ -49,6 +51,7 @@ namespace EddiShipMonitor
 
         public ShipMonitor()
         {
+            uiSyncContext = SynchronizationContext.Current;
             readShips();
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
         }
@@ -76,6 +79,11 @@ namespace EddiShipMonitor
         public UserControl ConfigurationTabItem()
         {
             return new ConfigurationWindow();
+        }
+
+        public void Save()
+        {
+            uiSyncContext.Post(_ => writeShips(), null);
         }
 
         /// <summary>
@@ -561,7 +569,9 @@ namespace EddiShipMonitor
         private void handleModulesStoredEvent(ModulesStoredEvent @event)
         {
             foreach (string slot in @event.slots)
+            {
                 RemoveModule((int)@event.shipid, slot);
+            }
             writeShips();
         }
 
@@ -572,8 +582,7 @@ namespace EddiShipMonitor
             string fromSlot = @event.fromslot;
             string toSlot = @event.toslot;
 
-            // Module is a hardpoint
-            if (fromSlot.Contains("Hardpoint"))
+            if (fromSlot.Contains("Hardpoint")) // Module is a hardpoint
             {
                 // Build new dictionary of ship hardpoints, excepting the swapped hardpoints
                 // Save ship hardpoints which match the 'From' and 'To' slots
@@ -582,9 +591,14 @@ namespace EddiShipMonitor
                 foreach (Hardpoint hpt in ship.hardpoints)
                 {
                     if (hpt.name == fromSlot)
+                    {
                         hpt.name = toSlot;
+                    }
+
                     if (hpt.name == toSlot)
+                    {
                         hpt.name = fromSlot;
+                    }
 
                     hardpoints.Add(hpt.name, hpt);
                 }
@@ -595,16 +609,15 @@ namespace EddiShipMonitor
                 {
                     for (int i = 1; i < 12; i++)
                     {
-                        Hardpoint hpt;
-                        hardpoints.TryGetValue(size + "Hardpoint" + i, out hpt);
+                        hardpoints.TryGetValue(size + "Hardpoint" + i, out Hardpoint hpt);
                         if (hpt != null)
+                        {
                             ship.hardpoints.Add(hpt);
+                        }
                     }
                 }
             }
-
-            //Module is a compartment
-            else
+            else //Module is a compartment
             {
                 // Build new dictionary of ship compartments, excepting the swapped compartments
                 // Save ship compartments which match the 'From' and 'To' slots
@@ -613,9 +626,14 @@ namespace EddiShipMonitor
                 foreach (Compartment cpt in ship.compartments)
                 {
                     if (cpt.name == fromSlot)
+                    {
                         cpt.name = toSlot;
+                    }
+
                     if (cpt.name == toSlot)
+                    {
                         cpt.name = fromSlot;
+                    }
 
                     compartments.Add(cpt.name, cpt);
                 }
@@ -623,20 +641,24 @@ namespace EddiShipMonitor
                 // Clear ship compartments and repopulate in correct order
                 ship.compartments.Clear();
                 for (int i = 1; i <= 12; i++)
+                {
                     for (int j = 1; j <= 8; j++)
                     {
-                        Compartment cpt;
-                        compartments.TryGetValue("Slot" + i.ToString("00") + "_Size" + j, out cpt);
+                        compartments.TryGetValue("Slot" + i.ToString("00") + "_Size" + j, out Compartment cpt);
                         if (cpt != null)
+                        {
                             ship.compartments.Add(cpt);
+                        }
                     }
+                }
 
                 for (int i = 1; i <= 3; i++)
                 {
-                    Compartment cpt;
-                    compartments.TryGetValue("Military" + i.ToString("00"), out cpt);
+                    compartments.TryGetValue("Military" + i.ToString("00"), out Compartment cpt);
                     if (cpt != null)
+                    {
                         ship.compartments.Add(cpt);
+                    }
                 }
             }
             writeShips();
@@ -731,17 +753,17 @@ namespace EddiShipMonitor
                             // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
                             // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
                             JObject cargoHatchModule = new JObject
-                        {
-                            { "on", ship.cargohatch.enabled },
-                            { "priority", ship.cargohatch.priority },
-                            { "value", ship.cargohatch.price },
-                            { "health", ship.cargohatch.health },
-                            { "name", "ModularCargoBayDoor" }
-                        };
+                            {
+                                { "on", ship.cargohatch.enabled },
+                                { "priority", ship.cargohatch.priority },
+                                { "value", ship.cargohatch.price },
+                                { "health", ship.cargohatch.health },
+                                { "name", "ModularCargoBayDoor" }
+                            };
                             JObject cargoHatchSlot = new JObject
-                        {
-                            { "module", cargoHatchModule }
-                        };
+                            {
+                                { "module", cargoHatchModule }
+                            };
                             JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
                             parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
                             ship.raw = parsedRaw.ToString(Formatting.None);
@@ -756,7 +778,9 @@ namespace EddiShipMonitor
             {
                 Ship profileShip = profileShipyard.FirstOrDefault(s => s.LocalId == ship.LocalId);
                 if (profileShip == null)
+                {
                     RemoveShip(ship.LocalId);
+                }
             }
 
             // Add ships from the Profile Shipyard that are not found in the Shipyard 
@@ -767,10 +791,10 @@ namespace EddiShipMonitor
                 if (ship == null)
                 {
                     // This is a new ship, add it to the shipyard
-                    ship = profileShip;
-                    AddShip(ship);
+                    AddShip(profileShip);
                 }
             }
+
             writeShips();
         }
 
@@ -784,7 +808,7 @@ namespace EddiShipMonitor
             return variables;
         }
 
-        public void writeShips()
+        private void writeShips()
         {
             lock (shipyardLock)
             {
@@ -806,22 +830,10 @@ namespace EddiShipMonitor
                 ShipMonitorConfiguration configuration = ShipMonitorConfiguration.FromFile();
 
                 // Build a new shipyard
-                List<Ship> newShipyard = new List<Ship>();
-                foreach (Ship ship in configuration.shipyard)
-                {
-                    newShipyard.Add(ship);
-                }
-
-                // Now order the list by model
-                newShipyard = newShipyard.OrderBy(s => s.model).ToList();
+                List<Ship> newShiplist = configuration.shipyard.OrderBy(s => s.model).ToList();
 
                 // Update the shipyard
-                shipyard.Clear();
-                foreach (Ship ship in newShipyard)
-                {
-                    AddShip(ship);
-                }
-
+                shipyard = new ObservableCollection<Ship>(newShiplist);
                 currentShipId = configuration.currentshipid;
             }
         }
@@ -834,43 +846,27 @@ namespace EddiShipMonitor
             }
 
             // Ensure that we have a role for this ship
-
             if (ship.role == null)
             {
                 ship.role = Role.MultiPurpose;
             }
 
-            // If we were started from VoiceAttack then we might not have an application; check here and create if it doesn't exist
-            if (Application.Current == null)
-            {
-                new Application();
-            }
-
-            // Run this on the dispatcher to ensure that we can update it whilst reflecting changes in the UI
-            if (Application.Current.Dispatcher.CheckAccess())
-            {
-                _AddShip(ship);
-            }
-            else
-            {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                {
-                    _AddShip(ship);
-                }));
-            }
+            // Run this on the UI syncContext to ensure that we can update it whilst reflecting changes in the UI
+            uiSyncContext.Post(_ => _AddShip(ship), null);
         }
 
         private void _AddShip(Ship ship)
         {
+            if (ship == null)
+            {
+                return;
+            }
             lock (shipyardLock)
             {
-                if (ship == null)
-                {
-                    return;
-                }
                 // Remove the ship first (just in case we are trying to add a ship that already exists)
                 RemoveShip(ship.LocalId);
                 shipyard.Add(ship);
+                writeShips();
             }
         }
 
@@ -879,17 +875,12 @@ namespace EddiShipMonitor
         /// </summary>
         private void RemoveShip(int? localid)
         {
-            if (Application.Current.Dispatcher.CheckAccess())
+            if(localid == null)
             {
-                _RemoveShip(localid);
+                return;
             }
-            else
-            {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                {
-                    _RemoveShip(localid);
-                }));
-            }
+            // Run this on the UI syncContext to ensure that we can update it whilst reflecting changes in the UI
+            uiSyncContext.Post(_ => _RemoveShip(localid), null);
         }
 
         /// <summary>
@@ -897,17 +888,19 @@ namespace EddiShipMonitor
         /// </summary>
         private void _RemoveShip(int? localid)
         {
+            if (localid == null)
+            {
+                return;
+            }
             lock (shipyardLock)
             {
-                if (localid.HasValue)
+                for (int i = 0; i < shipyard.Count; i++)
                 {
-                    for (int i = 0; i < shipyard.Count; i++)
+                    if (shipyard[i].LocalId == localid)
                     {
-                        if (shipyard[i].LocalId == localid)
-                        {
-                            shipyard.RemoveAt(i);
-                            break;
-                        }
+                        shipyard.RemoveAt(i);
+                        writeShips();
+                        break;
                     }
                 }
             }
@@ -918,8 +911,9 @@ namespace EddiShipMonitor
         /// </summary>
         public Ship GetCurrentShip()
         {
-            EDDI.Instance.CurrentShip = GetShip(currentShipId);
-            return GetShip(currentShipId);
+            Ship currentShip = GetShip(currentShipId);
+            EDDI.Instance.CurrentShip = currentShip;
+            return currentShip;
         }
 
         /// <summary>
@@ -931,7 +925,12 @@ namespace EddiShipMonitor
             {
                 return null;
             }
-            return shipyard.FirstOrDefault(s => s.LocalId == localId);
+            Ship ship;
+            lock (shipyardLock)
+            {
+                ship = shipyard.FirstOrDefault(s => s.LocalId == localId);
+            }
+            return ship;
         }
 
         public void SetCurrentShip(int? localId, string model = null)
@@ -969,6 +968,7 @@ namespace EddiShipMonitor
                     ship.station = null;
                     EDDI.Instance.CurrentShip = ship;
                 }
+                writeShips();
             }
         }
 
@@ -1011,7 +1011,9 @@ namespace EddiShipMonitor
             }
 
             if (slot.Contains("PaintJob"))
+            {
                 ship.paintjob = module.EDName;
+            }
             else if (slot.Contains("Hardpoint"))
             {
                 // This is a hardpoint

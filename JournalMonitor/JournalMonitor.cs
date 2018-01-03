@@ -1658,13 +1658,10 @@ namespace EddiJournalMonitor
                             }
                         case "CrewHire":
                             {
-                                object val;
                                 string name = getString(data, "Name");
                                 string faction = getFaction(data, "Faction");
-                                data.TryGetValue("Cost", out val);
-                                long price = (long)val;
-                                data.TryGetValue("CombatRank", out val);
-                                CombatRating rating = CombatRating.FromRank((int)val);
+                                long price = getLong(data, "Cost");
+                                CombatRating rating = CombatRating.FromRank(getInt(data, "CombatRank"));
                                 events.Add(new CrewHiredEvent(timestamp, name, faction, price, rating) { raw = line });
                                 handled = true;
                                 break;
