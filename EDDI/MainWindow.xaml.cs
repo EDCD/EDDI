@@ -329,7 +329,7 @@ namespace Eddi
             {
                 if (Properties.Settings.Default.Minimized)
                     senderWindow.WindowState = WindowState.Minimized;
-                else if (Properties.Settings.Default.Maximized)
+                else
                     senderWindow.WindowState = WindowState.Maximized;
 
                 Visibility = Visibility.Visible;
@@ -689,6 +689,9 @@ namespace Eddi
             SpeechService.Instance.ReloadConfiguration();
         }
 
+        // Called from the VoiceAttack plugin if the "Configure EDDI" voice command has
+        // been given and the EDDI configuration window is already open. If the window
+        // is minimize, restore it, otherwise the plugin will ignore the command.
         public bool MinimizeCheck()
         {
             bool wasMinimized = false;

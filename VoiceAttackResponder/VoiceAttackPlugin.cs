@@ -61,7 +61,7 @@ namespace EddiVoiceAttackResponder
 
                     eddiMutex.Close();
                     eddiMutex = null;
-                    Thread.Sleep(2000);
+                    Thread.Sleep(1000);
                 }
             }
 
@@ -339,9 +339,6 @@ namespace EddiVoiceAttackResponder
                 try
                 {
                     configWindow.Dispatcher.BeginInvoke((Action)configWindow.Close);
-
-                    while (!configWindow.Dispatcher.HasShutdownFinished)
-                        Thread.Sleep(50);
                 }
                 catch (Exception ex)
                 {
@@ -430,7 +427,7 @@ namespace EddiVoiceAttackResponder
 
         private static void InvokeConfiguration(ref dynamic vaProxy)
         {
-            // Zero indicates that the EDDI configure UI is not running
+            // Make sure there's only one instance of the configuration UI
             if (!configWinRunning)
             {
                 thread = new Thread(() =>
@@ -459,8 +456,9 @@ namespace EddiVoiceAttackResponder
             }
             else
             {
-                vaProxy.WriteToLog("EDDI configuration window already open.", "red");
+                // Tell the configuration UI to restore its window if minimized
                 configWindow.Dispatcher.Invoke(configWindow.MinimizeCheck);
+                vaProxy.WriteToLog("EDDI configuration window already open.", "orange");
             }
         }
 
