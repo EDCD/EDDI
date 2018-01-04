@@ -6,6 +6,9 @@
     * Minimum window size refined to match designed window size. 
     * If EDDI is run as a standalone app, its entire window state is preserved. If EDDI is invoked via the VoiceAttack 'Configure EDDI' command, only the maximized state is preserved.
   * Fixed a bug that would cause EDDI to write to the shipyard before it had finished processing shipyard related actions (adding and removing ships)
+  * Text-to-Speech
+    * Re-enabled text-to-speech distortion on ship damage. If this option is enabled, EDDI will now increase voice processing effects as damage to the ship increases.
+    * Revised text-to-speech audio gain to compensate for volume losses when voice processing effects are applied.
 
 ### 2.4.6-b2
   * Core
