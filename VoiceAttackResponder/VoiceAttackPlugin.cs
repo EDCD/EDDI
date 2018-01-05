@@ -43,31 +43,42 @@ namespace EddiVoiceAttackResponder
         public static BlockingCollection<Event> EventQueue = new BlockingCollection<Event>();
         public static Thread updaterThread = null;
 
+        private static Mutex eddiMutex = null;
+        private static bool configAvailable = false;
+
         public static void VA_Init1(dynamic vaProxy)
         {
             Logging.Info("Initialising EDDI VoiceAttack plugin");
 
-            while (!firstOwner)
-            {
-                eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out firstOwner);
-
-                if (!firstOwner)
-                {
-                    vaProxy.WriteToLog("An instance of the EDDI application is already running.", "red");
-
-                    MessageBox.Show("An instance of EDDI is already running. Please close\r\n" +
-                                    "the open EDDI application and click OK to continue.",
-                                    "EDDI Instance Exists",
-                                    MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    eddiMutex.Close();
-                    eddiMutex = null;
-                    Thread.Sleep(1000);
-                }
-            }
-
             try
             {
+                bool firstOwner = false;
+
+                while (!firstOwner)
+                {
+                    eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out firstOwner);
+
+                    if (!firstOwner)
+                    {
+                        vaProxy.WriteToLog("An instance of the EDDI application is already running.", "red");
+
+                        MessageBoxResult result =
+                        MessageBox.Show("An instance of EDDI is already running. Please close\r\n" +
+                                        "the open EDDI application and click OK to continue, or " +
+                                        "Cancel to skip initializing the EDDI VoiceAttack plugin.",
+                                        "EDDI Instance Exists",
+                                        MessageBoxButton.OKCancel, MessageBoxImage.Information);
+
+                        // Any response will require the mutex to be reset
+                        eddiMutex.Close();
+
+                        if (MessageBoxResult.Cancel == result)
+                        {
+                            throw new Exception("EDDI initialization canceled by user.");
+                        }
+                    }
+                }
+
                 EDDI.Instance.Start();
 
                 // Add a notifier for state changes
@@ -194,12 +205,15 @@ namespace EddiVoiceAttackResponder
                 };
                 updaterThread.Start();
 
+                //vaProxy.WriteToLog("EDDI plugin status is: " + pluginStatus.ToString() + ".", "green");
+                vaProxy.WriteToLog("EDDI plugin is fully operational.", "green");
                 setStatus(ref vaProxy, "Operational");
+                configAvailable = true;
             }
             catch (Exception e)
             {
                 Logging.Error("Failed to initialise VoiceAttack plugin", e);
-                vaProxy.WriteToLog("Failed to initialise EDDI.  Some functions might not work", "red");
+                vaProxy.WriteToLog("Failed to fully initialise EDDI. Some functions may not work.", "red");
             }
         }
 
@@ -347,72 +361,67 @@ namespace EddiVoiceAttackResponder
                 }
             }
 
-            configWinRunning = false;
             updaterThread.Abort();
             SpeechService.Instance.ShutUp();
             EDDI.Instance.Stop();
-
-            if (null != eddiMutex)
-            {
-                eddiMutex.ReleaseMutex();
-                eddiMutex = null;
-                firstOwner = false;
-            }
+            eddiMutex.ReleaseMutex();
+            eddiMutex.Close();
         }
 
         public static void VA_Invoke1(dynamic vaProxy)
         {
-            Logging.Debug("Invoked with context " + (string)vaProxy.Context);
-            try
-            {
-                switch ((string)vaProxy.Context)
+                Logging.Debug("Invoked with context " + (string)vaProxy.Context);
+                try
                 {
-                    case "coriolis":
-                        InvokeCoriolis(ref vaProxy);
-                        break;
-                    case "eddbsystem":
-                        InvokeEDDBSystem(ref vaProxy);
-                        break;
-                    case "eddbstation":
-                        InvokeEDDBStation(ref vaProxy);
-                        break;
-                    case "profile":
-                        InvokeUpdateProfile(ref vaProxy);
-                        break;
-                    case "say":
-                        InvokeSay(ref vaProxy);
-                        break;
-                    case "speech":
-                        InvokeSpeech(ref vaProxy);
-                        break;
-                    case "system comment":
-                        InvokeStarMapSystemComment(ref vaProxy);
-                        break;
-                    case "configuration":
-                        InvokeConfiguration(ref vaProxy);
-                        break;
-                    case "shutup":
-                        InvokeShutUp(ref vaProxy);
-                        break;
-                    case "setstate":
-                        InvokeSetState(ref vaProxy);
-                        break;
-                    case "disablespeechresponder":
-                        InvokeDisableSpeechResponder(ref vaProxy);
-                        break;
-                    case "enablespeechresponder":
-                        InvokeEnableSpeechResponder(ref vaProxy);
-                        break;
-                    case "setspeechresponderpersonality":
-                        InvokeSetSpeechResponderPersonality(ref vaProxy);
-                        break;
+                    switch ((string)vaProxy.Context)
+                    {
+                        case "coriolis":
+                            InvokeCoriolis(ref vaProxy);
+                            break;
+                        case "eddbsystem":
+                            InvokeEDDBSystem(ref vaProxy);
+                            break;
+                        case "eddbstation":
+                            InvokeEDDBStation(ref vaProxy);
+                            break;
+                        case "profile":
+                            InvokeUpdateProfile(ref vaProxy);
+                            break;
+                        case "say":
+                            InvokeSay(ref vaProxy);
+                            break;
+                        case "speech":
+                            InvokeSpeech(ref vaProxy);
+                            break;
+                        case "system comment":
+                            InvokeStarMapSystemComment(ref vaProxy);
+                            break;
+                        case "configuration":
+                            InvokeConfiguration(ref vaProxy);
+                            break;
+                        case "shutup":
+                            InvokeShutUp(ref vaProxy);
+                            break;
+                        case "setstate":
+                            InvokeSetState(ref vaProxy);
+                            break;
+                        case "disablespeechresponder":
+                            InvokeDisableSpeechResponder(ref vaProxy);
+                            break;
+                        case "enablespeechresponder":
+                            InvokeEnableSpeechResponder(ref vaProxy);
+                            break;
+                        case "setspeechresponderpersonality":
+                            InvokeSetSpeechResponderPersonality(ref vaProxy);
+                            break;
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                Logging.Error("Failed to invoke action " + vaProxy.Context, e);
-                vaProxy.WriteToLog("Failed to invoke action " + vaProxy.Context);
-            }
+                catch (Exception e)
+                {
+                    Logging.Error("Failed to invoke action " + vaProxy.Context, e);
+                    vaProxy.WriteToLog("Failed to invoke action " + vaProxy.Context);
+                }
+            //}
         }
 
         public static void VA_StopCommand()
@@ -420,8 +429,6 @@ namespace EddiVoiceAttackResponder
         }
 
         // Allow only one instance of the EDDI configuration UI
-        private static bool firstOwner = false;
-        private static Mutex eddiMutex = null;
         private static MainWindow configWindow = null;
         private static bool configWinRunning = false;
         private static Thread configThread = null;
@@ -429,37 +436,40 @@ namespace EddiVoiceAttackResponder
         private static void InvokeConfiguration(ref dynamic vaProxy)
         {
             // Make sure there's only one instance of the configuration UI
-            if (!configWinRunning)
+            if (configAvailable)
             {
-                configThread = new Thread(() =>
+                if (!configWinRunning)
                 {
-                    try
+                    configThread = new Thread(() =>
                     {
-                        configWindow = new MainWindow(true);
-                        configWindow.Closed += configClosed;
-                        configWindow.Show();
-                        Dispatcher.Run();
-                    }
-                    catch (ThreadAbortException)
-                    {
-                        Logging.Debug("Thread aborted");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Warn("Show configuration window failed", ex);
-                    }
-                    configWindow = null;
-                });
-                configThread.SetApartmentState(ApartmentState.STA);
-                configThread.IsBackground = true;
-                configThread.Start();
-                configWinRunning = true;
-            }
-            else
-            {
-                // Tell the configuration UI to restore its window if minimized
-                configWindow.Dispatcher.Invoke(configWindow.MinimizeCheck);
-                vaProxy.WriteToLog("EDDI configuration window already open.", "orange");
+                        try
+                        {
+                            configWindow = new MainWindow(true);
+                            configWindow.Closed += configClosed;
+                            configWindow.Show();
+                            Dispatcher.Run();
+                        }
+                        catch (ThreadAbortException)
+                        {
+                            Logging.Debug("Thread aborted");
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Warn("Show configuration window failed", ex);
+                        }
+                        configWindow = null;
+                    });
+                    configThread.SetApartmentState(ApartmentState.STA);
+                    configThread.IsBackground = true;
+                    configThread.Start();
+                    configWinRunning = true;
+                }
+                else
+                {
+                    // Tell the configuration UI to restore its window if minimized
+                    configWindow.Dispatcher.Invoke(configWindow.MinimizeCheck);
+                    vaProxy.WriteToLog("EDDI configuration window already open.", "orange");
+                }
             }
         }
 
