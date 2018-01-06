@@ -64,13 +64,13 @@ namespace EddiSpeechResponder
                 return null;
             }
 
-            return resolveScript(script.Value, store, master);
+            return resolveScript(script, store, master);
         }
 
         /// <summary>
         /// Resolve a script with an existing store
         /// </summary>
-        public string resolveScript(string script, BuiltinStore store, bool master = true)
+        public string resolveScript(Script script, BuiltinStore store, bool master = true)
         {
             try
             {
@@ -82,11 +82,11 @@ namespace EddiSpeechResponder
                     EDDI.Instance.State["eddi_context_last_action"] = null;
                 }
 
-                var document = new SimpleDocument(script, setting);
+                var document = new SimpleDocument(script.Value, setting);
                 var result = document.Render(store);
                 // Tidy up the output script
                 result = Regex.Replace(result, " +", " ").Replace(" ,", ",").Replace(" .", ".").Trim();
-                Logging.Debug("Turned script " + script + " in to speech " + result);
+                Logging.Debug("Turned script " + script.Value + " in to speech " + result);
                 result = result.Trim() == "" ? null : result.Trim();
 
                 if (master && result != null)
@@ -117,9 +117,20 @@ namespace EddiSpeechResponder
             }
             catch (Exception e)
             {
-                Logging.Warn("Failed to resolve script: " + e.ToString());
-                return "There is a problem with the script: " + e.Message.Replace("'", "");
+                Logging.Warn(@"Failed to resolve """ + script.Name + @""" script. " + e.ToString());
+                return @"There is a problem with the: """ + script.Name + @""" script. " + errorTranslation(e.Message);
             }
+        }
+
+        private string errorTranslation(string msg)
+        {
+            // Give human readable descriptions for select cottle errors
+            return msg
+                    .Replace("'", "")
+                    .Replace("<EOF>", "opening curly bracket")
+                    .Replace("<eof>", "incomplete expression")
+                    .Replace("{", "opening curly bracket")
+                    .Replace("}", "closing curly bracket");
         }
 
         /// <summary>
@@ -185,14 +196,34 @@ namespace EddiSpeechResponder
             // Helper functions
             store["OneOf"] = new NativeFunction((values) =>
             {
-                return new ScriptResolver(scripts).resolveScript(values[random.Next(values.Count)].AsString, store, false);
+                string name = values[random.Next(values.Count)].AsString;
+                Script script;
+                scripts.TryGetValue(name, out script);
+                if (script != null)
+                {
+                    return new ScriptResolver(scripts).resolveScript(script, store, false);
+                }
+                else
+                {
+                    return name;
+                }
             });
 
             store["Occasionally"] = new NativeFunction((values) =>
             {
                 if (random.Next((int)values[0].AsNumber) == 0)
                 {
-                    return new ScriptResolver(scripts).resolveScript(values[1].AsString, store, false);
+                    string name = values[1].AsString;
+                    Script script;
+                    scripts.TryGetValue(name, out script);
+                    if (script != null)
+                    {
+                        return new ScriptResolver(scripts).resolveScript(script, store, false);
+                    }
+                    else
+                    {
+                        return name;
+                    }
                 }
                 else
                 {
