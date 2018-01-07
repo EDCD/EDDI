@@ -179,10 +179,15 @@ namespace EddiVoiceAttackResponder
                 };
                 updaterThread.Start();
 
-                //vaProxy.WriteToLog("EDDI plugin status is: " + pluginStatus.ToString() + ".", "green");
                 vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
                 setStatus(ref vaProxy, "Operational");
-                eddiInstance = true;
+
+                // Search for the one-time VA command to run at initialization time
+                if (vaProxy.CommandExists("eddi on startup"))
+                {
+                    Logging.Debug("Executing the \"eddi on startup\" command");
+                    vaProxy.ExecuteCommand("eddi on startup");
+                }
             }
             catch (Exception e)
             {
@@ -409,18 +414,10 @@ namespace EddiVoiceAttackResponder
                             InvokeStarMapSystemComment(ref vaProxy);
                             break;
                         case "initialize eddi":
-                            try
-                            {
-                                if (!eddiInstance)
-                                    GetEddiInstance(ref vaProxy);
-
+                            if (eddiInstance)
                                 vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
-                            }
-                            catch (Exception e)
-                            {
-                                Logging.Error("Failed to initialise VoiceAttack plugin", e);
-                                vaProxy.WriteToLog("Failed to fully initialise EDDI. Some functions may not work.", "red");
-                            }
+                            else
+                                VA_Init1(vaProxy);  // Attempt initialization again to see if it works this time...
 
                             break;
                         case "configuration":

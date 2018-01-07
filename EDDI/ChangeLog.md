@@ -3,9 +3,11 @@
 ### 2.4.6-b3
   * Core
     * Only one instance of EDDI is allowed, whether started stand-alone or from VoiceAttack.
+    * Added support for an optional 'EDDI on startup' VoiceAttack command (voice disabled) that, if defined, will not be executed until all of the EDDI monitors and responders have been successfully initialized.
     * Improved window size and position handling for multi-display setups. 
     * Minimum window size refined to match designed window size. 
     * If EDDI is run as a standalone app, its entire window state is preserved. If EDDI is invoked via the VoiceAttack 'Configure EDDI' command, only the maximized state is preserved.
+    * Augmented the VoiceAttack 'Configure EDDI' command to include commands to manipulate the EDDI window: 'Minimize EDDI', 'Maximize EDDI', 'Restore EDDI' and 'Close EDDi'.
   * Fixed a bug that would cause EDDI to write to the shipyard before it had finished processing shipyard related actions (adding and removing ships)
 
 ### 2.4.6-b2
