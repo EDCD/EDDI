@@ -152,6 +152,8 @@ namespace Eddi
             // Need to set up the correct information in the hero text depending on from where we were started
             if (fromVA)
             {
+                // Allow the EDDI VA plugin to change window state
+                EddiConfigure = new configDelegate(OnEddiConfigure);
                 heroText.Text = "Any changes made here will take effect automatically in VoiceAttack.  You can close this window when you have finished.";
             }
             else
@@ -692,17 +694,14 @@ namespace Eddi
         // Called from the VoiceAttack plugin if the "Configure EDDI" voice command has
         // been given and the EDDI configuration window is already open. If the window
         // is minimize, restore it, otherwise the plugin will ignore the command.
-        public bool MinimizeCheck()
+        public delegate void configDelegate(WindowState state, bool minimizeCheck);
+        public configDelegate EddiConfigure;
+        public void OnEddiConfigure(WindowState state, bool minimizeCheck)
         {
-            bool wasMinimized = false;
-
-            if (WindowState == WindowState.Minimized)
-            {
+            if (minimizeCheck && WindowState == WindowState.Minimized)
                 WindowState = WindowState.Normal;
-                wasMinimized = true;
-            }
-
-            return wasMinimized;
+            else if (!minimizeCheck && WindowState != state)
+                WindowState = state;
         }
 
         protected override void OnClosing(CancelEventArgs e)
