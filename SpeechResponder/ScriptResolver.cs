@@ -215,7 +215,6 @@ namespace EddiSpeechResponder
                 if (random.Next((int)values[0].AsNumber) == 0)
                 {
                     return new ScriptResolver(scripts).resolveScript(values[1].AsString, store, false);
-
                 }
                 else
                 {
