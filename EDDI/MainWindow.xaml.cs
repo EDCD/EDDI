@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
@@ -330,9 +329,13 @@ namespace Eddi
             if (Properties.Settings.Default.Maximized || Properties.Settings.Default.Minimized)
             {
                 if (Properties.Settings.Default.Minimized)
+                {
                     senderWindow.WindowState = WindowState.Minimized;
+                }
                 else
+                {
                     senderWindow.WindowState = WindowState.Maximized;
+                }
 
                 Visibility = Visibility.Visible;
             }

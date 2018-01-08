@@ -189,14 +189,16 @@ namespace EddiVoiceAttackResponder
             catch (Exception e)
             {
                 Logging.Error("Failed to initialize VoiceAttack plugin", e);
-                vaProxy.WriteToLog("Failed to fully initialize EDDI. Some functions may not work.", "red");
+                vaProxy.WriteToLog("Unable to fully initialize EDDI. Some functions may not work.", "red");
             }
         }
 
         private static void GetEddiInstance(ref dynamic vaProxy)
         {
             if (eddiInstance)
+            {
                 return;
+            }
 
             bool firstOwner = false;
 
@@ -374,84 +376,88 @@ namespace EddiVoiceAttackResponder
             }
 
             if (null != updaterThread)
+            {
                 updaterThread.Abort();
+            }
 
             SpeechService.Instance.ShutUp();
 
             if (eddiInstance)
+            {
                 EDDI.Instance.Stop();
+            }
         }
 
         public static void VA_Invoke1(dynamic vaProxy)
         {
-                Logging.Debug("Invoked with context " + (string)vaProxy.Context);
-                try
-                {
-                    switch ((string)vaProxy.Context)
-                    {
-                        case "coriolis":
-                            InvokeCoriolis(ref vaProxy);
-                            break;
-                        case "eddbsystem":
-                            InvokeEDDBSystem(ref vaProxy);
-                            break;
-                        case "eddbstation":
-                            InvokeEDDBStation(ref vaProxy);
-                            break;
-                        case "profile":
-                            InvokeUpdateProfile(ref vaProxy);
-                            break;
-                        case "say":
-                            InvokeSay(ref vaProxy);
-                            break;
-                        case "speech":
-                            InvokeSpeech(ref vaProxy);
-                            break;
-                        case "system comment":
-                            InvokeStarMapSystemComment(ref vaProxy);
-                            break;
-                        case "initialize eddi":
-                            if (eddiInstance)
-                                vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
-                            else
-                                VA_Init1(vaProxy);  // Attempt initialization again to see if it works this time...
+            Logging.Debug("Invoked with context " + (string)vaProxy.Context);
 
-                            break;
-                        case "configuration":
-                        case "configurationminimize":
-                        case "configurationmaximize":
-                        case "configurationrestore":
-                        case "configurationclose":
-                            // Ignore any attempt to access the EDDI UI if VA
-                            // doesn't have the EDDI instance.
-                            if (eddiInstance)
-                                InvokeConfiguration(ref vaProxy);
-                            else
-                                vaProxy.WriteToLog("The EDDI plugin is not fully initialized.", "red");
-                            break;
-                        case "shutup":
-                            InvokeShutUp(ref vaProxy);
-                            break;
-                        case "setstate":
-                            InvokeSetState(ref vaProxy);
-                            break;
-                        case "disablespeechresponder":
-                            InvokeDisableSpeechResponder(ref vaProxy);
-                            break;
-                        case "enablespeechresponder":
-                            InvokeEnableSpeechResponder(ref vaProxy);
-                            break;
-                        case "setspeechresponderpersonality":
-                            InvokeSetSpeechResponderPersonality(ref vaProxy);
-                            break;
-                    }
-                }
-                catch (Exception e)
+            try
+            {
+                switch ((string)vaProxy.Context)
                 {
-                    Logging.Error("Failed to invoke context " + vaProxy.Context, e);
-                    vaProxy.WriteToLog("Failed to invoke context " + vaProxy.Context, "red");
+                    case "coriolis":
+                        InvokeCoriolis(ref vaProxy);
+                        break;
+                    case "eddbsystem":
+                        InvokeEDDBSystem(ref vaProxy);
+                        break;
+                    case "eddbstation":
+                        InvokeEDDBStation(ref vaProxy);
+                        break;
+                    case "profile":
+                        InvokeUpdateProfile(ref vaProxy);
+                        break;
+                    case "say":
+                        InvokeSay(ref vaProxy);
+                        break;
+                    case "speech":
+                        InvokeSpeech(ref vaProxy);
+                        break;
+                    case "system comment":
+                        InvokeStarMapSystemComment(ref vaProxy);
+                        break;
+                    case "initialize eddi":
+                        if (eddiInstance)
+                            vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
+                        else
+                            VA_Init1(vaProxy);  // Attempt initialization again to see if it works this time...
+
+                        break;
+                    case "configuration":
+                    case "configurationminimize":
+                    case "configurationmaximize":
+                    case "configurationrestore":
+                    case "configurationclose":
+                        // Ignore any attempt to access the EDDI UI if VA
+                        // doesn't have the EDDI instance.
+                        if (eddiInstance)
+                            InvokeConfiguration(ref vaProxy);
+                        else
+                            vaProxy.WriteToLog("The EDDI plugin is not fully initialized.", "red");
+                        break;
+                    case "shutup":
+                        InvokeShutUp(ref vaProxy);
+                        break;
+                    case "setstate":
+                        InvokeSetState(ref vaProxy);
+                        break;
+                    case "disablespeechresponder":
+                        InvokeDisableSpeechResponder(ref vaProxy);
+                        break;
+                    case "enablespeechresponder":
+                        InvokeEnableSpeechResponder(ref vaProxy);
+                        break;
+                    case "setspeechresponderpersonality":
+                        InvokeSetSpeechResponderPersonality(ref vaProxy);
+                        break;
                 }
-            //}
+            }
+            catch (Exception e)
+            {
+                Logging.Error("Failed to invoke context " + vaProxy.Context, e);
+                vaProxy.WriteToLog("Failed to invoke context " + vaProxy.Context, "red");
+            }
         }
 
         public static void VA_StopCommand()
@@ -460,14 +466,13 @@ namespace EddiVoiceAttackResponder
 
         // Allow only one instance of the EDDI configuration UI
         private static MainWindow configWindow = null;
-        //private static bool configWinRunning = false;
         private static Thread configThread = null;
 
         private static void InvokeConfiguration(ref dynamic vaProxy)
         {
             string config = (string)vaProxy.Context;
 
-            if (null == configWindow && config != "configuration")
+            if (configWindow == null && config != "configuration")
             {
                 vaProxy.WriteToLog("The EDDI configuration window is not open.", "orange");
                 return;
@@ -477,7 +482,7 @@ namespace EddiVoiceAttackResponder
             {
                 case "configuration":
                     // Make sure there's only one instance of the configuration UI
-                    if (null == configWindow)
+                    if (configWindow == null)
                     {
                         configThread = new Thread(() =>
                         {
@@ -496,6 +501,8 @@ namespace EddiVoiceAttackResponder
                             {
                                 Logging.Warn("Show configuration window failed", ex);
                             }
+
+                            configWindow = null;
                         });
                         configThread.SetApartmentState(ApartmentState.STA);
                         configThread.IsBackground = true;
@@ -505,7 +512,7 @@ namespace EddiVoiceAttackResponder
                     {
                         // Tell the configuration UI to restore its window if minimized
                         configWindow.Dispatcher.Invoke(configWindow.EddiConfigure, new Object[] { WindowState.Minimized, true });
-                        vaProxy.WriteToLog("The EDDI configuration window already open.", "orange");
+                        vaProxy.WriteToLog("The EDDI configuration window is already open.", "orange");
                     }
                     break;
                 case "configurationminimize":
