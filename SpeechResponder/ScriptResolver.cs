@@ -64,13 +64,13 @@ namespace EddiSpeechResponder
                 return null;
             }
 
-            return resolveScript(script, store, master);
+            return resolveScript(script.Value, store, master, script);
         }
 
         /// <summary>
         /// Resolve a script with an existing store
         /// </summary>
-        public string resolveScript(Script script, BuiltinStore store, bool master = true)
+        public string resolveScript(string script, BuiltinStore store, bool master = true, Script scriptObject = null)
         {
             try
             {
@@ -82,11 +82,11 @@ namespace EddiSpeechResponder
                     EDDI.Instance.State["eddi_context_last_action"] = null;
                 }
 
-                var document = new SimpleDocument(script.Value, setting);
+                var document = new SimpleDocument(script, setting);
                 var result = document.Render(store);
                 // Tidy up the output script
                 result = Regex.Replace(result, " +", " ").Replace(" ,", ",").Replace(" .", ".").Trim();
-                Logging.Debug("Turned script " + script.Value + " in to speech " + result);
+                Logging.Debug("Turned script " + script + " in to speech " + result);
                 result = result.Trim() == "" ? null : result.Trim();
 
                 if (master && result != null)
@@ -117,8 +117,19 @@ namespace EddiSpeechResponder
             }
             catch (Exception e)
             {
-                Logging.Warn(@"Failed to resolve """ + script.Name + @""" script. " + e.ToString());
-                return @"There is a problem with the: """ + script.Name + @""" script. " + errorTranslation(e.Message);
+                // Report the failing the script name, if it is available
+                string scriptName;
+                if (scriptObject != null)
+                {
+                    scriptName = "the: " + scriptObject.Name;
+                }
+                else
+                {
+                    scriptName = "this ";
+                }
+
+                Logging.Warn(@"Failed to resolve " + scriptName + @" script. " + e.ToString());
+                return @"There is a problem with " + scriptName + @" script. " + errorTranslation(e.Message);
             }
         }
 
@@ -196,39 +207,12 @@ namespace EddiSpeechResponder
             // Helper functions
             store["OneOf"] = new NativeFunction((values) =>
             {
-                string name = values[random.Next(values.Count)].AsString;
-                Script script;
-                scripts.TryGetValue(name, out script);
-                if (script != null)
-                {
-                    return new ScriptResolver(scripts).resolveScript(script, store, false);
-                }
-                else
-                {
-                    return name;
-                }
+                return new ScriptResolver(scripts).resolveScript(values[random.Next(values.Count)].AsString, store, false);
             });
 
             store["Occasionally"] = new NativeFunction((values) =>
             {
-                if (random.Next((int)values[0].AsNumber) == 0)
-                {
-                    string name = values[1].AsString;
-                    Script script;
-                    scripts.TryGetValue(name, out script);
-                    if (script != null)
-                    {
-                        return new ScriptResolver(scripts).resolveScript(script, store, false);
-                    }
-                    else
-                    {
-                        return name;
-                    }
-                }
-                else
-                {
-                    return "";
-                }
+                return new ScriptResolver(scripts).resolveScript(values[1].AsString, store, false);
             }, 2);
 
             store["Humanise"] = new NativeFunction((values) =>
