@@ -182,17 +182,14 @@ namespace EddiVoiceAttackResponder
                 vaProxy.WriteToLog("The EDDI plugin is fully operational.", "green");
                 setStatus(ref vaProxy, "Operational");
 
-                // Search for the one-time VA command to run at initialization time
-                if (vaProxy.CommandExists("eddi on startup"))
-                {
-                    Logging.Debug("Executing the \"eddi on startup\" command");
-                    vaProxy.ExecuteCommand("eddi on startup");
-                }
+                // Fire an event once the VA plugin is initialized
+                Event @event = new VAInitializedEvent(DateTime.UtcNow);
+                EDDI.Instance.eventHandler(@event);
             }
             catch (Exception e)
             {
-                Logging.Error("Failed to initialise VoiceAttack plugin", e);
-                vaProxy.WriteToLog("Failed to fully initialise EDDI. Some functions may not work.", "red");
+                Logging.Error("Failed to initialize VoiceAttack plugin", e);
+                vaProxy.WriteToLog("Failed to fully initialize EDDI. Some functions may not work.", "red");
             }
         }
 
@@ -213,9 +210,9 @@ namespace EddiVoiceAttackResponder
 
                     MessageBoxResult result =
                     MessageBox.Show("An instance of EDDI is already running. Please close\r\n" +
-                                    "the open EDDI application and click OK to continue, or " +
-                                    "Cancel to skip initializing the EDDI VoiceAttack plugin.",
-                                    "EDDI Instance Exists",
+                                    "the open EDDI application and click OK to continue. " +
+                                    "If you click CANCEL, the EDDI VoiceAttack plugin will not be fully initialized.",
+                                    "EDDI instance already exists",
                                     MessageBoxButton.OKCancel, MessageBoxImage.Information);
 
                     // Any response will require the mutex to be reset
