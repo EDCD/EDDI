@@ -358,7 +358,6 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        //private static readonly object instanceLock = new object();
         public static void VA_Exit1(dynamic vaProxy)
         {
             Logging.Info("EDDI VoiceAttack plugin exiting");
@@ -464,7 +463,6 @@ namespace EddiVoiceAttackResponder
         {
         }
 
-        // Allow only one instance of the EDDI configuration UI
         private static MainWindow configWindow = null;
         private static Thread configThread = null;
 
