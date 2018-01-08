@@ -212,7 +212,16 @@ namespace EddiSpeechResponder
 
             store["Occasionally"] = new NativeFunction((values) =>
             {
-                return new ScriptResolver(scripts).resolveScript(values[1].AsString, store, false);
+                if (random.Next((int)values[0].AsNumber) == 0)
+                {
+
+                        return new ScriptResolver(scripts).resolveScript(values[1].AsString, store, false);
+
+                }
+                else
+                {
+                    return "";
+                }
             }, 2);
 
             store["Humanise"] = new NativeFunction((values) =>
