@@ -6,6 +6,10 @@
     * Minimum window size refined to match designed window size. 
     * If EDDI is run as a standalone app, its entire window state is preserved. If EDDI is invoked via the VoiceAttack 'Configure EDDI' command, only the maximized state is preserved.
   * Fixed a bug that would cause EDDI to write to the shipyard before it had finished processing shipyard related actions (adding and removing ships)
+  * Speech Responder
+    * Updated 'Bond redeemed' script for better handling with redemption via interstellar factors contacts.
+    * Updated 'Bounty redeemed' script for better handling with redemption via interstellar factors contacts.
+
 
 ### 2.4.6-b2
   * Core
