@@ -32,6 +32,9 @@ namespace Eddi
         // True if we have been started by VoiceAttack
         public static bool FromVA = false;
 
+        // True if the Speech Responder tab is waiting on a modal dialog window (FromVA specific)
+        public bool SpeechResponderModalWait { get; set; } = false;
+
         private static bool started;
 
         private static bool running = true;

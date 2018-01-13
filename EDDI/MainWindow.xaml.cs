@@ -711,17 +711,20 @@ namespace Eddi
         {
             base.OnClosing(e);
 
-            // Save window position here as the RestoreBounds rect gets set
-            // to empty somewhere between here and OnClosed.
-            SaveWindowState();
-
-            if (!fromVA)
+            if (!e.Cancel)
             {
-                // When in OnClosed(), if the EDDI window was closed while minimized
-                // (under debugger), monitorThread.Join() would block waiting for a
-                // thread(s) to terminate. Strange, because it does not block when the
-                // window is closed in the normal or maximized state.
-                EDDI.Instance.Stop();
+                // Save window position here as the RestoreBounds rect gets set
+                // to empty somewhere between here and OnClosed.
+                SaveWindowState();
+
+                if (!fromVA)
+                {
+                    // When in OnClosed(), if the EDDI window was closed while minimized
+                    // (under debugger), monitorThread.Join() would block waiting for a
+                    // thread(s) to terminate. Strange, because it does not block when the
+                    // window is closed in the normal or maximized state.
+                    EDDI.Instance.Stop();
+                }
             }
         }
 
