@@ -181,7 +181,12 @@ namespace EddiVoiceAttackResponder
 
                 // Fire an event once the VA plugin is initialized
                 Event @event = new VAInitializedEvent(DateTime.UtcNow);
-                EDDI.Instance.eventHandler(@event);
+
+                if (initEventEnabled(@event.type))
+                {
+                    EDDI.Instance.eventHandler(@event);
+                }
+
                 Logging.Info("EDDI VoiceAttack plugin initialization complete");
             }
             catch (Exception e)
@@ -189,6 +194,20 @@ namespace EddiVoiceAttackResponder
                 Logging.Error("Failed to initialize VoiceAttack plugin", e);
                 vaProxy.WriteToLog("Unable to fully initialize EDDI. Some functions may not work.", "red");
             }
+        }
+
+        private static bool initEventEnabled(string name)
+        {
+            Script script = null;
+            SpeechResponderConfiguration config = SpeechResponderConfiguration.FromFile();
+
+            if (config != null)
+            {
+                Personality personality = Personality.FromName(config.Personality);
+                personality.Scripts.TryGetValue(name, out script);
+            }
+
+            return script == null ? false : script.Enabled;
         }
 
         private static Mutex eddiMutex = null;
@@ -487,13 +506,14 @@ namespace EddiVoiceAttackResponder
                     // Ensure there's only one instance of the configuration UI
                     if (configWindow == null)
                     {
-                        Thread thread = new Thread(() =>
+                        Thread configThread = new Thread(() =>
                         {
                             try
                             {
                                 configWindow = new MainWindow(true);
-                                configWindow.Closing += new CancelEventHandler(configClosing);
+                                configWindow.Closing += new CancelEventHandler(eddiClosing);
                                 configWindow.ShowDialog();
+                                configWindow = null;
                             }
                             catch (ThreadAbortException)
                             {
@@ -504,29 +524,29 @@ namespace EddiVoiceAttackResponder
                                 Logging.Warn("Show configuration window failed", ex);
                             }
                         });
-                        thread.SetApartmentState(ApartmentState.STA);
-                        thread.Start();
+                        configThread.SetApartmentState(ApartmentState.STA);
+                        configThread.Start();
                     }
                     else
                     {
                         // Tell the configuration UI to restore its window if minimized
-                        configWindow.Dispatcher.Invoke(configWindow.EddiConfigure, new Object[] { WindowState.Minimized, true });
+                        setWindowState(ref vaProxy, WindowState.Minimized, true, false);
                         vaProxy.WriteToLog("The EDDI configuration window is already open.", "orange");
                     }
                     break;
                 case "configurationminimize":
-                    configWindow.Dispatcher.Invoke(configWindow.EddiConfigure, new Object[] { WindowState.Minimized, false });
+                    setWindowState(ref vaProxy, WindowState.Minimized);
                     break;
                 case "configurationmaximize":
-                    configWindow.Dispatcher.Invoke(configWindow.EddiConfigure, new Object[] { WindowState.Maximized, false });
+                    setWindowState(ref vaProxy, WindowState.Maximized);
                     break;
                 case "configurationrestore":
-                    configWindow.Dispatcher.Invoke(configWindow.EddiConfigure, new Object[] { WindowState.Normal, false });
+                    setWindowState(ref vaProxy, WindowState.Normal);
                     break;
                 case "configurationclose":
                     configWindow.Dispatcher.Invoke(configWindow.Close);
 
-                    if (configCloseCancelled)
+                    if (eddiCloseCancelled)
                     {
                         vaProxy.WriteToLog("The EDDI window cannot be closed at this time.", "orange");
                     }
@@ -541,23 +561,33 @@ namespace EddiVoiceAttackResponder
             }
         }
 
-        private static bool configCloseCancelled = false;
-        private static void configClosing(Object sender, CancelEventArgs e)
+        // Set main window minimize, maximize and normal states. Ignore and warn
+        // if the main window is blocked waiting for a modal dialog to close.
+        private static void setWindowState(ref dynamic vaProxy, WindowState newState, bool minimizeCheck = false, bool warn = true)
         {
-            // When run as VoiceAttack plugin, it's possible to close the EDDI UI
-            // MainWindow from code, even though one of its tab controls may be
-            // waiting on a modal dialog or message box. If MainWindow is closed,
-            // those windows remain open. Currently, the Speech Responder tab is
-            // the only control that creates modal windows, so this kludge tracks
-            // that and will cancel the MainWindow close and "beep" to mimic what
-            // would normally happen if the user had tried to close the UI window.
+            if (EDDI.Instance.SpeechResponderModalWait && warn)
+            {
+                System.Media.SystemSounds.Beep.Play();
+                vaProxy.WriteToLog("The EDDI window state cannot be changed at this time.", "orange");
+            }
+            else
+            {
+                configWindow.Dispatcher.Invoke(configWindow.VaWindowStateChange, new object[] { newState, minimizeCheck });
+            }
+        }
+
+        // Hook the closing event to see if the main window is blocked waiting
+        // for a modal dialog to close, and if it is, warn and cancel the close.
+        private static bool eddiCloseCancelled = false;
+        private static void eddiClosing(Object sender, CancelEventArgs e)
+        {
             if (EDDI.Instance.SpeechResponderModalWait)
             {
                 System.Media.SystemSounds.Beep.Play();
                 e.Cancel = true;
             }
 
-            configCloseCancelled = e.Cancel;
+            eddiCloseCancelled = e.Cancel;
         }
 
         /// <summary>Force-update EDDI's information</summary>
