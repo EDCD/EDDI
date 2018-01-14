@@ -5,6 +5,7 @@
     * Improved window size and position handling for multi-display setups. 
     * Minimum window size refined to match designed window size. 
     * If EDDI is run as a standalone app, its entire window state is preserved. If EDDI is invoked via the VoiceAttack 'Configure EDDI' command, only the maximized state is preserved.
+    * Fixed an error that could occur when a response isn't received from EDSM.
   * Fixed a bug that would cause EDDI to write to the shipyard before it had finished processing shipyard related actions (adding and removing ships)
 
 ### 2.4.6-b2
