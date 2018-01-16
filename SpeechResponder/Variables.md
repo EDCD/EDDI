@@ -178,7 +178,15 @@ A material.
     - `name` the name of the material (e.g. Iron)
     - `category` the category of the material (Element, Data or Manufactured)
     - `rarity` the rarity of the material
-    - `uses` the blueprints for which the material is used
+    - `blueprints` the blueprints for which the material is used (this is an array of blueprint objects)
+
+## Blueprint
+
+An engineering blueprint.
+
+    - `name` the name of the blueprint (e.g. 'heavy duty')
+    - `modulename` the name of the applicable module (e.g. 'shield booster')
+    - `grade` the grade of the engineering blueprint (e.g. 'grade 4')
 
 ## Commodity
 

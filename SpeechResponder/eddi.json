@@ -834,7 +834,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'collect')}\r\n{SetState('eddi_context_material_name', event.material)}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'collect')}\r\n{SetState('eddi_context_material_name', event.name)}\r\n",
       "default": true,
       "name": "Material collected",
       "description": "Triggered when you collect a material"
@@ -852,7 +852,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'discard')}\r\n{SetState('eddi_context_material_name', event.material)}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'discard')}\r\n{SetState('eddi_context_material_name', event.name)}\r\n",
       "default": true,
       "name": "Material discarded",
       "description": "Triggered when you discard a material"
@@ -861,7 +861,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'discover')}\r\n{SetState('eddi_context_material_name', event.material)}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'discover')}\r\n{SetState('eddi_context_material_name', event.name)}\r\n",
       "default": true,
       "name": "Material discovered",
       "description": "Triggered when you discover a material"
@@ -870,7 +870,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'donate')}\r\n{SetState('eddi_context_material_name', event.material)}\r\n",
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'donate')}\r\n{SetState('eddi_context_material_name', event.name)}\r\n",
       "default": true,
       "name": "Material donated",
       "description": "Triggered when you donate a material"

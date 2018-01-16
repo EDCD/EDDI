@@ -6,6 +6,14 @@
     * Minimum window size refined to match designed window size. 
     * If EDDI is run as a standalone app, its entire window state is preserved. If EDDI is invoked via the VoiceAttack 'Configure EDDI' command, only the maximized state is preserved.
   * Fixed a bug that would cause EDDI to write to the shipyard before it had finished processing shipyard related actions (adding and removing ships)
+  * Speech responder
+    * Add a description for the 'Blueprint' object in [the Variables documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Variables.md)
+    * Updated the description of the 'Material' object in [the Variables documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Variables.md)
+    * Fixed out-of-date context for the following scripts
+      * 'Material collected' 
+      * 'Material discarded' 
+      * 'Material discovered' 
+      * 'Material donated'
 
 ### 2.4.6-b2
   * Core
