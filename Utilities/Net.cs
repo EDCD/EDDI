@@ -26,12 +26,11 @@ namespace Utilities
                         ? Encoding.UTF8
                         : Encoding.GetEncoding(response.CharacterSet);
 
-                Logging.Debug("Reading response");
+                Logging.Debug("Reading response from " + uri);
                 using (var stream = response.GetResponseStream())
                 {
                     var reader = new StreamReader(stream, encoding);
                     string data = reader.ReadToEnd();
-                    Logging.Debug("Data is: " + data);
                     return data;
                 }
             }
