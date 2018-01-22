@@ -27,7 +27,7 @@ namespace EddiShipMonitor
         private int? currentShipId;
         private int? currentProfileId;
         private static readonly object shipyardLock = new object();
-        SynchronizationContext uiSyncContext;
+        //SynchronizationContext uiSyncContext;
 
         public string MonitorName()
         {
@@ -51,7 +51,6 @@ namespace EddiShipMonitor
 
         public ShipMonitor()
         {
-            //uiSyncContext = SynchronizationContext.Current;
             readShips();
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
         }
@@ -84,7 +83,6 @@ namespace EddiShipMonitor
         public void Save()
         {
             SynchronizationContext.Current.Post(_ => writeShips(), null);
-            //uiSyncContext.Post(_ => writeShips(), null);
         }
 
         /// <summary>
@@ -854,7 +852,6 @@ namespace EddiShipMonitor
 
             // Run this on the UI syncContext to ensure that we can update it whilst reflecting changes in the UI
             SynchronizationContext.Current.Post(_ => _AddShip(ship), null);
-            //uiSyncContext.Post(_ => _AddShip(ship), null);
         }
 
         private void _AddShip(Ship ship)
@@ -883,7 +880,6 @@ namespace EddiShipMonitor
             }
             // Run this on the UI syncContext to ensure that we can update it whilst reflecting changes in the UI
             SynchronizationContext.Current.Post(_ => _RemoveShip(localid), null);
-            //uiSyncContext.Post(_ => _RemoveShip(localid), null);
         }
 
         /// <summary>

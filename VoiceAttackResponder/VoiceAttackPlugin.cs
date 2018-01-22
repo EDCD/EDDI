@@ -233,7 +233,7 @@ namespace EddiVoiceAttackResponder
                     MessageBox.Show("An instance of EDDI is already running. Please close\r\n" +
                                     "the open EDDI application and click OK to continue. " +
                                     "If you click CANCEL, the EDDI VoiceAttack plugin will not be fully initialized.",
-                                    "EDDI instance already exists",
+                                    "EDDI Instance Exists",
                                     MessageBoxButton.OKCancel, MessageBoxImage.Information);
 
                     // Any response will require the mutex to be reset
