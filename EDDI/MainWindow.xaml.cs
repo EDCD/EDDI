@@ -161,8 +161,8 @@ namespace Eddi
             }
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
-            eddiHomeSystemText.Text = eddiConfiguration.HomeSystem;
-            eddiHomeStationText.Text = eddiConfiguration.HomeStation;
+            eddiHomeSystemText.Text = eddiConfiguration.validSystem == true ? eddiConfiguration.HomeSystem : string.Empty;
+            eddiHomeStationText.Text = eddiConfiguration.validStation == true ? eddiConfiguration.HomeStation : string.Empty;
             eddiInsuranceDecimal.Text = eddiConfiguration.Insurance.ToString(CultureInfo.InvariantCulture);
             eddiVerboseLogging.IsChecked = eddiConfiguration.Debug;
             eddiBetaProgramme.IsChecked = eddiConfiguration.Beta;
