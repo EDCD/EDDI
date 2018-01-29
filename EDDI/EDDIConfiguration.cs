@@ -39,6 +39,9 @@ namespace Eddi
             Plugins = new Dictionary<string, bool>();
             exporttarget = "Coriolis";
             Gender = "Male";
+
+            // Default the galnet monitor to 'off'
+            Plugins.Add("Galnet monitor", false);
         }
 
         /// <summary>

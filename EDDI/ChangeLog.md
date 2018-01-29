@@ -1,5 +1,9 @@
 ﻿# CHANGE LOG
 
+### 3.0.0-b1
+  * Galnet Monitor
+    * Default the galnet monitor plugin to 'off' in favor of the in-game Galnet Audio. The plugin still can be enabled if desired.
+
 ### 2.4.6-b3
   * Core
     * Improved window size and position handling for multi-display setups. 
