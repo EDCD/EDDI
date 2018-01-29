@@ -5,6 +5,7 @@
     * Improved window size and position handling for multi-display setups. 
     * Minimum window size refined to match designed window size. 
     * If EDDI is run as a standalone app, its entire window state is preserved. If EDDI is invoked via the VoiceAttack 'Configure EDDI' command, only the maximized state is preserved.
+    * When inputting your Home System and Home Station, EDDI's UI now clearly shows whether EDDI has found the system and station. Invalid entries (denoted with a red border) won't be saved.
   * Fixed a bug that would cause EDDI to write to the shipyard before it had finished processing shipyard related actions (adding and removing ships)
 
 ### 2.4.6-b2

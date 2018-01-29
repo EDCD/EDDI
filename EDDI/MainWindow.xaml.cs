@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Utilities;
@@ -341,16 +342,22 @@ namespace Eddi
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiConfiguration.HomeSystem = string.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
+            eddiConfiguration = EDDI.Instance.updateHomeSystem(eddiConfiguration);
             eddiConfiguration.ToFile();
-            EDDI.Instance.updateHomeSystemStation(eddiConfiguration);
+
+            // Update the UI for invalid results
+            runValidation(eddiHomeSystemText);
         }
 
         private void homeStationChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
             eddiConfiguration.HomeStation = string.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
+            eddiConfiguration = EDDI.Instance.updateHomeStation(eddiConfiguration);
             eddiConfiguration.ToFile();
-            EDDI.Instance.updateHomeSystemStation(eddiConfiguration);
+
+            // Update the UI for invalid results
+            runValidation(eddiHomeStationText);
         }
 
         private void insuranceChanged(object sender, TextChangedEventArgs e)
@@ -838,6 +845,82 @@ namespace Eddi
         private void WikiClicked(object sender, RoutedEventArgs e)
         {
             Process.Start("https://github.com/EDCD/EDDI/wiki");
+        }
+
+        private void runValidation(System.Windows.Controls.TextBox textBox)
+        {
+            BindingExpression b = BindingOperations.GetBindingExpression(textBox, System.Windows.Controls.TextBox.TextProperty);
+            try
+            {
+                b.ValidateWithoutUpdate();
+            }
+            catch { }
+        }
+
+        private void eddiHomeSystemText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Discard invalid results
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            if (!eddiConfiguration.validSystem)
+            {
+                eddiConfiguration.HomeSystem = null;
+                eddiHomeSystemText.Text = string.Empty;
+                eddiConfiguration.ToFile();
+            }
+        }
+
+        private void eddiHomeStationText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Discard invalid results
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            if (!eddiConfiguration.validStation)
+            {
+                eddiConfiguration.HomeStation = null;
+                eddiHomeStationText.Text = string.Empty;
+                eddiConfiguration.ToFile();
+            }
+        }
+    }
+
+    public class ValidSystemRule : ValidationRule
+    {
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+
+            if (value == null)
+            {
+                return ValidationResult.ValidResult;
+            }
+            if (eddiConfiguration.validSystem)
+            {
+                return ValidationResult.ValidResult;
+            }
+            else
+            {
+                return new ValidationResult(false, "Invalid System");
+            }
+        }
+    }
+
+    public class ValidStationRule : ValidationRule
+    {
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+
+            if (value == null)
+            {
+                return ValidationResult.ValidResult;
+            }
+            if (eddiConfiguration.validStation)
+            {
+                return ValidationResult.ValidResult;
+            }
+            else
+            {
+                return new ValidationResult(false, "Invalid Station");
+            }
         }
     }
 }

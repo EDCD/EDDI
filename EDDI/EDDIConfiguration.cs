@@ -1,18 +1,27 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using Utilities;
 
 namespace Eddi
 {
     /// <summary>Configuration for EDDI</summary>
-    public class EDDIConfiguration
+    public class EDDIConfiguration : INotifyPropertyChanged
     {
         [JsonProperty("homeSystem")]
-        public string HomeSystem { get; set; }
+        public string HomeSystem
+        {
+            get { return _HomeSystem; }
+            set { _HomeSystem = value; }
+        }
         [JsonProperty("homeStation")]
-        public string HomeStation { get; set; }
+        public string HomeStation
+        {
+            get { return _HomeStation; }
+            set { _HomeStation = value; }
+        }
         [JsonProperty("debug")]
         public bool Debug { get; set; }
         [JsonProperty("beta")]
@@ -27,6 +36,13 @@ namespace Eddi
         /// <summary>the current export target for the shipyard</summary>
         [JsonProperty("exporttarget")]
         public string exporttarget { get; set; } = "Coriolis";
+
+        /// <summary> Administrative values </summary>
+        public bool validSystem { get; set; }
+        public bool validStation { get; set; }
+
+        private string _HomeSystem;
+        private string _HomeStation;
 
         [JsonIgnore]
         private string dataPath;
@@ -101,6 +117,13 @@ namespace Eddi
 
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
             Files.Write(filename, json);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }
