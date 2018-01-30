@@ -42,6 +42,10 @@ namespace Eddi
 
         public bool inBeta { get; private set; } = false;
 
+        private Mutex perUserMutex; // to stop VA and standalone instances of EDDI fighting over the data files
+        const string localisedMultipleInstanceAlertTitle = "EDDI is already running";
+        const string localisedMultipleInstanceAlertText = "It looks like EDDI is already running, perhaps in VoiceAttack.\r\n\r\nClose the other instance and try again.";
+
         static EDDI()
         {
             // Set up our app directory
@@ -124,6 +128,15 @@ namespace Eddi
         {
             try
             {
+                string mutexName = Utilities.Constants.USER_CONCURRENCY_TOKEN;
+                perUserMutex = new Mutex(false, mutexName);
+                if (!perUserMutex.WaitOne(0))
+                {
+                    Logging.Warn("Duplicate per-user instance of EDDI launched, bailing out.");
+                    System.Windows.MessageBox.Show(localisedMultipleInstanceAlertText, localisedMultipleInstanceAlertTitle);
+                    System.Environment.Exit(0); // exit with extreme prejudice
+                }
+
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
 
                 // Exception handling
@@ -155,60 +168,9 @@ namespace Eddi
                 monitors = findMonitors();
                 responders = findResponders();
 
-                // Set up the app service
-                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
-                {
-                    // Carry out initial population of profile
-                    try
-                    {
-                        refreshProfile();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Debug("Failed to obtain profile: " + ex);
-                    }
-                }
+                SetupCompanionAPI(configuration);
 
-                Cmdr.insurance = configuration.Insurance;
-                Cmdr.gender = configuration.Gender;
-                if (Cmdr.name != null)
-                {
-                    Logging.Info("EDDI access to the companion app is enabled");
-                }
-                else
-                {
-                    // If InvokeUpdatePlugin failed then it will have have left an error message, but this once we ignore it
-                    Logging.Info("EDDI access to the companion app is disabled");
-                }
-
-                // Set up the star map service
-                StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
-                if (starMapCredentials != null && starMapCredentials.apiKey != null)
-                {
-                    // Commander name might come from star map credentials or the companion app's profile
-                    string commanderName = null;
-                    if (starMapCredentials.commanderName != null)
-                    {
-                        commanderName = starMapCredentials.commanderName;
-                    }
-                    else if (Cmdr != null && Cmdr.name != null)
-                    {
-                        commanderName = Cmdr.name;
-                    }
-                    if (commanderName != null)
-                    {
-                        starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
-                        Logging.Info("EDDI access to EDSM is enabled");
-                    }
-                    // Spin off a thread to download & sync EDSM flight logs & system comments in the background
-                    Thread updateThread = new Thread(() => starMapService.Sync(starMapCredentials.lastSync));
-                    updateThread.IsBackground = true;
-                    updateThread.Start();
-                }
-                if (starMapService == null)
-                {
-                    Logging.Info("EDDI access to EDSM is disabled");
-                }
+                SetupEDSM();
 
                 // We always start in normal space
                 Environment = Constants.ENVIRONMENT_NORMAL_SPACE;
@@ -218,6 +180,67 @@ namespace Eddi
             catch (Exception ex)
             {
                 Logging.Error("Failed to initialise", ex);
+            }
+        }
+
+        private void SetupCompanionAPI(EDDIConfiguration configuration)
+        {
+            // Set up the companion app service
+            if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+            {
+                // Carry out initial population of profile
+                try
+                {
+                    refreshProfile();
+                }
+                catch (Exception ex)
+                {
+                    Logging.Debug("Failed to obtain profile: " + ex);
+                }
+            }
+
+            Cmdr.insurance = configuration.Insurance;
+            Cmdr.gender = configuration.Gender;
+            if (Cmdr.name != null)
+            {
+                Logging.Info("EDDI access to the companion app is enabled");
+            }
+            else
+            {
+                // If InvokeUpdatePlugin failed then it will have have left an error message, but this once we ignore it
+                Logging.Info("EDDI access to the companion app is disabled");
+            }
+        }
+
+        private void SetupEDSM()
+        {
+            // Set up the star map service
+            StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
+            if (starMapCredentials != null && starMapCredentials.apiKey != null)
+            {
+                // Commander name might come from star map credentials or the companion app's profile
+                string commanderName = null;
+                if (starMapCredentials.commanderName != null)
+                {
+                    commanderName = starMapCredentials.commanderName;
+                }
+                else if (Cmdr != null && Cmdr.name != null)
+                {
+                    commanderName = Cmdr.name;
+                }
+                if (commanderName != null)
+                {
+                    starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
+                    Logging.Info("EDDI access to EDSM is enabled");
+                }
+                // Spin off a thread to download & sync EDSM flight logs & system comments in the background
+                Thread updateThread = new Thread(() => starMapService.Sync(starMapCredentials.lastSync));
+                updateThread.IsBackground = true;
+                updateThread.Start();
+            }
+            if (starMapService == null)
+            {
+                Logging.Info("EDDI access to EDSM is disabled");
             }
         }
 
