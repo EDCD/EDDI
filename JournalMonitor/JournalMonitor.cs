@@ -1113,6 +1113,20 @@ namespace EddiJournalMonitor
                             events.Add(new FighterDockedEvent(timestamp) { raw = line });
                             handled = true;
                             break;
+                        case "SRVDestroyed":
+                            {
+                                string vehicle = "srv";
+                                events.Add(new VehicleDestroyedEvent(timestamp, vehicle) { raw = line });
+                                handled = true;
+                            }
+                            break;
+                        case "FighterDestroyed":
+                            {
+                                string vehicle = "fighter";
+                                events.Add(new VehicleDestroyedEvent(timestamp, vehicle) { raw = line });
+                                handled = true;
+                            }
+                            break;
                         case "VehicleSwitch":
                             {
                                 string to = getString(data, "To");
@@ -1125,15 +1139,6 @@ namespace EddiJournalMonitor
                                 {
                                     events.Add(new ControllingShipEvent(timestamp) { raw = line });
                                     handled = true;
-                                }
-                                else if (to == null)
-                                {
-                                    // The variable 'to' may be blank if this event is written after a fighter or SRV is destroyed. In either case, we are back in our ship.
-                                    if (EDDI.Instance.Vehicle == Constants.VEHICLE_FIGHTER || EDDI.Instance.Vehicle == Constants.VEHICLE_SRV)
-                                    {
-                                        events.Add(new VehicleDestroyedEvent(timestamp) { raw = line });
-                                        handled = true;
-                                    }
                                 }
                             }
                             break;

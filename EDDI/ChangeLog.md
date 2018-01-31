@@ -1,5 +1,10 @@
 ﻿# CHANGE LOG
 
+  * Core
+    * EDDI will now more readily notice if your SRV or fighter was destroyed (EDDI couldn't always tell before).
+  * Speech Responder
+    * The 'Vehicle destroyed' event now includes the variable `vehicle`, describing the vehicle that was destroyed.
+ 
 ### 2.4.6-b3
   * Core
     * Improved window size and position handling for multi-display setups. 
