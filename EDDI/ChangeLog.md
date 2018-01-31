@@ -1,5 +1,7 @@
 ﻿# CHANGE LOG
 
+  * Fixed a bug caused by a structure change for the 'Bond redeemed' faction name and amount in the Beyond beta.
+
 ### 2.4.6-b3
   * Core
     * Improved window size and position handling for multi-display setups. 

@@ -1974,6 +1974,14 @@ namespace EddiJournalMonitor
                                         rewards.Add(new Reward(factionName, factionReward));
                                     }
                                 }
+                                else
+                                {
+                                    string factionName = getFaction(data, "Faction");
+                                    data.TryGetValue("Amount", out val);
+                                    long factionReward = (long)val;
+
+                                    rewards.Add(new Reward(factionName, factionReward));
+                                }
                                 data.TryGetValue("Amount", out val);
                                 long amount = (long)val;
 
