@@ -67,6 +67,7 @@ Source: "EddiSpeechResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiSpeechService.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiShipMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiStarMapService.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "EddiStatusMonitor.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiVoiceAttackResponder.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EntityFramework.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EntityFramework.SqlServer.dll"; DestDir: "{app}"; Flags: ignoreversion

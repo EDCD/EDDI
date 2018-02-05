@@ -8,7 +8,7 @@ Details of the objects available are as follows:
 
 ## Game state
 
-Information on game state is available at the top level i.e. these values can be accessed directlry.
+Information on game state is available at the top level i.e. these values can be accessed directly.
 
     - `environment` the commander's current environment.  Can be one of "Normal space", "Supercruise" or "Witch space"
     - `vehicle` the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter"
@@ -60,6 +60,46 @@ Any values might be missing, depending on EDDI's configuration.
     - `hardpoints` the ship's hardpoints (this is an array of HardPoint objects)
     - `compartments` the ship's internal compartments (this is an array of Compartment objects)
     - `launchbays` the ship's internal hangars, containing SRV or Fighter 'vehicles' (this is an array of launchbay objects) 
+
+
+## Status
+
+Information about your current status is available under the `status` object.
+
+Any values might be missing, depending on EDDI's configuration.
+
+    - `vehicle` the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter"
+    - `being_interdicted` a boolean value indicating whether the commander is currently being interdicted
+    - `in_danger` a boolean value indicating whether the commander is currently in danger
+    - `near_surface` a boolean value indicating whether the commander is near a landable surface (within it's gravity well)
+    - `overheating` a boolean value indicating whether the commander's vehicle is overheating
+    - `low_fuel` a boolean value indicating whether the commander has less than 25% fuel remaining
+    - `fsd_status` the current status of the ship's frame shift drive. Can be one of "ready", "cooldown", "charging", or "masslock"
+    - `srv_drive_assist` a boolean value indicating whether SRV drive assist is active
+    - `srv_under_ship` a boolean value indicating whether the SRV in within the proximity zone around the ship
+    - `srv_turret_deployed` a boolean value indicating whether the SRV's turret has been deployed
+    - `srv_handbrake_activated` a boolean value indicating whether the SRV's handbrake has been activated
+    - `scooping_fuel` a boolean value indicating whether the ship is currently scooping fuel
+    - `silent_running` a boolean value indicating whether silent running is active
+    - `cargo_scoop_deployed` a boolean value indicating whether the cargo scoop has been deployed
+    - `lights_on` a boolean value indicating whether the vehicle's external lights are active
+    - `in_wing` a boolean value indicating whether the commander is currently in a wing
+    - `hardpoints_deployed` a boolean value indicating whether hardpoints are currently deployed
+    - `flight_assist_off` a boolean value indicating whether flight assistance has been deactivated
+    - `supercruise` a boolean value indicating whether the ship is currently in supercruise
+    - `shields_up` a boolean value indicating whether the ship's shields are maintaining their integrity
+    - `landing_gear_down` a boolean value indicating whether the ship's landing gears have been deployed
+    - `landed` a boolean value indicating whether the ship is currently landed (on a surface)
+    - `docked` a boolean value indicating whether the ship is currently docked (at a station)
+    - `pips_sys` a decimal value indicating the power distributor allocation to systems
+    - `pips_eng` a decimal value indicating the power distributor allocation to engines
+    - `pips_wea` a decimal value indicating the power distributor allocation to weapons
+    - `firegroup` an integer value indicating the ship's currently selected firegroup
+    - `gui_focus` the commander's current focus. Can be one of "none", "internal panel" (right panel), "external panel" (left panel), "communications panel" (top panel), "role panel" (bottom panel), "station services", "galaxy map", or "system map"
+    - `latitude` a decimal value indicating the ship's current latitude (if near a surface)
+    - `longitude` a decimal value indicating the ship's current longitude (if near a surface)
+    - `altitude` a decimal value indicating the ship's current altitude (if in flight near a surface)
+    - `heading` a decimal value indicating the ship's current heading (if near a surface)
 
 ## Current starsystem
 

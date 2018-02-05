@@ -76,6 +76,8 @@
     <Compile Include="ModuleArrivedEvent.cs" />
     <Compile Include="ModuleTransferEvent.cs" />
     <Compile Include="ShipAfmuRepairedEvent.cs" />
+    <Compile Include="ShipFsdEvent.cs" />
+    <Compile Include="ShipLowFuelEvent.cs" />
     <Compile Include="ShipRepairDroneEvent.cs" />
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>

@@ -227,6 +227,11 @@ namespace EddiSpeechResponder
                 dict["station"] = new ReflectionValue(EDDI.Instance.CurrentStation);
             }
 
+            if (EDDI.Instance.CurrentStatus != null)
+            {
+                dict["status"] = new ReflectionValue(EDDI.Instance.CurrentStatus);
+            }
+
             if (theEvent != null)
             {
                 dict["event"] = new ReflectionValue(theEvent);

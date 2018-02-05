@@ -113,6 +113,9 @@ namespace Eddi
         public Ship CurrentShip { get; set; }
 
         // Session state
+        public Status CurrentStatus { get; private set; } = new Status();
+        public Status LastStatus { get; private set; } = new Status();
+
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
         /// <summary>
@@ -607,128 +610,132 @@ namespace Eddi
             }
         }
 
-        public void eventHandler(Event journalEvent)
+        public void eventHandler(Event @event)
         {
-            if (journalEvent != null)
+            if (@event != null)
             {
                 try
                 {
-                    Logging.Debug("Handling event " + JsonConvert.SerializeObject(journalEvent));
+                    Logging.Debug("Handling event " + JsonConvert.SerializeObject(@event));
                     // We have some additional processing to do for a number of events
                     bool passEvent = true;
-                    if (journalEvent is FileHeaderEvent)
+                    if (@event is FileHeaderEvent)
                     {
-                        passEvent = eventFileHeader((FileHeaderEvent)journalEvent);
+                        passEvent = eventFileHeader((FileHeaderEvent)@event);
                     }
-                    else if (journalEvent is JumpedEvent)
+                    else if (@event is JumpedEvent)
                     {
-                        passEvent = eventJumped((JumpedEvent)journalEvent);
+                        passEvent = eventJumped((JumpedEvent)@event);
                     }
-                    else if (journalEvent is DockedEvent)
+                    else if (@event is DockedEvent)
                     {
-                        passEvent = eventDocked((DockedEvent)journalEvent);
+                        passEvent = eventDocked((DockedEvent)@event);
                     }
-                    else if (journalEvent is UndockedEvent)
+                    else if (@event is UndockedEvent)
                     {
-                        passEvent = eventUndocked((UndockedEvent)journalEvent);
+                        passEvent = eventUndocked((UndockedEvent)@event);
                     }
-                    else if (journalEvent is LocationEvent)
+                    else if (@event is LocationEvent)
                     {
-                        passEvent = eventLocation((LocationEvent)journalEvent);
+                        passEvent = eventLocation((LocationEvent)@event);
                     }
-                    else if (journalEvent is FSDEngagedEvent)
+                    else if (@event is FSDEngagedEvent)
                     {
-                        passEvent = eventFSDEngaged((FSDEngagedEvent)journalEvent);
+                        passEvent = eventFSDEngaged((FSDEngagedEvent)@event);
                     }
-                    else if (journalEvent is EnteredSupercruiseEvent)
+                    else if (@event is EnteredSupercruiseEvent)
                     {
-                        passEvent = eventEnteredSupercruise((EnteredSupercruiseEvent)journalEvent);
+                        passEvent = eventEnteredSupercruise((EnteredSupercruiseEvent)@event);
                     }
-                    else if (journalEvent is EnteredNormalSpaceEvent)
+                    else if (@event is EnteredNormalSpaceEvent)
                     {
-                        passEvent = eventEnteredNormalSpace((EnteredNormalSpaceEvent)journalEvent);
+                        passEvent = eventEnteredNormalSpace((EnteredNormalSpaceEvent)@event);
                     }
-                    else if (journalEvent is CommanderContinuedEvent)
+                    else if (@event is CommanderContinuedEvent)
                     {
-                        passEvent = eventCommanderContinued((CommanderContinuedEvent)journalEvent);
+                        passEvent = eventCommanderContinued((CommanderContinuedEvent)@event);
                     }
-                    else if (journalEvent is CommanderRatingsEvent)
+                    else if (@event is CommanderRatingsEvent)
                     {
-                        passEvent = eventCommanderRatings((CommanderRatingsEvent)journalEvent);
+                        passEvent = eventCommanderRatings((CommanderRatingsEvent)@event);
                     }
-                    else if (journalEvent is CombatPromotionEvent)
+                    else if (@event is CombatPromotionEvent)
                     {
-                        passEvent = eventCombatPromotion((CombatPromotionEvent)journalEvent);
+                        passEvent = eventCombatPromotion((CombatPromotionEvent)@event);
                     }
-                    else if (journalEvent is TradePromotionEvent)
+                    else if (@event is TradePromotionEvent)
                     {
-                        passEvent = eventTradePromotion((TradePromotionEvent)journalEvent);
+                        passEvent = eventTradePromotion((TradePromotionEvent)@event);
                     }
-                    else if (journalEvent is ExplorationPromotionEvent)
+                    else if (@event is ExplorationPromotionEvent)
                     {
-                        passEvent = eventExplorationPromotion((ExplorationPromotionEvent)journalEvent);
+                        passEvent = eventExplorationPromotion((ExplorationPromotionEvent)@event);
                     }
-                    else if (journalEvent is FederationPromotionEvent)
+                    else if (@event is FederationPromotionEvent)
                     {
-                        passEvent = eventFederationPromotion((FederationPromotionEvent)journalEvent);
+                        passEvent = eventFederationPromotion((FederationPromotionEvent)@event);
                     }
-                    else if (journalEvent is EmpirePromotionEvent)
+                    else if (@event is EmpirePromotionEvent)
                     {
-                        passEvent = eventEmpirePromotion((EmpirePromotionEvent)journalEvent);
+                        passEvent = eventEmpirePromotion((EmpirePromotionEvent)@event);
                     }
-                    else if (journalEvent is CrewJoinedEvent)
+                    else if (@event is CrewJoinedEvent)
                     {
-                        passEvent = eventCrewJoined((CrewJoinedEvent)journalEvent);
+                        passEvent = eventCrewJoined((CrewJoinedEvent)@event);
                     }
-                    else if (journalEvent is CrewLeftEvent)
+                    else if (@event is CrewLeftEvent)
                     {
-                        passEvent = eventCrewLeft((CrewLeftEvent)journalEvent);
+                        passEvent = eventCrewLeft((CrewLeftEvent)@event);
                     }
-                    else if (journalEvent is EnteredCQCEvent)
+                    else if (@event is EnteredCQCEvent)
                     {
-                        passEvent = eventEnteredCQC((EnteredCQCEvent)journalEvent);
+                        passEvent = eventEnteredCQC((EnteredCQCEvent)@event);
                     }
-                    else if (journalEvent is SRVLaunchedEvent)
+                    else if (@event is SRVLaunchedEvent)
                     {
-                        passEvent = eventSRVLaunched((SRVLaunchedEvent)journalEvent);
+                        passEvent = eventSRVLaunched((SRVLaunchedEvent)@event);
                     }
-                    else if (journalEvent is SRVDockedEvent)
+                    else if (@event is SRVDockedEvent)
                     {
-                        passEvent = eventSRVDocked((SRVDockedEvent)journalEvent);
+                        passEvent = eventSRVDocked((SRVDockedEvent)@event);
                     }
-                    else if (journalEvent is FighterLaunchedEvent)
+                    else if (@event is FighterLaunchedEvent)
                     {
-                        passEvent = eventFighterLaunched((FighterLaunchedEvent)journalEvent);
+                        passEvent = eventFighterLaunched((FighterLaunchedEvent)@event);
                     }
-                    else if (journalEvent is FighterDockedEvent)
+                    else if (@event is FighterDockedEvent)
                     {
-                        passEvent = eventFighterDocked((FighterDockedEvent)journalEvent);
+                        passEvent = eventFighterDocked((FighterDockedEvent)@event);
                     }
-                    else if (journalEvent is BeltScannedEvent)
+                    else if (@event is BeltScannedEvent)
                     {
-                        passEvent = eventBeltScanned((BeltScannedEvent)journalEvent);
+                        passEvent = eventBeltScanned((BeltScannedEvent)@event);
                     }
-                    else if (journalEvent is StarScannedEvent)
+                    else if (@event is StarScannedEvent)
                     {
-                        passEvent = eventStarScanned((StarScannedEvent)journalEvent);
+                        passEvent = eventStarScanned((StarScannedEvent)@event);
                     }
-                    else if (journalEvent is BodyScannedEvent)
+                    else if (@event is BodyScannedEvent)
                     {
-                        passEvent = eventBodyScanned((BodyScannedEvent)journalEvent);
+                        passEvent = eventBodyScanned((BodyScannedEvent)@event);
                     }
-                    else if (journalEvent is VehicleDestroyedEvent)
+                    else if (@event is VehicleDestroyedEvent)
                     {
-                        passEvent = eventVehicleDestroyed((VehicleDestroyedEvent)journalEvent);
+                        passEvent = eventVehicleDestroyed((VehicleDestroyedEvent)@event);
+                    }
+                    else if (@event is StatusEvent)
+                    {
+                        passEvent = eventStatus((StatusEvent)@event);
                     }
                     // Additional processing is over, send to the event responders if required
                     if (passEvent)
                     {
-                        OnEvent(journalEvent);
+                        OnEvent(@event);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Logging.Error("Failed to handle event " + JsonConvert.SerializeObject(journalEvent), ex);
+                    Logging.Error("Failed to handle event " + JsonConvert.SerializeObject(@event), ex);
                 }
             }
         }
@@ -1290,6 +1297,40 @@ namespace Eddi
         {
             // We are back in the ship
             Vehicle = Constants.VEHICLE_SHIP;
+            return true;
+        }
+
+        private bool eventStatus(StatusEvent theEvent)
+        {
+            if (Instance.CurrentStatus != theEvent.status)
+            {
+                // Update global variables
+
+                Instance.LastStatus = Instance.CurrentStatus;
+                Instance.CurrentStatus = theEvent.status;
+                if (theEvent.status.supercruise == true)
+                {
+                    Instance.Environment = Constants.ENVIRONMENT_SUPERCRUISE;
+                }
+                Instance.Vehicle = theEvent.status.vehicle;
+
+                // Trigger events for changed status, as applicable
+
+                if (Instance.LastStatus.near_surface != Instance.CurrentStatus.near_surface)
+                {
+                    Instance.eventHandler(new NearSurfaceEvent(theEvent.timestamp, theEvent.status.near_surface));
+                }
+
+                if (Instance.LastStatus.srv_turret_deployed != Instance.CurrentStatus.srv_turret_deployed)
+                {
+                    Instance.eventHandler(new SRVTurretEvent(theEvent.timestamp, theEvent.status.srv_turret_deployed));
+                }
+
+                if (Instance.LastStatus.srv_under_ship != Instance.CurrentStatus.srv_under_ship)
+                {
+                    Instance.eventHandler(new SRVUnderShipEvent(theEvent.timestamp));
+                }
+            }
             return true;
         }
 
