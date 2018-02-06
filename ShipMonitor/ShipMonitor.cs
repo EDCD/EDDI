@@ -685,7 +685,10 @@ namespace EddiShipMonitor
 
             if (EDDI.Instance.LastStatus.low_fuel != EDDI.Instance.CurrentStatus.low_fuel)
             {
-                EDDI.Instance.eventHandler(new ShipLowFuelEvent(@event.timestamp));
+                if (@event.status.low_fuel) // Don't trigger 'low fuel' event when fuel exceeds 25%
+                {
+                    EDDI.Instance.eventHandler(new ShipLowFuelEvent(@event.timestamp));
+                }
             }
         }
 
