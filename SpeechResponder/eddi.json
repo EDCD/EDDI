@@ -1640,6 +1640,15 @@
       "name": "Trade voucher redeemed",
       "description": "Triggered when you redeem a trade voucher"
     },
+    "Under attack": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Under attack",
+      "description": "Triggered when under fire (same time as the Under Attack voice message)"
+    },
     "Undocked": {
       "enabled": true,
       "priority": 3,

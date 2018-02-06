@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BeltScannedEvent.cs" />
+    <Compile Include="UnderAttackEvent.cs" />
     <Compile Include="VehicleDestroyedEvent.cs" />
     <Compile Include="DatalinkMessageEvent.cs" />
     <Compile Include="CommunityGoalEvent.cs" />
