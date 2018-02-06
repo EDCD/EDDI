@@ -1,5 +1,8 @@
 ﻿# CHANGE LOG
 
+  * Speech Responder
+    * Add new event 'Shutdown', triggered on a clean shut down of the game.
+
 ### 2.4.6-b3
   * Core
     * Improved window size and position handling for multi-display setups. 
