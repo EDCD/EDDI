@@ -31,9 +31,9 @@
         public bool docked = false;
 
         // Variables set from pips (these are not always present in the event)
-        public decimal pips_sys = 0;
-        public decimal pips_eng = 0;
-        public decimal pips_wea = 0;
+        public decimal? pips_sys = 0;
+        public decimal? pips_eng = 0;
+        public decimal? pips_wea = 0;
 
         // Variables set directly from the event (these are not always present in the event)
         public int? firegroup = 0;

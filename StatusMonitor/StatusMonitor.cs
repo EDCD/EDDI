@@ -115,25 +115,19 @@ namespace EddiStatusMonitor
                 else
                 {
                     statusFileName = fileInfo.Name;
-                    try
+                    string[] thisStatus;
+                    thisStatus = File.ReadAllLines(fileInfo.FullName);
+                    if (lastStatus != thisStatus)
                     {
-                        string[] thisStatus = File.ReadAllLines(fileInfo.FullName);
-                        if (lastStatus != thisStatus)
+                        using (FileStream fs = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                         {
-                            using (FileStream fs = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                            foreach (string line in thisStatus)
                             {
-                                foreach (string line in thisStatus)
-                                {
-                                    ParseStatusEntry(line);
-                                }
+                                ParseStatusEntry(line);
                             }
                         }
-                        lastStatus = thisStatus;
                     }
-                    catch (Exception ex)
-                    {
-                        Logging.Warn("Elite Dangerous Status.json file is being written and cannot be read. " + ex);
-                    }
+                    lastStatus = thisStatus;
                 }
                 Thread.Sleep(100);
             }
@@ -207,10 +201,10 @@ namespace EddiStatusMonitor
 
                                 object val;
                                 data.TryGetValue("Pips", out val);
-                                List<long> pips = ((List<object>)val).Cast<long>().ToList(); // The 'TryGetValue' function returns these values as type 'object<long>'
-                                status.pips_sys = ((decimal)pips[0] / 2); // Set system pips (converting from half pips)
-                                status.pips_eng = ((decimal)pips[1] / 2); // Set engine pips (converting from half pips)
-                                status.pips_wea = ((decimal)pips[2] / 2); // Set weapon pips (converting from half pips)
+                                List<long> pips = ((List<object>)val)?.Cast<long>()?.ToList(); // The 'TryGetValue' function returns these values as type 'object<long>'
+                                status.pips_sys = pips != null ? ((decimal?)pips[0] / 2) : null; // Set system pips (converting from half pips)
+                                status.pips_eng = pips != null ? ((decimal?)pips[1] / 2) : null; // Set engine pips (converting from half pips)
+                                status.pips_wea = pips != null ? ((decimal?)pips[2] / 2) : null; // Set weapon pips (converting from half pips)
 
                                 status.firegroup = JsonParsing.getOptionalInt(data, "Firegroup");
                                 int? gui_focus = JsonParsing.getOptionalInt(data, "GuiFocus");
