@@ -10,7 +10,7 @@ namespace Utilities
         public const string EDDI_NAME = "EDDI";
         public const string EDDI_VERSION = "2.4.6-b3";
         public const string EDDI_SERVER_URL = "http://edcd.github.io/EDDP/";
-        public const string EDDI_SYSTEM_MUTEX_NAME = "{F1F85B96-14B8-45E4-AD19-0B2FCD6F6CF8}";
+        public static readonly string EDDI_SYSTEM_MUTEX_NAME = $"{EDDI_SERVER_URL}/{EDDI_NAME}/{Environment.GetEnvironmentVariable("UserName")}";
 
         public static readonly string DATA_DIR = Environment.GetEnvironmentVariable("AppData") + "\\" + EDDI_NAME;
 
