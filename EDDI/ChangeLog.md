@@ -2,10 +2,9 @@
 
 ### 2.4.6-b3
   * Core
-    * To prevent conflicting writes to config files from multiple instances of EDDI, only one instance of EDDI is now allowed to run at any given time (whether started stand-alone or from VoiceAttack). If running from VoiceAttack, the user interface can be invoked using the commands noted below.
-    * Improved window size and position handling for multi-display setups. 
-    * EDDI's minimum window size refined to match designed window size. 
-    * If EDDI is run as a standalone app, its entire window state is now preserved. If EDDI is invoked via VoiceAttack commands, only the maximized state is preserved.
+    * Only one instance of EDDI is now allowed at a time (standalone or VoiceAttack), to prevent conflicting writes to config and data files. 
+	  * If running from VoiceAttack, the user interface can be invoked using the commands listed in the VoiceAttack section below.
+    * If EDDI is run as a standalone app, its entire window state is now preserved. If EDDI is invoked via VoiceAttack commands, we only remember whether it was maximised and don't disturb the rest.
   * Fixed a bug that would cause EDDI to write to the shipyard before it had finished processing shipyard related actions (adding and removing ships)
   * Speech responder
     * Add new event 'VA initialized', triggered when the VoiceAttack plugin is fully initialized. You can respond to this event in VoiceAttack by creating a '((EDDI va initialized))' command.
