@@ -16,6 +16,8 @@ namespace Eddi
             MainWindow mainWindow = null;
             bool firstOwner = false;
             Mutex eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out firstOwner);
+            const string localisedMultipleInstanceAlertTitle = "EDDI is already running";
+            const string localisedMultipleInstanceAlertText = "Only one instance of EDDI can run at at time.\r\n\r\nPlease close the other instance and try again.";
 
             if (firstOwner)
             {
@@ -26,8 +28,8 @@ namespace Eddi
             }
             else
             {
-                MessageBox.Show("An EDDI application instance is already running.",
-                                "EDDI Instance Exists",
+                MessageBox.Show(localisedMultipleInstanceAlertText,
+                                localisedMultipleInstanceAlertTitle,
                                 MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
