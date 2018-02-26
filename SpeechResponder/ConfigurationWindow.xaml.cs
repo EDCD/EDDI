@@ -90,7 +90,9 @@ namespace EddiSpeechResponder
         {
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
             EditScriptWindow editScriptWindow = new EditScriptWindow(Personality.Scripts, script.Name);
+            EDDI.Instance.SpeechResponderModalWait = true;
             editScriptWindow.ShowDialog();
+            EDDI.Instance.SpeechResponderModalWait = false;
             scriptsData.Items.Refresh();
         }
 
@@ -142,6 +144,7 @@ namespace EddiSpeechResponder
 
         private void deleteScript(object sender, RoutedEventArgs e)
         {
+            EDDI.Instance.SpeechResponderModalWait = true;
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
             string messageBoxText = "Are you sure you want to delete the \"" + script.Name + "\" script?";
             string caption = "Delete Script";
@@ -157,6 +160,7 @@ namespace EddiSpeechResponder
                     scriptsData.Items.Refresh();
                     break;
             }
+            EDDI.Instance.SpeechResponderModalWait = false;
         }
 
         private void resetScript(object sender, RoutedEventArgs e)
@@ -201,6 +205,7 @@ namespace EddiSpeechResponder
             Personality.Scripts.Add(script.Name, script);
 
             // Now fire up an edit
+            EDDI.Instance.SpeechResponderModalWait = true;
             EditScriptWindow editScriptWindow = new EditScriptWindow(Personality.Scripts, script.Name);
             if (editScriptWindow.ShowDialog() == true)
             {
@@ -212,10 +217,12 @@ namespace EddiSpeechResponder
                 Personality.Scripts.Remove(script.Name);
             }
             scriptsData.Items.Refresh();
+            EDDI.Instance.SpeechResponderModalWait = false;
         }
 
         private void copyPersonalityClicked(object sender, RoutedEventArgs e)
         {
+            EDDI.Instance.SpeechResponderModalWait = true;
             CopyPersonalityWindow window = new CopyPersonalityWindow(Personality);
             if (window.ShowDialog() == true)
             {
@@ -225,10 +232,12 @@ namespace EddiSpeechResponder
                 Personalities.Add(newPersonality);
                 Personality = newPersonality;
             }
+            EDDI.Instance.SpeechResponderModalWait = false;
         }
 
         private void deletePersonalityClicked(object sender, RoutedEventArgs e)
         {
+            EDDI.Instance.SpeechResponderModalWait = true;
             string messageBoxText = "Are you sure you want to delete the \"" + Personality.Name + "\" personality?";
             string caption = "Delete Personality";
             MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -242,6 +251,7 @@ namespace EddiSpeechResponder
                     oldPersonality.RemoveFile();
                     break;
             }
+            EDDI.Instance.SpeechResponderModalWait = false;
         }
 
         private void subtitlesEnabled(object sender, RoutedEventArgs e)

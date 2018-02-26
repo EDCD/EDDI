@@ -1649,6 +1649,15 @@
       "name": "Undocked",
       "description": "Triggered when your ship undocks from a station or outpost"
     },
+    "VA initialized": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "VA initialized",
+      "description": "Triggered when the VoiceAttack plugin is initialized"
+    },
     "Vehicle destroyed": {
       "enabled": true,
       "priority": 3,

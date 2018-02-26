@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
@@ -152,6 +151,8 @@ namespace Eddi
             // Need to set up the correct information in the hero text depending on from where we were started
             if (fromVA)
             {
+                // Allow the EDDI VA plugin to change window state
+                VaWindowStateChange = new vaWindowStateChangeDelegate(OnVaWindowStateChange);
                 heroText.Text = "Any changes made here will take effect automatically in VoiceAttack.  You can close this window when you have finished.";
             }
             else
@@ -328,9 +329,13 @@ namespace Eddi
             if (Properties.Settings.Default.Maximized || Properties.Settings.Default.Minimized)
             {
                 if (Properties.Settings.Default.Minimized)
+                {
                     senderWindow.WindowState = WindowState.Minimized;
-                else if (Properties.Settings.Default.Maximized)
+                }
+                else
+                {
                     senderWindow.WindowState = WindowState.Maximized;
+                }
 
                 Visibility = Visibility.Visible;
             }
@@ -689,21 +694,37 @@ namespace Eddi
             SpeechService.Instance.ReloadConfiguration();
         }
 
+        // Called from the VoiceAttack plugin if the "Configure EDDI" voice command has
+        // been given and the EDDI configuration window is already open. If the window
+        // is minimize, restore it, otherwise the plugin will ignore the command.
+        public delegate void vaWindowStateChangeDelegate(WindowState state, bool minimizeCheck);
+        public vaWindowStateChangeDelegate VaWindowStateChange;
+        public void OnVaWindowStateChange(WindowState state, bool minimizeCheck)
+        {
+            if (minimizeCheck && WindowState == WindowState.Minimized)
+                WindowState = WindowState.Normal;
+            else if (!minimizeCheck && WindowState != state)
+                WindowState = state;
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
 
-            // Save window position here as the RestoreBounds rect gets set
-            // to empty somewhere between here and OnClosed.
-            SaveWindowState();
-
-            if (!fromVA)
+            if (!e.Cancel)
             {
-                // When in OnClosed(), if the EDDI window was closed while minimized
-                // (under debugger), monitorThread.Join() would block waiting for a
-                // thread(s) to terminate. Strange, because it does not block when the
-                // window is closed in the normal or maximized state.
-                EDDI.Instance.Stop();
+                // Save window position here as the RestoreBounds rect gets set
+                // to empty somewhere between here and OnClosed.
+                SaveWindowState();
+
+                if (!fromVA)
+                {
+                    // When in OnClosed(), if the EDDI window was closed while minimized
+                    // (under debugger), monitorThread.Join() would block waiting for a
+                    // thread(s) to terminate. Strange, because it does not block when the
+                    // window is closed in the normal or maximized state.
+                    EDDI.Instance.Stop();
+                }
             }
         }
 
