@@ -27,7 +27,6 @@ namespace EddiShipMonitor
         private int? currentShipId;
         private int? currentProfileId;
         private static readonly object shipyardLock = new object();
-        //SynchronizationContext uiSyncContext;
 
         public string MonitorName()
         {
