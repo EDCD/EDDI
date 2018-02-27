@@ -4,6 +4,83 @@
   * UI
     * If EDDI is run as a standalone app, its entire window state is now preserved. If EDDI is invoked via VoiceAttack commands, we only remember whether it was maximised and don't disturb the rest.
   * Core
+    * Add a new top level `status` object, which contains the following new variables
+      * `vehicle` the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter"
+      * `being_interdicted` a boolean value indicating whether the commander is currently being interdicted
+      * `in_danger` a boolean value indicating whether the commander is currently in danger
+      * `near_surface` a boolean value indicating whether the commander is near a landable surface (within it's gravity well)
+      * `overheating` a boolean value indicating whether the commander's vehicle is overheating
+      * `low_fuel` a boolean value indicating whether the commander has less than 25% fuel remaining
+      * `fsd_status` the current status of the ship's frame shift drive. Can be one of "ready", "cooldown", "charging", or "masslock"
+      * `srv_drive_assist` a boolean value indicating whether SRV drive assist is active
+      * `srv_under_ship` a boolean value indicating whether the SRV in within the proximity zone around the ship
+      * `srv_turret_deployed` a boolean value indicating whether the SRV's turret has been deployed
+      * `srv_handbrake_activated` a boolean value indicating whether the SRV's handbrake has been activated
+      * `scooping_fuel` a boolean value indicating whether the ship is currently scooping fuel
+      * `silent_running` a boolean value indicating whether silent running is active
+      * `cargo_scoop_deployed` a boolean value indicating whether the cargo scoop has been deployed
+      * `lights_on` a boolean value indicating whether the vehicle's external lights are active
+      * `in_wing` a boolean value indicating whether the commander is currently in a wing
+      * `hardpoints_deployed` a boolean value indicating whether hardpoints are currently deployed
+      * `flight_assist_off` a boolean value indicating whether flight assistance has been deactivated
+      * `supercruise` a boolean value indicating whether the ship is currently in supercruise
+      * `shields_up` a boolean value indicating whether the ship's shields are maintaining their integrity
+      * `landing_gear_down` a boolean value indicating whether the ship's landing gears have been deployed
+      * `landed` a boolean value indicating whether the ship is currently landed (on a surface)
+      * `docked` a boolean value indicating whether the ship is currently docked (at a station)
+      * `pips_sys` a decimal value indicating the power distributor allocation to systems
+      * `pips_eng` a decimal value indicating the power distributor allocation to engines
+      * `pips_wea` a decimal value indicating the power distributor allocation to weapons
+      * `firegroup` an integer value indicating the ship's currently selected firegroup
+      * `gui_focus` the commander's current focus. Can be one of "none", "internal panel" (right panel), "external panel" (left panel), "communications panel" (top panel), "role panel" (bottom panel), "station services", "galaxy map", or "system map"
+      * `latitude` a decimal value indicating the ship's current latitude (if near a surface)
+      * `longitude` a decimal value indicating the ship's current longitude (if near a surface)
+      * `altitude` a decimal value indicating the ship's current altitude (if in flight near a surface)
+      * `heading` a decimal value indicating the ship's current heading (if near a surface)
+  * Speech Responder
+    * Added new 'Near surface' event, triggered when you enter or depart the gravity well around a surface
+	* Added new 'SRV under ship' event, triggered when your SRV enters or leaves the proximity zone around your ship
+	* Added new 'SRV turret' event, triggered when you deploy or retract your SRV's turret
+	* Added new 'Ship fsd' event, triggered when there is a change to the status of your ship's fsd
+	* Added new 'Ship low fuel' event, triggered when your fuel level falls below 25%
+  * VoiceAttack
+    * Added the following new variables
+      * {TXT:Status vehicle}: the vehicle that is under the commander's control. Can be one of "Ship", "SRV" or "Fighter"
+      * {BOOL:Status being interdicted} a boolean value indicating whether the commander is currently being interdicted
+      * {BOOL:Status in danger} a boolean value indicating whether the commander is currently in danger
+      * {BOOL:Status near surface} a boolean value indicating whether the commander is near a landable surface (within it's gravity well)
+      * {BOOL:Status overheating} a boolean value indicating whether the commander's vehicle is overheating
+      * {BOOL:Status low fuel} a boolean value indicating whether the commander has less than 25% fuel remaining
+      * {TXT:Status fsd status} the current status of the ship's frame shift drive. Can be one of "ready", "cooldown", "charging", or "masslock"
+      * {BOOL:Status srv drive assist} a boolean value indicating whether SRV drive assist is active
+      * {BOOL:Status srv under ship} a boolean value indicating whether the SRV in within the proximity zone around the ship
+      * {BOOL:Status srv turret deployed} a boolean value indicating whether the SRV's turret has been deployed
+      * {BOOL:Status srv handbrake activated} a boolean value indicating whether the SRV's handbrake has been activated
+      * {BOOL:Status scooping fuel} a boolean value indicating whether the ship is currently scooping fuel
+      * {BOOL:Status silent running} a boolean value indicating whether silent running is active
+      * {BOOL:Status cargo scoop deployed} a boolean value indicating whether the cargo scoop has been deployed
+      * {BOOL:Status lights on} a boolean value indicating whether the vehicle's external lights are active
+      * {BOOL:Status in wing} a boolean value indicating whether the commander is currently in a wing
+      * {BOOL:Status hardpoints deployed} a boolean value indicating whether hardpoints are currently deployed
+      * {BOOL:Status flight assist off} a boolean value indicating whether flight assistance has been deactivated
+      * {BOOL:Status supercruise} a boolean value indicating whether the ship is currently in supercruise
+      * {BOOL:Status shields up} a boolean value indicating whether the ship's shields are maintaining their integrity
+      * {BOOL:Status landing gear down} a boolean value indicating whether the ship's landing gears have been deployed
+      * {BOOL:Status landed} a boolean value indicating whether the ship is currently landed (on a surface)
+      * {BOOL:Status docked} a boolean value indicating whether the ship is currently docked (at a station)
+      * {DEC:Status pips sys} a decimal value indicating the power distributor allocation to systems
+      * {DEC:Status pips eng} a decimal value indicating the power distributor allocation to engines
+      * {DEC:Status pips wea} a decimal value indicating the power distributor allocation to weapons
+      * {INT:Status firegroup} an integer value indicating the ship's currently selected firegroup
+      * {TXT:Status gui focus} the commander's current focus. Can be one of "none", "internal panel" (right panel), "external panel" (left panel), "communications panel" (top panel), "role panel" (bottom panel), "station services", "galaxy map", or "system map"
+      * {DEC:Status latitude} a decimal value indicating the ship's current latitude (if near a surface)
+      * {DEC:Status longitude} a decimal value indicating the ship's current longitude (if near a surface)
+      * {DEC:Status altitude} a decimal value indicating the ship's current altitude (if in flight near a surface)
+      * {DEC:Status heading} a decimal value indicating the ship's current heading (if near a surface)
+
+
+### 2.4.6-b3
+  * Core
     * Only one instance of EDDI is now allowed at a time (standalone or VoiceAttack), to prevent conflicting writes to config and data files. 
 	  * If running from VoiceAttack, the user interface can be invoked using the commands listed in the VoiceAttack section below.
     * Improved window size and position handling for multi-display setups. 

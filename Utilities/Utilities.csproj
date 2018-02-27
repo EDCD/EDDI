@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="DataGridNumericColumn.cs" />
+    <Compile Include="JsonParsing.cs" />
     <Compile Include="Dates.cs" />
     <Compile Include="Deserializtion.cs" />
     <Compile Include="Diff.cs" />

@@ -821,6 +821,15 @@
       "name": "Location",
       "description": "Triggered when the commander's location is reported, usually when they reload their game."
     },
+    "Low fuel": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Low fuel",
+      "description": "Triggered when your fuel level falls below 25%."
+    },
     "Market information updated": {
       "enabled": true,
       "priority": 3,
@@ -1127,6 +1136,15 @@
       "name": "Nav beacon scan",
       "description": "Triggered when you scan a nav beacon, before the scan data for all the bodies in the system is written into the journal"
     },
+    "Near surface": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Near surface",
+      "description": "Triggered when you enter or depart orbit around a surface"
+    },
     "NPC attack commenced": {
       "enabled": true,
       "priority": 3,
@@ -1343,6 +1361,15 @@
       "name": "Ship delivered",
       "description": "Triggered when your newly-purchased ship is delivered to you"
     },
+    "Ship fsd": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship fsd",
+      "description": "Triggered when there is a change to the status of your ship's fsd"
+    },
     "Ship interdicted": {
       "enabled": true,
       "priority": 3,
@@ -1369,6 +1396,15 @@
       "default": true,
       "name": "Ship loadout",
       "description": "Triggered when you obtain the loadout of your ship"
+    },
+    "Ship low fuel": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship low fuel",
+      "description": "Triggered when your fuel level falls below 25%"
     },
     "Ship purchased": {
       "enabled": true,
@@ -1495,6 +1531,24 @@
       "default": true,
       "name": "SRV launched",
       "description": "Triggered when you launch an SRV from your ship"
+    },
+    "SRV turret": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "SRV turret",
+      "description": "Triggered when you deploy or retract your SRV's turret"
+    },
+    "SRV under ship": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{OneOf(\"Buggy\", \"SRV\")} standing by for recovery.",
+      "default": true,
+      "name": "SRV under ship",
+      "description": "Triggered when your SRV enters the recovery zone under your ship"
     },
     "Star report": {
       "enabled": true,

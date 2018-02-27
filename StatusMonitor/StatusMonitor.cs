@@ -1,0 +1,552 @@
+﻿using Eddi;
+using EddiEvents;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Windows.Controls;
+using System.Text.RegularExpressions;
+using System.Threading;
+using Utilities;
+using EddiDataDefinitions;
+using EddiShipMonitor;
+
+namespace EddiStatusMonitor
+{
+    public class StatusMonitor : EDDIMonitor
+    {
+        // What we are monitoring and what to do with it
+        private static Regex Filter = new Regex(@"^Status\.json$");
+        private static Regex JsonRegex = new Regex(@"^{.*}$");
+        private string Directory = GetSavedGamesDir();
+        private string statusFileName;
+        private Status status { get; set; }
+
+        // Keep track of status
+        private bool running;
+
+        public StatusMonitor()
+        {
+            Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
+        }
+
+        public string MonitorName()
+        {
+            return "Status monitor";
+        }
+
+        public string MonitorVersion()
+        {
+            return "1.0.0";
+        }
+
+        public string MonitorDescription()
+        {
+            return "Monitor Elite: Dangerous' Status.json for current status.  This should not be disabled unless you are sure you know what you are doing, as it will result in many functions inside EDDI no longer working";
+        }
+
+        public bool IsRequired()
+        {
+            return true;
+        }
+
+        public bool NeedsStart()
+        {
+            return true;
+        }
+
+        public void Start()
+        {
+            start();
+        }
+
+        /// <summary>Monitor Status.json for changes</summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
+        public void start()
+        {
+            if (Directory == null || Directory.Trim() == "")
+            {
+                return;
+            }
+
+            running = true;
+
+            // Start off by moving to the end of the file
+            string[] lastStatus = null;
+            FileInfo fileInfo = null;
+            try
+            {
+                fileInfo = FindStatusFile(Directory, Filter);
+            }
+            catch (NotSupportedException nsex)
+            {
+                Logging.Error("Directory " + Directory + " not supported: ", nsex);
+            }
+            if (fileInfo != null)
+            {
+                lastStatus = File.ReadAllLines(fileInfo.FullName);
+            }
+
+            // Main loop
+            while (running)
+            {
+                fileInfo = FindStatusFile(Directory, Filter);
+                if (fileInfo == null || !Filter.IsMatch(fileInfo.Name))
+                {
+                    if (fileInfo != null)
+                    {
+                        statusFileName = fileInfo.Name;
+                    }
+                    else
+                    {
+                        // Status.json could not be found. Sleep until a Status.json file is found.
+                        Logging.Info("Error locating Elite Dangerous Status.json. Status monitor is not active. Have you installed and run Elite Dangerous previously? ");
+                        while (fileInfo == null)
+                        {
+                            Thread.Sleep(500);
+                            fileInfo = FindStatusFile(Directory, Filter);
+                        }
+                        Logging.Info("Elite Dangerous Status.json found. Status monitor activated.");
+                        return;
+                    }
+                }
+                else
+                {
+                    statusFileName = fileInfo.Name;
+                    string[] thisStatus;
+                    thisStatus = File.ReadAllLines(fileInfo.FullName);
+                    if (lastStatus != thisStatus)
+                    {
+                        using (FileStream fs = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        {
+                            foreach (string line in thisStatus)
+                            {
+                                ParseStatusEntry(line);
+                            }
+                        }
+                    }
+                    lastStatus = thisStatus;
+                }
+                Thread.Sleep(100);
+            }
+        }
+
+        public void Stop()
+        {
+            running = false;
+        }
+
+        public void Reload()
+        {
+        }
+
+        public UserControl ConfigurationTabItem()
+        {
+            return null;
+        }
+
+        public static List<Event> ParseStatusEntry(string line)
+        {
+            List<Event> events = new List<Event>();
+            try
+            {
+                Match match = JsonRegex.Match(line);
+                if (match.Success)
+                {
+                    IDictionary<string, object> data = Deserializtion.DeserializeData(line);
+
+                    // Every status event has a timestamp field
+                    DateTime timestamp = DateTime.Now;
+                    if (data.ContainsKey("timestamp"))
+                    {
+                        if (data["timestamp"] is DateTime)
+                        {
+                            timestamp = ((DateTime)data["timestamp"]).ToUniversalTime();
+                        }
+                        else
+                        {
+                            timestamp = DateTime.Parse(JsonParsing.getString(data, "timestamp")).ToUniversalTime();
+                        }
+                    }
+                    else
+                    {
+                        Logging.Warn("Status event without timestamp; using current time");
+                    }
+
+                    // Every event has an event field
+                    if (!data.ContainsKey("event"))
+                    {
+                        Logging.Warn("Status event without event field!");
+                        return null;
+                    }
+
+                    bool handled = false;
+
+                    string edType = JsonParsing.getString(data, "event");
+
+                    switch (edType)
+                    {
+                        case "Status":
+                            {
+                                Status status = new Status();
+
+                                status.flags = JsonParsing.getLong(data, "Flags");
+                                if (status.flags > 0)
+                                {
+                                    // Parse flags, comparing results to our prior status
+                                    status = ParseFlags(timestamp, status.flags, line, status);
+                                }
+
+                                object val;
+                                data.TryGetValue("Pips", out val);
+                                List<long> pips = ((List<object>)val)?.Cast<long>()?.ToList(); // The 'TryGetValue' function returns these values as type 'object<long>'
+                                status.pips_sys = pips != null ? ((decimal?)pips[0] / 2) : null; // Set system pips (converting from half pips)
+                                status.pips_eng = pips != null ? ((decimal?)pips[1] / 2) : null; // Set engine pips (converting from half pips)
+                                status.pips_wea = pips != null ? ((decimal?)pips[2] / 2) : null; // Set weapon pips (converting from half pips)
+
+                                status.firegroup = JsonParsing.getOptionalInt(data, "Firegroup");
+                                int? gui_focus = JsonParsing.getOptionalInt(data, "GuiFocus");
+                                switch (gui_focus)
+                                {
+                                    case 0: // No focus
+                                        {
+                                            status.gui_focus = "none";
+                                            break;
+                                        }
+                                    case 1: // InternalPanel (right hand side)
+                                        {
+                                            status.gui_focus = "internal panel";
+                                            break;
+                                        }
+                                    case 2: // ExternalPanel (left hand side)
+                                        {
+                                            status.gui_focus = "external panel";
+                                            break;
+                                        }
+                                    case 3: // CommsPanel (top)
+                                        {
+                                            status.gui_focus = "communications panel";
+                                            break;
+                                        }
+                                    case 4: // RolePanel (bottom)
+                                        {
+                                            status.gui_focus = "role panel";
+                                            break;
+                                        }
+                                    case 5: // StationServices
+                                        {
+                                            status.gui_focus = "station services";
+                                            break;
+                                        }
+                                    case 6: // GalaxyMap
+                                        {
+                                            status.gui_focus = "galaxy map";
+                                            break;
+                                        }
+                                    case 7: // SystemMap
+                                        {
+                                            status.gui_focus = "system map";
+                                            break;
+                                        }
+                                }
+                                status.latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+                                status.longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+                                status.altitude = JsonParsing.getOptionalDecimal(data, "Altitude");
+                                status.heading = JsonParsing.getOptionalDecimal(data, "Heading");
+
+                                // Update the global current status variable
+                                EDDI.Instance.eventHandler(new StatusEvent(timestamp, status));
+                            }
+                            handled = true;
+                            break;
+                    }
+
+                    if (!handled)
+                    {
+                        Logging.Debug("Unhandled status event: " + line);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Warn("Failed to parse Status.json line: " + ex.ToString());
+                Logging.Error("Exception whilst parsing Status.json line", line);
+            }
+            return events;
+        }
+
+        private static string GetSavedGamesDir()
+        {
+            IntPtr path;
+            int result = NativeMethods.SHGetKnownFolderPath(new Guid("4C5C32FF-BB9D-43B0-B5B4-2D72E54EAAA4"), 0, new IntPtr(0), out path);
+            if (result >= 0)
+            {
+                return Marshal.PtrToStringUni(path) + @"\Frontier Developments\Elite Dangerous";
+            }
+            else
+            {
+                throw new ExternalException("Failed to find the saved games directory.", result);
+            }
+        }
+
+        internal class NativeMethods
+        {
+            [DllImport("Shell32.dll")]
+            internal static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)]Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
+        }
+
+        public void PreHandle(Event @event)
+        {
+        }
+
+        public void PostHandle(Event @event)
+        {
+        }
+
+        public void HandleProfile(JObject profile)
+        {
+        }
+
+        public IDictionary<string, object> GetVariables()
+        {
+            return null;
+        }
+
+        /// <summary>Find the latest file in a given directory matching a given expression, or null if no such file exists</summary>
+        private static FileInfo FindStatusFile(string path, Regex filter = null)
+        {
+            if (path == null)
+            {
+                // Configuration can be changed underneath us so we do have to check each time...
+                return null;
+            }
+
+            var directory = new DirectoryInfo(path);
+            if (directory != null)
+            {
+                try
+                {
+                    FileInfo info = directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name)).OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
+                    if (info != null)
+                    {
+                        // This info can be cached so force a refresh
+                        info.Refresh();
+                    }
+                    return info;
+                }
+                catch { }
+            }
+            return null;
+        }
+
+        private static Status ParseFlags(DateTime timestamp, long flags, string line, Status status)
+        {
+            int value;
+
+            value = 67108864; // In SRV
+            if (flags >= value)
+            {
+                status.vehicle = Constants.VEHICLE_SRV;
+                flags = flags - value;
+            }
+
+            value = 33554432; // In Fighter
+            if (flags >= value)
+            {
+                status.vehicle = Constants.VEHICLE_FIGHTER;
+                flags = flags - value;
+            }
+
+            value = 16777216; // In MainShip
+            if (flags >= value)
+            {
+                status.vehicle = Constants.VEHICLE_SHIP;
+                flags = flags - value;
+            }
+
+            value = 8388608; // Being Interdicted
+            if (flags >= value)
+            {
+                status.being_interdicted = true;
+                flags = flags - value;
+            }
+
+            value = 4194304; // IsInDanger
+            if (flags >= value)
+            {
+                status.in_danger = true;
+                flags = flags - value;
+            }
+
+            value = 2097152; // Has Lat Long
+            if (flags >= value)
+            {
+                status.near_surface = true;
+                flags = flags - value;
+            }
+
+            value = 1048576; // Over Heating ( > 100% ), same as the 'Heat warning' event, so no new event is needed
+            if (flags >= value)
+            {
+                status.overheating = true;
+                flags = flags - value;
+            }
+
+            value = 524288; // Low Fuel ( < 25% )
+            if (flags >= value)
+            {
+                status.low_fuel = true;
+                flags = flags - value;
+            }
+
+            value = 262144; // FSD Cooldown
+            if (flags >= value)
+            {
+                status.fsd_status = "cooldown";
+                flags = flags - value;
+            }
+            if (EDDI.Instance.LastStatus.fsd_status == "cooldown" && EDDI.Instance.CurrentStatus.fsd_status != "cooldown")
+            {
+                status.fsd_status = "cooldown complete";
+            }
+
+            value = 131072; // FSD Charging
+            if (flags >= value)
+            {
+                status.fsd_status = "charging";
+                flags = flags - value;
+            }
+            if (EDDI.Instance.LastStatus.fsd_status == "charging" && EDDI.Instance.CurrentStatus.fsd_status != "charging")
+            {
+                status.fsd_status = "charging complete";
+            }
+
+            value = 65536; // FSD MassLocked
+            if (flags >= value)
+            {
+                status.fsd_status = "masslock";
+                flags = flags - value;
+            }
+            if (EDDI.Instance.LastStatus.fsd_status == "masslock" && EDDI.Instance.CurrentStatus.fsd_status != "masslock")
+            {
+                status.fsd_status = "masslock cleared";
+            }
+
+            value = 32768; // Srv DriveAssist
+            if (flags >= value)
+            {
+                status.srv_drive_assist = true;
+                flags = flags - value;
+            }
+
+            value = 16384; // Srv UnderShip
+            if (flags >= value)
+            {
+                status.srv_under_ship = true;
+                flags = flags - value;
+            }
+
+            value = 8192; // Srv Turret
+            if (flags >= value)
+            {
+                status.srv_turret_deployed = true;
+                flags = flags - value;
+            }
+
+            value = 4096; // Srv Handbrake
+            if (flags >= value)
+            {
+                status.srv_handbrake_activated = true;
+                flags = flags - value;
+            }
+
+            value = 2048; // Scooping Fuel
+            if (flags >= value)
+            {
+                status.scooping_fuel = true;
+                flags = flags - value;
+            }
+
+            value = 1024; // Silent Running
+            if (flags >= value)
+            {
+                status.silent_running = true;
+                flags = flags - value;
+            }
+
+            value = 512; // Cargo Scoop Deployed
+            if (flags >= value)
+            {
+                status.cargo_scoop_deployed = true;
+                flags = flags - value;
+            }
+
+            value = 256; // LightsOn
+            if (flags >= value)
+            {
+                status.lights_on = true;
+                flags = flags - value;
+            }
+
+            value = 128; // In Wing
+            if (flags >= value)
+            {
+                status.in_wing = true;
+                flags = flags - value;
+            }
+
+            value = 64; // Hardpoints Deployed
+            if (flags >= value)
+            {
+                status.hardpoints_deployed = true;
+                flags = flags - value;
+            }
+
+            value = 32; // FlightAssist Off
+            if (flags >= value)
+            {
+                status.flight_assist_off = true;
+                flags = flags - value;
+            }
+
+            value = 16; // Supercruise
+            if (flags >= value)
+            {
+                status.supercruise = true;
+                flags = flags - value;
+            }
+
+            value = 8; // Shields Up
+            if (flags >= value)
+            {
+                status.shields_up = true;
+                flags = flags - value;
+            }
+
+            value = 4; // Landing Gear Down
+            if (flags >= value)
+            {
+                status.landing_gear_down = true;
+                flags = flags - value;
+            }
+
+            value = 2; // Landed, (on planet surface)
+            if (flags >= value)
+            {
+                status.landed = true;
+                flags = flags - value;
+            }
+
+            value = 1; // Docked, (on a landing pad)
+            if (flags >= value)
+            {
+                status.docked = true;
+                flags = flags - value;
+            }
+
+            return status;
+        }
+    }
+}

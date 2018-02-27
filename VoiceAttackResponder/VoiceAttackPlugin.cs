@@ -1070,6 +1070,15 @@ namespace EddiVoiceAttackResponder
 
             try
             {
+                setStatusValues(EDDI.Instance.CurrentStatus, "Status", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set current status", ex);
+            }
+
+            try
+            {
                 setStarSystemValues(EDDI.Instance.LastStarSystem, "Last system", ref vaProxy);
             }
             catch (Exception ex)
@@ -1513,6 +1522,61 @@ namespace EddiVoiceAttackResponder
                 Logging.Warn("EDDI exception: " + (exception == null ? "<null>" : exception.ToString()));
                 vaProxy.SetText("EDDI exception", exception?.ToString());
             }
+        }
+
+        private static void setStatusValues(Status status, string prefix, ref dynamic vaProxy)
+        {
+            if (status == null)
+            {
+                return;
+            }
+
+            try
+            {
+                // Variables set from status flags
+                vaProxy.SetText(prefix + " vehicle", status?.vehicle);
+                vaProxy.SetBool(prefix + " being interdicted", status?.being_interdicted);
+                vaProxy.SetBool(prefix + " in danger", status?.in_danger);
+                vaProxy.SetBool(prefix + " near surface", status?.near_surface);
+                vaProxy.SetBool(prefix + " overheating", status?.overheating);
+                vaProxy.SetBool(prefix + " low fuel", status?.low_fuel);
+                vaProxy.SetText(prefix + " fsd status", status?.fsd_status);
+                vaProxy.SetBool(prefix + " srv drive assist", status?.srv_drive_assist);
+                vaProxy.SetBool(prefix + " srv under ship", status?.srv_under_ship);
+                vaProxy.SetBool(prefix + " srv turret deployed", status?.srv_turret_deployed);
+                vaProxy.SetBool(prefix + " srv handbrake", status?.srv_handbrake_activated);
+                vaProxy.SetBool(prefix + " scooping fuel", status?.scooping_fuel);
+                vaProxy.SetBool(prefix + " silent running", status?.silent_running);
+                vaProxy.SetBool(prefix + " cargo scoop deployed", status?.cargo_scoop_deployed);
+                vaProxy.SetBool(prefix + " lights on", status?.lights_on);
+                vaProxy.SetBool(prefix + " in wing", status?.in_wing);
+                vaProxy.SetBool(prefix + " hardpoints deployed", status?.hardpoints_deployed);
+                vaProxy.SetBool(prefix + " flight assist off", status?.flight_assist_off);
+                vaProxy.SetBool(prefix + " supercruise", status?.supercruise);
+                vaProxy.SetBool(prefix + " shields up", status?.shields_up);
+                vaProxy.SetBool(prefix + " landing gear down", status?.landing_gear_down);
+                vaProxy.SetBool(prefix + " landed", status?.landed);
+                vaProxy.SetBool(prefix + " docked", status?.docked);
+
+                // Variables set from pips (these are not always present in the event)
+                vaProxy.SetDecimal(prefix + " system pips", status?.pips_sys);
+                vaProxy.SetDecimal(prefix + " engine pips", status?.pips_eng);
+                vaProxy.SetDecimal(prefix + " weapon pips", status?.pips_wea);
+
+                // Variables set directly from the event (these are not always present in the event)
+                vaProxy.SetInt(prefix + " firegroup", status?.firegroup);
+                vaProxy.SetText(prefix + " gui focus", status?.gui_focus);
+                vaProxy.SetDecimal(prefix + " latitude", status?.latitude);
+                vaProxy.SetDecimal(prefix + " longitude", status?.longitude);
+                vaProxy.SetDecimal(prefix + " altitude", status?.altitude);
+                vaProxy.SetDecimal(prefix + " heading", status?.heading);
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to set real-time status information", e);
+            }
+
+            Logging.Debug("Set real-time status information");
         }
     }
 }
