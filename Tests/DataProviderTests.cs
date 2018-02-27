@@ -15,6 +15,13 @@ namespace Tests
         }
 
         [TestMethod]
+        public void TestDataProviderMalformedSystem()
+        {
+            StarSystem starSystem = DataProviderService.GetSystemData("Malformed with quote\" and backslash\\. So evil", null, null, null);
+            Assert.IsNotNull(starSystem);
+        }
+
+        [TestMethod]
         public void TestDataProviderBodies()
         {
             // Force obtain the data from remote source
