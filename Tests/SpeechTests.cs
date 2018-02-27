@@ -168,6 +168,7 @@ namespace Tests
         public void TestDamage()
         {
             Ship ship = ShipDefinitions.FromEliteID(128049363);
+            var origHealth = ship.health;
             ship.health = 100;
             SpeechService.Instance.Say(ship, "Systems fully operational.", true);
             ship.health = 80;
@@ -180,6 +181,7 @@ namespace Tests
             SpeechService.Instance.Say(ship, "Systems at 20%.", true);
             ship.health = 0;
             SpeechService.Instance.Say(ship, "Systems critical.", true);
+            ship.health = origHealth;
         }
 
         [TestMethod]
