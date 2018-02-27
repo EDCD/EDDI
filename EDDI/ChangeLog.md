@@ -4,6 +4,14 @@
   * UI
     * If EDDI is run as a standalone app, its entire window state is now preserved. If EDDI is invoked via VoiceAttack commands, we only remember whether it was maximised and don't disturb the rest.
   * Core
+    * EDDI will now more readily notice if your SRV or fighter was destroyed (EDDI couldn't always tell before).
+  * Speech Responder
+    * Added new 'Near surface' event, triggered when you enter or depart the gravity well around a surface
+	* Added new 'SRV under ship' event, triggered when your SRV enters or leaves the proximity zone around your ship
+	* Added new 'SRV turret' event, triggered when you deploy or retract your SRV's turret
+	* Added new 'Ship fsd' event, triggered when there is a change to the status of your ship's fsd
+	* Added new 'Ship low fuel' event, triggered when your fuel level falls below 25%
+    * The 'Vehicle destroyed' event now includes the variable `vehicle`, describing the vehicle that was destroyed.
     * Add a new top level `status` object, which contains the following new variables
       * `vehicle` the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter"
       * `being_interdicted` a boolean value indicating whether the commander is currently being interdicted
@@ -37,12 +45,6 @@
       * `longitude` a decimal value indicating the ship's current longitude (if near a surface)
       * `altitude` a decimal value indicating the ship's current altitude (if in flight near a surface)
       * `heading` a decimal value indicating the ship's current heading (if near a surface)
-  * Speech Responder
-    * Added new 'Near surface' event, triggered when you enter or depart the gravity well around a surface
-	* Added new 'SRV under ship' event, triggered when your SRV enters or leaves the proximity zone around your ship
-	* Added new 'SRV turret' event, triggered when you deploy or retract your SRV's turret
-	* Added new 'Ship fsd' event, triggered when there is a change to the status of your ship's fsd
-	* Added new 'Ship low fuel' event, triggered when your fuel level falls below 25%
   * VoiceAttack
     * Added the following new variables
       * {TXT:Status vehicle}: the vehicle that is under the commander's control. Can be one of "Ship", "SRV" or "Fighter"
