@@ -3,13 +3,14 @@
 ### 3.0.0-b1
   * UI
     * If EDDI is run as a standalone app, its entire window state is now preserved. If EDDI is invoked via VoiceAttack commands, we only remember whether it was maximised and don't disturb the rest.
-    * Improved window size and position handling for multi-display setups. 
-    * EDDI's UI now clearly shows whether EDDI has found your home system and station (if they haven't been found, the associated objects will not be populated). If EDDI cannot find a match, the textbox will display a red border and the contents will not be saved.
   * Core
     * Only one instance of EDDI is now allowed at a time (standalone or VoiceAttack), to prevent conflicting writes to config and data files. 
 	  * If running from VoiceAttack, the user interface can be invoked using the commands listed in the VoiceAttack section below.
+    * Improved window size and position handling for multi-display setups. 
+    * EDDI's UI now clearly shows whether EDDI has found your home system and station (if they haven't been found, the associated objects will not be populated). If EDDI cannot find a match, the textbox will display a red border and the contents will not be saved.
     * Fixed an error that could occur when a response isn't received from EDSM.
     * Fixed a bug that would cause EDDI to write to the shipyard before it had finished processing shipyard related actions (adding and removing ships)
+    * Fixed a bug caused by a structure change for the 'Bond redeemed' faction name and amount in the Beyond beta.
   * Speech Responder
     * Updated 'Bond redeemed' script for better handling with redemption via interstellar factors contacts.
     * Updated 'Bounty redeemed' script for better handling with redemption via interstellar factors contacts.
