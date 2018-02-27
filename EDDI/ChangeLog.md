@@ -44,10 +44,10 @@
       * `pips_wea` a decimal value indicating the power distributor allocation to weapons
       * `firegroup` an integer value indicating the ship's currently selected firegroup
       * `gui_focus` the commander's current focus. Can be one of "none", "internal panel" (right panel), "external panel" (left panel), "communications panel" (top panel), "role panel" (bottom panel), "station services", "galaxy map", or "system map"
-      * `latitude` a decimal value indicating the ship's current latitude (if near a surface)
-      * `longitude` a decimal value indicating the ship's current longitude (if near a surface)
-      * `altitude` a decimal value indicating the ship's current altitude (if in flight near a surface)
-      * `heading` a decimal value indicating the ship's current heading (if near a surface)
+      * `latitude` a decimal value indicating the ship's current latitude (if near a landable surface)
+      * `longitude` a decimal value indicating the ship's current longitude (if near a landable surface)
+      * `altitude` a decimal value indicating the ship's current altitude (if in flight near a landable surface)
+      * `heading` a decimal value indicating the ship's current heading (if near a landable surface)
   * VoiceAttack
     * Added the following new variables
       * {TXT:Status vehicle}: the vehicle that is under the commander's control. Can be one of "Ship", "SRV" or "Fighter"
