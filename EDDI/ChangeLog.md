@@ -5,9 +5,12 @@
     * Only one instance of EDDI is now allowed at a time (standalone or VoiceAttack), to prevent conflicting writes to config and data files. 
 	  * If running from VoiceAttack, the user interface can be invoked using the commands listed in the VoiceAttack section below.
     * If EDDI is run as a standalone app, its entire window state is now preserved. If EDDI is invoked via VoiceAttack commands, we only remember whether it was maximised and don't disturb the rest.
-  * Fixed a bug that would cause EDDI to write to the shipyard before it had finished processing shipyard related actions (adding and removing ships)
+    * Fixed a bug that would cause EDDI to write to the shipyard before it had finished processing shipyard related actions (adding and removing ships)
   * Speech responder
     * Add new event 'VA initialized', triggered when the VoiceAttack plugin is fully initialized. You can respond to this event in VoiceAttack by creating a '((EDDI va initialized))' command.
+  * Text-to-Speech
+    * Re-enabled text-to-speech distortion on ship damage. If this option is enabled, EDDI will now increase voice processing effects as damage to the ship increases.
+    * Revised text-to-speech audio gain to compensate for volume losses when voice processing effects are applied.
   * VoiceAttack
     * Augmented VoiceAttack commands to manipulate the EDDI user interface. The following commands are now included in the updated EDDI.vap file: 
       * 'Configure EDDI', 
