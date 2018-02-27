@@ -212,7 +212,7 @@ namespace EddiShipMonitor
             }
             else if (name != null && !name.Contains("***"))
             {
-                ship.name = name;
+                ship.name = Strings.JSONify(name);
             }
         }
 

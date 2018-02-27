@@ -345,6 +345,7 @@ namespace Eddi
         private void homeSystemChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiHomeSystemText.Text = Strings.JSONify(eddiHomeSystemText.Text);
             eddiConfiguration.HomeSystem = string.IsNullOrWhiteSpace(eddiHomeSystemText.Text) ? null : eddiHomeSystemText.Text.Trim();
             eddiConfiguration.ToFile();
             EDDI.Instance.updateHomeSystemStation(eddiConfiguration);
@@ -353,6 +354,7 @@ namespace Eddi
         private void homeStationChanged(object sender, TextChangedEventArgs e)
         {
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
+            eddiHomeStationText.Text = Strings.JSONify(eddiHomeStationText.Text);
             eddiConfiguration.HomeStation = string.IsNullOrWhiteSpace(eddiHomeStationText.Text) ? null : eddiHomeStationText.Text.Trim();
             eddiConfiguration.ToFile();
             EDDI.Instance.updateHomeSystemStation(eddiConfiguration);

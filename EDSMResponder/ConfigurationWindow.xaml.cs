@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Utilities;
 
 namespace EddiEdsmResponder
 {
@@ -45,10 +46,12 @@ namespace EddiEdsmResponder
             if (!string.IsNullOrWhiteSpace(edsmApiKeyTextBox.Text))
             {
                 edsmConfiguration.apiKey = edsmApiKeyTextBox.Text.Trim();
+                edsmConfiguration.apiKey = Strings.JSONify(edsmConfiguration.apiKey);
             }
             if (!string.IsNullOrWhiteSpace(edsmCommanderNameTextBox.Text))
             {
                 edsmConfiguration.commanderName = edsmCommanderNameTextBox.Text.Trim();
+                edsmConfiguration.commanderName = Strings.JSONify(edsmConfiguration.commanderName);
             }
             edsmConfiguration.ToFile();
             EDDI.Instance.Reload("EDSM responder");
