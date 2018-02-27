@@ -503,11 +503,19 @@ namespace EddiStarMapService
             var starMapLogResponse = client.Execute<StarMapLogResponse>(request);
             StarMapLogResponse response = starMapLogResponse.Data;
 
-            Logging.Debug("Response for star map logs is " + JsonConvert.SerializeObject(response));
-            if (response.msgnum != 100)
+            if (response != null)
             {
-                // An error occurred
-                throw new EDSMException(response.msg);
+                Logging.Debug("Response for star map logs is " + JsonConvert.SerializeObject(response));
+                if (response.msgnum != 100)
+                {
+                    // An error occurred
+                    throw new EDSMException(response.msg);
+                }
+            }
+            else
+            {
+                Logging.Debug("No response received.");
+                throw new EDSMException();
             }
 
             Dictionary<string, StarMapLogInfo> vals = new Dictionary<string, StarMapLogInfo>();
