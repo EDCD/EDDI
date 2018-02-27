@@ -32,22 +32,19 @@ Initial EDDI integration with VoiceAttack is automatic, but there is a lot that 
 
 If you are upgrading from EDDI 1 EDDI it is recommended that you uninstall your existing version of EDDI and remove your %APPDATA%\EDDI directory prior to upgrading to the new one.  This ensures that there is a clean installation and reduces the chances of problems occurring.
 
-If you used EDDI 1 with VoiceAttack then please follow the instructions at [https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration](https://github.com/EDCD/EDDI/wiki/VoiceAttack-Integration).
-
 If you are upgrading from another version of EDDI 2 the installer will take care of changes so you just need to run it.
 
 ## EDDI Voices
 
-EDDI uses the standard Windows TTS (text-to-speech) voices.  To be eligible for use in EDDI the voice needs to support phonetic speech.  Apart from Windows' default voices there are commercial voices available from IVONA and Cereproc, amongst others, that can be used.  The voice needs to be visible to Windows' TTS system to be made available to EDDI: this usually takes place when you install the voice.  If you cannot see a voice in EDDI then check the Windows TTS settings.
+EDDI uses the standard Windows TTS (text-to-speech) voices.  The voice needs to be visible to Windows' TTS system to be made available to EDDI: this usually takes place when you install the voice.  If you cannot see a voice in EDDI then check the Windows TTS settings.
+
+If you want to have a high-quality voice other than that available with Windows then the best choices are to purchase voices from either Ivona or Cereproc.  Though both provide great voices, Ivona voices typically adhere more closely to published SSML standards and provide fuller functionality for phonetic speech and other advanced features like pauses in the middle of speech and correct pronunciation of names (ships, powers, systems, etc.).
 
 # Troubleshooting
 
 If you are experiencing problems with EDDI then your first port of call should be the [troubleshooting page](https://github.com/EDCD/EDDI/blob/master/TROUBLESHOOTING.md).  If this does not fix your problem then please check the Known issues below:
 
-  * EDDI relies on the Elite: Dangerous companion app API for a lot of its information.  Sometimes EDDI loses connection to the API and needs to re-authenticate.  If you think that this is a problem you can re-run the 'EDDI.exe' and if the connection is bad it will ask for re-authentication
-  * EDDI is unable to know for sure if you have provided the correct path to the Logs directory.  The only way of knowing this for sure is to jump and see if EDDI tells you about your destination when you make a jump
-
-If you have an issue with EDDI then please report it at https://github.com/EDCD/EDDI/issues  If you have encountered a problem then please provide the output of the error report (shift-control-alt-e) to aid in fixing the issue.
+If you have an issue with EDDI then please [report it](https://github.com/EDCD/EDDI/issues). 
 
 # Uninstalling EDDI
 

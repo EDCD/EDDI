@@ -39,7 +39,7 @@
                             </Paragraph>
                             <Paragraph>
                                 You can read more about how EDDI functions on the
-                                <Hyperlink Click="WikiClicked">project wiki</Hyperlink> .
+                                <Hyperlink Click="WikiClicked">project wiki</Hyperlink>.
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>
@@ -52,13 +52,18 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="Enable verbose logging (only if you have been requested to do so by EDDI developers)" VerticalAlignment="Top"/>
-                        <CheckBox x:Name="eddiVerboseLogging" Grid.Row="0" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="If verbose logging is enabled, EDDI will prepare a truncated version of your log from the past hour and place it on your desktop. You may paste this log file into the Github Issue report. No personal information is sent in the log."/>
-                        <Button  x:Name="githubIssueButton" Grid.Row="1" Grid.Column="2" Content="Report an Issue" Margin="5" Width="110" Click="createGithubIssueClicked"/>
-                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="Access beta versions of EDDI" VerticalAlignment="Top"/>
-                        <CheckBox x:Name="eddiBetaProgramme" Grid.Row="2" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top">
+                            <Hyperlink Click="TroubleshootClicked">Troubleshoot</Hyperlink>
+                             common issues
+                        </TextBlock>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="Enable verbose logging (only if you have been requested to do so by EDDI developers)" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="eddiVerboseLogging" Grid.Row="1" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="If verbose logging is enabled, EDDI will prepare a truncated version of your log from the past hour and place it on your desktop. You may paste this log file into the Github Issue report. No personal information is sent in the log."/>
+                        <Button  x:Name="githubIssueButton" Grid.Row="2" Grid.Column="2" Content="Report an Issue" Margin="5" Width="110" Click="createGithubIssueClicked"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="Access beta versions of EDDI" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="eddiBetaProgramme" Grid.Row="3" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
                     </Grid>
                     <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" FontSize="20" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center" TextAlignment="Center"/>
                 </DockPanel>

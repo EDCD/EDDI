@@ -860,5 +860,10 @@ namespace Eddi
         {
             Process.Start("https://github.com/EDCD/EDDI/wiki");
         }
+
+        private void TroubleshootClicked(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/EDCD/EDDI/blob/master/TROUBLESHOOTING.md");
+        }
     }
 }
