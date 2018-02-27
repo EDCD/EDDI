@@ -5,6 +5,7 @@ using CSCore.Streams.Effects;
 using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Security;
@@ -373,8 +374,12 @@ namespace EddiSpeechService
                 }
                 catch (Exception ex)
                 {
-                    Logging.Warn("speech failed: ", ex);
-                    Logging.Error("Speech failed", @"{""speech"":""" + speech + @"""}");
+                    Logging.Warn("Speech failed: ", ex);
+                    var badSpeech = new Dictionary<string, object>() {
+                        {"speech", speech},
+                    };
+                    string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
+                    Logging.Error("Speech failed", badSpeechJSON);
                 }
             });
             synthThread.Start();
