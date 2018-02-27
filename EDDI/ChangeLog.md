@@ -12,6 +12,7 @@
 	* Added new 'Ship fsd' event, triggered when there is a change to the status of your ship's fsd
 	* Added new 'Ship low fuel' event, triggered when your fuel level falls below 25%
     * Added new 'Under attack' event
+    * Add new event 'Shutdown', triggered on a clean shut down of the game.
     * The 'Vehicle destroyed' event now includes the variable `vehicle`, describing the vehicle that was destroyed.
     * Add a new top level `status` object, which contains the following new variables
       * `vehicle` the vehicle that is under the commander's control.  Can be one of "Ship", "SRV" or "Fighter"

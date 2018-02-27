@@ -2558,6 +2558,12 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "Shutdown":
+                            {
+                                events.Add(new ShutdownEvent(timestamp) { raw = line });
+                                handled = true;
+                                break;
+                            }
                     }
 
                     if (!handled)

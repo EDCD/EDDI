@@ -1514,6 +1514,15 @@
       "name": "Ship transfer initiated",
       "description": "Triggered when you initiate a ship transfer"
     },
+    "Shutdown": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Shutdown",
+      "description": "Triggered on a clean shutdown of the game"
+    },
     "SRV docked": {
       "enabled": true,
       "priority": 3,
