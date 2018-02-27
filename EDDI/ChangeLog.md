@@ -2,6 +2,7 @@
 
 ### 2.4.6-b3
   * Core
+    * Added decontamination limpets
     * Improved window size and position handling for multi-display setups. 
     * Minimum window size refined to match designed window size. 
     * If EDDI is run as a standalone app, its entire window state is preserved. If EDDI is invoked via the VoiceAttack 'Configure EDDI' command, only the maximized state is preserved.
