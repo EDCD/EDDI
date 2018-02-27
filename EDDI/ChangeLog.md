@@ -1,5 +1,9 @@
 ﻿# CHANGE LOG
 
+### 3.0.0-b1
+  * Galnet Monitor
+    * Default the galnet monitor plugin to 'off' in favor of the in-game Galnet Audio. The plugin still can be enabled if desired.
+
 ### 2.4.6-b3
   * Core
     * Only one instance of EDDI is now allowed at a time (standalone or VoiceAttack), to prevent conflicting writes to config and data files. 
