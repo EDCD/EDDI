@@ -73,7 +73,7 @@ namespace Tests
         public void TestSsml4()
         {
             Logging.Verbose = true;
-            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>We're on our way to " + Translations.StarSystem("i Bootis",
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>We're on our way to " + Translations.StarSystem("i Bootis") + ".", true);
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfecrtly correct    
