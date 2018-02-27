@@ -1417,6 +1417,13 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "UnderAttack":
+                            {
+                                string target = getString(data, "Target");
+                                events.Add(new UnderAttackEvent(timestamp, target) { raw = line });
+                                handled = true;
+                                break;
+                            }
                         case "SelfDestruct":
                             events.Add(new SelfDestructEvent(timestamp) { raw = line });
                             handled = true;
