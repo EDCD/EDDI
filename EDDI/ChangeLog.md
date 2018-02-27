@@ -10,6 +10,7 @@
     * If EDDI is run as a standalone app, its entire window state is now preserved. If EDDI is invoked via VoiceAttack commands, we only remember whether it was maximised and don't disturb the rest.
     * Improved window size and position handling for multi-display setups. 
     * Minimum window size refined to match designed window size. 
+    * EDDI's UI now clearly shows whether EDDI has found your home system and station (if they haven't been found, the associated objects will not be populated). If EDDI cannot find a match, the textbox will display a red border and the contents will not be saved.
   * Speech Responder
     * Updated 'Bond redeemed' script for better handling with redemption via interstellar factors contacts.
     * Updated 'Bounty redeemed' script for better handling with redemption via interstellar factors contacts.

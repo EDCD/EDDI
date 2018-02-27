@@ -1824,6 +1824,13 @@ namespace Eddi
 
         public void updateHomeSystemStation(EDDIConfiguration configuration)
         {
+            updateHomeSystem(configuration);
+            updateHomeStation(configuration);
+            configuration.ToFile();
+        }
+
+        public EDDIConfiguration updateHomeSystem(EDDIConfiguration configuration)
+        {
             Logging.Verbose = configuration.Debug;
             if (configuration.HomeSystem != null && configuration.HomeSystem.Trim().Length > 0)
             {
@@ -1831,21 +1838,31 @@ namespace Eddi
                 if (HomeStarSystem != null)
                 {
                     Logging.Debug("Home star system is " + HomeStarSystem.name);
-                    if (configuration.HomeStation != null && configuration.HomeStation.Trim().Length > 0)
+                    configuration.validSystem = HomeStarSystem.bodies.Count > 0;
+                }
+            }
+            return configuration;
+        }
+
+        public EDDIConfiguration updateHomeStation(EDDIConfiguration configuration)
+        {
+            Logging.Verbose = configuration.Debug;
+            configuration.validStation = false;
+            if (configuration.HomeStation != null && configuration.HomeStation.Trim().Length > 0)
+            {
+                string homeStationName = configuration.HomeStation.Trim();
+                foreach (Station station in HomeStarSystem.stations)
+                {
+                    if (station.name == homeStationName)
                     {
-                        string homeStationName = configuration.HomeStation.Trim();
-                        foreach (Station station in HomeStarSystem.stations)
-                        {
-                            if (station.name == homeStationName)
-                            {
-                                HomeStation = station;
-                                Logging.Debug("Home station is " + HomeStation.name);
-                                break;
-                            }
-                        }
+                        HomeStation = station;
+                        Logging.Debug("Home station is " + HomeStation.name);
+                        configuration.validStation = true;
+                        break;
                     }
                 }
             }
+            return configuration;
         }
     }
 }

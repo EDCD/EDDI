@@ -7,6 +7,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:eddi="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
         xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
+        xmlns:local="clr-namespace:Eddi"
         mc:Ignorable="d"
         Title="EDDI" Height="{Binding ElementName=defaultHeight, Path=Value}"  Width="{Binding ElementName=defaultWidth, Path=Value}">
     <DockPanel LastChildFill="True">
@@ -90,9 +91,21 @@
                         </Grid.RowDefinitions>
                         <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Margin="5" Text="You can provide the name of a particular system you consider home, and also a station inside that system.  If you do then the information about this system and station will be made available to EDDI's responders." VerticalAlignment="Top"/>
                         <Label x:Name ="eddiHomeSystemLabel" Grid.Row="1" Grid.Column="0" Margin="5,5,30,5" Content="Home system:" />
-                        <TextBox x:Name ="eddiHomeSystemText" Grid.Row="1" Grid.Column="1" Margin="5" Grid.ColumnSpan ="6" TextChanged="homeSystemChanged"/>
+                        <TextBox x:Name ="eddiHomeSystemText" VerticalContentAlignment="Center" TextChanged="homeSystemChanged" Margin="5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan ="6" LostFocus="eddiHomeSystemText_LostFocus">
+                            <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="HomeSystem">
+                                <Binding.ValidationRules>
+                                    <local:ValidSystemRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
                         <Label x:Name ="eddiHomeStationLabel" Grid.Row="2" Grid.Column="0" Margin="5" Content="Home station:"/>
-                        <TextBox x:Name ="eddiHomeStationText" Grid.Row="2" Grid.Column="1" Margin="5" Grid.ColumnSpan ="6" TextChanged="homeStationChanged"/>
+                        <TextBox x:Name ="eddiHomeStationText" TextChanged="homeStationChanged" VerticalContentAlignment="Center" Margin="5" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan ="6" LostFocus="eddiHomeStationText_LostFocus">
+                            <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="HomeStation">
+                                <Binding.ValidationRules>
+                                    <local:ValidStationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox>
                         <TextBlock x:Name ="eddi3Text" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Margin="10,5,5,0" Text="Your insurance excess is the % of your ship's value you have to pay if your ship is destroyed.  This will usually be 5 but could be less if you are an early backer of Elite with alpha backers being 2.5 and beta backers being 3.75.  If you aren't sure then leave it at 5" VerticalAlignment="Top"/>
                         <Label x:Name ="eddiInsuranceLabel" Grid.Row="4" Grid.Column="0" Margin="5,5,58,5" Content="Insurance excess (%):"/>
                         <TextBox x:Name="eddiInsuranceDecimal" Grid.Row="4" Grid.Column="1" Margin="5,5,65,5" PreviewTextInput="EnsureValidDecimal" TextChanged="insuranceChanged" TextAlignment="Right"/>
