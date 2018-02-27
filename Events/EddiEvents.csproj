@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BeltScannedEvent.cs" />
+    <Compile Include="StatusEvent.cs" />
     <Compile Include="VAInitialized.cs" />
     <Compile Include="SRVTurretEvent.cs" />
     <Compile Include="NearSurfaceEvent.cs" />
