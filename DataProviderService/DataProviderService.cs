@@ -46,21 +46,23 @@ namespace EddiDataProviderService
             if (response == null || response == "")
             {
                 // No information found on this system, or some other issue.  Create a very basic response
-                response = @"{""name"":""" + system + @"""";
+                Dictionary<string, object> dummyData = new Dictionary<string, object>();
+                dummyData["name"] = system;
                 if (x.HasValue)
                 {
-                    response = response + @", ""x"":" + ((decimal)x).ToString(CultureInfo.InvariantCulture);
+                    dummyData["x"] = x.GetValueOrDefault();
                 }
                 if (y.HasValue)
                 {
-                    response = response + @", ""y"":" + ((decimal)y).ToString(CultureInfo.InvariantCulture);
+                    dummyData["y"] = y.GetValueOrDefault();
                 }
                 if (z.HasValue)
                 {
-                    response = response + @", ""z"":" + ((decimal)z).ToString(CultureInfo.InvariantCulture);
+                    dummyData["z"] = z.GetValueOrDefault();
                 }
-                response = response + @", ""stations"":[]";
-                response = response + @", ""bodies"":[]}";
+                dummyData["stations"] = new Dictionary<string, object>();
+                dummyData["bodies"] = new Dictionary<string, object>();
+                response = JsonConvert.SerializeObject(dummyData);
                 Logging.Info("Generating dummy response " + response);
             }
             return StarSystemFromEDDP(response, x, y, z);

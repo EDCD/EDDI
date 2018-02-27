@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -443,7 +444,10 @@ namespace EddiDataDefinitions
             }
             else
             {
-                Logging.Report("Unknown commodity", @"{""name"":""" + name + @"""}");
+                var badCommodity = new Dictionary<string, object>();
+                badCommodity["name"] = name;
+                string badCommodityJSON = JsonConvert.SerializeObject(badCommodity);
+                Logging.Report("Unknown commodity", badCommodityJSON);
 
                 // Put some basic information in place
                 Commodity.EDName = name;
