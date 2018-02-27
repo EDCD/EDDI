@@ -1419,7 +1419,7 @@ namespace EddiJournalMonitor
                             }
                         case "UnderAttack":
                             {
-                                string target = getString(data, "Target");
+                                string target = JsonParsing.getString(data, "Target");
                                 events.Add(new UnderAttackEvent(timestamp, target) { raw = line });
                                 handled = true;
                                 break;
