@@ -64,13 +64,13 @@ namespace EddiSpeechResponder
                 return null;
             }
 
-            return resolveScript(script.Value, store, master);
+            return resolveScript(script.Value, store, master, script);
         }
 
         /// <summary>
         /// Resolve a script with an existing store
         /// </summary>
-        public string resolveScript(string script, BuiltinStore store, bool master = true)
+        public string resolveScript(string script, BuiltinStore store, bool master = true, Script scriptObject = null)
         {
             try
             {
@@ -117,9 +117,31 @@ namespace EddiSpeechResponder
             }
             catch (Exception e)
             {
-                Logging.Warn("Failed to resolve script: " + e.ToString());
-                return "There is a problem with the script: " + e.Message.Replace("'", "");
+                // Report the failing the script name, if it is available
+                string scriptName;
+                if (scriptObject != null)
+                {
+                    scriptName = "the: " + scriptObject.Name;
+                }
+                else
+                {
+                    scriptName = "this ";
+                }
+
+                Logging.Warn(@"Failed to resolve " + scriptName + @" script. " + e.ToString());
+                return @"There is a problem with " + scriptName + @" script. " + errorTranslation(e.Message);
             }
+        }
+
+        private string errorTranslation(string msg)
+        {
+            // Give human readable descriptions for select cottle errors
+            return msg
+                    .Replace("'", "")
+                    .Replace("<EOF>", "opening curly bracket")
+                    .Replace("<eof>", "incomplete expression")
+                    .Replace("{", "opening curly bracket")
+                    .Replace("}", "closing curly bracket");
         }
 
         /// <summary>
