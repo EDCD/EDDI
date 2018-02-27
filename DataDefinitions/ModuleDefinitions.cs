@@ -900,10 +900,10 @@ namespace EddiDataDefinitions
                 {128788705, new Module(128788705, "Hpt_ATDumbfireMissile_Turret_Large", 1624, "AX Missile Rack", 3, "A", 3866338, Module.ModuleMount.Turreted) },
                 {128788702, new Module(128788702, "Hpt_ATMultiCannon_Fixed_Large", 1625, "AX Multi-Cannon", 3, "C", 1126044, Module.ModuleMount.Fixed) },
                 {128793060, new Module(128793060, "Hpt_ATMultiCannon_Turret_Large", 1626, "AX Multi-Cannon", 3, "E", 3642224, Module.ModuleMount.Turreted) },
-                {128793941, new Module(128793941, "Int_DroneControl_Decontamination", 1632, "Decontamination Limpet Controller", 1, "E", 3600) },
-                {128793942, new Module(128793942, "Int_DroneControl_Decontamination", 1633, "Decontamination Limpet Controller", 3, "E", 16201) },
-                {128793943, new Module(128793943, "Int_DroneControl_Decontamination", 1634, "Decontamination Limpet Controller", 5, "E", 145801) },
-                {128793944, new Module(128793944, "Int_DroneControl_Decontamination", 1635, "Decontamination Limpet Controller", 7, "E", 1312201) },
+                {128793941, new Module(128793941, "Int_DroneControl_Decontamination_Size1_Class1", 1632, "Decontamination Limpet Controller", 1, "E", 3600) },
+                {128793942, new Module(128793942, "Int_DroneControl_Decontamination_Size3_Class1", 1633, "Decontamination Limpet Controller", 3, "E", 16201) },
+                {128793943, new Module(128793943, "Int_DroneControl_Decontamination_Size5_Class1", 1634, "Decontamination Limpet Controller", 5, "E", 145801) },
+                {128793944, new Module(128793944, "Int_DroneControl_Decontamination_Size7_Class1", 1635, "Decontamination Limpet Controller", 7, "E", 1312201) },
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },

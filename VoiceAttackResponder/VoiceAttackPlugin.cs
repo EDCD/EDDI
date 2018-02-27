@@ -1535,28 +1535,28 @@ namespace EddiVoiceAttackResponder
             {
                 // Variables set from status flags
                 vaProxy.SetText(prefix + " vehicle", status?.vehicle);
-                vaProxy.SetBool(prefix + " being interdicted", status?.being_interdicted);
-                vaProxy.SetBool(prefix + " in danger", status?.in_danger);
-                vaProxy.SetBool(prefix + " near surface", status?.near_surface);
-                vaProxy.SetBool(prefix + " overheating", status?.overheating);
-                vaProxy.SetBool(prefix + " low fuel", status?.low_fuel);
+                vaProxy.SetBoolean(prefix + " being interdicted", status?.being_interdicted);
+                vaProxy.SetBoolean(prefix + " in danger", status?.in_danger);
+                vaProxy.SetBoolean(prefix + " near surface", status?.near_surface);
+                vaProxy.SetBoolean(prefix + " overheating", status?.overheating);
+                vaProxy.SetBoolean(prefix + " low fuel", status?.low_fuel);
                 vaProxy.SetText(prefix + " fsd status", status?.fsd_status);
-                vaProxy.SetBool(prefix + " srv drive assist", status?.srv_drive_assist);
-                vaProxy.SetBool(prefix + " srv under ship", status?.srv_under_ship);
-                vaProxy.SetBool(prefix + " srv turret deployed", status?.srv_turret_deployed);
-                vaProxy.SetBool(prefix + " srv handbrake", status?.srv_handbrake_activated);
-                vaProxy.SetBool(prefix + " scooping fuel", status?.scooping_fuel);
-                vaProxy.SetBool(prefix + " silent running", status?.silent_running);
-                vaProxy.SetBool(prefix + " cargo scoop deployed", status?.cargo_scoop_deployed);
-                vaProxy.SetBool(prefix + " lights on", status?.lights_on);
-                vaProxy.SetBool(prefix + " in wing", status?.in_wing);
-                vaProxy.SetBool(prefix + " hardpoints deployed", status?.hardpoints_deployed);
-                vaProxy.SetBool(prefix + " flight assist off", status?.flight_assist_off);
-                vaProxy.SetBool(prefix + " supercruise", status?.supercruise);
-                vaProxy.SetBool(prefix + " shields up", status?.shields_up);
-                vaProxy.SetBool(prefix + " landing gear down", status?.landing_gear_down);
-                vaProxy.SetBool(prefix + " landed", status?.landed);
-                vaProxy.SetBool(prefix + " docked", status?.docked);
+                vaProxy.SetBoolean(prefix + " srv drive assist", status?.srv_drive_assist);
+                vaProxy.SetBoolean(prefix + " srv under ship", status?.srv_under_ship);
+                vaProxy.SetBoolean(prefix + " srv turret deployed", status?.srv_turret_deployed);
+                vaProxy.SetBoolean(prefix + " srv handbrake", status?.srv_handbrake_activated);
+                vaProxy.SetBoolean(prefix + " scooping fuel", status?.scooping_fuel);
+                vaProxy.SetBoolean(prefix + " silent running", status?.silent_running);
+                vaProxy.SetBoolean(prefix + " cargo scoop deployed", status?.cargo_scoop_deployed);
+                vaProxy.SetBoolean(prefix + " lights on", status?.lights_on);
+                vaProxy.SetBoolean(prefix + " in wing", status?.in_wing);
+                vaProxy.SetBoolean(prefix + " hardpoints deployed", status?.hardpoints_deployed);
+                vaProxy.SetBoolean(prefix + " flight assist off", status?.flight_assist_off);
+                vaProxy.SetBoolean(prefix + " supercruise", status?.supercruise);
+                vaProxy.SetBoolean(prefix + " shields up", status?.shields_up);
+                vaProxy.SetBoolean(prefix + " landing gear down", status?.landing_gear_down);
+                vaProxy.SetBoolean(prefix + " landed", status?.landed);
+                vaProxy.SetBoolean(prefix + " docked", status?.docked);
 
                 // Variables set from pips (these are not always present in the event)
                 vaProxy.SetDecimal(prefix + " system pips", status?.pips_sys);
