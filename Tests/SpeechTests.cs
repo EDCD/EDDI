@@ -73,7 +73,7 @@ namespace Tests
         public void TestSsml4()
         {
             Logging.Verbose = true;
-            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>We're on our way to " + Translations.StarSystem("i Bootis") + ".", true);
+            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), @"<break time=""100ms""/>We're on our way to " + Translations.StarSystem("i Bootis",
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfecrtly correct    
@@ -126,16 +126,24 @@ namespace Tests
         [TestMethod]
         public void TestPowerplay()
         {
-            //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Aisling Duval") + ".");
-            //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Archon Delaine") + ".");
-            //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Arissa Lavigny-Duval") + ".");
-            //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Denton Patreus") + ".");
-            //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Edmund Mahon") + ".");
-            //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Felicia Winters") + ".");
-            //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Pranav Antal") + ".");
-            //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Zachary Hudson") + ".");
-            //SpeechService.Say(ShipDefinitions.ShipFromEliteID(128049363), Translations.Power("Zemina Torval") + ".");
-            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049363), Translations.Power("Li Yong-Rui") + ".", true);
+            var ship = ShipDefinitions.FromEliteID(128049363);
+            var speaker = SpeechService.Instance;
+            string[] powerNames = {
+                "Aisling Duval",
+                "Archon Delaine",
+                "Arissa Lavigny-Duval",
+                "Denton Patreus",
+                "Edmund Mahon",
+                "Felicia Winters",
+                "Pranav Antal",
+                "Zachary Hudson",
+                "Zemina Torval",
+                "Li Yong-Rui"
+            };
+            foreach(string powerName in powerNames)
+            {
+                speaker.Say(ship, Translations.Power(powerName) + ".", true);
+            }
         }
 
         [TestMethod]
