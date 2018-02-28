@@ -4,12 +4,16 @@
   * UI
     * If EDDI is run as a standalone app, its entire window state is now preserved. If EDDI is invoked via VoiceAttack commands, we only remember whether it was maximised and don't disturb the rest.
   * Core
-    * Added decontamination limpets
+    * Added Alliance Chieftan.
+	* Added decontamination limpets.
+    * Added recon limpets.
     * EDDI will now more readily notice if your SRV or fighter was destroyed (EDDI couldn't always tell before).
+  * Shipyard
+    * Speculative fix for the concurrency bug that messes up shipmonitor.json when you buy a ship.
   * NPC Comms
 	* Reporting of NPC comms is much more succint.
 		Was: Message received from "name".  Message reads: "blah".
-		Now: "name" sends: "blah".
+		Now: From "name": "blah".
   * Speech Responder
     * Added new 'Near surface' event, triggered when you enter or depart the gravity well around a surface
 	* Added new 'SRV under ship' event, triggered when your SRV enters or leaves the proximity zone around your ship
@@ -86,7 +90,6 @@
       * {DEC:Status longitude} a decimal value indicating the ship's current longitude (if near a surface)
       * {DEC:Status altitude} a decimal value indicating the ship's current altitude (if in flight near a surface)
       * {DEC:Status heading} a decimal value indicating the ship's current heading (if near a surface)
-
 
 ### 2.4.6-b3
   * Core
