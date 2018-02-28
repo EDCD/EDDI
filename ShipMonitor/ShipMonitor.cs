@@ -83,7 +83,7 @@ namespace EddiShipMonitor
 
         public void Save()
         {
-            uiSyncContext.Post(_ => writeShips(), null);
+            uiSyncContext.Send(_ => writeShips(), null);
         }
 
         /// <summary>
@@ -875,7 +875,7 @@ namespace EddiShipMonitor
             }
 
             // Run this on the UI syncContext to ensure that we can update it whilst reflecting changes in the UI
-            uiSyncContext.Post(_ => _AddShip(ship), null);
+            uiSyncContext.Send(_ => _AddShip(ship), null);
         }
 
         private void _AddShip(Ship ship)
@@ -903,7 +903,7 @@ namespace EddiShipMonitor
                 return;
             }
             // Run this on the UI syncContext to ensure that we can update it whilst reflecting changes in the UI
-            uiSyncContext.Post(_ => _RemoveShip(localid), null);
+            uiSyncContext.Send(_ => _RemoveShip(localid), null);
         }
 
         /// <summary>
