@@ -904,6 +904,15 @@ namespace EddiDataDefinitions
                 {128793942, new Module(128793942, "Int_DroneControl_Decontamination_Size3_Class1", 1633, "Decontamination Limpet Controller", 3, "E", 16201) },
                 {128793943, new Module(128793943, "Int_DroneControl_Decontamination_Size5_Class1", 1634, "Decontamination Limpet Controller", 5, "E", 145801) },
                 {128793944, new Module(128793944, "Int_DroneControl_Decontamination_Size7_Class1", 1635, "Decontamination Limpet Controller", 7, "E", 1312201) },
+                {128837858, new Module(128837858, "Int_DroneControl_Recon_Size1_Class1", 1632, "Recon  Limpet Controller", 1, "E", 2600) },
+                {128841592, new Module(128841592, "Int_DroneControl_Recon_Size3_Class1", 1633, "Recon Limpet Controller", 3, "E", 8200) },
+                {128841593, new Module(128841593, "Int_DroneControl_Recon_Size5_Class1", 1634, "Recon Limpet Controller", 5, "E", 75800) },
+                {128841594, new Module(128841594, "Int_DroneControl_Recon_Size7_Class1", 1635, "Recon Limpet Controller", 7, "E", 612200) },
+                {128816576, new Module(128816576, "TypeX_Armour_Grade1", 1627, "Lightweight Alloy", 1, "I", 0, 128816574) },
+                {128816577, new Module(128816577, "TypeX_Armour_Grade2", 1628, "Reinforced Alloy", 1, "I", 7752900, 128816574) },
+                {128816578, new Module(128816578, "TypeX_Armour_Grade3", 1629, "Military Grade Composite", 1, "I", 17444026, 128816574) },
+                {128816579, new Module(128816579, "TypeX_Armour_Mirrored", 1630, "Mirrored Surface Composite", 1, "I", 41226050, 128816574) },
+                {128816580, new Module(128816580, "TypeX_Armour_Reactive", 1631, "Reactive Surface Composite", 1, "I", 45683967, 128816574) },
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },
