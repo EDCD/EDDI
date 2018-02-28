@@ -114,7 +114,7 @@ namespace EddiShipMonitor
                 Ship.cargocapacity = 0;
 
                 // Be sensible with health - round it unless it's very low
-                decimal Health = (decimal)(json["health"]?["hull"] ?? 0) / 10000;
+                decimal Health = (decimal)(json["health"]?["hull"] ?? 1000000M) / 10000M;
                 if (Health < 5)
                 {
                     Ship.health = Math.Round(Health, 1);
@@ -172,9 +172,17 @@ namespace EddiShipMonitor
                             Compartment compartment = CompartmentFromJson(module);
                             string moduleName = compartment.module?.name ?? "";
                             if (moduleName == "Fuel Tank")
+                            {
                                 Ship.fueltanktotalcapacity += (decimal)Math.Pow(2, compartment.module.@class);
+                            }
                             if (moduleName == "Cargo Rack")
+                            {
                                 Ship.cargocapacity += (int)Math.Pow(2, compartment.module.@class);
+                            }
+                            if (moduleName == "Armour")
+                            {
+                                Ship.health = compartment.module?.health ?? 100M;
+                            }
 
                             Ship.compartments.Add(compartment);
                         }

@@ -264,6 +264,7 @@ namespace EddiDataDefinitions
 
         public Ship()
         {
+            health = 100M;
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
             launchbays = new List<LaunchBay>();
@@ -280,9 +281,11 @@ namespace EddiDataDefinitions
             phoneticmodel = PhoneticModel;
             size = Size;
             militarysize = MilitarySize;
+            health = 100M;
             hardpoints = new List<Hardpoint>();
             compartments = new List<Compartment>();
             launchbays = new List<LaunchBay>();
+            cargo = new List<Cargo>();
         }
 
         public string SpokenName(string defaultname = null)
