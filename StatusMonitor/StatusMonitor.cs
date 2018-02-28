@@ -116,18 +116,22 @@ namespace EddiStatusMonitor
                 {
                     statusFileName = fileInfo.Name;
                     string[] thisStatus;
-                    thisStatus = File.ReadAllLines(fileInfo.FullName);
-                    if (lastStatus != thisStatus)
+                    try
                     {
-                        using (FileStream fs = fileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        thisStatus = File.ReadAllLines(fileInfo.FullName);
+                        if (lastStatus != thisStatus)
                         {
                             foreach (string line in thisStatus)
                             {
                                 ParseStatusEntry(line);
                             }
                         }
+                        lastStatus = thisStatus;
                     }
-                    lastStatus = thisStatus;
+                    catch (Exception)
+                    {
+                        // file open elsewhere or being written, just wait for the next pass
+                    }
                 }
                 Thread.Sleep(100);
             }
