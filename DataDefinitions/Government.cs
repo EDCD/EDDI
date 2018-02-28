@@ -35,6 +35,7 @@ namespace EddiDataDefinitions
         public static readonly Government Feudal = new Government("$government_Feudal", "Feudal");
         public static readonly Government Imperial = new Government("$government_Imperial", "Imperial");
         public static readonly Government Patronage = new Government("$government_Patronage", "Patronage");
+        public static readonly Government Prison = new Government("$government_Prison", "Prison");
         public static readonly Government PrisonColony = new Government("$government_PrisonColony", "Prison Colony");
         public static readonly Government Theocracy = new Government("$government_Theocracy", "Theocracy");
         public static readonly Government Workshop = new Government("$government_Workshop", "Workshop");
