@@ -1280,6 +1280,15 @@
       "name": "Repeat last speech",
       "description": "Repeat the last thing said"
     },
+    "Report last scan value": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Context }\r\n{set scanValue to state.eddi_context_last_scan_estimated_value}\r\n\r\n{if scanValue:\r\n   {OneOf(\"This\", \"This data\", \"This scan\")} \r\n   {OneOf(\"could\", \"might\", \"can\", \"should\") } \r\n   {OneOf(\"fetch\", \"be worth\", \"get you\", \"sell for\")}\r\n   {Humanise(scanValue)} credits.\r\n}\r\n",
+      "default": true,
+      "name": "Report last scan value",
+      "description": "Report the estimated value of the last body scanned"
+    },
     "Screenshot": {
       "enabled": true,
       "priority": 3,
@@ -1738,15 +1747,6 @@
       "default": true,
       "name": "Vehicle destroyed",
       "description": "Triggered when your vehicle is destroyed"
-    },
-    "Report last scan value": {
-      "enabled": true,
-      "priority": 3,
-      "responder": false,
-      "script": "{_ Context }\r\n{set scanValue to state.eddi_context_last_scan_estimated_value}\r\n\r\n{if scanValue:\r\n   {OneOf(\"This\", \"This data\", \"This scan\")} \r\n   {OneOf(\"could\", \"might\", \"can\", \"should\") } \r\n   {OneOf(\"fetch\", \"be worth\", \"get you\", \"sell for\")}\r\n   {Humanise(scanValue)} credits.\r\n}\r\n",
-      "default": true,
-      "name": "Report last scan value",
-      "description": "Report the estimated value of the last body scanned"
     }
   }
 }
