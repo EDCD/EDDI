@@ -6,6 +6,10 @@
   * Core
     * Added decontamination limpets
     * EDDI will now more readily notice if your SRV or fighter was destroyed (EDDI couldn't always tell before).
+  * NPC Comms
+	* Reporting of NPC comms is much more succint.
+		Was: Message received from "name".  Message reads: "blah".
+		Now: "name" sends: "blah".
   * Speech Responder
     * Added new 'Near surface' event, triggered when you enter or depart the gravity well around a surface
 	* Added new 'SRV under ship' event, triggered when your SRV enters or leaves the proximity zone around your ship
