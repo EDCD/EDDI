@@ -36,7 +36,7 @@ namespace Tests
                             output.Add("");
                         }
 
-                        output.Add("When using this event in VoiceAttack the information about this event is available as follows");
+                        output.Add("To use this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")). The event information can be accessed using the following VoiceAttack variables");
                         output.Add("");
                         output.Add("");
                         foreach (KeyValuePair<string, string> variable in variables.OrderBy(i => i.Key))
