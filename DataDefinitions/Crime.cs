@@ -42,6 +42,7 @@ namespace EddiDataDefinitions
         public static readonly Crime TrespassMajor = new Crime("dockingMajorTrespass", "Trespassing");
         public static readonly Crime Collided = new Crime("collidedAtSpeedInNoFireZone", "Colliding with another ship");
         public static readonly Crime CollidedWithDamage = new Crime("collidedAtSpeedInNoFireZone_hulldamage", "Colliding with another ship, resulting in damage");
+        public static readonly Crime RecklessWeaponsDischarge = new Crime("recklessWeaponsDischarge", "Reckless weapons discharge");
 
         public static Crime FromName(string from)
         {
