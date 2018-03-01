@@ -1,5 +1,7 @@
 ﻿# CHANGE LOG
 
+### 3.0.0-b2
+
 ### 3.0.0-b1
   * UI
     * If EDDI is run as a standalone app, its entire window state is now preserved. If EDDI is invoked via VoiceAttack commands, we only remember whether it was maximised and don't disturb the rest.
