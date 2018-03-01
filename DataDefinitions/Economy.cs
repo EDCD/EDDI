@@ -36,6 +36,7 @@ namespace EddiDataDefinitions
         public static readonly Economy Service = new Economy("$economy_Service", "Service");
         public static readonly Economy Tourism = new Economy("$economy_Tourism", "Tourism");
         public static readonly Economy Military = new Economy("$economy_Military", "Military");
+        public static readonly Economy Prison = new Economy("$economy_Prison", "Prison");
 
         public static Economy FromName(string from)
         {
