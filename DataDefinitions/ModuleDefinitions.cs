@@ -928,7 +928,10 @@ namespace EddiDataDefinitions
                 {128666638, new Module(128666638, "Int_LifeSupport_Size1_Class1_free", -1, "Life Support", 1, "E", 0) },
 
                 // Items for which we are awaiting FD IDs
+                {999999901, new Module(999999901, "VoicePack_Verity", -1, "Vertiy", 1, "I", 0) },
+                {999999902, new Module(999999902, "VoicePack_Victor", -1, "Victor", 1, "I", 0) },
                 {999999903, new Module(999999903, "Hpt_MiningLaser_Fixed_Small_Advanced", -1, "Mining Lance", 1, "D", 6800, Module.ModuleMount.Fixed) },
+                {999999904, new Module(999999904, "VoicePack_Celeste", -1, "Celeste", 1, "I", 0) },
                 // The FDL has its own cargo bay door.  The FDL is like that
                 {999999907, new Module(999999907, "ModularCargoBayDoorFDL", -1, "Cargo Hatch", 1, "H", 0, -1) },
                 {999999908, new Module(999999908, "ModularCargoBayDoor", -1, "Cargo Hatch", 1, "H", 0, -1) },
