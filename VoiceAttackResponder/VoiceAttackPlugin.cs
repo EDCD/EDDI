@@ -1265,6 +1265,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("Debt (spoken)", Translations.Humanize(cmdr?.debt));
 
                 vaProxy.SetText("Title", cmdr?.title);
+                vaProxy.SetText("Gender", cmdr?.gender);
 
                 vaProxy.SetDecimal("Insurance", cmdr?.insurance);
 
