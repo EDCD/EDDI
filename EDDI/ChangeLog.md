@@ -3,7 +3,7 @@
 ### 3.0.0-b2
  * VoiceAttack
     * Added the following new variables
-      * {TXT:Gender}: the gender of the commander.  Can be one of "Male", "Female", or ""
+      * {TXT:Gender}: the gender of the commander.  Can be one of "Male", "Female", or "Neither".
 
 ### 3.0.0-b1
   * UI
