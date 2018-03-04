@@ -1,5 +1,13 @@
-﻿using EddiDataProviderService;
+﻿using Eddi;
+using EddiEvents;
+using EddiDataProviderService;
 using EddiDataDefinitions;
+using EddiShipMonitor;
+using EddiSpeechResponder;
+using EddiSpeechService;
+using EddiStatusMonitor;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,17 +15,10 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Diagnostics;
 using System.Windows;
-using EddiSpeechService;
-using Utilities;
-using Eddi;
-using EddiEvents;
 using System.ComponentModel;
 using System.Text;
 using System.Text.RegularExpressions;
-using EddiSpeechResponder;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using EddiShipMonitor;
+using Utilities;
 
 namespace EddiVoiceAttackResponder
 {
@@ -1070,7 +1071,7 @@ namespace EddiVoiceAttackResponder
 
             try
             {
-                setStatusValues(EDDI.Instance.CurrentStatus, "Status", ref vaProxy);
+                setStatusValues(StatusMonitor.currentStatus, "Status", ref vaProxy);
             }
             catch (Exception ex)
             {

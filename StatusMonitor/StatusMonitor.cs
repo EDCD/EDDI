@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiEvents;
+using EddiShipMonitor;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Utilities;
 using EddiDataDefinitions;
-using EddiShipMonitor;
 
 namespace EddiStatusMonitor
 {
@@ -22,7 +22,8 @@ namespace EddiStatusMonitor
         private static Regex JsonRegex = new Regex(@"^{.*}$");
         private string Directory = GetSavedGamesDir();
         private string statusFileName;
-        private Status status { get; set; }
+        public static Status currentStatus { get; set; } = new Status();
+        public static Status lastStatus { get; set; } = new Status();
 
         // Keep track of status
         private bool running;
@@ -151,7 +152,7 @@ namespace EddiStatusMonitor
             return null;
         }
 
-        public static List<Event> ParseStatusEntry(string line)
+        public List<Event> ParseStatusEntry(string line)
         {
             List<Event> events = new List<Event>();
             try
@@ -194,7 +195,7 @@ namespace EddiStatusMonitor
                     {
                         case "Status":
                             {
-                                Status status = new Status();
+                                Status status = currentStatus;
 
                                 status.flags = JsonParsing.getLong(data, "Flags");
                                 if (status.flags > 0)
@@ -260,8 +261,7 @@ namespace EddiStatusMonitor
                                 status.altitude = JsonParsing.getOptionalDecimal(data, "Altitude");
                                 status.heading = JsonParsing.getOptionalDecimal(data, "Heading");
 
-                                // Update the global current status variable
-                                EDDI.Instance.eventHandler(new StatusEvent(timestamp, status));
+                                handleStatus(timestamp, status);
                             }
                             handled = true;
                             break;
@@ -279,6 +279,47 @@ namespace EddiStatusMonitor
                 Logging.Error("Exception whilst parsing Status.json line", line);
             }
             return events;
+        }
+
+        private void handleStatus(DateTime timestamp, Status thisStatus)
+        {
+            // Save our last status for reference and update our current status
+            lastStatus = currentStatus;
+            currentStatus = thisStatus;
+
+            if (currentStatus != thisStatus)
+            {
+                // Post a status event to share the new status with other monitors and responders 
+                EDDI.Instance.eventHandler(new StatusEvent(timestamp, thisStatus));
+
+                // Trigger events for changed status, as applicable
+                if (lastStatus.near_surface != thisStatus.near_surface)
+                {
+                    EDDI.Instance.eventHandler(new NearSurfaceEvent(timestamp, thisStatus.near_surface));
+                }
+                if (lastStatus.srv_turret_deployed != thisStatus.srv_turret_deployed)
+                {
+                    EDDI.Instance.eventHandler(new SRVTurretEvent(timestamp, thisStatus.srv_turret_deployed));
+                }
+                if (lastStatus.srv_under_ship != thisStatus.srv_under_ship)
+                {
+                    EDDI.Instance.eventHandler(new SRVUnderShipEvent(timestamp));
+                }
+                if (lastStatus.fsd_status != thisStatus.fsd_status)
+                {
+                    if (thisStatus.fsd_status != "ready") // Don't trigger events for "ready" status
+                    {
+                        EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, thisStatus.fsd_status));
+                    }
+                }
+                if (lastStatus.low_fuel != thisStatus.low_fuel)
+                {
+                    if (thisStatus.low_fuel) // Don't trigger 'low fuel' event when fuel exceeds 25%
+                    {
+                        EDDI.Instance.eventHandler(new ShipLowFuelEvent(timestamp));
+                    }
+                }
+            }
         }
 
         private static string GetSavedGamesDir()
@@ -345,7 +386,7 @@ namespace EddiStatusMonitor
             return null;
         }
 
-        private static Status ParseFlags(DateTime timestamp, long flags, string line, Status status)
+        private Status ParseFlags(DateTime timestamp, long flags, string line, Status status)
         {
             int value;
 
@@ -411,7 +452,7 @@ namespace EddiStatusMonitor
                 status.fsd_status = "cooldown";
                 flags = flags - value;
             }
-            if (EDDI.Instance.LastStatus.fsd_status == "cooldown" && EDDI.Instance.CurrentStatus.fsd_status != "cooldown")
+            if (lastStatus.fsd_status == "cooldown" && currentStatus.fsd_status != "cooldown")
             {
                 status.fsd_status = "cooldown complete";
             }
@@ -422,7 +463,7 @@ namespace EddiStatusMonitor
                 status.fsd_status = "charging";
                 flags = flags - value;
             }
-            if (EDDI.Instance.LastStatus.fsd_status == "charging" && EDDI.Instance.CurrentStatus.fsd_status != "charging")
+            if (lastStatus.fsd_status == "charging" && currentStatus.fsd_status != "charging")
             {
                 status.fsd_status = "charging complete";
             }
@@ -433,7 +474,7 @@ namespace EddiStatusMonitor
                 status.fsd_status = "masslock";
                 flags = flags - value;
             }
-            if (EDDI.Instance.LastStatus.fsd_status == "masslock" && EDDI.Instance.CurrentStatus.fsd_status != "masslock")
+            if (lastStatus.fsd_status == "masslock" && currentStatus.fsd_status != "masslock")
             {
                 status.fsd_status = "masslock cleared";
             }
