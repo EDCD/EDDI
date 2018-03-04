@@ -134,7 +134,7 @@ namespace EddiStatusMonitor
                         // file open elsewhere or being written, just wait for the next pass
                     }
                 }
-                Thread.Sleep(100);
+                Thread.Sleep(250);
             }
         }
 
