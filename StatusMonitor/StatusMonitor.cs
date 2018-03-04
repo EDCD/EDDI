@@ -75,7 +75,7 @@ namespace EddiStatusMonitor
             running = true;
 
             // Start off by moving to the end of the file
-            string[] lastStatus = null;
+            string lastStatus = null;
             FileInfo fileInfo = null;
             try
             {
@@ -87,7 +87,7 @@ namespace EddiStatusMonitor
             }
             if (fileInfo != null)
             {
-                lastStatus = File.ReadAllLines(fileInfo.FullName);
+                lastStatus = Files.Read(fileInfo.FullName);
             }
 
             // Main loop
@@ -116,16 +116,13 @@ namespace EddiStatusMonitor
                 else
                 {
                     statusFileName = fileInfo.Name;
-                    string[] thisStatus;
+                    string thisStatus;
                     try
                     {
-                        thisStatus = File.ReadAllLines(fileInfo.FullName);
+                        thisStatus = Files.Read(fileInfo.FullName);
                         if (lastStatus != thisStatus)
                         {
-                            foreach (string line in thisStatus)
-                            {
-                                ParseStatusEntry(line);
-                            }
+                            ParseStatusEntry(thisStatus);
                         }
                         lastStatus = thisStatus;
                     }
@@ -261,7 +258,10 @@ namespace EddiStatusMonitor
                                 status.altitude = JsonParsing.getOptionalDecimal(data, "Altitude");
                                 status.heading = JsonParsing.getOptionalDecimal(data, "Heading");
 
-                                handleStatus(timestamp, status);
+                                // Spin off a thread to pass status entry updates in the background
+                                Thread updateThread = new Thread(() => handleStatus(timestamp, status));
+                                updateThread.IsBackground = true;
+                                updateThread.Start();
                             }
                             handled = true;
                             break;
