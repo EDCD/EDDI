@@ -1,6 +1,8 @@
 ﻿# CHANGE LOG
 
 ### 3.0.0-b2
+  * Core
+    * Squashed a bug with the status monitor that was preventing events from being detected in VoiceAttack and was messing up some other variables.
 
 ### 3.0.0-b1
   * UI
