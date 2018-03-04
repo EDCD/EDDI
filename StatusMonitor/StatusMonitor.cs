@@ -195,7 +195,7 @@ namespace EddiStatusMonitor
                     {
                         case "Status":
                             {
-                                Status status = currentStatus;
+                                Status status = new Status();
 
                                 status.flags = JsonParsing.getLong(data, "Flags");
                                 if (status.flags > 0)
@@ -283,12 +283,12 @@ namespace EddiStatusMonitor
 
         private void handleStatus(DateTime timestamp, Status thisStatus)
         {
-            // Save our last status for reference and update our current status
-            lastStatus = currentStatus;
-            currentStatus = thisStatus;
-
             if (currentStatus != thisStatus)
             {
+                // Save our last status for reference and update our current status
+                lastStatus = currentStatus;
+                currentStatus = thisStatus;
+
                 // Post a status event to share the new status with other monitors and responders 
                 EDDI.Instance.eventHandler(new StatusEvent(timestamp, thisStatus));
 
