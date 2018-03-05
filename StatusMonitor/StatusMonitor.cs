@@ -307,7 +307,7 @@ namespace EddiStatusMonitor
                 EDDI.Instance.eventHandler(new StatusEvent(timestamp, thisStatus));
 
                 // Trigger events for changed status, as applicable
-                if (lastStatus.near_surface != thisStatus.near_surface)
+                if (lastStatus.near_surface != thisStatus.near_surface && thisStatus.vehicle == Constants.VEHICLE_SHIP)
                 {
                     EDDI.Instance.eventHandler(new NearSurfaceEvent(timestamp, thisStatus.near_surface));
                 }
@@ -319,7 +319,7 @@ namespace EddiStatusMonitor
                 {
                     EDDI.Instance.eventHandler(new SRVUnderShipEvent(timestamp));
                 }
-                if (lastStatus.fsd_status != thisStatus.fsd_status)
+                if (lastStatus.fsd_status != thisStatus.fsd_status && thisStatus.vehicle == Constants.VEHICLE_SHIP)
                 {
                     if (thisStatus.fsd_status != "ready") // Don't trigger events for "ready" status
                     {
