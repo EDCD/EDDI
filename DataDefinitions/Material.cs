@@ -190,6 +190,20 @@ namespace EddiDataDefinitions
         public static readonly Material Tg_WeaponParts = new Material("tg_weaponparts", "Manufactured", "Weapon Parts", Rarity.Rare);
         public static readonly Material Tg_PropulsionElement = new Material("tg_propulsionelement", "Manufactured", "Propulsion Elements", Rarity.VeryRare);
 
+        public static readonly Material Rhenium = new Material("rhenium", "Element", "Rhenium", Rarity.VeryCommon, "Re", null, null);
+        public static readonly Material Lead = new Material("lead", "Element", "Lead", Rarity.VeryCommon, "Pb", null, null);
+
+        public static readonly Material Guardian_PowerCell = new Material("guardian_powercell", "Manufactured", "Guardian Power Cell", Rarity.VeryCommon);
+        public static readonly Material Guardian_PowerConduit = new Material("guardian_powerconduit", "Manufactured", "Guardian Power Conduit", Rarity.Common);
+        public static readonly Material Guardian_TechComponent = new Material("guardian_techcomponent", "Manufactured", "Guardian Tech Component", Rarity.Standard);
+
+        public static readonly Material Guardian_Sentinel_WreckageComponents = new Material("guardian_sentinel_wreckagecomponents", "Manufactured", "Guardian Sentinel Wreckage Components", Rarity.VeryCommon);
+        public static readonly Material Guardian_Sentinel_WeaponParts = new Material("guardian_sentinel_weaponparts", "Manufactured", "Guardian Sentinel Weapon Parts", Rarity.Standard);
+
+        public static readonly Material Guardian_ModuleBlueprint = new Material("guardian_moduleblueprint", "Manufactured", "Guardian Module Blueprint", Rarity.Rare);
+        public static readonly Material Guardian_VesselBlueprint = new Material("guardian_vesselblueprint", "Manufactured", "Guardian Vessel Blueprint", Rarity.Rare);
+        public static readonly Material Guardian_WeaponBlueprint = new Material("guardian_weaponblueprint", "Manufactured", "Guardian Weapon Blueprint", Rarity.VeryRare);
+
         public static Material FromName(string from)
         {
             if (string.IsNullOrEmpty(from))
