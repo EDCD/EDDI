@@ -111,7 +111,7 @@ namespace EddiStatusMonitor
                                     Logging.Info("Error locating Elite Dangerous Status.json. Status monitor is not active. Have you installed and run Elite Dangerous previously? ");
                                     while (fileInfo == null)
                                     {
-                                        Thread.Sleep(500);
+                                        Thread.Sleep(1000);
                                         fileInfo = FindStatusFile(Directory, Filter);
                                     }
                                     Logging.Info("Elite Dangerous Status.json found. Status monitor activated.");
@@ -138,7 +138,7 @@ namespace EddiStatusMonitor
                                 }
                                 lastStatus = thisStatus;
                             }
-                            Thread.Sleep(250);
+                            Thread.Sleep(500);
                         }
                     }
                 }
