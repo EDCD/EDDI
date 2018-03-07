@@ -1,6 +1,8 @@
 ﻿# CHANGE LOG
 
 ### 3.0.0-b2
+  * Core
+    * Fixed the bug that was preventing EDDI from talking to the update server. Unfortunately, users of old software versions won't be able to automatically update so please tell your friends that they can manually update to the latest (and greatest?) version.
 
 ### 3.0.0-b1
   * UI
