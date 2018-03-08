@@ -244,7 +244,7 @@ namespace Eddi
                 ServerInfo updateServerInfo = ServerInfo.FromServer(Constants.EDDI_SERVER_URL);
                 if (updateServerInfo == null)
                 {
-                    Logging.Warn("Failed to contact update server");
+                    throw new Exception("Failed to contact update server");
                 }
                 else
                 {
@@ -284,7 +284,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
+                SpeechService.Instance.Say(null, "I could not connect to my update server. If this recurs, please check the forum to see if it is a known problem.", false);
                 Logging.Warn("Failed to access " + Constants.EDDI_SERVER_URL, ex);
             }
         }
