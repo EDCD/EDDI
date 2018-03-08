@@ -115,10 +115,6 @@ namespace Eddi
         public string Vehicle { get; private set; } = Constants.VEHICLE_SHIP;
         public Ship CurrentShip { get; set; }
 
-        // Session state
-        public Status CurrentStatus { get; private set; } = new Status();
-        public Status LastStatus { get; private set; } = new Status();
-
         public ObservableConcurrentDictionary<string, object> State = new ObservableConcurrentDictionary<string, object>();
 
         /// <summary>
@@ -1256,35 +1252,11 @@ namespace Eddi
 
         private bool eventStatus(StatusEvent theEvent)
         {
-            if (Instance.CurrentStatus != theEvent.status)
+            if (theEvent.status.supercruise == true)
             {
-                // Update global variables
-
-                Instance.LastStatus = Instance.CurrentStatus;
-                Instance.CurrentStatus = theEvent.status;
-                if (theEvent.status.supercruise == true)
-                {
-                    Instance.Environment = Constants.ENVIRONMENT_SUPERCRUISE;
-                }
-                Instance.Vehicle = theEvent.status.vehicle;
-
-                // Trigger events for changed status, as applicable
-
-                if (Instance.LastStatus.near_surface != Instance.CurrentStatus.near_surface)
-                {
-                    Instance.eventHandler(new NearSurfaceEvent(theEvent.timestamp, theEvent.status.near_surface));
-                }
-
-                if (Instance.LastStatus.srv_turret_deployed != Instance.CurrentStatus.srv_turret_deployed)
-                {
-                    Instance.eventHandler(new SRVTurretEvent(theEvent.timestamp, theEvent.status.srv_turret_deployed));
-                }
-
-                if (Instance.LastStatus.srv_under_ship != Instance.CurrentStatus.srv_under_ship)
-                {
-                    Instance.eventHandler(new SRVUnderShipEvent(theEvent.timestamp));
-                }
+                Environment = Constants.ENVIRONMENT_SUPERCRUISE;
             }
+            Vehicle = theEvent.status.vehicle;
             return true;
         }
 

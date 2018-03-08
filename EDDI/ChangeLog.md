@@ -2,6 +2,7 @@
 
 ### 3.0.0-b2
   * Core
+    * Squashed a bug with the status monitor that was preventing events from being detected in VoiceAttack and was messing up some other variables.
     * Fixed the outdated TLS protocol usage on EDDI's side whereby the update server began refusing to talk to existing releases of EDDI.
 	  * In future, EDDI will let you know if it cannot reach its update server for any reason.
 	  * Unfortunately, users of all prior versions won't be able to automatically update so please tell your friends that they can manually update to the latest and greatest version.

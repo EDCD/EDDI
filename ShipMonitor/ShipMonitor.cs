@@ -198,11 +198,6 @@ namespace EddiShipMonitor
             {
                 handleModuleTransferEvent((ModuleTransferEvent)@event);
             }
-            else if (@event is StatusEvent)
-            {
-                handleStatusEvent((StatusEvent)@event);
-            }
-
         }
 
         // Set the ship name conditionally, avoiding filtered names
@@ -669,27 +664,6 @@ namespace EddiShipMonitor
         private void handleModuleTransferEvent(ModuleTransferEvent @event)
         {
             // We don't do anything here as the ship object is unaffected
-        }
-
-        private void handleStatusEvent(StatusEvent @event)
-        {
-            // Trigger events for changed status, as applicable
-
-            if (EDDI.Instance.LastStatus.fsd_status != EDDI.Instance.CurrentStatus.fsd_status)
-            {
-                if (@event.status.fsd_status != "ready") // Don't trigger events for "ready" status
-                {
-                    EDDI.Instance.eventHandler(new ShipFsdEvent(@event.timestamp, @event.status.fsd_status));
-                }
-            }
-
-            if (EDDI.Instance.LastStatus.low_fuel != EDDI.Instance.CurrentStatus.low_fuel)
-            {
-                if (@event.status.low_fuel) // Don't trigger 'low fuel' event when fuel exceeds 25%
-                {
-                    EDDI.Instance.eventHandler(new ShipLowFuelEvent(@event.timestamp));
-                }
-            }
         }
 
         public void PostHandle(Event @event)
