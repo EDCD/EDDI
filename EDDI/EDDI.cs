@@ -285,57 +285,8 @@ namespace Eddi
             catch (Exception ex)
             {
                 SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
-                Logging.Warn("Failed to access api.eddp.co", ex);
-            }
-        }
-
-        /// <summary>
-        /// Obtain and check the information from the update server
-        /// </summary>
-        private bool UpdateServer()
-        {
-            try
-            {
-                ServerInfo updateServerInfo = ServerInfo.FromServer(Constants.EDDI_SERVER_URL);
-                if (updateServerInfo == null)
-                {
-                    Logging.Warn("Failed to contact update server");
-                    return false;
-                }
-                else
-                {
-                    InstanceInfo info = Constants.EDDI_VERSION.Contains("b") ? updateServerInfo.beta : updateServerInfo.production;
-                    if (Versioning.Compare(info.minversion, Constants.EDDI_VERSION) == 1)
-                    {
-                        Logging.Warn("This version of Eddi is too old to operate; please upgrade at " + info.url);
-                        SpeechService.Instance.Say(null, "This version of Eddi is too old to operate; please upgrade.", true);
-                        UpgradeRequired = true;
-                        UpgradeLocation = info.url;
-                        UpgradeVersion = info.version;
-                    }
-
-                    if (Versioning.Compare(info.version, Constants.EDDI_VERSION) == 1)
-                    {
-                        // There is an update available
-                        SpeechService.Instance.Say(null, "EDDI version " + info.version.Replace(".", " point ") + " is now available.", true);
-                        UpgradeAvailable = true;
-                        UpgradeLocation = info.url;
-                        UpgradeVersion = info.version;
-                    }
-
-                    if (info.motd != null)
-                    {
-                        // There is a message
-                        SpeechService.Instance.Say(null, info.motd, false);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                SpeechService.Instance.Say(null, "There was a problem connecting to external data services; some features may be temporarily unavailable", false);
                 Logging.Warn("Failed to access " + Constants.EDDI_SERVER_URL, ex);
             }
-            return true;
         }
 
         [SecurityPermissionAttribute(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.UnmanagedCode)]
