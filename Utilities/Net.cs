@@ -10,6 +10,32 @@ namespace Utilities
 {
     public class Net
     {
+        static Net()
+        {
+            // .NET 4.7 forces ServicePointManager.SecurityProtocol to SecurityProtocolType.SystemDefault.
+            // Unfortunately when running under Voice Attack we are linked to an older version of .NET which doesn't do this.
+            // This means that we try to call the update server with a deprecated version of TLS which it rejects.
+            // Thus we explicity set the security protocol here.
+            // Ref: https://stackoverflow.com/questions/26389899/how-do-i-disable-ssl-fallback-and-use-only-tls-for-outbound-connections-in-net/26392698#26392698
+            // TODO: yank this when VoiceAttack updates to .NET 4.7 or later.
+            ServicePointManager.SecurityProtocol = 0; // 0 is SecurityProtocolType.SystemDefault
+            foreach (SecurityProtocolType protocol in SecurityProtocolType.GetValues(typeof(SecurityProtocolType)))
+            {
+                switch (protocol)
+                {
+                    case SecurityProtocolType.Ssl3:
+                    case SecurityProtocolType.Tls:
+                    case SecurityProtocolType.Tls11:
+                        // these are deprecated
+                        break;
+                    default:
+                        // we bitwise OR all the non-deprecated protocols
+                        ServicePointManager.SecurityProtocol |= protocol;
+                        break;
+                }
+            }
+        }
+
         public static string DownloadString(string uri)
         {
             HttpWebRequest request = GetRequest(uri);
