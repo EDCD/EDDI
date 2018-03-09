@@ -6,6 +6,9 @@
     * Fixed the outdated TLS protocol usage on EDDI's side whereby the update server began refusing to talk to existing releases of EDDI.
 	  * In future, EDDI will let you know if it cannot reach its update server for any reason.
 	  * Unfortunately, users of all prior versions won't be able to automatically update so please tell your friends that they can manually update to the latest and greatest version.
+  * VoiceAttack
+    * Added the following new variables
+      * {TXT:Gender}: the gender of the commander.  Can be one of "Male", "Female", or "Neither".
 
 ### 3.0.0-b1
   * UI
