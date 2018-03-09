@@ -1550,15 +1550,6 @@
       "name": "SRV launched",
       "description": "Triggered when you launch an SRV from your ship"
     },
-    "SRV recovery zone transition": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{if event.entering:\r\n   {OneOf(\"Buggy\", \"SRV\")} standing by for recovery.\r\n}",
-      "default": true,
-      "name": "SRV recovery zone transition",
-      "description": "Triggered when your SRV enters the recovery zone under your ship"
-    },
     "SRV turret": {
       "enabled": true,
       "priority": 3,
