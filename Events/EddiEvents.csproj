@@ -68,7 +68,7 @@
     <Compile Include="VAInitialized.cs" />
     <Compile Include="SRVTurretEvent.cs" />
     <Compile Include="NearSurfaceEvent.cs" />
-    <Compile Include="SRVUnderShipEvent.cs" />
+    <Compile Include="SRVRecoveryZoneTransitionEvent.cs" />
     <Compile Include="UnderAttackEvent.cs" />
     <Compile Include="VehicleDestroyedEvent.cs" />
     <Compile Include="DatalinkMessageEvent.cs" />
