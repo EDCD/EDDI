@@ -15,6 +15,9 @@ namespace EddiStarMapService
     /// <summary> Talk to the Elite: Dangerous Star Map service </summary>
     public class StarMapService
     {
+        // Set the maximum batch size we will use for syncing before we write systems to our sql database
+        public const int syncBatchSize = 100;
+
         // Use en-US everywhere to ensure that we don't use , rather than . for our separator
         private static CultureInfo EN_US_CULTURE = new CultureInfo("en-US");
 
@@ -555,7 +558,7 @@ namespace EddiStarMapService
             {
                 Dictionary<string, StarMapLogInfo> systems = getStarMapLog(since);
                 Dictionary<string, string> comments = getStarMapComments();
-                int total = systems.Count;
+                List<StarSystem> syncSystems = new List<StarSystem>();
                 foreach (string system in systems.Keys)
                 {
                     StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
@@ -565,17 +568,32 @@ namespace EddiStarMapService
                     {
                         CurrentStarSystem.comment = comments[system];
                     }
-                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                    syncSystems.Add(CurrentStarSystem);
+
+                    if (syncSystems.Count == syncBatchSize)
+                    {
+                        saveStarSystems(syncSystems);
+                        syncSystems.Clear();
+                    }
                 }
-                StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
-                starMapConfiguration.lastSync = DateTime.UtcNow;
-                starMapConfiguration.ToFile();
+                if (syncSystems.Count > 0)
+                {
+                    saveStarSystems(syncSystems);
+                }
                 Logging.Info("EDSM sync completed");
             }
             catch (EDSMException edsme)
             {
                 Logging.Debug("EDSM error received: " + edsme.Message);
             }
+        }
+
+        public static void saveStarSystems(List<StarSystem> syncSystems)
+        {
+            StarSystemSqLiteRepository.Instance.SaveStarSystems(syncSystems);
+            StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
+            starMapConfiguration.lastSync = DateTime.UtcNow;
+            starMapConfiguration.ToFile();
         }
     }
     
