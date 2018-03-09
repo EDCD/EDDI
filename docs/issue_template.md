@@ -1,5 +1,5 @@
 ## EDDI version in which issue found
-[]
+[please give the full version number here, not just "latest" or "current", and also say whether you are running under Voice Attack or standalone]
 
 ## Steps to reproduce
 
