@@ -4,6 +4,7 @@ using EddiEvents;
 using EddiShipMonitor;
 using EddiStarMapService;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Controls;
 using Utilities;
 
@@ -37,6 +38,13 @@ namespace EddiEdsmResponder
         public bool Start()
         {
             Reload();
+
+            // Spin off a thread to download & sync EDSM flight logs & system comments in the background
+            StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
+            Thread updateThread = new Thread(() => starMapService.Sync(starMapCredentials.lastSync));
+            updateThread.IsBackground = true;
+            updateThread.Start();
+
             return starMapService != null;
         }
 

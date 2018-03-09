@@ -202,10 +202,7 @@ namespace Eddi
                         starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
                         Logging.Info("EDDI access to EDSM is enabled");
                     }
-                    // Spin off a thread to download & sync EDSM flight logs & system comments in the background
-                    Thread updateThread = new Thread(() => starMapService.Sync(starMapCredentials.lastSync));
-                    updateThread.IsBackground = true;
-                    updateThread.Start();
+
                 }
                 if (starMapService == null)
                 {
