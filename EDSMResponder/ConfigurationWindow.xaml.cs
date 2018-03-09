@@ -113,7 +113,8 @@ namespace EddiEdsmResponder
 
                 foreach (string system in systems.Keys)
                 {
-                    progress.Report("Obtaining log " + i++ + "/" + total);
+                    ++i;
+                    progress.Report($"Obtaining log {i}/{total}");
                     StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
                     CurrentStarSystem.visits = systems[system].visits;
                     CurrentStarSystem.lastvisit = systems[system].lastVisit;
