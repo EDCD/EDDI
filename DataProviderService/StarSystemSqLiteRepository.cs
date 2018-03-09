@@ -1,6 +1,7 @@
 ﻿using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using Utilities;
@@ -197,6 +198,60 @@ namespace EddiDataProviderService
             else
             {
                 updateStarSystem(starSystem);
+            }
+        }
+
+        public void SaveStarSystems(List<StarSystem> starSystems)
+        {
+            using (var con = SimpleDbConnection())
+            {
+                con.Open();
+                using (var cmd = new SQLiteCommand(con))
+                {
+                    foreach (StarSystem system in starSystems)
+                    {
+                        if (GetStarSystem(system.name, false) == null)
+                        {
+                            // Delete the system
+                            cmd.CommandText = DELETE_SQL;
+                            cmd.Prepare();
+                            cmd.Parameters.AddWithValue("@name", system.name);
+                            cmd.ExecuteNonQuery();
+
+                            // Re-insert the system
+                            lock (insertLock)
+                            {
+                                Logging.Debug("Creating new starsystem " + system.name);
+                                if (system.lastvisit == null)
+                                {
+                                    // DB constraints don't allow this to be null
+                                    system.lastvisit = DateTime.Now;
+                                }
+
+                                cmd.CommandText = INSERT_SQL;
+                                cmd.Prepare();
+                                cmd.Parameters.AddWithValue("@name", system.name);
+                                cmd.Parameters.AddWithValue("@totalvisits", system.visits);
+                                cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.Now);
+                                cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
+                                cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+                        else
+                        {
+                            // Update the system
+                            cmd.CommandText = UPDATE_SQL;
+                            cmd.Prepare();
+                            cmd.Parameters.AddWithValue("@totalvisits", system.visits);
+                            cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.Now);
+                            cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
+                            cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
+                            cmd.Parameters.AddWithValue("@name", system.name);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
             }
         }
 

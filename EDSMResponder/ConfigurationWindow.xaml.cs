@@ -109,9 +109,12 @@ namespace EddiEdsmResponder
                 Dictionary<string, string> comments = starMapService.getStarMapComments();
                 int total = systems.Count;
                 int i = 0;
+                List<StarSystem> syncSystems = new List<StarSystem>();
+
                 foreach (string system in systems.Keys)
                 {
-                    progress.Report("Obtaining log " + i++ + "/" + total);
+                    ++i;
+                    progress.Report($"Obtaining log {i}/{total}");
                     StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
                     CurrentStarSystem.visits = systems[system].visits;
                     CurrentStarSystem.lastvisit = systems[system].lastVisit;
@@ -119,8 +122,19 @@ namespace EddiEdsmResponder
                     {
                         CurrentStarSystem.comment = comments[system];
                     }
-                    StarSystemSqLiteRepository.Instance.SaveStarSystem(CurrentStarSystem);
+                    syncSystems.Add(CurrentStarSystem);
+
+                    if (syncSystems.Count == StarMapService.syncBatchSize)
+                    {
+                        StarMapService.saveStarSystems(syncSystems);
+                        syncSystems.Clear();
+                    }
                 }
+                if (syncSystems.Count > 0)
+                {
+                    StarMapService.saveStarSystems(syncSystems);
+                }
+
                 progress.Report("Obtained log");
             }
             catch (EDSMException edsme)
