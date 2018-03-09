@@ -12,10 +12,14 @@ namespace EddiEvents
 
         static SRVUnderShipEvent()
         {
+            VARIABLES.Add("entering", "A boolean value. True if you are entering the space under your ship");
         }
 
-        public SRVUnderShipEvent(DateTime timestamp) : base(timestamp, NAME)
+        bool entering { get; set; }
+
+        public SRVUnderShipEvent(DateTime timestamp, bool entering) : base(timestamp, NAME)
         {
+            this.entering = entering;
         }
     }
 }

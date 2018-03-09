@@ -1563,7 +1563,7 @@
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{OneOf(\"Buggy\", \"SRV\")} standing by for recovery.",
+      "script": "{if event.entering:\r\n   {OneOf(\"Buggy\", \"SRV\")} standing by for recovery.\r\n}",
       "default": true,
       "name": "SRV under ship",
       "description": "Triggered when your SRV enters the recovery zone under your ship"

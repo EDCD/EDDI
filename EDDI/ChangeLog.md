@@ -7,6 +7,8 @@
     * Fixed the outdated TLS protocol usage on EDDI's side whereby the update server began refusing to talk to existing releases of EDDI.
 	  * In future, EDDI will let you know if it cannot reach its update server for any reason.
 	  * Unfortunately, users of all prior versions won't be able to automatically update so please tell your friends that they can manually update to the latest and greatest version.
+  * Speech Responder
+    * The 'SRV under ship' event now includes the variable `entering`. This is a boolean value describing whether the SRV is entering or leaving the recovery zone.
   * VoiceAttack
     * Added the following new variables
       * {TXT:Gender}: the preferred gender of the commander for pronouns and titles. One of "Male", "Female", or "Neither".
