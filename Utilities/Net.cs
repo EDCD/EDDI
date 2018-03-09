@@ -10,6 +10,15 @@ namespace Utilities
 {
     public class Net
     {
+        static Net()
+        {
+            // .NET 4.7 forces ServicePointManager.SecurityProtocol to SecurityProtocolType.SystemDefault.
+            // Unfortunately when running under Voice Attack we are linked to an older version of .NET which doesn't do this.
+            // This means that we try to call the update server with a deprecated version of TLS which it rejects.
+            // Thus we explicity set the security protocol here.
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.SystemDefault;
+        }
+
         public static string DownloadString(string uri)
         {
             HttpWebRequest request = GetRequest(uri);
