@@ -318,7 +318,7 @@ namespace EddiStatusMonitor
                 if (lastStatus.srv_under_ship != thisStatus.srv_under_ship)
                 {
                     bool entering = true;
-                    if (lastStatus.srv_under_ship == true & thisStatus.srv_under_ship == false) { entering = false; }
+                    if (lastStatus.srv_under_ship == true && thisStatus.srv_under_ship == false) { entering = false; }
                     EDDI.Instance.eventHandler(new SRVUnderShipEvent(timestamp, entering));
                 }
                 if (lastStatus.fsd_status != thisStatus.fsd_status && thisStatus.vehicle == Constants.VEHICLE_SHIP)
