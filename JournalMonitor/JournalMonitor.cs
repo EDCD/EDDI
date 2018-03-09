@@ -423,7 +423,8 @@ namespace EddiJournalMonitor
                                         {
                                             health = Math.Round(health);
                                         }
-                                        long price = JsonParsing.getLong(moduleData, "Value");
+                                        // Some built-in modules don't give "Value" keys in the Loadout event. We'll set them to zero to match the Frontier API.
+                                        long price = JsonParsing.getOptionalLong(moduleData, "Value") ?? 0; 
 
                                         // Ammunition
                                         int? clip = JsonParsing.getOptionalInt(moduleData, "AmmoInClip");
@@ -504,6 +505,10 @@ namespace EddiJournalMonitor
                                         else if (slot.StartsWith("ShipName") || slot.StartsWith("ShipID"))
                                         {
                                             // Ignore nameplates
+                                        }
+                                        else if (slot == "VesselVoice")
+                                        {
+                                            // Ignore the chosen voice
                                         }
                                         else
                                         {

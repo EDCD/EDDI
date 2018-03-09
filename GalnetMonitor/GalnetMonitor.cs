@@ -151,7 +151,7 @@ namespace GalnetMonitor
                         IEnumerable<FeedItem> items = new FeedReader(new GalnetFeedItemNormalizer(), true).RetrieveFeed(url);
                         if (items != null)
                         {
-                            foreach (FeedItem item in items)
+                            foreach (GalnetFeedItemNormalizer.ExtendedFeedItem item in items)
                             {
                                 if (firstUid == null)
                                 {
