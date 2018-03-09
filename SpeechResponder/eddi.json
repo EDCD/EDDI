@@ -1559,15 +1559,6 @@
       "name": "SRV turret",
       "description": "Triggered when you deploy or retract your SRV's turret"
     },
-    "SRV under ship": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": "{OneOf(\"Buggy\", \"SRV\")} standing by for recovery.",
-      "default": true,
-      "name": "SRV under ship",
-      "description": "Triggered when your SRV enters the recovery zone under your ship"
-    },
     "Star report": {
       "enabled": true,
       "priority": 3,
