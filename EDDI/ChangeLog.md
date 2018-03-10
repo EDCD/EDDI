@@ -10,6 +10,7 @@
 	  * In future, EDDI will let you know if it cannot reach its update server for any reason.
 	  * Unfortunately, users of all prior versions won't be able to automatically update so please tell your friends that they can manually update to the latest and greatest version.
   * Speech Responder
+    * Made the 'Fuel check' script more succinct, for less cognitive burden during those buckyballing runs.
     * The 'SRV under ship' event has been removed as it turns out to give the same info as the 'SRV turret' event.
   * VoiceAttack
     * Added the following new variables
