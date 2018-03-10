@@ -8,7 +8,7 @@
 	  * In future, EDDI will let you know if it cannot reach its update server for any reason.
 	  * Unfortunately, users of all prior versions won't be able to automatically update so please tell your friends that they can manually update to the latest and greatest version.
   * Speech Responder
-    * The 'SRV under ship' event now includes the variable `entering`. This is a boolean value describing whether the SRV is entering or leaving the recovery zone.
+    * Added new 'SRV turret availability' event. The variable `available` is a boolean value describing whether the SRV's turret is now available.
   * VoiceAttack
     * Added the following new variables
       * {TXT:Gender}: the preferred gender of the commander for pronouns and titles. One of "Male", "Female", or "Neither".
@@ -29,7 +29,7 @@
 		Now: From "name": "blah".
   * Speech Responder
     * Added new 'Near surface' event, triggered when you enter or depart the gravity well around a surface
-	* Added new 'SRV under ship' event, triggered when your SRV enters or leaves the proximity zone around your ship
+	* ~~Added new 'SRV under ship' event, triggered when your SRV enters or leaves the proximity zone around your ship~~
 	* Added new 'SRV turret' event, triggered when you deploy or retract your SRV's turret
 	* Added new 'Ship fsd' event, triggered when there is a change to the status of your ship's fsd
 	* Added new 'Ship low fuel' event, triggered when your fuel level falls below 25%
