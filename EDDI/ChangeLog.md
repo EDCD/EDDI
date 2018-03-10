@@ -8,7 +8,7 @@
 	  * In future, EDDI will let you know if it cannot reach its update server for any reason.
 	  * Unfortunately, users of all prior versions won't be able to automatically update so please tell your friends that they can manually update to the latest and greatest version.
   * Speech Responder
-    * Added new 'SRV turret availability' event. The variable `deployable` is a boolean value describing whether the SRV's turret is now available.
+    * Added new 'SRV turret deployable' event. The variable `deployable` is a boolean value describing whether the SRV's turret is now available.
   * VoiceAttack
     * Added the following new variables
       * {TXT:Gender}: the preferred gender of the commander for pronouns and titles. One of "Male", "Female", or "Neither".
