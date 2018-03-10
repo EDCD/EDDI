@@ -1550,14 +1550,14 @@
       "name": "SRV launched",
       "description": "Triggered when you launch an SRV from your ship"
     },
-    "SRV recovery zone transition": {
+    "SRV turret deployable": {
       "enabled": true,
       "priority": 3,
       "responder": true,
-      "script": "{if event.entering:\r\n   {OneOf(\"Buggy\", \"SRV\")} standing by for recovery.\r\n}",
+      "script": "{if !event.deployable:\r\n   {OneOf(\"Buggy\", \"SRV\")} standing by for recovery.\r\n}",
       "default": true,
-      "name": "SRV recovery zone transition",
-      "description": "Triggered when your SRV enters the recovery zone under your ship"
+      "name": "SRV turret deployable",
+      "description": "Triggered when your SRV enters or leaves the restriction zone around a ship."
     },
     "SRV turret": {
       "enabled": true,

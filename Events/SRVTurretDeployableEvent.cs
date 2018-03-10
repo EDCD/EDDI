@@ -13,14 +13,14 @@ namespace EddiEvents
 
         static SRVTurretDeployableEvent()
         {
-            VARIABLES.Add("entering", "A boolean value. True if you are entering the restriction zone around a ship.");
+            VARIABLES.Add("deployable", "A boolean value. True if you are leaving the restriction zone around a ship.");
         }
 
-        bool entering { get; set; }
+        bool deployable { get; set; }
 
-        public SRVTurretDeployableEvent(DateTime timestamp, bool entering) : base(timestamp, NAME)
+        public SRVTurretDeployableEvent(DateTime timestamp, bool deployable) : base(timestamp, NAME)
         {
-            this.entering = entering;
+            this.deployable = deployable;
         }
     }
 }
