@@ -222,7 +222,7 @@ namespace EddiStatusMonitor
                                 status.pips_eng = pips != null ? ((decimal?)pips[1] / 2) : null; // Set engine pips (converting from half pips)
                                 status.pips_wea = pips != null ? ((decimal?)pips[2] / 2) : null; // Set weapon pips (converting from half pips)
 
-                                status.firegroup = JsonParsing.getOptionalInt(data, "Firegroup");
+                                status.firegroup = JsonParsing.getOptionalInt(data, "FireGroup");
                                 int? gui_focus = JsonParsing.getOptionalInt(data, "GuiFocus");
                                 switch (gui_focus)
                                 {
