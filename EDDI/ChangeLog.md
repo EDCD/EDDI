@@ -11,7 +11,7 @@
 	  * Unfortunately, users of all prior versions won't be able to automatically update so please tell your friends that they can manually update to the latest and greatest version.
   * Speech Responder
     * Made the 'Fuel check' script more succinct, for less cognitive burden during those buckyballing runs.
-    * The 'SRV under ship' event has been removed as it turns out to give the same info as the 'SRV turret' event.
+    * Added new 'SRV turret deployable' event. The variable `deployable` is a boolean value describing whether the SRV's turret is now available.
   * VoiceAttack
     * Added the following new variables
       * {TXT:Gender}: the preferred gender of the commander for pronouns and titles. One of "Male", "Female", or "Neither".

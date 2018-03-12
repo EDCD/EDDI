@@ -315,6 +315,12 @@ namespace EddiStatusMonitor
                 {
                     EDDI.Instance.eventHandler(new SRVTurretEvent(timestamp, thisStatus.srv_turret_deployed));
                 }
+                if (lastStatus.srv_under_ship != thisStatus.srv_under_ship)
+                {
+                    // If the turret is deployable then we are not under our ship. And vice versa. 
+                    bool deployable = !thisStatus.srv_under_ship;
+                    EDDI.Instance.eventHandler(new SRVTurretDeployableEvent(timestamp, deployable));
+                }
                 if (lastStatus.fsd_status != thisStatus.fsd_status && thisStatus.vehicle == Constants.VEHICLE_SHIP)
                 {
                     if (thisStatus.fsd_status != "ready") // Don't trigger events for "ready" status
