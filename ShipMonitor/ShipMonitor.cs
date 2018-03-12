@@ -83,7 +83,11 @@ namespace EddiShipMonitor
 
         public void Save()
         {
-            uiSyncContext.Send(_ => writeShips(), null);
+            // Run this on the dispatcher thread with a UI syncContext to ensure that we can update it whilst reflecting changes in the UI
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                uiSyncContext.Send(_ => writeShips(), null);
+            });
         }
 
         /// <summary>
@@ -848,8 +852,11 @@ namespace EddiShipMonitor
                 ship.role = Role.MultiPurpose;
             }
 
-            // Run this on the UI syncContext to ensure that we can update it whilst reflecting changes in the UI
-            uiSyncContext.Send(_ => _AddShip(ship), null);
+            // Run this on the dispatcher thread with a UI syncContext to ensure that we can update it whilst reflecting changes in the UI
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                uiSyncContext.Send(_ => _AddShip(ship), null);
+            });
         }
 
         private void _AddShip(Ship ship)
@@ -876,8 +883,11 @@ namespace EddiShipMonitor
             {
                 return;
             }
-            // Run this on the UI syncContext to ensure that we can update it whilst reflecting changes in the UI
-            uiSyncContext.Send(_ => _RemoveShip(localid), null);
+            // Run this on the dispatcher thread with a UI syncContext to ensure that we can update it whilst reflecting changes in the UI
+            App.Current.Dispatcher.Invoke((Action)delegate
+            {
+                uiSyncContext.Send(_ => _RemoveShip(localid), null);
+            });
         }
 
         /// <summary>
