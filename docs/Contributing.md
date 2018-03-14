@@ -34,6 +34,7 @@ If your WIP branch has gotten so far behind `development` that code and project 
   * Please be aware that departing from the expected version string format may break the code that talks to the update server.
   * Version strings are parsed and compared by `Utilities.Versioning` which is 100% covered by `Tests.VersioningTests`.
     * Please take a strict test-driven approach to any changes here and keep it 100% covered.
+  * Please be aware that the version string needs to be updated in both `Utilities\Constants.cs` and `Installer.iss`. It also appears in `EDDI\ChangeLog.md` obviously.
 
 ## Git commit conventions
   * Please use the standard Git convention of a short title in the first line and fuller body text in subsequent lines. However we aren't too strict about line lengths.
@@ -59,3 +60,9 @@ To regenerate the auto-generated parts of the Wiki:
 3. Rebuild the solution and run all the tests in `Tests\GeneratorTests.cs`.
 4. Overwrite `C:\dev\EDDI.wiki` with `C:\dev\EDDI\Tests\bin\Debug\Wiki`, overwriting, not merging folders.
 5. Push to the Wiki.
+
+## Build process
+
+Building the release target will create in `bin\Installer` both the installer `EDDI-[version-number].exe` and a zip of the debug symbols called `PDBs.zip`. These debug symbols are required for symbolicating stack traces and crash dumps from users, and are tied using UUIDs to the *exact* build session that created the the executables. If they are lost, it is no good to rebuild them later from the same source code: the ones from the build session need to be uploaded to Github along with the installer.
+
+The update server is governed by `info.json` in https://github.com/EDCD/EDDP.git.
