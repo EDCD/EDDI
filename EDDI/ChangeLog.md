@@ -2,6 +2,7 @@
 
 ### 3.0.0-b2
   * Core
+    * Squashed a bug that was preventing EDDI from correctly registering changes to the shipyard.
     * Squashed a bug with the status monitor that was preventing events from being detected in VoiceAttack and was messing up some other variables.
 	* EDDI will no longer try to sync data from EDSM while the EDSM responder is disabled, and when syncing EDSM data EDDI will now write to the local SQL database in batches.
 	* Squashed a bug that was causing EDDI to request and re-process complete EDSM flight logs on every load. Now it'll only request the new stuff since its last update.
