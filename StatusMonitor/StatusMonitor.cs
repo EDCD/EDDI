@@ -326,19 +326,22 @@ namespace EddiStatusMonitor
                     && thisStatus.vehicle == Constants.VEHICLE_SHIP 
                     && !thisStatus.docked)
                 {
-                    if (thisStatus.fsd_status == "ready" && lastStatus.fsd_status == "charging")
+                    if (thisStatus.fsd_status == "ready")
                     {
-                        EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "charging complete"));
+                        if (thisStatus.fsd_status == "ready" && lastStatus.fsd_status == "charging")
+                        {
+                            EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "charging complete"));
+                        }
+                        else if (thisStatus.fsd_status == "ready" && lastStatus.fsd_status == "cooldown")
+                        {
+                            EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "cooldown complete"));
+                        }
+                        else if (thisStatus.fsd_status == "ready" && lastStatus.fsd_status == "masslock")
+                        {
+                            EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "masslock cleared"));
+                        }
                     }
-                    else if (thisStatus.fsd_status == "ready" && lastStatus.fsd_status == "cooldown")
-                    {
-                        EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "cooldown complete"));
-                    }
-                    else if (thisStatus.fsd_status == "ready" && lastStatus.fsd_status == "masslock")
-                    {
-                        EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "masslock cleared"));
-                    }
-                    else if (thisStatus.fsd_status != "ready") // Don't trigger events for "ready" status
+                    else
                     {
                         EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, thisStatus.fsd_status));
                     }
