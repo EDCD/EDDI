@@ -307,31 +307,50 @@ namespace EddiStatusMonitor
                 EDDI.Instance.eventHandler(new StatusEvent(timestamp, thisStatus));
 
                 // Trigger events for changed status, as applicable
-                if (lastStatus.near_surface != thisStatus.near_surface && thisStatus.vehicle == Constants.VEHICLE_SHIP)
+                if (thisStatus.near_surface != lastStatus.near_surface 
+                    && thisStatus.vehicle == Constants.VEHICLE_SHIP)
                 {
                     EDDI.Instance.eventHandler(new NearSurfaceEvent(timestamp, thisStatus.near_surface));
                 }
-                if (lastStatus.srv_turret_deployed != thisStatus.srv_turret_deployed)
+                if (thisStatus.srv_turret_deployed != lastStatus.srv_turret_deployed)
                 {
                     EDDI.Instance.eventHandler(new SRVTurretEvent(timestamp, thisStatus.srv_turret_deployed));
                 }
-                if (lastStatus.srv_under_ship != thisStatus.srv_under_ship)
+                if (thisStatus.srv_under_ship != lastStatus.srv_under_ship)
                 {
                     // If the turret is deployable then we are not under our ship. And vice versa. 
                     bool deployable = !thisStatus.srv_under_ship;
                     EDDI.Instance.eventHandler(new SRVTurretDeployableEvent(timestamp, deployable));
                 }
-                if (lastStatus.fsd_status != thisStatus.fsd_status && thisStatus.vehicle == Constants.VEHICLE_SHIP)
+                if (thisStatus.fsd_status != lastStatus.fsd_status 
+                    && thisStatus.vehicle == Constants.VEHICLE_SHIP 
+                    && !thisStatus.docked)
                 {
-                    if (thisStatus.fsd_status != "ready") // Don't trigger events for "ready" status
+                    if (thisStatus.fsd_status == "ready")
+                    {
+                        switch(lastStatus.fsd_status)
+                        {
+                            case "charging":
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "charging complete"));
+                                break;
+                            case "cooldown":
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "cooldown complete"));
+                                break;
+                            case "masslock":
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "masslock cleared"));
+                                break;
+                        }
+                    }
+                    else
                     {
                         EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, thisStatus.fsd_status));
                     }
                 }
-                if (lastStatus.low_fuel != thisStatus.low_fuel)
+                if (thisStatus.low_fuel != lastStatus.low_fuel)
                 {
                     // Don't trigger 'low fuel' event when fuel exceeds 25% or when we're not in our ship
-                    if (thisStatus.low_fuel && thisStatus.vehicle == Constants.VEHICLE_SHIP) 
+                    if (thisStatus.low_fuel 
+                        && thisStatus.vehicle == Constants.VEHICLE_SHIP) 
                     {
                         EDDI.Instance.eventHandler(new ShipLowFuelEvent(timestamp));
                     }
@@ -469,10 +488,6 @@ namespace EddiStatusMonitor
                 status.fsd_status = "cooldown";
                 flags = flags - value;
             }
-            if (lastStatus.fsd_status == "cooldown" && currentStatus.fsd_status != "cooldown")
-            {
-                status.fsd_status = "cooldown complete";
-            }
 
             value = 131072; // FSD Charging
             if (flags >= value)
@@ -480,20 +495,12 @@ namespace EddiStatusMonitor
                 status.fsd_status = "charging";
                 flags = flags - value;
             }
-            if (lastStatus.fsd_status == "charging" && currentStatus.fsd_status != "charging")
-            {
-                status.fsd_status = "charging complete";
-            }
 
             value = 65536; // FSD MassLocked
             if (flags >= value)
             {
                 status.fsd_status = "masslock";
                 flags = flags - value;
-            }
-            if (lastStatus.fsd_status == "masslock" && currentStatus.fsd_status != "masslock")
-            {
-                status.fsd_status = "masslock cleared";
             }
 
             value = 32768; // Srv DriveAssist
