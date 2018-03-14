@@ -321,9 +321,21 @@ namespace EddiStatusMonitor
                     bool deployable = !thisStatus.srv_under_ship;
                     EDDI.Instance.eventHandler(new SRVTurretDeployableEvent(timestamp, deployable));
                 }
-                if (lastStatus.fsd_status != thisStatus.fsd_status && thisStatus.vehicle == Constants.VEHICLE_SHIP)
+                if (lastStatus.fsd_status != thisStatus.fsd_status && thisStatus.vehicle == Constants.VEHICLE_SHIP && thisStatus.docked != true)
                 {
-                    if (thisStatus.fsd_status != "ready") // Don't trigger events for "ready" status
+                    if (lastStatus.fsd_status == "charging" && thisStatus.fsd_status == "ready")
+                    {
+                        EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "charging complete"));
+                    }
+                    else if (lastStatus.fsd_status == "cooldown" && thisStatus.fsd_status == "ready")
+                    {
+                        EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "cooldown complete"));
+                    }
+                    else if (lastStatus.fsd_status == "masslock" && thisStatus.fsd_status == "ready")
+                    {
+                        EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "masslock cleared"));
+                    }
+                    else if (thisStatus.fsd_status != "ready") // Don't trigger events for "ready" status
                     {
                         EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, thisStatus.fsd_status));
                     }
@@ -469,10 +481,6 @@ namespace EddiStatusMonitor
                 status.fsd_status = "cooldown";
                 flags = flags - value;
             }
-            if (lastStatus.fsd_status == "cooldown" && currentStatus.fsd_status != "cooldown")
-            {
-                status.fsd_status = "cooldown complete";
-            }
 
             value = 131072; // FSD Charging
             if (flags >= value)
@@ -480,20 +488,12 @@ namespace EddiStatusMonitor
                 status.fsd_status = "charging";
                 flags = flags - value;
             }
-            if (lastStatus.fsd_status == "charging" && currentStatus.fsd_status != "charging")
-            {
-                status.fsd_status = "charging complete";
-            }
 
             value = 65536; // FSD MassLocked
             if (flags >= value)
             {
                 status.fsd_status = "masslock";
                 flags = flags - value;
-            }
-            if (lastStatus.fsd_status == "masslock" && currentStatus.fsd_status != "masslock")
-            {
-                status.fsd_status = "masslock cleared";
             }
 
             value = 32768; // Srv DriveAssist
