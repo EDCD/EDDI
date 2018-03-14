@@ -321,7 +321,7 @@ namespace EddiStatusMonitor
                     bool deployable = !thisStatus.srv_under_ship;
                     EDDI.Instance.eventHandler(new SRVTurretDeployableEvent(timestamp, deployable));
                 }
-                if (lastStatus.fsd_status != thisStatus.fsd_status && thisStatus.vehicle == Constants.VEHICLE_SHIP && thisStatus.docked != true)
+                if (lastStatus.fsd_status != thisStatus.fsd_status && thisStatus.vehicle == Constants.VEHICLE_SHIP && !thisStatus.docked)
                 {
                     if (lastStatus.fsd_status == "charging" && thisStatus.fsd_status == "ready")
                     {
