@@ -328,17 +328,17 @@ namespace EddiStatusMonitor
                 {
                     if (thisStatus.fsd_status == "ready")
                     {
-                        if (lastStatus.fsd_status == "charging")
+                        switch(lastStatus.fsd_status)
                         {
-                            EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "charging complete"));
-                        }
-                        else if (lastStatus.fsd_status == "cooldown")
-                        {
-                            EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "cooldown complete"));
-                        }
-                        else if (lastStatus.fsd_status == "masslock")
-                        {
-                            EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "masslock cleared"));
+                            case "charging":
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "charging complete"));
+                                break;
+                            case "cooldown":
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "cooldown complete"));
+                                break;
+                            case "masslock":
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "masslock cleared"));
+                                break;
                         }
                     }
                     else
