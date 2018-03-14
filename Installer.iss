@@ -93,18 +93,6 @@ Source: "Variables.md"; DestDir: "{app}"; Flags: ignoreversion
 
 Source: "EDDI.vap"; DestDir: "{app}"; Flags: ignoreversion
 
-Source: "Newtonsoft.Json.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "CommonMark.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Exceptionless.Wpf.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "Exceptionless.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "MathNet.Numerics.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "System.Data.SQLite.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "SimpleFeedReader.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "CSCore.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "RestSharp.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "EntityFramework.SqlServer.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "EntityFramework.xml"; DestDir: "{app}"; Flags: ignoreversion
-
 Source: "EddiDataProviderService.dll.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EDDI.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "EddiVoiceAttackResponder.dll.config"; DestDir: "{app}"; Flags: ignoreversion
@@ -116,6 +104,17 @@ Source: "System.Data.SQLite.dll.config"; DestDir: "{app}"; Flags: ignoreversion
 Type: files; Name: "{app}\Eddi.exe"
 Type: files; Name: "{app}\EDDI.ico"
 Type: files; Name: "{app}\EddiNetLogMonitor.dll"
+Type: files; Name: "{app}\Newtonsoft.Json.xml"
+Type: files; Name: "{app}\CommonMark.xml"
+Type: files; Name: "{app}\Exceptionless.Wpf.xml"
+Type: files; Name: "{app}\Exceptionless.xml"
+Type: files; Name: "{app}\MathNet.Numerics.xml"
+Type: files; Name: "{app}\System.Data.SQLite.xml"
+Type: files; Name: "{app}\SimpleFeedReader.xml"
+Type: files; Name: "{app}\CSCore.xml"
+Type: files; Name: "{app}\RestSharp.xml"
+Type: files; Name: "{app}\EntityFramework.SqlServer.xml"
+Type: files; Name: "{app}\EntityFramework.xml"
 
 ; Remove sensitive data on uninstall
 [UninstallDelete]
