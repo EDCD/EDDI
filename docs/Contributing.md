@@ -10,25 +10,25 @@ This is based on git-flow, but more relaxed:
   * Releases are tagged in the format `Release/3.0.0-b1`. There are some older release tags in the repo that lack the `Release/` prefix but never mind.
   * `master` points to the current production release. **All unit tests and code analysis must pass.**
   * `beta` points to the current beta release. **All unit tests and code analysis must pass.**
-  * `development` is the integration branch for work in progress. **All unit tests and code analysis must pass.**
+  * `develop` is the integration branch for work in progress. **All unit tests and code analysis must pass.**
 
 ### Work in progress conventions
 
 Branch names for WIP typically look like `feature/47-cargo-monitor` or `hotfix/305-shipyard`. Including the ticket number saves you looking it up when you come to hashtag it in the commit message. We're not too picky as long as it's clear. We do prefer prefixes like `feature/` and `hotfix/` that create collapsible folders in GUIs.
 
-**Important:** please **under no circumstances** merge *from* `development` *into* your WIP branch! 
+**Important:** please **under no circumstances** merge *from* `develop` *into* your WIP branch! 
 
-We have learned the hard way that this causes very big problems when merging the WIP branch back into `development`, notably a very confused commit history with a great many duplicated commit objects. Git's own documentation also warns against this. Any such Pull Requests will be declined.
+We have learned the hard way that this causes very big problems when merging the WIP branch back into `develop`, notably a very confused commit history with a great many duplicated commit objects. Git's own documentation also warns against this. Any such Pull Requests will be declined.
 
-In general, just ignore any progress in `development` while your WIP branch was in progress and simply create a Pull Request based on your WIP branch. We will handle the merge and liaise if necessary.
+In general, just ignore any progress in `develop` while your WIP branch was in progress and simply create a Pull Request based on your WIP branch. We will handle the merge and liaise if necessary.
 
 In particular, if GitHub is showing that the only potential merge conflicts are in `ChangeLog.md`, just go ahead and create a Pull Request. I'm more than happy to sort out any conflicts in `ChangeLog.md` at my end.
 
-If your WIP branch has gotten so far behind `development` that code and project files cannot merge cleanly, here's what to do:
+If your WIP branch has gotten so far behind `develop` that code and project files cannot merge cleanly, here's what to do:
 
-  * Above all, **don't** merge from `development` into your WIP branch!
-  * If you *haven't* yet published your WIP branch, it is perfectly OK to rebase it onto `development` and resolve any issues in the privacy and comfort of your own branch. I do this all the time.
-  * If you *have* published your WIP branch, you can duplicate it and rebase *the duplicate* onto `development`. Once you are happy with it you can delete the original branch and PR and create a new PR. We are fine with that. Please do resist the temptation to rename the duplicate back to the name of the original, as that will confuse both GitHub and humans mightily.
+  * Above all, **don't** merge from `develop` into your WIP branch!
+  * If you *haven't* yet published your WIP branch, it is perfectly OK to rebase it onto `develop` and resolve any issues in the privacy and comfort of your own branch. I do this all the time.
+  * If you *have* published your WIP branch, you can duplicate it and rebase *the duplicate* onto `develop`. Once you are happy with it you can delete the original branch and PR and create a new PR. We are fine with that. Please do resist the temptation to rename the duplicate back to the name of the original, as that will confuse both GitHub and humans mightily.
 
 ## Version conventions
   * Please be aware that departing from the expected version string format may break the code that talks to the update server.
