@@ -1,5 +1,7 @@
 ﻿# CHANGE LOG
 
+### 3.0.0-b3
+
 ### 3.0.0-b2
   * Core
     * Squashed a bug that was preventing EDDI from correctly registering changes to the shipyard.
