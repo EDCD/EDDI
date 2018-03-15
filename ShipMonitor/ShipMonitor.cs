@@ -787,14 +787,16 @@ namespace EddiShipMonitor
             }
 
             // Prune ships from the Shipyard that are not found in the Profile Shipyard 
+            List<int> idsToRemove = new List<int>(shipyard.Count);
             foreach (Ship ship in shipyard)
             {
                 Ship profileShip = profileShipyard.FirstOrDefault(s => s.LocalId == ship.LocalId);
                 if (profileShip == null)
                 {
-                    RemoveShip(ship.LocalId);
+                    idsToRemove.Add(ship.LocalId);
                 }
             }
+            _RemoveShips(idsToRemove);
 
             // Add ships from the Profile Shipyard that are not found in the Shipyard 
             // Update name, ident and value of ships in the Shipyard 
@@ -913,6 +915,24 @@ namespace EddiShipMonitor
                     {
                         shipyard.RemoveAt(i);
                         break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Remove a list of ships from the shipyard
+        /// </summary>
+        private void _RemoveShips(List<int> idsToRemove)
+        {
+            idsToRemove.Sort();
+            lock (shipyardLock)
+            {
+                for (int i = 0; i < shipyard.Count; i++)
+                {
+                    if (idsToRemove.BinarySearch(shipyard[i].LocalId) >= 0)
+                    {
+                        shipyard.RemoveAt(i);
                     }
                 }
             }
