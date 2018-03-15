@@ -3,7 +3,7 @@
 ### 3.0.0-b3
   * Core
     * Fixed a crash upon startup when the EDSM responder was not configured.
-    * Fixed a crash upon shipyard refresh when ship(s) had been sold while EDDI was not running.
+    * Fixed a crash upon shipyard refresh when any ships had been sold while EDDI was not running.
 
 ### 3.0.0-b2
   * Core
