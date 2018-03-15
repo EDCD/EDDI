@@ -1,5 +1,7 @@
 ﻿# CHANGE LOG
 
+### 3.0.0-b4
+
 ### 3.0.0-b3
   * Core
     * Fixed a crash upon startup when the EDSM responder was not configured.
