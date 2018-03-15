@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using Utilities;
+using System.Windows.Data;
 
 namespace EddiShipMonitor
 {
@@ -22,12 +23,13 @@ namespace EddiShipMonitor
         private static List<string> HARDPOINT_SIZES = new List<string>() { "Huge", "Large", "Medium", "Small", "Tiny" };
 
         // Observable collection for us to handle changes
-        public ObservableCollection<Ship> shipyard = new ObservableCollection<Ship>();
+        public ObservableCollection<Ship> shipyard { get; private set; }
+
         // The ID of the current ship; can be null
         private int? currentShipId;
         private int? currentProfileId;
         private static readonly object shipyardLock = new object();
-        SynchronizationContext uiSyncContext;
+        public event EventHandler ShipyardUpdatedEvent;
 
         public string MonitorName()
         {
@@ -51,9 +53,25 @@ namespace EddiShipMonitor
 
         public ShipMonitor()
         {
-            uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
+            shipyard = new ObservableCollection<Ship>();
+            BindingOperations.CollectionRegistering += Shipyard_CollectionRegistering;
+
             readShips();
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
+        }
+
+        private void Shipyard_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
+        {
+            if (Application.Current != null)
+            {
+                // Synchronize this collection between threads
+                BindingOperations.EnableCollectionSynchronization(shipyard, shipyardLock);
+            }
+            else
+            {
+                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(shipyard, shipyardLock); });
+            }
         }
 
         public bool NeedsStart()
@@ -83,7 +101,7 @@ namespace EddiShipMonitor
 
         public void Save()
         {
-            uiSyncContext.Send(_ => writeShips(), null);
+            writeShips();
         }
 
         /// <summary>
@@ -198,11 +216,6 @@ namespace EddiShipMonitor
             {
                 handleModuleTransferEvent((ModuleTransferEvent)@event);
             }
-            else if (@event is StatusEvent)
-            {
-                handleStatusEvent((StatusEvent)@event);
-            }
-
         }
 
         // Set the ship name conditionally, avoiding filtered names
@@ -264,7 +277,7 @@ namespace EddiShipMonitor
                 Ship storedShip = GetShip(@event.storedshipid);
                 if (storedShip != null)
                 {
-                    // Set location of stored ship to the current sstem
+                    // Set location of stored ship to the current system
                     storedShip.starsystem = EDDI.Instance?.CurrentStarSystem?.name;
                     storedShip.station = EDDI.Instance?.CurrentStation?.name;
                 }
@@ -321,14 +334,12 @@ namespace EddiShipMonitor
         private void handleShipSoldEvent(ShipSoldEvent @event)
         {
             RemoveShip(@event.shipid);
-
             writeShips();
         }
 
         private void handleShipSoldOnRebuyEvent(ShipSoldOnRebuyEvent @event)
         {
             RemoveShip(@event.shipid);
-
             writeShips();
         }
 
@@ -671,27 +682,6 @@ namespace EddiShipMonitor
             // We don't do anything here as the ship object is unaffected
         }
 
-        private void handleStatusEvent(StatusEvent @event)
-        {
-            // Trigger events for changed status, as applicable
-
-            if (EDDI.Instance.LastStatus.fsd_status != EDDI.Instance.CurrentStatus.fsd_status)
-            {
-                if (@event.status.fsd_status != "ready") // Don't trigger events for "ready" status
-                {
-                    EDDI.Instance.eventHandler(new ShipFsdEvent(@event.timestamp, @event.status.fsd_status));
-                }
-            }
-
-            if (EDDI.Instance.LastStatus.low_fuel != EDDI.Instance.CurrentStatus.low_fuel)
-            {
-                if (@event.status.low_fuel) // Don't trigger 'low fuel' event when fuel exceeds 25%
-                {
-                    EDDI.Instance.eventHandler(new ShipLowFuelEvent(@event.timestamp));
-                }
-            }
-        }
-
         public void PostHandle(Event @event)
         {
             if (@event is ShipLoadoutEvent)
@@ -703,7 +693,7 @@ namespace EddiShipMonitor
         private void posthandleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
             /// The ship may have engineering data, request a profile refresh from the Frontier API a minute after switching
-            refreshProfileDelayed(@event.shipid, currentProfileId);
+            refreshProfileDelayed(@event.shipid, currentProfileId).GetAwaiter().GetResult();
         }
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
@@ -843,6 +833,8 @@ namespace EddiShipMonitor
                 };
                 configuration.ToFile();
             }
+            // Make sure the UI is up to date
+            RaiseOnUIThread(ShipyardUpdatedEvent, shipyard);
         }
 
         private void readShips()
@@ -873,9 +865,10 @@ namespace EddiShipMonitor
             {
                 ship.role = Role.MultiPurpose;
             }
-
-            // Run this on the UI syncContext to ensure that we can update it whilst reflecting changes in the UI
-            uiSyncContext.Send(_ => _AddShip(ship), null);
+            // Remove the ship first (just in case we are trying to add a ship that already exists)
+            _RemoveShip(ship.LocalId);
+            _AddShip(ship);
+            writeShips();
         }
 
         private void _AddShip(Ship ship)
@@ -886,10 +879,7 @@ namespace EddiShipMonitor
             }
             lock (shipyardLock)
             {
-                // Remove the ship first (just in case we are trying to add a ship that already exists)
-                RemoveShip(ship.LocalId);
                 shipyard.Add(ship);
-                writeShips();
             }
         }
 
@@ -898,12 +888,12 @@ namespace EddiShipMonitor
         /// </summary>
         private void RemoveShip(int? localid)
         {
-            if(localid == null)
+            if (localid == null)
             {
                 return;
             }
-            // Run this on the UI syncContext to ensure that we can update it whilst reflecting changes in the UI
-            uiSyncContext.Send(_ => _RemoveShip(localid), null);
+            _RemoveShip(localid);
+            writeShips();
         }
 
         /// <summary>
@@ -922,7 +912,6 @@ namespace EddiShipMonitor
                     if (shipyard[i].LocalId == localid)
                     {
                         shipyard.RemoveAt(i);
-                        writeShips();
                         break;
                     }
                 }
@@ -1200,7 +1189,7 @@ namespace EddiShipMonitor
             return (model == "Empire_Fighter" || model == "Federation_Fighter" || model == "Independent_Fighter" || model == "TestBuggy");
         }
 
-        static async void refreshProfileDelayed(int? shipId, int? profileId)
+        static async Task refreshProfileDelayed(int? shipId, int? profileId)
         {
             do
             {
@@ -1208,6 +1197,22 @@ namespace EddiShipMonitor
                 EDDI.Instance.refreshProfile();
             } while (shipId != profileId);
             Logging.Debug("Current Ship Id is: " + shipId + ", Profile Ship Id is " + profileId);
+        }
+
+        static void RaiseOnUIThread(EventHandler handler, object sender)
+        {
+            if (handler != null)
+            {
+                SynchronizationContext uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
+                if (uiSyncContext == null)
+                {
+                    handler(sender, EventArgs.Empty);
+                }
+                else
+                {
+                    uiSyncContext.Send(delegate { handler(sender, EventArgs.Empty); }, null);
+                }
+            }
         }
     }
 }

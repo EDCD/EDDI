@@ -44,7 +44,7 @@ namespace GalnetMonitor
                 itemuri = alternatelink.GetAbsoluteUri();
             }
 
-            return new FeedItem
+            return new ExtendedFeedItem
             {
                 Id = string.IsNullOrEmpty(item.Id) ? null : item.Id.Trim(),
                 Title = item.Title == null ? null : Normalize(item.Title.Text),
@@ -100,6 +100,17 @@ namespace GalnetMonitor
                 return null;
 
             return newvalue;
+        }
+
+        public class ExtendedFeedItem : FeedItem
+        {
+            public string Id { get; set; }
+            public DateTimeOffset PublishDate { get; set; }
+            public DateTimeOffset LastUpdatedDate { get; set; }
+
+            public ExtendedFeedItem() { }
+            public ExtendedFeedItem(FeedItem item)
+                : base(item) { }
         }
     }
 }

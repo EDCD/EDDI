@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using EddiDataDefinitions;
 using EddiShipMonitor;
+using EddiStatusMonitor;
 
 namespace EddiSpeechResponder
 {
@@ -227,9 +228,9 @@ namespace EddiSpeechResponder
                 dict["station"] = new ReflectionValue(EDDI.Instance.CurrentStation);
             }
 
-            if (EDDI.Instance.CurrentStatus != null)
+            if (StatusMonitor.currentStatus != null)
             {
-                dict["status"] = new ReflectionValue(EDDI.Instance.CurrentStatus);
+                dict["status"] = new ReflectionValue(StatusMonitor.currentStatus);
             }
 
             if (theEvent != null)

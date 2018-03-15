@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiEvents;
+using EddiShipMonitor;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Utilities;
 using EddiDataDefinitions;
-using EddiShipMonitor;
+using System.Text;
 
 namespace EddiStatusMonitor
 {
@@ -22,7 +23,8 @@ namespace EddiStatusMonitor
         private static Regex JsonRegex = new Regex(@"^{.*}$");
         private string Directory = GetSavedGamesDir();
         private string statusFileName;
-        private Status status { get; set; }
+        public static Status currentStatus { get; set; } = new Status();
+        public static Status lastStatus { get; set; } = new Status();
 
         // Keep track of status
         private bool running;
@@ -74,7 +76,7 @@ namespace EddiStatusMonitor
             running = true;
 
             // Start off by moving to the end of the file
-            string[] lastStatus = null;
+            string lastStatus = string.Empty;
             FileInfo fileInfo = null;
             try
             {
@@ -86,54 +88,64 @@ namespace EddiStatusMonitor
             }
             if (fileInfo != null)
             {
-                lastStatus = File.ReadAllLines(fileInfo.FullName);
-            }
+                try
+                {
+                    using (FileStream fs = new FileStream(fileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+                    {
+                        lastStatus = reader.ReadLine() ?? string.Empty;
 
-            // Main loop
-            while (running)
-            {
-                fileInfo = FindStatusFile(Directory, Filter);
-                if (fileInfo == null || !Filter.IsMatch(fileInfo.Name))
-                {
-                    if (fileInfo != null)
-                    {
-                        statusFileName = fileInfo.Name;
-                    }
-                    else
-                    {
-                        // Status.json could not be found. Sleep until a Status.json file is found.
-                        Logging.Info("Error locating Elite Dangerous Status.json. Status monitor is not active. Have you installed and run Elite Dangerous previously? ");
-                        while (fileInfo == null)
+                        // Main loop
+                        while (running)
                         {
-                            Thread.Sleep(500);
                             fileInfo = FindStatusFile(Directory, Filter);
-                        }
-                        Logging.Info("Elite Dangerous Status.json found. Status monitor activated.");
-                        return;
-                    }
-                }
-                else
-                {
-                    statusFileName = fileInfo.Name;
-                    string[] thisStatus;
-                    try
-                    {
-                        thisStatus = File.ReadAllLines(fileInfo.FullName);
-                        if (lastStatus != thisStatus)
-                        {
-                            foreach (string line in thisStatus)
+                            if (fileInfo == null || !Filter.IsMatch(fileInfo.Name))
                             {
-                                ParseStatusEntry(line);
+                                if (fileInfo != null)
+                                {
+                                    statusFileName = fileInfo.Name;
+                                }
+                                else
+                                {
+                                    // Status.json could not be found. Sleep until a Status.json file is found.
+                                    Logging.Info("Error locating Elite Dangerous Status.json. Status monitor is not active. Have you installed and run Elite Dangerous previously? ");
+                                    while (fileInfo == null)
+                                    {
+                                        Thread.Sleep(1000);
+                                        fileInfo = FindStatusFile(Directory, Filter);
+                                    }
+                                    Logging.Info("Elite Dangerous Status.json found. Status monitor activated.");
+                                    return;
+                                }
                             }
+                            else
+                            {
+                                statusFileName = fileInfo.Name;
+                                string thisStatus = string.Empty;
+                                try
+                                {
+                                    fs.Seek(0, SeekOrigin.Begin);
+                                    thisStatus = reader.ReadLine() ?? string.Empty;
+                                    //thisStatus = Files.Read(fileInfo.FullName) ?? string.Empty;
+                                }
+                                catch (Exception)
+                                {
+                                    // file open elsewhere or being written, just wait for the next pass
+                                }
+                                if (lastStatus != thisStatus && thisStatus != string.Empty)
+                                {
+                                    ParseStatusEntry(thisStatus);
+                                }
+                                lastStatus = thisStatus;
+                            }
+                            Thread.Sleep(500);
                         }
-                        lastStatus = thisStatus;
-                    }
-                    catch (Exception)
-                    {
-                        // file open elsewhere or being written, just wait for the next pass
                     }
                 }
-                Thread.Sleep(100);
+                catch (Exception)
+                {
+                    // file open elsewhere or being written, just wait for the next pass
+                }
             }
         }
 
@@ -151,7 +163,7 @@ namespace EddiStatusMonitor
             return null;
         }
 
-        public static List<Event> ParseStatusEntry(string line)
+        public List<Event> ParseStatusEntry(string line)
         {
             List<Event> events = new List<Event>();
             try
@@ -210,7 +222,7 @@ namespace EddiStatusMonitor
                                 status.pips_eng = pips != null ? ((decimal?)pips[1] / 2) : null; // Set engine pips (converting from half pips)
                                 status.pips_wea = pips != null ? ((decimal?)pips[2] / 2) : null; // Set weapon pips (converting from half pips)
 
-                                status.firegroup = JsonParsing.getOptionalInt(data, "Firegroup");
+                                status.firegroup = JsonParsing.getOptionalInt(data, "FireGroup");
                                 int? gui_focus = JsonParsing.getOptionalInt(data, "GuiFocus");
                                 switch (gui_focus)
                                 {
@@ -260,8 +272,10 @@ namespace EddiStatusMonitor
                                 status.altitude = JsonParsing.getOptionalDecimal(data, "Altitude");
                                 status.heading = JsonParsing.getOptionalDecimal(data, "Heading");
 
-                                // Update the global current status variable
-                                EDDI.Instance.eventHandler(new StatusEvent(timestamp, status));
+                                // Spin off a thread to pass status entry updates in the background
+                                Thread updateThread = new Thread(() => handleStatus(timestamp, status));
+                                updateThread.IsBackground = true;
+                                updateThread.Start();
                             }
                             handled = true;
                             break;
@@ -279,6 +293,69 @@ namespace EddiStatusMonitor
                 Logging.Error("Exception whilst parsing Status.json line", line);
             }
             return events;
+        }
+
+        private void handleStatus(DateTime timestamp, Status thisStatus)
+        {
+            if (currentStatus != thisStatus)
+            {
+                // Save our last status for reference and update our current status
+                lastStatus = currentStatus;
+                currentStatus = thisStatus;
+
+                // Post a status event to share the new status with other monitors and responders 
+                EDDI.Instance.eventHandler(new StatusEvent(timestamp, thisStatus));
+
+                // Trigger events for changed status, as applicable
+                if (thisStatus.near_surface != lastStatus.near_surface 
+                    && thisStatus.vehicle == Constants.VEHICLE_SHIP)
+                {
+                    EDDI.Instance.eventHandler(new NearSurfaceEvent(timestamp, thisStatus.near_surface));
+                }
+                if (thisStatus.srv_turret_deployed != lastStatus.srv_turret_deployed)
+                {
+                    EDDI.Instance.eventHandler(new SRVTurretEvent(timestamp, thisStatus.srv_turret_deployed));
+                }
+                if (thisStatus.srv_under_ship != lastStatus.srv_under_ship)
+                {
+                    // If the turret is deployable then we are not under our ship. And vice versa. 
+                    bool deployable = !thisStatus.srv_under_ship;
+                    EDDI.Instance.eventHandler(new SRVTurretDeployableEvent(timestamp, deployable));
+                }
+                if (thisStatus.fsd_status != lastStatus.fsd_status 
+                    && thisStatus.vehicle == Constants.VEHICLE_SHIP 
+                    && !thisStatus.docked)
+                {
+                    if (thisStatus.fsd_status == "ready")
+                    {
+                        switch(lastStatus.fsd_status)
+                        {
+                            case "charging":
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "charging complete"));
+                                break;
+                            case "cooldown":
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "cooldown complete"));
+                                break;
+                            case "masslock":
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "masslock cleared"));
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, thisStatus.fsd_status));
+                    }
+                }
+                if (thisStatus.low_fuel != lastStatus.low_fuel)
+                {
+                    // Don't trigger 'low fuel' event when fuel exceeds 25% or when we're not in our ship
+                    if (thisStatus.low_fuel 
+                        && thisStatus.vehicle == Constants.VEHICLE_SHIP) 
+                    {
+                        EDDI.Instance.eventHandler(new ShipLowFuelEvent(timestamp));
+                    }
+                }
+            }
         }
 
         private static string GetSavedGamesDir()
@@ -345,7 +422,7 @@ namespace EddiStatusMonitor
             return null;
         }
 
-        private static Status ParseFlags(DateTime timestamp, long flags, string line, Status status)
+        private Status ParseFlags(DateTime timestamp, long flags, string line, Status status)
         {
             int value;
 
@@ -411,10 +488,6 @@ namespace EddiStatusMonitor
                 status.fsd_status = "cooldown";
                 flags = flags - value;
             }
-            if (EDDI.Instance.LastStatus.fsd_status == "cooldown" && EDDI.Instance.CurrentStatus.fsd_status != "cooldown")
-            {
-                status.fsd_status = "cooldown complete";
-            }
 
             value = 131072; // FSD Charging
             if (flags >= value)
@@ -422,20 +495,12 @@ namespace EddiStatusMonitor
                 status.fsd_status = "charging";
                 flags = flags - value;
             }
-            if (EDDI.Instance.LastStatus.fsd_status == "charging" && EDDI.Instance.CurrentStatus.fsd_status != "charging")
-            {
-                status.fsd_status = "charging complete";
-            }
 
             value = 65536; // FSD MassLocked
             if (flags >= value)
             {
                 status.fsd_status = "masslock";
                 flags = flags - value;
-            }
-            if (EDDI.Instance.LastStatus.fsd_status == "masslock" && EDDI.Instance.CurrentStatus.fsd_status != "masslock")
-            {
-                status.fsd_status = "masslock cleared";
             }
 
             value = 32768; // Srv DriveAssist
