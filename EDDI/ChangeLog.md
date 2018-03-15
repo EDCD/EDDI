@@ -1,6 +1,8 @@
 ﻿# CHANGE LOG
 
 ### 3.0.0-b3
+  * Core
+    * Fix a crash upon startup bug due to EDDI trying to sync data from EDSM even though the EDSM responder was not configured.
 
 ### 3.0.0-b2
   * Core

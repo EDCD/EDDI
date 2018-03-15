@@ -14,6 +14,7 @@ namespace EddiEdsmResponder
     {
         private StarMapService starMapService;
         private string system;
+        private Thread updateThread;
 
         public string ResponderName()
         {
@@ -39,17 +40,13 @@ namespace EddiEdsmResponder
         {
             Reload();
 
-            // Spin off a thread to download & sync EDSM flight logs & system comments in the background
-            StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
-            Thread updateThread = new Thread(() => starMapService.Sync(starMapCredentials.lastSync));
-            updateThread.IsBackground = true;
-            updateThread.Start();
-
             return starMapService != null;
         }
 
         public void Stop()
         {
+            updateThread?.Abort();
+            updateThread = null;
             starMapService = null;
         }
 
@@ -73,6 +70,15 @@ namespace EddiEdsmResponder
                 {
                     starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
                 }
+            }
+
+            if (starMapService != null && updateThread == null)
+            {
+                // Spin off a one-shot fire-and-forget thread to download & sync EDSM flight logs & system comments in the background
+                updateThread = new Thread(() => starMapService.Sync(starMapCredentials.lastSync));
+                updateThread.IsBackground = true;
+                updateThread.Name = "EDSM updater";
+                updateThread.Start();
             }
         }
 

@@ -589,6 +589,10 @@ namespace EddiStarMapService
             {
                 Logging.Debug("EDSM error received: " + edsme.Message);
             }
+            catch (ThreadAbortException e)
+            {
+                Logging.Debug("EDSM update stopped by user: " + e.Message);
+            }
         }
 
         public static void saveStarSystems(List<StarSystem> syncSystems)
