@@ -362,7 +362,7 @@ namespace EddiDataDefinitions
             {128672136, new Commodity(328, "LargeExplorationDataCash", "Large Survey Data Cache", "Salvage", 0, false) },
             {128672811, new Commodity(329, "DamagedEscapePod", "Damaged Escape Pod", "Salvage", 11912, false) },
             {128672161, new Commodity(330, "EarthRelics", "Earth Relics", "Salvage", 0, false) },
-            {128824468, new Commodity(331, "ThargoidScoutTissueSample", "Thargoid Scout Tissue Sample", "Salvage", 0, false) },
+            {128824468, new Commodity(331, "ThargoidScoutTissueSample", "Thargoid Scout Tissue Sample", "Salvage", 15215, false) },
 
             // Items for which we do not have EDDB IDs
             {200000012, new Commodity(10012, "siriuscommercialcontracts", "Sirius Commerical Contracts", "Powerplay", 0, false) },
