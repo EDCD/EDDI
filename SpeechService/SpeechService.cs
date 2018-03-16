@@ -6,6 +6,7 @@ using EddiDataDefinitions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Security;
@@ -18,13 +19,30 @@ using Utilities;
 namespace EddiSpeechService
 {
     /// <summary>Provide speech services with a varying amount of alterations to the voice</summary>
-    public class SpeechService
+    public class SpeechService : INotifyPropertyChanged
     {
         private SpeechServiceConfiguration configuration;
 
         private static readonly object activeSpeechLock = new object();
         private ISoundOut activeSpeech;
         private int activeSpeechPriority;
+
+        private static bool? _eddiSpeaking;
+        public static bool? eddiSpeaking
+        {
+            get
+            {
+                return _eddiSpeaking;
+            }
+            set
+            {
+                if (_eddiSpeaking != value)
+                {
+                    _eddiSpeaking = value;
+                    Instance.NotifyPropertyChanged("eddiSpeaking");
+                }
+            }
+        }
 
         private static SpeechService instance;
 
@@ -424,6 +442,7 @@ namespace EddiSpeechService
                         if (activeSpeech == null)
                         {
                             Logging.Debug("We can - setting active speech");
+                            eddiSpeaking = true;
                             activeSpeech = soundout;
                             activeSpeechPriority = priority;
                             started = true;
@@ -483,6 +502,7 @@ namespace EddiSpeechService
                     activeSpeech.Dispose();
                     activeSpeech = null;
                     Logging.Debug("Stopped current speech");
+                    eddiSpeaking = false;
                 }
             }
         }
@@ -558,8 +578,7 @@ namespace EddiSpeechService
             return configuration.EffectsLevel + distortionFX;
         }
 
-
-    private ISoundOut GetSoundOut()
+        private ISoundOut GetSoundOut()
         {
             if (WasapiOut.IsSupportedOnCurrentPlatform)
             {
@@ -569,6 +588,13 @@ namespace EddiSpeechService
             {
                 return new DirectSoundOut();
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }
