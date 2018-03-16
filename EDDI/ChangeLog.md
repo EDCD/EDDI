@@ -1,6 +1,10 @@
 ﻿# CHANGE LOG
 
 ### 3.0.0-b4
+  * Speech Responder
+    * Added 'Jet cone damage' event
+    * Script changes
+      * Added new script 'Jet cone damage'
 
 ### 3.0.0-b3
   * Core
@@ -18,8 +22,9 @@
       * In future, EDDI will let you know if it cannot reach its update server for any reason.
       * **Unfortunately, users of all prior versions won't be able to automatically update so please tell your friends that they can manually update to the latest and greatest version.**
   * Speech Responder
-    * Made the 'Fuel check' script more succinct, for less cognitive burden during those buckyballing runs.
     * Added new 'SRV turret deployable' event. The variable `deployable` is a boolean value describing whether the SRV's turret is now available.
+    * Script changes
+      * Made the 'Fuel check' script more succinct, for less cognitive burden during those buckyballing runs.
   * VoiceAttack
     * Added the following new variables
       * `{TXT:Gender}` the preferred gender of the commander for pronouns and titles. One of "Male", "Female", or "Neither".
