@@ -96,4 +96,4 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 UseRelativePaths=True
 
 [Messages]
-SelectDirBrowseLabel=To continue, click Next. If this is not your VoiceAttack installation location, or would like to put the EDDI files in a different location, click Browse.
+SelectDirBrowseLabel=To continue, click Next. If this is not your VoiceAttack installation location, or you would like to put the EDDI files in a different location, click Browse.
