@@ -1,6 +1,9 @@
 ﻿# CHANGE LOG
 
 ### 3.0.0-b4
+  * Installer
+    * First installations will now take any custom VoiceAttack installation location into account when proposing a location for EDDI.
+    * Upgrade installations will continue to use whatever location was selected in the first installation.
 
 ### 3.0.0-b3
   * Core

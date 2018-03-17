@@ -19,7 +19,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName=C:\Program Files (x86)\VoiceAttack\Apps\{#MyAppName}
+DefaultDirName={reg:HKCU\Software\VoiceAttack.com\VoiceAttack,InstallPath|{pf32}\VoiceAttack}\Apps\{#MyAppName}
 DefaultGroupName={#MyAppName}
 SourceDir="{#SourcePath}\bin\Release"
 OutputDir="{#SourcePath}\bin\Installer"
@@ -96,4 +96,4 @@ Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChang
 UseRelativePaths=True
 
 [Messages]
-SelectDirBrowseLabel=To continue, click Next.  If you have a custom VoiceAttack installation location, or would like to put the EDDI files in a different location, click Browse.
+SelectDirBrowseLabel=To continue, click Next. If this is not your VoiceAttack installation location, or would like to put the EDDI files in a different location, click Browse.
