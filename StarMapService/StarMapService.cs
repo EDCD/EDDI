@@ -25,44 +25,33 @@ namespace EddiStarMapService
         private string apiKey;
         private string baseUrl;
 
-        public StarMapService(string apiKey, string commanderName, string baseUrl="https://www.edsm.net/")
+        // For normal use, the EDSM API base URL is https://www.edsm.net/.
+        // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint.
+        public StarMapService(string apiKey, string commanderName, string baseUrl= "https://beta.edsm.net/")
         {
             this.apiKey = apiKey;
             this.commanderName = commanderName;
             this.baseUrl = baseUrl;
         }
 
-        public void sendStarMapLog(DateTime timestamp, string systemName, decimal? x, decimal? y, decimal? z)
+        public void sendEvent(string eventData)
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-logs-v1/set-log", Method.POST);
-            request.AddParameter("apiKey", apiKey);
+            var request = new RestRequest("journal-v1", Method.POST);
             request.AddParameter("commanderName", commanderName);
-            request.AddParameter("systemName", systemName);
-            request.AddParameter("dateVisited", timestamp.ToString("yyyy-MM-dd HH:mm:ss"));
+            request.AddParameter("apiKey", apiKey);
             request.AddParameter("fromSoftware", Constants.EDDI_NAME);
             request.AddParameter("fromSoftwareVersion", Constants.EDDI_VERSION);
-            if (x.HasValue)
-            {
-                request.AddParameter("x", ((decimal)x).ToString("0.000", EN_US_CULTURE));
-            }
-            if (y.HasValue)
-            {
-                request.AddParameter("y", ((decimal)y).ToString("0.000", EN_US_CULTURE));
-            }
-            if (z.HasValue)
-            {
-                request.AddParameter("z", ((decimal)z).ToString("0.000", EN_US_CULTURE));
-            }
+            request.AddParameter("message", JsonConvert.SerializeObject(eventData));
 
             Thread thread = new Thread(() =>
             {
                 try
                 {
-                    Logging.Debug("Sending data to EDSM: " + client.BuildUri(request).AbsoluteUri);
+                    Logging.Debug("Sending event to EDSM: " + client.BuildUri(request).AbsoluteUri);
                     var clientResponse = client.Execute<StarMapLogResponse>(request);
                     StarMapLogResponse response = clientResponse.Data;
-                    Logging.Debug("Data sent to EDSM");
+                    Logging.Debug("Event sent to EDSM");
                     if (response.msgnum != 100)
                     {
                         Logging.Warn("EDSM responded with " + response.msg);
@@ -74,52 +63,13 @@ namespace EddiStarMapService
                 }
                 catch (Exception ex)
                 {
-                    Logging.Warn("Failed to send data to EDSM", ex);
+                    Logging.Warn("Failed to send event to EDSM", ex);
                 }
             });
             thread.IsBackground = true;
-            thread.Name = "StarMapService send starmap log";
+            thread.Name = "StarMapService send event";
             thread.Start();
         }
-
-        public void sendData(Dictionary<string, int> data)
-        {
-            var client = new RestClient(baseUrl);
-            var request = new RestRequest("api-commander-v1/set-materials", Method.POST);
-            request.AddParameter("apiKey", apiKey);
-            request.AddParameter("commanderName", commanderName);
-            request.AddParameter("type", "data");
-            request.AddParameter("values", JsonConvert.SerializeObject(data));
-            request.AddParameter("fromSoftware", Constants.EDDI_NAME);
-            request.AddParameter("fromSoftwareVersion", Constants.EDDI_VERSION);
-
-            Thread thread = new Thread(() =>
-            {
-                try
-                {
-                    Logging.Debug("Sending data to EDSM: " + client.BuildUri(request).AbsoluteUri);
-                    var clientResponse = client.Execute<StarMapLogResponse>(request);
-                    StarMapLogResponse response = clientResponse.Data;
-                    Logging.Debug("Data sent to EDSM");
-                    if (response.msgnum != 100)
-                    {
-                        Logging.Warn("EDSM responded with " + response.msg);
-                    }
-                }
-                catch (ThreadAbortException)
-                {
-                    Logging.Debug("Thread aborted");
-                }
-                catch (Exception ex)
-                {
-                    Logging.Warn("Failed to send data to EDSM", ex);
-                }
-            });
-            thread.IsBackground = true;
-            thread.Name = "StarMapService send data";
-            thread.Start();
-        }
-
 
         public void sendStarMapComment(string systemName, string comment)
         {
@@ -153,6 +103,15 @@ namespace EddiStarMapService
             thread.IsBackground = true;
             thread.Name = "StarMapService send starmap comment";
             thread.Start();
+        }
+
+        public List<string> getIgnoredEvents()
+        {
+            var client = new RestClient(baseUrl);
+            var request = new RestRequest("api-journal-v1/discard", Method.POST);
+            var clientResponse = client.Execute<List<string>>(request);
+            List<string> response = clientResponse.Data;
+            return (response != null) ? response : null;
         }
 
         public string getStarMapComment(string systemName)

@@ -3,6 +3,7 @@ using EddiDataDefinitions;
 using EddiEvents;
 using EddiShipMonitor;
 using EddiStarMapService;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Controls;
@@ -15,6 +16,7 @@ namespace EddiEdsmResponder
         private StarMapService starMapService;
         private string system;
         private Thread updateThread;
+        private List<string> ignoredEvents;
 
         public string ResponderName()
         {
@@ -70,6 +72,10 @@ namespace EddiEdsmResponder
                 {
                     starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
                 }
+                if (ignoredEvents == null)
+                {
+                    ignoredEvents = starMapService.getIgnoredEvents();
+                }
             }
 
             if (starMapService != null && updateThread == null)
@@ -104,16 +110,34 @@ namespace EddiEdsmResponder
 
             if (starMapService != null)
             {
-                if (theEvent is JumpedEvent)
+                if (!ignoredEvents.Contains(theEvent.type))
                 {
-                    JumpedEvent jumpedEvent = (JumpedEvent)theEvent;
-
-                    if (jumpedEvent.system != system)
+                    // Prep transient game state info
+                    List<decimal?> coordinates = new List<decimal?>()
                     {
-                        Logging.Debug("Sending jump data to EDSM (jumped)");
-                        starMapService.sendStarMapLog(jumpedEvent.timestamp, jumpedEvent.system, jumpedEvent.x, jumpedEvent.y, jumpedEvent.z);
-                        system = jumpedEvent.system;
-                    }
+                        EDDI.Instance.CurrentStarSystem.x,
+                        EDDI.Instance.CurrentStarSystem.y,
+                        EDDI.Instance.CurrentStarSystem.z
+                    };
+                    Dictionary<string, object> transientData = new Dictionary<string, object>()
+                    {
+                        { "_systemName", EDDI.Instance.CurrentStarSystem.name },
+                        { "_systemCoordinates", coordinates },
+                        { "_stationName", EDDI.Instance.CurrentStation.name },
+                        { "_shipId", EDDI.Instance.CurrentShip.LocalId },
+
+                        // We don't collect this info yet
+                        { "_systemAddress", null },
+                        { "_marketId", null },
+                    };
+
+                    // Unpackage and add transient game state info
+                    IDictionary<string, object> eventObject = Deserializtion.DeserializeData(theEvent.raw);
+                    eventObject.Add("transient", transientData);
+
+                    // Repackage and send the event
+                    string eventData = JsonConvert.SerializeObject(eventObject);
+                    starMapService.sendEvent(eventData);
                 }
             }
         }
