@@ -3,6 +3,9 @@
 ### 3.0.0-b4
   * Core
     * Incorporated new data definitions for 3.0.
+  * Installer
+    * First installations will now take any custom VoiceAttack installation location into account when proposing a location for EDDI.
+    * Upgrade installations will continue to use whatever location was selected in the first installation.
   * Speech Responder
     * Added 'Jet cone damage' event
     * Script changes
