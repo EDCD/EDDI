@@ -362,6 +362,7 @@ namespace EddiDataDefinitions
             {128672136, new Commodity(328, "LargeExplorationDataCash", "Large Survey Data Cache", "Salvage", 0, false) },
             {128672811, new Commodity(329, "DamagedEscapePod", "Damaged Escape Pod", "Salvage", 11912, false) },
             {128672161, new Commodity(330, "EarthRelics", "Earth Relics", "Salvage", 0, false) },
+            {128824468, new Commodity(331, "ThargoidScoutTissueSample", "Thargoid Scout Tissue Sample", "Salvage", 15215, false) },
 
             // Items for which we do not have EDDB IDs
             {200000012, new Commodity(10012, "siriuscommercialcontracts", "Sirius Commerical Contracts", "Powerplay", 0, false) },
@@ -371,7 +372,10 @@ namespace EddiDataDefinitions
             {128672159, new Commodity(10016, "AntiqueJewellery", "Antique Jewellery", "Salvage", 0, false) },
             {128672162, new Commodity(10018, "GeneBank", "Gene Bank", "Salvage", 0, false) },
             {128672163, new Commodity(10019, "TimeCapsule", "Time Capsule", "Salvage", 0, false) },
-            {200000016, new Commodity(10020, "ThargoidTissueSampleType1", "Thargoid Tissue Sample", "Salvage", 14081, false) },
+            {128793127, new Commodity(10022, "ThargoidHeart", "Thargoid Heart", "Salvage", 0, false) },
+            {128793128, new Commodity(10020, "ThargoidTissueSampleType1", "Thargoid Tissue Sample", "Salvage", 14081, false) },
+            {128793129, new Commodity(10023, "ThargoidTissueSampleType2", "Thargoid Tissue Sample", "Salvage", 0, false) },
+            {128793130, new Commodity(10024, "ThargoidTissueSampleType3", "Thargoid Tissue Sample", "Salvage", 0, false) },
         };
 
         // Builds dictionaries for Name & EDName, converting to lower case and removing all spaces, dashes, and dots from the names
