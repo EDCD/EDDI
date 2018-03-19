@@ -57,7 +57,6 @@ namespace EddiVoiceAttackResponder
                 EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
 
                 SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.eddiSpeaking, "EDDI speaking", ref vaProxy);
-                if (!SpeechService.eddiSpeaking.HasValue) { SpeechService.eddiSpeaking = new bool(); } // Initialize this variable when the plugin loads
 
                 // Display instance information if available
                 if (EDDI.Instance.UpgradeRequired)

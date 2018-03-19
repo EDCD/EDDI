@@ -27,8 +27,8 @@ namespace EddiSpeechService
         private ISoundOut activeSpeech;
         private int activeSpeechPriority;
 
-        private static bool? _eddiSpeaking;
-        public static bool? eddiSpeaking
+        private static bool _eddiSpeaking;
+        public static bool eddiSpeaking
         {
             get
             {
