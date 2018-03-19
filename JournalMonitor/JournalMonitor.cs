@@ -1970,6 +1970,40 @@ namespace EddiJournalMonitor
                                 handled = true;
                                 break;
                             }
+                        case "JetConeDamage":
+                            {
+                                string modulename = JsonParsing.getString(data, "Module");
+                                Module module = ModuleDefinitions.fromEDName(modulename);
+                                if (module != null)
+                                {
+                                    if (module.mount != null)
+                                    {
+                                        // This is a weapon so provide a bit more information
+                                        string mount;
+                                        if (module.mount == Module.ModuleMount.Fixed)
+                                        {
+                                            mount = "fixed";
+                                        }
+                                        else if (module.mount == Module.ModuleMount.Gimballed)
+                                        {
+                                            mount = "gimballed";
+                                        }
+                                        else
+                                        {
+                                            mount = "turreted";
+                                        }
+                                        modulename = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.name;
+                                    }
+                                    else
+                                    {
+                                        modulename = module.name;
+                                    }
+                                }
+
+                                events.Add(new JetConeDamageEvent(timestamp, modulename, module) { raw = line });
+                                handled = true;
+                                break;
+                            }
                         case "RedeemVoucher":
                             {
                                 object val;

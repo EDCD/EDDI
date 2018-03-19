@@ -740,6 +740,15 @@
       "name": "Jet cone boost",
       "description": "Triggered when enough material has been collected from a solar jet cone (at a white dwarf or neutron star) for a jump boost"
     },
+    "Jet cone damage": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Jet cone damage",
+      "description": "Triggered in normal space when passing through the jet cone from a white dwarf or neutron star causes damage to a ship module"
+    },
     "Jumped": {
       "enabled": true,
       "priority": 3,
