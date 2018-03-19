@@ -80,7 +80,7 @@ namespace EddiEdsmResponder
                 else
                 {
                     edsmFetchLogsButton.IsEnabled = false;
-                    edsmFetchLogsButton.Content = "Companion app not configured and no name supplied; cannot obtain logs";
+                    edsmFetchLogsButton.Content = "EDSM API not configured; cannot obtain logs";
                     return;
                 }
             }
