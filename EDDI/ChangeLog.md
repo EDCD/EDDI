@@ -10,6 +10,9 @@
     * Added 'Jet cone damage' event
     * Script changes
       * Added new script 'Jet cone damage'
+  * VoiceAttack
+    * Added the following new variables
+      * `{BOOL:EDDI speaking}` True if EDDI is speaking, false otherwise. Useful for synchronizing speech between EDDI and other sources in VoiceAttack.
 
 ### 3.0.0-b3
   * Core

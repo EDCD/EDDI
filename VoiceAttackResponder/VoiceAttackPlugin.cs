@@ -53,8 +53,10 @@ namespace EddiVoiceAttackResponder
                 GetEddiInstance(ref vaProxy);
                 EDDI.Instance.Start();
 
-                // Add a notifier for state changes
+                // Add notifiers for state and property changes 
                 EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
+
+                SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.eddiSpeaking, "EDDI speaking", ref vaProxy);
 
                 // Display instance information if available
                 if (EDDI.Instance.UpgradeRequired)
@@ -1510,6 +1512,11 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetDecimal(prefix + " age", (decimal)(long)body.age);
             }
             Logging.Debug("Set body information (" + prefix + ")");
+        }
+
+        private static void setSpeaking(bool? eddiSpeaking, string key, ref dynamic vaProxy)
+        {
+            vaProxy.SetBoolean(key, eddiSpeaking);
         }
 
         private static void setStatus(ref dynamic vaProxy, string status, Exception exception = null)
