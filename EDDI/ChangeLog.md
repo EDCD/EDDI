@@ -1,6 +1,8 @@
 ﻿# CHANGE LOG
 
 ### 3.0.0-b4
+  * Core
+    * Incorporated new data definitions for 3.0.
   * Speech Responder
     * Added 'Jet cone damage' event
     * Script changes
