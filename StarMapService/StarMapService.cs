@@ -49,13 +49,8 @@ namespace EddiStarMapService
                 try
                 {
                     Logging.Debug("Sending event to EDSM: " + client.BuildUri(request).AbsoluteUri);
-                    var clientResponse = client.Execute<StarMapLogResponse>(request);
-                    StarMapLogResponse response = clientResponse.Data;
+                    client.Execute<StarMapLogResponse>(request);
                     Logging.Debug("Event sent to EDSM");
-                    if (response.msgnum != 100)
-                    {
-                        Logging.Warn("EDSM responded with " + response.msg);
-                    }
                 }
                 catch (ThreadAbortException)
                 {

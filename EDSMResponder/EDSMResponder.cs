@@ -14,7 +14,6 @@ namespace EddiEdsmResponder
     public class EDSMResponder : EDDIResponder
     {
         private StarMapService starMapService;
-        private string system;
         private Thread updateThread;
         private List<string> ignoredEvents;
 
@@ -112,34 +111,130 @@ namespace EddiEdsmResponder
             {
                 if (!ignoredEvents.Contains(theEvent.type))
                 {
-                    // Prep transient game state info
-                    List<decimal?> coordinates = new List<decimal?>()
+                    // Retrieve applicable transient game state info (metadata) for the event
+                    Dictionary<string, object> transientData = GetTransientData(theEvent);
+
+                    // Unpackage the event, add transient game state info as applicable, then repackage and send the event
+                    string eventData;
+                    IDictionary<string, object> eventObject;
+                    if (transientData.Count > 0)
                     {
-                        EDDI.Instance.CurrentStarSystem.x,
-                        EDDI.Instance.CurrentStarSystem.y,
-                        EDDI.Instance.CurrentStarSystem.z
-                    };
-                    Dictionary<string, object> transientData = new Dictionary<string, object>()
+                        eventObject = Deserializtion.DeserializeData(theEvent.raw);
+                        eventObject.Add("transient", transientData);
+                        eventData = JsonConvert.SerializeObject(eventObject);
+                    }
+                    else
                     {
-                        { "_systemName", EDDI.Instance.CurrentStarSystem.name },
-                        { "_systemCoordinates", coordinates },
-                        { "_stationName", EDDI.Instance.CurrentStation.name },
-                        { "_shipId", EDDI.Instance.CurrentShip.LocalId },
-
-                        // We don't collect this info yet
-                        { "_systemAddress", null },
-                        { "_marketId", null },
-                    };
-
-                    // Unpackage and add transient game state info
-                    IDictionary<string, object> eventObject = Deserializtion.DeserializeData(theEvent.raw);
-                    eventObject.Add("transient", transientData);
-
-                    // Repackage and send the event
-                    string eventData = JsonConvert.SerializeObject(eventObject);
+                        eventData = theEvent.raw;
+                    }
                     starMapService.sendEvent(eventData);
                 }
             }
+        }
+
+        private static Dictionary<string, object> GetTransientData(Event theEvent)
+        {
+            // Prep transient game state info (metadata) per https://www.edsm.net/en/api-journal-v1.
+            Dictionary<string, object> transientData = new Dictionary<string, object>();
+
+            // Add metadata from events
+            switch (theEvent.type)
+            {
+                case "LoadGame":
+                    {
+                        transientData.Add("_systemAddress", null);
+                        transientData.Add("_systemName", null);
+                        transientData.Add("_systemCoordinates", null);
+                        transientData.Add("_marketId", null);
+                        transientData.Add("_stationName", null);
+                        break;
+                    }
+                case "SetUserShipName":
+                    {
+                        ShipRenamedEvent shipRenamedEvent = (ShipRenamedEvent)theEvent;
+                        transientData.Add("_shipId", shipRenamedEvent.shipid);
+                        break;
+                    }
+                case "ShipyardBuy":
+                    {
+                        transientData.Add("_shipId", null);
+                        break;
+                    }
+                case "ShipyardSwap":
+                    {
+                        ShipSwappedEvent shipSwappedEvent = (ShipSwappedEvent)theEvent;
+                        transientData.Add("_shipId", shipSwappedEvent.shipid);
+                        break;
+                    }
+                case "Loadout":
+                    {
+                        ShipLoadoutEvent shipLoadoutEvent = (ShipLoadoutEvent)theEvent;
+                        transientData.Add("_shipId", shipLoadoutEvent.shipid);
+                        break;
+                    }
+                case "Undocked":
+                    {
+                        transientData.Add("_marketId", null);
+                        transientData.Add("_stationName", null);
+                        break;
+                    }
+                case "Location":
+                    {
+                        LocationEvent locationEvent = (LocationEvent)theEvent;
+                        transientData.Add("_systemAddress", null); // We don't collect this info yet
+                        transientData.Add("_systemName", locationEvent.system);
+                        List<decimal?> _systemCoordinates = new List<decimal?>
+                        {
+                            locationEvent.x,
+                            locationEvent.y,
+                            locationEvent.z
+                        };
+                        transientData.Add("_systemCoordinates", _systemCoordinates);
+                        transientData.Add("_marketId", null); // We don't collect this info yet
+                        transientData.Add("_stationName", locationEvent.station);
+                        break;
+                    }
+                case "FSDJump":
+                    {
+                        JumpedEvent jumpedEvent = (JumpedEvent)theEvent;
+                        transientData.Add("_systemAddress", null); // We don't collect this info yet
+                        transientData.Add("_systemName", jumpedEvent.system);
+                        List<decimal?> _systemCoordinates = new List<decimal?>
+                        {
+                            jumpedEvent.x,
+                            jumpedEvent.y,
+                            jumpedEvent.z
+                        };
+                        transientData.Add("_systemCoordinates", _systemCoordinates);
+                        break;
+                    }
+                case "Docked":
+                    {
+                        DockedEvent dockedEvent = (DockedEvent)theEvent;
+                        transientData.Add("_systemAddress", null); // We don't collect this info yet
+                        transientData.Add("_systemName", dockedEvent.system);
+                        transientData.Add("_systemCoordinates", null);
+                        transientData.Add("_marketId", null); // We don't collect this info yet
+                        transientData.Add("_stationName", dockedEvent.station);
+                        break;
+                    }
+            }
+
+            // Supplement with metadata from the tracked game state, as applicable
+            if (!transientData.ContainsKey("_systemAddress")) { transientData.Add("_systemAddress", null); } // We don't collect this info yet
+            if (!transientData.ContainsKey("_systemName")) { transientData.Add("_systemName", EDDI.Instance.CurrentStarSystem.name); }
+            List<decimal?> _coordinates = new List<decimal?>
+            {
+                EDDI.Instance.CurrentStarSystem.x,
+                EDDI.Instance.CurrentStarSystem.y,
+                EDDI.Instance.CurrentStarSystem.z
+            };
+            if (!transientData.ContainsKey("_systemCoordinates")) { transientData.Add("_systemCoordinates", _coordinates); }
+            if (!transientData.ContainsKey("_marketId")) { transientData.Add("_marketId", null); } // We don't collect this info yet
+            if (!transientData.ContainsKey("_stationName")) { transientData.Add("_stationName", EDDI.Instance.CurrentStation.name); }
+            if (!transientData.ContainsKey("_shipId")) { transientData.Add("_shipId", EDDI.Instance.CurrentShip.LocalId); }
+
+            return transientData;
         }
 
         public UserControl ConfigurationTabItem()
