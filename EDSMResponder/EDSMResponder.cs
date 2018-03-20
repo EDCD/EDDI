@@ -221,18 +221,18 @@ namespace EddiEdsmResponder
             }
 
             // Supplement with metadata from the tracked game state, as applicable
-            if (!transientData.ContainsKey("_systemAddress")) { transientData.Add("_systemAddress", null); } // We don't collect this info yet
-            if (!transientData.ContainsKey("_systemName")) { transientData.Add("_systemName", EDDI.Instance.CurrentStarSystem.name); }
+            if (!transientData.ContainsKey("_systemAddress") && EDDI.Instance.CurrentStarSystem != null) { transientData.Add("_systemAddress", null); } // We don't collect this info yet
+            if (!transientData.ContainsKey("_systemName") && EDDI.Instance.CurrentStarSystem != null) { transientData.Add("_systemName", EDDI.Instance.CurrentStarSystem.name); }
             List<decimal?> _coordinates = new List<decimal?>
             {
                 EDDI.Instance.CurrentStarSystem.x,
                 EDDI.Instance.CurrentStarSystem.y,
                 EDDI.Instance.CurrentStarSystem.z
             };
-            if (!transientData.ContainsKey("_systemCoordinates")) { transientData.Add("_systemCoordinates", _coordinates); }
-            if (!transientData.ContainsKey("_marketId")) { transientData.Add("_marketId", null); } // We don't collect this info yet
-            if (!transientData.ContainsKey("_stationName")) { transientData.Add("_stationName", EDDI.Instance.CurrentStation.name); }
-            if (!transientData.ContainsKey("_shipId")) { transientData.Add("_shipId", EDDI.Instance.CurrentShip.LocalId); }
+            if (!transientData.ContainsKey("_systemCoordinates") && EDDI.Instance.CurrentStarSystem != null) { transientData.Add("_systemCoordinates", _coordinates); }
+            if (!transientData.ContainsKey("_marketId") && EDDI.Instance.CurrentStation != null) { transientData.Add("_marketId", null); } // We don't collect this info yet
+            if (!transientData.ContainsKey("_stationName") && EDDI.Instance.CurrentStation != null) { transientData.Add("_stationName", EDDI.Instance.CurrentStation.name); }
+            if (!transientData.ContainsKey("_shipId") && EDDI.Instance.CurrentShip != null) { transientData.Add("_shipId", EDDI.Instance.CurrentShip.LocalId); }
 
             return transientData;
         }
