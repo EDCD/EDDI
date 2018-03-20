@@ -882,11 +882,6 @@ namespace EddiDataDefinitions
                 {128777344, new Module(128777344, "Int_DroneControl_Repair_Size7_Class3", 1611, "Repair Limpet Controller", 7, "C", 1749600) },
                 {128777345, new Module(128777345, "Int_DroneControl_Repair_Size7_Class4", 1612, "Repair Limpet Controller", 7, "B", 3499200) },
                 {128777346, new Module(128777346, "Int_DroneControl_Repair_Size7_Class5", 1613, "Repair Limpet Controller", 7, "A", 6998400) },
-                {128785621, new Module(128785621, "Type9_Military_Armour_Grade1", 1627, "Lightweight Alloy", 1, "I", 0, 128785619) },
-                {128785622, new Module(128785622, "Type9_Military_Armour_Grade2", 1628, "Reinforced Alloy", 1, "I", 48654583, 128785619) },
-                {128785623, new Module(128785623, "Type9_Military_Armour_Grade3", 1629, "Military Grade Composite", 1, "I", 109472813, 128785619) },
-                {128785624, new Module(128785624, "Type9_Military_Armour_Mirrored", 1630, "Mirrored Surface Composite", 1, "I", 258720748, 128785619) },
-                {128785625, new Module(128785625, "Type9_Military_Armour_Reactive", 1631, "Reactive Surface Composite", 1, "I", 283830162, 128785619) },
                 {128788699, new Module(128788699, "Hpt_ATDumbfireMissile_Fixed_Medium", 1614, "AX Missile Rack", 2, "B", 540900, Module.ModuleMount.Fixed) },
                 {128788704, new Module(128788704, "Hpt_ATDumbfireMissile_Turret_Medium", 1615, "AX Missile Rack", 2, "B", 2022700, Module.ModuleMount.Turreted) },
                 {128793115, new Module(128793115, "Hpt_XenoScanner_Basic_Tiny", 1616, "Xeno Scanner", 0, "E", 365700) },
@@ -976,13 +971,13 @@ namespace EddiDataDefinitions
                 {999999942, new Module(999999942, "Type9_Military_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128785619) },
                 
                 // Needs EDDB ID
-                {128833944, new Module(128833944, "int_corrosionproofcargorack_size4_class1", -1, "Corrosion Resistant Cargo Rack", 4, "E", 94329) },
+                {128833944, new Module(128833944, "Int_CorrosionProofCargoRack_Size4_Class1", -1, "Corrosion Resistant Cargo Rack", 4, "E", 94329) },
                 {128833687, new Module(128833687, "Hpt_Guardian_GaussCannon_Fixed_Medium", -1, "Guardian Gauss Cannon", 2, "B", 543801, Module.ModuleMount.Fixed) },
                 {128833998, new Module(128833998, "Hpt_Guardian_PlasmaLauncher_Fixed_Medium", -1, "Guardian Plasma Charger", 2, "B", 567761, Module.ModuleMount.Fixed) },
 
                 // Needs EDDB ID & pricing
-                {128833988, new Module(128833988, "Int_GuardianPowerplant_Size2	", -1, "Guardian Power Plant", 2, "A", 0) },
-                {128833989, new Module(128833989, "Int_GuardianPowerplant_Size3", -1, "	Guardian Power Plant", 3, "A", 0) },
+                {128833988, new Module(128833988, "Int_GuardianPowerplant_Size2", -1, "Guardian Power Plant", 2, "A", 0) },
+                {128833989, new Module(128833989, "Int_GuardianPowerplant_Size3", -1, "Guardian Power Plant", 3, "A", 0) },
                 {128833990, new Module(128833990, "Int_GuardianPowerplant_Size4", -1, "Guardian Power Plant", 4, "A", 0) },
                 {128833991, new Module(128833991, "Int_GuardianPowerplant_Size5", -1, "Guardian Power Plant", 5, "A", 0) },
                 {128833992, new Module(128833992, "Int_GuardianPowerplant_Size6", -1, "Guardian Power Plant", 6, "A", 0) },
