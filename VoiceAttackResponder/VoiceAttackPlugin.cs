@@ -56,7 +56,7 @@ namespace EddiVoiceAttackResponder
                 // Add notifiers for state and property changes 
                 EDDI.Instance.State.CollectionChanged += (s, e) => setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
 
-                SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.eddiSpeaking, "EDDI speaking", ref vaProxy);
+                SpeechService.Instance.PropertyChanged += (s, e) => setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
 
                 // Display instance information if available
                 if (EDDI.Instance.UpgradeRequired)
@@ -1100,6 +1100,15 @@ namespace EddiVoiceAttackResponder
 
             try
             {
+                setSpeechValues(ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set initial speech service variables", ex);
+            }
+
+            try
+            {
                 setDictionaryValues(EDDI.Instance.State, "state", ref vaProxy);
             }
             catch (Exception ex)
@@ -1499,7 +1508,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Set system information (" + prefix + ")");
         }
 
-        private static void setBodyValues(Body body, string prefix, dynamic vaProxy)
+        private static void setBodyValues(Body body, string prefix, ref dynamic vaProxy)
         {
             Logging.Debug("Setting body information (" + prefix + ")");
             vaProxy.SetText(prefix + " stellar class", body?.stellarclass);
@@ -1514,9 +1523,14 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Set body information (" + prefix + ")");
         }
 
-        private static void setSpeaking(bool? eddiSpeaking, string key, ref dynamic vaProxy)
+        private static void setSpeechValues(ref dynamic vaProxy)
         {
-            vaProxy.SetBoolean(key, eddiSpeaking);
+            setSpeaking(SpeechService.eddiSpeaking, vaProxy);
+        }
+
+        private static void setSpeaking(bool eddiSpeaking, ref dynamic vaProxy)
+        {
+            vaProxy.SetBoolean("EDDI speaking", eddiSpeaking);
         }
 
         private static void setStatus(ref dynamic vaProxy, string status, Exception exception = null)
