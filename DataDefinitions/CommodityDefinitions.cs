@@ -373,9 +373,9 @@ namespace EddiDataDefinitions
             {128672162, new Commodity(10018, "GeneBank", "Gene Bank", "Salvage", 0, false) },
             {128672163, new Commodity(10019, "TimeCapsule", "Time Capsule", "Salvage", 0, false) },
             {128793127, new Commodity(10022, "ThargoidHeart", "Thargoid Heart", "Salvage", 0, false) },
-            {128793128, new Commodity(10020, "ThargoidTissueSampleType1", "Thargoid Tissue Sample", "Salvage", 14081, false) },
-            {128793129, new Commodity(10023, "ThargoidTissueSampleType2", "Thargoid Tissue Sample", "Salvage", 0, false) },
-            {128793130, new Commodity(10024, "ThargoidTissueSampleType3", "Thargoid Tissue Sample", "Salvage", 0, false) },
+            {128793128, new Commodity(10020, "ThargoidTissueSampleType1", "Thargoid Cyclops Tissue Sample", "Salvage", 14081, false) },
+            {128793129, new Commodity(10023, "ThargoidTissueSampleType2", "Thargoid Basilisk Tissue Sample", "Salvage", 0, false) },
+            {128793130, new Commodity(10024, "ThargoidTissueSampleType3", "Thargoid Medusa Tissue Sample", "Salvage", 0, false) },
         };
 
         // Builds dictionaries for Name & EDName, converting to lower case and removing all spaces, dashes, and dots from the names
