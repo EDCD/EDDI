@@ -1525,7 +1525,7 @@ namespace EddiVoiceAttackResponder
 
         private static void setSpeechValues(ref dynamic vaProxy)
         {
-            setSpeaking(SpeechService.eddiSpeaking, vaProxy);
+            setSpeaking(SpeechService.eddiSpeaking, ref vaProxy);
         }
 
         private static void setSpeaking(bool eddiSpeaking, ref dynamic vaProxy)
