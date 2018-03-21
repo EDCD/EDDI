@@ -33,7 +33,7 @@ namespace EddiDataDefinitions
 
         private static Dictionary<long, Commodity> CommoditiesByEliteID = new Dictionary<long, Commodity>
         // 2xxxxxxxx & 3xxxxxxxx series Frontier IDs are placeholders, to use until an actual Frontier ID is identified
-        // Check https://eddb.io/archive/v5/commodities.json and https://github.com/EDCD/FDevIDsfor any undefined EDDBID's
+        // Check https://eddb.io/archive/v5/commodities.json (for any undefined EDDBID's or undefined FDevID's) and https://github.com/EDCD/FDevIDs (for any undefined FDevID's)
         {
             {128049204, new Commodity(1, "Explosives", "Explosives", "Chemicals", 261, false) },
             {128049202, new Commodity(2, "HydrogenFuel", "Hydrogen Fuel", "Chemicals", 110, false) },
