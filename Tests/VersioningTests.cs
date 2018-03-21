@@ -53,5 +53,41 @@ namespace Tests
         {
             Assert.AreEqual(-1, Versioning.Compare("2.1.0-b3", "2.1.0"));
         }
+
+        [TestMethod]
+        public void TestVersionAlphaToRC()
+        {
+            Assert.AreEqual(-1, Versioning.Compare("2.1.0-a3", "2.1.0-rc1"));
+        }
+
+        [TestMethod]
+        public void TestVersionBetaToRC()
+        {
+            Assert.AreEqual(-1, Versioning.Compare("2.1.0-b3", "2.1.0-rc1"));
+        }
+
+        [TestMethod]
+        public void TestVersionRCToRC()
+        {
+            Assert.AreEqual(-1, Versioning.Compare("2.1.0-rc1", "2.1.0-rc2"));
+        }
+
+        [TestMethod]
+        public void TestVersionRCToFinal()
+        {
+            Assert.AreEqual(-1, Versioning.Compare("2.1.0-rc3", "2.1.0"));
+        }
+
+        [TestMethod]
+        public void TestVersionOlderFinalToRC()
+        {
+            Assert.AreEqual(-1, Versioning.Compare("2.0.0", "2.1.0-rc1"));
+        }
+
+        [TestMethod]
+        public void TestVersionRCToNewerAlpha()
+        {
+            Assert.AreEqual(-1, Versioning.Compare("2.1.0-rc1", "2.2.0-a1"));
+        }
     }
 }
