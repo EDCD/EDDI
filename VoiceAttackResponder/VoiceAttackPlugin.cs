@@ -1136,6 +1136,15 @@ namespace EddiVoiceAttackResponder
 
             try
             {
+                setDetailedBodyValues(EDDI.Instance.CurrentStellarBody, "Body", ref vaProxy);
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Failed to set stellar body", ex);
+            }
+
+            try
+            {
                 setStationValues(EDDI.Instance.CurrentStation, "Last station", ref vaProxy);
             }
             catch (Exception ex)
@@ -1518,6 +1527,56 @@ namespace EddiVoiceAttackResponder
             {
                 vaProxy.SetDecimal(prefix + " age", (decimal)(long)body.age);
             }
+            Logging.Debug("Set body information (" + prefix + ")");
+        }
+
+        private static void setDetailedBodyValues(Body body, string prefix, ref dynamic vaProxy)
+        {
+            Logging.Debug("Setting current stellar body information");
+            vaProxy.SetDecimal(prefix + " EDDB id", body?.EDDBID);
+            vaProxy.SetText(prefix + " type", body?.type);
+            vaProxy.SetText(prefix + " name", body?.name);
+            vaProxy.SetText(prefix + " system name", body?.systemname);
+            if (body?.age == null)
+            {
+                vaProxy.SetDecimal(prefix + " age", null);
+            }
+            else
+            {
+                vaProxy.SetDecimal(prefix + " age", (decimal)(long)body.age);
+            }
+            vaProxy.SetDecimal(prefix + " distance", body?.distance);
+            vaProxy.SetBoolean(prefix + " landable", body?.landable);
+            vaProxy.SetBoolean(prefix + " tidally locked", body?.tidallylocked);
+            vaProxy.SetDecimal(prefix + " temperature", body?.temperature);
+            // Star specific items 
+            vaProxy.SetBoolean(prefix + " main star", body?.mainstar);
+            vaProxy.SetText(prefix + " stellar class", body?.stellarclass);
+            vaProxy.SetText(prefix + " luminosity class", body?.luminosityclass);
+            vaProxy.SetDecimal(prefix + " solar mass", body?.solarmass);
+            vaProxy.SetDecimal(prefix + " solar radius", body?.solarradius);
+            vaProxy.SetText(prefix + " chromaticity", body?.chromaticity);
+            vaProxy.SetDecimal(prefix + " radius probability", body?.radiusprobability);
+            vaProxy.SetDecimal(prefix + " mass probability", body?.massprobability);
+            vaProxy.SetDecimal(prefix + " temp probability", body?.tempprobability);
+            vaProxy.SetDecimal(prefix + " age probability", body?.ageprobability);
+            // Body specific items 
+            vaProxy.SetDecimal(prefix + " periapsis", body?.periapsis);
+            vaProxy.SetText(prefix + " atmosphere", body?.atmosphere);
+            vaProxy.SetDecimal(prefix + " tilt", body?.tilt);
+            vaProxy.SetDecimal(prefix + " earth mass", body?.earthmass);
+            vaProxy.SetDecimal(prefix + " gravity", body?.gravity);
+            vaProxy.SetDecimal(prefix + " eccentricity", body?.eccentricity);
+            vaProxy.SetDecimal(prefix + " inclination", body?.inclination);
+            vaProxy.SetDecimal(prefix + " orbital period", body?.orbitalperiod);
+            vaProxy.SetDecimal(prefix + " radius", body?.radius);
+            vaProxy.SetDecimal(prefix + " rotational period", body?.rotationalperiod);
+            vaProxy.SetDecimal(prefix + " semi major axis", body?.semimajoraxis);
+            vaProxy.SetDecimal(prefix + " pressure", body?.pressure);
+            vaProxy.SetText(prefix + " terraform state", body?.terraformstate);
+            vaProxy.SetText(prefix + " planet type", body?.planettype);
+            vaProxy.SetText(prefix + " reserves", body?.reserves);
+
             Logging.Debug("Set body information (" + prefix + ")");
         }
 
