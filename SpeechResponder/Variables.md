@@ -132,7 +132,7 @@ Any values might be missing, depending on EDDI's configuration and the informati
 
 Information about your current starsystem is avaialble under the `lastsystem` object.
 
-Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
+Any values might be missing, depending on EDDI's configuration and the information available about the system. 
 
 Values are the same as for the current starsystem.
 
@@ -140,9 +140,25 @@ Values are the same as for the current starsystem.
 
 Information about your home starsystem is available under the `homesystem` object.
 
-Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
+Any values might be missing, depending on EDDI's configuration and the information available about the system. 
 
 Values are the same as for the current starsystem.
+
+## Current orbital body 
+ 
+Information about the current nearest orbital body is available under the `body` object.  
+ 
+Any values might be missing, depending on EDDI's configuration and the information available about the body. 
+ 
+Values are below in the 'Body' object. 
+ 
+## Current station 
+ 
+Information about the current nearest sstation is available under the `station` object.  
+ 
+Any values might be missing, depending on EDDI's configuration and the information available about the station. 
+ 
+Values are below in the 'Station' object. 
 
 ## Home station
 
