@@ -1,6 +1,6 @@
 ﻿# CHANGE LOG
 
-### 3.0.0-b4
+### 3.0.0-rc1
   * Core
     * Incorporated new data definitions for 3.0.
   * Installer
@@ -13,6 +13,7 @@
   * VoiceAttack
     * Added the following new variables
       * `{BOOL:EDDI speaking}` True if EDDI is speaking, false otherwise. Useful for synchronizing speech between EDDI and other sources in VoiceAttack.
+    * Fixed a bug whereby `cmdr.title` was not being initialised. 
 
 ### 3.0.0-b3
   * Core
