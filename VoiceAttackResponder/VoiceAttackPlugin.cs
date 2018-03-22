@@ -1506,7 +1506,7 @@ namespace EddiVoiceAttackResponder
             Logging.Debug("Set system information (" + prefix + ")");
         }
 
-        private static void setBodyValues(Body body, string prefix, ref dynamic vaProxy)
+        private static void setBodyValues(Body body, string prefix, dynamic vaProxy)
         {
             Logging.Debug("Setting body information (" + prefix + ")");
             vaProxy.SetText(prefix + " stellar class", body?.stellarclass);
