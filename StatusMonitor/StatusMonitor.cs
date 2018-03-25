@@ -123,7 +123,12 @@ namespace EddiStatusMonitor
                                 }
                                 if (lastStatus != thisStatus && thisStatus != string.Empty)
                                 {
-                                    ParseStatusEntry(thisStatus);
+                                    Status status = ParseStatusEntry(thisStatus);
+
+                                    // Spin off a thread to pass status entry updates in the background
+                                    Thread updateThread = new Thread(() => handleStatus(status));
+                                    updateThread.IsBackground = true;
+                                    updateThread.Start();
                                 }
                                 lastStatus = thisStatus;
                             }
@@ -152,27 +157,26 @@ namespace EddiStatusMonitor
             return null;
         }
 
-        public void ParseStatusEntry(string line)
+        public static Status ParseStatusEntry(string line)
         {
+            Status status = new Status();
             try
             {
                 Match match = JsonRegex.Match(line);
                 if (match.Success)
                 {
                     IDictionary<string, object> data = Deserializtion.DeserializeData(line);
-                    Status status = new Status();
 
                     // Every status event has a timestamp field
-                    DateTime timestamp = DateTime.Now;
                     if (data.ContainsKey("timestamp"))
                     {
                         if (data["timestamp"] is DateTime)
                         {
-                            timestamp = ((DateTime)data["timestamp"]).ToUniversalTime();
+                            status.timestamp = ((DateTime)data["timestamp"]).ToUniversalTime();
                         }
                         else
                         {
-                            timestamp = DateTime.Parse(JsonParsing.getString(data, "timestamp")).ToUniversalTime();
+                            status.timestamp = DateTime.Parse(JsonParsing.getString(data, "timestamp")).ToUniversalTime();
                         }
                     }
                     else
@@ -184,12 +188,12 @@ namespace EddiStatusMonitor
                     if (status.flags > 0)
                     {
                         // Parse flags, comparing results to our prior status
-                        status = ParseFlags(timestamp, status.flags, line, status);
+                        status = ParseFlags(status);
                     }
                     else if (status.flags == 0)
                     {
                         // No flags are set. We aren't in game.
-                        return;
+                        return status;
                     }
 
                     object val;
@@ -249,10 +253,7 @@ namespace EddiStatusMonitor
                     status.altitude = JsonParsing.getOptionalDecimal(data, "Altitude");
                     status.heading = JsonParsing.getOptionalDecimal(data, "Heading");
 
-                    // Spin off a thread to pass status entry updates in the background
-                    Thread updateThread = new Thread(() => handleStatus(timestamp, status));
-                    updateThread.IsBackground = true;
-                    updateThread.Start();
+                    return status;
                 }
             }
             catch (Exception ex)
@@ -260,9 +261,10 @@ namespace EddiStatusMonitor
                 Logging.Warn("Failed to parse Status.json line: " + ex.ToString());
                 Logging.Error("Exception whilst parsing Status.json line ", line);
             }
+            return status = null;
         }
 
-        private void handleStatus(DateTime timestamp, Status thisStatus)
+        public static void handleStatus(Status thisStatus)
         {
             if (currentStatus != thisStatus)
             {
@@ -271,23 +273,23 @@ namespace EddiStatusMonitor
                 currentStatus = thisStatus;
 
                 // Post a status event to share the new status with other monitors and responders 
-                EDDI.Instance.eventHandler(new StatusEvent(timestamp, thisStatus));
+                EDDI.Instance.eventHandler(new StatusEvent(thisStatus.timestamp, thisStatus));
 
                 // Trigger events for changed status, as applicable
                 if (thisStatus.near_surface != lastStatus.near_surface 
                     && thisStatus.vehicle == Constants.VEHICLE_SHIP)
                 {
-                    EDDI.Instance.eventHandler(new NearSurfaceEvent(timestamp, thisStatus.near_surface));
+                    EDDI.Instance.eventHandler(new NearSurfaceEvent(thisStatus.timestamp, thisStatus.near_surface));
                 }
                 if (thisStatus.srv_turret_deployed != lastStatus.srv_turret_deployed)
                 {
-                    EDDI.Instance.eventHandler(new SRVTurretEvent(timestamp, thisStatus.srv_turret_deployed));
+                    EDDI.Instance.eventHandler(new SRVTurretEvent(thisStatus.timestamp, thisStatus.srv_turret_deployed));
                 }
                 if (thisStatus.srv_under_ship != lastStatus.srv_under_ship)
                 {
                     // If the turret is deployable then we are not under our ship. And vice versa. 
                     bool deployable = !thisStatus.srv_under_ship;
-                    EDDI.Instance.eventHandler(new SRVTurretDeployableEvent(timestamp, deployable));
+                    EDDI.Instance.eventHandler(new SRVTurretDeployableEvent(thisStatus.timestamp, deployable));
                 }
                 if (thisStatus.fsd_status != lastStatus.fsd_status 
                     && thisStatus.vehicle == Constants.VEHICLE_SHIP 
@@ -298,19 +300,19 @@ namespace EddiStatusMonitor
                         switch(lastStatus.fsd_status)
                         {
                             case "charging":
-                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "charging complete"));
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "charging complete"));
                                 break;
                             case "cooldown":
-                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "cooldown complete"));
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "cooldown complete"));
                                 break;
                             case "masslock":
-                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "masslock cleared"));
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "masslock cleared"));
                                 break;
                         }
                     }
                     else
                     {
-                        EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, thisStatus.fsd_status));
+                        EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, thisStatus.fsd_status));
                     }
                 }
                 if (thisStatus.low_fuel != lastStatus.low_fuel)
@@ -319,7 +321,7 @@ namespace EddiStatusMonitor
                     if (thisStatus.low_fuel 
                         && thisStatus.vehicle == Constants.VEHICLE_SHIP) 
                     {
-                        EDDI.Instance.eventHandler(new ShipLowFuelEvent(timestamp));
+                        EDDI.Instance.eventHandler(new ShipLowFuelEvent(thisStatus.timestamp));
                     }
                 }
             }
@@ -389,9 +391,10 @@ namespace EddiStatusMonitor
             return null;
         }
 
-        private Status ParseFlags(DateTime timestamp, long flags, string line, Status status)
+        private static Status ParseFlags(Status status)
         {
             int value;
+            long flags = status.flags;
 
             value = 67108864; // In SRV
             if (flags >= value)

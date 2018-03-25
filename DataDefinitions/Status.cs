@@ -1,4 +1,6 @@
-﻿namespace EddiDataDefinitions
+﻿using System;
+
+namespace EddiDataDefinitions
 {
     /// <summary>
     /// Details about the current game status
@@ -45,5 +47,6 @@
 
         // Admin values
         public long flags;
+        public DateTime timestamp = DateTime.Now;
     }
 }
