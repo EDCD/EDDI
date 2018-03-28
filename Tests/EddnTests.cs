@@ -1,15 +1,51 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using EddiDataDefinitions;
+using EddiDataProviderService;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NetMQ;
+using NetMQ.Sockets;
 using System;
 using System.IO;
 using System.IO.Compression;
-using NetMQ;
-using NetMQ.Sockets;
 
 namespace Tests
 {
     [TestClass]
     public class EddnTests
     {
+        class MockStarService : StarSystemRepository
+        {
+            public StarSystem GetOrCreateStarSystem(string name, bool refreshIfOutdated = true)
+            {
+                throw new NotImplementedException();
+            }
+
+            public StarSystem GetOrFetchStarSystem(string name, bool fetchIfMissing = true)
+            {
+                throw new NotImplementedException();
+            }
+
+            public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void LeaveStarSystem(StarSystem starSystem)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void SaveStarSystem(StarSystem starSystem)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private EDDNResponder.EDDNResponder makeTestEDDNResponder()
+        {
+            EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder(new MockStarService());
+            return responder;
+        }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
         [TestMethod, TestCategory("Network")]
         public void TestListen()
@@ -38,7 +74,7 @@ namespace Tests
         [TestMethod()]
         public void TestEDDNResponderGoodMatch()
         {
-            EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
+            EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
             var privateObject = new PrivateObject(responder);
             privateObject.SetFieldOrProperty("systemName", "Sol");
             privateObject.SetFieldOrProperty("systemX", 0.0M);
@@ -53,7 +89,7 @@ namespace Tests
         [TestMethod()]
         public void TestEDDNResponderBadInitialGoodFinal()
         {
-            EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
+            EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
             var privateObject = new PrivateObject(responder);
             // Intentionally place our EDDN responder in a state with no coordinates available.
             privateObject.SetFieldOrProperty("systemName", "Not in this galaxy");
@@ -73,7 +109,7 @@ namespace Tests
         [TestMethod()]
         public void TestEDDNResponderGoodInitialBadFinal()
         {
-            EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
+            EDDNResponder.EDDNResponder responder = makeTestEDDNResponder();
             var privateObject = new PrivateObject(responder);
             privateObject.SetFieldOrProperty("systemName", "Sol");
             privateObject.SetFieldOrProperty("systemX", 0.0M);
