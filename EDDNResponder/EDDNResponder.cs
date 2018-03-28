@@ -17,11 +17,11 @@ namespace EDDNResponder
     /// </summary>
     public class EDDNResponder : EDDIResponder
     {
-        // We keep a local track of the starsystem information
-        private string systemName = null;
-        private decimal? systemX = null;
-        private decimal? systemY = null;
-        private decimal? systemZ = null;
+        // We keep track of the starsystem information locally
+        public string systemName { get; private set; } = null;
+        public decimal? systemX { get; private set; } = null;
+        public decimal? systemY { get; private set; } = null;
+        public decimal? systemZ { get; private set; } = null;
 
         public string ResponderName()
         {
@@ -165,10 +165,13 @@ namespace EDDNResponder
 
         private void handleDockedEvent(DockedEvent theEvent)
         {
-            // When we dock we have access to commodity and outfitting information
-            sendCommodityInformation();
-            sendOutfittingInformation();
-            sendShipyardInformation();
+            if (eventSystemNameMatches(theEvent.system))
+            {
+                // When we dock we have access to commodity and outfitting information
+                sendCommodityInformation();
+                sendOutfittingInformation();
+                sendShipyardInformation();
+            }
         }
 
         private void handleMarketInformationUpdatedEvent(MarketInformationUpdatedEvent theEvent)
@@ -370,6 +373,35 @@ namespace EDDNResponder
         public UserControl ConfigurationTabItem()
         {
             return null;
+        }
+
+        public bool eventSystemNameMatches(string eventSystem)
+        {
+            // Check to make sure the eventSystem given matches the systemName we expected to see.
+            if (systemName == eventSystem)
+            {
+                return true;
+            }
+
+            StarSystem system = EddiDataProviderService.StarSystemSqLiteRepository.Instance.GetStarSystem(eventSystem);
+            if (system != null)
+            {
+                // Provide a fallback data source for system coordinate metadata if the eventSystem does not match the systemName we expected
+                systemName = system.name;
+                systemX = system.x;
+                systemY = system.y;
+                systemZ = system.z;
+                return true;
+            }
+            else
+            {
+                // Set values to null if data isn't available. If any data is null, data shall not be sent to EDDN.
+                systemName = eventSystem;
+                systemX = null;
+                systemY = null;
+                systemZ = null;
+                return false;
+            }
         }
     }
 }
