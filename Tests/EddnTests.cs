@@ -39,13 +39,14 @@ namespace Tests
         public void TestEventSystemNameMatches()
         {
             EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
+            var privateObject = new PrivateObject(responder);
 
-            /// The EDDN responder tracks system names and coordinates independently. 
-            /// Intentionally place our EDDN responder in a state with no coordinates available.
-            responder.systemName = "Not in this galaxy";
-            responder.systemX = null;
-            responder.systemY = null;
-            responder.systemZ = null;
+            // The EDDN responder tracks system names and coordinates independently. 
+            // Intentionally place our EDDN responder in a state with no coordinates available.
+            privateObject.SetProperty("systemName", "Not in this galaxy");
+            privateObject.SetProperty("systemX", null);
+            privateObject.SetProperty("systemY", null);
+            privateObject.SetProperty("systemZ", null);
 
             // Force a call to the method
             responder.eventSystemNameMatches("Artemis");

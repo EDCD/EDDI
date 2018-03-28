@@ -18,10 +18,10 @@ namespace EDDNResponder
     public class EDDNResponder : EDDIResponder
     {
         // We keep track of the starsystem information locally
-        public string systemName = null;
-        public decimal? systemX = null;
-        public decimal? systemY = null;
-        public decimal? systemZ = null;
+        public string systemName { get; private set; } = null;
+        public decimal? systemX { get; private set; } = null;
+        public decimal? systemY { get; private set; } = null;
+        public decimal? systemZ { get; private set; } = null;
 
         public string ResponderName()
         {
