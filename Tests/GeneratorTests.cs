@@ -10,7 +10,7 @@ namespace Tests
     [TestClass]
     public class GeneratorTests
     {
-        [TestMethod]
+        [TestMethod, TestCategory("DocGen")]
         public void TestGenerateWikiEvents()
         {
             foreach (KeyValuePair<string, Type> entry in Events.TYPES.OrderBy(i => i.Key))
@@ -76,7 +76,7 @@ namespace Tests
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("DocGen")]
         public void TestGenerateWikiEventsList()
         {
 
