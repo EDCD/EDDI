@@ -54,7 +54,7 @@ namespace Tests
         }
 
         [TestMethod()]
-        public void TestEDDNResponderBadInitialSystem()
+        public void TestEDDNResponderBadInitialGoodFinal()
         {
             EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
             var privateObject = new PrivateObject(responder);
@@ -67,7 +67,8 @@ namespace Tests
             privateObject.SetFieldOrProperty("systemZ", null);
 
             // Force a call to the method
-            responder.eventSystemNameMatches("Artemis");
+            bool matched = responder.eventSystemNameMatches("Artemis");
+            Assert.IsTrue(matched);
 
             // Test that the results, including coordinates, have been correctly retrieved by the EDDN responder
             Assert.AreEqual("Artemis", responder.systemName);
