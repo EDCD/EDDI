@@ -36,6 +36,24 @@ namespace Tests
         }
 
         [TestMethod()]
+        public void TestEDDNResponderGoodMatch()
+        {
+            EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
+            var privateObject = new PrivateObject(responder);
+
+            // The EDDN responder tracks system names and coordinates independently. 
+            // Intentionally place our EDDN responder in a state with no coordinates available.
+            privateObject.SetFieldOrProperty("systemName", "Sol");
+            privateObject.SetFieldOrProperty("systemX", 0.0M);
+            privateObject.SetFieldOrProperty("systemY", 0.0M);
+            privateObject.SetFieldOrProperty("systemZ", 0.0M);
+
+            // Force a call to the method
+            bool matched = responder.eventSystemNameMatches("Sol");
+            Assert.IsTrue(matched);
+        }
+
+        [TestMethod()]
         public void TestEDDNResponderBadInitialSystem()
         {
             EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
