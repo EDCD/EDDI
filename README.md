@@ -1,4 +1,6 @@
-﻿# EDDI: The Elite Dangerous Data Interface
+﻿[![Build status](https://ci.appveyor.com/api/projects/status/28rh2y2fhgedk8m3/branch/develop?svg=true)](https://ci.appveyor.com/project/richardbuckle/eddi/branch/develop)
+
+# EDDI: The Elite Dangerous Data Interface
 
 EDDI is a companion application for Elite: Dangerous, providing responses to events that occur in-game using data from the game as well as various third-party tools.
 
