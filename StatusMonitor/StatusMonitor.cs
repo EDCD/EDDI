@@ -22,7 +22,6 @@ namespace EddiStatusMonitor
         private static Regex Filter = new Regex(@"^Status\.json$");
         private static Regex JsonRegex = new Regex(@"^{.*}$");
         private string Directory = GetSavedGamesDir();
-        private string statusFileName;
         public static Status currentStatus { get; set; } = new Status();
         public static Status lastStatus { get; set; } = new Status();
 
@@ -98,35 +97,25 @@ namespace EddiStatusMonitor
                         // Main loop
                         while (running)
                         {
-                            fileInfo = FindStatusFile(Directory, Filter);
-                            if (fileInfo == null || !Filter.IsMatch(fileInfo.Name))
+                            if (fileInfo == null)
                             {
-                                if (fileInfo != null)
+                                // Status.json could not be found. Sleep until a Status.json file is found.
+                                Logging.Info("Error locating Elite Dangerous Status.json. Status monitor is not active. Have you installed and run Elite Dangerous previously? ");
+                                while (fileInfo == null)
                                 {
-                                    statusFileName = fileInfo.Name;
+                                    Thread.Sleep(5000);
+                                    fileInfo = FindStatusFile(Directory, Filter);
                                 }
-                                else
-                                {
-                                    // Status.json could not be found. Sleep until a Status.json file is found.
-                                    Logging.Info("Error locating Elite Dangerous Status.json. Status monitor is not active. Have you installed and run Elite Dangerous previously? ");
-                                    while (fileInfo == null)
-                                    {
-                                        Thread.Sleep(1000);
-                                        fileInfo = FindStatusFile(Directory, Filter);
-                                    }
-                                    Logging.Info("Elite Dangerous Status.json found. Status monitor activated.");
-                                    return;
-                                }
+                                Logging.Info("Elite Dangerous Status.json found. Status monitor activated.");
+                                return;
                             }
                             else
                             {
-                                statusFileName = fileInfo.Name;
                                 string thisStatus = string.Empty;
                                 try
                                 {
                                     fs.Seek(0, SeekOrigin.Begin);
                                     thisStatus = reader.ReadLine() ?? string.Empty;
-                                    //thisStatus = Files.Read(fileInfo.FullName) ?? string.Empty;
                                 }
                                 catch (Exception)
                                 {
@@ -134,7 +123,12 @@ namespace EddiStatusMonitor
                                 }
                                 if (lastStatus != thisStatus && thisStatus != string.Empty)
                                 {
-                                    ParseStatusEntry(thisStatus);
+                                    Status status = ParseStatusEntry(thisStatus);
+
+                                    // Spin off a thread to pass status entry updates in the background
+                                    Thread updateThread = new Thread(() => handleStatus(status));
+                                    updateThread.IsBackground = true;
+                                    updateThread.Start();
                                 }
                                 lastStatus = thisStatus;
                             }
@@ -163,9 +157,9 @@ namespace EddiStatusMonitor
             return null;
         }
 
-        public List<Event> ParseStatusEntry(string line)
+        public static Status ParseStatusEntry(string line)
         {
-            List<Event> events = new List<Event>();
+            Status status = new Status();
             try
             {
                 Match match = JsonRegex.Match(line);
@@ -174,16 +168,15 @@ namespace EddiStatusMonitor
                     IDictionary<string, object> data = Deserializtion.DeserializeData(line);
 
                     // Every status event has a timestamp field
-                    DateTime timestamp = DateTime.Now;
                     if (data.ContainsKey("timestamp"))
                     {
                         if (data["timestamp"] is DateTime)
                         {
-                            timestamp = ((DateTime)data["timestamp"]).ToUniversalTime();
+                            status.timestamp = ((DateTime)data["timestamp"]).ToUniversalTime();
                         }
                         else
                         {
-                            timestamp = DateTime.Parse(JsonParsing.getString(data, "timestamp")).ToUniversalTime();
+                            status.timestamp = DateTime.Parse(JsonParsing.getString(data, "timestamp")).ToUniversalTime();
                         }
                     }
                     else
@@ -191,111 +184,87 @@ namespace EddiStatusMonitor
                         Logging.Warn("Status event without timestamp; using current time");
                     }
 
-                    // Every event has an event field
-                    if (!data.ContainsKey("event"))
+                    status.flags = JsonParsing.getLong(data, "Flags");
+                    if (status.flags > 0)
                     {
-                        Logging.Warn("Status event without event field!");
-                        return null;
+                        // Parse flags, comparing results to our prior status
+                        status = ParseFlags(status);
+                    }
+                    else if (status.flags == 0)
+                    {
+                        // No flags are set. We aren't in game.
+                        return status;
                     }
 
-                    bool handled = false;
+                    object val;
+                    data.TryGetValue("Pips", out val);
+                    List<long> pips = ((List<object>)val)?.Cast<long>()?.ToList(); // The 'TryGetValue' function returns these values as type 'object<long>'
+                    status.pips_sys = pips != null ? ((decimal?)pips[0] / 2) : null; // Set system pips (converting from half pips)
+                    status.pips_eng = pips != null ? ((decimal?)pips[1] / 2) : null; // Set engine pips (converting from half pips)
+                    status.pips_wea = pips != null ? ((decimal?)pips[2] / 2) : null; // Set weapon pips (converting from half pips)
 
-                    string edType = JsonParsing.getString(data, "event");
-
-                    switch (edType)
+                    status.firegroup = JsonParsing.getOptionalInt(data, "FireGroup");
+                    int? gui_focus = JsonParsing.getOptionalInt(data, "GuiFocus");
+                    switch (gui_focus)
                     {
-                        case "Status":
+                        case 0: // No focus
                             {
-                                Status status = new Status();
-
-                                status.flags = JsonParsing.getLong(data, "Flags");
-                                if (status.flags > 0)
-                                {
-                                    // Parse flags, comparing results to our prior status
-                                    status = ParseFlags(timestamp, status.flags, line, status);
-                                }
-
-                                object val;
-                                data.TryGetValue("Pips", out val);
-                                List<long> pips = ((List<object>)val)?.Cast<long>()?.ToList(); // The 'TryGetValue' function returns these values as type 'object<long>'
-                                status.pips_sys = pips != null ? ((decimal?)pips[0] / 2) : null; // Set system pips (converting from half pips)
-                                status.pips_eng = pips != null ? ((decimal?)pips[1] / 2) : null; // Set engine pips (converting from half pips)
-                                status.pips_wea = pips != null ? ((decimal?)pips[2] / 2) : null; // Set weapon pips (converting from half pips)
-
-                                status.firegroup = JsonParsing.getOptionalInt(data, "FireGroup");
-                                int? gui_focus = JsonParsing.getOptionalInt(data, "GuiFocus");
-                                switch (gui_focus)
-                                {
-                                    case 0: // No focus
-                                        {
-                                            status.gui_focus = "none";
-                                            break;
-                                        }
-                                    case 1: // InternalPanel (right hand side)
-                                        {
-                                            status.gui_focus = "internal panel";
-                                            break;
-                                        }
-                                    case 2: // ExternalPanel (left hand side)
-                                        {
-                                            status.gui_focus = "external panel";
-                                            break;
-                                        }
-                                    case 3: // CommsPanel (top)
-                                        {
-                                            status.gui_focus = "communications panel";
-                                            break;
-                                        }
-                                    case 4: // RolePanel (bottom)
-                                        {
-                                            status.gui_focus = "role panel";
-                                            break;
-                                        }
-                                    case 5: // StationServices
-                                        {
-                                            status.gui_focus = "station services";
-                                            break;
-                                        }
-                                    case 6: // GalaxyMap
-                                        {
-                                            status.gui_focus = "galaxy map";
-                                            break;
-                                        }
-                                    case 7: // SystemMap
-                                        {
-                                            status.gui_focus = "system map";
-                                            break;
-                                        }
-                                }
-                                status.latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
-                                status.longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
-                                status.altitude = JsonParsing.getOptionalDecimal(data, "Altitude");
-                                status.heading = JsonParsing.getOptionalDecimal(data, "Heading");
-
-                                // Spin off a thread to pass status entry updates in the background
-                                Thread updateThread = new Thread(() => handleStatus(timestamp, status));
-                                updateThread.IsBackground = true;
-                                updateThread.Start();
+                                status.gui_focus = "none";
+                                break;
                             }
-                            handled = true;
-                            break;
+                        case 1: // InternalPanel (right hand side)
+                            {
+                                status.gui_focus = "internal panel";
+                                break;
+                            }
+                        case 2: // ExternalPanel (left hand side)
+                            {
+                                status.gui_focus = "external panel";
+                                break;
+                            }
+                        case 3: // CommsPanel (top)
+                            {
+                                status.gui_focus = "communications panel";
+                                break;
+                            }
+                        case 4: // RolePanel (bottom)
+                            {
+                                status.gui_focus = "role panel";
+                                break;
+                            }
+                        case 5: // StationServices
+                            {
+                                status.gui_focus = "station services";
+                                break;
+                            }
+                        case 6: // GalaxyMap
+                            {
+                                status.gui_focus = "galaxy map";
+                                break;
+                            }
+                        case 7: // SystemMap
+                            {
+                                status.gui_focus = "system map";
+                                break;
+                            }
                     }
+                    status.latitude = JsonParsing.getOptionalDecimal(data, "Latitude");
+                    status.longitude = JsonParsing.getOptionalDecimal(data, "Longitude");
+                    status.altitude = JsonParsing.getOptionalDecimal(data, "Altitude");
+                    status.heading = JsonParsing.getOptionalDecimal(data, "Heading");
 
-                    if (!handled)
-                    {
-                        Logging.Debug("Unhandled status event: " + line);
-                    }
+                    return status;
                 }
             }
             catch (Exception ex)
             {
                 Logging.Warn("Failed to parse Status.json line: " + ex.ToString());
-                Logging.Error("Exception whilst parsing Status.json line", line);
+                Logging.Error("Exception whilst parsing Status.json line ", line);
             }
-            return events;
+            return status = null;
         }
 
-        private void handleStatus(DateTime timestamp, Status thisStatus)
+        public static void handleStatus(Status thisStatus)
         {
             if (currentStatus != thisStatus)
             {
@@ -304,23 +273,23 @@ namespace EddiStatusMonitor
                 currentStatus = thisStatus;
 
                 // Post a status event to share the new status with other monitors and responders 
-                EDDI.Instance.eventHandler(new StatusEvent(timestamp, thisStatus));
+                EDDI.Instance.eventHandler(new StatusEvent(thisStatus.timestamp, thisStatus));
 
                 // Trigger events for changed status, as applicable
                 if (thisStatus.near_surface != lastStatus.near_surface 
                     && thisStatus.vehicle == Constants.VEHICLE_SHIP)
                 {
-                    EDDI.Instance.eventHandler(new NearSurfaceEvent(timestamp, thisStatus.near_surface));
+                    EDDI.Instance.eventHandler(new NearSurfaceEvent(thisStatus.timestamp, thisStatus.near_surface));
                 }
                 if (thisStatus.srv_turret_deployed != lastStatus.srv_turret_deployed)
                 {
-                    EDDI.Instance.eventHandler(new SRVTurretEvent(timestamp, thisStatus.srv_turret_deployed));
+                    EDDI.Instance.eventHandler(new SRVTurretEvent(thisStatus.timestamp, thisStatus.srv_turret_deployed));
                 }
                 if (thisStatus.srv_under_ship != lastStatus.srv_under_ship)
                 {
                     // If the turret is deployable then we are not under our ship. And vice versa. 
                     bool deployable = !thisStatus.srv_under_ship;
-                    EDDI.Instance.eventHandler(new SRVTurretDeployableEvent(timestamp, deployable));
+                    EDDI.Instance.eventHandler(new SRVTurretDeployableEvent(thisStatus.timestamp, deployable));
                 }
                 if (thisStatus.fsd_status != lastStatus.fsd_status 
                     && thisStatus.vehicle == Constants.VEHICLE_SHIP 
@@ -331,19 +300,19 @@ namespace EddiStatusMonitor
                         switch(lastStatus.fsd_status)
                         {
                             case "charging":
-                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "charging complete"));
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "charging complete"));
                                 break;
                             case "cooldown":
-                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "cooldown complete"));
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "cooldown complete"));
                                 break;
                             case "masslock":
-                                EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, "masslock cleared"));
+                                EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, "masslock cleared"));
                                 break;
                         }
                     }
                     else
                     {
-                        EDDI.Instance.eventHandler(new ShipFsdEvent(timestamp, thisStatus.fsd_status));
+                        EDDI.Instance.eventHandler(new ShipFsdEvent(thisStatus.timestamp, thisStatus.fsd_status));
                     }
                 }
                 if (thisStatus.low_fuel != lastStatus.low_fuel)
@@ -352,7 +321,7 @@ namespace EddiStatusMonitor
                     if (thisStatus.low_fuel 
                         && thisStatus.vehicle == Constants.VEHICLE_SHIP) 
                     {
-                        EDDI.Instance.eventHandler(new ShipLowFuelEvent(timestamp));
+                        EDDI.Instance.eventHandler(new ShipLowFuelEvent(thisStatus.timestamp));
                     }
                 }
             }
@@ -409,7 +378,7 @@ namespace EddiStatusMonitor
             {
                 try
                 {
-                    FileInfo info = directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name)).OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
+                    FileInfo info = directory.GetFiles().Where(f => filter == null || filter.IsMatch(f.Name)).FirstOrDefault();
                     if (info != null)
                     {
                         // This info can be cached so force a refresh
@@ -422,9 +391,10 @@ namespace EddiStatusMonitor
             return null;
         }
 
-        private Status ParseFlags(DateTime timestamp, long flags, string line, Status status)
+        private static Status ParseFlags(Status status)
         {
             int value;
+            long flags = status.flags;
 
             value = 67108864; // In SRV
             if (flags >= value)
