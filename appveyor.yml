@@ -5,6 +5,8 @@ branches:
 skip_tags: true
 image: Visual Studio 2017
 configuration: Debug
+nuget:
+  project_feed: true
 build:
   verbosity: minimal
 test:
