@@ -36,7 +36,7 @@ namespace Tests
         }
 
         [TestMethod()]
-        public void eventSystemNameMatchesTest()
+        public void TestEventSystemNameMatches()
         {
             EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
             responder.Start();
