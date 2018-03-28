@@ -383,7 +383,7 @@ namespace EDDNResponder
                 return true;
             }
 
-            StarSystem system = EddiDataProviderService.StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(eventSystem);
+            StarSystem system = EddiDataProviderService.StarSystemSqLiteRepository.Instance.GetStarSystem(eventSystem);
             if (system != null)
             {
                 // Provide a fallback data source for system coordinate metadata if the eventSystem does not match the systemName we expected
