@@ -26,7 +26,22 @@ namespace Tests
 
             public StarSystem GetStarSystem(string name, bool refreshIfOutdated = true)
             {
-                throw new NotImplementedException();
+                switch(name)
+                {
+                    case "Artemis":
+                        {
+                            StarSystem result = new StarSystem();
+                            result.name = "Artemis";
+                            result.x = 14.28125M;
+                            result.y = -63.1875M;
+                            result.z = -24.875M;
+                            return result;
+                        }
+
+                    default:
+                        break;
+                }
+                return null;
             }
 
             public void LeaveStarSystem(StarSystem starSystem)
