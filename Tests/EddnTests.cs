@@ -36,7 +36,7 @@ namespace Tests
         }
 
         [TestMethod()]
-        public void TestEventSystemNameMatches()
+        public void TestEDDNResponderBadInitialSystem()
         {
             EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
             var privateObject = new PrivateObject(responder);
