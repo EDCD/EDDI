@@ -16,3 +16,4 @@ test:
     except:
     - Speech
     - DocGen
+    - Network

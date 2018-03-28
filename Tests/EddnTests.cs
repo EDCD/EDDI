@@ -11,7 +11,7 @@ namespace Tests
     public class EddnTests
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")] // this usage is perfectly correct
-        [TestMethod]
+        [TestMethod, TestCategory("Network")]
         public void TestListen()
         {
             using (var subscriber = new SubscriberSocket())
