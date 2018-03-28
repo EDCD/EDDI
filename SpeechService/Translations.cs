@@ -354,15 +354,11 @@ Console.WriteLine("Results[" + i + "][" + j + "] is *" + match.Groups[i].Capture
                 }
 
                 string secondPiece = Match.Groups[2].Value;
-                Console.WriteLine("1) Second piece is " + secondPiece);
                 if (useICAO)
                 {
                     secondPiece = ICAO(secondPiece, true);
                 }
-                Console.WriteLine("2) Second piece is " + secondPiece);
                 secondPiece = secondPiece.Replace("-", " dash ");
-                Console.WriteLine("3) Second piece is " + secondPiece);
-
                 starSystem = firstPiece + subPiece + " " + secondPiece;
             }
             else if (starSystem.StartsWith("2MASS ")
