@@ -39,7 +39,6 @@ namespace Tests
         public void TestEventSystemNameMatches()
         {
             EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
-            responder.Start();
 
             /// The EDDN responder tracks system names and coordinates independently. 
             /// Intentionally place our EDDN responder in a state with no coordinates available.
@@ -56,8 +55,6 @@ namespace Tests
             Assert.AreEqual(14.28125, (double)responder.systemX, 0.00001);
             Assert.AreEqual(-63.1875, (double)responder.systemY, 0.00001);
             Assert.AreEqual(-24.875, (double)responder.systemZ, 0.00001);
-
-            responder.Stop();
         }
     }
 }
