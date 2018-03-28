@@ -17,11 +17,11 @@ namespace EDDNResponder
     /// </summary>
     public class EDDNResponder : EDDIResponder
     {
-        // We keep a local track of the starsystem information
-        private string systemName = null;
-        private decimal? systemX = null;
-        private decimal? systemY = null;
-        private decimal? systemZ = null;
+        // We keep track of the starsystem information locally
+        public string systemName = null;
+        public decimal? systemX = null;
+        public decimal? systemY = null;
+        public decimal? systemZ = null;
 
         public string ResponderName()
         {
@@ -375,12 +375,12 @@ namespace EDDNResponder
             return null;
         }
 
-        private bool eventSystemNameMatches(string eventSystem)
+        public bool eventSystemNameMatches(string eventSystem)
         {
             // Check to make sure the eventSystem given matches the systemName we expected to see.
             if (systemName != eventSystem)
             {
-                StarSystem system = EddiDataProviderService.StarSystemSqLiteRepository.Instance.GetOrFetchStarSystem(eventSystem);
+                StarSystem system = EddiDataProviderService.StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(eventSystem);
                 if (system != null)
                 {
                     // Provide a fallback data source for system coordinate metadata if the eventSystem does not match the systemName we expected

@@ -34,5 +34,30 @@ namespace Tests
                 }
             }
         }
+
+        [TestMethod()]
+        public void eventSystemNameMatchesTest()
+        {
+            EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
+            responder.Start();
+
+            /// The EDDN responder tracks system names and coordinates independently. 
+            /// Intentionally place our EDDN responder in a state with no coordinates available.
+            responder.systemName = "Not in this galaxy";
+            responder.systemX = null;
+            responder.systemY = null;
+            responder.systemZ = null;
+
+            // Force a call to the method
+            responder.eventSystemNameMatches("Artemis");
+
+            // Test that the results, including coordinates, have been correctly retrieved by the EDDN responder
+            Assert.AreEqual("Artemis", responder.systemName);
+            Assert.AreEqual(14.28125, (double)responder.systemX);
+            Assert.AreEqual(-63.1875, (double)responder.systemY);
+            Assert.AreEqual(-24.875, (double)responder.systemZ);
+
+            responder.Stop();
+        }
     }
 }
