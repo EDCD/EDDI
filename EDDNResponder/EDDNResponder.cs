@@ -1,5 +1,6 @@
 ﻿using Eddi;
 using EddiDataDefinitions;
+using EddiDataProviderService;
 using EddiEvents;
 using Newtonsoft.Json;
 using RestSharp;
@@ -23,6 +24,8 @@ namespace EDDNResponder
         public decimal? systemY { get; private set; } = null;
         public decimal? systemZ { get; private set; } = null;
 
+        private StarSystemRepository starSystemRepository;
+
         public string ResponderName()
         {
             return "EDDN responder";
@@ -38,9 +41,10 @@ namespace EDDNResponder
             return "Send station, jump, and scan information to EDDN.  EDDN is a third-party tool that gathers information on systems and markets, and provides data for most trading tools as well as starsystem information tools such as EDDB";
         }
 
-        public EDDNResponder()
+        public EDDNResponder(StarSystemRepository starSystemRepository = null)
         {
             Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
+            this.starSystemRepository = starSystemRepository ?? EddiDataProviderService.StarSystemSqLiteRepository.Instance;
         }
 
         public void Handle(Event theEvent)
@@ -383,7 +387,7 @@ namespace EDDNResponder
                 return true;
             }
 
-            StarSystem system = EddiDataProviderService.StarSystemSqLiteRepository.Instance.GetStarSystem(eventSystem);
+            StarSystem system = starSystemRepository.GetStarSystem(eventSystem);
             if (system != null)
             {
                 // Provide a fallback data source for system coordinate metadata if the eventSystem does not match the systemName we expected
