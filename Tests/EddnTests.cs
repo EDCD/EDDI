@@ -43,19 +43,19 @@ namespace Tests
 
             // The EDDN responder tracks system names and coordinates independently. 
             // Intentionally place our EDDN responder in a state with no coordinates available.
-            privateObject.SetProperty("systemName", "Not in this galaxy");
-            privateObject.SetProperty("systemX", null);
-            privateObject.SetProperty("systemY", null);
-            privateObject.SetProperty("systemZ", null);
+            privateObject.SetFieldOrProperty("systemName", "Not in this galaxy");
+            privateObject.SetFieldOrProperty("systemX", null);
+            privateObject.SetFieldOrProperty("systemY", null);
+            privateObject.SetFieldOrProperty("systemZ", null);
 
             // Force a call to the method
             responder.eventSystemNameMatches("Artemis");
 
             // Test that the results, including coordinates, have been correctly retrieved by the EDDN responder
             Assert.AreEqual("Artemis", responder.systemName);
-            Assert.AreEqual(14.28125, (double)responder.systemX, 0.00001);
-            Assert.AreEqual(-63.1875, (double)responder.systemY, 0.00001);
-            Assert.AreEqual(-24.875, (double)responder.systemZ, 0.00001);
+            Assert.AreEqual(14.28125M, (decimal)responder.systemX);
+            Assert.AreEqual(-63.1875M, (decimal)responder.systemY);
+            Assert.AreEqual(-24.875M, (decimal)responder.systemZ);
         }
     }
 }
