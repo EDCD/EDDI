@@ -40,16 +40,13 @@ namespace Tests
         {
             EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
             var privateObject = new PrivateObject(responder);
-
-            // The EDDN responder tracks system names and coordinates independently. 
-            // Intentionally place our EDDN responder in a state with no coordinates available.
             privateObject.SetFieldOrProperty("systemName", "Sol");
             privateObject.SetFieldOrProperty("systemX", 0.0M);
             privateObject.SetFieldOrProperty("systemY", 0.0M);
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            // Force a call to the method
             bool matched = responder.eventSystemNameMatches("Sol");
+
             Assert.IsTrue(matched);
         }
 
@@ -58,19 +55,15 @@ namespace Tests
         {
             EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
             var privateObject = new PrivateObject(responder);
-
-            // The EDDN responder tracks system names and coordinates independently. 
             // Intentionally place our EDDN responder in a state with no coordinates available.
             privateObject.SetFieldOrProperty("systemName", "Not in this galaxy");
             privateObject.SetFieldOrProperty("systemX", null);
             privateObject.SetFieldOrProperty("systemY", null);
             privateObject.SetFieldOrProperty("systemZ", null);
 
-            // Force a call to the method
             bool matched = responder.eventSystemNameMatches("Artemis");
-            Assert.IsTrue(matched);
 
-            // Test that the results, including coordinates, have been correctly retrieved by the EDDN responder
+            Assert.IsTrue(matched);
             Assert.AreEqual("Artemis", responder.systemName);
             Assert.AreEqual(14.28125M, (decimal)responder.systemX);
             Assert.AreEqual(-63.1875M, (decimal)responder.systemY);
@@ -82,19 +75,14 @@ namespace Tests
         {
             EDDNResponder.EDDNResponder responder = new EDDNResponder.EDDNResponder();
             var privateObject = new PrivateObject(responder);
-
-            // The EDDN responder tracks system names and coordinates independently. 
-            // Intentionally place our EDDN responder in a state with no coordinates available.
             privateObject.SetFieldOrProperty("systemName", "Sol");
             privateObject.SetFieldOrProperty("systemX", 0.0M);
             privateObject.SetFieldOrProperty("systemY", 0.0M);
             privateObject.SetFieldOrProperty("systemZ", 0.0M);
 
-            // Force a call to the method
             bool matched = responder.eventSystemNameMatches("Not in this galaxy");
-            Assert.IsFalse(matched);
 
-            // Test that the results, including coordinates, have been correctly retrieved by the EDDN responder
+            Assert.IsFalse(matched);
             Assert.IsNull(responder.systemX);
             Assert.IsNull(responder.systemY);
             Assert.IsNull(responder.systemZ);
