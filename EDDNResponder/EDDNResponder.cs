@@ -378,28 +378,30 @@ namespace EDDNResponder
         public bool eventSystemNameMatches(string eventSystem)
         {
             // Check to make sure the eventSystem given matches the systemName we expected to see.
-            if (systemName != eventSystem)
+            if (systemName == eventSystem)
             {
-                StarSystem system = EddiDataProviderService.StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(eventSystem);
-                if (system != null)
-                {
-                    // Provide a fallback data source for system coordinate metadata if the eventSystem does not match the systemName we expected
-                    systemName = system.name;
-                    systemX = system.x;
-                    systemY = system.y;
-                    systemZ = system.z;
-                }
-                else
-                {
-                    // Set values to null if data isn't available. If any data is null, data shall not be sent to EDDN.
-                    systemName = eventSystem;
-                    systemX = null;
-                    systemY = null;
-                    systemZ = null;
-                    return false;
-                }
+                return true;
             }
-            return true;
+
+            StarSystem system = EddiDataProviderService.StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(eventSystem);
+            if (system != null)
+            {
+                // Provide a fallback data source for system coordinate metadata if the eventSystem does not match the systemName we expected
+                systemName = system.name;
+                systemX = system.x;
+                systemY = system.y;
+                systemZ = system.z;
+                return true;
+            }
+            else
+            {
+                // Set values to null if data isn't available. If any data is null, data shall not be sent to EDDN.
+                systemName = eventSystem;
+                systemX = null;
+                systemY = null;
+                systemZ = null;
+                return false;
+            }
         }
     }
 }
