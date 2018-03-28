@@ -1565,7 +1565,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetBoolean(prefix + " srv drive assist", status?.srv_drive_assist);
                 vaProxy.SetBoolean(prefix + " srv under ship", status?.srv_under_ship);
                 vaProxy.SetBoolean(prefix + " srv turret deployed", status?.srv_turret_deployed);
-                vaProxy.SetBoolean(prefix + " srv handbrake", status?.srv_handbrake_activated);
+                vaProxy.SetBoolean(prefix + " srv handbrake activated", status?.srv_handbrake_activated);
                 vaProxy.SetBoolean(prefix + " scooping fuel", status?.scooping_fuel);
                 vaProxy.SetBoolean(prefix + " silent running", status?.silent_running);
                 vaProxy.SetBoolean(prefix + " cargo scoop deployed", status?.cargo_scoop_deployed);
