@@ -1,8 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EddiDataDefinitions;
-using EddiEvents;
+﻿using EddiDataDefinitions;
 using EddiStatusMonitor;
-using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Tests
 {
@@ -16,6 +15,8 @@ namespace Tests
             Status status = StatusMonitor.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
+            DateTime expectedTimestamp = new DateTime(2018, 3, 25, 0, 39, 48, DateTimeKind.Utc);
+            Assert.AreEqual(expectedTimestamp, status.timestamp);
             Assert.AreEqual(status.flags, 16842765);
             Assert.AreEqual(status.vehicle, "Ship");
             Assert.IsFalse(status.being_interdicted);
