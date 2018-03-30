@@ -58,9 +58,9 @@ namespace EddiSpeechResponder
             { 
                 personality = Personality.Default();
             }
-            scriptResolver = new ScriptResolver(personality.Scripts);
-            subtitles = configuration.Subtitles;
-            subtitlesOnly = configuration.SubtitlesOnly;
+            scriptResolver = new ScriptResolver(personality?.Scripts);
+            subtitles = configuration?.Subtitles ?? false;
+            subtitlesOnly = configuration?.SubtitlesOnly ?? false;
             Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
         }
 
