@@ -1534,7 +1534,7 @@ namespace Eddi
         /// <summary>
         /// Find all monitors
         /// </summary>
-        private List<EDDIMonitor> findMonitors()
+        public List<EDDIMonitor> findMonitors()
         {
             DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             List<EDDIMonitor> monitors = new List<EDDIMonitor>();
@@ -1606,7 +1606,7 @@ namespace Eddi
         /// <summary>
         /// Find all responders
         /// </summary>
-        private List<EDDIResponder> findResponders()
+        public List<EDDIResponder> findResponders()
         {
             DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             List<EDDIResponder> responders = new List<EDDIResponder>();
