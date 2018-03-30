@@ -181,7 +181,7 @@ namespace EddiDataProviderService
             {
                 foreach (dynamic body in json["bodies"])
                 {
-                    if (body["group_name"] == "Belt")
+                    if ((string)body["group_name"] == "Belt")
                     {
                         // Not interested in asteroid belts
                         continue;
@@ -193,7 +193,7 @@ namespace EddiDataProviderService
                     Body.EDDBID = (long)body["id"];
                     Body.name = (string)body["name"];
                     Body.systemname = systemName;
-                    Body.type = body["group_name"];
+                    Body.type = (string)body["group_name"];
                     Body.distance = (long?)body["distance_to_arrival"];
                     Body.temperature = (long?)body["surface_temperature"];
                     Body.tidallylocked = (bool?)body["is_rotational_period_tidally_locked"];
