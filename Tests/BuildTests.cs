@@ -10,14 +10,16 @@ namespace Tests
         [TestMethod]
         public void TestResponders()
         {
-            Assert.IsTrue(EDDI.Instance.findResponders().Count > 0);
+            int numResponders = EDDI.Instance.findResponders().Count;
+            Assert.IsTrue(numResponders > 0);
         }
 
 
         [TestMethod]
         public void TestMonitors()
         {
-            Assert.IsTrue(EDDI.Instance.findMonitors().Count > 0);
+            int numMonitors = EDDI.Instance.findMonitors().Count;
+            Assert.IsTrue(numMonitors > 0);
         }
     }
 }
