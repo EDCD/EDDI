@@ -109,113 +109,108 @@ namespace EddiEdsmResponder
 
             if (starMapService != null)
             {
-                if (!ignoredEvents.Contains(theEvent.type))
+                /// Retrieve applicable transient game state info (metadata) 
+                /// for the event and the event with transient info to EDSM
+                string eventData = prepareEventData(theEvent);
+                if (eventData == null)
                 {
-                    // Retrieve applicable transient game state info (metadata) for the event
-                    Dictionary<string, object> transientData = GetTransientData(theEvent);
-
-                    // Unpackage the event, add transient game state info as applicable, then repackage and send the event
-                    string eventData;
-                    IDictionary<string, object> eventObject;
-                    if (transientData.Count > 0)
-                    {
-                        eventObject = Deserializtion.DeserializeData(theEvent.raw);
-                        eventObject.Add("transient", transientData);
-                        eventData = JsonConvert.SerializeObject(eventObject);
-                    }
-                    else
-                    {
-                        eventData = theEvent.raw;
-                    }
-                    starMapService.sendEvent(eventData);
+                    return;
                 }
+                starMapService.sendEvent(eventData);
             }
         }
 
-        private static Dictionary<string, object> GetTransientData(Event theEvent)
+        private string prepareEventData(Event theEvent)
         {
             // Prep transient game state info (metadata) per https://www.edsm.net/en/api-journal-v1.
-            Dictionary<string, object> transientData = new Dictionary<string, object>();
+            // Unpackage the event, add transient game state info as applicable, then repackage and send the event
+            IDictionary<string, object> eventObject = Deserializtion.DeserializeData(theEvent.raw);
+            string eventType = JsonParsing.getString(eventObject, "event");
+
+            if (ignoredEvents.Contains(eventType) || theEvent.raw == null)
+            {
+                return null;
+            }
 
             // Add metadata from events
-            switch (theEvent.type)
+            switch (eventType)
             {
                 case "LoadGame":
                     {
-                        transientData.Add("_systemAddress", null);
-                        transientData.Add("_systemName", null);
-                        transientData.Add("_systemCoordinates", null);
-                        transientData.Add("_marketId", null);
-                        transientData.Add("_stationName", null);
+                        eventObject.Add("_systemAddress", null);
+                        eventObject.Add("_systemName", null);
+                        eventObject.Add("_systemCoordinates", null);
+                        eventObject.Add("_marketId", null);
+                        eventObject.Add("_stationName", null);
                         break;
                     }
                 case "SetUserShipName":
                     {
                         ShipRenamedEvent shipRenamedEvent = (ShipRenamedEvent)theEvent;
-                        transientData.Add("_shipId", shipRenamedEvent.shipid);
+                        eventObject.Add("_shipId", shipRenamedEvent.shipid);
                         break;
                     }
                 case "ShipyardBuy":
                     {
-                        transientData.Add("_shipId", null);
+                        eventObject.Add("_shipId", null);
                         break;
                     }
                 case "ShipyardSwap":
                     {
                         ShipSwappedEvent shipSwappedEvent = (ShipSwappedEvent)theEvent;
-                        transientData.Add("_shipId", shipSwappedEvent.shipid);
+                        eventObject.Add("_shipId", shipSwappedEvent.shipid);
                         break;
                     }
                 case "Loadout":
                     {
                         ShipLoadoutEvent shipLoadoutEvent = (ShipLoadoutEvent)theEvent;
-                        transientData.Add("_shipId", shipLoadoutEvent.shipid);
+                        eventObject.Add("_shipId", shipLoadoutEvent.shipid);
                         break;
                     }
                 case "Undocked":
                     {
-                        transientData.Add("_marketId", null);
-                        transientData.Add("_stationName", null);
+                        eventObject.Add("_marketId", null);
+                        eventObject.Add("_stationName", null);
                         break;
                     }
                 case "Location":
                     {
                         LocationEvent locationEvent = (LocationEvent)theEvent;
-                        transientData.Add("_systemAddress", null); // We don't collect this info yet
-                        transientData.Add("_systemName", locationEvent.system);
+                        eventObject.Add("_systemAddress", null); // We don't collect this info yet
+                        eventObject.Add("_systemName", locationEvent.system);
                         List<decimal?> _systemCoordinates = new List<decimal?>
                         {
                             locationEvent.x,
                             locationEvent.y,
                             locationEvent.z
                         };
-                        transientData.Add("_systemCoordinates", _systemCoordinates);
-                        transientData.Add("_marketId", null); // We don't collect this info yet
-                        transientData.Add("_stationName", locationEvent.station);
+                        eventObject.Add("_systemCoordinates", _systemCoordinates);
+                        eventObject.Add("_marketId", null); // We don't collect this info yet
+                        eventObject.Add("_stationName", locationEvent.station);
                         break;
                     }
                 case "FSDJump":
                     {
                         JumpedEvent jumpedEvent = (JumpedEvent)theEvent;
-                        transientData.Add("_systemAddress", null); // We don't collect this info yet
-                        transientData.Add("_systemName", jumpedEvent.system);
+                        eventObject.Add("_systemAddress", null); // We don't collect this info yet
+                        eventObject.Add("_systemName", jumpedEvent.system);
                         List<decimal?> _systemCoordinates = new List<decimal?>
                         {
                             jumpedEvent.x,
                             jumpedEvent.y,
                             jumpedEvent.z
                         };
-                        transientData.Add("_systemCoordinates", _systemCoordinates);
+                        eventObject.Add("_systemCoordinates", _systemCoordinates);
                         break;
                     }
                 case "Docked":
                     {
                         DockedEvent dockedEvent = (DockedEvent)theEvent;
-                        transientData.Add("_systemAddress", null); // We don't collect this info yet
-                        transientData.Add("_systemName", dockedEvent.system);
-                        transientData.Add("_systemCoordinates", null);
-                        transientData.Add("_marketId", null); // We don't collect this info yet
-                        transientData.Add("_stationName", dockedEvent.station);
+                        eventObject.Add("_systemAddress", null); // We don't collect this info yet
+                        eventObject.Add("_systemName", dockedEvent.system);
+                        eventObject.Add("_systemCoordinates", null);
+                        eventObject.Add("_marketId", null); // We don't collect this info yet
+                        eventObject.Add("_stationName", dockedEvent.station);
                         break;
                     }
             }
@@ -223,28 +218,43 @@ namespace EddiEdsmResponder
             // Supplement with metadata from the tracked game state, as applicable
             if (EDDI.Instance.CurrentStarSystem != null)
             {
-                if (!transientData.ContainsKey("_systemAddress")) { transientData.Add("_systemAddress", null); } // We don't collect this info yet
-                if (!transientData.ContainsKey("_systemName")) { transientData.Add("_systemName", EDDI.Instance.CurrentStarSystem.name); }
-                List<decimal?> _coordinates = new List<decimal?>
-                { 
+                if (!eventObject.ContainsKey("_systemAddress") && !eventObject.ContainsKey("SystemAddress"))
+                {
+                    eventObject.Add("_systemAddress", null); // We don't collect this info yet
+                } 
+                if (!eventObject.ContainsKey("_systemName") && !eventObject.ContainsKey("SystemName"))
+                {
+                    eventObject.Add("_systemName", EDDI.Instance.CurrentStarSystem.name);
+                }
+                if (!eventObject.ContainsKey("_systemCoordinates") && !eventObject.ContainsKey("StarPos"))
+                {
+                    List<decimal?> _coordinates = new List<decimal?>
+                    {
                     EDDI.Instance.CurrentStarSystem.x,
                     EDDI.Instance.CurrentStarSystem.y,
                     EDDI.Instance.CurrentStarSystem.z
-                };
-                if (!transientData.ContainsKey("_systemCoordinates")) { transientData.Add("_systemCoordinates", _coordinates); }
+                    };
+                    eventObject.Add("_systemCoordinates", _coordinates);
+                }
 
             }
             if (EDDI.Instance.CurrentStation != null)
             {
-                if (!transientData.ContainsKey("_marketId")) { transientData.Add("_marketId", null); } // We don't collect this info yet
-                if (!transientData.ContainsKey("_stationName")) { transientData.Add("_stationName", EDDI.Instance.CurrentStation.name); }
+                if (!eventObject.ContainsKey("_marketId") && !eventObject.ContainsKey("MarketID"))
+                {
+                    eventObject.Add("_marketId", null); // We don't collect this info yet
+                } 
+                if (!eventObject.ContainsKey("_stationName") && !eventObject.ContainsKey("StationName"))
+                {
+                    eventObject.Add("_stationName", EDDI.Instance.CurrentStation.name);
+                }
             }
-            if (EDDI.Instance.CurrentShip != null)
+            if (EDDI.Instance.CurrentShip != null && !eventObject.ContainsKey("ShipId") && !eventObject.ContainsKey("_shipId"))
             {
-                if (!transientData.ContainsKey("_shipId")) { transientData.Add("_shipId", EDDI.Instance.CurrentShip.LocalId); }
+                eventObject.Add("_shipId", EDDI.Instance.CurrentShip.LocalId);
             }
 
-            return transientData;
+            return JsonConvert.SerializeObject(eventObject).Normalize();
         }
 
         public UserControl ConfigurationTabItem()

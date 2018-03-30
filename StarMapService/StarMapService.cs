@@ -37,20 +37,24 @@ namespace EddiStarMapService
         public void sendEvent(string eventData)
         {
             var client = new RestClient(baseUrl);
-            var request = new RestRequest("journal-v1", Method.POST);
+            var request = new RestRequest("api-journal-v1", Method.POST);
             request.AddParameter("commanderName", commanderName);
             request.AddParameter("apiKey", apiKey);
             request.AddParameter("fromSoftware", Constants.EDDI_NAME);
             request.AddParameter("fromSoftwareVersion", Constants.EDDI_VERSION);
-            request.AddParameter("message", JsonConvert.SerializeObject(eventData));
+            request.AddParameter("message", eventData);
 
             Thread thread = new Thread(() =>
             {
                 try
                 {
                     Logging.Debug("Sending event to EDSM: " + client.BuildUri(request).AbsoluteUri);
-                    client.Execute<StarMapLogResponse>(request);
-                    Logging.Debug("Event sent to EDSM");
+                    var clientResponse = client.Execute<StarMapLogResponse>(request);
+                    StarMapLogResponse response = clientResponse.Data;
+                    if (response.msgnum != 100)
+                    {
+                        Logging.Warn("EDSM responded with " + response.msg);
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -293,6 +297,15 @@ namespace EddiStarMapService
     }
     
     // response from the Star Map log API
+    class StarMapResponse
+    {
+        public string content{ get; set; }
+        public Dictionary<string, object> data { get; set; }
+        public bool isSuccessful { get; set; }
+        public string errorMessage { get; set; }
+        public Exception errorException { get; set; }
+    }
+
     class StarMapLogResponse
     {
         public int msgnum { get; set; }
