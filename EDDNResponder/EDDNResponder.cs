@@ -41,10 +41,15 @@ namespace EDDNResponder
             return "Send station, jump, and scan information to EDDN.  EDDN is a third-party tool that gathers information on systems and markets, and provides data for most trading tools as well as starsystem information tools such as EDDB";
         }
 
-        public EDDNResponder(StarSystemRepository starSystemRepository = null)
+        public EDDNResponder()
         {
             Logging.Info("Initialised " + ResponderName() + " " + ResponderVersion());
+        }
+
+        public EDDNResponder(StarSystemRepository starSystemRepository = null)
+        {
             this.starSystemRepository = starSystemRepository ?? EddiDataProviderService.StarSystemSqLiteRepository.Instance;
+            EDDNResponder responder = new EDDNResponder();
         }
 
         public void Handle(Event theEvent)
