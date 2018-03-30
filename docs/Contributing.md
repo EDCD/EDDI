@@ -8,8 +8,8 @@ This is based on git-flow, but more relaxed:
 
   * We dispense with git-flow's ceremony concerning release branches.
   * Releases are tagged in the format `Release/3.0.0-b1`. There are some older release tags in the repo that lack the `Release/` prefix but never mind.
-  * `master` points to the current production release. **All unit tests and code analysis must pass.**
-  * `beta` points to the current beta release. **All unit tests and code analysis must pass.**
+  * `master` points to the current production release. **All unit tests and code analysis must pass.** Fast-forwarding the `master` branch is preferred versus adding a merge commit.
+  * `beta` points to the current beta release. **All unit tests and code analysis must pass.** Fast-forwarding the `beta` branch is preferred versus adding a merge commit.
   * `develop` is the integration branch for work in progress. **All unit tests and code analysis must pass.**
 
 ### Work in progress conventions
@@ -29,6 +29,10 @@ If your WIP branch has gotten so far behind `develop` that code and project file
   * Above all, **don't** merge from `develop` into your WIP branch!
   * If you *haven't* yet published your WIP branch, it is perfectly OK to rebase it onto `develop` and resolve any issues in the privacy and comfort of your own branch. I do this all the time.
   * If you *have* published your WIP branch, you can duplicate it and rebase *the duplicate* onto `develop`. Once you are happy with it you can delete the original branch and PR and create a new PR. We are fine with that. Please do resist the temptation to rename the duplicate back to the name of the original, as that will confuse both GitHub and humans mightily.
+
+## Coding conventions
+
+Please adhere to US spelling for all names in the source code, for consistency with the .NET framework and to simplify searching the code base, e.g. for all variables whose name contains "color".
 
 ## Version conventions
   * Please be aware that departing from the expected version string format may break the code that talks to the update server.
