@@ -124,13 +124,20 @@ namespace Utilities
         {
             try
             {
-                if (!(data is string))
+                if (data is object)
                 {
                     data = JsonConvert.SerializeObject(data);
                 }
-                Dictionary<string, object> json = new Dictionary<string, object>();
-                json.Add("json", data != null ? data : "{}");
-                RollbarLocator.RollbarInstance.Info(message, json);
+                if (data is string)
+                {
+                    Dictionary<string, object> json = new Dictionary<string, object>();
+                    json.Add("raw", json);
+                    RollbarLocator.RollbarInstance.Log(ErrorLevel.Info, message, json);
+                }
+                else
+                {
+                    Warn(@"Unable to report message """ + message + @""". Invalid data type " + data.GetType());
+                }
             }
             catch (Exception)
             {
