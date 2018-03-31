@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Rollbar;
+using System;
 using System.Runtime.CompilerServices;
 using System.IO;
 using System.Threading;
 using System.Net;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Utilities
 {
@@ -117,37 +120,17 @@ namespace Utilities
             }
         }
 
-        public static void Report(string message, string data = "{}", [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
+        public static void Report(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
             try
             {
-                if (data == null)
+                if (!(data is string))
                 {
-                    data = "{}";
+                    data = JsonConvert.SerializeObject(data);
                 }
-
-                string body = @"{""message"":""" + message + @""", ""version"":""" + Constants.EDDI_VERSION + @""", ""json"":" + data + @"}";
-                Thread thread = new Thread(() =>
-                {
-                    try
-                    {
-                        using (var client = new WebClient())
-                        {
-                            client.UploadString(@"http://api.eddp.co/error", body);
-                        }
-                    }
-                    catch (ThreadAbortException)
-                    {
-                        Logging.Debug("Thread aborted");
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Warn("Failed to send error to EDDP", ex);
-                    }
-                });
-                thread.Name = "Reporter";
-                thread.IsBackground = true;
-                thread.Start();
+                Dictionary<string, object> json = new Dictionary<string, object>();
+                json.Add("json", data != null ? data : "{}");
+                RollbarLocator.RollbarInstance.Info(message, json);
             }
             catch (Exception)
             {
