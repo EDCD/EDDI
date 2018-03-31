@@ -51,6 +51,8 @@ namespace EddiSpeechResponder
             set { }
         }
 
+        private static string[] ignoredEventKeys = { "Belt scanned", "Jumping", "Status" };
+
         /// <summary>
         /// Obtain all personalities from a directory.  If the directory name is not supplied the
         /// default of Constants.Data_DIR\personalities is used
@@ -201,7 +203,7 @@ namespace EddiSpeechResponder
                 Script defaultScript = null;
                 defaultPersonality?.Scripts?.TryGetValue(defaultEvent.Key, out defaultScript);
                 script = UpgradeScript(script, defaultScript);
-                if (script == null)
+                if (script == null && !ignoredEventKeys.Contains(defaultEvent.Key))
                 {
                     Logging.Report("Failed to find script for " + defaultEvent.Key);
                 }
