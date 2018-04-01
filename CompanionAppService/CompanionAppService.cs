@@ -648,7 +648,7 @@ namespace EddiCompanionAppService
                 }
                 if (moduleErrors.Count > 0)
                 {
-                    Logging.Report("Module definition errors", moduleErrors);
+                    Logging.Report("Module definition errors", JsonConvert.SerializeObject(moduleErrors));
                 }
             }
 
@@ -749,7 +749,7 @@ namespace EddiCompanionAppService
 
                 if (commodityErrors.Count() > 0)
                 {
-                    Logging.Report("Commodity definition errors", commodityErrors);
+                    Logging.Report("Commodity definition errors", JsonConvert.SerializeObject(commodityErrors));
                 }
             }
 

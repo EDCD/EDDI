@@ -269,7 +269,7 @@ namespace EddiSpeechResponder
             }
             if (missingScripts.Count > 0)
             {
-                Logging.Report("Failed to find scripts", missingScripts);
+                Logging.Report("Failed to find scripts", JsonConvert.SerializeObject(missingScripts));
             }
 
             // Re-order the scripts by name
