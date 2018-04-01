@@ -148,7 +148,7 @@ namespace Eddi
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                 updateHomeSystemStation(configuration);
-                setupExceptionHandling(configuration);
+                configureRollbarExceptionHandling(configuration);
 
                 // Set up monitors and responders
                 monitors = findMonitors();
@@ -1821,7 +1821,7 @@ namespace Eddi
             return configuration;
         }
 
-        private static void setupExceptionHandling(EDDIConfiguration configuration)
+        private static void configureRollbarExceptionHandling(EDDIConfiguration configuration)
         {
             // Exception handling (configuration instructions are at https://github.com/rollbar/Rollbar.NET)
             string[] scrubfields = { "Commander", "apiKey", "commanderName" }; // Scrub these fields from the reported data
@@ -1838,10 +1838,6 @@ namespace Eddi
                     };
                     payload.Data.CodeVersion = Constants.EDDI_VERSION;
                 },
-
-                // Limit reporting so that we don't get overwhelmed by a single bug
-                MaxReportsPerMinute = 1,
-                ReportingQueueDepth = 1,
             });
             // Send unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
@@ -1849,7 +1845,5 @@ namespace Eddi
                 RollbarLocator.RollbarInstance.Error(args.ExceptionObject as Exception);
             };
         }
-
-
     }
 }
