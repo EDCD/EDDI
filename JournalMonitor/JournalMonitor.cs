@@ -1132,6 +1132,13 @@ namespace EddiJournalMonitor
                                 handled = true;
                             }
                             break;
+                        case "FighterRebuilt":
+                            {
+                                string loadout = JsonParsing.getString(data, "Loadout");
+                                events.Add(new FighterRebuiltEvent(timestamp, loadout) { raw = line });
+                                handled = true;
+                            }
+                            break;
                         case "VehicleSwitch":
                             {
                                 string to = JsonParsing.getString(data, "To");
