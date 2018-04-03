@@ -5,12 +5,12 @@ using System.Runtime.CompilerServices;
 using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace Utilities
 {
-    public class Logging
+    public class Logging: _Rollbar
     {
-        const string rollbarReadAccessToken = "ffec003259a14847bbf588ffec517d66";
         public static readonly string LogFile = Constants.DATA_DIR + @"\eddi.log";
         public static bool Verbose { get; set; } = false;
 
@@ -124,23 +124,18 @@ namespace Utilities
         {
             try
             {
-                if (data is object)
+                if (!(data is Dictionary<string, object>))
                 {
-                    data = JsonConvert.SerializeObject(data);
+                    data = JsonConvert.DeserializeObject<Dictionary<string, object>>(data.ToString());
                 }
-                if (data is string)
+                Dictionary<string, object> thisData = (Dictionary<string, object>)data;
+                if (isUniqueMessage(message, thisData))
                 {
-                    if (isUniqueMessage(message, (string)data))
-                    {
-                        Dictionary<string, object> json = new Dictionary<string, object>();
-                        json.Add("raw", json);
-                        RollbarLocator.RollbarInstance.Configure("b16e82cc9116430eb05d901cd9ed5a25");
-                        RollbarLocator.RollbarInstance.Info(message, json);
-                    }
-                    else
-                    {
-                        Warn(@"Unable to report message """ + message + @""". Invalid data type " + data.GetType());
-                    }
+                    RollbarLocator.RollbarInstance.Info(message, thisData);
+                }
+                else
+                {
+                    Warn(@"Unable to report message """ + message + @""". Invalid data type " + data.GetType());
                 }
             }
             catch (Exception)
@@ -148,14 +143,46 @@ namespace Utilities
                 // Nothing to do
             }
         }
+    }
 
-        public static bool isUniqueMessage(string message, string data = null)
+    public class _Rollbar
+    {
+        // Exception handling (configuration instructions are at https://github.com/rollbar/Rollbar.NET)
+        // We have a limited data plan, so before sending exceptions and other reports, we shall use the API to check that the item is unique
+        // The Rollbar API test console is available at https://rollbar.com/docs/api/test_console/.
+
+        const string rollbarReadToken = "66e63ff290854a75b8b4c3263f084db6";
+        const string rollbarWriteToken = "debe6e50f82d4e8c955d5efafa79c789";
+
+        public static void configureRollbarExceptionHandling(bool beta, string uniqueId)
         {
-            // We have a limited data plan, so before sending exceptions and other reports, check to make sure the item is unique
-            // The Rollbar API test console is available at https://rollbar.com/docs/api/test_console/.
+            var config = new RollbarConfig(rollbarWriteToken)
+            {
+                Environment = beta ? "development" : "production",
+                ScrubFields = new string[] // Scrub these fields from the reported data
+                {
+                    "Commander", "apiKey", "commanderName"
+                },
+                Transform = payload =>
+                {
+                    payload.Data.CodeVersion = Constants.EDDI_VERSION;
+                },
+                // Identify each EDDI configuration by a unique ID, or by "Commander" if a unique ID isn't available.
+                Person = new Rollbar.DTOs.Person(uniqueId),
+            };
+            RollbarLocator.RollbarInstance.Configure(config);
+            // Send unhandled exceptions
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                RollbarLocator.RollbarInstance.Error(args.ExceptionObject as Exception);
+            };
+        }
+
+        public static bool isUniqueMessage(string message, Dictionary<string, object> thisData = null)
+        {
             var client = new RestClient("https://api.rollbar.com/api/1");
             var request = new RestRequest("/items/", Method.GET);
-            request.AddParameter("access_token", rollbarReadAccessToken);
+            request.AddParameter("access_token", rollbarReadToken);
             var clientResponse = client.Execute<Dictionary<string, object>>(request);
             Dictionary<string, object> response = clientResponse.Data;
 
@@ -177,39 +204,38 @@ namespace Utilities
                     string itemStatus = JsonParsing.getString(item, "status");
                     string itemResolvedVersion = JsonParsing.getString(item, "resolved_in_version");
                     long itemId = JsonParsing.getLong(item, "id");
+                    bool uniqueData = isUniqueData(itemId, thisData);
 
-                    // Filter for messages & data, send only reports which are not unique
-                    if (itemMessage == message && isUniqueData(itemId, data))
+                    if (itemMessage == message)
                     {
-                        // Any item that is already active can be safely ignored. If the item reoccurs after being marked as "resolved" it shall be reactivated.
-                        if (itemStatus == "active")
+                        // Filter messages & data so that we send only reports which are unique
+                        if (itemStatus == "active" && !uniqueData)
                         {
-                            return false;
+                            return false; // Note that if an item reoccurs after being marked as "resolved" it is automatically reactivated.
                         }
                         else if (itemResolvedVersion != null)
                         {
                             if (Versioning.Compare(itemResolvedVersion, Constants.EDDI_VERSION) > 0)
                             {
-                                // This has been marked as resolved in a more current client version.
-                                return false;
+                                return false; // This has been marked as resolved in a more current client version.
                             }
                         }
                     }
                 }
             }
-            else
-            {
-                Debug("Connection to Rollbar API failed, code " + (int)val + @". Unclear whether reporting item is unique. Message: " + message + ". Data: " + data);
-            }
-            // This item appears to be unique.
             return true;
         }
 
-        public static bool isUniqueData(long itemId, string data = null)
+        public static bool isUniqueData(long itemId, Dictionary<string, object> thisData = null)
         {
+            if (thisData is null)
+            {
+                return true;
+            }
+
             var client = new RestClient("https://api.rollbar.com/api/1");
             var request = new RestRequest("/item/" + itemId + "/instances/", Method.GET);
-            request.AddParameter("access_token", rollbarReadAccessToken);
+            request.AddParameter("access_token", rollbarReadToken);
             var clientResponse = client.Execute<Dictionary<string, object>>(request);
             Dictionary<string, object> response = clientResponse.Data;
 
@@ -233,18 +259,17 @@ namespace Utilities
 
                     instanceData.TryGetValue("custom", out val);
                     Dictionary<string, object> customData = (Dictionary<string, object>)val;
-                    foreach (KeyValuePair<string, object> json in customData)
+
+                    if (customData != null)
                     {
-                        string escapedData = System.Text.RegularExpressions.Regex.Escape(data);
-                        string escapedJson = System.Text.RegularExpressions.Regex.Escape((string)json.Value);
-                        if ((string)json.Value == escapedData)
+                        if (customData.Keys.Count == thisData.Keys.Count && 
+                            customData.Keys.All(k => thisData.ContainsKey(k) && Equals(thisData[k], customData[k])))
                         {
                             return false;
                         }
                     }
                 }
             }
-            // This item appears to be unique.
             return true;
         }
     }

@@ -450,7 +450,8 @@ namespace EddiDataDefinitions
             {
                 var badCommodity = new Dictionary<string, object>();
                 badCommodity["name"] = name;
-                Logging.Report("Unknown commodity", badCommodity);
+                string badCommodityJSON = JsonConvert.SerializeObject(badCommodity);
+                Logging.Report("Unknown commodity", badCommodityJSON);
 
                 // Put some basic information in place
                 Commodity.EDName = name;

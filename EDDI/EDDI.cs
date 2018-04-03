@@ -5,7 +5,6 @@ using EddiEvents;
 using EddiSpeechService;
 using EddiStarMapService;
 using Newtonsoft.Json;
-using Rollbar;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -148,7 +147,7 @@ namespace Eddi
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                 updateHomeSystemStation(configuration);
-                configureRollbarExceptionHandling(configuration);
+                _Rollbar.configureRollbarExceptionHandling(configuration.Beta, configuration.uniqueId);
 
                 // Set up monitors and responders
                 monitors = findMonitors();
@@ -1819,31 +1818,6 @@ namespace Eddi
                 }
             }
             return configuration;
-        }
-
-        private static void configureRollbarExceptionHandling(EDDIConfiguration configuration)
-        {
-            // Exception handling (configuration instructions are at https://github.com/rollbar/Rollbar.NET)
-            string[] scrubfields = { "Commander", "apiKey", "commanderName" }; // Scrub these fields from the reported data
-            RollbarLocator.RollbarInstance.Configure(new RollbarConfig("b16e82cc9116430eb05d901cd9ed5a25")
-            {
-                Environment = configuration.Beta ? "development" : "production",
-                ScrubFields = scrubfields,
-                Transform = payload =>
-                {
-                    payload.Data.Person = new Rollbar.DTOs.Person()
-                    {
-                        // Identify each EDDI configuration by a unique ID, or by "Commander" if a unique ID isn't available.
-                        Id = configuration.uniqueId ?? "Commander"
-                    };
-                    payload.Data.CodeVersion = Constants.EDDI_VERSION;
-                },
-            });
-            // Send unhandled exceptions
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
-            {
-                RollbarLocator.RollbarInstance.Error(args.ExceptionObject as Exception);
-            };
         }
     }
 }
