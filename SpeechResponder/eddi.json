@@ -578,6 +578,15 @@
       "name": "Fighter launched",
       "description": "Triggered when you launch a fighter from your ship"
     },
+    "Fighter rebuilt": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Fighter {OneOf(\"rebuilt\", \"reconstruction complete\")} and ready for {OneOf(\"launch\", \"deployment\")}.",
+      "default": true,
+      "name": "Fighter rebuilt",
+      "description": "Triggered when a ship's fighter is rebuilt in the hangar"
+    },
     "File Header": {
       "enabled": true,
       "priority": 3,
