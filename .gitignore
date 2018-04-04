@@ -213,3 +213,7 @@ ModelManifest.xml
 
 # Inno Setup
 *.~is
+
+# Auto-generated resource manager
+*.Designer.cs
+Documentation.chw
