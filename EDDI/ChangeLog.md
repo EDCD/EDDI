@@ -1,5 +1,7 @@
 ﻿# CHANGE LOG
 
+### 3.0.0-rc2
+
 ### 3.0.0-rc1
   * Core
     * Incorporated new data definitions for 3.0.
