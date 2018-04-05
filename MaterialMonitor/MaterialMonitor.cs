@@ -113,6 +113,10 @@ namespace EddiMaterialMonitor
             {
                 handleModificationCraftedEvent((ModificationCraftedEvent)@event);
             }
+            else if (@event is TechnologyBrokerEvent)
+            {
+                handleTechnologyBrokerEvent((TechnologyBrokerEvent)@event);
+            }
         }
 
         // Flush any pending events
@@ -186,6 +190,14 @@ namespace EddiMaterialMonitor
             foreach (MaterialAmount component in @event.materials)
             {
                 decMaterial(component.edname, component.amount);
+            }
+        }
+
+        private void handleTechnologyBrokerEvent(TechnologyBrokerEvent @event)
+        {
+            foreach (MaterialAmount material in @event.materials)
+            {
+                decMaterial(material.edname, material.amount);
             }
         }
 

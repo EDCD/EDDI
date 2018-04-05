@@ -1703,6 +1703,15 @@
       "name": "System state report",
       "description": "Report on the current state of the contextual system"
     },
+    "Technology broker": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Technology broker",
+      "description": "Triggered when using the Technology Broker to unlock new purchasable technology"
+    },
     "Touchdown": {
       "enabled": true,
       "priority": 3,

@@ -794,6 +794,46 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
+                        case "TechnologyBroker":
+                            {
+                                object val;
+
+                                string brokerType = JsonParsing.getString(data, "BrokerType");
+                                long marketId = JsonParsing.getLong(data, "MarketID");
+
+                                data.TryGetValue("ItemsUnlocked", out val);
+                                List<Dictionary<string, object>> itemsUnlocked = (List<Dictionary<string, object>>)val;
+                                List<string> items = new List<string>();
+                                foreach (Dictionary<string, object> item in itemsUnlocked)
+                                {
+                                    items.Add(JsonParsing.getString(item, "Name"));
+                                }
+
+                                data.TryGetValue("Commodities", out val);
+                                List<Dictionary<string, object>> commodities = (List<Dictionary<string, object>>)val;
+                                List<CommodityAmount> Commodities = new List<CommodityAmount>();
+                                foreach (Dictionary<string, object> _commodity in commodities)
+                                {
+                                    Commodity commodity = CommodityDefinitions.FromName(JsonParsing.getString(_commodity, "Name"));
+                                    int count = JsonParsing.getInt(_commodity, "Count");
+                                    Commodities.Add(new CommodityAmount(commodity, count));
+                                }
+
+                                data.TryGetValue("Materials", out val);
+                                List<Dictionary<string, object>> materials = (List<Dictionary<string, object>>)val;
+                                List<MaterialAmount> Materials = new List<MaterialAmount>();
+                                foreach (Dictionary<string, object> _material in materials)
+                                {
+                                    Material material = Material.FromEDName(JsonParsing.getString(_material, "Name"));
+                                    material.category = Material.TidiedCategory(JsonParsing.getString(_material, "Category"));
+                                    int count = JsonParsing.getInt(_material, "Count");
+                                    Materials.Add(new MaterialAmount(material, count));
+                                }
+
+                                events.Add(new TechnologyBrokerEvent(timestamp, brokerType, marketId, items, Commodities, Materials) { raw = line });
+                                handled = true;
+                            }
+                            break;
                         case "ShipyardTransfer":
                             {
                                 object val;
