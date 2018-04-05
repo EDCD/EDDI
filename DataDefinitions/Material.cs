@@ -297,6 +297,7 @@ namespace EddiDataDefinitions
 
         public static string TidiedCategory(string edCategory)
         {
+            // FDev categorizes materials as one of: `$MICRORESOURCE_CATEGORY_Manufactured;`, `$MICRORESOURCE_CATEGORY_Encoded;`, or `$MICRORESOURCE_CATEGORY_Elements;`
             return edCategory.Replace("$MICRORESOURCE_CATEGORY_", "").Replace(";", "");
         }
     }
