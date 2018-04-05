@@ -1,8 +1,47 @@
 ﻿# CHANGE LOG
 
-### 3.0.0-rc2
-  * Speech Responder
-    * Added 'Fighter rebuilt' event
+### 3.0.1-XX
+  * Core 
+    * EDDI will now track the nearest stellar body and make that data available to EDDI's Speech responder via the `body` variable (planet, moon, etc.).  
+  * Speech Responder 
+    * Updated the 'Near surface' event to include the name of the body that you are approaching or exiting. 
+    * Add a new top level `body` object, which contains details of the nearest stellar body. Any values might be missing, depending on EDDI's configuration and the information available about the body. 
+  * VoiceAttack 
+    * Added the following new variables describing details of the nearest stellar body, with values as described by the 'Body' object 
+      * `{DEC:Body EDDB id}`
+      * `{TXT:Body type}`
+      * `{TXT:Body name}` 
+      * `{TXT:Body system name}`
+      * `{DEC:Body age}`
+      * `{DEC:Body distance}`
+      * `{BOOL:Body landable}` 
+      * `{BOOL:Body tidally locked}` 
+      * `{DEC:Body temperature}` 
+      * `{BOOL:Body main star}` 
+      * `{TXT:Body stellar class}` 
+      * `{TXT:Body luminosity class}` 
+      * `{DEC:Body solar mass}` 
+      * `{DEC:Body solar radius}` 
+      * `{TXT:Body chromaticity}` 
+      * `{DEC:Body radius probability}` 
+      * `{DEC:Body mass probability}` 
+      * `{DEC:Body temp probability}` 
+      * `{DEC:Body age probability}` 
+      * `{DEC:Body periapsis}` 
+      * `{TXT:Body atmosphere}` 
+      * `{DEC:Body tilt}` 
+      * `{DEC:Body earth mass}` 
+      * `{DEC:Body gravity}` 
+      * `{DEC:Body eccentricity}` 
+      * `{DEC:Body inclination}` 
+      * `{DEC:Body orbital period}` 
+      * `{DEC:Body radius}` 
+      * `{DEC:Body rotational period}` 
+      * `{DEC:Body semi major axis}` 
+      * `{DEC:Body pressure}` 
+      * `{TXT:Body terraform state}` 
+      * `{TXT:Body planet type}` 
+      * `{TXT:Body reserves}` 
 
 ### 3.0.0-rc1
   * Core
