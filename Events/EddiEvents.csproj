@@ -65,6 +65,7 @@
     <Compile Include="BeltScannedEvent.cs" />
     <Compile Include="FighterRebuiltEvent.cs" />
     <Compile Include="JetConeDamageEvent.cs" />
+    <Compile Include="MaterialTradedEvent.cs" />
     <Compile Include="ShutdownEvent.cs" />
     <Compile Include="StatusEvent.cs" />
     <Compile Include="VAInitialized.cs" />

@@ -101,6 +101,10 @@ namespace EddiMaterialMonitor
             {
                 handleMaterialDonatedEvent((MaterialDonatedEvent)@event);
             }
+            else if (@event is MaterialTradedEvent)
+            {
+                handleMaterialTradedEvent((MaterialTradedEvent)@event);
+            }
             else if (@event is SynthesisedEvent)
             {
                 handleSynthesisedEvent((SynthesisedEvent)@event);
@@ -161,6 +165,12 @@ namespace EddiMaterialMonitor
         private void handleMaterialDonatedEvent(MaterialDonatedEvent @event)
         {
             decMaterial(@event.edname, @event.amount);
+        }
+
+        private void handleMaterialTradedEvent(MaterialTradedEvent @event)
+        {
+            decMaterial(@event.paid_edname, @event.paidqty);
+            incMaterial(@event.received_edname, @event.receivedqty);
         }
 
         private void handleSynthesisedEvent(SynthesisedEvent @event)

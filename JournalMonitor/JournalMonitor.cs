@@ -1231,6 +1231,32 @@ namespace EddiJournalMonitor
                                 handled = true;
                             }
                             break;
+                        case "MaterialTrade":
+                            {
+                                object val;
+
+                                long marketId = JsonParsing.getLong(data, "MarketID");
+                                string traderType = JsonParsing.getString(data, "TraderType");
+
+                                data.TryGetValue("Paid", out val);
+                                Dictionary<string, object> paid = (Dictionary<string, object>)val;
+
+                                Material materialPaid = Material.FromEDName(JsonParsing.getString(paid, "Material"));
+                                materialPaid.category = Material.TidiedCategory(JsonParsing.getString(paid, "Category"));
+                                int materialPaidQty = JsonParsing.getInt(paid, "Quantity");
+
+                                data.TryGetValue("Received", out val);
+                                Dictionary<string, object> received = (Dictionary<string, object>)val;
+
+                                Material materialReceived = Material.FromEDName(JsonParsing.getString(received, "Material"));
+                                materialReceived.category = Material.TidiedCategory(JsonParsing.getString(received, "Category"));
+                                int materialReceivedQty = JsonParsing.getInt(received, "Quantity");
+
+                                events.Add(new MaterialTradedEvent(timestamp, marketId, traderType, materialPaid, materialPaidQty, materialReceived, materialReceivedQty) { raw = line });
+                                handled = true;
+
+                                break;
+                            }
                         case "ScientificResearch":
                             {
                                 object val;

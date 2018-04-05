@@ -947,6 +947,15 @@
       "name": "Material threshold",
       "description": "Triggered when a material reaches a threshold"
     },
+    "Material traded": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Material traded",
+      "description": "Triggered when materials are traded at a material trader"
+    },
     "Material use report": {
       "enabled": true,
       "priority": 3,
