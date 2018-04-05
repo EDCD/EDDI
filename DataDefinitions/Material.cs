@@ -294,5 +294,10 @@ namespace EddiDataDefinitions
 
             return deprecatedMaterialsList.Contains(name.Trim());
         }
+
+        public static string TidiedCategory(string edCategory)
+        {
+            return edCategory.Replace("$MICRORESOURCE_CATEGORY_", "").Replace(";", "");
+        }
     }
 }
