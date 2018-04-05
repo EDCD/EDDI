@@ -27,7 +27,7 @@ namespace EddiStarMapService
 
         // For normal use, the EDSM API base URL is https://www.edsm.net/.
         // If you need to do some testing on EDSM's API, please use the https://beta.edsm.net/ endpoint.
-        public StarMapService(string apiKey, string commanderName, string baseUrl= "https://beta.edsm.net/")
+        public StarMapService(string apiKey, string commanderName, string baseUrl= "https://www.edsm.net/")
         {
             this.apiKey = apiKey;
             this.commanderName = commanderName;
