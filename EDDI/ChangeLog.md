@@ -1,6 +1,8 @@
 ﻿# CHANGE LOG
 
 ### 3.0.0-rc2
+  * Core
+    * The EDSM responder has been updated to send data to EDSM per their revised API. 
   * Speech Responder
     * Added 'Fighter rebuilt' event
 
