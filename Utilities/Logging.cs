@@ -153,6 +153,7 @@ namespace Utilities
 
         const string rollbarReadToken = "66e63ff290854a75b8b4c3263f084db6";
         const string rollbarWriteToken = "debe6e50f82d4e8c955d5efafa79c789";
+        private static bool filterMessages = true; // We are rate limited, so keep this set to true unless we have a good reason to do otherwise.
 
         public static void configureRollbarExceptionHandling(bool beta, string uniqueId)
         {
@@ -184,12 +185,20 @@ namespace Utilities
                     trace.Add("StackTrace", exception.StackTrace != null ? exception.StackTrace : "StackTrace not available");
                 }
 
-                RollbarLocator.RollbarInstance.Error(exception, trace);
+                if (isUniqueMessage(exception.GetType() + ": " + exception.Message, trace))
+                {
+                    RollbarLocator.RollbarInstance.Error(exception, trace);
+                }
             };
         }
 
-        public static bool isUniqueMessage(string message, Dictionary<string, object> thisData = null, Exception exception = null)
+        public static bool isUniqueMessage(string message, Dictionary<string, object> thisData = null)
         {
+            if (!filterMessages)
+            {
+                return true;
+            }
+
             var client = new RestClient("https://api.rollbar.com/api/1");
             var request = new RestRequest("/items/", Method.GET);
             request.AddParameter("access_token", rollbarReadToken);
@@ -293,9 +302,10 @@ namespace Utilities
             {
                 Dictionary<string, object> trace = new Dictionary<string, object>();
                 trace.Add("StackTrace", ex.StackTrace != null ? ex.StackTrace : "This string represents a stack trace");
-                RollbarLocator.RollbarInstance.Error(ex, trace);
-                
-                RollbarLocator.RollbarInstance.Error(ex);
+                if (isUniqueMessage(ex.GetType() + ": " + ex.Message, trace))
+                {
+                    RollbarLocator.RollbarInstance.Error(ex, trace);
+                }
             }
         }
     }
