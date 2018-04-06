@@ -1,12 +1,14 @@
 ﻿# CHANGE LOG
 
 ### 3.0.0-rc2
-  * Incorporate new material transaction events
-  * EDDI's Material Monitor will now auto-calculate maximum material limits when they are not otherwise defined... provided the material rarity is known.
+  * Core
+    * The EDSM responder has been updated to send data to EDSM per their revised API. 
+    * Incorporated new material transaction events
+    * EDDI's Material Monitor will now auto-calculate maximum material limits when not otherwise defined... provided the material rarity is known.
   * Speech Responder
-    * Added `Fighter rebuilt` event
-    * Added `Material trade` event
-    * Added `Technology broker` event
+      * Added `Fighter rebuilt` event
+      * Added `Material trade` event
+      * Added `Technology broker` event
 
 ### 3.0.0-rc1
   * Core
