@@ -1,5 +1,9 @@
 ﻿# CHANGE LOG
 
+### 3.0.0-rc2
+  * Core
+    * Switched error reporting to [Rollbar](https://rollbar.com/).
+
 ### 3.0.0-rc1
   * Core
     * Incorporated new data definitions for 3.0.
