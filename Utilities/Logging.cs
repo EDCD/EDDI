@@ -132,6 +132,7 @@ namespace Utilities
                 if (isUniqueMessage(message, thisData))
                 {
                     RollbarLocator.RollbarInstance.Info(message, thisData);
+                    Info("Reporting unique data, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id + ": " + message + thisData);
                 }
                 else
                 {
@@ -187,6 +188,7 @@ namespace Utilities
 
                 if (isUniqueMessage(exception.GetType() + ": " + exception.Message, trace))
                 {
+                    Logging.Error("Reporting unhandled exception, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id);
                     RollbarLocator.RollbarInstance.Error(exception, trace);
                 }
             };
