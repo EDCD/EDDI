@@ -3,6 +3,7 @@ using EddiDataDefinitions;
 using EddiEvents;
 using EddiShipMonitor;
 using EddiStarMapService;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Controls;
@@ -13,8 +14,8 @@ namespace EddiEdsmResponder
     public class EDSMResponder : EDDIResponder
     {
         private StarMapService starMapService;
-        private string system;
         private Thread updateThread;
+        private List<string> ignoredEvents;
 
         public string ResponderName()
         {
@@ -70,6 +71,10 @@ namespace EddiEdsmResponder
                 {
                     starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
                 }
+                if (ignoredEvents == null)
+                {
+                    ignoredEvents = starMapService.getIgnoredEvents();
+                }
             }
 
             if (starMapService != null && updateThread == null)
@@ -104,86 +109,152 @@ namespace EddiEdsmResponder
 
             if (starMapService != null)
             {
-                if (theEvent is JumpedEvent)
+                /// Retrieve applicable transient game state info (metadata) 
+                /// for the event and the event with transient info to EDSM
+                string eventData = prepareEventData(theEvent);
+                if (eventData == null)
                 {
-                    JumpedEvent jumpedEvent = (JumpedEvent)theEvent;
+                    return;
+                }
+                starMapService.sendEvent(eventData);
+            }
+        }
 
-                    if (jumpedEvent.system != system)
+        private string prepareEventData(Event theEvent)
+        {
+            // Prep transient game state info (metadata) per https://www.edsm.net/en/api-journal-v1.
+            // Unpackage the event, add transient game state info as applicable, then repackage and send the event
+            IDictionary<string, object> eventObject = Deserializtion.DeserializeData(theEvent.raw);
+            string eventType = JsonParsing.getString(eventObject, "event");
+
+            if (ignoredEvents.Contains(eventType) || theEvent.raw == null)
+            {
+                return null;
+            }
+
+            // Add metadata from events
+            switch (eventType)
+            {
+                case "LoadGame":
                     {
-                        Logging.Debug("Sending jump data to EDSM (jumped)");
-                        starMapService.sendStarMapLog(jumpedEvent.timestamp, jumpedEvent.system, jumpedEvent.x, jumpedEvent.y, jumpedEvent.z);
-                        system = jumpedEvent.system;
+                        eventObject.Add("_systemAddress", null);
+                        eventObject.Add("_systemName", null);
+                        eventObject.Add("_systemCoordinates", null);
+                        eventObject.Add("_marketId", null);
+                        eventObject.Add("_stationName", null);
+                        break;
                     }
-                }
-                else if (theEvent is CommanderContinuedEvent)
-                {
-                    CommanderContinuedEvent continuedEvent = (CommanderContinuedEvent)theEvent;
-                    starMapService.sendCredits(continuedEvent.credits, continuedEvent.loan);
-                }
-                else if (theEvent is MaterialInventoryEvent)
-                {
-                    MaterialInventoryEvent materialInventoryEvent = (MaterialInventoryEvent)theEvent;
-                    Dictionary<string, int> materials = new Dictionary<string, int>();
-                    Dictionary<string, int> data = new Dictionary<string, int>();
-                    foreach (MaterialAmount ma in materialInventoryEvent.inventory)
+                case "SetUserShipName":
                     {
-                        Material material = Material.FromEDName(ma.edname);
-                        if (material.category == "Element" || material.category == "Manufactured")
+                        ShipRenamedEvent shipRenamedEvent = (ShipRenamedEvent)theEvent;
+                        eventObject.Add("_shipId", shipRenamedEvent.shipid);
+                        break;
+                    }
+                case "ShipyardBuy":
+                    {
+                        eventObject.Add("_shipId", null);
+                        break;
+                    }
+                case "ShipyardSwap":
+                    {
+                        ShipSwappedEvent shipSwappedEvent = (ShipSwappedEvent)theEvent;
+                        eventObject.Add("_shipId", shipSwappedEvent.shipid);
+                        break;
+                    }
+                case "Loadout":
+                    {
+                        ShipLoadoutEvent shipLoadoutEvent = (ShipLoadoutEvent)theEvent;
+                        eventObject.Add("_shipId", shipLoadoutEvent.shipid);
+                        break;
+                    }
+                case "Undocked":
+                    {
+                        eventObject.Add("_marketId", null);
+                        eventObject.Add("_stationName", null);
+                        break;
+                    }
+                case "Location":
+                    {
+                        LocationEvent locationEvent = (LocationEvent)theEvent;
+                        eventObject.Add("_systemAddress", null); // We don't collect this info yet
+                        eventObject.Add("_systemName", locationEvent.system);
+                        List<decimal?> _systemCoordinates = new List<decimal?>
                         {
-                            materials.Add(material.EDName, ma.amount);
-                        }
-                        else
+                            locationEvent.x,
+                            locationEvent.y,
+                            locationEvent.z
+                        };
+                        eventObject.Add("_systemCoordinates", _systemCoordinates);
+                        eventObject.Add("_marketId", null); // We don't collect this info yet
+                        eventObject.Add("_stationName", locationEvent.station);
+                        break;
+                    }
+                case "FSDJump":
+                    {
+                        JumpedEvent jumpedEvent = (JumpedEvent)theEvent;
+                        eventObject.Add("_systemAddress", null); // We don't collect this info yet
+                        eventObject.Add("_systemName", jumpedEvent.system);
+                        List<decimal?> _systemCoordinates = new List<decimal?>
                         {
-                            data.Add(material.EDName, ma.amount);
-                        }
+                            jumpedEvent.x,
+                            jumpedEvent.y,
+                            jumpedEvent.z
+                        };
+                        eventObject.Add("_systemCoordinates", _systemCoordinates);
+                        break;
                     }
-                    starMapService.sendMaterials(materials);
-                    starMapService.sendData(data);
-                }
-                else if (theEvent is ShipLoadoutEvent)
-                {
-                    ShipLoadoutEvent shipLoadoutEvent = (ShipLoadoutEvent)theEvent;
-                    Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetShip(shipLoadoutEvent.shipid);
-                    starMapService.sendShip(ship);
-                }
-                else if (theEvent is ShipSwappedEvent)
-                {
-                    ShipSwappedEvent shipSwappedEvent = (ShipSwappedEvent)theEvent;
-                    if (shipSwappedEvent.shipid.HasValue)
+                case "Docked":
                     {
-                        starMapService.sendShipSwapped((int)shipSwappedEvent.shipid);
+                        DockedEvent dockedEvent = (DockedEvent)theEvent;
+                        eventObject.Add("_systemAddress", null); // We don't collect this info yet
+                        eventObject.Add("_systemName", dockedEvent.system);
+                        eventObject.Add("_systemCoordinates", null);
+                        eventObject.Add("_marketId", null); // We don't collect this info yet
+                        eventObject.Add("_stationName", dockedEvent.station);
+                        break;
                     }
-                }
-                else if (theEvent is ShipSoldEvent)
+            }
+
+            // Supplement with metadata from the tracked game state, as applicable
+            if (EDDI.Instance.CurrentStarSystem != null)
+            {
+                if (!eventObject.ContainsKey("_systemAddress") && !eventObject.ContainsKey("SystemAddress"))
                 {
-                    ShipSoldEvent shipSoldEvent = (ShipSoldEvent)theEvent;
-                    if (shipSoldEvent.shipid.HasValue)
-                    {
-                        starMapService.sendShipSold((int)shipSoldEvent.shipid);
-                    }
-                }
-                else if (theEvent is ShipDeliveredEvent)
+                    eventObject.Add("_systemAddress", null); // We don't collect this info yet
+                } 
+                if (!eventObject.ContainsKey("_systemName") && !eventObject.ContainsKey("SystemName"))
                 {
-                    ShipDeliveredEvent shipDeliveredEvent = (ShipDeliveredEvent)theEvent;
-                    if (shipDeliveredEvent.shipid.HasValue)
-                    {
-                        starMapService.sendShipSwapped((int)shipDeliveredEvent.shipid);
-                    }
+                    eventObject.Add("_systemName", EDDI.Instance.CurrentStarSystem.name);
                 }
-                else if (theEvent is CommanderProgressEvent)
+                if (!eventObject.ContainsKey("_systemCoordinates") && !eventObject.ContainsKey("StarPos"))
                 {
-                    CommanderProgressEvent progressEvent = (CommanderProgressEvent)theEvent;
-                    if (EDDI.Instance.Cmdr != null && EDDI.Instance.Cmdr.federationrating != null)
+                    List<decimal?> _coordinates = new List<decimal?>
                     {
-                        starMapService.sendRanks(EDDI.Instance.Cmdr.combatrating.rank, (int)progressEvent.combat,
-                            EDDI.Instance.Cmdr.traderating.rank, (int)progressEvent.trade,
-                            EDDI.Instance.Cmdr.explorationrating.rank, (int)progressEvent.exploration,
-                            EDDI.Instance.Cmdr.cqcrating.rank, (int)progressEvent.cqc,
-                            EDDI.Instance.Cmdr.federationrating.rank, (int)progressEvent.federation,
-                            EDDI.Instance.Cmdr.empirerating.rank, (int)progressEvent.empire);
-                    }
+                    EDDI.Instance.CurrentStarSystem.x,
+                    EDDI.Instance.CurrentStarSystem.y,
+                    EDDI.Instance.CurrentStarSystem.z
+                    };
+                    eventObject.Add("_systemCoordinates", _coordinates);
+                }
+
+            }
+            if (EDDI.Instance.CurrentStation != null)
+            {
+                if (!eventObject.ContainsKey("_marketId") && !eventObject.ContainsKey("MarketID"))
+                {
+                    eventObject.Add("_marketId", null); // We don't collect this info yet
+                } 
+                if (!eventObject.ContainsKey("_stationName") && !eventObject.ContainsKey("StationName"))
+                {
+                    eventObject.Add("_stationName", EDDI.Instance.CurrentStation.name);
                 }
             }
+            if (EDDI.Instance.CurrentShip != null && !eventObject.ContainsKey("ShipId") && !eventObject.ContainsKey("_shipId"))
+            {
+                eventObject.Add("_shipId", EDDI.Instance.CurrentShip.LocalId);
+            }
+
+            return JsonConvert.SerializeObject(eventObject).Normalize();
         }
 
         public UserControl ConfigurationTabItem()
