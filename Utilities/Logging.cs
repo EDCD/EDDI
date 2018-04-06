@@ -181,10 +181,7 @@ namespace Utilities
                 Exception exception = args.ExceptionObject as Exception;
 
                 Dictionary<string, object> trace = new Dictionary<string, object>();
-                if (exception.StackTrace != null)
-                {
-                    trace.Add("StackTrace", exception.StackTrace != null ? exception.StackTrace : "StackTrace not available");
-                }
+                trace.Add("StackTrace", exception.StackTrace ?? "StackTrace not available");
 
                 if (isUniqueMessage(exception.GetType() + ": " + exception.Message, trace))
                 {
