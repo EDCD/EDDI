@@ -140,6 +140,10 @@ namespace EddiCargoMonitor
             {
                 // If we fail a mission with cargo it becomes stolen
             }
+            else if (@event is TechnologyBrokerEvent)
+            {
+                // TODO
+            }
             // TODO Powerplay events
         }
 
@@ -168,6 +172,17 @@ namespace EddiCargoMonitor
             //{
             //    inventory.Add(cargo);
             //}
+        }
+
+        private void handleTechnologyBrokerEvent(TechnologyBrokerEvent @event)
+        {
+            for (int i = 0; i < @event.commodities.Count; i++)
+            {
+                Cargo cargo = new Cargo();
+                string commodityName = @event.commodities[i].commodity;
+                cargo.amount = @event.commodities[i].amount;
+                removeCargo(cargo);
+            }
         }
 
         public IDictionary<string, object> GetVariables()
