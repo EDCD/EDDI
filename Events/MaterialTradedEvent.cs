@@ -9,13 +9,12 @@ namespace EddiEvents
     {
         public const string NAME = "Material traded";
         public const string DESCRIPTION = "Triggered when you trade materials at a materials trader";
-        public const string SAMPLE = "{ \"timestamp\":\"2018-02-21T15:23:49Z\", \"event\":\"MaterialTrade\", \"MarketID\":3221397760, \"TraderType\":\"encoded\", \"Paid\":{ \"Material\":\"scandatabanks\", \"Material_Localised\":\"Classified Scan Databanks\", \"Category\":\"$MICRORESOURCE_CATEGORY_Encoded;\", \"Category_Localised\":\"Encoded\", \"Quantity\":6, \"Category\":\"$MICRORESOURCE_CATEGORY_Encoded;\", \"Category_Localised\":\"Encoded\" }, \"Received\":{ \"Material\":\"encodedscandata\", \"Material_Localised\":\"Divergent Scan Data\", \"Quantity\":1 }";
-
+        public const string SAMPLE = "{ \"timestamp\": \"2018-04-02T05:04:45Z\", \"event\": \"MaterialTrade\", \"MarketID\": 3223343616, \"TraderType\": \"encoded\", \"Paid\": { \"Material\": \"shielddensityreports\", \"Material_Localised\": \"Untypical Shield Scans \", \"Category\": \"$MICRORESOURCE_CATEGORY_Encoded;\", \"Category_Localised\": \"Encoded\", \"Quantity\": 72 }, \"Received\": { \"Material\": \"shieldfrequencydata\", \"Material_Localised\": \"Peculiar Shield Frequency Data\", \"Category\": \"$MICRORESOURCE_CATEGORY_Encoded;\", \"Category_Localised\": \"Encoded\", \"Quantity\": 2 } }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static MaterialTradedEvent()
         {
-            VARIABLES.Add("traderType", "The type of material trader for the trade");
+            VARIABLES.Add("tradertype", "The type of material trader for the trade");
             VARIABLES.Add("paid", "The name of the material lost in the trade");
             VARIABLES.Add("paidqty", "The amount of the material lost in the trade");
             VARIABLES.Add("received", "The name of the material lost in the trade");

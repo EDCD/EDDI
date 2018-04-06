@@ -15,16 +15,16 @@ namespace EddiEvents
         static TechnologyBrokerEvent()
         {
             VARIABLES.Add("brokertype", "The technology broker's type (e.g. \"Human\")");
-            VARIABLES.Add("items", "The items unlocked in the transaction (this is a list of item names)");
-            VARIABLES.Add("materials", "The materials and quantities used in the crafting (MaterialAmount object)");
-            VARIABLES.Add("commodities", "The commodities and quantities used in the crafting (CommodityAmount object)");
+            VARIABLES.Add("items", "The items unlocked in the transaction (this is a list of Module objects)");
+            VARIABLES.Add("materials", "The materials and quantities used in the crafting (MaterialAmount object with keys \"material\" and \"amount\", consisting of a material object and an amount)");
+            VARIABLES.Add("commodities", "The commodities and quantities used in the crafting (CommodityAmount object with keys \"commodity\" and \"amount\", consisting of a commodity object and an amount)");
         }
 
         [JsonProperty("brokertype")]
         public string brokertype { get; private set; }
 
         [JsonProperty("items")]
-        public List<string> items { get; private set; }
+        public List<Module> items { get; private set; }
 
         public List<CommodityAmount> commodities { get; private set; }
 
@@ -33,7 +33,7 @@ namespace EddiEvents
         // Admin
         public long marketid { get; private set; }
 
-        public TechnologyBrokerEvent(DateTime timestamp, string brokerType, long marketId, List<string> items, List<CommodityAmount> commodities, List<MaterialAmount> materials) : base(timestamp, NAME)
+        public TechnologyBrokerEvent(DateTime timestamp, string brokerType, long marketId, List<Module> items, List<CommodityAmount> commodities, List<MaterialAmount> materials) : base(timestamp, NAME)
         {
             this.brokertype = brokerType;
             this.marketid = marketId;
