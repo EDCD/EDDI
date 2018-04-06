@@ -16,9 +16,9 @@ namespace EddiEvents
         {
             VARIABLES.Add("tradertype", "The type of material trader for the trade");
             VARIABLES.Add("paid", "The name of the material lost in the trade");
-            VARIABLES.Add("paidqty", "The amount of the material lost in the trade");
+            VARIABLES.Add("paid_quantity", "The amount of the material lost in the trade");
             VARIABLES.Add("received", "The name of the material gained in the trade");
-            VARIABLES.Add("receivedqty", "The amount of the material gained in the trade");
+            VARIABLES.Add("received_quantity", "The amount of the material gained in the trade");
         }
 
         [JsonProperty("tradertype")]
