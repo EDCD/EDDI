@@ -163,22 +163,32 @@ namespace Utilities
                 {
                     "Commander", "apiKey", "commanderName"
                 },
-                Transform = payload =>
-                {
-                    payload.Data.CodeVersion = Constants.EDDI_VERSION;
-                },
                 // Identify each EDDI configuration by a unique ID, or by "Commander" if a unique ID isn't available.
                 Person = new Rollbar.DTOs.Person(uniqueId),
+                // Set server info
+                Server = new Rollbar.DTOs.Server
+                {
+                    CodeVersion = Constants.EDDI_VERSION,
+                    Root = "/"
+                },
             };
             RollbarLocator.RollbarInstance.Configure(config);
             // Send unhandled exceptions
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
-                RollbarLocator.RollbarInstance.Error(args.ExceptionObject as Exception);
+                Exception exception = args.ExceptionObject as Exception;
+
+                Dictionary<string, object> trace = new Dictionary<string, object>();
+                if (exception.StackTrace != null)
+                {
+                    trace.Add("StackTrace", exception.StackTrace != null ? exception.StackTrace : "StackTrace not available");
+                }
+
+                RollbarLocator.RollbarInstance.Error(exception, trace);
             };
         }
 
-        public static bool isUniqueMessage(string message, Dictionary<string, object> thisData = null)
+        public static bool isUniqueMessage(string message, Dictionary<string, object> thisData = null, Exception exception = null)
         {
             var client = new RestClient("https://api.rollbar.com/api/1");
             var request = new RestRequest("/items/", Method.GET);
@@ -262,7 +272,7 @@ namespace Utilities
 
                     if (customData != null)
                     {
-                        if (customData.Keys.Count == thisData.Keys.Count && 
+                        if (customData.Keys.Count == thisData.Keys.Count &&
                             customData.Keys.All(k => thisData.ContainsKey(k) && Equals(thisData[k], customData[k])))
                         {
                             return false;
@@ -271,6 +281,22 @@ namespace Utilities
                 }
             }
             return true;
+        }
+
+        public static void TestRollBar()
+        {
+            try
+            {
+                throw new NullReferenceException("Value cannot be null");
+            }
+            catch (Exception ex)
+            {
+                Dictionary<string, object> trace = new Dictionary<string, object>();
+                trace.Add("StackTrace", ex.StackTrace != null ? ex.StackTrace : "This string represents a stack trace");
+                RollbarLocator.RollbarInstance.Error(ex, trace);
+                
+                RollbarLocator.RollbarInstance.Error(ex);
+            }
         }
     }
 }
