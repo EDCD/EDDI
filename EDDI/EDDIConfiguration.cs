@@ -37,6 +37,9 @@ namespace Eddi
         [JsonProperty("exporttarget")]
         public string exporttarget { get; set; } = "Coriolis";
 
+        [JsonProperty("uniqueId")]
+        public string uniqueId { get; set; }
+
         /// <summary> Administrative values </summary>
         public bool validSystem { get; set; }
         public bool validStation { get; set; }
@@ -58,6 +61,9 @@ namespace Eddi
 
             // Default the galnet monitor to 'off'
             Plugins.Add("Galnet monitor", false);
+
+            // Generate an id unique to this configuration for bug tracking
+            uniqueId = Guid.NewGuid().ToString();
         }
 
         /// <summary>

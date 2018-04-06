@@ -195,6 +195,7 @@ namespace EddiSpeechResponder
 
             Dictionary<string, Script> fixedScripts = new Dictionary<string, Script>();
             // Ensure that every required event is present
+            List<string> missingScripts = new List<string>();
             foreach (KeyValuePair<string, string> defaultEvent in Events.DESCRIPTIONS)
             {
                 personality.Scripts.TryGetValue(defaultEvent.Key, out Script script);
@@ -203,7 +204,7 @@ namespace EddiSpeechResponder
                 script = UpgradeScript(script, defaultScript);
                 if (script == null)
                 {
-                    Logging.Report("Failed to find script for " + defaultEvent.Key);
+                    missingScripts.Add(defaultEvent.Key);
                 }
                 else
                 {
@@ -248,6 +249,16 @@ namespace EddiSpeechResponder
                         fixedScripts.Add(kv.Key, kv.Value);
                     }
                 }
+            }
+            // Report missing scripts, except those we have specifically named
+            /// `Belt scanned` is a useless event, only exists so that the count on nav beacon scans comes out right
+            /// `Jumping` is a deprecated event
+            /// `Status` is an event which shares status updates with monitors / responders but is not intended to be user facing
+            string[] ignoredEventKeys = { "Belt scanned", "Jumping", "Status" };
+            missingScripts.RemoveAll(t => t == "Belt scanned" || t == "Jumping" || t == "Status");
+            if (missingScripts.Count > 0)
+            {
+                Logging.Report("Failed to find scripts", JsonConvert.SerializeObject(missingScripts));
             }
 
             // Re-order the scripts by name

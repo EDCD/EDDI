@@ -4,7 +4,6 @@ using EddiDataProviderService;
 using EddiEvents;
 using EddiSpeechService;
 using EddiStarMapService;
-using Exceptionless;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -128,10 +127,6 @@ namespace Eddi
             {
                 Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " starting");
 
-                // Exception handling
-                ExceptionlessClient.Default.Startup("vJW9HtWB2NHiQb7AwVQsBQM6hjWN1sKzHf5PCpW1");
-                ExceptionlessClient.Default.Configuration.SetVersion(Constants.EDDI_VERSION);
-
                 // Start by fetching information from the update server, and handling appropriately
                 CheckUpgrade();
                 if (UpgradeRequired)
@@ -152,6 +147,7 @@ namespace Eddi
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                 updateHomeSystemStation(configuration);
+                _Rollbar.configureRollbarExceptionHandling(configuration.Beta, configuration.uniqueId);
 
                 // Set up monitors and responders
                 monitors = findMonitors();
@@ -400,8 +396,6 @@ namespace Eddi
             }
 
             Logging.Info(Constants.EDDI_NAME + " " + Constants.EDDI_VERSION + " stopped");
-
-            ExceptionlessClient.Default.Shutdown();
 
             started = false;
         }

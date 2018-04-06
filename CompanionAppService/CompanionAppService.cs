@@ -627,6 +627,7 @@ namespace EddiCompanionAppService
 
             if (json["lastStarport"] != null && json["lastStarport"]["modules"] != null)
             {
+                List<Module> moduleErrors = new List<Module>();
                 foreach (dynamic moduleJson in json["lastStarport"]["modules"])
                 {
                     dynamic module = moduleJson.Value;
@@ -636,14 +637,18 @@ namespace EddiCompanionAppService
                         Module Module = ModuleDefinitions.ModuleFromEliteID((long)module["id"]);
                         if (Module.name == null)
                         {
-                            // Unknown module; log an error so that we can update the definitions
-                            Logging.Report("No definition for outfitting module", module.ToString(Formatting.None));
+                            // Unknown module; batch and report so that we can update the definitions
+                            moduleErrors.Add(module);
                             // Set the name from the JSON
                             Module.EDName = (string)module["name"];
                         }
                         Module.price = module["cost"];
                         Modules.Add(Module);
                     }
+                }
+                if (moduleErrors.Count > 0)
+                {
+                    Logging.Report("Module definition errors", JsonConvert.SerializeObject(moduleErrors));
                 }
             }
 
@@ -736,6 +741,7 @@ namespace EddiCompanionAppService
                     {
                         if (eddiCommodity.name != "Limpet")
                         {
+                            // Unknown commodity; batch and report so that we can update the definitions
                             commodityErrors.Add(Commodity);
                         }
                     }
@@ -743,7 +749,7 @@ namespace EddiCompanionAppService
 
                 if (commodityErrors.Count() > 0)
                 {
-                    Logging.Report("Commodity definition errors: " + JsonConvert.SerializeObject(commodityErrors));
+                    Logging.Report("Commodity definition errors", JsonConvert.SerializeObject(commodityErrors));
                 }
             }
 
