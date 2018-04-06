@@ -291,22 +291,5 @@ namespace Utilities
             }
             return true;
         }
-
-        public static void TestRollBar()
-        {
-            try
-            {
-                throw new NullReferenceException("Value cannot be null");
-            }
-            catch (Exception ex)
-            {
-                Dictionary<string, object> trace = new Dictionary<string, object>();
-                trace.Add("StackTrace", ex.StackTrace != null ? ex.StackTrace : "This string represents a stack trace");
-                if (isUniqueMessage(ex.GetType() + ": " + ex.Message, trace))
-                {
-                    RollbarLocator.RollbarInstance.Error(ex, trace);
-                }
-            }
-        }
     }
 }
