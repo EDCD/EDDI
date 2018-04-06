@@ -1,8 +1,11 @@
 ﻿# CHANGE LOG
 
 ### 3.0.0-rc2
+  * Incorporate new material transaction events
   * Speech Responder
-    * Added 'Fighter rebuilt' event
+    * Added `Fighter rebuilt` event
+    * Added `Material trade` event
+    * Added `Technology broker` event
 
 ### 3.0.0-rc1
   * Core
@@ -11,9 +14,9 @@
     * First installations will now take any custom VoiceAttack installation location into account when proposing a location for EDDI.
     * Upgrade installations will continue to use whatever location was selected in the first installation.
   * Speech Responder
-    * Added 'Jet cone damage' event
+    * Added `Jet cone damage` event
     * Script changes
-      * Added new script 'Jet cone damage'
+      * Added new script `Jet cone damage`
   * VoiceAttack
     * Added the following new variables
       * `{BOOL:EDDI speaking}` True if EDDI is speaking, false otherwise. Useful for synchronizing speech between EDDI and other sources in VoiceAttack.
