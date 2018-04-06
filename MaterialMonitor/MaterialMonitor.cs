@@ -367,6 +367,17 @@ namespace EddiMaterialMonitor
                         if (addToInv == true)
                         {
                             MaterialAmount ma2 = new MaterialAmount(ma.material, ma.amount, ma.minimum, ma.desired, ma.maximum);
+
+                            // Set material maximums if they aren't already defined
+                            if (ma2.maximum == null || ma2.maximum == 0)
+                            {
+                                int rarityLevel = Material.FromEDName(ma2.edname).rarity.level;
+                                if (rarityLevel > 0)
+                                {
+                                    ma2.maximum = -50 * (rarityLevel) + 350;
+                                }
+                            }
+
                             newInventory.Add(ma2);
                         }
                     }

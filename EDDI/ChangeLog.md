@@ -2,6 +2,7 @@
 
 ### 3.0.0-rc2
   * Incorporate new material transaction events
+  * EDDI's Material Monitor will now auto-calculate maximum material limits when they are not otherwise defined... provided the material rarity is known.
   * Speech Responder
     * Added `Fighter rebuilt` event
     * Added `Material trade` event
