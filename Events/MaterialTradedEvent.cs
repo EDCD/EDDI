@@ -16,9 +16,9 @@ namespace EddiEvents
         {
             VARIABLES.Add("tradertype", "The type of material trader for the trade");
             VARIABLES.Add("paid", "The name of the material lost in the trade");
-            VARIABLES.Add("paidqty", "The amount of the material lost in the trade");
-            VARIABLES.Add("received", "The name of the material lost in the trade");
-            VARIABLES.Add("receivedqty", "The amount of the material lost in the trade");
+            VARIABLES.Add("paid_quantity", "The amount of the material lost in the trade");
+            VARIABLES.Add("received", "The name of the material gained in the trade");
+            VARIABLES.Add("received_quantity", "The amount of the material gained in the trade");
         }
 
         [JsonProperty("tradertype")]
@@ -27,14 +27,14 @@ namespace EddiEvents
         [JsonProperty("paid")]
         public string paid { get; private set; }
 
-        [JsonProperty("paidqty")]
-        public int paidqty { get; private set; }
+        [JsonProperty("paid_quantity")]
+        public int paid_quantity { get; private set; }
 
         [JsonProperty("received")]
         public string received { get; private set; }
 
-        [JsonProperty("receivedqty")]
-        public int receivedqty { get; private set; }
+        [JsonProperty("received_quantity")]
+        public int received_quantity { get; private set; }
 
         // Admin
         public long marketid { get; private set; }
@@ -50,10 +50,10 @@ namespace EddiEvents
             this.marketid = marketId;
             this.tradertype = traderType;
             this.paid = materialPaid?.name;
-            this.paidqty = materialPaidQty;
+            this.paid_quantity = materialPaidQty;
             this.paid_edname = materialPaid?.EDName;
             this.received = materialReceived?.name;
-            this.receivedqty = materialReceivedQty;
+            this.received_quantity = materialReceivedQty;
             this.received_edname = materialReceived?.EDName;
         }
     }

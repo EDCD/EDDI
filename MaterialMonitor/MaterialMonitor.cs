@@ -173,8 +173,8 @@ namespace EddiMaterialMonitor
 
         private void handleMaterialTradedEvent(MaterialTradedEvent @event)
         {
-            decMaterial(@event.paid_edname, @event.paidqty);
-            incMaterial(@event.received_edname, @event.receivedqty);
+            decMaterial(@event.paid_edname, @event.paid_quantity);
+            incMaterial(@event.received_edname, @event.received_quantity);
         }
 
         private void handleSynthesisedEvent(SynthesisedEvent @event)
