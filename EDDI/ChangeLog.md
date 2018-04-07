@@ -1,5 +1,7 @@
 ﻿# CHANGE LOG
 
+Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
+
 ### 3.0.0-rc2
   * Incorporated new material transaction events
   * EDDI's Material Monitor will now auto-calculate maximum material limits when they are not otherwise defined... provided the material rarity is known.
