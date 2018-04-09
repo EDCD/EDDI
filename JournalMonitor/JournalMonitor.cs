@@ -794,6 +794,70 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
+                        case "TechnologyBroker":
+                            {
+                                object val;
+
+                                string brokerType = JsonParsing.getString(data, "BrokerType");
+                                long marketId = JsonParsing.getLong(data, "MarketID");
+
+                                data.TryGetValue("ItemsUnlocked", out val);
+                                List<object> itemsUnlocked = (List<object>)val;
+                                List<Module> items = new List<Module>();
+                                foreach (object item in itemsUnlocked)
+                                {
+                                    Dictionary<string, object> itemProperties = (Dictionary<string, object>)item;
+                                    string moduleEdName = JsonParsing.getString(itemProperties, "Name");
+                                    Module module = ModuleDefinitions.fromEDName(moduleEdName);
+                                    if (module == null)
+                                    {
+                                        // Unknown module
+                                        Logging.Info("Unknown module " + moduleEdName);
+                                        Logging.Report("Unknown module " + moduleEdName, JsonConvert.SerializeObject(item));
+                                    }
+                                    items.Add(module);
+                                }
+
+                                data.TryGetValue("Commodities", out val);
+                                List<object> commodities = (List<object>)val;
+                                List<CommodityAmount> Commodities = new List<CommodityAmount>();
+                                foreach (Dictionary<string, object> _commodity in commodities)
+                                {
+                                    string commodityEdName = JsonParsing.getString(_commodity, "Name");
+                                    Commodity commodity = CommodityDefinitions.FromName(commodityEdName);
+                                    int count = JsonParsing.getInt(_commodity, "Count");
+                                    if (commodity == null)
+                                    {
+                                        Logging.Info("Unknown commodity " + commodityEdName);
+                                        Logging.Report("Unknown commodity " + commodityEdName, JsonConvert.SerializeObject(_commodity));
+                                    }
+                                    Commodities.Add(new CommodityAmount(commodity, count));
+                                }
+
+                                data.TryGetValue("Materials", out val);
+                                List<object> materials = (List<object>)val;
+                                List<MaterialAmount> Materials = new List<MaterialAmount>();
+                                foreach (Dictionary<string, object> _material in materials)
+                                {
+                                    string materialEdName = JsonParsing.getString(_material, "Name");
+                                    Material material = Material.FromEDName(materialEdName);
+                                    int count = JsonParsing.getInt(_material, "Count");
+                                    if (material == null)
+                                    {
+                                        Logging.Info("Unknown material " + materialEdName);
+                                        Logging.Report("Unknown material " + materialEdName, JsonConvert.SerializeObject(_material));
+                                    }
+                                    else
+                                    {
+                                        material.category = Material.TidiedCategory(JsonParsing.getString(_material, "Category"));
+                                    }
+                                    Materials.Add(new MaterialAmount(material, count));
+                                }
+
+                                events.Add(new TechnologyBrokerEvent(timestamp, brokerType, marketId, items, Commodities, Materials) { raw = line });
+                                handled = true;
+                            }
+                            break;
                         case "ShipyardTransfer":
                             {
                                 object val;
@@ -1221,6 +1285,45 @@ namespace EddiJournalMonitor
                                 handled = true;
                             }
                             break;
+                        case "MaterialTrade":
+                            {
+                                object val;
+
+                                long marketId = JsonParsing.getLong(data, "MarketID");
+                                string traderType = JsonParsing.getString(data, "TraderType");
+
+                                data.TryGetValue("Paid", out val);
+                                Dictionary<string, object> paid = (Dictionary<string, object>)val;
+
+                                string materialEdName = JsonParsing.getString(paid, "Material");
+                                Material materialPaid = Material.FromEDName(materialEdName);
+                                materialPaid.category = Material.TidiedCategory(JsonParsing.getString(paid, "Category"));
+                                int materialPaidQty = JsonParsing.getInt(paid, "Quantity");
+
+                                if (materialPaid == null)
+                                {
+                                    Logging.Info("Unknown material " + materialEdName);
+                                    Logging.Report("Unknown material " + materialEdName, JsonConvert.SerializeObject(paid));
+                                }
+
+                                data.TryGetValue("Received", out val);
+                                Dictionary<string, object> received = (Dictionary<string, object>)val;
+
+                                Material materialReceived = Material.FromEDName(JsonParsing.getString(received, "Material"));
+                                materialReceived.category = Material.TidiedCategory(JsonParsing.getString(received, "Category"));
+                                int materialReceivedQty = JsonParsing.getInt(received, "Quantity");
+
+                                if (materialReceived == null)
+                                {
+                                    Logging.Info("Unknown material " + materialEdName);
+                                    Logging.Report("Unknown material " + materialEdName, JsonConvert.SerializeObject(received));
+                                }
+
+                                events.Add(new MaterialTradedEvent(timestamp, marketId, traderType, materialPaid, materialPaidQty, materialReceived, materialReceivedQty) { raw = line });
+                                handled = true;
+
+                                break;
+                            }
                         case "ScientificResearch":
                             {
                                 object val;

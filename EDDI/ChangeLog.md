@@ -1,11 +1,17 @@
 ﻿# CHANGE LOG
 
+Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
+
 ### 3.0.0-rc2
   * Core
     * The EDSM responder has been updated to send data to EDSM per their revised API. 
     * Switched error reporting to [Rollbar](https://rollbar.com/).
+  * Incorporated new material transaction events
+  * EDDI's Material Monitor will now auto-calculate maximum material limits when they are not otherwise defined, provided the material rarity is known.
   * Speech Responder
-    * Added 'Fighter rebuilt' event
+    * Added `Fighter rebuilt` event
+    * Added `Material trade` event
+    * Added `Technology broker` event
 
 ### 3.0.0-rc1
   * Core
@@ -14,9 +20,9 @@
     * First installations will now take any custom VoiceAttack installation location into account when proposing a location for EDDI.
     * Upgrade installations will continue to use whatever location was selected in the first installation.
   * Speech Responder
-    * Added 'Jet cone damage' event
+    * Added `Jet cone damage` event
     * Script changes
-      * Added new script 'Jet cone damage'
+      * Added new script `Jet cone damage`
   * VoiceAttack
     * Added the following new variables
       * `{BOOL:EDDI speaking}` True if EDDI is speaking, false otherwise. Useful for synchronizing speech between EDDI and other sources in VoiceAttack.

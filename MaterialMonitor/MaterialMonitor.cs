@@ -101,6 +101,10 @@ namespace EddiMaterialMonitor
             {
                 handleMaterialDonatedEvent((MaterialDonatedEvent)@event);
             }
+            else if (@event is MaterialTradedEvent)
+            {
+                handleMaterialTradedEvent((MaterialTradedEvent)@event);
+            }
             else if (@event is SynthesisedEvent)
             {
                 handleSynthesisedEvent((SynthesisedEvent)@event);
@@ -108,6 +112,10 @@ namespace EddiMaterialMonitor
             else if (@event is ModificationCraftedEvent)
             {
                 handleModificationCraftedEvent((ModificationCraftedEvent)@event);
+            }
+            else if (@event is TechnologyBrokerEvent)
+            {
+                handleTechnologyBrokerEvent((TechnologyBrokerEvent)@event);
             }
         }
 
@@ -163,6 +171,12 @@ namespace EddiMaterialMonitor
             decMaterial(@event.edname, @event.amount);
         }
 
+        private void handleMaterialTradedEvent(MaterialTradedEvent @event)
+        {
+            decMaterial(@event.paid_edname, @event.paid_quantity);
+            incMaterial(@event.received_edname, @event.received_quantity);
+        }
+
         private void handleSynthesisedEvent(SynthesisedEvent @event)
         {
             foreach (MaterialAmount component in @event.materials)
@@ -176,6 +190,14 @@ namespace EddiMaterialMonitor
             foreach (MaterialAmount component in @event.materials)
             {
                 decMaterial(component.edname, component.amount);
+            }
+        }
+
+        private void handleTechnologyBrokerEvent(TechnologyBrokerEvent @event)
+        {
+            foreach (MaterialAmount material in @event.materials)
+            {
+                decMaterial(material.edname, material.amount);
             }
         }
 
@@ -345,6 +367,17 @@ namespace EddiMaterialMonitor
                         if (addToInv == true)
                         {
                             MaterialAmount ma2 = new MaterialAmount(ma.material, ma.amount, ma.minimum, ma.desired, ma.maximum);
+
+                            // Set material maximums if they aren't already defined
+                            if (ma2.maximum == null || ma2.maximum == 0)
+                            {
+                                int rarityLevel = Material.FromEDName(ma2.edname).rarity.level;
+                                if (rarityLevel > 0)
+                                {
+                                    ma2.maximum = -50 * (rarityLevel) + 350;
+                                }
+                            }
+
                             newInventory.Add(ma2);
                         }
                     }
