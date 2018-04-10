@@ -259,7 +259,7 @@ namespace EddiStatusMonitor
             catch (Exception ex)
             {
                 Logging.Warn("Failed to parse Status.json line: " + ex.ToString());
-                Logging.Error("Exception whilst parsing Status.json line ", line);
+                Logging.Error("Failed to parse Status.json line", ex);
             }
             return status = null;
         }

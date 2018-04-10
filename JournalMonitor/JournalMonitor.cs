@@ -2715,7 +2715,7 @@ namespace EddiJournalMonitor
             catch (Exception ex)
             {
                 Logging.Warn("Failed to parse line: " + ex.ToString());
-                Logging.Error("Exception whilst parsing line", line);
+                Logging.Error("Exception whilst parsing journal line", ex);
             }
             return events;
         }
