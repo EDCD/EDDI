@@ -972,7 +972,7 @@ namespace EddiDataDefinitions
                 {999999941, new Module(999999941, "string_lights_coloured", -1, "Coloured string lights", 1, "I", 0, -1) },
                 {999999942, new Module(999999942, "Type9_Military_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128785619) },
                 {999999943, new Module(999999943, "TypeX_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128816574) },
-                // Ship launched fighter modules
+                // Fighter modules
                 {999999950, new Module(999999950, "Empire_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
                 {999999951, new Module(999999951, "Federation_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
                 {999999952, new Module(999999952, "Independent_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
@@ -981,6 +981,7 @@ namespace EddiDataDefinitions
                 {999999975, new Module(999999975, "Federation_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
                 {999999976, new Module(999999976, "Independent_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
                 {999999980, new Module(999999980, "Int_ShieldGenerator_Fighter_Class1", -1, "Shield Generator", 1, "I", 0, -1) },
+                {999999985, new Module(999999985, "Ext_Emitter_Standard", -1, "Shield Generator", 1, "I", 0, -1) },
 
                 // Needs EDDB ID
                 {128833944, new Module(128833944, "Int_CorrosionProofCargoRack_Size4_Class1", -1, "Corrosion Resistant Cargo Rack", 4, "E", 94329) },
