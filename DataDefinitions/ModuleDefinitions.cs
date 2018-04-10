@@ -973,13 +973,15 @@ namespace EddiDataDefinitions
                 {999999942, new Module(999999942, "Type9_Military_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128785619) },
                 {999999943, new Module(999999943, "TypeX_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128816574) },
                 // Ship launched fighter modules
-                {999999944, new Module(999999950, "Empire_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
-                {999999944, new Module(999999951, "Federation_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
-                {999999944, new Module(999999952, "Independent_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
-                {999999944, new Module(999999960, "Hpt_Pulselaser_Fixed_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
-                {999999944, new Module(999999965, "Hpt_Multicannon_Fixed_Fed_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
+                {999999950, new Module(999999950, "Empire_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
+                {999999951, new Module(999999951, "Federation_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
+                {999999952, new Module(999999952, "Independent_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
+                {999999960, new Module(999999960, "Hpt_Pulselaser_Fixed_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {999999965, new Module(999999965, "Hpt_Multicannon_Fixed_Fed_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
+                {999999975, new Module(999999975, "Federation_Fighter_Armour_Standard", -1, "Fighter armour", 1, "I", 0, -1) },
+                {999999976, new Module(999999976, "Independent_Fighter_Armour_Standard", -1, "Fighter armour", 1, "I", 0, -1) },
 
-
+                
 
                 // Needs EDDB ID
                 {128833944, new Module(128833944, "Int_CorrosionProofCargoRack_Size4_Class1", -1, "Corrosion Resistant Cargo Rack", 4, "E", 94329) },
