@@ -121,7 +121,7 @@ namespace EddiStatusMonitor
                                 {
                                     // file open elsewhere or being written, just wait for the next pass
                                 }
-                                if (lastStatus != thisStatus && thisStatus != string.Empty)
+                                if (lastStatus != thisStatus && !string.IsNullOrWhiteSpace(thisStatus))
                                 {
                                     Status status = ParseStatusEntry(thisStatus);
 
@@ -259,7 +259,7 @@ namespace EddiStatusMonitor
             catch (Exception ex)
             {
                 Logging.Warn("Failed to parse Status.json line: " + ex.ToString());
-                Logging.Error("Exception whilst parsing Status.json line ", line);
+                Logging.Error(ex);
             }
             return status = null;
         }
