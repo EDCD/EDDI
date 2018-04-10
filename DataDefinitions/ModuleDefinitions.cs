@@ -977,6 +977,8 @@ namespace EddiDataDefinitions
                 {999999944, new Module(999999951, "Federation_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
                 {999999944, new Module(999999952, "Independent_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
                 {999999944, new Module(999999960, "Hpt_Pulselaser_Fixed_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {999999944, new Module(999999965, "Hpt_Multicannon_Fixed_Fed_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
+
 
 
                 // Needs EDDB ID
