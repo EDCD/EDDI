@@ -998,6 +998,7 @@ namespace EddiDataDefinitions
                 {999999947, new Module(999999947, "Int_MetaAlloyHullReinforcement_Size4_Class2", -1, "Meta Alloy Hull Reinforcement", 4, "D", 292500) },
                 {999999953, new Module(999999953, "Int_MetaAlloyHullReinforcement_Size5_Class1", -1, "Meta Alloy Hull Reinforcement", 5, "E", 225001) },
                 {999999948, new Module(999999948, "Int_MetaAlloyHullReinforcement_Size5_Class2", -1, "Meta Alloy Hull Reinforcement", 5, "D", 675001) },
+                {999999949, new Module(999999949, "Hpt_PlasmaShockCannon_Gimbal_Medium", -1, "Shock Cannon", 2, "D", 495963, Module.ModuleMount.Gimballed) },
         };
 
         private static Dictionary<string, Module> ModulesByEDName = ModulesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
