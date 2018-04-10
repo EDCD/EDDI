@@ -1,6 +1,7 @@
 ﻿using Eddi;
 using EddiDataDefinitions;
 using EddiEvents;
+using EddiShipMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -9,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Threading.Tasks;
@@ -21,8 +23,6 @@ namespace EddiCargoMonitor
      */
     public class CargoMonitor : EDDIMonitor
     {
-        private static CargoMonitor instance;
-
         // Observable collection for us to handle changes
         public ObservableCollection<Cargo> inventory { get; private set; }
 
@@ -52,10 +52,26 @@ namespace EddiCargoMonitor
 
         public CargoMonitor()
         {
+            inventory = new ObservableCollection<Cargo>();
+            BindingOperations.CollectionRegistering += Inventory_CollectionRegistering;
+
             readInventory();
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
         }
 
+        private void Inventory_CollectionRegistering(object sender, CollectionRegisteringEventArgs e)
+        {
+            if (Application.Current != null)
+            {
+                // Synchronize this collection between threads
+                BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock);
+            }
+            else
+            {
+                // If started from VoiceAttack, the dispatcher is on a different thread. Invoke synchronization there.
+                Dispatcher.CurrentDispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock); });
+            }
+        }
         public bool NeedsStart()
         {
             // We don't actively do anything, just listen to events
@@ -561,6 +577,12 @@ namespace EddiCargoMonitor
                 foreach (Cargo cargo in inventory)
                 {
                     cargocarried += cargo.total;
+                }
+
+                Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
+                if (ship != null)
+                {
+                    ship.cargocarried = cargocarried;
                 }
 
                 configuration.cargo = inventory;

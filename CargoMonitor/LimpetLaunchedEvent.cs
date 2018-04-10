@@ -13,15 +13,15 @@ namespace EddiCargoMonitor
 
         static LimpetLaunchedEvent()
         {
-            VARIABLES.Add("type", "The type of limpet launched");
+            VARIABLES.Add("kind", "The kind of limpet launched");
         }
 
-        public string type { get; private set; }
+        public string kind { get; private set; }
 
 
-        public LimpetLaunchedEvent(DateTime timestamp, string type) : base(timestamp, NAME)
+        public LimpetLaunchedEvent(DateTime timestamp, string kind) : base(timestamp, NAME)
         {
-            this.type = type;
+            this.kind = kind;
         }
     }
 }

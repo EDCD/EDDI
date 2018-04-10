@@ -1810,8 +1810,8 @@ namespace EddiJournalMonitor
                             }
                         case "LaunchDrone":
                             {
-                                string type = JsonParsing.getString(data, "Type");
-                                events.Add(new LimpetLaunchedEvent(timestamp, type) { raw = line });
+                                string kind = JsonParsing.getString(data, "Type");
+                                events.Add(new LimpetLaunchedEvent(timestamp, kind) { raw = line });
                                 handled = true;
                                 break;
                             }

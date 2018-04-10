@@ -1,5 +1,4 @@
 ﻿using Eddi;
-using EddiCargoMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
@@ -29,6 +28,7 @@ namespace EddiShipMonitor
         // The ID of the current ship; can be null
         private int? currentShipId;
         private int? currentProfileId;
+
         private static readonly object shipyardLock = new object();
         public event EventHandler ShipyardUpdatedEvent;
 
