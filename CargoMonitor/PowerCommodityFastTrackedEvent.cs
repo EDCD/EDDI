@@ -1,7 +1,8 @@
-﻿using System;
+﻿using EddiEvents;
+using System;
 using System.Collections.Generic;
 
-namespace EddiEvents
+namespace EddiCargoMonitor
 {
     public class PowerCommodityFastTrackedEvent : Event
     {

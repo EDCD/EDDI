@@ -202,31 +202,6 @@ namespace EddiShipMonitor
 
                 }
 
-                // Obtain the cargo
-                if (json["cargo"] != null && json["cargo"]["items"] != null)
-                {
-                    foreach (dynamic cargoJson in json["cargo"]["items"])
-                    {
-                        if (cargoJson != null && cargoJson["commodity"] != null)
-                        {
-                            string name = (string)cargoJson["commodity"];
-                            Cargo cargo = new Cargo();
-                            cargo.commodity = CommodityDefinitions.FromName(name);
-                            if (cargo.commodity.name == null)
-                            {
-                                // Unknown commodity; log an error so that we can update the definitions
-                                Logging.Error("No commodity definition for cargo", cargoJson.ToString(Formatting.None));
-                                cargo.commodity.name = name;
-                            }
-                            cargo.amount = (int)cargoJson["qty"];
-                            cargo.price = (long)cargoJson["value"] / cargo.amount;
-                            cargo.missionid = (long?)cargoJson["mission"];
-                            cargo.stolen = ((int?)(long?)cargoJson["marked"]) == 1;
-
-                            Ship.cargo.Add(cargo);
-                        }
-                    }
-                }
             }
             catch (Exception ex)
             {

@@ -6,22 +6,29 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiCargoMonitor
 {
     /**
      * Monitor cargo for the current ship
-     * Missing: there is no event for when a drone is fired, so we cannot keep track of this individually.  Instead we have to rely
-     * on the inventory events to give us information on the number of drones in-ship.
      */
     public class CargoMonitor : EDDIMonitor
     {
+        private static CargoMonitor instance;
+
         // Observable collection for us to handle changes
-        public ObservableCollection<Cargo> inventory = new ObservableCollection<Cargo>();
+        public ObservableCollection<Cargo> inventory { get; private set; }
+
+        public int cargocarried;
+        private static readonly object inventoryLock = new object();
+        public event EventHandler InventoryUpdatedEvent;
 
         public string MonitorName()
         {
@@ -45,6 +52,7 @@ namespace EddiCargoMonitor
 
         public CargoMonitor()
         {
+            readInventory();
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
         }
 
@@ -64,11 +72,14 @@ namespace EddiCargoMonitor
 
         public void Reload()
         {
+            readInventory();
+            Logging.Info("Reloaded " + MonitorName() + " " + MonitorVersion());
+
         }
 
         public UserControl ConfigurationTabItem()
         {
-            return null;
+            return new ConfigurationWindow();
         }
 
         public void HandleProfile(JObject profile)
@@ -90,226 +101,566 @@ namespace EddiCargoMonitor
             }
             else if (@event is CommodityCollectedEvent)
             {
-
+                handleCommodityCollectedEvent((CommodityCollectedEvent)@event);
             }
             else if (@event is CommodityEjectedEvent)
             {
-
+                handleCommodityEjectedEvent((CommodityEjectedEvent)@event);
             }
             else if (@event is CommodityPurchasedEvent)
             {
-
+                handleCommodityPurchasedEvent((CommodityPurchasedEvent)@event);
             }
             else if (@event is CommodityRefinedEvent)
             {
-
+                handleCommodityRefinedEvent((CommodityRefinedEvent)@event);
             }
             else if (@event is CommoditySoldEvent)
             {
-
+                handleCommoditySoldEvent((CommoditySoldEvent)@event);
             }
             else if (@event is PowerCommodityObtainedEvent)
             {
-
+                handlePowerCommodityObtainedEvent((PowerCommodityObtainedEvent)@event);
             }
             else if (@event is PowerCommodityDeliveredEvent)
             {
-
+                handlePowerCommodityDeliveredEvent((PowerCommodityDeliveredEvent)@event);
             }
             else if (@event is LimpetPurchasedEvent)
             {
-
+                handleLimpetPurchasedEvent((LimpetPurchasedEvent)@event);
             }
             else if (@event is LimpetSoldEvent)
             {
-
+                handleLimpetSoldEvent((LimpetSoldEvent)@event);
+            }
+            else if (@event is LimpetLaunchedEvent)
+            {
+                handleLimpetLaunchedEvent((LimpetLaunchedEvent)@event);
             }
             else if (@event is MissionAbandonedEvent)
             {
                 // If we abandon a mission with cargo it becomes stolen
+                handleMissionAbandonedEvent((MissionAbandonedEvent)@event);
             }
             else if (@event is MissionAcceptedEvent)
             {
                 // Check to see if this is a cargo mission and update our inventory accordingly
+                handleMissionAcceptedEvent((MissionAcceptedEvent)@event);
             }
             else if (@event is MissionCompletedEvent)
             {
                 // Check to see if this is a cargo mission and update our inventory accordingly
+                handleMissionCompletedEvent((MissionCompletedEvent)@event);
             }
             else if (@event is MissionFailedEvent)
             {
                 // If we fail a mission with cargo it becomes stolen
+                handleMissionFailedEvent((MissionFailedEvent)@event);
             }
+            else if (@event is SynthesisedEvent)
+            {
+                handleSynthesisedEvent((SynthesisedEvent)@event);
+            }
+
             // TODO Powerplay events
         }
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
         {
-            //// CargoInventoryEvent does not contain stolen, missionid, or cost information so merge it here
-            //foreach (Cargo cargo in @event.inventory)
-            //{
-            //    bool added = false;
-            //    foreach (Cargo inventoryCargo in inventory)
-            //    {
-            //        if (inventoryCargo.commodity == cargo.commodity)
-            //        {
-            //            // Match of commodity
-            //            added = true;
-            //        }
-            //    }
-            //    if (!added)
-            //    {
-            //        // We haven't heard of this cargo so add it to the inventory directly
-            //        AddCargo(cargo);
-            //    }
-            //}
-            //inventory.Clear();
-            //foreach (Cargo cargo in @event.inventory)
-            //{
-            //    inventory.Add(cargo);
-            //}
+            // CargoInventoryEvent does not contain missionid or cost information so fill in gaps here
+            foreach (Cargo cargo in @event.inventory)
+            {
+                Cargo inventoryCargo = inventory.FirstOrDefault(c => c.name == cargo.name);
+                if (inventoryCargo != null)
+                {
+                    // Match of commodity
+                    inventoryCargo.total = cargo.total;
+                    inventoryCargo.stolen = cargo.stolen;
+                    inventoryCargo.other = cargo.total - cargo.stolen - inventoryCargo.haulage;
+                }
+                else
+                {
+                    // We haven't heard of this cargo so add it to the inventory directly
+                    AddCargo(cargo);
+                }
+            }
+
+            foreach (Cargo inventoryCargo in inventory)
+            {
+                Cargo cargo = @event.inventory.FirstOrDefault(c => c.name == inventoryCargo.name);
+                if (cargo == null)
+                {
+                    RemoveCargo(inventoryCargo.name);
+                }
+            }
+            writeInventory();
+        }
+
+        private void handleCommodityCollectedEvent(CommodityCollectedEvent @event)
+        {
+            Cargo cargo = GetCargo(@event.commodity);
+            if (cargo != null)
+            {
+                cargo.total++;
+                if (@event.stolen)
+                {
+                    cargo.stolen++;
+                }
+                else
+                {
+                    cargo.other++;
+                }
+            }
+
+            else
+            {
+                Cargo newCargo = new Cargo(@event.commodity, 1);
+                newCargo.haulage = 0;
+                if (@event.stolen)
+                {
+                    newCargo.stolen = 1;
+                }
+                else
+                {
+                    newCargo.other = 1;
+                }
+                AddCargo(newCargo);
+            }
+            writeInventory();
+        }
+
+        private void handleCommodityEjectedEvent(CommodityEjectedEvent @event)
+        {
+            Cargo cargo = GetCargo(@event.commodity);
+            if (cargo != null)
+            {
+                if (@event.amount == cargo.stolen || @event.amount > cargo.other)
+                {
+                    cargo.stolen -= @event.amount;
+                }
+                else
+                {
+                    cargo.other -= @event.amount;
+                }
+
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                if (cargo.total < 1)
+                {
+                    RemoveCargo(cargo.name);
+                }
+            }
+            writeInventory();
+        }
+
+        private void handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
+        {
+            Cargo cargo = GetCargo(@event.commodity);
+            if (cargo != null)
+            {
+                cargo.other += @event.amount;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+            }
+            else
+            {
+                Cargo newCargo = new Cargo(@event.commodity, @event.price, @event.amount);
+                newCargo.haulage = 0;
+                newCargo.stolen = 0;
+                newCargo.other = @event.amount;
+                AddCargo(newCargo);
+            }
+            writeInventory();
+        }
+
+        private void handleCommodityRefinedEvent(CommodityRefinedEvent @event)
+        {
+            Cargo cargo = GetCargo(@event.commodity);
+            if (cargo != null)
+            {
+                cargo.other++;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+            }
+            else
+            {
+                Cargo newCargo = new Cargo(@event.commodity, 1);
+                newCargo.haulage = 0;
+                newCargo.stolen = 0;
+                newCargo.other = 1;
+                AddCargo(newCargo);
+            }
+            writeInventory();
+        }
+
+        private void handleCommoditySoldEvent(CommoditySoldEvent @event)
+        {
+            Cargo cargo = GetCargo(@event.commodity);
+            if (cargo != null)
+            {
+                if (@event.stolen)
+                {
+                    // Cargo is stolen
+                    cargo.stolen -= @event.amount;
+                }
+                else if (@event.blackmarket)
+                {
+                    // Cargo is mission-related
+                    HaulageAmount haulageAmount = cargo.haulageamounts.FirstOrDefault(ha => ha.amount >= @event.amount);
+                    if (haulageAmount != null)
+                    {
+                        cargo.haulage -= @event.amount;
+                        haulageAmount.amount -= @event.amount;
+                        if (haulageAmount.amount == 0)
+                        {
+                            cargo.haulageamounts.Remove(haulageAmount);
+                        }
+                    }
+                }
+                else
+                {
+                    // Cargo is owned by the commander
+                    cargo.other -= @event.amount;
+                }
+
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                if (cargo.total < 1)
+                {
+                    // All of the commodity was sold
+                    RemoveCargo(cargo.name);
+                }
+            }
+            writeInventory();
+        }
+
+        private void handlePowerCommodityObtainedEvent(PowerCommodityObtainedEvent @event)
+        {
+            Cargo cargo = GetCargo(@event.commodity);
+            if (cargo != null)
+            {
+                cargo.other += @event.amount;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+            }
+            else
+            {
+                Cargo newCargo = new Cargo(@event.commodity, @event.amount);
+                newCargo.haulage = 0;
+                newCargo.stolen = 0;
+                newCargo.other = @event.amount;
+                AddCargo(newCargo);
+            }
+            writeInventory();
+        }
+
+
+        private void handlePowerCommodityDeliveredEvent(PowerCommodityDeliveredEvent @event)
+        {
+            Cargo cargo = GetCargo(@event.commodity);
+            if (cargo != null)
+            {
+                cargo.other -= @event.amount;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+
+                if (cargo.total < 1)
+                {
+                    RemoveCargo(cargo.name);
+                }
+            }
+            writeInventory();
+        }
+
+        private void handleLimpetPurchasedEvent(LimpetPurchasedEvent @event)
+        {
+            Cargo cargo = GetCargo("Limpet");
+            if (cargo != null)
+            {
+                cargo.other += @event.amount;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+            }
+            else
+            {
+                Cargo newCargo = new Cargo("Limpet", @event.amount, @event.price);
+                newCargo.haulage = 0;
+                newCargo.stolen = 0;
+                newCargo.other = @event.amount;
+                AddCargo(newCargo);
+            }
+            writeInventory();
+        }
+
+        private void handleLimpetSoldEvent(LimpetSoldEvent @event)
+        {
+            Cargo cargo = GetCargo("Limpet");
+            if (cargo != null)
+            {
+                cargo.other -= @event.amount;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+
+                if (cargo.total < 1)
+                {
+                    RemoveCargo(cargo.name);
+                }
+            }
+            writeInventory();
+        }
+
+        private void handleLimpetLaunchedEvent(LimpetLaunchedEvent @event)
+        {
+            Cargo cargo = GetCargo("Limpet");
+            if (cargo != null)
+            {
+                cargo.other --;
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+
+                if (cargo.total < 1)
+                {
+                    RemoveCargo(cargo.name);
+                }
+            }
+            writeInventory();
+        }
+
+        private void handleMissionAbandonedEvent(MissionAbandonedEvent @event)
+        {
+            foreach (Cargo inventoryCargo in inventory)
+            {
+                HaulageAmount haulageAmount = inventoryCargo.haulageamounts.FirstOrDefault(ha => ha.missionid == @event.missionid);
+                if (haulageAmount != null)
+                {
+                    inventoryCargo.haulage -= haulageAmount.amount;
+                    inventoryCargo.stolen += haulageAmount.amount;
+                    inventoryCargo.haulageamounts.Remove(haulageAmount);
+                    break;
+                }
+            }
+            writeInventory();
+        }
+
+        private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
+        {
+            if (@event.commodity != null)
+            {
+                HaulageAmount haulageAmount = new HaulageAmount();
+                haulageAmount.missionid = @event.missionid ?? 0;
+                haulageAmount.amount = @event.amount ?? 0;
+
+                Cargo cargo = GetCargo(@event.commodity);
+                if (cargo != null)
+                {
+                    cargo.haulage += @event.amount ?? 0;
+                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                    cargo.haulageamounts.Add(haulageAmount);
+                }
+                else
+                {
+                    Cargo newCargo = new Cargo(@event.commodity, @event.amount ?? 0);
+                    newCargo.haulage = @event.amount ?? 0;
+                    newCargo.stolen = 0;
+                    newCargo.other = 0;
+                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                    newCargo.haulageamounts.Add(haulageAmount);
+                    AddCargo(newCargo);
+                }
+            }
+            writeInventory();
+        }
+
+        private void handleMissionCompletedEvent(MissionCompletedEvent @event)
+        {
+            Cargo cargo = GetCargo(@event.commodity);
+            if (cargo != null)
+            {
+                cargo.haulage -= @event.amount ?? 0;
+                HaulageAmount haulageAmount = cargo.haulageamounts.FirstOrDefault(ha => ha.missionid == @event.missionid);
+                if (haulageAmount != null)
+                {
+                    cargo.haulageamounts.Remove(haulageAmount);
+                }
+
+                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                if (cargo.total < 1)
+                {
+                    RemoveCargo(cargo.name);
+                }
+            }
+
+            foreach (CommodityAmount commodityReward in @event.commodityrewards)
+            {
+                Cargo cargoReward = GetCargo(commodityReward.commodity);
+                if (cargoReward != null)
+                {
+                    cargoReward.other += commodityReward.amount;
+                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                }
+                else
+                {
+                    Cargo newCargo = new Cargo(commodityReward.commodity, commodityReward.amount);
+                    newCargo.haulage = 0;
+                    newCargo.stolen = 0;
+                    newCargo.other = commodityReward.amount;
+                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                    AddCargo(newCargo);
+                }
+            }
+            writeInventory();
+        }
+
+        private void handleMissionFailedEvent(MissionFailedEvent @event)
+        {
+            foreach (Cargo inventoryCargo in inventory)
+            {
+                HaulageAmount haulageAmount = inventoryCargo.haulageamounts.FirstOrDefault(ha => ha.missionid == @event.missionid);
+                if (haulageAmount != null)
+                {
+                    inventoryCargo.stolen += haulageAmount.amount;
+                    inventoryCargo.haulageamounts.Remove(haulageAmount);
+                    break;
+                }
+            }
+            writeInventory();
+        }
+
+        private void handleSynthesisedEvent(SynthesisedEvent @event)
+        {
+            if (@event.synthesis == "Limpet")
+            {
+                Cargo cargo = GetCargo("Limpet");
+                if (cargo != null)
+                {
+                    cargo.other += 4;
+                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                }
+                else
+                {
+                    Cargo newCargo = new Cargo("Limpet", 4);
+                    newCargo.haulage = 0;
+                    newCargo.stolen = 0;
+                    newCargo.other = 4;
+                    AddCargo(newCargo);
+                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                }
+                writeInventory();
+            }
         }
 
         public IDictionary<string, object> GetVariables()
         {
             IDictionary<string, object> variables = new Dictionary<string, object>
             {
-                ["cargo"] = new List<Cargo>(inventory)
+                ["inventory"] = new List<Cargo>(inventory)
             };
             return variables;
         }
 
-        public void AddCargo(Cargo cargo)
+        public void writeInventory()
         {
-            // If we were started from VoiceAttack then we might not have an application; check here and create if it doesn't exist
-            if (Application.Current == null)
+            lock (inventoryLock)
             {
-                new Application();
-            }
-
-            // Run this on the dispatcher to ensure that we can update it whilst reflecting changes in the UI
-            if (Application.Current.Dispatcher.CheckAccess())
-            {
-                addCargo(cargo);
-            }
-            else
-            {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                // Write cargo configuration with current inventory
+                CargoMonitorConfiguration configuration = new CargoMonitorConfiguration();
+                cargocarried = 0;
+                foreach (Cargo cargo in inventory)
                 {
-                    addCargo(cargo);
-                }));
+                    cargocarried += cargo.total;
+                }
+
+                configuration.cargo = inventory;
+                configuration.cargocarried = cargocarried;
+                configuration.ToFile();
+            }
+            // Make sure the UI is up to date
+            RaiseOnUIThread(InventoryUpdatedEvent, inventory);
+        }
+
+        private void readInventory()
+        {
+            lock (inventoryLock)
+            {
+                // Obtain current cargo inventory from configuration
+                CargoMonitorConfiguration configuration = CargoMonitorConfiguration.FromFile();
+                cargocarried = configuration.cargocarried;
+
+                // Build a new inventory
+                List<Cargo> newInventory = new List<Cargo>();
+
+                // Start with the materials we have in the log
+                foreach (Cargo cargo in configuration.cargo)
+                {
+                    newInventory.Add(cargo);
+                }
+
+                // Now order the list by name
+                newInventory = newInventory.OrderBy(c => c.name).ToList();
+
+                // Update the inventory 
+                inventory.Clear();
+                foreach (Cargo cargo in newInventory)
+                {
+                    inventory.Add(cargo);
+                }
             }
         }
 
-        public void RemoveCargo(Cargo cargo)
+        private void AddCargo(Cargo cargo)
         {
-            // If we were started from VoiceAttack then we might not have an application; check here and create if it doesn't exist
-            if (Application.Current == null)
+            if (cargo == null)
             {
-                new Application();
+                return;
             }
 
-            // Run this on the dispatcher to ensure that we can update it whilst reflecting changes in the UI
-            if (Application.Current.Dispatcher.CheckAccess())
+            lock (inventoryLock)
             {
-                removeCargo(cargo);
+                inventory.Add(cargo);
             }
-            else
-            {
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                {
-                    removeCargo(cargo);
-                }));
-            }
+            writeInventory();
         }
 
-        private void addCargo(Cargo cargo)
+        private void RemoveCargo(string commodityName)
         {
-            foreach (Cargo inventoryCargo in inventory)
+            lock (inventoryLock)
             {
-                if (inventoryCargo.commodity == cargo.commodity)
+                if (commodityName != null)
                 {
-                    // Matching commodity; see if the details match
-                    if (inventoryCargo.missionid != null)
+                    for (int i = 0; i < inventory.Count; i++)
                     {
-                        // Mission-specific cargo
-                        if (inventoryCargo.missionid == cargo.missionid)
+                        if (inventory[i].name == commodityName)
                         {
-                            // Both for the same mission - add to this
-                            inventoryCargo.amount += cargo.amount;
-                            return;
-                        }
-                        // Different mission; skip
-                        continue;
-                    }
-
-                    if (inventoryCargo.stolen == cargo.stolen)
-                    {
-                        // Both of the same legality
-                        if (inventoryCargo.price == cargo.price)
-                        {
-                            // Same cost basis - add to this
-                            inventoryCargo.amount += cargo.amount;
-                            return;
+                            inventory.RemoveAt(i);
+                            break;
                         }
                     }
                 }
             }
-            // No matching cargo - add entry
-            inventory.Add(cargo);
+            writeInventory();
         }
 
-        private void removeCargo(Cargo cargo)
+        public Cargo GetCargo(string commodityName)
         {
-            for (int i = 0; i < inventory.Count; i++)
+            if (commodityName == null)
             {
-                Cargo inventoryCargo = inventory[i];
-                if (inventoryCargo.commodity == cargo.commodity)
-                {
-                    // Matching commodity; see if the details match
-                    if (inventoryCargo.missionid != null)
-                    {
-                        // Mission-specific cargo
-                        if (inventoryCargo.missionid == cargo.missionid)
-                        {
-                            // Both for the same mission - remove from this
-                            if (inventoryCargo.amount == cargo.amount)
-                            {
-                                inventory.RemoveAt(i);
-                                return;
-                            }
-                            else
-                            {
-                                inventoryCargo.amount -= cargo.amount;
-                            }
-                            return;
-                        }
-                        // Different mission; skip
-                        continue;
-                    }
+                return null;
+            }
+            return inventory.FirstOrDefault(c => c.name == commodityName);
+        }
 
-                    if (inventoryCargo.stolen == cargo.stolen)
-                    {
-                        // Both of the same legality
-                        if (inventoryCargo.price == cargo.price)
-                        {
-                            // Same cost basis - remove from this
-                            if (inventoryCargo.amount == cargo.amount)
-                            {
-                                inventory.RemoveAt(i);
-                                return;
-                            }
-                            else
-                            {
-                                inventoryCargo.amount -= cargo.amount;
-                            }
-                            return;
-                        }
-                    }
+        public int GetCargoCarried()
+        {
+            return cargocarried;
+        }
+
+        static void RaiseOnUIThread(EventHandler handler, object sender)
+        {
+            if (handler != null)
+            {
+                SynchronizationContext uiSyncContext = SynchronizationContext.Current ?? new SynchronizationContext();
+                if (uiSyncContext == null)
+                {
+                    handler(sender, EventArgs.Empty);
+                }
+                else
+                {
+                    uiSyncContext.Send(delegate { handler(sender, EventArgs.Empty); }, null);
                 }
             }
-            // No matching cargo - ignore
-            Logging.Debug("Did not find match for cargo " + JsonConvert.SerializeObject(cargo));
         }
     }
 }

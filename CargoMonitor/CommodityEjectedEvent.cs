@@ -1,9 +1,10 @@
 ﻿using EddiDataDefinitions;
+using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace EddiEvents
+namespace EddiCargoMonitor
 {
     public class CommodityEjectedEvent : Event
     {

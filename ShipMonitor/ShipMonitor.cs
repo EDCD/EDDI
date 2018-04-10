@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCargoMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
@@ -171,18 +172,6 @@ namespace EddiShipMonitor
             else if (@event is ShipRestockedEvent)
             {
                 handleShipRestockedEvent((ShipRestockedEvent)@event);
-            }
-            else if (@event is CargoInventoryEvent)
-            {
-                handleCargoInventoryEvent((CargoInventoryEvent)@event);
-            }
-            else if (@event is LimpetPurchasedEvent)
-            {
-                handleLimpetPurchasedEvent((LimpetPurchasedEvent)@event);
-            }
-            else if (@event is LimpetSoldEvent)
-            {
-                handleLimpetSoldEvent((LimpetSoldEvent)@event);
             }
             else if (@event is ModulePurchasedEvent)
             {
@@ -694,37 +683,6 @@ namespace EddiShipMonitor
         {
             /// The ship may have engineering data, request a profile refresh from the Frontier API a minute after switching
             refreshProfileDelayed(@event.shipid, currentProfileId).GetAwaiter().GetResult();
-        }
-
-        private void handleCargoInventoryEvent(CargoInventoryEvent @event)
-        {
-            Ship ship = GetCurrentShip();
-            ship.cargo = @event.inventory;
-        }
-
-        private void handleLimpetPurchasedEvent(LimpetPurchasedEvent @event)
-        {
-            Cargo limpets = GetCurrentShip().cargo.Find(c => c.commodity.name == "Limpet");
-            if (limpets == null)
-            {
-                // No limpets so create an entry
-                limpets = new Cargo();
-                limpets.commodity = CommodityDefinitions.FromName("Limpet");
-                limpets.price = @event.price;
-                limpets.amount = 0;
-                GetCurrentShip().cargo.Add(limpets);
-            }
-            limpets.amount += @event.amount;
-        }
-
-        private void handleLimpetSoldEvent(LimpetSoldEvent @event)
-        {
-            Cargo limpets = GetCurrentShip().cargo.Find(c => c.commodity.name == "Limpet");
-            if (limpets != null)
-            {
-                limpets.amount -= @event.amount;
-                if (limpets.amount < 0) limpets.amount = 0;
-            }
         }
 
         public void HandleProfile(JObject profile)

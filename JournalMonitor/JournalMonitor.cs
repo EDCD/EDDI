@@ -1,6 +1,7 @@
 ﻿using Eddi;
 using EddiDataDefinitions;
 using EddiEvents;
+using EddiCargoMonitor;
 using EddiShipMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -1528,6 +1529,8 @@ namespace EddiJournalMonitor
                         case "MarketBuy":
                             {
                                 object val;
+                                data.TryGetValue("MarketID", out val);
+                                long marketid = (long)val;
                                 string commodityName = JsonParsing.getString(data, "Type");
                                 Commodity commodity = CommodityDefinitions.FromName(commodityName);
                                 if (commodity == null)
@@ -1537,14 +1540,16 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("BuyPrice", out val);
-                                long price = (long)val;
-                                events.Add(new CommodityPurchasedEvent(timestamp, commodity, amount, price) { raw = line });
+                                int price = (int)(long)val;
+                                events.Add(new CommodityPurchasedEvent(timestamp, marketid, commodity, amount, price) { raw = line });
                                 handled = true;
                                 break;
                             }
                         case "MarketSell":
                             {
                                 object val;
+                                data.TryGetValue("MarketID", out val);
+                                long marketid = (long)val;
                                 string commodityName = JsonParsing.getString(data, "Type");
                                 Commodity commodity = CommodityDefinitions.FromName(commodityName);
                                 if (commodity == null)
@@ -1565,7 +1570,7 @@ namespace EddiJournalMonitor
                                 bool stolen = tmp.HasValue ? (bool)tmp : false;
                                 tmp = JsonParsing.getOptionalBool(data, "BlackMarket");
                                 bool blackmarket = tmp.HasValue ? (bool)tmp : false;
-                                events.Add(new CommoditySoldEvent(timestamp, commodity, amount, price, profit, illegal, stolen, blackmarket) { raw = line });
+                                events.Add(new CommoditySoldEvent(timestamp, marketid, commodity, amount, price, profit, illegal, stolen, blackmarket) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -1787,7 +1792,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("BuyPrice", out val);
-                                long price = (long)val;
+                                int price = (int)val;
                                 events.Add(new LimpetPurchasedEvent(timestamp, amount, price) { raw = line });
                                 handled = true;
                                 break;
@@ -1798,8 +1803,15 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
                                 data.TryGetValue("SellPrice", out val);
-                                long price = (long)val;
+                                int price = (int)val;
                                 events.Add(new LimpetSoldEvent(timestamp, amount, price) { raw = line });
+                                handled = true;
+                                break;
+                            }
+                        case "LaunchDrone":
+                            {
+                                string type = JsonParsing.getString(data, "Type");
+                                events.Add(new LimpetLaunchedEvent(timestamp, type) { raw = line });
                                 handled = true;
                                 break;
                             }
@@ -2481,9 +2493,12 @@ namespace EddiJournalMonitor
                                     List<object> inventoryJson = (List<object>)val;
                                     foreach (Dictionary<string, object> cargoJson in inventoryJson)
                                     {
-                                        Cargo cargo = new Cargo();
-                                        cargo.commodity = CommodityDefinitions.FromName(JsonParsing.getString(cargoJson, "Name"));
-                                        cargo.amount = JsonParsing.getInt(cargoJson, "Count");
+                                        string commodityName = JsonParsing.getString(cargoJson, "Name");
+                                        int amount = JsonParsing.getInt(cargoJson, "Count");
+                                        Cargo cargo = new Cargo(commodityName, amount);
+                                        cargo.haulage = 0;
+                                        cargo.stolen = JsonParsing.getInt(cargoJson, "Stolen");
+                                        cargo.other = amount - cargo.stolen;
                                         inventory.Add(cargo);
                                     }
                                 }
@@ -2492,6 +2507,7 @@ namespace EddiJournalMonitor
                             }
                             handled = true;
                             break;
+
                         case "PowerplayJoin":
                             {
                                 string power = JsonParsing.getString(data, "Power");
