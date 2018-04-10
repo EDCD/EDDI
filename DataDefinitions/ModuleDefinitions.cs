@@ -970,6 +970,7 @@ namespace EddiDataDefinitions
                 {999999940, new Module(999999940, "hpt_shipdatalinkscanner", -1, "Data Link Scanner", 1, "I", 0, -1) },
                 {999999941, new Module(999999941, "string_lights_coloured", -1, "Coloured string lights", 1, "I", 0, -1) },
                 {999999942, new Module(999999942, "Type9_Military_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128785619) },
+                {999999943, new Module(999999943, "TypeX_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128816574) },
                 
                 // Needs EDDB ID
                 {128833944, new Module(128833944, "Int_CorrosionProofCargoRack_Size4_Class1", -1, "Corrosion Resistant Cargo Rack", 4, "E", 94329) },
