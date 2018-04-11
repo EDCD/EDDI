@@ -972,11 +972,14 @@ namespace EddiDataDefinitions
                 {999999941, new Module(999999941, "string_lights_coloured", -1, "Coloured string lights", 1, "I", 0, -1) },
                 {999999942, new Module(999999942, "Type9_Military_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128785619) },
                 {999999943, new Module(999999943, "TypeX_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128816574) },
+                {999999944, new Module(999999944, "string_lights_warm_white", -1, "White string lights", 1, "I", 0, -1) },
+
                 // Fighter modules
                 {899999950, new Module(899999950, "Empire_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
                 {899999951, new Module(899999951, "Federation_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
                 {899999952, new Module(899999952, "Independent_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
                 {899999960, new Module(899999960, "Hpt_Pulselaser_Fixed_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899999961, new Module(899999961, "Hpt_ATMulticannon_Fixed_Indie_Fighter", -1, "AT Multicannon", 1, "I", 0, -1) },
                 {899999965, new Module(899999965, "Hpt_Multicannon_Fixed_Fed_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
                 {899999975, new Module(899999975, "Federation_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
                 {899999976, new Module(899999976, "Independent_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
