@@ -9,7 +9,7 @@ namespace EddiCargoMonitor
     {
         public const string NAME = "Cargo inventory";
         public const string DESCRIPTION = "Triggered when you obtain an inventory of your cargo";
-        public const string SAMPLE = "{ \"timestamp\":\"2017-02-10T14:25:51Z\", \"event\":\"Cargo\", \"Inventory\":[ { \"Name\":\"syntheticmeat\", \"Count\":2, \"Stolen\": 0 }, { \"Name\":\"evacuationshelter\", \"Count\":1, \"Stolen\": 0 }, { \"Name\":\"progenitorcells\", \"Count\":3, \"Stolen\": 3 }, { \"Name\":\"bioreducinglichen\", \"Count\":1, \"Stolen\": 0 }, { \"Name\":\"neofabricinsulation\", \"Count\":2, \"Stolen\": 0 } ] }";
+        public const string SAMPLE = "{ \"timestamp\":\"2018-04-10T23:33:17Z\", \"event\":\"Cargo\", \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":2, \"Stolen\":0 }, { \"Name\":\"survivalequipment\", \"Name_Localised\":\"Survival Equipment\", \"Count\":2, \"Stolen\":0 } ] }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CargoInventoryEvent()

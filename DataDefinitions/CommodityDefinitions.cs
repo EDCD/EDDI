@@ -393,8 +393,8 @@ namespace EddiDataDefinitions
                 Commodity.EDName = Template.EDName;
                 Commodity.name = Template.name;
                 Commodity.category = Template.category;
-                Commodity.rare = Template.rare;
                 Commodity.avgprice = Template.avgprice;
+                Commodity.rare = Template.rare;
             }
             return Commodity;
         }
@@ -409,6 +409,7 @@ namespace EddiDataDefinitions
             Commodity Commodity = new Commodity();
 
             string cleanedName = name.ToLowerInvariant()
+                .Replace(" ", "") // Remove spaces
                 .Replace("$", "") // Header for types from mining and mission events
                 .Replace("_name;", "") // Trailer for types from mining and mission events
                 ;
