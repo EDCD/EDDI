@@ -102,7 +102,7 @@ namespace EddiDataDefinitions
         public Cargo(string name, int total, int? price = null)
         {
             Commodity commodity = CommodityDefinitions.FromName(name);
-            this.name = name;
+            this.name = commodity.name;
             this.commodity = commodity;
             this.category = commodity.category;
             this.price = (price != null ? price ?? 0 : commodity.avgprice ?? 0);
