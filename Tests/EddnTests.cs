@@ -7,7 +7,7 @@ using System;
 using System.IO;
 using System.IO.Compression;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class EddnTests

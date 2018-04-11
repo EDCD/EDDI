@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiEvents;
 using EddiJournalMonitor;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class PromotionTests

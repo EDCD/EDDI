@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 
-namespace Tests
+namespace GeneratorTests
 {
     [TestClass]
     public class GeneratorTests

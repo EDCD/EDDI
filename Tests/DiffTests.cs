@@ -3,7 +3,7 @@ using Utilities;
 using static Utilities.Diff;
 using System.Collections.Generic;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class DiffTests

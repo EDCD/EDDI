@@ -3,7 +3,7 @@ using EddiStatusMonitor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class StatusMonitorTests
