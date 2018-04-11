@@ -1002,16 +1002,16 @@ namespace EddiDataDefinitions
                 {128833999, new Module(128833999, "Hpt_Guardian_PlasmaLauncher_Turret_Medium", -1, "Guardian Plasma Charger", 2, "E", 0, Module.ModuleMount.Turreted) },
 
                 // Needs FDev ID & EDDB ID
-                {999999949, new Module(999999949, "Int_MetaAlloyHullReinforcement_Size1_Class1", -1, "Meta Alloy Hull Reinforcement", 1, "E", 7501) },
-                {999999944, new Module(999999944, "Int_MetaAlloyHullReinforcement_Size1_Class2", -1, "Meta Alloy Hull Reinforcement", 1, "D", 22500) },
+                {999999948, new Module(999999948, "Int_MetaAlloyHullReinforcement_Size1_Class1", -1, "Meta Alloy Hull Reinforcement", 1, "E", 7501) },
+                {999999949, new Module(999999949, "Int_MetaAlloyHullReinforcement_Size1_Class2", -1, "Meta Alloy Hull Reinforcement", 1, "D", 22500) },
                 {999999950, new Module(999999950, "Int_MetaAlloyHullReinforcement_Size2_Class1", -1, "Meta Alloy Hull Reinforcement", 2, "E", 18000) },
-                {999999945, new Module(999999945, "Int_MetaAlloyHullReinforcement_Size2_Class2", -1, "Meta Alloy Hull Reinforcement", 2, "D", 54000) },
-                {999999951, new Module(999999951, "Int_MetaAlloyHullReinforcement_Size3_Class1", -1, "Meta Alloy Hull Reinforcement", 3, "E", 42000) },
-                {999999946, new Module(999999946, "Int_MetaAlloyHullReinforcement_Size3_Class2", -1, "Meta Alloy Hull Reinforcement", 3, "D", 126000) },
-                {999999952, new Module(999999952, "Int_MetaAlloyHullReinforcement_Size4_Class1", -1, "Meta Alloy Hull Reinforcement", 4, "E", 97501) },
-                {999999947, new Module(999999947, "Int_MetaAlloyHullReinforcement_Size4_Class2", -1, "Meta Alloy Hull Reinforcement", 4, "D", 292500) },
-                {999999953, new Module(999999953, "Int_MetaAlloyHullReinforcement_Size5_Class1", -1, "Meta Alloy Hull Reinforcement", 5, "E", 225001) },
-                {999999948, new Module(999999948, "Int_MetaAlloyHullReinforcement_Size5_Class2", -1, "Meta Alloy Hull Reinforcement", 5, "D", 675001) },
+                {999999951, new Module(999999951, "Int_MetaAlloyHullReinforcement_Size2_Class2", -1, "Meta Alloy Hull Reinforcement", 2, "D", 54000) },
+                {999999952, new Module(999999952, "Int_MetaAlloyHullReinforcement_Size3_Class1", -1, "Meta Alloy Hull Reinforcement", 3, "E", 42000) },
+                {999999953, new Module(999999953, "Int_MetaAlloyHullReinforcement_Size3_Class2", -1, "Meta Alloy Hull Reinforcement", 3, "D", 126000) },
+                {999999954, new Module(999999954, "Int_MetaAlloyHullReinforcement_Size4_Class1", -1, "Meta Alloy Hull Reinforcement", 4, "E", 97501) },
+                {999999955, new Module(999999955, "Int_MetaAlloyHullReinforcement_Size4_Class2", -1, "Meta Alloy Hull Reinforcement", 4, "D", 292500) },
+                {999999956, new Module(999999956, "Int_MetaAlloyHullReinforcement_Size5_Class1", -1, "Meta Alloy Hull Reinforcement", 5, "E", 225001) },
+                {999999957, new Module(999999957, "Int_MetaAlloyHullReinforcement_Size5_Class2", -1, "Meta Alloy Hull Reinforcement", 5, "D", 675001) },
         };
 
         private static Dictionary<string, Module> ModulesByEDName = ModulesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
