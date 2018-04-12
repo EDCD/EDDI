@@ -2,7 +2,7 @@
 using System;
 using Eddi;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class CoriolisTests

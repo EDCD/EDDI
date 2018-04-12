@@ -2,7 +2,7 @@
 using EddiDataDefinitions;
 using EddiDataProviderService;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class DataProviderTests

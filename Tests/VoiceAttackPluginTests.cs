@@ -6,7 +6,7 @@ using EddiDataDefinitions;
 using EddiDataProviderService;
 using Newtonsoft.Json;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     [DeploymentItem(@"x86\SQLite.Interop.dll", "x86")]

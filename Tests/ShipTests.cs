@@ -8,7 +8,7 @@ using EddiShipMonitor;
 using Utilities;
 using Eddi;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class ShipTests

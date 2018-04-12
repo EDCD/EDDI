@@ -12,7 +12,7 @@ using CSCore.Streams.Effects;
 using EddiDataDefinitions;
 using Utilities;
 
-namespace Tests
+namespace SpeechTests
 {
     [TestClass]
     public class SpeechTests

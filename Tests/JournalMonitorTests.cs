@@ -4,7 +4,7 @@ using EddiEvents;
 using EddiJournalMonitor;
 using System.Collections.Generic;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class JournalMonitorTests

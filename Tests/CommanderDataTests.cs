@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using EddiShipMonitor;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class CommanderDataTests

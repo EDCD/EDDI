@@ -2,7 +2,7 @@
 using EddiEvents;
 using System.Collections.Generic;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class BodyScanTests

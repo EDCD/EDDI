@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Utilities;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class VersioningTests

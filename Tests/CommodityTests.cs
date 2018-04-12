@@ -2,7 +2,7 @@
 using System;
 using EddiDataDefinitions;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class CommodityTests

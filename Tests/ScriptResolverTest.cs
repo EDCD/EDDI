@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Tests
+namespace UnitTests
 {
     [TestClass]
     public class ScriptResolverTest
