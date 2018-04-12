@@ -122,6 +122,9 @@ namespace Utilities
 
         public static void Report(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
+#if DEBUG
+            Debug(message, data?.ToString(), memberName, filePath);
+#else
             try
             {
                 if (!(data is Dictionary<string, object>))
@@ -147,6 +150,7 @@ namespace Utilities
             {
                 // Nothing to do
             }
+#endif
         }
     }
 
