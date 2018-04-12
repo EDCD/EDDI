@@ -122,11 +122,18 @@ namespace Utilities
 
         public static void Report(string message, object data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
+#if DEBUG
+            Debug(message, data?.ToString(), memberName, filePath);
+#else
             try
             {
                 if (!(data is Dictionary<string, object>))
                 {
-                    data = JsonConvert.DeserializeObject<Dictionary<string, object>>(data.ToString());
+                    var wrapppedData = new Dictionary<string, object>()
+                    {
+                        {"data", data}
+                    };
+                    data = wrapppedData;
                 }
                 Dictionary<string, object> thisData = (Dictionary<string, object>)data;
                 if (thisData.ContainsKey("timestamp"))
@@ -148,6 +155,7 @@ namespace Utilities
             {
                 // Nothing to do
             }
+#endif
         }
     }
 
