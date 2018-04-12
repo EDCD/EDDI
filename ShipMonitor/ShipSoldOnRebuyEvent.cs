@@ -1,3 +1,4 @@
+using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
 using System;
@@ -34,7 +35,7 @@ namespace EddiShipMonitor
 
         public ShipSoldOnRebuyEvent(DateTime timestamp, string ship, int shipId, long price, string system) : base(timestamp, NAME)
         {
-            this.ship = ship;      
+            this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipId;
             this.price = price;
             this.system = system;

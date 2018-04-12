@@ -43,7 +43,7 @@ namespace EddiShipMonitor
 
         public ModuleSwappedEvent(DateTime timestamp, string ship, int? shipid, string fromslot, Module frommodule, string toslot, Module tomodule) : base(timestamp, NAME)
         {
-            this.ship = ship;
+            this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipid;
             this.fromslot = fromslot;
             this.frommodule = frommodule;

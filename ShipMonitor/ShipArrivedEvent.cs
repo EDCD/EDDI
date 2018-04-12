@@ -49,7 +49,7 @@ namespace EddiShipMonitor
 
         public ShipArrivedEvent(DateTime timestamp, string ship, int? shipid, string system, decimal distance, long? price, long? time, string station) : base(timestamp, NAME)
         {
-            this.ship = ship;
+            this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipid;
             this.station = station;
             this.system = system;

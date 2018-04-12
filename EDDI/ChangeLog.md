@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.0-XX
+  * Ship monitor
+    * Made sure we are using human readable ship names in all scripts (e.g. "Imperial Eagle" rather than "Empire_Eagle")
+
 ### 3.0.0-rc2
   * Core
     * The EDSM responder has been updated to send data to EDSM per their revised API. 
