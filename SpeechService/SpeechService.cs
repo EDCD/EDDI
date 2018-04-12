@@ -397,7 +397,7 @@ namespace EddiSpeechService
                         {"speech", speech},
                     };
                     string badSpeechJSON = JsonConvert.SerializeObject(badSpeech);
-                    Logging.Error("Speech failed", badSpeechJSON);
+                    Logging.Info("Speech failed", badSpeechJSON, "", "");
                 }
             });
             synthThread.Start();
