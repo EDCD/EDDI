@@ -32,8 +32,18 @@ namespace EddiEvents
         public DiedEvent(DateTime timestamp, List<string> commanders, List<string> ships, List<CombatRating> ratings) : base(timestamp, NAME)
         {
             this.commanders = commanders;
-            this.ships = ships;
+            this.ships = killerShipModels(ships);
             this.ratings = ratings.ConvertAll(x => x.name);
+        }
+
+        public static List<string> killerShipModels(List<string> ships)
+        {
+            List<string> shipModels = new List<string>();
+            foreach (string shipName in ships)
+            {
+                shipModels.Add(ShipDefinitions.FromEDModel(shipName).model);
+            }
+            return shipModels;
         }
     }
 }

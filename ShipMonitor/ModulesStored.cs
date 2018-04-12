@@ -35,7 +35,7 @@ namespace EddiShipMonitor
 
         public ModulesStoredEvent(DateTime timestamp, string ship, int? shipid, List<string> slots, List<Module> modules ) : base(timestamp, NAME)
         {
-            this.ship = ship;
+            this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipid;
             this.slots = slots;
             this.modules = modules;
