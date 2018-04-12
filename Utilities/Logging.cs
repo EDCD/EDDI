@@ -129,6 +129,11 @@ namespace Utilities
                     data = JsonConvert.DeserializeObject<Dictionary<string, object>>(data.ToString());
                 }
                 Dictionary<string, object> thisData = (Dictionary<string, object>)data;
+                if (thisData.ContainsKey("timestamp"))
+                {
+                    // Repeated data should be matched even if timestamps differ, so remove journal event timestamps here.
+                    thisData.Remove("timestamp"); 
+                }
                 if (isUniqueMessage(message, thisData))
                 {
                     RollbarLocator.RollbarInstance.Info(message, thisData);
