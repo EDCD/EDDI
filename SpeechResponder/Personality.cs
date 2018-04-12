@@ -258,7 +258,7 @@ namespace EddiSpeechResponder
             missingScripts.RemoveAll(t => t == "Belt scanned" || t == "Jumping" || t == "Status");
             if (missingScripts.Count > 0)
             {
-                Logging.Report("Failed to find scripts", JsonConvert.SerializeObject(missingScripts));
+                Logging.Info("Failed to find scripts" + string.Join(";", missingScripts));
             }
 
             // Re-order the scripts by name
