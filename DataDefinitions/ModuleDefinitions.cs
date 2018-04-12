@@ -914,6 +914,7 @@ namespace EddiDataDefinitions
                 {128816578, new Module(128816578, "TypeX_Armour_Grade3", 1642, "Military Grade Composite", 1, "I", 17444026, 128816574) },
                 {128816579, new Module(128816579, "TypeX_Armour_Mirrored", 1643, "Mirrored Surface Composite", 1, "I", 41226050, 128816574) },
                 {128816580, new Module(128816580, "TypeX_Armour_Reactive", 1644, "Reactive Surface Composite", 1, "I", 45683967, 128816574) },
+                {128834003, new Module(128834003, "Hpt_PlasmaShockCannon_Gimbal_Medium", -1, "Shock Cannon", 2, "D", 495963, Module.ModuleMount.Gimballed) },
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },
@@ -934,7 +935,7 @@ namespace EddiDataDefinitions
                 {999999903, new Module(999999903, "Hpt_MiningLaser_Fixed_Small_Advanced", -1, "Mining Lance", 1, "D", 6800, Module.ModuleMount.Fixed) },
                 {999999904, new Module(999999904, "VoicePack_Celeste", -1, "Celeste", 1, "I", 0) },
                 // The FDL has its own cargo bay door.  The FDL is like that
-                {999999907, new Module(999999907, "ModularCargoBayDoorFDL", -1, "Cargo Hatch", 1, "H", 0, -1) },
+                {999999907, new Module(999999907, "ModularCargoBayDoorFDL", -1, "Cargo Hatch", 1, "H", 0, 128049351) },
                 {999999908, new Module(999999908, "ModularCargoBayDoor", -1, "Cargo Hatch", 1, "H", 0, -1) },
                 {999999909, new Module(999999909, "Empire_Courier_Cockpit", -1, "Cockpit", 1, "I", 0, 128671223) },
                 {999999910, new Module(999999910, "SideWinder_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128049249) },
@@ -970,7 +971,21 @@ namespace EddiDataDefinitions
                 {999999940, new Module(999999940, "hpt_shipdatalinkscanner", -1, "Data Link Scanner", 1, "I", 0, -1) },
                 {999999941, new Module(999999941, "string_lights_coloured", -1, "Coloured string lights", 1, "I", 0, -1) },
                 {999999942, new Module(999999942, "Type9_Military_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128785619) },
-                
+                {999999943, new Module(999999943, "TypeX_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, 128816574) },
+                {999999944, new Module(999999944, "string_lights_warm_white", -1, "White string lights", 1, "I", 0, -1) },
+
+                // Fighter modules
+                {899999950, new Module(899999950, "Empire_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
+                {899999951, new Module(899999951, "Federation_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
+                {899999952, new Module(899999952, "Independent_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
+                {899999960, new Module(899999960, "Hpt_Pulselaser_Fixed_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899999961, new Module(899999961, "Hpt_ATMulticannon_Fixed_Indie_Fighter", -1, "AT Multicannon", 1, "I", 0, -1) },
+                {899999965, new Module(899999965, "Hpt_Multicannon_Fixed_Fed_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
+                {899999975, new Module(899999975, "Federation_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
+                {899999976, new Module(899999976, "Independent_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
+                {899999980, new Module(899999980, "Int_ShieldGenerator_Fighter_Class1", -1, "Shield Generator", 1, "I", 0, -1) },
+                {899999985, new Module(899999985, "Ext_Emitter_Standard", -1, "Shield Generator", 1, "I", 0, -1) },
+
                 // Needs EDDB ID
                 {128833944, new Module(128833944, "Int_CorrosionProofCargoRack_Size4_Class1", -1, "Corrosion Resistant Cargo Rack", 4, "E", 94329) },
                 {128833687, new Module(128833687, "Hpt_Guardian_GaussCannon_Fixed_Medium", -1, "Guardian Gauss Cannon", 2, "B", 543801, Module.ModuleMount.Fixed) },
@@ -987,16 +1002,16 @@ namespace EddiDataDefinitions
                 {128833999, new Module(128833999, "Hpt_Guardian_PlasmaLauncher_Turret_Medium", -1, "Guardian Plasma Charger", 2, "E", 0, Module.ModuleMount.Turreted) },
 
                 // Needs FDev ID & EDDB ID
-                {999999949, new Module(999999949, "Int_MetaAlloyHullReinforcement_Size1_Class1", -1, "Meta Alloy Hull Reinforcement", 1, "E", 7501) },
-                {999999944, new Module(999999944, "Int_MetaAlloyHullReinforcement_Size1_Class2", -1, "Meta Alloy Hull Reinforcement", 1, "D", 22500) },
+                {999999948, new Module(999999948, "Int_MetaAlloyHullReinforcement_Size1_Class1", -1, "Meta Alloy Hull Reinforcement", 1, "E", 7501) },
+                {999999949, new Module(999999949, "Int_MetaAlloyHullReinforcement_Size1_Class2", -1, "Meta Alloy Hull Reinforcement", 1, "D", 22500) },
                 {999999950, new Module(999999950, "Int_MetaAlloyHullReinforcement_Size2_Class1", -1, "Meta Alloy Hull Reinforcement", 2, "E", 18000) },
-                {999999945, new Module(999999945, "Int_MetaAlloyHullReinforcement_Size2_Class2", -1, "Meta Alloy Hull Reinforcement", 2, "D", 54000) },
-                {999999951, new Module(999999951, "Int_MetaAlloyHullReinforcement_Size3_Class1", -1, "Meta Alloy Hull Reinforcement", 3, "E", 42000) },
-                {999999946, new Module(999999946, "Int_MetaAlloyHullReinforcement_Size3_Class2", -1, "Meta Alloy Hull Reinforcement", 3, "D", 126000) },
-                {999999952, new Module(999999952, "Int_MetaAlloyHullReinforcement_Size4_Class1", -1, "Meta Alloy Hull Reinforcement", 4, "E", 97501) },
-                {999999947, new Module(999999947, "Int_MetaAlloyHullReinforcement_Size4_Class2", -1, "Meta Alloy Hull Reinforcement", 4, "D", 292500) },
-                {999999953, new Module(999999953, "Int_MetaAlloyHullReinforcement_Size5_Class1", -1, "Meta Alloy Hull Reinforcement", 5, "E", 225001) },
-                {999999948, new Module(999999948, "Int_MetaAlloyHullReinforcement_Size5_Class2", -1, "Meta Alloy Hull Reinforcement", 5, "D", 675001) },
+                {999999951, new Module(999999951, "Int_MetaAlloyHullReinforcement_Size2_Class2", -1, "Meta Alloy Hull Reinforcement", 2, "D", 54000) },
+                {999999952, new Module(999999952, "Int_MetaAlloyHullReinforcement_Size3_Class1", -1, "Meta Alloy Hull Reinforcement", 3, "E", 42000) },
+                {999999953, new Module(999999953, "Int_MetaAlloyHullReinforcement_Size3_Class2", -1, "Meta Alloy Hull Reinforcement", 3, "D", 126000) },
+                {999999954, new Module(999999954, "Int_MetaAlloyHullReinforcement_Size4_Class1", -1, "Meta Alloy Hull Reinforcement", 4, "E", 97501) },
+                {999999955, new Module(999999955, "Int_MetaAlloyHullReinforcement_Size4_Class2", -1, "Meta Alloy Hull Reinforcement", 4, "D", 292500) },
+                {999999956, new Module(999999956, "Int_MetaAlloyHullReinforcement_Size5_Class1", -1, "Meta Alloy Hull Reinforcement", 5, "E", 225001) },
+                {999999957, new Module(999999957, "Int_MetaAlloyHullReinforcement_Size5_Class2", -1, "Meta Alloy Hull Reinforcement", 5, "D", 675001) },
         };
 
         private static Dictionary<string, Module> ModulesByEDName = ModulesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
