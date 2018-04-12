@@ -2,6 +2,19 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.0-rc3
+  * Core
+    * Fixed the reporting of the Location event to EDDB. Was using the current body when it should have used the current station.
+    * Tuned the new logging to Rollbar for quicker startup in some situaitons.
+    * Added missing definitions for:
+      * Lavigny Garrison Supplies.
+      * Shock Cannon
+      * FdL Cargo Hatch
+      * Type-10 cockpit
+      * String of white cockpit lights
+      * Figher cockpit weapons and armor
+      * Meta Alloy Hull Reinforcement
+
 ### 3.0.0-rc2
   * Core
     * The EDSM responder has been updated to send data to EDSM per their revised API. 
