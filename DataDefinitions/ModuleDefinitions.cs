@@ -914,7 +914,6 @@ namespace EddiDataDefinitions
                 {128816578, new Module(128816578, "TypeX_Armour_Grade3", 1642, "Military Grade Composite", 1, "I", 17444026, 128816574) },
                 {128816579, new Module(128816579, "TypeX_Armour_Mirrored", 1643, "Mirrored Surface Composite", 1, "I", 41226050, 128816574) },
                 {128816580, new Module(128816580, "TypeX_Armour_Reactive", 1644, "Reactive Surface Composite", 1, "I", 45683967, 128816574) },
-                {128834003, new Module(128834003, "Hpt_PlasmaShockCannon_Gimbal_Medium", -1, "Shock Cannon", 2, "D", 495963, Module.ModuleMount.Gimballed) },
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },
@@ -1001,10 +1000,12 @@ namespace EddiDataDefinitions
                 {899990090, new Module(899990090, "Ext_Emitter_Standard", -1, "Shield Generator", 1, "I", 0, -1) },
 
                 // Needs EDDB ID
+                {128671345, new Module(128671345, "Hpt_MultiCannon_Fixed_Small_Strong", -1, "The Enforcer", 1, "F", 11811, Module.ModuleMount.Fixed, 60, 1000) },
                 {128833944, new Module(128833944, "Int_CorrosionProofCargoRack_Size4_Class1", -1, "Corrosion Resistant Cargo Rack", 4, "E", 94329) },
                 {128833687, new Module(128833687, "Hpt_Guardian_GaussCannon_Fixed_Medium", -1, "Guardian Gauss Cannon", 2, "B", 543801, Module.ModuleMount.Fixed) },
                 {128833998, new Module(128833998, "Hpt_Guardian_PlasmaLauncher_Fixed_Medium", -1, "Guardian Plasma Charger", 2, "B", 567761, Module.ModuleMount.Fixed) },
                 {128834000, new Module(128834000, "Hpt_Guardian_ShardCannon_Fixed_Medium", -1, "Shard Cannon", 2, "A", 445560, Module.ModuleMount.Fixed) },
+                {128834003, new Module(128834003, "Hpt_PlasmaShockCannon_Gimbal_Medium", -1, "Shock Cannon", 2, "D", 495963, Module.ModuleMount.Gimballed) },
 
                 // Needs EDDB ID & pricing
                 {128833988, new Module(128833988, "Int_GuardianPowerplant_Size2", -1, "Guardian Power Plant", 2, "A", 0) },
