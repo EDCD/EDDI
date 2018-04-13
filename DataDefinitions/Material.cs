@@ -131,7 +131,7 @@ namespace EddiDataDefinitions
         public static readonly Material AncientLanguageData = new Material("ancientlanguagedata", "Encoded", "Ancient Language Data (Pattern Delta)", Rarity.Rare);
         public static readonly Material AncientTechnologicalData = new Material("ancienttechnologicaldata", "Encoded", "Ancient Technological Data (Pattern Epsilon)", Rarity.Rare);
         public static readonly Material Tg_ShipFlightData = new Material("tg_shipflightdata", "Encoded", "Ship Flight Data", Rarity.Rare);
-        public static readonly Material Tg_ShipSystemData = new Material("tg_shipsystemdata", "Encoded", "Ship System Data", Rarity.Rare);
+        public static readonly Material Tg_ShipSystemsData = new Material("tg_shipsystemsdata", "Encoded", "Ship System Data", Rarity.Rare);
         public static readonly Material Tg_ResidueData = new Material("tg_residuedata", "Encoded", "Thargoid Residue Data", Rarity.Rare);
         public static readonly Material UnknownWakeScan = new Material("unknownwakedata", "Encoded", "Thargoid Wake Data", Rarity.Rare);
 
