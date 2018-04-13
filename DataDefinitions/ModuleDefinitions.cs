@@ -975,16 +975,18 @@ namespace EddiDataDefinitions
                 {999999944, new Module(999999944, "string_lights_warm_white", -1, "White string lights", 1, "I", 0, -1) },
 
                 // Fighter modules
-                {899999950, new Module(899999950, "Empire_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
-                {899999951, new Module(899999951, "Federation_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
-                {899999952, new Module(899999952, "Independent_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
-                {899999960, new Module(899999960, "Hpt_Pulselaser_Fixed_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
-                {899999961, new Module(899999961, "Hpt_ATMulticannon_Fixed_Indie_Fighter", -1, "AT Multicannon", 1, "I", 0, -1) },
-                {899999965, new Module(899999965, "Hpt_Multicannon_Fixed_Fed_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
-                {899999975, new Module(899999975, "Federation_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
-                {899999976, new Module(899999976, "Independent_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
-                {899999980, new Module(899999980, "Int_ShieldGenerator_Fighter_Class1", -1, "Shield Generator", 1, "I", 0, -1) },
-                {899999985, new Module(899999985, "Ext_Emitter_Standard", -1, "Shield Generator", 1, "I", 0, -1) },
+                {899990000, new Module(899990000, "Empire_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
+                {899990001, new Module(899990001, "Federation_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
+                {899990002, new Module(899990002, "Independent_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
+                {899990020, new Module(899990020, "Hpt_BeamLaser_Fixed_Indie_Fighter", -1, "Beam Laser", 1, "I", 0, -1) },
+                {899990030, new Module(899990030, "Hpt_Pulselaser_Fixed_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990031, new Module(899990031, "Hpt_PulseLaser_Gimbal_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990040, new Module(899990040, "Hpt_ATMulticannon_Fixed_Indie_Fighter", -1, "AT Multicannon", 1, "I", 0, -1) },
+                {899990050, new Module(899990050, "Hpt_Multicannon_Fixed_Fed_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
+                {899990060, new Module(899990060, "Federation_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
+                {899990070, new Module(899990070, "Independent_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
+                {899990080, new Module(899990080, "Int_ShieldGenerator_Fighter_Class1", -1, "Shield Generator", 1, "I", 0, -1) },
+                {899990090, new Module(899990090, "Ext_Emitter_Standard", -1, "Shield Generator", 1, "I", 0, -1) },
 
                 // Needs EDDB ID
                 {128833944, new Module(128833944, "Int_CorrosionProofCargoRack_Size4_Class1", -1, "Corrosion Resistant Cargo Rack", 4, "E", 94329) },
@@ -1012,6 +1014,20 @@ namespace EddiDataDefinitions
                 {999999955, new Module(999999955, "Int_MetaAlloyHullReinforcement_Size4_Class2", -1, "Meta Alloy Hull Reinforcement", 4, "D", 292500) },
                 {999999956, new Module(999999956, "Int_MetaAlloyHullReinforcement_Size5_Class1", -1, "Meta Alloy Hull Reinforcement", 5, "E", 225001) },
                 {999999957, new Module(999999957, "Int_MetaAlloyHullReinforcement_Size5_Class2", -1, "Meta Alloy Hull Reinforcement", 5, "D", 675001) },
+
+                // Needs FDev ID, EDDB ID, grade, & pricing
+                {999990001, new Module(999990001, "Int_GuardianPowerDistributor_Size1", -1, "Guardian Power Distributor", 1, "D", 0) },
+                {999990002, new Module(999990002, "Int_GuardianPowerDistributor_Size2", -1, "Guardian Power Distributor", 2, "D", 0) },
+                {999990003, new Module(999990003, "Int_GuardianPowerDistributor_Size3", -1, "Guardian Power Distributor", 3, "D", 0) },
+                {999990004, new Module(999990004, "Int_GuardianPowerDistributor_Size4", -1, "Guardian Power Distributor", 4, "D", 0) },
+                {999990005, new Module(999990005, "Int_GuardianPowerDistributor_Size5", -1, "Guardian Power Distributor", 5, "D", 0) },
+                {999990006, new Module(999990006, "Int_GuardianPowerDistributor_Size6", -1, "Guardian Power Distributor", 6, "D", 0) },
+                {999990007, new Module(999990007, "Int_GuardianPowerDistributor_Size7", -1, "Guardian Power Distributor", 7, "D", 0) },
+                {999990008, new Module(999990008, "Int_GuardianPowerDistributor_Size8", -1, "Guardian Power Distributor", 8, "D", 0) },
+
+                {999990011, new Module(999990011, "Hpt_Guardian_ShardCannon_Fixed_Medium", -1, "Shard Cannon", 2, "D", 0, Module.ModuleMount.Fixed) },
+                {999990012, new Module(999990012, "Hpt_Guardian_ShardCannon_Turret_Medium", -1, "Shard Cannon", 2, "D", 0, Module.ModuleMount.Turreted) },
+                {999990021, new Module(999990021, "Hpt_FlechetteLauncher_Fixed_Medium", -1, "Flechette Launcher", 2, "D", 0, Module.ModuleMount.Fixed) },
         };
 
         private static Dictionary<string, Module> ModulesByEDName = ModulesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
