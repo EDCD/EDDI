@@ -1066,6 +1066,7 @@ namespace EddiDataDefinitions
                  || module.EDName == "Hpt_MiningLaser_Fixed_Small_Advanced"
                  || module.EDName == "Hpt_BeamLaser_Fixed_Small_Heat"
                  || module.EDName == "Hpt_PulseLaser_Fixed_Medium_?" // Disruptor
+                 || module.EDName == "Hpt_MultiCannon_Fixed_Small_Strong" // Enforcer cannon
                  );
         }
 
