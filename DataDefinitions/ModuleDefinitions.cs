@@ -983,6 +983,7 @@ namespace EddiDataDefinitions
                 {899990031, new Module(899990031, "Hpt_PulseLaser_Gimbal_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
                 {899990040, new Module(899990040, "Hpt_ATMulticannon_Fixed_Indie_Fighter", -1, "AT Multicannon", 1, "I", 0, -1) },
                 {899990050, new Module(899990050, "Hpt_Multicannon_Fixed_Fed_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
+                {899990059, new Module(899990059, "Empire_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
                 {899990060, new Module(899990060, "Federation_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
                 {899990070, new Module(899990070, "Independent_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
                 {899990080, new Module(899990080, "Int_ShieldGenerator_Fighter_Class1", -1, "Shield Generator", 1, "I", 0, -1) },
