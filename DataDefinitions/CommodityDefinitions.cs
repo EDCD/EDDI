@@ -365,6 +365,8 @@ namespace EddiDataDefinitions
             {128824468, new Commodity(331, "ThargoidScoutTissueSample", "Thargoid Scout Tissue Sample", "Salvage", 15215, false) },
 
             // Items for which we do not have EDDB IDs
+            {200000000, new Commodity(10000, "aislingpromotionalmaterials", "Aisling Promotional Materials", "Powerplay", 0, false) },
+            {200000001, new Commodity(10001, "alliancelegaslativerecords", "Alliance Legislative Records", "Powerplay", 0, false) },
             {200000012, new Commodity(10012, "siriuscommercialcontracts", "Sirius Commerical Contracts", "Powerplay", 0, false) },
             {200000013, new Commodity(10013, "siriusindustrialequipment", "Sirius Inustrial Equipment", "Powerplay", 0, false) },
             {200000014, new Commodity(10014, "siriusfranchisepackage", "Sirius Franchise Package", "Powerplay", 0, false) },
@@ -377,6 +379,7 @@ namespace EddiDataDefinitions
             {128793128, new Commodity(10020, "ThargoidTissueSampleType1", "Thargoid Cyclops Tissue Sample", "Salvage", 14081, false) },
             {128793129, new Commodity(10023, "ThargoidTissueSampleType2", "Thargoid Basilisk Tissue Sample", "Salvage", 0, false) },
             {128793130, new Commodity(10024, "ThargoidTissueSampleType3", "Thargoid Medusa Tissue Sample", "Salvage", 0, false) },
+            {200000017, new Commodity(10017, "kachiriginleaches", "Kachirigin Leeches", "Consumer Items", 0, true) },
         };
 
         // Builds dictionaries for Name & EDName, converting to lower case and removing all spaces, dashes, and dots from the names
