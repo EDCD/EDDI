@@ -992,6 +992,7 @@ namespace EddiDataDefinitions
                 {128833944, new Module(128833944, "Int_CorrosionProofCargoRack_Size4_Class1", -1, "Corrosion Resistant Cargo Rack", 4, "E", 94329) },
                 {128833687, new Module(128833687, "Hpt_Guardian_GaussCannon_Fixed_Medium", -1, "Guardian Gauss Cannon", 2, "B", 543801, Module.ModuleMount.Fixed) },
                 {128833998, new Module(128833998, "Hpt_Guardian_PlasmaLauncher_Fixed_Medium", -1, "Guardian Plasma Charger", 2, "B", 567761, Module.ModuleMount.Fixed) },
+                {128834000, new Module(128834000, "Hpt_Guardian_ShardCannon_Fixed_Medium", -1, "Shard Cannon", 2, "A", 445560, Module.ModuleMount.Fixed) },
 
                 // Needs EDDB ID & pricing
                 {128833988, new Module(128833988, "Int_GuardianPowerplant_Size2", -1, "Guardian Power Plant", 2, "A", 0) },
@@ -1014,6 +1015,7 @@ namespace EddiDataDefinitions
                 {999999955, new Module(999999955, "Int_MetaAlloyHullReinforcement_Size4_Class2", -1, "Meta Alloy Hull Reinforcement", 4, "D", 292500) },
                 {999999956, new Module(999999956, "Int_MetaAlloyHullReinforcement_Size5_Class1", -1, "Meta Alloy Hull Reinforcement", 5, "E", 225001) },
                 {999999957, new Module(999999957, "Int_MetaAlloyHullReinforcement_Size5_Class2", -1, "Meta Alloy Hull Reinforcement", 5, "D", 675001) },
+                {999990012, new Module(999990012, "Hpt_Guardian_ShardCannon_Turret_Medium", -1, "Shard Cannon", 2, "A", 1722825, Module.ModuleMount.Turreted) },
 
                 // Needs FDev ID, EDDB ID, grade, & pricing
                 {999990001, new Module(999990001, "Int_GuardianPowerDistributor_Size1", -1, "Guardian Power Distributor", 1, "D", 0) },
@@ -1024,9 +1026,6 @@ namespace EddiDataDefinitions
                 {999990006, new Module(999990006, "Int_GuardianPowerDistributor_Size6", -1, "Guardian Power Distributor", 6, "D", 0) },
                 {999990007, new Module(999990007, "Int_GuardianPowerDistributor_Size7", -1, "Guardian Power Distributor", 7, "D", 0) },
                 {999990008, new Module(999990008, "Int_GuardianPowerDistributor_Size8", -1, "Guardian Power Distributor", 8, "D", 0) },
-
-                {999990011, new Module(999990011, "Hpt_Guardian_ShardCannon_Fixed_Medium", -1, "Shard Cannon", 2, "D", 0, Module.ModuleMount.Fixed) },
-                {999990012, new Module(999990012, "Hpt_Guardian_ShardCannon_Turret_Medium", -1, "Shard Cannon", 2, "D", 0, Module.ModuleMount.Turreted) },
                 {999990021, new Module(999990021, "Hpt_FlechetteLauncher_Fixed_Medium", -1, "Flechette Launcher", 2, "D", 0, Module.ModuleMount.Fixed) },
         };
 
