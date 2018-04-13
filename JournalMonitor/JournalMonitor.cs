@@ -24,10 +24,13 @@ namespace EddiJournalMonitor
 
         public static void ForwardJournalEntry(string line, Action<Event> callback)
         {
-            List<Event> events = ParseJournalEntry(line);
-            foreach (Event @event in events)
+            if (line != null)
             {
-                callback(@event);
+                List<Event> events = ParseJournalEntry(line);
+                foreach (Event @event in events)
+                {
+                    callback(@event);
+                }
             }
         }
 
