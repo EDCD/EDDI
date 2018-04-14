@@ -1006,6 +1006,8 @@ namespace EddiDataDefinitions
                 {128833998, new Module(128833998, "Hpt_Guardian_PlasmaLauncher_Fixed_Medium", -1, "Guardian Plasma Charger", 2, "B", 567761, Module.ModuleMount.Fixed) },
                 {128834000, new Module(128834000, "Hpt_Guardian_ShardCannon_Fixed_Medium", -1, "Shard Cannon", 2, "A", 445560, Module.ModuleMount.Fixed) },
                 {128834003, new Module(128834003, "Hpt_PlasmaShockCannon_Gimbal_Medium", -1, "Shock Cannon", 2, "D", 495963, Module.ModuleMount.Gimballed) },
+                {128833982, new Module(128833982, "Int_GuardianPowerDistributor_Size3", -1, "Guardian Power Distributor", 3, "D", 303580) },
+                {128833984, new Module(128833984, "Int_GuardianPowerDistributor_Size5", -1, "Guardian Power Distributor", 5, "D", 2363097) },
 
                 // Needs EDDB ID & pricing
                 {128833988, new Module(128833988, "Int_GuardianPowerplant_Size2", -1, "Guardian Power Plant", 2, "A", 0) },
@@ -1033,9 +1035,7 @@ namespace EddiDataDefinitions
                 // Needs FDev ID, EDDB ID, grade, & pricing
                 {999990001, new Module(999990001, "Int_GuardianPowerDistributor_Size1", -1, "Guardian Power Distributor", 1, "D", 0) },
                 {999990002, new Module(999990002, "Int_GuardianPowerDistributor_Size2", -1, "Guardian Power Distributor", 2, "D", 0) },
-                {999990003, new Module(999990003, "Int_GuardianPowerDistributor_Size3", -1, "Guardian Power Distributor", 3, "D", 0) },
                 {999990004, new Module(999990004, "Int_GuardianPowerDistributor_Size4", -1, "Guardian Power Distributor", 4, "D", 0) },
-                {999990005, new Module(999990005, "Int_GuardianPowerDistributor_Size5", -1, "Guardian Power Distributor", 5, "D", 0) },
                 {999990006, new Module(999990006, "Int_GuardianPowerDistributor_Size6", -1, "Guardian Power Distributor", 6, "D", 0) },
                 {999990007, new Module(999990007, "Int_GuardianPowerDistributor_Size7", -1, "Guardian Power Distributor", 7, "D", 0) },
                 {999990008, new Module(999990008, "Int_GuardianPowerDistributor_Size8", -1, "Guardian Power Distributor", 8, "D", 0) },
