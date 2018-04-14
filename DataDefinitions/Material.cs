@@ -242,7 +242,7 @@ namespace EddiDataDefinitions
                 // Fall back to the edname if searching by name fails.
                 result = MATERIALS.FirstOrDefault(v => v.EDName.ToLowerInvariant() == tidiedFrom);
             }
-            if (result == null)
+            if (result == null & !DeprecatedMaterials(from))
             {
                 Logging.Report("Unknown material name " + from);
                 result = new Material(tidiedFrom, "Unknown", from, Rarity.Unknown);
