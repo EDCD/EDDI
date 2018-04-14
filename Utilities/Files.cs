@@ -23,35 +23,35 @@ namespace Utilities
                 }
                 catch (ArgumentException ex)
                 {
-                    Logging.Error("Failed to read from " + name, ex);
+                    Logging.Debug("Failed to read from " + name, ex);
                 }
                 catch (PathTooLongException ex)
                 {
-                    Logging.Error("Path " + name + " too long", ex);
+                    Logging.Debug("Path " + name + " too long", ex);
                 }
                 catch (DirectoryNotFoundException ex)
                 {
-                    Logging.Error("Directory for " + name + " not found", ex);
+                    Logging.Debug("Directory for " + name + " not found", ex);
                 }
                 catch (FileNotFoundException ex)
                 {
-                    Logging.Error("File" + name + " not found", ex);
+                    Logging.Debug("File " + name + " not found", ex);
                 }
                 catch (IOException ex)
                 {
-                    Logging.Error("IO exception for " + name, ex);
+                    Logging.Debug("IO exception for " + name, ex);
                 }
                 catch (UnauthorizedAccessException ex)
                 {
-                    Logging.Error("Not allowed to read from " + name, ex);
+                    Logging.Debug("Not allowed to read from " + name, ex);
                 }
                 catch (NotSupportedException ex)
                 {
-                    Logging.Error("Not supported reading from " + name, ex);
+                    Logging.Debug("Not supported reading from " + name, ex);
                 }
                 catch (SecurityException ex)
                 {
-                    Logging.Error("Security exception reading from " + name, ex);
+                    Logging.Debug("Security exception reading from " + name, ex);
                 }
 
             }

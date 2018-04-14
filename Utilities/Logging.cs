@@ -176,7 +176,7 @@ namespace Utilities
                 Environment = beta ? "development" : "production",
                 ScrubFields = new string[] // Scrub these fields from the reported data
                 {
-                    "Commander", "apiKey", "commanderName"
+                    "Commander", "apiKey", "commanderName", Constants.DATA_DIR
                 },
                 // Identify each EDDI configuration by a unique ID, or by "Commander" if a unique ID isn't available.
                 Person = new Rollbar.DTOs.Person(uniqueId),
@@ -198,7 +198,7 @@ namespace Utilities
 
                 if (isUniqueMessage(exception.GetType() + ": " + exception.Message, trace))
                 {
-                    Logging.Error("Reporting unhandled exception, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id);
+                    Logging.Info("Reporting unhandled exception, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id);
                     RollbarLocator.RollbarInstance.Error(exception, trace);
                 }
             };
