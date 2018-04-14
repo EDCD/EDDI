@@ -266,6 +266,11 @@ namespace EddiStatusMonitor
 
         public static void handleStatus(Status thisStatus)
         {
+            if (thisStatus == null)
+            {
+                return;
+            }
+
             if (currentStatus != thisStatus)
             {
                 // Save our last status for reference and update our current status
