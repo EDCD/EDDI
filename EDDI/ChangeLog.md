@@ -2,6 +2,9 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.1
+  * Exports to Coriolis and EDShipyard now send data in `Loadout` journal event format, rather than in the old Frontier API format.
+
 ### 3.0.0-rc3
   * Core
     * Fixed the reporting of the Location event to EDDB. Was using the current body when it should have used the current station.
