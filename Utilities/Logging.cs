@@ -232,15 +232,16 @@ namespace Utilities
                 {
                     Dictionary<string, object> item = (Dictionary<string, object>)Item;
                     string itemMessage = JsonParsing.getString(item, "title");
-                    string itemStatus = JsonParsing.getString(item, "status");
-                    string itemResolvedVersion = JsonParsing.getString(item, "resolved_in_version");
-                    long itemId = JsonParsing.getLong(item, "id");
-                    bool uniqueData = isUniqueData(itemId, thisData);
 
-                    if (itemMessage == message)
+                    if (itemMessage.ToLowerInvariant() == message.ToLowerInvariant())
                     {
+                        string itemStatus = JsonParsing.getString(item, "status");
+                        long itemId = JsonParsing.getLong(item, "id");
+                        bool uniqueData = isUniqueData(itemId, thisData);
+                        string itemResolvedVersion = JsonParsing.getString(item, "resolved_in_version");
+
                         // Filter messages & data so that we send only reports which are unique
-                        if (itemStatus == "active" && !uniqueData)
+                        if (itemStatus.ToLowerInvariant() == "active" && !uniqueData)
                         {
                             return false; // Note that if an item reoccurs after being marked as "resolved" it is automatically reactivated.
                         }
@@ -294,7 +295,7 @@ namespace Utilities
                     if (customData != null)
                     {
                         if (customData.Keys.Count == thisData.Keys.Count &&
-                            customData.Keys.All(k => thisData.ContainsKey(k) && Equals(thisData[k], customData[k])))
+                            customData.Keys.All(k => thisData.ContainsKey(k) && Equals(thisData[k].ToString().ToLowerInvariant(), customData[k].ToString().ToLowerInvariant())))
                         {
                             return false;
                         }
