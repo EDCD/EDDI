@@ -18,7 +18,6 @@ namespace EddiCargoMonitor
 
         public string kind { get; private set; }
 
-
         public LimpetLaunchedEvent(DateTime timestamp, string kind) : base(timestamp, NAME)
         {
             this.kind = kind;

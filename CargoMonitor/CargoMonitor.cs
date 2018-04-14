@@ -98,6 +98,16 @@ namespace EddiCargoMonitor
             return new ConfigurationWindow();
         }
 
+        public void EnableConfigBinding(MainWindow configWindow)
+        {
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(inventory, inventoryLock); });
+        }
+
+        public void DisableConfigBinding(MainWindow configWindow)
+        {
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(inventory); });
+        }
+
         public void HandleProfile(JObject profile)
         {
         }

@@ -100,6 +100,16 @@ namespace EddiShipMonitor
             return new ConfigurationWindow();
         }
 
+        public void EnableConfigBinding(MainWindow configWindow)
+        {
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.EnableCollectionSynchronization(shipyard, shipyardLock); });
+        }
+
+        public void DisableConfigBinding(MainWindow configWindow)
+        {
+            configWindow.Dispatcher.Invoke(() => { BindingOperations.DisableCollectionSynchronization(shipyard); });
+        }
+
         public void Save()
         {
             writeShips();

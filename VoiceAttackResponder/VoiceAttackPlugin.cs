@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCargoMonitor;
 using EddiEvents;
 using EddiDataProviderService;
 using EddiDataDefinitions;
@@ -516,6 +517,11 @@ namespace EddiVoiceAttackResponder
                                 configWindow = new MainWindow(true);
                                 configWindow.Closing += new CancelEventHandler(eddiClosing);
                                 configWindow.ShowDialog();
+
+                                // Bind Cargo monitor inventory & Ship monitor shipyard collections to the EDDI config Window
+                                ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).EnableConfigBinding(configWindow);
+                                ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).EnableConfigBinding(configWindow);
+
                                 configWindow = null;
                             }
                             catch (ThreadAbortException)
@@ -547,6 +553,10 @@ namespace EddiVoiceAttackResponder
                     setWindowState(ref vaProxy, WindowState.Normal);
                     break;
                 case "configurationclose":
+                    // Unbind the Cargo Monitor inventory & Ship Monitor shipyard collections from the EDDI config window
+                    ((CargoMonitor)EDDI.Instance.ObtainMonitor("Cargo monitor")).DisableConfigBinding(configWindow);
+                    ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).DisableConfigBinding(configWindow);
+
                     configWindow.Dispatcher.Invoke(configWindow.Close);
 
                     if (eddiCloseCancelled)
