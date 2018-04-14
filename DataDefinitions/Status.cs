@@ -46,7 +46,7 @@ namespace EddiDataDefinitions
         public decimal? heading;
 
         // Admin values
-        public long flags;
+        public long? flags;
         public DateTime timestamp = DateTime.Now;
     }
 }
