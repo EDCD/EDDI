@@ -983,12 +983,15 @@ namespace EddiDataDefinitions
                 {899990023, new Module(899990023, "Hpt_Beamlaser_Gimbal_Empire_Fighter", -1, "Beam Laser", 1, "I", 0, -1) },
                 {899990024, new Module(899990024, "Hpt_Beamlaser_Gimbal_Fed_Fighter", -1, "Beam Laser", 1, "I", 0, -1) },
                 {899990025, new Module(899990025, "Hpt_Beamlaser_Gimbal_Indie_Fighter", -1, "Beam Laser", 1, "I", 0, -1) },
-                {899990028, new Module(899990028, "Hpt_Pulselaser_Fixed_Empire_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
-                {899990029, new Module(899990029, "Hpt_Pulselaser_Fixed_Fed_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
-                {899990030, new Module(899990030, "Hpt_Pulselaser_Fixed_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
-                {899990031, new Module(899990031, "Hpt_PulseLaser_Gimbal_Empire_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
-                {899990032, new Module(899990032, "Hpt_PulseLaser_Gimbal_Fed_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
-                {899990033, new Module(899990033, "Hpt_PulseLaser_Gimbal_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990026, new Module(899990026, "Hpt_PlasmaRepeater_Fixed_Empire_Fighter", -1, "Plasma Repeater", 1, "I", 0, -1) },
+                {899990027, new Module(899990027, "Hpt_PlasmaRepeater_Fixed_Fed_Fighter", -1, "Plasma Repeater", 1, "I", 0, -1) },
+                {899990028, new Module(899990028, "Hpt_PlasmaRepeater_Fixed_Indie_Fighter", -1, "Plasma Repeater", 1, "I", 0, -1) },
+                {899990029, new Module(899990029, "Hpt_Pulselaser_Fixed_Empire_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990030, new Module(899990030, "Hpt_Pulselaser_Fixed_Fed_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990031, new Module(899990031, "Hpt_Pulselaser_Fixed_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990032, new Module(899990032, "Hpt_PulseLaser_Gimbal_Empire_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990033, new Module(899990033, "Hpt_PulseLaser_Gimbal_Fed_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990034, new Module(899990034, "Hpt_PulseLaser_Gimbal_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
                 {899990040, new Module(899990040, "Hpt_ATMulticannon_Fixed_Indie_Fighter", -1, "AT Multicannon", 1, "I", 0, -1) },
                 {899990050, new Module(899990050, "Hpt_Multicannon_Fixed_Empire_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
                 {899990051, new Module(899990051, "Hpt_Multicannon_Fixed_Fed_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
@@ -998,6 +1001,8 @@ namespace EddiDataDefinitions
                 {899990070, new Module(899990070, "Independent_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
                 {899990080, new Module(899990080, "Int_ShieldGenerator_Fighter_Class1", -1, "Shield Generator", 1, "I", 0, -1) },
                 {899990090, new Module(899990090, "Ext_Emitter_Standard", -1, "Shield Generator", 1, "I", 0, -1) },
+
+                
 
                 // Needs EDDB ID
                 {128671345, new Module(128671345, "Hpt_MultiCannon_Fixed_Small_Strong", -1, "The Enforcer", 1, "F", 11811, Module.ModuleMount.Fixed, 60, 1000) },
