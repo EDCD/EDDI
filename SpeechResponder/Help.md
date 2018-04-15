@@ -135,7 +135,7 @@ Common usage of this is to provide a more human-sounding reading of text with va
 This function allows you to dynamically adjust the volume of the spoken speech. This function uses SSML tags.
 
 ##### Please take care with decibel values. If accidentally you blow out your speakers, that's totally on you. 
-SpeechRate() takes two mandatory arguments: the text to speak and the valume at which to speak it (legal values for the speech volume include "silent", "x-soft", "soft", "medium", "loud", "x-loud", "default", as well as relative decibel values like "-6dB").
+SpeechRate() takes two mandatory arguments: the text to speak and the volume at which to speak it (legal values for the speech volume include "silent", "x-soft", "soft", "medium", "loud", "x-loud", "default", as well as relative decibel values like "-6dB").
 A value of "+0dB" means no change of volume, "+6dB" means approximately twice the current amplitude, "-6dB" means approximately half the current amplitude.
 
 Common usage of this is to provide a more human-sounding reading of text with variation in speech volume:
@@ -162,6 +162,14 @@ Play() takes one argument: the path to the file to play.  This file must be a '.
 Common usage of this is to provide a pre-recorded custom audio file rather than use EDDI's text-to-speech, for example:
 
     {Play('C:\\Users\\CmdrMcDonald\\Desktop\\Warning.wav')}
+
+### Transmit()
+
+This function allows you to add a radio effect to speech.
+
+Transmit() takes one argument: the text to speak, for example:
+
+{Transmit("{ShipName()} returning from orbit.")}
 
 ### ICAO()
 
