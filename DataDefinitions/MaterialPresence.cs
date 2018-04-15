@@ -33,7 +33,7 @@ namespace EddiDataDefinitions
         [JsonConstructor]
         public MaterialPresence(string material, decimal percentage)
         {
-            Material definition = Material.FromName(material);
+            Material definition = Material.FromEDName(material);
             if (definition != null)
             {
                 this.definition = definition;

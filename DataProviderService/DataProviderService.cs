@@ -244,7 +244,7 @@ namespace EddiDataProviderService
                             List<MaterialPresence> Materials = new List<MaterialPresence>();
                             foreach (dynamic materialJson in body["materials"])
                             {
-                                Material material = Material.FromName((string)materialJson["material_name"]);
+                                Material material = Material.FromEDName((string)materialJson["material_name"]);
                                 decimal? amount = (decimal?)(double?)materialJson["share"];
                                 if (material != null && amount != null)
                                 {

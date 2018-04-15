@@ -138,7 +138,7 @@ namespace EddiDataDefinitions
         [JsonConstructor]
         public MaterialAmount(string material, int amount, int? minimum, int? desired, int? maximum)
         {
-            Material My_material = Material.FromName(material);
+            Material My_material = Material.FromEDName(material);
             this.material = material;
             this.edname = My_material.EDName;
             this.amount = amount;
