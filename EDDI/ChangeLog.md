@@ -2,6 +2,10 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
+### 3.0.1
+  * Text-to-Speech
+    * Add new audio function `Transmit`, which adds a radio effect to speech output. Details on this new function are described in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md)
+
 ### 3.0.0-rc3
   * Core
     * Fixed the reporting of the Location event to EDDB. Was using the current body when it should have used the current station.
