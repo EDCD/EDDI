@@ -11,6 +11,8 @@ namespace EddiDataDefinitions
 
         [JsonIgnore]
         private string _material;
+
+        [JsonIgnore]
         public string material
         {
             get
@@ -97,7 +99,10 @@ namespace EddiDataDefinitions
             }
         }
 
+        [JsonIgnore]
         private string _Category;
+
+        [JsonIgnore]
         public string Category
         {
             get
@@ -136,11 +141,11 @@ namespace EddiDataDefinitions
         }
 
         [JsonConstructor]
-        public MaterialAmount(string material, int amount, int? minimum, int? desired, int? maximum)
+        public MaterialAmount(string edName, int amount, int? minimum, int? desired, int? maximum)
         {
-            Material My_material = Material.FromEDName(material);
-            this.material = material;
-            this.edname = My_material.EDName;
+            Material My_material = Material.FromEDName(edName);
+            this.material = My_material.name;
+            this.edname = edName;
             this.amount = amount;
             this.minimum = minimum;
             this.desired = desired;
