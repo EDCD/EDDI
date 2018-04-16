@@ -358,6 +358,9 @@ namespace EddiShipMonitor
                 ship.role = Role.MultiPurpose;
             }
 
+            // Save a copy of the raw event so that we can send it to other 3rd party apps
+            ship.raw = @event.raw;
+
             // Update name, ident & paintjob if required
             setShipName(ship, @event.shipname);
             setShipIdent(ship, @event.shipident);
@@ -753,34 +756,6 @@ namespace EddiShipMonitor
                         // Information from the Frontier API can be out-of-date, use it to set our ship if we don't know what it already is
                         ship = profileCurrentShip;
                         AddShip(ship);
-                    }
-                    else
-                    {
-                        ship.raw = profileCurrentShip.raw;
-                        ship.launchbays = profileCurrentShip.launchbays;
-                        ship.paintjob = profileCurrentShip.paintjob;
-
-                        if (ship.cargohatch != null)
-                        {
-                            // Engineering info for each module isn't in the journal, but we only use this to pass on to Coriolis so don't
-                            // need to splice it in to our model.  We do, however, have cargo hatch information from the journal that we
-                            // want to make avaialable to Coriolis so need to parse the raw data and add cargo hatch info as appropriate
-                            JObject cargoHatchModule = new JObject
-                            {
-                                { "on", ship.cargohatch.enabled },
-                                { "priority", ship.cargohatch.priority },
-                                { "value", ship.cargohatch.price },
-                                { "health", ship.cargohatch.health },
-                                { "name", "ModularCargoBayDoor" }
-                            };
-                            JObject cargoHatchSlot = new JObject
-                            {
-                                { "module", cargoHatchModule }
-                            };
-                            JObject parsedRaw = JObject.Parse(profileCurrentShip.raw);
-                            parsedRaw["modules"]["CargoHatch"] = cargoHatchSlot;
-                            ship.raw = parsedRaw.ToString(Formatting.None);
-                        }
                     }
                     Logging.Debug("Ship is: " + JsonConvert.SerializeObject(ship));
                 }
