@@ -23,10 +23,11 @@ namespace EddiDataDefinitions
             DATASCANS.Add(this);
         }
 
+        public static readonly DataScan AbandonedDataLog = new DataScan("AbandonedDataLog", "Abandoned Data Log");
         public static readonly DataScan DataLink = new DataScan("DataLink", "Data Link");
         public static readonly DataScan DataPoint = new DataScan("DataPoint", "Data Point");
         public static readonly DataScan ListeningPost = new DataScan("ListeningPost", "Listening Post");
-        public static readonly DataScan AbandonedDataLog = new DataScan("AbandonedDataLog", "Abandoned Data Log");
+        public static readonly DataScan TouristBeacon = new DataScan("TouristBeacon", "Tourist Beacon");
         public static readonly DataScan WreckedShip = new DataScan("WreckedShip", "Wrecked Ship");
 
         public static DataScan FromName(string from)
