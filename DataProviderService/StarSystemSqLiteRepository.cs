@@ -76,7 +76,7 @@ namespace EddiDataProviderService
             }
         }
 
-        private static readonly object insertLock = new object();
+        private static readonly object editLock = new object();
 
         public StarSystem GetOrCreateStarSystem(string name, bool fetchIfMissing = true)
         {
@@ -212,15 +212,15 @@ namespace EddiDataProviderService
                     {
                         if (GetStarSystem(system.name, false) == null)
                         {
-                            // Delete the system
-                            cmd.CommandText = DELETE_SQL;
-                            cmd.Prepare();
-                            cmd.Parameters.AddWithValue("@name", system.name);
-                            cmd.ExecuteNonQuery();
-
-                            // Re-insert the system
-                            lock (insertLock)
+                            lock (editLock)
                             {
+                                // Delete the system
+                                cmd.CommandText = DELETE_SQL;
+                                cmd.Prepare();
+                                cmd.Parameters.AddWithValue("@name", system.name);
+                                cmd.ExecuteNonQuery();
+
+                                // Re-insert the system
                                 Logging.Debug("Creating new starsystem " + system.name);
                                 if (system.lastvisit == null)
                                 {
@@ -240,15 +240,18 @@ namespace EddiDataProviderService
                         }
                         else
                         {
-                            // Update the system
-                            cmd.CommandText = UPDATE_SQL;
-                            cmd.Prepare();
-                            cmd.Parameters.AddWithValue("@totalvisits", system.visits);
-                            cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.Now);
-                            cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
-                            cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
-                            cmd.Parameters.AddWithValue("@name", system.name);
-                            cmd.ExecuteNonQuery();
+                            lock (editLock)
+                            {
+                                // Update the system
+                                cmd.CommandText = UPDATE_SQL;
+                                cmd.Prepare();
+                                cmd.Parameters.AddWithValue("@totalvisits", system.visits);
+                                cmd.Parameters.AddWithValue("@lastvisit", system.lastvisit ?? DateTime.Now);
+                                cmd.Parameters.AddWithValue("@starsystem", JsonConvert.SerializeObject(system));
+                                cmd.Parameters.AddWithValue("@starsystemlastupdated", system.lastupdated);
+                                cmd.Parameters.AddWithValue("@name", system.name);
+                                cmd.ExecuteNonQuery();
+                            }
                         }
                     }
                 }
@@ -264,7 +267,7 @@ namespace EddiDataProviderService
 
         private void insertStarSystem(StarSystem system)
         {
-            lock (insertLock)
+            lock (editLock)
             {
                 // Before we insert we attempt to fetch to ensure that we don't have it present
                 StarSystem existingStarSystem = GetStarSystem(system.name, false);
