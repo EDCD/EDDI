@@ -914,7 +914,6 @@ namespace EddiDataDefinitions
                 {128816578, new Module(128816578, "TypeX_Armour_Grade3", 1642, "Military Grade Composite", 1, "I", 17444026, 128816574) },
                 {128816579, new Module(128816579, "TypeX_Armour_Mirrored", 1643, "Mirrored Surface Composite", 1, "I", 41226050, 128816574) },
                 {128816580, new Module(128816580, "TypeX_Armour_Reactive", 1644, "Reactive Surface Composite", 1, "I", 45683967, 128816574) },
-                {128834003, new Module(128834003, "Hpt_PlasmaShockCannon_Gimbal_Medium", -1, "Shock Cannon", 2, "D", 495963, Module.ModuleMount.Gimballed) },
 
                 // Various free modules that show up in SRVs, fighters and training; not used anywhere but note them here so that they do not throw errors when encountered
                 {128666643, new Module(128666643, "Int_CargoRack_Size2_Class1_free", -1, "Cargo Rack", 2, "E", 0) },
@@ -975,21 +974,45 @@ namespace EddiDataDefinitions
                 {999999944, new Module(999999944, "string_lights_warm_white", -1, "White string lights", 1, "I", 0, -1) },
 
                 // Fighter modules
-                {899999950, new Module(899999950, "Empire_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
-                {899999951, new Module(899999951, "Federation_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
-                {899999952, new Module(899999952, "Independent_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
-                {899999960, new Module(899999960, "Hpt_Pulselaser_Fixed_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
-                {899999961, new Module(899999961, "Hpt_ATMulticannon_Fixed_Indie_Fighter", -1, "AT Multicannon", 1, "I", 0, -1) },
-                {899999965, new Module(899999965, "Hpt_Multicannon_Fixed_Fed_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
-                {899999975, new Module(899999975, "Federation_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
-                {899999976, new Module(899999976, "Independent_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
-                {899999980, new Module(899999980, "Int_ShieldGenerator_Fighter_Class1", -1, "Shield Generator", 1, "I", 0, -1) },
-                {899999985, new Module(899999985, "Ext_Emitter_Standard", -1, "Shield Generator", 1, "I", 0, -1) },
+                {899990000, new Module(899990000, "Empire_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
+                {899990001, new Module(899990001, "Federation_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
+                {899990002, new Module(899990002, "Independent_Fighter_Cockpit", -1, "Cockpit Canopy", 1, "I", 0, -1) },
+                {899990018, new Module(899990018, "Hpt_BeamLaser_Fixed_Empire_Fighter", -1, "Beam Laser", 1, "I", 0, -1) },
+                {899990019, new Module(899990019, "Hpt_BeamLaser_Fixed_Fed_Fighter", -1, "Beam Laser", 1, "I", 0, -1) },
+                {899990020, new Module(899990020, "Hpt_BeamLaser_Fixed_Indie_Fighter", -1, "Beam Laser", 1, "I", 0, -1) },
+                {899990023, new Module(899990023, "Hpt_Beamlaser_Gimbal_Empire_Fighter", -1, "Beam Laser", 1, "I", 0, -1) },
+                {899990024, new Module(899990024, "Hpt_Beamlaser_Gimbal_Fed_Fighter", -1, "Beam Laser", 1, "I", 0, -1) },
+                {899990025, new Module(899990025, "Hpt_Beamlaser_Gimbal_Indie_Fighter", -1, "Beam Laser", 1, "I", 0, -1) },
+                {899990026, new Module(899990026, "Hpt_PlasmaRepeater_Fixed_Empire_Fighter", -1, "Plasma Repeater", 1, "I", 0, -1) },
+                {899990027, new Module(899990027, "Hpt_PlasmaRepeater_Fixed_Fed_Fighter", -1, "Plasma Repeater", 1, "I", 0, -1) },
+                {899990028, new Module(899990028, "Hpt_PlasmaRepeater_Fixed_Indie_Fighter", -1, "Plasma Repeater", 1, "I", 0, -1) },
+                {899990029, new Module(899990029, "Hpt_Pulselaser_Fixed_Empire_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990030, new Module(899990030, "Hpt_Pulselaser_Fixed_Fed_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990031, new Module(899990031, "Hpt_Pulselaser_Fixed_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990032, new Module(899990032, "Hpt_PulseLaser_Gimbal_Empire_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990033, new Module(899990033, "Hpt_PulseLaser_Gimbal_Fed_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990034, new Module(899990034, "Hpt_PulseLaser_Gimbal_Indie_Fighter", -1, "Pulse Laser", 1, "I", 0, -1) },
+                {899990040, new Module(899990040, "Hpt_ATMulticannon_Fixed_Indie_Fighter", -1, "AT Multicannon", 1, "I", 0, -1) },
+                {899990050, new Module(899990050, "Hpt_Multicannon_Fixed_Empire_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
+                {899990051, new Module(899990051, "Hpt_Multicannon_Fixed_Fed_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
+                {899990052, new Module(899990052, "Hpt_Multicannon_Fixed_Indie_Fighter", -1, "Multicannon", 1, "I", 0, -1) },
+                {899990059, new Module(899990059, "Empire_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
+                {899990060, new Module(899990060, "Federation_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
+                {899990070, new Module(899990070, "Independent_Fighter_Armour_Standard", -1, "Fighter Armour", 1, "I", 0, -1) },
+                {899990080, new Module(899990080, "Int_ShieldGenerator_Fighter_Class1", -1, "Shield Generator", 1, "I", 0, -1) },
+                {899990090, new Module(899990090, "Ext_Emitter_Standard", -1, "Shield Generator", 1, "I", 0, -1) },
+
+                
 
                 // Needs EDDB ID
+                {128671345, new Module(128671345, "Hpt_MultiCannon_Fixed_Small_Strong", -1, "The Enforcer", 1, "F", 11811, Module.ModuleMount.Fixed, 60, 1000) },
                 {128833944, new Module(128833944, "Int_CorrosionProofCargoRack_Size4_Class1", -1, "Corrosion Resistant Cargo Rack", 4, "E", 94329) },
                 {128833687, new Module(128833687, "Hpt_Guardian_GaussCannon_Fixed_Medium", -1, "Guardian Gauss Cannon", 2, "B", 543801, Module.ModuleMount.Fixed) },
                 {128833998, new Module(128833998, "Hpt_Guardian_PlasmaLauncher_Fixed_Medium", -1, "Guardian Plasma Charger", 2, "B", 567761, Module.ModuleMount.Fixed) },
+                {128834000, new Module(128834000, "Hpt_Guardian_ShardCannon_Fixed_Medium", -1, "Shard Cannon", 2, "A", 445560, Module.ModuleMount.Fixed) },
+                {128834003, new Module(128834003, "Hpt_PlasmaShockCannon_Gimbal_Medium", -1, "Shock Cannon", 2, "D", 495963, Module.ModuleMount.Gimballed) },
+                {128833982, new Module(128833982, "Int_GuardianPowerDistributor_Size3", -1, "Guardian Power Distributor", 3, "D", 303580) },
+                {128833984, new Module(128833984, "Int_GuardianPowerDistributor_Size5", -1, "Guardian Power Distributor", 5, "D", 2363097) },
 
                 // Needs EDDB ID & pricing
                 {128833988, new Module(128833988, "Int_GuardianPowerplant_Size2", -1, "Guardian Power Plant", 2, "A", 0) },
@@ -1012,6 +1035,16 @@ namespace EddiDataDefinitions
                 {999999955, new Module(999999955, "Int_MetaAlloyHullReinforcement_Size4_Class2", -1, "Meta Alloy Hull Reinforcement", 4, "D", 292500) },
                 {999999956, new Module(999999956, "Int_MetaAlloyHullReinforcement_Size5_Class1", -1, "Meta Alloy Hull Reinforcement", 5, "E", 225001) },
                 {999999957, new Module(999999957, "Int_MetaAlloyHullReinforcement_Size5_Class2", -1, "Meta Alloy Hull Reinforcement", 5, "D", 675001) },
+                {999990012, new Module(999990012, "Hpt_Guardian_ShardCannon_Turret_Medium", -1, "Shard Cannon", 2, "A", 1722825, Module.ModuleMount.Turreted) },
+
+                // Needs FDev ID, EDDB ID, grade, & pricing
+                {999990001, new Module(999990001, "Int_GuardianPowerDistributor_Size1", -1, "Guardian Power Distributor", 1, "D", 0) },
+                {999990002, new Module(999990002, "Int_GuardianPowerDistributor_Size2", -1, "Guardian Power Distributor", 2, "D", 0) },
+                {999990004, new Module(999990004, "Int_GuardianPowerDistributor_Size4", -1, "Guardian Power Distributor", 4, "D", 0) },
+                {999990006, new Module(999990006, "Int_GuardianPowerDistributor_Size6", -1, "Guardian Power Distributor", 6, "D", 0) },
+                {999990007, new Module(999990007, "Int_GuardianPowerDistributor_Size7", -1, "Guardian Power Distributor", 7, "D", 0) },
+                {999990008, new Module(999990008, "Int_GuardianPowerDistributor_Size8", -1, "Guardian Power Distributor", 8, "D", 0) },
+                {999990021, new Module(999990021, "Hpt_FlechetteLauncher_Fixed_Medium", -1, "Flechette Launcher", 2, "D", 0, Module.ModuleMount.Fixed) },
         };
 
         private static Dictionary<string, Module> ModulesByEDName = ModulesByEliteID.ToDictionary(kp => kp.Value.EDName.ToLowerInvariant().Replace(" ", "").Replace(".", "").Replace("-", ""), kp => kp.Value);
@@ -1038,6 +1071,7 @@ namespace EddiDataDefinitions
                  || module.EDName == "Hpt_MiningLaser_Fixed_Small_Advanced"
                  || module.EDName == "Hpt_BeamLaser_Fixed_Small_Heat"
                  || module.EDName == "Hpt_PulseLaser_Fixed_Medium_?" // Disruptor
+                 || module.EDName == "Hpt_MultiCannon_Fixed_Small_Strong" // Enforcer cannon
                  );
         }
 
