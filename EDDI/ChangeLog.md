@@ -2,7 +2,7 @@
 
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
-### 3.0.0-rc3
+### 3.0.0
   * Core
     * Fixed the reporting of the Location event to EDDB. Was using the current body when it should have used the current station.
     * Tuned the new logging to Rollbar for quicker startup in some situaitons.
