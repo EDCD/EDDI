@@ -341,45 +341,20 @@ namespace EddiMaterialMonitor
                 // Start with the materials we have in the log
                 foreach (MaterialAmount ma in configuration.materials)
                 {
-                    // Fix up & add any materials that are not deprecated material names 
-                    if (Material.DeprecatedMaterials(ma.material) == false)
+                    MaterialAmount ma2 = new MaterialAmount(ma.edname, ma.amount, ma.minimum, ma.desired, ma.maximum);
+                    // Make sure the edname is unique before adding the material to the new inventory
+                    if (newInventory.Where(inv => inv.edname == ma2.edname).Count() == 0)
                     {
-                        bool addToInv = false;
-                        // if the edname is not set, or
-                        if (ma.edname == null)
+                        // Set material maximums if they aren't already defined
+                        if (ma2.maximum == null || ma2.maximum == 0)
                         {
-                            addToInv = true;
-                        }
-                        // if the edname is UNIQUE to the collection, or
-                        else if (configuration.materials.Any(item => item.edname == ma.edname) == false)
-                        {
-                            addToInv = true;
-                        }
-                        /// if the EDNAME IS NOT UNIQUE to the collection, the MATERIAL NAME IS UNIQUE, & THE EDNAME DOESN'T MATCH THE MATERIAL NAME 
-                        /// (once an EDName is established, this will identify & "heal" any duplicate entries having the same EDName in the materialmonitor)
-                        else if ((configuration.materials.Any(item => item.edname == ma.edname) == true) &&
-                            (configuration.materials.Any(item => item.material == ma.material) == true) &&
-                            (ma.edname != ma.material))
-                        {
-                            addToInv = true;
-                        }
-                        // then add the material to the new inventory list, preserving user preferences for that material
-                        if (addToInv == true)
-                        {
-                            MaterialAmount ma2 = new MaterialAmount(ma.material, ma.amount, ma.minimum, ma.desired, ma.maximum);
-
-                            // Set material maximums if they aren't already defined
-                            if (ma2.maximum == null || ma2.maximum == 0)
+                            int rarityLevel = Material.FromEDName(ma2.edname).rarity.level;
+                            if (rarityLevel > 0)
                             {
-                                int rarityLevel = Material.FromEDName(ma2.edname).rarity.level;
-                                if (rarityLevel > 0)
-                                {
-                                    ma2.maximum = -50 * (rarityLevel) + 350;
-                                }
+                                ma2.maximum = -50 * (rarityLevel) + 350;
                             }
-
-                            newInventory.Add(ma2);
                         }
+                        newInventory.Add(ma2);
                     }
                 }
 
@@ -390,12 +365,9 @@ namespace EddiMaterialMonitor
                     if (ma == null)
                     {
                         // We don't have this one - add it and set it to zero
-                        if ((Material.DeprecatedMaterials(material.name) == false))
-                        {
-                            Logging.Debug("Adding new material " + material.name + " to the materials list");
-                            ma = new MaterialAmount(material, 0);
-                            newInventory.Add(ma);
-                        }
+                        Logging.Debug("Adding new material " + material.name + " to the materials list");
+                        ma = new MaterialAmount(material, 0);
+                        newInventory.Add(ma);
                     }
                 }
 
