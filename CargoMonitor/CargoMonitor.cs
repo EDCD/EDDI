@@ -13,7 +13,6 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using System.Threading.Tasks;
 using Utilities;
 
 namespace EddiCargoMonitor
@@ -201,9 +200,28 @@ namespace EddiCargoMonitor
                 Cargo inventoryCargo = inventory.FirstOrDefault(c => c.name == cargo.name);
                 if (inventoryCargo != null)
                 {
-                    // Match of commodity
+                    // Found match of commodity
                     inventoryCargo.total = cargo.total;
-                    inventoryCargo.stolen = cargo.stolen;
+
+                    // Account for 'Mission failed' event between game sessions
+                    if (inventoryCargo.stolen < cargo.stolen)
+                    {
+                        int stolenChanged = cargo.stolen - inventoryCargo.stolen;
+
+                        // Remove failed mission from haulageamounts
+                        HaulageAmount haulageAmount = inventoryCargo.haulageamounts.FirstOrDefault(ha => ha.amount == stolenChanged);
+                        if (haulageAmount != null)
+                        {
+                            cargo.haulageamounts.Remove(haulageAmount);
+                        }
+
+                        // Adjust cargo haulage
+                        if (inventoryCargo.haulage >= stolenChanged)
+                        {
+                            inventoryCargo.haulage -= stolenChanged;
+                        }
+                        inventoryCargo.stolen = cargo.stolen;
+                    }
                     inventoryCargo.other = cargo.total - cargo.stolen - inventoryCargo.haulage;
                 }
                 else
@@ -334,13 +352,13 @@ namespace EddiCargoMonitor
                     HaulageAmount haulageAmount = cargo.haulageamounts.FirstOrDefault(ha => ha.amount >= @event.amount);
                     if (haulageAmount != null)
                     {
-                        cargo.haulage -= @event.amount;
                         haulageAmount.amount -= @event.amount;
                         if (haulageAmount.amount == 0)
                         {
                             cargo.haulageamounts.Remove(haulageAmount);
                         }
                     }
+                    cargo.haulage -= @event.amount;
                 }
                 else
                 {
@@ -482,7 +500,6 @@ namespace EddiCargoMonitor
                     newCargo.haulage = @event.amount ?? 0;
                     newCargo.stolen = 0;
                     newCargo.other = 0;
-                    newCargo.total = newCargo.haulage + newCargo.stolen + newCargo.other;
                     newCargo.haulageamounts.Add(haulageAmount);
                     AddCargo(newCargo);
                 }
@@ -523,7 +540,6 @@ namespace EddiCargoMonitor
                     newCargo.haulage = 0;
                     newCargo.stolen = 0;
                     newCargo.other = commodityReward.amount;
-                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
                     AddCargo(newCargo);
                 }
             }
