@@ -482,7 +482,7 @@ namespace EddiCargoMonitor
                     newCargo.haulage = @event.amount ?? 0;
                     newCargo.stolen = 0;
                     newCargo.other = 0;
-                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                    newCargo.total = newCargo.haulage + newCargo.stolen + newCargo.other;
                     newCargo.haulageamounts.Add(haulageAmount);
                     AddCargo(newCargo);
                 }
@@ -547,7 +547,7 @@ namespace EddiCargoMonitor
 
         private void handleSynthesisedEvent(SynthesisedEvent @event)
         {
-            if (@event.synthesis == "Limpet")
+            if (@event.synthesis.Contains("Limpet"))
             {
                 Cargo cargo = GetCargo("Limpet");
                 if (cargo != null)
