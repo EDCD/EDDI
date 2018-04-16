@@ -22,7 +22,7 @@ namespace EddiDataDefinitions
             InWing = 0x00000080,
             LightsOn = 0x00000100,
             CargoScoopDeployed = 0x00000200,
-            SilentRunning, = 0x00000400,
+            SilentRunning = 0x00000400,
             ScoopingFuel = 0x00000800,
             SrvHandbrake = 0x00001000,
             SrvTurret = 0x00002000,
@@ -59,7 +59,7 @@ namespace EddiDataDefinitions
                 : "ready";
         public bool srv_drive_assist => (flags & Flags.SrvDriveAssist) != 0;
         public bool srv_under_ship => (flags & Flags.SrvUnderShip) != 0;
-        public bool srv_turret_deployed => (flags & Flags.SrvUnderShip) != 0;
+        public bool srv_turret_deployed => (flags & Flags.SrvTurret) != 0;
         public bool srv_handbrake_activated => (flags & Flags.SrvHandbrake) != 0;
         public bool scooping_fuel => (flags & Flags.ScoopingFuel) != 0;
         public bool silent_running => (flags & Flags.SilentRunning) != 0;

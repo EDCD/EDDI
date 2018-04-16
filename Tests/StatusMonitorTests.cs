@@ -17,7 +17,7 @@ namespace UnitTests
             // Variables set from status flags (when not signed in, flags are set to '0')
             DateTime expectedTimestamp = new DateTime(2018, 3, 25, 0, 39, 48, DateTimeKind.Utc);
             Assert.AreEqual(expectedTimestamp, status.timestamp);
-            Assert.AreEqual(status.flags, 16842765);
+            Assert.AreEqual(status.flags, (Status.Flags)16842765);
             Assert.AreEqual(status.vehicle, "Ship");
             Assert.IsFalse(status.being_interdicted);
             Assert.IsFalse(status.in_danger);
@@ -50,7 +50,7 @@ namespace UnitTests
             Status status = StatusMonitor.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
-            Assert.AreEqual(status.flags, 16777320);
+            Assert.AreEqual(status.flags, (Status.Flags)16777320);
             Assert.AreEqual(status.vehicle, "Ship");
             Assert.IsFalse(status.being_interdicted);
             Assert.IsFalse(status.in_danger);
@@ -83,7 +83,7 @@ namespace UnitTests
             Status status = StatusMonitor.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
-            Assert.AreEqual(status.flags, 69255432);
+            Assert.AreEqual(status.flags, (Status.Flags)69255432);
             Assert.AreEqual(status.vehicle, "SRV");
             Assert.IsFalse(status.being_interdicted);
             Assert.IsFalse(status.in_danger);
@@ -116,7 +116,7 @@ namespace UnitTests
             Status status = StatusMonitor.ParseStatusEntry(line);
 
             // Variables set from status flags (when not signed in, flags are set to '0')
-            Assert.AreEqual(status.flags, 16777240);
+            Assert.AreEqual(status.flags, (Status.Flags)16777240);
             Assert.AreEqual(status.vehicle, "Ship");
             Assert.IsTrue(status.supercruise);
         }
