@@ -2493,7 +2493,7 @@ namespace EddiJournalMonitor
                                     List<object> inventoryJson = (List<object>)val;
                                     foreach (Dictionary<string, object> cargoJson in inventoryJson)
                                     {
-                                        string commodityName = JsonParsing.getString(cargoJson, "Name_Localised");
+                                        string commodityName = JsonParsing.getString(cargoJson, "Name");
                                         int amount = JsonParsing.getInt(cargoJson, "Count");
                                         Cargo cargo = new Cargo(commodityName, amount);
                                         cargo.haulage = 0;
