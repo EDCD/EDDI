@@ -3,6 +3,7 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.0.1-b1
+  * Completely re-witten Cargo Monitor. Cargo and limpets should now be tracked accuratelty.
   * Exports to Coriolis and EDShipyard now send data in `Loadout` journal event format, rather than in the old Frontier API format.
 
 ### 3.0.0
