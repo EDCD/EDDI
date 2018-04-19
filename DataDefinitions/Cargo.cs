@@ -83,6 +83,9 @@ namespace EddiDataDefinitions
         // Total amount of the commodity
         public int total { get; set; }
 
+        // How much cargo has been ejected during a game session
+        public int ejected { get; set; }
+
         // How much we actually paid for it (per unit)
         public int price { get; set; }
 
@@ -107,6 +110,7 @@ namespace EddiDataDefinitions
             this.category = commodity.category;
             this.price = (price != null ? price ?? 0 : commodity.avgprice ?? 0);
             this.total = total;
+            this.ejected = 0;
             haulageamounts = new List<HaulageAmount>();
         }
 

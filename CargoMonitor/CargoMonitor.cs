@@ -202,26 +202,7 @@ namespace EddiCargoMonitor
                 {
                     // Found match of commodity
                     inventoryCargo.total = cargo.total;
-
-                    // Account for 'Mission failed' event between game sessions
-                    if (inventoryCargo.stolen < cargo.stolen)
-                    {
-                        int stolenChanged = cargo.stolen - inventoryCargo.stolen;
-
-                        // Remove failed mission from haulageamounts
-                        HaulageAmount haulageAmount = inventoryCargo.haulageamounts.FirstOrDefault(ha => ha.amount == stolenChanged);
-                        if (haulageAmount != null)
-                        {
-                            cargo.haulageamounts.Remove(haulageAmount);
-                        }
-
-                        // Adjust cargo haulage
-                        if (inventoryCargo.haulage >= stolenChanged)
-                        {
-                            inventoryCargo.haulage -= stolenChanged;
-                        }
-                        inventoryCargo.stolen = cargo.stolen;
-                    }
+                    inventoryCargo.stolen = cargo.stolen;
                     inventoryCargo.other = cargo.total - cargo.stolen - inventoryCargo.haulage;
                 }
                 else
@@ -280,7 +261,12 @@ namespace EddiCargoMonitor
             Cargo cargo = GetCargo(@event.commodity);
             if (cargo != null)
             {
-                if (@event.amount == cargo.stolen || @event.amount > cargo.other)
+                if (cargo.haulageamounts.Any(ha => ha.amount >= @event.amount))
+                {
+                    cargo.ejected = @event.amount;
+                    cargo.haulage -= @event.amount;
+                }
+                else if (cargo.stolen > 0)
                 {
                     cargo.stolen -= @event.amount;
                 }
@@ -289,11 +275,7 @@ namespace EddiCargoMonitor
                     cargo.other -= @event.amount;
                 }
 
-                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
-                if (cargo.total < 1)
-                {
-                    RemoveCargo(cargo.name);
-                }
+                cargo.total -= @event.amount;
             }
             writeInventory();
         }
@@ -304,7 +286,7 @@ namespace EddiCargoMonitor
             if (cargo != null)
             {
                 cargo.other += @event.amount;
-                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                cargo.total += @event.amount; ;
             }
             else
             {
@@ -323,7 +305,7 @@ namespace EddiCargoMonitor
             if (cargo != null)
             {
                 cargo.other++;
-                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                cargo.total++;
             }
             else
             {
@@ -346,18 +328,10 @@ namespace EddiCargoMonitor
                     // Cargo is stolen
                     cargo.stolen -= @event.amount;
                 }
-                else if (@event.blackmarket)
+                else if (@event.blackmarket && cargo.haulageamounts.Any(ha => ha.amount >= @event.amount))
                 {
                     // Cargo is mission-related
-                    HaulageAmount haulageAmount = cargo.haulageamounts.FirstOrDefault(ha => ha.amount >= @event.amount);
-                    if (haulageAmount != null)
-                    {
-                        haulageAmount.amount -= @event.amount;
-                        if (haulageAmount.amount == 0)
-                        {
-                            cargo.haulageamounts.Remove(haulageAmount);
-                        }
-                    }
+                    cargo.ejected = @event.amount;
                     cargo.haulage -= @event.amount;
                 }
                 else
@@ -366,7 +340,7 @@ namespace EddiCargoMonitor
                     cargo.other -= @event.amount;
                 }
 
-                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                cargo.total -= @event.amount;
                 if (cargo.total < 1)
                 {
                     // All of the commodity was sold
@@ -470,9 +444,11 @@ namespace EddiCargoMonitor
                 HaulageAmount haulageAmount = inventoryCargo.haulageamounts.FirstOrDefault(ha => ha.missionid == @event.missionid);
                 if (haulageAmount != null)
                 {
-                    inventoryCargo.haulage -= haulageAmount.amount;
-                    inventoryCargo.stolen += haulageAmount.amount;
+                    int remaining = haulageAmount.amount - inventoryCargo.ejected;
                     inventoryCargo.haulageamounts.Remove(haulageAmount);
+                    inventoryCargo.haulage -= remaining;
+                    inventoryCargo.stolen += remaining;
+                    inventoryCargo.ejected = 0;
                     break;
                 }
             }
@@ -483,15 +459,13 @@ namespace EddiCargoMonitor
         {
             if (@event.commodity != null)
             {
-                HaulageAmount haulageAmount = new HaulageAmount();
-                haulageAmount.missionid = @event.missionid ?? 0;
-                haulageAmount.amount = @event.amount ?? 0;
+                HaulageAmount haulageAmount = new HaulageAmount(@event.missionid ?? 0, @event.amount ?? 0);
 
                 Cargo cargo = GetCargo(@event.commodity);
                 if (cargo != null)
                 {
                     cargo.haulage += @event.amount ?? 0;
-                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                    cargo.total += @event.amount ?? 0;
                     cargo.haulageamounts.Add(haulageAmount);
                 }
                 else
@@ -519,7 +493,7 @@ namespace EddiCargoMonitor
                     cargo.haulageamounts.Remove(haulageAmount);
                 }
 
-                cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                cargo.total -= @event.amount ?? 0;
                 if (cargo.total < 1)
                 {
                     RemoveCargo(cargo.name);
@@ -553,8 +527,11 @@ namespace EddiCargoMonitor
                 HaulageAmount haulageAmount = inventoryCargo.haulageamounts.FirstOrDefault(ha => ha.missionid == @event.missionid);
                 if (haulageAmount != null)
                 {
-                    inventoryCargo.stolen += haulageAmount.amount;
+                    int remaining = haulageAmount.amount - inventoryCargo.ejected;
                     inventoryCargo.haulageamounts.Remove(haulageAmount);
+                    inventoryCargo.haulage -= remaining;
+                    inventoryCargo.stolen += remaining;
+                    inventoryCargo.ejected = 0;
                     break;
                 }
             }
