@@ -8,29 +8,6 @@ namespace EddiDataDefinitions
 {
     public class CommodityDefinitions
     {
-        // Mapping from Elite internal names to common names
-        private static Dictionary<string, string> nameMapping = new Dictionary<string, string>
-        {
-            {"agriculturalmedicines", "agrimedicines"},
-            {"atmosphericextractors", "atmosphericprocessors"},
-            {"basicnarcotics", "narcotics"},
-            {"hazardousenvironmentsuits", "hesuits"},
-            {"marinesupplies", "marineequipment"},
-            //{"mutomimager", "muonimager"},
-            {"skimercomponents", "skimmercomponents"},
-            {"terrainenrichmentsystems", "landenrichmentsystems"},
-            {"trinketsoffortune", "trinketsofhiddenfortune"},
-            //{"unknownartifact", "unknownartefact"},
-            //{"usscargoancientartefact", "ancientartefact"},
-            //{"usscargoexperimentalchemicals", "experimentalchemicals"},
-            //{"usscargomilitaryplans", "militaryplans"},
-            //{"usscargoprototypetech", "prototypetech"},
-            //{"usscargorebeltransmissions", "rebeltransmissions"},
-            //{"usscargotechnicalblueprints", "technicalblueprints"},
-            //{"usscargotradedata", "tradedata"},
-            {"comercialsamples", "commercialsamples"},
-        };
-
         private static Dictionary<long, Commodity> CommoditiesByEliteID = new Dictionary<long, Commodity>
         // 2xxxxxxxx & 3xxxxxxxx series Frontier IDs are placeholders, to use until an actual Frontier ID is identified
         // Check https://eddb.io/archive/v5/commodities.json (for any undefined EDDBID's or undefined FDevID's) and https://github.com/EDCD/FDevIDs (for any undefined FDevID's)
@@ -394,8 +371,8 @@ namespace EddiDataDefinitions
                 Commodity.EDName = Template.EDName;
                 Commodity.name = Template.name;
                 Commodity.category = Template.category;
-                Commodity.rare = Template.rare;
                 Commodity.avgprice = Template.avgprice;
+                Commodity.rare = Template.rare;
             }
             return Commodity;
         }
@@ -410,30 +387,16 @@ namespace EddiDataDefinitions
             Commodity Commodity = new Commodity();
 
             string cleanedName = name.ToLowerInvariant()
+                .Replace(" ", "") // Remove spaces
                 .Replace("$", "") // Header for types from mining and mission events
                 .Replace("_name;", "") // Trailer for types from mining and mission events
                 ;
-
-            // Map from ED name to sensible name
-            string edName;
-            nameMapping.TryGetValue(cleanedName, out edName);
 
             // Now try to fetch the commodity by either ED or real name
             Commodity Template = null;
             bool found = false;
 
-            if (edName != null)
-            {
-                found = CommoditiesByEDName.TryGetValue(edName, out Template);
-                if (!found)
-                {
-                    found = CommoditiesByName.TryGetValue(edName, out Template);
-                }
-            }
-            if (!found)
-            {
-                found = CommoditiesByEDName.TryGetValue(cleanedName, out Template);
-            }
+            found = CommoditiesByEDName.TryGetValue(cleanedName, out Template);
             if (!found)
             {
                 found = CommoditiesByName.TryGetValue(cleanedName, out Template);

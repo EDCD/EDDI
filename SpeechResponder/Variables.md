@@ -43,7 +43,6 @@ Any values might be missing, depending on EDDI's configuration.
     - `value` the value of the ship without cargo, in credits
     - `cargocapacity` the total tonnage cargo capacity
     - `cargocarried` the current tonnage cargo carried
-    - `cargo` specific details on the cargo being carried
     - `name` the name of the ship
     - `role` the role of the ship 
     - `health` the current health of the hull, from 0 to 100
@@ -227,6 +226,25 @@ An engineering blueprint.
     - `name` the name of the blueprint (e.g. 'heavy duty')
     - `modulename` the name of the applicable module (e.g. 'shield booster')
     - `grade` the grade of the engineering blueprint (e.g. 'grade 4')
+
+## Inventory
+
+The inventory of the cargo carried within the current ship.
+
+    - `cargo` specific details on the cargo being carried
+
+## Cargo
+
+Details of an individual commodity being carried.
+
+    - `name` name of the cargo (e.g. Tea)
+    - `commodity` the object containing commodity details
+	- `category` the category of the commodity (e.g. Foods, Machinery, Technology)
+    - `stolen` the number of units flagged as stolen
+    - `haulage` the number of units associated with a mission
+    - `other` the number of units privately purchased or collected (not stolen)
+    - `total` the total number of units
+    - `price` the price of an individual unit
 
 ## Commodity
 

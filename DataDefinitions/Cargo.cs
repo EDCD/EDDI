@@ -1,14 +1,125 @@
-﻿namespace EddiDataDefinitions
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+
+namespace EddiDataDefinitions
 {
     /// <summary>
     /// Cargo defines a number of commodities carried along with some additional data
     /// </summary>
-    public class Cargo
+    public class Cargo : INotifyPropertyChanged
     {
-        public Commodity commodity; // The commodity
-        public int amount; // The number of items
-        public long price; // How much we actually paid for it (per unit)
-        public bool stolen; // If the cargo is stolen
-        public long? missionid; // The mission ID to which the cargo relates
+        // The commodity name
+        private string _name;
+        public string name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (_name != value)
+                {
+                    _name = value;
+                    NotifyPropertyChanged("name");
+                }
+            }
+        }
+
+        // The number of stolen items
+        private int _stolen;
+        public int stolen
+        {
+            get
+            {
+                return _stolen;
+            }
+            set
+            {
+                if (_stolen != value)
+                {
+                    _stolen = value;
+                    NotifyPropertyChanged("stolen");
+                }
+            }
+        }
+
+        // The number of items related to a mission
+        private int _haulage;
+        public int haulage
+        {
+            get
+            {
+                return _haulage;
+            }
+            set
+            {
+                if (_haulage != value)
+                {
+                    _haulage = value;
+                    NotifyPropertyChanged("haulage");
+                }
+            }
+        }
+
+        // The number of collected/purchased items
+        private int _other;
+        public int other
+        {
+            get
+            {
+                return _other;
+            }
+            set
+            {
+                if (_other != value)
+                {
+                    _other = value;
+                    NotifyPropertyChanged("other");
+                }
+            }
+        }
+
+        // Total amount of the commodity
+        public int total { get; set; }
+
+        // How much cargo has been ejected during a game session
+        public int ejected { get; set; }
+
+        // How much we actually paid for it (per unit)
+        public int price { get; set; }
+
+        // The commodity catagory
+        public string category { get; set; }
+
+        public Commodity commodity { get; set; }
+
+        public List<HaulageAmount> haulageamounts { get; set; }
+
+        public Cargo()
+        {
+            Commodity commodity = new Commodity();
+            haulageamounts = new List<HaulageAmount>();
+        }
+
+        public Cargo(string name, int total, int? price = null)
+        {
+            Commodity commodity = CommodityDefinitions.FromName(name);
+            this.name = commodity.name;
+            this.commodity = commodity;
+            this.category = commodity.category;
+            this.price = (price != null ? price ?? 0 : commodity.avgprice ?? 0);
+            this.total = total;
+            this.ejected = 0;
+            haulageamounts = new List<HaulageAmount>();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            this.total = this.stolen + this.haulage + this.other;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
     }
 }

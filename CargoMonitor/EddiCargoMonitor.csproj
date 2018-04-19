@@ -52,9 +52,11 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,7 +66,23 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CargoInventoryEvent.cs" />
     <Compile Include="CargoMonitor.cs" />
+    <Compile Include="CargoMonitorConfiguration.cs" />
+    <Compile Include="CommodityCollectedEvent.cs" />
+    <Compile Include="CommodityEjectedEvent.cs" />
+    <Compile Include="CommodityPurchasedEvent.cs" />
+    <Compile Include="CommodityRefinedEvent.cs" />
+    <Compile Include="CommoditySoldEvent.cs" />
+    <Compile Include="ConfigurationWindow.xaml.cs">
+      <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LimpetLaunchedEvent.cs" />
+    <Compile Include="LimpetPurchasedEvent.cs" />
+    <Compile Include="LimpetSoldEvent.cs" />
+    <Compile Include="PowerCommodityDeliveredEvent.cs" />
+    <Compile Include="PowerCommodityFastTrackedEvent.cs" />
+    <Compile Include="PowerCommodityObtainedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +98,10 @@
       <Project>{2BB41C51-9BE0-49C9-91FD-C4E444994ECE}</Project>
       <Name>EddiEvents</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ShipMonitor\EddiShipMonitor.csproj">
+      <Project>{5294706e-e600-4ea1-b904-66a41561e852}</Project>
+      <Name>EddiShipMonitor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{CD71DD2A-86AC-44A8-959B-E1C3069966BD}</Project>
       <Name>Utilities</Name>
@@ -87,6 +109,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="ConfigurationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -92,7 +92,6 @@
     <Compile Include="CrewLeftEvent.cs" />
     <Compile Include="CrewJoinedEvent.cs" />
     <Compile Include="DataVoucherRedeemedEvent.cs" />
-    <Compile Include="CargoInventoryEvent.cs" />
     <Compile Include="MaterialInventoryEvent.cs" />
     <Compile Include="FSDEngagedEvent.cs" />
     <Compile Include="BondRedeemedEvent.cs" />
@@ -109,9 +108,6 @@
     <Compile Include="PowerVoucherReceivedEvent.cs" />
     <Compile Include="StationNoFireZoneExitedEvent.cs" />
     <Compile Include="StationNoFireZoneEnteredEvent.cs" />
-    <Compile Include="PowerCommodityFastTrackedEvent.cs" />
-    <Compile Include="PowerCommodityDeliveredEvent.cs" />
-    <Compile Include="PowerCommodityObtainedEvent.cs" />
     <Compile Include="PowerSalaryClaimedEvent.cs" />
     <Compile Include="PowerPerparationVoteCastEvent.cs" />
     <Compile Include="PowerDefectedEvent.cs" />
@@ -131,15 +127,12 @@
     <Compile Include="MissionRedirectedEvent.cs" />
     <Compile Include="SearchAndRescueEvent.cs" />
     <Compile Include="JumpingEvent.cs" />
-    <Compile Include="LimpetSoldEvent.cs" />
-    <Compile Include="LimpetPurchasedEvent.cs" />
     <Compile Include="ExplorationDataSoldEvent.cs" />
     <Compile Include="ExplorationDataPurchasedEvent.cs" />
     <Compile Include="MaterialDiscoveredEvent.cs" />
     <Compile Include="MaterialDiscardedEvent.cs" />
     <Compile Include="MaterialCollectedEvent.cs" />
     <Compile Include="KilledEvent.cs" />
-    <Compile Include="CommodityRefinedEvent.cs" />
     <Compile Include="ShipInterdictionEvent.cs" />
     <Compile Include="ShipInterdictedEvent.cs" />
     <Compile Include="CommanderRanksEvent.cs" />
@@ -162,10 +155,7 @@
     <Compile Include="SRVDockedEvent.cs" />
     <Compile Include="FighterDockedEvent.cs" />
     <Compile Include="FighterLaunchedEvent.cs" />
-    <Compile Include="CommoditySoldEvent.cs" />
     <Compile Include="BountyIncurredEvent .cs" />
-    <Compile Include="CommodityEjectedEvent.cs" />
-    <Compile Include="CommodityPurchasedEvent.cs" />
     <Compile Include="DockingTimedOutEvent.cs" />
     <Compile Include="DockingDeniedEvent.cs" />
     <Compile Include="DockingGrantedEvent.cs" />
@@ -180,7 +170,6 @@
     <Compile Include="BodyScannedEvent.cs" />
     <Compile Include="StarScannedEvent.cs" />
     <Compile Include="CockpitBreachedEvent.cs" />
-    <Compile Include="CommodityCollectedEvent.cs" />
     <Compile Include="ExplorationPromotionEvent.cs" />
     <Compile Include="ScreenshotEvent.cs" />
     <Compile Include="MusicEvent.cs" />

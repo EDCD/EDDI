@@ -1,14 +1,15 @@
 ﻿using EddiDataDefinitions;
+using EddiEvents;
 using System;
 using System.Collections.Generic;
 
-namespace EddiEvents
+namespace EddiCargoMonitor
 {
     public class CargoInventoryEvent : Event
     {
         public const string NAME = "Cargo inventory";
         public const string DESCRIPTION = "Triggered when you obtain an inventory of your cargo";
-        public const string SAMPLE = @"{ ""timestamp"":""2017-04-03T16:15:32Z"", ""event"":""Cargo"", ""Inventory"":[ { ""Name"":""fish"", ""Count"":10 }, { ""Name"":""beer"", ""Count"":12 }, { ""Name"":""tobacco"", ""Count"":8 }, { ""Name"":""drones"", ""Count"":20 } ] }";
+        public const string SAMPLE = "{ \"timestamp\":\"2018-04-10T23:33:17Z\", \"event\":\"Cargo\", \"Inventory\":[ { \"Name\":\"hydrogenfuel\", \"Name_Localised\":\"Hydrogen Fuel\", \"Count\":2, \"Stolen\":0 }, { \"Name\":\"survivalequipment\", \"Name_Localised\":\"Survival Equipment\", \"Count\":2, \"Stolen\":0 } ] }";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 
         static CargoInventoryEvent()

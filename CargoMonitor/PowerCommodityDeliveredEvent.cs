@@ -1,7 +1,13 @@
-﻿using System;
+﻿using EddiDataDefinitions;
+using EddiEvents;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace EddiEvents
+namespace EddiCargoMonitor
 {
     public class PowerCommodityDeliveredEvent : Event
     {
@@ -14,7 +20,7 @@ namespace EddiEvents
         static PowerCommodityDeliveredEvent()
         {
             VARIABLES.Add("power", "The name of the power for which the commander is delivering the commodity");
-            VARIABLES.Add("commodity", "The commodity the commander is delivering");
+            VARIABLES.Add("commodity", "The name of the commodity the commander is delivering");
             VARIABLES.Add("amount", "The amount of the commodity the commander is delivering");
         }
 
