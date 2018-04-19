@@ -5532,7 +5532,6 @@ namespace UnitTests
             Assert.AreEqual(null, ship.compartments[8].module);
 
             Assert.AreEqual(10, ship.cargocapacity);
-            Assert.AreEqual(6, ship.cargocarried);
 
             /// 7 stored ships plus active ship
             Assert.AreEqual(8, shipyard.Count);
