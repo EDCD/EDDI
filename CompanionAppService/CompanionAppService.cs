@@ -708,7 +708,6 @@ namespace EddiCompanionAppService
                 List<Commodity> commodityErrors = new List<Commodity>();
                 foreach (dynamic commodity in json["lastStarport"]["commodities"])
                 {
-                    dynamic commodityJson = commodity.Value;
                     Commodity Commodity = new Commodity();
                     Commodity eddiCommodity = CommodityDefinitions.CommodityFromEliteID((long)commodity["id"]);
                     if (eddiCommodity == null)
