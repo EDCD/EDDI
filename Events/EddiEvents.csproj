@@ -67,6 +67,7 @@
     <Compile Include="JetConeDamageEvent.cs" />
     <Compile Include="ShutdownEvent.cs" />
     <Compile Include="StatusEvent.cs" />
+    <Compile Include="TechnologyBrokerEvent.cs" />
     <Compile Include="VAInitialized.cs" />
     <Compile Include="SRVTurretEvent.cs" />
     <Compile Include="NearSurfaceEvent.cs" />

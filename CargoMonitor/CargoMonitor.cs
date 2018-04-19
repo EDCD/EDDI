@@ -188,8 +188,10 @@ namespace EddiCargoMonitor
             {
                 handleSynthesisedEvent((SynthesisedEvent)@event);
             }
-
-            // TODO Powerplay events
+            else if (@event is TechnologyBrokerEvent)
+            {
+                handleTechnologyBrokerEvent((TechnologyBrokerEvent)@event);
+            }
         }
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
@@ -263,7 +265,7 @@ namespace EddiCargoMonitor
             {
                 if (cargo.haulageamounts.Any(ha => ha.amount >= @event.amount))
                 {
-                    cargo.ejected = @event.amount;
+                    cargo.ejected += @event.amount;
                     cargo.haulage -= @event.amount;
                 }
                 else if (cargo.stolen > 0)
@@ -506,7 +508,7 @@ namespace EddiCargoMonitor
                 if (cargoReward != null)
                 {
                     cargoReward.other += commodityReward.amount;
-                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                    cargo.total += commodityReward.amount;
                 }
                 else
                 {
@@ -546,7 +548,7 @@ namespace EddiCargoMonitor
                 if (cargo != null)
                 {
                     cargo.other += 4;
-                    cargo.total = cargo.haulage + cargo.stolen + cargo.other;
+                    cargo.total += 4;
                 }
                 else
                 {
@@ -559,6 +561,20 @@ namespace EddiCargoMonitor
                 }
                 writeInventory();
             }
+        }
+
+        private void handleTechnologyBrokerEvent(TechnologyBrokerEvent @event)
+        {
+            foreach (CommodityAmount commodityAmount in @event.commodities)
+            {
+                Cargo cargo = GetCargo(commodityAmount.commodity);
+                if (cargo != null)
+                {
+                    cargo.other -= commodityAmount.amount;
+                    cargo.total -= commodityAmount.amount;
+                }
+            }
+            writeInventory();
         }
 
         public IDictionary<string, object> GetVariables()
