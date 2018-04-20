@@ -295,7 +295,7 @@ namespace Utilities
                     if (customData != null)
                     {
                         if (customData.Keys.Count == thisData.Keys.Count &&
-                            customData.Keys.All(k => thisData.ContainsKey(k) && Equals(thisData[k].ToString().ToLowerInvariant(), customData[k].ToString().ToLowerInvariant())))
+                            customData.Keys.All(k => thisData.ContainsKey(k) && Equals(thisData[k]?.ToString()?.ToLowerInvariant(), customData[k]?.ToString()?.ToLowerInvariant())))
                         {
                             return false;
                         }
