@@ -56,12 +56,12 @@ namespace EddiCargoMonitor
             CargoMonitorConfiguration configuration = new CargoMonitorConfiguration();
             if (File.Exists(filename))
             {
-                string data = Files.Read(filename);
-                if (data != null)
+                string json = Files.Read(filename);
+                if (json != null)
                 {
                     try
                     {
-                        configuration = JsonConvert.DeserializeObject<CargoMonitorConfiguration>(data);
+                        configuration = FromJsonString(json);
                     }
                     catch (Exception ex)
                     {
@@ -76,6 +76,11 @@ namespace EddiCargoMonitor
 
             configuration.dataPath = filename;
             return configuration;
+        }
+
+        public static CargoMonitorConfiguration FromJsonString(string json)
+        {
+            return JsonConvert.DeserializeObject<CargoMonitorConfiguration>(json);
         }
 
         /// <summary>

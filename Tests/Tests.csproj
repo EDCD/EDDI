@@ -138,6 +138,8 @@
     <Compile Include="ShipTests.cs" />
     <Compile Include="PromotionTests.cs" />
     <Compile Include="BuildTests.cs" />
+    <Compile Include="CargoMonitorTests.cs" />
+    <Compile Include="MaterialMonitorTests.cs" />
     <Compile Include="VersioningTests.cs" />
     <Compile Include="DataProviderTests.cs" />
     <Compile Include="SpeechTests.cs" />

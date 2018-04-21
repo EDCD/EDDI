@@ -36,10 +36,10 @@ namespace EddiMaterialMonitor
             {
                 try
                 {
-                    string data = Files.Read(filename);
-                    if (data != null)
+                    string json = Files.Read(filename);
+                    if (json != null)
                     {
-                        configuration = JsonConvert.DeserializeObject<MaterialMonitorConfiguration>(data);
+                        configuration = FromJsonString(json);
                     }
                 }
                 catch (Exception ex)
@@ -54,6 +54,11 @@ namespace EddiMaterialMonitor
 
             configuration.dataPath = filename;
             return configuration;
+        }
+
+        public static MaterialMonitorConfiguration FromJsonString(string json)
+        {
+            return JsonConvert.DeserializeObject<MaterialMonitorConfiguration>(json);
         }
 
         /// <summary>
