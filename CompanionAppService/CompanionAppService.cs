@@ -632,18 +632,25 @@ namespace EddiCompanionAppService
                 {
                     dynamic module = moduleJson.Value;
                     // Not interested in paintjobs, decals, ...
-                    if (module["category"] == "weapon" || module["category"] == "module" || module["category"] == "utility")
+                    string moduleCategory = module["category"]; // need to convert from LINQ to string
+                    switch (moduleCategory)
                     {
-                        Module Module = ModuleDefinitions.ModuleFromEliteID((long)module["id"]);
-                        if (Module.name == null)
-                        {
-                            // Unknown module; batch and report so that we can update the definitions
-                            moduleErrors.Add(module);
-                            // Set the name from the JSON
-                            Module.EDName = (string)module["name"];
-                        }
-                        Module.price = module["cost"];
-                        Modules.Add(Module);
+                        case "weapon":
+                        case "module":
+                        case "utility":
+                            {
+                                Module Module = ModuleDefinitions.ModuleFromEliteID((long)module["id"]);
+                                if (Module.name == null)
+                                {
+                                    // Unknown module; batch and report so that we can update the definitions
+                                    moduleErrors.Add(module);
+                                    // Set the name from the JSON
+                                    Module.EDName = (string)module["name"];
+                                }
+                                Module.price = module["cost"];
+                                Modules.Add(Module);
+                            }
+                            break;
                     }
                 }
                 if (moduleErrors.Count > 0)
