@@ -277,7 +277,11 @@ namespace EddiCargoMonitor
                     cargo.other -= @event.amount;
                 }
 
-                cargo.total -= @event.amount;
+                if (cargo.total < 1)
+                {
+                    // All of the commodity was ejected
+                    RemoveCargo(cargo.name);
+                }
             }
             writeInventory();
         }
@@ -307,7 +311,6 @@ namespace EddiCargoMonitor
             if (cargo != null)
             {
                 cargo.other++;
-                cargo.total++;
             }
             else
             {
@@ -341,8 +344,6 @@ namespace EddiCargoMonitor
                     // Cargo is owned by the commander
                     cargo.other -= @event.amount;
                 }
-
-                cargo.total -= @event.amount;
                 if (cargo.total < 1)
                 {
                     // All of the commodity was sold
