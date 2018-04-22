@@ -344,8 +344,6 @@ namespace EddiCargoMonitor
                     // Cargo is owned by the commander
                     cargo.other -= @event.amount;
                 }
-
-                cargo.total -= @event.amount;
                 if (cargo.total < 1)
                 {
                     // All of the commodity was sold
