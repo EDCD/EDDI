@@ -472,6 +472,10 @@ namespace Eddi
                 {
                     statusText.Text = "Frontier API connection not operational";
                 }
+                else if (!EDDI.running)
+                {
+                    statusText.Text = "Safe mode - manadatory upgrade required.";
+                }
                 else
                 {
                     statusText.Text = "Operational";
