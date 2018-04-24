@@ -21,7 +21,7 @@ namespace Utilities
 
         public static void Error(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            Error(ex.ToString(), memberName, filePath);
+            Error(ex.Message, ex.ToString(), memberName, filePath);
         }
 
         public static void Error(string message, string data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -42,7 +42,7 @@ namespace Utilities
 
         public static void Warn(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            Warn(ex.ToString(), memberName, filePath);
+            Warn(ex.Message, ex.ToString(), memberName, filePath);
         }
 
         public static void Warn(string message, string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -62,7 +62,7 @@ namespace Utilities
 
         public static void Info(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            Info(ex.ToString(), memberName, filePath);
+            Info(ex.Message, ex.ToString(), memberName, filePath);
         }
 
         public static void Info(string message, string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
