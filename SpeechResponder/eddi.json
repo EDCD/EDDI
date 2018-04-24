@@ -1442,15 +1442,6 @@
       "name": "Ship loadout",
       "description": "Triggered when you obtain the loadout of your ship"
     },
-    "Ship low fuel": {
-      "enabled": true,
-      "priority": 3,
-      "responder": true,
-      "script": null,
-      "default": true,
-      "name": "Ship low fuel",
-      "description": "Triggered when your fuel level falls below 25%"
-    },
     "Ship purchased": {
       "enabled": true,
       "priority": 3,
