@@ -128,7 +128,7 @@ namespace Utilities
             try
             {
                 message.Replace(Constants.DATA_DIR, ""); // Scrub out data directories, if present in the Rollbar message.
-                if (!(data is Dictionary<string, object>))
+                if (!(data is Dictionary<string, object> || data is Exception))
                 {
                     var wrapppedData = new Dictionary<string, object>()
                     {
