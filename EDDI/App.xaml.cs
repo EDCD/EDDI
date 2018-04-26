@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,14 +15,14 @@ namespace Eddi
         [STAThread]
         static void Main()
         {
+            // Configure Rollbar error reporting
+
             // Generate or retrieve an id unique to this configuration for bug tracking
             string uniqueId = Eddi.Properties.Settings.Default.uniqueID ?? Guid.NewGuid().ToString();
             if (Eddi.Properties.Settings.Default.uniqueID == null)
             {
                 Eddi.Properties.Settings.Default.uniqueID = uniqueId;
             }
-
-            // Configure Rollbar error reporting
             _Rollbar.configureRollbar(uniqueId);
 
             // Catch and send unhandled exceptions from Windows forms
@@ -45,6 +46,13 @@ namespace Eddi
                 _Rollbar.ExceptionHandler(exception);
                 ReloadAndRecover(exception);
             };
+            // Catch and write managed exceptions to the local debug console (but do not send)
+            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
+            {
+                Debug.WriteLine(eventArgs.Exception.ToString());
+            };
+
+            // Start the application
 
             MainWindow mainWindow = null;
             bool firstOwner = false;
