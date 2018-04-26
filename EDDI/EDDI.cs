@@ -143,7 +143,6 @@ namespace Eddi
                 // Set up the EDDI configuration
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                 updateHomeSystemStation(configuration);
-                _Rollbar.configureRollbarExceptionHandling(configuration.Beta, configuration.uniqueId);
 
                 // Set up monitors and responders
                 monitors = findMonitors();
