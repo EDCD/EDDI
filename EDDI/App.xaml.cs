@@ -30,18 +30,21 @@ namespace Eddi
             {
                 Exception exception = args.Exception as Exception;
                 _Rollbar.ExceptionHandler(exception);
+                ReloadAndRecover(exception);
             };
             // Catch and send unhandled exceptions from non-UI threads
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
                 Exception exception = args.ExceptionObject as Exception;
                 _Rollbar.ExceptionHandler(exception);
+                ReloadAndRecover(exception);
             };
             // Catch and send unhandled exceptions from the task scheduler
             TaskScheduler.UnobservedTaskException += (sender, args) =>
             {
                 Exception exception = args.Exception as Exception;
                 _Rollbar.ExceptionHandler(exception);
+                ReloadAndRecover(exception);
             };
 
             ApplyAnyOverrideCulture(); // this must be done before any UI is generated
@@ -91,6 +94,13 @@ namespace Eddi
                 Thread.CurrentThread.CurrentCulture = ci;
                 Thread.CurrentThread.CurrentUICulture = ci;
             }
+        }
+
+        private static void ReloadAndRecover(Exception exception)
+        {
+            Logging.Debug("Reloading after unhandled exception: " + exception.ToString());
+            EDDI.Instance.Stop();
+            EDDI.Instance.Start();
         }
     }
 }
