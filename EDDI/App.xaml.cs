@@ -77,9 +77,12 @@ namespace Eddi
 
         private static void ReloadAndRecover(Exception exception)
         {
+#if DEBUG
+#else
             Logging.Debug("Reloading after unhandled exception: " + exception.ToString());
             EDDI.Instance.Stop();
             EDDI.Instance.Start();
+#endif
         }
     }
 }
