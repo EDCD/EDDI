@@ -21,7 +21,7 @@ namespace Utilities
 
         public static void Error(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            Error(ex.ToString(), memberName, filePath);
+            Error(ex.Message, ex.ToString(), memberName, filePath);
         }
 
         public static void Error(string message, string data = null, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -42,7 +42,7 @@ namespace Utilities
 
         public static void Warn(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            Warn(ex.ToString(), memberName, filePath);
+            Warn(ex.Message, ex.ToString(), memberName, filePath);
         }
 
         public static void Warn(string message, string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -62,7 +62,7 @@ namespace Utilities
 
         public static void Info(Exception ex, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
         {
-            Info(ex.ToString(), memberName, filePath);
+            Info(ex.Message, ex.ToString(), memberName, filePath);
         }
 
         public static void Info(string message, string data, [CallerMemberName] string memberName = "", [CallerFilePath] string filePath = "")
@@ -127,7 +127,8 @@ namespace Utilities
 #else
             try
             {
-                if (!(data is Dictionary<string, object>))
+                message.Replace(Constants.DATA_DIR, ""); // Scrub out data directories, if present in the Rollbar message.
+                if (!(data is Dictionary<string, object> || data is Exception))
                 {
                     var wrapppedData = new Dictionary<string, object>()
                     {
@@ -169,11 +170,11 @@ namespace Utilities
         const string rollbarWriteToken = "debe6e50f82d4e8c955d5efafa79c789";
         private static bool filterMessages = true; // We are rate limited, so keep this set to true unless we have a good reason to do otherwise.
 
-        public static void configureRollbarExceptionHandling(bool beta, string uniqueId)
+        public static void configureRollbar(string uniqueId)
         {
             var config = new RollbarConfig(rollbarWriteToken)
             {
-                Environment = beta ? "development" : "production",
+                Environment = Constants.EDDI_VERSION,
                 ScrubFields = new string[] // Scrub these fields from the reported data
                 {
                     "Commander", "apiKey", "commanderName", Constants.DATA_DIR
@@ -183,25 +184,23 @@ namespace Utilities
                 // Set server info
                 Server = new Rollbar.DTOs.Server
                 {
-                    CodeVersion = Constants.EDDI_VERSION,
+                    CodeVersion = ThisAssembly.Git.Sha,
                     Root = "/"
                 },
             };
             RollbarLocator.RollbarInstance.Configure(config);
-            // Send unhandled exceptions
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+        }
+
+        public static void ExceptionHandler(Exception exception)
+        {
+            Dictionary<string, object> trace = new Dictionary<string, object>();
+            trace.Add("StackTrace", exception.StackTrace ?? "StackTrace not available");
+
+            if (isUniqueMessage(exception.GetType() + ": " + exception.Message, trace))
             {
-                Exception exception = args.ExceptionObject as Exception;
-
-                Dictionary<string, object> trace = new Dictionary<string, object>();
-                trace.Add("StackTrace", exception.StackTrace ?? "StackTrace not available");
-
-                if (isUniqueMessage(exception.GetType() + ": " + exception.Message, trace))
-                {
-                    Logging.Info("Reporting unhandled exception, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id);
-                    RollbarLocator.RollbarInstance.Error(exception, trace);
-                }
-            };
+                Logging.Info("Reporting unhandled exception, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id);
+                RollbarLocator.RollbarInstance.Error(exception, trace);
+            }
         }
 
         public static bool isUniqueMessage(string message, Dictionary<string, object> thisData = null)
