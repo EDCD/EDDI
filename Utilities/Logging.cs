@@ -174,7 +174,7 @@ namespace Utilities
         {
             var config = new RollbarConfig(rollbarWriteToken)
             {
-                Environment = beta ? "development" : "production",
+                Environment = Constants.EDDI_VERSION,
                 ScrubFields = new string[] // Scrub these fields from the reported data
                 {
                     "Commander", "apiKey", "commanderName", Constants.DATA_DIR
@@ -184,7 +184,7 @@ namespace Utilities
                 // Set server info
                 Server = new Rollbar.DTOs.Server
                 {
-                    CodeVersion = Constants.EDDI_VERSION,
+                    CodeVersion = ThisAssembly.Git.Commit,
                     Root = "/"
                 },
             };
