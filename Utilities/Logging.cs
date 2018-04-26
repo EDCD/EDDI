@@ -170,7 +170,7 @@ namespace Utilities
         const string rollbarWriteToken = "debe6e50f82d4e8c955d5efafa79c789";
         private static bool filterMessages = true; // We are rate limited, so keep this set to true unless we have a good reason to do otherwise.
 
-        public static void configureRollbarExceptionHandling(bool beta, string uniqueId)
+        public static void configureRollbar(string uniqueId)
         {
             var config = new RollbarConfig(rollbarWriteToken)
             {
@@ -184,25 +184,23 @@ namespace Utilities
                 // Set server info
                 Server = new Rollbar.DTOs.Server
                 {
-                    CodeVersion = ThisAssembly.Git.Commit,
+                    CodeVersion = ThisAssembly.Git.Sha,
                     Root = "/"
                 },
             };
             RollbarLocator.RollbarInstance.Configure(config);
-            // Send unhandled exceptions
-            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+        }
+
+        public static void ExceptionHandler(Exception exception)
+        {
+            Dictionary<string, object> trace = new Dictionary<string, object>();
+            trace.Add("StackTrace", exception.StackTrace ?? "StackTrace not available");
+
+            if (isUniqueMessage(exception.GetType() + ": " + exception.Message, trace))
             {
-                Exception exception = args.ExceptionObject as Exception;
-
-                Dictionary<string, object> trace = new Dictionary<string, object>();
-                trace.Add("StackTrace", exception.StackTrace ?? "StackTrace not available");
-
-                if (isUniqueMessage(exception.GetType() + ": " + exception.Message, trace))
-                {
-                    Logging.Info("Reporting unhandled exception, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id);
-                    RollbarLocator.RollbarInstance.Error(exception, trace);
-                }
-            };
+                Logging.Info("Reporting unhandled exception, anonymous ID " + RollbarLocator.RollbarInstance.Config.Person.Id);
+                RollbarLocator.RollbarInstance.Error(exception, trace);
+            }
         }
 
         public static bool isUniqueMessage(string message, Dictionary<string, object> thisData = null)

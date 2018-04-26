@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Utilities;
 
@@ -13,6 +14,35 @@ namespace Eddi
         [STAThread]
         static void Main()
         {
+            // Generate or retrieve an id unique to this configuration for bug tracking
+            string uniqueId = Eddi.Properties.Settings.Default.uniqueID ?? Guid.NewGuid().ToString();
+            if (Eddi.Properties.Settings.Default.uniqueID == null)
+            {
+                Eddi.Properties.Settings.Default.uniqueID = uniqueId;
+            }
+
+            // Configure Rollbar error reporting
+            _Rollbar.configureRollbar(uniqueId);
+
+            // Catch and send unhandled exceptions from Windows forms
+            System.Windows.Forms.Application.ThreadException += (sender, args) =>
+            {
+                Exception exception = args.Exception as Exception;
+                _Rollbar.ExceptionHandler(exception);
+            };
+            // Catch and send unhandled exceptions from non-UI threads
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                Exception exception = args.ExceptionObject as Exception;
+                _Rollbar.ExceptionHandler(exception);
+            };
+            // Catch and send unhandled exceptions from the task scheduler
+            TaskScheduler.UnobservedTaskException += (sender, args) =>
+            {
+                Exception exception = args.Exception as Exception;
+                _Rollbar.ExceptionHandler(exception);
+            };
+
             MainWindow mainWindow = null;
             bool firstOwner = false;
             Mutex eddiMutex = new Mutex(true, Constants.EDDI_SYSTEM_MUTEX_NAME, out firstOwner);
