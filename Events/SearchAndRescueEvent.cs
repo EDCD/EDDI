@@ -19,7 +19,7 @@ namespace EddiEvents
             VARIABLES.Add("reward", "The monetary reward for completing the search and rescue");
         }
 
-        public Commodity commodity { get; private set; }
+        public CommodityDefinition commodity { get; private set; }
 		
 	public string commodityname { get; private set; }
 
@@ -27,10 +27,10 @@ namespace EddiEvents
 
         public long reward { get; private set; }
 
-        public SearchAndRescueEvent(DateTime timestamp, Commodity commodity, int? amount, long reward) : base(timestamp, NAME)
+        public SearchAndRescueEvent(DateTime timestamp, CommodityDefinition commodity, int? amount, long reward) : base(timestamp, NAME)
         {
             this.commodity = commodity;
-            this.commodityname = commodity.name;
+            this.commodityname = commodity.localizedName;
             this.amount = amount;
             this.reward = reward;
         }

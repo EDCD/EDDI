@@ -79,11 +79,11 @@ namespace EddiEvents
             this.docked = docked;
             this.station = station;
             this.stationtype = stationtype;
-            this.allegiance = (allegiance == null ? Superpower.None.name : allegiance.name);
+            this.allegiance = (allegiance ?? Superpower.None).localizedName;
             this.faction = faction;
-            this.economy = (economy == null ? Economy.None.name : economy.name);
-            this.government = (government == null ? Government.None.name : government.name);
-            this.security = (security == null ? SecurityLevel.Low.name : security.name);
+            this.economy = (economy ?? Economy.None).localizedName;
+            this.government = (government ?? Government.None).localizedName;
+            this.security = (security ?? SecurityLevel.None).localizedName;
             this.population = population;
             this.longitude = longitude;
             this.latitude = latitude;

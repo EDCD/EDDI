@@ -22,20 +22,20 @@ namespace EddiEdsmResponder
             StarMapConfiguration starMapConfiguration = StarMapConfiguration.FromFile();
             edsmApiKeyTextBox.Text = starMapConfiguration.apiKey;
             edsmCommanderNameTextBox.Text = starMapConfiguration.commanderName;
-            edsmFetchLogsButton.Content = String.IsNullOrEmpty(edsmApiKeyTextBox.Text) ? "Please enter EDSM API key  to obtain log" : "Obtain log";
+            edsmFetchLogsButton.Content = String.IsNullOrEmpty(edsmApiKeyTextBox.Text) ? Properties.EDSMResources.log_button_empty_api_key : Properties.EDSMResources.log_button;
         }
 
         private void edsmCommanderNameChanged(object sender, TextChangedEventArgs e)
         {
             edsmFetchLogsButton.IsEnabled = true;
-            edsmFetchLogsButton.Content = "Obtain log";
+            edsmFetchLogsButton.Content = Properties.EDSMResources.log_button;
             updateEdsmConfiguration();
         }
 
         private void edsmApiKeyChanged(object sender, TextChangedEventArgs e)
         {
             edsmFetchLogsButton.IsEnabled = true;
-            edsmFetchLogsButton.Content = String.IsNullOrEmpty(edsmApiKeyTextBox.Text) ? "Please enter EDSM API key  to obtain log" : "Obtain log";
+            edsmFetchLogsButton.Content = String.IsNullOrEmpty(edsmApiKeyTextBox.Text) ? Properties.EDSMResources.log_button_empty_api_key : Properties.EDSMResources.log_button;
             updateEdsmConfiguration();
         }
 
@@ -64,7 +64,7 @@ namespace EddiEdsmResponder
             if (string.IsNullOrEmpty(starMapConfiguration.apiKey))
             {
                 edsmFetchLogsButton.IsEnabled = false;
-                edsmFetchLogsButton.Content = "Please enter EDSM API key  to obtain log";
+                edsmFetchLogsButton.Content = Properties.EDSMResources.log_button_empty_api_key;
                 return;
             }
 
@@ -80,7 +80,7 @@ namespace EddiEdsmResponder
                 else
                 {
                     edsmFetchLogsButton.IsEnabled = false;
-                    edsmFetchLogsButton.Content = "EDSM API not configured; cannot obtain logs";
+                    edsmFetchLogsButton.Content = Properties.EDSMResources.log_button_companion_unconfigured;
                     return;
                 }
             }
@@ -90,7 +90,7 @@ namespace EddiEdsmResponder
             }
 
             edsmFetchLogsButton.IsEnabled = false;
-            edsmFetchLogsButton.Content = "Obtaining log...";
+            edsmFetchLogsButton.Content = Properties.EDSMResources.log_button_fetching;
 
             var progress = new Progress<string>(s => edsmFetchLogsButton.Content = s);
             await Task.Factory.StartNew(() => obtainEdsmLogs(starMapConfiguration, commanderName, progress),
@@ -114,7 +114,7 @@ namespace EddiEdsmResponder
                 foreach (string system in systems.Keys)
                 {
                     ++i;
-                    progress.Report($"Obtaining log {i}/{total}");
+                    progress.Report($"{Properties.EDSMResources.log_button_fetching_progress} {i}/{total}");
                     StarSystem CurrentStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(system, false);
                     CurrentStarSystem.visits = systems[system].visits;
                     CurrentStarSystem.lastvisit = systems[system].lastVisit;
@@ -135,11 +135,11 @@ namespace EddiEdsmResponder
                     StarMapService.saveStarSystems(syncSystems);
                 }
 
-                progress.Report("Obtained log");
+                progress.Report(Properties.EDSMResources.log_button_fetched);
             }
             catch (EDSMException edsme)
             {
-                progress.Report("EDSM error received: " + edsme.Message);
+                progress.Report(Properties.EDSMResources.log_button_error_received + edsme.Message);
             }
         }
     }

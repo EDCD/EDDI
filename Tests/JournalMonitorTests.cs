@@ -34,9 +34,9 @@ namespace UnitTests
             Assert.AreEqual(ev.bodyclass, "High metal content body");
             Assert.AreEqual(ev.atmosphere, "hot thick carbon dioxide atmosphere");
             Assert.IsNotNull(ev.volcanism);
-            Assert.AreEqual("Magma", ev.volcanism.type);
-            Assert.AreEqual("Iron", ev.volcanism.composition);
-            Assert.AreEqual("Minor", ev.volcanism.amount);
+            Assert.AreEqual("Magma", ev.volcanism.invariantType);
+            Assert.AreEqual("Iron", ev.volcanism.invariantComposition);
+            Assert.AreEqual("Minor", ev.volcanism.invariantAmount);
             Assert.IsTrue(ev.earthmass == (decimal)2.171783);
             Assert.IsTrue(ev.radius  == (decimal)7622170.500000);
             Assert.AreEqual(ev.gravity, Body.ms2g((decimal)14.899396));

@@ -22,7 +22,7 @@ namespace EddiEvents
 
         public CombatPromotionEvent(DateTime timestamp, CombatRating rating) : base(timestamp, NAME)
         {
-            this.rating = rating.name;
+            this.rating = rating.localizedName;
         }
     }
 }

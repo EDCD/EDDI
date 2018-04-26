@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -7,69 +6,38 @@ namespace EddiDataDefinitions
     /// <summary>
     /// Exploration ratings
     /// </summary>
-    public class ExplorationRating
+    public class ExplorationRating : ResourceBasedLocalizedEDName<ExplorationRating>
     {
-        private static readonly List<ExplorationRating> RATINGS = new List<ExplorationRating>();
+        static ExplorationRating()
+        {
+            resourceManager = Properties.ExplorationRatings.ResourceManager;
+            resourceManager.IgnoreCase = false;
 
-        public string edname { get; private set; }
-
-        public string name { get; private set; }
+            var Aimless = new ExplorationRating("Aimless", 0);
+            var MostlyAimless = new ExplorationRating("MostlyAimless", 1);
+            var Scout = new ExplorationRating("Scout", 2);
+            var Surveyor = new ExplorationRating("Surveyor", 3);
+            var Trailblazer = new ExplorationRating("Trailblazer", 4);
+            var Pathfinder = new ExplorationRating("Pathfinder", 5);
+            var Ranger = new ExplorationRating("Ranger", 6);
+            var Pioneer = new ExplorationRating("Pioneer", 7);
+            var Elite = new ExplorationRating("Elite", 8);
+        }
 
         public int rank { get; private set; }
 
-        private ExplorationRating(string edname, int rank, string name)
+        // dummy used to ensure that the static constructor has run
+        public ExplorationRating() : this("", 0)
+        { }
+
+        private ExplorationRating(string edname, int rank) : base(edname, edname)
         {
-            this.edname = edname;
             this.rank = rank;
-            this.name = name;
-
-            RATINGS.Add(this);
-        }
-
-        public static readonly ExplorationRating Aimless = new ExplorationRating("Aimless", 0, "Aimless");
-        public static readonly ExplorationRating MostlyAimless = new ExplorationRating("MostlyAimless", 1, "Mostly Aimless");
-        public static readonly ExplorationRating Scout = new ExplorationRating("Scout", 2, "Scout");
-        public static readonly ExplorationRating Surveyor = new ExplorationRating("Surveyor", 3, "Surveyor");
-        public static readonly ExplorationRating Trailblazer = new ExplorationRating("Trailblazer", 4, "Trailblazer");
-        public static readonly ExplorationRating Pathfinder = new ExplorationRating("Pathfinder", 5, "Pathfinder");
-        public static readonly ExplorationRating Ranger = new ExplorationRating("Ranger", 6, "Ranger");
-        public static readonly ExplorationRating Pioneer = new ExplorationRating("Pioneer", 7, "Pioneer");
-        public static readonly ExplorationRating Elite = new ExplorationRating("Elite", 8, "Elite");
-
-        public static ExplorationRating FromName(string from)
-        {
-            if (from == null)
-            {
-                return null;
-            }
-
-            ExplorationRating result = RATINGS.FirstOrDefault(v => v.name == from);
-            if (result == null)
-            {
-                Logging.Report("Unknown Exploration Rating name " + from);
-            }
-            return result;
-        }
-
-        public static ExplorationRating FromEDName(string from)
-        {
-            if (from == null)
-            {
-                return null;
-            }
-
-            string tidiedFrom = from.ToLowerInvariant();
-            ExplorationRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
-            if (result == null)
-            {
-                Logging.Report("Unknown Exploration Rating ED name " + from);
-            }
-            return result;
         }
 
         public static ExplorationRating FromRank(int from)
         {
-            ExplorationRating result = RATINGS.FirstOrDefault(v => v.rank == from);
+            ExplorationRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Report("Unknown Exploration Rating rank " + from);

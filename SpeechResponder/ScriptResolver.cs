@@ -563,10 +563,10 @@ namespace EddiSpeechResponder
 
             store["StateDetails"] = new NativeFunction((values) =>
             {
-                State result = State.FromName(values[0].AsString);
+                SystemState result = SystemState.FromName(values[0].AsString);
                 if (result == null)
                 {
-                    result = State.FromEDName(values[0].AsString);
+                    result = SystemState.FromEDName(values[0].AsString);
                 }
                 return (result == null ? new ReflectionValue(new object()) : new ReflectionValue(result));
             }, 1);

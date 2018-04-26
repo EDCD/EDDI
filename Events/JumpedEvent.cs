@@ -57,7 +57,7 @@ namespace EddiEvents
 
         public long? population { get; private set; }
 
-        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, SecurityLevel security, long? population) : base(timestamp, NAME)
+        public JumpedEvent(DateTime timestamp, string system, decimal x, decimal y, decimal z, decimal distance, decimal fuelused, decimal fuelremaining, Superpower allegiance, string faction, SystemState factionstate, Economy economy, Government government, SecurityLevel security, long? population) : base(timestamp, NAME)
         {
             this.system = system;
             this.x = x;
@@ -66,12 +66,12 @@ namespace EddiEvents
             this.distance = distance;
             this.fuelused = fuelused;
             this.fuelremaining = fuelremaining;
-            this.allegiance = (allegiance == null ? Superpower.None.name : allegiance.name) ;
+            this.allegiance = (allegiance ?? Superpower.None).localizedName;
             this.faction = faction;
-            this.factionstate = (factionstate == null ? State.None.name : factionstate.name);
-            this.economy = (economy == null ? Economy.None.name : economy.name);
-            this.government = (government == null ? Government.None.name : government.name);
-            this.security = (security == null ? SecurityLevel.None.name : security.name);
+            this.factionstate = (factionstate == null ? SystemState.None.localizedName : factionstate.localizedName);
+            this.economy = (economy ?? Economy.None).localizedName;
+            this.government = (government ?? Government.None).localizedName;
+            this.security = (security ?? SecurityLevel.None).localizedName;
             this.population = population;
         }
     }

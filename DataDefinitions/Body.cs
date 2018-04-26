@@ -136,7 +136,7 @@ namespace EddiDataDefinitions
                 if (solarradius != null) radiusprobability = StarClass.sanitiseCP(starClass.stellarRadiusCP((decimal)solarradius));
                 if (temperature != null) tempprobability = StarClass.sanitiseCP(starClass.tempCP((decimal)temperature));
                 if (age != null) ageprobability = StarClass.sanitiseCP(starClass.ageCP((decimal)age));
-                chromaticity = starClass.chromaticity;
+                chromaticity = starClass.chromaticity.localizedName;
             }
         }
     }

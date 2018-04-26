@@ -1,0 +1,761 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- 
+		Microsoft ResX Schema
+
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+	
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+  <data name="Alrai" xml:space="preserve">
+    <value>ˈalraɪ</value>
+    <comment>Optional phonetic pronunciation for Alrai</comment>
+  </data>
+  <data name="Antliae" xml:space="preserve">
+    <value>ˈæntlɪˌiː</value>
+    <comment>Optional phonetic pronunciation for Antliae</comment>
+  </data>
+  <data name="Aquarii" xml:space="preserve">
+    <value>əˈkwɛərɪˌaɪ</value>
+    <comment>Optional phonetic pronunciation for Aquarii</comment>
+  </data>
+  <data name="Arietis" xml:space="preserve">
+    <value>əˈraɪɪtɪs</value>
+    <comment>Optional phonetic pronunciation for Arietis</comment>
+  </data>
+  <data name="Bei" xml:space="preserve">
+    <value>beɪ</value>
+    <comment>Optional phonetic pronunciation for Bei</comment>
+  </data>
+  <data name="BeiDou_Bei" xml:space="preserve">
+    <value>beɪ</value>
+    <comment>Optional phonetic pronunciation for BeiDou_Bei</comment>
+  </data>
+  <data name="BeiDou_Dou" xml:space="preserve">
+    <value>ˈduː</value>
+    <comment>Optional phonetic pronunciation for BeiDou_Dou</comment>
+  </data>
+  <data name="Blanco" xml:space="preserve">
+    <value>blæŋkˌəʊ</value>
+    <comment>Optional phonetic pronunciation for Blanco</comment>
+  </data>
+  <data name="Bleae" xml:space="preserve">
+    <value>bliːiː</value>
+    <comment>Optional phonetic pronunciation for Bleae</comment>
+  </data>
+  <data name="BleaeThaa_Bleae" xml:space="preserve">
+    <value>bliːiː</value>
+    <comment>Optional phonetic pronunciation for BleaeThaa_Bleae</comment>
+  </data>
+  <data name="BleaeThaa_Thaa" xml:space="preserve">
+    <value>θɑː</value>
+    <comment>Optional phonetic pronunciation for BleaeThaa_Thaa</comment>
+  </data>
+  <data name="BleaeThua_Thua" xml:space="preserve">
+    <value>θuːə</value>
+    <comment>Optional phonetic pronunciation for BleaeThua_Thua</comment>
+  </data>
+  <data name="Capricorni" xml:space="preserve">
+    <value>ˌkæprɪˈkɔːnaɪ</value>
+    <comment>Optional phonetic pronunciation for Capricorni</comment>
+  </data>
+  <data name="Carina" xml:space="preserve">
+    <value>kəˈriːnə</value>
+    <comment>Optional phonetic pronunciation for Carina</comment>
+  </data>
+  <data name="Cephei" xml:space="preserve">
+    <value>ˈsiːfɪˌaɪ</value>
+    <comment>Optional phonetic pronunciation for Cephei</comment>
+  </data>
+  <data name="Cepheus" xml:space="preserve">
+    <value>ˈsiːfjuːs</value>
+    <comment>Optional phonetic pronunciation for Cepheus</comment>
+  </data>
+  <data name="Ceti" xml:space="preserve">
+    <value>ˈsiːtaɪ</value>
+    <comment>Optional phonetic pronunciation for Ceti</comment>
+  </data>
+  <data name="Chi" xml:space="preserve">
+    <value>kaɪ</value>
+    <comment>Optional phonetic pronunciation for Chi</comment>
+  </data>
+  <data name="ChiPersei_Chi" xml:space="preserve">
+    <value>kaɪ</value>
+    <comment>Optional phonetic pronunciation for ChiPersei_Chi</comment>
+  </data>
+  <data name="ChiPersei_Persei" xml:space="preserve">
+    <value>ˈpɜːsɪˌaɪ</value>
+    <comment>Optional phonetic pronunciation for ChiPersei_Persei</comment>
+  </data>
+  <data name="Crucis" xml:space="preserve">
+    <value>ˈkruːsɪs</value>
+    <comment>Optional phonetic pronunciation for Crucis</comment>
+  </data>
+  <data name="Cygni" xml:space="preserve">
+    <value>ˈsɪɡnaɪ</value>
+    <comment>Optional phonetic pronunciation for Cygni</comment>
+  </data>
+  <data name="Dou" xml:space="preserve">
+    <value>ˈduː</value>
+    <comment>Optional phonetic pronunciation for Dou</comment>
+  </data>
+  <data name="Eta" xml:space="preserve">
+    <value>ita</value>
+    <comment>Optional phonetic pronunciation for Eta</comment>
+  </data>
+  <data name="EtaCarina_Carina" xml:space="preserve">
+    <value>kəˈriːnə</value>
+    <comment>Optional phonetic pronunciation for EtaCarina_Carina</comment>
+  </data>
+  <data name="EtaCarina_Eta" xml:space="preserve">
+    <value>ita</value>
+    <comment>Optional phonetic pronunciation for EtaCarina_Eta</comment>
+  </data>
+  <data name="Euq" xml:space="preserve">
+    <value>juːk</value>
+    <comment>Optional phonetic pronunciation for Euq</comment>
+  </data>
+  <data name="Fornacis" xml:space="preserve">
+    <value>fɔːˈneɪsɪs</value>
+    <comment>Optional phonetic pronunciation for Fornacis</comment>
+  </data>
+  <data name="Herculis" xml:space="preserve">
+    <value>hɜːkjʊˈlɪs</value>
+    <comment>Optional phonetic pronunciation for Herculis</comment>
+  </data>
+  <data name="Hyades" xml:space="preserve">
+    <value>ˈhaɪəˌdiːz</value>
+    <comment>Optional phonetic pronunciation for Hyades</comment>
+  </data>
+  <data name="Hydrae" xml:space="preserve">
+    <value>ˈhaɪdriː</value>
+    <comment>Optional phonetic pronunciation for Hydrae</comment>
+  </data>
+  <data name="Lupus" xml:space="preserve">
+    <value>ˈluːpəs</value>
+    <comment>Optional phonetic pronunciation for Lupus</comment>
+  </data>
+  <data name="Lyncis" xml:space="preserve">
+    <value>ˈlɪnsɪs</value>
+    <comment>Optional phonetic pronunciation for Lyncis</comment>
+  </data>
+  <data name="Omega" xml:space="preserve">
+    <value>ˈəʊmɪɡə</value>
+    <comment>Optional phonetic pronunciation for Omega</comment>
+  </data>
+  <data name="Ophiuchi" xml:space="preserve">
+    <value>ɒˈfjuːkaɪ</value>
+    <comment>Optional phonetic pronunciation for Ophiuchi</comment>
+  </data>
+  <data name="Ophiuchus" xml:space="preserve">
+    <value>ɒˈfjuːkəs</value>
+    <comment>Optional phonetic pronunciation for Ophiuchus</comment>
+  </data>
+  <data name="Pegasi" xml:space="preserve">
+    <value>ˈpɛɡəˌsaɪ</value>
+    <comment>Optional phonetic pronunciation for Pegasi</comment>
+  </data>
+  <data name="Persei" xml:space="preserve">
+    <value>ˈpɜːsɪˌaɪ</value>
+    <comment>Optional phonetic pronunciation for Persei</comment>
+  </data>
+  <data name="Piscium" xml:space="preserve">
+    <value>ˈpaɪsɪəm</value>
+    <comment>Optional phonetic pronunciation for Piscium</comment>
+  </data>
+  <data name="Pleiades" xml:space="preserve">
+    <value>ˈplaɪədiːz</value>
+    <comment>Optional phonetic pronunciation for Pleiades</comment>
+  </data>
+  <data name="Pru" xml:space="preserve">
+    <value>pruː</value>
+    <comment>Optional phonetic pronunciation for Pru</comment>
+  </data>
+  <data name="PruEuq_Euq" xml:space="preserve">
+    <value>juːk</value>
+    <comment>Optional phonetic pronunciation for PruEuq_Euq</comment>
+  </data>
+  <data name="PruEuq_Pru" xml:space="preserve">
+    <value>pruː</value>
+    <comment>Optional phonetic pronunciation for PruEuq_Pru</comment>
+  </data>
+  <data name="Puppis" xml:space="preserve">
+    <value>ˈpʌpɪs</value>
+    <comment>Optional phonetic pronunciation for Puppis</comment>
+  </data>
+  <data name="Rho" xml:space="preserve">
+    <value>rəʊ</value>
+    <comment>Optional phonetic pronunciation for Rho</comment>
+  </data>
+  <data name="RhoOphiuchi_Ophiuchi" xml:space="preserve">
+    <value>ɒˈfjuːkaɪ</value>
+    <comment>Optional phonetic pronunciation for RhoOphiuchi_Ophiuchi</comment>
+  </data>
+  <data name="RhoOphiuchi_Rho" xml:space="preserve">
+    <value>rəʊ</value>
+    <comment>Optional phonetic pronunciation for RhoOphiuchi_Rho</comment>
+  </data>
+  <data name="Sagittarius" xml:space="preserve">
+    <value>ˌsædʒˈtɛəriəs</value>
+    <comment>Optional phonetic pronunciation for Sagittarius</comment>
+  </data>
+  <data name="Scorpii" xml:space="preserve">
+    <value>ˈskɔːpɪˌaɪ</value>
+    <comment>Optional phonetic pronunciation for Scorpii</comment>
+  </data>
+  <data name="Shui" xml:space="preserve">
+    <value>ˈʃuːi</value>
+    <comment>Optional phonetic pronunciation for Shui</comment>
+  </data>
+  <data name="ShuiWei_Shui" xml:space="preserve">
+    <value>ˈʃuːi</value>
+    <comment>Optional phonetic pronunciation for ShuiWei_Shui</comment>
+  </data>
+  <data name="ShuiWei_Wei" xml:space="preserve">
+    <value>weɪ</value>
+    <comment>Optional phonetic pronunciation for ShuiWei_Wei</comment>
+  </data>
+  <data name="Tascheter" xml:space="preserve">
+    <value>ˈtɑːʃətɜː</value>
+    <comment>Optional phonetic pronunciation for Tascheter</comment>
+  </data>
+  <data name="Tau" xml:space="preserve">
+    <value>taʊ</value>
+    <comment>Optional phonetic pronunciation for Tau</comment>
+  </data>
+  <data name="TauCeti_Ceti" xml:space="preserve">
+    <value>ˈsiːtaɪ</value>
+    <comment>Optional phonetic pronunciation for TauCeti_Ceti</comment>
+  </data>
+  <data name="TauCeti_Tau" xml:space="preserve">
+    <value>taʊ</value>
+    <comment>Optional phonetic pronunciation for TauCeti_Tau</comment>
+  </data>
+  <data name="Thaa" xml:space="preserve">
+    <value>θɑː</value>
+    <comment>Optional phonetic pronunciation for Thaa</comment>
+  </data>
+  <data name="Thua" xml:space="preserve">
+    <value>θuːə</value>
+    <comment>Optional phonetic pronunciation for Thua</comment>
+  </data>
+  <data name="Trianguli" xml:space="preserve">
+    <value>traɪˈæŋˌɡjʊˌlaɪ</value>
+    <comment>Optional phonetic pronunciation for Trianguli</comment>
+  </data>
+  <data name="Trifid" xml:space="preserve">
+    <value>ˈtraɪfɪd</value>
+    <comment>Optional phonetic pronunciation for Trifid</comment>
+  </data>
+  <data name="Tucanae" xml:space="preserve">
+    <value>tuːˈkɑːniː</value>
+    <comment>Optional phonetic pronunciation for Tucanae</comment>
+  </data>
+  <data name="Wei" xml:space="preserve">
+    <value>weɪ</value>
+    <comment>Optional phonetic pronunciation for Wei</comment>
+  </data>
+  <data name="Wredguia" xml:space="preserve">
+    <value>ˈredɡaɪə</value>
+    <comment>Optional phonetic pronunciation for Wredguia</comment>
+  </data>
+  <data name="achenar" xml:space="preserve">
+    <value>ˈakɜːnɑ</value>
+    <comment>Optional phonetic pronunciation for achenar</comment>
+  </data>
+  <data name="acihault" xml:space="preserve">
+    <value>əˈsɪhɔːt</value>
+    <comment>Optional phonetic pronunciation for acihault</comment>
+  </data>
+  <data name="adan" xml:space="preserve">
+    <value>ˈædən</value>
+    <comment>Optional phonetic pronunciation for adan</comment>
+  </data>
+  <data name="aisling" xml:space="preserve">
+    <value>ˈæʃlɪŋ</value>
+    <comment>Optional phonetic pronunciation for aisling</comment>
+  </data>
+  <data name="alcyone" xml:space="preserve">
+    <value>ælˈsaɪəniː</value>
+    <comment>Optional phonetic pronunciation for alcyone</comment>
+  </data>
+  <data name="aldebaran" xml:space="preserve">
+    <value>alˈdɛbəɹən</value>
+    <comment>Optional phonetic pronunciation for aldebaran</comment>
+  </data>
+  <data name="anemoi" xml:space="preserve">
+    <value>æˈniːmɔɪ</value>
+    <comment>Optional phonetic pronunciation for anemoi</comment>
+  </data>
+  <data name="antal" xml:space="preserve">
+    <value>ˌænˈtæl</value>
+    <comment>Optional phonetic pronunciation for antal</comment>
+  </data>
+  <data name="apoyota" xml:space="preserve">
+    <value>æˈpɔɪəʊtə</value>
+    <comment>Optional phonetic pronunciation for apoyota</comment>
+  </data>
+  <data name="archon" xml:space="preserve">
+    <value>ˈɑːkɒn</value>
+    <comment>Optional phonetic pronunciation for archon</comment>
+  </data>
+  <data name="arissa" xml:space="preserve">
+    <value>əˈrɪsə</value>
+    <comment>Optional phonetic pronunciation for arissa</comment>
+  </data>
+  <data name="arque" xml:space="preserve">
+    <value>ɑːrk</value>
+    <comment>Optional phonetic pronunciation for arque</comment>
+  </data>
+  <data name="asterope" xml:space="preserve">
+    <value>əˈstɛroʊpiː</value>
+    <comment>Optional phonetic pronunciation for asterope</comment>
+  </data>
+  <data name="atlas" xml:space="preserve">
+    <value>ˈætləs</value>
+    <comment>Optional phonetic pronunciation for atlas</comment>
+  </data>
+  <data name="aulin" xml:space="preserve">
+    <value>ˈɔːlɪn</value>
+    <comment>Optional phonetic pronunciation for aulin</comment>
+  </data>
+  <data name="bajaja" xml:space="preserve">
+    <value>ˈbɑːhɑːhɑː</value>
+    <comment>Optional phonetic pronunciation for bajaja</comment>
+  </data>
+  <data name="bootis" xml:space="preserve">
+    <value>bəʊˈəʊtɪs</value>
+    <comment>Optional phonetic pronunciation for bootis</comment>
+  </data>
+  <data name="bunda" xml:space="preserve">
+    <value>ˈbuːndə</value>
+    <comment>Optional phonetic pronunciation for bunda</comment>
+  </data>
+  <data name="cayutorme" xml:space="preserve">
+    <value>ˈkaɪətɔːm</value>
+    <comment>Optional phonetic pronunciation for cayutorme</comment>
+  </data>
+  <data name="celaeno" xml:space="preserve">
+    <value>sᵻˈliːnoʊ</value>
+    <comment>Optional phonetic pronunciation for celaeno</comment>
+  </data>
+  <data name="ceos" xml:space="preserve">
+    <value>ˈkeɪɒs</value>
+    <comment>Optional phonetic pronunciation for ceos</comment>
+  </data>
+  <data name="cygnus" xml:space="preserve">
+    <value>ˈsɪɡnəs</value>
+    <comment>Optional phonetic pronunciation for cygnus</comment>
+  </data>
+  <data name="deciat" xml:space="preserve">
+    <value>ˈdɛsiːæt</value>
+    <comment>Optional phonetic pronunciation for deciat</comment>
+  </data>
+  <data name="delaine" xml:space="preserve">
+    <value>dəˈleɪn</value>
+    <comment>Optional phonetic pronunciation for delaine</comment>
+  </data>
+  <data name="denton" xml:space="preserve">
+    <value>ˈdɛntən</value>
+    <comment>Optional phonetic pronunciation for denton</comment>
+  </data>
+  <data name="dezhra" xml:space="preserve">
+    <value>ˈdezɦrə</value>
+    <comment>Optional phonetic pronunciation for dezhra</comment>
+  </data>
+  <data name="diso" xml:space="preserve">
+    <value>ˈdiːsəʊ</value>
+    <comment>Optional phonetic pronunciation for diso</comment>
+  </data>
+  <data name="djiwal" xml:space="preserve">
+    <value>ˈdʒɪwæl</value>
+    <comment>Optional phonetic pronunciation for djiwal</comment>
+  </data>
+  <data name="duval" xml:space="preserve">
+    <value>duːˈvæl</value>
+    <comment>Optional phonetic pronunciation for duval</comment>
+  </data>
+  <data name="dvorsi" xml:space="preserve">
+    <value>ˈdvɔːsiː</value>
+    <comment>Optional phonetic pronunciation for dvorsi</comment>
+  </data>
+  <data name="edmund" xml:space="preserve">
+    <value>ˈɛdmənd</value>
+    <comment>Optional phonetic pronunciation for edmund</comment>
+  </data>
+  <data name="electra" xml:space="preserve">
+    <value>ᵻˈlɛktrə</value>
+    <comment>Optional phonetic pronunciation for electra</comment>
+  </data>
+  <data name="eranin" xml:space="preserve">
+    <value>ˈɛrənin</value>
+    <comment>Optional phonetic pronunciation for eranin</comment>
+  </data>
+  <data name="eravate" xml:space="preserve">
+    <value>ɛrəˈvɑːtˌeɪ</value>
+    <comment>Optional phonetic pronunciation for eravate</comment>
+  </data>
+  <data name="fei" xml:space="preserve">
+    <value>feɪ</value>
+    <comment>Optional phonetic pronunciation for fei</comment>
+  </data>
+  <data name="felicia" xml:space="preserve">
+    <value>fəˈlɪʃɪə</value>
+    <comment>Optional phonetic pronunciation for felicia</comment>
+  </data>
+  <data name="frigaha" xml:space="preserve">
+    <value>frɪɡˈɑːhɑːr</value>
+    <comment>Optional phonetic pronunciation for frigaha</comment>
+  </data>
+  <data name="grandmort" xml:space="preserve">
+    <value>ˈɡʀɒdˌmɔʀ</value>
+    <comment>Optional phonetic pronunciation for grandmort</comment>
+  </data>
+  <data name="grom" xml:space="preserve">
+    <value>ˈɡrɒm</value>
+    <comment>Optional phonetic pronunciation for grom</comment>
+  </data>
+  <data name="hecate" xml:space="preserve">
+    <value>ˈhɛkətɪ</value>
+    <comment>Optional phonetic pronunciation for hecate</comment>
+  </data>
+  <data name="hotas" xml:space="preserve">
+    <value>həʊtæs</value>
+    <comment>Optional phonetic pronunciation for hotas</comment>
+  </data>
+  <data name="hudson" xml:space="preserve">
+    <value>ˈhʌdsən</value>
+    <comment>Optional phonetic pronunciation for hudson</comment>
+  </data>
+  <data name="i" xml:space="preserve">
+    <value>aɪ</value>
+    <comment>Optional phonetic pronunciation for i</comment>
+  </data>
+  <data name="ibootis_bootis" xml:space="preserve">
+    <value>bəʊˈəʊtɪs</value>
+    <comment>Optional phonetic pronunciation for ibootis_bootis</comment>
+  </data>
+  <data name="ibootis_i" xml:space="preserve">
+    <value>aɪ</value>
+    <comment>Optional phonetic pronunciation for ibootis_i</comment>
+  </data>
+  <data name="isleta" xml:space="preserve">
+    <value>aɪlˈetə</value>
+    <comment>Optional phonetic pronunciation for isleta</comment>
+  </data>
+  <data name="kaia" xml:space="preserve">
+    <value>ˈkaɪə</value>
+    <comment>Optional phonetic pronunciation for kaia</comment>
+  </data>
+  <data name="kaiabajaja_bajaja" xml:space="preserve">
+    <value>ˈbɑːhɑːhɑː</value>
+    <comment>Optional phonetic pronunciation for kaiabajaja_bajaja</comment>
+  </data>
+  <data name="kaiabajaja_kaia" xml:space="preserve">
+    <value>ˈkaɪə</value>
+    <comment>Optional phonetic pronunciation for kaiabajaja_kaia</comment>
+  </data>
+  <data name="kigana" xml:space="preserve">
+    <value>kiːˈɡɑːnə</value>
+    <comment>Optional phonetic pronunciation for kigana</comment>
+  </data>
+  <data name="kini" xml:space="preserve">
+    <value>ˈkiːniː</value>
+    <comment>Optional phonetic pronunciation for kini</comment>
+  </data>
+  <data name="koji" xml:space="preserve">
+    <value>ˈkəʊdʒiː</value>
+    <comment>Optional phonetic pronunciation for koji</comment>
+  </data>
+  <data name="kremainn" xml:space="preserve">
+    <value>krəˈmeɪn</value>
+    <comment>Optional phonetic pronunciation for kremainn</comment>
+  </data>
+  <data name="laksak" xml:space="preserve">
+    <value>ˈlæks.æk</value>
+    <comment>Optional phonetic pronunciation for laksak</comment>
+  </data>
+  <data name="lave" xml:space="preserve">
+    <value>leɪv</value>
+    <comment>Optional phonetic pronunciation for lave</comment>
+  </data>
+  <data name="lavigny" xml:space="preserve">
+    <value>ləˈviːniː</value>
+    <comment>Optional phonetic pronunciation for lavigny</comment>
+  </data>
+  <data name="leesti" xml:space="preserve">
+    <value>ˈliːstiː</value>
+    <comment>Optional phonetic pronunciation for leesti</comment>
+  </data>
+  <data name="leucos" xml:space="preserve">
+    <value>ˈluːkɒs</value>
+    <comment>Optional phonetic pronunciation for leucos</comment>
+  </data>
+  <data name="li" xml:space="preserve">
+    <value>liː</value>
+    <comment>Optional phonetic pronunciation for li</comment>
+  </data>
+  <data name="luytens" xml:space="preserve">
+    <value>ˈlaʊ.təns</value>
+    <comment>Optional phonetic pronunciation for luytens</comment>
+  </data>
+  <data name="mahon" xml:space="preserve">
+    <value>ˈmɑːn</value>
+    <comment>Optional phonetic pronunciation for mahon</comment>
+  </data>
+  <data name="maia" xml:space="preserve">
+    <value>ˈmaɪ.ə</value>
+    <comment>Optional phonetic pronunciation for maia</comment>
+  </data>
+  <data name="mata" xml:space="preserve">
+    <value>ˈmɑː.tʌ</value>
+    <comment>Optional phonetic pronunciation for mata</comment>
+  </data>
+  <data name="merope" xml:space="preserve">
+    <value>ˈmɛrəpiː</value>
+    <comment>Optional phonetic pronunciation for merope</comment>
+  </data>
+  <data name="mu" xml:space="preserve">
+    <value>mjuː</value>
+    <comment>Optional phonetic pronunciation for mu</comment>
+  </data>
+  <data name="mukoji_koji" xml:space="preserve">
+    <value>ˈkəʊdʒiː</value>
+    <comment>Optional phonetic pronunciation for mukoji_koji</comment>
+  </data>
+  <data name="mukoji_mu" xml:space="preserve">
+    <value>mjuː</value>
+    <comment>Optional phonetic pronunciation for mukoji_mu</comment>
+  </data>
+  <data name="nuenets" xml:space="preserve">
+    <value>ˈnjuːənɛts</value>
+    <comment>Optional phonetic pronunciation for nuenets</comment>
+  </data>
+  <data name="okinura" xml:space="preserve">
+    <value>ɒkɪˈnjʊrə</value>
+    <comment>Optional phonetic pronunciation for okinura</comment>
+  </data>
+  <data name="orrere" xml:space="preserve">
+    <value>ɒrˈɪər</value>
+    <comment>Optional phonetic pronunciation for orrere</comment>
+  </data>
+  <data name="pai" xml:space="preserve">
+    <value>paɪ</value>
+    <comment>Optional phonetic pronunciation for pai</comment>
+  </data>
+  <data name="paiszu_pai" xml:space="preserve">
+    <value>paɪ</value>
+    <comment>Optional phonetic pronunciation for paiszu_pai</comment>
+  </data>
+  <data name="paiszu_szu" xml:space="preserve">
+    <value>ʃuː</value>
+    <comment>Optional phonetic pronunciation for paiszu_szu</comment>
+  </data>
+  <data name="patreus" xml:space="preserve">
+    <value>pətˈreɪəs</value>
+    <comment>Optional phonetic pronunciation for patreus</comment>
+  </data>
+  <data name="pleione" xml:space="preserve">
+    <value>ˈplaɪəniː</value>
+    <comment>Optional phonetic pronunciation for pleione</comment>
+  </data>
+  <data name="potriti" xml:space="preserve">
+    <value>pəˈtriːtɪ</value>
+    <comment>Optional phonetic pronunciation for potriti</comment>
+  </data>
+  <data name="pranav" xml:space="preserve">
+    <value>pɜːnʌv</value>
+    <comment>Optional phonetic pronunciation for pranav</comment>
+  </data>
+  <data name="procyon" xml:space="preserve">
+    <value>ˈprəʊˌsɪən</value>
+    <comment>Optional phonetic pronunciation for procyon</comment>
+  </data>
+  <data name="reorte" xml:space="preserve">
+    <value>ˌriːˈɔːt</value>
+    <comment>Optional phonetic pronunciation for reorte</comment>
+  </data>
+  <data name="rui" xml:space="preserve">
+    <value>reɪ</value>
+    <comment>Optional phonetic pronunciation for rui</comment>
+  </data>
+  <data name="sakti" xml:space="preserve">
+    <value>ˈsæk.tiː</value>
+    <comment>Optional phonetic pronunciation for sakti</comment>
+  </data>
+  <data name="shinrarta" xml:space="preserve">
+    <value>ʃɪnˈrɑːrtə</value>
+    <comment>Optional phonetic pronunciation for shinrarta</comment>
+  </data>
+  <data name="shinrartadezhra_dezhra" xml:space="preserve">
+    <value>ˈdezɦrə</value>
+    <comment>Optional phonetic pronunciation for shinrartadezhra_dezhra</comment>
+  </data>
+  <data name="shinrartadezhra_shinrarta" xml:space="preserve">
+    <value>ʃɪnˈrɑːrtə</value>
+    <comment>Optional phonetic pronunciation for shinrartadezhra_shinrarta</comment>
+  </data>
+  <data name="star" xml:space="preserve">
+    <value>stɑː</value>
+    <comment>Optional phonetic pronunciation for star</comment>
+  </data>
+  <data name="surya" xml:space="preserve">
+    <value>ˈsuːˈrɪːˈɛr</value>
+    <comment>Optional phonetic pronunciation for surya</comment>
+  </data>
+  <data name="szu" xml:space="preserve">
+    <value>ʃuː</value>
+    <comment>Optional phonetic pronunciation for szu</comment>
+  </data>
+  <data name="taygeta" xml:space="preserve">
+    <value>teɪˈɪdʒᵻtə</value>
+    <comment>Optional phonetic pronunciation for taygeta</comment>
+  </data>
+  <data name="torval" xml:space="preserve">
+    <value>tɔːˈvæl</value>
+    <comment>Optional phonetic pronunciation for torval</comment>
+  </data>
+  <data name="tse" xml:space="preserve">
+    <value>ʃjɛ</value>
+    <comment>Optional phonetic pronunciation for tse</comment>
+  </data>
+  <data name="winters" xml:space="preserve">
+    <value>ˈwɪntəs</value>
+    <comment>Optional phonetic pronunciation for winters</comment>
+  </data>
+  <data name="xihe" xml:space="preserve">
+    <value>ʃiː.hər</value>
+    <comment>Optional phonetic pronunciation for xihe</comment>
+  </data>
+  <data name="xinca" xml:space="preserve">
+    <value>ˈʃɛnkə</value>
+    <comment>Optional phonetic pronunciation for xinca</comment>
+  </data>
+  <data name="yakabugai" xml:space="preserve">
+    <value>ˈjækəbuːɡaɪ</value>
+    <comment>Optional phonetic pronunciation for yakabugai</comment>
+  </data>
+  <data name="yong" xml:space="preserve">
+    <value>ˈjɒŋ</value>
+    <comment>Optional phonetic pronunciation for yong</comment>
+  </data>
+  <data name="yuri" xml:space="preserve">
+    <value>jʊəˈriː</value>
+    <comment>Optional phonetic pronunciation for yuri</comment>
+  </data>
+  <data name="zachary" xml:space="preserve">
+    <value>ˈzækərɪ</value>
+    <comment>Optional phonetic pronunciation for zachary</comment>
+  </data>
+  <data name="zaonce" xml:space="preserve">
+    <value>ˈzeɪɒns</value>
+    <comment>Optional phonetic pronunciation for zaonce</comment>
+  </data>
+  <data name="zemina" xml:space="preserve">
+    <value>zəˈmiːnə</value>
+    <comment>Optional phonetic pronunciation for zemina</comment>
+  </data>
+  <data name="zhang" xml:space="preserve">
+    <value>ʈʂáŋ</value>
+    <comment>Optional phonetic pronunciation for zhang</comment>
+  </data>
+  <data name="zhangfei_fei" xml:space="preserve">
+    <value>feɪ</value>
+    <comment>Optional phonetic pronunciation for zhangfei_fei</comment>
+  </data>
+  <data name="zhangfei_zhang" xml:space="preserve">
+    <value>ʈʂáŋ</value>
+    <comment>Optional phonetic pronunciation for zhangfei_zhang</comment>
+  </data>
+</root>

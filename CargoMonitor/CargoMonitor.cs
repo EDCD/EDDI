@@ -34,6 +34,11 @@ namespace EddiCargoMonitor
             return "Cargo monitor";
         }
 
+        public string LocalizedMonitorName()
+        {
+            return Properties.Resources.cargo_monitor_name;
+        }
+
         public string MonitorVersion()
         {
             return "1.0.0";
@@ -41,7 +46,7 @@ namespace EddiCargoMonitor
 
         public string MonitorDescription()
         {
-            return "Track information on your cargo.";
+            return Properties.Resources.cargo_monitor_desc;
         }
 
         public bool IsRequired()
@@ -199,7 +204,7 @@ namespace EddiCargoMonitor
             // CargoInventoryEvent does not contain missionid or cost information so fill in gaps here
             foreach (Cargo cargo in @event.inventory)
             {
-                Cargo inventoryCargo = inventory.FirstOrDefault(c => c.name == cargo.name);
+                Cargo inventoryCargo = inventory.FirstOrDefault(c => c.invariantName == cargo.invariantName);
                 if (inventoryCargo != null)
                 {
                     // Found match of commodity
@@ -216,10 +221,10 @@ namespace EddiCargoMonitor
 
             foreach (Cargo inventoryCargo in inventory)
             {
-                Cargo cargo = @event.inventory.FirstOrDefault(c => c.name == inventoryCargo.name);
+                Cargo cargo = @event.inventory.FirstOrDefault(c => c.invariantName == inventoryCargo.invariantName);
                 if (cargo == null)
                 {
-                    RemoveCargo(inventoryCargo.name);
+                    RemoveCargoWithInvariantName(inventoryCargo.invariantName);
                 }
             }
             writeInventory();
@@ -227,7 +232,7 @@ namespace EddiCargoMonitor
 
         private void handleCommodityCollectedEvent(CommodityCollectedEvent @event)
         {
-            Cargo cargo = GetCargo(@event.commodity);
+            Cargo cargo = GetCargoWithInvariantName(@event.commodity);
             if (cargo != null)
             {
                 cargo.total++;
@@ -260,7 +265,7 @@ namespace EddiCargoMonitor
 
         private void handleCommodityEjectedEvent(CommodityEjectedEvent @event)
         {
-            Cargo cargo = GetCargo(@event.commodity);
+            Cargo cargo = GetCargoWithInvariantName(@event.commodity);
             if (cargo != null)
             {
                 if (cargo.haulageamounts.Any(ha => ha.amount >= @event.amount))
@@ -284,7 +289,7 @@ namespace EddiCargoMonitor
 
         private void handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
         {
-            Cargo cargo = GetCargo(@event.commodity);
+            Cargo cargo = GetCargoWithInvariantName(@event.commodity);
             if (cargo != null)
             {
                 cargo.other += @event.amount;
@@ -303,7 +308,7 @@ namespace EddiCargoMonitor
 
         private void handleCommodityRefinedEvent(CommodityRefinedEvent @event)
         {
-            Cargo cargo = GetCargo(@event.commodity);
+            Cargo cargo = GetCargoWithInvariantName(@event.commodity);
             if (cargo != null)
             {
                 cargo.other++;
@@ -322,7 +327,7 @@ namespace EddiCargoMonitor
 
         private void handleCommoditySoldEvent(CommoditySoldEvent @event)
         {
-            Cargo cargo = GetCargo(@event.commodity);
+            Cargo cargo = GetCargoWithInvariantName(@event.commodity);
             if (cargo != null)
             {
                 if (@event.stolen)
@@ -346,7 +351,7 @@ namespace EddiCargoMonitor
                 if (cargo.total < 1)
                 {
                     // All of the commodity was sold
-                    RemoveCargo(cargo.name);
+                    RemoveCargoWithInvariantName(cargo.invariantName);
                 }
             }
             writeInventory();
@@ -354,7 +359,7 @@ namespace EddiCargoMonitor
 
         private void handlePowerCommodityObtainedEvent(PowerCommodityObtainedEvent @event)
         {
-            Cargo cargo = GetCargo(@event.commodity);
+            Cargo cargo = GetCargoWithInvariantName(@event.commodity);
             if (cargo != null)
             {
                 cargo.other += @event.amount;
@@ -374,7 +379,7 @@ namespace EddiCargoMonitor
 
         private void handlePowerCommodityDeliveredEvent(PowerCommodityDeliveredEvent @event)
         {
-            Cargo cargo = GetCargo(@event.commodity);
+            Cargo cargo = GetCargoWithInvariantName(@event.commodity);
             if (cargo != null)
             {
                 cargo.other -= @event.amount;
@@ -382,7 +387,7 @@ namespace EddiCargoMonitor
 
                 if (cargo.total < 1)
                 {
-                    RemoveCargo(cargo.name);
+                    RemoveCargoWithInvariantName(cargo.invariantName);
                 }
             }
             writeInventory();
@@ -390,7 +395,7 @@ namespace EddiCargoMonitor
 
         private void handleLimpetPurchasedEvent(LimpetPurchasedEvent @event)
         {
-            Cargo cargo = GetCargo("Limpet");
+            Cargo cargo = GetCargoWithInvariantName("Limpet");
             if (cargo != null)
             {
                 cargo.other += @event.amount;
@@ -409,7 +414,7 @@ namespace EddiCargoMonitor
 
         private void handleLimpetSoldEvent(LimpetSoldEvent @event)
         {
-            Cargo cargo = GetCargo("Limpet");
+            Cargo cargo = GetCargoWithInvariantName("Limpet");
             if (cargo != null)
             {
                 cargo.other -= @event.amount;
@@ -417,7 +422,7 @@ namespace EddiCargoMonitor
 
                 if (cargo.total < 1)
                 {
-                    RemoveCargo(cargo.name);
+                    RemoveCargoWithInvariantName(cargo.invariantName);
                 }
             }
             writeInventory();
@@ -425,7 +430,7 @@ namespace EddiCargoMonitor
 
         private void handleLimpetLaunchedEvent(LimpetLaunchedEvent @event)
         {
-            Cargo cargo = GetCargo("Limpet");
+            Cargo cargo = GetCargoWithInvariantName("Limpet");
             if (cargo != null)
             {
                 cargo.other --;
@@ -433,7 +438,7 @@ namespace EddiCargoMonitor
 
                 if (cargo.total < 1)
                 {
-                    RemoveCargo(cargo.name);
+                    RemoveCargoWithInvariantName(cargo.invariantName);
                 }
             }
             writeInventory();
@@ -463,7 +468,7 @@ namespace EddiCargoMonitor
             {
                 HaulageAmount haulageAmount = new HaulageAmount(@event.missionid ?? 0, @event.amount ?? 0);
 
-                Cargo cargo = GetCargo(@event.commodity);
+                Cargo cargo = GetCargoWithInvariantName(@event.commodity);
                 if (cargo != null)
                 {
                     cargo.haulage += @event.amount ?? 0;
@@ -485,7 +490,7 @@ namespace EddiCargoMonitor
 
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
-            Cargo cargo = GetCargo(@event.commodity);
+            Cargo cargo = GetCargoWithInvariantName(@event.commodity);
             if (cargo != null)
             {
                 cargo.haulage -= @event.amount ?? 0;
@@ -498,13 +503,13 @@ namespace EddiCargoMonitor
                 cargo.total -= @event.amount ?? 0;
                 if (cargo.total < 1)
                 {
-                    RemoveCargo(cargo.name);
+                    RemoveCargoWithInvariantName(cargo.invariantName);
                 }
             }
 
             foreach (CommodityAmount commodityReward in @event.commodityrewards)
             {
-                Cargo cargoReward = GetCargo(commodityReward.commodity);
+                Cargo cargoReward = GetCargoWithInvariantName(commodityReward.commodity);
                 if (cargoReward != null)
                 {
                     cargoReward.other += commodityReward.amount;
@@ -544,7 +549,7 @@ namespace EddiCargoMonitor
         {
             if (@event.synthesis.Contains("Limpet"))
             {
-                Cargo cargo = GetCargo("Limpet");
+                Cargo cargo = GetCargoWithInvariantName("Limpet");
                 if (cargo != null)
                 {
                     cargo.other += 4;
@@ -567,7 +572,7 @@ namespace EddiCargoMonitor
         {
             foreach (CommodityAmount commodityAmount in @event.commodities)
             {
-                Cargo cargo = GetCargo(commodityAmount.commodity);
+                Cargo cargo = GetCargoWithInvariantName(commodityAmount.commodity);
                 if (cargo != null)
                 {
                     cargo.other -= commodityAmount.amount;
@@ -630,7 +635,7 @@ namespace EddiCargoMonitor
                 }
 
                 // Now order the list by name
-                newInventory = newInventory.OrderBy(c => c.name).ToList();
+                newInventory = newInventory.OrderBy(c => c.invariantName).ToList();
 
                 // Update the inventory 
                 inventory.Clear();
@@ -655,15 +660,15 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        private void RemoveCargo(string commodityName)
+        private void RemoveCargoWithInvariantName(string invariantCommodityName)
         {
             lock (inventoryLock)
             {
-                if (commodityName != null)
+                if (invariantCommodityName != null)
                 {
                     for (int i = 0; i < inventory.Count; i++)
                     {
-                        if (inventory[i].name == commodityName)
+                        if (inventory[i].invariantName == invariantCommodityName)
                         {
                             inventory.RemoveAt(i);
                             break;
@@ -674,16 +679,16 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        public Cargo GetCargo(string commodityName)
+        public Cargo GetCargoWithInvariantName(string invariantCommodityName)
         {
-            if (commodityName == null)
+            if (invariantCommodityName == null)
             {
                 return null;
             }
-            return inventory.FirstOrDefault(c => c.name == commodityName);
+            return inventory.FirstOrDefault(c => c.invariantName == invariantCommodityName);
         }
 
-        public int GetCargoCarried()
+        public int GetCargoWithInvariantNameCarried()
         {
             return cargocarried;
         }

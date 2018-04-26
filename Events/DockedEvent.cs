@@ -50,7 +50,7 @@ namespace EddiEvents
 
         public List<string> stationservices { get; private set; }
 
-        public DockedEvent(DateTime timestamp, string system, string station, string state, string model, Superpower allegiance, string faction, State factionstate, Economy economy, Government government, decimal? distancefromstar, List<string> stationservices) : base(timestamp, NAME)
+        public DockedEvent(DateTime timestamp, string system, string station, string state, string model, Superpower allegiance, string faction, SystemState factionstate, Economy economy, Government government, decimal? distancefromstar, List<string> stationservices) : base(timestamp, NAME)
         {
             this.system = system;
             this.station = station;
@@ -58,9 +58,9 @@ namespace EddiEvents
             this.model = model;
             this.allegiance = allegiance;
             this.faction = faction;
-            this.factionstate = (factionstate == null ? State.None.name : factionstate.name);
-            this.economy = (economy == null ? Economy.None.name : economy.name);
-            this.government = (government == null ? Government.None.name : government.name);
+            this.factionstate = (factionstate == null ? SystemState.None.localizedName : factionstate.localizedName);
+            this.economy = (economy ?? Economy.None).localizedName;
+            this.government = (government ?? Government.None).localizedName;
             this.distancefromstar = distancefromstar;
             this.stationservices = stationservices;
         }

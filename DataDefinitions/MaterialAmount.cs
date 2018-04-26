@@ -116,36 +116,36 @@ namespace EddiDataDefinitions
 
         public MaterialAmount(Material material, int amount)
         {
-            Material My_material = Material.FromEDName(material.EDName);
-            this.material = My_material.name;
-            this.edname = My_material.EDName;
+            Material My_material = Material.FromEDName(material.edname);
+            this.material = My_material.invariantName;
+            this.edname = My_material.edname;
             this.amount = amount;
-            this.Category = My_material.category;
+            this.Category = My_material.category.localizedName;
         }
 
         public MaterialAmount(Material material, int amount, int? minimum, int? desired, int? maximum)
         {
-            Material My_material = Material.FromEDName(material.EDName);
-            this.material = My_material.name;
-            this.edname = My_material.EDName;
+            Material My_material = Material.FromEDName(material.edname);
+            this.material = My_material.localizedName;
+            this.edname = My_material.edname;
             this.amount = amount;
             this.minimum = minimum;
             this.desired = desired;
             this.maximum = maximum;
-            this.Category = My_material.category;
+            this.Category = My_material.category.localizedName;
         }
 
         [JsonConstructor]
-        public MaterialAmount(string material, int amount, int? minimum, int? desired, int? maximum)
+        public MaterialAmount(string edname, string material, int amount, int? minimum, int? desired, int? maximum)
         {
-            Material My_material = Material.FromName(material);
-            this.material = material;
-            this.edname = My_material.EDName;
+            Material My_material = Material.FromEDName(edname);
+            this.material = My_material.localizedName;
+            this.edname = My_material.edname;
             this.amount = amount;
             this.minimum = minimum;
             this.desired = desired;
             this.maximum = maximum;
-            this.Category = My_material.category;
+            this.Category = My_material.category.localizedName;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

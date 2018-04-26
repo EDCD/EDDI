@@ -33,7 +33,7 @@ namespace EddiEvents
         {
             this.commanders = commanders;
             this.ships = ships;
-            this.ratings = ratings.ConvertAll(x => x.name);
+            this.ratings = ratings.ConvertAll(x => x.localizedName);
         }
     }
 }

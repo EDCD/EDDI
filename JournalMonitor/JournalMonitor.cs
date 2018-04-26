@@ -94,7 +94,7 @@ namespace EddiJournalMonitor
                                 string stationModel = JsonParsing.getString(data, "StationType");
                                 Superpower allegiance = getAllegiance(data, "StationAllegiance");
                                 string faction = getFaction(data, "StationFaction");
-                                State factionState = State.FromEDName(JsonParsing.getString(data, "FactionState"));
+                                SystemState factionState = SystemState.FromEDName(JsonParsing.getString(data, "FactionState"));
                                 Economy economy = Economy.FromEDName(JsonParsing.getString(data, "StationEconomy"));
                                 Government government = Government.FromEDName(JsonParsing.getString(data, "StationGovernment"));
                                 decimal? distancefromstar = JsonParsing.getOptionalDecimal(data, "DistFromStarLS");
@@ -165,7 +165,7 @@ namespace EddiJournalMonitor
                                 decimal distance = JsonParsing.getDecimal(data, "JumpDist");
                                 Superpower allegiance = getAllegiance(data, "SystemAllegiance");
                                 string faction = getFaction(data, "SystemFaction");
-                                State factionState = State.FromEDName(JsonParsing.getString(data, "FactionState"));
+                                SystemState factionState = SystemState.FromEDName(JsonParsing.getString(data, "FactionState"));
                                 Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
                                 Government government = Government.FromEDName(JsonParsing.getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity"));
@@ -367,7 +367,7 @@ namespace EddiJournalMonitor
                         case "CollectCargo":
                             {
                                 string commodityName = JsonParsing.getString(data, "Type");
-                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map collectcargo type " + commodityName + " to commodity");
@@ -382,7 +382,7 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 string commodityName = JsonParsing.getString(data, "Type");
-                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map ejectcargo type " + commodityName + " to commodity");
@@ -461,7 +461,7 @@ namespace EddiJournalMonitor
                                                 hardpoint.size = 4;
                                             }
 
-                                            Module module = ModuleDefinitions.fromEDName(item);
+                                            Module module = Module.FromEDName(item);
                                             if (module == null)
                                             {
                                                 Logging.Info("Unknown module " + item);
@@ -520,7 +520,7 @@ namespace EddiJournalMonitor
                                         {
                                             // This is a compartment
                                             Compartment compartment = new Compartment() { name = slot };
-                                            Module module = ModuleDefinitions.fromEDName(item);
+                                            Module module = Module.FromEDName(item);
                                             if (module == null)
                                             {
                                                 Logging.Info("Unknown module " + item);
@@ -590,7 +590,7 @@ namespace EddiJournalMonitor
                                 {
                                     foreach (Compartment compartment in ship.compartments)
                                     {
-                                        if ((compartment.module.name == "Detailed Surface Scanner") && (compartment.module.enabled))
+                                        if ((compartment.module.basename == "DetailedSurfaceScanner") && (compartment.module.enabled))
                                         {
                                             dssEquipped = true;
                                         }
@@ -606,7 +606,7 @@ namespace EddiJournalMonitor
                                     foreach (Dictionary<string, object> ringData in ringsData)
                                     {
                                         string ringName = JsonParsing.getString(ringData, "Name");
-                                        string ringComposition = Composition.FromEDName(JsonParsing.getString(ringData, "RingClass")).name;
+                                        string ringComposition = Composition.FromEDName(JsonParsing.getString(ringData, "RingClass")).localizedName;
                                         decimal ringMass = JsonParsing.getDecimal(ringData, "MassMT");
                                         decimal ringInnerRadius = JsonParsing.getDecimal(ringData, "InnerRad");
                                         decimal ringOuterRadius = JsonParsing.getDecimal(ringData, "OuterRad");
@@ -814,7 +814,7 @@ namespace EddiJournalMonitor
                                 {
                                     Dictionary<string, object> itemProperties = (Dictionary<string, object>)item;
                                     string moduleEdName = JsonParsing.getString(itemProperties, "Name");
-                                    Module module = ModuleDefinitions.fromEDName(moduleEdName);
+                                    Module module = Module.FromEDName(moduleEdName);
                                     if (module == null)
                                     {
                                         // Unknown module
@@ -830,7 +830,7 @@ namespace EddiJournalMonitor
                                 foreach (Dictionary<string, object> _commodity in commodities)
                                 {
                                     string commodityEdName = JsonParsing.getString(_commodity, "Name");
-                                    Commodity commodity = CommodityDefinitions.FromName(commodityEdName);
+                                    CommodityDefinition commodity = CommodityDefinition.FromName(commodityEdName);
                                     int count = JsonParsing.getInt(_commodity, "Count");
                                     if (commodity == null)
                                     {
@@ -848,15 +848,6 @@ namespace EddiJournalMonitor
                                     string materialEdName = JsonParsing.getString(_material, "Name");
                                     Material material = Material.FromEDName(materialEdName);
                                     int count = JsonParsing.getInt(_material, "Count");
-                                    if (material == null)
-                                    {
-                                        Logging.Info("Unknown material " + materialEdName);
-                                        Logging.Report("Unknown material " + materialEdName, JsonConvert.SerializeObject(_material));
-                                    }
-                                    else
-                                    {
-                                        material.category = Material.TidiedCategory(JsonParsing.getString(_material, "Category"));
-                                    }
                                     Materials.Add(new MaterialAmount(material, count));
                                 }
 
@@ -902,7 +893,7 @@ namespace EddiJournalMonitor
                                 int shipId = (int)(long)val;
                                 string ship = JsonParsing.getString(data, "Ship");
 
-                                Module module = ModuleDefinitions.fromEDName(JsonParsing.getString(data, "StoredItem"));
+                                Module module = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
                                 data.TryGetValue("TransferCost", out val);
                                 long transferCost = (long)val;
                                 long? transferTime = JsonParsing.getOptionalLong(data, "TransferTime");
@@ -955,7 +946,7 @@ namespace EddiJournalMonitor
                                         string slot = JsonParsing.getString(item, "Slot");
                                         slots.Add(slot);
 
-                                        module = ModuleDefinitions.fromEDName(JsonParsing.getString(item, "Name"));
+                                        module = Module.FromEDName(JsonParsing.getString(item, "Name"));
                                         module.modified = JsonParsing.getString(item, "EngineerModifications") != null;
                                         modules.Add(module);
                                     }
@@ -973,7 +964,7 @@ namespace EddiJournalMonitor
                                 int shipId = (int)(long)val;
                                 string ship = JsonParsing.getString(data, "Ship");
 
-                                Module module = ModuleDefinitions.fromEDName(JsonParsing.getString(data, "StoredItem"));
+                                Module module = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
                                 data.TryGetValue("TransferCost", out val);
                                 long transferCost = (long)val;
                                 long? transferTime = JsonParsing.getOptionalLong(data, "TransferTime");
@@ -1000,7 +991,7 @@ namespace EddiJournalMonitor
                                 string ship = JsonParsing.getString(data, "Ship");
 
                                 string slot = JsonParsing.getString(data, "Slot");
-                                Module buyModule = ModuleDefinitions.fromEDName(JsonParsing.getString(data, "BuyItem"));
+                                Module buyModule = Module.FromEDName(JsonParsing.getString(data, "BuyItem"));
                                 data.TryGetValue("BuyPrice", out val);
                                 long buyPrice = (long)val;
                                 buyModule.price = buyPrice;
@@ -1011,9 +1002,9 @@ namespace EddiJournalMonitor
                                 buyModule.health = 100;
                                 buyModule.modified = false;
 
-                                Module sellModule = ModuleDefinitions.fromEDName(JsonParsing.getString(data, "SellItem"));
+                                Module sellModule = Module.FromEDName(JsonParsing.getString(data, "SellItem"));
                                 long? sellPrice = JsonParsing.getOptionalLong(data, "SellPrice");
-                                Module storedModule = ModuleDefinitions.fromEDName(JsonParsing.getString(data, "StoredItem"));
+                                Module storedModule = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
 
                                 events.Add(new ModulePurchasedEvent(timestamp, ship, shipId, slot, buyModule, buyPrice, sellModule, sellPrice, storedModule) { raw = line });
                             }
@@ -1028,7 +1019,7 @@ namespace EddiJournalMonitor
                                 string ship = JsonParsing.getString(data, "Ship");
 
                                 string slot = JsonParsing.getString(data, "Slot");
-                                Module module = ModuleDefinitions.fromEDName(JsonParsing.getString(data, "RetrievedItem"));
+                                Module module = Module.FromEDName(JsonParsing.getString(data, "RetrievedItem"));
                                 data.TryGetValue("Cost", out val);
                                 long? cost = JsonParsing.getOptionalLong(data, "Cost");
                                 string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
@@ -1040,7 +1031,7 @@ namespace EddiJournalMonitor
                                 module.priority = 1;
                                 module.health = 100;
 
-                                Module swapoutModule = ModuleDefinitions.fromEDName(JsonParsing.getString(data, "SwapOutItem"));
+                                Module swapoutModule = Module.FromEDName(JsonParsing.getString(data, "SwapOutItem"));
 
                                 events.Add(new ModuleRetrievedEvent(timestamp, ship, shipId, slot, module, cost, engineerModifications, swapoutModule) { raw = line });
                             }
@@ -1055,7 +1046,7 @@ namespace EddiJournalMonitor
                                 string ship = JsonParsing.getString(data, "Ship");
 
                                 string slot = JsonParsing.getString(data, "Slot");
-                                Module module = ModuleDefinitions.fromEDName(JsonParsing.getString(data, "SellItem"));
+                                Module module = Module.FromEDName(JsonParsing.getString(data, "SellItem"));
                                 data.TryGetValue("SellPrice", out val);
                                 long price = (long)val;
 
@@ -1072,7 +1063,7 @@ namespace EddiJournalMonitor
                                 int shipId = (int)(long)val;
                                 string ship = JsonParsing.getString(data, "Ship");
 
-                                Module module = ModuleDefinitions.fromEDName(JsonParsing.getString(data, "SellItem"));
+                                Module module = Module.FromEDName(JsonParsing.getString(data, "SellItem"));
                                 data.TryGetValue("SellPrice", out val);
                                 long price = (long)val;
 
@@ -1095,14 +1086,14 @@ namespace EddiJournalMonitor
                                 string ship = JsonParsing.getString(data, "Ship");
 
                                 string slot = JsonParsing.getString(data, "Slot");
-                                Module module = ModuleDefinitions.fromEDName(JsonParsing.getString(data, "StoredItem"));
+                                Module module = Module.FromEDName(JsonParsing.getString(data, "StoredItem"));
                                 string engineerModifications = JsonParsing.getString(data, "EngineerModifications");
                                 module.modified = engineerModifications != null;
                                 data.TryGetValue("Cost", out val);
                                 long? cost = JsonParsing.getOptionalLong(data, "Cost");
 
 
-                                Module replacementModule = ModuleDefinitions.fromEDName(JsonParsing.getString(data, "ReplacementItem"));
+                                Module replacementModule = Module.FromEDName(JsonParsing.getString(data, "ReplacementItem"));
                                 if (replacementModule != null)
                                 {
                                     replacementModule.price = replacementModule.value;
@@ -1125,9 +1116,9 @@ namespace EddiJournalMonitor
                                 string ship = JsonParsing.getString(data, "Ship");
 
                                 string fromSlot = JsonParsing.getString(data, "FromSlot");
-                                Module fromModule = ModuleDefinitions.fromEDName(JsonParsing.getString(data, "FromItem"));
+                                Module fromModule = Module.FromEDName(JsonParsing.getString(data, "FromItem"));
                                 string toSlot = JsonParsing.getString(data, "ToSlot");
-                                Module toModule = ModuleDefinitions.fromEDName(JsonParsing.getString(data, "ToItem"));
+                                Module toModule = Module.FromEDName(JsonParsing.getString(data, "ToItem"));
 
                                 events.Add(new ModuleSwappedEvent(timestamp, ship, shipId, fromSlot, fromModule, toSlot, toModule) { raw = line });
                             }
@@ -1303,7 +1294,6 @@ namespace EddiJournalMonitor
 
                                 string materialEdName = JsonParsing.getString(paid, "Material");
                                 Material materialPaid = Material.FromEDName(materialEdName);
-                                materialPaid.category = Material.TidiedCategory(JsonParsing.getString(paid, "Category"));
                                 int materialPaidQty = JsonParsing.getInt(paid, "Quantity");
 
                                 if (materialPaid == null)
@@ -1316,7 +1306,6 @@ namespace EddiJournalMonitor
                                 Dictionary<string, object> received = (Dictionary<string, object>)val;
 
                                 Material materialReceived = Material.FromEDName(JsonParsing.getString(received, "Material"));
-                                materialReceived.category = Material.TidiedCategory(JsonParsing.getString(received, "Category"));
                                 int materialReceivedQty = JsonParsing.getInt(received, "Quantity");
 
                                 if (materialReceived == null)
@@ -1481,7 +1470,7 @@ namespace EddiJournalMonitor
                             {
                                 string commodityName = JsonParsing.getString(data, "Type");
 
-                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map commodityrefined type " + commodityName + " to commodity");
@@ -1630,7 +1619,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("MarketID", out val);
                                 long marketid = (long)val;
                                 string commodityName = JsonParsing.getString(data, "Type");
-                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map marketbuy type " + commodityName + " to commodity");
@@ -1649,7 +1638,7 @@ namespace EddiJournalMonitor
                                 data.TryGetValue("MarketID", out val);
                                 long marketid = (long)val;
                                 string commodityName = JsonParsing.getString(data, "Type");
-                                Commodity commodity = CommodityDefinitions.FromName(commodityName);
+                                CommodityDefinition commodity = CommodityDefinition.FromName(commodityName);
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map marketsell type " + commodityName + " to commodity");
@@ -1691,7 +1680,7 @@ namespace EddiJournalMonitor
                                         foreach (KeyValuePair<string, object> used in usedData)
                                         {
                                             // Used could be a material or a commodity
-                                            Commodity commodity = CommodityDefinitions.FromName(used.Key);
+                                            CommodityDefinition commodity = CommodityDefinition.FromName(used.Key);
                                             if (commodity.category != null)
                                             {
                                                 // This is a real commodity
@@ -2090,30 +2079,18 @@ namespace EddiJournalMonitor
                         case "JetConeDamage":
                             {
                                 string modulename = JsonParsing.getString(data, "Module");
-                                Module module = ModuleDefinitions.fromEDName(modulename);
+                                Module module = Module.FromEDName(modulename);
                                 if (module != null)
                                 {
                                     if (module.mount != null)
                                     {
                                         // This is a weapon so provide a bit more information
-                                        string mount;
-                                        if (module.mount == Module.ModuleMount.Fixed)
-                                        {
-                                            mount = "fixed";
-                                        }
-                                        else if (module.mount == Module.ModuleMount.Gimballed)
-                                        {
-                                            mount = "gimballed";
-                                        }
-                                        else
-                                        {
-                                            mount = "turreted";
-                                        }
-                                        modulename = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.name;
+                                        string mount = module.LocalizedMountName();
+                                        modulename = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.localizedName;
                                     }
                                     else
                                     {
-                                        modulename = module.name;
+                                        modulename = module.localizedName;
                                     }
                                 }
 
@@ -2273,7 +2250,7 @@ namespace EddiJournalMonitor
                                 string destinationstation = JsonParsing.getString(data, "DestinationStation");
 
                                 // Missions with commodities
-                                Commodity commodity = CommodityDefinitions.FromName(JsonParsing.getString(data, "Commodity"));
+                                CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Commodity"));
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
 
@@ -2317,7 +2294,7 @@ namespace EddiJournalMonitor
                                 string faction = getFaction(data, "Faction");
 
                                 // Missions with commodities
-                                Commodity commodity = CommodityDefinitions.FromName(JsonParsing.getString(data, "Commodity"));
+                                CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Commodity"));
                                 data.TryGetValue("Count", out val);
                                 int? amount = (int?)(long?)val;
 
@@ -2328,7 +2305,7 @@ namespace EddiJournalMonitor
                                 {
                                     foreach (Dictionary<string, object> commodityRewardData in commodityRewardsData)
                                     {
-                                        Commodity rewardCommodity = CommodityDefinitions.FromName(JsonParsing.getString(commodityRewardData, "Name"));
+                                        CommodityDefinition rewardCommodity = CommodityDefinition.FromName(JsonParsing.getString(commodityRewardData, "Name"));
                                         commodityRewardData.TryGetValue("Count", out val);
                                         int count = (int)(long)val;
                                         commodityrewards.Add(new CommodityAmount(rewardCommodity, count));
@@ -2377,7 +2354,7 @@ namespace EddiJournalMonitor
                             {
                                 object val;
                                 string commodityName = JsonParsing.getString(data, "Name");
-                                Commodity commodity = CommodityDefinitions.FromName(JsonParsing.getString(data, "Name"));
+                                CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Name"));
                                 if (commodity == null)
                                 {
                                     Logging.Error("Failed to map SearchAndRescue commodity type " + commodityName + " to commodity");
@@ -2394,7 +2371,7 @@ namespace EddiJournalMonitor
                             {
                                 string item = JsonParsing.getString(data, "Module");
                                 // Item might be a module
-                                Module module = ModuleDefinitions.fromEDName(item);
+                                Module module = Module.FromEDName(item);
                                 if (module != null)
                                 {
                                     if (module.mount != null)
@@ -2413,11 +2390,11 @@ namespace EddiJournalMonitor
                                         {
                                             mount = "turreted";
                                         }
-                                        item = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.name;
+                                        item = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.localizedName;
                                     }
                                     else
                                     {
-                                        item = module.name;
+                                        item = module.localizedName;
                                     }
                                 }
 
@@ -2433,7 +2410,7 @@ namespace EddiJournalMonitor
                                 object val;
                                 string item = JsonParsing.getString(data, "Item");
                                 // Item might be a module
-                                Module module = ModuleDefinitions.fromEDName(item);
+                                Module module = Module.FromEDName(item);
                                 if (module != null)
                                 {
                                     if (module.mount != null)
@@ -2452,11 +2429,11 @@ namespace EddiJournalMonitor
                                         {
                                             mount = "turreted";
                                         }
-                                        item = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.name;
+                                        item = "" + module.@class.ToString() + module.grade + " " + mount + " " + module.localizedName;
                                     }
                                     else
                                     {
-                                        item = module.name;
+                                        item = module.localizedName;
                                     }
                                 }
                                 data.TryGetValue("Cost", out val);
@@ -2547,7 +2524,6 @@ namespace EddiJournalMonitor
                                     foreach (Dictionary<string, object> materialJson in materialsJson)
                                     {
                                         Material material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
-                                        material.category = "Element";
                                         materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                     }
                                 }
@@ -2559,7 +2535,6 @@ namespace EddiJournalMonitor
                                     foreach (Dictionary<string, object> materialJson in materialsJson)
                                     {
                                         Material material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
-                                        material.category = "Manufactured";
                                         materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                     }
                                 }
@@ -2571,7 +2546,6 @@ namespace EddiJournalMonitor
                                     foreach (Dictionary<string, object> materialJson in materialsJson)
                                     {
                                         Material material = Material.FromEDName(JsonParsing.getString(materialJson, "Name"));
-                                        material.category = "Data";
                                         materials.Add(new MaterialAmount(material, (int)(long)materialJson["Count"]));
                                     }
                                 }
@@ -2591,9 +2565,9 @@ namespace EddiJournalMonitor
                                     List<object> inventoryJson = (List<object>)val;
                                     foreach (Dictionary<string, object> cargoJson in inventoryJson)
                                     {
-                                        string commodityName = JsonParsing.getString(cargoJson, "Name");
+                                        string name = JsonParsing.getString(cargoJson, "Name");
                                         int amount = JsonParsing.getInt(cargoJson, "Count");
-                                        Cargo cargo = new Cargo(commodityName, amount);
+                                        Cargo cargo = new Cargo(name, amount);
                                         cargo.haulage = 0;
                                         cargo.stolen = JsonParsing.getInt(cargoJson, "Stolen");
                                         cargo.other = amount - cargo.stolen;
@@ -2874,6 +2848,11 @@ namespace EddiJournalMonitor
             return "Journal monitor";
         }
 
+        public string LocalizedMonitorName()
+        {
+            return EddiJournalMonitor.Properties.Resources.name;
+        }
+
         public string MonitorVersion()
         {
             return "1.0.0";
@@ -2881,7 +2860,7 @@ namespace EddiJournalMonitor
 
         public string MonitorDescription()
         {
-            return "Monitor Elite: Dangerous' journal.log for many common events.  This should not be disabled unless you are sure you know what you are doing, as it will result in many functions inside EDDI no longer working";
+            return EddiJournalMonitor.Properties.Resources.desc;
         }
 
         public bool IsRequired()
@@ -2962,7 +2941,7 @@ namespace EddiJournalMonitor
             string faction = JsonParsing.getString(data, key);
             // Might be a superpower...
             Superpower superpowerFaction = Superpower.From(faction);
-            return superpowerFaction != null ? superpowerFaction.name : faction;
+            return superpowerFaction?.invariantName ?? faction;
         }
 
         private static string getRole(IDictionary<string, object> data, string key)

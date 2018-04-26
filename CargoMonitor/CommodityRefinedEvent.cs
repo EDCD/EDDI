@@ -24,9 +24,9 @@ namespace EddiCargoMonitor
         [JsonProperty("commodity")]
         public string commodity { get; private set; }
 
-        public CommodityRefinedEvent(DateTime timestamp, Commodity commodity) : base(timestamp, NAME)
+        public CommodityRefinedEvent(DateTime timestamp, CommodityDefinition commodity) : base(timestamp, NAME)
         {
-            this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
+            this.commodity = commodity?.localizedName ?? "unknown commodity";
         }
     }
 }

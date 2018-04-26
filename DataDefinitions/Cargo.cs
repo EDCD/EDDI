@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace EddiDataDefinitions
 {
@@ -9,31 +12,27 @@ namespace EddiDataDefinitions
     public class Cargo : INotifyPropertyChanged
     {
         // The commodity name
-        private string _name;
-        public string name
+        [JsonIgnore]
+        public string invariantName => commodityDef?.invariantName ?? "";
+        [JsonIgnore]
+        public string localizedName => commodityDef?.localizedName ?? "";
+
+        public string edname
         {
-            get
-            {
-                return _name;
-            }
+            get => commodityDef.edname;
             set
             {
-                if (_name != value)
-                {
-                    _name = value;
-                    NotifyPropertyChanged("name");
-                }
+                CommodityDefinition cDef = CommodityDefinition.FromEDName(value);
+                this.commodityDef = cDef;
             }
         }
 
         // The number of stolen items
+        [JsonIgnore]
         private int _stolen;
         public int stolen
         {
-            get
-            {
-                return _stolen;
-            }
+            get => _stolen;
             set
             {
                 if (_stolen != value)
@@ -45,13 +44,11 @@ namespace EddiDataDefinitions
         }
 
         // The number of items related to a mission
+        [JsonIgnore]
         private int _haulage;
         public int haulage
         {
-            get
-            {
-                return _haulage;
-            }
+            get => _haulage;
             set
             {
                 if (_haulage != value)
@@ -63,13 +60,11 @@ namespace EddiDataDefinitions
         }
 
         // The number of collected/purchased items
+        [JsonIgnore]
         private int _other;
         public int other
         {
-            get
-            {
-                return _other;
-            }
+            get => _other;
             set
             {
                 if (_other != value)
@@ -89,26 +84,48 @@ namespace EddiDataDefinitions
         // How much we actually paid for it (per unit)
         public int price { get; set; }
 
-        // The commodity catagory
-        public string category { get; set; }
+        // The commodity category
+        [JsonIgnore]
+        public string localizedCategory => commodityDef?.category?.localizedName ?? null;
 
-        public Commodity commodity { get; set; }
+        [JsonIgnore]
+        private CommodityDefinition _commodityDef;
+        [JsonIgnore]
+        public CommodityDefinition commodityDef
+        {
+            get => _commodityDef;
+            set
+            {
+                _commodityDef = value;
+                NotifyPropertyChanged("invariantName");
+                NotifyPropertyChanged("localizedName");
+                NotifyPropertyChanged("localizedCategory");
+            }
+        }
 
         public List<HaulageAmount> haulageamounts { get; set; }
 
-        public Cargo()
+        [JsonExtensionData]
+        private IDictionary<string, JToken> _additionalJsonData;
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
         {
-            Commodity commodity = new Commodity();
-            haulageamounts = new List<HaulageAmount>();
+            if (commodityDef == null)
+            {
+                // legacy JSON with no edname in the top level
+                string edname = (string)_additionalJsonData["commodity"]["EDName"];
+                commodityDef = CommodityDefinition.FromEDName(edname);
+            }
+
+            _additionalJsonData = null;
         }
 
-        public Cargo(string name, int total, int? price = null)
+        [JsonConstructor]
+        public Cargo(string edname, int total, int? price = null)
         {
-            Commodity commodity = CommodityDefinitions.FromName(name);
-            this.name = commodity.name;
-            this.commodity = commodity;
-            this.category = commodity.category;
-            this.price = (price != null ? price ?? 0 : commodity.avgprice ?? 0);
+            this.commodityDef = CommodityDefinition.FromEDName(edname);
+            this.price = price ?? commodityDef.avgprice;
             this.total = total;
             this.ejected = 0;
             haulageamounts = new List<HaulageAmount>();

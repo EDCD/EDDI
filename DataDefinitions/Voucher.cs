@@ -1,64 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Utilities;
-
+﻿
 namespace EddiDataDefinitions
 {
     /// <summary>
     /// Vouchers
     /// </summary>
-    public class Voucher
+    public class Voucher : ResourceBasedLocalizedEDName<Voucher>
     {
-        private static readonly List<Voucher> VOUCHERS = new List<Voucher>();
-
-        public string name { get; private set; }
-
-        public string edname { get; private set; }
-
-        private Voucher(string edname, string name)
+        static Voucher()
         {
-            this.edname = edname;
-            this.name = name;
+            resourceManager = Properties.Vouchers.ResourceManager;
+            resourceManager.IgnoreCase = false;
+            missingEDNameHandler = (edname) => new Voucher(edname);
 
-            VOUCHERS.Add(this);
+            var Bounty = new Voucher("bounty");
+            var Bond = new Voucher("CombatBond");
+            var Scannable = new Voucher("scannable");
+            var Settlement = new Voucher("settlement");
+            var Trade = new Voucher("trade");
         }
 
-        public static readonly Voucher Bounty = new Voucher("bounty", "Bounty");
-        public static readonly Voucher Bond = new Voucher("CombatBond", "Combat Bond");
-        public static readonly Voucher Scannable = new Voucher("scannable", "Scannable");
-        public static readonly Voucher Settlement = new Voucher("settlement", "Settlement");
-        public static readonly Voucher Trade = new Voucher("trade", "Trade");
 
-        public static Voucher FromName(string from)
-        {
-            if (from == null)
-            {
-                return null;
-            }
+        // dummy used to ensure that the static constructor has run
+        public Voucher() : this("")
+        { }
 
-            Voucher result = VOUCHERS.FirstOrDefault(v => v.name == from);
-            if (result == null)
-            {
-                Logging.Report("Unknown Voucher name " + from);
-            }
-            return result;
-        }
-
-        public static Voucher FromEDName(string from)
-        {
-            if (from == null)
-            {
-                return null;
-            }
-
-            string tidiedFrom = from.ToLowerInvariant();
-            Voucher result = VOUCHERS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
-            if (result == null)
-            {
-                Logging.Report("Unknown Voucher ED name " + from);
-                result = new Voucher(from, tidiedFrom);
-            }
-            return result;
-        }
+        private Voucher(string edname) : base(edname, edname)
+        {}
     }
 }

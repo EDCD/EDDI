@@ -8,6 +8,7 @@
         xmlns:eddi="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
         xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
         xmlns:local="clr-namespace:Eddi"
+        xmlns:resx="clr-namespace:Eddi.Properties"
         mc:Ignorable="d"
         Title="EDDI" Height="{Binding ElementName=defaultHeight, Path=Value}"  Width="{Binding ElementName=defaultWidth, Path=Value}">
     <DockPanel LastChildFill="True">
@@ -15,32 +16,36 @@
             <TabItem Header="EDDI">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <DockPanel LastChildFill="True" Background="#FFE5E5E5" DockPanel.Dock="Bottom" Margin="5">
-                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="EDDI Status: "/>
+                        <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="{x:Static resx:MainWindow.EDDI_status_label}"/>
                         <TextBlock x:Name="versionText" VerticalAlignment="Center" DockPanel.Dock="Right"/>
                         <Label Height="28" Margin="0,0,0,0" Name="Version" DockPanel.Dock="Right" VerticalAlignment="Center">
-                            <Hyperlink Click="ChangeLog_Click">Version:</Hyperlink>
+                            <Hyperlink Click="ChangeLog_Click">
+                                <Run Text="{x:Static resx:MainWindow.version_hyperlink}" />
+                            </Hyperlink>
                         </Label>
-                        <Button x:Name="upgradeButton" VerticalAlignment="Center" DockPanel.Dock="Left" Visibility="Collapsed" Margin="10,0,10,0" Foreground="Orange" Click="upgradeClicked">Upgrade EDDI</Button>
-                        <TextBlock x:Name="statusText" VerticalAlignment="Center" DockPanel.Dock="Left" Text="Operational"/>
+                        <Button x:Name="upgradeButton" VerticalAlignment="Center" DockPanel.Dock="Left" Visibility="Collapsed" Margin="10,0,10,0" Foreground="Orange" Click="upgradeClicked" Content="{x:Static resx:MainWindow.upgrade_button}"></Button>
+                        <TextBlock x:Name="statusText" VerticalAlignment="Center" DockPanel.Dock="Left" Text="{x:Static resx:Resources.operational}"/>
                     </DockPanel>
                     <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
                         <FlowDocument Background="#FFE5E5E5">
                             <Paragraph>
                                 <Hyperlink Click="EDDIClicked">EDDI</Hyperlink>
-                                has a number of features that can be configured separately.  There are three different types of items.
+                                <Run Text="{x:Static resx:MainWindow.paragraph_0}" />
                             </Paragraph>
                             <Paragraph>
-                                The first group obtain and manage the basic information used by EDDI.  These are the 'Commander Details', 'Frontier API' and 'Text-to-Speech' tabs.  You should go through each of these and configure them so that EDDI has full access to your Elite: Dangerous information.
+                                <Run Text="{x:Static resx:MainWindow.paragraph_1}" />
                             </Paragraph>
                             <Paragraph>
-                                The second group obtain event information.  These are the tabs that end in 'monitor'.  They obtain events from different places, and require minimal configuration but need to be completed before they will work.
+                                <Run Text="{x:Static resx:MainWindow.paragraph_2}" />
                             </Paragraph>
                             <Paragraph>
-                                The third group respond to events.  These are the tabs that end in 'responder'.  These come with varying degrees of configuration, but will work out of the box.
+                                <Run Text="{x:Static resx:MainWindow.paragraph_3}" />
                             </Paragraph>
                             <Paragraph>
-                                You can read more about how EDDI functions on the
-                                <Hyperlink Click="WikiClicked">project wiki</Hyperlink>.
+                                <TextBlock Text="{x:Static resx:MainWindow.paragraph_4}" />
+                                <Hyperlink Click="WikiClicked" >
+                                    <Run Text="{x:Static resx:MainWindow.wiki_hyperlink}" />
+                                </Hyperlink>.
                             </Paragraph>
                         </FlowDocument>
                     </RichTextBox>
@@ -54,22 +59,24 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" TextWrapping="Wrap" VerticalAlignment="Top">
-                            <Hyperlink Click="TroubleshootClicked">Troubleshoot</Hyperlink>
-                             common issues
+                            <Hyperlink Click="TroubleshootClicked"><Run Text="{x:Static resx:MainWindow.troubleshoot_common_issues}" /></Hyperlink>
                         </TextBlock>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="Enable verbose logging (only if you have been requested to do so by EDDI developers)" VerticalAlignment="Top"/>
-                        <CheckBox x:Name="eddiVerboseLogging" Grid.Row="1" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
-                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="If verbose logging is enabled, EDDI will prepare a truncated version of your log from the past hour and place it on your desktop. You may paste this log file into the Github Issue report. No personal information is sent in the log."/>
-                        <Button  x:Name="githubIssueButton" Grid.Row="2" Grid.Column="2" Content="Report an Issue" Margin="5" Width="110" Click="createGithubIssueClicked"/>
-                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="Access beta versions of EDDI" VerticalAlignment="Top"/>
-                        <CheckBox x:Name="eddiBetaProgramme" Grid.Row="3" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
+                        <TextBlock x:Name="chooseLanguageText" Grid.Row="1" Grid.Column="0" Margin="5" Text="{x:Static resx:MainWindow.choose_lang_label}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                        <ComboBox x:Name="chooseLanguageDropDown" Grid.Row="1" Grid.Column="1" Margin="5" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.verbose_logging_checkbox}" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="eddiVerboseLogging" Grid.Row="2" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="verboseLoggingEnabled" Unchecked="verboseLoggingDisabled"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.verbose_logging_desc}"/>
+                        <Button  x:Name="githubIssueButton" Grid.Row="3" Grid.Column="2" Content="{x:Static resx:MainWindow.report_issue}" Margin="5" Width="110" Click="createGithubIssueClicked"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.access_beta}" VerticalAlignment="Top"/>
+                        <CheckBox x:Name="eddiBetaProgramme" Grid.Row="4" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
                     </Grid>
-                    <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" FontSize="20" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center" TextAlignment="Center"/>
+                    <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" FontSize="20" FontStyle="Italic" FontWeight="Bold" Text="{x:Static resx:Resources.if_using_va}" VerticalAlignment="Center" TextAlignment="Center"/>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Commander Details">
+            <TabItem Header="{x:Static resx:MainWindow.tab_commander_details_header}">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -89,8 +96,8 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Margin="5" Text="You can provide the name of a particular system you consider home, and also a station inside that system.  If you do then the information about this system and station will be made available to EDDI's responders." VerticalAlignment="Top"/>
-                        <Label x:Name ="eddiHomeSystemLabel" Grid.Row="1" Grid.Column="0" Margin="5,5,30,5" Content="Home system:" />
+                        <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:MainWindow.tab_commander_par1}" VerticalAlignment="Top"/>
+                        <Label x:Name ="eddiHomeSystemLabel" Grid.Row="1" Grid.Column="0" Margin="5,5,30,5" Content="{x:Static resx:MainWindow.tab_commander_home_system}" />
                         <TextBox x:Name ="eddiHomeSystemText" VerticalContentAlignment="Center" TextChanged="homeSystemChanged" Margin="5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan ="6" LostFocus="eddiHomeSystemText_LostFocus">
                             <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="HomeSystem">
                                 <Binding.ValidationRules>
@@ -98,7 +105,7 @@
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox>
-                        <Label x:Name ="eddiHomeStationLabel" Grid.Row="2" Grid.Column="0" Margin="5" Content="Home station:"/>
+                        <Label x:Name ="eddiHomeStationLabel" Grid.Row="2" Grid.Column="0" Margin="5" Content="{x:Static resx:MainWindow.tab_commander_home_station}"/>
                         <TextBox x:Name ="eddiHomeStationText" TextChanged="homeStationChanged" VerticalContentAlignment="Center" Margin="5" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan ="6" LostFocus="eddiHomeStationText_LostFocus">
                             <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="HomeStation">
                                 <Binding.ValidationRules>
@@ -106,19 +113,19 @@
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox>
-                        <TextBlock x:Name ="eddi3Text" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Margin="10,5,5,0" Text="Your insurance excess is the % of your ship's value you have to pay if your ship is destroyed.  This will usually be 5 but could be less if you are an early backer of Elite with alpha backers being 2.5 and beta backers being 3.75.  If you aren't sure then leave it at 5" VerticalAlignment="Top"/>
-                        <Label x:Name ="eddiInsuranceLabel" Grid.Row="4" Grid.Column="0" Margin="5,5,58,5" Content="Insurance excess (%):"/>
+                        <TextBlock x:Name ="eddi3Text" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Margin="10,5,5,0" Text="{x:Static resx:MainWindow.tab_commander_par2}" VerticalAlignment="Top"/>
+                        <Label x:Name ="eddiInsuranceLabel" Grid.Row="4" Grid.Column="0" Margin="5,5,58,5" Content="{x:Static resx:MainWindow.tab_commander_insurance}"/>
                         <TextBox x:Name="eddiInsuranceDecimal" Grid.Row="4" Grid.Column="1" Margin="5,5,65,5" PreviewTextInput="EnsureValidDecimal" TextChanged="insuranceChanged" TextAlignment="Right"/>
-                        <Label x:Name ="eddiGenderLabel" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan ="2" Content="Preferred gender for pronouns and titles:" Margin="5,7,28,-5" Grid.RowSpan="2"/>
-                        <RadioButton x:Name ="eddiGenderMale" Content="Male" HorizontalAlignment="Left" VerticalAlignment="Bottom"  Height="Auto" Grid.Row="5" Checked="isMale_Checked" Margin="62,0,0,43" Grid.Column="1" Grid.ColumnSpan="4" Width="409"/>
-                        <RadioButton x:Name ="eddiGenderFemale" Content="Female" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isFemale_Checked" Margin="62,37,0,19" RenderTransformOrigin="0.456,1" Grid.Column="1" Grid.ColumnSpan="4" Width="409"/>
-                        <RadioButton x:Name ="eddiGenderNeither" Content="Neither" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isNeitherGender_Checked" Margin="62,58,0,0" RenderTransformOrigin="0.456,1" Grid.Column="1" Grid.ColumnSpan="4" Width="409"/>
+                        <Label x:Name ="eddiGenderLabel" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan ="2" Content="{x:Static resx:MainWindow.tab_commander_gender}" Margin="5,7,28,-5" Grid.RowSpan="2"/>
+                        <RadioButton x:Name ="eddiGenderMale" Content="{x:Static resx:MainWindow.tab_commander_gender_m}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isMale_Checked" Margin="62,0,0,43" Grid.Column="1" Grid.ColumnSpan="4" Width="409"/>
+                        <RadioButton x:Name ="eddiGenderFemale" Content="{x:Static resx:MainWindow.tab_commander_gender_f}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isFemale_Checked" Margin="62,28,0,19" RenderTransformOrigin="0.456,1" Grid.Column="1" Grid.ColumnSpan="4" Width="409"/>
+                        <RadioButton x:Name ="eddiGenderNeither" Content="{x:Static resx:MainWindow.tab_commander_gender_n}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isNeitherGender_Checked" Margin="62,58,0,0" RenderTransformOrigin="0.456,1" Grid.Column="1" Grid.ColumnSpan="4" Width="409"/>
                     </Grid>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Frontier API">
+            <TabItem Header="{x:Static resx:MainWindow.tab_frontier_header}">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="Frontier has an API that allows EDDI to obtain information on your ships, the current station's market, and various other items.  This data is not available elsewhere.  If you want EDDI to obtain and use this information you need to enter your Frontier in-game email address and password below." VerticalAlignment="Top"/>
+                    <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:MainWindow.tab_frontier_desc}" VerticalAlignment="Top"/>
                     <Grid DockPanel.Dock="Bottom">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -127,8 +134,8 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock x:Name ="companionAppResetText" Visibility="Visible" Grid.Row="0" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" Text="If you are experiencing problems with your connection you can reset it and log back in again, which can clear the problem"/>
-                        <Button x:Name="companionAppResetButton" Grid.Row="1" Grid.Column="0" Content="Reset" Margin="5" Click="companionAppResetClicked"/>
+                        <TextBlock x:Name ="companionAppResetText" Visibility="Visible" Grid.Row="0" Grid.Column="0" Margin="5" Grid.ColumnSpan="2" Text="{x:Static resx:MainWindow.tab_frontier_reset_desc}"/>
+                        <Button x:Name="companionAppResetButton" Grid.Row="1" Grid.Column="0" Content="{x:Static resx:MainWindow.reset_button}" Margin="5" Click="companionAppResetClicked"/>
                     </Grid>
                     <Grid DockPanel.Dock="Top">
                         <Grid.ColumnDefinitions>
@@ -141,20 +148,20 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock x:Name ="companionAppText" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5"  Text="You do not have a connection to the Frontier app at this time.  Please enter your Elite: Dangerous email address and password below" VerticalAlignment="Top"/>
-                        <Label x:Name ="companionAppEmailLabel" Grid.Row="1" Grid.Column="0" Margin="5" Content="Email:"/>
+                        <TextBlock x:Name ="companionAppText" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:Resources.frontier_api_no_logins}" VerticalAlignment="Top"/>
+                        <Label x:Name ="companionAppEmailLabel" Grid.Row="1" Grid.Column="0" Margin="5" Content="{x:Static resx:MainWindow.label_email}"/>
                         <TextBox x:Name ="companionAppEmailText" Grid.Row="1" Grid.Column="1" Margin="5" />
-                        <Label x:Name ="companionAppPasswordLabel" Grid.Row="2" Grid.Column="0" Margin="5" Content="Password:"/>
+                        <Label x:Name ="companionAppPasswordLabel" Grid.Row="2" Grid.Column="0" Margin="5" Content="{x:Static resx:MainWindow.label_password}"/>
                         <PasswordBox x:Name ="companionAppPasswordText" Grid.Row="2" Grid.Column="1" Margin="5" />
-                        <Button  x:Name="companionAppNextButton" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="Next" Margin="5" Click="companionAppNextClicked"/>
-                        <Label x:Name ="companionAppCodeLabel" Visibility="Hidden" Grid.Row="1" Grid.Column="0" Margin="5" Content="Code:"/>
+                        <Button  x:Name="companionAppNextButton" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Content="{x:Static resx:Resources.next}" Margin="5" Click="companionAppNextClicked"/>
+                        <Label x:Name ="companionAppCodeLabel" Visibility="Hidden" Grid.Row="1" Grid.Column="0" Margin="5" Content="{x:Static resx:MainWindow.label_code}"/>
                         <TextBox x:Name ="companionAppCodeText" Visibility="Hidden" Grid.Row="1" Grid.Column="1" Margin="5" />
                     </Grid>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Text-to-Speech">
+            <TabItem Header="{x:Static resx:MainWindow.tab_tts_header}">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <TextBlock x:Name="ttsText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="EDDI uses its own text-to-speech engine that processes the voice depending on feature such as ship damage and size of cockpit.  You can adjust the voice's parameters here." />
+                    <TextBlock x:Name="ttsText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:MainWindow.tab_tts_desc}" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
@@ -174,38 +181,38 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
-                        <Label x:Name="ttsVoiceLabel" Grid.Column="0" Grid.Row="0" Margin="5" Content="Voice:" />
+                        <Label x:Name="ttsVoiceLabel" Grid.Column="0" Grid.Row="0" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_voice_label}" />
                         <ComboBox x:Name="ttsVoiceDropDown" Grid.Column="1" Grid.Row="0" Margin="5" SelectionChanged="ttsVoiceDropDownUpdated"/>
-                        <Label x:Name="ttsVolumeLabel" Grid.Column="0" Grid.Row="1" Margin="5" Content="Volume of speech:" />
+                        <Label x:Name="ttsVolumeLabel" Grid.Column="0" Grid.Row="1" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_volume_label}" />
                         <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="1" Margin="5" VerticalAlignment="Center">
                             <TextBox x:Name="ttsVolumeText"  DockPanel.Dock="Right" Text="{Binding ElementName=ttsVolumeSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" Width="40"/>
                             <Slider x:Name="ttsVolumeSlider" Minimum="0" Maximum="100"  IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="ttsVolumeUpdated"/>
                         </DockPanel>
-                        <Label x:Name="ttsRateLabel" Grid.Column="0" Grid.Row="2" Margin="5" Content="Speed of speech:" />
+                        <Label x:Name="ttsRateLabel" Grid.Column="0" Grid.Row="2" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_rate_label}" />
                         <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="2" Margin="5" VerticalAlignment="Center">
                             <TextBox x:Name="ttsRateText"  DockPanel.Dock="Right" Text="{Binding ElementName=ttsRateSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" Width="40"/>
                             <Slider x:Name="ttsRateSlider" Minimum="-10" Maximum="10"  IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="ttsRateUpdated"/>
                         </DockPanel>
-                        <Label x:Name="ttsEffectsLevelLabel" Grid.Column="0" Grid.Row="3" Margin="5" Content="Level of voice processing:" />
+                        <Label x:Name="ttsEffectsLevelLabel" Grid.Column="0" Grid.Row="3" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_level_label}" />
                         <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="3" Margin="5" VerticalAlignment="Center">
                             <TextBox x:Name="ttsEffectsLevelText"  DockPanel.Dock="Right" Text="{Binding ElementName=ttsEffectsLevelSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" Width="40"/>
                             <Slider x:Name="ttsEffectsLevelSlider" Minimum="0" Maximum="100"  IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="ttsEffectsLevelUpdated"/>
                         </DockPanel>
-                        <Label x:Name="ttsDistortLabel" Grid.Column="0" Grid.Row="4" Margin="5" Content="Distort the voice on ship damage:" />
+                        <Label x:Name="ttsDistortLabel" Grid.Column="0" Grid.Row="4" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_distort_label}" />
                         <CheckBox x:Name="ttsDistortCheckbox" Grid.Column="1" Grid.Row="4" Margin="5" VerticalAlignment="Center" Checked="ttsDistortionLevelUpdated" Unchecked="ttsDistortionLevelUpdated"/>
-                        <TextBlock Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="You can test how the voice will sound below.  Note that if the voice is incompatible it will use the default voice instead." />
-                        <Label x:Name="ttsTestShipLabel" Grid.Column="0" Grid.Row="6" Margin="5" Content="Ship for testing the voice:" />
+                        <TextBlock Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_test_desc}" />
+                        <Label x:Name="ttsTestShipLabel" Grid.Column="0" Grid.Row="6" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_test_ship_label}" />
                         <ComboBox x:Name="ttsTestShipDropDown" Grid.Column="1" Grid.Row="6" Margin="5"/>
                         <UniformGrid Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Margin="5" Columns="2">
-                            <Button x:Name="ttsTestButton" Margin="0,0,5,0" Content="Test voice" Click="ttsTestVoiceButtonClicked" />
-                            <Button x:Name="ttsTestDamagedButton" Margin="5,0,0,0" Content="Test voice (severe damage)" Click="ttsTestDamagedVoiceButtonClicked" />
+                            <Button x:Name="ttsTestButton" Margin="0,0,5,0" Content="{x:Static resx:MainWindow.tab_tts_test_button}" Click="ttsTestVoiceButtonClicked" />
+                            <Button x:Name="ttsTestDamagedButton" Margin="5,0,0,0" Content="{x:Static resx:MainWindow.tab_tts_test_damaged_button}" Click="ttsTestDamagedVoiceButtonClicked" />
                         </UniformGrid>
-                        <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="EDDI uses phonetic speech to pronounce various hard-to-say words, and to put pauses between speech.  Some voices, often Microsoft ones, have a problem with phonetic speech and it causes EDDI to hang or crash.  If you experience this then try checking the option below" />
-                        <Label x:Name="disableSsmltLabel" Grid.Column="0" Grid.Row="9" Margin="5" Content="Disable phonetic speech:" />
+                        <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_phonetic_speech_desc}" />
+                        <Label x:Name="disableSsmltLabel" Grid.Column="0" Grid.Row="9" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_label}" />
                         <CheckBox x:Name="disableSsmlCheckbox" Grid.Column="1" Grid.Row="9" Margin="5" VerticalAlignment="Center" Checked="disableSsmlUpdated" Unchecked="disableSsmlUpdated"/>
-                        <Label x:Name="SSmlnote" Grid.Column="3" Grid.Row="9" Margin="5" HorizontalAlignment="Right"  Content="(this will disable all functions using SSML speech tags, as noted in the Speech Responder's Help file)" />
-                        <TextBlock Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="EDDI can use ICAO, for example using 'alpha' rather than 'A', when saying star and body names.  This can make it easier to understand system names, but does take longer to pronounce.  If you want to hear ICAO pronunciations then check the option below.  Note that this will not work if you have disabled phonetic speech above." />
-                        <Label x:Name="enableIcaoLabel" Grid.Column="0" Grid.Row="11" Margin="5" Content="Enable ICAO:" />
+                        <Label x:Name="SSmlnote" Grid.Column="2" Grid.Row="9" Margin="20,5,5,5" HorizontalAlignment="Right"  Content="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_note}" />
+                        <TextBlock Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_icao_desc}" />
+                        <Label x:Name="enableIcaoLabel" Grid.Column="0" Grid.Row="11" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_icao_label}" />
                         <CheckBox x:Name="enableIcaoCheckbox" Grid.Column="1" Grid.Row="11" Margin="5" VerticalAlignment="Center" Checked="enableICAOUpdated" Unchecked="enableICAOUpdated"/>
                     </Grid>
                 </DockPanel>

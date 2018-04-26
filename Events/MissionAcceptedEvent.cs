@@ -63,14 +63,14 @@ namespace EddiEvents
 
         public string reputation { get; private set; }
 
-        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string faction, string destinationsystem, string destinationstation, Commodity commodity, int? amount, string passengertype, bool? passengerswanted, string target, string targettype, string targetfaction, bool communal, DateTime? expiry, string influence, string reputation) : base(timestamp, NAME)
+        public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string faction, string destinationsystem, string destinationstation, CommodityDefinition commodity, int? amount, string passengertype, bool? passengerswanted, string target, string targettype, string targetfaction, bool communal, DateTime? expiry, string influence, string reputation) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;
             this.faction = faction;
             this.destinationsystem = destinationsystem;
             this.destinationstation = destinationstation;
-            this.commodity = (commodity == null ? null : commodity.name);
+            this.commodity = commodity?.localizedName;
             this.amount = amount;
             this.passengertype = passengertype;
             this.passengerswanted = passengerswanted;

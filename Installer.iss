@@ -48,7 +48,10 @@ Source: "x86\*.*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createa
 Source: "*.dll"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
+Source: "*.resources.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs replacesameversion
+
 Source: "eddi.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "eddi.*.json"; DestDir: "{app}"; Flags: ignoreversion
 
 Source: "ChangeLog.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Help.md"; DestDir: "{app}"; Flags: ignoreversion

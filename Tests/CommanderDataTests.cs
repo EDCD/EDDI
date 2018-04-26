@@ -5541,7 +5541,6 @@ namespace UnitTests
             Assert.AreEqual("Vulture", StoredShip1.model);
             Assert.AreEqual("TZ Arietis", StoredShip1.starsystem);
             Assert.AreEqual("Snyder Enterprise", StoredShip1.station);
-
         }
 
         [TestMethod]

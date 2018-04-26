@@ -22,7 +22,7 @@ namespace EddiEvents
 
         public ExplorationPromotionEvent(DateTime timestamp, ExplorationRating rating) : base(timestamp, NAME)
         {
-            this.rating = rating.name;
+            this.rating = rating.localizedName;
         }
     }
 }

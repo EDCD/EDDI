@@ -46,7 +46,7 @@ namespace EddiEvents
             this.succeeded = succeeded;
             this.iscommander = iscommander;
             this.interdictee = interdictee;
-            this.rating = (rating == null ? null : rating.name);
+            this.rating = rating?.localizedName;
             this.faction = faction;
             this.power = power;
         }

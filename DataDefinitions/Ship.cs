@@ -8,6 +8,8 @@ using System.Text;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.Serialization;
+using Newtonsoft.Json.Linq;
 
 namespace EddiDataDefinitions
 {
@@ -145,23 +147,43 @@ namespace EddiDataDefinitions
                 }
             }
         }
+
         /// <summary>the role of this ship</summary>
-        private string Role;
-        public string role
-        { get { return Role; }
+        private Role _Role = Role.MultiPurpose;
+        [JsonProperty("ShipRole")]
+        public Role Role
+        {
+            get
+            {
+                return _Role;
+            }
             set
             {
-                // Map old roles
-                if (value == "0") Role = EddiDataDefinitions.Role.MultiPurpose;
-                else if (value == "1") Role = EddiDataDefinitions.Role.Exploration;
-                else if (value == "2") Role = EddiDataDefinitions.Role.Trading;
-                else if (value == "3") Role = EddiDataDefinitions.Role.Mining;
-                else if (value == "4") Role = EddiDataDefinitions.Role.Smuggling;
-                else if (value == "5") Role = EddiDataDefinitions.Role.Piracy;
-                else if (value == "6") Role = EddiDataDefinitions.Role.BountyHunting;
-                else if (value == "7") Role = EddiDataDefinitions.Role.Combat;
-                else Role = value;
+                if (_Role != value)
+                {
+                    _Role = value;
+                    NotifyPropertyChanged("Role");
+                }
             }
+        }
+
+        [JsonExtensionData]
+        private IDictionary<string, JToken> additionalJsonData;
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            if(Role == null) // legacy shipmonitor JSON
+            {
+                string roleName = (string)additionalJsonData["role"];
+                Role = Role.FromEDName(roleName) ?? Role.FromName(roleName);
+            }
+            else
+            {
+                // get the canonical role object for the given EDName
+                Role = Role.FromEDName(Role.edname);
+            }
+            additionalJsonData = null;
         }
 
         /// <summary>
@@ -349,15 +371,7 @@ namespace EddiDataDefinitions
                 }
 
                 // Add the ship's name
-                string bn;
-                if (name == null)
-                {
-                    bn = role + " " + model;
-                }
-                else
-                {
-                    bn = name;
-                }
+                string bn = name ?? $"{Role.localizedName} {model}";
                 uri += "&bn=" + Uri.EscapeDataString(bn);
 
                 return uri;
@@ -407,9 +421,9 @@ namespace EddiDataDefinitions
                 phoneticmodel = template.phoneticmodel;
                 size = template.size;
                 militarysize = template.militarysize;
-                if (role == null)
+                if (Role == null)
                 {
-                    role = EddiDataDefinitions.Role.MultiPurpose;
+                    Role = EddiDataDefinitions.Role.MultiPurpose;
                 }
             }
         }

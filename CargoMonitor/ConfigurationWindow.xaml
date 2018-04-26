@@ -5,22 +5,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EddiCargoMonitor"
+             xmlns:resx="clr-namespace:EddiCargoMonitor.Properties"
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Below is a list of all cargo stored within installed Cargo Bays."></TextBlock>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated."></TextBlock>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="{x:Static resx:Resources.para1}" />
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="{x:Static resx:Resources.para2}" />
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="cargoData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="cargoUpdated">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Path=name}">
+                <DataGridTextColumn Header="{x:Static resx:Resources.header_name}" Width="*" IsReadOnly="True" Binding="{Binding Path=localizedName}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.HeaderStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Type" Width="*" IsReadOnly="True" Binding="{Binding Path=category}">
+                <DataGridTextColumn Header="{x:Static resx:Resources.header_type}" Width="*" IsReadOnly="True" Binding="{Binding Path=localizedCategory}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -33,7 +34,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="Price/Unit" Width="80" IsReadOnly="True" Binding="{Binding Path=price}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:Resources.header_price}" Width="80" IsReadOnly="True" Binding="{Binding Path=price}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -46,7 +47,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="Haulage" Width="80" Binding="{Binding Path=haulage, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:Resources.header_haulage}" Width="80" Binding="{Binding Path=haulage, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -59,7 +60,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="Stolen" Width="80" Binding="{Binding Path=stolen, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:Resources.header_stolen}" Width="80" Binding="{Binding Path=stolen, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -72,7 +73,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="Other" Width="80" Binding="{Binding Path=other, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:Resources.header_owned}" Width="80" Binding="{Binding Path=other, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

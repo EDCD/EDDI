@@ -48,10 +48,6 @@ namespace Eddi
         {
             // Set up our app directory
             Directory.CreateDirectory(Constants.DATA_DIR);
-
-            // Use invariant culture to ensure that we use . rather than , for our separator when writing out decimals
-            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
         }
 
         private static readonly object instanceLock = new object();
@@ -239,6 +235,7 @@ namespace Eddi
                 {
                     EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                     InstanceInfo info = configuration.Beta ? updateServerInfo.beta : updateServerInfo.production;
+                    string spokenVersion = info.version.Replace(".", $" {Properties.Resources.point} ");
                     Motd = info.motd;
                     if (updateServerInfo.productionbuilds != null)
                     {
@@ -250,7 +247,8 @@ namespace Eddi
                         // There is a mandatory update available
                         if (!FromVA)
                         {
-                            SpeechService.Instance.Say(null, "Mandatory Eddi upgrade to " + info.version.Replace(".", " point ") + " is required.", false);
+                            string message = String.Format(Properties.Resources.mandatory_upgrade, spokenVersion);
+                            SpeechService.Instance.Say(null, message, false);
                         }
                         UpgradeRequired = true;
                         UpgradeLocation = info.url;
@@ -263,7 +261,8 @@ namespace Eddi
                         // There is an update available
                         if (!FromVA)
                         {
-                            SpeechService.Instance.Say(null, "Eddi version " + info.version.Replace(".", " point ") + " is now available.", false);
+                            string message = String.Format(Properties.Resources.update_available, spokenVersion);
+                            SpeechService.Instance.Say(null, message, false);
                         }
                         UpgradeAvailable = true;
                         UpgradeLocation = info.url;
@@ -273,7 +272,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, "I could not connect to my update server. If this recurs, please check the forum to see if it is a known problem.", false);
+                SpeechService.Instance.Say(null, Properties.Resources.update_server_unreachable, false);
                 Logging.Warn("Failed to access " + Constants.EDDI_SERVER_URL, ex);
             }
         }
@@ -287,11 +286,11 @@ namespace Eddi
                 if (UpgradeLocation != null)
                 {
                     Logging.Info("Downloading upgrade from " + UpgradeLocation);
-                    SpeechService.Instance.Say(null, "Downloading upgrade.", true);
+                    SpeechService.Instance.Say(null, Properties.Resources.downloading_upgrade, true);
                     string updateFile = Net.DownloadFile(UpgradeLocation, @"EDDI-update.exe");
                     if (updateFile == null)
                     {
-                        SpeechService.Instance.Say(null, "Download failed.  Please try again later.", true);
+                        SpeechService.Instance.Say(null, Properties.Resources.download_failed, true);
                     }
                     else
                     {
@@ -301,7 +300,7 @@ namespace Eddi
                         Logging.Info("Downloaded update to " + updateFile);
                         Logging.Info("Path is " + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                         File.SetAttributes(updateFile, FileAttributes.Normal);
-                        SpeechService.Instance.Say(null, "Starting upgrade.", true);
+                        SpeechService.Instance.Say(null, Properties.Resources.starting_upgrade, true);
                         Logging.Info("Starting upgrade.");
 
                         Process.Start(updateFile, @"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
@@ -310,7 +309,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, "Upgrade failed.  Please try again later.", true);
+                SpeechService.Instance.Say(null, Properties.Resources.upgrade_failed, true);
                 Logging.Error("Upgrade failed", ex);
             }
         }
@@ -420,11 +419,11 @@ namespace Eddi
         /// <summary>
         /// Obtain a named monitor
         /// </summary>
-        public EDDIMonitor ObtainMonitor(string name)
+        public EDDIMonitor ObtainMonitor(string invariantName)
         {
             foreach (EDDIMonitor monitor in monitors)
             {
-                if (monitor.MonitorName() == name)
+                if (monitor.MonitorName() == invariantName)
                 {
                     return monitor;
                 }
@@ -435,11 +434,11 @@ namespace Eddi
         /// <summary>
         /// Obtain a named responder
         /// </summary>
-        public EDDIResponder ObtainResponder(string name)
+        public EDDIResponder ObtainResponder(string invariantName)
         {
             foreach (EDDIResponder responder in responders)
             {
-                if (responder.ResponderName() == name)
+                if (responder.ResponderName() == invariantName)
                 {
                     return responder;
                 }
@@ -1133,7 +1132,7 @@ namespace Eddi
         {
             // There is a bug with the journal where it reports superpower increases in rank as combat increases
             // Hence we check to see if this is a real event by comparing our known combat rating to the promoted rating
-            if ((Cmdr == null || Cmdr.combatrating == null) || theEvent.rating != Cmdr.combatrating.name)
+            if ((Cmdr == null || Cmdr.combatrating == null) || theEvent.rating != Cmdr.combatrating.localizedName)
             {
                 // Real event. Capture commander ratings and add them to the commander object
                 if (Cmdr != null)
@@ -1508,16 +1507,16 @@ namespace Eddi
         {
             if (Cmdr != null)
             {
-                Cmdr.title = "Commander";
+                Cmdr.title = Properties.Resources.Commander;
                 if (CurrentStarSystem != null)
                 {
                     if (CurrentStarSystem.allegiance == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
                     {
-                        Cmdr.title = Cmdr.federationrating.name;
+                        Cmdr.title = Cmdr.federationrating.localizedName;
                     }
                     else if (CurrentStarSystem.allegiance == "Empire" && Cmdr.empirerating != null && Cmdr.empirerating.rank > minEmpireRankForTitle)
                     {
-                        Cmdr.title = Cmdr.empirerating.name;
+                        Cmdr.title = Cmdr.empirerating.maleRank.localizedName;
                     }
                 }
             }
@@ -1581,13 +1580,13 @@ namespace Eddi
                 }
                 catch (FileLoadException flex)
                 {
-                    string msg = "Failed to load monitor. Please ensure that " + dir.FullName + " is not on a network share, or itself shared";
+                    string msg = string.Format(Properties.Resources.problem_load_monitor_file, dir.FullName);
                     Logging.Error(msg, flex);
                     SpeechService.Instance.Say(null, msg, false);
                 }
                 catch (Exception ex)
                 {
-                    string msg = $"Failed to load monitor: {file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}";
+                    string msg = string.Format(Properties.Resources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
                     SpeechService.Instance.Say(null, msg, false);
                 }

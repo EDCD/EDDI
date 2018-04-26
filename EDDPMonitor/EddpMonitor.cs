@@ -1,6 +1,7 @@
 ﻿using Eddi;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using EddiEddpMonitor;
 using EddiEvents;
 using NetMQ;
 using NetMQ.Sockets;
@@ -30,6 +31,11 @@ namespace EddiEddpMonitor
             return "EDDP monitor";
         }
 
+        public string LocalizedMonitorName()
+        {
+            return Properties.Resources.name;
+        }
+
         /// <summary>
         /// The version of the monitor; shows up in EDDI's logs
         /// </summary>
@@ -43,7 +49,7 @@ namespace EddiEddpMonitor
         /// </summary>
         public string MonitorDescription()
         {
-            return @"Monitor EDDP for changes in system control and state, and generate events that match the watch list.";
+            return Properties.Resources.desc;
         }
 
         public bool IsRequired()
@@ -148,8 +154,8 @@ namespace EddiEddpMonitor
             string oldfaction = (string)json["oldfaction"];
             string newfaction = (string)json["newfaction"];
 
-            string oldstate = (string)json["oldstate"];
-            string newstate = (string)json["newstate"];
+            SystemState oldstate = SystemState.FromName((string)json["oldstate"]);
+            SystemState newstate = SystemState.FromName((string)json["newstate"]);
 
             string oldallegiance = (string)json["oldallegiance"];
             string newallegiance = (string)json["newallegiance"];
@@ -178,7 +184,7 @@ namespace EddiEddpMonitor
                     }
                     if (newstate != null)
                     {
-                        system.state = newstate;
+                        system.systemState = newstate;
                     }
                     if (newallegiance != null)
                     {
@@ -221,7 +227,7 @@ namespace EddiEddpMonitor
         /// <summary>
         /// Find a matching watch for a given set of parameters
         /// </summary>
-        private string match(string systemname, string stationname, decimal x, decimal y, decimal z, string oldfaction, string newfaction, string oldstate, string newstate)
+        private string match(string systemname, string stationname, decimal x, decimal y, decimal z, string oldfaction, string newfaction, SystemState oldstate, SystemState newstate)
         {
             foreach (Watch watch in configuration.watches)
             {

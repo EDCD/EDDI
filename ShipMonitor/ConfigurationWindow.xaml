@@ -6,22 +6,26 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:eddi="clr-namespace:EddiDataDefinitions;assembly=EddiDataDefinitions"
              xmlns:local="clr-namespace:EddiShipMonitor"
+             xmlns:resx="clr-namespace:EddiShipMonitor.Properties"
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="This allows you to see your ships and give them individual roles.  The information is made available to responders and is used in scripts to tailor actions." VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="{x:Static resx:Resources.p1}" VerticalAlignment="Top"/>
         <RichTextBox DockPanel.Dock="Top" Margin="10"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
             <FlowDocument Background="#FFE5E5E5">
                 <Paragraph >
-                    If the name of your ship is hard for EDDI to pronounce then you can add a spoken version of the ship using the
-                    <Hyperlink Click="ipaClicked">International Phonetic Alphabet</Hyperlink> . For example, if your ship was called 'Pride of Achenar' then your spoken name would be 'praɪdɒvˈakɜːnɑ' (note no spaces in the phonetic version).
+                    <Run Text="{x:Static resx:Resources.p2}" />
+                    <Hyperlink Click="ipaClicked" >
+                        <Run Text="{x:Static resx:Resources.link_ipa}" />
+                    </Hyperlink>
+                    <Run Text="{x:Static resx:Resources.p3}" />
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="Please note that if you have not configured access to the Frontier API then some of the data below will be inaccurate or unavailable.  Also, if you had multiple ships prior to installing EDDI you will need to swap to them as your primary ship and wait a few moments before full information for them will be available." VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="{x:Static resx:Resources.p4}" VerticalAlignment="Top"/>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Top">
-            <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="EDDI can send an export of your ship's data to Coriolis or EDShipyard (3rd Party tools). Select the tool you prefer." VerticalAlignment="Top"/>
+            <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10"  Text="{x:Static resx:Resources.p5}" VerticalAlignment="Top"/>
             <ComboBox x:Name="exportComboBox" Background="#FFE5E5E5" SelectionChanged="onExportTargetChanged" SelectedValuePath="Content" IsEditable="False" IsReadOnly="True" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center">
                 <ComboBoxItem>Coriolis</ComboBoxItem>
                 <ComboBoxItem>EDShipyard</ComboBoxItem>
@@ -29,10 +33,10 @@
         </StackPanel>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="shipData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="shipsUpdated">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Path=name}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Model" IsReadOnly="True" Binding="{Binding Path=model}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Ident" IsReadOnly="True" Binding="{Binding Path=ident}"></DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="Value" IsReadOnly="True" Binding="{Binding Path=value, StringFormat=\{0:N0\}}">
+                <DataGridTextColumn Header="{x:Static resx:Resources.header_name}" IsReadOnly="True" Binding="{Binding Path=name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:Resources.header_model}" IsReadOnly="True" Binding="{Binding Path=model}"></DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:Resources.header_ship_ID}" IsReadOnly="True" Binding="{Binding Path=ident}"></DataGridTextColumn>
+                <utility:DataGridNumericColumn Header="{x:Static resx:Resources.header_value}" IsReadOnly="True" Binding="{Binding Path=value, StringFormat=\{0:N0\}}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
@@ -40,15 +44,15 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <DataGridTextColumn Header="Location" IsReadOnly="True" Binding="{Binding Path=starsystem}"></DataGridTextColumn>
-                <DataGridComboBoxColumn Header="Role" SelectedItemBinding="{Binding Path=role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static eddi:Role.ROLES}}">
+                <DataGridTextColumn Header="{x:Static resx:Resources.header_location}" IsReadOnly="True" Binding="{Binding Path=starsystem}"></DataGridTextColumn>
+                <DataGridComboBoxColumn Header="{x:Static resx:Resources.header_role}" SelectedItemBinding="{Binding Path=Role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static eddi:Role.Sorted}}">
                     <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="{x:Type ComboBox}">
                             <EventSetter Event="SelectionChanged" Handler="shipsUpdated" />
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
-                <DataGridTextColumn Header="Name (spoken)" Width="*">
+                <DataGridTextColumn Header="{x:Static resx:Resources.header_spoken_name}" Width="*">
                     <DataGridTextColumn.Binding>
                         <Binding Path="phoneticname" NotifyOnTargetUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" TargetNullValue="{x:Static System:String.Empty}">
                             <Binding.ValidationRules>
@@ -60,14 +64,14 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="testShipName">Hear it</Button>
+                            <Button Click="testShipName" Content="{x:Static resx:Resources.hear_it_button}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button IsEnabled="{Binding RawIsNotNull, UpdateSourceTrigger=PropertyChanged}" Click="exportShip">Export it</Button>
+                            <Button IsEnabled="{Binding RawIsNotNull, UpdateSourceTrigger=PropertyChanged}" Click="exportShip" Content="{x:Static resx:Resources.export_it_button}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

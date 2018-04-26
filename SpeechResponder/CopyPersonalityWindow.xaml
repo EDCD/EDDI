@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EddiSpeechResponder"
+        xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
         mc:Ignorable="d"
-        Title="Copy Personality" Height="200" Width="300">
+        Title="{x:Static resx:Resources.button_copy}" 
+        Height="200" Width="300">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
@@ -18,13 +20,13 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="Name"></TextBlock>
+            <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:Resources.header_name}"></TextBlock>
             <TextBox Margin="10" Grid.Row="0" Grid.Column="1" Text="{Binding Path=PersonalityName, Mode=TwoWay}"/>
-            <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="Description"></TextBlock>
+            <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:Resources.header_description}"></TextBlock>
             <TextBox Margin="10" Grid.Row="1" Grid.Column="1" Text="{Binding Path=PersonalityDescription, Mode=TwoWay}"/>
             <UniformGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="20" Rows="1" Columns="2" Width="260" HorizontalAlignment="Center">
-                <Button x:Name="acceptButton" FontSize="18" Content="OK" VerticalAlignment="Top" Click="acceptButtonClick" Margin="10" IsEnabled="{Binding Path=AbleToAccept}"/>
-                <Button x:Name="cancelButton" FontSize="18" Content="Cancel" VerticalAlignment="Top" Click="cancelButtonClick" Margin="10"/>
+                <Button x:Name="acceptButton" FontSize="18" Content="{x:Static resx:Resources.button_ok}" VerticalAlignment="Top" Click="acceptButtonClick" Margin="10" IsEnabled="{Binding Path=AbleToAccept}"/>
+                <Button x:Name="cancelButton" FontSize="18" Content="{x:Static resx:Resources.button_cancel}" VerticalAlignment="Top" Click="cancelButtonClick" Margin="10"/>
             </UniformGrid>
         </Grid>
     </DockPanel>

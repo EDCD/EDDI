@@ -217,7 +217,7 @@ namespace EddiCompanionAppService
                 if (CurrentState != State.READY)
                 {
                     // No luck; give up
-                    SpeechService.Instance.Say(null, "Access to Frontier API has been lost.  Please update your information in Eddi's Frontier API tab to re-establish the connection.", false);
+                    SpeechService.Instance.Say(null, Properties.Resources.frontier_api_lost, false);
                     Logout();
                 }
                 else
@@ -229,7 +229,7 @@ namespace EddiCompanionAppService
 
                     {
                         // No luck with a relogin; give up
-                        SpeechService.Instance.Say(null, "Access to Frontier API has been lost.  Please update your information in Eddi's Frontier API tab to re-establish the connection.", false);
+                        SpeechService.Instance.Say(null, Properties.Resources.frontier_api_lost, false);
                         Logout();
                         throw new EliteDangerousCompanionAppException("Failed to obtain data from Frontier server (" + CurrentState + ")");
                     }
@@ -290,7 +290,7 @@ namespace EddiCompanionAppService
                 if (cachedProfile.LastStation.hasmarket ?? false)
                 {
                     cachedProfile.LastStation.economies = EconomiesFromProfile(marketJson);
-                    cachedProfile.LastStation.commodities = CommoditiesFromProfile(marketJson);
+                    cachedProfile.LastStation.commodities = CommodityQuotesFromProfile(marketJson);
                     cachedProfile.LastStation.prohibited = ProhibitedCommoditiesFromProfile(marketJson);
                 }
 
@@ -550,7 +550,6 @@ namespace EddiCompanionAppService
             {
                 profile = ProfileFromJson(JObject.Parse(data));
             }
-            AugmentCmdrInfo(profile.Cmdr);
             Logging.Debug("Leaving");
             return profile;
         }
@@ -602,24 +601,6 @@ namespace EddiCompanionAppService
             return Profile;
         }
 
-        private static void AugmentCmdrInfo(Commander cmdr)
-        {
-            Logging.Debug("Entered");
-            //if (cmdr != null)
-            //{
-            //    CommanderConfiguration cmdrConfiguration = CommanderConfiguration.FromFile();
-            //    if (cmdrConfiguration.PhoneticName == null || cmdrConfiguration.PhoneticName.Trim().Length == 0)
-            //    {
-            //        cmdr.phoneticname = null;
-            //    }
-            //    else
-            //    {
-            //        cmdr.phoneticname = cmdrConfiguration.PhoneticName;
-            //    }
-            //}
-            Logging.Debug("Leaving");
-        }
-
         // Obtain the list of outfitting modules from the profile
         public static List<Module> OutfittingFromProfile(dynamic json)
         {
@@ -639,13 +620,12 @@ namespace EddiCompanionAppService
                         case "module":
                         case "utility":
                             {
-                                Module Module = ModuleDefinitions.ModuleFromEliteID((long)module["id"]);
-                                if (Module.name == null)
+                                long id = (long)json["module"]["id"];
+                                Module Module = new Module(Module.FromEliteID(id));
+                                if (Module?.invariantName == null)
                                 {
-                                    // Unknown module; batch and report so that we can update the definitions
-                                    moduleErrors.Add(module);
-                                    // Set the name from the JSON
-                                    Module.EDName = (string)module["name"];
+                                    // Unknown module; the infrastructure will have reported it
+                                    continue;
                                 }
                                 Module.price = module["cost"];
                                 Modules.Add(Module);
@@ -706,60 +686,34 @@ namespace EddiCompanionAppService
         }
 
         // Obtain the list of commodities from the profile
-        public static List<Commodity> CommoditiesFromProfile(dynamic json)
+        private static List<CommodityMarketQuote> CommodityQuotesFromProfile(dynamic json)
         {
-            List<Commodity> Commodities = new List<Commodity>();
+            var quotes = new List<CommodityMarketQuote>();
 
             if (json["lastStarport"] != null && json["lastStarport"]["commodities"] != null)
             {
-                List<Commodity> commodityErrors = new List<Commodity>();
                 foreach (dynamic commodity in json["lastStarport"]["commodities"])
                 {
-                    Commodity Commodity = new Commodity();
-                    Commodity eddiCommodity = CommodityDefinitions.CommodityFromEliteID((long)commodity["id"]);
-                    if (eddiCommodity == null)
-                    {
-                        // If we fail to identify the commodity by EDID, try using the EDName.
-                        eddiCommodity = CommodityDefinitions.FromName((string)commodity["name"]);
-                    }
-
-                    Commodity.EDName = (string)commodity["name"];
-                    Commodity.name = (string)commodity["locName"];
-                    Commodity.category = ((string)commodity["categoryname"]).Trim();
-                    Commodity.avgprice = (int)commodity["meanPrice"];
-                    Commodity.buyprice = (int)commodity["buyPrice"];
-                    Commodity.stock = (int)commodity["stock"];
-                    Commodity.stockbracket = (dynamic)commodity["stockBracket"];
-                    Commodity.sellprice = (int)commodity["sellPrice"];
-                    Commodity.demand = (int)commodity["demand"];
-                    Commodity.demandbracket = (dynamic)commodity["demandBracket"];
+                    CommodityDefinition commidityDef = CommodityDefinition.CommodityDefinitionFromEliteID((long)commodity["id"]);
+                    CommodityMarketQuote quote = new CommodityMarketQuote(commidityDef);
+                    quote.buyprice = (int)commodity["buyPrice"];
+                    quote.stock = (int)commodity["stock"];
+                    quote.stockbracket = (dynamic)commodity["stockBracket"];
+                    quote.sellprice = (int)commodity["sellPrice"];
+                    quote.demand = (int)commodity["demand"];
+                    quote.demandbracket = (dynamic)commodity["demandBracket"];
 
                     List<string> StatusFlags = new List<string>();
                     foreach (dynamic statusFlag in commodity["statusFlags"])
                     {
                         StatusFlags.Add((string)statusFlag);
                     }
-                    Commodity.StatusFlags = StatusFlags;
-                    Commodities.Add(Commodity);
-
-                    if (eddiCommodity == null || eddiCommodity.EDName != Commodity.EDName || eddiCommodity.name != Commodity.name
-                        || eddiCommodity.category != Commodity.category)
-                    {
-                        if (eddiCommodity.name != "Limpet")
-                        {
-                            // Unknown commodity; batch and report so that we can update the definitions
-                            commodityErrors.Add(Commodity);
-                        }
-                    }
-                }
-
-                if (commodityErrors.Count() > 0)
-                {
-                    Logging.Report("Commodity definition errors", JsonConvert.SerializeObject(commodityErrors));
+                    quote.StatusFlags = StatusFlags;
+                    quotes.Add(quote);
                 }
             }
 
-            return Commodities;
+            return quotes;
         }
 
         // Obtain the list of ships available at the station from the profile

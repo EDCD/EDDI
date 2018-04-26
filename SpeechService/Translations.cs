@@ -20,27 +20,27 @@ namespace EddiSpeechService
             switch (power)
             {
                 case "Archon Delaine":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈɑːkɒn\">Archon</phoneme> <phoneme alphabet=\"ipa\" ph=\"dəˈleɪn\">Delaine</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.archon + "\">Archon</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.delaine + "\">Delaine</phoneme>";
                 case "Aisling Duval":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈæʃlɪŋ\">Aisling</phoneme> <phoneme alphabet=\"ipa\" ph=\"duːˈvæl\">Duval</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.aisling + "\">Aisling</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.duval + "\">Duval</phoneme>";
                 case "Arissa Lavigny-Duval":
-                    return "<phoneme alphabet=\"ipa\" ph=\"əˈrɪsə\">Arissa</phoneme> <phoneme alphabet=\"ipa\" ph=\"ləˈviːniː\">Lavigny</phoneme> <phoneme alphabet=\"ipa\" ph=\"duːˈvæl\">Duval</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.arissa + "\">Arissa</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.lavigny +"\">Lavigny</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.duval + "\">Duval</phoneme>";
                 case "Denton Patreus":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈdɛntən\">Denton</phoneme> <phoneme alphabet=\"ipa\" ph=\"pətˈreɪəs\">Patreus</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.denton + "\">Denton</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.patreus + "\">Patreus</phoneme>";
                 case "Edmund Mahon":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈɛdmənd\">Edmund</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈmɑːn\">Mahon</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.edmund + "\">Edmund</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.mahon + "\">Mahon</phoneme>";
                 case "Felicia Winters":
-                    return "<phoneme alphabet=\"ipa\" ph=\"fəˈlɪʃɪə\">Felicia</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈwɪntəs\">Winters</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.felicia + "\">Felicia</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.winters + "\">Winters</phoneme>";
                 case "Pranav Antal":
-                    return "<phoneme alphabet=\"ipa\" ph=\"pɜːnʌv\">Pranav</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˌænˈtæl\">Antal</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.pranav + "\">Pranav</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.antal + "\">Antal</phoneme>";
                 case "Zachary Hudson":
-                    return "<phoneme alphabet=\"ipa\" ph=\"ˈzækərɪ\">Zachary</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈhʌdsən\">Hudson</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.zachary + "\">Zachary</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.hudson + "\">Hudson</phoneme>";
                 case "Zemina Torval":
-                    return "<phoneme alphabet=\"ipa\" ph=\"zəˈmiːnə\">Zemina</phoneme> <phoneme alphabet=\"ipa\" ph=\"tɔːˈvæl\">Torval</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.zemina + "\">Zemina</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.torval + "\">Torval</phoneme>";
                 case "Li Yong-Rui":
-                    return "<phoneme alphabet=\"ipa\" ph=\"liː\">Li</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈjɒŋ\">Yong</phoneme> <phoneme alphabet=\"ipa\" ph=\"reɪ\">Rui</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.li + "\">Li</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.yong + "\">Yong</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.rui + "\">Rui</phoneme>";
                 case "Yuri Grom":
-                    return "<phoneme alphabet=\"ipa\" ph=\"jʊəˈriː\">Yuri</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈɡrɒm\">Grom</phoneme>";
+                    return "<phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.yuri + "\">Yuri</phoneme> <phoneme alphabet=\"ipa\" ph=\"" + Properties.Phonetics.grom + "\">Grom</phoneme>";
                 default:
                     return power;
             }
@@ -55,115 +55,115 @@ namespace EddiSpeechService
         // Fixes to avoid issues with some of the more strangely-named factions
         private static Dictionary<string, string> FACTION_FIXES = new Dictionary<string, string>()
         {
-            { "SCORPIONS ORDER", "Scorpions Order" } // Stop it being treated as a sector
+            { "SCORPIONS ORDER", "Scorpions Order" }, // Stop it being treated as a sector
+            { "Federation Unite!", "Federation Unite"} // Stop pausing at the end of Unite!
         };
 
         private static Dictionary<string, string[]> STAR_SYSTEM_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
-            { "Achenar", new string[] { "ˈakɜːnɑ" } },
-            { "Acihault", new string[] { "əˈsɪhɔːt" } },
-            { "Adan", new string[] { "ˈædən" } },
-            { "Alcyone", new string[] { "ælˈsaɪəniː" } },
-            { "Aldebaran", new string[] { "alˈdɛbəɹən" } },
-            { "Anemoi", new string[] { "æˈniːmɔɪ" } },
-            { "Apoyota", new string[] { "æˈpɔɪəʊtə" } },
-            { "Arque", new string[] { "ɑːrk" } },
-            { "Asterope", new string[] { "əˈstɛroʊpiː" } },
-            { "Atlas", new string[] {  "ˈætləs" } },
-            { "Aulin", new string[] { "ˈɔːlɪn" } },
-            { "Bunda", new string[] { "ˈbuːndə" } },
-            { "Cayutorme", new string[] { "ˈkaɪətɔːm" }  },
-            { "Celaeno", new string[] {  "sᵻˈliːnoʊ" }  },
-            { "Ceos", new string[] { "ˈkeɪɒs" }  },
-            { "Cygnus", new string[] { "ˈsɪɡnəs" }  },
-            { "Deciat", new string[] { "ˈdɛsiːæt" } },
-            { "Diso ", new string[] { "ˈdiːsəʊ" } },
-            { "Djiwal", new string[] { "ˈdʒɪwæl" } },
-            { "Dvorsi", new string[] { "ˈdvɔːsiː" } },
-            { "Electra", new string[] { "ᵻˈlɛktrə" } },
-            { "Eravate" , new string[] { "ɛrəˈvɑːtˌeɪ" } },
-            { "Eranin" , new string[] { "ˈɛrənin" } },
-            { "Frigaha", new string[] { "frɪɡˈɑːhɑːr" } },
-            { "Grandmort" , new string[] { "ˈɡʀɒdˌmɔʀ" } },
-            { "Hecate" , new string[] { "ˈhɛkətɪ" } },
-            { "Hotas" , new string[] { "həʊtæs" } },
-            { "Isleta" , new string[] { "aɪlˈetə" } },
-            { "i Bootis" , new string[] { "aɪ", "bəʊˈəʊtɪs" } },
-            { "Lave", new string[] { "leɪv" } },
-            { "Kaia Bajaja", new string[] { "ˈkaɪə", "ˈbɑːhɑːhɑː" } },
-            { "Kigana", new string[] { "kiːˈɡɑːnə" } },
-            { "Kini", new string[] { "ˈkiːniː" } },
-            { "Kremainn", new string[] { "krəˈmeɪn" } },
-            { "Laksak", new string[] { "ˈlæks.æk" } },
-            { "Leesti", new string[] { "ˈliːstiː" } },
-            { "Leucos", new string[] { "ˈluːkɒs" } },
-            { "Luyten's Star", new string[] { "ˈlaʊ.təns", "stɑː" } },
-            { "Maia", new string[] { "ˈmaɪ.ə" } },
-            { "Mata", new string[] { "ˈmɑː.tʌ" } },
-            { "Merope", new string[] { "ˈmɛrəpiː" } },
-            { "Mu Koji", new string[] { "mjuː", "ˈkəʊdʒiː" } },
-            { "Nuenets", new string[] { "ˈnjuːənɛts" } },
-            { "Okinura", new string[] { "ɒkɪˈnjʊrə" } },
-            { "Orrere", new string[] { "ɒrˈɪər" } },
-            { "Pai Szu", new string[] { "paɪ", "ʃuː" } },
-            { "Pleione", new string[] { "ˈplaɪəniː" } },
-            { "Procyon", new string[] { "ˈprəʊˌsɪən" } },
-            { "Potriti", new string[] { "pəˈtriːtɪ" } },
-            { "Reorte", new string[] { "ˌriːˈɔːt" } },
-            { "Sakti", new string[] { "ˈsæk.tiː" } },
-            { "Shinrarta Dezhra", new string[] { "ʃɪnˈrɑːrtə", "ˈdezɦrə" } },
-            { "Surya", new string[] { "ˈsuːˈrɪːˈɛr" } },
-            { "Taygeta", new string[] { "teɪˈɪdʒᵻtə" } },
-            { "Tse", new string[] { "ʃjɛ" } },
-            { "Xihe", new string[] { "ʃiː.hər" } },
-            { "Xinca", new string[] { "ˈʃɛnkə" } },
-            { "Yakabugai", new string[] { "ˈjækəbuːɡaɪ" } },
-            { "Zaonce", new string[] { "ˈzeɪɒns" } },
-            { "Zhang Fei", new string[] { "ʈʂáŋ", "feɪ" } },
+            { "Achenar", new string[] { Properties.Phonetics.achenar } },
+            { "Acihault", new string[] { Properties.Phonetics.acihault } },
+            { "Adan", new string[] { Properties.Phonetics.adan } },
+            { "Alcyone", new string[] { Properties.Phonetics.alcyone } },
+            { "Aldebaran", new string[] { Properties.Phonetics.aldebaran } },
+            { "Anemoi", new string[] { Properties.Phonetics.anemoi } },
+            { "Apoyota", new string[] { Properties.Phonetics.apoyota } },
+            { "Arque", new string[] { Properties.Phonetics.arque } },
+            { "Asterope", new string[] { Properties.Phonetics.asterope } },
+            { "Atlas", new string[] { Properties.Phonetics.atlas } },
+            { "Aulin", new string[] { Properties.Phonetics.aulin } },
+            { "Bunda", new string[] { Properties.Phonetics.bunda } },
+            { "Cayutorme", new string[] { Properties.Phonetics.cayutorme } },
+            { "Celaeno", new string[] { Properties.Phonetics.celaeno } },
+            { "Ceos", new string[] { Properties.Phonetics.ceos } },
+            { "Cygnus", new string[] { Properties.Phonetics.cygnus } },
+            { "Deciat", new string[] { Properties.Phonetics.deciat } },
+            { "Diso ", new string[] { Properties.Phonetics.diso } },
+            { "Djiwal", new string[] { Properties.Phonetics.djiwal } },
+            { "Dvorsi", new string[] { Properties.Phonetics.dvorsi } },
+            { "Electra", new string[] { Properties.Phonetics.electra } },
+            { "Eravate" , new string[] { Properties.Phonetics.eravate } },
+            { "Eranin" , new string[] { Properties.Phonetics.eranin } },
+            { "Frigaha", new string[] { Properties.Phonetics.frigaha } },
+            { "Grandmort" , new string[] { Properties.Phonetics.grandmort } },
+            { "Hecate" , new string[] { Properties.Phonetics.hecate } },
+            { "Hotas" , new string[] { Properties.Phonetics.hotas } },
+            { "Isleta" , new string[] { Properties.Phonetics.hotas } },
+            { "i Bootis" , new string[] { Properties.Phonetics.ibootis_i, Properties.Phonetics.ibootis_bootis } },
+            { "Lave", new string[] { Properties.Phonetics.lave } },
+            { "Kaia Bajaja", new string[] { Properties.Phonetics.kaiabajaja_kaia, Properties.Phonetics.kaiabajaja_bajaja } },
+            { "Kigana", new string[] { Properties.Phonetics.kigana } },
+            { "Kini", new string[] { Properties.Phonetics.kini } },
+            { "Kremainn", new string[] { Properties.Phonetics.kremainn } },
+            { "Laksak", new string[] { Properties.Phonetics.laksak } },
+            { "Leesti", new string[] { Properties.Phonetics.leesti } },
+            { "Leucos", new string[] { Properties.Phonetics.leucos } },
+            { "Luyten's Star", new string[] { Properties.Phonetics.luytens, Properties.Phonetics.star } },
+            { "Maia", new string[] { Properties.Phonetics.maia } },
+            { "Mata", new string[] { Properties.Phonetics.mata } },
+            { "Merope", new string[] { Properties.Phonetics.merope } },
+            { "Mu Koji", new string[] { Properties.Phonetics.mukoji_mu, Properties.Phonetics.mukoji_koji } },
+            { "Nuenets", new string[] { Properties.Phonetics.nuenets } },
+            { "Okinura", new string[] { Properties.Phonetics.okinura } },
+            { "Orrere", new string[] { Properties.Phonetics.orrere } },
+            { "Pai Szu", new string[] { Properties.Phonetics.paiszu_pai, Properties.Phonetics.paiszu_szu } },
+            { "Pleione", new string[] { Properties.Phonetics.pleione } },
+            { "Procyon", new string[] { Properties.Phonetics.procyon } },
+            { "Potriti", new string[] { Properties.Phonetics.potriti } },
+            { "Reorte", new string[] { Properties.Phonetics.reorte } },
+            { "Sakti", new string[] { Properties.Phonetics.sakti } },
+            { "Shinrarta Dezhra", new string[] { Properties.Phonetics.shinrartadezhra_shinrarta, Properties.Phonetics.shinrartadezhra_dezhra } },
+            { "Surya", new string[] { Properties.Phonetics.surya } },
+            { "Taygeta", new string[] { Properties.Phonetics.taygeta } },
+            { "Tse", new string[] { Properties.Phonetics.tse } },
+            { "Xihe", new string[] { Properties.Phonetics.xihe } },
+            { "Xinca", new string[] { Properties.Phonetics.xinca } },
+            { "Yakabugai", new string[] { Properties.Phonetics.yakabugai } },
+            { "Zaonce", new string[] { Properties.Phonetics.zaonce } },
+            { "Zhang Fei", new string[] { Properties.Phonetics.zhangfei_zhang, Properties.Phonetics.zhangfei_fei } },
         };
 
         private static Dictionary<string, string[]> CONSTELLATION_PRONUNCIATIONS = new Dictionary<string, string[]>()
         {
-            { "Alrai" , new string[] { "ˈalraɪ" } },
-            { "Antliae" , new string[] { "ˈæntlɪˌiː" } },
-            { "Aquarii" , new string[] { "əˈkwɛərɪˌaɪ" } },
-            { "Arietis" , new string[] { "əˈraɪɪtɪs" } },
-            { "Bei Dou" , new string[] { "beɪ", "ˈduː" } },
-            { "Blanco" , new string[] { "blæŋkˌəʊ" } },
-            { "Bleae Thaa" , new string[] { "bliːiː", "θɑː" } },
-            { "Bleae Thua" , new string[] { "bliːiː", "θuːə" } },
-            { "Capricorni" , new string[] { "ˌkæprɪˈkɔːnaɪ" } },
-            { "Cepheus" , new string[] { "ˈsiːfjuːs" } },
-            { "Cephei" , new string[] { "ˈsiːfɪˌaɪ" } },
-            { "Ceti" , new string[] { "ˈsiːtaɪ" } },
-            { "Chi Persei" , new string[] { "kaɪ", "ˈpɜːsɪˌaɪ" } },
-            { "Crucis" , new string[] { "ˈkruːsɪs" } },
-            { "Cygni" , new string[] { "ˈsɪɡnaɪ" } },
-            { "Eta Carina" , new string[] { "ˈiːtə", "kəˈriːnə" } },
-            { "Fornacis" , new string[] { "fɔːˈneɪsɪs" } },
-            { "Herculis" , new string[] { "hɜːkjʊˈlɪs" } },
-            { "Hyades" , new string[] { "ˈhaɪəˌdiːz" } },
-            { "Hydrae" , new string[] { "ˈhaɪdriː" } },
-            { "Lupus" , new string[] { "ˈluːpəs" } },
-            { "Lyncis" , new string[] { "ˈlɪnsɪs" } },
-            { "Omega" , new string[] { "ˈəʊmɪɡə" } },
-            { "Ophiuchus" , new string[] { "ɒˈfjuːkəs" } },
-            { "Pegasi" , new string[] { "ˈpɛɡəˌsaɪ" } },
-            { "Persei" , new string[] { "ˈpɜːsɪˌaɪ" } },
-            { "Piscium" , new string[] { "ˈpaɪsɪəm" } },
-            { "Pleiades" , new string[] { "ˈplaɪədiːz" } },
-            { "Puppis" , new string[] { "ˈpʌpɪs" } },
-            { "Pru Euq" , new string[] { "pruː", "juːk"} },
-            { "Rho Ophiuchi" , new string[] { "rəʊ", "ɒˈfjuːkaɪ" } },
-            { "Sagittarius", new string[] { "ˌsædʒˈtɛəriəs" } },
-            { "Scorpii", new string[] { "ˈskɔːpɪˌaɪ" } },
-            { "Shui Wei", new string[] { "ˈʃuːi", "weɪ" } },
-            { "Tau Ceti" , new string[] { "taʊ", "ˈsiːtaɪ" } },
-            { "Tascheter", new string[] { "ˈtɑːʃətɜː" } },
-            { "Trianguli", new string[] { "traɪˈæŋˌɡjʊˌlaɪ" } },
-            { "Trifid", new string[] { "ˈtraɪfɪd" } },
-            { "Tucanae", new string[] { "tuːˈkɑːniː" } },
-            { "Wredguia", new string[] { "ˈredɡaɪə" } },
+            { "Alrai" , new string[] { Properties.Phonetics.Alrai } },
+            { "Antliae" , new string[] { Properties.Phonetics.Antliae } },
+            { "Aquarii" , new string[] { Properties.Phonetics.Aquarii } },
+            { "Arietis" , new string[] { Properties.Phonetics.Arietis } },
+            { "Bei Dou" , new string[] { Properties.Phonetics.Bei, Properties.Phonetics.Dou } },
+            { "Blanco" , new string[] { Properties.Phonetics.Blanco } },
+            { "Bleae Thaa" , new string[] { Properties.Phonetics.BleaeThaa_Bleae, Properties.Phonetics.BleaeThaa_Thaa } },
+            { "Capricorni" , new string[] { Properties.Phonetics.Capricorni } },
+            { "Cepheus" , new string[] { Properties.Phonetics.Cepheus } },
+            { "Cephei" , new string[] { Properties.Phonetics.Cephei } },
+            { "Ceti" , new string[] { Properties.Phonetics.Ceti } },
+            { "Chi Persei" , new string[] { Properties.Phonetics.ChiPersei_Chi, Properties.Phonetics.ChiPersei_Persei } },
+            { "Crucis" , new string[] { Properties.Phonetics.Crucis } },
+            { "Cygni" , new string[] { Properties.Phonetics.Cygni } },
+            { "Eta Carina" , new string[] { Properties.Phonetics.EtaCarina_Eta, Properties.Phonetics.EtaCarina_Carina } },
+            { "Fornacis" , new string[] { Properties.Phonetics.Fornacis } },
+            { "Herculis" , new string[] { Properties.Phonetics.Herculis } },
+            { "Hyades" , new string[] { Properties.Phonetics.Hyades } },
+            { "Hydrae" , new string[] { Properties.Phonetics.Hydrae } },
+            { "Lupus" , new string[] { Properties.Phonetics.Lupus } },
+            { "Lyncis" , new string[] { Properties.Phonetics.Lyncis } },
+            { "Omega" , new string[] { Properties.Phonetics.Omega } },
+            { "Ophiuchus" , new string[] { Properties.Phonetics.Ophiuchus } },
+            { "Pegasi" , new string[] { Properties.Phonetics.Pegasi } },
+            { "Persei" , new string[] { Properties.Phonetics.Persei } },
+            { "Piscium" , new string[] { Properties.Phonetics.Piscium } },
+            { "Pleiades" , new string[] { Properties.Phonetics.Pleiades } },
+            { "Puppis" , new string[] { Properties.Phonetics.Puppis } },
+            { "Pru Euq" , new string[] { Properties.Phonetics.PruEuq_Pru, Properties.Phonetics.PruEuq_Euq } },
+            { "Rho Ophiuchi" , new string[] { Properties.Phonetics.RhoOphiuchi_Rho, Properties.Phonetics.RhoOphiuchi_Ophiuchi } },
+            { "Sagittarius", new string[] { Properties.Phonetics.Sagittarius } },
+            { "Scorpii", new string[] { Properties.Phonetics.Scorpii } },
+            { "Shui Wei", new string[] { Properties.Phonetics.ShuiWei_Shui, Properties.Phonetics.ShuiWei_Wei } },
+            { "Tau Ceti" , new string[] { Properties.Phonetics.TauCeti_Tau, Properties.Phonetics.TauCeti_Ceti } },
+            { "Tascheter", new string[] { Properties.Phonetics.Tascheter } },
+            { "Trianguli", new string[] { Properties.Phonetics.Trianguli } },
+            { "Trifid", new string[] { Properties.Phonetics.Trifid} },
+            { "Tucanae", new string[] { Properties.Phonetics.Tucanae } },
+            { "Wredguia", new string[] { Properties.Phonetics.Wredguia } },
         };
 
         // Various handy regexes so we don't keep recreating them
@@ -308,11 +308,11 @@ namespace EddiSpeechService
                 || starSystem.StartsWith("HD ")
                 )
             {
-                starSystem = starSystem.Replace("-", " dash ");
+                starSystem = starSystem.Replace("-", Properties.Phrases.dash);
             }
             else if (starSystem.StartsWith("Gliese "))
             {
-                starSystem = starSystem.Replace(".", " point ");
+                starSystem = starSystem.Replace(".", Properties.Phrases.point);
             }
             else if (SECTOR.IsMatch(starSystem))
             {
@@ -352,7 +352,7 @@ namespace EddiSpeechService
                 {
                     secondPiece = ICAO(secondPiece, true);
                 }
-                secondPiece = secondPiece.Replace("-", " dash ");
+                secondPiece = secondPiece.Replace("-", Properties.Phrases.dash);
                 starSystem = firstPiece + subPiece + " " + secondPiece;
             }
             else if (starSystem.StartsWith("2MASS ")
@@ -378,9 +378,9 @@ namespace EddiSpeechService
                 starSystem = starSystem.Replace("Csi ", "CSI ")
                                        .Replace("WISE ", "Wise ")
                                        .Replace("2MASS ", "2 mass ")
-                                       .Replace("+", " plus ")
-                                       .Replace("-", " minus ")
-                                       .Replace(".", " point ");
+                                       .Replace("+", Properties.Phrases.plus)
+                                       .Replace("-", Properties.Phrases.minus)
+                                       .Replace(".", Properties.Phrases.point);
             }
             else
             {
@@ -574,7 +574,7 @@ namespace EddiSpeechService
 
             if (value == 0)
             {
-                return "zero";
+                return Properties.Phrases.zero;
             }
 
             if (value < 10)
@@ -606,35 +606,35 @@ namespace EddiSpeechService
             {
                 // Thousands
                 number = (int)(value / 1000);
-                order = "thousand";
+                order = Properties.Phrases.thousand;
                 nextDigit = (((int)value) - (number * 1000)) / 100;
             }
             else if (digits < 9)
             {
                 // Millions
                 number = (int)(value / 1000000);
-                order = "million";
+                order = Properties.Phrases.million;
                 nextDigit = (((int)value) - (number * 1000000)) / 100000;
             }
             else if (digits < 12)
             {
                 // Billions
                 number = (int)(value / 1000000000);
-                order = "billion";
+                order = Properties.Phrases.billion;
                 nextDigit = (int)(((long)value) - ((long)number * 1000000000)) / 100000000;
             }
             else if (digits < 15)
             {
                 // Trillions
                 number = (int)(value / 1000000000000);
-                order = "trillion";
+                order = Properties.Phrases.trillion;
                 nextDigit = (int)(((long)value) - (int)((number * 1000000000000)) / 100000000000);
             }
             else
             {
                 // Quadrillions
                 number = (int)(value / 1000000000000000);
-                order = "quadrillion";
+                order = Properties.Phrases.quadrillion;
                 nextDigit = (int)(((long)value) - (int)((number * 1000000000000000)) / 100000000000000);
             }
 
@@ -653,37 +653,37 @@ namespace EddiSpeechService
                 {
                     if (nextDigit < 6)
                     {
-                        return "Over " + number + " " + order;
+                        return Properties.Phrases.over + number + " " + order;
                     }
                     else
                     {
-                        return "Nearly " + (number + 1) + " " + order;
+                        return Properties.Phrases.nearly + (number + 1) + " " + order;
                     }
                 }
                 switch (nextDigit)
                 {
                     case 0:
-                        return "just over " + number + " " + order;
+                        return Properties.Phrases.justover + number + " " + order;
                     case 1:
-                        return "over " + number + " " + order;
+                        return Properties.Phrases.over + number + " " + order;
                     case 2:
-                        return "well over " + number + " " + order;
+                        return Properties.Phrases.wellover + number + " " + order;
                     case 3:
-                        return "on the way to " + number + " and a half " + order;
+                        return Properties.Phrases.onthewayto + number + Properties.Phrases.andahalf + order;
                     case 4:
-                        return "nearly " + number + " and a half " + order;
+                        return Properties.Phrases.nearly + number + Properties.Phrases.andahalf + order;
                     case 5:
-                        return "around " + number + " and a half " + order;
+                        return Properties.Phrases.around + number + Properties.Phrases.andahalf + order;
                     case 6:
-                        return "just over " + number + " and a half " + order;
+                        return Properties.Phrases.justover + number + Properties.Phrases.andahalf + order;
                     case 7:
-                        return "well over " + number + " and a half " + order;
+                        return Properties.Phrases.wellover + number + Properties.Phrases.andahalf + order;
                     case 8:
-                        return "on the way to " + (number + 1) + " " + order;
+                        return Properties.Phrases.onthewayto + (number + 1) + " " + order;
                     case 9:
-                        return "nearly " + (number + 1) + " " + order;
+                        return Properties.Phrases.nearly + (number + 1) + " " + order;
                     default:
-                        return "around " + number + " " + order;
+                        return Properties.Phrases.around + number + " " + order;
                 }
             }
 

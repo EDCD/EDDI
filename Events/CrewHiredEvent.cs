@@ -34,7 +34,7 @@ namespace EddiEvents
             this.name = name;
             this.faction = faction;
             this.price = price;
-            this.combatrating = combatrating.name;
+            this.combatrating = combatrating.localizedName;
         }
     }
 }

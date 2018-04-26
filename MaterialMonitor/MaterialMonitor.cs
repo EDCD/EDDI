@@ -32,6 +32,11 @@ namespace EddiMaterialMonitor
             return "Material monitor";
         }
 
+        public string LocalizedMonitorName()
+        {
+            return EddiMaterialMonitor.Properties.Resources.name;
+        }
+
         public string MonitorVersion()
         {
             return "1.0.0";
@@ -39,7 +44,7 @@ namespace EddiMaterialMonitor
 
         public string MonitorDescription()
         {
-            return "Track the amount of materials and generate events when limits are reached.";
+            return EddiMaterialMonitor.Properties.Resources.name;
         }
 
         public bool IsRequired()
@@ -213,7 +218,7 @@ namespace EddiMaterialMonitor
             lock(inventoryLock)
             {
                 Material material = Material.FromEDName(edname);
-                MaterialAmount ma = inventory.Where(inv => inv.edname == material.EDName).FirstOrDefault();
+                MaterialAmount ma = inventory.Where(inv => inv.edname == material.edname).FirstOrDefault();
                 if (ma == null)
                 {
                     // No information for the current material - create one and set it to 0
@@ -254,7 +259,7 @@ namespace EddiMaterialMonitor
             lock(inventoryLock)
             {
                 Material material = Material.FromEDName(edname);
-                MaterialAmount ma = inventory.Where(inv => inv.edname == material.EDName).FirstOrDefault();
+                MaterialAmount ma = inventory.Where(inv => inv.edname == material.edname).FirstOrDefault();
                 if (ma == null)
                 {
                     // No information for the current material - create one and set it to amount
@@ -296,7 +301,7 @@ namespace EddiMaterialMonitor
             lock(inventoryLock)
             {
                 Material material = Material.FromEDName(edname);
-                MaterialAmount ma = inventory.Where(inv => inv.edname == material.EDName).FirstOrDefault();
+                MaterialAmount ma = inventory.Where(inv => inv.edname == material.edname).FirstOrDefault();
                 if (ma == null)
                 {
                     // No information for the current material - create one and set it to amount
@@ -366,7 +371,7 @@ namespace EddiMaterialMonitor
                         // then add the material to the new inventory list, preserving user preferences for that material
                         if (addToInv == true)
                         {
-                            MaterialAmount ma2 = new MaterialAmount(ma.material, ma.amount, ma.minimum, ma.desired, ma.maximum);
+                            MaterialAmount ma2 = new MaterialAmount(ma.edname, ma.material, ma.amount, ma.minimum, ma.desired, ma.maximum);
 
                             // Set material maximums if they aren't already defined
                             if (ma2.maximum == null || ma2.maximum == 0)
@@ -384,15 +389,15 @@ namespace EddiMaterialMonitor
                 }
 
                 // Add in any new materials
-                foreach (Material material in Material.MATERIALS)
+                foreach (Material material in Material.AllOfThem)
                 {
-                    MaterialAmount ma = newInventory.Where(inv => inv.edname == material.EDName).FirstOrDefault();
+                    MaterialAmount ma = newInventory.Where(inv => inv.edname == material.edname).FirstOrDefault();
                     if (ma == null)
                     {
                         // We don't have this one - add it and set it to zero
-                        if ((Material.DeprecatedMaterials(material.name) == false))
+                        if ((Material.DeprecatedMaterials(material.invariantName) == false))
                         {
-                            Logging.Debug("Adding new material " + material.name + " to the materials list");
+                            Logging.Debug("Adding new material " + material.invariantName + " to the materials list");
                             ma = new MaterialAmount(material, 0);
                             newInventory.Add(ma);
                         }
@@ -419,7 +424,7 @@ namespace EddiMaterialMonitor
                 Dictionary<string, List<Blueprint>> blueprints = JsonConvert.DeserializeObject<Dictionary<string, List<Blueprint>>>(data);
                 foreach (KeyValuePair<string, List<Blueprint>> kv in blueprints)
                 {
-                    Material material = Material.MATERIALS.FirstOrDefault(m => m.name == kv.Key);
+                    Material material = Material.AllOfThem.FirstOrDefault(m => m.invariantName == kv.Key);
                     if (material != null)
                     {
                         material.blueprints = kv.Value;
@@ -436,7 +441,7 @@ namespace EddiMaterialMonitor
                 Dictionary<string, Dictionary<string, object>> locations= JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(data);
                 foreach (KeyValuePair<string, Dictionary<string, object>> kv in locations)
                 {
-                    Material material = Material.MATERIALS.FirstOrDefault(m => m.name == kv.Key);
+                    Material material = Material.AllOfThem.FirstOrDefault(m => m.invariantName == kv.Key);
                     if (material != null)
                     {
                         material.location = (string)kv.Value["location"];

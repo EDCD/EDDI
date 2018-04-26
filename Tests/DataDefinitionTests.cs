@@ -9,24 +9,24 @@ namespace UnitTests
         [TestMethod]
         public void TestDataDefinitionReactiveArmour()
         {
-            Commodity commodity = CommodityDefinitions.FromName("$ReactiveArmour_Name;");
-            Assert.AreEqual(commodity.name, "Reactive Armour");
+            CommodityDefinition commodity = CommodityDefinition.FromName("$ReactiveArmour_Name;");
+            Assert.AreEqual("Reactive Armour", commodity.invariantName);
             Assert.IsNotNull(commodity.EDDBID);
         }
 
         [TestMethod]
         public void TestDataDefinitionUnknownName()
         {
-            Commodity commodity = CommodityDefinitions.FromName("$MagicStuff_Name;");
-            Assert.AreEqual("Magic Stuff", commodity.name);
+            CommodityDefinition commodity = CommodityDefinition.FromName("$MagicStuff_Name;");
+            Assert.AreEqual("magicstuff", commodity.invariantName);
             Assert.AreEqual(0, commodity.EDDBID);
         }
 
         [TestMethod]
         public void TestDataDefinitionMaterialName1()
         {
-            Material material  = Material.FromName("cracked industrial firmware");
-            Assert.AreEqual("Cracked Industrial Firmware", material.name);
+            Material material  = Material.FromName("Cracked Industrial Firmware");
+            Assert.AreEqual("Cracked Industrial Firmware", material.invariantName);
             Assert.IsNotNull(material.rarity);
         }
 
@@ -34,8 +34,67 @@ namespace UnitTests
         public void TestDataDefinitionMaterialName2()
         {
             Material material = Material.FromName("Niobium");
-            Assert.AreEqual("Niobium", material.name);
+            Assert.AreEqual("Niobium", material.invariantName);
             Assert.IsNotNull(material.rarity);
+            Assert.AreEqual("Element", material.category.invariantName);
+        }
+
+        [TestMethod]
+        public void TestGovernmentKnownName()
+        {
+            Government govt = Government.FromName("Anarchy");
+            Assert.AreEqual("Anarchy", govt.basename);
+            Assert.AreEqual("Anarchy", govt.invariantName);
+        }
+
+        [TestMethod]
+        public void TestGovernmentKnownEDName()
+        {
+            Government govt = Government.FromEDName("$government_Anarchy");
+            Assert.AreEqual("Anarchy", govt.basename);
+            Assert.AreEqual("Anarchy", govt.invariantName);
+        }
+
+        [TestMethod]
+        public void TestGovernmentMissingNameFallback()
+        {
+            Government govt = Government.FromEDName("$government_NoSuchAnimal");
+            Assert.AreEqual("NoSuchAnimal", govt.basename);
+            Assert.AreEqual("NoSuchAnimal", govt.localizedName);
+        }
+
+        [TestMethod]
+        public void TestMaterialsExquisiteFocusCrystals()
+        {
+            Material efc = Material.FromName("Exquisite Focus Crystals");
+            Assert.AreEqual("exquisitefocuscrystals", efc.basename);
+            Assert.AreEqual("Exquisite Focus Crystals", efc.localizedName);
+            Assert.AreEqual("very rare", efc.rarity.invariantName);
+        }
+
+        [TestMethod]
+        public void TestCommodityTea()
+        {
+            CommodityDefinition trinket = CommodityDefinition.FromEDName("Tea");
+            Assert.AreEqual("Tea", trinket.edname);
+            Assert.AreEqual("Tea", trinket.invariantName);
+        }
+
+        [TestMethod]
+        public void TestCommodityDrones()
+        {
+            CommodityDefinition trinket = CommodityDefinition.FromEDName("Drones");
+            Assert.AreEqual("Drones", trinket.edname);
+            Assert.AreEqual("Limpet", trinket.invariantName);
+            Assert.AreEqual("Non-marketable", trinket.category.invariantName);
+        }
+
+        [TestMethod]
+        public void TestCommodityTrinketsOfFortune()
+        {
+            CommodityDefinition trinket = CommodityDefinition.FromEDName("TrinketsOfFortune");
+            Assert.AreEqual("TrinketsOfFortune", trinket.edname);
+            Assert.AreEqual("Trinkets Of Hidden Fortune", trinket.invariantName);
         }
     }
 }

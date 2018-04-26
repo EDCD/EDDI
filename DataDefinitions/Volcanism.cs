@@ -1,23 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Resources;
 
 namespace EddiDataDefinitions
 {
     /// <summary>
     /// Volcanism
     /// </summary>
+    [JsonObject(MemberSerialization.OptIn)]
     public class Volcanism
     {
-        // Translation of composition of volcanism 
-        private static readonly IDictionary<string, string> COMPOSITIONS = new Dictionary<string, string>();
-
-        public string type { get; set; } // Geysers/Magma
-
-        public string composition { get; set; } // Iron, Silicate, etc.
-
-        public string amount { get; set; } // Minor, Major, null (for normal)
-
         static Volcanism()
         {
+            resourceManager = Properties.Volcanism.ResourceManager;
+            resourceManager.IgnoreCase = false;
+
             COMPOSITIONS.Add("ammonia", "Ammonia");
             COMPOSITIONS.Add("carbon dioxide", "Carbon dioxide");
             COMPOSITIONS.Add("metallic", "Iron");
@@ -28,11 +26,45 @@ namespace EddiDataDefinitions
             COMPOSITIONS.Add("water", "Water");
         }
 
-        public Volcanism(string type, string composition, string amount)
+        public static readonly ResourceManager resourceManager;
+
+        // Translation of composition of volcanism 
+        private static readonly IDictionary<string, string> COMPOSITIONS = new Dictionary<string, string>();
+
+        [JsonProperty("type")]
+        public string edType { get; set; } // Geysers/Magma
+        public string invariantType => GetInvariantString(edType);
+        public string localizedType => GetLocalizedString(edType);
+
+        [JsonProperty("composition")]
+        public string edComposition { get; set; } // Iron, Silicate, etc.
+        public string invariantComposition => GetInvariantString(edComposition);
+        public string localizedComposition => GetLocalizedString(edComposition);
+
+        [JsonProperty("amount")]
+        public string edAmount { get; set; } // Minor, Major, null (for normal)
+        public string invariantAmount => GetInvariantString(edAmount);
+        public string localizedAmount => GetLocalizedString(edAmount);
+
+        private string GetInvariantString(string name)
         {
-            this.type = type;
-            this.composition = composition;
-            this.amount = amount;
+            if (name == null) { return null; }
+            name = name.Replace(" ", "_");
+            return resourceManager.GetString(name, CultureInfo.InvariantCulture);
+        }
+
+        private string GetLocalizedString(string name)
+        {
+            if (name == null) { return null; }
+            name = name.Replace(" ", "_");
+            return resourceManager.GetString(name);
+        }
+
+        public Volcanism(string type, string composition, string amountEDNAme)
+        {
+            this.edType = type;
+            this.edComposition = composition;
+            this.edAmount = amountEDNAme;
         }
 
         /// <summary>
@@ -87,15 +119,15 @@ namespace EddiDataDefinitions
             return new Volcanism(type, composition, amount);
         }
 
-        public string toString()
+        public override string ToString()
         {
-            if (amount == null)
+            if (localizedAmount == null)
             {
-                return composition + " " + type;
+                return $"{localizedComposition} {localizedType}";
             }
             else
             {
-                return amount + " " + composition + " " + type;
+                return $"{localizedAmount} {localizedComposition} {localizedType}";
             }
         }
     }

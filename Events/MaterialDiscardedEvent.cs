@@ -30,9 +30,9 @@ namespace EddiEvents
 
         public MaterialDiscardedEvent(DateTime timestamp, Material material, int amount) : base(timestamp, NAME)
         {
-            this.name = material?.name;
+            this.name = material?.localizedName;
             this.amount = amount;
-            this.edname = material?.EDName;
+            this.edname = material?.edname;
         }
     }
 }

@@ -1,33 +1,32 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
+﻿
 namespace EddiDataDefinitions
 {
     /// <summary>
     /// Superpowers
     /// </summary>
-    public class Superpower
+    public class Superpower : ResourceBasedLocalizedEDName<Superpower>
     {
-        private static readonly List<Superpower> SUPERPOWERS = new List<Superpower>();
-
-        public string name { get; private set; }
-
-        public string edname { get; private set; }
-
-        private Superpower(string edname, string name)
+        static Superpower()
         {
-            this.edname = edname;
-            this.name = name;
+            resourceManager = Properties.Superpowers.ResourceManager;
+            resourceManager.IgnoreCase = true;
 
-            SUPERPOWERS.Add(this);
+            None = new Superpower("$faction_none;");
+            var Federation = new Superpower("$faction_Federation;");
+            var Alliance = new Superpower("$faction_Alliance;");
+            var Empire = new Superpower("$faction_Empire;");
+            var Independent = new Superpower("$faction_Independent;");
+            var Pirate = new Superpower("$faction_Pirate;");
         }
 
-        public static readonly Superpower None = new Superpower("$faction_none;", "None");
-        public static readonly Superpower Federation = new Superpower("$faction_Federation;", "Federation");
-        public static readonly Superpower Alliance = new Superpower("$faction_Alliance;", "Alliance");
-        public static readonly Superpower Empire = new Superpower("$faction_Empire;", "Empire");
-        public static readonly Superpower Independent = new Superpower("$faction_Independent;", "Independent");
-        public static readonly Superpower Pirate = new Superpower("$faction_Pirate;", "Pirate");
+        public static readonly Superpower None;
+
+        // dummy used to ensure that the static constructor has run
+        public Superpower() : this("")
+        { }
+
+        private Superpower(string edname) : base(edname, edname.Replace("$faction_", "").Replace(";", ""))
+        { }
 
         public static Superpower From(string from)
         {
@@ -36,44 +35,7 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            Superpower result = FromName(from);
-            if (result == null)
-            {
-                result = FromEDName(from);
-            }
-            return result;
-        }
-
-        public static Superpower FromName(string from)
-        {
-            if (from == null)
-            {
-                return null;
-            }
-
-            Superpower result = SUPERPOWERS.FirstOrDefault(v => v.name == from);
-            return result;
-        }
-
-        // We don't report if the result wasn't found because this is used speculatively, and many factions
-        // are not superpowers
-        public static Superpower FromEDName(string from)
-        {
-            if (from == null)
-            {
-                return null;
-            }
-
-            string tidiedFrom = from.ToLowerInvariant();
-            Superpower result;
-            if (tidiedFrom == null || tidiedFrom == "")
-            {
-                result = null;
-            }
-            else
-            {
-                result = SUPERPOWERS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
-            }
+            Superpower result = FromName(from) ?? FromEDName(from);
             return result;
         }
     }

@@ -1,17 +1,18 @@
 ﻿using Eddi;
+using EddiEvents;
+using Newtonsoft.Json.Linq;
 using SimpleFeedReader;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading;
-using Utilities;
-using EddiEvents;
-using Newtonsoft.Json.Linq;
 using System.Windows.Controls;
+using Utilities;
 
 namespace GalnetMonitor
 {
+
     /// <summary>
     /// A sample EDDI monitor to watch The Elite: Dangerous RSS feed and generate an event for new items
     /// </summary>
@@ -48,6 +49,11 @@ namespace GalnetMonitor
             return "Galnet monitor";
         }
 
+        public string LocalizedMonitorName()
+        {
+            return EddiGalnetMonitor.Properties.Resources.name;
+        }
+
         /// <summary>
         /// The version of the monitor; shows up in EDDI's logs
         /// </summary>
@@ -61,7 +67,7 @@ namespace GalnetMonitor
         /// </summary>
         public string MonitorDescription()
         {
-            return @"Monitor Galnet for new news items and generate a ""Galnet news published"" event when new items are posted";
+            return EddiGalnetMonitor.Properties.Resources.desc;
         }
 
         public bool IsRequired()

@@ -22,6 +22,11 @@ namespace EddiEdsmResponder
             return "EDSM responder";
         }
 
+        public string LocalizedResponderName()
+        {
+            return Properties.EDSMResources.name;
+        }
+
         public string ResponderVersion()
         {
             return "1.0.0";
@@ -29,7 +34,7 @@ namespace EddiEdsmResponder
 
         public string ResponderDescription()
         {
-            return "Send details of your travels to EDSM.  EDSM is a third-party tool that provides information on the locations of star systems and keeps a log of the star systems you have visited.  It uses the data provided to crowd-source a map of the galaxy";
+            return Properties.EDSMResources.desc;
         }
 
         public EDSMResponder()

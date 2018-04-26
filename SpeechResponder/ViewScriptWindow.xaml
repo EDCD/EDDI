@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EddiSpeechResponder"
+        xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
         mc:Ignorable="d"
-        Title="View Script" Height="600" Width="800">
+        Title="{x:Static resx:Resources.view_script_title}" Height="600" Width="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
@@ -19,13 +20,13 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="Name"></TextBlock>
+            <TextBlock Margin="10" Grid.Row="0" Grid.Column="0" Text="{x:Static resx:Resources.header_name}"/>
             <TextBlock Margin="10" Grid.Row="0" Grid.Column="1" Text="{Binding Path=ScriptName}"/>
-            <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="Description"></TextBlock>
+            <TextBlock Margin="10" Grid.Row="1" Grid.Column="0" Text="{x:Static resx:Resources.header_description}" />
             <TextBlock Margin="10" Grid.Row="1" Grid.Column="1" Text="{Binding Path=ScriptDescription}"/>
             <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" TextWrapping="Wrap" IsReadOnly="True" FontFamily="Consolas" VerticalAlignment="Stretch" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Text="{Binding Path=ScriptValue, Mode=TwoWay}"/>
             <UniformGrid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Rows="1" Columns="1" Width="770" Margin="0,0,0,10" HorizontalAlignment="Center">
-                <Button x:Name="okButton" FontSize="18" Content="OK" VerticalAlignment="Top" Click="okButtonClick" Margin="0,0,5,0"/>
+                <Button x:Name="okButton" FontSize="18" Content="{x:Static resx:Resources.button_ok}" VerticalAlignment="Top" Click="okButtonClick" Margin="0,0,5,0"/>
             </UniformGrid>
         </Grid>
     </DockPanel>

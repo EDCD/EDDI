@@ -4,23 +4,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EddiVoiceAttackResponder"
+             xmlns:resx="clr-namespace:EddiVoiceAttackResponder.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="To integrate EDDI with VoiceAttack EDDI needs to be installed within VoiceAttack's 'Apps' directory.  The default path for this is 'C:\Program Files (x86)\VoiceAttack\Apps', and is where EDDI will be installed by default." VerticalAlignment="Top"/>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="EDDI will only work with versions of VoiceAttack 1.5.12.22 and higher.  Note that this a beta release." VerticalAlignment="Top"/>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="Once VoiceAttack is installed you will need to enable plugin support.  To do so you must click on the Settings icon (a spanner) in the top-right corner of the VoiceAttack and check the 'Enable plugin support' option and restart VoiceAttack.  You should see a message in the VoiceAttack window along the lines of 'Plugin EDDI 2.0.0 initialized'." VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:Resources.p1}" VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:Resources.p2}" VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:Resources.p3}" VerticalAlignment="Top"/>
         <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
             <FlowDocument Background="#FFE5E5E5">
-                <Paragraph>At this point you can integrate EDDI's variables with your own VoiceAttack scripts.  For example, your commander's name is stored in the 'Name' text variable so to access it you just use '{TXT:Name}' in your own commands.  There are variables for your commander, your ships, the current starsystem and station you are at, and more.  A full list of variables is available <Hyperlink Click="VAVariablesClicked">on the main EDDI site</Hyperlink>.</Paragraph>
+                <Paragraph>
+                    <Run Text="{x:Static resx:Resources.p4}" />
+                    <Hyperlink Click="VAVariablesClicked">
+                        <Run Text="{x:Static resx:Resources.p4_link}" />
+                    </Hyperlink>.</Paragraph>
             </FlowDocument>
         </RichTextBox>
         <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
             <FlowDocument Background="#FFE5E5E5">
-                <Paragraph>In addition to writing scripts that you trigger with voice or keyboard actions you can also write scripts that trigger on events that occur within Elite.  For example, if you wanted to trigger a script every time the 'Docked' event occurs then you would write a script called '((EDDI docked))' (note the double brackets around the name to avoid it being called accidentally, and the lower cased 'd' in docked).  A full list of events is also available
-                    <Hyperlink Click="VAVariablesClicked">on the main EDDI site</Hyperlink>.
-                    <!--, and you can also
-                    <Hyperlink Click="VAExampleClicked">watch a video setting up a command to trigger on an event</Hyperlink>.-->
+                <Paragraph>
+                    <Run Text="{x:Static resx:Resources.p5}" />
+                    <Hyperlink Click="VAVariablesClicked">
+                        <Run Text="{x:Static resx:Resources.p5_link}" />
+                    </Hyperlink>.
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>

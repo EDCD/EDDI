@@ -24,8 +24,8 @@ namespace EddiDataDefinitions
         public MaterialPresence(Material definition, decimal percentage)
         {
             this.definition = definition;
-            this.name = definition.name;
-            this.material = definition.name;
+            this.name = definition.invariantName;
+            this.material = definition.invariantName;
             this.rarity= definition.rarity;
             this.percentage = percentage;
         }
@@ -37,8 +37,8 @@ namespace EddiDataDefinitions
             if (definition != null)
             {
                 this.definition = definition;
-                this.name = definition.name;
-                this.material = definition.name;
+                this.name = definition.invariantName;
+                this.material = definition.invariantName;
                 this.rarity = definition.rarity;
             }
             this.percentage = percentage;

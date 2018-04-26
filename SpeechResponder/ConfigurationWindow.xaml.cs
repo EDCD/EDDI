@@ -146,8 +146,8 @@ namespace EddiSpeechResponder
         {
             EDDI.Instance.SpeechResponderModalWait = true;
             Script script = ((KeyValuePair<string, Script>)((Button)e.Source).DataContext).Value;
-            string messageBoxText = "Are you sure you want to delete the \"" + script.Name + "\" script?";
-            string caption = "Delete Script";
+            string messageBoxText = string.Format(Properties.Resources.delete_script_message, script.Name);
+            string caption = Properties.Resources.delete_script_caption;
             MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
             switch (result)
             {
@@ -238,8 +238,8 @@ namespace EddiSpeechResponder
         private void deletePersonalityClicked(object sender, RoutedEventArgs e)
         {
             EDDI.Instance.SpeechResponderModalWait = true;
-            string messageBoxText = "Are you sure you want to delete the \"" + Personality.Name + "\" personality?";
-            string caption = "Delete Personality";
+            string messageBoxText = string.Format(Properties.Resources.delete_personality_message, Personality.Name);
+            string caption = Properties.Resources.delete_personality_caption;
             MessageBoxResult result = MessageBox.Show(messageBoxText, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
             switch (result)
             {
@@ -290,14 +290,14 @@ namespace EddiSpeechResponder
         {
             if (personality.IsDefault)
             {
-                defaultText.Text = "The default personality cannot be modified. If you wish to make changes, create a copy.";
+                defaultText.Text = Properties.Resources.default_is_read_only;
                 defaultText.FontWeight = FontWeights.Bold;
                 defaultText.FontStyle = FontStyles.Italic;
                 defaultText.FontSize = 13;
             }
             else
             {
-                defaultText.Text = "Scripts which are triggered by an event can be disabled but not deleted.";
+                defaultText.Text = Properties.Resources.warning_triggered;
                 defaultText.FontWeight = FontWeights.Normal;
                 defaultText.FontStyle = FontStyles.Italic;
                 defaultText.FontSize = 13;

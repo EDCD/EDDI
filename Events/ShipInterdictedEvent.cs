@@ -51,7 +51,7 @@ namespace EddiEvents
             this.submitted = submitted;
             this.iscommander = iscommander;
             this.interdictor = interdictor;
-            this.rating = (rating == null ? null : rating.name);
+            this.rating = rating?.localizedName;
             this.faction = faction;
             this.power = power;
         }
