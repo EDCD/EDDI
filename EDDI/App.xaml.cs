@@ -29,18 +29,21 @@ namespace Eddi
             {
                 Exception exception = args.Exception as Exception;
                 _Rollbar.ExceptionHandler(exception);
+                ReloadAndRecover(exception);
             };
             // Catch and send unhandled exceptions from non-UI threads
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
                 Exception exception = args.ExceptionObject as Exception;
                 _Rollbar.ExceptionHandler(exception);
+                ReloadAndRecover(exception);
             };
             // Catch and send unhandled exceptions from the task scheduler
             TaskScheduler.UnobservedTaskException += (sender, args) =>
             {
                 Exception exception = args.Exception as Exception;
                 _Rollbar.ExceptionHandler(exception);
+                ReloadAndRecover(exception);
             };
 
             MainWindow mainWindow = null;
@@ -62,6 +65,13 @@ namespace Eddi
                                 localisedMultipleInstanceAlertTitle,
                                 MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+
+        private static void ReloadAndRecover(Exception exception)
+        {
+            Logging.Debug("Reloading after unhandled exception: " + exception.ToString());
+            EDDI.Instance.Stop();
+            EDDI.Instance.Start();
         }
     }
 }
