@@ -200,7 +200,6 @@ namespace Eddi
             {
                 LanguageDef cultureDef = (LanguageDef)chooseLanguageDropDown.SelectedValue;
                 Eddi.Properties.Settings.Default.OverrideCulture = cultureDef.ci.Name;
-                eddiConfiguration.ToFile();
             };
 
             Logging.Verbose = eddiConfiguration.Debug;
