@@ -61,6 +61,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced Discovery Scanner.
+        /// </summary>
+        public static string AdvancedDiscoveryScanner {
+            get {
+                return ResourceManager.GetString("AdvancedDiscoveryScanner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced Plasma Accelerator.
         /// </summary>
         public static string AdvancedPlasmaAccelerator {
@@ -331,6 +340,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to fixed.
+        /// </summary>
+        public static string Fixed {
+            get {
+                return ResourceManager.GetString("Fixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fragment Cannon.
         /// </summary>
         public static string FragmentCannon {
@@ -390,6 +408,15 @@ namespace EddiDataDefinitions.Properties {
         public static string FuelTransferLimpetController {
             get {
                 return ResourceManager.GetString("FuelTransferLimpetController", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gimballed.
+        /// </summary>
+        public static string Gimballed {
+            get {
+                return ResourceManager.GetString("Gimballed", resourceCulture);
             }
         }
         
@@ -867,6 +894,15 @@ namespace EddiDataDefinitions.Properties {
         public static string TorpedoPylon {
             get {
                 return ResourceManager.GetString("TorpedoPylon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to turreted.
+        /// </summary>
+        public static string Turreted {
+            get {
+                return ResourceManager.GetString("Turreted", resourceCulture);
             }
         }
         

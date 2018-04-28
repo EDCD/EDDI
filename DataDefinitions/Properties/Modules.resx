@@ -509,4 +509,8 @@
     <value>turreted</value>
     <comment>Weapon mount type Turreted</comment>
   </data>
+  <data name="AdvancedDiscoveryScanner" xml:space="preserve">
+    <value>Advanced Discovery Scanner</value>
+    <comment>Module AdvancedDiscoveryScanner</comment>
+  </data>
 </root>
