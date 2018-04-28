@@ -151,7 +151,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aluminium.
+        ///   Looks up a localized string similar to Aluminum.
         /// </summary>
         public static string Aluminium {
             get {
@@ -259,7 +259,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Antique Jewellery.
+        ///   Looks up a localized string similar to Antique Jewelry.
         /// </summary>
         public static string AntiqueJewellery {
             get {
@@ -673,7 +673,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Combat Stabilisers.
+        ///   Looks up a localized string similar to Combat Stabilizers.
         /// </summary>
         public static string CombatStabilisers {
             get {
@@ -2203,7 +2203,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reactive Armour.
+        ///   Looks up a localized string similar to Reactive Armor.
         /// </summary>
         public static string ReactiveArmour {
             get {
@@ -2365,7 +2365,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sirius Inustrial Equipment.
+        ///   Looks up a localized string similar to Sirius Industrial Equipment.
         /// </summary>
         public static string siriusindustrialequipment {
             get {
@@ -2446,7 +2446,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Surface Stabilisers.
+        ///   Looks up a localized string similar to Surface Stabilizers.
         /// </summary>
         public static string SurfaceStabilisers {
             get {
@@ -2779,7 +2779,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ancient Artefact.
+        ///   Looks up a localized string similar to Ancient Artifact.
         /// </summary>
         public static string USSCargoAncientArtefact {
             get {

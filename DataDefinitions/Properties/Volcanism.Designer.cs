@@ -151,7 +151,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Silicate vapour.
+        ///   Looks up a localized string similar to Silicate vapor.
         /// </summary>
         public static string Silicate_vapour {
             get {

@@ -130,7 +130,7 @@
     <value>La conexión de la API de no funciona</value>
   </data>
   <data name="frontier_api_no_logins" xml:space="preserve">
-    <value>No tiene una conexión con la API de Frontier en este momento. por favor ingrese a continuación su dirección de correo electrónico y contraseña de Elite: Dangerous</value>
+    <value>No tiene una conexión con la API de Frontier en este momento. por favor ingrese a continuación su dirección de correo electrónico y contraseña de Elite Dangerous</value>
   </data>
   <data name="frontier_api_ok" xml:space="preserve">
     <value>Su conexión a la API de Frontier está operativa, Commander {0}.</value>

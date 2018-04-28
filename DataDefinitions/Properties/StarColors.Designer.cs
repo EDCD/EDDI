@@ -59,5 +59,59 @@ namespace EddiDataDefinitions.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to blue.
+        /// </summary>
+        public static string blue {
+            get {
+                return ResourceManager.GetString("blue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to blue-white.
+        /// </summary>
+        public static string blue_white {
+            get {
+                return ResourceManager.GetString("blue_white", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to orange-red.
+        /// </summary>
+        public static string orange_red {
+            get {
+                return ResourceManager.GetString("orange_red", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to white.
+        /// </summary>
+        public static string white {
+            get {
+                return ResourceManager.GetString("white", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to yellow-orange.
+        /// </summary>
+        public static string yellow_orange {
+            get {
+                return ResourceManager.GetString("yellow_orange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to yellow-white.
+        /// </summary>
+        public static string yellow_white {
+            get {
+                return ResourceManager.GetString("yellow_white", resourceCulture);
+            }
+        }
     }
 }

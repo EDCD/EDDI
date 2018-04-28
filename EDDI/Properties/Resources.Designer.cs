@@ -61,7 +61,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only one instance of EDDI can run at at time.
+        ///   Looks up a localized string similar to Only one instance of EDDI can run at a time.
         ///
         ///Please close the other instance and try again..
         /// </summary>
@@ -144,7 +144,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You do not have a connection to the Frontier API at this time. Please enter your Elite: Dangerous email address and password below..
+        ///   Looks up a localized string similar to You do not have a connection to the Frontier API at this time. Please enter your Elite Dangerous email address and password below..
         /// </summary>
         public static string frontier_api_no_logins {
             get {

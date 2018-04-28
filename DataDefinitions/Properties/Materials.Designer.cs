@@ -916,7 +916,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sulphur.
+        ///   Looks up a localized string similar to Sulfur.
         /// </summary>
         public static string sulphur {
             get {

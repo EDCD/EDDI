@@ -70,7 +70,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select EDDI&apos;s language (requires relauncing EDDI):.
+        ///   Looks up a localized string similar to Select EDDI&apos;s language (requires relaunching EDDI):.
         /// </summary>
         public static string choose_lang_label {
             get {
@@ -124,7 +124,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The first group obtain and manage the basic information used by EDDI. These are the &apos;Commander Details&apos;, &apos;Frontier API&apos; and &apos;Text-to-Speech&apos; tabs. You should go through each of these and configure them so that EDDI has full access to your Elite: Dangerous information..
+        ///   Looks up a localized string similar to The first group obtains and manages the basic information used by EDDI. These are the &apos;Commander Details&apos;, &apos;Frontier API&apos; and &apos;Text-to-Speech&apos; tabs. You should go through each of these and configure them so that EDDI has full access to your Elite: Dangerous information..
         /// </summary>
         public static string paragraph_1 {
             get {
@@ -133,7 +133,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The second group obtain event information. These are the tabs that end in &apos;monitor&apos;. They obtain events from different places, and require minimal configuration but need to be completed before they will work..
+        ///   Looks up a localized string similar to The second group obtains event information. These are the tabs that end in &apos;monitor&apos;. They obtain events from different places, and require minimal configuration but need to be completed before they will work..
         /// </summary>
         public static string paragraph_2 {
             get {
@@ -268,7 +268,7 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Frontier has an API that allows EDDI to obtain information on your ships, the current station&apos;s market, and various other items. This data is not available elsewhere. If you want EDDI to obtain and use this information you need to enter your Frontier in-game email address and password below..
+        ///   Looks up a localized string similar to Frontier has an API that allows EDDI to obtain information about your ships, the current station&apos;s market, and various other items. This data is not available elsewhere. If you want EDDI to obtain and use this information you need to enter your Frontier in-game email address and password below..
         /// </summary>
         public static string tab_frontier_desc {
             get {

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
+  <!-- 
 		Microsoft ResX Schema
 
 		Version 1.3
@@ -58,46 +58,45 @@
 			: using a System.ComponentModel.TypeConverter
 			: and then encoded with base64 encoding.
 	-->
-	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
   <data name="AdvancedCatalysers" xml:space="preserve">
     <value>Advanced Catalysers</value>
     <comment>Commodity AdvancedCatalysers</comment>
@@ -135,7 +134,7 @@
     <comment>Commodity AltairianSkin</comment>
   </data>
   <data name="Aluminium" xml:space="preserve">
-    <value>Aluminium</value>
+    <value>Aluminum</value>
     <comment>Commodity Aluminium</comment>
   </data>
   <data name="AlyaBodySoap" xml:space="preserve">
@@ -183,7 +182,7 @@
     <comment>Commodity AntimatterContainmentUnit</comment>
   </data>
   <data name="AntiqueJewellery" xml:space="preserve">
-    <value>Antique Jewellery</value>
+    <value>Antique Jewelry</value>
     <comment>Commodity AntiqueJewellery</comment>
   </data>
   <data name="Antiquities" xml:space="preserve">
@@ -367,7 +366,7 @@
     <comment>Commodity Coltan</comment>
   </data>
   <data name="CombatStabilisers" xml:space="preserve">
-    <value>Combat Stabilisers</value>
+    <value>Combat Stabilizers</value>
     <comment>Commodity CombatStabilisers</comment>
   </data>
   <data name="ComercialSamples" xml:space="preserve">
@@ -1047,7 +1046,7 @@
     <comment>Commodity RapaBaoSnakeSkins</comment>
   </data>
   <data name="ReactiveArmour" xml:space="preserve">
-    <value>Reactive Armour</value>
+    <value>Reactive Armor</value>
     <comment>Commodity ReactiveArmour</comment>
   </data>
   <data name="ReinforcedMountingPlate" xml:space="preserve">
@@ -1139,7 +1138,7 @@
     <comment>Commodity Superconductors</comment>
   </data>
   <data name="SurfaceStabilisers" xml:space="preserve">
-    <value>Surface Stabilisers</value>
+    <value>Surface Stabilizers</value>
     <comment>Commodity SurfaceStabilisers</comment>
   </data>
   <data name="SurvivalEquipment" xml:space="preserve">
@@ -1255,7 +1254,7 @@
     <comment>Commodity TrinketsOfFortune</comment>
   </data>
   <data name="USSCargoAncientArtefact" xml:space="preserve">
-    <value>Ancient Artefact</value>
+    <value>Ancient Artifact</value>
     <comment>Commodity USSCargoAncientArtefact</comment>
   </data>
   <data name="USSCargoBlackBox" xml:space="preserve">
@@ -1419,7 +1418,7 @@
     <comment>Commodity siriusfranchisepackage</comment>
   </data>
   <data name="siriusindustrialequipment" xml:space="preserve">
-    <value>Sirius Inustrial Equipment</value>
+    <value>Sirius Industrial Equipment</value>
     <comment>Commodity siriusindustrialequipment</comment>
   </data>
   <data name="xihecompanions" xml:space="preserve">

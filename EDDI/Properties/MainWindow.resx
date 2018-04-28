@@ -127,10 +127,10 @@
     <value>has a number of features that can be configured separately. There are three different types of items.</value>
   </data>
   <data name="paragraph_1" xml:space="preserve">
-    <value>The first group obtain and manage the basic information used by EDDI. These are the 'Commander Details', 'Frontier API' and 'Text-to-Speech' tabs. You should go through each of these and configure them so that EDDI has full access to your Elite: Dangerous information.</value>
+    <value>The first group obtains and manages the basic information used by EDDI. These are the 'Commander Details', 'Frontier API' and 'Text-to-Speech' tabs. You should go through each of these and configure them so that EDDI has full access to your Elite: Dangerous information.</value>
   </data>
   <data name="paragraph_2" xml:space="preserve">
-    <value>The second group obtain event information. These are the tabs that end in 'monitor'. They obtain events from different places, and require minimal configuration but need to be completed before they will work.</value>
+    <value>The second group obtains event information. These are the tabs that end in 'monitor'. They obtain events from different places, and require minimal configuration but need to be completed before they will work.</value>
   </data>
   <data name="paragraph_3" xml:space="preserve">
     <value>The third group respond to events. These are the tabs that end in 'responder'. These come with varying degrees of configuration, but will work out of the box.</value>
@@ -158,7 +158,7 @@
     <value>project wiki</value>
   </data>
   <data name="choose_lang_label" xml:space="preserve">
-    <value>Select EDDI's language (requires relauncing EDDI):</value>
+    <value>Select EDDI's language (requires relaunching EDDI):</value>
   </data>
   <data name="label_code" xml:space="preserve">
     <value>Code:</value>
@@ -170,7 +170,7 @@
     <value>Password:</value>
   </data>
   <data name="tab_frontier_desc" xml:space="preserve">
-    <value>Frontier has an API that allows EDDI to obtain information on your ships, the current station's market, and various other items. This data is not available elsewhere. If you want EDDI to obtain and use this information you need to enter your Frontier in-game email address and password below.</value>
+    <value>Frontier has an API that allows EDDI to obtain information about your ships, the current station's market, and various other items. This data is not available elsewhere. If you want EDDI to obtain and use this information you need to enter your Frontier in-game email address and password below.</value>
   </data>
   <data name="tab_frontier_header" xml:space="preserve">
     <value>Frontier API</value>

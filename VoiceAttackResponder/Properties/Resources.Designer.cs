@@ -106,7 +106,7 @@ namespace EddiVoiceAttackResponder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to At this point you can integrate EDDI&apos;s variables with your own VoiceAttack scripts. For example, your commander&apos;s name is stored in the &apos;Name&apos; text variable so to access it you just use &apos;{TXT:Name}&apos; in your own commands. There are variables for your commander, your ships, the current starsystem and station you are at, and more. A full list of variables is available .
+        ///   Looks up a localized string similar to At this point you can integrate EDDI&apos;s variables with your own VoiceAttack scripts. For example, your commander&apos;s name is stored in the &apos;Name&apos; text variable so to access it you just use &apos;{TXT:Name}&apos; in your own commands. There are variables for your commander, your ships, the current star system and station you are at, and more. A full list of variables is available .
         /// </summary>
         public static string p4 {
             get {

@@ -412,7 +412,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to gimballed.
+        ///   Looks up a localized string similar to gimbaled.
         /// </summary>
         public static string Gimballed {
             get {

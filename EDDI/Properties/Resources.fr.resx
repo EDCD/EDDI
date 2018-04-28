@@ -130,7 +130,7 @@
     <value>Connexion à l'API Frontier non opérationnelle</value>
   </data>
   <data name="frontier_api_no_logins" xml:space="preserve">
-    <value>Vous n'êtes pas connecté à l'API Frontier actuellement. Veuillez entrer votre adresse mail et votre mot de passe Elite: Dangerous ci-dessous.</value>
+    <value>Vous n'êtes pas connecté à l'API Frontier actuellement. Veuillez entrer votre adresse mail et votre mot de passe Elite Dangerous ci-dessous.</value>
   </data>
   <data name="frontier_api_ok" xml:space="preserve">
     <value>Votre connexion à l'API Frontier est opérationnelle, Commandant {0}.</value>
