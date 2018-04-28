@@ -39,9 +39,9 @@ namespace Eddi
 
         private static void ApplyAnyOverrideCulture()
         {
-            string overrideCultureName = Eddi.Properties.Settings.Default.OverrideCulture;
             try
             {
+                string overrideCultureName = Eddi.Properties.Settings.Default.OverrideCulture;
                 CultureInfo overrideCulture = String.IsNullOrEmpty(overrideCultureName) ? null : new CultureInfo(overrideCultureName);
                 ApplyCulture(overrideCulture);
             }
