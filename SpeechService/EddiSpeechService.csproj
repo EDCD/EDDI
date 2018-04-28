@@ -2,9 +2,6 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <UICulture>en-US</UICulture>
-  </PropertyGroup>
-  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{19572A69-C13A-459D-AB72-2B0F034AC27F}</ProjectGuid>
@@ -81,11 +78,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\Phonetics.en-US.Designer.cs">
-      <DependentUpon>Phonetics.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\Phonetics.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -98,11 +90,6 @@
     </Compile>
     <Compile Include="Properties\Phrases.fr.Designer.cs">
       <DependentUpon>Phrases.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\Phrases.en-US.Designer.cs">
-      <DependentUpon>Phrases.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -137,10 +124,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Phonetics.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Phonetics.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Phonetics.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Phonetics.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Phonetics.Designer.cs</LastGenOutput>
@@ -152,10 +135,6 @@
     <EmbeddedResource Include="Properties\Phrases.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Phrases.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Phrases.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Phrases.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Phrases.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

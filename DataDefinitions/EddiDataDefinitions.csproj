@@ -2,9 +2,6 @@
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <UICulture>en-US</UICulture>
-  </PropertyGroup>
-  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0C845B02-E283-43D8-91A7-205AD3397371}</ProjectGuid>
@@ -84,11 +81,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\CombatRatings.en-US.Designer.cs">
-      <DependentUpon>CombatRatings.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\CombatRatings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -104,11 +96,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\Commodities.en-US.Designer.cs">
-      <DependentUpon>Commodities.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\CommodityCategories.es.Designer.cs">
       <DependentUpon>CommodityCategories.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -119,11 +106,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\CommodityCategories.en-US.Designer.cs">
-      <DependentUpon>CommodityCategories.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\Compositions.es.Designer.cs">
       <DependentUpon>Compositions.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -131,11 +113,6 @@
     </Compile>
     <Compile Include="Properties\Compositions.fr.Designer.cs">
       <DependentUpon>Compositions.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\Compositions.en-US.Designer.cs">
-      <DependentUpon>Compositions.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -154,11 +131,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\CQCRatings.en-US.Designer.cs">
-      <DependentUpon>CQCRatings.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\CQCRatings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -171,11 +143,6 @@
     </Compile>
     <Compile Include="Properties\Crimes.fr.Designer.cs">
       <DependentUpon>Crimes.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\Crimes.en-US.Designer.cs">
-      <DependentUpon>Crimes.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -194,11 +161,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\DataScans.en-US.Designer.cs">
-      <DependentUpon>DataScans.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\DataScans.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -214,11 +176,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\Economies.en-US.Designer.cs">
-      <DependentUpon>Economies.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\Economies.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -226,11 +183,6 @@
     </Compile>
     <Compile Include="Properties\EmpireRatingsFemale.fr.Designer.cs">
       <DependentUpon>EmpireRatingsFemale.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\EmpireRatingsFemale.en-US.Designer.cs">
-      <DependentUpon>EmpireRatingsFemale.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -249,11 +201,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\EmpireRatingsMale.en-US.Designer.cs">
-      <DependentUpon>EmpireRatingsMale.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\EmpireRatingsMale.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -266,11 +213,6 @@
     </Compile>
     <Compile Include="Properties\ExplorationRatings.fr.Designer.cs">
       <DependentUpon>ExplorationRatings.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\ExplorationRatings.en-US.Designer.cs">
-      <DependentUpon>ExplorationRatings.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -289,11 +231,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\FederationRatings.en-US.Designer.cs">
-      <DependentUpon>FederationRatings.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\FederationRatings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -309,11 +246,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\GameModes.en-US.Designer.cs">
-      <DependentUpon>GameModes.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\GameModes.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -326,11 +258,6 @@
     </Compile>
     <Compile Include="Properties\MaterialCategories.fr.Designer.cs">
       <DependentUpon>MaterialCategories.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\MaterialCategories.en-US.Designer.cs">
-      <DependentUpon>MaterialCategories.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -354,11 +281,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\Materials.en-US.Designer.cs">
-      <DependentUpon>Materials.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\Commodities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -379,11 +301,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\Modules.en-US.Designer.cs">
-      <DependentUpon>Modules.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\Modules.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -396,11 +313,6 @@
     </Compile>
     <Compile Include="Properties\Rarities.fr.Designer.cs">
       <DependentUpon>Rarities.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\Rarities.en-US.Designer.cs">
-      <DependentUpon>Rarities.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -419,11 +331,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\ShipRoles.en-US.Designer.cs">
-      <DependentUpon>ShipRoles.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\ShipRoles.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -436,11 +343,6 @@
     </Compile>
     <Compile Include="Properties\StarColors.fr.Designer.cs">
       <DependentUpon>StarColors.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\StarColors.en-US.Designer.cs">
-      <DependentUpon>StarColors.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -459,11 +361,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\SystemStates.en-US.Designer.cs">
-      <DependentUpon>SystemStates.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\SystemStates.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -476,11 +373,6 @@
     </Compile>
     <Compile Include="Properties\TradeRatings.fr.Designer.cs">
       <DependentUpon>TradeRatings.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\TradeRatings.en-US.Designer.cs">
-      <DependentUpon>TradeRatings.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -499,20 +391,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Properties\Volcanism.en-US.Designer.cs">
-      <DependentUpon>Volcanism.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\Volcanism.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Volcanism.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Vouchers.en-US.Designer.cs">
-      <DependentUpon>Vouchers.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Properties\Vouchers.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -526,11 +408,6 @@
     </Compile>
     <Compile Include="Properties\SecurityLevels.fr.Designer.cs">
       <DependentUpon>SecurityLevels.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\SecurityLevels.en-US.Designer.cs">
-      <DependentUpon>SecurityLevels.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -552,11 +429,6 @@
     </Compile>
     <Compile Include="Properties\Superpowers.fr.Designer.cs">
       <DependentUpon>Superpowers.fr.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\Superpowers.en-US.Designer.cs">
-      <DependentUpon>Superpowers.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -630,10 +502,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CombatRatings.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\CombatRatings.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CombatRatings.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\CombatRatings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CombatRatings.Designer.cs</LastGenOutput>
@@ -646,10 +514,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Commodities.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Commodities.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Commodities.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\CommodityCategories.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CommodityCategories.es.Designer.cs</LastGenOutput>
@@ -658,10 +522,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CommodityCategories.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\CommodityCategories.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CommodityCategories.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Compositions.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Compositions.es.Designer.cs</LastGenOutput>
@@ -669,10 +529,6 @@
     <EmbeddedResource Include="Properties\Compositions.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Compositions.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Compositions.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Compositions.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Compositions.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -686,10 +542,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CQCRatings.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\CQCRatings.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>CQCRatings.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\CQCRatings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CQCRatings.Designer.cs</LastGenOutput>
@@ -701,10 +553,6 @@
     <EmbeddedResource Include="Properties\Crimes.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Crimes.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Crimes.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Crimes.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Crimes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -718,10 +566,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DataScans.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\DataScans.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>DataScans.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\DataScans.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DataScans.Designer.cs</LastGenOutput>
@@ -734,17 +578,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Economies.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Economies.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Economies.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\EmpireRatingsFemale.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmpireRatingsFemale.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\EmpireRatingsFemale.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EmpireRatingsFemale.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\EmpireRatingsFemale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -758,10 +594,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmpireRatingsMale.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\EmpireRatingsMale.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>EmpireRatingsMale.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\EmpireRatingsMale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmpireRatingsMale.Designer.cs</LastGenOutput>
@@ -773,10 +605,6 @@
     <EmbeddedResource Include="Properties\ExplorationRatings.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ExplorationRatings.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\ExplorationRatings.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ExplorationRatings.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\ExplorationRatings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -790,10 +618,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>FederationRatings.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\FederationRatings.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>FederationRatings.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\FederationRatings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>FederationRatings.Designer.cs</LastGenOutput>
@@ -806,15 +630,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameModes.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\GameModes.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>GameModes.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\GameModes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameModes.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Governments.en-US.resx" />
     <EmbeddedResource Include="Properties\Governments.es.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -837,10 +656,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MaterialCategories.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\MaterialCategories.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MaterialCategories.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\MaterialCategories.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MaterialCategories.Designer.cs</LastGenOutput>
@@ -852,10 +667,6 @@
     <EmbeddedResource Include="Properties\Materials.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Materials.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Materials.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Materials.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Materials.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -877,10 +688,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Modules.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Modules.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Modules.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Modules.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Modules.Designer.cs</LastGenOutput>
@@ -892,10 +699,6 @@
     <EmbeddedResource Include="Properties\Rarities.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Rarities.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Rarities.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Rarities.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Rarities.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -909,10 +712,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ShipRoles.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\ShipRoles.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ShipRoles.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\ShipRoles.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ShipRoles.Designer.cs</LastGenOutput>
@@ -924,10 +723,6 @@
     <EmbeddedResource Include="Properties\StarColors.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StarColors.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\StarColors.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>StarColors.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\StarColors.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -941,10 +736,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SystemStates.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\SystemStates.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SystemStates.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\SystemStates.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SystemStates.Designer.cs</LastGenOutput>
@@ -956,10 +747,6 @@
     <EmbeddedResource Include="Properties\TradeRatings.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TradeRatings.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\TradeRatings.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>TradeRatings.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\TradeRatings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -973,17 +760,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Volcanism.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Volcanism.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Volcanism.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Volcanism.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Volcanism.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Vouchers.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Vouchers.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Vouchers.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -996,10 +775,6 @@
     <EmbeddedResource Include="Properties\SecurityLevels.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SecurityLevels.fr.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\SecurityLevels.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>SecurityLevels.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\SecurityLevels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -1014,10 +789,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Superpowers.fr.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Superpowers.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Superpowers.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Superpowers.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

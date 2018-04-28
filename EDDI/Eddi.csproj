@@ -173,11 +173,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\MainWindow.en-US.Designer.cs">
-      <DependentUpon>MainWindow.en-US.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Properties\MainWindow.es.Designer.cs">
       <DependentUpon>MainWindow.es.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -190,11 +185,6 @@
     </Compile>
     <Compile Include="Properties\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\Resources.en-US.Designer.cs">
-      <DependentUpon>Resources.en-US.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -218,10 +208,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\MainWindow.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>MainWindow.en-US.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\MainWindow.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MainWindow.es.Designer.cs</LastGenOutput>
@@ -233,10 +219,6 @@
     <EmbeddedResource Include="Properties\MainWindow.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MainWindow.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.en-US.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
