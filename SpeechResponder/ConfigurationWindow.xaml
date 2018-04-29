@@ -7,20 +7,20 @@
              xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-    <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0, 5, 0, 0">
-        <Grid DockPanel.Dock="Top" Margin="5, 0">
+    <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="-10">
+        <Grid DockPanel.Dock="Top" Margin="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="285"/>
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Vertical" Grid.Column="0" DockPanel.Dock="Top" >
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                    <TextBlock Margin="0, 0, 0, 5" TextWrapping="Wrap" Text="{x:Static resx:Resources.subs}" />
+                    <TextBlock Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.subs}" />
                     <CheckBox x:Name="subtitlesCheckbox" VerticalAlignment="Center" Margin="5, 0" Checked="subtitlesEnabled" Unchecked="subtitlesDisabled"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" >
-                    <TextBlock Margin="0,5" TextWrapping="Wrap" Text="{x:Static resx:Resources.subs_only}"></TextBlock>
-                    <CheckBox x:Name="subtitlesOnlyCheckbox" Margin="5, 0" VerticalAlignment="Center" Checked="subtitlesOnlyEnabled" Unchecked="subtitlesOnlyDisabled"/>
+                    <TextBlock Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.subs_only}"></TextBlock>
+                    <CheckBox x:Name="subtitlesOnlyCheckbox" Margin="0" VerticalAlignment="Center" Checked="subtitlesOnlyEnabled" Unchecked="subtitlesOnlyDisabled"/>
                 </StackPanel>
             </StackPanel>
             <TextBlock x:Name="defaultText" VerticalAlignment="Top" DockPanel.Dock="Left" Grid.Column="1" TextWrapping="Wrap" Width="Auto" Text="{x:Static resx:Resources.default_is_read_only}"/>
@@ -30,7 +30,7 @@
             <ComboBox Margin="5,0" ItemsSource="{Binding Personalities}" SelectedValue="{Binding Personality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectionChanged="personalityChanged" />
             <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding Personality.Description}"/>
         </StackPanel>
-        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0,5">
+        <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0">
             <Button Margin="10" HorizontalAlignment="Center" Click="newScriptClicked" IsEnabled="{Binding Path=Personality.IsEditable}" Content="{x:Static resx:Resources.button_new}"></Button>
             <Button Margin="10" HorizontalAlignment="Center" Click="copyPersonalityClicked" Content="{x:Static resx:Resources.button_copy}"></Button>
             <Button Margin="10" HorizontalAlignment="Center" Click="deletePersonalityClicked" IsEnabled="{Binding Path=Personality.IsEditable}" Content="{x:Static resx:Resources.button_delete}"></Button>

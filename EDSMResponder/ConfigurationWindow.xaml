@@ -21,14 +21,14 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:EDSMResources.p1}" VerticalAlignment="Top"/>
-            <Label Grid.Row="1" Grid.Column="0" Margin="10" Content="{x:Static resx:EDSMResources.api_key_label}"/>
-            <TextBox x:Name="edsmApiKeyTextBox" Grid.Row="1" Grid.Column="1" Margin="10" TextChanged="edsmApiKeyChanged"/>
-            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:EDSMResources.p2}" VerticalAlignment="Top"/>
-            <Label Grid.Row="3" Grid.Column="0" Margin="10" Content="{x:Static resx:EDSMResources.cmd_name_label}"/>
-            <TextBox x:Name="edsmCommanderNameTextBox" Grid.Row="3" Grid.Column="1" Margin="10" TextChanged="edsmCommanderNameChanged"/>
-            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:EDSMResources.p3}" VerticalAlignment="Top"/>
-            <Button x:Name="edsmFetchLogsButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="{x:Static resx:EDSMResources.log_button}" Margin="10" Click="edsmObtainLogClicked"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="-5,5" Text="{x:Static resx:EDSMResources.p1}"/>
+            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="{x:Static resx:EDSMResources.api_key_label}"/>
+            <TextBox x:Name="edsmApiKeyTextBox" Grid.Row="1" Grid.Column="1" Margin="0, 5" Height="25" VerticalContentAlignment="Center" TextChanged="edsmApiKeyChanged"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="-5,5" Text="{x:Static resx:EDSMResources.p2}"/>
+            <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="{x:Static resx:EDSMResources.cmd_name_label}"/>
+            <TextBox x:Name="edsmCommanderNameTextBox" Grid.Row="3" Grid.Column="1" Margin="0, 5" Height="25" VerticalContentAlignment="Center" TextChanged="edsmCommanderNameChanged"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="-5,5" Text="{x:Static resx:EDSMResources.p3}"/>
+            <Button x:Name="edsmFetchLogsButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="{x:Static resx:EDSMResources.log_button}" Margin="0, 10" Click="edsmObtainLogClicked"/>
         </Grid>
     </DockPanel>
 </UserControl>

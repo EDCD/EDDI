@@ -73,12 +73,12 @@
                         <TextBlock Grid.Row="4" Grid.Column="0" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.access_beta}" VerticalAlignment="Top"/>
                         <CheckBox x:Name="eddiBetaProgramme" Grid.Row="4" Grid.Column="1" Margin="5" VerticalAlignment="Center" Checked="betaProgrammeEnabled" Unchecked="betaProgrammeDisabled"/>
                     </Grid>
-                    <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5" FontSize="18" FontStyle="Italic" FontWeight="Bold" Text="{x:Static resx:Resources.if_using_va}" VerticalAlignment="Center" TextAlignment="Center"/>
+                    <TextBlock x:Name="heroText" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" FontSize="18" FontStyle="Italic" FontWeight="Bold" Text="{x:Static resx:Resources.if_using_va}" VerticalAlignment="Center" TextAlignment="Center"/>
                 </DockPanel>
             </TabItem>
             <TabItem Header="{x:Static resx:MainWindow.tab_commander_details_header}">
                 <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-                    <Grid>
+                    <Grid Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -95,31 +95,32 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Margin="5" Text="{x:Static resx:MainWindow.tab_commander_par1}" VerticalAlignment="Top"/>
-                        <Label x:Name ="eddiHomeSystemLabel" Grid.Row="1" Grid.Column="0" Margin="5,5,30,5" Content="{x:Static resx:MainWindow.tab_commander_home_system}" />
-                        <TextBox x:Name ="eddiHomeSystemText" VerticalContentAlignment="Center" TextChanged="homeSystemChanged" Margin="5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan ="6" LostFocus="eddiHomeSystemText_LostFocus">
+                        <TextBlock x:Name ="eddi2Text" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_commander_par1}" VerticalAlignment="Top"/>
+                        <Label x:Name ="eddiHomeSystemLabel" Grid.Row="1" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_home_system}" />
+                        <TextBox x:Name ="eddiHomeSystemText" VerticalContentAlignment="Center" TextChanged="homeSystemChanged" Margin="0,5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan ="6" Height="25" LostFocus="eddiHomeSystemText_LostFocus">
                             <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="HomeSystem">
                                 <Binding.ValidationRules>
                                     <local:ValidSystemRule/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox>
-                        <Label x:Name ="eddiHomeStationLabel" Grid.Row="2" Grid.Column="0" Margin="5" Content="{x:Static resx:MainWindow.tab_commander_home_station}"/>
-                        <TextBox x:Name ="eddiHomeStationText" TextChanged="homeStationChanged" VerticalContentAlignment="Center" Margin="5" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan ="6" LostFocus="eddiHomeStationText_LostFocus">
+                        <Label x:Name ="eddiHomeStationLabel" Grid.Row="2" Grid.Column="0" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_home_station}"/>
+                        <TextBox x:Name ="eddiHomeStationText" TextChanged="homeStationChanged" VerticalContentAlignment="Center" Margin="0,5" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan ="6" Height="25" LostFocus="eddiHomeStationText_LostFocus">
                             <Binding UpdateSourceTrigger="PropertyChanged" ElementName="eddiConfiguration" Path="HomeStation">
                                 <Binding.ValidationRules>
                                     <local:ValidStationRule/>
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox>
-                        <TextBlock x:Name ="eddi3Text" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Margin="10,5,5,0" Text="{x:Static resx:MainWindow.tab_commander_par2}" VerticalAlignment="Top"/>
-                        <Label x:Name ="eddiInsuranceLabel" Grid.Row="4" Grid.Column="0" Margin="5,5,58,5" Content="{x:Static resx:MainWindow.tab_commander_insurance}"/>
-                        <TextBox x:Name="eddiInsuranceDecimal" Grid.Row="4" Grid.Column="1" Margin="5,5,65,5" PreviewTextInput="EnsureValidDecimal" TextChanged="insuranceChanged" TextAlignment="Right"/>
-                        <Label x:Name ="eddiGenderLabel" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan ="2" Content="{x:Static resx:MainWindow.tab_commander_gender}" Margin="5,7,28,-5" Grid.RowSpan="2"/>
-                        <RadioButton x:Name ="eddiGenderMale" Content="{x:Static resx:MainWindow.tab_commander_gender_m}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isMale_Checked" Margin="62,0,0,43" Grid.Column="1" Grid.ColumnSpan="4" Width="409"/>
-                        <RadioButton x:Name ="eddiGenderFemale" Content="{x:Static resx:MainWindow.tab_commander_gender_f}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isFemale_Checked" Margin="62,28,0,19" RenderTransformOrigin="0.456,1" Grid.Column="1" Grid.ColumnSpan="4" Width="409"/>
-                        <RadioButton x:Name ="eddiGenderNeither" Content="{x:Static resx:MainWindow.tab_commander_gender_n}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isNeitherGender_Checked" Margin="62,58,0,0" RenderTransformOrigin="0.456,1" Grid.Column="1" Grid.ColumnSpan="4" Width="409"/>
+                        <TextBlock x:Name ="eddi3Text" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6" TextWrapping="Wrap" Margin="0,5" Text="{x:Static resx:MainWindow.tab_commander_par2}" VerticalAlignment="Top"/>
+                        <Label x:Name ="eddiInsuranceLabel" Grid.Row="4" Grid.Column="0" Margin="0,5" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_commander_insurance}"/>
+                        <TextBox x:Name="eddiInsuranceDecimal" Grid.Row="4" Grid.Column="1" Margin="0,5" PreviewTextInput="EnsureValidDecimal" TextChanged="insuranceChanged" TextAlignment="Center" VerticalContentAlignment="Center" Height="25" Width="30"/>
+                        <Label x:Name ="eddiGenderLabel" Grid.Row="5" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan ="2" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_commander_gender}"/>
+                        <RadioButton x:Name ="eddiGenderMale" Content="{x:Static resx:MainWindow.tab_commander_gender_m}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="5" Checked="isMale_Checked" Margin="0, 12.5, 0, 5" Grid.Column="2"/>
+                        <RadioButton x:Name ="eddiGenderFemale" Content="{x:Static resx:MainWindow.tab_commander_gender_f}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="6" Checked="isFemale_Checked" Margin="0, 5" Grid.Column="2"/>
+                        <RadioButton x:Name ="eddiGenderNeither" Content="{x:Static resx:MainWindow.tab_commander_gender_n}" HorizontalAlignment="Left" VerticalAlignment="Center"  Height="Auto" Grid.Row="7" Checked="isNeitherGender_Checked" Margin="0, 5" Grid.Column="2"/>
                     </Grid>
                 </DockPanel>
             </TabItem>
@@ -181,38 +182,38 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
-                        <Label x:Name="ttsVoiceLabel" Grid.Column="0" Grid.Row="0" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_voice_label}" />
-                        <ComboBox x:Name="ttsVoiceDropDown" Grid.Column="1" Grid.Row="0" Margin="5" SelectionChanged="ttsVoiceDropDownUpdated"/>
-                        <Label x:Name="ttsVolumeLabel" Grid.Column="0" Grid.Row="1" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_volume_label}" />
+                        <Label x:Name="ttsVoiceLabel" Grid.Column="0" Grid.Row="0" Margin="0, 5" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_tts_voice_label}" />
+                        <ComboBox x:Name="ttsVoiceDropDown" Grid.Column="1" Grid.Row="0" Margin="5" VerticalContentAlignment="Center" SelectionChanged="ttsVoiceDropDownUpdated"/>
+                        <Label x:Name="ttsVolumeLabel" Grid.Column="0" Grid.Row="1" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_volume_label}" />
                         <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="1" Margin="5" VerticalAlignment="Center">
-                            <TextBox x:Name="ttsVolumeText"  DockPanel.Dock="Right" Text="{Binding ElementName=ttsVolumeSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" Width="40"/>
-                            <Slider x:Name="ttsVolumeSlider" Minimum="0" Maximum="100"  IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="ttsVolumeUpdated"/>
+                            <TextBox x:Name="ttsVolumeText"  DockPanel.Dock="Right" Text="{Binding ElementName=ttsVolumeSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" Width="40" Margin="5,0,0,0"/>
+                            <Slider x:Name="ttsVolumeSlider" Minimum="0" Maximum="100" IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="ttsVolumeUpdated"/>
                         </DockPanel>
-                        <Label x:Name="ttsRateLabel" Grid.Column="0" Grid.Row="2" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_rate_label}" />
+                        <Label x:Name="ttsRateLabel" Grid.Column="0" Grid.Row="2" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_rate_label}" />
                         <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="2" Margin="5" VerticalAlignment="Center">
                             <TextBox x:Name="ttsRateText"  DockPanel.Dock="Right" Text="{Binding ElementName=ttsRateSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" Width="40"/>
                             <Slider x:Name="ttsRateSlider" Minimum="-10" Maximum="10"  IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="ttsRateUpdated"/>
                         </DockPanel>
-                        <Label x:Name="ttsEffectsLevelLabel" Grid.Column="0" Grid.Row="3" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_level_label}" />
+                        <Label x:Name="ttsEffectsLevelLabel" Grid.Column="0" Grid.Row="3" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_level_label}" />
                         <DockPanel LastChildFill="True" Grid.Column="1" Grid.Row="3" Margin="5" VerticalAlignment="Center">
                             <TextBox x:Name="ttsEffectsLevelText"  DockPanel.Dock="Right" Text="{Binding ElementName=ttsEffectsLevelSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Right" Width="40"/>
                             <Slider x:Name="ttsEffectsLevelSlider" Minimum="0" Maximum="100"  IsSnapToTickEnabled="True" TickFrequency="1" ValueChanged="ttsEffectsLevelUpdated"/>
                         </DockPanel>
-                        <Label x:Name="ttsDistortLabel" Grid.Column="0" Grid.Row="4" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_distort_label}" />
+                        <Label x:Name="ttsDistortLabel" Grid.Column="0" Grid.Row="4" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_distort_label}" />
                         <CheckBox x:Name="ttsDistortCheckbox" Grid.Column="1" Grid.Row="4" Margin="5" VerticalAlignment="Center" Checked="ttsDistortionLevelUpdated" Unchecked="ttsDistortionLevelUpdated"/>
                         <TextBlock Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_test_desc}" />
-                        <Label x:Name="ttsTestShipLabel" Grid.Column="0" Grid.Row="6" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_test_ship_label}" />
-                        <ComboBox x:Name="ttsTestShipDropDown" Grid.Column="1" Grid.Row="6" Margin="5"/>
+                        <Label x:Name="ttsTestShipLabel" Grid.Column="0" Grid.Row="6" Margin="0, 5" VerticalContentAlignment="Center" Content="{x:Static resx:MainWindow.tab_tts_test_ship_label}" />
+                        <ComboBox x:Name="ttsTestShipDropDown" Grid.Column="1" Grid.Row="6" Margin="5" VerticalContentAlignment="Center"/>
                         <UniformGrid Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Margin="5" Columns="2">
                             <Button x:Name="ttsTestButton" Margin="0,0,5,0" Content="{x:Static resx:MainWindow.tab_tts_test_button}" Click="ttsTestVoiceButtonClicked" />
                             <Button x:Name="ttsTestDamagedButton" Margin="5,0,0,0" Content="{x:Static resx:MainWindow.tab_tts_test_damaged_button}" Click="ttsTestDamagedVoiceButtonClicked" />
                         </UniformGrid>
                         <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_phonetic_speech_desc}" />
-                        <Label x:Name="disableSsmltLabel" Grid.Column="0" Grid.Row="9" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_label}" />
+                        <Label x:Name="disableSsmltLabel" Grid.Column="0" Grid.Row="9" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_label}" />
                         <CheckBox x:Name="disableSsmlCheckbox" Grid.Column="1" Grid.Row="9" Margin="5" VerticalAlignment="Center" Checked="disableSsmlUpdated" Unchecked="disableSsmlUpdated"/>
-                        <Label x:Name="SSmlnote" Grid.Column="2" Grid.Row="9" Margin="20,5,5,5" HorizontalAlignment="Right"  Content="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_note}" />
+                        <Label x:Name="SSmlnote" Grid.Column="2" Grid.Row="9" Margin="5" HorizontalAlignment="Right"  Content="{x:Static resx:MainWindow.tab_tts_disable_phonetic_speech_note}" />
                         <TextBlock Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" Margin="5" TextWrapping="Wrap" Text="{x:Static resx:MainWindow.tab_tts_icao_desc}" />
-                        <Label x:Name="enableIcaoLabel" Grid.Column="0" Grid.Row="11" Margin="5" Content="{x:Static resx:MainWindow.tab_tts_icao_label}" />
+                        <Label x:Name="enableIcaoLabel" Grid.Column="0" Grid.Row="11" Margin="0, 5" Content="{x:Static resx:MainWindow.tab_tts_icao_label}" />
                         <CheckBox x:Name="enableIcaoCheckbox" Grid.Column="1" Grid.Row="11" Margin="5" VerticalAlignment="Center" Checked="enableICAOUpdated" Unchecked="enableICAOUpdated"/>
                     </Grid>
                 </DockPanel>
