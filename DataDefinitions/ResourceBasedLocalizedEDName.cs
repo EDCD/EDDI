@@ -94,7 +94,7 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            string tidiedFrom = from?.Replace(";", "").ToLowerInvariant();
+            string tidiedFrom = from?.Replace(";", "").Replace(" ", "").ToLowerInvariant();
             T result = AllOfThem.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
             if (result == null)
             {

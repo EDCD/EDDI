@@ -428,7 +428,7 @@ namespace EddiDataDefinitions
 
         new public static CommodityDefinition FromEDName(string rawEDName)
         {
-            string edName = NormalizedEDName(rawEDName);
+            string edName = NormalizedEDName(rawEDName); 
             return ResourceBasedLocalizedEDName<CommodityDefinition>.FromEDName(edName);
         }
     }

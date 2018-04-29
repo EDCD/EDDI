@@ -91,7 +91,7 @@ namespace EddiDataProviderService
                 StarSystem.faction = (string)json["faction"];
                 StarSystem.primaryeconomy = (string)json["primary_economy"];
                 string stateName = (string)json["state"];
-                StarSystem.systemState = stateName == "None" ? null : SystemState.FromName(stateName);
+                StarSystem.systemState = stateName == "None" ? null : SystemState.FromEDName(stateName);
                 StarSystem.security = (string)json["security"];
                 StarSystem.power = (string)json["power"] == "None" ? null : (string)json["power"];
                 StarSystem.powerstate = (string)json["power_state"];
@@ -251,7 +251,7 @@ namespace EddiDataProviderService
                             List<MaterialPresence> Materials = new List<MaterialPresence>();
                             foreach (dynamic materialJson in body["materials"])
                             {
-                                Material material = Material.FromName((string)materialJson["material_name"]);
+                                Material material = Material.FromEDName((string)materialJson["material_name"]);
                                 decimal? amount = (decimal?)(double?)materialJson["share"];
                                 if (material != null && amount != null)
                                 {
