@@ -41,7 +41,7 @@ public string name => localizedName;
 
 ## Project preparation
 
-Surprisingly, Visual Studio isn't much help here. Though the `csproj` file is accessible in Visual Studios, you must unload the project file and then right click to edit the project. You may prefer to close the solution and hand-edit the files, copy-pasting from an existing project.
+Surprisingly, Visual Studio isn't much help here. Though the `csproj` file is accessible in Visual Studio, you must unload the project file and then right click to edit the project. You may prefer to close the solution and hand-edit the files, copy-pasting from an existing project.
 
 If localizing resources using **UltimateResourceFallbackLocation.MainAssembly** (as described below), the `csproj` file MUST NOT have the following stanza added under the top-level `<Project>` tag, as this will cause the program to look for a satellite resource bearing the same name:
 
