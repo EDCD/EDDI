@@ -248,13 +248,33 @@ namespace Eddi
         private List<LanguageDef> GetAvailableLangs()
         {
             List<LanguageDef> cultures = new List<LanguageDef>();
-            cultures.Add(new LanguageDef(CultureInfo.InvariantCulture, Properties.Resources.system_language));
-            var names = new List<string> { "en-US", "fr", "es" };
-            foreach (string name in names)
+            cultures.Add(new LanguageDef(CultureInfo.InvariantCulture, Properties.Resources.system_language)); // Add the "Automatic" culture
+            CultureInfo neutralInfo = new CultureInfo("en"); // Add our "neutral" language "en".
+            cultures.Add(new LanguageDef(neutralInfo, neutralInfo.TextInfo.ToTitleCase(neutralInfo.NativeName)));
+            try // Add our satellite resource language folders to the list. Since these are stored according to folder name, we can interate through folder names to identify supported resources
+            {
+                DirectoryInfo rootInfo = new DirectoryInfo(new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName);
+                DirectoryInfo[] subDirs = rootInfo.GetDirectories("*.*", SearchOption.AllDirectories) ?? null;
+                Regex cultureResourceRegex = new Regex("^[a-z]{2,3}(?:-[A-Z]{2,3}(?:-[a-zA-Z]{4})?)?$");
+                if (subDirs != null)
                 {
-                    CultureInfo cinfo = new CultureInfo(name);
-                    cultures.Add(new LanguageDef(cinfo, cinfo.NativeName));
+                    foreach (DirectoryInfo dir in subDirs)
+                    {
+                        if (cultureResourceRegex.IsMatch(dir.Name))
+                        {
+                            CultureInfo cInfo = new CultureInfo(dir.Name) ?? null;
+                            if (cInfo != null)
+                            {
+                                cultures.Add(new LanguageDef(cInfo, cInfo.TextInfo.ToTitleCase(cInfo.NativeName)));
+                            }
+                        }
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logging.Error("Error obtaining satellite resource details for language selection.", ex);
+            }
             return cultures;
         }
 
