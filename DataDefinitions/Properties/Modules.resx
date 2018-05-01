@@ -502,7 +502,7 @@
     <comment>Weapon mount type Fixed</comment>
   </data>
   <data name="Gimballed" xml:space="preserve">
-    <value>gimbaled</value>
+    <value>gimballed</value>
     <comment>Weapon mount type Gimballed</comment>
   </data>
   <data name="Turreted" xml:space="preserve">

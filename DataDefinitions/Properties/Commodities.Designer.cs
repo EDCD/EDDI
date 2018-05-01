@@ -151,7 +151,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Aluminum.
+        ///   Looks up a localized string similar to Aluminium.
         /// </summary>
         public static string Aluminium {
             get {
@@ -673,7 +673,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Combat Stabilizers.
+        ///   Looks up a localized string similar to Combat Stabilisers.
         /// </summary>
         public static string CombatStabilisers {
             get {
@@ -2203,7 +2203,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reactive Armor.
+        ///   Looks up a localized string similar to Reactive Armour.
         /// </summary>
         public static string ReactiveArmour {
             get {
@@ -2446,7 +2446,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Surface Stabilizers.
+        ///   Looks up a localized string similar to Surface Stabilisers.
         /// </summary>
         public static string SurfaceStabilisers {
             get {

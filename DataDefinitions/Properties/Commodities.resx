@@ -1,76 +1,96 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
-		Microsoft ResX Schema
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
 
-		Version 1.3
-
-		The primary goals of this format is to allow a simple XML format 
-		that is mostly human readable. The generation and parsing of the 
-		various data types are done through the TypeConverter classes 
-		associated with the data types.
-
-		Example:
-
-		... ado.net/XML headers & schema ...
-		<resheader name="resmimetype">text/microsoft-resx</resheader>
-		<resheader name="version">1.3</resheader>
-		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-		<data name="Name1">this is my long string</data>
-		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-			[base64 mime encoded serialized .NET Framework object]
-		</data>
-		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-			[base64 mime encoded string representing a byte array form of the .NET Framework object]
-		</data>
-
-		There are any number of "resheader" rows that contain simple 
-		name/value pairs.
-
-		Each data row contains a name, and value. The row also contains a 
-		type or mimetype. Type corresponds to a .NET class that support 
-		text/value conversion through the TypeConverter architecture. 
-		Classes that don't support this are serialized and stored with the 
-		mimetype set.
-
-		The mimetype is used for serialized objects, and tells the 
-		ResXResourceReader how to depersist the object. This is currently not 
-		extensible. For a given mimetype the value must be set accordingly:
-
-		Note - application/x-microsoft.net.object.binary.base64 is the format 
-		that the ResXResourceWriter will generate, however the reader can 
-		read any of the formats listed below.
-
-		mimetype: application/x-microsoft.net.object.binary.base64
-		value   : The object must be serialized with 
-			: System.Serialization.Formatters.Binary.BinaryFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.soap.base64
-		value   : The object must be serialized with 
-			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.bytearray.base64
-		value   : The object must be serialized into a byte array 
-			: using a System.ComponentModel.TypeConverter
-			: and then encoded with base64 encoding.
-	-->
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -89,13 +109,13 @@
     <value>text/microsoft-resx</value>
   </resheader>
   <resheader name="version">
-    <value>1.3</value>
+    <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdvancedCatalysers" xml:space="preserve">
     <value>Advanced Catalysers</value>
@@ -129,12 +149,16 @@
     <value>Algae</value>
     <comment>Commodity Algae</comment>
   </data>
+  <data name="alieneggs" xml:space="preserve">
+    <value>Leathery Eggs</value>
+    <comment>Commodity alieneggs</comment>
+  </data>
   <data name="AltairianSkin" xml:space="preserve">
     <value>Altairian Skin</value>
     <comment>Commodity AltairianSkin</comment>
   </data>
   <data name="Aluminium" xml:space="preserve">
-    <value>Aluminum</value>
+    <value>Aluminium</value>
     <comment>Commodity Aluminium</comment>
   </data>
   <data name="AlyaBodySoap" xml:space="preserve">
@@ -169,13 +193,13 @@
     <value>Anduliga Fire Works</value>
     <comment>Commodity AnduligaFireWorks</comment>
   </data>
-  <data name="AnimalMonitors" xml:space="preserve">
-    <value>Animal Monitors</value>
-    <comment>Commodity AnimalMonitors</comment>
-  </data>
   <data name="Animalmeat" xml:space="preserve">
     <value>Animal Meat</value>
     <comment>Commodity Animalmeat</comment>
+  </data>
+  <data name="AnimalMonitors" xml:space="preserve">
+    <value>Animal Monitors</value>
+    <comment>Commodity AnimalMonitors</comment>
   </data>
   <data name="AntimatterContainmentUnit" xml:space="preserve">
     <value>Antimatter Containment Unit</value>
@@ -305,10 +329,6 @@
     <value>CD-75 Kitten Brand Coffee</value>
     <comment>Commodity CD_75KittenBrandCoffee</comment>
   </data>
-  <data name="CMMComposite" xml:space="preserve">
-    <value>CMM Composite</value>
-    <comment>Commodity CMMComposite</comment>
-  </data>
   <data name="CentauriMegaGin" xml:space="preserve">
     <value>Centauri Mega Gin</value>
     <comment>Commodity CentauriMegaGin</comment>
@@ -353,6 +373,10 @@
     <value>Clothing</value>
     <comment>Commodity Clothing</comment>
   </data>
+  <data name="CMMComposite" xml:space="preserve">
+    <value>CMM Composite</value>
+    <comment>Commodity CMMComposite</comment>
+  </data>
   <data name="Cobalt" xml:space="preserve">
     <value>Cobalt</value>
     <comment>Commodity Cobalt</comment>
@@ -366,7 +390,7 @@
     <comment>Commodity Coltan</comment>
   </data>
   <data name="CombatStabilisers" xml:space="preserve">
-    <value>Combat Stabilizers</value>
+    <value>Combat Stabilisers</value>
     <comment>Commodity CombatStabilisers</comment>
   </data>
   <data name="ComercialSamples" xml:space="preserve">
@@ -581,30 +605,6 @@
     <value>Grain</value>
     <comment>Commodity Grain</comment>
   </data>
-  <data name="HIP10175BushMeat" xml:space="preserve">
-    <value>HIP 10175 Bush Meat</value>
-    <comment>Commodity HIP10175BushMeat</comment>
-  </data>
-  <data name="HIP118311Swarm" xml:space="preserve">
-    <value>HIP 118311 Swarm</value>
-    <comment>Commodity HIP118311Swarm</comment>
-  </data>
-  <data name="HIPOrganophosphates" xml:space="preserve">
-    <value>HIP Organophosphates</value>
-    <comment>Commodity HIPOrganophosphates</comment>
-  </data>
-  <data name="HIPProto_Squid" xml:space="preserve">
-    <value>HIP Proto-Squid</value>
-    <comment>Commodity HIPProto_Squid</comment>
-  </data>
-  <data name="HNShockMount" xml:space="preserve">
-    <value>HN Shock Mount</value>
-    <comment>Commodity HNShockMount</comment>
-  </data>
-  <data name="HR7221Wheat" xml:space="preserve">
-    <value>HR 7221 Wheat</value>
-    <comment>Commodity HR7221Wheat</comment>
-  </data>
   <data name="Hafnium178" xml:space="preserve">
     <value>Hafnium 178</value>
     <comment>Commodity Hafnium178</comment>
@@ -633,6 +633,26 @@
     <value>Helvetitj Pearls</value>
     <comment>Commodity HelvetitjPearls</comment>
   </data>
+  <data name="HIP10175BushMeat" xml:space="preserve">
+    <value>HIP 10175 Bush Meat</value>
+    <comment>Commodity HIP10175BushMeat</comment>
+  </data>
+  <data name="HIP118311Swarm" xml:space="preserve">
+    <value>HIP 118311 Swarm</value>
+    <comment>Commodity HIP118311Swarm</comment>
+  </data>
+  <data name="HIPOrganophosphates" xml:space="preserve">
+    <value>HIP Organophosphates</value>
+    <comment>Commodity HIPOrganophosphates</comment>
+  </data>
+  <data name="HIPProto_Squid" xml:space="preserve">
+    <value>HIP Proto-Squid</value>
+    <comment>Commodity HIPProto_Squid</comment>
+  </data>
+  <data name="HNShockMount" xml:space="preserve">
+    <value>HN Shock Mount</value>
+    <comment>Commodity HNShockMount</comment>
+  </data>
   <data name="HolvaDuellingBlades" xml:space="preserve">
     <value>Holva Duelling Blades</value>
     <comment>Commodity HolvaDuellingBlades</comment>
@@ -644,6 +664,10 @@
   <data name="Hostage" xml:space="preserve">
     <value>Hostage</value>
     <comment>Commodity Hostage</comment>
+  </data>
+  <data name="HR7221Wheat" xml:space="preserve">
+    <value>HR 7221 Wheat</value>
+    <comment>Commodity HR7221Wheat</comment>
   </data>
   <data name="HydrogenFuel" xml:space="preserve">
     <value>Hydrogen Fuel</value>
@@ -729,10 +753,6 @@
     <value>Koro Kung Pellets</value>
     <comment>Commodity KoroKungPellets</comment>
   </data>
-  <data name="LTTHypersweet" xml:space="preserve">
-    <value>LTT Hypersweet</value>
-    <comment>Commodity LTTHypersweet</comment>
-  </data>
   <data name="Landmines" xml:space="preserve">
     <value>Landmines</value>
     <comment>Commodity Landmines</comment>
@@ -784,6 +804,10 @@
   <data name="LowTemperatureDiamond" xml:space="preserve">
     <value>Low Temperature Diamonds</value>
     <comment>Commodity LowTemperatureDiamond</comment>
+  </data>
+  <data name="LTTHypersweet" xml:space="preserve">
+    <value>LTT Hypersweet</value>
+    <comment>Commodity LTTHypersweet</comment>
   </data>
   <data name="LyraeWeed" xml:space="preserve">
     <value>Lyrae Weed</value>
@@ -865,10 +889,6 @@
     <value>Motrona Experience Jelly</value>
     <comment>Commodity MotronaExperienceJelly</comment>
   </data>
-  <data name="MuTomImager" xml:space="preserve">
-    <value>Muon Imager</value>
-    <comment>Commodity MuTomImager</comment>
-  </data>
   <data name="MukusubiiChitin_Os" xml:space="preserve">
     <value>Mukusubii Chitin-Os</value>
     <comment>Commodity MukusubiiChitin_Os</comment>
@@ -876,6 +896,10 @@
   <data name="MulachiGiantFungus" xml:space="preserve">
     <value>Mulachi Giant Fungus</value>
     <comment>Commodity MulachiGiantFungus</comment>
+  </data>
+  <data name="MuTomImager" xml:space="preserve">
+    <value>Muon Imager</value>
+    <comment>Commodity MuTomImager</comment>
   </data>
   <data name="MysteriousIdol" xml:space="preserve">
     <value>Mysterious Idol</value>
@@ -1046,12 +1070,16 @@
     <comment>Commodity RapaBaoSnakeSkins</comment>
   </data>
   <data name="ReactiveArmour" xml:space="preserve">
-    <value>Reactive Armor</value>
+    <value>Reactive Armour</value>
     <comment>Commodity ReactiveArmour</comment>
   </data>
   <data name="ReinforcedMountingPlate" xml:space="preserve">
     <value>Reinforced Mounting Plate</value>
     <comment>Commodity ReinforcedMountingPlate</comment>
+  </data>
+  <data name="republicangarisonsupplies" xml:space="preserve">
+    <value>Republic Garrison Supplies</value>
+    <comment>Commodity republicangarisonsupplies</comment>
   </data>
   <data name="ResonatingSeparators" xml:space="preserve">
     <value>Resonating Separators</value>
@@ -1069,10 +1097,6 @@
     <value>Rutile</value>
     <comment>Commodity Rutile</comment>
   </data>
-  <data name="SAP8CoreContainer" xml:space="preserve">
-    <value>Sap 8 Core Container</value>
-    <comment>Commodity SAP8CoreContainer</comment>
-  </data>
   <data name="Samarium" xml:space="preserve">
     <value>Samarium</value>
     <comment>Commodity Samarium</comment>
@@ -1080,6 +1104,10 @@
   <data name="SanumaDecorativeMeat" xml:space="preserve">
     <value>Sanuma Decorative Meat</value>
     <comment>Commodity SanumaDecorativeMeat</comment>
+  </data>
+  <data name="SAP8CoreContainer" xml:space="preserve">
+    <value>Sap 8 Core Container</value>
+    <comment>Commodity SAP8CoreContainer</comment>
   </data>
   <data name="SaxonWine" xml:space="preserve">
     <value>Saxon Wine</value>
@@ -1104,6 +1132,18 @@
   <data name="Silver" xml:space="preserve">
     <value>Silver</value>
     <comment>Commodity Silver</comment>
+  </data>
+  <data name="siriuscommercialcontracts" xml:space="preserve">
+    <value>Sirius Commercial Contracts</value>
+    <comment>Commodity siriuscommercialcontracts</comment>
+  </data>
+  <data name="siriusfranchisepackage" xml:space="preserve">
+    <value>Sirius Franchise Package</value>
+    <comment>Commodity siriusfranchisepackage</comment>
+  </data>
+  <data name="siriusindustrialequipment" xml:space="preserve">
+    <value>Sirius Industrial Equipment</value>
+    <comment>Commodity siriusindustrialequipment</comment>
   </data>
   <data name="SkimerComponents" xml:space="preserve">
     <value>Skimmer Components</value>
@@ -1138,7 +1178,7 @@
     <comment>Commodity Superconductors</comment>
   </data>
   <data name="SurfaceStabilisers" xml:space="preserve">
-    <value>Surface Stabilizers</value>
+    <value>Surface Stabilisers</value>
     <comment>Commodity SurfaceStabilisers</comment>
   </data>
   <data name="SurvivalEquipment" xml:space="preserve">
@@ -1189,13 +1229,13 @@
     <value>Telemetry Suite</value>
     <comment>Commodity TelemetrySuite</comment>
   </data>
-  <data name="TerraMaterBloodBores" xml:space="preserve">
-    <value>Terra Mater Blood Bores</value>
-    <comment>Commodity TerraMaterBloodBores</comment>
-  </data>
   <data name="TerrainEnrichmentSystems" xml:space="preserve">
     <value>Land Enrichment Systems</value>
     <comment>Commodity TerrainEnrichmentSystems</comment>
+  </data>
+  <data name="TerraMaterBloodBores" xml:space="preserve">
+    <value>Terra Mater Blood Bores</value>
+    <comment>Commodity TerraMaterBloodBores</comment>
   </data>
   <data name="Thallium" xml:space="preserve">
     <value>Thallium</value>
@@ -1253,6 +1293,38 @@
     <value>Trinkets Of Hidden Fortune</value>
     <comment>Commodity TrinketsOfFortune</comment>
   </data>
+  <data name="UnknownArtifact" xml:space="preserve">
+    <value>Thargoid Sensor</value>
+    <comment>Commodity UnknownArtifact</comment>
+  </data>
+  <data name="UnknownArtifact2" xml:space="preserve">
+    <value>Thargoid Probe</value>
+    <comment>Commodity UnknownArtifact2</comment>
+  </data>
+  <data name="UnknownArtifact3" xml:space="preserve">
+    <value>Thargoid Link</value>
+    <comment>Commodity UnknownArtifact3</comment>
+  </data>
+  <data name="UnknownResin" xml:space="preserve">
+    <value>Thargoid Resin</value>
+    <comment>Commodity UnknownResin</comment>
+  </data>
+  <data name="UnknownTechnologySamples" xml:space="preserve">
+    <value>Thargoid Technology Samples</value>
+    <comment>Commodity UnknownTechnologySamples</comment>
+  </data>
+  <data name="UnstableDataCore" xml:space="preserve">
+    <value>Unstable Data Core</value>
+    <comment>Commodity UnstableDataCore</comment>
+  </data>
+  <data name="Uraninite" xml:space="preserve">
+    <value>Uraninite</value>
+    <comment>Commodity Uraninite</comment>
+  </data>
+  <data name="Uranium" xml:space="preserve">
+    <value>Uranium</value>
+    <comment>Commodity Uranium</comment>
+  </data>
   <data name="USSCargoAncientArtefact" xml:space="preserve">
     <value>Ancient Artifact</value>
     <comment>Commodity USSCargoAncientArtefact</comment>
@@ -1289,38 +1361,6 @@
     <value>Trade Data</value>
     <comment>Commodity USSCargoTradeData</comment>
   </data>
-  <data name="UnknownArtifact" xml:space="preserve">
-    <value>Thargoid Sensor</value>
-    <comment>Commodity UnknownArtifact</comment>
-  </data>
-  <data name="UnknownArtifact2" xml:space="preserve">
-    <value>Thargoid Probe</value>
-    <comment>Commodity UnknownArtifact2</comment>
-  </data>
-  <data name="UnknownArtifact3" xml:space="preserve">
-    <value>Thargoid Link</value>
-    <comment>Commodity UnknownArtifact3</comment>
-  </data>
-  <data name="UnknownResin" xml:space="preserve">
-    <value>Thargoid Resin</value>
-    <comment>Commodity UnknownResin</comment>
-  </data>
-  <data name="UnknownTechnologySamples" xml:space="preserve">
-    <value>Thargoid Technology Samples</value>
-    <comment>Commodity UnknownTechnologySamples</comment>
-  </data>
-  <data name="UnstableDataCore" xml:space="preserve">
-    <value>Unstable Data Core</value>
-    <comment>Commodity UnstableDataCore</comment>
-  </data>
-  <data name="Uraninite" xml:space="preserve">
-    <value>Uraninite</value>
-    <comment>Commodity Uraninite</comment>
-  </data>
-  <data name="Uranium" xml:space="preserve">
-    <value>Uranium</value>
-    <comment>Commodity Uranium</comment>
-  </data>
   <data name="UszaianTreeGrub" xml:space="preserve">
     <value>Uszaian Tree Grub</value>
     <comment>Commodity UszaianTreeGrub</comment>
@@ -1333,10 +1373,6 @@
     <value>Uzumoku Low-G Wings</value>
     <comment>Commodity UzumokuLow_GWings</comment>
   </data>
-  <data name="VHerculisBodyRub" xml:space="preserve">
-    <value>V Herculis Body Rub</value>
-    <comment>Commodity VHerculisBodyRub</comment>
-  </data>
   <data name="VanayequiCeratomorphaFur" xml:space="preserve">
     <value>Vanayequi Ceratomorpha Fur</value>
     <comment>Commodity VanayequiCeratomorphaFur</comment>
@@ -1344,6 +1380,10 @@
   <data name="VegaSlimweed" xml:space="preserve">
     <value>Vega Slimweed</value>
     <comment>Commodity VegaSlimweed</comment>
+  </data>
+  <data name="VHerculisBodyRub" xml:space="preserve">
+    <value>V Herculis Body Rub</value>
+    <comment>Commodity VHerculisBodyRub</comment>
   </data>
   <data name="VidavantianLace" xml:space="preserve">
     <value>Vidavantian Lace</value>
@@ -1393,6 +1433,10 @@
     <value>Wuthielo Ku Froth</value>
     <comment>Commodity WuthieloKuFroth</comment>
   </data>
+  <data name="xihecompanions" xml:space="preserve">
+    <value>Xihe Biomorphic Companions</value>
+    <comment>Commodity xihecompanions</comment>
+  </data>
   <data name="YasoKondiLeaf" xml:space="preserve">
     <value>Yaso Kondi Leaf</value>
     <comment>Commodity YasoKondiLeaf</comment>
@@ -1400,29 +1444,5 @@
   <data name="ZeesszeAntGrubGlue" xml:space="preserve">
     <value>Zeessze Ant Grub Glue</value>
     <comment>Commodity ZeesszeAntGrubGlue</comment>
-  </data>
-  <data name="alieneggs" xml:space="preserve">
-    <value>Leathery Eggs</value>
-    <comment>Commodity alieneggs</comment>
-  </data>
-  <data name="republicangarisonsupplies" xml:space="preserve">
-    <value>Republic Garrison Supplies</value>
-    <comment>Commodity republicangarisonsupplies</comment>
-  </data>
-  <data name="siriuscommercialcontracts" xml:space="preserve">
-    <value>Sirius Commercial Contracts</value>
-    <comment>Commodity siriuscommercialcontracts</comment>
-  </data>
-  <data name="siriusfranchisepackage" xml:space="preserve">
-    <value>Sirius Franchise Package</value>
-    <comment>Commodity siriusfranchisepackage</comment>
-  </data>
-  <data name="siriusindustrialequipment" xml:space="preserve">
-    <value>Sirius Industrial Equipment</value>
-    <comment>Commodity siriusindustrialequipment</comment>
-  </data>
-  <data name="xihecompanions" xml:space="preserve">
-    <value>Xihe Biomorphic Companions</value>
-    <comment>Commodity xihecompanions</comment>
   </data>
 </root>
