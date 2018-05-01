@@ -2055,14 +2055,15 @@ namespace EddiJournalMonitor
                                 {
                                     if (friends[index].status != cmdr.status)
                                     {
-                                        /// This is a known friend: replace in situ (this is more efficient than removing and re-adding).
+                                        /// This is a known friend with a revised status: replace in situ (this is more efficient than removing and re-adding).
                                         friends[index] = cmdr;
-                                    }                                }
+                                        events.Add(new FriendsEvent(timestamp, name, status) { raw = line });
+                                    }
+                                }
                                 else
                                 {
                                     /// This is a new friend, add them to the list
                                     friends.Add(cmdr);
-                                    events.Add(new FriendsEvent(timestamp, name, status) { raw = line });
                                 }
 
                                 handled = true;
