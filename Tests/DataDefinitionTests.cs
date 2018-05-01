@@ -10,7 +10,7 @@ namespace UnitTests
         public void TestDataDefinitionReactiveArmour()
         {
             CommodityDefinition commodity = CommodityDefinition.FromName("$ReactiveArmour_Name;");
-            Assert.AreEqual("Reactive Armor", commodity.invariantName);
+            Assert.AreEqual("Reactive Armour", commodity.invariantName);
             Assert.IsNotNull(commodity.EDDBID);
         }
 

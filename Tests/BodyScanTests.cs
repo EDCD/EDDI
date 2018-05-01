@@ -39,7 +39,7 @@ namespace UnitTests
 
             Assert.IsNotNull(bsEvent.volcanism);
             Assert.AreEqual("Geysers", bsEvent.volcanism.invariantType);
-            Assert.AreEqual("Silicate vapor", bsEvent.volcanism.invariantComposition);
+            Assert.AreEqual("Silicate vapour", bsEvent.volcanism.invariantComposition);
             Assert.AreEqual("Minor", bsEvent.volcanism.invariantAmount);
         }
 
