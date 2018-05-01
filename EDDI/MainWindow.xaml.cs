@@ -195,14 +195,11 @@ namespace Eddi
             chooseLanguageDropDown.ItemsSource = langs;
             chooseLanguageDropDown.DisplayMemberPath = "displayName";
             chooseLanguageDropDown.SelectedItem = langs.Find(l => l.ci.Name == Eddi.Properties.Settings.Default.OverrideCulture);
-            // Setting the handler there to avoid EDDI to restart indefinitely
             chooseLanguageDropDown.SelectionChanged += (sender, e) =>
             {
                 LanguageDef cultureDef = (LanguageDef)chooseLanguageDropDown.SelectedValue;
                 Eddi.Properties.Settings.Default.OverrideCulture = cultureDef.ci.Name;
             };
-
-            Logging.Verbose = eddiConfiguration.Debug;
 
             // Configure the Frontier API tab
             CompanionAppCredentials companionAppCredentials = CompanionAppCredentials.FromFile();
@@ -248,7 +245,10 @@ namespace Eddi
         private List<LanguageDef> GetAvailableLangs()
         {
             List<LanguageDef> cultures = new List<LanguageDef>();
-            cultures.Add(new LanguageDef(CultureInfo.InvariantCulture, Properties.Resources.system_language)); // Add the "Automatic" culture
+
+            // Add the "Automatic" culture, we are using the InvariantCulture name "" to mean user's culture
+            cultures.Add(new LanguageDef(CultureInfo.InvariantCulture, Properties.Resources.system_language)); 
+
             CultureInfo neutralInfo = new CultureInfo("en"); // Add our "neutral" language "en".
             cultures.Add(new LanguageDef(neutralInfo, neutralInfo.TextInfo.ToTitleCase(neutralInfo.NativeName)));
             try // Add our satellite resource language folders to the list. Since these are stored according to folder name, we can interate through folder names to identify supported resources

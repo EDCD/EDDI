@@ -42,6 +42,7 @@ namespace Eddi
             try
             {
                 string overrideCultureName = Eddi.Properties.Settings.Default.OverrideCulture;
+                // we are using the InvariantCulture name "" to mean user's culture
                 CultureInfo overrideCulture = String.IsNullOrEmpty(overrideCultureName) ? null : new CultureInfo(overrideCultureName);
                 ApplyCulture(overrideCulture);
             }
