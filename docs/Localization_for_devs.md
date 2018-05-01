@@ -30,19 +30,29 @@ eddiInsuranceDecimal.Text = eddiConfiguration.Insurance.ToString(CultureInfo.Inv
 ```
 ### Can't assume that items have a single name that never changes
 
-In some cases we are looking up materials etc by their display name rather than EDName. This is obviously fragile when display names get localized. I'm replacing the `name` property of such items by `localizedName` and `invariantName` properties so as to flush out any such issues.
+In some cases we are looking up materials etc by their display name rather than EDName. This is obviously fragile when display names get localized. In code, properties must be clearly described (e.g. `localizedName` and `invariantName`). 
+
+Pre-existing variable properties like `name` which are not clear, shall not be used in code. Instead, they shall be tagged with `[Obsolete()]` attribute tag. This will allow functionality to be preserved for Cottle scripts and VoiceAttack users while maintaining clear variable descriptions in the codebase.
+
+```cs
+[Obsolete("For coding clarity, please use (localizedName) or (invariantName) in all code.")]
+public string name => localizedName;
+```
 
 ## Project preparation
 
-Surprisingly, Visual Studio isn't much help here. It's better to close the solution and hand-edit the files, copy-pasting the below from an existing project.
+Surprisingly, Visual Studio isn't much help here. Though the `csproj` file is accessible in Visual Studios, you must unload the project file and then right click to edit the project. You may prefer to close the solution and hand-edit the files, copy-pasting from an existing project.
 
-The `csproj` file needs to have the following stanza added under the top-level `<Project>` tag:
+If localizing resources using **UltimateResourceFallbackLocation.MainAssembly** (as described below), the `csproj` file MUST NOT have the following stanza added under the top-level `<Project>` tag, as this will cause the program to look for a satellite resource bearing the same name:
 
 ```xml
   <PropertyGroup>
-    <UICulture>en-US</UICulture>
+    <UICulture>en</UICulture>
   </PropertyGroup>
 ```
+
+Conversely, if localizing resources using **UltimateResourceFallbackLocation.Satellite** then the `csproj` file MUST include the above stanza.
+
 Beware of the existing PropertyGroup tags: most of them are conditional on a particular build configuration or CPU platform which is not what we want.
 
 The Properties\AssemblyInfo.cs file needs a `using System.Resources;` at the top and the following in the body (the comment isn't strictly necessary but it is part of MS's boilerplate):
@@ -56,18 +66,20 @@ The Properties\AssemblyInfo.cs file needs a `using System.Resources;` at the top
 //the NeutralResourceLanguage attribute below.  Update the "en-US" in
 //the line below to match the UICulture setting in the project file.
 
-[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.Satellite)]
+[assembly: NeutralResourcesLanguage("en", UltimateResourceFallbackLocation.MainAssembly)]
 ```
+
+This defines your neutral resource string table as "en" and indicates that the neutral resource is located in the main assembly resource file (e.g. MainWindow.resx) rather than in a satellite resource file (e.g. MainWindow.en-US.resx). 
 
 ## Resource editing
 
 To add a resource, right-click the project's Properties folder, choose Add->New Item, then Resources file. Hit F2 to rename it, the name must be a legal C# class name. We'll use `Superpowers` for this example. The next step is important and easily forgotten: open the resource and change the access modifier from `Internal` to `Public`. Visual Studio will generate the code-behind file `Superpowers.Designer.cs` which gives a handy type-safe accessor for each key in the string table, such as `EddiDataDefinitions.Properties.Superpowers.Empire`. This lets us catch typos at compile time. It's also the reason why resource names and string table keys need to be legal C# names. Sometimes Studio has a senior moment and forgets to update the code-behind file, in which case right-click the resource and choose "Run Custom Tool".
 
-Now we duplicate the resource (ctrl+c, ctrl+v, F2 to rename) for each supported culture (at the time of writing these are en-US, fr and es). The culture specifier goes between the resource name and the `.resx` suffix, for example `Superpowers.fr.resx`. Studio is smart enough to recognize these as localisations and give them an empty code-behind file.
+Now we duplicate the resource (ctrl+c, ctrl+v, F2 to rename) for each supported satellite culture (at the time of writing these are fr and es). The culture specifier goes between the resource name and the `.resx` suffix, for example `Superpowers.fr.resx`. Studio is smart enough to recognize these as localisations and give them an empty code-behind file.
 
-If you don't yet have a translation for a given key, omit that key entirely from the localized string table - the OS will fall back to the en-US string table. Don't put in a key with a blank value or you'll get blank text in the UI!
+If you don't yet have a translation for a given key, omit that key entirely from the localized string table - the OS will fall back to the neutral resource string table. Don't put in a key with a blank value or you'll get blank text in the UI!
 
-The documents suggest that we shouldn't need to duplicate the English string table between the base resource `Superpowers.resx` and the localized `Superpowers.en-US.resx` but I couldn't get that to work.
+Note: Various tools exist to assist with managing resource files in Visual Studios. One that we have found useful so far is [ResXManager](https://github.com/tom-englert/ResXResourceManager/).
 
 ## XAML localization
 
@@ -188,8 +200,6 @@ Most users will just go with the system language setting and EDDI will automatic
 To that end I have added an application setting called `OverrideCulture` which is a string. If it is null or empty (the default) then there will be no override and the user's normal culture will be used. If it is set to a valid culture name such as "fr" then that culture will be used.
 
 This is implemented in `App.xaml.cs` in the method `ApplyAnyOverrideCulture()`, because it needs to happen before any UI is loaded.
-
-I haven't yet implemented the drop-down menu for users to control this setting. Changes won't take effect until EDDI is restarted, and I'm currently undecided whether to restart for the user or leave them in control of that. I'm not a big fan of "Restart now / Restart later" message boxes, I find them annoying.
 
 ## Enumerating the installed localizations
 
