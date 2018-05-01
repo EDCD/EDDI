@@ -129,7 +129,7 @@
   </data>
   <data name="header_name" xml:space="preserve">
     <value>Name</value>
-    <comment>Nmae of cargo, such as "Gold"</comment>
+    <comment>Name of cargo, such as "Gold"</comment>
   </data>
   <data name="header_owned" xml:space="preserve">
     <value>Owned</value>
