@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 //the NeutralResourceLanguage attribute below.  Update the "en-US" in
 //the line below to match the UICulture setting in the project file.
 
-[assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
+[assembly: NeutralResourcesLanguage("en", UltimateResourceFallbackLocation.MainAssembly)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("462ed721-1c9c-43fa-8a3f-4c1644363a5a")]
