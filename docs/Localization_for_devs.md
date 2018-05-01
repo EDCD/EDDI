@@ -35,7 +35,7 @@ In some cases we are looking up materials etc by their display name rather than 
 Pre-existing variable properties like `name` which are not clear, shall not be used in code. Instead, they shall be tagged with `[Obsolete()]` attribute tag. This will allow functionality to be preserved for Cottle scripts and VoiceAttack users while maintaining clear variable descriptions in the codebase.
 
 ```cs
-[Obsolete("For coding clarity, please use (localizedName) or (invariantName) in all code.")]
+[Obsolete("Please be explicit and use localizedName or invariantName")]
 public string name => localizedName;
 ```
 

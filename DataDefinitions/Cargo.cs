@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
@@ -84,9 +85,13 @@ namespace EddiDataDefinitions
         // How much we actually paid for it (per unit)
         public int price { get; set; }
 
-        // The commodity category
+        // The commodity category, localized
         [JsonIgnore]
         public string localizedCategory => commodityDef?.category?.localizedName ?? null;
+
+        // deprecated commodity category (exposed to Cottle and VA)
+        [JsonIgnore, Obsolete("Please use localizedCategory instead")]
+        public string category => localizedCategory;
 
         [JsonIgnore]
         private CommodityDefinition _commodityDef;

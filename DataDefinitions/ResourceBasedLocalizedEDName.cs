@@ -42,6 +42,9 @@ namespace EddiDataDefinitions
             }
         }
 
+        [Obsolete("Please be explicit and use localizedName or invariantName")]
+        public string name => localizedName;
+
         public override string ToString()
         {
             return localizedName;
