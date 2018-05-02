@@ -161,7 +161,7 @@ namespace EddiShipMonitor
                         if (module.Name.Contains("Slot"))
                         {
                             Compartment compartment = CompartmentFromJson(module);
-                            string moduleName = compartment.module?.name ?? "";
+                            string moduleName = compartment.module?.invariantName ?? "";
                             if (moduleName == "Fuel Tank")
                             {
                                 Ship.fueltanktotalcapacity += (decimal)Math.Pow(2, compartment.module.@class);
@@ -192,7 +192,6 @@ namespace EddiShipMonitor
                     }
 
                 }
-
             }
             catch (Exception ex)
             {
@@ -265,10 +264,10 @@ namespace EddiShipMonitor
         public static Module ModuleFromJson(string name, JObject json)
         {
             long id = (long)json["module"]["id"];
-            Module module = ModuleDefinitions.ModuleFromEliteID(id);
-            if (module.name == null)
+            Module module = new Module(Module.FromEliteID(id));
+            if (module.invariantName == null)
             {
-                // Unknown module; log an error so that we can update the definitions
+                // Unknown module; the infrastructure will have reported it
                 Logging.Error("No definition for ship module", json["module"].ToString(Formatting.None));
             }
 
@@ -303,9 +302,9 @@ namespace EddiShipMonitor
             {
                 if (cpt.name == launchbay.name)
                 {
-                    if (cpt.module.name == "Planetary Vehicle Hangar")
+                    if (cpt.module.basename == "PlanetaryVehicleHangar")
                         launchbay.type = "SRV";
-                    else if (cpt.module.name == "Fighter Hangar")
+                    else if (cpt.module.basename == "FighterHangar")
                         launchbay.type = "Fighter";
                 }
             }

@@ -16,6 +16,11 @@ namespace EddiVoiceAttackResponder
             return "VoiceAttack responder";
         }
 
+        public string LocalizedResponderName()
+        {
+            return Properties.Resources.name;
+        }
+
         public string ResponderVersion()
         {
             return "1.0.0";
@@ -23,7 +28,7 @@ namespace EddiVoiceAttackResponder
 
         public string ResponderDescription()
         {
-            return "A responder that generates a large number of variables within VoiceAttack as well as triggering user-defined actions.";
+            return Properties.Resources.desc;
         }
 
         public VoiceAttackResponder()

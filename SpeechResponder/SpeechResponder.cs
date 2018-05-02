@@ -36,6 +36,11 @@ namespace EddiSpeechResponder
             return "Speech responder";
         }
 
+        public string LocalizedResponderName()
+        {
+            return Properties.Resources.name;
+        }
+
         public string ResponderVersion()
         {
             return "1.0.0";
@@ -43,7 +48,7 @@ namespace EddiSpeechResponder
 
         public string ResponderDescription()
         {
-            return "Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its 'Test' and 'View' buttons are disabled.";
+            return Properties.Resources.desc;
         }
 
         public SpeechResponder()

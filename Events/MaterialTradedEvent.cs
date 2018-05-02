@@ -49,12 +49,12 @@ namespace EddiEvents
         {
             this.marketid = marketId;
             this.tradertype = traderType;
-            this.paid = materialPaid?.name;
+            this.paid = materialPaid?.localizedName;
             this.paid_quantity = materialPaidQty;
-            this.paid_edname = materialPaid?.EDName;
-            this.received = materialReceived?.name;
+            this.paid_edname = materialPaid?.edname;
+            this.received = materialReceived?.localizedName;
             this.received_quantity = materialReceivedQty;
-            this.received_edname = materialReceived?.EDName;
+            this.received_edname = materialReceived?.edname;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace EddiMaterialMonitor.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace EddiMaterialMonitor.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiMaterialMonitor.Properties.Resources", typeof(Resources).Assembly);
@@ -51,12 +51,102 @@ namespace EddiMaterialMonitor.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Track the amount of materials and generate events when limits are reached..
+        /// </summary>
+        public static string desc {
+            get {
+                return ResourceManager.GetString("desc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Desired.
+        /// </summary>
+        public static string desired_header {
+            get {
+                return ResourceManager.GetString("desired_header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory.
+        /// </summary>
+        public static string inventory_header {
+            get {
+                return ResourceManager.GetString("inventory_header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum.
+        /// </summary>
+        public static string max_header {
+            get {
+                return ResourceManager.GetString("max_header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum.
+        /// </summary>
+        public static string min_header {
+            get {
+                return ResourceManager.GetString("min_header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Material monitor.
+        /// </summary>
+        public static string name {
+            get {
+                return ResourceManager.GetString("name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string name_header {
+            get {
+                return ResourceManager.GetString("name_header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Below is a list of all known materials. You can set values for the minimum, desired and maximum levels of each and EDDI will generate events when you move beyond the levels..
+        /// </summary>
+        public static string p1 {
+            get {
+                return ResourceManager.GetString("p1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated..
+        /// </summary>
+        public static string p2 {
+            get {
+                return ResourceManager.GetString("p2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string type_header {
+            get {
+                return ResourceManager.GetString("type_header", resourceCulture);
             }
         }
     }

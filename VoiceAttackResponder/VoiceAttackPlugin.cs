@@ -62,21 +62,21 @@ namespace EddiVoiceAttackResponder
                 // Display instance information if available
                 if (EDDI.Instance.UpgradeRequired)
                 {
-                    string msg = "Please shut down VoiceAttack and run Eddi standalone to upgrade";
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
+                    string msg = Properties.Resources.run_eddi_standalone;
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
                 else if (EDDI.Instance.UpgradeAvailable)
                 {
-                    string msg = "Please shut down VoiceAttack and run Eddi standalone to upgrade";
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
+                    string msg = Properties.Resources.run_eddi_standalone;
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
 
                 if (EDDI.Instance.Motd != null)
                 {
-                    string msg = "Message from Eddi: " + EDDI.Instance.Motd;
                     vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
+                    string msg = String.Format(Eddi.Properties.Resources.msg_from_eddi, EDDI.Instance.Motd);
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
 
@@ -719,7 +719,7 @@ namespace EddiVoiceAttackResponder
         /// <summary>Find a module in outfitting that matches our existing module and provide its price</summary>
         private static void setShipModuleValues(Module module, string name, ref dynamic vaProxy)
         {
-            vaProxy.SetText(name, module?.name);
+            vaProxy.SetText(name, module?.localizedName);
             vaProxy.SetInt(name + " class", module?.@class);
             vaProxy.SetText(name + " grade", module?.grade);
             vaProxy.SetDecimal(name + " health", module?.health);
@@ -1272,21 +1272,21 @@ namespace EddiVoiceAttackResponder
             {
                 vaProxy.SetText("Name", cmdr?.name);
                 vaProxy.SetInt("Combat rating", cmdr?.combatrating?.rank);
-                vaProxy.SetText("Combat rank", cmdr?.combatrating?.name);
+                vaProxy.SetText("Combat rank", cmdr?.combatrating?.localizedName);
                 vaProxy.SetInt("Trade rating", cmdr?.traderating?.rank);
-                vaProxy.SetText("Trade rank", cmdr?.traderating?.name);
+                vaProxy.SetText("Trade rank", cmdr?.traderating?.localizedName);
                 vaProxy.SetInt("Explore rating", cmdr?.explorationrating?.rank);
-                vaProxy.SetText("Explore rank", cmdr?.explorationrating?.name);
+                vaProxy.SetText("Explore rank", cmdr?.explorationrating?.localizedName);
                 vaProxy.SetInt("Empire rating", cmdr?.empirerating?.rank);
-                vaProxy.SetText("Empire rank", cmdr?.empirerating?.name);
+                vaProxy.SetText("Empire rank", cmdr?.empirerating?.maleRank.localizedName);
                 vaProxy.SetInt("Federation rating", cmdr?.federationrating?.rank);
-                vaProxy.SetText("Federation rank", cmdr?.federationrating?.name);
+                vaProxy.SetText("Federation rank", cmdr?.federationrating?.localizedName);
                 vaProxy.SetDecimal("Credits", cmdr?.credits);
                 vaProxy.SetText("Credits (spoken)", Translations.Humanize(cmdr?.credits));
                 vaProxy.SetDecimal("Debt", cmdr?.debt);
                 vaProxy.SetText("Debt (spoken)", Translations.Humanize(cmdr?.debt));
-                vaProxy.SetText("Title", cmdr?.title ?? "Commander");
-                vaProxy.SetText("Gender", cmdr?.gender ?? "Neither");
+                vaProxy.SetText("Title", cmdr?.title ?? Eddi.Properties.Resources.Commander);
+                vaProxy.SetText("Gender", cmdr?.gender ?? Eddi.Properties.MainWindow.tab_commander_gender_n);
                 vaProxy.SetDecimal("Insurance", cmdr?.insurance);
 
                 // Backwards-compatibility with 1.x
@@ -1325,7 +1325,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " name (spoken)", ship?.phoneticname);
                 vaProxy.SetText(prefix + " ident", ship?.ident);
                 vaProxy.SetText(prefix + " ident (spoken)", Translations.ICAO(ship?.ident, false));
-                vaProxy.SetText(prefix + " role", ship?.role?.ToString());
+                vaProxy.SetText(prefix + " role", ship?.Role?.localizedName);
                 vaProxy.SetText(prefix + " size", ship?.size?.ToString());
                 vaProxy.SetDecimal(prefix + " value", ship?.value);
                 vaProxy.SetText(prefix + " value (spoken)", Translations.Humanize(ship?.value));
@@ -1455,7 +1455,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText(prefix + " government", system?.government);
                 vaProxy.SetText(prefix + " faction", system?.faction);
                 vaProxy.SetText(prefix + " primary economy", system?.primaryeconomy);
-                vaProxy.SetText(prefix + " state", system?.state);
+                vaProxy.SetText(prefix + " state", system?.systemState.localizedName);
                 vaProxy.SetText(prefix + " security", system?.security);
                 vaProxy.SetText(prefix + " power", system?.power);
                 vaProxy.SetText(prefix + " power (spoken)", Translations.Power(EDDI.Instance.CurrentStarSystem?.power));

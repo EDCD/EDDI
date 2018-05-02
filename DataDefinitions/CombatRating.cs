@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Utilities;
 
 namespace EddiDataDefinitions
@@ -7,69 +6,38 @@ namespace EddiDataDefinitions
     /// <summary>
     /// Combat ratings
     /// </summary>
-    public class CombatRating
+    public class CombatRating : ResourceBasedLocalizedEDName<CombatRating>
     {
-        private static readonly List<CombatRating> RATINGS = new List<CombatRating>();
+        static CombatRating()
+        {
+            resourceManager = Properties.CombatRatings.ResourceManager;
+            resourceManager.IgnoreCase = false;
 
-        public string edname { get; private set; }
-
-        public string name { get; private set; }
+            var Harmless = new CombatRating("Harmless", 0);
+            var MostlyHarmless = new CombatRating("MostlyHarmless", 1);
+            var Novice = new CombatRating("Novice", 2);
+            var Competent = new CombatRating("Competent", 3);
+            var Expert = new CombatRating("Expert", 4);
+            var Master = new CombatRating("Master", 5);
+            var Dangerous = new CombatRating("Dangerous", 6);
+            var Deadly = new CombatRating("Deadly", 7);
+            var Elite = new CombatRating("Elite", 8);
+        }
 
         public int rank { get; private set; }
 
-        private CombatRating(string edname, int rank, string name)
+        // dummy used to ensure that the static constructor has run
+        public CombatRating() : this("", 0)
+        { }
+
+        private CombatRating(string edname, int rank) : base(edname, edname)
         {
-            this.edname = edname;
             this.rank = rank;
-            this.name = name;
-
-            RATINGS.Add(this);
-        }
-
-        public static readonly CombatRating Harmless = new CombatRating("Harmless", 0, "Harmless");
-        public static readonly CombatRating MostlyHarmless = new CombatRating("MostlyHarmless", 1, "Mostly Harmless");
-        public static readonly CombatRating Novice = new CombatRating("Novice", 2, "Novice");
-        public static readonly CombatRating Competent = new CombatRating("Competent", 3, "Competent");
-        public static readonly CombatRating Expert = new CombatRating("Expert", 4, "Expert");
-        public static readonly CombatRating Master = new CombatRating("Master", 5, "Master");
-        public static readonly CombatRating Dangerous = new CombatRating("Dangerous", 6, "Dangerous");
-        public static readonly CombatRating Deadly = new CombatRating("Deadly", 7, "Deadly");
-        public static readonly CombatRating Elite = new CombatRating("Elite", 8, "Elite");
-
-        public static CombatRating FromName(string from)
-        {
-            if (from == null)
-            {
-                return null;
-            }
-
-            CombatRating result = RATINGS.FirstOrDefault(v => v.name == from);
-            if (result == null)
-            {
-                Logging.Report("Unknown Combat Rating name " + from);
-            }
-            return result;
-        }
-
-        public static CombatRating FromEDName(string from)
-        {
-            if (from == null)
-            {
-                return null;
-            }
-
-            string tidiedFrom = from.ToLowerInvariant();
-            CombatRating result = RATINGS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
-            if (result == null)
-            {
-                Logging.Report("Unknown Combat Rating ED name " + from);
-            }
-            return result;
         }
 
         public static CombatRating FromRank(int from)
         {
-            CombatRating result = RATINGS.FirstOrDefault(v => v.rank == from);
+            CombatRating result = AllOfThem.FirstOrDefault(v => v.rank == from);
             if (result == null)
             {
                 Logging.Report("Unknown Combat Rating rank " + from);

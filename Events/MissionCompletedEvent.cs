@@ -49,12 +49,12 @@ namespace EddiEvents
 
         public int rewardAmount { get; private set; }
 
-        public MissionCompletedEvent(DateTime timestamp, long? missionid, string name, string faction, Commodity commodity, int? amount, bool communal, long reward, List<CommodityAmount> commodityrewards, long donation) : base(timestamp, NAME)
+        public MissionCompletedEvent(DateTime timestamp, long? missionid, string name, string faction, CommodityDefinition commodity, int? amount, bool communal, long reward, List<CommodityAmount> commodityrewards, long donation) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;
             this.faction = faction;
-            this.commodity = (commodity == null ? null : commodity.name);
+            this.commodity = commodity?.localizedName;
             this.amount = amount;
             this.communal = communal;
             this.reward = reward;

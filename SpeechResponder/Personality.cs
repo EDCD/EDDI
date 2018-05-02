@@ -30,7 +30,8 @@ namespace EddiSpeechResponder
         [JsonIgnore]
         private string dataPath;
 
-        private static readonly string DEFAULT_PATH = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)).FullName + @"\eddi.json";
+        private static readonly string DEFAULT_PATH = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)).FullName + @"\" + Properties.Resources.default_personality_script_filename;
+        private static readonly string DEFAULT_USER_PATH = Constants.DATA_DIR + @"\personalities\" + Properties.Resources.default_personality_script_filename;
 
         public Personality(string name, string description, Dictionary<string, Script> scripts)
         {
@@ -96,14 +97,14 @@ namespace EddiSpeechResponder
         }
 
         /// <summary>
-        /// Obtain personality from a file.  If the file name is not supplied the the default
-        /// path of Constants.Data_DIR\personalities\eddi.json is used
+        /// Obtain personality from a file.
         /// </summary>
         public static Personality FromFile(string filename = null, bool isDefault = false)
         {
             if (filename == null)
             {
-                filename = Constants.DATA_DIR + @"\personalities\eddi.json";
+                filename = DEFAULT_USER_PATH;
+                isDefault = true;
             }
 
             Personality personality = null;
@@ -131,8 +132,7 @@ namespace EddiSpeechResponder
         }
 
         /// <summary>
-        /// Write personality to a file.  If the file name is not supplied the the default
-        /// path of Constants.Data_DIR\personalities\eddi.json is used
+        /// Write personality to a file.
         /// </summary>
         public void ToFile(string filename = null)
         {
@@ -142,7 +142,7 @@ namespace EddiSpeechResponder
             }
             if (filename == null)
             {
-                filename = Constants.DATA_DIR + @"\personalities\eddi.json";
+                filename = DEFAULT_USER_PATH;
             }
 
             if (filename != DEFAULT_PATH)
@@ -242,7 +242,7 @@ namespace EddiSpeechResponder
                     fixedScripts.Remove(script);
                 }
                 // Also add any secondary scripts in the default personality that aren't present in the list
-                foreach (KeyValuePair<string, Script> kv in defaultPersonality.Scripts)
+                foreach (KeyValuePair<string, Script> kv in defaultPersonality?.Scripts)
                 {
                     if (!fixedScripts.ContainsKey(kv.Key))
                     {

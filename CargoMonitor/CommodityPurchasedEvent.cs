@@ -29,10 +29,10 @@ namespace EddiCargoMonitor
         public int amount { get; private set; }
         public int price { get; private set; }
 
-        public CommodityPurchasedEvent(DateTime timestamp, long marketid, Commodity commodity, int amount, int price) : base(timestamp, NAME)
+        public CommodityPurchasedEvent(DateTime timestamp, long marketid, CommodityDefinition commodity, int amount, int price) : base(timestamp, NAME)
         {
             this.marketid = marketid;
-            this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
+            this.commodity = commodity?.localizedName ?? "unknown commodity";
             this.amount = amount;
             this.price = price;
         }

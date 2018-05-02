@@ -37,6 +37,11 @@ namespace EddiShipMonitor
             return "Ship monitor";
         }
 
+        public string LocalizedMonitorName()
+        {
+            return Properties.Resources.name;
+        }
+
         public string MonitorVersion()
         {
             return "1.0.0";
@@ -44,7 +49,7 @@ namespace EddiShipMonitor
 
         public string MonitorDescription()
         {
-            return "Track information on your ships.";
+            return Properties.Resources.desc;
         }
 
         public bool IsRequired()
@@ -254,7 +259,7 @@ namespace EddiShipMonitor
                     // We don't know of this ship so need to create it
                     ship = ShipDefinitions.FromEDModel(@event.ship);
                     ship.LocalId = (int)@event.shipid;
-                    ship.role = Role.MultiPurpose;
+                    ship.Role = Role.MultiPurpose;
                     AddShip(ship);
                 }
                 setShipName(ship, @event.shipname);
@@ -354,7 +359,7 @@ namespace EddiShipMonitor
                 Logging.Debug("Unknown ship ID " + @event.shipid);
                 ship = ShipDefinitions.FromEDModel(@event.ship);
                 ship.LocalId = (int)@event.shipid;
-                ship.role = Role.MultiPurpose;
+                ship.Role = Role.MultiPurpose;
             }
 
             // Save a copy of the raw event so that we can send it to other 3rd party apps
@@ -439,10 +444,10 @@ namespace EddiShipMonitor
             ship.hardpoints = @event.hardpoints;
 
             // total fuel tank capacity
-            ship.fueltanktotalcapacity = ship.fueltankcapacity + (int)ship.compartments.Where(c => c.module != null && c.module.name.EndsWith("Fuel Tank")).Sum(c => Math.Pow(2, c.module.@class));
+            ship.fueltanktotalcapacity = ship.fueltankcapacity + (int)ship.compartments.Where(c => c.module != null && c.module.basename.Equals("FuelTank")).Sum(c => Math.Pow(2, c.module.@class));
 
             // Cargo capacity
-            ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.name.EndsWith("Cargo Rack")).Sum(c => Math.Pow(2, c.module.@class));
+            ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.basename.Equals("CargoRack")).Sum(c => Math.Pow(2, c.module.@class));
 
             // Update the global variable
             EDDI.Instance.CurrentShip = ship;
@@ -806,9 +811,9 @@ namespace EddiShipMonitor
             }
 
             // Ensure that we have a role for this ship
-            if (ship.role == null)
+            if (ship.Role == null)
             {
-                ship.role = Role.MultiPurpose;
+                ship.Role = Role.MultiPurpose;
             }
             // Remove the ship first (just in case we are trying to add a ship that already exists)
             _RemoveShip(ship.LocalId);
@@ -923,7 +928,7 @@ namespace EddiShipMonitor
                         // We can make one though
                         ship = ShipDefinitions.FromEDModel(model);
                         ship.LocalId = (int)localId;
-                        ship.role = Role.MultiPurpose;
+                        ship.Role = Role.MultiPurpose;
                         AddShip(ship);
                         currentShipId = ship.LocalId;
                         Logging.Debug("Created ship ID " + localId + ";  " + JsonConvert.SerializeObject(ship));

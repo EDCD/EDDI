@@ -11,13 +11,43 @@ namespace EddiDataDefinitions
     /// </summary>
     public class StarClass
     {
+        static StarClass()
+        {
+            // Percentages are obtained from a combination of https://en.wikipedia.org/wiki/Stellar_classification#Harvard_spectral_classification
+            // and http://physics.stackexchange.com/questions/153150/what-does-this-stellar-mass-distribution-mean
+
+            var O = new StarClass("O", "O", "blue", 0.0000009M, new Normal(37.57, 27.50), new Normal(14.52, 29.67), new Normal(49698, 21338), new Normal(138, 262));
+            var B = new StarClass("B", "B", "blue_white", 0.039M, new Normal(5.81, 4.52), new Normal(3.36, 13.42), new Normal(16478, 6044), new Normal(237, 289));
+            var A = new StarClass("A", "A", "blue_white", 0.18M, new Normal(1.82, 2.78), new Normal(2.29, 16.63), new Normal(8208, 1179), new Normal(1809, 20152));
+            var F = new StarClass("F", "F", "white", 0.9M, new Normal(1.30, 0.20), new Normal(1.30, 3.86), new Normal(6743, 531), new Normal(2141, 1662));
+            var G = new StarClass("G", "G", "yellow_white", 2.28M, new Normal(0.94, 0.13), new Normal(1.01, 0.76), new Normal(5653, 7672), new Normal(4713, 3892));
+            var K = new StarClass("K", "K", "yellow_orange", 3.63M, new Normal(1.04, 45.55), new Normal(0.94, 2.11), new Normal(4452, 3284), new Normal(6291, 4144));
+            var M = new StarClass("M", "M", "orange_red", 22.935M, new Normal(0.66, 33.23), new Normal(1.58, 47.11), new Normal(2835, 481), new Normal(6609, 8645));
+        }
+
+       public class Chromaticity : ResourceBasedLocalizedEDName<StarClass.Chromaticity>
+        {
+            static Chromaticity()
+            {
+                resourceManager = Properties.StarColors.ResourceManager;
+                resourceManager.IgnoreCase = false;
+            }
+
+            // dummy used to ensure that the static constructor has run
+            public Chromaticity() : this("")
+            {}
+
+            public Chromaticity(string edname) : base(edname, edname)
+            {}
+        }
+
         private static readonly List<StarClass> CLASSES = new List<StarClass>();
 
         public string edname { get; private set; }
 
         public string name { get; private set; }
 
-        public string chromaticity { get; private set; }
+        public Chromaticity chromaticity { get; private set; } = new Chromaticity();
 
         public decimal percentage { get; private set; }
 
@@ -31,9 +61,9 @@ namespace EddiDataDefinitions
 
         private StarClass(string edname, string name, string chromaticity, decimal percentage, IUnivariateDistribution massdistribution, IUnivariateDistribution radiusdistribution, IUnivariateDistribution tempdistribution, IUnivariateDistribution agedistribution)
         {
+            Chromaticity dummy = new Chromaticity();
             this.edname = edname;
             this.name = name;
-            this.chromaticity = chromaticity;
             this.percentage = percentage;
             this.massdistribution = massdistribution;
             this.radiusdistribution = radiusdistribution;
@@ -42,17 +72,6 @@ namespace EddiDataDefinitions
 
             CLASSES.Add(this);
         }
-
-        // Percentages are obtained from a combination of https://en.wikipedia.org/wiki/Stellar_classification#Harvard_spectral_classification
-        // and http://physics.stackexchange.com/questions/153150/what-does-this-stellar-mass-distribution-mean
-
-        public static readonly StarClass O = new StarClass("O", "O", "blue", 0.0000009M, new Normal(37.57, 27.50), new Normal(14.52, 29.67), new Normal(49698, 21338), new Normal(138, 262));
-        public static readonly StarClass B = new StarClass("B", "B", "blue-white", 0.039M, new Normal(5.81, 4.52), new Normal(3.36, 13.42), new Normal(16478, 6044), new Normal(237, 289));
-        public static readonly StarClass A = new StarClass("A", "A", "blue-white", 0.18M, new Normal(1.82, 2.78), new Normal(2.29, 16.63), new Normal(8208, 1179), new Normal(1809, 20152));
-        public static readonly StarClass F = new StarClass("F", "F", "white", 0.9M, new Normal(1.30, 0.20), new Normal(1.30, 3.86), new Normal(6743, 531), new Normal(2141, 1662));
-        public static readonly StarClass G = new StarClass("G", "G", "yellow-white", 2.28M, new Normal(0.94, 0.13), new Normal(1.01, 0.76), new Normal(5653, 7672), new Normal(4713, 3892));
-        public static readonly StarClass K = new StarClass("K", "K", "yellow-orange", 3.63M, new Normal(1.04, 45.55), new Normal(0.94, 2.11), new Normal(4452, 3284), new Normal(6291, 4144));
-        public static readonly StarClass M = new StarClass("M", "M", "orange-red", 22.935M, new Normal(0.66, 33.23), new Normal(1.58, 47.11), new Normal(2835, 481), new Normal(6609, 8645));
 
         /// <summary>
         /// Provide the cumulative probability that a star of this class will have a temp equal to or lower than that supplied

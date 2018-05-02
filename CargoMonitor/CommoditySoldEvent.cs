@@ -37,10 +37,10 @@ namespace EddiCargoMonitor
         public bool stolen { get; private set; }
         public bool blackmarket { get; private set; }
 
-        public CommoditySoldEvent(DateTime timestamp, long marketid, Commodity commodity, int amount, long price, long profit, bool illegal, bool stolen, bool blackmarket) : base(timestamp, NAME)
+        public CommoditySoldEvent(DateTime timestamp, long marketid, CommodityDefinition commodity, int amount, long price, long profit, bool illegal, bool stolen, bool blackmarket) : base(timestamp, NAME)
         {
             this.marketid = marketid;
-            this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
+            this.commodity = commodity?.localizedName ?? "unknown commodity";
             this.amount = amount;
             this.price = price;
             this.profit = profit;

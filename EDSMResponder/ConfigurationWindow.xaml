@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EddiEdsmResponder"
+             xmlns:resx="clr-namespace:EddiEdsmResponder.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
@@ -20,14 +21,14 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="To connect to EDSM you need to have registered an account with them.  Once you have done this you can obtain your API key by clicking on your portrait in the top-right corner of the screen and selecting 'My API Key'" VerticalAlignment="Top"/>
-            <Label Grid.Row="1" Grid.Column="0" Margin="10" Content="EDSM API key"/>
-            <TextBox x:Name="edsmApiKeyTextBox" Grid.Row="1" Grid.Column="1" Margin="10" TextChanged="edsmApiKeyChanged"/>
-            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="If you registered a different commander name to your actual one, or you have not enabled the companion app, please enter your commander name below" VerticalAlignment="Top"/>
-            <Label Grid.Row="3" Grid.Column="0" Margin="10" Content="EDSM Commander name"/>
-            <TextBox x:Name="edsmCommanderNameTextBox" Grid.Row="3" Grid.Column="1" Margin="10" TextChanged="edsmCommanderNameChanged"/>
-            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="10" Text="Once you have entered your data above you can pull your existing logs from EDSM so that EDDI knows how many times you have been to each system.  You only need to do this the first time you set up EDSM.  Note that this can take a while to run" VerticalAlignment="Top"/>
-            <Button x:Name="edsmFetchLogsButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="Obtain EDSM log" Margin="10" Click="edsmObtainLogClicked"/>
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="-5,5" Text="{x:Static resx:EDSMResources.p1}"/>
+            <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="{x:Static resx:EDSMResources.api_key_label}"/>
+            <TextBox x:Name="edsmApiKeyTextBox" Grid.Row="1" Grid.Column="1" Margin="0, 5" Height="25" VerticalContentAlignment="Center" TextChanged="edsmApiKeyChanged"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="-5,5" Text="{x:Static resx:EDSMResources.p2}"/>
+            <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Content="{x:Static resx:EDSMResources.cmd_name_label}"/>
+            <TextBox x:Name="edsmCommanderNameTextBox" Grid.Row="3" Grid.Column="1" Margin="0, 5" Height="25" VerticalContentAlignment="Center" TextChanged="edsmCommanderNameChanged"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" Margin="-5,5" Text="{x:Static resx:EDSMResources.p3}"/>
+            <Button x:Name="edsmFetchLogsButton" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Content="{x:Static resx:EDSMResources.log_button}" Margin="0, 10" Click="edsmObtainLogClicked"/>
         </Grid>
     </DockPanel>
 </UserControl>

@@ -22,7 +22,7 @@ namespace EddiEvents
 
         public FederationPromotionEvent(DateTime timestamp, FederationRating rating) : base(timestamp, NAME)
         {
-            this.rank = rating.name;
+            this.rank = rating.localizedName;
         }
     }
 }

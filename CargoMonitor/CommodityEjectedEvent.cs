@@ -29,9 +29,9 @@ namespace EddiCargoMonitor
         [JsonProperty("abandoned")]
         public bool abandoned { get; private set; }
 
-        public CommodityEjectedEvent(DateTime timestamp, Commodity commodity , int amount, bool abandoned) : base(timestamp, NAME)
+        public CommodityEjectedEvent(DateTime timestamp, CommodityDefinition commodity , int amount, bool abandoned) : base(timestamp, NAME)
         {
-            this.commodity = (commodity == null ? "unknown commodity" : commodity.name);
+            this.commodity = commodity?.localizedName ?? "unknown commodity";
             this.amount = amount;
             this.abandoned = abandoned;
         }

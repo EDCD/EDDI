@@ -1,51 +1,82 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EddiDataDefinitions
 {
     /// <summary>
     /// Roles for ship
     /// </summary>
-    public class Role
+    public class Role : ResourceBasedLocalizedEDName<Role>, IComparable<Role>
     {
-        public static readonly List<string> ROLES = new List<string>();
-
-        public static readonly string Assassination = "Assassination";
-        public static readonly string BountyHunting = "Bounty hunting";
-        public static readonly string Combat = "Combat";
-        public static readonly string CombatSupport = "Combat support";
-        public static readonly string Exploration = "Exploration";
-        public static readonly string Journalism = "Journalism";
-        public static readonly string Mining = "Mining";
-        public static readonly string MultiCrew = "MultiCrew";
-        public static readonly string MultiPurpose = "Multi-purpose";
-        public static readonly string Piracy = "Piracy";
-        public static readonly string Racing = "Racing";
-        public static readonly string Refueling = "Refueling";
-        public static readonly string Science = "Science";
-        public static readonly string SearchAndRescue = "Search and rescue";
-        public static readonly string Smuggling = "Smuggling";
-        public static readonly string Trading = "Trading";
-        public static readonly string Taxi = "Taxi";
-
         static Role()
         {
-            ROLES.Add(Assassination);
-            ROLES.Add(BountyHunting);
-            ROLES.Add(Combat);
-            ROLES.Add(CombatSupport);
-            ROLES.Add(Exploration);
-            ROLES.Add(Journalism);
-            ROLES.Add(Mining);
-            ROLES.Add(MultiCrew);
-            ROLES.Add(MultiPurpose);
-            ROLES.Add(Piracy);
-            ROLES.Add(Racing);
-            ROLES.Add(Refueling);
-            ROLES.Add(Science);
-            ROLES.Add(SearchAndRescue);
-            ROLES.Add(Smuggling);
-            ROLES.Add(Taxi);
-            ROLES.Add(Trading);
+            resourceManager = Properties.ShipRoles.ResourceManager;
+            resourceManager.IgnoreCase = false;
+
+            Assassination = new Role("Assassination");
+            BountyHunting = new Role("Bountyhunting");
+            Combat = new Role("Combat");
+            CombatSupport = new Role("Combatsupport");
+            Exploration = new Role("Exploration");
+            Journalism = new Role("Journalism");
+            Mining = new Role("Mining");
+            MultiCrew = new Role("MultiCrew");
+            MultiPurpose = new Role("Multipurpose");
+            Piracy = new Role("Piracy");
+            Racing = new Role("Racing");
+            Refueling = new Role("Refueling");
+            Science = new Role("Science");
+            SearchAndRescue = new Role("Searchandrescue");
+            Smuggling = new Role("Smuggling");
+            Taxi = new Role("Taxi");
+            Trading = new Role("Trading");
+        }
+
+        public static readonly Role Assassination;
+        public static readonly Role BountyHunting;
+        public static readonly Role Combat;
+        public static readonly Role CombatSupport;
+        public static readonly Role Exploration;
+        public static readonly Role Journalism;
+        public static readonly Role Mining;
+        public static readonly Role MultiCrew;
+        public static readonly Role MultiPurpose;
+        public static readonly Role Piracy;
+        public static readonly Role Racing;
+        public static readonly Role Refueling;
+        public static readonly Role Science;
+        public static readonly Role SearchAndRescue;
+        public static readonly Role Smuggling;
+        public static readonly Role Trading;
+        public static readonly Role Taxi;
+
+        // dummy used to ensure that the static constructor has run
+        public Role() : this("")
+        { }
+
+        private Role(string edname) : base(edname, edname)
+        { }
+
+        public int CompareTo(Role rhs)
+        {
+            // A null rhs means that this object is greater.
+            if (rhs == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return this.localizedName.CompareTo(rhs.localizedName);
+            }
+        }
+
+        public static List<Role> Sorted
+        {
+            get
+            {
+                AllOfThem.Sort();
+                return AllOfThem;
+            }
         }
     }
 }

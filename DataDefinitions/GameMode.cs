@@ -7,56 +7,23 @@ namespace EddiDataDefinitions
     /// <summary>
     /// Game mode
     /// </summary>
-    public class GameMode
+    public class GameMode : ResourceBasedLocalizedEDName<GameMode>
     {
-        private static readonly List<GameMode> MODES = new List<GameMode>();
-
-        public string edname { get; private set; }
-
-        public string name { get; private set; }
-
-        private GameMode(string edname, string name)
+        static GameMode()
         {
-            this.edname = edname;
-            this.name = name;
+            resourceManager = Properties.GameModes.ResourceManager;
+            resourceManager.IgnoreCase = false;
 
-            MODES.Add(this);
+            var Open = new GameMode("Open");
+            var Group = new GameMode("Group");
+            var Solo = new GameMode("Solo");
         }
 
-        public static readonly GameMode Open = new GameMode("Open", "Open");
-        public static readonly GameMode Group = new GameMode("Group", "Group");
-        public static readonly GameMode Solo = new GameMode("Solo", "Solo");
+        // dummy used to ensure that the static constructor has run
+        public GameMode() : this("")
+        {}
 
-        public static GameMode FromName(string from)
-        {
-            if (from == null)
-            {
-                return null;
-            }
-
-            GameMode result = MODES.FirstOrDefault(v => v.name == from);
-            if (result == null)
-            {
-                Logging.Report("Unknown game mode name " + from);
-            }
-            return result;
-        }
-
-        public static GameMode FromEDName(string from)
-        {
-            if (from == null)
-            {
-                return null;
-            }
-
-            string tidiedFrom = from.ToLowerInvariant();
-            GameMode result = MODES.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
-            if (result == null)
-            {
-                Logging.Report("Unknown game mode ED name " + from);
-                result = new GameMode(from, tidiedFrom);
-            }
-            return result;
-        }
+        private GameMode(string edname) : base(edname, edname)
+        {}
     }
 }

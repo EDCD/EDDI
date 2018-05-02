@@ -7,59 +7,30 @@ namespace EddiDataDefinitions
     /// <summary>
     /// Ring compositions
     /// </summary>
-    public class Composition
+    public class Composition: ResourceBasedLocalizedEDName<Composition>
     {
-        private static readonly List<Composition> COMPOSITIONS = new List<Composition>();
-
-        public string edname { get; private set; }
-
-        public string name { get; private set; }
-
-        public Composition() { }
-
-        private Composition(string edname, string name)
+        static Composition()
         {
-            this.edname = edname;
-            this.name = name;
-
-            COMPOSITIONS.Add(this);
+            resourceManager = Properties.Compositions.ResourceManager;
+            resourceManager.IgnoreCase = false;
+            
+            var Icy = new Composition("Icy");
+            var Rocky = new Composition("Rocky");
+            var Metallic = new Composition("Metalic"); // sic
+            var MetalRich = new Composition("MetalRich");
         }
 
-        public static readonly Composition Icy= new Composition("eRingClass_Icy", "Icy");
-        public static readonly Composition Rocky = new Composition("eRingClass_Rocky", "Rocky");
-        public static readonly Composition Metallic = new Composition("eRingClass_Metalic", "Metallic");
-        public static readonly Composition MetalRich = new Composition("eRingClass_MetalRich", "Metal-rich");
+        // dummy used to ensure that the static constructor has run
+        public Composition() : this("")
+        {}
 
-        public static Composition FromName(string from)
+        private Composition(string edname): base(edname, edname.Replace("eRingClass_", "").Replace("-", ""))
+        {}
+
+        new public static Composition FromEDName(string edname)
         {
-            if (from == null)
-            {
-                return null;
-            }
-
-            Composition result = COMPOSITIONS.FirstOrDefault(v => v.name == from);
-            if (result == null)
-            {
-                Logging.Report("Unknown composition name " + from);
-            }
-            return result;
-        }
-
-        public static Composition FromEDName(string from)
-        {
-            if (from == null)
-            {
-                return null;
-            }
-
-            string tidiedFrom = from.ToLowerInvariant();
-            Composition result = COMPOSITIONS.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
-            if (result == null)
-            {
-                Logging.Report("Unknown composition ED name " + from);
-                result = new EddiDataDefinitions.Composition(from, tidiedFrom);
-            }
-            return result;
+            string normalizedEDName = edname.Replace("eRingClass_", "").Replace("-", "");
+            return ResourceBasedLocalizedEDName<Composition>.FromEDName(normalizedEDName);
         }
     }
 }

@@ -20,9 +20,9 @@ namespace UnitTests
             BodyScannedEvent bsEvent = (BodyScannedEvent)events[0];
 
             Assert.IsNotNull(bsEvent.volcanism);
-            Assert.AreEqual("Geysers", bsEvent.volcanism.type);
-            Assert.AreEqual("Carbon dioxide", bsEvent.volcanism.composition);
-            Assert.IsNull(bsEvent.volcanism.amount);
+            Assert.AreEqual("Geysers", bsEvent.volcanism.invariantType);
+            Assert.AreEqual("Carbon dioxide", bsEvent.volcanism.invariantComposition);
+            Assert.IsNull(bsEvent.volcanism.invariantAmount);
         }
 
         [TestMethod]
@@ -38,9 +38,9 @@ namespace UnitTests
             BodyScannedEvent bsEvent = (BodyScannedEvent)events[0];
 
             Assert.IsNotNull(bsEvent.volcanism);
-            Assert.AreEqual("Geysers", bsEvent.volcanism.type);
-            Assert.AreEqual("Silicate vapour", bsEvent.volcanism.composition);
-            Assert.AreEqual("Minor", bsEvent.volcanism.amount);
+            Assert.AreEqual("Geysers", bsEvent.volcanism.invariantType);
+            Assert.AreEqual("Silicate vapour", bsEvent.volcanism.invariantComposition);
+            Assert.AreEqual("Minor", bsEvent.volcanism.invariantAmount);
         }
 
         [TestMethod]
@@ -71,9 +71,9 @@ namespace UnitTests
             BodyScannedEvent bsEvent = (BodyScannedEvent)events[0];
 
             Assert.IsNotNull(bsEvent.volcanism);
-            Assert.AreEqual("Magma", bsEvent.volcanism.type);
-            Assert.AreEqual("Iron", bsEvent.volcanism.composition);
-            Assert.IsNull(bsEvent.volcanism.amount);
+            Assert.AreEqual("Magma", bsEvent.volcanism.invariantType);
+            Assert.AreEqual("Iron", bsEvent.volcanism.invariantComposition);
+            Assert.IsNull(bsEvent.volcanism.invariantAmount);
         }
 
         [TestMethod]
@@ -89,9 +89,9 @@ namespace UnitTests
             BodyScannedEvent bsEvent = (BodyScannedEvent)events[0];
 
             Assert.IsNotNull(bsEvent.volcanism);
-            Assert.AreEqual("Magma", bsEvent.volcanism.type);
-            Assert.AreEqual("Silicate", bsEvent.volcanism.composition);
-            Assert.AreEqual("Major", bsEvent.volcanism.amount);
+            Assert.AreEqual("Magma", bsEvent.volcanism.invariantType);
+            Assert.AreEqual("Silicate", bsEvent.volcanism.invariantComposition);
+            Assert.AreEqual("Major", bsEvent.volcanism.invariantAmount);
         }
     }
 }

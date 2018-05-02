@@ -24,8 +24,8 @@ namespace EddiEvents
 
         public EmpirePromotionEvent(DateTime timestamp, EmpireRating rating) : base(timestamp, NAME)
         {
-            this.rank = rating.name;
-            this.femininerank = rating.femininename;
+            this.rank = rating.maleRank.localizedName;
+            this.femininerank = rating.femaleRank.localizedName;
         }
     }
 }

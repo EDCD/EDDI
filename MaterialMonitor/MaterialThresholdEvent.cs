@@ -10,7 +10,7 @@ namespace EddiMaterialMonitor
         public const string NAME = "Material threshold";
         public const string DESCRIPTION = "Triggered when a material reaches a threshold";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-        public static MaterialThresholdEvent SAMPLE = new MaterialThresholdEvent(DateTime.Now, Material.AnomalousBulkScanData, "Minimum", 6, 5, "Reduction");
+        public static MaterialThresholdEvent SAMPLE = new MaterialThresholdEvent(DateTime.Now, Material.FromEDName("carbon"), "Minimum", 6, 5, "Reduction");
 
         static MaterialThresholdEvent()
         {

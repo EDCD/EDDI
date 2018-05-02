@@ -90,7 +90,8 @@ namespace EddiDataProviderService
                 StarSystem.government = (string)json["government"];
                 StarSystem.faction = (string)json["faction"];
                 StarSystem.primaryeconomy = (string)json["primary_economy"];
-                StarSystem.state = (string)json["state"] == "None" ? null : (string)json["state"];
+                string stateName = (string)json["state"];
+                StarSystem.systemState = stateName == "None" ? null : SystemState.FromEDName(stateName);
                 StarSystem.security = (string)json["security"];
                 StarSystem.power = (string)json["power"] == "None" ? null : (string)json["power"];
                 StarSystem.powerstate = (string)json["power_state"];
@@ -150,7 +151,7 @@ namespace EddiDataProviderService
                     if (largestpad == "L") { largestpad = "Large"; }
                     Station.largestpad = largestpad;
 
-                    Station.commodities = CommoditiesFromEDDP(station);
+                    Station.commodities = CommodityQuotesFromEDDP(station);
                     Station.commoditiesupdatedat = (long?)station["market_updated_at"];
 
                     Logging.Debug("Station is " + JsonConvert.SerializeObject(Station));
@@ -160,17 +161,23 @@ namespace EddiDataProviderService
             return Stations;
         }
 
-        public static List<Commodity> CommoditiesFromEDDP(dynamic json)
+        public static List<CommodityMarketQuote> CommodityQuotesFromEDDP(dynamic json)
         {
-            List<Commodity> commodities = new List<Commodity>();
+            var quotes = new List<CommodityMarketQuote>();
             if (json["commodities"] != null)
             {
                 foreach (dynamic commodity in json["commodities"])
                 {
-                    commodities.Add(new Commodity((int)(long)commodity["id"], (string)commodity["name"], (int?)(long?)commodity["buy_price"], (int?)(long?)commodity["demand"], (int?)(long?)commodity["sell_price"], (int?)(long?)commodity["supply"]));
+                    CommodityDefinition commodityDefinition = CommodityDefinition.FromName((string)commodity["name"]);
+                    CommodityMarketQuote quote = new CommodityMarketQuote(commodityDefinition);
+                    quote.buyprice = (int?)(long?)commodity["buy_price"];
+                    quote.sellprice = (int?)(long?)commodity["sell_price"];
+                    quote.demand = (int?)(long?)commodity["demand"];
+                    quote.stock = (int?)(long?)commodity["supply"];
+                    quotes.Add(quote);
                 }
             }
-            return commodities;
+            return quotes;
         }
 
         public static List<Body> BodiesFromEDDP(string systemName, dynamic json)
@@ -244,7 +251,7 @@ namespace EddiDataProviderService
                             List<MaterialPresence> Materials = new List<MaterialPresence>();
                             foreach (dynamic materialJson in body["materials"])
                             {
-                                Material material = Material.FromName((string)materialJson["material_name"]);
+                                Material material = Material.FromEDName((string)materialJson["material_name"]);
                                 decimal? amount = (decimal?)(double?)materialJson["share"];
                                 if (material != null && amount != null)
                                 {

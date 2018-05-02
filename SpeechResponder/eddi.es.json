@@ -1,0 +1,1797 @@
+{
+  "name": "EDDI",
+  "description": "A balanced, non-partisan personality",
+  "scripts": {
+    "AFMU repairs": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.item} \r\n{if event.repairedfully:\r\n    fully repaired\r\n|else:\r\n    partially repaired \r\n    {Occasionally(2, cat(\r\n        OneOf(\"to \", \"at \"),\r\n        Humanise(event.health * 100),\r\n        \" percent functionality\"\r\n    ))}\r\n}\r\n\r\n{Occasionally(2, \r\n    cat(OneOf(\", \", \"and is\"), \" ready for re-activation\")\r\n)}.",
+      "default": true,
+      "name": "AFMU repairs",
+      "description": "Triggered when repairing modules using the Auto Field Maintenance Unit (AFMU)"
+    },
+    "Blueprint make report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Function to obtain current inventory of a material}\r\n{set _inventory(required) to:\r\n    {for material in materials:\r\n        {if material.material = required:\r\n            {return material}\r\n        }\r\n    }\r\n}\r\n\r\n{_ Fetch blueprint from state }\r\n{set blueprintname to state.blueprint}\r\n{if blueprintname:\r\n    {_ Fetch full blueprint details }\r\n    {set blueprint to BlueprintDetails(blueprintname)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'blueprint')}\r\n    {SetState('eddi_context_blueprint_name', blueprintname)}\r\n}\r\n\r\n{if !blueprint:\r\n    {_ Fetch from context }\r\n    {set blueprint to BlueprintDetails(state.eddi_context_blueprint_name)}\r\n}\r\n\r\n{set canbemade to 999}\r\n\r\n{if blueprint:\r\n    {_ Find the smallest number of this blueprint that can be made }\r\n    \r\n    {set cur to 0}\r\n    {while cur < len(blueprint.materials):\r\n        {set inventory to _inventory(blueprint.materials[cur].material)}\r\n        {if !inventory:\r\n            {set canbemade to 0}\r\n        |else:\r\n            {if inventory.amount < canbemade:\r\n                {set canbemade to inventory.amount}\r\n            }\r\n        }\r\n        {set cur to cur + 1}\r\n    }\r\n\r\n    {if canbemade = 0:\r\n        You cannot make any {blueprintname}\r\n    |elif canbemade = 1:\r\n        You can make one {blueprintname}\r\n    |else:\r\n        You can make {canbemade} {blueprintname}\r\n    }\r\n|else:\r\n    No information available on materials required for {blueprintname}\r\n}.\r\n",
+      "default": true,
+      "name": "Blueprint make report",
+      "description": "Report on how many of a particular blueprint we can make"
+    },
+    "Blueprint material report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch blueprint from state }\r\n{set blueprintname to state.blueprint}\r\n{if blueprintname:\r\n    {_ Fetch full blueprint details }\r\n    {set blueprint to BlueprintDetails(blueprintname)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'blueprint')}\r\n    {SetState('eddi_context_blueprint_name', blueprintname)}\r\n}\r\n\r\n{if !blueprint:\r\n    {_ Fetch from context }\r\n    {set blueprint to BlueprintDetails(state.eddi_context_blueprint_name)}\r\n}\r\n\r\n{if blueprint:\r\n    {set materials to len(blueprint.materials)}\r\n    {blueprintname} requires \r\n    {if materials = 1:\r\n        {blueprint.materials[0].material}\r\n    |elif materials = 2:\r\n        {blueprint.materials[0].material} and {blueprint.materials[1].material}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(blueprint.materials):\r\n            {if cur = 0:\r\n                {blueprint.materials[cur].material}\r\n            |elif cur < len(blueprint.materials) - 1:\r\n                , {blueprint.materials[cur].material}\r\n            |else:\r\n                , and {blueprint.materials[cur].material}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n|else:\r\n    No information available on materials required for {blueprintname}\r\n}.\r\n",
+      "default": true,
+      "name": "Blueprint material report",
+      "description": "Report on the material requirements for a blueprint"
+    },
+    "Body report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch from context }\r\n{set reportbody to BodyDetails(state.eddi_context_body_name, state.eddi_context_body_system)}\r\n{if !reportbody.name || reportbody.name = \"\": {set reportbody to BodyDetails(state.eddi_context_body_name)} }\r\n\r\n{if !reportbody.name || reportbody.name = \"\":\r\n    I'm not sure which body you are asking about.\r\n|else:\r\n    {set shortBodyName to reportbody.name}\r\n    {set systemName to state.eddi_context_body_system}\r\n    {set sysNameLen to len(systemName)}\r\n    {if len(shortBodyName) > sysNameLen && eq(systemName, slice(shortBodyName, 0, sysNameLen)):\r\n        {set shortBodyName to cat(\"Body\", Spacialise(slice(shortBodyName, sysNameLen)))}\r\n    }\r\n\r\n    {shortBodyName} is\r\n    {if reportbody.gravity < 0.5:\r\n        a low-gravity\r\n    |elif reportbody.gravity <2:\r\n        a medium-gravity\r\n    |elif reportbody.gravity <4:\r\n        a high-gravity\r\n    |else:\r\n        an extremely high-gravity\r\n    }\r\n\r\n    {if reportbody.tidallylocked:\r\n        tidally-locked\r\n    }\r\n\r\n    {if reportbody.terraformstate = \"Terraformable\":\r\n        terraformable\r\n    |elif reportbody.terraformstate = \"Terraformed\":\r\n        terraformed\r\n    }\r\n\r\n    {if len(reportbody.rings) > 0:\r\n        ringed\r\n    }\r\n\r\n    {reportbody.planettype}\r\n\r\n    {if reportbody.terraformstate = \"Terraforming\":\r\n      in the process of being terraformed\r\n    }\r\n\r\n    {if type(reportbody.landable) != \"void\": \r\n        that is\r\n        {if reportbody.landable:\r\n            suitable\r\n        |else:\r\n            unsuitable\r\n        }\r\n        for landing\r\n    }\r\n    . {_ note the full stop}\r\n\r\n    {_ Atmosphere? }\r\n\r\n    {if reportbody.volcanism:\r\n        This planet shows signs of volcanism, with\r\n        {if reportbody.volcanism.type = 'Geysers':\r\n            {if reportbody.volcanism.amount = 'Major':\r\n                high numbers of\r\n            |elif reportbody.volcanism.amount = 'Minor':\r\n                low numbers of\r\n            }\r\n            active {reportbody.volcanism.composition} geysers\r\n        |else:\r\n            {if reportbody.volcanism.amount = 'Major':\r\n                high levels of\r\n            |elif reportbody.volcanism.amount = 'Minor':\r\n                low levels  of\r\n            }\r\n            active {reportbody.volcanism.composition} magma flows\r\n        }.\r\n    }\r\n\r\n    {if reportbody.landable :\r\n        It has a\r\n        {if reportbody.rotationalperiod < -20.0:\r\n            slow retrograde\r\n        |elif reportbody.rotationalperiod < -0.5:\r\n            retrograde\r\n        |elif reportbody.rotationalperiod < 0:\r\n            fast retrograde\r\n        |elif reportbody.rotationalperiod <= 0.5:\r\n            fast\r\n        |elif reportbody.rotationalperiod > 20.0:\r\n            slow\r\n        }\r\n        rotational period of {Humanise(reportbody.rotationalperiod)}\r\n        day{if Humanise(reportbody.rotationalperiod) != \"1\":s}.\r\n\r\n        {set goodmaterials to []}\r\n        {set greatmaterials to []}\r\n        {for material in reportbody.materials:\r\n            {if material.percentage >= MaterialDetails(material.material).greatpctbody:\r\n                {set greatmaterials to cat(greatmaterials, [material])}\r\n            |elif material.percentage >= MaterialDetails(material.material).goodpctbody:\r\n                {set goodmaterials to cat(goodmaterials, [material])}\r\n            }\r\n        }\r\n\r\n        {if len(greatmaterials) > 0:\r\n            This body contains very high levels of\r\n            {if len(greatmaterials) = 1:\r\n                {greatmaterials[0].material}\r\n            |elif len(greatmaterials) = 2:\r\n                {greatmaterials[0].material} and {greatmaterials[1].material}\r\n            |else:\r\n                {set cur to 0}\r\n                {while cur < len(greatmaterials):\r\n                    {if cur = 0:\r\n                        {greatmaterials[cur].material}\r\n                    |elif cur < len(greatmaterials) - 1:\r\n                        , {greatmaterials[cur].material}\r\n                    |else:\r\n                        , and {greatmaterials[cur].material}\r\n                    }\r\n                    {set cur to cur + 1}\r\n                }\r\n            }\r\n        }\r\n        {if len(goodmaterials) > 0:\r\n            {if len(greatmaterials) > 0:\r\n                and high levels of\r\n            |else:\r\n                This body contains high levels of\r\n            }\r\n            {if len(goodmaterials) = 1:\r\n                {goodmaterials[0].material}\r\n            |elif len(goodmaterials) = 2:\r\n                {goodmaterials[0].material} and {goodmaterials[1].material}\r\n            |else:\r\n                {set cur to 0}\r\n                {while cur < len(goodmaterials):\r\n                    {if cur = 0:\r\n                        {goodmaterials[cur].material}\r\n                    |elif cur < len(goodmaterials) - 1:\r\n                        , {goodmaterials[cur].material}\r\n                    |else:\r\n                        , and {goodmaterials[cur].material}\r\n                    }\r\n                    {set cur to cur + 1}\r\n                }\r\n            }\r\n        }\r\n        {if len(greatmaterials) > 0 || len(goodmaterials) > 0:\r\n            .\r\n        }\r\n    }\r\n}",
+      "default": true,
+      "name": "Body report",
+      "description": "Function to report on the details of the contextual body"
+    },
+    "Body scanned": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'body')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_body_system', system.name)}\r\n{SetState('eddi_context_body_name', event.name)}\r\n{SetState('eddi_context_last_scan_estimated_value', event.estimatedvalue)}\r\n\r\n{Pause(1000)}\r\n\r\nScan {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Body report\")}\r\n\r\n{F(\"Report last scan value\")}\r\n\r\n",
+      "default": true,
+      "name": "Body scanned",
+      "description": "Triggered when you complete a scan of a planetary body"
+    },
+    "Bond awarded": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Bond awarded }\r\n{_ Triggered when you are awarded a combat bond }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'bond')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n{SetState('eddi_context_bond_amount', event.reward)}\r\n{SetState('eddi_context_bond_faction', event.awardingfaction)}\r\n\r\n{event.victimfaction} ship {OneOf(\"destroyed\",\"eliminated\",\"down\")},\r\n\r\n{event.reward} credits awarded from {event.awardingfaction}.\r\n",
+      "default": true,
+      "name": "Bond awarded",
+      "description": "Triggered when you are awarded a combat bond"
+    },
+    "Bond redeemed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bond')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_bond_amount', event.amount)}\r\n\r\nCombat bonds for {Humanise(event.amount)} credits \r\n{Occasionally(2, OneOf(\"have been\", \"have now been\"))}\r\n{OneOf(\"redeemed\", \"claimed\")}\r\n\r\n{Occasionally(2, \"\r\n  {if len(event.rewards) = 1 && len(event.rewards[0].faction) > 0:\r\n    from {P(event.rewards[0].faction)}\r\n  |else:\r\n    . \r\n    {set cur to 0}\r\n    {while cur < len(event.rewards):\r\n      {if len(event.rewards[cur].faction) > 0:\r\n        {if cur = 0:\r\n        |elif cur < len(event.rewards) - 1:\r\n            , \r\n        |else:\r\n            and\r\n        }\r\n        {Humanise(event.rewards[cur].amount)} credits from\r\n        {P(event.rewards[cur].faction)} \r\n        {set cur to cur + 1}\r\n      }\r\n    }\r\n  }\r\n\")}\r\n\r\n{if event.brokerpercentage && event.brokerpercentage > 0:\r\n    after deducting\r\n    {OneOf(\"payments\", \"fees\")} of\r\n    {round((event.amount / (100 - event.brokerpercentage)) * event.brokerpercentage, 0)} credits\r\n}.",
+      "default": true,
+      "name": "Bond redeemed",
+      "description": "Triggered when you redeem a combat bond"
+    },
+    "Bounty awarded": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n{SetState('eddi_context_bounty_name', event.target)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.reward)}\r\n\r\n{Pause(500)}\r\n{if len(event.rewards) = 1:\r\n    Bounty voucher of {Humanise(event.reward)} credits received from {P(event.rewards[0].faction)}\r\n|elif len(event.rewards) > 1:\r\n    {len(event.rewards)} bounty vouchers received for a total of {Humanise(event.reward)} credits\r\n}\r\n{if event.shared:\r\n    to share between yourself and your wing-mates\r\n}.\r\n",
+      "default": true,
+      "name": "Bounty awarded",
+      "description": "Triggered when you are awarded a bounty"
+    },
+    "Bounty incurred": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_bounty_name', event.victim)}\r\n{SetState('eddi_context_bounty_faction', event.faction)}\r\n{SetState('eddi_context_bounty_amount', event.bounty)}\r\n\r\n{P(event.faction)} just put a bounty of {event.bounty} credits on your head for {event.crime}.",
+      "default": true,
+      "name": "Bounty incurred",
+      "description": "Triggered when you incur a bounty"
+    },
+    "Bounty redeemed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'bounty')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_bounty_amount', event.amount)}\r\n\r\nBounty vouchers for {Humanise(event.amount)} credits \r\n{Occasionally(2, OneOf(\"have been\", \"have now been\"))}\r\n{OneOf(\"redeemed\", \"claimed\")}\r\n\r\n{Occasionally(2, \"\r\n  {if len(event.rewards) = 1 && len(event.rewards[0].faction) > 0:\r\n    from {P(event.rewards[0].faction)}\r\n  |else:\r\n    . \r\n    {set cur to 0}\r\n    {while cur < len(event.rewards):\r\n      {if len(event.rewards[cur].faction) > 0:\r\n        {if cur = 0:\r\n        |elif cur < len(event.rewards) - 1:\r\n            , \r\n        |else:\r\n            and\r\n        }\r\n        {Humanise(event.rewards[cur].amount)} credits from\r\n        {P(event.rewards[cur].faction)} \r\n        {set cur to cur + 1}\r\n      }\r\n    }\r\n  }\r\n\")}\r\n\r\n{if event.brokerpercentage && event.brokerpercentage > 0:\r\n    after deducting\r\n    {OneOf(\"payments\", \"fees\")} of\r\n    {round((event.amount / (100 - event.brokerpercentage)) * event.brokerpercentage, 0)} credits\r\n}.",
+      "default": true,
+      "name": "Bounty redeemed",
+      "description": "Triggered when you redeem a bounty voucher"
+    },
+    "Cargo inventory": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Cargo inventory",
+      "description": "Triggered when you obtain an inventory of your cargo"
+    },
+    "Cargo report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Cargo report }\r\n{_ Report current cargo manifest }\r\n\r\n{set cargocarried to 0}\r\n{set haulage to 0}\r\n{set illegal to false}\r\n{set stolen to false}\r\n\r\n{if len(inventory) > 0:\r\n    {for cargo in inventory:\r\n        {set cargocarried to cargocarried + cargo.total}\r\n        {set haulage to haulage + cargo.haulage}\r\n        {if cargo.stolen > 0: {set stolen to true}}\r\n        {if status.docked:\r\n            {for prohibited in station.prohibited:\r\n                {if cargo.name = prohibited: {set illegal to true}}\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n\r\n{if cargocarried > 0:\r\n    {if cargocarried = ship.cargocapacity:\r\n        Your cargo {OneOf(\"bay\", \"hold\")} is full.\r\n    |else:\r\n        You are carrying {cargocarried} tonne{if cargocarried != 1:s}\r\n    }\r\n\r\n    {if len(inventory) = 1:\r\n        {if inventory[0].name = \"Limpet\":\r\n            of limpets.\r\n        |else:\r\n            of {inventory[0].name}.\r\n        }\r\n    |else:\r\n        {if cargocarried < ship.cargocapacity: of cargo.}\r\n        {Occasionally(2, \"Cargo\")} {OneOf(\"Manifest\", \"Inventory\")} is as follows:\r\n        {set position to 0}\r\n        {for cargo in inventory:\r\n            {cargo.total} tonne{if cargo.total != 1:s} of \r\n            {if cargo_commodity_array[0] = \"Limpet\":\r\n                of limpets\r\n            |else:\r\n                of {cargo.name}\r\n            }\r\n            {set position to position + 1}\r\n            {if position = len(inventory) - 1: and |else:,}\r\n        }\r\n    }.\r\n\r\n    {if cargocarried < ship.cargocapacity:\r\n        {set free to ship.cargocapacity - cargocarried}\r\n        You have {free} tonne{if free != 1:s} {OneOf(\"free\",\"of free space\")}.\r\n    }\r\n\r\n    {if stolen || illegal:\r\n        Warning: You are carrying\r\n        {if stolen: stolen goods}\r\n        {if illegal:\r\n            {if stolen:, and }\r\n            goods that are illegal in this jurisdiction\r\n        }.\r\n    }\r\n\r\n|else:\r\n    {OneOf(\"Your cargo bay is empty.\",\"You have no cargo.\",\"You are carrying no cargo.\")}\r\n}\r\n",
+      "default": true,
+      "name": "Cargo report",
+      "description": "Report current cargo manifest"
+    },
+    "Cleared save": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'save')}\r\n{SetState('eddi_context_last_action', 'clear')}\r\n\r\nGoodbye {F(\"Honorific\")}.  It was a pleasure to serve you.",
+      "default": true,
+      "name": "Cleared save",
+      "description": "Triggered when you clear your save"
+    },
+    "Cockpit breached": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'cockpit')}\r\n{SetState('eddi_context_last_action', 'breach')}\r\n\r\nIs it me, or is it cold in here?",
+      "default": true,
+      "name": "Cockpit breached",
+      "description": "Triggered when your ship's cockpit is broken"
+    },
+    "Combat promotion": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'rank')}\r\n{SetState('eddi_context_last_action', 'promotion')}\r\n{SetState('eddi_context_rank_name', 'combat')}\r\n{SetState('eddi_context_rank_amount', event.rating)}\r\n\r\nYou have been recognised for your combat skills, {F(\"Honorific\")}.",
+      "default": true,
+      "name": "Combat promotion",
+      "description": "Triggered when your combat rank increases"
+    },
+    "Commander continued": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Welcome back {F(\"Honorific\")}.",
+      "default": true,
+      "name": "Commander continued",
+      "description": "Triggered when you continue an existing game"
+    },
+    "Commander progress": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Commander progress",
+      "description": "Triggered when your progress is reported"
+    },
+    "Commander ratings": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Commander ratings",
+      "description": "Triggered when your ratings are reported"
+    },
+    "Commander started": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Welcome, Commander.",
+      "default": true,
+      "name": "Commander started",
+      "description": "Triggered when you start a new game"
+    },
+    "Commodity collected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'collect')}\r\n{SetState('eddi_context_cargo_name', event.commodity)}\r\n\r\n{event.commodity} now on board.",
+      "default": true,
+      "name": "Commodity collected",
+      "description": "Triggered when you pick up a commodity in your ship or SRV"
+    },
+    "Commodity ejected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'eject')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n",
+      "default": true,
+      "name": "Commodity ejected",
+      "description": "Triggered when you eject a commodity from your ship or SRV"
+    },
+    "Commodity purchase check": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{for commodity in station.commodities:\r\n    {if commodity.stock > 0 && commodity.buyprice < commodity.avgprice:\r\n        {set discount to commodity.avgprice - commodity.buyprice}\r\n        {if discount > best.avgprice - best.buyprice:\r\n            {set thirdbest to secondbest}\r\n            {set secondbest to best}\r\n            {set best to commodity}\r\n        |elif discount > secondbest.avgprice - secondbest.buyprice:\r\n            {set thirdbest to secondbest}\r\n            {set secondbest to commodity}\r\n        |elif discount > thirdbest.avgprice - thirdbest.buyprice:\r\n            {set thirdbest to commodity}\r\n        }\r\n    }\r\n}\r\n\r\n{if best:\r\n    The local market is selling {best.name} at a good price\r\n    {if secondbest\r\n       , as well as {secondbest.name}\r\n        {if thirdbest:\r\n            and {thirdbest.name}\r\n        }\r\n    }\r\n.}\r\n",
+      "default": true,
+      "name": "Commodity purchase check",
+      "description": "Check to see which commodities are the best to purchase"
+    },
+    "Commodity purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'purchase')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n{SetState('eddi_context_commodity_amount', event.amount)}\r\n\r\n{if event.amount = 1:\r\n   You have just purchased one tonne of {event.commodity} for {event.price} credits.\r\n|elif event.amount > 1:\r\n    You have just purchased {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne.  Total cost is {event.amount * event.price} credits.\r\n}",
+      "default": true,
+      "name": "Commodity purchased",
+      "description": "Triggered when you buy a commodity from the markets"
+    },
+    "Commodity refined": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'refine')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n\r\n",
+      "default": true,
+      "name": "Commodity refined",
+      "description": "Triggered when you refine a commodity from the refinery"
+    },
+    "Commodity sale check": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Function to find a given commodity in market}\r\n{set market(commodity) to:\r\n    {for marketcommodity in station.commodities:\r\n        {if marketcommodity.EDDBID = commodity.EDDBID:\r\n            {return marketcommodity}\r\n        }\r\n    }\r\n}\r\n\r\n{set totalprofit to 0}\r\n{set missioncommodities to []}\r\n{set profitablecommodities to []}\r\n{set stolencommodities to []}\r\n{set unknowncommodities to []}\r\n\r\n{for cargo in inventory:\r\n    {if cargo.name != 'Limpet':\r\n        {set marketcommodity to market(cargo.commodity)}\r\n        {set profit to (marketcommodity.sellprice - cargo.price) * cargo.other}\r\n\r\n        {if cargo.stolen > 0:\r\n            {set stolencommodities to cat(stolencommodities, [cargo.commodity])}\r\n        |elif cargo.haulage > 0:\r\n            {set missioncommodities to cat(missioncommodities, [cargo.commodity])}\r\n        |elif !marketcommodity:\r\n            {set unknowncommodities to cat(unknowncommodities, [cargo.commodity])}\r\n        |elif marketcommodity && profit > 0:\r\n            {set profitablecommodities to cat(profitablecommodities, [cargo.commodity])}\r\n            {set totalprofit to totalprofit + profit}\r\n        }\r\n    }\r\n}\r\n\r\n{_ Let the user know about any commodities they can sell here for a profit}\r\n{if len(profitablecommodities) > 0:\r\n    You can sell your\r\n    {if len(profitablecommodities) = 1:\r\n        {profitablecommodities[0].name}\r\n    |elif len(profitablecommodities) = 2:\r\n        {profitablecommodities[0].name} and {profitablecommodities[1].name}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(profitablecommodities):\r\n            {if cur = 0:\r\n                {profitablecommodities[cur].name}\r\n            |elif cur < len(profitablecommodities) - 1:\r\n                , {profitablecommodities[cur].name}\r\n            |else:\r\n                , and {profitablecommodities[cur].name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n    for a profit of {totalprofit} credits.\r\n}\r\n\r\n{_ Let the user know about any commodities about which we are unsure if they can sell for a profit}\r\n{if len(unknowncommodities) > 0:\r\n    You could {if len(profitablecommodities) > 0: also } sell your\r\n    {if len(unknowncommodities) = 1:\r\n        {unknowncommodities[0].name}\r\n    |elif len(unknowncommodities) = 2:\r\n        {unknowncommodities[0].name} and {unknowncommodities[1].name}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(unknowncommodities):\r\n            {if cur = 0:\r\n                {unknowncommodities[cur].name}\r\n            |elif cur < len(profitablecommodities) - 1:\r\n                , {unknowncommodities[cur].name}\r\n            |else:\r\n                , and {unknowncommodities[cur].name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n    , although check potential profits for {if len(unknowncommodities) > 1: these |else: this} before confirming the transaction.\r\n}\r\n\r\n{_ Let the user know about any stolen commodities they can sell on the black market}\r\n{if len(stolencommodities) > 0:\r\n    {if station.hasblackmarket:\r\n        You can fence your stolen\r\n        {if len(stolencommodities) = 1:\r\n            {stolencommodities[0].name}\r\n        |elif len(stolencommodities) = 2:\r\n            {stolencommodities[0].name} and {stolencommodities[1].name}\r\n        |else:\r\n            {set cur to 0}\r\n            {while cur < len(stolencommodities):\r\n                {if cur = 0:\r\n                    {stolencommodities[cur].name}\r\n                |elif cur < len(stolencommodities) - 1:\r\n                    , {stolencommodities[cur].name}\r\n                |else:\r\n                    , and {stolencommodities[cur].name}\r\n                }\r\n                {set cur to cur + 1}\r\n            }\r\n        }\r\n        here.\r\n    |else:\r\n        Reminder: you {OneOf(\"have stolen cargo on-board\", \"have stolen goods on-board\", \"are carrying stolen goods\", \"are carrying stolen cargo\")}.\r\n    }\r\n}\r\n\r\n{_ Let the user know about any mission related commodities they can sell on the black market}\r\n{if len(missioncommodities) > 0 && station.hasblackmarket:\r\n\r\n    You can {if len(stolencommodities) > 0: also} {OneOf('offload', 'dump')} your mission related\r\n    {if len(missioncommodities) = 1:\r\n        {missioncommodities[0].name}\r\n    |elif len(missioncommodities) = 2:\r\n        {missioncommodities[0].name} and {missioncommodities[1].name}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(missioncommodities):\r\n            {if cur = 0:\r\n                {missioncommodities[cur].name}\r\n            |elif cur < len(missioncommodities) - 1:\r\n                , {missioncommodities[cur].name}\r\n            |else:\r\n                , and {missioncommodities[cur].name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n    here.\r\n}\r\n",
+      "default": true,
+      "name": "Commodity sale check",
+      "description": "Check to see which commodities can be sold here"
+    },
+    "Commodity sold": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'commodity')}\r\n{SetState('eddi_context_last_action', 'sell')}\r\n{SetState('eddi_context_commodity_name', event.commodity)}\r\n{SetState('eddi_context_commodity_amount', event.amount)}\r\n\r\n{if event.amount = 1:\r\n   You have just sold one tonne of {event.commodity} for {event.price} credits\r\n|elif event.amount > 1:\r\n    You have just sold {event.amount} tonnes of {event.commodity} at {event.price} credits per tonne for a total of {event.amount * event.price} credits\r\n}\r\n{if event.price != event.profit:\r\n    {if event.profit < 0:\r\n        with a loss of {-1 * event.profit * event.amount} credits.\r\n    |elif event.profit = 0:\r\n        and broke even on the trade.\r\n    |else:\r\n        with a profit of {event.profit * event.amount} credits.\r\n    }\r\n}",
+      "default": true,
+      "name": "Commodity sold",
+      "description": "Triggered when you sell a commodity to the markets"
+    },
+    "Community goal": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Set Context _}\r\n{SetState('eddi_context_last_subject', 'community goal')}\r\n{_ Save goal location to context if there is only one goal present _}\r\n{if len(event.cgid) = 1:\r\n   {SetState('eddi_context_goal_system_name', event.system[0])}\r\n   {SetState('eddi_context_goal_station_name', event.station[0])}\r\n}\r\n\r\n{F('Honorific')}, \r\n\r\n{if len(event.name) > 1:\r\n    {OneOf(\"you have expressed interest in\", \"I am tracking\")}\r\n    the following community goals:\r\n|else: \r\n    The community goal,    \r\n}\r\n\r\n{set cur to 0}\r\n{while cur < len(event.name):\r\n\r\n   {if cur = 0 && len(event.name) = 1:\r\n      {_ nothing _}\r\n   |elif cur = 0 && len(event.name) > 1:\r\n      The first,\r\n   |elif cur < (len(event.name) - 1):\r\n      The next, \r\n   |else:\r\n      The last,\r\n   }\r\n\r\n   {event.name[cur]},\r\n\r\n   {if event.iscomplete[cur]:\r\n      {OneOf(\"is complete\", \"has finished\")} \r\n   |else: \r\n      {if (event.expiry[cur] / 3600) < 12:\r\n         {OneOf(\"is nearing completion\", \r\n                \"shall end in {Humanise(round(event.expiry[cur] / 3600, 1))} hours\", \r\n                \"is nearly complete\")}\r\n      |else:\r\n         {OneOf(\"is not yet complete\", \r\n                \"is active\", \r\n                \"is incomplete\")} \r\n      }\r\n   }\r\n\r\n   {if event.tier[cur]:\r\n       {OneOf(\"and has reached\", \"and currently at\")} {event.tier[cur]}.\r\n       {if event.contribution[cur] > 0:\r\n           Your expected reward is \r\n           {Occasionally(2, \"currently\")}\r\n           {Occasionally(2, \"calculated at\")}\r\n           {Humanise(event.tierreward[cur])} credits\r\n           {Occasionally(2, \"in the {event.percentileband[cur]}th percentile\")}\r\n       }\r\n   }.\r\n\r\n   {_ Create a comparison function _}\r\n   {set compare(stat) to:     \r\n       {if stat < 0.01:\r\n            just a {OneOf(\"fraction\", \"token\")} of            \r\n       |elif stat < 0.10:\r\n            less than a tenth of\r\n       |elif stat < 0.25:\r\n            less than a quarter of\r\n       |elif stat < 0.5:\r\n            less than half of\r\n       |elif stat < 0.75:\r\n            less than\r\n       |elif stat < 0.96: \r\n            {OneOf(\"fractionally\",\"just\")}\r\n            less than\r\n       |elif stat < 1.05:\r\n            {OneOf(\"approximately\",\"roughly\",\"nearly\")} \r\n            equal to \r\n       |elif stat < 1.25:\r\n            a little more than\r\n       |elif stat < 1.5:\r\n            more than\r\n       |elif stat < 2:\r\n            significantly more than\r\n       |else:\r\n            vastly more than\r\n       }\r\n    }\r\n    {set compare_contribution to (event.contribution[cur] / round(event.total[cur] / event.contributors[cur], 0))}\r\n\r\n    {if compare_contribution != 0:\r\n       {if event.toprank[cur]: \r\n          Congratulations! \r\n          You are one of {event.topranksize[cur]} top commanders in this event, having contributed \r\n          {compare(compare_contribution)}\r\n          the average.\r\n       |else:\r\n          {Occasionally(2, \"You have contributed \r\n          {compare(compare_contribution)}\r\n          the average.\")}\r\n       }\r\n    }\r\n\r\n    {if !event.iscomplete[cur]:\r\n       You may \r\n       {if event.contribution[cur] > 0: \r\n          {OneOf(\"contribute more\", \"make additional contributions\")} \r\n       |else: \r\n          {OneOf(\"contribute\", \"make a contribution\")}\r\n       }\r\n       {if event.station[cur] = station.name:\r\n          {Occasionally(2, \"here\")}\r\n          {Occasionally(2, \"at this station\")}.\r\n       |elif event.system[cur] = system.name:\r\n          at {P(event.station[cur])}\r\n          {Occasionally(2, \"here\")}\r\n          {Occasionally(2, \"in this system\", \"in the current system\")}.\r\n       |else:\r\n          at {P(event.station[cur])},\r\n          in {OneOf(\"{P(event.system[cur])}\", \"the {P(event.system[cur])} system\" )}.\r\n       }\r\n    }\r\n\r\n    {set cur to cur + 1}\r\n    {Pause(1000)}\r\n}",
+      "default": true,
+      "name": "Community goal",
+      "description": "Triggered when checking the status of a community goal"
+    },
+    "Controlling fighter": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {Occasionally(2, \"to fighter\")} {OneOf(\"initiated\", \"established\", \"engaged\")}.",
+      "default": true,
+      "name": "Controlling fighter",
+      "description": "Triggered when you switch control from your ship to your fighter"
+    },
+    "Controlling ship": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {OneOf(\"terminated\", \"disengaged\")}.",
+      "default": true,
+      "name": "Controlling ship",
+      "description": "Triggered when you switch control from your fighter to your ship"
+    },
+    "Crew assigned": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.role = \"Active\":\r\n    {event.name} is now on active duty.\r\n|else:\r\n    {event.name} standing down from active duty.\r\n}",
+      "default": true,
+      "name": "Crew assigned",
+      "description": "Triggered when you assign crew"
+    },
+    "Crew fired": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'fire')}\r\n{SetState('eddi_context_crew_name', event.name)}\r\n\r\n{event.name} has been fired.",
+      "default": true,
+      "name": "Crew fired",
+      "description": "Triggered when you fire crew"
+    },
+    "Crew hired": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'hire')}\r\n{SetState('eddi_context_crew_name', event.name)}\r\n\r\n{event.name} has been hired.",
+      "default": true,
+      "name": "Crew hired",
+      "description": "Triggered when you hire crew"
+    },
+    "Crew joined": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'join')}\r\n{SetState('eddi_context_crew_name', event.captain)}\r\n\r\nYou have joined {event.captain}'s crew.",
+      "default": true,
+      "name": "Crew joined",
+      "description": "Triggered when you join a crew"
+    },
+    "Crew left": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'leave')}\r\n{SetState('eddi_context_crew_name', event.captain)}\r\n\r\nYou have left {event.captain}'s crew.",
+      "default": true,
+      "name": "Crew left",
+      "description": "Triggered when you leave a crew"
+    },
+    "Crew member joined": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'join')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n\r\n{event.crew} has joined your crew.",
+      "default": true,
+      "name": "Crew member joined",
+      "description": "Triggered when a commander joins your crew"
+    },
+    "Crew member launched": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'launch')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n\r\n{event.crew} has launched their fighter.",
+      "default": true,
+      "name": "Crew member launched",
+      "description": "Triggered when a crew member launches the fighter"
+    },
+    "Crew member left": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'leave')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n\r\n{event.crew} has left your crew.",
+      "default": true,
+      "name": "Crew member left",
+      "description": "Triggered when a commander leaves your crew"
+    },
+    "Crew member removed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'remove')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n\r\nYou have remove {event.crew} from your crew.",
+      "default": true,
+      "name": "Crew member removed",
+      "description": "Triggered when you remove a commander from your crew"
+    },
+    "Crew member role changed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'crew')}\r\n{SetState('eddi_context_last_action', 'role')}\r\n{SetState('eddi_context_crew_name', event.crew)}\r\n{SetState('eddi_context_crew_role', event.role)}\r\n\r\n{if event.role = 'Idle':\r\n    {event.crew} is no longer manning a position\r\n|elif event.role = 'Fighter':\r\n    {event.crew} is now manning the fighter\r\n|elif event.role = 'Gunner':\r\n    {event.crew} is now manning the guns\r\n}.\r\n",
+      "default": true,
+      "name": "Crew member role changed",
+      "description": "Triggered when a crew member changes their role"
+    },
+    "Crew role changed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.role = 'Gunner':\r\n  You are now this crew's gunner.\r\n|elif event.role = 'Fighter':\r\n  You are now this crew's fighter pilot.\r\n|elif event.role = 'Idle':\r\n  You have been unassigned from active duty.\r\n}",
+      "default": true,
+      "name": "Crew role changed",
+      "description": "Triggered when your role in the crew changes"
+    },
+    "Damage check": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Track if there is any damage}\r\n{set damaged to 0}\r\n\r\n{_ Announce hull health}\r\n{if ship.health < 100:\r\n    Hull at {Humanise(ship.health)}%.\r\n    {set damaged to 1}\r\n}\r\n\r\n{_ Announce critical module health}\r\n\r\n{set minordamage to []}\r\n{set majordamage to []}\r\n\r\n{if ship.powerplant.health < 60:\r\n    {set majordamage to cat(majordamage, [ship.powerplant])}\r\n|elif ship.powerplant.health < 100:\r\n    {set minordamage to cat(minordamage, [ship.powerplant])}\r\n}\r\n\r\n{if ship.thrusters.health < 60:\r\n    {set majordamage to cat(majordamage, [ship.thrusters])}\r\n|elif ship.thrusters.health < 100:\r\n    {set minordamage to cat(minordamage, [ship.thrusters])}\r\n}\r\n\r\n{if ship.frameshiftdrive.health < 60:\r\n    {set majordamage to cat(majordamage, [ship.frameshiftdrive])}\r\n|elif ship.frameshiftdrive.health < 100:\r\n    {set minordamage to cat(minordamage, [ship.frameshiftdrive])}\r\n}\r\n\r\n{if ship.powerdistributor.health < 60:\r\n    {set majordamage to cat(majordamage, [ship.powerdistributor])}\r\n|elif ship.powerdistributor.health < 100:\r\n    {set minordamage to cat(minordamage, [ship.powerdistributor])}\r\n}\r\n\r\n{if ship.lifesupport.health < 60:\r\n    {set majordamage to cat(majordamage, [ship.lifesupport])}\r\n|elif ship.lifesupport.health < 100:\r\n    {set minordamage to cat(minordamage, [ship.lifesupport])}\r\n}\r\n\r\n{if ship.sensors.health < 60:\r\n    {set majordamage to cat(majordamage, [ship.sensors])}\r\n|elif ship.sensors.health < 100:\r\n    {set minordamage to cat(minordamage, [ship.sensors])}\r\n}\r\n\r\n{if len(majordamage) > 0:\r\n    {set damaged to 1}\r\n    Major damage to\r\n    {if len(majordamage) = 1:\r\n        {majordamage[0].name}\r\n    |elif len(majordamage) = 2:\r\n        {majordamage[0].name} and {majordamage[1].name}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(majordamage):\r\n            {if cur = 0:\r\n                {majordamage[cur].name}\r\n            |elif cur < len(majordamage) - 1:\r\n                , {majordamage[cur].name}\r\n            |else:\r\n                ,and {majordamage[cur].name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }.\r\n}\r\n\r\n{if len(minordamage) > 0:\r\n    {set damaged to 1}\r\n    Minor damage to\r\n    {if len(minordamage) = 1:\r\n        {minordamage[0].name}\r\n    |elif len(minordamage) = 2:\r\n        {minordamage[0].name} and {minordamage[1].name}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(minordamage):\r\n            {if cur = 0:\r\n                {minordamage[cur].name}\r\n            |elif cur < len(minordamage) - 1:\r\n                , {minordamage[cur].name}\r\n            |else:\r\n                ,and {minordamage[cur].name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }.\r\n}\r\n\r\n{_ Announce other module health}\r\n\r\n{set minordamage to []}\r\n{set majordamage to []}\r\n\r\n{for compartment in ship.compartments:\r\n    {if compartment.module.health < 60:\r\n        {set majordamage to cat(majordamage, [compartment.module.name])}\r\n    |elif hardpoint.module.health < 100:\r\n        {set minordamage to cat(minordamage, [compartment.module.name])}\r\n    }\r\n}\r\n\r\n{for hardpoint in ship.hardpoints:\r\n    {if hardpoint.module.health < 60:\r\n        {set majordamage to cat(majordamage, [hardpoint.module.name])}\r\n    |elif hardpoint.module.health < 100:\r\n        {set minordamage to cat(minordamage, [hardpiont.module.name])}\r\n    }\r\n}\r\n\r\n{if len(majordamage) > 0:\r\n    {set damaged to 1}\r\n    {if len(majordamage) = 1:\r\n       One other ship component with major damage\r\n    |elif len(majordamage) > 1:\r\n        {len(majordamage)} other ship components with major damage\r\n    }\r\n    {if len(minordamage) = 1:\r\n       and one other ship component with minor damage\r\n    |elif len(minordamage) > 1:\r\n       and {len(minordamage)} other ship components with minor damage\r\n    }.\r\n|elif len(minordamage) = 1:\r\n    {set damaged to 1}\r\n    One other ship component with minor damage.\r\n|elif len(minordamage) > 1:\r\n    {set damaged to 1}\r\n    {len(minordamage)} other ship components with minor damage.\r\n}\r\n\r\n{if damaged = 0:\r\n    {OneOf(\"All systems fully operational.\", \"{ShipName()} is fully operational.\", \"{ShipName()} is undamaged.\")}\r\n}\r\n",
+      "default": true,
+      "name": "Damage check",
+      "description": "Check on the levels of damage to your ship"
+    },
+    "Data scanned": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Data scanned }\r\n{_ Triggered when scanning some types of data links }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'scan')}\r\n{SetState('eddi_context_last_action', 'data')}\r\n{SetState('eddi_context_data_scan_type', event.datalinktype)}\r\n\r\nData scan of {event.datalinktype} completed.",
+      "default": true,
+      "name": "Data scanned",
+      "description": "Triggered when scanning some types of data links"
+    },
+    "Data voucher awarded": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Data voucher awarded }\r\n{_ Triggered when you are awarded a data voucher }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'data_voucher')}\r\n{SetState('eddi_context_last_action', 'award')}\r\n{SetState('eddi_context_bond_amount', event.reward)}\r\n{SetState('eddi_context_bond_faction', event.payeefaction)}\r\n\r\nData voucher awarded from {event.payeefaction} for {event.reward} credits.\r\n",
+      "default": true,
+      "name": "Data voucher awarded",
+      "description": "Triggered when you are awarded a data voucher"
+    },
+    "Data voucher redeemed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'data_voucher')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_data_voucher_amount', event.amount)}\r\n\r\nData \r\n{if len event.rewards > 1: vouchers |else: voucher }\r\nfor {Humanise(event.amount)} credits\r\n{Occasionally(2, OneOf(\"have been\", \"have now been\"))}\r\n{OneOf(\"redeemed\", \"claimed\")}\r\n\r\n{Occasionally(2, \"\r\n  {if len(event.rewards) = 1 && len(event.rewards[0].faction) > 0:\r\n    {OneOf(\"by\", \"courtesy of\")}\r\n    {P(event.rewards[0].faction)}\r\n  |else:\r\n    {if len(event.rewards[0].faction) > 0:\r\n       {OneOf(\"by\", \"courtesy of\")}\r\n       {set cur to 0}\r\n       {while cur < len(event.rewards):\r\n          {if cur = 0:\r\n          |elif cur < len(event.rewards) - 1:\r\n              , \r\n          |else:\r\n              and\r\n          }\r\n          {P(event.rewards[cur].faction)}\r\n          {set cur to cur + 1}\r\n       }\r\n    }\r\n  }\r\n\")}.",
+      "default": true,
+      "name": "Data voucher redeemed",
+      "description": "Triggered when you redeem a data voucher"
+    },
+    "Datalink message": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Datalink message",
+      "description": "Triggered upon completion of Datalink scan"
+    },
+    "Died": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if len(event.ships) > 0:\r\n\r\n    {set commanders to []}\r\n    {for cmdr in event.commanders:\r\n        {if find(cmdr, \"$ShipName\") >= 0:\r\n           {_ Ignore NPC ships _}        \r\n        |else: \r\n           {set commanders to cat(commanders, [cmdr])}\r\n        }\r\n    }\r\n\r\n    {ShipName()} was\r\n    {Occasionally(2, \"just\")}\r\n    {OneOf(\"blown away\", \"terminated\", \"destroyed\")}\r\n\r\n    {if len(commanders) = 1:\r\n        by {commanders[0]} \r\n        in a {event.ships[0]} \r\n        and with a combat ranking of {event.ratings[0]}.\r\n    |elif len(commanders) = 2:\r\n        by {commanders[0]} \r\n        in a {event.ships[0]} and with a \r\n        combat ranking of {event.ratings[0]}, \r\n        and by {commanders[1]} \r\n        in a {event.ships[1]} and with a \r\n        combat ranking of {event.ratings[1]}.\r\n    |elif len(commanders) > 2:\r\n        {set cur to 0}\r\n        by\r\n        {while cur < len(commanders):\r\n            {if cur = 0:\r\n                {commanders[cur]} \r\n                in a {event.ships[cur]} \r\n                and with a combat ranking of {event.ratings[cur]}\r\n            |elif cur < len(commanders) - 1:\r\n                , {commanders[cur]} \r\n                in a {event.ships[cur]} \r\n                and with a combat ranking of {event.ratings[cur]}\r\n            |else:\r\n                , and {commanders[cur]} \r\n                in a {event.ships[cur]} \r\n                and with a combat ranking of {event.ratings[cur]}.\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n}",
+      "default": true,
+      "name": "Died",
+      "description": "Triggered when you have died"
+    },
+    "Docked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.state = \"Damaged\": Emergency}\r\nDocking complete.",
+      "default": true,
+      "name": "Docked",
+      "description": "Triggered when your ship docks at a station or outpost"
+    },
+    "Docking cancelled": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Docking request cancelled.",
+      "default": true,
+      "name": "Docking cancelled",
+      "description": "Triggered when your ship cancels a docking request at a station or outpost"
+    },
+    "Docking denied": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Pause(2000)}\r\n\r\nWe have been denied docking\r\n\r\n{if event.reason = \"ActiveFighter\":\r\n    because our fighter is deployed\r\n|elif event.reason = \"Distance\":\r\n    because we are too far from the station\r\n|elif event.reason = \"Hostile\":\r\n    because the station's controlling faction doesn't like us\r\n|elif event.reason = \"NoSpace\":\r\n    because there is no space available\r\n|elif event.reason = \"Offences\":\r\n    because we have recently committed an offence against them\r\n|elif event.reason = \"TooLarge\":\r\n    because there are no landing pads that can accomodate the size of our ship\r\n}.",
+      "default": true,
+      "name": "Docking denied",
+      "description": "Triggered when your ship is denied docking at a station or outpost"
+    },
+    "Docking granted": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'landing pad')}\r\n{SetState('eddi_context_landing_pad_system', system.name)}\r\n{SetState('eddi_context_landing_pad_station', event.station)}\r\n{SetState('eddi_context_landing_pad_pad', event.landingpad)}\r\n\r\n{set station to StationDetails(event.station)}\r\n{if station.model = \"Coriolis Starport\" || station.model = \"Orbis Starport\" || station.model = \"Ocellus Starport\" || station.model = \"Asteroid Base\" || station.model = \"Unknown Starport\":\r\n    {Pause(8000)}\r\n    {F(\"Landing pad report\")}\r\n}\r\n",
+      "default": true,
+      "name": "Docking granted",
+      "description": "Triggered when your ship is granted docking permission at a station or outpost"
+    },
+    "Docking requested": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Docking requested",
+      "description": "Triggered when your ship requests docking at a station or outpost"
+    },
+    "Docking timed out": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "No response to our docking request.",
+      "default": true,
+      "name": "Docking timed out",
+      "description": "Triggered when your docking request times out"
+    },
+    "Empire honorific": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Forms of address taken from <https://en.wikipedia.org/wiki/Forms_of_address_in_the_United_Kingdom>}\r\n{if cmdr.empirerating.rank <= 4: {_ Commoner }\r\n   commander\r\n|elif cmdr.empirerating.rank = 5: {_ Knight / Dame }\r\n    {if cmdr.gender = \"Male\": \r\n        sir \r\n    |elif cmdr.gender = \"Female\": \r\n        madam\r\n    |else: \r\n        commander\r\n    }\r\n|elif cmdr.empirerating.rank <= 11: {_ Peer / Peeress }\r\n    {if cmdr.gender = \"Male\": \r\n        {OneOf(\"my lord\", \"your lordship\")}\r\n    |elif cmdr.gender = \"Female\": \r\n        {OneOf(\"my lady\", \"your ladyship\")}\r\n    |else: \r\n        commander\r\n    }\r\n|elif cmdr.empirerating.rank = 12:\r\n    your grace\r\n|elif cmdr.empirerating.rank = 13:\r\n    your royal highness\r\n|elif cmdr.empirerating.rank = 14:\r\n    your majesty\r\n}\r\n",
+      "default": true,
+      "name": "Empire honorific",
+      "description": "Function to provide a suitable honorific for your commander when in the empire"
+    },
+    "Empire promotion": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{F(\"Empire honorific\")},\r\nthe Imperial Navy has \r\n{OneOf(\"granted you a promotion\", \"promoted you\", \"advanced you\", \"named you\")}\r\nto the rank of\r\n{when(cmdr.gender = \"Female\", event.femininerank, event.rank)}\r\n{Occasionally(2, \"for your service to the Empire\")}.",
+      "default": true,
+      "name": "Empire promotion",
+      "description": "Triggered when your rank increases with the Empire"
+    },
+    "Engineer progressed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.engineer} has given you access to grade {event.rank} blueprints.",
+      "default": true,
+      "name": "Engineer progressed",
+      "description": "Triggered when you reach a new rank with an engineer"
+    },
+    "Entered CQC": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Entering close-quarters combat.",
+      "default": true,
+      "name": "Entered CQC",
+      "description": "Triggered when you enter CQC"
+    },
+    "Entered normal space": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'disengage')}\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_body_name', event.body)}\r\n{SetState('eddi_context_body_system', event.system)}\r\n\r\n{Pause(5000)}\r\n\r\n{OneOf(\"{ShipName()} has\", \"\")} {OneOf(\"left supercruise\", \"{OneOf(\\\"entered\\\", \\\"returned to\\\", \\\"dropped to\\\")} normal space\")}\r\n\r\n{if event.bodytype = 'Planet':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} planet {P(event.body)}\r\n|elif event.bodytype = 'Star':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} star {P(event.body)}\r\n  |elif event.bodytype = 'Station':\r\n    {OneOf(\"near\", \"close to\", \"in the vicinity of\")} {P(event.body)}\r\n}.\r\n",
+      "default": true,
+      "name": "Entered normal space",
+      "description": "Triggered when your ship enters normal space"
+    },
+    "Entered signal source": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{set warninglevel to:\r\n   {set entered to OneOf(\"Entered\", \"Dropped into\", \"Entering\")}\r\n   {if event.threat < 2:\r\n      {entered}\r\n   |elif event.threat = 2:\r\n      Caution: {entered} medium threat\r\n   |elif event.threat = 3:\r\n      Warning: {entered} high-threat\r\n   |elif event.threat = 4:\r\n      Danger: {entered} very high-threat\r\n   |elif event.threat = 5:\r\n      Extreme Danger: {Occasionally(2, entered)} very high-threat\r\n   |elif event.threat = 6:\r\n      Extreme Danger: {Occasionally(2, entered)} extremely high-threat\r\n   |elif event.threat = 7:\r\n      Extreme Danger: {Occasionally(2, entered)} ultra high-threat\r\n   |else:\r\n      Extreme Danger: {Occasionally(2, entered)} Unprecedented level {event.threat} threat\r\n   }\r\n}\r\n\r\n{set source to token(event.source, \"$USS_Type_\", 1)}\r\n\r\n{if source = \"Aftermath;\":\r\n   {set source to OneOf(\"combat aftermath\", \"dissipating combat\")}\r\n|elif ((source = \"Anomaly;\" || source = \"Salvage;\") && event.threat = 2):\r\n   {set warninglevel to entered}\r\n   {set source to OneOf(\"alien\", \"xeno\", \"non-human\", \"Thargoid probe\")}\r\n|elif (source = \"Anomaly;\" && event.threat = 4):\r\n   {set warninglevel to entered}\r\n   {set source to OneOf(\"alien\", \"xeno\", \"non-human\", \"Thargoid sensor\")}\r\n|elif source = \"Anomaly;\":\r\n   {set source to OneOf(\"anomalous\", \"unknown\", \"mysterious\")}\r\n|elif source = \"Ceremonial;\":\r\n    {set source to \"ceremonial comms\"}\r\n|elif source = \"Convoy;\":\r\n    {set source to \"convoy\"}\r\n|elif source = \"DisruptedWakeEchoes;\":\r\n    {set source to \"\"}\r\n|elif source = \"DistressSignal;\":\r\n   {set source to \"distress\"}\r\n|elif source = \"MissionTarget;\":\r\n   {set source to OneOf(\"mission\", \"mission encoded\")}\r\n|elif source = \"NonHuman;\":\r\n   {set source to OneOf(\"alien\", \"xeno\", \"non-human\")}\r\n|elif source = \"Salvage;\":\r\n    {set source to \"degraded emissions\"}\r\n|elif source = \"ValuableSalvage;\":\r\n    {set source to \"encoded emissions\"}\r\n|elif source = \"VeryValuableSalvage;\":\r\n    {set source to \"high grade emissions\"}\r\n|elif source = \"WeaponsFire;\":\r\n   {set source to OneOf(\"combat\", \"weapons fire\")}\r\n}\r\n\r\n{Pause(2000)}\r\n{warninglevel} {source} signal source. \r\n\r\n{if system.state = \"Anarchy\" && source = \"degraded emissions\" && system.population > 0: \r\n   {Occasionally(2, \"\r\n      Caution:\r\n      {set local to OneOf('local', 'nearby')}\r\n      {set chatter to OneOf('chatter', 'gossip', 'rumor')}\r\n      {set indicate to OneOf('claims', 'suggests', 'implies', 'reports')}\r\n      {OneOf('{local} transmissions {indicate}', \r\n         '{chatter} in {local} transmissions {indicate}')}\r\n      {Occasionally(3, 'that there is')}\r\n      {OneOf('increased', 'elevated', 'heightened')}\r\n      {OneOf('criminal {Occasionally(2, \\\\'syndicate\\\\')}', \r\n             'pirate {Occasionally(2, OneOf(\\\\'gang\\\\', \\\\'clan\\\\'))}' )}\r\n      {OneOf('activity', 'presence')}\r\n      in {OneOf('the area', 'the vicinity', 'this sector', 'this system')}.\r\n      {OneOf('Remain', 'Stay', 'Keep')} {OneOf('vigilant', 'alert', 'frosty', 'sharp')} \r\n      {Occasionally(3,' {F(\\\\'Honorific\\\\')}' )}.\r\n   \")}\r\n}",
+      "default": true,
+      "name": "Entered signal source",
+      "description": "Triggered when your ship enters a signal source"
+    },
+    "Entered supercruise": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'engage')}\r\n\r\n{Pause(1000)}\r\n\r\n{OneOf(\"{ShipName()} has\", \"\")} {OneOf(\"entered\", \"jumped to\")} supercruise.\r\n\r\n",
+      "default": true,
+      "name": "Entered supercruise",
+      "description": "Triggered when your ship enters supercruise"
+    },
+    "Exploration data purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{OneOf(\"Purchased {OneOf('system', 'exploration')} data for {P(event.system)}\",\r\n            \"{OneOf('system', 'exploration')} data for {P(event.system)} now available\",\r\n            \"{Occasionally(3, '{ShipName()} has')} Received {OneOf('system', 'exploration')} data for {P(event.system)} from station services\",\r\n            \"Receipt of {P(event.system)} {OneOf('system', 'exploration')} data confirmed\")}.",
+      "default": true,
+      "name": "Exploration data purchased",
+      "description": "Triggered when you purchase exploration data"
+    },
+    "Exploration data sold": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Exploration data for {len(event.systems)} systems sold for {Humanise(event.reward)} credits\r\n\r\n{if len(event.firsts) > 0:\r\n    , with an additional bonus of {Humanise(event.bonus)} credits for\r\n    {if len(event.firsts) = 1:\r\n        one first discovery\r\n    |else:\r\n        {len(event.firsts)} first discoveries\r\n    }\r\n}\r\n.",
+      "default": true,
+      "name": "Exploration data sold",
+      "description": "Triggered when you sell exploration data"
+    },
+    "Exploration promotion": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have been recognised for your exploration skills, {F(\"Honorific\")}.",
+      "default": true,
+      "name": "Exploration promotion",
+      "description": "Triggered when your exploration rank increases"
+    },
+    "Federation promotion": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "The Federation Navy has \r\n{OneOf(\"granted you a promotion\", \"promoted you\", \"advanced you\")}\r\nto the rank of\r\n{event.rank}\r\n{Occasionally(2, \"for your service to the Federation\")}.",
+      "default": true,
+      "name": "Federation promotion",
+      "description": "Triggered when your rank increases with the Federation"
+    },
+    "Fighter docked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Fighter {OneOf(\"docked\", \"redocked\")} {Occasionally(2, \"with ship\")}.",
+      "default": true,
+      "name": "Fighter docked",
+      "description": "Triggered when you dock a fighter with your ship"
+    },
+    "Fighter launched": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Fighter {OneOf(\"deploying\", \"launching\")} {Occasionally(2, \"from mothership\")}.",
+      "default": true,
+      "name": "Fighter launched",
+      "description": "Triggered when you launch a fighter from your ship"
+    },
+    "Fighter rebuilt": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Fighter {OneOf(\"rebuilt\", \"reconstruction complete\")} and ready for {OneOf(\"launch\", \"deployment\")}.",
+      "default": true,
+      "name": "Fighter rebuilt",
+      "description": "Triggered when a ship's fighter is rebuilt in the hangar"
+    },
+    "File Header": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "File Header",
+      "description": "Triggered when the file header is read"
+    },
+    "Fine incurred": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fine')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_fine_name', event.victim)}\r\n{SetState('eddi_context_fine_faction', event.faction)}\r\n{SetState('eddi_context_fine_amount', event.fine)}\r\n\r\nYou owe {P(event.faction)} {Humanise(event.fine)} credits for {event.crime}.",
+      "default": true,
+      "name": "Fine incurred",
+      "description": "Triggered when your incur a fine"
+    },
+    "Fine paid": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fine')}\r\n{SetState('eddi_context_last_action', 'pay')}\r\n{SetState('eddi_context_fine_amount', event.amount)}\r\n\r\n\r\nPaid fine of {Humanise(event.amount)} credits.",
+      "default": true,
+      "name": "Fine paid",
+      "description": "Triggered when you pay a fine"
+    },
+    "Friends status": {
+      "enabled": false,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Set uselist to \"white\" or \"black\", depending on which list you want to use to filter people _}\r\n{_ \"white\" will only allow notifications from people in this list (e.g. \"User1\", \"User2\", & \"User3\") _}\r\n{_ \"black\" will allow all notification EXCEPT those on this list (e.g. \"User4\", \"User5\", & \"User6\") _}\r\n{_ to allow all notifications, you may also use an empty blacklist (i.e. \"set blacklist to []\" _}\r\n\r\n{set uselist to \"black\"}\r\n\r\n{set whitelist to [\"User1\", \"User2\", \"User3\"]}\r\n{set blacklist to [\"User4\", \"User5\", \"User6\"]}\r\n\r\n{if event.name:\r\n    {if uselist = \"white\":\r\n        {if find(whitelist, event.name) > -1:\r\n            {event.name} is now {event.status}.\r\n        }\r\n    |elif uselist = \"black\":\r\n        {if find(blacklist, event.name) = -1:\r\n            {event.name} is now {event.status}.\r\n        }\r\n    }\r\n|else:\r\n    I don't know who you are talking about.\r\n}",
+      "default": true,
+      "name": "Friends status",
+      "description": "Triggered when a friendly commander changes status"
+    },
+    "FSD engaged": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fsd')}\r\n{SetState('eddi_context_last_action', 'engage')}\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_system_system', event.system)}\r\n{SetState('eddi_context_fsd_target', event.target)}\r\n\r\n{if event.target = 'Hyperspace':\r\n    {_ Rewrite context to represent a jump }\r\n    {SetState('eddi_context_last_subject', 'jump')}\r\n    {SetState('eddi_context_last_action', 'start')}\r\n\r\n    {set system to SystemDetails(event.system)}\r\n\r\n    {_ Wait for the FSD countdown and initial jump}\r\n    {Pause(5000)}\r\n\r\n    {OneOf(\"Destination confirmed\",\"Jump in progress\",\"Telemetry obtained\")}.\r\n    {ShipName()} is {OneOf(\"heading to\", \"on route to\", \"travelling to\", \"in transit to\")} the {P(system.name)} system.\r\n    {if system.name = homesystem.name:\r\n        Welcome home, {F(\"Honorific\")}\r\n    |else:\r\n        {set scoopables to [\"O\", \"B\", \"A\", \"F\", \"G\", \"K\", \"M\"]}\r\n        {if slice(event.stellarclass, 0, 1) = \"D\":\r\n            Caution: white dwarf detected.\r\n        |elif event.stellarclass = \"N\":\r\n            Caution: neutron star detected.\r\n        |elif event.stellarclass = \"H\":\r\n            Caution: black hole detected.\r\n        |elif find(scoopables, event.stellarclass) = -1:\r\n            Information: arrival star is not scoopable.\r\n        }\r\n        \r\n        {if lastsystem.allegiance && lastsystem.allegiance != \"None\" && lastsystem.allegiance != \"Independent\" && (!system.allegiance || system.allegiance = \"None\" || system.allegiance = \"Independent\"):\r\n            You {OneOf(\"are leaving\", \"have left\", \"are no longer in\")} {lastsystem.allegiance} space.\r\n        |elif lastsystem.allegiance && lastsystem.allegiance != system.allegiance && system.allegiance && system.allegiance != \"None\":\r\n            You {OneOf(\"are now in\", \"have entered\", \"are entering\")} {system.allegiance} space.\r\n            {if cmdr.title != \"Commander\":\r\n                Welcome back {F(\"Honorific\")}.\r\n            }\r\n        }\r\n\r\n        {if system.visits = 0:\r\n            This is your first visit to this system\r\n        |elif system.visits = 1:\r\n            This is your second visit to this system\r\n        |elif system.visits = 2:\r\n            This is your third visit to this system\r\n        |elif system.visits = 3:\r\n            This is your fourth visit to this system\r\n        |else:\r\n            You have visited this system {system.visits} times\r\n        }.\r\n\r\n        {if !system.population:\r\n            {OneOf(\"This system is unpopulated\",\"There is no human presence here\", \"Humans have yet to colonise this system\")}.\r\n        |else:\r\n            {F(\"System report\")}\r\n        }\r\n\r\n        {if system.distancefromhome:\r\n            {Occasionally(7, \"{OneOf(\\\"You are\\\", \\\"Current location is\\\", \\\"You are now\\\")} {Humanise(system.distancefromhome)} lightyears from {OneOf(\\\"home\\\", \\\"{P(homesystem.name)}\\\")}.\")}\r\n        }\r\n\r\n        {if system.comment:\r\n            You made a {OneOf(\"note\", \"comment\", \"remark\")} {OneOf(\"about\", \"for\", \"on\")} this system.  It {OneOf(\"is as follows\", \"says\", \"reads\", \"is\")} {system.comment}.\r\n        }\r\n    }\r\n}",
+      "default": true,
+      "name": "FSD engaged",
+      "description": "Triggered when your FSD has engaged"
+    },
+    "Fuel check": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fuel Check _}\r\n{_ Report fuel level _}\r\n\r\n{if ship.name = state.eddi_fuelcheck_shipname:\r\n    {if state.eddi_context_fuel_used > state.eddi_fuelcheck_maxfuel:\r\n        {SetState('eddi_fuelcheck_maxfuel', state.eddi_context_fuel_used)}\r\n    }\r\n|else:\r\n    {SetState('eddi_fuelcheck_maxfuel', state.eddi_context_fuel_used)}\r\n    {SetState('eddi_fuelcheck_shipname', ship.name)}\r\n}\r\n\r\n{set maxfuel to state.eddi_fuelcheck_maxfuel}\r\n{set fuelremaining to state.eddi_context_fuel_remaining}\r\n{set maxjump to fuelremaining/maxfuel}\r\n{set currentfuel to round(fuelremaining / ship.fueltanktotalcapacity * 100, 0)}\r\n{set shipsfuel to:\r\n   {Occasionally(2, \"{P(ShipName())}'s\" )} Fuel\r\n   {OneOf(\"levels\", \"tanks\", \"reserves\")} {Occasionally(2, \"are\")} {Occasionally(2, \"now\")}\r\n}\r\n{set currentpercent to: \r\n   at {currentfuel} percent {Occasionally(2, \"capacity\")}\r\n}\r\n{set title to Occasionally(3,\"{F('Honorific')}\")}\r\n\r\n{if maxjump < 0.5:\r\n   Danger!\r\n   {shipsfuel} depleted!\r\n   {Pause(500)}\r\n   Running on reserves. Shutdown of non-essential systems is advised!\r\n   {Pause(500)}\r\n   Emergency transponder standing by, {title}\r\n|elif maxjump < 1.25:\r\n   {OneOf(\"Warning:\", \"Caution:\", \"Danger:\", \"Attention:\")}\r\n   {shipsfuel} {OneOf(\"dangerously low\", \"almost depleted\")}.\r\n   {OneOf(\"Please refuel\", \"Refueling is strongly recommended\")}, {title}\r\n|elif currentfuel < 25:\r\n   {OneOf(\"Warning:\", \"Caution:\", \"Danger:\", \"Attention:\")}\r\n   {shipsfuel} {OneOf(\"below 25%\", \"{currentpercent}\" )}, {title}\r\n|elif currentfuel < 50:\r\n   {shipsfuel} {OneOf(\"below 50%\", \"{currentpercent}\" )}, {title}\r\n|elif currentfuel < 75:\r\n   {Occasionally(2, \"{shipsfuel} {currentpercent}, {title}\")}\r\n|elif currentfuel < 100:\r\n   {Occasionally(3, \"{shipsfuel} {currentpercent}, {title}\")}\r\n|else:\r\n   {shipsfuel} {OneOf(currentpercent, \"at maximum\")}, {title}\r\n}",
+      "default": true,
+      "name": "Fuel check",
+      "description": "Report on fuel levels"
+    },
+    "Galnet latest news": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch category from state }\r\n{set articlecategory to state.article_category}\r\n\r\n{if articlecategory:\r\n    {set articles to GalnetNewsArticles(articlecategory)}\r\n|else:\r\n    {set articles to GalnetNewsArticles('Article')}\r\n}\r\n\r\n{if len(articles) = 0:\r\n    There is no unread news in that category\r\n|else:\r\n    {set article to articles[0]}\r\n    {SetState('eddi_context_galnet_news_id', article.id)}\r\n    {article.title}: {article.content}\r\n    {GalnetNewsMarkRead(article.id)}\r\n}.\r\n",
+      "default": true,
+      "name": "Galnet latest news",
+      "description": "Read the latest unread news in a given category"
+    },
+    "Galnet mark read": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch category from state }\r\n{set articlecategory to state.article_category}\r\n\r\n{if articlecategory:\r\n    {set articles to GalnetNewsArticles(articlecategory)}\r\n|else:\r\n    {set articles to GalnetNewsArticles('Article')}\r\n}\r\n\r\n{if len(articles) = 0:\r\n    There is no unread news \r\n    {if articlecategory: 'in that category' }\r\n|else:\r\n    {set item to 0}\r\n    {while item < len(articles):\r\n        {GalnetNewsMarkRead(articles[item].id)}\r\n        {set item to (item + 1)}\r\n    }\r\n    {len(articles)} news {OneOf('articles', 'items')} marked as red\r\n}.\r\n",
+      "default": true,
+      "name": "Galnet mark read",
+      "description": "Mark news articles as read"
+    },
+    "Galnet news": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch article from state }\r\n{set articleid to state.articleid}\r\n{if articleid:\r\n    {set article to GalnetNews(articleid)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'news')}\r\n    {SetState('eddi_context_galnet_news_id', articleid)}\r\n}\r\n\r\n{if !article:\r\n    {_ Fetch from context }\r\n    {set article to GalnetNews(state.eddi_context_galnet_news_id)}\r\n}\r\n\r\n{if article:\r\n    {article.title}: {article.content}\r\n    {GalnetNewsMarkRead(article.id)}\r\n|else:\r\n    I don't have any information about that article\r\n}.",
+      "default": true,
+      "name": "Galnet news",
+      "description": "Read a particular news article"
+    },
+    "Galnet news published": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{set statustitle to \"^(Galactic News: ((Weekly .*)|(Starport Status Update)))|(Powerplay: Incoming Update)\"}\r\n\r\n{set interesting_news_title to []}\r\n{set interesting_news_content to []}\r\n{set not_interesting_news_title to []}\r\n{set not_interesting_news_content to []}\r\n\r\n{set item to 0}\r\n{while item < len(event.items):\r\n    {if !match(event.items[item].title, statustitle):\r\n        {set interesting_news_title to cat(interesting_news_title, [event.items[item].title])}\r\n        {set interesting_news_content to cat(interesting_news_content, [event.items[item].content])}\r\n    |else:\r\n        {set not_interesting_news_title to cat(not_interesting_news_title, [event.items[item].title])}\r\n        {set not_interesting_news_content to cat(not_interesting_news_content, [event.items[item].content])}\r\n    }\r\n    {GalnetNewsMarkRead(event.items[item].content.id)}\r\n    {set item to (item + 1)}\r\n}\r\n{if len(event.items) = len(interesting_news_title): \r\n    {set allinteresting to 1} \r\n}\r\n\r\n{if len(interesting_news_title) > 0:\r\n    {if len(interesting_news_title) = 1:\r\n        {set remarkable to OneOf('A noteworthy', 'A remarkable', 'An interesting', 'An intriguing', 'An unusual')}\r\n        {OneOf('A', '{remarkable}' )}\r\n        new Galnet article has been published, entitled {interesting_news_title[0]}.\r\n    |elif len(event.items) > 1:\r\n        {len(event.items)} \r\n        {if allinteresting: \r\n             {OneOf(\"noteworthy\", \"interesting\", \"intriguing\", \"remarkable\", \"unusual\")}\r\n        }\r\n        new Galnet articles have been published\r\n        {if !allinteresting:\r\n             , including {len(interesting_news_title)} \r\n             {OneOf('of interest.', 'of note.', 'worthy of remark.')}\r\n        }.\r\n    }\r\n|elif len(event.items) != ( len(interesting_news_title) + len(not_interesting_news_title) ):\r\n    {len(event.items)} new Galnet articles have been published, but I wasn't able to determine whether \r\n    any were of interest to you, {F('Honorific')}. \r\n|elif len(interesting_news_title) = 0:\r\n    Galnet news has been updated, but there is nothing noteworthy to report, {F('Honorific')}.\r\n}\r\n\r\n{if len(interesting_news_title) > 0:\r\n    {if len(interesting_news_title) = 1:\r\n        It reads: {interesting_news_content[0]}.\r\n    |elif len(interesting_news_title) > 1:\r\n        {set item to 0}\r\n        {while item < len(interesting_news_title):\r\n            {if item = 0:\r\n                The first \r\n                is entitled {interesting_news_title[item]},\r\n                and reads: {interesting_news_content[item]}.\r\n            |elif item = 1:\r\n                The second\r\n                is entitled {interesting_news_title[item]},\r\n                and reads: {interesting_news_content[item]}.\r\n            |elif item = len(event.items) - 1:\r\n                The last\r\n                is entitled {interesting_news_title[item]},\r\n                and reads: {interesting_news_content[item]}.\r\n            |else:\r\n                The next\r\n                is entitled {interesting_news_title[item]},\r\n                and reads: {interesting_news_content[item]}.\r\n            }\r\n            {set item to item + 1}\r\n            {Pause(1000)}\r\n        }\r\n    }\r\n}",
+      "default": true,
+      "name": "Galnet news published",
+      "description": "Triggered when news is published on Galnet"
+    },
+    "Galnet oldest news": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch category from state }\r\n{set articlecategory to state.article_category}\r\n\r\n{if articlecategory:\r\n    {set articles to GalnetNewsArticles(articlecategory)}\r\n|else:\r\n    {set articles to GalnetNewsArticles('Article')}\r\n}\r\n\r\n{if len(articles) = 0:\r\n    There is no unread news in that category\r\n|else:\r\n    {set article to articles[len(articles)-1]}\r\n    {SetState('eddi_context_galnet_news_id', article.id)}\r\n    {article.title}: {article.content}\r\n    {GalnetNewsMarkRead(article.id)}\r\n}.\r\n",
+      "default": true,
+      "name": "Galnet oldest news",
+      "description": "Read the oldest unread news in a given category"
+    },
+    "Galnet unread report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{set articles to GalnetNewsArticles(\"Article\")}\r\n\r\n{if len(articles) = 0:\r\n    You have no unread news\r\n|elif len(articles) = 1:\r\n    You have one unread news item\r\n|else:\r\n    You have {len(articles)} unread news items\r\n}.",
+      "default": true,
+      "name": "Galnet unread report",
+      "description": "Report on unread news"
+    },
+    "Heat damage": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Occasionally(2, \"Danger:\")}\r\nHeat damage.",
+      "default": true,
+      "name": "Heat damage",
+      "description": "Triggered when your ship is taking damage from excessive heat"
+    },
+    "Heat warning": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Occasionally(2, \"Warning:\")}\r\nHeat levels beyond operating tolerance.",
+      "default": true,
+      "name": "Heat warning",
+      "description": "Triggered when your ship's heat exceeds 100%"
+    },
+    "Honorific": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{if system.allegiance = \"Empire\":\r\n    {F(\"Empire honorific\")}\r\n|elif system.allegiance = \"Federation\":\r\n    {if cmdr.federationrating.rank = 0:\r\n        commander\r\n    |else:\r\n        {cmdr.federationrating.name}\r\n    }\r\n|else:\r\n    commander\r\n}\r\n",
+      "default": true,
+      "name": "Honorific",
+      "description": "Function to provide a suitable honorific for your commander"
+    },
+    "Hull damaged": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.vehicle = vehicle:\r\n    {if event.health < 40:\r\n        Danger:\r\n    |elif event.health < 60:\r\n        Warning:\r\n    |elif event.health < 80:\r\n        Caution:\r\n    }\r\n    {OneOf(\"Hull\", \"Hull integrity\", \"Integrity\", \"Structural integrity\")} {Occasionally(3, \"is\")} at {event.health}%.\r\n}\r\n",
+      "default": true,
+      "name": "Hull damaged",
+      "description": "Triggered when your hull is damaged to a certain extent"
+    },
+    "Insurance check": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{set insurance to round(ship.value * cmdr.insurance / 100)}\r\n\r\n{set covereds to round((cmdr.credits / insurance) - 0.5)}\r\n\r\n{if covereds = 0:\r\n  Danger: you do not have enough credits to cover your insurance excess.\r\n|elif covereds = 1:\r\n  Caution: you only have enough credits to cover a single insurance excess.\r\n|elif covereds < 4:\r\n  Note: you only have enough credits to cover {covereds} insurance excesses.\r\n}\r\n",
+      "default": true,
+      "name": "Insurance check",
+      "description": "Check for enough credits to cover your insurance"
+    },
+    "Jet cone boost": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Pause(1000)}\r\nFrame shift drive boosted by {Humanise(event.boost * 100)} percent.",
+      "default": true,
+      "name": "Jet cone boost",
+      "description": "Triggered when enough material has been collected from a solar jet cone (at a white dwarf or neutron star) for a jump boost"
+    },
+    "Jet cone damage": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Jet cone damage",
+      "description": "Triggered in normal space when passing through the jet cone from a white dwarf or neutron star causes damage to a ship module"
+    },
+    "Jumped": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'jump')}\r\n{SetState('eddi_context_last_action', 'complete')}\r\n{SetState('eddi_context_system_name', system.name)}\r\n{SetState('eddi_context_system_system', system.name)}\r\n{SetState('eddi_context_fuel_remaining', event.fuelremaining)}\r\n{SetState('eddi_context_fuel_used', event.fuelused)}\r\n\r\n{F('Fuel check')}\r\n{Pause(2000)}\r\n\r\n{set statereport to F(\"System state report\")}\r\n{if statereport:\r\n    {Pause(2000)}\r\n    Information:  {statereport}\r\n}",
+      "default": true,
+      "name": "Jumped",
+      "description": "Triggered when you complete a jump to another system"
+    },
+    "Killed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Killed",
+      "description": "Triggered when you kill another player"
+    },
+    "Landing pad report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{set landingpad to state.eddi_context_landing_pad_pad}\r\nLanding pad {landingpad} is at\r\n{if landingpad = 1:\r\n    six o'clock near\r\n|elif landingpad = 2:\r\n    six o'clock near\r\n|elif landingpad = 3:\r\n    six o'clock far\r\n|elif landingpad = 4:\r\n    six o'clock far\r\n|elif landingpad = 5:\r\n    seven o'clock near\r\n|elif landingpad = 6:\r\n    seven o'clock near\r\n|elif landingpad = 7:\r\n    seven o'clock far\r\n|elif landingpad = 8:\r\n    seven o'clock far\r\n|elif landingpad = 9:\r\n    eight o'clock near\r\n|elif landingpad = 10:\r\n    eight o'clock far\r\n|elif landingpad = 11:\r\n    nine o'clock near\r\n|elif landingpad = 12:\r\n    nine o'clock near\r\n|elif landingpad = 13:\r\n    nine o'clock mid\r\n|elif landingpad = 14:\r\n    nine o'clock far\r\n|elif landingpad = 15:\r\n    nine o'clock far\r\n|elif landingpad = 16:\r\n    ten o'clock near\r\n|elif landingpad = 17:\r\n    ten o'clock near\r\n|elif landingpad = 18:\r\n    ten o'clock far\r\n|elif landingpad = 19:\r\n    ten o'clock far\r\n|elif landingpad = 20:\r\n    eleven o'clock near\r\n|elif landingpad = 21:\r\n    eleven o'clock near\r\n|elif landingpad = 22:\r\n    eleven o'clock far\r\n|elif landingpad = 23:\r\n    eleven o'clock far\r\n|elif landingpad = 24:\r\n    twelve o'clock near\r\n|elif landingpad = 25:\r\n    twelve o'clock far\r\n|elif landingpad = 26:\r\n    one o'clock near\r\n|elif landingpad = 27:\r\n    one o'clock near\r\n|elif landingpad = 28:\r\n    one o'clock mid\r\n|elif landingpad = 29:\r\n    one o'clock far\r\n|elif landingpad = 30:\r\n    one o'clock far\r\n|elif landingpad = 31:\r\n    two o'clock near\r\n|elif landingpad = 32:\r\n    two o'clock near\r\n|elif landingpad = 33:\r\n    two o'clock far\r\n|elif landingpad = 34:\r\n    two o'clock far\r\n|elif landingpad = 35:\r\n    three o'clock near\r\n|elif landingpad = 36:\r\n    three o'clock near\r\n|elif landingpad = 37:\r\n    three o'clock mid\r\n|elif landingpad = 38:\r\n    three o'clock far\r\n|elif landingpad = 39:\r\n    four o'clock near\r\n|elif landingpad = 40:\r\n    four o'clock far\r\n|elif landingpad = 41:\r\n    five o'clock near\r\n|elif landingpad = 42:\r\n    five o'clock near\r\n|elif landingpad = 43:\r\n    five o'clock mid\r\n|elif landingpad = 44:\r\n    five o'clock far\r\n|elif landingpad = 45:\r\n    five o'clock far\r\n}\r\n, as you enter with the green lights on your right.\r\n\r\n",
+      "default": true,
+      "name": "Landing pad report",
+      "description": "Report on the location of a landing pad"
+    },
+    "Liftoff": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.playercontrolled = true:\r\n  Lift off.\r\n|else:\r\n  {ShipName()} has lifted off.\r\n}",
+      "default": true,
+      "name": "Liftoff",
+      "description": "Triggered when your ship lifts off from a planet's surface"
+    },
+    "Limpet check": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{set  controllers to 0}\r\n{for compartment in ship.compartments:\r\n    {if find(compartment.module.name, \"Controller\") != -1:\r\n        {set controllers to controllers + 1}\r\n    }\r\n}\r\n\r\n{set limpets to 0}\r\n{for cargo in inventory:\r\n    {if cargo.name = \"Limpet\":\r\n        {set limpets to cargo.total}\r\n    }\r\n}\r\n\r\n{set tenpercent to ship.cargocapacity / 10 - 1}\r\n{if controllers > 0 && limpets = 0:\r\n    Reminder: you have a limpet controller but are not carrying any limpets.\r\n|elif controllers = 0 && limpets > 0:\r\n    You are carrying limpets but no limpet controller.\r\n|elif controllers > 0 && limpets < tenpercent:\r\n    You only have {limpets} {if limpets = 1: limpet |else: limpets} on-board; you might want to consider re-stocking.\r\n}\r\n",
+      "default": true,
+      "name": "Limpet check",
+      "description": "Check for the presence/absence of limpets and limpet controllers"
+    },
+    "Limpet purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.amount} limpet{if event.amount > 1:s}\r\n{Occasionally(2, \"have been\")}\r\nadded to \r\n{OneOf(\"our\", \"{ShipName()}'s\")}\r\n{OneOf(\"cargo hold\", \"inventory\", \"hold\")}",
+      "default": true,
+      "name": "Limpet purchased",
+      "description": "Triggered when you buy limpets from a station"
+    },
+    "Limpet sold": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.amount} limpet{if event.amount > 1:s}\r\n{Occasionally(2, \"have been\")} sold.",
+      "default": true,
+      "name": "Limpet sold",
+      "description": "Triggered when you sell limpets to a station"
+    },
+    "List launchbays": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{for launchbay in ship.launchbays:\r\n    You have a size {launchbay.size} {launchbay.type} hangar.\r\n    {for vehicle in launchbay.vehicles:\r\n        It has a {P(vehicle.name)} with {vehicle.loadout} load out\r\n\r\n        {if type(vehicle.mount) != null:\r\n            {if vehicle.mount = 'F':\r\n                , and fixed weapons\r\n            |elif vehicle.mount = 'G':\r\n                , and ghim balled weapons\r\n            }\r\n        }\r\n        .{_ full stop}\r\n\r\n        {if vehicle.rebuilds != null:\r\n            {if vehicle.rebuilds = 1:\r\n                It has one rebuild remaining.\r\n            |elif vehicle.rebuilds = 0:\r\n                It has no rebuilds remaining.\r\n            |else:\r\n                It has {vehicle.rebuilds} rebuilds remaining.\r\n            }\r\n        }\r\n\r\n        {Pause(500)}\r\n    }\r\n}\r\n",
+      "default": true,
+      "name": "List launchbays",
+      "description": "Describes the contents of each launchbay in the ship"
+    },
+    "Location": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_system_name', event.system)}\r\n{SetState('eddi_context_body_name', event.body)}\r\n{SetState('eddi_context_body_system', event.system)}\r\n\r\nYou are\r\n{if event.docked:\r\n    docked at the\r\n    {if event.station = event.body:\r\n        orbital station {P(event.station)}\r\n    |else:\r\n        ground station {P(event.station)} on {P(event.body)}\r\n    }\r\n|elif event.body:\r\n    near {P(event.body)}\r\n}\r\nin the {P(event.system)} system.",
+      "default": true,
+      "name": "Location",
+      "description": "Triggered when the commander's location is reported, usually when they reload their game."
+    },
+    "Low fuel": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Low fuel",
+      "description": "Triggered when your fuel level falls below 25%."
+    },
+    "Market information updated": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Find out in advance what we have to say }\r\n{if ship.role = \"Multi-purpose\" || ship.role = \"Trading\":\r\n    {set purchasecheck to F(\"Commodity purchase check\")}\r\n}\r\n{set limpetcheck to F(\"Limpet check\")}\r\n{set swapoutcheck to F(\"Swapout check\")}\r\n{set salecheck to F(\"Commodity sale check\")}\r\n\r\n{Pause(4500)}\r\n\r\n{if purchasecheck || salecheck || limpetcheck || swapoutcheck:\r\n    {OneOf(\"Market\", \"Local market\", \"Station services\")}\r\n    {OneOf(\"data\", \"information\", \"price\")}\r\n    {OneOf(\"update\", \"refresh\", \"changes\")}\r\n    {OneOf(\"received\", \"obtained\")}.\r\n\r\n    {salecheck}\r\n    {purchasecheck}\r\n    {swapoutcheck}\r\n    {limpetcheck}\r\n}",
+      "default": true,
+      "name": "Market information updated",
+      "description": "Triggered when market information for the currently docked station has been updated"
+    },
+    "Material collected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'collect')}\r\n{SetState('eddi_context_material_name', event.name)}\r\n",
+      "default": true,
+      "name": "Material collected",
+      "description": "Triggered when you collect a material"
+    },
+    "Material discard report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Function to obtain a material from inventory}\r\n{set _inventory(required) to:\r\n    {for material in materials:\r\n        {if material.material = required:\r\n            {return material}\r\n        }\r\n    }\r\n}\r\n\r\n{_ Fetch material from state }\r\n{set material to state.material}\r\n{if material:\r\n    {_ Fetch full material details }\r\n    {set material to MaterialDetails(material)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'material')}\r\n    {SetState('eddi_context_material_name', material.name)}\r\n}\r\n\r\n{if !material:\r\n    {_ Fetch from context }\r\n    {set material to MaterialDetails(state.eddi_context_material_name)}\r\n}\r\n\r\n{set inventory to _inventory(material.name)}\r\n\r\n\r\n{if inventory:\r\n    {if inventory.maximum && inventory.maximum < inventory.amount:\r\n        {set over to inventory.amount - inventory.maximum}\r\n        {if over > 1:\r\n            You can discard {over} units of {inventory.material} to reach your maximum level.\r\n        |elif over = 1:\r\n            You can discard 1 unit of {inventory.material} to reach your maximum level.\r\n        }\r\n    |elif inventory.desired && inventory.desired < inventory.amount:\r\n        {set over to inventory.amount - inventory.desired}\r\n        {if over > 1:\r\n            You can discard {over} units of {inventory.material} to reach your desired level.\r\n        |elif over = 1:\r\n            You can discard 1 unit of {inventory.material} to reach your desired level.\r\n        }\r\n    |elif inventory.desired:\r\n        You are below your desired level for {inventory.material}.\r\n    |elif inventory.maximum:\r\n        You are below your maximum level for {inventory.material}.\r\n    |else:\r\n        You have not set any levels for {inventory.material}.\r\n    }\r\n}\r\n",
+      "default": true,
+      "name": "Material discard report",
+      "description": "Report on how many of a material can be discarded"
+    },
+    "Material discarded": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'discard')}\r\n{SetState('eddi_context_material_name', event.name)}\r\n",
+      "default": true,
+      "name": "Material discarded",
+      "description": "Triggered when you discard a material"
+    },
+    "Material discovered": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'discover')}\r\n{SetState('eddi_context_material_name', event.name)}\r\n",
+      "default": true,
+      "name": "Material discovered",
+      "description": "Triggered when you discover a material"
+    },
+    "Material donated": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'material')}\r\n{SetState('eddi_context_last_action', 'donate')}\r\n{SetState('eddi_context_material_name', event.name)}\r\n",
+      "default": true,
+      "name": "Material donated",
+      "description": "Triggered when you donate a material"
+    },
+    "Material inventory": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Material inventory",
+      "description": "Triggered when you obtain an inventory of your current materials"
+    },
+    "Material inventory report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Function to obtain a material from inventory}\r\n{set _inventory(required) to:\r\n    {for material in materials:\r\n        {if material.material = required:\r\n            {return material}\r\n        }\r\n    }\r\n}\r\n\r\n{_ Fetch material from state }\r\n{set material to state.material}\r\n{if material:\r\n    {_ Fetch full material details }\r\n    {set material to MaterialDetails(material)}\r\n \r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'material')}\r\n    {SetState('eddi_context_last_subject', 'inventory')}\r\n    {SetState('eddi_context_material_name', material.name)}\r\n}\r\n\r\n{if !material:\r\n    {_ Fetch from context }\r\n    {set material to MaterialDetails(state.eddi_context_material_name)}\r\n}\r\n\r\n{set inventory to _inventory(material.name)}\r\n\r\n{if inventory && inventory.amount > 0:\r\n    {if inventory.amount = 1:\r\n       You have {inventory.amount} unit of {inventory.material} on board.\r\n    |else:\r\n       You have {inventory.amount} units of {inventory.material} on board.\r\n    }\r\n|else:\r\n    You have no {inventory.material} on board.\r\n}\r\n",
+      "default": true,
+      "name": "Material inventory report",
+      "description": "Report on how many of a material are on-board"
+    },
+    "Material location report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch material from state }\r\n{set material to state.material}\r\n{if material:\r\n    {_ Fetch full material details }\r\n    {set material to MaterialDetails(material)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'material')}\r\n    {SetState('eddi_context_material_name', material.name)}\r\n}\r\n\r\n{if !material:\r\n    {_ Fetch from context }\r\n    {set material to MaterialDetails(state.eddi_context_material_name)}\r\n}\r\n\r\n{if material.name:\r\n    {if material.location:\r\n        {material.name} can be {material.location}\r\n    |else:\r\n        No information available on where to find {material.name}\r\n    }\r\n|else:\r\n    I don't have any information about that material\r\n}.\r\n",
+      "default": true,
+      "name": "Material location report",
+      "description": "Report on the where to obtain a particular material"
+    },
+    "Material required report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Function to obtain a material from inventory}\r\n{set _inventory(required) to:\r\n    {for material in materials:\r\n        {if material.material = required:\r\n            {return material}\r\n        }\r\n    }\r\n}\r\n\r\n{_ Fetch material from state }\r\n{set material to state.material}\r\n{if material:\r\n    {_ Fetch full material details }\r\n    {set material to MaterialDetails(material)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'material')}\r\n    {SetState('eddi_context_material_name', material.name)}\r\n}\r\n\r\n{if !material:\r\n    {_ Fetch from context }\r\n    {set material to MaterialDetails(state.eddi_context_material_name)}\r\n}\r\n\r\n{set inventory to _inventory(material.name)}\r\n\r\n\r\n{if inventory:\r\n    {if inventory.minimum && inventory.minimum > inventory.amount:\r\n        {set under to inventory.minimum - inventory.amount}\r\n        {if under > 1:\r\n            You require {under} units of {inventory.material} to reach your minimum level.\r\n        |elif under = 1:\r\n            You require 1 unit of {inventory.material} to reqach your minimum level.\r\n        }\r\n    |elif inventory.desired && inventory.desired > inventory.amount:\r\n        {set under to inventory.desired - inventory.amount}\r\n        {if under > 1:\r\n            You require {under} units of {inventory.material} to reach your desired level.\r\n        |elif under = 1:\r\n            You require 1 unit of {inventory.material} to reach your desired level.\r\n        }\r\n    |elif inventory.desired:\r\n        You are above your desired level for {inventory.material}.\r\n    |elif inventory.minimum :\r\n        You are above your minimum level for {inventory.material}.\r\n    |else:\r\n        You have not set any levels for {inventory.material}.\r\n    }\r\n}\r\n\r\n",
+      "default": true,
+      "name": "Material required report",
+      "description": "Report on how many of a material are required to reach 'desired' level"
+    },
+    "Material threshold": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.level = 'Minimum':\r\n    {_ Gone below the minimum level }\r\n    {OneOf(\"Stock\", \"Inventory\", \"Supplies\")} of {event.material.name} has fallen below your minimum.\r\n|elif event.level = 'Maximum':\r\n  {_ Gone above the maximum level }\r\n    {OneOf(\"Stock\", \"Inventory\", \"Supplies\")} of {event.material.name} has grown above your maximum.\r\n|else:\r\n    {_ Moved around the desired level }\r\n    {if event.change = 'Increase':\r\n        You have reached your desired level of {event.material.name}.\r\n    |else:\r\n        You are below your desired level of {event.material.name}.\r\n    }\r\n}\r\n\r\n{OneOf(\"Current stock is {event.amount}\",\r\n       \"Currently holding {event.amount}\",\r\n       \"{event.amount} on-board\")}.",
+      "default": true,
+      "name": "Material threshold",
+      "description": "Triggered when a material reaches a threshold"
+    },
+    "Material traded": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Material traded",
+      "description": "Triggered when materials are traded at a material trader"
+    },
+    "Material use report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch material from state }\r\n{set material to state.material}\r\n{if material:\r\n    {_ Fetch full material details }\r\n    {set material to MaterialDetails(material)}\r\n\r\n    {_ Context }\r\n    {SetState('eddi_context_last_subject', 'material')}\r\n    {SetState('eddi_context_material_name', material.name)}\r\n}\r\n\r\n{if !material:\r\n    {_ Fetch from context }\r\n    {set material to MaterialDetails(state.eddi_context_material_name)}\r\n}\r\n\r\n{if material && material.name:\r\n    {set uses to len(material.blueprints)}\r\n    {if slice(material.name, len(material.name)-1) = 's':\r\n        {set plural to 'are'}\r\n    |else:\r\n        {set plural to 'is'}\r\n    }\r\n    {if uses = 0:\r\n      {material.name} {plural} not required for any blueprints\r\n    |elif uses = 1:\r\n        {set name to cat(material.blueprints[0].name, material.blueprints[0].modulename, 'grade', material.blueprints[0].grade)}\r\n        {material.name} {plural} used for the {name} blueprint\r\n    |elif uses = 2:\r\n        {set name0 to cat(material.blueprints[0].name, material.blueprints[0].modulename, 'grade', material.blueprints[0].grade)}\r\n        {set name1 to cat(material.blueprints[1].name, material.blueprints[1].modulename, 'grade', material.blueprints[1].grade)}\r\n        {material.name} {plural} used for the {name0} and {name1} blueprints\r\n    |else:\r\n        {material.name} {plural} used for {len(material.blueprints)} blueprints.  These are\r\n        {set cur to 0}\r\n        {while cur < len(material.blueprints):\r\n            {set name to cat(material.blueprints[cur].name, material.blueprints[cur].modulename, 'grade', material.blueprints[cur].grade)}\r\n            {if cur = 0:\r\n                {name}\r\n            |elif cur < len(material.blueprints) - 1:\r\n                , {name}\r\n            |else:\r\n                , and {name}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }\r\n|else:\r\n    I don't have any information about that material\r\n}.\r\n",
+      "default": true,
+      "name": "Material use report",
+      "description": "Report on the use of a material"
+    },
+    "Materials discard report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "\r\n{_ Find those that are above maximum, desired and minimum}\r\n{set shoulddiscardmaterials to []}\r\n{set coulddiscardmaterials to []}\r\n{set lastdiscardmaterials to []}\r\n\r\n{for material in materials:\r\n    {if material.maximum && material.amount > material.maximum:\r\n      {set shoulddiscardmaterials to cat(shoulddiscardmaterials, [material])}\r\n    |elif material.desired && material.amount > material.desired:\r\n      {set coulddiscardmaterials to cat(coulddiscardmaterials, [material])}\r\n    |elif material.minimum && material.amount > material.minimum:\r\n      {set lastdiscardmaterials to cat(lastdiscardmaterials, [material])}\r\n    }\r\n}\r\n\r\n{if len(shoulddiscardmaterials) > 0:\r\n    You are over your maximum level for {if len(shoulddiscardmaterials) = 1: 1 material |else: {len(shoulddiscardmaterials)} materials}.  You can discard\r\n    {if len(shoulddiscardmaterials) = 1:\r\n        {shoulddiscardmaterials[0].amount - shoulddiscardmaterials[0].maximum} {shoulddiscardmaterials[0].material}\r\n    |elif len(shoulddiscardmaterials) = 2:\r\n        {shoulddiscardmaterials[0].amount - shoulddiscardmaterials[0].maximum} {shoulddiscardmaterials[0].material} and {shoulddiscardmaterials[1].amount - shoulddiscardmaterials[1].maximum} {shoulddiscardmaterials[1].material}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(shoulddiscardmaterials):\r\n            {if cur = 0:\r\n                {shoulddiscardmaterials[cur].amount - shoulddiscardmaterials[cur].maximum} {shoulddiscardmaterials[cur].material}\r\n            |elif cur < len(shoulddiscardmaterials) - 1:\r\n                , {shoulddiscardmaterials[cur].amount - shoulddiscardmaterials[cur].maximum} {shoulddiscardmaterials[cur].material}\r\n            |else:\r\n                , and {shoulddiscardmaterials[cur].amount - shoulddiscardmaterials[cur].maximum} {shoulddiscardmaterials[cur].material}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }.\r\n|elif len(coulddiscardmaterials) > 0:\r\n    You are over your desired level for {if len(coulddiscardmaterials) = 1: 1 material |else: {len(coulddiscardmaterials)} materials}.  You can discard\r\n    {if len(coulddiscardmaterials) = 1:\r\n        {coulddiscardmaterials[0].amount - coulddiscardmaterials[0].desired} {coulddiscardmaterials[0].material}\r\n    |elif len(coulddiscardmaterials) = 2:\r\n        {coulddiscardmaterials[0].amount - coulddiscardmaterials[0].desired} {coulddiscardmaterials[0].material} and {coulddiscardmaterials[1].amount - coulddiscardmaterials[1].desired} {coulddiscardmaterials[1].material}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(coulddiscardmaterials):\r\n            {if cur = 0:\r\n                {coulddiscardmaterials[cur].amount - coulddiscardmaterials[cur].desired} {coulddiscardmaterials[cur].material}\r\n            |elif cur < len(coulddiscardmaterials) - 1:\r\n                , {coulddiscardmaterials[cur].amount - coulddiscardmaterials[cur].desired} {coulddiscardmaterials[cur].material}\r\n            |else:\r\n                , and {coulddiscardmaterials[cur].amount - coulddiscardmaterials[cur].desired} {coulddiscardmaterials[cur].material}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }.\r\n|elif len(lastdiscardmaterials) > 0:\r\n    You are over your minimum level for {if len(lastdiscardmaterials) = 1: 1 material |else: {len(lastdiscardmaterials)} materials}.  You can discard\r\n    {if len(lastdiscardmaterials) = 1:\r\n        {lastdiscardmaterials[0].amount - lastdiscardmaterials[0].minimum} {lastdiscardmaterials[0].material}\r\n    |elif len(lastdiscardmaterials) = 2:\r\n        {lastdiscardmaterials[0].amount - lastdiscardmaterials[0].minimum} {lastdiscardmaterials[0].material} and {lastdiscardmaterials[1].amount - lastdiscardmaterials[1].minimum} {lastdiscardmaterials[1].material}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(lastdiscardmaterials):\r\n            {if cur = 0:\r\n                {lastdiscardmaterials[cur].amount - lastdiscardmaterials[cur].minimum} {lastdiscardmaterials[cur].material}\r\n            |elif cur < len(lastdiscardmaterials) - 1:\r\n                , {lastdiscardmaterials[cur].amount - lastdiscardmaterials[cur].minimum} {lastdiscardmaterials[cur].material}\r\n            |else:\r\n                , and {lastdiscardmaterials[cur].amount - lastdiscardmaterials[cur].minimum} {lastdiscardmaterials[cur].material}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }.\r\n|else:\r\n    No materials can be discarded and remain within minimum levels.\r\n}\r\n",
+      "default": true,
+      "name": "Materials discard report",
+      "description": "Report on which materials can be discarded"
+    },
+    "Materials required report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{set required to []}\r\n\r\n{for material in materials:\r\n  {if material.desired && material.amount < material.desired:\r\n    {set required to cat(required, [material])}\r\n }\r\n}\r\n\r\n{if len(required) > 0:\r\n    You require\r\n    {if len(required) = 1:\r\n        {required[0].desired - required[0].amount} {required[0].material}\r\n    |elif len(required) = 2:\r\n        {required[0].desired - required[0].amount} {required[0].material} and {required[1].desired - required[1].amount} {required[1].material}\r\n    |else:\r\n        {set cur to 0}\r\n        {while cur < len(required):\r\n            {if cur = 0:\r\n                {required[cur].desired - required[cur].amount} {required[cur].material}\r\n            |elif cur < len(required) - 1:\r\n                , {required[cur].desired - required[cur].amount} {required[cur].material}\r\n            |else:\r\n                , and {required[cur].desired - required[cur].amount} {required[cur].material}\r\n            }\r\n            {set cur to cur + 1}\r\n        }\r\n    }.\r\n|else:\r\n    You have all the materials you desire.\r\n}",
+      "default": true,
+      "name": "Materials required report",
+      "description": "Report on how many of each material are required to reach 'desired' level"
+    },
+    "Message received": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'message')}\r\n{SetState('eddi_context_last_action', 'receive')}\r\n{SetState('eddi_context_message_name', event.from)}\r\n{SetState('eddi_context_message_content', event.message)}\r\n\r\n{if event.player = true:\r\n    {if event.message = \"o7\":\r\n        {event.from} salutes\r\n        {if event.channel = \"player\":\r\n            you\r\n        }.\r\n    |else:\r\n        {event.source} {event.from} sends: {event.message}.\r\n    }\r\n|elif event.source != \"Station\":\r\n    From {event.source} {event.from}: {event.message}.\r\n}\r\n",
+      "default": true,
+      "name": "Message received",
+      "description": "Triggered when you receive a message"
+    },
+    "Message sent": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'message')}\r\n{SetState('eddi_context_last_action', 'send')}\r\n{SetState('eddi_context_message_name', event.to)}\r\n{SetState('eddi_context_message_content', event.message)}\r\n\r\n{OneOf(\"Message away\", \"Message sent\", \"Sent\")}.",
+      "default": true,
+      "name": "Message sent",
+      "description": "Triggered when you send a message"
+    },
+    "Mission abandoned": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Mission abandoned.",
+      "default": true,
+      "name": "Mission abandoned",
+      "description": "Triggered when you abandon a mission"
+    },
+    "Mission accepted": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.communal:\r\n    Community goal accepted.\r\n|else:\r\n    Mission for {P(event.faction)} accepted.\r\n    {if event.passengerswanted:\r\n        {set wanteddescription to OneOf(\"wanted passengers\", \"known felons\")}\r\n        Caution: {OneOf(\"you are carrying {wanteddescription}\",\"{wanteddescription} now on board\")}.\r\n    }\r\n}",
+      "default": true,
+      "name": "Mission accepted",
+      "description": "Triggered when you accept a mission"
+    },
+    "Mission completed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.reward > 0:\r\n    Payment of {Humanise(event.reward)} credits {Occasionally(2, 'from {P(event.faction)}')} {OneOf('received', 'confirmed')}.\r\n|elif event.donation > 0:\r\n    {OneOf(\"Donated {Occasionally(2, '{Humanise(event.donation)} credits')} to {Occasionally(2, 'a grateful')} {P(event.faction)}\",\r\n                 \"{P(event.faction)} has {Occasionally(2, 'gratefully')} received your donation {Occasionally(2, 'of {Humanise(event.donation)} credits')}\",\r\n                 \"{P(event.faction)} thanks you for your donation {Occasionally(2, 'of {Humanise(event.donation)} credits')}\"\r\n    )}.\r\n|else:\r\n    Mission completed.\r\n}\r\n{for commodityreward in event.commodityrewards:\r\n  {commodityreward.amount} tonnes of {commodityreward.commodity} {OneOf(\"now on-board\", \"also received\", \"confirmed on-board\")}.\r\n}",
+      "default": true,
+      "name": "Mission completed",
+      "description": "Triggered when you complete a mission"
+    },
+    "Mission failed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Mission failed",
+      "description": "Triggered when you fail a mission"
+    },
+    "Mission redirected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Mission redirected from \r\n{if event.olddestinationstation:\r\n   {event.olddestinationstation} in the {event.olddestinationsystem} \r\n   to {event.newdestinationstation} in the {event.newdestinationsystem}\r\n|else:\r\n   {event.olddestinationsystem} to {event.newdestinationsystem}\r\n}",
+      "default": true,
+      "name": "Mission redirected",
+      "description": "Triggered when a mission is redirected"
+    },
+    "Modification applied": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Modification applied",
+      "description": "Triggered when you apply a modification to a module"
+    },
+    "Modification crafted": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Modification crafted",
+      "description": "Triggered when you craft a modification to a module"
+    },
+    "Module arrived": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.module.name} has\r\n\r\n{OneOf('arrived {if station.name != event.station && event.station: at}', \r\n       'completed its transfer {if station.name != event.station && event.station: to}')}\r\n\r\n{if station.name != event.station && event.station:\r\n   {event.station}\r\n   {if system.name != event.system && event.system:\r\n      in the {event.system} system\r\n   }\r\n}.",
+      "default": true,
+      "name": "Module arrived",
+      "description": "Triggered when you complete a module transfer"
+    },
+    "Module purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have purchased a {event.buymodule.class}-{event.buymodule.grade},\r\n\r\n{if type(event.buymodule.mount) != \"void\":\r\n    {for index, value in event.buymodule.mount: {set mount to value}}\r\n    {if mount = 0:\r\n        fixed\r\n    |elif mount = 1:\r\n        giimballed\r\n    |elif mount = 2:\r\n        turreted\r\n    }\r\n}\r\n{event.buymodule.name} for {event.buyprice} credits\r\n\r\n{if type(event.sellmodule) != \"void\":\r\n    , and sold a {event.sellmodule.class}-{event.sellmodule.grade},\r\n\r\n    {if type(event.sellmodule.mount) != \"void\":\r\n        {for index, value in event.sellmodule.mount: {set mount to value}}\r\n        {if mount = 0:\r\n            fixed\r\n        |elif mount = 1:\r\n            giimballed\r\n       |elif mount = 2:\r\n            turreted\r\n        }\r\n    }\r\n    {event.sellmodule.name} for {event.sellprice} credits\r\n\r\n|elif type(event.storedmodule) != \"void\":\r\n    , and stored a {event.storedmodule.class}-{event.storedmodule.grade},\r\n\r\n    {if type(event.storedmodule.mount) != \"void\":\r\n        {for index, value in event.storedmodule.mount: {set mount to value}}\r\n        {if mount = 0:\r\n            fixed\r\n        |elif mount = 1:\r\n            giimballed\r\n       |elif mount = 2:\r\n            turreted\r\n        }\r\n    }\r\n    {event.storedmodule.name}\r\n}\r\n\r\n\r\n",
+      "default": true,
+      "name": "Module purchased",
+      "description": "Triggered when you purchase a module in outfitting"
+    },
+    "Module retrieved": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have retrieved a {event.module.class}-{event.module.grade},\r\n\r\n{if type(event.module.mount) != \"void\":\r\n    {for index, value in event.module.mount: {set mount to value}}\r\n    {if mount = 0:\r\n        fixed\r\n    |elif mount = 1:\r\n        giimballed\r\n    |elif mount = 2:\r\n        turreted\r\n    }\r\n}\r\n\r\n{event.module.name} from storage\r\n\r\n{if type(event.swapoutmodule) != \"void\":\r\n    and stored a {event.swapoutmodule.class}-{event.swapoutmodule.grade},\r\n\r\n    {if type(event.swapoutmodule.mount) != \"void\":\r\n        {for index, value in event.swapoutmodule.mount: {set mount to value}}\r\n        {if mount = 0:\r\n            fixed\r\n        |elif mount = 1:\r\n            giimballed\r\n       |elif mount = 2:\r\n            turreted\r\n        }\r\n    }\r\n    {event.swapoutmodule.name}\r\n}\r\n\r\n{if type(event.cost) != \"void\": for a cost of {event.cost} credits}\r\n",
+      "default": true,
+      "name": "Module retrieved",
+      "description": "Triggered when you fetch a previously stored module"
+    },
+    "Module sold": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have sold a {event.module.class}-{event.module.grade},\r\n\r\n{if type(event.module.mount) != \"void\":\r\n    {for index, value in event.module.mount: {set mount to value}}\r\n    {if mount = 0:\r\n        fixed\r\n    |elif mount = 1:\r\n        giimballed\r\n    |elif mount = 2:\r\n        turreted\r\n    }\r\n}\r\n\r\n{event.module.name} for {event.price} credits.",
+      "default": true,
+      "name": "Module sold",
+      "description": "Triggered when selling a module to outfitting"
+    },
+    "Module sold from storage": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have sold a {event.module.class}-{event.module.grade},\r\n\r\n{if type(event.module.mount) != \"void\":\r\n    {for index, value in event.module.mount: {set mount to value}}\r\n    {if mount = 0:\r\n        fixed\r\n    |elif mount = 1:\r\n        giimballed\r\n    |elif mount = 2:\r\n        turreted\r\n    }\r\n}\r\n\r\n{event.module.name} from your stores for {event.price} credits.",
+      "default": true,
+      "name": "Module sold from storage",
+      "description": "Triggered when selling a module from storage"
+    },
+    "Module stored": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have stored a {event.module.class}-{event.module.grade},\r\n\r\n{if type(event.module.mount) != \"void\":\r\n    {for index, value in event.module.mount: {set mount to value}}\r\n    {if mount = 0:\r\n        fixed\r\n    |elif mount = 1:\r\n        giimballed\r\n    |elif mount = 2:\r\n        turreted\r\n    }\r\n}\r\n\r\n{event.module.name}\r\n\r\n{if type(event.cost) = \"void\": . |else: for a cost of {event.cost} credits.}",
+      "default": true,
+      "name": "Module stored",
+      "description": "Triggered when you store a module"
+    },
+    "Module swapped": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have swapped the positions of a {event.frommodule.class}-{event.frommodule.grade},\r\n\r\n{if type(event.frommodule.mount) != \"void\":\r\n    {for index, value in event.frommodule.mount: {set mount to value}}\r\n    {if mount = 0:\r\n        fixed\r\n    |elif mount = 1:\r\n        giimballed\r\n    |elif mount = 2:\r\n        turreted\r\n    }\r\n}\r\n\r\n{event.frommodule.name} and \r\n\r\n{if event.tomodule:\r\n    a {event.tomodule.class}-{event.tomodule.grade},\r\n    {if type(event.tomodule.mount) != \"void\":\r\n        {for index, value in event.tomodule.mount: {set mount to value}}\r\n        {if mount = 0:\r\n            fixed\r\n        |elif mount = 1:\r\n            giimballed\r\n        |elif mount = 2:\r\n            turreted\r\n        }\r\n    }\r\n    {event.tomodule.name}.\r\n|else: \r\n    an empty slot.\r\n}",
+      "default": true,
+      "name": "Module swapped",
+      "description": "Triggered when modules are swapped between slots on the ship"
+    },
+    "Module transfer": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have transferred a {event.module.class}-{event.module.grade}\r\n\r\n{if event.module.mount:\r\n    {for index, value in event.module.mount: {set mount to value}}\r\n    {if mount = 0:\r\n        fixed\r\n    |elif mount = 1:\r\n        giimballed\r\n    |elif mount = 2:\r\n        turreted\r\n    }\r\n}\r\n\r\n{event.module.name} \r\n\r\n{if event.transfercost: for a cost of {event.transfercost} credits.}\r\n\r\n{set t_remaining to event.transfertime}\r\n\r\n{if t_remaining:\r\n\r\n   {Pause(1000)}\r\n   Expected arrival in:\r\n\r\n   {if t_remaining > (60*60*24):\r\n      {set t_days to floor(t_remaining/(60*60*24))}\r\n      {t_days} days,\r\n      {set t_remaining to t_remaining-(t_days*(60*60*24))}\r\n   }\r\n\r\n   {if t_remaining > 3600:\r\n      {set t_hours to floor(t_remaining/3600)}\r\n      {t_hours} hours,\r\n      {set t_remaining to t_remaining-(t_hours*(60*60))}\r\n   }\r\n\r\n   {if t_remaining > 60:\r\n      {if t_days || t_hours: and}\r\n      {set t_minutes to round(t_remaining/(60),0)}\r\n      {t_minutes} minutes.\r\n   }\r\n}",
+      "default": true,
+      "name": "Module transfer",
+      "description": "Triggered when you transfer a module from storage at another station"
+    },
+    "Modules stored": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have stored the following modules:\r\n\r\n{for module in event.modules:\r\n\r\n    {module.class}-{module.grade},\r\n\r\n    {if type(module.mount) != \"void\":\r\n        {for index, value in module.mount: {set mount to value}}\r\n        {if mount = 0:\r\n            fixed\r\n        |elif mount = 1:\r\n            giimballed\r\n        |elif mount = 2:\r\n            turreted\r\n        }\r\n    }\r\n    {module.name}\r\n    {Pause(400)}\r\n}\r\n\r\n\r\n",
+      "default": true,
+      "name": "Modules stored",
+      "description": "Triggered when you store multiple modules"
+    },
+    "Music": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Music",
+      "description": "Triggered when the game music 'mood' changes"
+    },
+    "Nav beacon scan": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context _}\r\n{SetState('eddi_context_last_subject', 'nav beacon')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_star_system', system.name)}\r\n{SetState('eddi_context_nav_scans', event.numbodies)}\r\n\r\n{set nav to OneOf(\"nav\", \"navigation\")}\r\n{set beacon to OneOf(\"beacon\", \"buoy\")}\r\n{OneOf(\"This {nav} {beacon} has transferred details of {event.numbodies} bodies in this system.\",\r\n \"Details on {event.numbodies} bodies in this system received.\")}\r\n\r\n{Pause(500)}",
+      "default": true,
+      "name": "Nav beacon scan",
+      "description": "Triggered when you scan a nav beacon, before the scan data for all the bodies in the system is written into the journal"
+    },
+    "Near surface": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Near surface",
+      "description": "Triggered when you enter or depart orbit around a surface"
+    },
+    "NPC attack commenced": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Warning: attack \r\n{if event.by:\r\n   by {event.by} \r\n}\r\ndetected.",
+      "default": true,
+      "name": "NPC attack commenced",
+      "description": "Triggered when an attack on your ship by an NPC is detected"
+    },
+    "NPC cargo scan commenced": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ See if we are carrying non-limpet cargo}\r\n{set carryingvaluablecargo to 0}\r\n{for cargo in ship.cargo:\r\n    {if cargo.commodity != 'Limpet':\r\n        {set carryingvaluablecargo to 1}\r\n    }\r\n}\r\n\r\n{if carryingvaluablecargo = 1:\r\n  Caution: cargo scan\r\n  {if event.by:\r\n    by {event.by} \r\n  }\r\n  detected.\r\n}\r\n",
+      "default": true,
+      "name": "NPC cargo scan commenced",
+      "description": "Triggered when a cargo scan on your ship by an NPC is detected"
+    },
+    "NPC interdiction commenced": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Warning: interdiction attempt\r\n{if event.by:\r\n   by {event.by} \r\n}\r\ndetected.\r\n\r\n{Occasionally(3, \"Throttle down or evade.\")}",
+      "default": true,
+      "name": "NPC interdiction commenced",
+      "description": "Triggered when an interdiction attempt on your ship by an NPC is detected"
+    },
+    "Power commodity delivered": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.amount} units of {event.commodity} delivered {Occasionally(2, \"for {P(event.power)}\")}.",
+      "default": true,
+      "name": "Power commodity delivered",
+      "description": "Triggered when a commander delivers a commodity to a power"
+    },
+    "Power commodity fast tracked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Humanise(event.amount)} credits spent fast-tracking commodities {Occasionally(2, \"for {P(event.power)}\")}.",
+      "default": true,
+      "name": "Power commodity fast tracked",
+      "description": "Triggered when a commander fast tracks a commodity of a power"
+    },
+    "Power commodity obtained": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.amount} units of {event.commodity} obtained {Occasionally(2, \"for {P(event.power)}\")}.",
+      "default": true,
+      "name": "Power commodity obtained",
+      "description": "Triggered when a commander obtains a commodity from a power"
+    },
+    "Power defected": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have defected from {P(event.frompower)} to {P(event.topower)}.",
+      "default": true,
+      "name": "Power defected",
+      "description": "Triggered when you defect from one power to another"
+    },
+    "Power expansion vote cast": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Vote\r\n{OneOf(\"cast\", \"registered\")}",
+      "default": true,
+      "name": "Power expansion vote cast",
+      "description": "Triggered when a commander votes for system expansion"
+    },
+    "Power joined": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have aligned yourself with {P(event.power)}",
+      "default": true,
+      "name": "Power joined",
+      "description": "Triggered when you join a power"
+    },
+    "Power left": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You are no longer aligned with {P(event.power)}",
+      "default": true,
+      "name": "Power left",
+      "description": "Triggered when you leave a power"
+    },
+    "Power preparation vote cast": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Vote\r\n{OneOf(\"cast\", \"registered\")}",
+      "default": true,
+      "name": "Power preparation vote cast",
+      "description": "Triggered when a commander votes for system perparation"
+    },
+    "Power salary claimed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Salary of {Humanise(event.amount)}  credits claimed {Occasionally(2, \"from {P(event.power)}\")}.",
+      "default": true,
+      "name": "Power salary claimed",
+      "description": "Triggered when a commander claims salary from a power"
+    },
+    "Power voucher received": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Power voucher received",
+      "description": "Triggered when a commander turns in combat vouchers against an opposing power"
+    },
+    "Repair drone": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{set systemsrepaired to []}\r\n\r\n{if event.hull:\r\n   {set systemsrepaired to cat(systemsrepaired, [\"the hull\"])} \r\n}\r\n{if event.cockpit:\r\n   {set systemsrepaired to cat(systemsrepaired, [\"the cockpit\"])} \r\n}\r\n{if event.corrosion:\r\n   {set systemsrepaired to cat(systemsrepaired, [OneOf(\"corroded systems\", \"systems affected by corrosion\")])} \r\n}\r\n\r\n{if len(systemsrepaired) > 0:\r\n\r\n    {set remote to Occasionally(2, \"remote\")}\r\n    {set sequence to OneOf(\"sequence\", \"cycle\")}\r\n    {OneOf(\r\n        \"The limpet has completed it's {remote} repairs to\", \r\n        \"{remote} {sequence} completed, repairs made to\"\r\n    )}\r\n\r\n    {set cur to 0}\r\n    {while cur < len(systemsrepaired):\r\n        {if cur = 0:\r\n        |elif cur < len(systemsrepaired) - 1:\r\n            , \r\n        |else:\r\n            and\r\n        }\r\n        {systemsrepaired[cur]}\r\n        {set cur to cur + 1}\r\n    }\r\n}.\r\n",
+      "default": true,
+      "name": "Repair drone",
+      "description": "Triggered when your ship is repaired via a repair limpet controller"
+    },
+    "Repeat last speech": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{state.eddi_context_last_speech}",
+      "default": true,
+      "name": "Repeat last speech",
+      "description": "Repeat the last thing said"
+    },
+    "Report last scan value": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Context }\r\n{set scanValue to state.eddi_context_last_scan_estimated_value}\r\n\r\n{if scanValue:\r\n   {OneOf(\"This\", \"This data\", \"This scan\")} \r\n   {OneOf(\"could\", \"might\", \"can\", \"should\") } \r\n   {OneOf(\"fetch\", \"be worth\", \"get you\", \"sell for\")}\r\n   {Humanise(scanValue)} credits.\r\n}\r\n",
+      "default": true,
+      "name": "Report last scan value",
+      "description": "Report the estimated value of the last body scanned"
+    },
+    "Screenshot": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Screenshot",
+      "description": "Triggered when you take a screenshot"
+    },
+    "Search and rescue": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.amount} \r\n{if event.commodity.rare: rare}\r\n\r\n{if event.commodity.name = \"Black Box\":\r\n   {if event.amount > 1:\r\n      {OneOf(\"flight records\", \"black boxes\")}\r\n   |else: \r\n      {OneOf(\"flight record\", \"black box\")}\r\n   }\r\n\r\n|elif event.commodity.name = \"Damaged Escape Pod\":\r\n   {OneOf(\"damaged cryo pod\", \"damaged escape pod\")}{if event.amount > 1:s}\r\n\r\n|elif event.commodity.name = \"Occupied Escape Pod\":\r\n   {OneOf(\"occupied escape pod\", \"occupied cryo pod\")}{if event.amount > 1:s}\r\n\r\n|elif event.commodity.name = \"Personal Effects\":\r\n   {OneOf(\"set\", \"collection\")}{if event.amount > 1:s} of\r\n   {OneOf(\"personal effects\", \"personal belongings\")}\r\n\r\n|elif event.commodity.name = \"Salvageable Wreckage\":\r\n   {set wreckage to OneOf(\"wreckage\", \"debris\")}\r\n   {set fragment to OneOf(\"fragment\", \"bit\", \"piece\", \"part\", \"remnant\")}\r\n   {OneOf(\"{fragment}{if event.amount > 1:s} of {wreckage}\", \r\n          \"{wreckage} {fragment}{if event.amount > 1:s}\")}\r\n\r\n|elif event.commodity.name = \"Hostage\":\r\n   {OneOf(\"hostage\")}{if event.amount > 1:s}\r\n\r\n|else:\r\n   {event.commodity.name}{if event.amount > 1:s}\r\n}\r\n\r\n{OneOf(\"recovered\", \"salvaged\")}\r\n{Occasionally(2, \"in exchange\")}\r\nfor {Humanise(event.reward)} credits\r\n",
+      "default": true,
+      "name": "Search and rescue",
+      "description": "Triggered when delivering items to a Search and Rescue contact"
+    },
+    "Security presence report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{if system.population > 0:\r\n    There is\r\n    {if system.security = \"None\":\r\n        no\r\n    |elif system.security = \"Low\":\r\n        {OneOf(\"minimal\", \"low\", \"weak\")}\r\n    |elif system.security = \"Medium\":\r\n        {OneOf(\"standard\", \"medium\", \"average\")}\r\n    |elif system.security = \"High\":\r\n        {OneOf(\"high\", \"heavy\", \"strong\")}\r\n    |else:\r\n        {system.security}\r\n    }\r\n    {OneOf(\"police\", \"security\", \"law enforcement\")} presence {OneOf(\"here\", \"in this system\", \"in the locality\")}.\r\n}",
+      "default": true,
+      "name": "Security presence report",
+      "description": "Function to report on the details of system security"
+    },
+    "Self destruct": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Self-destruct sequence initiated.  Closing heat vents.",
+      "default": true,
+      "name": "Self destruct",
+      "description": "Triggered when you start the self destruct sequence"
+    },
+    "Settlement approached": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Settlement approached",
+      "description": "Triggered when you approach a settlement"
+    },
+    "Shields down": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Shields down",
+      "description": "Triggered when your ship's shields go offline"
+    },
+    "Shields up": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Shields up",
+      "description": "Triggered when your ship's shields come online"
+    },
+    "Ship arrived": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Occasionally(2, '{F(\\'Honorific\\')}, ')}\r\nYour {event.ship} has \r\n\r\n{OneOf('arrived {if station.name != event.station && event.station: at}', \r\n       'completed its transfer {if station.name != event.station && event.station: to}')}\r\n\r\n{if station.name != event.station && event.station:\r\n   {event.station}\r\n   {if system.name != event.system && event.system:\r\n      in the {event.system} system\r\n   }\r\n}.",
+      "default": true,
+      "name": "Ship arrived",
+      "description": "Triggered when you complete a ship transfer"
+    },
+    "Ship delivered": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{ShipCallsign()} handover complete.",
+      "default": true,
+      "name": "Ship delivered",
+      "description": "Triggered when your newly-purchased ship is delivered to you"
+    },
+    "Ship fsd": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship fsd",
+      "description": "Triggered when there is a change to the status of your ship's fsd"
+    },
+    "Ship interdicted": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship interdicted",
+      "description": "Triggered when your ship is interdicted by another ship"
+    },
+    "Ship interdiction": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship interdiction",
+      "description": "Triggered when you interdict another ship"
+    },
+    "Ship loadout": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship loadout",
+      "description": "Triggered when you obtain the loadout of your ship"
+    },
+    "Ship low fuel": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship low fuel",
+      "description": "Triggered when your fuel level falls below 25%"
+    },
+    "Ship purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{P(event.ship)} purchased.",
+      "default": true,
+      "name": "Ship purchased",
+      "description": "Triggered when you purchase a ship"
+    },
+    "Ship rebooted": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship rebooted",
+      "description": "Triggered when you run reboot/repair on your ship"
+    },
+    "Ship refuelled": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.total:\r\n   {SetState('eddi_context_fuel_remaining', event.total)}\r\n|else:\r\n   {SetState('eddi_context_fuel_remaining', state.eddi_context_fuel_remaining + event.amount)}\r\n}\r\n\r\n{Pause(2000)}\r\n{if event.total = ship.fueltanktotalcapacity || event.price:\r\n   {set refueled_desc to OneOf(\"fully refuelled\", \"at maximum fuel capacity\",\"at 100% fuel capacity\")}\r\n   {OneOf(\"Refueled\", \"Fuel at maximum\", \"Maximum fuel\", \"{P(ShipName())} is now {refueled_desc}\" )}\r\n|else:\r\n   {if event.amount <= 5.0000:\r\n      {F('Fuel check')}\r\n   }\r\n}",
+      "default": true,
+      "name": "Ship refuelled",
+      "description": "Triggered when you refuel your ship"
+    },
+    "Ship renamed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{ShipName()} now registered with {P(system.faction)}.  Identification is {ICAO(event.ident)}.",
+      "default": true,
+      "name": "Ship renamed",
+      "description": "Triggered when you rename a ship"
+    },
+    "Ship repaired": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{ShipName()} repaired.",
+      "default": true,
+      "name": "Ship repaired",
+      "description": "Triggered when you repair your ship"
+    },
+    "Ship repurchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship repurchased",
+      "description": "Triggered when you repurchase your ship"
+    },
+    "Ship restocked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{ShipName()} {OneOf(\"restocked\",\"rearmed\")}.",
+      "default": true,
+      "name": "Ship restocked",
+      "description": "Triggered when you restock your ship's ammunition"
+    },
+    "Ship shutdown": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Ship shutdown",
+      "description": "Triggered when your ship's system are shutdown"
+    },
+    "Ship sold": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{OneOf(\"Retired {ShipName(event.shipid, event.ship)} from active duty\",\r\n             \"Decommissioned {ShipName(event.shipid, event.ship)}\",\r\n             \"Sold {ShipName(event.shipid, event.ship)}\",)}\r\n\r\n{if event.system != system.name:\r\n   in {event.system}\r\n}",
+      "default": true,
+      "name": "Ship sold",
+      "description": "Triggered when you sell a ship"
+    },
+    "Ship sold on rebuy": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{event.ship}, identification {event.shipid}, sold in {event.system} for {Humanise(event.price)} credits",
+      "default": true,
+      "name": "Ship sold on rebuy",
+      "description": "Triggered when you sell a ship to raise funds on the insurance / rebuy screen"
+    },
+    "Ship swapped": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if event.storedship:\r\n    {OneOf(\"Storing\", \"Mothballing\", \"Parking\")} {ShipName(event.storedshipid, event.storedship)} and\r\n|elif event.soldship:\r\n    Selling {ShipName(event.soldshipid, event.soldship)} and\r\n}\r\n{OneOf(\"swapping\",\"moving\",\"transferring\")} to {ShipName(event.shipid, event.ship)}.\r\n\r\n{F(\"Limpet check\")}\r\n{F(\"List launchbays\")}\r\n\r\n{set fighterhangar to false}\r\n{for compartment in ship.compartments:\r\n    {if find(compartment.module.name, \"Fighter Hangar\") != -1:\r\n        {set fighterhangar to true}\r\n    }\r\n}\r\n{if fighterhangar = true:\r\n    Reminder: you need to assign a crew member to active duty.\r\n}\r\n",
+      "default": true,
+      "name": "Ship swapped",
+      "description": "Triggered when you swap a ship"
+    },
+    "Ship transfer initiated": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{ShipName(event.shipid, event.ship)} {OneOf(\"on its way\",\"being transferred\", \"transfer initiated\", \"being transported\", \"being transferred\")} from {P(event.system)}\r\n\r\n{if event.transfercost: for a cost of {event.price} credits.}\r\n\r\n{set t_remaining to event.time}\r\n\r\n{if t_remaining:\r\n\r\n   {Pause(1000)}\r\n   Expected arrival in:\r\n\r\n   {if t_remaining > (60*60*24):\r\n      {set t_days to floor(t_remaining/(60*60*24))}\r\n      {t_days} days,\r\n      {set t_remaining to t_remaining-(t_days*(60*60*24))}\r\n   }\r\n\r\n   {if t_remaining > 3600:\r\n      {set t_hours to floor(t_remaining/3600)}\r\n      {t_hours} hours,\r\n      {set t_remaining to t_remaining-(t_hours*(60*60))}\r\n   }\r\n\r\n   {if t_remaining > 60:\r\n      {if t_days || t_hours: and}\r\n      {set t_minutes to round(t_remaining/(60),0)}\r\n      {t_minutes} minutes.\r\n   }\r\n}",
+      "default": true,
+      "name": "Ship transfer initiated",
+      "description": "Triggered when you initiate a ship transfer"
+    },
+    "Shutdown": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Shutdown",
+      "description": "Triggered on a clean shutdown of the game"
+    },
+    "SRV docked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{OneOf(\"Buggy\", \"SRV\")} docked.",
+      "default": true,
+      "name": "SRV docked",
+      "description": "Triggered when you dock an SRV with your ship"
+    },
+    "SRV launched": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{OneOf(\"Buggy\", \"SRV\")} {OneOf(\"launched\", \"away\")}.",
+      "default": true,
+      "name": "SRV launched",
+      "description": "Triggered when you launch an SRV from your ship"
+    },
+    "SRV turret deployable": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{if !event.deployable:\r\n   {OneOf(\"Buggy\", \"SRV\")} standing by for recovery.\r\n}",
+      "default": true,
+      "name": "SRV turret deployable",
+      "description": "Triggered when your SRV enters or leaves the restriction zone around a ship."
+    },
+    "SRV turret": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "SRV turret",
+      "description": "Triggered when you deploy or retract your SRV's turret"
+    },
+    "Star report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch from context }\r\n{set reportbody to BodyDetails(state.eddi_context_star_star, state.eddi_context_star_system)}\r\n\r\n{if !reportbody.name || reportbody.name = \"\":\r\n    I'm not sure which star you are asking about.\r\n|else:\r\n    {set mainsequence to 0}\r\n    {P(reportbody.name)} is\r\n    {if reportbody.stellarclass = \"O\":\r\n        an incredibly rare main sequence star\r\n        {set mainsequence to 1}\r\n    |elif reportbody.stellarclass = \"B\":\r\n        a very rare main sequence star\r\n        {set mainsequence to 1}\r\n    |elif reportbody.stellarclass = \"A\":\r\n        a rare main sequence star\r\n        {set mainsequence to 1}\r\n    |elif reportbody.stellarclass = \"F\":\r\n        an uncommon main sequence star\r\n        {set mainsequence to 1}\r\n    |elif reportbody.stellarclass = \"G\":\r\n        a common main sequence star\r\n        {set mainsequence to 1}\r\n    |elif reportbody.stellarclass = \"K\":\r\n        a common main sequence star\r\n        {set mainsequence to 1}\r\n    |elif reportbody.stellarclass = \"M\":\r\n        a very common main sequence star\r\n        {set mainsequence to 1}\r\n    |elif find([\"L\", \"T\", \"Y\"], reportbody.stellarclass) > -1:\r\n        a brown dwarf\r\n    |elif reportbody.stellarclass = \"TTS\":\r\n        a T tauri star in the process of gravitational contraction\r\n    |elif reportbody.stellarclass = \"AEBE\":\r\n        a very young proto-star yet to enter main sequence {Occasionally(4, \"but on the way to becoming an A or B class star\")}\r\n    |elif reportbody.stellarclass = \"WC\":\r\n        a {Occasionally(2, \"fast burning \")} carbon rich Wolf-Rayet star \r\n        {Occasionally(2, \", shedding considerable mass and exposing ionised carbon at its core, \")}\r\n    |elif reportbody.stellarclass = \"WN\":\r\n        a {Occasionally(2, \"fast burning \")} helium and nitrogen rich Wolf-Rayet star \r\n        {Occasionally(2, \", shedding considerable mass and exposing ionised helium and nitrogen at its core, \")}\r\n    |elif reportbody.stellarclass = \"WO\":\r\n        a {Occasionally(2, \"fast burning \")} oxygen rich Wolf-Rayet star \r\n        {Occasionally(2, \", shedding considerable mass and exposing ionised oxygen at its core, \")}\r\n    |elif reportbody.stellarclass = \"WNC\":\r\n        a {Occasionally(2, \"fast burning \")} Wolf-Rayet star \r\n        {Occasionally(2, \", shedding considerable mass and exposing ionised nitrogen, carbon, oxygen, and helium at its core, \")}\r\n    |elif reportbody.stellarclass = \"W\":\r\n        a {Occasionally(2, \"fast burning \")} Wolf-Rayet star \r\n        {Occasionally(2, \", shedding considerable mass and exposing heavier elements at its core, \")}\r\n    |elif reportbody.stellarclass = \"CS\":\r\n        a carbon star\r\n    |elif find([\"C\", \"CN\", \"CH\", \"CHd\"], reportbody.stellarclass) > -1:\r\n        a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(4, \"with an atmosphere dominated by carbon\")}\r\n    |elif reportbody.stellarclass = \"CJ\":\r\n        a {Occasionally(2, \"late-sequence\")} carbon star {Occasionally(2, \"with high levels of carbon 13 in its atmosphere\")}\r\n    |elif reportbody.stellarclass = \"MS\":\r\n        a late sequence star {Occasionally(4, \"that was once an M class star and is on the way to becoming a carbon star\")}\r\n    |elif reportbody.stellarclass = \"S\":\r\n        a late sequence star {Occasionally(4, \"that was once an M class star and is becoming a carbon star\")}\r\n    |elif reportbody.stellarclass = \"D\":\r\n        a white dwarf\r\n    |elif reportbody.stellarclass = \"DA\":\r\n        a white dwarf {Occasionally(4, \"with a hydrogen-rich atmosphere\")}\r\n    |elif reportbody.stellarclass = \"DAB\":\r\n        a white dwarf {Occasionally(4, \"with an atmosphere rich in hydrogen and helium\")}\r\n    |elif slice(reportbody.stellarclass, 0, 1) = \"D\":\r\n        a white dwarf\r\n    |elif slice(reportbody.stellarclass, 0, 1) = \"N\":\r\n        a neutron star {Occasionally(4, \"that has a dangerously high-density core\")}\r\n    |elif reportbody.stellarclass = \"H\":\r\n        a black hole\r\n    |elif reportbody.stellarclass = \"X\":\r\n        an exotic stellar entity\r\n    |elif reportbody.stellarclass = \"SuperMassiveBlackHole\":\r\n        a supermassive black hole\r\n    |elif reportbody.stellarclass = \"A_BlueWhiteSuperGiant\":\r\n        a blue-white super-giant {Occasionally(4, \"that is expanding towards being a red super-giant\")}\r\n    |elif reportbody.stellarclass = \"F_WhiteSuperGiant\":\r\n        a yellow-white supergiant {Occasionally(4, \"that is expanding towards being a red super-giant\")}\r\n    |elif reportbody.stellarclass = \"M_RedSuperGiant\":\r\n        a red super-giant {Occasionally(4, \"in its helium burning phase\")}\r\n    |elif reportbody.stellarclass = \"M_RedGiant\":\r\n        a red giant {Occasionally(4, \"that is expanding towards being a red super-giant\")}\r\n    |elif reportbody.stellarclass = \"K_OrangeGiant\":\r\n        an orange giant {Occasionally(4, \"that is expanding as it heads towards the end of its life\")}\r\n    |elif reportbody.stellarclass = \"RoguePlanet\":\r\n        a rogue planet\r\n    |elif reportbody.stellarclass = \"Nebula\":\r\n        a nebula\r\n    |elif reportbody.stellarclass = \"StellarRemnantNebula\":\r\n        a nebula remnant\r\n    |else:\r\n        a class {Spacialise(reportbody.stellarclass)} star\r\n    }\r\n    \r\n    {set ageInYears to reportbody.age * 1000000}\r\n    {if reportbody.age > 0:\r\n        {OneOf(\"that has been around for {Humanise(ageInYears)} years\",\r\n               \"that is {Humanise(ageInYears)} years old\",\r\n               \"of {Humanise(ageInYears)} years\",\r\n        )}\r\n    |else:\r\n        that has been in existence for less than one million years,\r\n    }\r\n    {if ageInYears < 1000000:\r\n        making it one of the youngest stars in the galaxy\r\n    |elif ageInYears >14000000000:\r\n        making it one of the oldest stars in the galaxy\r\n    }.\r\n\r\n    {if mainsequence = 1:\r\n        {Occasionally(2,\"As you can see, it emits a {reportbody.chromaticity} light.\")}\r\n\r\n        {set notables to []}\r\n\r\n        {if reportbody.massprobability < 0.01:\r\n            {set notables to cat(notables, [cat(\"an incredibly low solar mass of \", Humanise(reportbody.solarmass))])}\r\n        |elif reportbody.massprobability < 0.1:\r\n            {set notables to cat(notables, [cat(\"an extremely low solar mass of \", Humanise(reportbody.solarmass))])}\r\n        |elif reportbody.massprobability < 1:\r\n            {set notables to cat(notables, [\"an unusually low solar mass\"])}\r\n        |elif reportbody.massprobability < 10:\r\n            {set notables to cat(notables, [\"lower than average solar mass\"])}\r\n        |elif reportbody.massprobability > 99.99:\r\n            {set notables to cat(notables, [cat(\"an incredibly high solar mass of \", Humanise(reportbody.solarmass))])}\r\n        |elif reportbody.massprobability > 99.9:\r\n            {set notables to cat(notables, [cat(\"an extremely high solar mass of \", Humanise(reportbody.solarmass))])}\r\n        |elif reportbody.massprobability > 99:\r\n            {set notables to cat(notables, [\"an unusually high solar mass\"])}\r\n        |elif reportbody.massprobability > 90:\r\n            {set notables to cat(notables, [\"higher than average solar mass\"])}\r\n        }\r\n\r\n        {if reportbody.radiusprobability < 0.01:\r\n            {set notables to cat(notables, [cat(\"an incredibly low solar radius of \", Humanise(reportbody.solarradius))])}\r\n        |elif reportbody.radiusprobability < 0.1:\r\n            {set notables to cat(notables, [cat(\"an extremely low solar radius of \", Humanise(reportbody.solarradius))])}\r\n        |elif reportbody.radiusprobability < 1:\r\n            {set notables to cat(notables, [\"an unusually low solar radius\"])}\r\n        |elif reportbody.radiusprobability < 10:\r\n            {set notables to cat(notables, [\"lower than average solar radius\"])}\r\n        |elif reportbody.radiusprobability > 99.99:\r\n            {set notables to cat(notables, [cat(\"an extremely high solar radius of \", Humanise(reportbody.solarradius))])}\r\n        |elif reportbody.radiusprobability > 99.9:\r\n            {set notables to cat(notables, [cat(\"an incredibly high solar radius of \", Humanise(reportbody.solarradius))])}\r\n        |elif reportbody.radiusprobability > 99:\r\n            {set notables to cat(notables, [\"an unusually high solar radius\"])}\r\n        |elif reportbody.radiusprobability > 90:\r\n            {set notables to cat(notables, [\"higher than average solar radius\"])}\r\n        }\r\n\r\n        {if reportbody.tempprobability < 0.01:\r\n            {set notables to cat(notables, [cat(\"an incredibly low surface temperature of \", Humanise(reportbody.temperature), \" kelvin\")])}\r\n        |elif reportbody.tempprobability < 0.1:\r\n            {set notables to cat(notables, [cat(\"an extremely low surface temperature of \", Humanise(reportbody.temperature), \" kelvin\")])}\r\n        |elif reportbody.tempprobability < 1:\r\n            {set notables to cat(notables, [\"an unusually low surface temperature\"])}\r\n        |elif reportbody.tempprobability < 10:\r\n            {set notables to cat(notables, [\"lower than average surface temperature\"])}\r\n        |elif reportbody.tempprobability > 99.99:\r\n            {set notables to cat(notables, [cat(\"an extremely high surface temperature of \", Humanise(reportbody.temperature), \" kelvin\")])}\r\n        |elif reportbody.tempprobability > 99.9:\r\n            {set notables to cat(notables, [cat(\"an incredibly high surface temperature of \", Humanise(reportbody.temperature), \" kelvin\")])}\r\n        |elif reportbody.tempprobability > 99:\r\n            {set notables to cat(notables, [\"an unusually high surface temperature\"])}\r\n        |elif reportbody.tempprobability > 90:\r\n            {set notables to cat(notables, [\"higher than average surface temperature\"])}\r\n        }\r\n\r\n        {if len(notables) = 0:\r\n            {OneOf(\"\", \"This is a typical example of this class of star.\", \"There is nothing particularly notable about this star.\", \"It is an average example for such a star.\")}\r\n        |else:\r\n            {OneOf('Compared to other stars in its class', 'In comparison to other {reportbody.stellarclass}-class stars', 'Relative to other {reportbody.stellarclass}-class stars')}, this star is\r\n            {if len(notables) = 1:\r\n                notable for having {notables[0]}.\r\n            |elif len(notables) = 2:\r\n                {OneOf('interesting', 'unusual')}, with {notables[0]} and {notables[1]}.\r\n            |elif len(notables) = 3:\r\n                {OneOf('exceptional', 'remarkable')}, with {notables[0]}, {notables[1]} and {notables[2]}.\r\n            }\r\n        }\r\n    }    \r\n}",
+      "default": true,
+      "name": "Star report",
+      "description": "Function to report on the details of the contextual body"
+    },
+    "Star scanned": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'star')}\r\n{SetState('eddi_context_last_action', 'scan')}\r\n{SetState('eddi_context_star_system', system.name)}\r\n{SetState('eddi_context_star_star', event.name)}\r\n{SetState('eddi_context_last_scan_estimated_value', event.estimatedvalue)}\r\n\r\n{Pause(1000)}\r\n\r\nScan of {event.stellarclass}-class star {OneOf(\"complete\", \"completed\", \"finished\")}.\r\n\r\n{F(\"Star report\")}\r\n\r\n{F(\"Report last scan value\")}\r\n\r\n{if (event.estimatedhabzoneinner && event.estimatedhabzoneouter) && \r\n (event.estimatedhabzoneinner > 0 && event.estimatedhabzoneouter> 0):\r\n   Habitable zone\r\n   {Occasionally(2, OneOf(\"calculated at\", \"calculated to fall from\"))}: \r\n   {Humanise(event.estimatedhabzoneinner)} \r\n   to {Humanise(event.estimatedhabzoneouter)} \r\n   lightseconds.\r\n|elif event.estimatedhabzoneouter && event.estimatedhabzoneouter > 0:\r\n   Habitable zone\r\n   {Occasionally(2, OneOf(\"calculated at\", \"calculated to fall from\"))}: \r\n   {Humanise(event.estimatedhabzoneouter)} \r\n   lightseconds maximum.\r\n}",
+      "default": true,
+      "name": "Star scanned",
+      "description": "Triggered when you complete a scan of a stellar body"
+    },
+    "Station no fire zone entered": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Station no fire zone entered",
+      "description": "Triggered when your ship enters a station's no fire zone"
+    },
+    "Station no fire zone exited": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Station no fire zone exited",
+      "description": "Triggered when your ship exits a station's no fire zone"
+    },
+    "Station report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "Nothing of interest here.",
+      "default": true,
+      "name": "Station report",
+      "description": "Function to report on the details of the current station"
+    },
+    "Swapout check": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Function to find a given module in outfitting}\r\n{set outfitting(module) to:\r\n    {for outfittingmodule in station.outfitting:\r\n        {if outfittingmodule.EDDBID = module.EDDBID:\r\n            {return outfittingmodule}\r\n        }\r\n    }\r\n}\r\n\r\n{_ Function to report if a module is cheaper in outfitting that on the ship}\r\n{set reportIfCheaper(shipmodule) to:\r\n    {_ Only consider if this has no modifications}\r\n    {if !shipmodule.modified:\r\n        {set outfittingmodule to outfitting(shipmodule)}\r\n        {if outfittingmodule:\r\n            {if outfittingmodule.price < shipmodule.price:\r\n                {set saving to shipmodule.price - outfittingmodule.price}\r\n                {_ Only bother if it's a relatively good saving}\r\n                {if saving / cmdr.credits > 0.001:\r\n                    You could save {Humanise(saving)} credits by swapping out your {shipmodule.name} here.\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n{reportIfCheaper(ship.powerplant)}\r\n{reportIfCheaper(ship.thrusters)}\r\n{reportIfCheaper(ship.frameshiftdrive)}\r\n{reportIfCheaper(ship.lifesupport)}\r\n{reportIfCheaper(ship.powerdistributor)}\r\n{reportIfCheaper(ship.sensors)}\r\n{for hardpoint in ship.hardpoints:\r\n    {if hardpoint.module:\r\n        {reportIfCheaper(hardpoint.module)}\r\n    }\r\n}\r\n{for compartment in ship.compartments:\r\n    {if compartment.module:\r\n        {reportIfCheaper(compartment.module)}\r\n    }\r\n}\r\n",
+      "default": true,
+      "name": "Swapout check",
+      "description": "Check to see if any fitted modules are available more cheaply here"
+    },
+    "Synthesised": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "Synthesis complete.",
+      "default": true,
+      "name": "Synthesised",
+      "description": "Triggered when you synthesise something from materials"
+    },
+    "System distance report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch from context }\r\n{set reportsystem to SystemDetails(state.eddi_context_system_system)}\r\n\r\n{if !reportsystem.name || reportbody.name = \"\":\r\n    I'm not sure which system you are asking about.\r\n|else:\r\n    Distance to {P(reportsystem.name)} is {Humanise(Distance(reportsystem.x, reportsystem.y, reportsystem.z, system.x, system.y, system.z))} light years.\r\n}\r\n\r\n\r\n\r\n",
+      "default": true,
+      "name": "System distance report",
+      "description": "Function to report on the distance to the contextual system"
+    },
+    "System faction changed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "System faction changed",
+      "description": "Triggered when there is a change in the controlling faction of a watched system"
+    },
+    "System report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch from context }\r\n{set reportsystem to SystemDetails(state.eddi_context_system_system)}\r\n\r\n{if !reportsystem.name || reportbody.name = \"\":\r\n    I'm not sure which system you are asking about.\r\n|else:\r\n    {P(reportsystem.name)} is\r\n\r\n    {if reportsystem.population && reportsystem.population > 0:\r\n        {if reportsystem.allegiance = \"Federation\":\r\n            a Federation\r\n        |elif reportsystem.allegiance = \"Empire\":\r\n            an Empire\r\n        |else:\r\n            an independent\r\n        }\r\n        {if reportsystem.government:\r\n            {reportsystem.government}\r\n        |else:\r\n          system\r\n        }\r\n        {OneOf(\"of\", \"with a population of\", \"home to\", \"supporting\")} {Humanise(reportsystem.population)} {OneOf(\"people\", \"souls\")}\r\n        {if reportsystem.power:\r\n            , {OneOf(\"aligned to\", \"allied with\", \"controlled by\")} {P(reportsystem.power)}\r\n        }.\r\n\r\n        {if reportsystem.faction:\r\n          {P(reportsystem.faction)} is the {OneOf(\"controlling\", \"local\", \"immediate\")} {OneOf(\"power\", \"faction\")}.\r\n        }\r\n\r\n        {if len(reportsystem.stations) = 0:\r\n          There are no stations present\r\n        |else:\r\n            {if len(reportsystem.orbitalstations) = 0:\r\n                {if len(reportsystem.planetarystations) = 1:\r\n                    There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} planetary station\r\n                |else:\r\n                    There are {len(reportsystem.planetarystations)} planetary stations\r\n                }\r\n            |elif len(reportsystem.orbitalstations) = 1:\r\n                There is {OneOf(\"a single\", \"a lone\", \"just one\", \"one\")} orbital station\r\n                {if len(reportsystem.planetarystations) = 1:\r\n                    and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n                |elif len(reportsystem.planetarystations) > 1:\r\n                    and {len(reportsystem.planetarystations)} planetary stations\r\n                }\r\n            |else:\r\n                There are {len(reportsystem.orbitalstations)} orbital stations\r\n                {if len(reportsystem.planetarystations) = 1:\r\n                    and {OneOf(\"a lone\", \"a single\", \"one\")} planetary station\r\n                |elif len(reportsystem.planetarystations) > 1:\r\n                    and {len(reportsystem.planetarystations)} planetary stations\r\n                }\r\n            }\r\n        }\r\n        in this system\r\n    |else:\r\n       unpopulated\r\n   }.\r\n}",
+      "default": true,
+      "name": "System report",
+      "description": "Function to report on the details of the contextual star system"
+    },
+    "System state changed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'system')}\r\n{SetState('eddi_context_last_action', 'change_state')}\r\n{SetState('eddi_context_system', event.system)}\r\n{SetState('eddi_context_system_system', event.system)}\r\n\r\n{_ Set up our system name}\r\n{if event.system = homesystem.name:\r\n  {set system to OneOf('{P(event.system)}',\r\n                       'your home system')}\r\n|elif event.system = system.name:\r\n  {set system to OneOf('{P{event.system)}',\r\n                       'this system')}\r\n|else:\r\n  {set system to OneOf('system {P(event.system)}'\r\n                       '{P(event.system)}'))}\r\n}\r\n\r\n{if event.newstate != 'None':\r\n  {_ System has entered a new state}\r\n  {OneOf('Local transmissions report that', 'Information: ', 'Transmission intercepted.  Contents state that ')}\r\n  {if event.newstate = 'Boom':\r\n    {OneOf('{system} is experiencing a commercial boom',\r\n           '{system} is entering a period of heightened commercial success')}\r\n  |elif event.newstate = 'Bust':\r\n    {system} is experiencing economic hardship\r\n  |elif event.newstate = 'Civil Unrest':\r\n    {OneOf('{system} is experiencing civil unrest',\r\n           'there is unrest in the {system} system')}\r\n  |elif event.newstate = 'Civil War':\r\n    {OneOf('{system} is at war with another faction in the same system',\r\n           'civil war has broken out in {system}',\r\n           '{system} has fallen in to civil war',\r\n           'hostilities have broken out in {system}')}\r\n  |elif event.newstate = 'Election':\r\n    {system} is undergoing elections\r\n  |elif event.newstate = 'Expansion':\r\n    {OneOf(\"a faction in {system}'s is attempting to expand in to a neighbouring system\",\r\n           \"a faction in {system}'s is preparing to expand in to a neighbouring system\")}\r\n  |elif event.newstate = 'Famine':\r\n    {system} is suffering from famine\r\n  |elif event.newstate = 'Investment':\r\n    {system}'s controlling faction are investing heavily in their local infrastructure\r\n  |elif event.newstate = 'Lockdown':\r\n    {system} has heightened security due to a lockdown by the controlling faction\r\n  |elif event.newstate = 'Outbreak':\r\n    {system} is suffering from an outbreak of contagious disease\r\n  |elif event.newstate = 'Retreat':\r\n    {system}'s controlling faction is retreating from a neighbouring system\r\n  |elif event.newstate = 'War':\r\n    {system} is now at war with a neighbouring system\r\n  |else:\r\n    {OneOf('{system} has entered {event.state}',\r\n           '{system} is now in a state of {event.state}')}\r\n  }.\r\n}\r\n\r\n",
+      "default": true,
+      "name": "System state changed",
+      "description": "Triggered when there is a change in the state of a watched system"
+    },
+    "System state report": {
+      "enabled": true,
+      "priority": 3,
+      "responder": false,
+      "script": "{_ Fetch from context }\r\n{set reportsystem to SystemDetails(state.eddi_context_system_system)}\r\n\r\n{if !reportsystem.name || reportsystem.name = \"\":\r\n    I'm not sure which system you are asking about.\r\n|elif reportsystem.state && reportsystem.state != 'None':\r\n    {P(reportsystem.name)}\r\n    {if reportsystem.state = \"Retreat\":\r\n        is in retreat\r\n    |elif reportsystem.state = \"War\":\r\n        is at war; caution is advised\r\n    |elif reportsystem.state = \"Boom\":\r\n        is undergoing a boom; there might be some good trading profits to be made here\r\n    |elif reportsystem.state = \"Civil Unrest\":\r\n        is experiencing civil unrest; caution is advised\r\n    |elif reportsystem.state = \"Civil War\":\r\n        is in civil war; caution is advised\r\n    |elif reportsystem.state = \"Famine\":\r\n        is in a state of famine; caution is advised\r\n    |elif reportsystem.state = \"Lockdown\":\r\n        is in lockdown; caution is advised\r\n    |elif reportsystem.state = \"Outbreak\":\r\n        is attempting to contain an outbreak of disease; caution is advised\r\n    |elif reportsystem.state = \"Expansion\":\r\n        is gearing up to expand to another system\r\n    |elif reportsystem.state = \"Bust\":\r\n        is financially bust\r\n    |elif reportsystem.state = \"Election\":\r\n        is electing new leaders\r\n    |elif reportsystem.state = \"Investment\":\r\n        is investing in its infrastructure\r\n    }\r\n    .\r\n}",
+      "default": true,
+      "name": "System state report",
+      "description": "Report on the current state of the contextual system"
+    },
+    "Technology broker": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Technology broker",
+      "description": "Triggered when using the Technology Broker to unlock new purchasable technology"
+    },
+    "Touchdown": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{set body to BodyDetails(state.eddi_context_body_name, state.eddi_context_system_name)}\r\n\r\n{if event.playercontrolled = true:\r\n  Touchdown \r\n  {if body.name: on {P(body.name)} }.\r\n|else:\r\n  {ShipName()} has touched down\r\n  {if body.name: on {P(body.name)} }.\r\n}\r\n\r\n{Pause(2000)}\r\n\r\n{if type(event.latitude) != \"void\" && type(event.longitude) != \"void\" :\r\n   Coordinates are  {round(event.latitude, 2)} degrees latitude, {round(event.longitude, 2)} degrees longitude.\r\n}\r\n",
+      "default": true,
+      "name": "Touchdown",
+      "description": "Triggered when your ship touches down on a planet's surface"
+    },
+    "Trade data purchased": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'tradedata')}\r\n{SetState('eddi_context_last_action', 'buy')}\r\n{SetState('eddi_context_tradedata_name', event.system)}\r\n\r\n{OneOf(\"Purchased trade data for {P(event.system)}\",\r\n            \"Trade data for {P(event.system)} now available\",\r\n            \"Received trade data for {P(event.system)} from station services\",\r\n            \"Receipt of {P(event.system)} trade data confirmed\")}.",
+      "default": true,
+      "name": "Trade data purchased",
+      "description": "Triggered when you purchase trade data"
+    },
+    "Trade promotion": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "You have been recognised for your trading ability, {F(\"Honorific\")}.",
+      "default": true,
+      "name": "Trade promotion",
+      "description": "Triggered when your trade rank increases"
+    },
+    "Trade voucher redeemed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'trade_voucher')}\r\n{SetState('eddi_context_last_action', 'redeem')}\r\n{SetState('eddi_context_trade_voucher_amount', event.amount)}\r\n\r\nTrade vouchers for {Humanise(event.amount)} credits redeemed\r\n{Occasionally(2, \"\r\n  {if len(event.rewards) = 1:\r\n    by {P(event.rewards[0].faction)}\r\n  |else:\r\n    by\r\n    {set cur to 0}\r\n    {while cur < len(event.rewards):\r\n        {if cur = 0:\r\n        |elif cur < len(event.rewards) - 1:\r\n            , \r\n        |else:\r\n            and\r\n        }\r\n        {P(event.rewards[cur].faction)}\r\n        {set cur to cur + 1}\r\n    }\r\n  }\r\n\")}.\r\n",
+      "default": true,
+      "name": "Trade voucher redeemed",
+      "description": "Triggered when you redeem a trade voucher"
+    },
+    "Under attack": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "Under attack",
+      "description": "Triggered when under fire (same time as the Under Attack voice message)"
+    },
+    "Undocked": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{OneOf(\"Full control re-established\", \"Docking clamps free\", \"Disengaged from local networks\")}.\r\n\r\n{set limpetcheck to F(\"Limpet check\")}\r\n\r\n{if limpetcheck:\r\n    {Pause(5000)}\r\n    {limpetcheck}\r\n}\r\n",
+      "default": true,
+      "name": "Undocked",
+      "description": "Triggered when your ship undocks from a station or outpost"
+    },
+    "VA initialized": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": null,
+      "default": true,
+      "name": "VA initialized",
+      "description": "Triggered when the VoiceAttack plugin is initialized"
+    },
+    "Vehicle destroyed": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{Pause(2000)}\r\n{OneOf(\"Neural link\", \"Link\", \"Uplink\")} {OneOf(\"terminated\", \"disengaged\")}.",
+      "default": true,
+      "name": "Vehicle destroyed",
+      "description": "Triggered when your vehicle is destroyed"
+    }
+  }
+}

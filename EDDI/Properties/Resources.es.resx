@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="change_affect_va" xml:space="preserve">
+    <value>Cada cambio realizado aquí tendrá efecto automáticamente en VoiceAttack. Puedes cerrar esta ventana cuando hayas terminado. </value>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>Hecho</value>
+  </data>
+  <data name="failed" xml:space="preserve">
+    <value>Fallo</value>
+  </data>
+  <data name="frontier_api_nok" xml:space="preserve">
+    <value>La conexión de la API de no funciona</value>
+  </data>
+  <data name="frontier_api_no_logins" xml:space="preserve">
+    <value>No tiene una conexión con la API de Frontier en este momento. por favor ingrese a continuación su dirección de correo electrónico y contraseña de Elite Dangerous</value>
+  </data>
+  <data name="frontier_api_ok" xml:space="preserve">
+    <value>Su conexión a la API de Frontier está operativa, Commander {0}.</value>
+  </data>
+  <data name="frontier_api_temp_nok" xml:space="preserve">
+    <value>Su conexión a la API de Frontier es buena pero experimenta problemas temporales. Su información debería estar pronto disponible. </value>
+  </data>
+  <data name="frontier_api_verification_code" xml:space="preserve">
+    <value>Ingrese el código de verificación que se ha enviado a su email</value>
+  </data>
+  <data name="if_using_va" xml:space="preserve">
+    <value>Si usa VoiceAttack, cierre esta ventana antes de iniciarlo para que los cambios surtan efecto. Puede acceder a esta ventana desde VoiceAttack con el comando 'Configurar EDDI'.</value>
+  </data>
+  <data name="login_nok_frontier_service" xml:space="preserve">
+    <value>No se puede conectar. Es posible que se deba a un problema temporal con los servidores de Frontier; Por favor intentelo de nuevo más tarde</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>Cerrar sesión</value>
+  </data>
+  <data name="next" xml:space="preserve">
+    <value>Siguiente</value>
+  </data>
+  <data name="operational" xml:space="preserve">
+    <value>Operativo</value>
+  </data>
+  <data name="preparing_log" xml:space="preserve">
+    <value>Preparando log...</value>
+  </data>
+  <data name="update_message" xml:space="preserve">
+    <value>Versión {0} disponible</value>
+  </data>
+  <data name="voice_test_damage" xml:space="preserve">
+    <value>Daño severo a su {0}.</value>
+  </data>
+  <data name="voice_test_ship" xml:space="preserve">
+    <value>Así es como voy a hablar en tu {0}.</value>
+  </data>
+  <data name="plugin_enabled" xml:space="preserve">
+    <value>Plugin activado</value>
+  </data>
+  <data name="download_failed" xml:space="preserve">
+    <value>Descarga fallida. Por favor, inténtelo de nuevo. </value>
+  </data>
+  <data name="downloading_upgrade" xml:space="preserve">
+    <value>Descargando actualización. </value>
+  </data>
+  <data name="mandatory_upgrade" xml:space="preserve">
+    <value>Se requiere actualizar obligatoriamente EDDI a {0}</value>
+  </data>
+  <data name="msg_from_eddi" xml:space="preserve">
+    <value>Mensaje de EDDI: {0}</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>Punto</value>
+  </data>
+  <data name="update_available" xml:space="preserve">
+    <value>La versión de Eddi {0} ya está disponible.</value>
+  </data>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>Error al actualizar. Por favor intente de nuevo más tarde.</value>
+  </data>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>Empezando actualización.</value>
+  </data>
+  <data name="problem_load_monitor" xml:space="preserve">
+    <value>Error al cargar el monitor: {0}</value>
+    <comment>Weapon mount type problem_load_monitor</comment>
+  </data>
+  <data name="problem_load_monitor_file" xml:space="preserve">
+    <value>Error al cargar el monitor. Asegúrese de que {0} no se comparta en la Red.</value>
+    <comment>Weapon mount type problem_load_monitor_file</comment>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>Comandante</value>
+    <comment>Vocative form of "Commander"</comment>
+  </data>
+</root>

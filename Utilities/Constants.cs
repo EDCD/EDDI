@@ -14,13 +14,13 @@ namespace Utilities
 
         public static readonly string DATA_DIR = Environment.GetEnvironmentVariable("AppData") + "\\" + EDDI_NAME;
 
-        public const string ENVIRONMENT_WITCH_SPACE = "Witch space";
-        public const string ENVIRONMENT_SUPERCRUISE = "Supercruise";
-        public const string ENVIRONMENT_NORMAL_SPACE = "Normal space";
+        public static readonly string ENVIRONMENT_WITCH_SPACE = Properties.Resources.witch_space;
+        public static readonly string ENVIRONMENT_SUPERCRUISE = Properties.Resources.supercruise;
+        public static readonly string ENVIRONMENT_NORMAL_SPACE = Properties.Resources.normal_space;
 
-        public const string VEHICLE_SHIP = "Ship";
-        public const string VEHICLE_SRV = "SRV";
-        public const string VEHICLE_FIGHTER = "Fighter";
+        public static readonly string VEHICLE_SHIP = Properties.Resources.ship;
+        public static readonly string VEHICLE_SRV = Properties.Resources.srv;
+        public static readonly string VEHICLE_FIGHTER = Properties.Resources.fighter;
 
         // Physical Constants
         public const int lightSpeedMetersPerSecond = 299792458;

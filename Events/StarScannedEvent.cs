@@ -129,7 +129,7 @@ namespace EddiEvents
                 radiusprobability = StarClass.sanitiseCP(starClass.stellarRadiusCP(this.solarradius));
                 tempprobability = StarClass.sanitiseCP(starClass.tempCP(this.temperature));
                 ageprobability = StarClass.sanitiseCP(starClass.ageCP(this.age));
-                chromaticity = starClass.chromaticity;
+                chromaticity = starClass.chromaticity.localizedName;
                 if (radius != 0 && temperature != 0)
                 {
                     // Minimum estimated single-star habitable zone (target black body temperature of 315°K / 42°C / 107°F or less)

@@ -18,9 +18,6 @@ namespace EddiStarMapService
         // Set the maximum batch size we will use for syncing before we write systems to our sql database
         public const int syncBatchSize = 100;
 
-        // Use en-US everywhere to ensure that we don't use , rather than . for our separator
-        private static CultureInfo EN_US_CULTURE = new CultureInfo("en-US");
-
         private string commanderName;
         private string apiKey;
         private string baseUrl;

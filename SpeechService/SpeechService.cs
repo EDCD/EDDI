@@ -69,10 +69,6 @@ namespace EddiSpeechService
         private SpeechService()
         {
             configuration = SpeechServiceConfiguration.FromFile();
-            Logging.Debug("Current UI culture is " + Thread.CurrentThread.CurrentUICulture.Name);
-            // Set the culture for this thread to the installed culture, to allow better selection of TTS voices
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(CultureInfo.InstalledUICulture.Name);
-            Logging.Debug("Thread UI culture is " + Thread.CurrentThread.CurrentUICulture.Name);
         }
 
         public void ReloadConfiguration()

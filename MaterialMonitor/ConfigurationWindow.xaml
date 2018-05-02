@@ -5,17 +5,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EddiMaterialMonitor"
+             xmlns:resx="clr-namespace:EddiMaterialMonitor.Properties"
              xmlns:utility="clr-namespace:Utilities;assembly=Utilities"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Below is a list of all known materials.  You can set values for the minimum, desired and maximum levels of each and EDDI will generate events when you move beyond the levels."></TextBlock>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Text="Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated."></TextBlock>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5,0" Text="{x:Static resx:Resources.p1}"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin ="5" Text="{x:Static resx:Resources.p2}"/>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="materialsData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="materialsUpdated">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Width="*" IsReadOnly="True" Binding="{Binding Path=material}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Type" Width="100" IsReadOnly="True" Binding="{Binding Path=Category}"></DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="Inventory" IsReadOnly="True" Binding="{Binding Path=amount}">
+                <DataGridTextColumn Header="{x:Static resx:Resources.name_header}" Width="*" IsReadOnly="True" Binding="{Binding Path=material}"></DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:Resources.type_header}" Width="100" IsReadOnly="True" Binding="{Binding Path=Category}"></DataGridTextColumn>
+                <utility:DataGridNumericColumn Header="{x:Static resx:Resources.inventory_header}" IsReadOnly="True" Binding="{Binding Path=amount}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
@@ -23,7 +24,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="Minimum" Binding="{Binding Path=minimum, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:Resources.min_header}" Binding="{Binding Path=minimum, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
@@ -31,7 +32,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="Desired" Binding="{Binding Path=desired, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:Resources.desired_header}" Binding="{Binding Path=desired, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
@@ -40,7 +41,7 @@
                     </DataGridTextColumn.ElementStyle>
 
                 </utility:DataGridNumericColumn>
-                <utility:DataGridNumericColumn Header="Maximum" Binding="{Binding Path=maximum, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                <utility:DataGridNumericColumn Header="{x:Static resx:Resources.max_header}" Binding="{Binding Path=maximum, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />

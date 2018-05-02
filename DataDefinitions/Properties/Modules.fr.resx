@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AdvancedDiscoveryScanner" xml:space="preserve">
+    <value>Détecteur de Découverte Avancé</value>
+    <comment>Module AdvancedDiscoveryScanner</comment>
+  </data>
+  <data name="AXMissileRack" xml:space="preserve">
+    <value>Batterie de Missiles AX</value>
+    <comment>Module AXMissileRack</comment>
+  </data>
+  <data name="BasicDiscoveryScanner" xml:space="preserve">
+    <value>Détecteur de Découverte Simple</value>
+    <comment>Module BasicDiscoveryScanner</comment>
+  </data>
+  <data name="BeamLaser" xml:space="preserve">
+    <value>Rayon Laser</value>
+    <comment>Module BeamLaser</comment>
+  </data>
+  <data name="Bi_WeaveShieldGenerator" xml:space="preserve">
+    <value>Générateur de bouclier entrelacé</value>
+    <comment>Module Bi_WeaveShieldGenerator</comment>
+  </data>
+  <data name="BurstLaser" xml:space="preserve">
+    <value>Laser en rafale</value>
+    <comment>Module BurstLaser</comment>
+  </data>
+  <data name="BusinessClassPassengerCabin" xml:space="preserve">
+    <value>Cabine passager Business Class</value>
+    <comment>Module BusinessClassPassengerCabin</comment>
+  </data>
+  <data name="Cannon" xml:space="preserve">
+    <value>Canon</value>
+    <comment>Module Cannon</comment>
+  </data>
+  <data name="CargoHatch" xml:space="preserve">
+    <value>Baie de soute</value>
+    <comment>Module CargoHatch</comment>
+  </data>
+  <data name="CargoRack" xml:space="preserve">
+    <value>Compartiment de soute</value>
+    <comment>Module CargoRack</comment>
+  </data>
+  <data name="CockpitCanopy" xml:space="preserve">
+    <value>Verrière</value>
+    <comment>Module CockpitCanopy</comment>
+  </data>
+  <data name="CollectorLimpetController" xml:space="preserve">
+    <value>Controleur de drône collecteur</value>
+    <comment>Module CollectorLimpetController</comment>
+  </data>
+  <data name="CorrosionResistantCargoRack" xml:space="preserve">
+    <value>Compartiment de soute résistant à la corosion</value>
+    <comment>Module CorrosionResistantCargoRack</comment>
+  </data>
+  <data name="Cytoscrambler" xml:space="preserve">
+    <value>Cytobrouilleur</value>
+    <comment>Module Cytoscrambler</comment>
+  </data>
+  <data name="DataLinkScanner" xml:space="preserve">
+    <value>Scanner de données</value>
+    <comment>Module DataLinkScanner</comment>
+  </data>
+  <data name="DetailedSurfaceScanner" xml:space="preserve">
+    <value>Détecteur de surface détaillé</value>
+    <comment>Module DetailedSurfaceScanner</comment>
+  </data>
+  <data name="Disruptor" xml:space="preserve">
+    <value>Laser Foudroyant</value>
+    <comment>Module Disruptor</comment>
+  </data>
+  <data name="EconomyClassPassengerCabin" xml:space="preserve">
+    <value>Cabine passager classe éco</value>
+    <comment>Module EconomyClassPassengerCabin</comment>
+  </data>
+  <data name="EnhancedPerformanceThrusters" xml:space="preserve">
+    <value>Moteurs performances améliorées</value>
+    <comment>Module EnhancedPerformanceThrusters</comment>
+  </data>
+  <data name="FighterHangar" xml:space="preserve">
+    <value>Hangar pour chasseur</value>
+    <comment>Module FighterHangar</comment>
+  </data>
+  <data name="FirstClassPassengerCabin" xml:space="preserve">
+    <value>Cabine passager première classe</value>
+    <comment>Module FirstClassPassengerCabin</comment>
+  </data>
+  <data name="FragmentCannon" xml:space="preserve">
+    <value>Canon à fragmentation</value>
+    <comment>Module FragmentCannon</comment>
+  </data>
+  <data name="FrameShiftDrive" xml:space="preserve">
+    <value>Réacteur F S D</value>
+    <comment>Module FrameShiftDrive</comment>
+  </data>
+  <data name="FuelScoop" xml:space="preserve">
+    <value>Récupérateur de carburant</value>
+    <comment>Module FuelScoop</comment>
+  </data>
+  <data name="FuelTank" xml:space="preserve">
+    <value>Réservoir de carburant</value>
+    <comment>Module FuelTank</comment>
+  </data>
+  <data name="FuelTransferLimpetController" xml:space="preserve">
+    <value>Contrôleur de drônes de ravitaillement</value>
+    <comment>Module FuelTransferLimpetController</comment>
+  </data>
+  <data name="HatchBreakerLimpetController" xml:space="preserve">
+    <value>Perce-Soute</value>
+    <comment>Module HatchBreakerLimpetController</comment>
+  </data>
+  <data name="HullReinforcementPackage" xml:space="preserve">
+    <value>Renforts de coque</value>
+    <comment>Module HullReinforcementPackage</comment>
+  </data>
+  <data name="ImperialHammer" xml:space="preserve">
+    <value>Marteleur Imprérial</value>
+    <comment>Module ImperialHammer</comment>
+  </data>
+  <data name="IntermediateDiscoveryScanner" xml:space="preserve">
+    <value>Détecteur de Découverte Intermédiaire</value>
+    <comment>Module IntermediateDiscoveryScanner</comment>
+  </data>
+  <data name="LightweightAlloy" xml:space="preserve">
+    <value>Coque légère</value>
+    <comment>Module LightweightAlloy</comment>
+  </data>
+  <data name="LuxuryClassPassengerCabin" xml:space="preserve">
+    <value>Cabine passager de luxe</value>
+    <comment>Module LuxuryClassPassengerCabin</comment>
+  </data>
+  <data name="MilitaryGradeComposite" xml:space="preserve">
+    <value>Coque Composite Militaire</value>
+    <comment>Module MilitaryGradeComposite</comment>
+  </data>
+  <data name="MineLauncher" xml:space="preserve">
+    <value>Lance-mines</value>
+    <comment>Module MineLauncher</comment>
+  </data>
+  <data name="MiningLance" xml:space="preserve">
+    <value>Lance de minage</value>
+    <comment>Module MiningLance</comment>
+  </data>
+  <data name="MiningLaser" xml:space="preserve">
+    <value>Laser Minier</value>
+    <comment>Module MiningLaser</comment>
+  </data>
+  <data name="MirroredSurfaceComposite" xml:space="preserve">
+    <value>Coque réflective</value>
+    <comment>Module MirroredSurfaceComposite</comment>
+  </data>
+  <data name="MissileRack" xml:space="preserve">
+    <value>Batterie de Missiles</value>
+    <comment>Module MissileRack</comment>
+  </data>
+  <data name="ModuleReinforcementPackage" xml:space="preserve">
+    <value>Renforcement de module</value>
+    <comment>Module ModuleReinforcementPackage</comment>
+  </data>
+  <data name="Multi_Cannon" xml:space="preserve">
+    <value>Multi-canon</value>
+    <comment>Module Multi_Cannon</comment>
+  </data>
+  <data name="Pacifier" xml:space="preserve">
+    <value>Pacificateur</value>
+    <comment>Module Pacifier</comment>
+  </data>
+  <data name="Pack_Hound" xml:space="preserve">
+    <value>Batterie Essaim</value>
+    <comment>Module Pack_Hound</comment>
+  </data>
+  <data name="PlanetaryApproachSuite" xml:space="preserve">
+    <value>Apareillage d'approche planétaire</value>
+    <comment>Module PlanetaryApproachSuite</comment>
+  </data>
+  <data name="PlanetaryVehicleHangar" xml:space="preserve">
+    <value>Hangar SRV</value>
+    <comment>Module PlanetaryVehicleHangar</comment>
+  </data>
+  <data name="PlasmaAccelerator" xml:space="preserve">
+    <value>Accélérateur à plasma</value>
+    <comment>Module PlasmaAccelerator</comment>
+  </data>
+  <data name="PointDefence" xml:space="preserve">
+    <value>Défense ponctuelle</value>
+    <comment>Module PointDefence</comment>
+  </data>
+  <data name="PrismaticShieldGenerator" xml:space="preserve">
+    <value>Générateur de Bouclier Prismatique</value>
+    <comment>Module PrismaticShieldGenerator</comment>
+  </data>
+  <data name="ProspectorLimpetController" xml:space="preserve">
+    <value>Controleur de drônes de prospection</value>
+    <comment>Module ProspectorLimpetController</comment>
+  </data>
+  <data name="PulseLaser" xml:space="preserve">
+    <value>Laser à impulsion</value>
+    <comment>Module PulseLaser</comment>
+  </data>
+  <data name="RailGun" xml:space="preserve">
+    <value>Canon électrique</value>
+    <comment>Module RailGun</comment>
+  </data>
+  <data name="ReactiveSurfaceComposite" xml:space="preserve">
+    <value>Surface Composite Réactive</value>
+    <comment>Module ReactiveSurfaceComposite</comment>
+  </data>
+  <data name="Refinery" xml:space="preserve">
+    <value>Rafinerie</value>
+    <comment>Module Refinery</comment>
+  </data>
+  <data name="ReinforcedAlloy" xml:space="preserve">
+    <value>Coque Renforcée</value>
+    <comment>Module ReinforcedAlloy</comment>
+  </data>
+  <data name="RemoteReleaseFlakLauncher" xml:space="preserve">
+    <value>Remote Release Flak Launcher</value>
+    <comment>Module RemoteReleaseFlakLauncher</comment>
+  </data>
+  <data name="RepairLimpetController" xml:space="preserve">
+    <value>Contrôleur de drônes de réparation</value>
+    <comment>Module RepairLimpetController</comment>
+  </data>
+  <data name="ResearchLimpetController" xml:space="preserve">
+    <value>Research Limpet Controller</value>
+    <comment>Module ResearchLimpetController</comment>
+  </data>
+  <data name="RocketPropelledFSDDisruptor" xml:space="preserve">
+    <value>Missile disrupteur FSD</value>
+    <comment>Module RocketPropelledFSDDisruptor</comment>
+  </data>
+  <data name="Sensors" xml:space="preserve">
+    <value>Capteurs</value>
+    <comment>Module Sensors</comment>
+  </data>
+  <data name="ShockMineLauncher" xml:space="preserve">
+    <value>Lance mine électrique</value>
+    <comment>Module ShockMineLauncher</comment>
+  </data>
+  <data name="StandardDockingComputer" xml:space="preserve">
+    <value>Ordinateur d'appontage</value>
+    <comment>Module StandardDockingComputer</comment>
+  </data>
+  <data name="Thrusters" xml:space="preserve">
+    <value>Propulseurs</value>
+    <comment>Module Thrusters</comment>
+  </data>
+  <data name="TorpedoPylon" xml:space="preserve">
+    <value>Tube lance-torpille</value>
+    <comment>Module TorpedoPylon</comment>
+  </data>
+  <data name="XenoScanner" xml:space="preserve">
+    <value>Xeno Scanner</value>
+    <comment>Module XenoScanner</comment>
+  </data>
+  <data name="Fixed" xml:space="preserve">
+    <value>fixe</value>
+    <comment>Weapon mount type Fixed</comment>
+  </data>
+  <data name="Gimballed" xml:space="preserve">
+    <value>rotatif</value>
+    <comment>Weapon mount type Gimballed</comment>
+  </data>
+  <data name="Turreted" xml:space="preserve">
+    <value>Tourelle</value>
+    <comment>Weapon mount type Turreted</comment>
+  </data>
+  <data name="ChaffLauncher" xml:space="preserve">
+    <value>Lanceur de paillettes</value>
+  </data>
+  <data name="FrameShiftDriveInterdictor" xml:space="preserve">
+    <value>Intercepteur F S D</value>
+  </data>
+  <data name="ShieldBooster" xml:space="preserve">
+    <value>Survolteur de bouclier</value>
+  </data>
+  <data name="FrameShiftWakeScanner" xml:space="preserve">
+    <value>Détecteur de sillage FSD</value>
+  </data>
+  <data name="KillWarrantScanner" xml:space="preserve">
+    <value>Détecteur d'avis de recherche</value>
+  </data>
+  <data name="LifeSupport" xml:space="preserve">
+    <value>Système de survie</value>
+  </data>
+  <data name="HeatSinkLauncher" xml:space="preserve">
+    <value>Dissipateur thermique</value>
+  </data>
+  <data name="PowerDistributor" xml:space="preserve">
+    <value>Répartiteur de puissance</value>
+  </data>
+  <data name="ShieldCellBank" xml:space="preserve">
+    <value>Réserve de cellule d'énergie</value>
+  </data>
+  <data name="ElectronicCountermeasure" xml:space="preserve">
+    <value>Contre-mesures électroniques</value>
+  </data>
+  <data name="Multicannon" xml:space="preserve">
+    <value>Multi-canon</value>
+  </data>
+  <data name="PowerPlant" xml:space="preserve">
+    <value>Générateur</value>
+  </data>
+  <data name="ShieldGenerator" xml:space="preserve">
+    <value>Générateur de bouclier</value>
+  </data>
+</root>

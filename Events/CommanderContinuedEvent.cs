@@ -65,7 +65,7 @@ namespace EddiEvents
             this.ship = ship;
             this.shipname = shipName;
             this.shipident = shipIdent;
-            this.mode = (mode == null ? null : mode.name);
+            this.mode = (mode == null ? null : mode.localizedName);
             this.group = group;
             this.credits = credits;
             this.loan = loan;

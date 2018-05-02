@@ -1,82 +1,40 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Utilities;
-
+﻿
 namespace EddiDataDefinitions
 {
     /// <summary>
     /// Economy types
     /// </summary>
-    public class Economy
+    public class Economy : ResourceBasedLocalizedEDName<Economy>
     {
-        private static readonly List<Economy> ECONOMIES = new List<Economy>();
-
-        public string name { get; private set; }
-
-        public string edname { get; private set; }
-
-        private Economy(string edname, string name)
+        static Economy()
         {
-            this.edname = edname;
-            this.name = name;
+            resourceManager = Properties.Economies.ResourceManager;
+            resourceManager.IgnoreCase = false;
+            missingEDNameHandler = (edname) => new Economy(edname);
 
-            ECONOMIES.Add(this);
+            None = new Economy("$economy_None");
+            var Agriculture = new Economy("$economy_Agri");
+            var Colony = new Economy("$economy_Colony");
+            var Damaged = new Economy("$economy_Damaged");
+            var Extraction = new Economy("$economy_Extraction");
+            var Refinery = new Economy("$economy_Refinery");
+            var Repair = new Economy("$economy_Repair");
+            var Industrial = new Economy("$economy_Industrial");
+            var Terraforming = new Economy("$economy_Terraforming");
+            var HighTech = new Economy("$economy_HighTech");
+            var Service = new Economy("$economy_Service");
+            var Tourism = new Economy("$economy_Tourism");
+            var Military = new Economy("$economy_Military");
+            var Prison = new Economy("$economy_Prison");
         }
 
-        public static readonly Economy None = new Economy("$economy_None", "None");
-        public static readonly Economy Agriculture = new Economy("$economy_Agri", "Agriculture");
-        public static readonly Economy Colony = new Economy("$economy_Colony", "Colony");
-        public static readonly Economy Damaged = new Economy("$economy_Damaged", "Damaged");
-        public static readonly Economy Extraction = new Economy("$economy_Extraction", "Extraction");
-        public static readonly Economy Refinery = new Economy("$economy_Refinery", "Refinery");
-        public static readonly Economy Repair = new Economy("$economy_Repair", "Repairing");
-        public static readonly Economy Industrial = new Economy("$economy_Industrial", "Industrial");
-        public static readonly Economy Terraforming = new Economy("$economy_Terraforming", "Terraforming");
-        public static readonly Economy HighTech = new Economy("$economy_HighTech", "High Tech");
-        public static readonly Economy Service = new Economy("$economy_Service", "Service");
-        public static readonly Economy Tourism = new Economy("$economy_Tourism", "Tourism");
-        public static readonly Economy Military = new Economy("$economy_Military", "Military");
-        public static readonly Economy Prison = new Economy("$economy_Prison", "Prison");
+        public static readonly Economy None;
 
-        public static Economy FromName(string from)
-        {
-            if (from == null)
-            {
-                return null;
-            }
+        // dummy used to ensure that the static constructor has run
+        public Economy() : this("")
+        {}
 
-            Economy result = ECONOMIES.FirstOrDefault(v => v.name == from);
-            if (result == null)
-            {
-                Logging.Report("Unknown Economy name " + from);
-            }
-            return result;
-        }
-
-        public static Economy FromEDName(string from)
-        {
-            if (from == null)
-            {
-                return null;
-            }
-
-            string tidiedFrom = from.Replace(";", "").ToLowerInvariant();
-
-            Economy result;
-            if (tidiedFrom == null || tidiedFrom == "")
-            {
-                result = null;
-            }
-            else
-            {
-                result = ECONOMIES.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
-            }
-            if (result == null)
-            {
-                Logging.Report("Unknown Economy ED name " + from);
-                result = new Economy(from, tidiedFrom);
-            }
-            return result;
-        }
+        private Economy(string edname) : base(edname, edname.Replace("$economy_", "").Replace(";", ""))
+        {}
     }
 }

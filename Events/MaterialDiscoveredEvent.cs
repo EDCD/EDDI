@@ -22,7 +22,7 @@ namespace EddiEvents
 
         public MaterialDiscoveredEvent(DateTime timestamp, Material material) : base(timestamp, NAME)
         {
-            this.name = material?.name;
+            this.name = material?.localizedName;
         }
     }
 }

@@ -31,6 +31,11 @@ namespace EDDNResponder
             return "EDDN responder";
         }
 
+        public string LocalizedResponderName()
+        {
+            return EddiEddnResponder.Properties.Resources.name;
+        }
+
         public string ResponderVersion()
         {
             return "1.0.0";
@@ -38,7 +43,7 @@ namespace EDDNResponder
 
         public string ResponderDescription()
         {
-            return "Send station, jump, and scan information to EDDN.  EDDN is a third-party tool that gathers information on systems and markets, and provides data for most trading tools as well as starsystem information tools such as EDDB";
+            return EddiEddnResponder.Properties.Resources.desc;
         }
 
         public EDDNResponder() : this(EddiDataProviderService.StarSystemSqLiteRepository.Instance)
@@ -194,7 +199,7 @@ namespace EDDNResponder
             // It's possible that the commodity data, if it is here, has already come from EDDB.  We use the average price
             // as a marker: this isn't visible in EDDB, so if we have average price we know that this is data from the companion
             // API and should be reported
-            if (EDDI.Instance.CurrentStation != null && EDDI.Instance.CurrentStation.commodities != null && EDDI.Instance.CurrentStation.commodities.Count > 0 && EDDI.Instance.CurrentStation.commodities[0].avgprice != null)
+            if (EDDI.Instance.CurrentStation != null && EDDI.Instance.CurrentStation.commodities != null && EDDI.Instance.CurrentStation.commodities.Count > 0)
             {
                 List<EDDNEconomy> eddnEconomies = new List<EDDNEconomy>();
                 if (EDDI.Instance.CurrentStation.economies != null)
@@ -209,15 +214,15 @@ namespace EDDNResponder
                 }
 
                 List<EDDNCommodity> eddnCommodities = new List<EDDNCommodity>();
-                foreach (Commodity commodity in EDDI.Instance.CurrentStation.commodities)
+                foreach (CommodityMarketQuote commodity in EDDI.Instance.CurrentStation.commodities)
                 {
-                    if (commodity.category == "NonMarketable")
+                    if (commodity.definition.category == CommodityCategory.NonMarketable)
                     {
                         continue;
                     }
                     EDDNCommodity eddnCommodity = new EDDNCommodity();
-                    eddnCommodity.name = commodity.EDName;
-                    eddnCommodity.meanPrice = (int)commodity.avgprice;
+                    eddnCommodity.name = commodity.definition.edname;
+                    eddnCommodity.meanPrice = (int)commodity.definition.avgprice;
                     eddnCommodity.buyPrice = (int)commodity.buyprice;
                     eddnCommodity.stock = (int)commodity.stock;
                     eddnCommodity.stockBracket = commodity.stockbracket;
@@ -266,7 +271,7 @@ namespace EDDNResponder
                 List<string> eddnModules = new List<string>();
                 foreach (Module module in EDDI.Instance.CurrentStation.outfitting)
                 {
-                    if ((!ModuleDefinitions.IsPP(module))
+                    if ((!module.IsPowerPlay())
                         && (module.EDName.StartsWith("Int_") || module.EDName.StartsWith("Hpt_") || module.EDName.Contains("_Armour_"))
                         && (!(module.EDName == "Int_PlanetApproachSuite")))
                     {

@@ -43,7 +43,8 @@ namespace EddiShipMonitor
 
         private void ipaClicked(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://en.wikipedia.org/wiki/International_Phonetic_Alphabet");
+            string url = EddiShipMonitor.Properties.Resources.ipa_page;
+            Process.Start(url);
         }
 
         private void testShipName(object sender, RoutedEventArgs e)
@@ -51,14 +52,12 @@ namespace EddiShipMonitor
             Ship ship = (Ship)((Button)e.Source).DataContext;
             ship.health = 100;
             SpeechServiceConfiguration speechConfiguration = SpeechServiceConfiguration.FromFile();
+            string nameToSpeak = String.IsNullOrEmpty(ship.phoneticname) 
+                ? ship.name 
+                : $@"<phoneme alphabet=""ipa"" ph=""{ship.phoneticname}"">{ship.name}</phoneme>";
+            string message = String.Format(Properties.Resources.ship_ready, nameToSpeak);
             if (string.IsNullOrEmpty(ship.phoneticname))
-            {
-                SpeechService.Instance.Say(ship, ship.name + " stands ready.", false);
-            }
-            else
-            {
-                SpeechService.Instance.Say(ship, "<phoneme alphabet=\"ipa\" ph=\"" + ship.phoneticname + "\">" + ship.name + "</phoneme>" + " stands ready.", false);
-            }
+            SpeechService.Instance.Say(ship, message, false);
         }
 
         private void exportShip(object sender, RoutedEventArgs e)

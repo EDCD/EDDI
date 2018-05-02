@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="access_beta" xml:space="preserve">
+    <value>Access beta versions of EDDI</value>
+  </data>
+  <data name="EDDI_status_label" xml:space="preserve">
+    <value>EDDI status: </value>
+  </data>
+  <data name="paragraph_0" xml:space="preserve">
+    <value>has a number of features that can be configured separately. There are three different types of items.</value>
+  </data>
+  <data name="paragraph_1" xml:space="preserve">
+    <value>The first group obtains and manages the basic information used by EDDI. These are the 'Commander Details', 'Frontier API' and 'Text-to-Speech' tabs. You should go through each of these and configure them so that EDDI has full access to your Elite: Dangerous information.</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>The second group obtains event information. These are the tabs that end in 'monitor'. They obtain events from different places, and require minimal configuration but need to be completed before they will work.</value>
+  </data>
+  <data name="paragraph_3" xml:space="preserve">
+    <value>The third group respond to events. These are the tabs that end in 'responder'. These come with varying degrees of configuration, but will work out of the box.</value>
+  </data>
+  <data name="paragraph_4" xml:space="preserve">
+    <value>You can read more about how EDDI functions on the</value>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>Report an Issue</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Troubleshoot common issues</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
+  <data name="verbose_logging_checkbox" xml:space="preserve">
+    <value>Enable verbose logging (only if you have been requested to do so by EDDI developers)</value>
+  </data>
+  <data name="verbose_logging_desc" xml:space="preserve">
+    <value>If verbose logging is enabled, EDDI will prepare a truncated version of your log from the past hour and place it on your desktop. You may paste this log file into the Github Issue report. No personal information is sent in the log.</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Version:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>project wiki</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Select EDDI's language (requires relaunching EDDI):</value>
+  </data>
+  <data name="label_code" xml:space="preserve">
+    <value>Code:</value>
+  </data>
+  <data name="label_email" xml:space="preserve">
+    <value>Email:</value>
+  </data>
+  <data name="label_password" xml:space="preserve">
+    <value>Password:</value>
+  </data>
+  <data name="tab_frontier_desc" xml:space="preserve">
+    <value>Frontier has an API that allows EDDI to obtain information about your ships, the current station's market, and various other items. This data is not available elsewhere. If you want EDDI to obtain and use this information you need to enter your Frontier in-game email address and password below.</value>
+  </data>
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Frontier API</value>
+  </data>
+  <data name="tab_frontier_reset_desc" xml:space="preserve">
+    <value>If you are experiencing problems with your connection you can reset it and log back in again, which can clear the problem</value>
+  </data>
+  <data name="tab_tts_desc" xml:space="preserve">
+    <value>EDDI uses its own text-to-speech engine that processes the voice depending on feature such as ship damage and size of cockpit. You can adjust the voice's parameters here.</value>
+  </data>
+  <data name="tab_tts_distort_label" xml:space="preserve">
+    <value>Distort the voice on ship damage:</value>
+  </data>
+  <data name="tab_tts_header" xml:space="preserve">
+    <value>Text-to-Speech</value>
+  </data>
+  <data name="tab_tts_level_label" xml:space="preserve">
+    <value>Level of voice processing:</value>
+  </data>
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDI uses phonetic speech to pronounce various hard-to-say words, and to put pauses between speech. Some voices, often Microsoft ones, have a problem with phonetic speech and it causes EDDI to hang or crash. If you experience this then try checking the option below</value>
+  </data>
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>Speed of speech:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>Test voice</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>Test voice (severe damage)</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>Ship for testing the voice:</value>
+  </data>
+  <data name="tab_tts_voice_label" xml:space="preserve">
+    <value>Voice:</value>
+  </data>
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>Volume of speech:</value>
+  </data>
+  <data name="upgrade_button" xml:space="preserve">
+    <value>Upgrade EDDI</value>
+  </data>
+  <data name="reset_button" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>You can test how the voice will sound below. Note that if the voice is incompatible it will use the default voice instead.</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>Disable phonetic speech:</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
+    <value>(this will disable all functions using SSML speech tags, as noted in the Speech Responder's Help file)</value>
+  </data>
+  <data name="tab_tts_icao_desc" xml:space="preserve">
+    <value>EDDI can use ICAO, for example using 'alpha' rather than 'A', when saying star and body names. This can make it easier to understand system names, but does take longer to pronounce. If you want to hear ICAO pronunciations then check the option below. Note that this will not work if you have disabled phonetic speech above.</value>
+  </data>
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>Enable ICAO:</value>
+  </data>
+  <data name="tab_commander_details_header" xml:space="preserve">
+    <value>Commander Details</value>
+  </data>
+  <data name="tab_commander_gender" xml:space="preserve">
+    <value>Preferred gender for pronouns and titles:</value>
+  </data>
+  <data name="tab_commander_gender_f" xml:space="preserve">
+    <value>Female</value>
+  </data>
+  <data name="tab_commander_gender_m" xml:space="preserve">
+    <value>Male</value>
+  </data>
+  <data name="tab_commander_gender_n" xml:space="preserve">
+    <value>Neither</value>
+  </data>
+  <data name="tab_commander_home_station" xml:space="preserve">
+    <value>Home station:</value>
+  </data>
+  <data name="tab_commander_home_system" xml:space="preserve">
+    <value>Home system:</value>
+  </data>
+  <data name="tab_commander_insurance" xml:space="preserve">
+    <value>Insurance excess (%):</value>
+  </data>
+  <data name="tab_commander_par1" xml:space="preserve">
+    <value>You can provide the name of a particular system you consider home, and also a station inside that system. If you do then the information about this system and station will be made available to EDDI's responders.</value>
+  </data>
+  <data name="tab_commander_par2" xml:space="preserve">
+    <value>Your insurance excess is the % of your ship's value you have to pay if your ship is destroyed. This will usually be 5 but could be less if you are an early backer of Elite with alpha backers being 2.5 and beta backers being 3.75. If you aren't sure then leave it at 5.</value>
+  </data>
+</root>

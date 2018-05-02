@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,9 +112,125 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="change_affect_va" xml:space="preserve">
+    <value>Any changes made here will take effect automatically in VoiceAttack. You can close this window when you have finished.</value>
+  </data>
+  <data name="complete" xml:space="preserve">
+    <value>Complete</value>
+    <comment>This is the adjective not the verb</comment>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>done</value>
+  </data>
+  <data name="failed" xml:space="preserve">
+    <value>failed</value>
+  </data>
+  <data name="frontier_api_nok" xml:space="preserve">
+    <value>Frontier API connection not operational</value>
+  </data>
+  <data name="frontier_api_no_logins" xml:space="preserve">
+    <value>You do not have a connection to the Frontier API at this time. Please enter your Elite Dangerous email address and password below.</value>
+  </data>
+  <data name="frontier_api_ok" xml:space="preserve">
+    <value>Your connection to the Frontier API is operational, Commander {0}.</value>
+  </data>
+  <data name="frontier_api_temp_nok" xml:space="preserve">
+    <value>Your connection to the Frontier API is good but experiencing temporary issues. Your information should be available soon</value>
+  </data>
+  <data name="frontier_api_verification_code" xml:space="preserve">
+    <value>Please enter the verification code that should have been sent to your email address</value>
+  </data>
+  <data name="if_using_va" xml:space="preserve">
+    <value>If you are using VoiceAttack then please close this window before you start VoiceAttack for your changes to take effect. You can access this window from VoiceAttack with the 'Configure EDDI' command.</value>
+  </data>
+  <data name="invalid_station" xml:space="preserve">
+    <value>Invalid Station</value>
+  </data>
+  <data name="invalid_system" xml:space="preserve">
+    <value>Invalid System</value>
+  </data>
+  <data name="login_nok_frontier_service" xml:space="preserve">
+    <value>Unable to log in. This is usually a temporary issue with Frontier's service; please try again later</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>Log out</value>
+  </data>
+  <data name="next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="operational" xml:space="preserve">
+    <value>Operational</value>
+  </data>
+  <data name="preparing_log" xml:space="preserve">
+    <value>Preparing log... </value>
+  </data>
+  <data name="update_message" xml:space="preserve">
+    <value>Version {0} is available</value>
+  </data>
+  <data name="voice_test_damage" xml:space="preserve">
+    <value>Severe damage to your {0}.</value>
+  </data>
+  <data name="voice_test_ship" xml:space="preserve">
+    <value>This is how I will sound in your {0}.</value>
+  </data>
+  <data name="plugin_enabled" xml:space="preserve">
+    <value>Plugin enabled</value>
+  </data>
+  <data name="download_failed" xml:space="preserve">
+    <value>Download failed. Please try again later.</value>
+  </data>
+  <data name="downloading_upgrade" xml:space="preserve">
+    <value>Downloading upgrade.</value>
+  </data>
+  <data name="mandatory_upgrade" xml:space="preserve">
+    <value>Mandatory Eddi upgrade to {0} is required.</value>
+  </data>
+  <data name="msg_from_eddi" xml:space="preserve">
+    <value>Message from Eddi: {0}</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>point</value>
+    <comment>spoken decimal point for reading out version numbers like "2.4.1"</comment>
+  </data>
+  <data name="update_available" xml:space="preserve">
+    <value>Eddi version {0} is now available.</value>
+  </data>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>Upgrade failed. Please try again later.</value>
+  </data>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>Starting upgrade.</value>
+  </data>
+  <data name="update_server_unreachable" xml:space="preserve">
+    <value>I could not connect to my update server. If this recurs, please check the forum to see if it is a known problem.</value>
+  </data>
+  <data name="already_running_alert_body_text" xml:space="preserve">
+    <value>Only one instance of EDDI can run at a time.
+
+Please close the other instance and try again.</value>
+  </data>
+  <data name="already_running_alert_title" xml:space="preserve">
+    <value>EDDI is already running</value>
+  </data>
+  <data name="problem_load_monitor" xml:space="preserve">
+    <value>Failed to load monitor: {0}</value>
+    <comment>Weapon mount type problem_load_monitor</comment>
+  </data>
+  <data name="problem_load_monitor_file" xml:space="preserve">
+    <value>Failed to load monitor. Please ensure that {0} is not on a network share, or itself shared.</value>
+    <comment>Weapon mount type problem_load_monitor_file</comment>
+  </data>
+  <data name="Commander" xml:space="preserve">
+    <value>Commander</value>
+    <comment>Vocative form of "Commander"</comment>
+  </data>
+  <data name="system_language" xml:space="preserve">
+    <value>Automatic</value>
+    <comment>The user's system language</comment>
+  </data>
 </root>

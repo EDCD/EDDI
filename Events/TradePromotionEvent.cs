@@ -22,7 +22,7 @@ namespace EddiEvents
 
         public TradePromotionEvent(DateTime timestamp, TradeRating rating) : base(timestamp, NAME)
         {
-            this.rating = rating.name;
+            this.rating = rating.localizedName;
         }
     }
 }

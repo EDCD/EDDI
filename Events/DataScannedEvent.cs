@@ -22,7 +22,7 @@ namespace EddiEvents
 
         public DataScannedEvent(DateTime timestamp, DataScan datalinktype) : base(timestamp, NAME)
         {
-            this.datalinktype = datalinktype.name;
+            this.datalinktype = datalinktype.localizedName;
         }
     }
 }

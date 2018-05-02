@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
              mc:Ignorable="d"
-             Title="Compare to default" Height="600" Width="800" 
+             Title="{x:Static resx:Resources.compare_script_title}" 
+             Height="600" Width="800"
              Background="#FFE5E5E5" >
     <RichTextBox x:Name="scriptText" Background="Transparent" BorderThickness="0" Margin="5" IsReadOnly="True" FontFamily="Consolas">
         <RichTextBox.Resources>

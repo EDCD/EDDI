@@ -38,6 +38,11 @@ namespace EddiStatusMonitor
             return "Status monitor";
         }
 
+        public string LocalizedMonitorName()
+        {
+            return "Status monitor";
+        }
+
         public string MonitorVersion()
         {
             return "1.0.0";
