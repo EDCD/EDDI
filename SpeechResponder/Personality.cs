@@ -30,8 +30,8 @@ namespace EddiSpeechResponder
         [JsonIgnore]
         private string dataPath;
 
-        private static readonly string DEFAULT_PATH = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)).FullName + @"\" + Properties.Resources.default_personality_script_filename;
-        private static readonly string DEFAULT_USER_PATH = Constants.DATA_DIR + @"\personalities\" + Properties.Resources.default_personality_script_filename;
+        private static readonly string DEFAULT_PATH = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)).FullName + @"\" + Properties.SpeechResponder.default_personality_script_filename;
+        private static readonly string DEFAULT_USER_PATH = Constants.DATA_DIR + @"\personalities\" + Properties.SpeechResponder.default_personality_script_filename;
 
         public Personality(string name, string description, Dictionary<string, Script> scripts)
         {

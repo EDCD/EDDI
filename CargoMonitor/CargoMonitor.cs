@@ -36,7 +36,7 @@ namespace EddiCargoMonitor
 
         public string LocalizedMonitorName()
         {
-            return Properties.Resources.cargo_monitor_name;
+            return Properties.CargoMonitor.cargo_monitor_name;
         }
 
         public string MonitorVersion()
@@ -46,7 +46,7 @@ namespace EddiCargoMonitor
 
         public string MonitorDescription()
         {
-            return Properties.Resources.cargo_monitor_desc;
+            return Properties.CargoMonitor.cargo_monitor_desc;
         }
 
         public bool IsRequired()

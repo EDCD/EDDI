@@ -51,7 +51,7 @@ namespace GalnetMonitor
 
         public string LocalizedMonitorName()
         {
-            return EddiGalnetMonitor.Properties.Resources.name;
+            return EddiGalnetMonitor.Properties.GalnetMonitor.name;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace GalnetMonitor
         /// </summary>
         public string MonitorDescription()
         {
-            return EddiGalnetMonitor.Properties.Resources.desc;
+            return EddiGalnetMonitor.Properties.GalnetMonitor.desc;
         }
 
         public bool IsRequired()

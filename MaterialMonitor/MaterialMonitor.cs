@@ -34,7 +34,7 @@ namespace EddiMaterialMonitor
 
         public string LocalizedMonitorName()
         {
-            return EddiMaterialMonitor.Properties.Resources.name;
+            return EddiMaterialMonitor.Properties.MaterialMonitor.name;
         }
 
         public string MonitorVersion()
@@ -44,7 +44,7 @@ namespace EddiMaterialMonitor
 
         public string MonitorDescription()
         {
-            return EddiMaterialMonitor.Properties.Resources.name;
+            return EddiMaterialMonitor.Properties.MaterialMonitor.name;
         }
 
         public bool IsRequired()

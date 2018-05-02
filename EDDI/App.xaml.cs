@@ -29,8 +29,8 @@ namespace Eddi
             }
             else
             {
-                string localisedMultipleInstanceAlertTitle = Eddi.Properties.Resources.already_running_alert_title;
-                string localisedMultipleInstanceAlertText = Eddi.Properties.Resources.already_running_alert_body_text;
+                string localisedMultipleInstanceAlertTitle = Eddi.Properties.EddiResources.already_running_alert_title;
+                string localisedMultipleInstanceAlertText = Eddi.Properties.EddiResources.already_running_alert_body_text;
                 MessageBox.Show(localisedMultipleInstanceAlertText,
                                 localisedMultipleInstanceAlertTitle,
                                 MessageBoxButton.OK, MessageBoxImage.Information);

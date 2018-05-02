@@ -6,15 +6,16 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text.RegularExpressions;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Threading;
 using Utilities;
-using System.Windows.Data;
 
 namespace EddiShipMonitor
 {
@@ -34,12 +35,12 @@ namespace EddiShipMonitor
 
         public string MonitorName()
         {
-            return "Ship monitor";
+            return Properties.ShipMonitor.ResourceManager.GetString("name", CultureInfo.InvariantCulture);
         }
 
         public string LocalizedMonitorName()
         {
-            return Properties.Resources.name;
+            return Properties.ShipMonitor.name;
         }
 
         public string MonitorVersion()
@@ -49,7 +50,7 @@ namespace EddiShipMonitor
 
         public string MonitorDescription()
         {
-            return Properties.Resources.desc;
+            return Properties.ShipMonitor.desc;
         }
 
         public bool IsRequired()

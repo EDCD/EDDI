@@ -38,7 +38,7 @@ namespace EddiSpeechResponder
 
         public string LocalizedResponderName()
         {
-            return Properties.Resources.name;
+            return Properties.SpeechResponder.name;
         }
 
         public string ResponderVersion()
@@ -48,7 +48,7 @@ namespace EddiSpeechResponder
 
         public string ResponderDescription()
         {
-            return Properties.Resources.desc;
+            return Properties.SpeechResponder.desc;
         }
 
         public SpeechResponder()

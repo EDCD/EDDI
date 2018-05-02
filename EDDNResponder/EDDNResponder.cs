@@ -33,7 +33,7 @@ namespace EDDNResponder
 
         public string LocalizedResponderName()
         {
-            return EddiEddnResponder.Properties.Resources.name;
+            return EddiEddnResponder.Properties.EddnResources.name;
         }
 
         public string ResponderVersion()
@@ -43,7 +43,7 @@ namespace EDDNResponder
 
         public string ResponderDescription()
         {
-            return EddiEddnResponder.Properties.Resources.desc;
+            return EddiEddnResponder.Properties.EddnResources.desc;
         }
 
         public EDDNResponder() : this(EddiDataProviderService.StarSystemSqLiteRepository.Instance)

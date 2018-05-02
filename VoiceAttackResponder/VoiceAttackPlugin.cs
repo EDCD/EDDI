@@ -63,20 +63,20 @@ namespace EddiVoiceAttackResponder
                 if (EDDI.Instance.UpgradeRequired)
                 {
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "red");
-                    string msg = Properties.Resources.run_eddi_standalone;
+                    string msg = Properties.VoiceAttack.run_eddi_standalone;
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
                 else if (EDDI.Instance.UpgradeAvailable)
                 {
                     vaProxy.WriteToLog("Please shut down VoiceAttack and run EDDI standalone to upgrade", "orange");
-                    string msg = Properties.Resources.run_eddi_standalone;
+                    string msg = Properties.VoiceAttack.run_eddi_standalone;
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
 
                 if (EDDI.Instance.Motd != null)
                 {
                     vaProxy.WriteToLog("Message from EDDI: " + EDDI.Instance.Motd, "black");
-                    string msg = String.Format(Eddi.Properties.Resources.msg_from_eddi, EDDI.Instance.Motd);
+                    string msg = String.Format(Eddi.Properties.EddiResources.msg_from_eddi, EDDI.Instance.Motd);
                     SpeechService.Instance.Say(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), msg, false);
                 }
 
@@ -1285,7 +1285,7 @@ namespace EddiVoiceAttackResponder
                 vaProxy.SetText("Credits (spoken)", Translations.Humanize(cmdr?.credits));
                 vaProxy.SetDecimal("Debt", cmdr?.debt);
                 vaProxy.SetText("Debt (spoken)", Translations.Humanize(cmdr?.debt));
-                vaProxy.SetText("Title", cmdr?.title ?? Eddi.Properties.Resources.Commander);
+                vaProxy.SetText("Title", cmdr?.title ?? Eddi.Properties.EddiResources.Commander);
                 vaProxy.SetText("Gender", cmdr?.gender ?? Eddi.Properties.MainWindow.tab_commander_gender_n);
                 vaProxy.SetDecimal("Insurance", cmdr?.insurance);
 

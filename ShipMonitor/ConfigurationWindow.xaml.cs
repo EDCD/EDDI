@@ -43,7 +43,7 @@ namespace EddiShipMonitor
 
         private void ipaClicked(object sender, RoutedEventArgs e)
         {
-            string url = EddiShipMonitor.Properties.Resources.ipa_page;
+            string url = EddiShipMonitor.Properties.ShipMonitor.ipa_page;
             Process.Start(url);
         }
 
@@ -55,7 +55,7 @@ namespace EddiShipMonitor
             string nameToSpeak = String.IsNullOrEmpty(ship.phoneticname) 
                 ? ship.name 
                 : $@"<phoneme alphabet=""ipa"" ph=""{ship.phoneticname}"">{ship.name}</phoneme>";
-            string message = String.Format(Properties.Resources.ship_ready, nameToSpeak);
+            string message = String.Format(Properties.ShipMonitor.ship_ready, nameToSpeak);
             if (string.IsNullOrEmpty(ship.phoneticname))
             SpeechService.Instance.Say(ship, message, false);
         }

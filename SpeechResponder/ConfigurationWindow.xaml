@@ -15,30 +15,30 @@
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Vertical" Grid.Column="0" DockPanel.Dock="Top" >
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                    <TextBlock Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.subs}" />
+                    <TextBlock Margin="5" TextWrapping="Wrap" Text="{x:Static resx:SpeechResponder.subs}" />
                     <CheckBox x:Name="subtitlesCheckbox" VerticalAlignment="Center" Margin="5, 0" Checked="subtitlesEnabled" Unchecked="subtitlesDisabled"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" >
-                    <TextBlock Margin="5" TextWrapping="Wrap" Text="{x:Static resx:Resources.subs_only}"></TextBlock>
+                    <TextBlock Margin="5" TextWrapping="Wrap" Text="{x:Static resx:SpeechResponder.subs_only}"></TextBlock>
                     <CheckBox x:Name="subtitlesOnlyCheckbox" Margin="0" VerticalAlignment="Center" Checked="subtitlesOnlyEnabled" Unchecked="subtitlesOnlyDisabled"/>
                 </StackPanel>
             </StackPanel>
-            <TextBlock x:Name="defaultText" VerticalAlignment="Top" DockPanel.Dock="Left" Grid.Column="1" TextWrapping="Wrap" Width="Auto" Text="{x:Static resx:Resources.default_is_read_only}"/>
+            <TextBlock x:Name="defaultText" VerticalAlignment="Top" DockPanel.Dock="Left" Grid.Column="1" TextWrapping="Wrap" Width="Auto" Text="{x:Static resx:SpeechResponder.default_is_read_only}"/>
         </Grid>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="5, 0">
-            <TextBlock VerticalAlignment="Center" Text="{x:Static resx:Resources.active_personality}" />
+            <TextBlock VerticalAlignment="Center" Text="{x:Static resx:SpeechResponder.active_personality}" />
             <ComboBox Margin="5,0" ItemsSource="{Binding Personalities}" SelectedValue="{Binding Personality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" SelectionChanged="personalityChanged" />
             <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding Personality.Description}"/>
         </StackPanel>
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0">
-            <Button Margin="10" HorizontalAlignment="Center" Click="newScriptClicked" IsEnabled="{Binding Path=Personality.IsEditable}" Content="{x:Static resx:Resources.button_new}"></Button>
-            <Button Margin="10" HorizontalAlignment="Center" Click="copyPersonalityClicked" Content="{x:Static resx:Resources.button_copy}"></Button>
-            <Button Margin="10" HorizontalAlignment="Center" Click="deletePersonalityClicked" IsEnabled="{Binding Path=Personality.IsEditable}" Content="{x:Static resx:Resources.button_delete}"></Button>
+            <Button Margin="10" HorizontalAlignment="Center" Click="newScriptClicked" IsEnabled="{Binding Path=Personality.IsEditable}" Content="{x:Static resx:SpeechResponder.button_new}"></Button>
+            <Button Margin="10" HorizontalAlignment="Center" Click="copyPersonalityClicked" Content="{x:Static resx:SpeechResponder.button_copy}"></Button>
+            <Button Margin="10" HorizontalAlignment="Center" Click="deletePersonalityClicked" IsEnabled="{Binding Path=Personality.IsEditable}" Content="{x:Static resx:SpeechResponder.button_delete}"></Button>
         </UniformGrid>
         <DataGrid Margin="0,5" IsReadOnly="True" AutoGenerateColumns="False" x:Name="scriptsData" CanUserAddRows="false" ItemsSource="{Binding Personality.Scripts}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{x:Static resx:Resources.header_name}" Binding="{Binding Path=Value.Name}" SortDirection="Ascending" />
-                <DataGridTemplateColumn Header="{x:Static resx:Resources.header_enabled}">
+                <DataGridTextColumn Header="{x:Static resx:SpeechResponder.header_name}" Binding="{Binding Path=Value.Name}" SortDirection="Ascending" />
+                <DataGridTemplateColumn Header="{x:Static resx:SpeechResponder.header_enabled}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Border IsEnabled="{Binding Path=Value.Responder}">
@@ -47,25 +47,25 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="{x:Static resx:Resources.header_description}" Width="*" Binding="{Binding Path=Value.Description}" />
+                <DataGridTextColumn Header="{x:Static resx:SpeechResponder.header_description}" Width="*" Binding="{Binding Path=Value.Description}" />
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button IsEnabled="{Binding Path=Value.HasValue}" Click="testScript" Content="{x:Static resx:Resources.test_script}" />
+                            <Button IsEnabled="{Binding Path=Value.HasValue}" Click="testScript" Content="{x:Static resx:SpeechResponder.test_script}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button IsEnabled="{Binding Path=Value.HasValue}" Click="viewScript" Content="{x:Static resx:Resources.view_script}" />
+                            <Button IsEnabled="{Binding Path=Value.HasValue}" Click="viewScript" Content="{x:Static resx:SpeechResponder.view_script}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Click="editScript" Content="{x:Static resx:Resources.edit_script}" />
+                            <Button IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Click="editScript" Content="{x:Static resx:SpeechResponder.edit_script}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -73,7 +73,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel IsEnabled="{Binding Path=Value.IsDeleteable}">
-                                <Button IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Click="deleteScript" Content="{x:Static resx:Resources.delete_script}" />
+                                <Button IsEnabled="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=Personality.IsEditable}" Click="deleteScript" Content="{x:Static resx:SpeechResponder.delete_script}" />
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

@@ -18,7 +18,7 @@ namespace EddiVoiceAttackResponder
 
         public string LocalizedResponderName()
         {
-            return Properties.Resources.name;
+            return Properties.VoiceAttack.name;
         }
 
         public string ResponderVersion()
@@ -28,7 +28,7 @@ namespace EddiVoiceAttackResponder
 
         public string ResponderDescription()
         {
-            return Properties.Resources.desc;
+            return Properties.VoiceAttack.desc;
         }
 
         public VoiceAttackResponder()

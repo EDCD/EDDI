@@ -235,7 +235,7 @@ namespace Eddi
                 {
                     EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                     InstanceInfo info = configuration.Beta ? updateServerInfo.beta : updateServerInfo.production;
-                    string spokenVersion = info.version.Replace(".", $" {Properties.Resources.point} ");
+                    string spokenVersion = info.version.Replace(".", $" {Properties.EddiResources.point} ");
                     Motd = info.motd;
                     if (updateServerInfo.productionbuilds != null)
                     {
@@ -247,7 +247,7 @@ namespace Eddi
                         // There is a mandatory update available
                         if (!FromVA)
                         {
-                            string message = String.Format(Properties.Resources.mandatory_upgrade, spokenVersion);
+                            string message = String.Format(Properties.EddiResources.mandatory_upgrade, spokenVersion);
                             SpeechService.Instance.Say(null, message, false);
                         }
                         UpgradeRequired = true;
@@ -261,7 +261,7 @@ namespace Eddi
                         // There is an update available
                         if (!FromVA)
                         {
-                            string message = String.Format(Properties.Resources.update_available, spokenVersion);
+                            string message = String.Format(Properties.EddiResources.update_available, spokenVersion);
                             SpeechService.Instance.Say(null, message, false);
                         }
                         UpgradeAvailable = true;
@@ -272,7 +272,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, Properties.Resources.update_server_unreachable, false);
+                SpeechService.Instance.Say(null, Properties.EddiResources.update_server_unreachable, false);
                 Logging.Warn("Failed to access " + Constants.EDDI_SERVER_URL, ex);
             }
         }
@@ -286,11 +286,11 @@ namespace Eddi
                 if (UpgradeLocation != null)
                 {
                     Logging.Info("Downloading upgrade from " + UpgradeLocation);
-                    SpeechService.Instance.Say(null, Properties.Resources.downloading_upgrade, true);
+                    SpeechService.Instance.Say(null, Properties.EddiResources.downloading_upgrade, true);
                     string updateFile = Net.DownloadFile(UpgradeLocation, @"EDDI-update.exe");
                     if (updateFile == null)
                     {
-                        SpeechService.Instance.Say(null, Properties.Resources.download_failed, true);
+                        SpeechService.Instance.Say(null, Properties.EddiResources.download_failed, true);
                     }
                     else
                     {
@@ -300,7 +300,7 @@ namespace Eddi
                         Logging.Info("Downloaded update to " + updateFile);
                         Logging.Info("Path is " + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                         File.SetAttributes(updateFile, FileAttributes.Normal);
-                        SpeechService.Instance.Say(null, Properties.Resources.starting_upgrade, true);
+                        SpeechService.Instance.Say(null, Properties.EddiResources.starting_upgrade, true);
                         Logging.Info("Starting upgrade.");
 
                         Process.Start(updateFile, @"/closeapplications /restartapplications /silent /log /nocancel /noicon /dir=""" + Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"""");
@@ -309,7 +309,7 @@ namespace Eddi
             }
             catch (Exception ex)
             {
-                SpeechService.Instance.Say(null, Properties.Resources.upgrade_failed, true);
+                SpeechService.Instance.Say(null, Properties.EddiResources.upgrade_failed, true);
                 Logging.Error("Upgrade failed", ex);
             }
         }
@@ -1507,7 +1507,7 @@ namespace Eddi
         {
             if (Cmdr != null)
             {
-                Cmdr.title = Properties.Resources.Commander;
+                Cmdr.title = Properties.EddiResources.Commander;
                 if (CurrentStarSystem != null)
                 {
                     if (CurrentStarSystem.allegiance == "Federation" && Cmdr.federationrating != null && Cmdr.federationrating.rank > minFederationRankForTitle)
@@ -1580,13 +1580,13 @@ namespace Eddi
                 }
                 catch (FileLoadException flex)
                 {
-                    string msg = string.Format(Properties.Resources.problem_load_monitor_file, dir.FullName);
+                    string msg = string.Format(Properties.EddiResources.problem_load_monitor_file, dir.FullName);
                     Logging.Error(msg, flex);
                     SpeechService.Instance.Say(null, msg, false);
                 }
                 catch (Exception ex)
                 {
-                    string msg = string.Format(Properties.Resources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
+                    string msg = string.Format(Properties.EddiResources.problem_load_monitor, $"{file.Name}.\n{ex.Message} {ex.InnerException?.Message ?? ""}");
                     Logging.Error(msg, ex);
                     SpeechService.Instance.Say(null, msg, false);
                 }

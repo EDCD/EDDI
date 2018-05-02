@@ -40,7 +40,7 @@ namespace EddiEddpMonitor
 
             // Make a list of states plus a (anything) state that maps to NULL
             StatesPlusNone = new List<KeyValuePair<string, string>>();
-            StatesPlusNone.Add(new KeyValuePair<string, string>(Properties.Resources.anything, null));
+            StatesPlusNone.Add(new KeyValuePair<string, string>(Properties.EddpResources.anything, null));
             StatesPlusNone.AddRange(SystemState.AllOfThem.Select(x => new KeyValuePair<string, string>(x.localizedName, x.localizedName)));
 
             configurationFromFile();
@@ -75,7 +75,7 @@ namespace EddiEddpMonitor
         private void eddpAddWatch(object sender, RoutedEventArgs e)
         {
             Watch watch = new Watch();
-            watch.Name = Properties.Resources.new_watch;
+            watch.Name = Properties.EddpResources.new_watch;
 
             configuration.watches.Add(watch);
             updateWatchesConfiguration();

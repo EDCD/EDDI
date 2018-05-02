@@ -177,11 +177,11 @@ namespace Eddi
             {
                 // Allow the EDDI VA plugin to change window state
                 VaWindowStateChange = new vaWindowStateChangeDelegate(OnVaWindowStateChange);
-                heroText.Text = Properties.Resources.change_affect_va;
+                heroText.Text = Properties.EddiResources.change_affect_va;
             }
             else
             {
-                heroText.Text = Properties.Resources.if_using_va;
+                heroText.Text = Properties.EddiResources.if_using_va;
             }
 
             EDDIConfiguration eddiConfiguration = EDDIConfiguration.FromFile();
@@ -222,11 +222,11 @@ namespace Eddi
                 profile = CompanionAppService.Instance.Profile();
                 if (profile == null)
                 {
-                    setUpCompanionAppComplete(Properties.Resources.frontier_api_temp_nok);
+                    setUpCompanionAppComplete(Properties.EddiResources.frontier_api_temp_nok);
                 }
                 else
                 {
-                    setUpCompanionAppComplete(String.Format(Properties.Resources.frontier_api_ok, profile.Cmdr.name));
+                    setUpCompanionAppComplete(String.Format(Properties.EddiResources.frontier_api_ok, profile.Cmdr.name));
                 }
             }
             catch (Exception)
@@ -259,7 +259,7 @@ namespace Eddi
             List<LanguageDef> cultures = new List<LanguageDef>();
 
             // Add the "Automatic" culture, we are using the InvariantCulture name "" to mean user's culture
-            cultures.Add(new LanguageDef(CultureInfo.InvariantCulture, Properties.Resources.system_language)); 
+            cultures.Add(new LanguageDef(CultureInfo.InvariantCulture, Properties.EddiResources.system_language)); 
 
             CultureInfo neutralInfo = new CultureInfo("en"); // Add our "neutral" language "en".
             cultures.Add(new LanguageDef(neutralInfo));
@@ -532,7 +532,7 @@ namespace Eddi
 
             if (EDDI.Instance.UpgradeVersion != null)
             {
-                statusText.Text = String.Format(Properties.Resources.update_message, EDDI.Instance.UpgradeVersion);
+                statusText.Text = String.Format(Properties.EddiResources.update_message, EDDI.Instance.UpgradeVersion);
                 // Do not show upgrade button if EDDI is started from VA
                 upgradeButton.Visibility = EDDI.FromVA ? Visibility.Collapsed : Visibility.Visible;
             }
@@ -541,11 +541,11 @@ namespace Eddi
                 upgradeButton.Visibility = Visibility.Collapsed;
                 if (CompanionAppService.Instance.CurrentState != CompanionAppService.State.READY)
                 {
-                    statusText.Text = Properties.Resources.frontier_api_nok;
+                    statusText.Text = Properties.EddiResources.frontier_api_nok;
                 }
                 else
                 {
-                    statusText.Text = Properties.Resources.operational;
+                    statusText.Text = Properties.EddiResources.operational;
                 }
             }
         }
@@ -586,11 +586,11 @@ namespace Eddi
                         }
                         if (profile == null)
                         {
-                            setUpCompanionAppComplete(Properties.Resources.frontier_api_temp_nok);
+                            setUpCompanionAppComplete(Properties.EddiResources.frontier_api_temp_nok);
                         }
                         else
                         {
-                            setUpCompanionAppComplete(String.Format(Properties.Resources.frontier_api_ok, profile.Cmdr.name));
+                            setUpCompanionAppComplete(String.Format(Properties.EddiResources.frontier_api_ok, profile.Cmdr.name));
                         }
                     }
                 }
@@ -604,7 +604,7 @@ namespace Eddi
                 }
                 catch (Exception)
                 {
-                    companionAppText.Text = Properties.Resources.login_nok_frontier_service;
+                    companionAppText.Text = Properties.EddiResources.login_nok_frontier_service;
                 }
             }
             else if (companionAppCodeText.Visibility == Visibility.Visible)
@@ -618,7 +618,7 @@ namespace Eddi
                     profile = CompanionAppService.Instance.Profile();
                     if (profile != null)
                     {
-                        setUpCompanionAppComplete(String.Format(Properties.Resources.frontier_api_ok, profile.Cmdr.name));
+                        setUpCompanionAppComplete(String.Format(Properties.EddiResources.frontier_api_ok, profile.Cmdr.name));
                     }
                 }
                 catch (EliteDangerousCompanionAppAuthenticationException ex)
@@ -631,7 +631,7 @@ namespace Eddi
                 }
                 catch (Exception)
                 {
-                    setUpCompanionAppStage1(Properties.Resources.login_nok_frontier_service);
+                    setUpCompanionAppStage1(Properties.EddiResources.login_nok_frontier_service);
                 }
             }
         }
@@ -640,7 +640,7 @@ namespace Eddi
         {
             if (message == null)
             {
-                companionAppText.Text = Properties.Resources.frontier_api_no_logins;
+                companionAppText.Text = Properties.EddiResources.frontier_api_no_logins;
             }
             else
             {
@@ -663,7 +663,7 @@ namespace Eddi
         {
             if (message == null)
             {
-                companionAppText.Text = Properties.Resources.frontier_api_verification_code;
+                companionAppText.Text = Properties.EddiResources.frontier_api_verification_code;
             }
             else
             {
@@ -677,7 +677,7 @@ namespace Eddi
             companionAppPasswordText.Visibility = Visibility.Hidden;
             companionAppCodeLabel.Visibility = Visibility.Visible;
             companionAppCodeText.Visibility = Visibility.Visible;
-            companionAppNextButton.Content = Properties.Resources.next;
+            companionAppNextButton.Content = Properties.EddiResources.next;
         }
 
         private void setUpCompanionAppComplete(string message = null)
@@ -699,7 +699,7 @@ namespace Eddi
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
-            companionAppNextButton.Content = Properties.Resources.logout;
+            companionAppNextButton.Content = Properties.EddiResources.logout;
         }
 
         // Handle Text-to-speech tab
@@ -733,7 +733,7 @@ namespace Eddi
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 100;
-            string message = String.Format(Properties.Resources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel());
+            string message = String.Format(Properties.EddiResources.voice_test_ship, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel());
             SpeechService.Instance.Say(testShip, message, false);
         }
 
@@ -741,7 +741,7 @@ namespace Eddi
         {
             Ship testShip = ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue);
             testShip.health = 20;
-            string message = String.Format(Properties.Resources.voice_test_damage, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel());
+            string message = String.Format(Properties.EddiResources.voice_test_damage, ShipDefinitions.FromModel((string)ttsTestShipDropDown.SelectedValue).SpokenModel());
             SpeechService.Instance.Say(testShip, message, false);
         }
 
@@ -835,7 +835,7 @@ namespace Eddi
             if (eddiVerboseLogging.IsChecked.Value)
             {
                 Logging.Debug("Preparing log for export.");
-                var progress = new Progress<string>(s => githubIssueButton.Content = Properties.Resources.preparing_log + s);
+                var progress = new Progress<string>(s => githubIssueButton.Content = Properties.EddiResources.preparing_log + s);
                 await Task.Factory.StartNew(() => prepareLog(progress), TaskCreationOptions.LongRunning);
             }
             
@@ -909,11 +909,11 @@ namespace Eddi
                 File.Delete(issueLogFile);
                 Directory.Delete(issueLogDir);
 
-                progress.Report(Properties.Resources.done);
+                progress.Report(Properties.EddiResources.done);
             }
             catch (Exception ex)
             {
-                progress.Report(Properties.Resources.failed);
+                progress.Report(Properties.EddiResources.failed);
                 Logging.Error("Failed to prepare log", ex);
 
             }
@@ -995,7 +995,7 @@ namespace Eddi
             }
             else
             {
-                return new ValidationResult(false, Properties.Resources.invalid_system);
+                return new ValidationResult(false, Properties.EddiResources.invalid_system);
             }
         }
     }
@@ -1016,7 +1016,7 @@ namespace Eddi
             }
             else
             {
-                return new ValidationResult(false, Properties.Resources.invalid_station);
+                return new ValidationResult(false, Properties.EddiResources.invalid_station);
             }
         }
     }

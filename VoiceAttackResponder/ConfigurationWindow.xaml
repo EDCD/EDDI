@@ -8,24 +8,24 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:Resources.p1}" VerticalAlignment="Top"/>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:Resources.p2}" VerticalAlignment="Top"/>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:Resources.p3}" VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:VoiceAttack.p1}" VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:VoiceAttack.p2}" VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="10" Text="{x:Static resx:VoiceAttack.p3}" VerticalAlignment="Top"/>
         <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
             <FlowDocument Background="#FFE5E5E5">
                 <Paragraph>
-                    <Run Text="{x:Static resx:Resources.p4}" />
+                    <Run Text="{x:Static resx:VoiceAttack.p4}" />
                     <Hyperlink Click="VAVariablesClicked">
-                        <Run Text="{x:Static resx:Resources.p4_link}" />
+                        <Run Text="{x:Static resx:VoiceAttack.p4_link}" />
                     </Hyperlink>.</Paragraph>
             </FlowDocument>
         </RichTextBox>
         <RichTextBox DockPanel.Dock="Top" Margin="5"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
             <FlowDocument Background="#FFE5E5E5">
                 <Paragraph>
-                    <Run Text="{x:Static resx:Resources.p5}" />
+                    <Run Text="{x:Static resx:VoiceAttack.p5}" />
                     <Hyperlink Click="VAVariablesClicked">
-                        <Run Text="{x:Static resx:Resources.p5_link}" />
+                        <Run Text="{x:Static resx:VoiceAttack.p5_link}" />
                     </Hyperlink>.
                 </Paragraph>
             </FlowDocument>

@@ -57,7 +57,7 @@ Beware of the existing PropertyGroup tags: most of them are conditional on a par
 
 The Properties\AssemblyInfo.cs file needs a `using System.Resources;` at the top and the following in the body (the comment isn't strictly necessary but it is part of MS's boilerplate):
 
-```cs
+```csharp
 
 //In order to begin building localizable applications, set 
 //<UICulture>CultureYouAreCodingWith</UICulture> in your .csproj file
@@ -83,7 +83,11 @@ Note: Various tools exist to assist with managing resource files in Visual Studi
 
 ## XAML localization
 
-I had lots of fun figuring this out. This will be easist to follow if you have `MainWindow.xaml` open. The trick is to create a static binding between the XAML and the code-behind resource accessors. We add the following property to the top-level `<Window>` tag:
+I had lots of fun figuring this out. This will be easist to follow if you have `MainWindow.xaml` open. 
+
+Pro tip: fix any C# errors before tackling the XAML. The XAML compiler looks at the compiled CLR, so won't see any changes to resources etc until C#-land is building happily.
+
+Now, the trick is to create a static binding between the XAML and the code-behind resource accessors. We add the following property to the top-level `<Window>` tag:
 ```xml
         xmlns:resx="clr-namespace:Eddi.Properties"
 ```
@@ -104,14 +108,14 @@ These bindings only work for properties of items, so any free text in the XAML n
 ## C# localization
 
 If you know the key at compile time then the best way is to call the auto-generated accessor, like the `EddiDataDefinitions.Properties.Superpowers.Empire` mentioned above. If the key is not known until runtime then call the resource's GetString accessor with the key:
-```cs
+```csharp
 string edName = "Empire";
 string localizedName = EddiDataDefinitions.Properties.Superpowers.GetString(edName);
 ```
 Be prepared to get `null` if the key is neither in the resource nor in the English fallback resource.
 
 You can also specify a different CultureInfo:
-```cs
+```csharp
 string invariantName = EddiDataDefinitions.Properties.Superpowers.GetString(edName, CultureInfo.InvariantCulture);
 
 CultureInfo frenchCulture = new CultureInfo("fr");
@@ -136,20 +140,20 @@ and the following methods:
 - `FromEDName()`
 
 Have a look at `Government.cs` as it's a good example. The static constructor is where everything is set up. First the class's `resourceManager` property is set up. In this case we need to tell it to be case insensitive: Microsoft does document this as causing a small performance hit so if you can get away without doing that then please do.
-```cs
+```csharp
         static Government()
         {
             resourceManager = Properties.Governments.ResourceManager;
             resourceManager.IgnoreCase = true;
 ```
 If you need to handle cases where the EDName is not recognized (e.g. whenever FD introduce new weapons, materials, etc.) then define the `missingEDNameHandler` too. This is a function that takes a string, the EDName, and returns an instance of the class in question:
-```cs
+```csharp
             missingEDNameHandler = (edname) => new Government(edname);
 ```
 If you don't define the `missingEDNameHandler` then you will get `null` when you call `FromEDName()` with an unrecognized EDName.
 
 Next we instantiate all the values that we know about:
-```cs
+```csharp
             None = new Government("$government_None;");
             var Anarchy = new Government("$government_Anarchy;");
             var Colony = new Government("$government_Colony;");
@@ -172,18 +176,18 @@ Next we instantiate all the values that we know about:
 The base class will automatically add them all to the `AllOfThem` list.
 
 In this example only the `None` value is needed by client code, so that is the only one I exposed:
-```cs
+```csharp
         public static readonly Government None;
 ```
 
 The base class needs a public no-argument constructor, which it calls if `AllOfThem` is empty to cause the static constructor to run and populate it. As long as its `basename` is null or empty, the object returned by this constructor will be discarded and not added to `AllOfThem`.
-```cs
+```csharp
         // dummy used to ensure that the static constructor has run
         public Government() : this("")
         {}
 ```
 Finally we get to the real constructor. We initialise the base class with first the EDName, then the basename, which is the EDName without any illegal characters and any redundant prefix, and is also the lookup key in the resource's string table:
-```cs
+```csharp
         private Government(string edname) : base(edname, edname.Replace("$government_", "").Replace(";", ""))
         {}
 ```

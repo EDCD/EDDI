@@ -33,7 +33,7 @@ namespace EddiEddpMonitor
 
         public string LocalizedMonitorName()
         {
-            return Properties.Resources.name;
+            return Properties.EddpResources.name;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace EddiEddpMonitor
         /// </summary>
         public string MonitorDescription()
         {
-            return Properties.Resources.desc;
+            return Properties.EddpResources.desc;
         }
 
         public bool IsRequired()

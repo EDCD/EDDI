@@ -10,16 +10,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0,5">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5, 0, 0, 10"  Text="{x:Static resx:Resources.p1}" VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5, 0, 0, 10"  Text="{x:Static resx:EddpResources.p1}" VerticalAlignment="Top"/>
         <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0,5">
-            <Button Margin="10" HorizontalAlignment="Center" Click="eddpAddWatch" Content="{x:Static resx:Resources.new_watch}" />
+            <Button Margin="10" HorizontalAlignment="Center" Click="eddpAddWatch" Content="{x:Static resx:EddpResources.new_watch}" />
         </UniformGrid>
         <DataGrid AutoGenerateColumns="False" x:Name="watchData" CanUserAddRows="false" TargetUpdated="eddpWatchesUpdated"  ItemsSource="{Binding Watches}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{x:Static resx:Resources.name_header}" Binding="{Binding Path=Name, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:Resources.system_header}" Width="*" Binding="{Binding Path=System, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:Resources.faction_header}" Width="*" Binding="{Binding Path=Faction, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
-                <DataGridComboBoxColumn Header="{x:Static resx:Resources.state_header}" SelectedValueBinding="{Binding Path=State, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DisplayMemberPath="Key" SelectedValuePath="Value">
+                <DataGridTextColumn Header="{x:Static resx:EddpResources.name_header}" Binding="{Binding Path=Name, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:EddpResources.system_header}" Width="*" Binding="{Binding Path=System, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:EddpResources.faction_header}" Width="*" Binding="{Binding Path=Faction, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></DataGridTextColumn>
+                <DataGridComboBoxColumn Header="{x:Static resx:EddpResources.state_header}" SelectedValueBinding="{Binding Path=State, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DisplayMemberPath="Key" SelectedValuePath="Value">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="{x:Type ComboBox}">
                             <Setter Property="ItemsSource" Value="{Binding Path=DataContext.StatesPlusNone, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
@@ -32,12 +32,12 @@
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
-                <local:DataGridNumericColumn Header="{x:Static resx:Resources.max_dist_ship_header}" Width="*" Binding="{Binding Path=MaxDistanceFromShip, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></local:DataGridNumericColumn>
-                <local:DataGridNumericColumn Header="{x:Static resx:Resources.max_dist_home_header}" Width="*" Binding="{Binding Path=MaxDistanceFromHome, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></local:DataGridNumericColumn>
+                <local:DataGridNumericColumn Header="{x:Static resx:EddpResources.max_dist_ship_header}" Width="*" Binding="{Binding Path=MaxDistanceFromShip, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></local:DataGridNumericColumn>
+                <local:DataGridNumericColumn Header="{x:Static resx:EddpResources.max_dist_home_header}" Width="*" Binding="{Binding Path=MaxDistanceFromHome, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}"></local:DataGridNumericColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="eddpDeleteWatch" Content="{x:Static resx:Resources.delete_btn}"/>
+                            <Button Click="eddpDeleteWatch" Content="{x:Static resx:EddpResources.delete_btn}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

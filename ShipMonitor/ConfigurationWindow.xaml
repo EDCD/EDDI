@@ -11,21 +11,21 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     <DockPanel LastChildFill="True" Background="#FFE5E5E5" Margin="0">
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:Resources.p1}" VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:ShipMonitor.p1}" VerticalAlignment="Top"/>
         <RichTextBox DockPanel.Dock="Top" Margin="0"  IsReadOnly="True" IsDocumentEnabled="True" Background="#FFE5E5E5" BorderThickness="0">
             <FlowDocument Background="#FFE5E5E5">
                 <Paragraph >
-                    <Run Text="{x:Static resx:Resources.p2}" />
+                    <Run Text="{x:Static resx:ShipMonitor.p2}" />
                     <Hyperlink Click="ipaClicked" >
-                        <Run Text="{x:Static resx:Resources.link_ipa}" />
+                        <Run Text="{x:Static resx:ShipMonitor.link_ipa}" />
                     </Hyperlink>
-                    <Run Text="{x:Static resx:Resources.p3}" />
+                    <Run Text="{x:Static resx:ShipMonitor.p3}" />
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:Resources.p4}" VerticalAlignment="Top"/>
+        <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:ShipMonitor.p4}" VerticalAlignment="Top"/>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" VerticalAlignment="Top">
-            <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:Resources.p5}" VerticalAlignment="Top"/>
+            <TextBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="5"  Text="{x:Static resx:ShipMonitor.p5}" VerticalAlignment="Top"/>
             <ComboBox x:Name="exportComboBox" Background="#FFE5E5E5" SelectionChanged="onExportTargetChanged" SelectedValuePath="Content" IsEditable="False" IsReadOnly="True" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" VerticalAlignment="Center">
                 <ComboBoxItem>Coriolis</ComboBoxItem>
                 <ComboBoxItem>EDShipyard</ComboBoxItem>
@@ -33,10 +33,10 @@
         </StackPanel>
         <DataGrid Margin="0,5" AutoGenerateColumns="False" x:Name="shipData" CanUserAddRows="false" CanUserDeleteRows="False" TargetUpdated="shipsUpdated">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{x:Static resx:Resources.header_name}" IsReadOnly="True" Binding="{Binding Path=name}"></DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:Resources.header_model}" IsReadOnly="True" Binding="{Binding Path=model}"></DataGridTextColumn>
-                <DataGridTextColumn Header="{x:Static resx:Resources.header_ship_ID}" IsReadOnly="True" Binding="{Binding Path=ident}"></DataGridTextColumn>
-                <utility:DataGridNumericColumn Header="{x:Static resx:Resources.header_value}" IsReadOnly="True" Binding="{Binding Path=value, StringFormat=\{0:N0\}}">
+                <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_name}" IsReadOnly="True" Binding="{Binding Path=name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_model}" IsReadOnly="True" Binding="{Binding Path=model}"></DataGridTextColumn>
+                <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_ship_ID}" IsReadOnly="True" Binding="{Binding Path=ident}"></DataGridTextColumn>
+                <utility:DataGridNumericColumn Header="{x:Static resx:ShipMonitor.header_value}" IsReadOnly="True" Binding="{Binding Path=value, StringFormat=\{0:N0\}}">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Right" />
@@ -44,15 +44,15 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
-                <DataGridTextColumn Header="{x:Static resx:Resources.header_location}" IsReadOnly="True" Binding="{Binding Path=starsystem}"></DataGridTextColumn>
-                <DataGridComboBoxColumn Header="{x:Static resx:Resources.header_role}" SelectedItemBinding="{Binding Path=Role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static eddi:Role.Sorted}}">
+                <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_location}" IsReadOnly="True" Binding="{Binding Path=starsystem}"></DataGridTextColumn>
+                <DataGridComboBoxColumn Header="{x:Static resx:ShipMonitor.header_role}" SelectedItemBinding="{Binding Path=Role, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={x:Static eddi:Role.Sorted}}">
                     <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="{x:Type ComboBox}">
                             <EventSetter Event="SelectionChanged" Handler="shipsUpdated" />
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
                 </DataGridComboBoxColumn>
-                <DataGridTextColumn Header="{x:Static resx:Resources.header_spoken_name}" Width="*">
+                <DataGridTextColumn Header="{x:Static resx:ShipMonitor.header_spoken_name}" Width="*">
                     <DataGridTextColumn.Binding>
                         <Binding Path="phoneticname" NotifyOnTargetUpdated="True" UpdateSourceTrigger="PropertyChanged" Mode="TwoWay" TargetNullValue="{x:Static System:String.Empty}">
                             <Binding.ValidationRules>
@@ -64,14 +64,14 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Click="testShipName" Content="{x:Static resx:Resources.hear_it_button}" />
+                            <Button Click="testShipName" Content="{x:Static resx:ShipMonitor.hear_it_button}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button IsEnabled="{Binding RawIsNotNull, UpdateSourceTrigger=PropertyChanged}" Click="exportShip" Content="{x:Static resx:Resources.export_it_button}" />
+                            <Button IsEnabled="{Binding RawIsNotNull, UpdateSourceTrigger=PropertyChanged}" Click="exportShip" Content="{x:Static resx:ShipMonitor.export_it_button}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:resx="clr-namespace:EddiSpeechResponder.Properties"
              mc:Ignorable="d"
-             Title="{x:Static resx:Resources.compare_script_title}" 
+             Title="{x:Static resx:SpeechResponder.compare_script_title}" 
              Height="600" Width="800"
              Background="#FFE5E5E5" >
     <RichTextBox x:Name="scriptText" Background="Transparent" BorderThickness="0" Margin="5" IsReadOnly="True" FontFamily="Consolas">
