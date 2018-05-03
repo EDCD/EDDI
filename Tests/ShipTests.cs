@@ -50,6 +50,17 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestShipModel()
+        {
+            string line = "{ \"timestamp\":\"2016-09-20T18:14:26Z\", \"event\":\"ShipyardBuy\", \"ShipType\":\"Empire_Eagle\", \"ShipPrice\":10000, \"SellOldShip\":\"CobraMkIII\", \"SellShipID\":42, \"SellPrice\":950787 }";
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            Assert.AreEqual(1, events.Count);
+
+            ShipPurchasedEvent @event = (ShipPurchasedEvent)events[0];
+            Assert.AreEqual("Imperial Eagle", @event.ship);
+        }
+
+        [TestMethod]
         public void TestShipScenario1()
         {
             int sidewinderId = 901;
