@@ -236,5 +236,29 @@ namespace UnitTests
 
             Assert.AreEqual("Wine", event1.commodity);
         }
+
+        [TestMethod]
+        public void TestFriends()
+        {
+            string line = "{ \"timestamp\":\"2017-08-24T17:22:03Z\", \"event\":\"Friends\", \"Status\":\"Online\", \"Name\":\"_Testy_McTest_\" }";
+            string line2 = "{ \"timestamp\":\"2017-08-24T17:22:03Z\", \"event\":\"Friends\", \"Status\":\"Offline\", \"Name\":\"_Testy_McTest_\" }";
+
+            List<Event> events = JournalMonitor.ParseJournalEntry(line);
+            events = JournalMonitor.ParseJournalEntry(line2);
+
+            /// Since this friend is unknown to us, the first time we see this friend no event should trigger. 
+            /// Only the second line, registering the status as offline, should be registered as an event.
+            Assert.IsTrue(events.Count == 1);
+
+            FriendsEvent @event = (FriendsEvent)events[0];
+            Friend testFriend = new Friend();
+            testFriend.name = @event.name;
+            testFriend.status = @event.status;
+
+            Assert.AreEqual("Offline", @event.status);
+
+            // Clean up
+            Eddi.EDDI.Instance.Cmdr.friends.Remove(testFriend);
+        }
     }
 }
