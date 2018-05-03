@@ -51,7 +51,7 @@ namespace EddiShipMonitor
 
         public ModulePurchasedEvent(DateTime timestamp, string ship, int? shipid, string slot, Module buymodule, long buyprice, Module sellmodule, long? sellprice, Module storedmodule) : base(timestamp, NAME)
         {
-            this.ship = ship;
+            this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipid;
             this.slot = slot;
             this.buymodule = buymodule;

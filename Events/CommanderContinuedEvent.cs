@@ -62,7 +62,7 @@ namespace EddiEvents
         {
             this.commander = commander;
             this.shipid = shipId;
-            this.ship = ship;
+            this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipname = shipName;
             this.shipident = shipIdent;
             this.mode = (mode == null ? null : mode.localizedName);
