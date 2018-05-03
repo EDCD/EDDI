@@ -33,7 +33,7 @@ namespace EddiShipMonitor
 
         public ShipLoadoutEvent(DateTime timestamp, string ship, int? shipId, string shipName, string shipIdent, List<Compartment> compartments, List<Hardpoint> hardpoints, string paintjob) : base(timestamp, NAME)
         {
-            this.ship = ship;
+            this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipId;
             this.shipname = shipName;
             this.shipident = shipIdent;

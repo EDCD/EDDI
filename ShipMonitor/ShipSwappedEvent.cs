@@ -1,4 +1,5 @@
-﻿using EddiEvents;
+﻿using EddiDataDefinitions;
+using EddiEvents;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace EddiShipMonitor
 
         public ShipSwappedEvent(DateTime timestamp, string ship, int shipId, string soldship, int? soldshipid, string storedship, int? storedshipid) : base(timestamp, NAME)
         {
-            this.ship = ship;
+            this.ship = ShipDefinitions.FromEDModel(ship).model;
             this.shipid = shipId;
             this.soldship = soldship;
             this.soldshipid = soldshipid;
