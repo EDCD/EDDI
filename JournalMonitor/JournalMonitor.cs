@@ -2570,7 +2570,7 @@ namespace EddiJournalMonitor
                                         Cargo cargo = new Cargo(name, amount);
                                         cargo.haulage = 0;
                                         cargo.stolen = JsonParsing.getInt(cargoJson, "Stolen");
-                                        cargo.other = amount - cargo.stolen;
+                                        cargo.owned = amount - cargo.stolen;
                                         inventory.Add(cargo);
                                     }
                                 }
