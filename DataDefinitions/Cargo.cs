@@ -71,7 +71,7 @@ namespace EddiDataDefinitions
                 if (_owned != value)
                 {
                     _owned = value;
-                    NotifyPropertyChanged("other");
+                    NotifyPropertyChanged("owned");
                 }
             }
         }
