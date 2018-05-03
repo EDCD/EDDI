@@ -6,6 +6,8 @@ We are looking for one team lead per language, please. If you want to share the 
 
 Anyone interested in translating, please create an account at https://www.oneskyapp.com/ and then PM me your username and the language(s) you support, via GitHub, Discord or OneSky. My username on OneSky is `VerticalBlank`.
 
+The translation project itself is located at https://osxtyfi.oneskyapp.com/collaboration/project?id=145348.
+
 ## Notes
 
 - **NATIVE SPEAKERS ONLY PLEASE!** Goes without saying.
