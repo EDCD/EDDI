@@ -543,6 +543,10 @@ namespace Eddi
                 {
                     statusText.Text = Properties.EddiResources.frontier_api_nok;
                 }
+                else if (!EDDI.running)
+                {
+                    statusText.Text = "Safe mode - manadatory upgrade required.";
+                }
                 else
                 {
                     statusText.Text = Properties.EddiResources.operational;

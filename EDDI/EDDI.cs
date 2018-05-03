@@ -36,7 +36,7 @@ namespace Eddi
 
         private static bool started;
 
-        private static bool running = true;
+        internal static bool running = true;
 
         public bool inCQC { get; private set; } = false;
 
@@ -127,9 +127,8 @@ namespace Eddi
                 CheckUpgrade();
                 if (UpgradeRequired)
                 {
-                    // We are too old to continue; don't
+                    // We are too old to continue; initialize in a "safe mode".
                     running = false;
-                    return;
                 }
 
                 // Ensure that our primary data structures have something in them.  This allows them to be updated from any source
@@ -144,60 +143,68 @@ namespace Eddi
                 EDDIConfiguration configuration = EDDIConfiguration.FromFile();
                 updateHomeSystemStation(configuration);
 
-                // Set up monitors and responders
-                monitors = findMonitors();
-                responders = findResponders();
-
-                // Set up the app service
-                if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+                running = false;
+                if (running)
                 {
-                    // Carry out initial population of profile
-                    try
-                    {
-                        refreshProfile();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Debug("Failed to obtain profile: " + ex);
-                    }
-                }
+                    // Set up monitors and responders
+                    monitors = findMonitors();
+                    responders = findResponders();
 
-                Cmdr.insurance = configuration.Insurance;
-                Cmdr.gender = configuration.Gender;
-                if (Cmdr.name != null)
-                {
-                    Logging.Info("EDDI access to the companion app is enabled");
+                    // Set up the app service
+                    if (CompanionAppService.Instance.CurrentState == CompanionAppService.State.READY)
+                    {
+                        // Carry out initial population of profile
+                        try
+                        {
+                            refreshProfile();
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.Debug("Failed to obtain profile: " + ex);
+                        }
+                    }
+
+                    Cmdr.insurance = configuration.Insurance;
+                    Cmdr.gender = configuration.Gender;
+                    if (Cmdr.name != null)
+                    {
+                        Logging.Info("EDDI access to the companion app is enabled");
+                    }
+                    else
+                    {
+                        // If InvokeUpdatePlugin failed then it will have have left an error message, but this once we ignore it
+                        Logging.Info("EDDI access to the companion app is disabled");
+                    }
+
+                    // Set up the star map service
+                    StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
+                    if (starMapCredentials != null && starMapCredentials.apiKey != null)
+                    {
+                        // Commander name might come from star map credentials or the companion app's profile
+                        string commanderName = null;
+                        if (starMapCredentials.commanderName != null)
+                        {
+                            commanderName = starMapCredentials.commanderName;
+                        }
+                        else if (Cmdr != null && Cmdr.name != null)
+                        {
+                            commanderName = Cmdr.name;
+                        }
+                        if (commanderName != null)
+                        {
+                            starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
+                            Logging.Info("EDDI access to EDSM is enabled");
+                        }
+
+                    }
+                    if (starMapService == null)
+                    {
+                        Logging.Info("EDDI access to EDSM is disabled");
+                    }
                 }
                 else
                 {
-                    // If InvokeUpdatePlugin failed then it will have have left an error message, but this once we ignore it
-                    Logging.Info("EDDI access to the companion app is disabled");
-                }
-
-                // Set up the star map service
-                StarMapConfiguration starMapCredentials = StarMapConfiguration.FromFile();
-                if (starMapCredentials != null && starMapCredentials.apiKey != null)
-                {
-                    // Commander name might come from star map credentials or the companion app's profile
-                    string commanderName = null;
-                    if (starMapCredentials.commanderName != null)
-                    {
-                        commanderName = starMapCredentials.commanderName;
-                    }
-                    else if (Cmdr != null && Cmdr.name != null)
-                    {
-                        commanderName = Cmdr.name;
-                    }
-                    if (commanderName != null)
-                    {
-                        starMapService = new StarMapService(starMapCredentials.apiKey, commanderName);
-                        Logging.Info("EDDI access to EDSM is enabled");
-                    }
-
-                }
-                if (starMapService == null)
-                {
-                    Logging.Info("EDDI access to EDSM is disabled");
+                    Logging.Info("Mandatory upgrade required! EDDI initializing in safe mode until upgrade is completed.");
                 }
 
                 // We always start in normal space
