@@ -13,3 +13,10 @@ The translation project itself is located at https://osxtyfi.oneskyapp.com/colla
 - **NATIVE SPEAKERS ONLY PLEASE!** Goes without saying.
 - Text that appears in the UI must be perfect. Text that is only spoken can be a bit more lax.
 - Please try to keep any text in the UI as brief as possible, to minimize cognitive burden.
+
+## Tips and tricks
+
+When working in OneSky, I find it best to select a single resource file to work on from the dropdown menu. This helps maintain context and stops me from getting too overwhelmed.
+
+ ![](select_a_resource_file.png)
+ 
