@@ -15,13 +15,16 @@ namespace EddiCargoMonitor
         static CargoInventoryEvent()
         {
             VARIABLES.Add("inventory", "The cargo in your inventory");
+            VARIABLES.Add("cargocarried", "The total amount of cargo in your inventory");
         }
 
         public List<Cargo> inventory { get; private set; }
+        public int cargocarried { get; private set; }
 
-        public CargoInventoryEvent(DateTime timestamp, List<Cargo> inventory) : base(timestamp, NAME)
+        public CargoInventoryEvent(DateTime timestamp, List<Cargo> inventory, int cargocarried) : base(timestamp, NAME)
         {
             this.inventory = inventory;
+            this.cargocarried = cargocarried;
         }
     }
 }

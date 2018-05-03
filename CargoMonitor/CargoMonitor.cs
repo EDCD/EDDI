@@ -1,7 +1,6 @@
 ﻿using Eddi;
 using EddiDataDefinitions;
 using EddiEvents;
-using EddiShipMonitor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -214,6 +213,10 @@ namespace EddiCargoMonitor
                     // Found match of commodity
                     inventoryCargo.total = cargo.total;
                     inventoryCargo.stolen = cargo.stolen;
+                    if (inventoryCargo.haulageamounts == null || !inventoryCargo.haulageamounts.Any())
+                    {
+                        inventoryCargo.haulage = 0;
+                    }
                     inventoryCargo.owned = cargo.total - cargo.stolen - inventoryCargo.haulage;
                     inventoryCargo.ejected = 0;
                 }
@@ -245,18 +248,17 @@ namespace EddiCargoMonitor
             Cargo cargo = GetCargoWithInvariantName(@event.commodity);
             if (cargo != null)
             {
+                bool handled = false;
                 if (@event.stolen)
                 {
                     cargo.stolen++;
                 }
                 else if (cargo.haulageamounts.Any())
                 {
-                    int total = 0;
-                    bool handled = false;
                     foreach (HaulageAmount haulageAmount in cargo.haulageamounts)
                     {
                         string type = haulageAmount.name.Split('_').ElementAt(1).ToLowerInvariant();
-                        total += cargo.haulageamounts.Where(ha => ha.name.ToLowerInvariant().Contains(type)).Sum(ha => ha.amount);
+                        int total = cargo.haulageamounts.Where(ha => ha.name.ToLowerInvariant().Contains(type)).Sum(ha => ha.amount);
                         switch (type)
                         {
                             case "altruism":
@@ -288,7 +290,7 @@ namespace EddiCargoMonitor
                         }
                     }
                 }
-                else
+                else if (!handled)
                 {
                     cargo.owned++;
                 }
@@ -315,29 +317,72 @@ namespace EddiCargoMonitor
             Cargo cargo = GetCargoWithInvariantName(@event.commodity);
             if (cargo != null)
             {
-                // Order of preference is other -> stolen -> haulage
-                if (cargo.owned >= @event.amount)
-                {
-                    cargo.owned -= @event.amount;
-                }
-                else if (cargo.stolen >= @event.amount)
-                {
-                    cargo.stolen -= @event.amount;
-                }
-                else if (cargo.haulage >= @event.amount)
-                {
-                    cargo.haulage -= @event.amount;
-                }
+                bool handled = false;
 
-                // Track ejected amounts that may be mission related
+                // Check for related missions
                 if (cargo.haulageamounts.Any())
                 {
                     cargo.ejected += @event.amount;
+                    foreach (HaulageAmount haulageAmount in cargo.haulageamounts)
+                    {
+                        string type = haulageAmount.name.Split('_').ElementAt(1).ToLowerInvariant();
+                        int total = cargo.haulageamounts.Where(ha => ha.name.ToLowerInvariant().Contains(type)).Sum(ha => ha.amount);
+                        switch (type)
+                        {
+                            case "altruism":
+                            case "collect":
+                            case "mining":
+                            case "piracy":
+                                {
+                                    if(cargo.owned >= @event.amount)
+                                    {
+                                        cargo.owned -= @event.amount;
+                                        handled = true;
+                                    }
+                                }
+                                break;
+                            case "delivery":
+                            case "rescue":
+                            case "salvage":
+                            case "smuggle":
+                                {
+                                    if (cargo.haulage >= @event.amount)
+                                    {
+                                        cargo.haulage -= @event.amount;
+                                        handled = true;
+                                    }
+                                }
+                                break;
+                        }
+                        if (handled)
+                        {
+                            break;
+                        }
+                    }
                 }
-                // If not mission related and all was ejected
-                else if (cargo.total < 1)
+
+                // Otherwise, order of preference is owned -> stolen
+                if (!handled)
                 {
-                    RemoveCargoWithInvariantName(cargo.invariantName);
+                    if (cargo.owned >= @event.amount)
+                    {
+                        cargo.owned -= @event.amount;
+                    }
+                    else if (cargo.stolen >= @event.amount)
+                    {
+                        cargo.stolen -= @event.amount;
+                    }
+                }
+
+                // If not mission related and all was ejected
+                if (cargo.total < 1)
+                {
+                    // Check if other missions are pending
+                    if (cargo.haulageamounts == null || !cargo.haulageamounts.Any())
+                    {
+                        // All of the commodity was ejected
+                        RemoveCargoWithInvariantName(cargo.invariantName);
+                    }
                 }
                 writeInventory();
             }
@@ -586,8 +631,7 @@ namespace EddiCargoMonitor
                         .ToLowerInvariant();
                     string subtype = @event.name.Split('_').ElementAt(2)
                         .ToLowerInvariant()
-                        .Replace("$", "")
-                        .Replace("_name", "");
+                        .Replace("$", "");
                     switch (type)
                     {
                         case "altruism":
@@ -788,12 +832,6 @@ namespace EddiCargoMonitor
                 foreach (Cargo cargo in inventory)
                 {
                     cargocarried += cargo.total;
-                }
-
-                Ship ship = ((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip();
-                if (ship != null)
-                {
-                    ship.cargocarried = cargocarried;
                 }
 
                 configuration.cargo = inventory;
