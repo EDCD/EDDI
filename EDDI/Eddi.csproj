@@ -135,7 +135,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="CoriolisIDDefinitions.cs" />
     <Compile Include="EDDI.cs" />
     <Compile Include="EliteConfiguration.cs" />
     <Compile Include="EDDIMonitor.cs" />
@@ -156,7 +155,6 @@
     <Compile Include="ChangeLog.xaml.cs">
       <DependentUpon>ChangeLog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LZString.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
