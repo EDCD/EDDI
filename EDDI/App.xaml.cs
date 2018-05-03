@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using Utilities;
 
@@ -14,6 +16,45 @@ namespace Eddi
         [STAThread]
         static void Main()
         {
+            // Configure Rollbar error reporting
+
+            // Generate or retrieve an id unique to this configuration for bug tracking
+            string uniqueId = Eddi.Properties.Settings.Default.uniqueID ?? Guid.NewGuid().ToString();
+            if (Eddi.Properties.Settings.Default.uniqueID == null)
+            {
+                Eddi.Properties.Settings.Default.uniqueID = uniqueId;
+            }
+            _Rollbar.configureRollbar(uniqueId);
+
+            // Catch and send unhandled exceptions from Windows forms
+            System.Windows.Forms.Application.ThreadException += (sender, args) =>
+            {
+                Exception exception = args.Exception as Exception;
+                _Rollbar.ExceptionHandler(exception);
+                ReloadAndRecover(exception);
+            };
+            // Catch and send unhandled exceptions from non-UI threads
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                Exception exception = args.ExceptionObject as Exception;
+                _Rollbar.ExceptionHandler(exception);
+                ReloadAndRecover(exception);
+            };
+            // Catch and send unhandled exceptions from the task scheduler
+            TaskScheduler.UnobservedTaskException += (sender, args) =>
+            {
+                Exception exception = args.Exception as Exception;
+                _Rollbar.ExceptionHandler(exception);
+                ReloadAndRecover(exception);
+            };
+            // Catch and write managed exceptions to the local debug console (but do not send)
+            AppDomain.CurrentDomain.FirstChanceException += (sender, eventArgs) =>
+            {
+                Debug.WriteLine(eventArgs.Exception.ToString());
+            };
+
+            // Start the application
+
             ApplyAnyOverrideCulture(); // this must be done before any UI is generated
 
             MainWindow mainWindow = null;
@@ -61,6 +102,16 @@ namespace Eddi
                 Thread.CurrentThread.CurrentCulture = ci;
                 Thread.CurrentThread.CurrentUICulture = ci;
             }
+        }
+
+        private static void ReloadAndRecover(Exception exception)
+        {
+#if DEBUG
+#else
+            Logging.Debug("Reloading after unhandled exception: " + exception.ToString());
+            EDDI.Instance.Stop();
+            EDDI.Instance.Start();
+#endif
         }
     }
 }

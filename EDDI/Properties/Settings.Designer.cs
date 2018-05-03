@@ -82,5 +82,17 @@ namespace Eddi.Properties {
                 this["OverrideCulture"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string uniqueID {
+            get {
+                return ((string)(this["uniqueID"]));
+            }
+            set {
+                this["uniqueID"] = value;
+            }
+        }
     }
 }
