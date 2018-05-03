@@ -236,6 +236,10 @@ namespace EddiSpeechResponder
                     {
                         scriptHolder.Add(kv.Key);
                     }
+                    else if (kv.Value.Name == "Ship low fuel") // Accidental duplicate. The real event is called 'Low fuel'
+                    {
+                        scriptHolder.Add(kv.Key);
+                    }
                 }
                 foreach (string script in scriptHolder)
                 {
