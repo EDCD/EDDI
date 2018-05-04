@@ -234,23 +234,5 @@ namespace EddiDataDefinitions
             }
             return result;
         }
-
-        public static bool DeprecatedMaterials(string name)
-        {
-            // These material names have been replaced / are no longer in use. Listed for reference so that they won't be retained by the material monitor.
-            if (name == null)
-            {
-                return false;
-            }
-            List<string> deprecatedMaterialsList = new List<string>
-            {
-                "Thargoid Residue Data Analysis",
-                "Unknown Ship Signature",
-                "Unknown Wake Data",
-                "Unknown Fragment",
-            };
-
-            return deprecatedMaterialsList.Contains(name.Trim());
-        }
     }
 }
