@@ -121,4 +121,8 @@
     <value>Tourist Beacon</value>
     <comment>Data scan type TouristBeacon</comment>
   </data>
+  <data name="ShipUplink" xml:space="preserve">
+    <value>Ship Uplink</value>
+    <comment>Data scan type ShipUplink</comment>
+  </data>
 </root>
