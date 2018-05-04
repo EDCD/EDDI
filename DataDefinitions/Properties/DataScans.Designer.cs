@@ -133,7 +133,7 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thargoid Transmitter.
+        ///   Looks up a localized string similar to Thargoid Device.
         /// </summary>
         public static string TgTransmitter {
             get {

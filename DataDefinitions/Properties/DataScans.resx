@@ -142,7 +142,7 @@
     <comment>Data scan type DataPointHVT</comment>
   </data>
   <data name="TgTransmitter" xml:space="preserve">
-    <value>Thargoid Transmitter</value>
+    <value>Thargoid Device</value>
     <comment>Data scan type TGTRANSMITTER</comment>
   </data>
 </root>
