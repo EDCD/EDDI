@@ -484,6 +484,9 @@ namespace EddiVoiceAttackResponder
                     case "setspeechresponderpersonality":
                         InvokeSetSpeechResponderPersonality(ref vaProxy);
                         break;
+                    case "transmit":
+                        InvokeTransmit(ref vaProxy);
+                        break;
                 }
             }
             catch (Exception e)
@@ -788,7 +791,36 @@ namespace EddiVoiceAttackResponder
             }
             catch (Exception e)
             {
-                setStatus(ref vaProxy, "Failed to run internal speech system", e);
+                setStatus(ref vaProxy, "Failed to run EDDI's internal speech system (say)", e);
+            }
+        }
+
+        /// <summary>Say something inside the cockpit with text-to-speech</summary> 
+        public static void InvokeTransmit(ref dynamic vaProxy)
+        {
+            try
+            {
+                string script = vaProxy.GetText("Script");
+                if (script == null)
+                {
+                    return;
+                }
+
+                int? priority = vaProxy.GetInt("Priority");
+                if (priority == null)
+                {
+                    priority = 3;
+                }
+
+                string voice = vaProxy.GetText("Voice");
+
+                string speech = SpeechFromScript(script);
+
+                SpeechService.Instance.Transmit(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), speech, true, (int)priority, voice);
+            }
+            catch (Exception e)
+            {
+                setStatus(ref vaProxy, "Failed to run EDDI's internal speech system (transmit)", e);
             }
         }
 

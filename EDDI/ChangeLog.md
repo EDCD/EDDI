@@ -5,6 +5,8 @@ Full details of the variables available for each noted event, and VoiceAttack in
 ### 3.0.1-b2
   * Ship monitor
     * Made sure we are using human readable ship names in all scripts (e.g. "Imperial Eagle" rather than "Empire_Eagle")
+  * Text-to-Speech 
+    * Add new audio function `Transmit`, which adds a radio effect to speech output. Details on this new function are described in [the SpeechResponder documentation](https://github.com/EDCD/EDDI/blob/master/SpeechResponder/Help.md) 
 
 ### 3.0.1-b1
   * Completely re-witten Cargo Monitor. Cargo and limpets should now be tracked accurately.

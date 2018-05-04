@@ -196,11 +196,8 @@ namespace SpeechTests
         public void TestVariants()
         {
             SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049309), "Welcome to your Vulture.  Weapons online.", true);
-            //SpeechService.Instance.Transmit(ShipDefinitions.FromEliteID(128049309), "Vulture x-ray whiskey tango seven one seven six requesting docking.", true);
             SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049339), "Welcome to your Python.  Scanning at full range.", true);
-            //SpeechService.Instance.Transmit(ShipDefinitions.FromEliteID(128049339), "Python victor oscar Pappa fife tree fawer niner requesting docking.", true);
             SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049363), "Welcome to your Anaconda.  All systems operational.", true);
-            //SpeechService.Instance.Transmit(ShipDefinitions.FromEliteID(128049363), "Anaconda charlie november delta one niner eight fawer requesting docking.", true);
         }
 
         [TestMethod, TestCategory("Speech")]
@@ -217,9 +214,7 @@ namespace SpeechTests
         [TestMethod, TestCategory("Speech")]
         public void TestSendAndReceive()
         {
-            SpeechService.Instance.Say(ShipDefinitions.FromEliteID(128049339), "Issuing docking request.  Please stand by.", true);
-            //SpeechService.Instance.Transmit(ShipDefinitions.FromEliteID(128049339), "Anaconda golf foxtrot lima one niner six eight requesting docking.", true, true);
-            //SpeechService.Instance.Receive(ShipDefinitions.FromEliteID(128049339), "Roger golf foxtrot lima one niner six eight docking request received", true, true);
+            SpeechService.Instance.Transmit(ShipDefinitions.FromEliteID(128049339), "Anaconda golf foxtrot lima one niner six eight returning from orbit.", true);
         }
 
         [TestMethod, TestCategory("Speech")]
@@ -532,6 +527,13 @@ namespace SpeechTests
         {
             Logging.Verbose = true;
             SpeechService.Instance.Say(null, "<phoneme alphabet=\"ipa\" ph=\"ʃɪnˈrɑːrtə\">Shinrarta</phoneme> <phoneme alphabet=\"ipa\" ph=\"ˈdezɦrə\">Dezhra</phoneme> & Co's shop", true);
+        }
+
+        [TestMethod, TestCategory("Speech")]
+        public void TestSpeechServiceRadio()
+        {
+            Logging.Verbose = true;
+            SpeechService.Instance.Transmit(null, "Your python has touched down.", true);
         }
     }
 }

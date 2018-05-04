@@ -352,6 +352,20 @@ namespace EddiSpeechResponder
                 }
             }, 1, 2);
 
+            store["Transmit"] = new NativeFunction((values) =>
+            {
+                string text = values[0].AsString;
+                if (values.Count == 1 || string.IsNullOrEmpty(values[1].AsString))
+                {
+                    SpeechService.Instance.Transmit(((ShipMonitor)EDDI.Instance.ObtainMonitor("Ship monitor")).GetCurrentShip(), resolveScript(text, buildStore(vars)));
+                    return "";
+                }
+                else
+                {
+                    return "The Transmit function is used improperly. Please review the documentation for correct usage.";
+                }
+            }, 1);
+
             store["StartsWithVowel"] = new NativeFunction((values) =>
             {
                 string Entree = values[0].AsString;
