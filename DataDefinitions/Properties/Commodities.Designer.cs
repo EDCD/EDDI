@@ -2734,6 +2734,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Torval Commercial Contracts.
+        /// </summary>
+        public static string torvalcommercialcontracts {
+            get {
+                return ResourceManager.GetString("torvalcommercialcontracts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Torval Deed.
         /// </summary>
         public static string torvaldeeds {

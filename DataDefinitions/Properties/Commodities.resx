@@ -1489,4 +1489,8 @@
     <value>Underground Support</value>
     <comment>Commodity undergroundsupport</comment>
   </data>
+  <data name="torvalcommercialcontracts" xml:space="preserve">
+    <value>Torval Commercial Contracts</value>
+    <comment>Commodity torvalcommercialcontracts</comment>
+  </data>
 </root>
