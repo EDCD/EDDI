@@ -129,4 +129,8 @@
     <value>Unknown Uplink</value>
     <comment>Data scan type UnknownUplink</comment>
   </data>
+  <data name="SettlementUnknown" xml:space="preserve">
+    <value>Settlement Unknown</value>
+    <comment>Data scan type SettlementUnknown</comment>
+  </data>
 </root>

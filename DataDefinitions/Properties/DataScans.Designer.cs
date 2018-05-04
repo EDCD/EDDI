@@ -97,6 +97,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settlement Unknown.
+        /// </summary>
+        public static string SettlementUnknown {
+            get {
+                return ResourceManager.GetString("SettlementUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ship Uplink.
         /// </summary>
         public static string ShipUplink {
