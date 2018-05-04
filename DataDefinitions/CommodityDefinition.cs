@@ -367,6 +367,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(200000019, 10019, "KachiriginLeaches", Medicines, 8227, true),
                 new CommodityDefinition(200000020, 10020, "VanayequiRhinoFur", Textiles, 8331, true),
                 new CommodityDefinition(200000021, 10021, "ZeesszeAntGlue", ConsumerItems, 8161, true),
+                new CommodityDefinition(200000022, 10022, "imperialprisoner", Salvage, 0, false),
 
             };
         }

@@ -1473,4 +1473,8 @@
     <value>Alliance Legislative Records</value>
     <comment>Commodity alliancelegaslativerecords</comment>
   </data>
+  <data name="imperialprisoner" xml:space="preserve">
+    <value>Imperial Prisoner</value>
+    <comment>Commodity imperialprisoner</comment>
+  </data>
 </root>

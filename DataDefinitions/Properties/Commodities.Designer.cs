@@ -1339,6 +1339,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Imperial Prisoner.
+        /// </summary>
+        public static string imperialprisoner {
+            get {
+                return ResourceManager.GetString("imperialprisoner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Imperial Slaves.
         /// </summary>
         public static string ImperialSlaves {
