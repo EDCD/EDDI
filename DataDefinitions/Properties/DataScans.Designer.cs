@@ -70,6 +70,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ancient Codex.
+        /// </summary>
+        public static string AncientCodex {
+            get {
+                return ResourceManager.GetString("AncientCodex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data Link.
         /// </summary>
         public static string DataLink {

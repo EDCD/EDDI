@@ -133,4 +133,8 @@
     <value>Settlement Unknown</value>
     <comment>Data scan type SettlementUnknown</comment>
   </data>
+  <data name="AncientCodex" xml:space="preserve">
+    <value>Ancient Codex</value>
+    <comment>Data scan type AncientCodex</comment>
+  </data>
 </root>

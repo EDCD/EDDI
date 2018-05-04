@@ -16,6 +16,7 @@ namespace EddiDataDefinitions
             missingEDNameHandler = edname => new DataScan(edname);
 
             var AbandonedDataLog = new DataScan("AbandonedDataLog");
+            var AncientCodex = new DataScan("ANCIENTCODEX");
             var DataLink = new DataScan("DataLink");
             var DataPoint = new DataScan("DataPoint");
             var ListeningPost = new DataScan("ListeningPost");
