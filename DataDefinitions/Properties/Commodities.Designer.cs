@@ -2923,6 +2923,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vanayequi Ceratomorpha Fur.
+        /// </summary>
+        public static string VanayequiRhinoFur {
+            get {
+                return ResourceManager.GetString("VanayequiRhinoFur", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vega Slimweed.
         /// </summary>
         public static string VegaSlimweed {

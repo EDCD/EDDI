@@ -363,6 +363,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(200000017, 10017, "RajukruStoves", ConsumerItems, 8378, true),
                 new CommodityDefinition(200000018, 10018, "KinagoInstruments", ConsumerItems, 13030, true),
                 new CommodityDefinition(200000019, 10019, "KachiriginLeaches", Medicines, 8227, true),
+                new CommodityDefinition(200000020, 10020, "VanayequiRhinoFur", Textiles, 8331, true),
             };
         }
         private static Dictionary<long, CommodityDefinition> CommoditiesByEliteID;

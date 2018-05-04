@@ -1457,4 +1457,8 @@
     <value>Kachirigin Filter Leeches</value>
     <comment>Commodity KachiriginLeaches</comment>
   </data>
+  <data name="VanayequiRhinoFur" xml:space="preserve">
+    <value>Vanayequi Ceratomorpha Fur</value>
+    <comment>Commodity VanayequiRhinoFur</comment>
+  </data>
 </root>
