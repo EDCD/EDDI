@@ -612,7 +612,7 @@
       "script": "{_ Context }\r\n{SetState('eddi_context_last_subject', 'fine')}\r\n{SetState('eddi_context_last_action', 'incur')}\r\n{SetState('eddi_context_fine_name', event.victim)}\r\n{SetState('eddi_context_fine_faction', event.faction)}\r\n{SetState('eddi_context_fine_amount', event.fine)}\r\n\r\nYou owe {P(event.faction)} {Humanise(event.fine)} credits for {event.crime}.",
       "default": true,
       "name": "Fine incurred",
-      "description": "Triggered when your incur a fine"
+      "description": "Triggered when you incur a fine"
     },
     "Fine paid": {
       "enabled": true,
