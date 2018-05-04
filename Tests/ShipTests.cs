@@ -61,6 +61,30 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [DeploymentItem("loadout.json")]
+        public void TestLoadoutParsing()
+        {
+            string data = System.IO.File.ReadAllText("loadout.json");
+
+            // Set ourselves as in beta to stop sending data to remote systems
+            EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
+            Logging.Verbose = true;
+
+            List<Event> events = JournalMonitor.ParseJournalEntry(data);
+            Assert.AreEqual(1, events.Count);
+            ShipLoadoutEvent loadoutEvent = events[0] as ShipLoadoutEvent;
+            Assert.AreEqual("Peppermint", loadoutEvent.shipname);
+            Assert.AreEqual(18, loadoutEvent.compartments.Count);
+            Assert.AreEqual(7, loadoutEvent.hardpoints.Count);
+
+            ShipMonitor shipMonitor = new ShipMonitor();
+            var privateObject = new PrivateObject(shipMonitor);
+            object[] args = new object[]{loadoutEvent};
+            Ship ship = privateObject.Invoke("ParseShipLoadoutEvent", args) as Ship;
+            Assert.AreEqual("Peppermint", ship.name);
+        }
+
+        [TestMethod]
         public void TestShipScenario1()
         {
             int sidewinderId = 901;
