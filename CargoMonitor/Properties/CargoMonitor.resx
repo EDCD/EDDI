@@ -131,25 +131,29 @@
     <value>Name</value>
     <comment>Name of cargo, such as "Gold"</comment>
   </data>
-  <data name="header_owned" xml:space="preserve">
-    <value>Owned</value>
-    <comment>Tons of owned cargo carried</comment>
+  <data name="header_need" xml:space="preserve">
+    <value>Needed</value>
+    <comment>Tons needed for missions</comment>
   </data>
-  <data name="header_price" xml:space="preserve">
-    <value>Price per Ton</value>
+  <data name="para2" xml:space="preserve">
+    <value>Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated.</value>
   </data>
-  <data name="header_stolen" xml:space="preserve">
-    <value>Stolen</value>
-    <comment>Tons of stolen cargo carried</comment>
+  <data name="para1" xml:space="preserve">
+    <value>Below is a list of all your cargo.</value>
   </data>
   <data name="header_type" xml:space="preserve">
     <value>Type</value>
     <comment>Type of cargo, such as "Metals"</comment>
   </data>
-  <data name="para1" xml:space="preserve">
-    <value>Below is a list of all your cargo.</value>
+  <data name="header_stolen" xml:space="preserve">
+    <value>Stolen</value>
+    <comment>Tons of stolen cargo carried</comment>
   </data>
-  <data name="para2" xml:space="preserve">
-    <value>Note that if your inventory is incorrect you will need to start or restart Elite and this information will be updated.</value>
+  <data name="header_price" xml:space="preserve">
+    <value>Price per Ton</value>
+  </data>
+  <data name="header_owned" xml:space="preserve">
+    <value>Owned</value>
+    <comment>Tons of owned cargo carried</comment>
   </data>
 </root>

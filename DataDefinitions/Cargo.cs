@@ -76,6 +76,22 @@ namespace EddiDataDefinitions
             }
         }
 
+        // The number of items needed for missions
+        [JsonIgnore]
+        private int _need;
+        public int need
+        {
+            get => _need;
+            set
+            {
+                if (_need != value)
+                {
+                    _need = value;
+                    NotifyPropertyChanged("need");
+                }
+            }
+        }
+
         // Total amount of the commodity
         public int total { get; set; }
 
@@ -133,6 +149,7 @@ namespace EddiDataDefinitions
             this.price = price ?? commodityDef.avgprice;
             this.total = total;
             this.ejected = 0;
+            this.need = 0;
             haulageamounts = new List<HaulageAmount>();
         }
 

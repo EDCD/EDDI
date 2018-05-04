@@ -97,6 +97,15 @@ namespace EddiCargoMonitor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Needed.
+        /// </summary>
+        public static string header_need {
+            get {
+                return ResourceManager.GetString("header_need", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Owned.
         /// </summary>
         public static string header_owned {

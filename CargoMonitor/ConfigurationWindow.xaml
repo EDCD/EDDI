@@ -92,6 +92,19 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </utility:DataGridNumericColumn>
+                <utility:DataGridNumericColumn Header="{x:Static resx:CargoMonitor.header_need}" Width="80" Binding="{Binding Path=need, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, TargetNullValue={x:Static System:String.Empty}}">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5, 0" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </utility:DataGridNumericColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
