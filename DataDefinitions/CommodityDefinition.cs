@@ -360,6 +360,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(200000014, 10014, "siriusfranchisepackage", Powerplay, 0, false),
                 new CommodityDefinition(200000015, 10015, "republicangarisonsupplies", Powerplay, 0, false),
                 new CommodityDefinition(200000016, 10016, "lavignygarisonsupplies", Powerplay, 0, false),
+                new CommodityDefinition(200000017, 10017, "RajukruStoves", ConsumerItems, 0, true),
             };
         }
         private static Dictionary<long, CommodityDefinition> CommoditiesByEliteID;

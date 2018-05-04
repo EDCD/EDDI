@@ -2194,6 +2194,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rajukru Multi-Stoves.
+        /// </summary>
+        public static string RajukruStoves {
+            get {
+                return ResourceManager.GetString("RajukruStoves", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rapa Bao Snake Skins.
         /// </summary>
         public static string RapaBaoSnakeSkins {

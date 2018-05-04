@@ -1445,4 +1445,8 @@
     <value>Zeessze Ant Grub Glue</value>
     <comment>Commodity ZeesszeAntGrubGlue</comment>
   </data>
+  <data name="RajukruStoves" xml:space="preserve">
+    <value>Rajukru Multi-Stoves</value>
+    <comment>Commodity RajukruStoves</comment>
+  </data>
 </root>
