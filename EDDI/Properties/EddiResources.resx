@@ -233,4 +233,7 @@ Please close the other instance and try again.</value>
     <value>Automatic</value>
     <comment>The user's system language</comment>
   </data>
+  <data name="safe_mode" xml:space="preserve">
+    <value>Safe mode - upgrade required.</value>
+  </data>
 </root>

@@ -315,6 +315,15 @@ namespace Eddi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Safe mode - upgrade required..
+        /// </summary>
+        public static string safe_mode {
+            get {
+                return ResourceManager.GetString("safe_mode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Starting upgrade..
         /// </summary>
         public static string starting_upgrade {

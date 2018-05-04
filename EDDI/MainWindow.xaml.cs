@@ -543,6 +543,10 @@ namespace Eddi
                 {
                     statusText.Text = Properties.EddiResources.frontier_api_nok;
                 }
+                else if (!EDDI.running)
+                {
+                    statusText.Text = Properties.EddiResources.safe_mode;
+                }
                 else
                 {
                     statusText.Text = Properties.EddiResources.operational;
