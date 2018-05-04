@@ -1461,4 +1461,8 @@
     <value>Vanayequi Ceratomorpha Fur</value>
     <comment>Commodity VanayequiRhinoFur</comment>
   </data>
+  <data name="ZeesszeAntGlue" xml:space="preserve">
+    <value>Zeessze Ant Grub Glue</value>
+    <comment>Commodity ZeesszeAntGlue</comment>
+  </data>
 </root>

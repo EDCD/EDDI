@@ -3078,6 +3078,15 @@ namespace EddiDataDefinitions.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Zeessze Ant Grub Glue.
         /// </summary>
+        public static string ZeesszeAntGlue {
+            get {
+                return ResourceManager.GetString("ZeesszeAntGlue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zeessze Ant Grub Glue.
+        /// </summary>
         public static string ZeesszeAntGrubGlue {
             get {
                 return ResourceManager.GetString("ZeesszeAntGrubGlue", resourceCulture);
