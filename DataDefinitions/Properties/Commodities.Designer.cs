@@ -2779,6 +2779,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Underground Support.
+        /// </summary>
+        public static string undergroundsupport {
+            get {
+                return ResourceManager.GetString("undergroundsupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Sensor.
         /// </summary>
         public static string UnknownArtifact {

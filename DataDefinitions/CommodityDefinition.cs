@@ -371,6 +371,7 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(200000020, 10020, "VanayequiRhinoFur", Textiles, 8331, true),
                 new CommodityDefinition(200000021, 10021, "ZeesszeAntGlue", ConsumerItems, 8161, true),
                 new CommodityDefinition(200000022, 10022, "imperialprisoner", Salvage, 0, false),
+                new CommodityDefinition(200000023, 10023, "undergroundsupport", Powerplay, 0, false),
 
             };
         }
