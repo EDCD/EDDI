@@ -1429,6 +1429,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kachirigin Filter Leeches.
+        /// </summary>
+        public static string KachiriginLeaches {
+            get {
+                return ResourceManager.GetString("KachiriginLeaches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kamitra Cigars.
         /// </summary>
         public static string KamitraCigars {
@@ -1461,6 +1470,15 @@ namespace EddiDataDefinitions.Properties {
         public static string KarsukiLocusts {
             get {
                 return ResourceManager.GetString("KarsukiLocusts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kinago Violins.
+        /// </summary>
+        public static string KinagoInstruments {
+            get {
+                return ResourceManager.GetString("KinagoInstruments", resourceCulture);
             }
         }
         

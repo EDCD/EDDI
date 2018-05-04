@@ -1449,4 +1449,12 @@
     <value>Rajukru Multi-Stoves</value>
     <comment>Commodity RajukruStoves</comment>
   </data>
+  <data name="KinagoInstruments" xml:space="preserve">
+    <value>Kinago Violins</value>
+    <comment>Commodity KinagoInstruments</comment>
+  </data>
+  <data name="KachiriginLeaches" xml:space="preserve">
+    <value>Kachirigin Filter Leeches</value>
+    <comment>Commodity KachiriginLeaches</comment>
+  </data>
 </root>
