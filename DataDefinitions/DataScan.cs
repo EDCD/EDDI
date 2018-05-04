@@ -23,6 +23,7 @@ namespace EddiDataDefinitions
             var ListeningPost = new DataScan("ListeningPost");
             var SettlementUnknown = new DataScan("Settlement_Unknown");
             var ShipUplink = new DataScan("ShipUplink");
+            var TgTransmitter = new DataScan("TGTRANSMITTER");
             var TouristBeacon = new DataScan("TouristBeacon");
             var UnknownUplink = new DataScan("Unknown_Uplink");
             var WreckedShip = new DataScan("WreckedShip");
