@@ -58,7 +58,7 @@ namespace EddiEvents
             this.model = model;
             this.allegiance = allegiance;
             this.faction = faction;
-            this.factionstate = (factionstate == null ? SystemState.None.localizedName : factionstate.localizedName);
+            this.factionstate = (factionstate == null ? SystemState.FromEDName("None").localizedName : factionstate.localizedName);
             this.economy = (economy ?? Economy.None).localizedName;
             this.government = (government ?? Government.None).localizedName;
             this.distancefromstar = distancefromstar;

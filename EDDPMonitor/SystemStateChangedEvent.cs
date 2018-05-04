@@ -10,7 +10,7 @@ namespace EddiEddpMonitor
         public const string NAME = "System state changed";
         public const string DESCRIPTION = "Triggered when there is a change in the state of a watched system";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
-        public static SystemStateChangedEvent SAMPLE = new SystemStateChangedEvent(DateTime.Now, "home", "Shinrarta Dezhra", SystemState.CivilUnrest, SystemState.CivilWar);
+        public static SystemStateChangedEvent SAMPLE = new SystemStateChangedEvent(DateTime.Now, "home", "Shinrarta Dezhra", SystemState.FromEDName("CivilUnrest"), SystemState.FromEDName("CivilWar"));
 
         static SystemStateChangedEvent()
         {
@@ -24,16 +24,16 @@ namespace EddiEddpMonitor
 
         public string system { get; private set; }
 
-        public SystemState oldstate { get; private set; }
+        public string oldstate { get; private set; }
 
-        public SystemState newstate { get; private set; }
+        public string newstate { get; private set; }
 
         public SystemStateChangedEvent(DateTime timestamp, string match, string system, SystemState oldstate, SystemState newstate) : base(timestamp, NAME)
         {
             this.match = match;
             this.system = system;
-            this.oldstate = oldstate;
-            this.newstate = newstate;
+            this.oldstate = (oldstate == null ? SystemState.FromEDName("None").localizedName : oldstate.localizedName);
+            this.newstate = (newstate == null ? SystemState.FromEDName("None").localizedName : newstate.localizedName);
         }
     }
 }

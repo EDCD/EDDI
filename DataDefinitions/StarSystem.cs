@@ -10,7 +10,7 @@ namespace EddiDataDefinitions
     public class StarSystem
     {
         // The ID in EDDB
-        public long EDDBID { get; set; }
+        public long? EDDBID { get; set; }
         public string name { get; set; }
         public long? population { get; set; }
         public string allegiance { get; set; }
@@ -21,6 +21,9 @@ namespace EddiDataDefinitions
         public string security { get; set; }
         public string power { get; set; }
         public string powerstate { get; set; }
+
+        [Obsolete("Please be explicit and use the systemState object instead")]
+        public string state { get { return systemState == null ? SystemState.FromEDName("None").localizedName : systemState.localizedName; } }
 
         /// <summary>X co-ordinate for this system</summary>
         public decimal? x { get; set; }
