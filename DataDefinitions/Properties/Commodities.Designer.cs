@@ -106,6 +106,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aisling Media Materials.
+        /// </summary>
+        public static string aislingmediamaterials {
+            get {
+                return ResourceManager.GetString("aislingmediamaterials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aisling Promotional Materials.
         /// </summary>
         public static string aislingpromotionalmaterials {
