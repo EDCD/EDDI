@@ -106,6 +106,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aisling Promotional Materials.
+        /// </summary>
+        public static string aislingpromotionalmaterials {
+            get {
+                return ResourceManager.GetString("aislingpromotionalmaterials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alacarakmo Skin Art.
         /// </summary>
         public static string AlacarakmoSkinArt {
@@ -138,6 +147,15 @@ namespace EddiDataDefinitions.Properties {
         public static string alieneggs {
             get {
                 return ResourceManager.GetString("alieneggs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alliance Legislative Records.
+        /// </summary>
+        public static string alliancelegaslativerecords {
+            get {
+                return ResourceManager.GetString("alliancelegaslativerecords", resourceCulture);
             }
         }
         
