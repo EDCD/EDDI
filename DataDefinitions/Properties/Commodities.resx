@@ -1477,4 +1477,8 @@
     <value>Imperial Prisoner</value>
     <comment>Commodity imperialprisoner</comment>
   </data>
+  <data name="torvaldeeds" xml:space="preserve">
+    <value>Torval Deed</value>
+    <comment>Commodity torvaldeeds</comment>
+  </data>
 </root>

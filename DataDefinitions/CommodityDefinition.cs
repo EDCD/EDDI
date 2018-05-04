@@ -357,6 +357,7 @@ namespace EddiDataDefinitions
                 // Items for which we do not have EDDB IDs
                 new CommodityDefinition(200000000, 10000, "aislingpromotionalmaterials", Powerplay, 0, false),
                 new CommodityDefinition(200000001, 10001, "alliancelegaslativerecords", Powerplay, 0, false),
+                new CommodityDefinition(200000002, 10002, "torvaldeeds", Powerplay, 0, false),
                 new CommodityDefinition(200000012, 10012, "siriuscommercialcontracts", Powerplay, 0, false),
                 new CommodityDefinition(200000013, 10013, "siriusindustrialequipment", Powerplay, 0, false),
                 new CommodityDefinition(200000014, 10014, "siriusfranchisepackage", Powerplay, 0, false),

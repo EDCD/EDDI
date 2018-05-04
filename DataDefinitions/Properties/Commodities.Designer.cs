@@ -2725,6 +2725,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Torval Deed.
+        /// </summary>
+        public static string torvaldeeds {
+            get {
+                return ResourceManager.GetString("torvaldeeds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Toxandji Virocide.
         /// </summary>
         public static string ToxandjiVirocide {
