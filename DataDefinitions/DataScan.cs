@@ -21,6 +21,7 @@ namespace EddiDataDefinitions
             var ListeningPost = new DataScan("ListeningPost");
             var ShipUplink = new DataScan("ShipUplink");
             var TouristBeacon = new DataScan("TouristBeacon");
+            var UnknownUplink = new DataScan("Unknown_Uplink");
             var WreckedShip = new DataScan("WreckedShip");
         }
 
