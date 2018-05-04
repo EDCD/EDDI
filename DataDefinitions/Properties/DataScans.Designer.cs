@@ -97,6 +97,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data Point H.V.T..
+        /// </summary>
+        public static string DataPointHVT {
+            get {
+                return ResourceManager.GetString("DataPointHVT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Listening Post.
         /// </summary>
         public static string ListeningPost {

@@ -19,6 +19,7 @@ namespace EddiDataDefinitions
             var AncientCodex = new DataScan("ANCIENTCODEX");
             var DataLink = new DataScan("DataLink");
             var DataPoint = new DataScan("DataPoint");
+            var DataPointHVT = new DataScan("DataPointHVT");
             var ListeningPost = new DataScan("ListeningPost");
             var SettlementUnknown = new DataScan("Settlement_Unknown");
             var ShipUplink = new DataScan("ShipUplink");

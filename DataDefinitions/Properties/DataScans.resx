@@ -137,4 +137,8 @@
     <value>Ancient Codex</value>
     <comment>Data scan type AncientCodex</comment>
   </data>
+  <data name="DataPointHVT" xml:space="preserve">
+    <value>Data Point H.V.T.</value>
+    <comment>Data scan type DataPointHVT</comment>
+  </data>
 </root>
