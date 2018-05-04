@@ -6,7 +6,7 @@ namespace EddiEvents
     public class PowerPreparationVoteCast : Event
     {
         public const string NAME = "Power preparation vote cast";
-        public const string DESCRIPTION = "Triggered when a commander votes for system perparation";
+        public const string DESCRIPTION = "Triggered when a commander votes for system preparation";
         public const string SAMPLE = @"{ ""timestamp"":""2016-11-16T09:28:19Z"", ""event"":""PowerplayVote"", ""Power"":""Zachary Hudson"", ""System"":""Sol"", ""Votes"":10 }";
 
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();

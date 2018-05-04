@@ -1278,7 +1278,7 @@
       "script": "Vote\r\n{OneOf(\"cast\", \"registered\")}",
       "default": true,
       "name": "Power preparation vote cast",
-      "description": "Triggered when a commander votes for system perparation"
+      "description": "Triggered when a commander votes for system preparation"
     },
     "Power salary claimed": {
       "enabled": true,
