@@ -164,7 +164,7 @@ namespace Utilities
     {
         // Exception handling (configuration instructions are at https://github.com/rollbar/Rollbar.NET)
         // We have a limited data plan, so before sending exceptions and other reports, we shall use the API to check that the item is unique
-        // The Rollbar API test console is available at https://rollbar.com/docs/api/test_console/.
+        // The Rollbar API test console is available at https://docs.rollbar.com/reference.
 
         const string rollbarReadToken = "66e63ff290854a75b8b4c3263f084db6";
         const string rollbarWriteToken = "debe6e50f82d4e8c955d5efafa79c789";
@@ -237,7 +237,7 @@ namespace Utilities
                         string itemStatus = JsonParsing.getString(item, "status");
                         long itemId = JsonParsing.getLong(item, "id");
                         bool uniqueData = isUniqueData(itemId, thisData);
-                        string itemResolvedVersion = JsonParsing.getString(item, "resolved_in_version");
+                        string itemResolvedVersion = JsonParsing.getString(item, "environment");
 
                         // Filter messages & data so that we send only reports which are unique
                         if (itemStatus.ToLowerInvariant() == "active" && !uniqueData)
