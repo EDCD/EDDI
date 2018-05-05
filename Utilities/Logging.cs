@@ -187,6 +187,7 @@ namespace Utilities
                     CodeVersion = ThisAssembly.Git.Sha,
                     Root = "/"
                 },
+                MaxReportsPerMinute = 1,
             };
             RollbarLocator.RollbarInstance.Configure(config);
         }
