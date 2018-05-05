@@ -708,7 +708,7 @@ namespace EddiCompanionAppService
 
                     if (commodityDef == null || (string)commodity["name"] != commodityDef.invariantName)
                     {
-                        if (commodityDef.invariantName != "Limpet")
+                        if (commodityDef.edname != "Drones")
                         {
                             // Unknown commodity; report the full object so that we can update the definitions
                             Logging.Report("Commodity definition error: " + (string)commodity["name"], JsonConvert.SerializeObject(commodity));
