@@ -163,6 +163,14 @@ Common usage of this is to provide a pre-recorded custom audio file rather than 
 
     {Play('C:\\Users\\CmdrMcDonald\\Desktop\\Warning.wav')}
 
+### Transmit() 
+ 
+This function allows you to add a radio effect to speech. 
+ 
+Transmit() takes one argument: the text to speak, for example: 
+ 
+{Transmit("{ShipName()} returning from orbit.")} 
+
 ### ICAO()
 
 This function will turn its argument into an ICAO spoken value, for example "NCC" becomes "November Charlie Charlie".
