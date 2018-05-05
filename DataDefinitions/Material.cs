@@ -99,7 +99,7 @@ namespace EddiDataDefinitions
             var AncientLanguageData = new Material("ancientlanguagedata", Data, Rare);
             var AncientTechnologicalData = new Material("ancienttechnologicaldata", Data, Rare);
             var Tg_ShipFlightData = new Material("tg_shipflightdata", Data, Rare);
-            var Tg_ShipSystemData = new Material("tg_shipsystemdata", Data, Rare);
+            var Tg_ShipSystemData = new Material("tg_shipsystemsdata", Data, Rare);
             var Tg_ResidueData = new Material("tg_residuedata", Data, Rare);
             var UnknownWakeScan = new Material("unknownwakedata", Data, Rare);
 
