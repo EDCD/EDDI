@@ -2557,6 +2557,7 @@ namespace EddiJournalMonitor
                             break;
                         case "Cargo":
                             {
+                                int cargocarried = 0;
                                 object val;
                                 List<Cargo> inventory = new List<Cargo>();
 
@@ -2568,15 +2569,16 @@ namespace EddiJournalMonitor
                                     {
                                         string name = JsonParsing.getString(cargoJson, "Name");
                                         int amount = JsonParsing.getInt(cargoJson, "Count");
+                                        cargocarried += amount;
                                         Cargo cargo = new Cargo(name, amount);
                                         cargo.haulage = 0;
                                         cargo.stolen = JsonParsing.getInt(cargoJson, "Stolen");
-                                        cargo.other = amount - cargo.stolen;
+                                        cargo.owned = amount - cargo.stolen;
                                         inventory.Add(cargo);
                                     }
                                 }
 
-                                events.Add(new CargoInventoryEvent(DateTime.Now, inventory) { raw = line });
+                                events.Add(new CargoInventoryEvent(DateTime.Now, inventory, cargocarried) { raw = line });
                             }
                             handled = true;
                             break;

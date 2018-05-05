@@ -62,16 +62,32 @@ namespace EddiDataDefinitions
 
         // The number of collected/purchased items
         [JsonIgnore]
-        private int _other;
-        public int other
+        private int _owned;
+        public int owned
         {
-            get => _other;
+            get => _owned;
             set
             {
-                if (_other != value)
+                if (_owned != value)
                 {
-                    _other = value;
-                    NotifyPropertyChanged("other");
+                    _owned = value;
+                    NotifyPropertyChanged("owned");
+                }
+            }
+        }
+
+        // The number of items needed for missions
+        [JsonIgnore]
+        private int _need;
+        public int need
+        {
+            get => _need;
+            set
+            {
+                if (_need != value)
+                {
+                    _need = value;
+                    NotifyPropertyChanged("need");
                 }
             }
         }
@@ -133,6 +149,7 @@ namespace EddiDataDefinitions
             this.price = price ?? commodityDef.avgprice;
             this.total = total;
             this.ejected = 0;
+            this.need = 0;
             haulageamounts = new List<HaulageAmount>();
         }
 
@@ -140,7 +157,7 @@ namespace EddiDataDefinitions
 
         public void NotifyPropertyChanged(string propName)
         {
-            this.total = this.stolen + this.haulage + this.other;
+            this.total = this.stolen + this.haulage + this.owned;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }

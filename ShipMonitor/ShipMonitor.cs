@@ -1,4 +1,5 @@
 ﻿using Eddi;
+using EddiCargoMonitor;
 using EddiDataDefinitions;
 using EddiEvents;
 using Newtonsoft.Json;
@@ -132,6 +133,14 @@ namespace EddiShipMonitor
             if (@event is CommanderContinuedEvent)
             {
                 handleCommanderContinuedEvent((CommanderContinuedEvent)@event);
+            }
+            else if (@event is CargoInventoryEvent)
+            {
+                handleCargoInventoryEvent((CargoInventoryEvent)@event);
+            }
+            else if (@event is CargoUpdatedEvent)
+            {
+                handleCargoUpdatedEvent((CargoUpdatedEvent)@event);
             }
             else if (@event is ShipPurchasedEvent)
             {
@@ -271,6 +280,26 @@ namespace EddiShipMonitor
                 }
                 writeShips();
             }
+        }
+
+        private void handleCargoInventoryEvent(CargoInventoryEvent @event)
+        {
+            Ship ship = GetCurrentShip();
+            if (ship != null)
+            {
+                ship.cargocarried = @event.cargocarried;
+            }
+            writeShips();
+        }
+
+        private void handleCargoUpdatedEvent(CargoUpdatedEvent @event)
+        {
+            Ship ship = GetCurrentShip();
+            if (ship != null)
+            {
+                ship.cargocarried = @event.cargocarried;
+            }
+            writeShips();
         }
 
         private void handleShipPurchasedEvent(ShipPurchasedEvent @event)

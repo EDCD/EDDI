@@ -104,7 +104,7 @@ Any values might be missing, depending on EDDI's configuration.
 
 Information about your current starsystem is available under the `system` object.
 
-Any values might be missing, depending on EDDI's configuration and the information avaialable about the system.
+Any values might be missing, depending on EDDI's configuration and the information available about the system.
 
     - `name` the name of the starsystem
     - `population` the population of the starsystem
@@ -229,7 +229,7 @@ An engineering blueprint.
 
 ## Inventory
 
-The inventory of the cargo carried within the current ship.
+The inventory of cargo carried within the ship is available under the `inventory` object.
 
     - `cargo` specific details on the cargo being carried
 
@@ -242,7 +242,7 @@ Details of an individual commodity being carried.
 	- `category` the category of the commodity (e.g. Foods, Machinery, Technology)
     - `stolen` the number of units flagged as stolen
     - `haulage` the number of units associated with a mission
-    - `other` the number of units privately purchased or collected (not stolen)
+    - `owned` the number of units privately purchased or collected (not stolen or mission related)
     - `total` the total number of units
     - `price` the price of an individual unit
 

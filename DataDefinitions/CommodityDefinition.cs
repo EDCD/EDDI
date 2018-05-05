@@ -413,7 +413,7 @@ namespace EddiDataDefinitions
             return rawEDName?.ToLowerInvariant()
                 ?.Replace("$", "") // Header for types from mining and mission events
                 ?.Replace("_name;", "") // Trailer for types from mining and mission events
-                ;
+                ?.Replace(" name;", "");
         }
         
         new public static CommodityDefinition FromName(string name)
