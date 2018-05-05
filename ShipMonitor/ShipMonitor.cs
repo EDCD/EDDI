@@ -134,9 +134,13 @@ namespace EddiShipMonitor
             {
                 handleCommanderContinuedEvent((CommanderContinuedEvent)@event);
             }
-            if (@event is CargoInventoryEvent)
+            else if (@event is CargoInventoryEvent)
             {
                 handleCargoInventoryEvent((CargoInventoryEvent)@event);
+            }
+            else if (@event is CargoUpdatedEvent)
+            {
+                handleCargoUpdatedEvent((CargoUpdatedEvent)@event);
             }
             else if (@event is ShipPurchasedEvent)
             {
@@ -279,6 +283,16 @@ namespace EddiShipMonitor
         }
 
         private void handleCargoInventoryEvent(CargoInventoryEvent @event)
+        {
+            Ship ship = GetCurrentShip();
+            if (ship != null)
+            {
+                ship.cargocarried = @event.cargocarried;
+            }
+            writeShips();
+        }
+
+        private void handleCargoUpdatedEvent(CargoUpdatedEvent @event)
         {
             Ship ship = GetCurrentShip();
             if (ship != null)

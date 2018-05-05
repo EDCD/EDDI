@@ -262,7 +262,7 @@ namespace EddiCargoMonitor
                 {
                     foreach (HaulageAmount haulageAmount in cargo.haulageamounts)
                     {
-                        string type = haulageAmount.name.Split('_').ElementAt(1).ToLowerInvariant();
+                        string type = haulageAmount.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
                         int total = cargo.haulageamounts.Where(ha => ha.name.ToLowerInvariant().Contains(type)).Sum(ha => ha.amount);
                         switch (type)
                         {
@@ -331,7 +331,7 @@ namespace EddiCargoMonitor
                     cargo.ejected += @event.amount;
                     foreach (HaulageAmount haulageAmount in cargo.haulageamounts)
                     {
-                        string type = haulageAmount.name.Split('_').ElementAt(1).ToLowerInvariant();
+                        string type = haulageAmount.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
                         int total = cargo.haulageamounts.Where(ha => ha.name.ToLowerInvariant().Contains(type)).Sum(ha => ha.amount);
                         switch (type)
                         {
@@ -569,7 +569,7 @@ namespace EddiCargoMonitor
                 HaulageAmount haulageAmount = inventoryCargo.haulageamounts.FirstOrDefault(ha => ha.id == @event.missionid);
                 if (haulageAmount != null)
                 {
-                    string type = @event.name.Split('_').ElementAt(1).ToLowerInvariant();
+                    string type = @event.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
                     switch (type)
                     {
                         case "delivery":
@@ -610,7 +610,7 @@ namespace EddiCargoMonitor
         {
             if (@event.commodity != null)
             {
-                string type = @event.name.Split('_').ElementAt(1).ToLowerInvariant();
+                string type = @event.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
                 switch (type)
                 {
                     case "altruism":
@@ -656,9 +656,9 @@ namespace EddiCargoMonitor
                 HaulageAmount haulageAmount = cargo.haulageamounts.FirstOrDefault(ha => ha.id == @event.missionid);
                 if (haulageAmount != null)
                 {
-                    string type = @event.name.Split('_').ElementAt(1)
+                    string type = @event.name.Split('_').ElementAtOrDefault(1)
                         .ToLowerInvariant();
-                    string subtype = @event.name.Split('_').ElementAt(2)
+                    string subtype = @event.name.Split('_').ElementAtOrDefault(2)
                         .ToLowerInvariant()
                         .Replace("$", "");
                     switch (type)
@@ -704,6 +704,15 @@ namespace EddiCargoMonitor
                     }
                     cargo.haulageamounts.Remove(haulageAmount);
                 }
+                else if (cargo.haulage >= @event.amount)
+                {
+                    cargo.haulage -= @event.amount ?? 0;
+                }
+                else if (cargo.owned >= @event.amount)
+                {
+                    cargo.owned -= @event.amount ?? 0;
+                }
+
 
                 // Check if other missions are pending
                 if (cargo.haulageamounts == null || !cargo.haulageamounts.Any())
@@ -747,7 +756,7 @@ namespace EddiCargoMonitor
                 HaulageAmount haulageAmount = inventoryCargo.haulageamounts.FirstOrDefault(ha => ha.id == @event.missionid);
                 if (haulageAmount != null)
                 {
-                    string type = @event.name.Split('_').ElementAt(1).ToLowerInvariant();
+                    string type = @event.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
                     switch (type)
                     {
                         case "delivery":
@@ -883,7 +892,7 @@ namespace EddiCargoMonitor
                 {
                     cargocarried += cargo.total;
                 }
-
+                EDDI.Instance.eventHandler(new CargoUpdatedEvent(DateTime.Now, cargocarried));
                 configuration.cargo = inventory;
                 configuration.cargocarried = cargocarried;
                 configuration.ToFile();
@@ -971,18 +980,20 @@ namespace EddiCargoMonitor
         private int CalculateCargoNeed(Cargo cargo)
         {
             int need = 0;
-            if (cargo != null && cargo.haulageamounts.Any())
+            if (cargo != null && cargo.haulageamounts != null && cargo.haulageamounts.Any())
             {
                 int haulageNeeded = 0;
                 int ownedNeeded = 0;
                 int stolenNeeded = 0;
                 foreach (HaulageAmount haulageAmount in cargo.haulageamounts)
                 {
-                    string type = haulageAmount.name.Split('_').ElementAt(1)
+                    string type = haulageAmount.name.Split('_').ElementAtOrDefault(1)
                         .ToLowerInvariant();
-                    string subtype = haulageAmount.name.Split('_').ElementAt(2)
-                        .ToLowerInvariant()
-                        .Replace("$", "");
+                    string subtype = haulageAmount.name.Split('_').ElementAtOrDefault(2);
+                    if (subtype != null)
+                    {
+                        subtype = subtype.ToLowerInvariant().Replace("$", "");
+                    }
                     switch (type)
                     {
                         case "altruism":
