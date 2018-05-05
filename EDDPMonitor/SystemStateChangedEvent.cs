@@ -24,16 +24,20 @@ namespace EddiEddpMonitor
 
         public string system { get; private set; }
 
-        public SystemState oldstate { get; private set; }
+        public SystemState oldSystemState { get; private set; }
+        public SystemState newSystemState { get; private set; }
 
-        public SystemState newstate { get; private set; }
+        [Obsolete("Please use oldSystemState instead")]
+        public string oldstate => (oldSystemState ?? SystemState.None).localizedName;
+        [Obsolete("Please use newSystemState instead")]
+        public string newstate => (newSystemState ?? SystemState.None).localizedName;
 
-        public SystemStateChangedEvent(DateTime timestamp, string match, string system, SystemState oldstate, SystemState newstate) : base(timestamp, NAME)
+        public SystemStateChangedEvent(DateTime timestamp, string match, string system, SystemState oldSystemState, SystemState newSystemState) : base(timestamp, NAME)
         {
             this.match = match;
             this.system = system;
-            this.oldstate = oldstate;
-            this.newstate = newstate;
+            this.oldSystemState = oldSystemState;
+            this.newSystemState = newSystemState;
         }
     }
 }
