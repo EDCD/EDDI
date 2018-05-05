@@ -608,7 +608,6 @@ namespace EddiCompanionAppService
 
             if (json["lastStarport"] != null && json["lastStarport"]["modules"] != null)
             {
-                List<Module> moduleErrors = new List<Module>();
                 foreach (dynamic moduleJson in json["lastStarport"]["modules"])
                 {
                     dynamic module = moduleJson.Value;
@@ -624,18 +623,14 @@ namespace EddiCompanionAppService
                                 Module Module = new Module(Module.FromEliteID(id));
                                 if (Module?.invariantName == null)
                                 {
-                                    // Unknown module; the infrastructure will have reported it
-                                    continue;
+                                    // Unknown module; report the full object so that we can update the definitions
+                                    Logging.Report("Module definition error: " + (string)module["name"], JsonConvert.SerializeObject(module));
                                 }
                                 Module.price = module["cost"];
                                 Modules.Add(Module);
                             }
                             break;
                     }
-                }
-                if (moduleErrors.Count > 0)
-                {
-                    Logging.Report("Module definition errors", JsonConvert.SerializeObject(moduleErrors));
                 }
             }
 
@@ -694,8 +689,8 @@ namespace EddiCompanionAppService
             {
                 foreach (dynamic commodity in json["lastStarport"]["commodities"])
                 {
-                    CommodityDefinition commidityDef = CommodityDefinition.CommodityDefinitionFromEliteID((long)commodity["id"]);
-                    CommodityMarketQuote quote = new CommodityMarketQuote(commidityDef);
+                    CommodityDefinition commodityDef = CommodityDefinition.CommodityDefinitionFromEliteID((long)commodity["id"]);
+                    CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef);
                     quote.buyprice = (int)commodity["buyPrice"];
                     quote.stock = (int)commodity["stock"];
                     quote.stockbracket = (dynamic)commodity["stockBracket"];
@@ -710,6 +705,15 @@ namespace EddiCompanionAppService
                     }
                     quote.StatusFlags = StatusFlags;
                     quotes.Add(quote);
+
+                    if (commodityDef == null || (string)commodity["name"] != commodityDef.invariantName)
+                    {
+                        if (commodityDef.edname != "Drones")
+                        {
+                            // Unknown commodity; report the full object so that we can update the definitions
+                            Logging.Report("Commodity definition error: " + (string)commodity["name"], JsonConvert.SerializeObject(commodity));
+                        }
+                    }
                 }
             }
 

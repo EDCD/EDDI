@@ -7,6 +7,8 @@ namespace Utilities
 {
     public class Files
     {
+        public static bool ignoreMissing { get; set; } = false;
+
         /// <summary>
         /// Read a file, handling exceptions
         /// </summary>
@@ -35,11 +37,17 @@ namespace Utilities
                 }
                 catch (FileNotFoundException ex)
                 {
-                    Logging.Error("File " + name + " not found", ex);
+                    if (!ignoreMissing)
+                    {
+                        Logging.Error("File " + name + " not found", ex);
+                    }
                 }
                 catch (IOException ex)
                 {
-                    Logging.Error("IO exception for " + name, ex);
+                    if (!ignoreMissing)
+                    {
+                        Logging.Error("IO exception for " + name, ex);
+                    }
                 }
                 catch (UnauthorizedAccessException ex)
                 {

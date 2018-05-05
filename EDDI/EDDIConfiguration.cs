@@ -86,11 +86,11 @@ namespace Eddi
                 {
                     Logging.Debug("EDDI configuration file could not be read", ex);
                 }
-
             }
             if (configuration == null)
             {
                 configuration = new EDDIConfiguration();
+                Files.ignoreMissing = true; // This is our first run - we don't need to report missing config files for this session
             }
 
             configuration.dataPath = filename;
