@@ -8,7 +8,7 @@ namespace EddiEvents
     public class FineIncurredEvent : Event
     {
         public const string NAME = "Fine incurred";
-        public const string DESCRIPTION = "Triggered when your incur a fine";
+        public const string DESCRIPTION = "Triggered when you incur a fine";
         public const string SAMPLE = "{\"timestamp\":\"2016-06-10T14:32:03Z\",\"event\":\"CommitCrime\",\"CrimeType\":\"fireInNoFireZone\",\"Faction\":\"The Pilots Federation\",\"Victim\":\"Potapinski\",\"Fine\":210}";
         public static Dictionary<string, string> VARIABLES = new Dictionary<string, string>();
 

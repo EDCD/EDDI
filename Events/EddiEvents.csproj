@@ -109,7 +109,7 @@
     <Compile Include="StationNoFireZoneExitedEvent.cs" />
     <Compile Include="StationNoFireZoneEnteredEvent.cs" />
     <Compile Include="PowerSalaryClaimedEvent.cs" />
-    <Compile Include="PowerPerparationVoteCastEvent.cs" />
+    <Compile Include="PowerPreparationVoteCastEvent.cs" />
     <Compile Include="PowerDefectedEvent.cs" />
     <Compile Include="PowerLeftEvent.cs" />
     <Compile Include="PowerJoinedEvent.cs" />
