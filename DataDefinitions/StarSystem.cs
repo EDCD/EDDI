@@ -23,7 +23,7 @@ namespace EddiDataDefinitions
         public string powerstate { get; set; }
 
         [Obsolete("Please use systemState instead")]
-        public string state => systemState?.localizedName ?? SystemState.None.localizedName;
+        public string state => (systemState ?? SystemState.None).localizedName;
 
         /// <summary>X co-ordinate for this system</summary>
         public decimal? x { get; set; }
