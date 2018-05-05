@@ -22,6 +22,9 @@ namespace EddiDataDefinitions
         public string power { get; set; }
         public string powerstate { get; set; }
 
+        [Obsolete("Please use systemState instead")]
+        public string state => systemState?.localizedName ?? SystemState.None.localizedName;
+
         /// <summary>X co-ordinate for this system</summary>
         public decimal? x { get; set; }
         /// <summary>Y co-ordinate for this system</summary>
@@ -34,16 +37,10 @@ namespace EddiDataDefinitions
 
         /// <summary>Summary info for stations</summary>
         [JsonIgnore]
-        public List<Station> planetarystations
-        {
-            get { return stations.FindAll(s => s.IsPlanetary()); }
-        }
+        public List<Station> planetarystations => stations.FindAll(s => s.IsPlanetary());
 
         [JsonIgnore]
-        public List<Station> orbitalstations
-        {
-            get { return stations.FindAll(s => !s.IsPlanetary()); }
-        }
+        public List<Station> orbitalstations => stations.FindAll(s => !s.IsPlanetary());
 
         /// <summary>Details of bodies (stars/planets)</summary>
         public List<Body> bodies { get; set; }
