@@ -136,12 +136,29 @@ namespace Utilities
                     };
                     data = wrapppedData;
                 }
-                Dictionary<string, object> thisData = (Dictionary<string, object>)data;
-                if (thisData.ContainsKey("timestamp"))
-                {
-                    // Repeated data should be matched even if timestamps differ, so remove journal event timestamps here.
-                    thisData.Remove("timestamp"); 
-                }
+
+                // The Frontier API uses lowercase keys while the journal uses Titlecased keys. Establish case insensitivity before we proceed.
+                Dictionary<string, object> thisData = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+                thisData = (Dictionary<string, object>)data;
+
+                // Repeated data should be matched even if timestamps differ, so remove journal event timestamps here.
+                thisData.Remove("timestamp");
+
+                // Strip module data that is not useful to report for more consistent matching
+                thisData.Remove("on");
+                thisData.Remove("priority");
+                thisData.Remove("health");
+
+                // Strip commodity data that is not useful to report for more consistent matching
+                thisData.Remove("buyprice");
+                thisData.Remove("stock");
+                thisData.Remove("stockbracket");
+                thisData.Remove("sellprice");
+                thisData.Remove("demand");
+                thisData.Remove("demandbracket");
+                thisData.Remove("StatusFlags");
+
+                // Report only unique messages and data
                 if (isUniqueMessage(message, thisData))
                 {
                     RollbarLocator.RollbarInstance.Info(message, thisData);

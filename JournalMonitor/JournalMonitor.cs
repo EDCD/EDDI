@@ -465,7 +465,7 @@ namespace EddiJournalMonitor
                                             if (module == null)
                                             {
                                                 Logging.Info("Unknown module " + item);
-                                                Logging.Report("Unknown module " + item, JsonConvert.SerializeObject(StripExtraModuleData(moduleData)));
+                                                Logging.Report("Unknown module " + item, JsonConvert.SerializeObject(moduleData));
                                             }
                                             else
                                             {
@@ -524,7 +524,7 @@ namespace EddiJournalMonitor
                                             if (module == null)
                                             {
                                                 Logging.Info("Unknown module " + item);
-                                                Logging.Report("Unknown module " + item, JsonConvert.SerializeObject(StripExtraModuleData(moduleData)));
+                                                Logging.Report("Unknown module " + item, JsonConvert.SerializeObject(moduleData));
                                             }
                                             else
                                             {
@@ -2714,15 +2714,6 @@ namespace EddiJournalMonitor
                 Logging.Error("Exception whilst parsing journal line", ex);
             }
             return events;
-        }
-
-        private static Dictionary<string, object> StripExtraModuleData(Dictionary<string, object> moduleData)
-        {
-            // Strip values that are not useful to report
-            moduleData.Remove("On");
-            moduleData.Remove("Priority");
-            moduleData.Remove("Health");
-            return moduleData;
         }
 
         private static string npcSpeechBy(string from, string message)
