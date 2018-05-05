@@ -246,14 +246,18 @@ namespace EddiSpeechResponder
                     fixedScripts.Remove(script);
                 }
                 // Also add any secondary scripts in the default personality that aren't present in the list
-                foreach (KeyValuePair<string, Script> kv in defaultPersonality?.Scripts)
+                if (defaultPersonality?.Scripts != null )
                 {
-                    if (!fixedScripts.ContainsKey(kv.Key))
+                    foreach (KeyValuePair<string, Script> kv in defaultPersonality?.Scripts)
                     {
-                        fixedScripts.Add(kv.Key, kv.Value);
+                        if (!fixedScripts.ContainsKey(kv.Key))
+                        {
+                            fixedScripts.Add(kv.Key, kv.Value);
+                        }
                     }
                 }
             }
+
             // Report missing scripts, except those we have specifically named
             /// `Belt scanned` is a useless event, only exists so that the count on nav beacon scans comes out right
             /// `Jumping` is a deprecated event
