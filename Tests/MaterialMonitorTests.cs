@@ -38,11 +38,11 @@ namespace UnitTests
             MaterialAmount zirconiumAmount = config.materials[1];
             Assert.AreEqual("zirconium", zirconiumAmount.edname);
             Assert.AreEqual(13, zirconiumAmount.amount);
-            Assert.AreEqual(EddiDataDefinitions.Properties.Materials.zirconium, ResourceBasedLocalizedEDName<Material>.FromEDName(config.materials[1].edname).localizedName);
+            Assert.AreEqual(EddiDataDefinitions.Properties.Materials.zirconium, Material.FromEDName(config.materials[1].edname).localizedName);
             Assert.AreEqual(100, config.materials[1].maximum);
             Assert.AreEqual(50, config.materials[1].desired);
             Assert.IsNull(config.materials[1].minimum);
-            Assert.AreEqual(EddiDataDefinitions.Properties.MaterialCategories.Element, ResourceBasedLocalizedEDName<Material>.FromEDName(config.materials[1].edname).category.localizedName);
+            Assert.AreEqual(EddiDataDefinitions.Properties.MaterialCategories.Element, Material.FromEDName(config.materials[1].edname).category.localizedName);
         }
     }
 }
