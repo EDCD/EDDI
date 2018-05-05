@@ -15,10 +15,17 @@ namespace EddiDataDefinitions
             resourceManager.IgnoreCase = false;
             missingEDNameHandler = edname => new DataScan(edname);
 
+            var AbandonedDataLog = new DataScan("AbandonedDataLog");
+            var AncientCodex = new DataScan("ANCIENTCODEX");
             var DataLink = new DataScan("DataLink");
             var DataPoint = new DataScan("DataPoint");
+            var DataPointHVT = new DataScan("DataPointHVT");
             var ListeningPost = new DataScan("ListeningPost");
-            var AbandonedDataLog = new DataScan("AbandonedDataLog");
+            var SettlementUnknown = new DataScan("Settlement_Unknown");
+            var ShipUplink = new DataScan("ShipUplink");
+            var TgTransmitter = new DataScan("TGTRANSMITTER");
+            var TouristBeacon = new DataScan("TouristBeacon");
+            var UnknownUplink = new DataScan("Unknown_Uplink");
             var WreckedShip = new DataScan("WreckedShip");
         }
 

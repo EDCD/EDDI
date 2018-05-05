@@ -19,6 +19,7 @@ namespace EddiDataDefinitions
             var Extraction = new Economy("$economy_Extraction");
             var Refinery = new Economy("$economy_Refinery");
             var Repair = new Economy("$economy_Repair");
+            var Rescue = new Economy("$economy_Rescue");
             var Industrial = new Economy("$economy_Industrial");
             var Terraforming = new Economy("$economy_Terraforming");
             var HighTech = new Economy("$economy_HighTech");

@@ -59,5 +59,113 @@ namespace EddiDataDefinitions.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Abandoned Data Log.
+        /// </summary>
+        public static string AbandonedDataLog {
+            get {
+                return ResourceManager.GetString("AbandonedDataLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ancient Codex.
+        /// </summary>
+        public static string AncientCodex {
+            get {
+                return ResourceManager.GetString("AncientCodex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Link.
+        /// </summary>
+        public static string DataLink {
+            get {
+                return ResourceManager.GetString("DataLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Point.
+        /// </summary>
+        public static string DataPoint {
+            get {
+                return ResourceManager.GetString("DataPoint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Point H.V.T..
+        /// </summary>
+        public static string DataPointHVT {
+            get {
+                return ResourceManager.GetString("DataPointHVT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Listening Post.
+        /// </summary>
+        public static string ListeningPost {
+            get {
+                return ResourceManager.GetString("ListeningPost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settlement Unknown.
+        /// </summary>
+        public static string SettlementUnknown {
+            get {
+                return ResourceManager.GetString("SettlementUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ship Uplink.
+        /// </summary>
+        public static string ShipUplink {
+            get {
+                return ResourceManager.GetString("ShipUplink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Device.
+        /// </summary>
+        public static string TgTransmitter {
+            get {
+                return ResourceManager.GetString("TgTransmitter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tourist Beacon.
+        /// </summary>
+        public static string TouristBeacon {
+            get {
+                return ResourceManager.GetString("TouristBeacon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown Uplink.
+        /// </summary>
+        public static string UnknownUplink {
+            get {
+                return ResourceManager.GetString("UnknownUplink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wrecked Ship.
+        /// </summary>
+        public static string WreckedShip {
+            get {
+                return ResourceManager.GetString("WreckedShip", resourceCulture);
+            }
+        }
     }
 }

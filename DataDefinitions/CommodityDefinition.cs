@@ -355,11 +355,23 @@ namespace EddiDataDefinitions
                 new CommodityDefinition(128824468, 331, "ThargoidScoutTissueSample", Salvage, 15215, false),
 
                 // Items for which we do not have EDDB IDs
+                new CommodityDefinition(200000000, 10000, "aislingpromotionalmaterials", Powerplay, 0, false),
+                new CommodityDefinition(200000001, 10001, "alliancelegaslativerecords", Powerplay, 0, false),
+                new CommodityDefinition(200000002, 10002, "torvaldeeds", Powerplay, 0, false),
+                new CommodityDefinition(200000003, 10003, "aislingmediamaterials", Powerplay, 0, false),
+                new CommodityDefinition(200000004, 10004, "torvalcommercialcontracts", Powerplay, 0, false),
                 new CommodityDefinition(200000012, 10012, "siriuscommercialcontracts", Powerplay, 0, false),
                 new CommodityDefinition(200000013, 10013, "siriusindustrialequipment", Powerplay, 0, false),
                 new CommodityDefinition(200000014, 10014, "siriusfranchisepackage", Powerplay, 0, false),
                 new CommodityDefinition(200000015, 10015, "republicangarisonsupplies", Powerplay, 0, false),
                 new CommodityDefinition(200000016, 10016, "lavignygarisonsupplies", Powerplay, 0, false),
+                new CommodityDefinition(200000017, 10017, "RajukruStoves", ConsumerItems, 8378, true),
+                new CommodityDefinition(200000018, 10018, "KinagoInstruments", ConsumerItems, 13030, true),
+                new CommodityDefinition(200000019, 10019, "KachiriginLeaches", Medicines, 8227, true),
+                new CommodityDefinition(200000020, 10020, "VanayequiRhinoFur", Textiles, 8331, true),
+                new CommodityDefinition(200000021, 10021, "ZeesszeAntGlue", ConsumerItems, 8161, true),
+                new CommodityDefinition(200000022, 10022, "imperialprisoner", Salvage, 0, false),
+                new CommodityDefinition(200000023, 10023, "undergroundsupport", Powerplay, 0, false),
             };
         }
         private static Dictionary<long, CommodityDefinition> CommoditiesByEliteID;
