@@ -13,14 +13,13 @@ namespace EddiDataDefinitions
         {
             resourceManager = Properties.SystemStates.ResourceManager;
             resourceManager.IgnoreCase = false;
-            missingEDNameHandler = (edname) => new SystemState(edname);
-
-            var None = new SystemState("None");
+            
+            None = new SystemState("None");
             var Retreat = new SystemState("Retreat");
             var War = new SystemState("War");
             var Lockdown = new SystemState("Lockdown");
-            var CivilUnrest = new SystemState("CivilUnrest");
-            var CivilWar = new SystemState("CivilWar");
+            CivilUnrest = new SystemState("CivilUnrest");
+            CivilWar = new SystemState("CivilWar");
             var Boom = new SystemState("Boom");
             var Expansion = new SystemState("Expansion");
             var Bust = new SystemState("Bust");
@@ -29,6 +28,10 @@ namespace EddiDataDefinitions
             var Election = new SystemState("Election");
             var Investment = new SystemState("Investment");
         }
+
+        public static readonly SystemState None;
+        public static readonly SystemState CivilUnrest;
+        public static readonly SystemState CivilWar;
 
         // dummy used to ensure that the static constructor has run
         public SystemState() : this("")
