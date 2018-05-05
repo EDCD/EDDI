@@ -110,6 +110,15 @@
       "name": "Cargo report",
       "description": "Report current cargo manifest"
     },
+    "Cargo updated": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Cargo updated }\r\n{_ Triggered when the cargo inventory is updated }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'cargo')}\r\n{SetState('eddi_context_last_action', 'updated')}\r\n{SetState('eddi_context_cargo_carried', event.cargocarried)}\r\n",
+      "default": true,
+      "name": "Cargo updated",
+      "description": "Triggered when the cargo inventory is updated"
+    },
     "Cleared save": {
       "enabled": true,
       "priority": 3,
