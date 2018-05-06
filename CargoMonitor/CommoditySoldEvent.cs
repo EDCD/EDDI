@@ -36,6 +36,7 @@ namespace EddiCargoMonitor
         public bool illegal { get; private set; }
         public bool stolen { get; private set; }
         public bool blackmarket { get; private set; }
+        public CommodityDefinition commodityObject { get; private set; }
 
         public CommoditySoldEvent(DateTime timestamp, long marketid, CommodityDefinition commodity, int amount, long price, long profit, bool illegal, bool stolen, bool blackmarket) : base(timestamp, NAME)
         {
@@ -47,6 +48,7 @@ namespace EddiCargoMonitor
             this.illegal = illegal;
             this.stolen = stolen;
             this.blackmarket = blackmarket;
+            this.commodityObject = commodity;
         }
     }
 }

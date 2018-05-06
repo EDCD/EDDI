@@ -35,6 +35,8 @@ namespace EddiEvents
 
         public string commodity { get; private set; }
 
+        public CommodityDefinition commodityObject { get; private set; }
+
         public int? amount { get; private set; }
 
         public bool communal { get; private set; }
@@ -55,6 +57,7 @@ namespace EddiEvents
             this.name = name;
             this.faction = faction;
             this.commodity = commodity?.localizedName;
+            this.commodityObject = commodity;
             this.amount = amount;
             this.communal = communal;
             this.reward = reward;

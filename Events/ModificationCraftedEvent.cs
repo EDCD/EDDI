@@ -44,11 +44,13 @@ namespace EddiEvents
     {
         public string commodity { get; private set; }
         public int amount { get; private set; }
+        public string edname { get; private set; }
 
         public CommodityAmount(CommodityDefinition commodity, int amount)
         {
             this.commodity = commodity.localizedName;
             this.amount = amount;
+            this.edname = commodity.edname;
         }
     }
 }

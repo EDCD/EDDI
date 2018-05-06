@@ -40,6 +40,13 @@ namespace EddiDataDefinitions
                 string localizedName = resourceManager.GetString(basename) ?? basename;
                 return localizedName;
             }
+            set
+            {
+                if (localizedName == null)
+                {
+                    localizedName = value;
+                }
+            }
         }
 
         [Obsolete("Please be explicit and use localizedName or invariantName")]
