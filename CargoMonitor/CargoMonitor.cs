@@ -56,14 +56,13 @@ namespace EddiCargoMonitor
 
         public CargoMonitor()
         {
-            cargoMonitor();
-        }
-
-        public void cargoMonitor(CargoMonitorConfiguration configuration = null)
-        {
             inventory = new ObservableCollection<Cargo>();
             BindingOperations.CollectionRegistering += Inventory_CollectionRegistering;
+            initializeCargoMonitor();
+        }
 
+        public void initializeCargoMonitor(CargoMonitorConfiguration configuration = null)
+        {
             readInventory(configuration);
             Logging.Info("Initialised " + MonitorName() + " " + MonitorVersion());
         }

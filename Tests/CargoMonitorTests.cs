@@ -16,6 +16,22 @@ namespace UnitTests
         CargoMonitor cargoMonitor = new CargoMonitor();
         Cargo cargo;
 
+        [TestInitialize]
+        private void StartTestCargoMonitor()
+        {
+            if (cargoMonitor == null)
+            {
+                cargoMonitor = new CargoMonitor();
+
+                // TODO: Create an EDDI-wide "test mode" that disables both sending data and writing to config files. Could be a rework of the current "safe mode"?
+                // Set ourselves in test mode to prevent writing to config files
+                cargoMonitor.testMode = true;
+
+                // Set ourselves as in beta to stop sending data to remote systems
+                EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
+            }
+        }
+
         [TestMethod]
         public void TestCargoConfig()
         {
@@ -35,8 +51,7 @@ namespace UnitTests
         [TestMethod]
         public void TestCargoEventsScenario()
         {
-            StartTestCargoMonitor();
-            cargoMonitor.cargoMonitor(new CargoMonitorConfiguration());
+            cargoMonitor.initializeCargoMonitor(new CargoMonitorConfiguration());
 
             // CargoEvent
             SendEvents(@"{""timestamp"": ""2018-05-05T19:12:10Z"", ""event"": ""Cargo"", ""Inventory"": [ { ""Name"": ""damagedescapepod"", ""Name_Localised"": ""Damaged Escape Pod"", ""Count"": 4, ""Stolen"": 0 }, { ""Name"": ""usscargoblackbox"", ""Name_Localised"": ""Black Box"", ""Count"": 4, ""Stolen"": 4 }, { ""Name"": ""drones"", ""Name_Localised"": ""Limpet"", ""Count"": 21, ""Stolen"": 0 } ] }", cargoMonitor);
@@ -105,15 +120,12 @@ namespace UnitTests
             Assert.AreEqual(5, cargoMonitor.inventory.Count);
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "aislingmediamaterials");
             Assert.IsNull(cargo);
-
-            StopTestCargoMonitor();
         }
 
         [TestMethod]
         public void TestCargoLimpetScenario()
         {
-            StartTestCargoMonitor();
-            cargoMonitor.cargoMonitor(new CargoMonitorConfiguration());
+            cargoMonitor.initializeCargoMonitor(new CargoMonitorConfiguration());
 
             SendEvents(@"{""timestamp"": ""2018-05-05T19:12:10Z"", ""event"": ""Cargo"", ""Inventory"": [ { ""Name"": ""damagedescapepod"", ""Name_Localised"": ""Damaged Escape Pod"", ""Count"": 4, ""Stolen"": 0 }, { ""Name"": ""usscargoblackbox"", ""Name_Localised"": ""Black Box"", ""Count"": 4, ""Stolen"": 4 }, { ""Name"": ""drones"", ""Name_Localised"": ""Limpet"", ""Count"": 21, ""Stolen"": 0 } ] }", cargoMonitor);
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Drones");
@@ -145,15 +157,12 @@ namespace UnitTests
             Assert.AreEqual(31, cargo.total);
             Assert.AreEqual(31, cargo.owned);
             Assert.AreEqual(0, cargo.need + cargo.stolen + cargo.haulage);
-
-            StopTestCargoMonitor();
         }
 
         [TestMethod]
         public void TestCargoMissionScenario()
         {
-            StartTestCargoMonitor();
-            cargoMonitor.cargoMonitor(new CargoMonitorConfiguration());
+            cargoMonitor.initializeCargoMonitor(new CargoMonitorConfiguration());
 
             SendEvents(@"{""timestamp"": ""2018-05-05T19:12:10Z"", ""event"": ""Cargo"", ""Inventory"": [ { ""Name"": ""damagedescapepod"", ""Name_Localised"": ""Damaged Escape Pod"", ""Count"": 4, ""Stolen"": 0 }, { ""Name"": ""usscargoblackbox"", ""Name_Localised"": ""Black Box"", ""Count"": 4, ""Stolen"": 4 }, { ""Name"": ""drones"", ""Name_Localised"": ""Limpet"", ""Count"": 21, ""Stolen"": 0 } ] }", cargoMonitor);
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "Drones");
@@ -209,15 +218,12 @@ namespace UnitTests
             Assert.AreEqual(1, cargo.stolen);
             Assert.AreEqual(0, cargo.need);
             Assert.AreEqual(0, cargo.haulage + cargo.owned);
-            
-            StopTestCargoMonitor();
         }
 
         [TestMethod]
         public void TestCargoSearchAndRescue()
         {
-            StartTestCargoMonitor();
-            cargoMonitor.cargoMonitor(new CargoMonitorConfiguration());
+            cargoMonitor.initializeCargoMonitor(new CargoMonitorConfiguration());
             SendEvents(@"{""timestamp"": ""2018-05-05T19:12:10Z"", ""event"": ""Cargo"", ""Inventory"": [ { ""Name"": ""damagedescapepod"", ""Name_Localised"": ""Damaged Escape Pod"", ""Count"": 4, ""Stolen"": 0 }, { ""Name"": ""usscargoblackbox"", ""Name_Localised"": ""Black Box"", ""Count"": 4, ""Stolen"": 4 }, { ""Name"": ""drones"", ""Name_Localised"": ""Limpet"", ""Count"": 21, ""Stolen"": 0 } ] }", cargoMonitor);
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "DamagedEscapePod");
             Assert.AreEqual(4, cargo.total);
@@ -230,16 +236,13 @@ namespace UnitTests
             Assert.AreEqual(2, cargo.total);
             Assert.AreEqual(2, cargo.owned);
             Assert.AreEqual(0, cargo.need + cargo.stolen + cargo.haulage);
-
-            StopTestCargoMonitor();
         }
 
 
         [TestMethod]
         public void TestCargoSynthesis()
         {
-            StartTestCargoMonitor();
-            cargoMonitor.cargoMonitor(new CargoMonitorConfiguration());
+            cargoMonitor.initializeCargoMonitor(new CargoMonitorConfiguration());
 
             // CargoSynthesisedEvent
             SendEvents(@"{ ""timestamp"": ""2018-05-05T21:08:41Z"", ""event"": ""Synthesis"", ""Name"": ""Limpet Basic"", ""Materials"": [ { ""Name"": ""iron"", ""Count"": 10 }, { ""Name"": ""nickel"", ""Count"": 10 } ] }", cargoMonitor);
@@ -248,15 +251,12 @@ namespace UnitTests
             Assert.AreEqual(4, cargo.total);
             Assert.AreEqual(4, cargo.owned);
             Assert.AreEqual(0, cargo.need + cargo.stolen + cargo.haulage);
-
-            StopTestCargoMonitor();
         }
 
         [TestMethod]
         public void TestCargoTechnologyBroker()
         {
-            StartTestCargoMonitor();
-            cargoMonitor.cargoMonitor(new CargoMonitorConfiguration());
+            cargoMonitor.initializeCargoMonitor(new CargoMonitorConfiguration());
             SendEvents(@"{""timestamp"": ""2018-05-05T19:12:10Z"", ""event"": ""Cargo"", ""Inventory"": [ { ""Name"": ""iondistributor"", ""Name_Localised"": ""Ion Distributor"", ""Count"": 10, ""Stolen"": 0 }, { ""Name"": ""usscargoblackbox"", ""Name_Localised"": ""Black Box"", ""Count"": 4, ""Stolen"": 4 }, { ""Name"": ""drones"", ""Name_Localised"": ""Limpet"", ""Count"": 21, ""Stolen"": 0 } ] }", cargoMonitor);
             cargo = cargoMonitor.inventory.ToList().FirstOrDefault(c => c.edname == "IonDistributor");
             Assert.AreEqual(10, cargo.total);
@@ -269,25 +269,9 @@ namespace UnitTests
             Assert.AreEqual(4, cargo.total);
             Assert.AreEqual(4, cargo.owned);
             Assert.AreEqual(0, cargo.need + cargo.stolen + cargo.haulage);
-
-            StopTestCargoMonitor();
         }
 
-        private void StartTestCargoMonitor()
-        {
-            if (cargoMonitor == null)
-            {
-                cargoMonitor = new CargoMonitor();
-
-                // TODO: Create an EDDI-wide "test mode" that disables both sending data and writing to config files. Could be a rework of the current "safe mode"?
-                // Set ourselves in test mode to prevent writing to config files
-                cargoMonitor.testMode = true;
-
-                // Set ourselves as in beta to stop sending data to remote systems
-                EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
-            }
-        }
-
+        [TestCleanup]
         private void StopTestCargoMonitor()
         {
             cargoMonitor.testMode = false;
