@@ -245,7 +245,7 @@ namespace EddiCargoMonitor
                     if (cargo == null)
                     {
                         // Strip out the stray from the manifest
-                        RemoveCargoWithEDName(inventoryCargo.edname);
+                        _RemoveCargoWithEDName(inventoryCargo.edname);
                     }
                 }
             }
@@ -384,19 +384,7 @@ namespace EddiCargoMonitor
                     }
                 }
 
-                // Check if missions are pending
-                if (cargo.haulageamounts == null || !cargo.haulageamounts.Any())
-                {
-                    if (cargo.total < 1)
-                    {
-                        // All of the commodity was ejected
-                        RemoveCargoWithEDName(cargo.edname);
-                    }
-                }
-                else
-                {
-                    cargo.need = CalculateCargoNeed(cargo);
-                }
+                RemoveCargo(cargo);
                 writeInventory();
             }
         }
@@ -462,19 +450,7 @@ namespace EddiCargoMonitor
                     cargo.owned -= (cargo.owned > @event.amount) ? @event.amount : cargo.owned;
                 }
 
-                // Check is missions are pending
-                if (cargo.haulageamounts == null || !cargo.haulageamounts.Any())
-                {
-                    if (cargo.total < 1)
-                    {
-                        // All of the commodity was sold
-                        RemoveCargoWithEDName(cargo.edname);
-                    }
-                }
-                else
-                {
-                    cargo.need = CalculateCargoNeed(cargo);
-                }
+                RemoveCargo(cargo);
                 writeInventory();
             }
         }
@@ -504,18 +480,7 @@ namespace EddiCargoMonitor
             if (cargo != null)
             {
                 cargo.owned -= @event.amount;
-                if (cargo.haulageamounts == null || !cargo.haulageamounts.Any())
-                {
-                    if (cargo.total < 1)
-                    {
-                        // All of the commodity was sold
-                        RemoveCargoWithEDName(cargo.edname);
-                    }
-                }
-                else
-                {
-                    cargo.need = CalculateCargoNeed(cargo);
-                }
+                RemoveCargo(cargo);
                 writeInventory();
             }
         }
@@ -544,10 +509,7 @@ namespace EddiCargoMonitor
             if (cargo != null)
             {
                 cargo.owned -= @event.amount;
-                if (cargo.total < 1)
-                {
-                    RemoveCargoWithEDName(cargo.edname);
-                }
+                RemoveCargo(cargo);
                 writeInventory();
             }
         }
@@ -558,10 +520,7 @@ namespace EddiCargoMonitor
             if (cargo != null)
             {
                 cargo.owned--;
-                if (cargo.total < 1)
-                {
-                    RemoveCargoWithEDName(cargo.edname);
-                }
+                RemoveCargo(cargo);
                 writeInventory();
             }
         }
@@ -593,19 +552,7 @@ namespace EddiCargoMonitor
                     }
                     inventoryCargo.haulageamounts.Remove(haulageAmount);
 
-                    // Check if other missions are pending
-                    if (inventoryCargo.haulageamounts == null || !inventoryCargo.haulageamounts.Any())
-                    {
-                        if (inventoryCargo.total < 1)
-                        {
-                            // All of the commodity was turned in
-                            RemoveCargoWithEDName(inventoryCargo.edname);
-                        }
-                    }
-                    else
-                    {
-                        inventoryCargo.need = CalculateCargoNeed(inventoryCargo);
-                    }
+                    RemoveCargo(inventoryCargo);
                     writeInventory();
                     break;
                 }
@@ -719,20 +666,7 @@ namespace EddiCargoMonitor
                     cargo.owned -= @event.amount ?? 0;
                 }
 
-
-                // Check if other missions are pending
-                if (cargo.haulageamounts == null || !cargo.haulageamounts.Any())
-                {
-                    if (cargo.total < 1)
-                    {
-                        // All of the commodity was turned in
-                        RemoveCargoWithEDName(cargo.edname);
-                    }
-                }
-                else
-                {
-                    cargo.need = CalculateCargoNeed(cargo);
-                }
+                RemoveCargo(cargo);
             }
 
             foreach (CommodityAmount commodityReward in @event.commodityrewards)
@@ -788,20 +722,7 @@ namespace EddiCargoMonitor
                             break;
                     }
                     inventoryCargo.haulageamounts.Remove(haulageAmount);
-
-                    // Check if other missions are pending
-                    if (inventoryCargo.haulageamounts == null || !inventoryCargo.haulageamounts.Any())
-                    {
-                        if (inventoryCargo.total < 1)
-                        {
-                            // All of the commodity was turned in
-                            RemoveCargoWithEDName(inventoryCargo.edname);
-                        }
-                    }
-                    else
-                    {
-                        inventoryCargo.need = CalculateCargoNeed(inventoryCargo);
-                    }
+                    RemoveCargo(inventoryCargo);
                     writeInventory();
                     break;
                 }
@@ -814,20 +735,7 @@ namespace EddiCargoMonitor
             if (cargo != null)
             {
                 cargo.owned -= (cargo.owned > @event.amount) ? @event.amount ?? 0 : cargo.owned;
-
-                // Check if other missions are pending
-                if (cargo.haulageamounts == null || !cargo.haulageamounts.Any())
-                {
-                    if (cargo.total < 1)
-                    {
-                        // All of the commodity was turned in
-                        RemoveCargoWithEDName(cargo.edname);
-                    }
-                }
-                else
-                {
-                    cargo.need = CalculateCargoNeed(cargo);
-                }
+                RemoveCargo(cargo);
                 writeInventory();
             }
         }
@@ -861,20 +769,7 @@ namespace EddiCargoMonitor
                 if (cargo != null)
                 {
                     cargo.owned -= (cargo.owned > commodityAmount.amount) ? commodityAmount.amount : cargo.owned;
-
-                    // Check if other missions are pending
-                    if (cargo.haulageamounts == null || !cargo.haulageamounts.Any())
-                    {
-                        if (cargo.total < 1)
-                        {
-                            // All of the commodity was turned in
-                            RemoveCargoWithEDName(cargo.edname);
-                        }
-                    }
-                    else
-                    {
-                        cargo.need = CalculateCargoNeed(cargo);
-                    }
+                    RemoveCargo(cargo);
                 }
             }
             writeInventory();
@@ -957,7 +852,24 @@ namespace EddiCargoMonitor
             writeInventory();
         }
 
-        private void RemoveCargoWithEDName(string edname)
+        private void RemoveCargo(Cargo cargo)
+        {
+            // Check if missions are pending
+            if (cargo.haulageamounts == null || !cargo.haulageamounts.Any())
+            {
+                if (cargo.total < 1)
+                {
+                    // All of the commodity was either expended, ejected, or sold
+                    _RemoveCargoWithEDName(cargo.edname);
+                }
+            }
+            else
+            {
+                cargo.need = CalculateCargoNeed(cargo);
+            }
+        }
+
+        private void _RemoveCargoWithEDName(string edname)
         {
             lock (inventoryLock)
             {
