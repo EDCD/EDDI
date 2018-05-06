@@ -27,7 +27,7 @@ namespace EddiEvents
 
         public long reward { get; private set; }
 
-        public CommodityDefinition commodityObject { get; private set; }
+        public CommodityDefinition commodityDefinition { get; private set; }
 
         public SearchAndRescueEvent(DateTime timestamp, CommodityDefinition commodity, int? amount, long reward) : base(timestamp, NAME)
         {
@@ -35,7 +35,7 @@ namespace EddiEvents
             this.commodityname = commodity.localizedName;
             this.amount = amount;
             this.reward = reward;
-            this.commodityObject = commodity;
+            this.commodityDefinition = commodity;
         }
     }
 }

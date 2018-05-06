@@ -256,7 +256,7 @@ namespace EddiCargoMonitor
 
         private void handleCommodityCollectedEvent(CommodityCollectedEvent @event)
         {
-            Cargo cargo = GetCargoWithEDName(@event.commodityObject.edname);
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition.edname);
             if (cargo != null)
             {
                 bool handled = false;
@@ -309,7 +309,7 @@ namespace EddiCargoMonitor
             }
             else
             {
-                Cargo newCargo = new Cargo(@event.commodityObject.edname, 1);
+                Cargo newCargo = new Cargo(@event.commodityDefinition.edname, 1);
                 newCargo.haulage = 0;
                 if (@event.stolen)
                 {
@@ -326,7 +326,7 @@ namespace EddiCargoMonitor
 
         private void handleCommodityEjectedEvent(CommodityEjectedEvent @event)
         {
-            Cargo cargo = GetCargoWithEDName(@event.commodityObject.edname);
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition.edname);
             if (cargo != null)
             {
                 bool handled = false;
@@ -405,7 +405,7 @@ namespace EddiCargoMonitor
 
         private void handleCommodityPurchasedEvent(CommodityPurchasedEvent @event)
         {
-            Cargo cargo = GetCargoWithEDName(@event.commodityObject.edname);
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition.edname);
             if (cargo != null)
             {
                 cargo.owned += @event.amount;
@@ -413,7 +413,7 @@ namespace EddiCargoMonitor
             }
             else
             {
-                Cargo newCargo = new Cargo(@event.commodityObject.edname, @event.amount, @event.price);
+                Cargo newCargo = new Cargo(@event.commodityDefinition.edname, @event.amount, @event.price);
                 newCargo.haulage = 0;
                 newCargo.stolen = 0;
                 newCargo.owned = @event.amount;
@@ -424,7 +424,7 @@ namespace EddiCargoMonitor
 
         private void handleCommodityRefinedEvent(CommodityRefinedEvent @event)
         {
-            Cargo cargo = GetCargoWithEDName(@event.commodityObject.edname);
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition.edname);
             if (cargo != null)
             {
                 cargo.owned++;
@@ -432,7 +432,7 @@ namespace EddiCargoMonitor
             }
             else
             {
-                Cargo newCargo = new Cargo(@event.commodityObject.edname, 1);
+                Cargo newCargo = new Cargo(@event.commodityDefinition.edname, 1);
                 newCargo.haulage = 0;
                 newCargo.stolen = 0;
                 newCargo.owned = 1;
@@ -443,7 +443,7 @@ namespace EddiCargoMonitor
 
         private void handleCommoditySoldEvent(CommoditySoldEvent @event)
         {
-            Cargo cargo = GetCargoWithEDName(@event.commodityObject.edname);
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition.edname);
             if (cargo != null)
             {
                 if (@event.stolen)
@@ -483,7 +483,7 @@ namespace EddiCargoMonitor
 
         private void handlePowerCommodityObtainedEvent(PowerCommodityObtainedEvent @event)
         {
-            Cargo cargo = GetCargoWithEDName(@event.commodityObject.edname);
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition.edname);
             if (cargo != null)
             {
                 cargo.owned += @event.amount;
@@ -491,7 +491,7 @@ namespace EddiCargoMonitor
             }
             else
             {
-                Cargo newCargo = new Cargo(@event.commodityObject.edname, @event.amount);
+                Cargo newCargo = new Cargo(@event.commodityDefinition.edname, @event.amount);
                 newCargo.haulage = 0;
                 newCargo.stolen = 0;
                 newCargo.owned = @event.amount;
@@ -502,7 +502,7 @@ namespace EddiCargoMonitor
 
         private void handlePowerCommodityDeliveredEvent(PowerCommodityDeliveredEvent @event)
         {
-            Cargo cargo = GetCargoWithEDName(@event.commodityObject.edname);
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition.edname);
             if (cargo != null)
             {
                 cargo.owned -= @event.amount;
@@ -616,7 +616,7 @@ namespace EddiCargoMonitor
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            if (@event.commodityObject.edname != null)
+            if (@event.commodityDefinition.edname != null)
             {
                 string type = @event.name.Split('_').ElementAtOrDefault(1).ToLowerInvariant();
                 switch (type)
@@ -632,7 +632,7 @@ namespace EddiCargoMonitor
                         {
                             int amount = (type == "delivery" || type == "smuggle") ? @event.amount ?? 0 : 0;
                             HaulageAmount haulageAmount = new HaulageAmount(@event.missionid ?? 0, @event.name, @event.amount ?? 0, (DateTime)@event.expiry);
-                            Cargo cargo = GetCargoWithEDName(@event.commodityObject.edname);
+                            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition.edname);
                             if (cargo != null)
                             {
                                 cargo.haulage += amount;
@@ -641,7 +641,7 @@ namespace EddiCargoMonitor
                             }
                             else
                             {
-                                Cargo newCargo = new Cargo(@event.commodityObject.edname, amount);
+                                Cargo newCargo = new Cargo(@event.commodityDefinition.edname, amount);
                                 newCargo.haulage = amount;
                                 newCargo.stolen = 0;
                                 newCargo.owned = 0;
@@ -658,7 +658,7 @@ namespace EddiCargoMonitor
 
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
-            Cargo cargo = GetCargoWithEDName(@event.commodityObject.edname);
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition.edname);
             if (cargo != null)
             {
                 HaulageAmount haulageAmount = cargo.haulageamounts.FirstOrDefault(ha => ha.id == @event.missionid);
@@ -812,7 +812,7 @@ namespace EddiCargoMonitor
 
         private void handleSearchAndRescueEvent(SearchAndRescueEvent @event)
         {
-            Cargo cargo = GetCargoWithEDName(@event.commodityObject.edname);
+            Cargo cargo = GetCargoWithEDName(@event.commodityDefinition.edname);
             if (cargo != null)
             {
                 cargo.owned -= (cargo.owned > @event.amount) ? @event.amount ?? 0 : cargo.owned;

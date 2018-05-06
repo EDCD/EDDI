@@ -28,7 +28,7 @@ namespace EddiCargoMonitor
         public string commodity { get; private set; }
         public int amount { get; private set; }
         public int price { get; private set; }
-        public CommodityDefinition commodityObject { get; private set; }
+        public CommodityDefinition commodityDefinition { get; private set; }
 
         public CommodityPurchasedEvent(DateTime timestamp, long marketid, CommodityDefinition commodity, int amount, int price) : base(timestamp, NAME)
         {
@@ -36,7 +36,7 @@ namespace EddiCargoMonitor
             this.commodity = commodity?.localizedName ?? "unknown commodity";
             this.amount = amount;
             this.price = price;
-            this.commodityObject = commodity;
+            this.commodityDefinition = commodity;
         }
     }
 }
