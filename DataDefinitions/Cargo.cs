@@ -137,6 +137,7 @@ namespace EddiDataDefinitions
                 // legacy JSON with no edname in the top level
                 string edname = (string)_additionalJsonData["commodity"]["EDName"];
                 commodityDef = CommodityDefinition.FromEDName(edname);
+                owned = (int)_additionalJsonData["other"];
             }
 
             _additionalJsonData = null;
