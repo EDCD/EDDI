@@ -24,6 +24,7 @@ namespace GeneratorTests
                     if (variables.Count == 0)
                     {
                         output.Add("This event has no variables.");
+                        output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")).");
                     }
                     else
                     {
@@ -36,7 +37,7 @@ namespace GeneratorTests
                             output.Add("");
                         }
 
-                        output.Add("To use this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")). The event information can be accessed using the following VoiceAttack variables");
+                        output.Add("To respond to this event in VoiceAttack, create a command entitled ((EDDI " + entry.Key.ToLowerInvariant() + ")). The event information can be accessed using the following VoiceAttack variables");
                         output.Add("");
                         output.Add("");
                         foreach (KeyValuePair<string, string> variable in variables.OrderBy(i => i.Key))
