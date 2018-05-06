@@ -35,7 +35,42 @@ namespace UnitTests
         [TestMethod]
         public void TestCargoConfig()
         {
-            string cargoConfigJson = @"{ ""cargo"": [ { ""edname"": ""DamagedEscapePod"", ""stolen"": 0, ""haulage"": 0, ""owned"": 4, ""need"": 0, ""total"": 4, ""ejected"": 0, ""price"": 11912, ""haulageamounts"": [] }, { ""edname"": ""USSCargoBlackBox"", ""stolen"": 4, ""haulage"": 0, ""owned"": 0, ""need"": 0, ""total"": 4, ""ejected"": 0, ""price"": 6995, ""haulageamounts"": [] }, { ""edname"": ""Drones"", ""stolen"": 0, ""haulage"": 0, ""owned"": 21, ""need"": 0, ""total"": 21, ""ejected"": 0, ""price"": 101, ""haulageamounts"": [] } ], ""cargocarried"": 29 }";
+            string cargoConfigJson = @"{
+	            ""cargo"": [{
+		            ""edname"": ""DamagedEscapePod"",
+		            ""stolen"": 0,
+		            ""haulage"": 0,
+		            ""owned"": 4,
+		            ""need"": 0,
+		            ""total"": 4,
+		            ""ejected"": 0,
+		            ""price"": 11912,
+		            ""haulageamounts"": []
+	            },
+	            {
+		            ""edname"": ""USSCargoBlackBox"",
+		            ""stolen"": 4,
+		            ""haulage"": 0,
+		            ""owned"": 0,
+		            ""need"": 0,
+		            ""total"": 4,
+		            ""ejected"": 0,
+		            ""price"": 6995,
+		            ""haulageamounts"": []
+	            },
+	            {
+		            ""edname"": ""Drones"",
+		            ""stolen"": 0,
+		            ""haulage"": 0,
+		            ""owned"": 21,
+		            ""need"": 0,
+		            ""total"": 21,
+		            ""ejected"": 0,
+		            ""price"": 101,
+		            ""haulageamounts"": []
+	            }],
+	            ""cargocarried"": 29
+            }";
             CargoMonitorConfiguration config = CargoMonitorConfiguration.FromJsonString(cargoConfigJson);
 
             Assert.AreEqual(3, config.cargo.Count);
