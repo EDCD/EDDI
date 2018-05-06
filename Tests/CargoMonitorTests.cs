@@ -13,23 +13,16 @@ namespace UnitTests
     [TestClass]
     public class CargoMonitorTests
     {
-        CargoMonitor cargoMonitor = new CargoMonitor();
+        CargoMonitor cargoMonitor;
         Cargo cargo;
 
         [TestInitialize]
         private void StartTestCargoMonitor()
         {
-            if (cargoMonitor == null)
-            {
-                cargoMonitor = new CargoMonitor();
+            cargoMonitor = new CargoMonitor();
 
-                // TODO: Create an EDDI-wide "test mode" that disables both sending data and writing to config files. Could be a rework of the current "safe mode"?
-                // Set ourselves in test mode to prevent writing to config files
-                cargoMonitor.testMode = true;
-
-                // Set ourselves as in beta to stop sending data to remote systems
-                EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
-            }
+            // Set ourselves as in beta to stop sending data to remote systems
+            EDDI.Instance.eventHandler(new FileHeaderEvent(DateTime.Now, "JournalBeta.txt", "beta", "beta"));
         }
 
         [TestMethod]
@@ -309,7 +302,6 @@ namespace UnitTests
         [TestCleanup]
         private void StopTestCargoMonitor()
         {
-            cargoMonitor.testMode = false;
         }
 
         private void SendEvents(string line, CargoMonitor monitor)

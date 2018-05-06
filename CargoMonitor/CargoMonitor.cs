@@ -27,7 +27,6 @@ namespace EddiCargoMonitor
         public int cargocarried;
         private static readonly object inventoryLock = new object();
         public event EventHandler InventoryUpdatedEvent;
-        public bool testMode = false; // Set to true during testing to prevent writing to files
 
         public string MonitorName()
         {
@@ -892,7 +891,6 @@ namespace EddiCargoMonitor
 
         public void writeInventory()
         {
-            if (testMode == true) { return; }; // Don't cargo configuration with current inventory if testing
             lock (inventoryLock)
             {
                 // Write cargo configuration with current inventory
