@@ -760,6 +760,18 @@ namespace EddiShipMonitor
                         ship = profileCurrentShip;
                         AddShip(ship);
                     }
+                    // Ship launchbay data is exclusively from the API, always update.
+                    else
+                    {
+                        if (profileCurrentShip.launchbays == null || !profileCurrentShip.launchbays.Any())
+                        {
+                            ship.launchbays.Clear();
+                        }
+                        else
+                        {
+                            ship.launchbays = profileCurrentShip.launchbays;
+                        }
+                    }
                     Logging.Debug("Ship is: " + JsonConvert.SerializeObject(ship));
                 }
             }
