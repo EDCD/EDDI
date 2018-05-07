@@ -2636,7 +2636,7 @@ namespace EddiJournalMonitor
                                 object val;
                                 string power = JsonParsing.getString(data, "Power");
                                 CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Type"));
-                                commodity.localizedName = JsonParsing.getString(data, "Type_Localised"); // Set a temporary localizedName from journal data, as required
+                                commodity.fallbackLocalizedName = JsonParsing.getString(data, "Type_Localised");
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
 
@@ -2649,7 +2649,7 @@ namespace EddiJournalMonitor
                                 object val;
                                 string power = JsonParsing.getString(data, "Power");
                                 CommodityDefinition commodity = CommodityDefinition.FromName(JsonParsing.getString(data, "Type"));
-                                commodity.localizedName = JsonParsing.getString(data, "Type_Localised"); // Set a temporary localizedName from journal data, as required
+                                commodity.fallbackLocalizedName = JsonParsing.getString(data, "Type_Localised");
                                 data.TryGetValue("Count", out val);
                                 int amount = (int)(long)val;
 
