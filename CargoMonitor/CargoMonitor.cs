@@ -600,12 +600,18 @@ namespace EddiCargoMonitor
                         case "salvage":
                         case "smuggle":
                             {
-                                int remaining = haulageAmount.amount - inventoryCargo.ejected;
-                                remaining = inventoryCargo.haulage < remaining ? inventoryCargo.haulage : remaining;
-                                inventoryCargo.haulage -= remaining;
-                                inventoryCargo.stolen += remaining;
-                                // Reduce the remaining cargo needs associated with this mission
-                                inventoryCargo.need -= (haulageAmount.amount - remaining);
+                                // Calculate the amount of mission-related cargo still in inventory
+                                int obtained = haulageAmount.amount - inventoryCargo.ejected;
+                                obtained = Math.Min(inventoryCargo.haulage, obtained);
+
+                                // Convert that amount of cargo from `haulage` to `stolen`
+                                inventoryCargo.haulage -= obtained;
+                                inventoryCargo.stolen += obtained;
+
+                                // Reduce our `need` counter by the amount of mission related cargo which had not yet been obtained.
+                                inventoryCargo.need -= (haulageAmount.amount - obtained);
+
+                                // We didn't fail for ejecting cargo so we set this counter to zero
                                 inventoryCargo.ejected = 0;
                             }
                             break;
@@ -779,20 +785,22 @@ namespace EddiCargoMonitor
                         case "salvage":
                         case "smuggle":
                             {
-                                int remaining = haulageAmount.amount;
-
-                                // If not expired, then failure due to jettison
+                                // Calculate the amount of mission-related cargo still in inventory
+                                int obtained = haulageAmount.amount;
+                                // If not expired, then failure may have been due to jettisoning cargo
                                 if (haulageAmount.expiry < DateTime.Now)
                                 {
-                                    remaining -= inventoryCargo.ejected;
+                                    obtained -= inventoryCargo.ejected;
                                     inventoryCargo.ejected = 0;
                                 }
-                                // Transfer remaining haulage to stolen
-                                remaining = inventoryCargo.haulage < remaining ? inventoryCargo.haulage : remaining;
-                                inventoryCargo.haulage -= remaining;
-                                inventoryCargo.stolen += remaining;
-                                // Reduce the remaining cargo needs associated with this mission
-                                inventoryCargo.need -= (haulageAmount.amount - remaining);
+                                obtained = Math.Min(inventoryCargo.haulage, obtained);
+
+                                // Convert that amount of cargo from `haulage` to `stolen`
+                                inventoryCargo.haulage -= obtained;
+                                inventoryCargo.stolen += obtained;
+
+                                // Reduce our `need` counter by the amount of mission related cargo which had not yet been obtained.
+                                inventoryCargo.need -= (haulageAmount.amount - obtained);
                             }
                             break;
                     }
