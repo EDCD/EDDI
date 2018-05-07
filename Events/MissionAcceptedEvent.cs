@@ -63,6 +63,8 @@ namespace EddiEvents
 
         public string reputation { get; private set; }
 
+        public CommodityDefinition commodityDefinition { get; private set; }
+
         public MissionAcceptedEvent(DateTime timestamp, long? missionid, string name, string faction, string destinationsystem, string destinationstation, CommodityDefinition commodity, int? amount, string passengertype, bool? passengerswanted, string target, string targettype, string targetfaction, bool communal, DateTime? expiry, string influence, string reputation) : base(timestamp, NAME)
         {
             this.missionid = missionid;
@@ -81,6 +83,7 @@ namespace EddiEvents
             this.expiry = expiry;
             this.influence = influence;
             this.reputation = reputation;
+            this.commodityDefinition = commodity;
         }
     }
 }

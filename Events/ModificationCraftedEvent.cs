@@ -39,16 +39,4 @@ namespace EddiEvents
             this.commodities = commodities;
         }
     }
-
-    public class CommodityAmount
-    {
-        public string commodity { get; private set; }
-        public int amount { get; private set; }
-
-        public CommodityAmount(CommodityDefinition commodity, int amount)
-        {
-            this.commodity = commodity.localizedName;
-            this.amount = amount;
-        }
-    }
 }

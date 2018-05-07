@@ -13,26 +13,24 @@ namespace EddiEvents
 
         static SearchAndRescueEvent()
         {
-            VARIABLES.Add("commodity", "The item recovered (this is an object)");
-	    VARIABLES.Add("commodityname", "The name of the item recovered");
+    	    VARIABLES.Add("commodity", "The name of the item recovered");
             VARIABLES.Add("amount", "The amount of the item recovered");
             VARIABLES.Add("reward", "The monetary reward for completing the search and rescue");
         }
 
-        public CommodityDefinition commodity { get; private set; }
-		
-	public string commodityname { get; private set; }
+        public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
 
-        public int? amount { get; private set; }
+        public int? amount { get; }
 
-        public long reward { get; private set; }
+        public long reward { get; }
+
+        public CommodityDefinition commodityDefinition { get; }
 
         public SearchAndRescueEvent(DateTime timestamp, CommodityDefinition commodity, int? amount, long reward) : base(timestamp, NAME)
         {
-            this.commodity = commodity;
-            this.commodityname = commodity.localizedName;
             this.amount = amount;
             this.reward = reward;
+            this.commodityDefinition = commodity;
         }
     }
 }

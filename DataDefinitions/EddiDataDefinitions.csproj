@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlueprintMaterials.cs" />
+    <Compile Include="CommodityAmount.cs" />
     <Compile Include="HaulageAmount.cs" />
     <Compile Include="CommodityCategory.cs" />
     <Compile Include="MaterialCategory.cs" />

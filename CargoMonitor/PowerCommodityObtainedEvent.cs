@@ -1,4 +1,5 @@
-﻿using EddiEvents;
+﻿using EddiDataDefinitions;
+using EddiEvents;
 using System;
 using System.Collections.Generic;
 
@@ -19,17 +20,19 @@ namespace EddiCargoMonitor
             VARIABLES.Add("amount", "The amount of the commodity the commander is obtaining");
         }
 
-        public string power { get; private set; }
+        public string power { get; }
 
-        public string commodity { get; private set; }
+        public string commodity => commodityDefinition.localizedName;
 
-        public int amount { get; private set; }
+        public int amount { get; }
 
-        public PowerCommodityObtainedEvent(DateTime timestamp, string power, string commodity, int amount) : base(timestamp, NAME)
+        public CommodityDefinition commodityDefinition { get; }
+
+        public PowerCommodityObtainedEvent(DateTime timestamp, string power, CommodityDefinition commodity, int amount) : base(timestamp, NAME)
         {
             this.power = power;
-            this.commodity = commodity;
             this.amount = amount;
+            this.commodityDefinition = commodity;
         }
     }
 }

@@ -33,14 +33,8 @@ namespace EddiDataDefinitions
             }
         }
 
-        public string localizedName
-        {
-            get
-            {
-                string localizedName = resourceManager.GetString(basename) ?? basename;
-                return localizedName;
-            }
-        }
+        public string fallbackLocalizedName { get; set; } = null;
+        public string localizedName => resourceManager.GetString(basename) ?? fallbackLocalizedName ?? basename;
 
         [Obsolete("Please be explicit and use localizedName or invariantName")]
         public string name => localizedName;
