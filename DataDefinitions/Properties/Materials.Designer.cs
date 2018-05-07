@@ -160,6 +160,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Boron.
+        /// </summary>
+        public static string boron {
+            get {
+                return ResourceManager.GetString("boron", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Anomalous Bulk Scan Data.
         /// </summary>
         public static string bulkscandata {
@@ -493,6 +502,78 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Guardian Module Blueprint.
+        /// </summary>
+        public static string guardian_moduleblueprint {
+            get {
+                return ResourceManager.GetString("guardian_moduleblueprint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Power Cell.
+        /// </summary>
+        public static string guardian_powercell {
+            get {
+                return ResourceManager.GetString("guardian_powercell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Power Conduit.
+        /// </summary>
+        public static string guardian_powerconduit {
+            get {
+                return ResourceManager.GetString("guardian_powerconduit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Sentinel Weapon Parts.
+        /// </summary>
+        public static string guardian_sentinel_weaponparts {
+            get {
+                return ResourceManager.GetString("guardian_sentinel_weaponparts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Sentinel Wreckage Components.
+        /// </summary>
+        public static string guardian_sentinel_wreckagecomponents {
+            get {
+                return ResourceManager.GetString("guardian_sentinel_wreckagecomponents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Technology Component.
+        /// </summary>
+        public static string guardian_techcomponent {
+            get {
+                return ResourceManager.GetString("guardian_techcomponent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Vessel Blueprint.
+        /// </summary>
+        public static string guardian_vesselblueprint {
+            get {
+                return ResourceManager.GetString("guardian_vesselblueprint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guardian Weapon Blueprint.
+        /// </summary>
+        public static string guardian_weaponblueprint {
+            get {
+                return ResourceManager.GetString("guardian_weaponblueprint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Heat Conduction Wiring.
         /// </summary>
         public static string heatconductionwiring {
@@ -597,6 +678,15 @@ namespace EddiDataDefinitions.Properties {
         public static string iron {
             get {
                 return ResourceManager.GetString("iron", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lead.
+        /// </summary>
+        public static string lead {
+            get {
+                return ResourceManager.GetString("lead", resourceCulture);
             }
         }
         
@@ -790,6 +880,15 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rhenium.
+        /// </summary>
+        public static string rhenium {
+            get {
+                return ResourceManager.GetString("rhenium", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ruthenium.
         /// </summary>
         public static string ruthenium {
@@ -961,11 +1060,29 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thargoid Bio-Mechanical Components.
+        /// </summary>
+        public static string tg_biomechanicalconduits {
+            get {
+                return ResourceManager.GetString("tg_biomechanicalconduits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Material Composition Data.
         /// </summary>
         public static string tg_compositiondata {
             get {
                 return ResourceManager.GetString("tg_compositiondata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Propulsion Element.
+        /// </summary>
+        public static string tg_propulsionelement {
+            get {
+                return ResourceManager.GetString("tg_propulsionelement", resourceCulture);
             }
         }
         
@@ -979,11 +1096,47 @@ namespace EddiDataDefinitions.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thargoid Ship Flight Data.
+        /// </summary>
+        public static string tg_shipflightdata {
+            get {
+                return ResourceManager.GetString("tg_shipflightdata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Ship Systems Data.
+        /// </summary>
+        public static string tg_shipsystemsdata {
+            get {
+                return ResourceManager.GetString("tg_shipsystemsdata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thargoid Structural Data.
         /// </summary>
         public static string tg_structuraldata {
             get {
                 return ResourceManager.GetString("tg_structuraldata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Weapon Parts.
+        /// </summary>
+        public static string tg_weaponparts {
+            get {
+                return ResourceManager.GetString("tg_weaponparts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thargoid Wreckage Components.
+        /// </summary>
+        public static string tg_wreckagecomponents {
+            get {
+                return ResourceManager.GetString("tg_wreckagecomponents", resourceCulture);
             }
         }
         
