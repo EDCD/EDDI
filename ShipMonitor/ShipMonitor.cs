@@ -851,8 +851,6 @@ namespace EddiShipMonitor
             {
                 ship.Role = Role.MultiPurpose;
             }
-            // Remove the ship first (just in case we are trying to add a ship that already exists)
-            _RemoveShip(ship.LocalId);
             _ReplaceOrAddShip(ship);
             writeShips();
         }
