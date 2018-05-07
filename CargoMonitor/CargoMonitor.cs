@@ -466,19 +466,19 @@ namespace EddiCargoMonitor
                 if (@event.stolen)
                 {
                     // Cargo is stolen
-                    cargo.stolen -= (cargo.stolen > @event.amount) ? @event.amount : cargo.stolen;
+                    cargo.stolen -= Math.Min(cargo.stolen, @event.amount);
                 }
                 else if (@event.blackmarket)
                 {
                     // Cargo is mission-related
-                    int amount = (cargo.owned > @event.amount) ? @event.amount : cargo.owned;
+                    int amount = Math.Min(cargo.haulage, @event.amount);
                     cargo.haulage -= amount;
                     cargo.ejected += amount;
                 }
                 else
                 {
                     // Cargo is owned by the commander
-                    cargo.owned -= (cargo.owned > @event.amount) ? @event.amount : cargo.owned;
+                    cargo.owned -= Math.Min(cargo.owned, @event.amount);
                 }
                 RemoveCargo(cargo);
             }
@@ -822,7 +822,7 @@ namespace EddiCargoMonitor
             Cargo cargo = GetCargoWithEDName(@event.commodityDefinition.edname);
             if (cargo != null)
             {
-                cargo.owned -= (cargo.owned > @event.amount) ? @event.amount ?? 0 : cargo.owned;
+                cargo.owned -= Math.Min(cargo.owned, @event.amount ?? 0);
                 RemoveCargo(cargo);
             }
         }
@@ -866,7 +866,7 @@ namespace EddiCargoMonitor
                 Cargo cargo = GetCargoWithEDName(commodityAmount.edname);
                 if (cargo != null)
                 {
-                    cargo.owned -= (cargo.owned > commodityAmount.amount) ? commodityAmount.amount : cargo.owned;
+                    cargo.owned -= Math.Min(cargo.owned, commodityAmount.amount);
                     RemoveCargo(cargo);
                 }
             }
