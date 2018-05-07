@@ -27,36 +27,35 @@ namespace EddiEvents
             VARIABLES.Add("rewardAmount", "The amount of the commodity reward (if applicable)");
         }
 
-        public long? missionid { get; private set; }
+        public long? missionid { get; }
 
-        public string name { get; private set; }
+        public string name { get; }
 
-        public string faction { get; private set; }
+        public string faction { get; }
 
-        public string commodity { get; private set; }
+        public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
 
-        public CommodityDefinition commodityDefinition { get; private set; }
+        public CommodityDefinition commodityDefinition { get; }
 
-        public int? amount { get; private set; }
+        public int? amount { get; }
 
-        public bool communal { get; private set; }
+        public bool communal { get; }
 
-        public long reward { get; private set; }
+        public long reward { get; }
 
-        public List<CommodityAmount> commodityrewards { get; private set; }
+        public List<CommodityAmount> commodityrewards { get; }
 
-        public long donation { get; private set; }
+        public long donation { get; }
 
-        public string rewardCommodity { get; private set; }
+        public string rewardCommodity { get; }
 
-        public int rewardAmount { get; private set; }
+        public int rewardAmount { get; }
 
         public MissionCompletedEvent(DateTime timestamp, long? missionid, string name, string faction, CommodityDefinition commodity, int? amount, bool communal, long reward, List<CommodityAmount> commodityrewards, long donation) : base(timestamp, NAME)
         {
             this.missionid = missionid;
             this.name = name;
             this.faction = faction;
-            this.commodity = commodity?.localizedName;
             this.commodityDefinition = commodity;
             this.amount = amount;
             this.communal = communal;

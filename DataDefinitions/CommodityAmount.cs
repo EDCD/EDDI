@@ -2,10 +2,10 @@
 {
     public class CommodityAmount
     {
-        public CommodityDefinition commodityDefinition { get; private set; }
+        public CommodityDefinition commodityDefinition { get; }
         public string commodity => commodityDefinition.localizedName;
         public string edname => commodityDefinition.edname;
-        public int amount { get; private set; }
+        public int amount { get; }
 
         public CommodityAmount(CommodityDefinition commodity, int amount)
         {

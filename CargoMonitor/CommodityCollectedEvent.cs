@@ -20,16 +20,14 @@ namespace EddiCargoMonitor
         }
 
         [JsonProperty("commodity")]
-        public string commodity { get; private set; }
-
+        public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
         [JsonProperty("stolen")]
-        public bool stolen { get; private set; }
+        public bool stolen { get; }
 
-        public CommodityDefinition commodityDefinition { get; private set; }
+        public CommodityDefinition commodityDefinition { get; }
 
         public CommodityCollectedEvent(DateTime timestamp, CommodityDefinition commodity, bool stolen) : base(timestamp, NAME)
         {
-            this.commodity = commodity?.localizedName ?? "unknown commodity";
             this.stolen = stolen;
             this.commodityDefinition = commodity;
         }

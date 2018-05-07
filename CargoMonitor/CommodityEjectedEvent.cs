@@ -21,19 +21,18 @@ namespace EddiCargoMonitor
         }
 
         [JsonProperty("commodity")]
-        public string commodity { get; private set; }
+        public string commodity => commodityDefinition?.localizedName ?? "unknown commodity"; 
 
         [JsonProperty("amount")]
-        public int amount { get; private set; }
+        public int amount { get; }
 
         [JsonProperty("abandoned")]
-        public bool abandoned { get; private set; }
+        public bool abandoned { get; }
 
-        public CommodityDefinition commodityDefinition { get; private set; }
+        public CommodityDefinition commodityDefinition { get; }
 
         public CommodityEjectedEvent(DateTime timestamp, CommodityDefinition commodity , int amount, bool abandoned) : base(timestamp, NAME)
         {
-            this.commodity = commodity?.localizedName ?? "unknown commodity";
             this.amount = amount;
             this.abandoned = abandoned;
             this.commodityDefinition = commodity;

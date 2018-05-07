@@ -18,9 +18,9 @@ namespace EddiCargoMonitor
             VARIABLES.Add("amount", "The number of credits spent fast tracking");
         }
 
-        public string power { get; private set; }
+        public string power { get; }
 
-        public int amount { get; private set; }
+        public int amount { get; }
 
         public PowerCommodityFastTrackedEvent(DateTime timestamp, string power, int amount) : base(timestamp, NAME)
         {

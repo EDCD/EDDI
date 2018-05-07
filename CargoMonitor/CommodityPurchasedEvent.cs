@@ -24,16 +24,15 @@ namespace EddiCargoMonitor
             VARIABLES.Add("price", "The price paid per unit of the purchased commodity");
         }
 
-        public long marketid { get; private set; }
-        public string commodity { get; private set; }
-        public int amount { get; private set; }
-        public int price { get; private set; }
-        public CommodityDefinition commodityDefinition { get; private set; }
+        public long marketid { get; }
+        public string commodity => commodityDefinition?.localizedName ?? "unknown commodity";
+        public int amount { get; }
+        public int price { get; }
+        public CommodityDefinition commodityDefinition { get; }
 
         public CommodityPurchasedEvent(DateTime timestamp, long marketid, CommodityDefinition commodity, int amount, int price) : base(timestamp, NAME)
         {
             this.marketid = marketid;
-            this.commodity = commodity?.localizedName ?? "unknown commodity";
             this.amount = amount;
             this.price = price;
             this.commodityDefinition = commodity;

@@ -1,11 +1,6 @@
-﻿using EddiDataDefinitions;
-using EddiEvents;
-using Newtonsoft.Json;
+﻿using EddiEvents;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EddiCargoMonitor
 {
@@ -22,8 +17,8 @@ namespace EddiCargoMonitor
             VARIABLES.Add("price", "The price obtained per limpet");
         }
 
-        public int amount { get; private set; }
-        public long price { get; private set; }
+        public int amount { get; }
+        public long price { get; }
 
         public LimpetSoldEvent(DateTime timestamp, int amount, long price) : base(timestamp, NAME)
         {
