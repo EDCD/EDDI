@@ -853,11 +853,11 @@ namespace EddiShipMonitor
             }
             // Remove the ship first (just in case we are trying to add a ship that already exists)
             _RemoveShip(ship.LocalId);
-            _AddShip(ship);
+            _ReplaceOrAddShip(ship);
             writeShips();
         }
 
-        private void _AddShip(Ship ship)
+        private void _ReplaceOrAddShip(Ship ship)
         {
             if (ship == null)
             {
@@ -865,6 +865,15 @@ namespace EddiShipMonitor
             }
             lock (shipyardLock)
             {
+                for (int i = 0; i < shipyard.Count; i++)
+                {
+                    if (shipyard[i].LocalId == ship.LocalId)
+                    {
+                        shipyard[i] = ship; // this is much more efficient than removing and adding
+                        return;
+                    }
+                }
+                // not found, so add
                 shipyard.Add(ship);
             }
         }
