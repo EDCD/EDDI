@@ -17,6 +17,8 @@ namespace EddiDataDefinitions
         public string invariantName => commodityDef?.invariantName ?? "";
         [JsonIgnore]
         public string localizedName => commodityDef?.localizedName ?? "";
+        [JsonIgnore, Obsolete("Please use localizedName or invariantName")]
+        public string name => localizedName;
 
         public string edname
         {
@@ -75,6 +77,8 @@ namespace EddiDataDefinitions
                 }
             }
         }
+        [Obsolete("please use owned instead")]
+        public int other => owned;
 
         // The number of items needed for missions
         [JsonIgnore]
@@ -106,7 +110,7 @@ namespace EddiDataDefinitions
         public string localizedCategory => commodityDef?.category?.localizedName ?? null;
 
         // deprecated commodity category (exposed to Cottle and VA)
-        [JsonIgnore, Obsolete("Please use localizedCategory instead")]
+        [Obsolete("Please use localizedCategory instead")]
         public string category => localizedCategory;
 
         [JsonIgnore]
@@ -123,6 +127,9 @@ namespace EddiDataDefinitions
                 NotifyPropertyChanged("localizedCategory");
             }
         }
+
+        [Obsolete]
+        public CommodityDefinition commodity => commodityDef;
 
         public List<HaulageAmount> haulageamounts { get; set; }
 
