@@ -626,7 +626,7 @@ namespace EddiCargoMonitor
 
         private void handleMissionAcceptedEvent(MissionAcceptedEvent @event)
         {
-            if (@event.commodityDefinition.edname != null)
+            if (@event.commodityDefinition != null)
             {
                 _handleMissionAcceptedEvent(@event);
                 writeInventory();
@@ -720,9 +720,16 @@ namespace EddiCargoMonitor
                             break;
                         case "salvage":
                             {
-                                if (subtype.Contains("illegal"))
+                                if (subtype != null)
                                 {
-                                    cargo.stolen -= @event.amount ?? 0;
+                                    if (subtype.Contains("illegal"))
+                                    {
+                                        cargo.stolen -= @event.amount ?? 0;
+                                    }
+                                    else
+                                    {
+                                        cargo.haulage -= @event.amount ?? 0;
+                                    }
                                 }
                                 else
                                 {
@@ -1030,9 +1037,16 @@ namespace EddiCargoMonitor
                             break;
                         case "salvage":
                             {
-                                if (subtype.Contains("illegal"))
+                                if (subtype != null)
                                 {
-                                    stolenNeeded += haulageAmount.amount;
+                                    if (subtype.Contains("illegal"))
+                                    {
+                                        stolenNeeded += haulageAmount.amount;
+                                    }
+                                    else
+                                    {
+                                        haulageNeeded += haulageAmount.amount;
+                                    }
                                 }
                                 else
                                 {
