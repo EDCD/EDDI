@@ -673,8 +673,11 @@ namespace EddiCargoMonitor
 
         private void handleMissionCompletedEvent(MissionCompletedEvent @event)
         {
-            _handleMissionCompletedEvent(@event);
-            writeInventory();
+            if (@event.commodityDefinition != null || @event.commodityrewards != null)
+            {
+                _handleMissionCompletedEvent(@event);
+                writeInventory();
+            }
         }
 
         public void _handleMissionCompletedEvent(MissionCompletedEvent @event)
