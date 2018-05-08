@@ -733,6 +733,7 @@ namespace EddiShipMonitor
             refreshProfileDelayed(@event.shipid, currentProfileId).GetAwaiter().GetResult();
         }
 
+        // Note: At a minimum, the API Profile data is required to update the current ship's launchbay status
         public void HandleProfile(JObject profile)
         {
             // Obtain the current ship from the profile
