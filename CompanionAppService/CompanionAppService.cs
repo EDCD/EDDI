@@ -683,7 +683,7 @@ namespace EddiCompanionAppService
         // Obtain the list of commodities from the profile
         private static List<CommodityMarketQuote> CommodityQuotesFromProfile(dynamic json)
         {
-            var quotes = new List<CommodityMarketQuote>();
+            List<CommodityMarketQuote> quotes = new List<CommodityMarketQuote>();
 
             if (json["lastStarport"] != null && json["lastStarport"]["commodities"] != null)
             {
@@ -693,10 +693,10 @@ namespace EddiCompanionAppService
                     CommodityMarketQuote quote = new CommodityMarketQuote(commodityDef);
                     quote.buyprice = (int)commodity["buyPrice"];
                     quote.stock = (int)commodity["stock"];
-                    quote.stockbracket = (dynamic)commodity["stockBracket"];
+                    quote.stockbracket = (int)commodity["stockBracket"];
                     quote.sellprice = (int)commodity["sellPrice"];
                     quote.demand = (int)commodity["demand"];
-                    quote.demandbracket = (dynamic)commodity["demandBracket"];
+                    quote.demandbracket = (int)commodity["demandBracket"];
 
                     List<string> StatusFlags = new List<string>();
                     foreach (dynamic statusFlag in commodity["statusFlags"])
@@ -706,7 +706,7 @@ namespace EddiCompanionAppService
                     quote.StatusFlags = StatusFlags;
                     quotes.Add(quote);
 
-                    if (commodityDef == null || (string)commodity["name"] != commodityDef.invariantName)
+                    if (commodityDef == null || (string)commodity["name"] != commodityDef.edname)
                     {
                         if (commodityDef.edname != "Drones")
                         {
