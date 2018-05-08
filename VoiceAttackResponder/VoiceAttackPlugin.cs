@@ -1448,11 +1448,12 @@ namespace EddiVoiceAttackResponder
                     {
                         // CurrentStarSystem might not have been initialised yet so we check. If not, it may be set on the next pass of the setValues() method.
                         StarSystem ThisStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(EDDI.Instance.CurrentStarSystem.name);
-                        if (ThisStarSystem!= null && ThisStarSystem.x != null & StoredShipStarSystem.x != null)
+                        if (ThisStarSystem?.x != null & StoredShipStarSystem?.x != null)
                         {
-                            decimal distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(ThisStarSystem.x - StoredShipStarSystem.x), 2)
-                                + Math.Pow((double)(ThisStarSystem.y - StoredShipStarSystem.y), 2)
-                                + Math.Pow((double)(ThisStarSystem.z - StoredShipStarSystem.z), 2)), 2);
+                            decimal dx = (ThisStarSystem.x - StoredShipStarSystem.x) ?? 0M;
+                            decimal dy = (ThisStarSystem.y - StoredShipStarSystem.y) ?? 0M;
+                            decimal dz = (ThisStarSystem.z - StoredShipStarSystem.z) ?? 0M;
+                            decimal distance = (decimal)(Math.Sqrt((double)(dx * dx + dy * dy + dz * dz)));
                             vaProxy.SetDecimal(prefix + " distance", distance);
                         }
                     }
