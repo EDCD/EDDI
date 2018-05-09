@@ -123,7 +123,7 @@
     <comment>Ship role Journalism</comment>
   </data>
   <data name="Mining" xml:space="preserve">
-    <value>Exploitation minière</value>
+    <value>Minage</value>
     <comment>Ship role Mining</comment>
   </data>
   <data name="MultiCrew" xml:space="preserve">
@@ -131,7 +131,7 @@
     <comment>Ship role MultiCrew</comment>
   </data>
   <data name="Multipurpose" xml:space="preserve">
-    <value>Généraliste</value>
+    <value>Multi-Rôle</value>
     <comment>Ship role Multipurpose</comment>
   </data>
   <data name="Piracy" xml:space="preserve">
@@ -170,4 +170,5 @@
     <value>Commerce</value>
     <comment>Ship role Trading</comment>
   </data>
+
 </root>

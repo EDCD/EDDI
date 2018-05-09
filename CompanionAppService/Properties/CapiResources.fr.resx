@@ -120,4 +120,5 @@
   <data name="frontier_api_lost" xml:space="preserve">
     <value>L'accès à l'API Frontier à été perdu. Veuillez mettre à jour vos informations dans l'onglet API Frontier afin de réétablir la connexion.</value>
   </data>
+
 </root>

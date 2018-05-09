@@ -111,11 +111,11 @@
     <comment>CQC rating Amateur</comment>
   </data>
   <data name="SemiProfessional" xml:space="preserve">
-    <value>Semi-professionel</value>
+    <value>Semi-professionnel</value>
     <comment>CQC rating SemiProfessional</comment>
   </data>
   <data name="Professional" xml:space="preserve">
-    <value>Professionel</value>
+    <value>Professionnel</value>
     <comment>CQC rating Professional</comment>
   </data>
   <data name="Champion" xml:space="preserve">
@@ -123,7 +123,7 @@
     <comment>CQC rating Champion</comment>
   </data>
   <data name="Hero" xml:space="preserve">
-    <value>Héro</value>
+    <value>Héros</value>
     <comment>CQC rating Hero</comment>
   </data>
   <data name="Legend" xml:space="preserve">
@@ -134,4 +134,5 @@
     <value>Élite</value>
     <comment>CQC rating Elite</comment>
   </data>
+
 </root>

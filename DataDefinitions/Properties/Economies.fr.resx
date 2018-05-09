@@ -111,11 +111,11 @@
     <comment>Economy type Extraction</comment>
   </data>
   <data name="HighTech" xml:space="preserve">
-    <value>Hautes technologies</value>
+    <value>Haute Technologie</value>
     <comment>Economy type HighTech</comment>
   </data>
   <data name="Industrial" xml:space="preserve">
-    <value>Industrielle</value>
+    <value>Industriel</value>
     <comment>Economy type Industrial</comment>
   </data>
   <data name="Military" xml:space="preserve">
@@ -142,4 +142,5 @@
     <value>Tourisme</value>
     <comment>Economy type Tourism</comment>
   </data>
+
 </root>

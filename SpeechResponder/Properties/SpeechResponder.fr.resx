@@ -120,6 +120,9 @@
   <data name="active_personality" xml:space="preserve">
     <value>Profil actif</value>
   </data>
+  <data name="button_cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
   <data name="button_copy" xml:space="preserve">
     <value>Copier le profil</value>
   </data>
@@ -129,6 +132,15 @@
   <data name="button_new" xml:space="preserve">
     <value>Créer un nouveau script</value>
   </data>
+  <data name="button_ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="compare_script_button" xml:space="preserve">
+    <value>Comparer à la valeur par défaut</value>
+  </data>
+  <data name="compare_script_title" xml:space="preserve">
+    <value>Comparaison avec le script par défaut</value>
+  </data>
   <data name="default_is_read_only" xml:space="preserve">
     <value>La personnalité par défaut ne peut être modifiée, Si vous voulez faire des modifications, veuillez créer une copie.</value>
   </data>
@@ -136,8 +148,14 @@
     <value>eddi.fr.json</value>
     <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
   </data>
+  <data name="delete_personality_caption" xml:space="preserve">
+    <value>Supprimer le profil</value>
+  </data>
   <data name="delete_personality_message" xml:space="preserve">
     <value>Êtes vous sur de vouloir supprimer le profil "{0}" ?</value>
+  </data>
+  <data name="delete_script" xml:space="preserve">
+    <value>Supprimer</value>
   </data>
   <data name="delete_script_caption" xml:space="preserve">
     <value>Supprimer le script</value>
@@ -148,6 +166,12 @@
   <data name="desc" xml:space="preserve">
     <value>Répond aux évenements avec un dialogue scripté basé sur les informations de l'évenement. Ils n'ont pas tous de réponses scriptés. Si un script de réponse est vide, les boutons 'Test' et 'Afficher' sont désactivé.</value>
   </data>
+  <data name="edit_script" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="edit_script_caption" xml:space="preserve">
+    <value>Modifier le script</value>
+  </data>
   <data name="header_description" xml:space="preserve">
     <value>Description</value>
   </data>
@@ -157,8 +181,18 @@
   <data name="header_name" xml:space="preserve">
     <value>Nom</value>
   </data>
+  <data name="help_button" xml:space="preserve">
+    <value>Aide</value>
+  </data>
   <data name="name" xml:space="preserve">
     <value>Répondeur vocal</value>
+  </data>
+  <data name="reset_script_button" xml:space="preserve">
+    <value>Réinitialiser par défaut</value>
+  </data>
+  <data name="script_variables_button" xml:space="preserve">
+    <value>Variables</value>
+    <comment>button that shows help for script variables</comment>
   </data>
   <data name="subs" xml:space="preserve">
     <value>Copier le texte des dialogues dans le fichier %APPDATA%\EDDI\speechresponder.out</value>
@@ -166,7 +200,20 @@
   <data name="subs_only" xml:space="preserve">
     <value>Ne pas parler lorsque le texte est écris dans le fichier ci-dessus</value>
   </data>
+  <data name="test_script" xml:space="preserve">
+    <value>Tester</value>
+  </data>
+  <data name="test_script_button" xml:space="preserve">
+    <value>Tester le script</value>
+  </data>
+  <data name="view_script" xml:space="preserve">
+    <value>Voir</value>
+  </data>
+  <data name="view_script_title" xml:space="preserve">
+    <value>Voir Script</value>
+  </data>
   <data name="warning_triggered" xml:space="preserve">
     <value>Les scripts lancés par des événements ne peuvent pas être effacés mais vous pouvez les désactiver.</value>
   </data>
+
 </root>

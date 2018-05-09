@@ -115,11 +115,12 @@
     <comment>witch_space</comment>
   </data>
   <data name="supercruise" xml:space="preserve">
-    <value>Super navigation</value>
+    <value>Super-navigation</value>
     <comment>supercruise</comment>
   </data>
   <data name="normal_space" xml:space="preserve">
     <value>Espace normal</value>
     <comment>normal_space</comment>
   </data>
+
 </root>

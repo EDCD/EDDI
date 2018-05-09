@@ -115,7 +115,8 @@
     <comment>Rarity rare</comment>
   </data>
   <data name="veryrare" xml:space="preserve">
-    <value>rarissime</value>
+    <value>très rare</value>
     <comment>Rarity veryrare</comment>
   </data>
+
 </root>

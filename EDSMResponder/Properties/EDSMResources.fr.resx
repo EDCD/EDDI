@@ -145,7 +145,7 @@
     <value>Récupération des journaux...</value>
   </data>
   <data name="log_button_fetching_progress" xml:space="preserve">
-    <value>Récupère les journaux</value>
+    <value>Récupération des journaux </value>
   </data>
   <data name="name" xml:space="preserve">
     <value>Répondeur EDSM</value>
@@ -157,6 +157,7 @@
     <value>Si vous avez enregistré un nom de commandant différent de celui renseigné actuellement, veuillez le renseigner ci-dessous.</value>
   </data>
   <data name="p3" xml:space="preserve">
-    <value>Une fois que vous avez renseigné vos informations ci-dessus, vous pouvez récupérer les journaux existants depuis EDSM pour qu'EDDI sache le nombre de fois où vous êtes allés dans chaque système. Vous pouvez effectuer cette action une seule fois lors de la première configuration d'EDSM. A noter que cette action peu prendre un peu de temps.</value>
+    <value>Une fois que vous avez renseigné vos informations ci-dessus, vous pouvez récupérer les journaux existants depuis EDSM pour qu'EDDI sache le nombre de fois où vous êtes allés dans chaque système. Vous pouvez effectuer cette action une seule fois lors de la première configuration d'EDSM. A noter que cette action peu prendre un certain temps.</value>
   </data>
+
 </root>
