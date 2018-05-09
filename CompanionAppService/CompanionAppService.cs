@@ -619,7 +619,7 @@ namespace EddiCompanionAppService
                         case "module":
                         case "utility":
                             {
-                                long id = (long)json["module"]["id"];
+                                long id = module["id"];
                                 Module Module = new Module(Module.FromEliteID(id));
                                 if (Module?.invariantName == null)
                                 {
@@ -633,7 +633,6 @@ namespace EddiCompanionAppService
                     }
                 }
             }
-
             return Modules;
         }
 
