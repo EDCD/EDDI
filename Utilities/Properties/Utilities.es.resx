@@ -103,7 +103,7 @@
     <comment>ship</comment>
   </data>
   <data name="srv" xml:space="preserve">
-    <value>SRV</value>
+    <value>VRS</value>
     <comment>srv</comment>
   </data>
   <data name="fighter" xml:space="preserve">
@@ -122,4 +122,5 @@
     <value>Espacio normal</value>
     <comment>normal_space</comment>
   </data>
+
 </root>

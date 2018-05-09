@@ -98,65 +98,38 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  <data name="None" xml:space="preserve">
-    <value>Aucune</value>
-    <comment>Federation rank None</comment>
+  <data name="ship" xml:space="preserve">
+    <value>Nave</value>
+    <comment>ship</comment>
   </data>
-  <data name="Recruit" xml:space="preserve">
-    <value>Recrue</value>
-    <comment>Federation rank Recruit</comment>
+  <data name="srv" xml:space="preserve">
+    <value>SRV</value>
+    <comment>srv</comment>
   </data>
-  <data name="Cadet" xml:space="preserve">
-    <value>Mousse</value>
-    <comment>Federation rank Cadet</comment>
+  <data name="fighter" xml:space="preserve">
+    <value>Caccia</value>
+    <comment>fighter</comment>
   </data>
-  <data name="Midshipman" xml:space="preserve">
-    <value>Matelot</value>
-    <comment>Federation rank Midshipman</comment>
+  
+<!--
+<data name="witch_space" xml:space="preserve">
+    <value>Witch Space</value>
+    <comment>witch_space</comment>
   </data>
-  <data name="PettyOfficer" xml:space="preserve">
-    <value>Second maitre</value>
-    <comment>Federation rank PettyOfficer</comment>
+-->
+  
+<!--
+<data name="supercruise" xml:space="preserve">
+    <value>Supercruise</value>
+    <comment>supercruise</comment>
   </data>
-  <data name="ChiefPettyOfficer" xml:space="preserve">
-    <value>Premier maître</value>
-    <comment>Federation rank ChiefPettyOfficer</comment>
+-->
+  
+<!--
+<data name="normal_space" xml:space="preserve">
+    <value>Normal Space</value>
+    <comment>normal_space</comment>
   </data>
-  <data name="WarrantOfficer" xml:space="preserve">
-    <value>Major</value>
-    <comment>Federation rank WarrantOfficer</comment>
-  </data>
-  <data name="Ensign" xml:space="preserve">
-    <value>Enseigne</value>
-    <comment>Federation rank Ensign</comment>
-  </data>
-  <data name="Lieutenant" xml:space="preserve">
-    <value>Lieutenant</value>
-    <comment>Federation rank Lieutenant</comment>
-  </data>
-  <data name="LieutenantCommander" xml:space="preserve">
-    <value>Capitaine de corvette</value>
-    <comment>Federation rank LieutenantCommander</comment>
-  </data>
-  <data name="PostCommander" xml:space="preserve">
-    <value>Capitaine de frégatte</value>
-    <comment>Federation rank PostCommander</comment>
-  </data>
-  <data name="PostCaptain" xml:space="preserve">
-    <value>Capitaine de vaisseau</value>
-    <comment>Federation rank PostCaptain</comment>
-  </data>
-  <data name="RearAdmiral" xml:space="preserve">
-    <value>Contre amiral</value>
-    <comment>Federation rank RearAdmiral</comment>
-  </data>
-  <data name="ViceAdmiral" xml:space="preserve">
-    <value>Vice amiral</value>
-    <comment>Federation rank ViceAdmiral</comment>
-  </data>
-  <data name="Admiral" xml:space="preserve">
-    <value>Amiral</value>
-    <comment>Federation rank Admiral</comment>
-  </data>
+-->
 
 </root>

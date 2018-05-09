@@ -117,121 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="change_affect_va" xml:space="preserve">
-    <value>Tous les changement effectués ici prendront automatiquement effet dans VoiceAttack. Vous pouvez fermer cette fenêtre lorsque vous aurez terminé.</value>
+  <data name="bounty" xml:space="preserve">
+    <value>Vale</value>
+    <comment>bounty voucher</comment>
   </data>
-  <data name="complete" xml:space="preserve">
-    <value>Achevé</value>
-    <comment>This is the adjective not the verb</comment>
+  <data name="CombatBond" xml:space="preserve">
+    <value>Bonificación de combate</value>
+    <comment>combat bond</comment>
   </data>
-  <data name="done" xml:space="preserve">
-    <value>terminé</value>
+  <data name="scannable" xml:space="preserve">
+    <value>Escaneable</value>
+    <comment>scannable voucher</comment>
   </data>
-  <data name="failed" xml:space="preserve">
-    <value>échec</value>
+  <data name="settlement" xml:space="preserve">
+    <value>Asentamiento</value>
+    <comment>settlement voucher</comment>
   </data>
-  <data name="frontier_api_nok" xml:space="preserve">
-    <value>Connexion à l'API Frontier non opérationnelle</value>
-  </data>
-  <data name="frontier_api_no_logins" xml:space="preserve">
-    <value>Vous n'êtes pas connecté à l'API Frontier actuellement. Veuillez entrer votre adresse mail et votre mot de passe Elite Dangerous ci-dessous.</value>
-  </data>
-  <data name="frontier_api_ok" xml:space="preserve">
-    <value>Votre connexion à l'API Frontier est opérationnelle, Commandant {0}.</value>
-  </data>
-  <data name="frontier_api_temp_nok" xml:space="preserve">
-    <value>Votre connexion à l'API Frontier est correcte mais rencontre des problèmes temporaires. Vos informations seront bientôt disponibles.</value>
-  </data>
-  <data name="frontier_api_verification_code" xml:space="preserve">
-    <value>Veuillez entrer le code de vérification qui a été envoyé dans votre boite mail.</value>
-  </data>
-  <data name="if_using_va" xml:space="preserve">
-    <value>Si vous utilisez VoiceAttack, veuillez fermer cette fenêtre avant de démarrer VoiceAttack afin que vos changements prennent effet. Vous pouvez accéder à cette fenêtre depuis VoiceAttack avec la commande 'Configurer les paramètres EDDI'.</value>
-  </data>
-  <data name="invalid_station" xml:space="preserve">
-    <value>Station invalide</value>
-  </data>
-  <data name="invalid_system" xml:space="preserve">
-    <value>Système invalide</value>
-  </data>
-  <data name="login_nok_frontier_service" xml:space="preserve">
-    <value>Impossible de se connecter. Ceci est généralement dû à un problème temporaire avec les serveurs de Frontier. Veuillez réessayer ultérieurement.</value>
-  </data>
-  <data name="logout" xml:space="preserve">
-    <value>Déconnexion</value>
-  </data>
-  <data name="next" xml:space="preserve">
-    <value>Suivant</value>
-  </data>
-  <data name="operational" xml:space="preserve">
-    <value>Opérationnel</value>
-  </data>
-  <data name="preparing_log" xml:space="preserve">
-    <value>Préparation du journal... </value>
-  </data>
-  <data name="update_message" xml:space="preserve">
-    <value>Version {0} est disponible</value>
-  </data>
-  <data name="voice_test_damage" xml:space="preserve">
-    <value>Dommage sévère sur votre {0}.</value>
-  </data>
-  <data name="voice_test_ship" xml:space="preserve">
-    <value>Voici comment je parlerai dans votre {0}.</value>
-  </data>
-  <data name="plugin_enabled" xml:space="preserve">
-    <value>Plugin activé</value>
-  </data>
-  <data name="download_failed" xml:space="preserve">
-    <value>Échec du téléchargement. Veuillez réessayer ultérieurement.</value>
-  </data>
-  <data name="downloading_upgrade" xml:space="preserve">
-    <value>Téléchargement de la mise à jour.</value>
-  </data>
-  <data name="mandatory_upgrade" xml:space="preserve">
-    <value>Mise à jour obligatoire d'EDDI vers {0} requise.</value>
-  </data>
-  <data name="msg_from_eddi" xml:space="preserve">
-    <value>Message d'EDDI: {0}</value>
-  </data>
-  <data name="point" xml:space="preserve">
-    <value> point </value>
-    <comment>spoken decimal point for reading out version numbers like "2.4.1"</comment>
-  </data>
-  <data name="update_available" xml:space="preserve">
-    <value>EDDI version {0} est maintenant disponible.</value>
-  </data>
-  <data name="upgrade_failed" xml:space="preserve">
-    <value>Échec de la mise à jour. Veuillez réessayer ultérieurement.</value>
-  </data>
-  <data name="starting_upgrade" xml:space="preserve">
-    <value>Lancement de la mise à jour.</value>
-  </data>
-  <data name="update_server_unreachable" xml:space="preserve">
-    <value>Je n'ai pas pu me connecter à mon serveur de mise à jour. Si cela se reproduit, veuillez vérifier le forum pour voir s'il s'agit d'un problème connu.</value>
-  </data>
-  <data name="already_running_alert_body_text" xml:space="preserve">
-    <value>Une seule instance d'EDDI peut s'exécuter à la fois.
-
-Veuillez fermer l'autre instance et réessayer.</value>
-  </data>
-  <data name="already_running_alert_title" xml:space="preserve">
-    <value>EDDI est déjà en cours d'exécution</value>
-  </data>
-  <data name="problem_load_monitor" xml:space="preserve">
-    <value>Échec du chargement du moniteur: {0}</value>
-    <comment>Weapon mount type problem_load_monitor</comment>
-  </data>
-  <data name="problem_load_monitor_file" xml:space="preserve">
-    <value>Échec du chargement du moniteur. Veuillez vous assurer que {0} n'est pas partagé sur le réseau.</value>
-    <comment>Weapon mount type problem_load_monitor_file</comment>
-  </data>
-  <data name="Commander" xml:space="preserve">
-    <value>Commandant</value>
-    <comment>Vocative form of "Commander"</comment>
-  </data>
-  <data name="system_language" xml:space="preserve">
-    <value>Automatique</value>
-    <comment>The user's system language</comment>
+  <data name="trade" xml:space="preserve">
+    <value>Comercio</value>
+    <comment>trade voucher</comment>
   </data>
 
 </root>

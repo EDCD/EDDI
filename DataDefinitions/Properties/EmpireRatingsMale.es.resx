@@ -98,6 +98,10 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+  <data name="None" xml:space="preserve">
+    <value>Ninguno</value>
+    <comment>Empire rank None</comment>
+  </data>
   <data name="Outsider" xml:space="preserve">
     <value>Forastero</value>
     <comment>Empire rank Outsider</comment>
@@ -105,6 +109,10 @@
   <data name="Serf" xml:space="preserve">
     <value>Siervo</value>
     <comment>Empire rank Serf</comment>
+  </data>
+  <data name="Master" xml:space="preserve">
+    <value>Maestro</value>
+    <comment>Empire rank Master</comment>
   </data>
   <data name="Squire" xml:space="preserve">
     <value>Escudero</value>
@@ -150,4 +158,5 @@
     <value>Rey</value>
     <comment>Empire rank King</comment>
   </data>
+
 </root>

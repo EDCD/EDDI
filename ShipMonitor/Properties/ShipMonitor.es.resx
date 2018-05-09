@@ -151,7 +151,7 @@
     <value>https://es.wikipedia.org/wiki/Alfabeto_Fon%C3%A9tico_Internacional</value>
   </data>
   <data name="link_ipa" xml:space="preserve">
-    <value>El Alfabeto Fonético Internacional</value>
+    <value>Alfabeto Fonético Internacional</value>
   </data>
   <data name="name" xml:space="preserve">
     <value>Monitor de la nave</value>
@@ -160,18 +160,19 @@
     <value>Permite ver sus naves y darles roles individuales. Esta información está disponible para contestadores automáticos y se usa en scripts para adaptar acciones.</value>
   </data>
   <data name="p2" xml:space="preserve">
-    <value>Si el nombre de la nave es difícil de pronunciar por EDDI, puede usar escritura fonética usando</value>
+    <value>Tenga en cuenta que si su inventario es incorrecto, deberá iniciar o reiniciar Elite para que se actualice.</value>
   </data>
   <data name="p3" xml:space="preserve">
     <value>. Por ejemplo, si usted usa una nave llamada 'Pride of Achenar', el nombre fonético sería 'praɪdɒvˈakɜːnɑ' (nunca se usan espacios)</value>
   </data>
   <data name="p4" xml:space="preserve">
-    <value>Tenga en cuenta que si no ha configurado el acceso a la API de Frontier, algunos de los datos siguientes serán inexactos o no estarán disponibles. Además, si tenía varias naves antes de instalar EDDI, tendrá que usar las como naves principales y esperar un poco antes de que su información completa esté disponible.</value>
+    <value>Tenga en cuenta que si no ha configurado el acceso a la API de Frontier, algunos de los datos siguientes serán inexactos o no estarán disponibles. Además, si tenía varias naves antes de instalar EDDI, tendrá que usarlas como nave principal y esperar un poco antes de que su información completa esté disponible.</value>
   </data>
   <data name="p5" xml:space="preserve">
-    <value>EDDI puede exportar de su nave a Coriolis o a EDShipyard (herramientas de terceros). Seleccione la herramienta que prefiera.</value>
+    <value>EDDI puede exportar su nave a Coriolis o EDShipyard (herramientas de terceros). Seleccione la herramienta que prefiera.</value>
   </data>
   <data name="ship_ready" xml:space="preserve">
     <value>{0} preparado.</value>
   </data>
+
 </root>

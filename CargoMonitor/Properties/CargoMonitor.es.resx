@@ -123,4 +123,34 @@
   <data name="cargo_monitor_name" xml:space="preserve">
     <value>Monitor de carga</value>
   </data>
+  <data name="header_haulage" xml:space="preserve">
+    <value>Carga</value>
+    <comment>Tons of haulage (mission cargo) carried</comment>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Nombre</value>
+    <comment>Name of cargo, such as "Gold"</comment>
+  </data>
+  <data name="header_owned" xml:space="preserve">
+    <value>De propiedad</value>
+    <comment>Tons of owned cargo carried</comment>
+  </data>
+  <data name="header_price" xml:space="preserve">
+    <value>Precio por tonelada</value>
+  </data>
+  <data name="header_stolen" xml:space="preserve">
+    <value>Robada</value>
+    <comment>Tons of stolen cargo carried</comment>
+  </data>
+  <data name="header_type" xml:space="preserve">
+    <value>Tipo</value>
+    <comment>Type of cargo, such as "Metals"</comment>
+  </data>
+  <data name="para1" xml:space="preserve">
+    <value>A continuación tiene una lista de toda su carga.</value>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>Tenga en cuenta que si su inventario es incorrecto, deberá iniciar o reiniciar Elite para que esta información se actualice.</value>
+  </data>
+
 </root>

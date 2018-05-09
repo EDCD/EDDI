@@ -98,7 +98,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="assault" xml:space="preserve">
-    <value>Assault</value>
+    <value>Agression</value>
     <comment>Crime assault</comment>
   </data>
   <data name="murder" xml:space="preserve">
@@ -110,11 +110,11 @@
     <comment>Crime piracy</comment>
   </data>
   <data name="interdiction" xml:space="preserve">
-    <value>Interdiction</value>
+    <value>Interdiction d'un vaisseau en règle</value>
     <comment>Crime interdiction</comment>
   </data>
   <data name="illegalCargo" xml:space="preserve">
-    <value>Transport de cargaisonn Illégale</value>
+    <value>Transport de cargaison illégale</value>
     <comment>Crime illegalCargo</comment>
   </data>
   <data name="disobeyPolice" xml:space="preserve">
@@ -138,24 +138,28 @@
     <comment>Crime dumpingNearStation</comment>
   </data>
   <data name="dockingMinorBlockingAirlock" xml:space="preserve">
-    <value>Bloquer un sas</value>
+    <value>Blocage d'une entrée de station</value>
     <comment>Crime dockingMinorBlockingAirlock</comment>
   </data>
   <data name="dockingMajorBlockingAirlock" xml:space="preserve">
-    <value>Bloquer un sas</value>
+    <value>Bloquer une entrée</value>
     <comment>Crime dockingMajorBlockingAirlock</comment>
   </data>
   <data name="dockingMinorBlockingLandingPad" xml:space="preserve">
-    <value>Bloquer une aire d'atterrissage</value>
+    <value>Bloquer une plateforme d'atterrissage</value>
     <comment>Crime dockingMinorBlockingLandingPad</comment>
   </data>
   <data name="dockingMajorBlockingLandingPad" xml:space="preserve">
-    <value>Bloquer une aire d'atterrissage</value>
+    <value>Bloquer une plateforme d'atterrissage</value>
     <comment>Crime dockingMajorBlockingLandingPad</comment>
   </data>
   <data name="dockingMinorTresspass" xml:space="preserve">
-    <value>intrusion</value>
-    <comment>Crime dockingMinorTrespass</comment>
+    <value>Intrusion</value>
+    <comment>Crime dockingMinorTresspass</comment>
+  </data>
+  <data name="dockingMajorTresspass" xml:space="preserve">
+    <value>Intrusion majeure</value>
+    <comment>Crime dockingMajorTresspass</comment>
   </data>
   <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
     <value>Collision</value>
@@ -164,5 +168,26 @@
   <data name="collidedAtSpeedInNoFireZone_hulldamage" xml:space="preserve">
     <value>Collision entraînant des dommages</value>
     <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
+  </data>
+  <data name="recklessWeaponsDischarge" xml:space="preserve">
+    <value>Tir involontaire</value>
+    <comment>Crime recklessWeaponsDischarge</comment>
+  </data>
+  <data name="passengerWanted" xml:space="preserve">
+    <value>Transport de personne recherchée</value>
+    <comment>Crime passengerWanted</comment>
+  </data>
+
+<data name="dockingMinonBlockingAirlock" xml:space="preserve">
+    <value>Bloquer une entrée</value>
+    <comment>Crime dockingMinonBlockingAirlock</comment>
+  </data>
+<data name="dockingMinorTrespass" xml:space="preserve">
+    <value>Intrusion</value>
+    <comment>Crime dockingMinorTrespass</comment>
+  </data>
+<data name="dockingMajorTrespass" xml:space="preserve">
+    <value>Intrusion majeure</value>
+    <comment>Crime dockingMajorTrespass</comment>
   </data>
 </root>

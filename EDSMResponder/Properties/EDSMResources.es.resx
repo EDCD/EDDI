@@ -121,7 +121,7 @@
     <value>Mi API EDSM:</value>
   </data>
   <data name="cmd_name_label" xml:space="preserve">
-    <value>Nombre del Comandante en EDSM:</value>
+    <value>Nombre de Comandante en EDSM:</value>
   </data>
   <data name="desc" xml:space="preserve">
     <value>Envíe los detalles de sus viajes a EDSM. EDSM es una herramienta de terceros que proporciona información sobre las ubicaciones de los sistemas de estrellas y mantiene un registro de los sistemas de estrellas que ha visitado. Utiliza los datos proporcionados a un mapa de la galaxia "crowd-source"</value>
@@ -130,7 +130,7 @@
     <value>Obtener log de EDSM</value>
   </data>
   <data name="log_button_companion_unconfigured" xml:space="preserve">
-    <value>La app complementaria no está configurada y no se ha proporcionado ningún nombre; no puede obtener registros</value>
+    <value>La API de EDSM no está configurada; no se podrán obtener registros. </value>
   </data>
   <data name="log_button_empty_api_key" xml:space="preserve">
     <value>Por favor, añada la clave API de EDSM para obtener los logs. </value>
@@ -157,6 +157,7 @@
     <value>Si registró un nombre de comandante diferente al actual, ingrese el nombre de su comandante a continuación.</value>
   </data>
   <data name="p3" xml:space="preserve">
-    <value>Una vez que haya ingresado sus datos arriba, puede extraer los registros existentes de EDSM para que EDDI sepa cuántas veces ha estado en cada sistema. Solo necesita hacer esto la primera vez que configura EDSM. Tenga en cuenta que esto puede tardar un tiempo en ejecutarse</value>
+    <value>Una vez que haya ingresado sus datos arriba, puede extraer los registros existentes de EDSM para que EDDI sepa cuántas veces ha estado en cada sistema. Solo necesita hacerlo la primera vez que configure EDSM. Tenga en cuenta que esto puede tardar un tiempo en ejecutarse</value>
   </data>
+
 </root>

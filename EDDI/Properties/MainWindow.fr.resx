@@ -136,10 +136,14 @@
     <value>Le troisième groupe répond aux événements. Ce sont les onglets commençant par 'Répondeur'. Ces derniers ont des degrés de configuration différents mais peuvent fonctionner directement.</value>
   </data>
   <data name="paragraph_4" xml:space="preserve">
-    <value>Vous pouvez en apprendre davantage sur EDDI en vous rendant sur le</value>
+    <value>Vous pouvez en savoir plus sur la façon dont fonctionne EDDI sur le</value>
   </data>
   <data name="report_issue" xml:space="preserve">
     <value>Signaler un problème</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Résoudre les problèmes techniques courants</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
   </data>
   <data name="verbose_logging_checkbox" xml:space="preserve">
     <value>Activer le journal complet (uniquement si demandé par les développeurs d'EDDI)</value>
@@ -152,6 +156,9 @@
   </data>
   <data name="wiki_hyperlink" xml:space="preserve">
     <value>wiki du projet (en anglais)</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Sélectionnez la langue d'EDDI (nécessite de relancer EDDI):</value>
   </data>
   <data name="label_code" xml:space="preserve">
     <value>Code:</value>
@@ -207,6 +214,9 @@
   <data name="upgrade_button" xml:space="preserve">
     <value>Mettre à jour EDDI</value>
   </data>
+  <data name="reset_button" xml:space="preserve">
+    <value>Réinitialiser</value>
+  </data>
   <data name="tab_tts_test_desc" xml:space="preserve">
     <value>Vous pouvez tester la voix ci-dessous. À noter que si la voix est incompatible, la voix par défaut sera utilisée.</value>
   </data>
@@ -238,10 +248,10 @@
     <value>Neutre</value>
   </data>
   <data name="tab_commander_home_station" xml:space="preserve">
-    <value>Station principal:</value>
+    <value>Station résidentielle:</value>
   </data>
   <data name="tab_commander_home_system" xml:space="preserve">
-    <value>Système principal:</value>
+    <value>Système résidentiel:</value>
   </data>
   <data name="tab_commander_insurance" xml:space="preserve">
     <value>Excès de l'assurance (%):</value>
@@ -250,6 +260,7 @@
     <value>Vous pouvez indiquer ici le nom d'un système en particulier que vous considérez comme votre domicile ainsi qu'une station dans ce système. Si vous le faites, l'information sera utilisée par les répondeurs EDDI.</value>
   </data>
   <data name="tab_commander_par2" xml:space="preserve">
-    <value>Votre excès d'assurance est le pourcentage de la valeur de votre vaisseau que vous devrez payer s'il est détruit. Il s'agit en général de 5% mais cette valeur peut être inférieure si vous êtes un supporter anticipé d'Elite: Dangerous, sachant que les supporters alpha sont à 2.5% et beta à 3.75%. Si vous n'êtes pas supporter, laissez cette valeur à 5%.</value>
+    <value>Votre excès d'assurance est le pourcentage de la valeur de votre vaisseau que vous devrez payer s'il est détruit. Il s'agit en général de 5% mais cette valeur peut être inférieure si vous êtes un backer (crowdfunding) d'Elite: Dangerous, sachant que les alpha backers sont à 2.5% et beta backers à 3.75%. Si vous n'êtes pas supporter, laissez cette valeur à 5%.</value>
   </data>
+
 </root>
