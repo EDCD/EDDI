@@ -124,6 +124,6 @@
     <value>Contestador VoiceAttack</value>
   </data>
   <data name="run_eddi_standalone" xml:space="preserve">
-    <value>Por favor, apague VoiceAttack y ejecute EDDI de forma independiente para actualizar.</value>
+    <value>Por favor, apague VoiceAttack y ejecute EDDI de forma independiente para actualizarlo.</value>
   </data>
 </root>

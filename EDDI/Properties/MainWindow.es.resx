@@ -127,25 +127,38 @@
     <value>tiene una serie de características que se pueden configurar por separado. Hay tres tipos de items diferentes.</value>
   </data>
   <data name="paragraph_1" xml:space="preserve">
-    <value>El primer grupo obtiene y gestiona la información básica utilizada por EDDI. Estas son las pestañas 'Detalles de los comandantes', 'Frontier API' y 'Text-to-Speech'. Debe revisar cada una de estas pestañas para configurarlas de forma que EDDI tenga acceso completo a la información de Elite: Dangerous. </value>
+    <value>El primer grupo obtiene y gestiona la información básica utilizada por EDDI. Estas son las pestañas 'Detalles de los comandantes', 'API de Frontier' y 'Texto-a-Voz'. Debería revisar la configuración de estas pestañas de forma que EDDI tenga acceso completo a la información de Elite: Dangerous.</value>
   </data>
   <data name="paragraph_2" xml:space="preserve">
-    <value>El segundo grupo obtiene la información de los eventos. Estas son las pestañas 'monitor'. Obtienen eventos de diferentes fuentes y necesitan una configuración mínima, que debe hacerse antes para que funcione.</value>
+    <value>El segundo grupo obtiene la información de los eventos. Estas son las pestañas llamadas 'Monitor'. Obtienen eventos de diferentes fuentes y necesitan una configuración mínima, que debe hacerse antes para que funcione.</value>
   </data>
   <data name="paragraph_3" xml:space="preserve">
-    <value>El tercer grupo responde a los eventos. Estas son las pestañas de 'contestador'. Cada uno tiene un grado variable de configuración, pero funcionará directamente.</value>
+    <value>El tercer grupo corresponde a los eventos. Estas son las pestañas de 'Contestador'. Cada una tiene un distinto grado de configuración, pero funcionarán desde el primer momento.</value>
   </data>
   <data name="paragraph_4" xml:space="preserve">
-    <value>Puede leer más sobre EDDI en el</value>
+    <value>Puede leer más sobre las funciones de EDDI en el </value>
   </data>
   <data name="report_issue" xml:space="preserve">
     <value>Reportar un error</value>
   </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Solucion de problemas comunes</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
   <data name="verbose_logging_checkbox" xml:space="preserve">
-    <value>Habilite el registro detallado (solo si los desarrolladores de EDDI lo solicitan)</value>
+    <value>Habilite el registro detallado (solo si los desarrolladores de EDDI se lo han solicitado)</value>
   </data>
   <data name="verbose_logging_desc" xml:space="preserve">
-    <value>Si el registro detallado está habilitado, EDDI preparará una versión truncada de su registro de la última hora y la colocará en su escritorio. Deberá pegar este archivo de registro en Github Issue Reporter. No se recopila información personal en el registro.</value>
+    <value>Si el registro detallado está habilitado, EDDI preparará una versión truncada de su registro de la última hora y la colocará en su escritorio. Deberá pegar este archivo de registro en Github Issue Reporter. No se recopilará ninguna información personal.</value>
+  </data>
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Versión:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>proyecto de la Wiki</value>
+  </data>
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Seleccione el idioma de EDDI (Requiere reinicio de EDDI):</value>
   </data>
   <data name="label_code" xml:space="preserve">
     <value>Código:</value>
@@ -157,28 +170,28 @@
     <value>Contraseña:</value>
   </data>
   <data name="tab_frontier_desc" xml:space="preserve">
-    <value>Frontier tiene una API que permite a EDDI obtener información sobre su nave, el mercado de la estación actual y otras cosas más. Estos datos no están disponibles en ningún otro lado. Si desea que EDDI vea y use esta información, debe ingresar a continuación su dirección de email y contraseña de Frontier. </value>
+    <value>Frontier tiene una API que permite a EDDI obtener información sobre su nave, el mercado de la estación actual y más. Estos datos no están disponibles en ningún otro lado. Si desea que EDDI vea y use esta información, ingrese a continuación su email y contraseña de Frontier.</value>
   </data>
   <data name="tab_frontier_header" xml:space="preserve">
-    <value>API Frontier</value>
+    <value>API de Frontier</value>
   </data>
   <data name="tab_frontier_reset_desc" xml:space="preserve">
     <value>Si tiene problemas con su conexión, puede reiniciarla y volver a iniciar sesión. Podría resolver el problema</value>
   </data>
   <data name="tab_tts_desc" xml:space="preserve">
-    <value>EDDI usa su propio motor de texto a voz que procesa la voz en función de la función y el tamaño de la cabina. Puede ajustar los parámetros de la voz aquí. </value>
+    <value>EDDI usa su propio motor de texto-a-voz que procesa la voz según la función y el tamaño de la cabina. Puede ajustar sus parámetros aquí.</value>
   </data>
   <data name="tab_tts_distort_label" xml:space="preserve">
     <value>Distorsión de la voz en dañarse la nave:</value>
   </data>
   <data name="tab_tts_header" xml:space="preserve">
-    <value>Text-to-Speech</value>
+    <value>Texto-a-Voz</value>
   </data>
   <data name="tab_tts_level_label" xml:space="preserve">
-    <value>Nivel de procesamiento de la voz:</value>
+    <value>Nivel de procesamiento de voz:</value>
   </data>
   <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
-    <value>EDDI usa el lenguaje fonético para pronunciar una palabra complicada y pausar entre diálogos. Algunas voces, a menudo las de Microsoft, tienen un problema con el lenguaje fonético que causa la congelación o el bloqueo de EDDI. Si encuentra este problema, intente marcar la opción siguiente</value>
+    <value>EDDI usa el lenguaje fonético para pronunciar palabras complicadas y añade pausas entre diálogos. Algunas voces, a menudo las de Microsoft, tienen un problema con el lenguaje fonético que causa la congelación o el bloqueo de EDDI. Si encuentra ese problema, intente marcar la opción siguiente</value>
   </data>
   <data name="tab_tts_rate_label" xml:space="preserve">
     <value>Velocidad de la voz:</value>
@@ -201,23 +214,23 @@
   <data name="upgrade_button" xml:space="preserve">
     <value>Actualizar EDDI</value>
   </data>
-  <data name="version_hyperlink" xml:space="preserve">
-    <value>Versión:</value>
+  <data name="reset_button" xml:space="preserve">
+    <value>Reset</value>
   </data>
   <data name="tab_tts_test_desc" xml:space="preserve">
-    <value>Puede probar como sonará la voz elegida. Tenga en cuanta que si la voz elegida es incompatible, se usará la voz por defecto.</value>
+    <value>Puede probar como sonará la voz elegida. Tenga en cuenta que si la voz elegida es incompatible, se usará la voz predeterminada.</value>
   </data>
   <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
-    <value>Desactivar el lenguaje fonético</value>
+    <value>Desactivar el lenguaje fonético:</value>
   </data>
   <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
-    <value>(esto desactivará todas las funciones que utilicen tags SSML, como se indica en el archivo de ayuda Speech Responder´s)</value>
+    <value>(esto desactivará todas las funciones que utilicen tags SSML, como se indica en el archivo de ayuda del 'Contestador vocal')</value>
   </data>
   <data name="tab_tts_icao_desc" xml:space="preserve">
-    <value>EDDI puede usar OACI, por ejemplo, usando 'alfa' en lugar de 'A', cuando dice nombres de estrellas y cuerpos. Esto puede facilitar la comprensión de los nombres del sistema, pero lleva más tiempo pronunciarlo. Si desea escuchar las pronunciaciones de la OACI, marque esta opción. Tenga en cuenta que no funcionará si ha deshabilitado el habla fonética anterior.</value>
+    <value>EDDI puede usar OACI, por ejemplo, usando 'alfa' en lugar de 'A', cuando dice nombres de estrellas y cuerpos. Esto puede facilitar la comprensión de los nombres del sistema, pero lleva más tiempo pronunciarlo. Si desea escuchar las pronunciaciones de la OACI, marque esta opción. Tenga en cuenta que no funcionará si ha deshabilitado la opción anterior de habla fonética.</value>
   </data>
   <data name="tab_tts_icao_label" xml:space="preserve">
-    <value>Activar ICAO</value>
+    <value>Activar OACI:</value>
   </data>
   <data name="tab_commander_details_header" xml:space="preserve">
     <value>Detalles del Comandante</value>
@@ -244,9 +257,10 @@
     <value>Exceso de seguro (%):</value>
   </data>
   <data name="tab_commander_par1" xml:space="preserve">
-    <value>Puede especificar el nombre de un sistema y una estación en particular del mismo,  que considere como su hogar. Si lo hace, su información estará disponible para los Responders de EDDI.</value>
+    <value>Puede especificar el nombre de un sistema y una estación en particular del mismo,  que considere como su hogar. Si lo hace, su información estará disponible para los Contestadores de EDDI.</value>
   </data>
   <data name="tab_commander_par2" xml:space="preserve">
-    <value>El exceso de seguro es el % del valor de su nave que debe pagar si es destruida. Por lo general, será 5, pero podría ser menor si fue uno de los primeros en dar apoyo a Elite Dangerous. Si fue en la alfa ponga 2.5 y si fue en la beta 3.75. Si no está seguro, déjelo en 5.</value>
+    <value>El exceso de seguro es el % del valor de su nave que debe pagar si es destruida. Por lo general, será 5, pero podría ser menor si fue uno de los primeros en dar apoyo a Elite. Si fue en la alfa ponga 2.5 y si fue en la beta 3.75. Si no está seguro, déjelo en 5.</value>
   </data>
+
 </root>

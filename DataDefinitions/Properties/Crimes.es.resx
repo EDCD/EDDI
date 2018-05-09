@@ -155,7 +155,11 @@
   </data>
   <data name="dockingMinorTresspass" xml:space="preserve">
     <value>Traspasar</value>
-    <comment>Crime dockingMinorTrespass</comment>
+    <comment>Crime dockingMinorTresspass</comment>
+  </data>
+  <data name="dockingMajorTresspass" xml:space="preserve">
+    <value>Problemas principales</value>
+    <comment>Crime dockingMajorTresspass</comment>
   </data>
   <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
     <value>Colisión</value>
@@ -164,5 +168,26 @@
   <data name="collidedAtSpeedInNoFireZone_hulldamage" xml:space="preserve">
     <value>Colisión produciendo un daño</value>
     <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
+  </data>
+  <data name="recklessWeaponsDischarge" xml:space="preserve">
+    <value>disparo temerario de armas</value>
+    <comment>Crime recklessWeaponsDischarge</comment>
+  </data>
+  <data name="passengerWanted" xml:space="preserve">
+    <value>transportando un pasajero buscado</value>
+    <comment>Crime passengerWanted</comment>
+  </data>
+
+<data name="dockingMinonBlockingAirlock" xml:space="preserve">
+    <value>Bloqueo a esclusa de aire</value>
+    <comment>Crime dockingMinonBlockingAirlock</comment>
+  </data>
+<data name="dockingMinorTrespass" xml:space="preserve">
+    <value>Traspasar</value>
+    <comment>Crime dockingMinorTrespass</comment>
+  </data>
+<data name="dockingMajorTrespass" xml:space="preserve">
+    <value>Problemas principales</value>
+    <comment>Crime dockingMajorTrespass</comment>
   </data>
 </root>
