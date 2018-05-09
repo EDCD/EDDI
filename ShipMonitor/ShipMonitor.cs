@@ -739,6 +739,7 @@ namespace EddiShipMonitor
             refreshProfileDelayed(@event.shipid, currentProfileId).GetAwaiter().GetResult();
         }
 
+        // Note: At a minimum, the API Profile data is required to update the current ship's launchbay status
         public void HandleProfile(JObject profile)
         {
             // Obtain the current ship from the profile
@@ -765,6 +766,18 @@ namespace EddiShipMonitor
                         // Information from the Frontier API can be out-of-date, use it to set our ship if we don't know what it already is
                         ship = profileCurrentShip;
                         AddShip(ship);
+                    }
+                    // Ship launchbay data is exclusively from the API, always update.
+                    else
+                    {
+                        if (profileCurrentShip.launchbays == null || !profileCurrentShip.launchbays.Any())
+                        {
+                            ship.launchbays.Clear();
+                        }
+                        else
+                        {
+                            ship.launchbays = profileCurrentShip.launchbays;
+                        }
                     }
                     Logging.Debug("Ship is: " + JsonConvert.SerializeObject(ship));
                 }
