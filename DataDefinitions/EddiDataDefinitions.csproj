@@ -515,6 +515,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Commodities.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Commodities.it.resx" />
     <EmbeddedResource Include="Properties\CommodityCategories.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CommodityCategories.es.Designer.cs</LastGenOutput>
@@ -669,6 +670,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Materials.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Materials.it.resx" />
     <EmbeddedResource Include="Properties\Materials.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Materials.Designer.cs</LastGenOutput>
