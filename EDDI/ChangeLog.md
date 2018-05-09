@@ -3,6 +3,12 @@
 Full details of the variables available for each noted event, and VoiceAttack integrations, are available in the individual [event pages](https://github.com/EDCD/EDDI/wiki/Events).
 
 ### 3.0.1-b2
+  * Localization
+    * EDDI is now localized! You can choose your language in the EDDI tab or just go with the system default.
+    * All localizable strings in source code have been moved into resources.
+    * The personality file `EDDI.json` has been generalized into `EDDI.fr.json` etc. However it is clear that this will not scale with the number of supported languages and we will be looking at re-working this in future.
+    * Added French and Spanish localizations, mostly complete.
+    * Added Italian localization, only 4% complete.
   * Ship monitor
     * Made sure we are using human readable ship names in all scripts (e.g. "Imperial Eagle" rather than "Empire_Eagle")
   * Text-to-Speech 
