@@ -18,7 +18,7 @@ namespace EddiJournalMonitor
 {
     public class JournalMonitor : LogMonitor, EDDIMonitor
     {
-        private static Regex JsonRegex = new Regex(@"^{.*}$");
+        private static Regex JsonRegex = new Regex(@"^{.*}$", RegexOptions.Singleline);
 
         public JournalMonitor() : base(GetSavedGamesDir(), @"^Journal.*\.[0-9\.]+\.log$", result =>
         ForwardJournalEntry(result, EDDI.Instance.eventHandler)) { }

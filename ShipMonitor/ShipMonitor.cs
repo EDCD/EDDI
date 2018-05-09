@@ -379,6 +379,17 @@ namespace EddiShipMonitor
 
         private void handleShipLoadoutEvent(ShipLoadoutEvent @event)
         {
+            Ship ship = ParseShipLoadoutEvent(@event);
+
+            // Update the global variable
+            EDDI.Instance.CurrentShip = ship;
+
+            AddShip(ship);
+            writeShips();
+        }
+
+        private Ship ParseShipLoadoutEvent(ShipLoadoutEvent @event)
+        {
             // Obtain the ship to which this loadout refers
             Logging.Debug("Current Ship Id is: " + currentShipId + ", Loadout Ship Id is " + @event.shipid);
             Ship ship = GetShip(@event.shipid);
@@ -478,12 +489,7 @@ namespace EddiShipMonitor
 
             // Cargo capacity
             ship.cargocapacity = (int)ship.compartments.Where(c => c.module != null && c.module.basename.Equals("CargoRack")).Sum(c => Math.Pow(2, c.module.@class));
-
-            // Update the global variable
-            EDDI.Instance.CurrentShip = ship;
-
-            AddShip(ship);
-            writeShips();
+            return ship;
         }
 
         private void handleShipRebootedEvent(ShipRebootedEvent @event)
@@ -845,13 +851,11 @@ namespace EddiShipMonitor
             {
                 ship.Role = Role.MultiPurpose;
             }
-            // Remove the ship first (just in case we are trying to add a ship that already exists)
-            _RemoveShip(ship.LocalId);
-            _AddShip(ship);
+            _ReplaceOrAddShip(ship);
             writeShips();
         }
 
-        private void _AddShip(Ship ship)
+        private void _ReplaceOrAddShip(Ship ship)
         {
             if (ship == null)
             {
@@ -859,6 +863,15 @@ namespace EddiShipMonitor
             }
             lock (shipyardLock)
             {
+                for (int i = 0; i < shipyard.Count; i++)
+                {
+                    if (shipyard[i].LocalId == ship.LocalId)
+                    {
+                        shipyard[i] = ship; // this is much more efficient than removing and adding
+                        return;
+                    }
+                }
+                // not found, so add
                 shipyard.Add(ship);
             }
         }

@@ -299,6 +299,12 @@ namespace EddiDataDefinitions
             launchbays = new List<LaunchBay>();
         }
 
+        public override string ToString()
+        {
+            // This is mostly to help with debugging
+            return name ?? $"{Role.localizedName} {model}";
+        }
+
         public string SpokenName(string defaultname = null)
         {
             string model = (defaultname == null ? SpokenModel() : defaultname) ?? "ship";

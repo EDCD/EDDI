@@ -1442,16 +1442,20 @@ namespace EddiVoiceAttackResponder
                     vaProxy.SetText(prefix + " system", ship.starsystem);
                     vaProxy.SetText(prefix + " station", ship.station);
                     StarSystem StoredShipStarSystem = StarSystemSqLiteRepository.Instance.GetOrCreateStarSystem(ship.starsystem);
-                    // Have to grab a local copy of our star system as CurrentStarSystem might not have been initialised yet
-                    StarSystem ThisStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(EDDI.Instance.CurrentStarSystem.name);
 
                     // Work out the distance to the system where the ship is stored if we can
-                    if (ThisStarSystem != null && ThisStarSystem.x != null && StoredShipStarSystem.x != null)
+                    if (EDDI.Instance.CurrentStarSystem != null)
                     {
-                        decimal distance = (decimal)Math.Round(Math.Sqrt(Math.Pow((double)(ThisStarSystem.x - StoredShipStarSystem.x), 2)
-                            + Math.Pow((double)(ThisStarSystem.y - StoredShipStarSystem.y), 2)
-                            + Math.Pow((double)(ThisStarSystem.z - StoredShipStarSystem.z), 2)), 2);
-                        vaProxy.SetDecimal(prefix + " distance", distance);
+                        // CurrentStarSystem might not have been initialised yet so we check. If not, it may be set on the next pass of the setValues() method.
+                        StarSystem ThisStarSystem = StarSystemSqLiteRepository.Instance.GetStarSystem(EDDI.Instance.CurrentStarSystem.name);
+                        if (ThisStarSystem?.x != null & StoredShipStarSystem?.x != null)
+                        {
+                            decimal dx = (ThisStarSystem.x - StoredShipStarSystem.x) ?? 0M;
+                            decimal dy = (ThisStarSystem.y - StoredShipStarSystem.y) ?? 0M;
+                            decimal dz = (ThisStarSystem.z - StoredShipStarSystem.z) ?? 0M;
+                            decimal distance = (decimal)(Math.Sqrt((double)(dx * dx + dy * dy + dz * dz)));
+                            vaProxy.SetDecimal(prefix + " distance", distance);
+                        }
                     }
                     else
                     {
@@ -1464,6 +1468,7 @@ namespace EddiVoiceAttackResponder
             }
             catch (Exception e)
             {
+                Logging.Error("Failed to set VoiceAttack ship information", e);
                 setStatus(ref vaProxy, "Failed to set ship information", e);
             }
 
