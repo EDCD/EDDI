@@ -151,21 +151,15 @@
   <data name="verbose_logging_desc" xml:space="preserve">
     <value>Si le journal complet est activé, EDDI préparera une version tronquée de votre dernier journal et le placera sur votre bureau. Vous devrez ensuite coller ce fichier journal dans votre rapport de problème GitHub (Github Issue report). Aucune information personnelle n'est collectée dans ce journal.</value>
   </data>
-  <data name="version_hyperlink" xml:space="preserve">
-    <value>Version:</value>
-  </data>
+  
   <data name="wiki_hyperlink" xml:space="preserve">
     <value>wiki du projet (en anglais)</value>
   </data>
   <data name="choose_lang_label" xml:space="preserve">
     <value>Sélectionnez la langue d'EDDI (nécessite de relancer EDDI):</value>
   </data>
-  <data name="label_code" xml:space="preserve">
-    <value>Code:</value>
-  </data>
-  <data name="label_email" xml:space="preserve">
-    <value>Email:</value>
-  </data>
+  
+  
   <data name="label_password" xml:space="preserve">
     <value>Mot de Passe:</value>
   </data>
