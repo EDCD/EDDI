@@ -98,56 +98,17 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  <data name="None" xml:space="preserve">
-    <value>None</value>
-    <comment>System state None</comment>
-  </data>
-  <data name="Retreat" xml:space="preserve">
-    <value>Retreat</value>
-    <comment>System state Retreat</comment>
-  </data>
-  <data name="War" xml:space="preserve">
-    <value>War</value>
-    <comment>System state War</comment>
-  </data>
-  <data name="Lockdown" xml:space="preserve">
-    <value>Lockdown</value>
-    <comment>System state Lockdown</comment>
-  </data>
-  <data name="CivilUnrest" xml:space="preserve">
-    <value>Civil Unrest</value>
-    <comment>System state CivilUnrest</comment>
-  </data>
-  <data name="CivilWar" xml:space="preserve">
-    <value>Civil War</value>
-    <comment>System state CivilWar</comment>
-  </data>
-  <data name="Boom" xml:space="preserve">
-    <value>Boom</value>
-    <comment>System state Boom</comment>
-  </data>
-  <data name="Expansion" xml:space="preserve">
-    <value>Expansion</value>
-    <comment>System state Expansion</comment>
-  </data>
-  <data name="Bust" xml:space="preserve">
-    <value>Bust</value>
-    <comment>System state Bust</comment>
-  </data>
-  <data name="Outbreak" xml:space="preserve">
-    <value>Outbreak</value>
-    <comment>System state Outbreak</comment>
-  </data>
-  <data name="Famine" xml:space="preserve">
-    <value>Famine</value>
-    <comment>System state Famine</comment>
-  </data>
-  <data name="Election" xml:space="preserve">
-    <value>Election</value>
-    <comment>System state Election</comment>
-  </data>
-  <data name="Investment" xml:space="preserve">
-    <value>Investment</value>
-    <comment>System state Investment</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
