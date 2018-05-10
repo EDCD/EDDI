@@ -132,9 +132,7 @@
   <data name="button_new" xml:space="preserve">
     <value>Créer un nouveau script</value>
   </data>
-  <data name="button_ok" xml:space="preserve">
-    <value>OK</value>
-  </data>
+  
   <data name="compare_script_button" xml:space="preserve">
     <value>Comparer à la valeur par défaut</value>
   </data>
@@ -172,9 +170,7 @@
   <data name="edit_script_caption" xml:space="preserve">
     <value>Modifier le script</value>
   </data>
-  <data name="header_description" xml:space="preserve">
-    <value>Description</value>
-  </data>
+  
   <data name="header_enabled" xml:space="preserve">
     <value>Activé</value>
   </data>
@@ -190,10 +186,7 @@
   <data name="reset_script_button" xml:space="preserve">
     <value>Réinitialiser par défaut</value>
   </data>
-  <data name="script_variables_button" xml:space="preserve">
-    <value>Variables</value>
-    <comment>button that shows help for script variables</comment>
-  </data>
+  
   <data name="subs" xml:space="preserve">
     <value>Copier le texte des dialogues dans le fichier %APPDATA%\EDDI\speechresponder.out</value>
   </data>
