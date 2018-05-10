@@ -106,7 +106,10 @@
     <value>Étranger</value>
     <comment>Empire rank Outsider</comment>
   </data>
-  
+  <data name="Serf" xml:space="preserve">
+    <value>Serf</value>
+    <comment>Empire rank Serf</comment>
+  </data>
   <data name="Master" xml:space="preserve">
     <value>Vilain</value>
     <comment>Empire rank Master</comment>
@@ -123,7 +126,10 @@
     <value>Banneret</value>
     <comment>Empire rank Lord</comment>
   </data>
-  
+  <data name="Baron" xml:space="preserve">
+    <value>Baron</value>
+    <comment>Empire rank Baron</comment>
+  </data>
   <data name="Viscount" xml:space="preserve">
     <value>Vicomte</value>
     <comment>Empire rank Viscount</comment>
@@ -144,7 +150,10 @@
     <value>Archiduc</value>
     <comment>Empire rank Duke</comment>
   </data>
-  
+  <data name="Prince" xml:space="preserve">
+    <value>Prince</value>
+    <comment>Empire rank Prince</comment>
+  </data>
   <data name="King" xml:space="preserve">
     <value>Roi</value>
     <comment>Empire rank King</comment>
