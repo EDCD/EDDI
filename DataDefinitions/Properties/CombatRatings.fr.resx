@@ -106,12 +106,18 @@
     <value>Bleu</value>
     <comment>Combat rating MostlyHarmless</comment>
   </data>
-  
+  <data name="Novice" xml:space="preserve">
+    <value>Novice</value>
+    <comment>Combat rating Novice</comment>
+  </data>
   <data name="Competent" xml:space="preserve">
     <value>Compétent</value>
     <comment>Combat rating Competent</comment>
   </data>
-  
+  <data name="Expert" xml:space="preserve">
+    <value>Expert</value>
+    <comment>Combat rating Expert</comment>
+  </data>
   <data name="Master" xml:space="preserve">
     <value>Maître</value>
     <comment>Combat rating Master</comment>
