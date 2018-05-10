@@ -117,52 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Ammonia" xml:space="preserve">
-    <value>Ammonia</value>
-    <comment>Volcanism Ammonia</comment>
-  </data>
-  <data name="Carbon_dioxide" xml:space="preserve">
-    <value>Carbon dioxide</value>
-    <comment>Volcanism Carbon_dioxide</comment>
-  </data>
-  <data name="Iron" xml:space="preserve">
-    <value>Iron</value>
-    <comment>Volcanism Iron</comment>
-  </data>
-  <data name="Methane" xml:space="preserve">
-    <value>Methane</value>
-    <comment>Volcanism Methane</comment>
-  </data>
-  <data name="Nitrogen" xml:space="preserve">
-    <value>Nitrogen</value>
-    <comment>Volcanism Nitrogen</comment>
-  </data>
-  <data name="Silicate" xml:space="preserve">
-    <value>Silicate</value>
-    <comment>Volcanism Silicate</comment>
-  </data>
-  <data name="Silicate_vapour" xml:space="preserve">
-    <value>Silicate vapour</value>
-    <comment>Volcanism Silicate_vapour</comment>
-  </data>
-  <data name="Water" xml:space="preserve">
-    <value>Water</value>
-    <comment>Volcanism Water</comment>
-  </data>
-  <data name="Major" xml:space="preserve">
-    <value>Major</value>
-    <comment>Volcanism Major</comment>
-  </data>
-  <data name="Minor" xml:space="preserve">
-    <value>Minor</value>
-    <comment>Volcanism Minor</comment>
-  </data>
-  <data name="Geysers" xml:space="preserve">
-    <value>Geysers</value>
-    <comment>Volcanism Geysers</comment>
-  </data>
-  <data name="Magma" xml:space="preserve">
-    <value>Magma</value>
-    <comment>Volcanism Magma</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
