@@ -117,19 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="desc" xml:space="preserve">
-    <value>Monitor Galnet for new news items and generate a "Galnet news published" event when new items are posted.</value>
-  </data>
-  <data name="language_label" xml:space="preserve">
-    <value>Galnet article language</value>
-  </data>
-  <data name="name" xml:space="preserve">
-    <value>Galnet monitor</value>
-  </data>
-  <data name="p1" xml:space="preserve">
-    <value>Please note that after changing language it can take up to 2 minutes for new Galnet articles to be available.</value>
-  </data>
-  <data name="p2" xml:space="preserve">
-    <value>Read Galnet articles when logged out</value>
-  </data>
+  
+  
+  
+  
+  
 </root>
