@@ -117,40 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="anything" xml:space="preserve">
-    <value>(anything)</value>
-  </data>
-  <data name="delete_btn" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="desc" xml:space="preserve">
-    <value>Monitor EDDP for changes in system control and state, and generate events that match the watch list.</value>
-  </data>
-  <data name="faction_header" xml:space="preserve">
-    <value>Faction</value>
-  </data>
-  <data name="max_dist_home_header" xml:space="preserve">
-    <value>Max distance from home</value>
-  </data>
-  <data name="max_dist_ship_header" xml:space="preserve">
-    <value>Max distance from ship</value>
-  </data>
-  <data name="name" xml:space="preserve">
-    <value>EDDP monitor</value>
-  </data>
-  <data name="name_header" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="new_watch" xml:space="preserve">
-    <value>New Watch</value>
-  </data>
-  <data name="p1" xml:space="preserve">
-    <value>You can create, edit and delete watches below. When EDDI receives information about a change somewhere in the galaxy it will compare it to each of the watches in turn. If the information matches all of the selected criteria for a given watch then it will trigger an event. Please be aware that this relies on information coming from EDDN, which in turn comes from commanders running programs like EDDI, so will only report changes of which the network is aware.</value>
-  </data>
-  <data name="state_header" xml:space="preserve">
-    <value>State</value>
-  </data>
-  <data name="system_header" xml:space="preserve">
-    <value>System</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
