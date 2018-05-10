@@ -117,102 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="active_personality" xml:space="preserve">
-    <value>Active personality</value>
-  </data>
-  <data name="button_cancel" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="button_copy" xml:space="preserve">
-    <value>Copy personality</value>
-  </data>
-  <data name="button_delete" xml:space="preserve">
-    <value>Delete personality</value>
-  </data>
-  <data name="button_new" xml:space="preserve">
-    <value>Create new script</value>
-  </data>
-  <data name="button_ok" xml:space="preserve">
-    <value>OK</value>
-  </data>
-  <data name="compare_script_button" xml:space="preserve">
-    <value>Compare to default</value>
-  </data>
-  <data name="compare_script_title" xml:space="preserve">
-    <value>Comparison with the default script</value>
-  </data>
-  <data name="default_is_read_only" xml:space="preserve">
-    <value>The default personality cannot be modified. If you wish to make changes, create a copy.</value>
-  </data>
-  <data name="default_personality_script_filename" xml:space="preserve">
-    <value>eddi.json</value>
-    <comment>Suggest "eddi.&lt;culture-code&gt;.json" e.g. "eddi.fr.json"</comment>
-  </data>
-  <data name="delete_personality_caption" xml:space="preserve">
-    <value>Delete Personality</value>
-  </data>
-  <data name="delete_personality_message" xml:space="preserve">
-    <value>Are you sure you want to delete the "{0}" personality ?</value>
-  </data>
-  <data name="delete_script" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="delete_script_caption" xml:space="preserve">
-    <value>Delete script</value>
-  </data>
-  <data name="delete_script_message" xml:space="preserve">
-    <value>Are you sure you want to delete the "{0}" script ?</value>
-  </data>
-  <data name="desc" xml:space="preserve">
-    <value>Respond to events with scripted speech based on the information in the event. Not all events have scripted responses. If a script response is empty, its 'Test' and 'View' buttons are disabled.</value>
-  </data>
-  <data name="edit_script" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="edit_script_caption" xml:space="preserve">
-    <value>Edit script</value>
-  </data>
-  <data name="header_description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="header_enabled" xml:space="preserve">
-    <value>Enabled</value>
-  </data>
-  <data name="header_name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="help_button" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="name" xml:space="preserve">
-    <value>Speech Responder</value>
-  </data>
-  <data name="reset_script_button" xml:space="preserve">
-    <value>Reset to default</value>
-  </data>
-  <data name="script_variables_button" xml:space="preserve">
-    <value>Variables</value>
-    <comment>button that shows help for script variables</comment>
-  </data>
-  <data name="subs" xml:space="preserve">
-    <value>Write text copies of speech to the file %APPDATA%\EDDI\speechresponder.out</value>
-  </data>
-  <data name="subs_only" xml:space="preserve">
-    <value>Do not speak out loud when text is written to the file as above</value>
-  </data>
-  <data name="test_script" xml:space="preserve">
-    <value>Test</value>
-  </data>
-  <data name="test_script_button" xml:space="preserve">
-    <value>Test script</value>
-  </data>
-  <data name="view_script" xml:space="preserve">
-    <value>View</value>
-  </data>
-  <data name="view_script_title" xml:space="preserve">
-    <value>View Script</value>
-  </data>
-  <data name="warning_triggered" xml:space="preserve">
-    <value>Scripts which are triggered by an event can be disabled but not deleted.</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
