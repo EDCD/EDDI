@@ -106,18 +106,12 @@
     <value>Chasse à Prime</value>
     <comment>Ship role Bountyhunting</comment>
   </data>
-  <data name="Combat" xml:space="preserve">
-    <value>Combat</value>
-    <comment>Ship role Combat</comment>
-  </data>
+  
   <data name="Combatsupport" xml:space="preserve">
     <value>Soutien au combat</value>
     <comment>Ship role Combatsupport</comment>
   </data>
-  <data name="Exploration" xml:space="preserve">
-    <value>Exploration</value>
-    <comment>Ship role Exploration</comment>
-  </data>
+  
   <data name="Journalism" xml:space="preserve">
     <value>Journalisme</value>
     <comment>Ship role Journalism</comment>
@@ -126,10 +120,7 @@
     <value>Minage</value>
     <comment>Ship role Mining</comment>
   </data>
-  <data name="MultiCrew" xml:space="preserve">
-    <value>MultiCrew</value>
-    <comment>Ship role MultiCrew</comment>
-  </data>
+  
   <data name="Multipurpose" xml:space="preserve">
     <value>Multi-Rôle</value>
     <comment>Ship role Multipurpose</comment>
@@ -162,10 +153,7 @@
     <value>Contrebande</value>
     <comment>Ship role Smuggling</comment>
   </data>
-  <data name="Taxi" xml:space="preserve">
-    <value>Taxi</value>
-    <comment>Ship role Taxi</comment>
-  </data>
+  
   <data name="Trading" xml:space="preserve">
     <value>Commerce</value>
     <comment>Ship role Trading</comment>
