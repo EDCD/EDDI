@@ -61,6 +61,15 @@ namespace Utilities.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clean.
+        /// </summary>
+        public static string clean {
+            get {
+                return ResourceManager.GetString("clean", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fighter.
         /// </summary>
         public static string fighter {
@@ -102,6 +111,24 @@ namespace Utilities.Properties {
         public static string supercruise {
             get {
                 return ResourceManager.GetString("supercruise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wanted.
+        /// </summary>
+        public static string wanted {
+            get {
+                return ResourceManager.GetString("wanted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warrant.
+        /// </summary>
+        public static string warrant {
+            get {
+                return ResourceManager.GetString("warrant", resourceCulture);
             }
         }
         

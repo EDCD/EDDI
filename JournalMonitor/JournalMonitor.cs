@@ -1523,9 +1523,24 @@ namespace EddiJournalMonitor
                                 int scanstage = JsonParsing.getInt(data, "ScanStage");
                                 string ship = JsonParsing.getString(data, "Ship_Localised");
                                 string name = JsonParsing.getString(data, "PilotName_Localised");
-                                string rank = JsonParsing.getString(data, "PilotRank");
+                                CombatRating rank = CombatRating.FromEDName(JsonParsing.getString(data, "PilotRank"));
                                 string faction = JsonParsing.getString(data, "Faction");
                                 string legalStatus = JsonParsing.getString(data, "LegalStatus");
+                                if (legalStatus != null)
+                                {
+                                    switch (legalStatus)
+                                    {
+                                        case "Clean":
+                                            legalStatus = Constants.LEGALSTATUS_CLEAN;
+                                            break;
+                                        case "Wanted":
+                                            legalStatus = Constants.LEGALSTATUS_WANTED;
+                                            break;
+                                        case "Warrant":
+                                            legalStatus = Constants.LEGALSTATUS_WARRANT;
+                                            break;
+                                    }
+                                }
                                 int? bounty = JsonParsing.getOptionalInt(data, "Bounty");
                                 decimal? shieldHealth = JsonParsing.getOptionalDecimal(data, "ShieldHealth");
                                 decimal? hullHealth = JsonParsing.getOptionalDecimal(data, "HullHealth");

@@ -22,6 +22,10 @@ namespace Utilities
         public static readonly string VEHICLE_SRV = Properties.Utilities.srv;
         public static readonly string VEHICLE_FIGHTER = Properties.Utilities.fighter;
 
+        public static readonly string LEGALSTATUS_CLEAN = Properties.Utilities.clean;
+        public static readonly string LEGALSTATUS_WANTED = Properties.Utilities.wanted;
+        public static readonly string LEGALSTATUS_WARRANT = Properties.Utilities.warrant;
+
         // Physical Constants
         public const int lightSpeedMetersPerSecond = 299792458;
         public const int solarRadiusMeters = 695500000;

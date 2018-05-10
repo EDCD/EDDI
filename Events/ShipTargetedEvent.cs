@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EddiDataDefinitions;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +18,7 @@ namespace EddiEvents
             VARIABLES.Add("ship", "the type of ship");
             VARIABLES.Add("scanstage", "the stage of the ship scan");
             VARIABLES.Add("name", "The name of the pilot");
-            VARIABLES.Add("rank", "The rank of the pilot");
+            VARIABLES.Add("rank", "The combat rank of the pilot");
             VARIABLES.Add("faction", "The faction of the pilot");
             VARIABLES.Add("legalstatus", "The legal status of the pilot");
             VARIABLES.Add("shieldhealth", "The health of the shields");
@@ -39,7 +40,7 @@ namespace EddiEvents
         public string name { get; private set; }
 
         [JsonProperty("rank")]
-        public string rank { get; private set; }
+        public CombatRating rank { get; private set; }
 
         [JsonProperty("faction")]
         public string faction { get; private set; }
@@ -62,7 +63,7 @@ namespace EddiEvents
         [JsonProperty("subsystemhealth")]
         public decimal? subsystemhealth { get; private set; }
 
-        public ShipTargetedEvent(DateTime timestamp, bool targetlocked, string ship, int scanstage, string name, string rank, string faction, string legalstatus, int? bounty, decimal? shieldhealth, decimal? hullhealth, string subsystem, decimal? subsystemhealth) : base(timestamp, NAME)
+        public ShipTargetedEvent(DateTime timestamp, bool targetlocked, string ship, int scanstage, string name, CombatRating rank, string faction, string legalstatus, int? bounty, decimal? shieldhealth, decimal? hullhealth, string subsystem, decimal? subsystemhealth) : base(timestamp, NAME)
         {
             this.ship = ship;
             this.name = name;
