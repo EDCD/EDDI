@@ -97,52 +97,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Agri" xml:space="preserve">
-    <value>Agriculture</value>
-    <comment>Economy type Agri</comment>
-  </data>
-  <data name="Colony" xml:space="preserve">
-    <value>Colony</value>
-    <comment>Economy type Colony</comment>
-  </data>
-  <data name="Extraction" xml:space="preserve">
-    <value>Extraction</value>
-    <comment>Economy type Extraction</comment>
-  </data>
-  <data name="HighTech" xml:space="preserve">
-    <value>High Tech</value>
-    <comment>Economy type HighTech</comment>
-  </data>
-  <data name="Industrial" xml:space="preserve">
-    <value>Industrial</value>
-    <comment>Economy type Industrial</comment>
-  </data>
-  <data name="Military" xml:space="preserve">
-    <value>Military</value>
-    <comment>Economy type Military</comment>
-  </data>
-  <data name="None" xml:space="preserve">
-    <value>None</value>
-    <comment>Economy type None</comment>
-  </data>
-  <data name="Refinery" xml:space="preserve">
-    <value>Refinery</value>
-    <comment>Economy type Refinery</comment>
-  </data>
-  <data name="Service" xml:space="preserve">
-    <value>Service</value>
-    <comment>Economy type Service</comment>
-  </data>
-  <data name="Terraforming" xml:space="preserve">
-    <value>Terraforming</value>
-    <comment>Economy type Terraforming</comment>
-  </data>
-  <data name="Tourism" xml:space="preserve">
-    <value>Tourism</value>
-    <comment>Economy type Tourism</comment>
-  </data>
-  <data name="Rescue" xml:space="preserve">
-    <value>Rescue</value>
-    <comment>Economy type Rescue</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
