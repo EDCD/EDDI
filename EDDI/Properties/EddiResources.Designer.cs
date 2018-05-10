@@ -142,7 +142,7 @@ namespace Eddi.Properties {
                 return ResourceManager.GetString("failed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to You do not have a connection to the Frontier API at this time. Please enter your Elite Dangerous email address and password below..
         /// </summary>

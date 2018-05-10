@@ -660,7 +660,7 @@ namespace Eddi
             companionAppCodeText.Text = "";
             companionAppCodeLabel.Visibility = Visibility.Hidden;
             companionAppCodeText.Visibility = Visibility.Hidden;
-            companionAppNextButton.Content = "Next";
+            companionAppNextButton.Content = Properties.EddiResources.next;
         }
 
         private void setUpCompanionAppStage2(string message = null)
@@ -688,7 +688,7 @@ namespace Eddi
         {
             if (message == null)
             {
-                companionAppText.Text = "Complete";
+                companionAppText.Text = Properties.EddiResources.complete;
             }
             else
             {

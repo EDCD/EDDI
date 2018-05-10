@@ -152,5 +152,7 @@
   <data name="para2" xml:space="preserve">
     <value>Notez que si votre inventaire est incorrect, vous devrez démarrer ou redémarrer Elite et cette information sera mise à jour.</value>
   </data>
-
+  <data name="header_need" xml:space="preserve">
+    <value>Nécessaire</value>
+  </data>
 </root>
