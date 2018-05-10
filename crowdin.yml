@@ -1,1 +1,5 @@
-files: []
+files:
+  - source: /**/*.resx
+    ignore:
+      - '*.*.resx'
+    translation: /**/%file_name%.%two_letters_code%.resx
