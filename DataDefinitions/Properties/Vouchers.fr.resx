@@ -125,10 +125,7 @@
     <value>Récompenses de Combat</value>
     <comment>combat bond</comment>
   </data>
-  <data name="scannable" xml:space="preserve">
-    <value>Scannable</value>
-    <comment>scannable voucher</comment>
-  </data>
+  
   <data name="settlement" xml:space="preserve">
     <value>Règlement</value>
     <comment>settlement voucher</comment>
