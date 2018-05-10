@@ -136,7 +136,7 @@
     <comment>Tons needed for missions</comment>
   </data>
   <data name="para2" xml:space="preserve">
-    <value>Notez que si votre inventaire est incorrect, vous devrez démarrer ou redémarrer Elite et cette information sera mise à jour.</value>
+    <value>À noter que si votre inventaire est incorrect, vous devez démarrer ou redémarrer Elite pour que les informations se mettent à jour.</value>
   </data>
   <data name="para1" xml:space="preserve">
     <value>Voici une liste de tout le contenu de votre soute.</value>
