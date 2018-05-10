@@ -123,27 +123,13 @@
   <data name="name" xml:space="preserve">
     <value>Contestador VoiceAttack</value>
   </data>
-  <data name="p1" xml:space="preserve">
-    <value>To integrate EDDI with VoiceAttack EDDI needs to be installed within VoiceAttack's 'Apps' directory. The default path for this is 'C:\Program Files (x86)\VoiceAttack\Apps', and is where EDDI will be installed by default.</value>
-  </data>
-  <data name="p2" xml:space="preserve">
-    <value>EDDI will only work with versions of VoiceAttack 1.5.12.22 and higher. Note that this a beta release.</value>
-  </data>
-  <data name="p3" xml:space="preserve">
-    <value>Once VoiceAttack is installed you will need to enable plugin support. To do so you must click on the Settings icon (a spanner) in the top-right corner of the VoiceAttack and check the 'Enable plugin support' option and restart VoiceAttack. You should see a message in the VoiceAttack window along the lines of 'Plugin EDDI 2.0.0 initialized'.</value>
-  </data>
-  <data name="p4" xml:space="preserve">
-    <value>At this point you can integrate EDDI's variables with your own VoiceAttack scripts. For example, your commander's name is stored in the 'Name' text variable so to access it you just use '{TXT:Name}' in your own commands. There are variables for your commander, your ships, the current star system and station you are at, and more. A full list of variables is available </value>
-  </data>
-  <data name="p4_link" xml:space="preserve">
-    <value>on the main EDDI site</value>
-  </data>
-  <data name="p5" xml:space="preserve">
-    <value>In addition to writing scripts that you trigger with voice or keyboard actions you can also write scripts that trigger on events that occur within Elite. For example, if you wanted to trigger a script every time the 'Docked' event occurs then you would write a script called '((EDDI docked))' (note the double brackets around the name to avoid it being called accidentally, and the lower cased 'd' in docked). A full list of events is also available </value>
-  </data>
-  <data name="p5_link" xml:space="preserve">
-    <value>on the main EDDI site</value>
-  </data>
+  
+  
+  
+  
+  
+  
+  
   <data name="run_eddi_standalone" xml:space="preserve">
     <value>Por favor, apague VoiceAttack y ejecute EDDI de forma independiente para actualizarlo.</value>
   </data>
