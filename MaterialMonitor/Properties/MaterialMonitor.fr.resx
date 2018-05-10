@@ -123,12 +123,8 @@
   <data name="inventory_header" xml:space="preserve">
     <value>Inventaire</value>
   </data>
-  <data name="max_header" xml:space="preserve">
-    <value>Maximum</value>
-  </data>
-  <data name="min_header" xml:space="preserve">
-    <value>Minimum</value>
-  </data>
+  
+  
   <data name="name" xml:space="preserve">
     <value>Moniteur des matériaux</value>
   </data>
@@ -141,7 +137,5 @@
   <data name="p2" xml:space="preserve">
     <value>À noter que si votre inventaire est incorrect, vous devez démarrer ou redémarrer Elite: Dangerous pour que les informations se mettent à jour.</value>
   </data>
-  <data name="type_header" xml:space="preserve">
-    <value>Type</value>
-  </data>
+  
 </root>
