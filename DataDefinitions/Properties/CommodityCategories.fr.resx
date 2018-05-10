@@ -157,10 +157,7 @@
     <value>Non commercialisable</value>
     <comment>Commodity category NonMarketable</comment>
   </data>
-  <data name="Powerplay" xml:space="preserve">
-    <value>Powerplay</value>
-    <comment>Commodity category Powerplay</comment>
-  </data>
+  
   <data name="Salvage" xml:space="preserve">
     <value>Ferraille</value>
     <comment>Commodity category Salvage</comment>
@@ -169,10 +166,7 @@
     <value>Technologie</value>
     <comment>Commodity category Technology</comment>
   </data>
-  <data name="Textiles" xml:space="preserve">
-    <value>Textiles</value>
-    <comment>Commodity category Textiles</comment>
-  </data>
+  
   <data name="Unknown" xml:space="preserve">
     <value>Inconnu</value>
     <comment>Commodity category Unknown</comment>
