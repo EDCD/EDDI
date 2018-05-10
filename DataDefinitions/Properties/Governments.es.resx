@@ -130,14 +130,8 @@
     <value>Dictadura</value>
     <comment>Government type Dictatorship</comment>
   </data>
-  <data name="Feudal" xml:space="preserve">
-    <value>Feudal</value>
-    <comment>Government type Feudal</comment>
-  </data>
-  <data name="Imperial" xml:space="preserve">
-    <value>Imperial</value>
-    <comment>Government type Imperial</comment>
-  </data>
+  
+  
   <data name="None" xml:space="preserve">
     <value>Ningún gobierno</value>
     <comment>Government type None</comment>
