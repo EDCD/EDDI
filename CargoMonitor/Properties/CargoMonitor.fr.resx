@@ -141,10 +141,7 @@
   <data name="para1" xml:space="preserve">
     <value>Voici une liste de tout le contenu de votre soute.</value>
   </data>
-  <data name="header_type" xml:space="preserve">
-    <value>Type</value>
-    <comment>Type of cargo, such as "Metals"</comment>
-  </data>
+  
   <data name="header_stolen" xml:space="preserve">
     <value>volé</value>
     <comment>Tons of stolen cargo carried</comment>
