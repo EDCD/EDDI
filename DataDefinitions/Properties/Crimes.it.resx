@@ -97,84 +97,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="assault" xml:space="preserve">
-    <value>Assault</value>
-    <comment>Crime assault</comment>
-  </data>
-  <data name="murder" xml:space="preserve">
-    <value>Murder</value>
-    <comment>Crime murder</comment>
-  </data>
-  <data name="piracy" xml:space="preserve">
-    <value>Piracy</value>
-    <comment>Crime piracy</comment>
-  </data>
-  <data name="interdiction" xml:space="preserve">
-    <value>Interdicting a clean ship</value>
-    <comment>Crime interdiction</comment>
-  </data>
-  <data name="illegalCargo" xml:space="preserve">
-    <value>Carrying illegal cargo</value>
-    <comment>Crime illegalCargo</comment>
-  </data>
-  <data name="disobeyPolice" xml:space="preserve">
-    <value>Disobeying police</value>
-    <comment>Crime disobeyPolice</comment>
-  </data>
-  <data name="fireInNoFireZone" xml:space="preserve">
-    <value>Firing in a no-fire zone</value>
-    <comment>Crime fireInNoFireZone</comment>
-  </data>
-  <data name="fireInStation" xml:space="preserve">
-    <value>Firing in a station</value>
-    <comment>Crime fireInStation</comment>
-  </data>
-  <data name="dumpingDangerous" xml:space="preserve">
-    <value>Dumping dangerous cargo</value>
-    <comment>Crime dumpingDangerous</comment>
-  </data>
-  <data name="dumpingNearStation" xml:space="preserve">
-    <value>Dumping cargo near a station</value>
-    <comment>Crime dumpingNearStation</comment>
-  </data>
-  <data name="dockingMinorBlockingAirlock" xml:space="preserve">
-    <value>Blocking an airlock</value>
-    <comment>Crime dockingMinorBlockingAirlock</comment>
-  </data>
-  <data name="dockingMajorBlockingAirlock" xml:space="preserve">
-    <value>Blocking an airlock</value>
-    <comment>Crime dockingMajorBlockingAirlock</comment>
-  </data>
-  <data name="dockingMinorBlockingLandingPad" xml:space="preserve">
-    <value>Blocking a landing pad</value>
-    <comment>Crime dockingMinorBlockingLandingPad</comment>
-  </data>
-  <data name="dockingMajorBlockingLandingPad" xml:space="preserve">
-    <value>Blocking a landing pad</value>
-    <comment>Crime dockingMajorBlockingLandingPad</comment>
-  </data>
-  <data name="dockingMinorTresspass" xml:space="preserve">
-    <value>Trespass</value>
-    <comment>Crime dockingMinorTresspass</comment>
-  </data>
-  <data name="dockingMajorTresspass" xml:space="preserve">
-    <value>Major trespass</value>
-    <comment>Crime dockingMajorTresspass</comment>
-  </data>
-  <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
-    <value>Collision</value>
-    <comment>Crime collidedAtSpeedInNoFireZone</comment>
-  </data>
-  <data name="collidedAtSpeedInNoFireZone_hulldamage" xml:space="preserve">
-    <value>Collision resulting in damage</value>
-    <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
-  </data>
-  <data name="recklessWeaponsDischarge" xml:space="preserve">
-    <value>reckless weapons discharge</value>
-    <comment>Crime recklessWeaponsDischarge</comment>
-  </data>
-  <data name="passengerWanted" xml:space="preserve">
-    <value>carrying a wanted person</value>
-    <comment>Crime passengerWanted</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
