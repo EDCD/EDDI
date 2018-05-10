@@ -157,10 +157,7 @@
     <value>Vanadio</value>
     <comment>Material vanadium</comment>
   </data>
-  <data name="zinc" xml:space="preserve">
-    <value>Zinc</value>
-    <comment>Material zinc</comment>
-  </data>
+  
   <data name="cadmium" xml:space="preserve">
     <value>Cadmio</value>
     <comment>Material cadmium</comment>
@@ -598,72 +595,21 @@
     <value>Circuitería orgánica Thargoide</value>
     <comment>Material unknownorganiccircuitry</comment>
   </data>
-  <data name="boron" xml:space="preserve">
-    <value>Boron</value>
-    <comment>Material boron</comment>
-  </data>
-  <data name="guardian_powercell" xml:space="preserve">
-    <value>Guardian Power Cell</value>
-    <comment>Material guardian_powercell</comment>
-  </data>
-  <data name="guardian_weaponblueprint" xml:space="preserve">
-    <value>Guardian Weapon Blueprint</value>
-    <comment>Material guardian_weaponblueprint</comment>
-  </data>
-  <data name="guardian_vesselblueprint" xml:space="preserve">
-    <value>Guardian Vessel Blueprint</value>
-    <comment>Material guardian_vesselblueprint</comment>
-  </data>
-  <data name="guardian_techcomponent" xml:space="preserve">
-    <value>Guardian Technology Component</value>
-    <comment>Material guardian_techcomponent</comment>
-  </data>
-  <data name="guardian_powerconduit" xml:space="preserve">
-    <value>Guardian Power Conduit</value>
-    <comment>Material guardian_powerconduit</comment>
-  </data>
-  <data name="guardian_moduleblueprint" xml:space="preserve">
-    <value>Guardian Module Blueprint</value>
-    <comment>Material guardian_moduleblueprint</comment>
-  </data>
-  <data name="guardian_sentinel_weaponparts" xml:space="preserve">
-    <value>Guardian Sentinel Weapon Parts</value>
-    <comment>Material guardian_sentinel_weaponparts</comment>
-  </data>
-  <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
-    <value>Guardian Sentinel Wreckage Components</value>
-    <comment>Material guardian_sentinel_wreckagecomponents</comment>
-  </data>
-  <data name="lead" xml:space="preserve">
-    <value>Lead</value>
-    <comment>Material lead</comment>
-  </data>
-  <data name="rhenium" xml:space="preserve">
-    <value>Rhenium</value>
-    <comment>Material rhenium</comment>
-  </data>
-  <data name="tg_propulsionelement" xml:space="preserve">
-    <value>Thargoid Propulsion Element</value>
-    <comment>Material tg_propulsionelement</comment>
-  </data>
-  <data name="tg_biomechanicalconduits" xml:space="preserve">
-    <value>Thargoid Bio-Mechanical Components</value>
-    <comment>Material tg_biomechanicalconduits</comment>
-  </data>
-  <data name="tg_weaponparts" xml:space="preserve">
-    <value>Thargoid Weapon Parts</value>
-    <comment>Material tg_weaponparts</comment>
-  </data>
-  <data name="tg_wreckagecomponents" xml:space="preserve">
-    <value>Thargoid Wreckage Components</value>
-    <comment>Material tg_wreckagecomponents</comment>
-  </data>
-  <data name="tg_shipflightdata" xml:space="preserve">
-    <value>Thargoid Ship Flight Data</value>
-    <comment>Material tg_shipflightdata</comment>
-  </data>
-  <data name="tg_shipsystemsdata" xml:space="preserve">
-    <value>Thargoid Ship Systems Data</value>
-    <comment>Material tg_shipsystemsdata</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
