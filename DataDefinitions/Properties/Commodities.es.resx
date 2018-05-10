@@ -353,10 +353,7 @@
     <value>Ropa mimética</value>
     <comment>Commodity ChameleonCloth</comment>
   </data>
-  <data name="ChateauDeAegaeon" xml:space="preserve">
-    <value>Chateau De Aegaeon</value>
-    <comment>Commodity ChateauDeAegaeon</comment>
-  </data>
+  
   <data name="ChemicalWaste" xml:space="preserve">
     <value>Residuos químicos</value>
     <comment>Commodity ChemicalWaste</comment>
@@ -385,10 +382,7 @@
     <value>Café</value>
     <comment>Commodity Coffee</comment>
   </data>
-  <data name="Coltan" xml:space="preserve">
-    <value>Coltan</value>
-    <comment>Commodity Coltan</comment>
-  </data>
+  
   <data name="CombatStabilisers" xml:space="preserve">
     <value>Estabilizadores de combate</value>
     <comment>Commodity CombatStabilisers</comment>
@@ -1446,52 +1440,16 @@
     <value>Pegamento de larvas de hormigas de Zeessze</value>
     <comment>Commodity ZeesszeAntGrubGlue</comment>
   </data>
-  <data name="RajukruStoves" xml:space="preserve">
-    <value>Rajukru Multi-Stoves</value>
-    <comment>Commodity RajukruStoves</comment>
-  </data>
-  <data name="KinagoInstruments" xml:space="preserve">
-    <value>Kinago Violins</value>
-    <comment>Commodity KinagoInstruments</comment>
-  </data>
-  <data name="KachiriginLeaches" xml:space="preserve">
-    <value>Kachirigin Filter Leeches</value>
-    <comment>Commodity KachiriginLeaches</comment>
-  </data>
-  <data name="VanayequiRhinoFur" xml:space="preserve">
-    <value>Vanayequi Ceratomorpha Fur</value>
-    <comment>Commodity VanayequiRhinoFur</comment>
-  </data>
-  <data name="ZeesszeAntGlue" xml:space="preserve">
-    <value>Zeessze Ant Grub Glue</value>
-    <comment>Commodity ZeesszeAntGlue</comment>
-  </data>
-  <data name="aislingpromotionalmaterials" xml:space="preserve">
-    <value>Aisling Promotional Materials</value>
-    <comment>Commodity aislingpromotionalmaterials</comment>
-  </data>
-  <data name="alliancelegaslativerecords" xml:space="preserve">
-    <value>Alliance Legislative Records</value>
-    <comment>Commodity alliancelegaslativerecords</comment>
-  </data>
-  <data name="imperialprisoner" xml:space="preserve">
-    <value>Imperial Prisoner</value>
-    <comment>Commodity imperialprisoner</comment>
-  </data>
-  <data name="torvaldeeds" xml:space="preserve">
-    <value>Torval Deed</value>
-    <comment>Commodity torvaldeeds</comment>
-  </data>
-  <data name="aislingmediamaterials" xml:space="preserve">
-    <value>Aisling Media Materials</value>
-    <comment>Commodity aislingmediamaterials</comment>
-  </data>
-  <data name="undergroundsupport" xml:space="preserve">
-    <value>Underground Support</value>
-    <comment>Commodity undergroundsupport</comment>
-  </data>
-  <data name="torvalcommercialcontracts" xml:space="preserve">
-    <value>Torval Commercial Contracts</value>
-    <comment>Commodity torvalcommercialcontracts</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
