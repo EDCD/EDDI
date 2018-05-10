@@ -122,10 +122,7 @@
     <value>Courtier</value>
     <comment>Trade rating Broker</comment>
   </data>
-  <data name="Entrepreneur" xml:space="preserve">
-    <value>Entrepreneur</value>
-    <comment>Trade rating Entrepreneur</comment>
-  </data>
+  
   <data name="Tycoon" xml:space="preserve">
     <value>Magnat</value>
     <comment>Trade rating Tycoon</comment>
