@@ -117,32 +117,11 @@
     <value>Nave destruida</value>
     <comment>Data scan type WreckedShip</comment>
   </data>
-  <data name="TouristBeacon" xml:space="preserve">
-    <value>Tourist Beacon</value>
-    <comment>Data scan type TouristBeacon</comment>
-  </data>
-  <data name="ShipUplink" xml:space="preserve">
-    <value>Ship Uplink</value>
-    <comment>Data scan type ShipUplink</comment>
-  </data>
-  <data name="UnknownUplink" xml:space="preserve">
-    <value>Unknown Uplink</value>
-    <comment>Data scan type UnknownUplink</comment>
-  </data>
-  <data name="SettlementUnknown" xml:space="preserve">
-    <value>Settlement Unknown</value>
-    <comment>Data scan type SettlementUnknown</comment>
-  </data>
-  <data name="AncientCodex" xml:space="preserve">
-    <value>Ancient Codex</value>
-    <comment>Data scan type AncientCodex</comment>
-  </data>
-  <data name="DataPointHVT" xml:space="preserve">
-    <value>Data Point H.V.T.</value>
-    <comment>Data scan type DataPointHVT</comment>
-  </data>
-  <data name="TgTransmitter" xml:space="preserve">
-    <value>Thargoid Device</value>
-    <comment>Data scan type TGTRANSMITTER</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
 </root>
