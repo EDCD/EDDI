@@ -126,7 +126,7 @@
     <value>Per favore inserisci la chiave dell'API EDSM per ottenere i log</value>
   </data>
   <data name="log_button_error_received" xml:space="preserve">
-    <value>Errore di EDSM ricevuto:</value>
+    <value>Errore di EDSM ricevuto: </value>
   </data>
   <data name="log_button_fetched" xml:space="preserve">
     <value>Log Ottenuti</value>
