@@ -59,27 +59,27 @@
 			: and then encoded with base64 encoding.
 	-->
 	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
 		<xsd:element name="root" msdata:IsDataSet="true">
 			<xsd:complexType>
 				<xsd:choice maxOccurs="unbounded">
 					<xsd:element name="data">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
 							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1"/>
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
 						</xsd:complexType>
 					</xsd:element>
 					<xsd:element name="resheader">
 						<xsd:complexType>
 							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
 							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
+							<xsd:attribute name="name" type="xsd:string" use="required"/>
 						</xsd:complexType>
 					</xsd:element>
 				</xsd:choice>
@@ -100,70 +100,70 @@
 	</resheader>
   <data name="andahalf" xml:space="preserve">
     <value> y medio </value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="around" xml:space="preserve">
     <value>alrededor </value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="billion" xml:space="preserve">
     <value>millardo</value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="dash" xml:space="preserve">
     <value> guión </value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="justover" xml:space="preserve">
     <value>justo encima de </value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="million" xml:space="preserve">
     <value>millón</value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="minus" xml:space="preserve">
     <value> menos </value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="nearly" xml:space="preserve">
     <value>cerca de </value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="onthewayto" xml:space="preserve">
     <value>hacia </value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="over" xml:space="preserve">
     <value>más allá de </value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="plus" xml:space="preserve">
     <value> mas </value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="point" xml:space="preserve">
     <value> punto </value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="quadrillion" xml:space="preserve">
     <value>cuatrillón</value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="thousand" xml:space="preserve">
     <value>mil</value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="trillion" xml:space="preserve">
     <value>trillón</value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="wellover" xml:space="preserve">
     <value>mucho más allá de </value>
-    <comment></comment>
+    <comment/>
   </data>
   <data name="zero" xml:space="preserve">
     <value>cero</value>
-    <comment></comment>
+    <comment/>
   </data>
 </root>
