@@ -106,10 +106,7 @@
     <value>Bleu</value>
     <comment>CQC rating MostlyHelpless</comment>
   </data>
-  <data name="Amateur" xml:space="preserve">
-    <value>Amateur</value>
-    <comment>CQC rating Amateur</comment>
-  </data>
+  
   <data name="SemiProfessional" xml:space="preserve">
     <value>Semi-professionnel</value>
     <comment>CQC rating SemiProfessional</comment>
@@ -118,10 +115,7 @@
     <value>Professionnel</value>
     <comment>CQC rating Professional</comment>
   </data>
-  <data name="Champion" xml:space="preserve">
-    <value>Champion</value>
-    <comment>CQC rating Champion</comment>
-  </data>
+  
   <data name="Hero" xml:space="preserve">
     <value>Héros</value>
     <comment>CQC rating Hero</comment>
