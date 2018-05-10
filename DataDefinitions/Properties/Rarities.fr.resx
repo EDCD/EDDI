@@ -110,10 +110,7 @@
     <value>commum</value>
     <comment>Rarity common</comment>
   </data>
-  <data name="rare" xml:space="preserve">
-    <value>rare</value>
-    <comment>Rarity rare</comment>
-  </data>
+  
   <data name="veryrare" xml:space="preserve">
     <value>très rare</value>
     <comment>Rarity veryrare</comment>
