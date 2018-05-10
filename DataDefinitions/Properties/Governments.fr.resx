@@ -114,10 +114,7 @@
     <value>Confédération</value>
     <comment>Government type Confederacy</comment>
   </data>
-  <data name="Cooperative" xml:space="preserve">
-    <value>Cooperative</value>
-    <comment>Government type Cooperative</comment>
-  </data>
+  
   <data name="Corporate" xml:space="preserve">
     <value>Corporation</value>
     <comment>Government type Corporate</comment>
@@ -142,10 +139,7 @@
     <value>Aucune</value>
     <comment>Government type None</comment>
   </data>
-  <data name="Patronage" xml:space="preserve">
-    <value>Patronage</value>
-    <comment>Government type Patronage</comment>
-  </data>
+  
   <data name="PrisonColony" xml:space="preserve">
     <value>Colonie carcérale</value>
     <comment>Government type PrisonColony</comment>
