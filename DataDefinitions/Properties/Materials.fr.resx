@@ -125,10 +125,7 @@
     <value>Fer</value>
     <comment>Material iron</comment>
   </data>
-  <data name="nickel" xml:space="preserve">
-    <value>Nickel</value>
-    <comment>Material nickel</comment>
-  </data>
+  
   <data name="phosphorus" xml:space="preserve">
     <value>Phosphore</value>
     <comment>Material phosphorus</comment>
@@ -137,34 +134,19 @@
     <value>Souffre</value>
     <comment>Material sulphur</comment>
   </data>
-  <data name="arsenic" xml:space="preserve">
-    <value>Arsenic</value>
-    <comment>Material arsenic</comment>
-  </data>
+  
   <data name="chromium" xml:space="preserve">
     <value>Chrome</value>
     <comment>Material chromium</comment>
   </data>
-  <data name="germanium" xml:space="preserve">
-    <value>Germanium</value>
-    <comment>Material germanium</comment>
-  </data>
+  
   <data name="manganese" xml:space="preserve">
     <value>Manganèse</value>
     <comment>Material manganese</comment>
   </data>
-  <data name="vanadium" xml:space="preserve">
-    <value>Vanadium</value>
-    <comment>Material vanadium</comment>
-  </data>
-  <data name="zinc" xml:space="preserve">
-    <value>Zinc</value>
-    <comment>Material zinc</comment>
-  </data>
-  <data name="cadmium" xml:space="preserve">
-    <value>Cadmium</value>
-    <comment>Material cadmium</comment>
-  </data>
+  
+  
+  
   <data name="mercury" xml:space="preserve">
     <value>Mercure</value>
     <comment>Material mercury</comment>
@@ -173,10 +155,7 @@
     <value>Molybdène</value>
     <comment>Material molybdenum</comment>
   </data>
-  <data name="niobium" xml:space="preserve">
-    <value>Niobium</value>
-    <comment>Material niobium</comment>
-  </data>
+  
   <data name="tin" xml:space="preserve">
     <value>Étain</value>
     <comment>Material tin</comment>
@@ -197,26 +176,14 @@
     <value>Technétium</value>
     <comment>Material technetium</comment>
   </data>
-  <data name="tellurium" xml:space="preserve">
-    <value>Tellurium</value>
-    <comment>Material tellurium</comment>
-  </data>
-  <data name="yttrium" xml:space="preserve">
-    <value>Yttrium</value>
-    <comment>Material yttrium</comment>
-  </data>
-  <data name="zirconium" xml:space="preserve">
-    <value>Zirconium</value>
-    <comment>Material zirconium</comment>
-  </data>
+  
+  
+  
   <data name="antimony" xml:space="preserve">
     <value>Antimoine</value>
     <comment>Material antimony</comment>
   </data>
-  <data name="polonium" xml:space="preserve">
-    <value>Polonium</value>
-    <comment>Material polonium</comment>
-  </data>
+  
   <data name="bulkscandata" xml:space="preserve">
     <value>Fichier volumineux d'analyse anormal</value>
     <comment>Material bulkscandata</comment>
