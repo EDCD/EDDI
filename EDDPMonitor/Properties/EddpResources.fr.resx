@@ -126,9 +126,7 @@
   <data name="desc" xml:space="preserve">
     <value>Surveille EDDP en récupérant les changements liés aux contrôle et à l'état des système et génère des événements dans la liste des observateurs.</value>
   </data>
-  <data name="faction_header" xml:space="preserve">
-    <value>Faction</value>
-  </data>
+  
   <data name="max_dist_home_header" xml:space="preserve">
     <value>Distance max du système résidentiel</value>
   </data>
