@@ -162,10 +162,7 @@
     <value>Contrabando</value>
     <comment>Ship role Smuggling</comment>
   </data>
-  <data name="Taxi" xml:space="preserve">
-    <value>Taxi</value>
-    <comment>Ship role Taxi</comment>
-  </data>
+  
   <data name="Trading" xml:space="preserve">
     <value>Comercio</value>
     <comment>Ship role Trading</comment>
