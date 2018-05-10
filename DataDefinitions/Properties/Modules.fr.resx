@@ -169,10 +169,7 @@
     <value>Compartiment de soute</value>
     <comment>Module CargoRack</comment>
   </data>
-  <data name="VoicePack_Celeste" xml:space="preserve">
-    <value>Celeste</value>
-    <comment>Module Celeste</comment>
-  </data>
+  
   <data name="ChaffLauncher" xml:space="preserve">
     <value>Lanceur de paillettes</value>
     <comment>Module ChaffLauncher</comment>
@@ -181,10 +178,7 @@
     <value>Verrière</value>
     <comment>Module CockpitCanopy</comment>
   </data>
-  <data name="Cockpit" xml:space="preserve">
-    <value>Cockpit</value>
-    <comment>Module Cockpit</comment>
-  </data>
+  
   <data name="CollectorLimpetController" xml:space="preserve">
     <value>Contrôleur de drone collecteur</value>
     <comment>Module CollectorLimpetController</comment>
@@ -197,10 +191,7 @@
     <value>Compartiment de soute résistant à la corrosion</value>
     <comment>Module CorrosionResistantCargoRack</comment>
   </data>
-  <data name="Cytoscrambler" xml:space="preserve">
-    <value>Cytoscrambler</value>
-    <comment>Module Cytoscrambler</comment>
-  </data>
+  
   <data name="DataLinkScanner" xml:space="preserve">
     <value>Détecteur de Liaison de Données</value>
     <comment>Module DataLinkScanner</comment>
@@ -213,10 +204,7 @@
     <value>Détecteur de surface détaillé</value>
     <comment>Module DetailedSurfaceScanner</comment>
   </data>
-  <data name="Disruptor" xml:space="preserve">
-    <value>Disruptor</value>
-    <comment>Module Disruptor</comment>
-  </data>
+  
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
     <value>Cabine passager de classe économique</value>
     <comment>Module EconomyClassPassengerCabin</comment>
@@ -481,14 +469,8 @@
     <value>Tube lance-torpille</value>
     <comment>Module TorpedoPylon</comment>
   </data>
-  <data name="VoicePack_Verity" xml:space="preserve">
-    <value>Verity</value>
-    <comment>Module Verity</comment>
-  </data>
-  <data name="VoicePack_Victor" xml:space="preserve">
-    <value>Victor</value>
-    <comment>Module Victor</comment>
-  </data>
+  
+  
   <data name="Whitestringlights" xml:space="preserve">
     <value>Guirlandes blanches</value>
     <comment>Module Whitestringlights</comment>
@@ -513,32 +495,11 @@
     <value>Détecteur de Découverte Avancé</value>
     <comment>Module AdvancedDiscoveryScanner</comment>
   </data>
-  <data name="PlasmaRepeater" xml:space="preserve">
-    <value>Plasma Repeater</value>
-    <comment>Module PlasmaRepeater (fighter module)</comment>
-  </data>
-  <data name="Enforcer" xml:space="preserve">
-    <value>Enforcer Cannon</value>
-    <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
-  </data>
-  <data name="GuardianFsdBooster" xml:space="preserve">
-    <value>Guardian FSD Booster</value>
-    <comment>Module GuardianFsdBooster</comment>
-  </data>
-  <data name="GuardianPowerDistributor" xml:space="preserve">
-    <value>Guardian Power Distributor</value>
-    <comment>Module GuardianPowerDistributor</comment>
-  </data>
-  <data name="ShardCannon" xml:space="preserve">
-    <value>Shard Cannon</value>
-    <comment>Module ShardCannon</comment>
-  </data>
-  <data name="FlechetteLauncher" xml:space="preserve">
-    <value>Flechette Launcher</value>
-    <comment>Modile FlechetteLauncher</comment>
-  </data>
-  <data name="EnzymeMissileRack" xml:space="preserve">
-    <value>Enzyme Missile Rack</value>
-    <comment>Module EnzymeMissileRack</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
 </root>
