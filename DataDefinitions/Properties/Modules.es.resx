@@ -169,10 +169,7 @@
     <value>Bodega de carga</value>
     <comment>Module CargoRack</comment>
   </data>
-  <data name="VoicePack_Celeste" xml:space="preserve">
-    <value>Celeste</value>
-    <comment>Module Celeste</comment>
-  </data>
+  
   <data name="ChaffLauncher" xml:space="preserve">
     <value>Lanzador de señuelos</value>
     <comment>Module ChaffLauncher</comment>
@@ -213,10 +210,7 @@
     <value>Escáner de superficie detallado</value>
     <comment>Module DetailedSurfaceScanner</comment>
   </data>
-  <data name="Disruptor" xml:space="preserve">
-    <value>Disruptor</value>
-    <comment>Module Disruptor</comment>
-  </data>
+  
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
     <value>Cabina de pasajero clase económica</value>
     <comment>Module EconomyClassPassengerCabin</comment>
@@ -513,32 +507,11 @@
     <value>Escáner de exploración avanzado</value>
     <comment>Module AdvancedDiscoveryScanner</comment>
   </data>
-  <data name="PlasmaRepeater" xml:space="preserve">
-    <value>Plasma Repeater</value>
-    <comment>Module PlasmaRepeater (fighter module)</comment>
-  </data>
-  <data name="Enforcer" xml:space="preserve">
-    <value>Enforcer Cannon</value>
-    <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
-  </data>
-  <data name="GuardianFsdBooster" xml:space="preserve">
-    <value>Guardian FSD Booster</value>
-    <comment>Module GuardianFsdBooster</comment>
-  </data>
-  <data name="GuardianPowerDistributor" xml:space="preserve">
-    <value>Guardian Power Distributor</value>
-    <comment>Module GuardianPowerDistributor</comment>
-  </data>
-  <data name="ShardCannon" xml:space="preserve">
-    <value>Shard Cannon</value>
-    <comment>Module ShardCannon</comment>
-  </data>
-  <data name="FlechetteLauncher" xml:space="preserve">
-    <value>Flechette Launcher</value>
-    <comment>Modile FlechetteLauncher</comment>
-  </data>
-  <data name="EnzymeMissileRack" xml:space="preserve">
-    <value>Enzyme Missile Rack</value>
-    <comment>Module EnzymeMissileRack</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
 </root>
