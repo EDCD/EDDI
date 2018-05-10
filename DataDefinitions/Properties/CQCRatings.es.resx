@@ -130,8 +130,5 @@
     <value>Leyenda</value>
     <comment>CQC rating Legend</comment>
   </data>
-  <data name="Elite" xml:space="preserve">
-    <value>Elite</value>
-    <comment>CQC rating Elite</comment>
-  </data>
+  
 </root>
