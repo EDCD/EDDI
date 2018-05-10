@@ -117,10 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="desc" xml:space="preserve">
-    <value>Send station, jump, and scan information to EDDN. EDDN is a third-party tool that gathers information on systems and markets, and provides data for most trading tools as well as star system information tools such as EDDB.</value>
-  </data>
-  <data name="name" xml:space="preserve">
-    <value>EDDN responder</value>
-  </data>
+  
+  
 </root>
