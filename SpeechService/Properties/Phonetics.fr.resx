@@ -106,10 +106,7 @@
     <value>ɑ̃tlijae</value>
     <comment>Optional phonetic pronunciation for Antliae</comment>
   </data>
-  <data name="Aquarii" xml:space="preserve">
-    <value>əˈkwɛərɪˌaɪ</value>
-    <comment>Optional phonetic pronunciation for Aquarii</comment>
-  </data>
+  
   <data name="Arietis" xml:space="preserve">
     <value>əˈʁaɪɪtɪs</value>
     <comment>Optional phonetic pronunciation for Arietis</comment>
@@ -190,18 +187,12 @@
     <value>du</value>
     <comment>Optional phonetic pronunciation for Dou</comment>
   </data>
-  <data name="Eta" xml:space="preserve">
-    <value>ita</value>
-    <comment>Optional phonetic pronunciation for Eta</comment>
-  </data>
+  
   <data name="EtaCarina_Carina" xml:space="preserve">
     <value>kaʁina</value>
     <comment>Optional phonetic pronunciation for EtaCarina_Carina</comment>
   </data>
-  <data name="EtaCarina_Eta" xml:space="preserve">
-    <value>ita</value>
-    <comment>Optional phonetic pronunciation for EtaCarina_Eta</comment>
-  </data>
+  
   <data name="Euq" xml:space="preserve">
     <value>øk</value>
     <comment>Optional phonetic pronunciation for Euq</comment>
@@ -238,10 +229,7 @@
     <value>ɔfjyʃy</value>
     <comment>Optional phonetic pronunciation for Ophiuchi</comment>
   </data>
-  <data name="Ophiuchus" xml:space="preserve">
-    <value>ɒˈfjuːkəs</value>
-    <comment>Optional phonetic pronunciation for Ophiuchus</comment>
-  </data>
+  
   <data name="Pegasi" xml:space="preserve">
     <value>peɡaz</value>
     <comment>Optional phonetic pronunciation for Pegasi</comment>
@@ -294,22 +282,10 @@
     <value>skɔʁpjɔ̃</value>
     <comment>Optional phonetic pronunciation for Scorpii</comment>
   </data>
-  <data name="Shui" xml:space="preserve">
-    <value>ˈʃuːi</value>
-    <comment>Optional phonetic pronunciation for Shui</comment>
-  </data>
-  <data name="ShuiWei_Shui" xml:space="preserve">
-    <value>ˈʃuːi</value>
-    <comment>Optional phonetic pronunciation for ShuiWei_Shui</comment>
-  </data>
-  <data name="ShuiWei_Wei" xml:space="preserve">
-    <value>weɪ</value>
-    <comment>Optional phonetic pronunciation for ShuiWei_Wei</comment>
-  </data>
-  <data name="Tascheter" xml:space="preserve">
-    <value>ˈtɑːʃətɜː</value>
-    <comment>Optional phonetic pronunciation for Tascheter</comment>
-  </data>
+  
+  
+  
+  
   <data name="Tau" xml:space="preserve">
     <value>to</value>
     <comment>Optional phonetic pronunciation for Tau</comment>
@@ -334,18 +310,12 @@
     <value>tʁijɑ̃ɡl</value>
     <comment>Optional phonetic pronunciation for Trianguli</comment>
   </data>
-  <data name="Trifid" xml:space="preserve">
-    <value>ˈtraɪfɪd</value>
-    <comment>Optional phonetic pronunciation for Trifid</comment>
-  </data>
+  
   <data name="Tucanae" xml:space="preserve">
     <value>tykana</value>
     <comment>Optional phonetic pronunciation for Tucanae</comment>
   </data>
-  <data name="Wei" xml:space="preserve">
-    <value>weɪ</value>
-    <comment>Optional phonetic pronunciation for Wei</comment>
-  </data>
+  
   <data name="Wredguia" xml:space="preserve">
     <value>wʁedɡja</value>
     <comment>Optional phonetic pronunciation for Wredguia</comment>
@@ -374,10 +344,7 @@
     <value>aldebaʁɑ̃</value>
     <comment>Optional phonetic pronunciation for aldebaran</comment>
   </data>
-  <data name="anemoi" xml:space="preserve">
-    <value>æˈniːmɔɪ</value>
-    <comment>Optional phonetic pronunciation for anemoi</comment>
-  </data>
+  
   <data name="antal" xml:space="preserve">
     <value>a~tal</value>
     <comment>Optional phonetic pronunciation for antal</comment>
@@ -446,10 +413,7 @@
     <value>delɛn</value>
     <comment>Optional phonetic pronunciation for delaine</comment>
   </data>
-  <data name="denton" xml:space="preserve">
-    <value>ˈdɛntən</value>
-    <comment>Optional phonetic pronunciation for denton</comment>
-  </data>
+  
   <data name="dezhra" xml:space="preserve">
     <value>dɛzʁa</value>
     <comment>Optional phonetic pronunciation for dezhra</comment>
@@ -486,10 +450,7 @@
     <value>eʁavat</value>
     <comment>Optional phonetic pronunciation for eravate</comment>
   </data>
-  <data name="fei" xml:space="preserve">
-    <value>feɪ</value>
-    <comment>Optional phonetic pronunciation for fei</comment>
-  </data>
+  
   <data name="felicia" xml:space="preserve">
     <value>felisja</value>
     <comment>Optional phonetic pronunciation for felicia</comment>
@@ -586,10 +547,7 @@
     <value>li:</value>
     <comment>Optional phonetic pronunciation for li</comment>
   </data>
-  <data name="luytens" xml:space="preserve">
-    <value>ˈlaʊ.təns</value>
-    <comment>Optional phonetic pronunciation for luytens</comment>
-  </data>
+  
   <data name="mahon" xml:space="preserve">
     <value>maɔ̃ </value>
     <comment>Optional phonetic pronunciation for mahon</comment>
@@ -686,10 +644,7 @@
     <value>ʃinʁaʁta</value>
     <comment>Optional phonetic pronunciation for shinrartadezhra_shinrarta</comment>
   </data>
-  <data name="star" xml:space="preserve">
-    <value>stɑː</value>
-    <comment>Optional phonetic pronunciation for star</comment>
-  </data>
+  
   <data name="surya" xml:space="preserve">
     <value>syʁja</value>
     <comment>Optional phonetic pronunciation for surya</comment>
@@ -698,10 +653,7 @@
     <value>szu</value>
     <comment>Optional phonetic pronunciation for szu</comment>
   </data>
-  <data name="taygeta" xml:space="preserve">
-    <value>teɪˈɪdʒᵻtə</value>
-    <comment>Optional phonetic pronunciation for taygeta</comment>
-  </data>
+  
   <data name="torval" xml:space="preserve">
     <value>tɔʁval</value>
     <comment>Optional phonetic pronunciation for torval</comment>
@@ -710,10 +662,7 @@
     <value>tse</value>
     <comment>Optional phonetic pronunciation for tse</comment>
   </data>
-  <data name="winters" xml:space="preserve">
-    <value>ˈwɪntəs</value>
-    <comment>Optional phonetic pronunciation for winters</comment>
-  </data>
+  
   <data name="xihe" xml:space="preserve">
     <value>ksie</value>
     <comment>Optional phonetic pronunciation for xihe</comment>
@@ -742,20 +691,8 @@
     <value>zaɔ̃s</value>
     <comment>Optional phonetic pronunciation for zaonce</comment>
   </data>
-  <data name="zemina" xml:space="preserve">
-    <value>zəˈmiːnə</value>
-    <comment>Optional phonetic pronunciation for zemina</comment>
-  </data>
-  <data name="zhang" xml:space="preserve">
-    <value>ʈʂáŋ</value>
-    <comment>Optional phonetic pronunciation for zhang</comment>
-  </data>
-  <data name="zhangfei_fei" xml:space="preserve">
-    <value>feɪ</value>
-    <comment>Optional phonetic pronunciation for zhangfei_fei</comment>
-  </data>
-  <data name="zhangfei_zhang" xml:space="preserve">
-    <value>ʈʂáŋ</value>
-    <comment>Optional phonetic pronunciation for zhangfei_zhang</comment>
-  </data>
+  
+  
+  
+  
 </root>
