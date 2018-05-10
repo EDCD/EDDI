@@ -1514,9 +1514,27 @@ namespace EddiJournalMonitor
                                 {
                                     events.Add(new ShieldsDownEvent(timestamp) { raw = line });
                                 }
-                                handled = true;
-                                break;
                             }
+                            handled = true;
+                            break;
+                        case "ShipTargeted":
+                            {
+                                bool targetlocked = JsonParsing.getBool(data, "TargetLocked");
+                                int scanstage = JsonParsing.getInt(data, "ScanStage");
+                                string ship = JsonParsing.getString(data, "Ship_Localised");
+                                string name = JsonParsing.getString(data, "PilotName_Localised");
+                                string rank = JsonParsing.getString(data, "PilotRank");
+                                string faction = JsonParsing.getString(data, "Faction");
+                                string legalStatus = JsonParsing.getString(data, "LegalStatus");
+                                int? bounty = JsonParsing.getOptionalInt(data, "Bounty");
+                                decimal? shieldHealth = JsonParsing.getOptionalDecimal(data, "ShieldHealth");
+                                decimal? hullHealth = JsonParsing.getOptionalDecimal(data, "HullHealth");
+                                string subSystem = JsonParsing.getString(data, "Subsystem_Localised");
+                                decimal? subSystemHealth = JsonParsing.getOptionalDecimal(data, "SubsystemHealth");
+                                events.Add(new ShipTargetedEvent(timestamp, targetlocked, ship, scanstage, name, rank, faction, legalStatus, bounty, shieldHealth, hullHealth, subSystem, subSystemHealth) { raw = line });
+                            }
+                            handled = true;
+                            break;
                         case "UnderAttack":
                             {
                                 string target = JsonParsing.getString(data, "Target");
