@@ -118,10 +118,7 @@
     <value>juste au dessus de </value>
     <comment/>
   </data>
-  <data name="million" xml:space="preserve">
-    <value>million</value>
-    <comment/>
-  </data>
+  
   <data name="minus" xml:space="preserve">
     <value> moins </value>
     <comment/>
@@ -138,18 +135,9 @@
     <value>au-delà de </value>
     <comment/>
   </data>
-  <data name="plus" xml:space="preserve">
-    <value> plus </value>
-    <comment/>
-  </data>
-  <data name="point" xml:space="preserve">
-    <value> point </value>
-    <comment/>
-  </data>
-  <data name="quadrillion" xml:space="preserve">
-    <value>quadrillion</value>
-    <comment/>
-  </data>
+  
+  
+  
   <data name="thousand" xml:space="preserve">
     <value>mille</value>
     <comment/>
