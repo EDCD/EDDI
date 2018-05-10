@@ -346,6 +346,12 @@ namespace EddiMaterialMonitor
                 // Start with the materials we have in the log
                 foreach (MaterialAmount ma in configuration.materials)
                 {
+                    // Remove incorrect edname introduced in an earlier version of EDDI
+                    if (ma.edname == "tg_shipsystemdata") // Should be "shipsystemsdata"
+                    {
+                        continue;
+                    }
+
                     MaterialAmount ma2 = new MaterialAmount(ma.edname, ma.amount, ma.minimum, ma.desired, ma.maximum);
                     // Make sure the edname is unique before adding the material to the new inventory 
                     if (newInventory.Where(inv => inv.edname == ma2.edname).Count() == 0)
