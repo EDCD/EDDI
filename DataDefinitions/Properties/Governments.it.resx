@@ -98,68 +98,20 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  <data name="Anarchy" xml:space="preserve">
-    <value>Anarchy</value>
-    <comment>Government type Anarchy</comment>
-  </data>
-  <data name="Colony" xml:space="preserve">
-    <value>Colony</value>
-    <comment>Government type Colony</comment>
-  </data>
-  <data name="Communism" xml:space="preserve">
-    <value>Communism</value>
-    <comment>Government type Communism</comment>
-  </data>
-  <data name="Confederacy" xml:space="preserve">
-    <value>Confederacy</value>
-    <comment>Government type Confederacy</comment>
-  </data>
-  <data name="Cooperative" xml:space="preserve">
-    <value>Cooperative</value>
-    <comment>Government type Cooperative</comment>
-  </data>
-  <data name="Corporate" xml:space="preserve">
-    <value>Corporate</value>
-    <comment>Government type Corporate</comment>
-  </data>
-  <data name="Democracy" xml:space="preserve">
-    <value>Democracy</value>
-    <comment>Government type Democracy</comment>
-  </data>
-  <data name="Dictatorship" xml:space="preserve">
-    <value>Dictatorship</value>
-    <comment>Government type Dictatorship</comment>
-  </data>
-  <data name="Feudal" xml:space="preserve">
-    <value>Feudal</value>
-    <comment>Government type Feudal</comment>
-  </data>
-  <data name="Imperial" xml:space="preserve">
-    <value>Imperial</value>
-    <comment>Government type Imperial</comment>
-  </data>
-  <data name="None" xml:space="preserve">
-    <value>None</value>
-    <comment>Government type None</comment>
-  </data>
-  <data name="Patronage" xml:space="preserve">
-    <value>Patronage</value>
-    <comment>Government type Patronage</comment>
-  </data>
-  <data name="PrisonColony" xml:space="preserve">
-    <value>Prison Colony</value>
-    <comment>Government type PrisonColony</comment>
-  </data>
-  <data name="Theocracy" xml:space="preserve">
-    <value>Theocracy</value>
-    <comment>Government type Theocracy</comment>
-  </data>
-  <data name="Workshop" xml:space="preserve">
-    <value>Workshop</value>
-    <comment>Government type Workshop</comment>
-  </data>
-  <data name="engineer" xml:space="preserve">
-    <value>Engineer</value>
-    <comment>Government type engineer</comment>
-  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </root>
