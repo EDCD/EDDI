@@ -163,9 +163,7 @@
   <data name="label_code" xml:space="preserve">
     <value>Código:</value>
   </data>
-  <data name="label_email" xml:space="preserve">
-    <value>Email:</value>
-  </data>
+  
   <data name="label_password" xml:space="preserve">
     <value>Contraseña:</value>
   </data>
@@ -214,9 +212,7 @@
   <data name="upgrade_button" xml:space="preserve">
     <value>Actualizar EDDI</value>
   </data>
-  <data name="reset_button" xml:space="preserve">
-    <value>Reset</value>
-  </data>
+  
   <data name="tab_tts_test_desc" xml:space="preserve">
     <value>Puede probar como sonará la voz elegida. Tenga en cuenta que si la voz elegida es incompatible, se usará la voz predeterminada.</value>
   </data>
