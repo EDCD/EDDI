@@ -138,10 +138,7 @@
     <value>Épidémie</value>
     <comment>System state Outbreak</comment>
   </data>
-  <data name="Famine" xml:space="preserve">
-    <value>Famine</value>
-    <comment>System state Famine</comment>
-  </data>
+  
   <data name="Election" xml:space="preserve">
     <value>Élections</value>
     <comment>System state Election</comment>
