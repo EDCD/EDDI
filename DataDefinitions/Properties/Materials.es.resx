@@ -606,11 +606,23 @@
     <value>Célula de energía de guardián</value>
     <comment>Material guardian_powercell</comment>
   </data>
+  <data name="guardian_weaponblueprint" xml:space="preserve">
+    <value>Plano de Armamento de Guardián</value>
+    <comment>Material guardian_weaponblueprint</comment>
+  </data>
   
-  
-  
-  
-  
+  <data name="guardian_techcomponent" xml:space="preserve">
+    <value>Componente tecnológico de guardián</value>
+    <comment>Material guardian_techcomponent</comment>
+  </data>
+  <data name="guardian_powerconduit" xml:space="preserve">
+    <value>Conducto de energía de guardián</value>
+    <comment>Material guardian_powerconduit</comment>
+  </data>
+  <data name="guardian_moduleblueprint" xml:space="preserve">
+    <value>Plano de Módulo de Guardián</value>
+    <comment>Material guardian_moduleblueprint</comment>
+  </data>
   
   
   
