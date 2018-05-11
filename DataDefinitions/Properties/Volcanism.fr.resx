@@ -157,6 +157,12 @@
     <value>Mineur</value>
     <comment>Volcanism Minor</comment>
   </data>
-  
-  
+  <data name="Geysers" xml:space="preserve">
+    <value>Geysers</value>
+    <comment>Volcanism Geysers</comment>
+  </data>
+  <data name="Magma" xml:space="preserve">
+    <value>Magma</value>
+    <comment>Volcanism Magma</comment>
+  </data>
 </root>
