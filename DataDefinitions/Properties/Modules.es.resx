@@ -213,7 +213,10 @@
     <value>Escáner de superficie detallado</value>
     <comment>Module DetailedSurfaceScanner</comment>
   </data>
-  
+  <data name="Disruptor" xml:space="preserve">
+    <value>Disruptor</value>
+    <comment>Module Disruptor</comment>
+  </data>
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
     <value>Cabina de pasajero clase económica</value>
     <comment>Module EconomyClassPassengerCabin</comment>
@@ -527,6 +530,12 @@
     <value>Cañón de esquirlas</value>
     <comment>Module ShardCannon</comment>
   </data>
-  
-  
+  <data name="FlechetteLauncher" xml:space="preserve">
+    <value>Lanzador de Flechettes</value>
+    <comment>Modile FlechetteLauncher</comment>
+  </data>
+  <data name="EnzymeMissileRack" xml:space="preserve">
+    <value>Lanzamisiles de Enzimas</value>
+    <comment>Module EnzymeMissileRack</comment>
+  </data>
 </root>
