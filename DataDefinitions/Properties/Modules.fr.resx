@@ -509,7 +509,10 @@
   </data>
   
   
-  
+  <data name="GuardianFsdBooster" xml:space="preserve">
+    <value>Survolteur FSD - Guardians</value>
+    <comment>Module GuardianFsdBooster</comment>
+  </data>
   <data name="GuardianPowerDistributor" xml:space="preserve">
     <value>Répartiteur de puissance hybride - Guardians</value>
     <comment>Module GuardianPowerDistributor</comment>
