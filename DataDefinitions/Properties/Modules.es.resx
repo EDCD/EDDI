@@ -510,8 +510,14 @@
     <value>Escáner de exploración avanzado</value>
     <comment>Module AdvancedDiscoveryScanner</comment>
   </data>
-  
-  
+  <data name="PlasmaRepeater" xml:space="preserve">
+    <value>Repetidor de Plasma</value>
+    <comment>Module PlasmaRepeater (fighter module)</comment>
+  </data>
+  <data name="Enforcer" xml:space="preserve">
+    <value>Cañón Ejecutor</value>
+    <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
+  </data>
   
   
   
