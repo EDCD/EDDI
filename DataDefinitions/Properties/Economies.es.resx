@@ -113,7 +113,10 @@
     <value>Alta tecnología</value>
     <comment>Economy type HighTech</comment>
   </data>
-  
+  <data name="Industrial" xml:space="preserve">
+    <value>Industrial</value>
+    <comment>Economy type Industrial</comment>
+  </data>
   <data name="Military" xml:space="preserve">
     <value>Militar</value>
     <comment>Economy type Military</comment>
@@ -138,5 +141,8 @@
     <value>Turismo</value>
     <comment>Economy type Tourism</comment>
   </data>
-  
+  <data name="Rescue" xml:space="preserve">
+    <value>Rescate</value>
+    <comment>Economy type Rescue</comment>
+  </data>
 </root>
