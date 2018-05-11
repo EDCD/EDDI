@@ -102,7 +102,10 @@
     <value>Vaisseau</value>
     <comment>ship</comment>
   </data>
-  
+  <data name="srv" xml:space="preserve">
+    <value>SRV</value>
+    <comment>srv</comment>
+  </data>
   <data name="fighter" xml:space="preserve">
     <value>Chasseur</value>
     <comment>fighter</comment>
