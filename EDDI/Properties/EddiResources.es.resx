@@ -233,5 +233,7 @@ Por favor, cierre la otra instancia y pruebe de nuevo.</value>
     <value>Automático</value>
     <comment>The user's system language</comment>
   </data>
-  
+  <data name="safe_mode" xml:space="preserve">
+    <value>Modo seguro - requiere actualización.</value>
+  </data>
 </root>
