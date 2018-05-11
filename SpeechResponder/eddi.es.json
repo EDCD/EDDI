@@ -1559,6 +1559,15 @@
       "name": "Ship swapped",
       "description": "Triggered when you swap a ship"
     },
+    "Ship targeted": {
+      "enabled": true,
+      "priority": 3,
+      "responder": true,
+      "script": "{_ Ship targeted }\r\n{_ Triggered when the player selects a target }\r\n\r\n\r\n{_ Context }\r\n{SetState('eddi_context_last_subject', 'ship')}\r\n{SetState('eddi_context_last_action', 'targeted')}\r\n\r\n",
+      "default": true,
+      "name": "Ship targeted",
+      "description": "Triggered when the player selects a target"
+    },
     "Ship transfer initiated": {
       "enabled": true,
       "priority": 3,
