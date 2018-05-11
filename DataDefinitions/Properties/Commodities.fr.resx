@@ -1454,7 +1454,10 @@
     <comment>Commodity ZeesszeAntGlue</comment>
   </data>
   
-  
+  <data name="alliancelegaslativerecords" xml:space="preserve">
+    <value>Dossiers législatifs de l'Alliance</value>
+    <comment>Commodity alliancelegaslativerecords</comment>
+  </data>
   <data name="imperialprisoner" xml:space="preserve">
     <value>Prisonniers impériaux</value>
     <comment>Commodity imperialprisoner</comment>
