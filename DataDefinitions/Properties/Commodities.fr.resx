@@ -1425,10 +1425,22 @@
     <value>Réchaud universel de Rajukru</value>
     <comment>Commodity RajukruStoves</comment>
   </data>
-  
-  
-  
-  
+  <data name="KinagoInstruments" xml:space="preserve">
+    <value>Violons de Kinago</value>
+    <comment>Commodity KinagoInstruments</comment>
+  </data>
+  <data name="KachiriginLeaches" xml:space="preserve">
+    <value>Sangsues de Kachirigin</value>
+    <comment>Commodity KachiriginLeaches</comment>
+  </data>
+  <data name="VanayequiRhinoFur" xml:space="preserve">
+    <value>Fourrure de cératomorphe de Vanayequi</value>
+    <comment>Commodity VanayequiRhinoFur</comment>
+  </data>
+  <data name="ZeesszeAntGlue" xml:space="preserve">
+    <value>Colle de larve de fourmi de Zeessze</value>
+    <comment>Commodity ZeesszeAntGlue</comment>
+  </data>
   
   
   
