@@ -1443,7 +1443,10 @@
   </data>
   
   
-  
+  <data name="imperialprisoner" xml:space="preserve">
+    <value>Prisonniers impériaux</value>
+    <comment>Commodity imperialprisoner</comment>
+  </data>
   
   
   
