@@ -130,5 +130,8 @@
     <value>Letal</value>
     <comment>Combat rating Deadly</comment>
   </data>
-  
+  <data name="Elite" xml:space="preserve">
+    <value>Élite</value>
+    <comment>Combat rating Elite</comment>
+  </data>
 </root>
