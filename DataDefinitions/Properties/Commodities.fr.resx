@@ -786,7 +786,10 @@
     <value>Alcool</value>
     <comment>Commodity Liquor</comment>
   </data>
-  
+  <data name="Lithium" xml:space="preserve">
+    <value>Lithium</value>
+    <comment>Commodity Lithium</comment>
+  </data>
   <data name="LithiumHydroxide" xml:space="preserve">
     <value>Hydroxyde de lithium</value>
     <comment>Commodity LithiumHydroxide</comment>
@@ -958,9 +961,18 @@
     <value>Vicieuse d'Orrere</value>
     <comment>Commodity OrrerianViciousBrew</comment>
   </data>
-  
-  
-  
+  <data name="Osmium" xml:space="preserve">
+    <value>Osmium</value>
+    <comment>Commodity Osmium</comment>
+  </data>
+  <data name="Painite" xml:space="preserve">
+    <value>Painite</value>
+    <comment>Commodity Painite</comment>
+  </data>
+  <data name="Palladium" xml:space="preserve">
+    <value>Palladium</value>
+    <comment>Commodity Palladium</comment>
+  </data>
   <data name="PantaaPrayerSticks" xml:space="preserve">
     <value>Bâtonnets d'encens de Panta</value>
     <comment>Commodity PantaaPrayerSticks</comment>
@@ -981,7 +993,10 @@
     <value>Armes de poing</value>
     <comment>Commodity PersonalWeapons</comment>
   </data>
-  
+  <data name="Pesticides" xml:space="preserve">
+    <value>Pesticides</value>
+    <comment>Commodity Pesticides</comment>
+  </data>
   <data name="Platinum" xml:space="preserve">
     <value>Platine</value>
     <comment>Commodity Platinum</comment>
@@ -1026,7 +1041,10 @@
     <value>Matériaux de recherche interdits</value>
     <comment>Commodity ProhibitedResearchMaterials</comment>
   </data>
-  
+  <data name="Pyrophyllite" xml:space="preserve">
+    <value>Pyrophyllite</value>
+    <comment>Commodity Pyrophyllite</comment>
+  </data>
   <data name="RadiationBaffle" xml:space="preserve">
     <value>Écran antiradiation</value>
     <comment>Commodity RadiationBaffle</comment>
@@ -1057,8 +1075,14 @@
     <comment>Commodity Robotics</comment>
   </data>
   
-  
-  
+  <data name="Rutile" xml:space="preserve">
+    <value>Rutile</value>
+    <comment>Commodity Rutile</comment>
+  </data>
+  <data name="Samarium" xml:space="preserve">
+    <value>Samarium</value>
+    <comment>Commodity Samarium</comment>
+  </data>
   <data name="SanumaDecorativeMeat" xml:space="preserve">
     <value>Viande ornementale de Sanuma</value>
     <comment>Commodity SanumaDecorativeMeat</comment>
@@ -1192,7 +1216,10 @@
     <value>Plasma sanguin de Terra Mater</value>
     <comment>Commodity TerraMaterBloodBores</comment>
   </data>
-  
+  <data name="Thallium" xml:space="preserve">
+    <value>Thallium</value>
+    <comment>Commodity Thallium</comment>
+  </data>
   <data name="TheHuttonMug" xml:space="preserve">
     <value>La tasse Hutton</value>
     <comment>Commodity TheHuttonMug</comment>
@@ -1201,7 +1228,10 @@
     <value>Unités de refroidissement</value>
     <comment>Commodity ThermalCoolingUnits</comment>
   </data>
-  
+  <data name="Thorium" xml:space="preserve">
+    <value>Thorium</value>
+    <comment>Commodity Thorium</comment>
+  </data>
   <data name="ThrutisCream" xml:space="preserve">
     <value>Crème de Thrutis</value>
     <comment>Commodity ThrutisCream</comment>
@@ -1266,8 +1296,14 @@
     <value>Centre de données instable</value>
     <comment>Commodity UnstableDataCore</comment>
   </data>
-  
-  
+  <data name="Uraninite" xml:space="preserve">
+    <value>Uraninite</value>
+    <comment>Commodity Uraninite</comment>
+  </data>
+  <data name="Uranium" xml:space="preserve">
+    <value>Uranium</value>
+    <comment>Commodity Uranium</comment>
+  </data>
   <data name="USSCargoAncientArtefact" xml:space="preserve">
     <value>Artefact Antique</value>
     <comment>Commodity USSCargoAncientArtefact</comment>
@@ -1385,7 +1421,10 @@
     <value>Colle de larve de fourmi de Zeessze</value>
     <comment>Commodity ZeesszeAntGrubGlue</comment>
   </data>
-  
+  <data name="RajukruStoves" xml:space="preserve">
+    <value>Réchaud universel de Rajukru</value>
+    <comment>Commodity RajukruStoves</comment>
+  </data>
   
   
   
