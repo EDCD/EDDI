@@ -121,10 +121,28 @@
     <value>Baliza turística</value>
     <comment>Data scan type TouristBeacon</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="ShipUplink" xml:space="preserve">
+    <value>Transmisión de nave</value>
+    <comment>Data scan type ShipUplink</comment>
+  </data>
+  <data name="UnknownUplink" xml:space="preserve">
+    <value>Transmisión Desconocida</value>
+    <comment>Data scan type UnknownUplink</comment>
+  </data>
+  <data name="SettlementUnknown" xml:space="preserve">
+    <value>Establecimiento Desconocido</value>
+    <comment>Data scan type SettlementUnknown</comment>
+  </data>
+  <data name="AncientCodex" xml:space="preserve">
+    <value>Código antiguo</value>
+    <comment>Data scan type AncientCodex</comment>
+  </data>
+  <data name="DataPointHVT" xml:space="preserve">
+    <value>Punto de datos H.V.T.</value>
+    <comment>Data scan type DataPointHVT</comment>
+  </data>
+  <data name="TgTransmitter" xml:space="preserve">
+    <value>Dispositivo Thargoide</value>
+    <comment>Data scan type TGTRANSMITTER</comment>
+  </data>
 </root>
