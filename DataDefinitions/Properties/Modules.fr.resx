@@ -510,9 +510,12 @@
   
   
   
-  
+  <data name="GuardianPowerDistributor" xml:space="preserve">
+    <value>Répartiteur de puissance hybride - Guardians</value>
+    <comment>Module GuardianPowerDistributor</comment>
+  </data>
   <data name="ShardCannon" xml:space="preserve">
-    <value>Canon de choc</value>
+    <value>Canon à éclats</value>
     <comment>Module ShardCannon</comment>
   </data>
   <data name="FlechetteLauncher" xml:space="preserve">
