@@ -511,8 +511,14 @@
   
   
   
-  
-  
+  <data name="ShardCannon" xml:space="preserve">
+    <value>Canon de choc</value>
+    <comment>Module ShardCannon</comment>
+  </data>
+  <data name="FlechetteLauncher" xml:space="preserve">
+    <value>Lanceur de fléchettes</value>
+    <comment>Modile FlechetteLauncher</comment>
+  </data>
   <data name="EnzymeMissileRack" xml:space="preserve">
     <value>Batterie de missiles enzymatiques</value>
     <comment>Module EnzymeMissileRack</comment>
