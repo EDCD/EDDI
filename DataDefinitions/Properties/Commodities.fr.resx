@@ -1447,7 +1447,10 @@
     <value>Prisonniers impériaux</value>
     <comment>Commodity imperialprisoner</comment>
   </data>
-  
+  <data name="torvaldeeds" xml:space="preserve">
+    <value>Actes juridiques de Torval</value>
+    <comment>Commodity torvaldeeds</comment>
+  </data>
   
   
   
