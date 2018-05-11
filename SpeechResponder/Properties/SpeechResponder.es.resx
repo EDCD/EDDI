@@ -190,7 +190,10 @@
   <data name="reset_script_button" xml:space="preserve">
     <value>Restablecer a predeterminado</value>
   </data>
-  
+  <data name="script_variables_button" xml:space="preserve">
+    <value>Variables</value>
+    <comment>button that shows help for script variables</comment>
+  </data>
   <data name="subs" xml:space="preserve">
     <value>Registra el texto hablado (TTS) en %APPDATA%\EDDI\speechresponder.out</value>
   </data>
