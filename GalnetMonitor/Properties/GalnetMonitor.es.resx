@@ -129,5 +129,7 @@
   <data name="p1" xml:space="preserve">
     <value>Tenga en cuenta que después de cambiar el idioma, los nuevos elementos de Galnet pueden tardar 2 minutos en estar disponibles.</value>
   </data>
-  
+  <data name="p2" xml:space="preserve">
+    <value>Leer artículos de la Galnet cuando se desconecte</value>
+  </data>
 </root>
