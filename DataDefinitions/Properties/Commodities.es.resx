@@ -353,7 +353,10 @@
     <value>Ropa mimética</value>
     <comment>Commodity ChameleonCloth</comment>
   </data>
-  
+  <data name="ChateauDeAegaeon" xml:space="preserve">
+    <value>Chateau de Aegaeon</value>
+    <comment>Commodity ChateauDeAegaeon</comment>
+  </data>
   <data name="ChemicalWaste" xml:space="preserve">
     <value>Residuos químicos</value>
     <comment>Commodity ChemicalWaste</comment>
@@ -382,7 +385,10 @@
     <value>Café</value>
     <comment>Commodity Coffee</comment>
   </data>
-  
+  <data name="Coltan" xml:space="preserve">
+    <value>Coltán</value>
+    <comment>Commodity Coltan</comment>
+  </data>
   <data name="CombatStabilisers" xml:space="preserve">
     <value>Estabilizadores de combate</value>
     <comment>Commodity CombatStabilisers</comment>
