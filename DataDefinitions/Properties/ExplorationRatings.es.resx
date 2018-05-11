@@ -130,5 +130,8 @@
     <value>Pionero</value>
     <comment>Exploration rating Pioneer</comment>
   </data>
-  
+  <data name="Elite" xml:space="preserve">
+    <value>Élite</value>
+    <comment>Exploration rating Elite</comment>
+  </data>
 </root>
