@@ -15,7 +15,7 @@ namespace EddiEvents
         static ShipTargetedEvent()
         {
             VARIABLES.Add("targetlocked", "True if a ship has been targeted");
-            VARIABLES.Add("ship", "the type of ship");
+            VARIABLES.Add("ship", "the model of the ship");
             VARIABLES.Add("scanstage", "the stage of the ship scan");
             VARIABLES.Add("name", "The name of the pilot");
             VARIABLES.Add("rank", "The combat rank of the pilot");
@@ -34,13 +34,13 @@ namespace EddiEvents
         public string ship { get; private set; }
 
         [JsonProperty("scanstage")]
-        public int scanstage { get; private set; }
+        public int? scanstage { get; private set; }
 
         [JsonProperty("name")]
         public string name { get; private set; }
 
         [JsonProperty("rank")]
-        public CombatRating rank { get; private set; }
+        public string rank { get; private set; }
 
         [JsonProperty("faction")]
         public string faction { get; private set; }
@@ -63,9 +63,11 @@ namespace EddiEvents
         [JsonProperty("subsystemhealth")]
         public decimal? subsystemhealth { get; private set; }
 
-        public ShipTargetedEvent(DateTime timestamp, bool targetlocked, string ship, int scanstage, string name, CombatRating rank, string faction, string legalstatus, int? bounty, decimal? shieldhealth, decimal? hullhealth, string subsystem, decimal? subsystemhealth) : base(timestamp, NAME)
+        public ShipTargetedEvent(DateTime timestamp, bool targetlocked, string ship, int? scanstage, string name, string rank, string faction, string legalstatus, int? bounty, decimal? shieldhealth, decimal? hullhealth, string subsystem, decimal? subsystemhealth) : base(timestamp, NAME)
         {
+            this.targetlocked = targetlocked;
             this.ship = ship;
+            this.scanstage = scanstage;
             this.name = name;
             this.rank = rank;
             this.faction = faction;

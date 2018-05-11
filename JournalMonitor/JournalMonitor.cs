@@ -1520,10 +1520,36 @@ namespace EddiJournalMonitor
                         case "ShipTargeted":
                             {
                                 bool targetlocked = JsonParsing.getBool(data, "TargetLocked");
-                                int scanstage = JsonParsing.getInt(data, "ScanStage");
-                                string ship = JsonParsing.getString(data, "Ship_Localised");
+                                int? scanstage = JsonParsing.getOptionalInt(data, "ScanStage");
+                                string ship = JsonParsing.getString(data, "Ship");
+                                if (ship != null)
+                                {
+                                    if (ship.Contains("fighter"))
+                                    {
+                                        string shipLocalised = JsonParsing.getString(data, "Ship_Localised");
+                                        if (shipLocalised != null)
+                                        {
+                                            ship = shipLocalised + " Fighter";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Ship shipDef = ShipDefinitions.FromEDModel(ship);
+                                        if (shipDef != null)
+                                        {
+                                            ship = shipDef.model;
+                                        }
+                                    }
+                                }
                                 string name = JsonParsing.getString(data, "PilotName_Localised");
-                                CombatRating rank = CombatRating.FromEDName(JsonParsing.getString(data, "PilotRank"));
+                                string rank = JsonParsing.getString(data, "PilotRank");
+                                if (rank != null)
+                                {
+                                    CombatRating rating = CombatRating.FromEDName(rank);
+                                    rank = rating.localizedName;
+                                }
+                                decimal? shieldHealth = JsonParsing.getOptionalDecimal(data, "ShieldHealth");
+                                decimal? hullHealth = JsonParsing.getOptionalDecimal(data, "HullHealth");
                                 string faction = JsonParsing.getString(data, "Faction");
                                 string legalStatus = JsonParsing.getString(data, "LegalStatus");
                                 if (legalStatus != null)
@@ -1542,8 +1568,6 @@ namespace EddiJournalMonitor
                                     }
                                 }
                                 int? bounty = JsonParsing.getOptionalInt(data, "Bounty");
-                                decimal? shieldHealth = JsonParsing.getOptionalDecimal(data, "ShieldHealth");
-                                decimal? hullHealth = JsonParsing.getOptionalDecimal(data, "HullHealth");
                                 string subSystem = JsonParsing.getString(data, "Subsystem_Localised");
                                 decimal? subSystemHealth = JsonParsing.getOptionalDecimal(data, "SubsystemHealth");
                                 events.Add(new ShipTargetedEvent(timestamp, targetlocked, ship, scanstage, name, rank, faction, legalStatus, bounty, shieldHealth, hullHealth, subSystem, subSystemHealth) { raw = line });
