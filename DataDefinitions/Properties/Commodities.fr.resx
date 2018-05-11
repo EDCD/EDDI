@@ -1119,7 +1119,10 @@
     <value>Contrats commerciaux de Sirius</value>
     <comment>Commodity siriuscommercialcontracts</comment>
   </data>
-  
+  <data name="siriusfranchisepackage" xml:space="preserve">
+    <value>Dossiers marketing de Sirius</value>
+    <comment>Commodity siriusfranchisepackage</comment>
+  </data>
   <data name="siriusindustrialequipment" xml:space="preserve">
     <value>Équipement Industriel de Sirius</value>
     <comment>Commodity siriusindustrialequipment</comment>
