@@ -157,7 +157,10 @@
     <value>Vanadio</value>
     <comment>Material vanadium</comment>
   </data>
-  
+  <data name="zinc" xml:space="preserve">
+    <value>Zinc</value>
+    <comment>Material zinc</comment>
+  </data>
   <data name="cadmium" xml:space="preserve">
     <value>Cadmio</value>
     <comment>Material cadmium</comment>
@@ -595,8 +598,14 @@
     <value>Circuitería orgánica Thargoide</value>
     <comment>Material unknownorganiccircuitry</comment>
   </data>
-  
-  
+  <data name="boron" xml:space="preserve">
+    <value>Boro</value>
+    <comment>Material boron</comment>
+  </data>
+  <data name="guardian_powercell" xml:space="preserve">
+    <value>Célula de energía de guardián</value>
+    <comment>Material guardian_powercell</comment>
+  </data>
   
   
   
