@@ -806,7 +806,10 @@
     <value>Hyper sucre LTT</value>
     <comment>Commodity LTTHypersweet</comment>
   </data>
-  
+  <data name="LyraeWeed" xml:space="preserve">
+    <value>Herbe Lyrane</value>
+    <comment>Commodity LyraeWeed</comment>
+  </data>
   <data name="MagneticEmitterCoil" xml:space="preserve">
     <value>Bobine d'émission magnétique</value>
     <comment>Commodity MagneticEmitterCoil</comment>
@@ -951,7 +954,10 @@
     <value>Tête d'oignon</value>
     <comment>Commodity OnionHead</comment>
   </data>
-  
+  <data name="OnionheadAlphaStrain" xml:space="preserve">
+    <value>Variété alpha de tête d'oignon</value>
+    <comment>Commodity OnionheadAlphaStrain</comment>
+  </data>
   <data name="OnionheadBetaStrain" xml:space="preserve">
     <value>Variété bêta de tête d'oignon</value>
     <comment>Commodity OnionheadBetaStrain</comment>
