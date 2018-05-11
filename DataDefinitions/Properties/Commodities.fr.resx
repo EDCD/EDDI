@@ -952,7 +952,10 @@
     <comment>Commodity OnionHead</comment>
   </data>
   
-  
+  <data name="OnionheadBetaStrain" xml:space="preserve">
+    <value>Variété bêta de tête d'oignon</value>
+    <comment>Commodity OnionheadBetaStrain</comment>
+  </data>
   <data name="OphiuchExinoArtefacts" xml:space="preserve">
     <value>Artefacts Ophiuch Exino</value>
     <comment>Commodity OphiuchExinoArtefacts</comment>
