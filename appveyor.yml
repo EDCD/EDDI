@@ -4,7 +4,7 @@ branches:
   - develop
 skip_tags: true
 image: Visual Studio 2017
-configuration: Debug
+configuration: Release
 nuget:
   project_feed: true
 before_build:
