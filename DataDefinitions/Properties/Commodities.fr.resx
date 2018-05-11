@@ -157,7 +157,10 @@
     <value>Peau d'Altaïr</value>
     <comment>Commodity AltairianSkin</comment>
   </data>
-  
+  <data name="Aluminium" xml:space="preserve">
+    <value>Aluminium</value>
+    <comment>Commodity Aluminium</comment>
+  </data>
   <data name="AlyaBodySoap" xml:space="preserve">
     <value>Savon corporel d'Alya</value>
     <comment>Commodity AlyaBodySoap</comment>
@@ -266,7 +269,10 @@
     <value>Armes Militaires</value>
     <comment>Commodity BattleWeapons</comment>
   </data>
-  
+  <data name="Bauxite" xml:space="preserve">
+    <value>Bauxite</value>
+    <comment>Commodity Bauxite</comment>
+  </data>
   <data name="Beer" xml:space="preserve">
     <value>Bière</value>
     <comment>Commodity Beer</comment>
@@ -275,7 +281,10 @@
     <value>Cuir de raie de Belalans</value>
     <comment>Commodity BelalansRayLeather</comment>
   </data>
-  
+  <data name="Bertrandite" xml:space="preserve">
+    <value>Bertrandite</value>
+    <comment>Commodity Bertrandite</comment>
+  </data>
   <data name="Beryllium" xml:space="preserve">
     <value>Béryllium</value>
     <comment>Commodity Beryllium</comment>
@@ -288,7 +297,10 @@
     <value>Biodéchets</value>
     <comment>Commodity Biowaste</comment>
   </data>
-  
+  <data name="Bismuth" xml:space="preserve">
+    <value>Bismuth</value>
+    <comment>Commodity Bismuth</comment>
+  </data>
   <data name="BlueMilk" xml:space="preserve">
     <value>Lait d'Azure</value>
     <comment>Commodity BlueMilk</comment>
@@ -301,7 +313,10 @@
     <value>Fléau de Borasetani</value>
     <comment>Commodity BorasetaniPathogenetics</comment>
   </data>
-  
+  <data name="Bromellite" xml:space="preserve">
+    <value>Bromellite</value>
+    <comment>Commodity Bromellite</comment>
+  </data>
   <data name="BuildingFabricators" xml:space="preserve">
     <value>Auto-bâtisseurs</value>
     <comment>Commodity BuildingFabricators</comment>
@@ -362,12 +377,18 @@
     <value>Composite MMC</value>
     <comment>Commodity CMMComposite</comment>
   </data>
-  
+  <data name="Cobalt" xml:space="preserve">
+    <value>Cobalt</value>
+    <comment>Commodity Cobalt</comment>
+  </data>
   <data name="Coffee" xml:space="preserve">
     <value>Café</value>
     <comment>Commodity Coffee</comment>
   </data>
-  
+  <data name="Coltan" xml:space="preserve">
+    <value>Coltan</value>
+    <comment>Commodity Coltan</comment>
+  </data>
   <data name="CombatStabilisers" xml:space="preserve">
     <value>Stabilisateurs de combat</value>
     <comment>Commodity CombatStabilisers</comment>
@@ -404,7 +425,10 @@
     <value>Moissoneuses</value>
     <comment>Commodity CropHarvesters</comment>
   </data>
-  
+  <data name="Cryolite" xml:space="preserve">
+    <value>Cryolite</value>
+    <comment>Commodity Cryolite</comment>
+  </data>
   <data name="CrystallineSpheres" xml:space="preserve">
     <value>Sphères cristallines</value>
     <comment>Commodity CrystallineSpheres</comment>
@@ -525,8 +549,14 @@
     <value>Guide de Voyage Galactique</value>
     <comment>Commodity GalacticTravelGuide</comment>
   </data>
-  
-  
+  <data name="Gallite" xml:space="preserve">
+    <value>Gallite</value>
+    <comment>Commodity Gallite</comment>
+  </data>
+  <data name="Gallium" xml:space="preserve">
+    <value>Gallium</value>
+    <comment>Commodity Gallium</comment>
+  </data>
   <data name="GeawenDanceDust" xml:space="preserve">
     <value>Poussière de danse Geawen</value>
     <comment>Commodity GeawenDanceDust</comment>
@@ -567,12 +597,18 @@
     <value>Café Goman Yaupon</value>
     <comment>Commodity GomanYauponCoffee</comment>
   </data>
-  
+  <data name="Goslarite" xml:space="preserve">
+    <value>Goslarite</value>
+    <comment>Commodity Goslarite</comment>
+  </data>
   <data name="Grain" xml:space="preserve">
     <value>Céréales</value>
     <comment>Commodity Grain</comment>
   </data>
-  
+  <data name="Hafnium178" xml:space="preserve">
+    <value>Hafnium 178</value>
+    <comment>Commodity Hafnium178</comment>
+  </data>
   <data name="HaidneBlackBrew" xml:space="preserve">
     <value>Tisane noire de Haiden</value>
     <comment>Commodity HaidneBlackBrew</comment>
@@ -649,8 +685,14 @@
     <value>Bourbon Indi</value>
     <comment>Commodity IndiBourbon</comment>
   </data>
-  
-  
+  <data name="Indite" xml:space="preserve">
+    <value>Indite</value>
+    <comment>Commodity Indite</comment>
+  </data>
+  <data name="Indium" xml:space="preserve">
+    <value>Indium</value>
+    <comment>Commodity Indium</comment>
+  </data>
   <data name="InsulatingMembrane" xml:space="preserve">
     <value>Membrane isolante</value>
     <comment>Commodity InsulatingMembrane</comment>
@@ -715,7 +757,10 @@
     <value>Mines terrestres</value>
     <comment>Commodity Landmines</comment>
   </data>
-  
+  <data name="Lanthanum" xml:space="preserve">
+    <value>Lanthanum</value>
+    <comment>Commodity Lanthanum</comment>
+  </data>
   <data name="LargeExplorationDataCash" xml:space="preserve">
     <value>Important Lot de Données d'Explorations</value>
     <comment>Commodity LargeExplorationDataCash</comment>
