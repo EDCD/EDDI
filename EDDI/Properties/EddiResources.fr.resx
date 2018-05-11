@@ -233,5 +233,7 @@ Veuillez fermer l'autre instance et réessayer.</value>
     <value>Automatique</value>
     <comment>The user's system language</comment>
   </data>
-  
+  <data name="safe_mode" xml:space="preserve">
+    <value>Mode sans échec - mise à jour requise.</value>
+  </data>
 </root>
