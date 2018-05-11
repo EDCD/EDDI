@@ -169,7 +169,10 @@
     <value>Compartiment de soute</value>
     <comment>Module CargoRack</comment>
   </data>
-  
+  <data name="VoicePack_Celeste" xml:space="preserve">
+    <value>Celeste</value>
+    <comment>Module Celeste</comment>
+  </data>
   <data name="ChaffLauncher" xml:space="preserve">
     <value>Lanceur de paillettes</value>
     <comment>Module ChaffLauncher</comment>
@@ -178,7 +181,10 @@
     <value>Verrière</value>
     <comment>Module CockpitCanopy</comment>
   </data>
-  
+  <data name="Cockpit" xml:space="preserve">
+    <value>Cockpit</value>
+    <comment>Module Cockpit</comment>
+  </data>
   <data name="CollectorLimpetController" xml:space="preserve">
     <value>Contrôleur de drone collecteur</value>
     <comment>Module CollectorLimpetController</comment>
@@ -469,8 +475,14 @@
     <value>Tube lance-torpille</value>
     <comment>Module TorpedoPylon</comment>
   </data>
-  
-  
+  <data name="VoicePack_Verity" xml:space="preserve">
+    <value>Verity</value>
+    <comment>Module Verity</comment>
+  </data>
+  <data name="VoicePack_Victor" xml:space="preserve">
+    <value>Victor</value>
+    <comment>Module Victor</comment>
+  </data>
   <data name="Whitestringlights" xml:space="preserve">
     <value>Guirlandes blanches</value>
     <comment>Module Whitestringlights</comment>
@@ -501,5 +513,8 @@
   
   
   
-  
+  <data name="EnzymeMissileRack" xml:space="preserve">
+    <value>Batterie de missiles enzymatiques</value>
+    <comment>Module EnzymeMissileRack</comment>
+  </data>
 </root>
