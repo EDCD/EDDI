@@ -13,36 +13,22 @@ namespace EddiDataDefinitions
             resourceManager = Properties.LegalStatus.ResourceManager;
             resourceManager.IgnoreCase = false;
 
-            var None = new LegalStatus("None", 0);
-            var Unknown = new LegalStatus("Unknown", 1);
-            var Lawless = new LegalStatus("Lawless", 2);
-            var Clean = new LegalStatus("Clean", 3);
-            var Wanted = new LegalStatus("Wanted", 4);
-            var Enemy = new LegalStatus("Enemy", 5);
-            var WantedEnemy = new LegalStatus("WantedEnemy", 6);
-            var Warrant = new LegalStatus("Warrant", 7);
-            var Hunter = new LegalStatus("Hunter", 8);
+            var None = new LegalStatus("None");
+            var Unknown = new LegalStatus("Unknown");
+            var Lawless = new LegalStatus("Lawless");
+            var Clean = new LegalStatus("Clean");
+            var Wanted = new LegalStatus("Wanted");
+            var Enemy = new LegalStatus("Enemy");
+            var WantedEnemy = new LegalStatus("WantedEnemy");
+            var Warrant = new LegalStatus("Warrant");
+            var Hunter = new LegalStatus("Hunter");
         }
-
-        public int legalstatus { get; private set; }
 
         // dummy used to ensure that the static constructor has run
-        public LegalStatus() : this("", 0)
+        public LegalStatus() : this("")
         { }
 
-        private LegalStatus(string edname, int rank) : base(edname, edname)
-        {
-            this.legalstatus = legalstatus;
-        }
-
-        public static LegalStatus FromRank(int from)
-        {
-            LegalStatus result = AllOfThem.FirstOrDefault(v => v.legalstatus == from);
-            if (result == null)
-            {
-                Logging.Report("Unknown Legal Status " + from);
-            }
-            return result;
-        }
+        private LegalStatus(string edname) : base(edname, edname)
+        { }
     }
 }
