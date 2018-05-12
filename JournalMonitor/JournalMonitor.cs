@@ -1542,30 +1542,20 @@ namespace EddiJournalMonitor
                                     }
                                 }
                                 string name = JsonParsing.getString(data, "PilotName_Localised");
-                                string rank = JsonParsing.getString(data, "PilotRank");
-                                if (rank != null)
+                                CombatRating rank = new CombatRating();
+                                string pilotRank = JsonParsing.getString(data, "PilotRank");
+                                if (pilotRank != null)
                                 {
-                                    CombatRating rating = CombatRating.FromEDName(rank);
-                                    rank = rating.localizedName;
+                                    rank = CombatRating.FromEDName(pilotRank);
                                 }
                                 decimal? shieldHealth = JsonParsing.getOptionalDecimal(data, "ShieldHealth");
                                 decimal? hullHealth = JsonParsing.getOptionalDecimal(data, "HullHealth");
                                 string faction = JsonParsing.getString(data, "Faction");
-                                string legalStatus = JsonParsing.getString(data, "LegalStatus");
-                                if (legalStatus != null)
+                                LegalStatus legalStatus = new LegalStatus();
+                                string pilotLegalStatus = JsonParsing.getString(data, "LegalStatus");
+                                if (pilotLegalStatus != null)
                                 {
-                                    switch (legalStatus)
-                                    {
-                                        case "Clean":
-                                            legalStatus = Constants.LEGALSTATUS_CLEAN;
-                                            break;
-                                        case "Wanted":
-                                            legalStatus = Constants.LEGALSTATUS_WANTED;
-                                            break;
-                                        case "Warrant":
-                                            legalStatus = Constants.LEGALSTATUS_WARRANT;
-                                            break;
-                                    }
+                                    legalStatus = LegalStatus.FromEDName(pilotLegalStatus);
                                 }
                                 int? bounty = JsonParsing.getOptionalInt(data, "Bounty");
                                 string subSystem = JsonParsing.getString(data, "Subsystem_Localised");

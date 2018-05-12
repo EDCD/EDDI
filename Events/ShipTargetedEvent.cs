@@ -14,11 +14,11 @@ namespace EddiEvents
 
         static ShipTargetedEvent()
         {
-            VARIABLES.Add("targetlocked", "True if a ship has been targeted");
+            VARIABLES.Add("targetlocked", "True when a ship has been targeted. False when a target has been lost/deselected");
             VARIABLES.Add("ship", "the model of the ship");
-            VARIABLES.Add("scanstage", "the stage of the ship scan");
+            VARIABLES.Add("scanstage", "the stage of the ship scan (e.g. 0, 1, 2, or 3)");
             VARIABLES.Add("name", "The name of the pilot");
-            VARIABLES.Add("rank", "The combat rank of the pilot");
+            VARIABLES.Add("rank", "The rank of the pilot");
             VARIABLES.Add("faction", "The faction of the pilot");
             VARIABLES.Add("legalstatus", "The legal status of the pilot");
             VARIABLES.Add("shieldhealth", "The health of the shields");
@@ -40,13 +40,13 @@ namespace EddiEvents
         public string name { get; private set; }
 
         [JsonProperty("rank")]
-        public string rank { get; private set; }
+        public string rank => combatrankDef?.localizedName ?? "unknown combat rank";
 
         [JsonProperty("faction")]
         public string faction { get; private set; }
 
         [JsonProperty("legalstatus")]
-        public string legalstatus { get; private set; }
+        public string legalstatus => legalstatusDef?.localizedName ?? "unknown legal status";
 
         [JsonProperty("bounty")]
         public int? bounty { get; private set; }
@@ -63,15 +63,18 @@ namespace EddiEvents
         [JsonProperty("subsystemhealth")]
         public decimal? subsystemhealth { get; private set; }
 
-        public ShipTargetedEvent(DateTime timestamp, bool targetlocked, string ship, int? scanstage, string name, string rank, string faction, string legalstatus, int? bounty, decimal? shieldhealth, decimal? hullhealth, string subsystem, decimal? subsystemhealth) : base(timestamp, NAME)
+        public CombatRating combatrankDef { get; }
+        public LegalStatus legalstatusDef { get; }
+
+        public ShipTargetedEvent(DateTime timestamp, bool targetlocked, string ship, int? scanstage, string name, CombatRating rank, string faction, LegalStatus legalstatus, int? bounty, decimal? shieldhealth, decimal? hullhealth, string subsystem, decimal? subsystemhealth) : base(timestamp, NAME)
         {
             this.targetlocked = targetlocked;
             this.ship = ship;
             this.scanstage = scanstage;
             this.name = name;
-            this.rank = rank;
+            this.combatrankDef = rank;
             this.faction = faction;
-            this.legalstatus = legalstatus;
+            this.legalstatusDef = legalstatus;
             this.bounty = bounty;
             this.shieldhealth = shieldhealth;
             this.hullhealth = hullhealth;

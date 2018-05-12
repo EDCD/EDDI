@@ -117,28 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ship" xml:space="preserve">
-    <value>Vaisseau</value>
-    <comment>ship</comment>
+  <data name="Clean" xml:space="preserve">
+    <value>Clean</value>
+    <comment>LegalStatus - Clean</comment>
   </data>
-  <data name="srv" xml:space="preserve">
-    <value>SRV</value>
-    <comment>srv</comment>
+  <data name="Enemy" xml:space="preserve">
+    <value>Enemy</value>
+    <comment>LegalStatus - Enemy</comment>
   </data>
-  <data name="fighter" xml:space="preserve">
-    <value>Chasseur</value>
-    <comment>fighter</comment>
+  <data name="Hunter" xml:space="preserve">
+    <value>Hunter</value>
+    <comment>LegalStatus - None</comment>
   </data>
-  <data name="witch_space" xml:space="preserve">
-    <value>Hyperespace</value>
-    <comment>witch_space</comment>
+  <data name="Lawless" xml:space="preserve">
+    <value>Lawless</value>
+    <comment>LegalStatus - Lawless</comment>
   </data>
-  <data name="supercruise" xml:space="preserve">
-    <value>Super-navigation</value>
-    <comment>supercruise</comment>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+    <comment>LegalStatus - None</comment>
   </data>
-  <data name="normal_space" xml:space="preserve">
-    <value>Espace normal</value>
-    <comment>normal_space</comment>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+    <comment>LegalStatus - Unknown</comment>
+  </data>
+  <data name="Wanted" xml:space="preserve">
+    <value>Wanted</value>
+    <comment>LegalStatus - Wanted</comment>
+  </data>
+  <data name="WantedEnemy" xml:space="preserve">
+    <value>Wanted Enemy</value>
+    <comment>LegalStatus - WantedEnemy</comment>
+  </data>
+  <data name="Warrant" xml:space="preserve">
+    <value>Warrant</value>
+    <comment>LegalStatus - None</comment>
   </data>
 </root>

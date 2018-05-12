@@ -141,16 +141,4 @@
     <value>Espacio normal</value>
     <comment>normal_space</comment>
   </data>
-  <data name="clean" xml:space="preserve">
-    <value>Limpia</value>
-    <comment>Clean</comment>
-  </data>
-  <data name="wanted" xml:space="preserve">
-    <value>Querido</value>
-    <comment>Wanted</comment>
-  </data>
-  <data name="warrant" xml:space="preserve">
-    <value>Orden Judicial</value>
-    <comment>Warrant</comment>
-  </data>
 </root>

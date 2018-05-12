@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Utilities.Properties {
+namespace EddiDataDefinitions.Properties {
     using System;
     
     
@@ -22,24 +22,24 @@ namespace Utilities.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Utilities {
+    internal class LegalStatus {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Utilities() {
+        internal LegalStatus() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Utilities.Properties.Utilities", typeof(Utilities).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EddiDataDefinitions.Properties.LegalStatus", typeof(LegalStatus).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Utilities.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,56 +61,83 @@ namespace Utilities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fighter.
+        ///   Looks up a localized string similar to Clean.
         /// </summary>
-        public static string fighter {
+        internal static string Clean {
             get {
-                return ResourceManager.GetString("fighter", resourceCulture);
+                return ResourceManager.GetString("Clean", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Normal Space.
+        ///   Looks up a localized string similar to Enemy.
         /// </summary>
-        public static string normal_space {
+        internal static string Enemy {
             get {
-                return ResourceManager.GetString("normal_space", resourceCulture);
+                return ResourceManager.GetString("Enemy", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ship.
+        ///   Looks up a localized string similar to Hunter.
         /// </summary>
-        public static string ship {
+        internal static string Hunter {
             get {
-                return ResourceManager.GetString("ship", resourceCulture);
+                return ResourceManager.GetString("Hunter", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SRV.
+        ///   Looks up a localized string similar to Lawless.
         /// </summary>
-        public static string srv {
+        internal static string Lawless {
             get {
-                return ResourceManager.GetString("srv", resourceCulture);
+                return ResourceManager.GetString("Lawless", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Supercruise.
+        ///   Looks up a localized string similar to None.
         /// </summary>
-        public static string supercruise {
+        internal static string None {
             get {
-                return ResourceManager.GetString("supercruise", resourceCulture);
+                return ResourceManager.GetString("None", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Witch Space.
+        ///   Looks up a localized string similar to Unknown.
         /// </summary>
-        public static string witch_space {
+        internal static string Unknown {
             get {
-                return ResourceManager.GetString("witch_space", resourceCulture);
+                return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wanted.
+        /// </summary>
+        internal static string Wanted {
+            get {
+                return ResourceManager.GetString("Wanted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wanted Enemy.
+        /// </summary>
+        internal static string WantedEnemy {
+            get {
+                return ResourceManager.GetString("WantedEnemy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warrant.
+        /// </summary>
+        internal static string Warrant {
+            get {
+                return ResourceManager.GetString("Warrant", resourceCulture);
             }
         }
     }

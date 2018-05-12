@@ -71,6 +71,7 @@
     <Compile Include="CommodityAmount.cs" />
     <Compile Include="HaulageAmount.cs" />
     <Compile Include="CommodityCategory.cs" />
+    <Compile Include="LegalStatus.cs" />
     <Compile Include="MaterialCategory.cs" />
     <Compile Include="Properties\CombatRatings.es.Designer.cs">
       <DependentUpon>CombatRatings.es.resx</DependentUpon>
@@ -321,6 +322,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Rarities.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\LegalStatus.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LegalStatus.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\LegalStatus.fr.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LegalStatus.fr.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\ShipRoles.es.Designer.cs">
       <DependentUpon>ShipRoles.es.resx</DependentUpon>
@@ -650,6 +661,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Economies.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\LegalStatus.es.resx" />
     <EmbeddedResource Include="Properties\MaterialCategories.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MaterialCategories.es.Designer.cs</LastGenOutput>
@@ -706,6 +718,14 @@
     <EmbeddedResource Include="Properties\Rarities.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Rarities.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\LegalStatus.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LegalStatus.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\LegalStatus.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LegalStatus.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\ShipRoles.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
