@@ -145,4 +145,16 @@
     <value>Rescue</value>
     <comment>Economy type Rescue</comment>
   </data>
+  <data name="Prison" xml:space="preserve">
+    <value>Prison</value>
+    <comment>Economy type Prison</comment>
+  </data>
+  <data name="Repair" xml:space="preserve">
+    <value>Repair</value>
+    <comment>Economy type Repair</comment>
+  </data>
+  <data name="Damaged" xml:space="preserve">
+    <value>Damaged</value>
+    <comment>Economy type Damaged</comment>
+  </data>
 </root>
