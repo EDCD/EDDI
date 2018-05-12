@@ -117,7 +117,10 @@
     <value>Débris d'épave</value>
     <comment>Data scan type WreckedShip</comment>
   </data>
-  
+  <data name="TouristBeacon" xml:space="preserve">
+    <value>Balise touristique</value>
+    <comment>Data scan type TouristBeacon</comment>
+  </data>
   
   
   
