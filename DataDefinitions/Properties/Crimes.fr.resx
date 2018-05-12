@@ -161,7 +161,10 @@
     <value>Intrusion majeure</value>
     <comment>Crime dockingMajorTresspass</comment>
   </data>
-  
+  <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
+    <value>Collision</value>
+    <comment>Crime collidedAtSpeedInNoFireZone</comment>
+  </data>
   <data name="collidedAtSpeedInNoFireZone_hulldamage" xml:space="preserve">
     <value>Collision entraînant des dommages</value>
     <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
