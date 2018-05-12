@@ -1,12 +1,21 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiDataDefinitions;
 using EddiDataProviderService;
+using Rollbar;
+using Newtonsoft.Json;
 
 namespace UnitTests
 {
     [TestClass]
     public class DataProviderTests
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+        }
+
         [TestMethod]
         public void TestDataProviderEmptySystem()
         {

@@ -4,12 +4,20 @@ using EddiDataDefinitions;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using EddiShipMonitor;
+using Rollbar;
 
 namespace UnitTests
 {
     [TestClass]
     public class CommanderDataTests
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+        }
+
         [TestMethod]
         public void TestCommanderFromProfile()
         {

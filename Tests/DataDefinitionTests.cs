@@ -1,11 +1,19 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiDataDefinitions;
+using Rollbar;
 
 namespace UnitTests
 {
     [TestClass]
     public class DataDefinitionTests
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+        }
+
         [TestMethod]
         public void TestDataDefinitionReactiveArmour()
         {

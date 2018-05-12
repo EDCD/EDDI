@@ -2,12 +2,20 @@
 using System;
 using EddiDataDefinitions;
 using Newtonsoft.Json;
+using Rollbar;
 
 namespace UnitTests
 {
     [TestClass]
     public class CommodityTests
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+        }
+
         [TestMethod]
         public void TestMalformedCommodityName()
         {

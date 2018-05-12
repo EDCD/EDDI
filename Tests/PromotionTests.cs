@@ -2,12 +2,20 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EddiEvents;
 using EddiJournalMonitor;
+using Rollbar;
 
 namespace UnitTests
 {
     [TestClass]
     public class PromotionTests
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+        }
+
         private void ParseSampleByName(string sampleName)
         {
             string sample = Events.SampleByName(sampleName) as string;

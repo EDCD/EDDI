@@ -7,12 +7,20 @@ using EddiJournalMonitor;
 using EddiShipMonitor;
 using Utilities;
 using Eddi;
+using Rollbar;
 
 namespace UnitTests
 {
     [TestClass]
     public class ShipTests
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+        }
+
         [TestMethod]
         public void TestShipSpokenName1()
         {

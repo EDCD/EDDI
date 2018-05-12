@@ -3,6 +3,7 @@ using EddiDataProviderService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NetMQ;
 using NetMQ.Sockets;
+using Rollbar;
 using System;
 using System.IO;
 using System.IO.Compression;
@@ -12,6 +13,13 @@ namespace UnitTests
     [TestClass]
     public class EddnTests
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+        }
+
         class MockStarService : StarSystemRepository
         {
             public StarSystem GetOrCreateStarSystem(string name, bool refreshIfOutdated = true)

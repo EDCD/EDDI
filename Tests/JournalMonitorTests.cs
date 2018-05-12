@@ -3,12 +3,20 @@ using EddiDataDefinitions;
 using EddiEvents;
 using EddiJournalMonitor;
 using System.Collections.Generic;
+using Rollbar;
 
 namespace UnitTests
 {
     [TestClass]
     public class JournalMonitorTests
     {
+        [TestInitialize]
+        public void start()
+        {
+            // Prevent telemetry data from being reported based on test results
+            RollbarLocator.RollbarInstance.Config.Enabled = false;
+        }
+
         [TestMethod]
         public void TestJournalPlanetScan1()
         {
