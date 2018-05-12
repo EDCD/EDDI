@@ -130,7 +130,10 @@
     <value>Enseigne</value>
     <comment>Federation rank Ensign</comment>
   </data>
-  
+  <data name="Lieutenant" xml:space="preserve">
+    <value>Lieutenant</value>
+    <comment>Federation rank Lieutenant</comment>
+  </data>
   <data name="LieutenantCommander" xml:space="preserve">
     <value>Capitaine de corvette</value>
     <comment>Federation rank LieutenantCommander</comment>
