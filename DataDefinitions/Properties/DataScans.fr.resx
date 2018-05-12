@@ -137,6 +137,12 @@
     <value>Codex antique</value>
     <comment>Data scan type AncientCodex</comment>
   </data>
-  
-  
+  <data name="DataPointHVT" xml:space="preserve">
+    <value>Point de données H.V.T.</value>
+    <comment>Data scan type DataPointHVT</comment>
+  </data>
+  <data name="TgTransmitter" xml:space="preserve">
+    <value>Dispositif Thargoïd</value>
+    <comment>Data scan type TGTRANSMITTER</comment>
+  </data>
 </root>
