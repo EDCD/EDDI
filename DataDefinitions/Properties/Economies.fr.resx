@@ -105,7 +105,10 @@
     <value>Colonie</value>
     <comment>Economy type Colony</comment>
   </data>
-  
+  <data name="Extraction" xml:space="preserve">
+    <value>Extraction</value>
+    <comment>Economy type Extraction</comment>
+  </data>
   <data name="HighTech" xml:space="preserve">
     <value>Haute Technologie</value>
     <comment>Economy type HighTech</comment>
@@ -126,7 +129,10 @@
     <value>Rafinerie</value>
     <comment>Economy type Refinery</comment>
   </data>
-  
+  <data name="Service" xml:space="preserve">
+    <value>Service</value>
+    <comment>Economy type Service</comment>
+  </data>
   <data name="Terraforming" xml:space="preserve">
     <value>Terraformation</value>
     <comment>Economy type Terraforming</comment>
@@ -135,5 +141,8 @@
     <value>Tourisme</value>
     <comment>Economy type Tourism</comment>
   </data>
-  
+  <data name="Rescue" xml:space="preserve">
+    <value>Sauvetage</value>
+    <comment>Economy type Rescue</comment>
+  </data>
 </root>
