@@ -11,6 +11,7 @@ This is based on git-flow, but more relaxed:
   * `master` points to the current production release. **All unit tests and code analysis must pass.** Fast-forwarding the `master` branch is preferred versus adding a merge commit.
   * `beta` points to the current beta release. **All unit tests and code analysis must pass.** Fast-forwarding the `beta` branch is preferred versus adding a merge commit.
   * `develop` is the integration branch for work in progress. **All unit tests and code analysis must pass.**
+  * `l10n_develop` is the branch to which CrowdIn commits translations, and in general `l10n_` is the configurable prefix it will use if we unleash it on other branches.
 
 ### Work in progress conventions
 
@@ -28,7 +29,7 @@ If your WIP branch has gotten so far behind `develop` that code and project file
 
   * Above all, **don't** merge from `develop` into your WIP branch!
   * If you *haven't* yet published your WIP branch, it is perfectly OK to rebase it onto `develop` and resolve any issues in the privacy and comfort of your own branch. I do this all the time.
-  * If you *have* published your WIP branch, you can duplicate it and rebase *the duplicate* onto `develop`. Once you are happy with it you can delete the original branch and PR and create a new PR. We are fine with that. Please do resist the temptation to rename the duplicate back to the name of the original, as that will confuse both GitHub and humans mightily.
+  * If you *have* published your WIP branch, you can duplicate it and rebase *the duplicate* onto `develop`. Once you are happy with it, you can delete the original branch and PR, and then create a new PR. We are fine with that. Please do resist the temptation to rename the duplicate back to the name of the original, as that will confuse both GitHub and humans mightily.
 
 ## Coding conventions
 
