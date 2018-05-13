@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -122,6 +122,27 @@
   </data>
   <data name="name" xml:space="preserve">
     <value>Contestador VoiceAttack</value>
+  </data>
+  <data name="p1" xml:space="preserve">
+    <value>Para integrar EDDI con VoiceAttack, EDDI debería estar instalado dentro del directorio 'Apps' de VoiceAttack. La ruta predeterminada donde se instalará EDDI por defecto es 'C:\Archivos de Programa (x86)\VoiceAttack\Apps'.</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>EDDI solo funcionará con la versión de VoiceAttack 1.5.12.22 o superior. Tenga en cuenta que esta es una versión beta.</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>Una vez haya instalado voiceAttack, deberá habilitar el soporte de complementos. Para hacerlo, haga clic en el ícono de Configuración (llave inglesa) en la esquina superior derecha de VoiceAttack, marcar la opción 'Enable plugin support' y reiniciar VoiceAttack. Debería ver un mensaje en la ventana VoiceAttack a lo largo de las líneas de 'Plugin EDDI 3. x. x initialized'.</value>
+  </data>
+  <data name="p4" xml:space="preserve">
+    <value>En este punto, puede integrar las variables de EDDI con sus propios scripts de VoiceAttack. Por ejemplo, el nombre de su comandante se almacena en la variable de texto 'Name', por lo que para acceder a él, simplemente use '{TXT:Name}' en sus propios comandos. Hay variables para su comandante, sus naves, el sistema estelar actual, la estación en la que se encuentra y más. Hay una lista completa de todas las variables </value>
+  </data>
+  <data name="p4_link" xml:space="preserve">
+    <value>en la página principal de EDDI</value>
+  </data>
+  <data name="p5" xml:space="preserve">
+    <value>Además de escribir scripts que puede activar con acciones de voz o teclado, también puede escribir scripts que activan eventos que ocurren dentro de Elite. Por ejemplo, si quisiera activar un script cada vez que ocurra el evento 'Docked', entonces debería escribir un script llamado '((EDDI docked))' (tenga en cuenta los doble-paréntesis alrededor del nombre para evitar que se active accidentalmente, y la "d" de 'docked' en minúscula). Todas las variables cada evento tambíen las podrás encontrar </value>
+  </data>
+  <data name="p5_link" xml:space="preserve">
+    <value>en la página principal de EDDI</value>
   </data>
   <data name="run_eddi_standalone" xml:space="preserve">
     <value>Por favor, apague VoiceAttack y ejecute EDDI de forma independiente para actualizarlo.</value>

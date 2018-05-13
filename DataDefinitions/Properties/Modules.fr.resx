@@ -59,46 +59,46 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
           <xsd:element name="metadata">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
               </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
             <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
             <xsd:complexType>
               <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
             </xsd:complexType>
           </xsd:element>
         </xsd:choice>
@@ -197,10 +197,7 @@
     <value>Compartiment de soute résistant à la corrosion</value>
     <comment>Module CorrosionResistantCargoRack</comment>
   </data>
-  <data name="Cytoscrambler" xml:space="preserve">
-    <value>Cytoscrambler</value>
-    <comment>Module Cytoscrambler</comment>
-  </data>
+  
   <data name="DataLinkScanner" xml:space="preserve">
     <value>Détecteur de Liaison de Données</value>
     <comment>Module DataLinkScanner</comment>
@@ -213,10 +210,7 @@
     <value>Détecteur de surface détaillé</value>
     <comment>Module DetailedSurfaceScanner</comment>
   </data>
-  <data name="Disruptor" xml:space="preserve">
-    <value>Disruptor</value>
-    <comment>Module Disruptor</comment>
-  </data>
+  
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
     <value>Cabine passager de classe économique</value>
     <comment>Module EconomyClassPassengerCabin</comment>
@@ -513,5 +507,26 @@
     <value>Détecteur de Découverte Avancé</value>
     <comment>Module AdvancedDiscoveryScanner</comment>
   </data>
-
+  
+  
+  <data name="GuardianFsdBooster" xml:space="preserve">
+    <value>Survolteur FSD - Guardians</value>
+    <comment>Module GuardianFsdBooster</comment>
+  </data>
+  <data name="GuardianPowerDistributor" xml:space="preserve">
+    <value>Répartiteur de puissance hybride - Guardians</value>
+    <comment>Module GuardianPowerDistributor</comment>
+  </data>
+  <data name="ShardCannon" xml:space="preserve">
+    <value>Canon à éclats</value>
+    <comment>Module ShardCannon</comment>
+  </data>
+  <data name="FlechetteLauncher" xml:space="preserve">
+    <value>Lanceur de fléchettes</value>
+    <comment>Modile FlechetteLauncher</comment>
+  </data>
+  <data name="EnzymeMissileRack" xml:space="preserve">
+    <value>Batterie de missiles enzymatiques</value>
+    <comment>Module EnzymeMissileRack</comment>
+  </data>
 </root>
