@@ -462,7 +462,7 @@
     <comment>Material unknowncarapace</comment>
   </data>
   <data name="chemicaldistillery" xml:space="preserve">
-    <value>Distilerie chimique</value>
+    <value>Distillerie chimique</value>
     <comment>Material chemicaldistillery</comment>
   </data>
   <data name="conductiveceramics" xml:space="preserve">
