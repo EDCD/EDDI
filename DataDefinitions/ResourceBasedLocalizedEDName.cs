@@ -76,10 +76,6 @@ namespace EddiDataDefinitions
                 v => 
                 v.localizedName.ToLowerInvariant() == from 
                 || v.invariantName.ToLowerInvariant() == from);
-            if (result == null)
-            {
-                Logging.Report($"Unknown name {from} in resource {resourceManager.BaseName}");
-            }
             return result;
         }
 
