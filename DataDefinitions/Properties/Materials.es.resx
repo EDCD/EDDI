@@ -610,7 +610,10 @@
     <value>Plano de Armamento de Guardián</value>
     <comment>Material guardian_weaponblueprint</comment>
   </data>
-  
+  <data name="guardian_vesselblueprint" xml:space="preserve">
+    <value>Plano de nave guardián</value>
+    <comment>Material guardian_vesselblueprint</comment>
+  </data>
   <data name="guardian_techcomponent" xml:space="preserve">
     <value>Componente tecnológico de guardián</value>
     <comment>Material guardian_techcomponent</comment>
