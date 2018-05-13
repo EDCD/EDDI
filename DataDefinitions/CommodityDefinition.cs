@@ -408,9 +408,9 @@ namespace EddiDataDefinitions
             }
         }
         
-        private static string NormalizedEDName(string rawEDName)
+        private static string NormalizedName(string rawName)
         {
-            return rawEDName?.ToLowerInvariant()
+            return rawName?.ToLowerInvariant()
                 ?.Replace("$", "") // Header for types from mining and mission events
                 ?.Replace("_name;", "") // Trailer for types from mining and mission events
                 ?.Replace(" name;", "");
@@ -423,24 +423,40 @@ namespace EddiDataDefinitions
                 return null;
             }
 
-            string edName = NormalizedEDName(name);
+            string normalizedName = NormalizedName(name);
 
+            if (ignoredCommodity(normalizedName))
+            {
+                return null;
+            }
+            
             // Now try to fetch the commodity by either ED or real name
             CommodityDefinition result = null;
-            if (edName != null)
+            if (normalizedName != null)
             {
-                result = ResourceBasedLocalizedEDName<CommodityDefinition>.FromName(edName);
+                result = ResourceBasedLocalizedEDName<CommodityDefinition>.FromName(normalizedName);
             }
             if (result == null)
             {
-                result = ResourceBasedLocalizedEDName<CommodityDefinition>.FromEDName(edName);
+                result = ResourceBasedLocalizedEDName<CommodityDefinition>.FromEDName(normalizedName);
             }
             return result;
         }
 
-        new public static CommodityDefinition FromEDName(string rawEDName)
+        private static bool ignoredCommodity(string name)
         {
-            string edName = NormalizedEDName(rawEDName); 
+            switch (name)
+            {
+                case "legal drugs": // This is a commodity category but in some older sql databases it is listed as a commodity
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        new public static CommodityDefinition FromEDName(string rawName)
+        {
+            string edName = NormalizedName(rawName); 
             return ResourceBasedLocalizedEDName<CommodityDefinition>.FromEDName(edName);
         }
     }
