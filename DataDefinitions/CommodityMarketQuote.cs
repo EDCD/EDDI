@@ -16,7 +16,15 @@ namespace EddiDataDefinitions
         {
             if (definition == null)
             {
-                string name = (string)additionalJsonData?["EDName"] ?? (string)additionalJsonData?["name"];
+                string name = null;
+                if (name == null && additionalJsonData.ContainsKey("EDName"))
+                {
+                    name = (string)additionalJsonData?["EDName"];
+                }
+                if (name == null && additionalJsonData.ContainsKey("name"))
+                {
+                    name = (string)additionalJsonData?["name"];
+                }
                 if (name != null)
                 {
                     definition = CommodityDefinition.FromEDName(name) ?? CommodityDefinition.FromName(name);
