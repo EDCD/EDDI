@@ -4,9 +4,9 @@
 
 We are looking for one team lead per language, please. If you want to share the work in a team, that's fine, but **each language team needs to agree upon one person who will lead it and adjudicate any differences of opinion that may arise**.
 
-Anyone interested in translating, please create an account at https://www.oneskyapp.com/ and then PM me your username and the language(s) you support, via GitHub, Discord or OneSky. My username on OneSky is `VerticalBlank`.
+Anyone interested in translating, please create an account at https://crwd.in/eddi and then PM me your username and the language(s) you support, via GitHub, Discord, Frontier Forums or CrowdIn. My username on CrowdIn is `VerticalBlank`.
 
-The translation project itself is located at https://osxtyfi.oneskyapp.com/collaboration/project?id=145348.
+The translation project itself is located at https://crowdin.com/project/eddi.
 
 ## Notes
 
@@ -14,9 +14,3 @@ The translation project itself is located at https://osxtyfi.oneskyapp.com/colla
 - Text that appears in the UI must be perfect. Text that is only spoken can be a bit more lax.
 - Please try to keep any text in the UI as brief as possible, to minimize cognitive burden.
 
-## Tips and tricks
-
-When working in OneSky, I find it best to select a single resource file to work on from the dropdown menu. This helps maintain context and stops me from getting too overwhelmed.
-
- ![](select_a_resource_file.png)
- 
