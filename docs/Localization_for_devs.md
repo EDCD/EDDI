@@ -208,3 +208,8 @@ This is implemented in `App.xaml.cs` in the method `ApplyAnyOverrideCulture()`, 
 ## Enumerating the installed localizations
 
 The simplest way to do this is to iterate the top-level subdirectories on the installed app location and try to create a `CultureInfo` object from each of their names. If you succeed, add the `CultureInfo` to the list. If the name is invalid you'll get a `CultureNotFoundException`.
+
+## Adding a new language
+
+The simplest way to add a new language to EDDI is via [ResXManager](https://github.com/tom-englert/ResXResourceManager/). In ResXManager, before making any other changes for the new language, select the `Add new language` button in ResXManager.
+![Image of ResXManager](Localization_for_devs_ResXManager_AddLanguage.png)
