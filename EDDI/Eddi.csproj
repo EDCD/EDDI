@@ -206,6 +206,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\EddiResources.hu.resx" />
     <EmbeddedResource Include="Properties\MainWindow.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MainWindow.es.Designer.cs</LastGenOutput>
@@ -214,6 +215,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MainWindow.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MainWindow.hu.resx" />
     <EmbeddedResource Include="Properties\MainWindow.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MainWindow.Designer.cs</LastGenOutput>

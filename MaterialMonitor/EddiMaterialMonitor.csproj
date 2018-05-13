@@ -114,6 +114,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MaterialMonitor.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MaterialMonitor.hu.resx" />
     <EmbeddedResource Include="Properties\MaterialMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MaterialMonitor.Designer.cs</LastGenOutput>

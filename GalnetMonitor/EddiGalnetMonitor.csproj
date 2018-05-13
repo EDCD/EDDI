@@ -157,6 +157,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GalnetMonitor.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GalnetMonitor.hu.resx" />
     <EmbeddedResource Include="Properties\GalnetMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GalnetMonitor.Designer.cs</LastGenOutput>

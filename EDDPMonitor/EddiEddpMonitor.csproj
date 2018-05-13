@@ -149,6 +149,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EddpResources.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\EddpResources.hu.resx" />
     <EmbeddedResource Include="Properties\EddpResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EddpResources.Designer.cs</LastGenOutput>

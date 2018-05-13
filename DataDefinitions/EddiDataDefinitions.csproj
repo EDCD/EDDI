@@ -503,6 +503,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CombatRatings.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\CombatRatings.hu.resx" />
     <EmbeddedResource Include="Properties\CombatRatings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CombatRatings.Designer.cs</LastGenOutput>
@@ -515,6 +516,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Commodities.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Commodities.hu.resx" />
     <EmbeddedResource Include="Properties\Commodities.it.resx" />
     <EmbeddedResource Include="Properties\CommodityCategories.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -524,6 +526,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CommodityCategories.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\CommodityCategories.hu.resx" />
     <EmbeddedResource Include="Properties\Compositions.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Compositions.es.Designer.cs</LastGenOutput>
@@ -532,6 +535,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Compositions.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Compositions.hu.resx" />
     <EmbeddedResource Include="Properties\Compositions.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Compositions.Designer.cs</LastGenOutput>
@@ -544,6 +548,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CQCRatings.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\CQCRatings.hu.resx" />
     <EmbeddedResource Include="Properties\CQCRatings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CQCRatings.Designer.cs</LastGenOutput>
@@ -556,6 +561,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Crimes.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Crimes.hu.resx" />
     <EmbeddedResource Include="Properties\Crimes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Crimes.Designer.cs</LastGenOutput>
@@ -568,6 +574,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DataScans.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\DataScans.hu.resx" />
     <EmbeddedResource Include="Properties\DataScans.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DataScans.Designer.cs</LastGenOutput>
@@ -580,10 +587,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Economies.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Economies.hu.resx" />
     <EmbeddedResource Include="Properties\EmpireRatingsFemale.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmpireRatingsFemale.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\EmpireRatingsFemale.hu.resx" />
     <EmbeddedResource Include="Properties\EmpireRatingsFemale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmpireRatingsFemale.Designer.cs</LastGenOutput>
@@ -596,6 +605,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmpireRatingsMale.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\EmpireRatingsMale.hu.resx" />
     <EmbeddedResource Include="Properties\EmpireRatingsMale.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmpireRatingsMale.Designer.cs</LastGenOutput>
@@ -608,6 +618,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ExplorationRatings.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\ExplorationRatings.hu.resx" />
     <EmbeddedResource Include="Properties\ExplorationRatings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ExplorationRatings.Designer.cs</LastGenOutput>
@@ -620,6 +631,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>FederationRatings.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\FederationRatings.hu.resx" />
     <EmbeddedResource Include="Properties\FederationRatings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>FederationRatings.Designer.cs</LastGenOutput>
@@ -632,6 +644,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameModes.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\GameModes.hu.resx" />
     <EmbeddedResource Include="Properties\GameModes.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameModes.Designer.cs</LastGenOutput>
@@ -642,6 +655,7 @@
     <EmbeddedResource Include="Properties\Governments.fr.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Governments.hu.resx" />
     <EmbeddedResource Include="Properties\Governments.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Governments.Designer.cs</LastGenOutput>
@@ -658,6 +672,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MaterialCategories.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\MaterialCategories.hu.resx" />
     <EmbeddedResource Include="Properties\MaterialCategories.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MaterialCategories.Designer.cs</LastGenOutput>
@@ -670,6 +685,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Materials.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Materials.hu.resx" />
     <EmbeddedResource Include="Properties\Materials.it.resx" />
     <EmbeddedResource Include="Properties\Materials.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -691,6 +707,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Modules.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Modules.hu.resx" />
     <EmbeddedResource Include="Properties\Modules.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Modules.Designer.cs</LastGenOutput>
@@ -703,10 +720,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Rarities.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Rarities.hu.resx" />
     <EmbeddedResource Include="Properties\Rarities.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Rarities.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\SecurityLevels.hu.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ShipRoles.es.Designer.cs</LastGenOutput>
@@ -715,6 +734,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ShipRoles.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\ShipRoles.hu.resx" />
     <EmbeddedResource Include="Properties\ShipRoles.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ShipRoles.Designer.cs</LastGenOutput>
@@ -727,10 +747,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StarColors.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\StarColors.hu.resx" />
     <EmbeddedResource Include="Properties\StarColors.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>StarColors.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Superpowers.hu.resx" />
     <EmbeddedResource Include="Properties\SystemStates.es.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SystemStates.es.Designer.cs</LastGenOutput>
@@ -739,6 +761,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SystemStates.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\SystemStates.hu.resx" />
     <EmbeddedResource Include="Properties\SystemStates.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>SystemStates.Designer.cs</LastGenOutput>
@@ -751,6 +774,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TradeRatings.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\TradeRatings.hu.resx" />
     <EmbeddedResource Include="Properties\TradeRatings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TradeRatings.Designer.cs</LastGenOutput>
@@ -763,10 +787,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Volcanism.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Volcanism.hu.resx" />
     <EmbeddedResource Include="Properties\Volcanism.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Volcanism.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Vouchers.hu.resx" />
     <EmbeddedResource Include="Properties\Vouchers.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Vouchers.Designer.cs</LastGenOutput>

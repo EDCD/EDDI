@@ -125,6 +125,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>JournalMonitor.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\JournalMonitor.hu.resx" />
     <EmbeddedResource Include="Properties\JournalMonitor.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>JournalMonitor.Designer.cs</LastGenOutput>

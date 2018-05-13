@@ -159,6 +159,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>VoiceAttack.fr.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\VoiceAttack.hu.resx" />
     <EmbeddedResource Include="Properties\VoiceAttack.it.resx" />
     <EmbeddedResource Include="Properties\VoiceAttack.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
