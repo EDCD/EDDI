@@ -118,7 +118,7 @@
     <value>Suit la quantité de matériaux que vous possédez et génère des événements lorsque des limites sont atteintes.</value>
   </data>
   <data name="desired_header" xml:space="preserve">
-    <value>Desiré</value>
+    <value>Désiré</value>
   </data>
   <data name="inventory_header" xml:space="preserve">
     <value>Inventaire</value>
