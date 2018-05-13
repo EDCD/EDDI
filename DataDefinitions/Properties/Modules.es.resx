@@ -521,7 +521,10 @@
     <value>Cañón Ejecutor</value>
     <comment>Module Hpt_MultiCannon_Fixed_Small_Strong</comment>
   </data>
-  
+  <data name="GuardianFsdBooster" xml:space="preserve">
+    <value>Amplificador FSD Guardián</value>
+    <comment>Module GuardianFsdBooster</comment>
+  </data>
   <data name="GuardianPowerDistributor" xml:space="preserve">
     <value>Distribuidor de Energía Guardián</value>
     <comment>Module GuardianPowerDistributor</comment>
