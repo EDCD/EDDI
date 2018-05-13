@@ -182,7 +182,16 @@ namespace EddiDataProviderService
             }
             catch (Exception ex)
             {
-                Logging.Warn("Problem obtaining data: " + ex);
+                Logging.Warn("Problem reading data from database, attempting to re-obtain from source: " + ex);
+                try
+                {
+                    result = DataProviderService.GetSystemData(name, null, null, null);
+                }
+                catch (Exception ex2)
+                {
+                    Logging.Warn("Problem obtaining data from source: " + ex2);
+                    result = null;
+                }
             }
 
             return result;
