@@ -548,19 +548,17 @@ namespace EddiJournalMonitor
                             break;
                         case "ApproachBody":
                             {
-                                bool approachingSurface = true;
                                 string system = JsonParsing.getString(data, "StarSystem");
                                 string body = JsonParsing.getString(data, "Body");
-                                events.Add(new NearSurfaceEvent(timestamp, approachingSurface, system, body) { raw = line });
+                                events.Add(new NearSurfaceEvent(timestamp, true, system, body) { raw = line });
                             }
                             handled = true;
                             break;
                         case "LeaveBody":
                             {
-                                bool approachingSurface = false;
                                 string system = JsonParsing.getString(data, "StarSystem");
                                 string body = JsonParsing.getString(data, "Body");
-                                events.Add(new NearSurfaceEvent(timestamp, approachingSurface, system, body) { raw = line });
+                                events.Add(new NearSurfaceEvent(timestamp, false, system, body) { raw = line });
                             }
                             handled = true;
                             break;

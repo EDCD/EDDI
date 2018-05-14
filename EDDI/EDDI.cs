@@ -790,7 +790,7 @@ namespace Eddi
 
             if (theEvent.docked == true || theEvent.bodytype.ToLowerInvariant() == "station")
             {
-                // In this case body === station
+                // In this case body === station and our body information is invalid
                 CurrentStellarBody = null;
 
                 // Force first location update even if it matches with 'firstLocation' bool
@@ -860,7 +860,7 @@ namespace Eddi
             }
             else
             {
-                // We are near neither at stellar body nor a station. 
+                // We are near neither a stellar body nor a station. 
                 CurrentStellarBody = null;
                 CurrentStation = null;
             }
