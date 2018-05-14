@@ -238,41 +238,80 @@
     <comment>Commodity AtmosphericExtractors</comment>
   </data>
   <data name="AutoFabricators" xml:space="preserve">
-    <value>Auto febrikétörsz</value>
+    <value>Auto fabrikáló</value>
     <comment>Commodity AutoFabricators</comment>
   </data>
   <data name="AzCancriFormula42" xml:space="preserve">
-    <value>É zí kenkri formula 42</value>
+    <value>Az Cancri Formula 42</value>
     <comment>Commodity AzCancriFormula42</comment>
   </data>
   <data name="BaltahSineVacuumKrill" xml:space="preserve">
-    <value>Baltah szájn vákum krill</value>
+    <value>Baltah sine vákum krill</value>
     <comment>Commodity BaltahSineVacuumKrill</comment>
+  </data>
+  <data name="BankiAmphibiousLeather" xml:space="preserve">
+    <value>Banki kétéltűbőr</value>
+    <comment>Commodity BankiAmphibiousLeather</comment>
+  </data>
+  <data name="BasicMedicines" xml:space="preserve">
+    <value>Gyógyszerek</value>
+    <comment>Commodity BasicMedicines</comment>
+  </data>
+  <data name="BasicNarcotics" xml:space="preserve">
+    <value>Narkotikum</value>
+    <comment>Commodity BasicNarcotics</comment>
+  </data>
+  
+  
+  
+  <data name="Beer" xml:space="preserve">
+    <value>Sör</value>
+    <comment>Commodity Beer</comment>
   </data>
   
   
   
   
+  <data name="Biowaste" xml:space="preserve">
+    <value>Biólógiai hulladék</value>
+    <comment>Commodity Biowaste</comment>
+  </data>
+  <data name="Bismuth" xml:space="preserve">
+    <value>Bismuth</value>
+    <comment>Commodity Bismuth</comment>
+  </data>
+  <data name="BlueMilk" xml:space="preserve">
+    <value>Azure tej</value>
+    <comment>Commodity BlueMilk</comment>
+  </data>
+  <data name="BootlegLiquor" xml:space="preserve">
+    <value>Csempész likőr</value>
+    <comment>Commodity BootlegLiquor</comment>
+  </data>
   
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="CD_75KittenBrandCoffee" xml:space="preserve">
+    <value>Cd-75 kitten brand kávé</value>
+    <comment>Commodity CD_75KittenBrandCoffee</comment>
+  </data>
+  <data name="CentauriMegaGin" xml:space="preserve">
+    <value>Kentauri mega Gin</value>
+    <comment>Commodity CentauriMegaGin</comment>
+  </data>
+  <data name="CeramicComposites" xml:space="preserve">
+    <value>Kerámi kompozit</value>
+    <comment>Commodity CeramicComposites</comment>
+  </data>
+  <data name="CeremonialHeikeTea" xml:space="preserve">
+    <value>Ceremónia heike tea</value>
+    <comment>Commodity CeremonialHeikeTea</comment>
+  </data>
+  <data name="CetiAepyornisEgg" xml:space="preserve">
+    <value>Elefántmadár tojás</value>
+    <comment>Commodity CetiAepyornisEgg</comment>
+  </data>
   
   
   
