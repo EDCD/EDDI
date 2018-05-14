@@ -75,10 +75,15 @@ namespace Utilities
         {
             if (name != null && content != null)
             {
+                object fileLock = new object();
+
                 // Attempt to write the file
                 try
                 {
-                    File.WriteAllText(name, content, Encoding.UTF8);
+                    lock (fileLock)
+                    {
+                        File.WriteAllText(name, content, Encoding.UTF8);
+                    }
                 }
                 catch (ArgumentException ex)
                 {
