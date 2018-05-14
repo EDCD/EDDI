@@ -312,8 +312,14 @@
     <value>Elefántmadár tojás</value>
     <comment>Commodity CetiAepyornisEgg</comment>
   </data>
-  
-  
+  <data name="CetiRabbits" xml:space="preserve">
+    <value>Ceti nyúlak</value>
+    <comment>Commodity CetiRabbits</comment>
+  </data>
+  <data name="ChameleonCloth" xml:space="preserve">
+    <value>Kaméleon ruha</value>
+    <comment>Commodity ChameleonCloth</comment>
+  </data>
   
   
   
