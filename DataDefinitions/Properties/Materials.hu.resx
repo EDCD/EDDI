@@ -173,13 +173,34 @@
     <value>Molibdén</value>
     <comment>Material molybdenum</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="niobium" xml:space="preserve">
+    <value>Nióbium</value>
+    <comment>Material niobium</comment>
+  </data>
+  <data name="tin" xml:space="preserve">
+    <value>Aluminium</value>
+    <comment>Material tin</comment>
+  </data>
+  <data name="tungsten" xml:space="preserve">
+    <value>Volfrám</value>
+    <comment>Material tungsten</comment>
+  </data>
+  <data name="ruthenium" xml:space="preserve">
+    <value>Ruténium</value>
+    <comment>Material ruthenium</comment>
+  </data>
+  <data name="selenium" xml:space="preserve">
+    <value>Szelén</value>
+    <comment>Material selenium</comment>
+  </data>
+  <data name="technetium" xml:space="preserve">
+    <value>Technécium</value>
+    <comment>Material technetium</comment>
+  </data>
+  <data name="tellurium" xml:space="preserve">
+    <value>Tellúr</value>
+    <comment>Material tellurium</comment>
+  </data>
   
   
   
