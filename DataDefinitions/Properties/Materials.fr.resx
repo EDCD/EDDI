@@ -286,7 +286,7 @@
     <comment>Material industrialfirmware</comment>
   </data>
   <data name="symmetrickeys" xml:space="preserve">
-    <value>clés symétriques ouvertes</value>
+    <value>Clés symétriques ouvertes</value>
     <comment>Material symmetrickeys</comment>
   </data>
   <data name="wakesolutions" xml:space="preserve">
@@ -330,7 +330,7 @@
     <comment>Material encodedscandata</comment>
   </data>
   <data name="hyperspacetrajectories" xml:space="preserve">
-    <value>Trajectoires hyperespace exentriques</value>
+    <value>Trajectoires d'hyperespace excentriques</value>
     <comment>Material hyperspacetrajectories</comment>
   </data>
   <data name="securityfirmware" xml:space="preserve">
@@ -450,11 +450,11 @@
     <comment>Material hybridcapacitors</comment>
   </data>
   <data name="mechanicalequipment" xml:space="preserve">
-    <value>Equipement mécanique</value>
+    <value>Équipement mécanique</value>
     <comment>Material mechanicalequipment</comment>
   </data>
   <data name="shieldemitters" xml:space="preserve">
-    <value>Analyses de bouclier atypiques</value>
+    <value>Émetteurs de bouclier</value>
     <comment>Material shieldemitters</comment>
   </data>
   <data name="unknowncarapace" xml:space="preserve">
@@ -478,7 +478,7 @@
     <comment>Material focuscrystals</comment>
   </data>
   <data name="heatexchangers" xml:space="preserve">
-    <value>Echangeurs de chaleur</value>
+    <value>Échangeurs de chaleur</value>
     <comment>Material heatexchangers</comment>
   </data>
   <data name="highdensitycomposites" xml:space="preserve">
@@ -518,7 +518,7 @@
     <comment>Material conductivepolymers</comment>
   </data>
   <data name="configurablecomponents" xml:space="preserve">
-    <value>Composant paramétrables</value>
+    <value>Composants paramétrables</value>
     <comment>Material configurablecomponents</comment>
   </data>
   <data name="heatvanes" xml:space="preserve">

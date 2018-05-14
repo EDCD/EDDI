@@ -146,7 +146,7 @@
     <comment>Type of cargo, such as "Metals"</comment>
   </data>
   <data name="header_stolen" xml:space="preserve">
-    <value>volé</value>
+    <value>Volé</value>
     <comment>Tons of stolen cargo carried</comment>
   </data>
   <data name="header_price" xml:space="preserve">

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Element" xml:space="preserve">
-    <value>Minerai</value>
+    <value>Élément</value>
     <comment>Material category Element</comment>
   </data>
   <data name="Manufactured" xml:space="preserve">
@@ -126,7 +126,7 @@
     <comment>Material category Manufactured</comment>
   </data>
   <data name="Data" xml:space="preserve">
-    <value>Données</value>
+    <value>Donnée</value>
     <comment>Material category Data</comment>
   </data>
   <data name="Unknown" xml:space="preserve">

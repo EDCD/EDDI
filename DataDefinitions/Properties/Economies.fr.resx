@@ -126,7 +126,7 @@
     <comment>Economy type None</comment>
   </data>
   <data name="Refinery" xml:space="preserve">
-    <value>Rafinerie</value>
+    <value>Raffinerie</value>
     <comment>Economy type Refinery</comment>
   </data>
   <data name="Service" xml:space="preserve">

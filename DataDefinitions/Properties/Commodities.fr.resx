@@ -674,7 +674,7 @@
     <comment>Commodity HydrogenFuel</comment>
   </data>
   <data name="HydrogenPeroxide" xml:space="preserve">
-    <value>Péroxyde d'hydrogène</value>
+    <value>Peroxyde d'hydrogène</value>
     <comment>Commodity HydrogenPeroxide</comment>
   </data>
   <data name="ImperialSlaves" xml:space="preserve">
@@ -1047,7 +1047,7 @@
     <comment>Commodity ProgenitorCells</comment>
   </data>
   <data name="ProhibitedResearchMaterials" xml:space="preserve">
-    <value>Matériaux de recherche interdits</value>
+    <value>Matériaux de recherches interdits</value>
     <comment>Commodity ProhibitedResearchMaterials</comment>
   </data>
   <data name="Pyrophyllite" xml:space="preserve">
