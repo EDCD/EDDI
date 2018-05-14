@@ -726,18 +726,7 @@ namespace EddiShipMonitor
         }
 
         public void PostHandle(Event @event)
-        {
-            if (@event is ShipLoadoutEvent)
-            {
-                posthandleShipLoadoutEvent((ShipLoadoutEvent)@event);
-            }
-        }
-
-        private void posthandleShipLoadoutEvent(ShipLoadoutEvent @event)
-        {
-            /// The ship may have engineering data, request a profile refresh from the Frontier API a minute after switching
-            refreshProfileDelayed(@event.shipid, currentProfileId).GetAwaiter().GetResult();
-        }
+        {}
 
         // Note: At a minimum, the API Profile data is required to update the current ship's launchbay status
         public void HandleProfile(JObject profile)
@@ -1211,16 +1200,6 @@ namespace EddiShipMonitor
         private bool inFighterOrBuggy(string model)
         {
             return (model == "Empire_Fighter" || model == "Federation_Fighter" || model == "Independent_Fighter" || model == "TestBuggy");
-        }
-
-        static async Task refreshProfileDelayed(int? shipId, int? profileId)
-        {
-            do
-            {
-                await Task.Delay(TimeSpan.FromSeconds(20));
-                EDDI.Instance.refreshProfile();
-            } while (shipId != profileId);
-            Logging.Debug("Current Ship Id is: " + shipId + ", Profile Ship Id is " + profileId);
         }
 
         static void RaiseOnUIThread(EventHandler handler, object sender)
