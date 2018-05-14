@@ -132,7 +132,7 @@
     <comment>Name of cargo, such as "Gold"</comment>
   </data>
   <data name="header_need" xml:space="preserve">
-    <value>Szükséges</value>
+    <value>Szükséges árucikk mennyisége</value>
     <comment>Tons needed for missions</comment>
   </data>
   <data name="para2" xml:space="preserve">
