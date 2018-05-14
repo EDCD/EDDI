@@ -118,34 +118,85 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdvancedCatalysers" xml:space="preserve">
-    <value>Fejlesztett katalizátor</value>
+    <value>Edvensz katalájzörsz</value>
     <comment>Commodity AdvancedCatalysers</comment>
   </data>
   <data name="AdvancedMedicines" xml:space="preserve">
-    <value>Fejlesztett gyógyszer</value>
+    <value>Edvensz mediszinsz</value>
     <comment>Commodity AdvancedMedicines</comment>
   </data>
   <data name="AganippeRush" xml:space="preserve">
     <value>Aganipi rash</value>
     <comment>Commodity AganippeRush</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AgriculturalMedicines" xml:space="preserve">
+    <value>Agri mediszinsz</value>
+    <comment>Commodity AgriculturalMedicines</comment>
+  </data>
+  <data name="AiRelics" xml:space="preserve">
+    <value>Éáj reliksz</value>
+    <comment>Commodity AiRelics</comment>
+  </data>
+  <data name="AlacarakmoSkinArt" xml:space="preserve">
+    <value>Alakarakamo Szkin Árt</value>
+    <comment>Commodity AlacarakmoSkinArt</comment>
+  </data>
+  <data name="AlbinoQuechuaMammoth" xml:space="preserve">
+    <value>Albino Kecsuá mamúth</value>
+    <comment>Commodity AlbinoQuechuaMammoth</comment>
+  </data>
+  <data name="Algae" xml:space="preserve">
+    <value>Aldzsí</value>
+    <comment>Commodity Algae</comment>
+  </data>
+  <data name="alieneggs" xml:space="preserve">
+    <value>Líthöri egsz</value>
+    <comment>Commodity alieneggs</comment>
+  </data>
+  <data name="AltairianSkin" xml:space="preserve">
+    <value>Altairian szkin</value>
+    <comment>Commodity AltairianSkin</comment>
+  </data>
+  <data name="Aluminium" xml:space="preserve">
+    <value>Alumínium</value>
+    <comment>Commodity Aluminium</comment>
+  </data>
+  <data name="AlyaBodySoap" xml:space="preserve">
+    <value>Alia bádi szóp</value>
+    <comment>Commodity AlyaBodySoap</comment>
+  </data>
+  <data name="AncientCasket" xml:space="preserve">
+    <value>Ésönt kaszket</value>
+    <comment>Commodity AncientCasket</comment>
+  </data>
+  <data name="AncientOrb" xml:space="preserve">
+    <value>Ésönt orb</value>
+    <comment>Commodity AncientOrb</comment>
+  </data>
+  <data name="AncientRelic" xml:space="preserve">
+    <value>Ésönt reliksz</value>
+    <comment>Commodity AncientRelic</comment>
+  </data>
+  <data name="AncientTablet" xml:space="preserve">
+    <value>Ésönt tablet</value>
+    <comment>Commodity AncientTablet</comment>
+  </data>
+  <data name="AncientTotem" xml:space="preserve">
+    <value>Ésönt totem</value>
+    <comment>Commodity AncientTotem</comment>
+  </data>
+  <data name="AncientUrn" xml:space="preserve">
+    <value>Ésönt jurn</value>
+    <comment>Commodity AncientUrn</comment>
+  </data>
+  <data name="AnduligaFireWorks" xml:space="preserve">
+    <value>Ándülígá fájör vörksz</value>
+    <comment>Commodity AnduligaFireWorks</comment>
+  </data>
+  <data name="Animalmeat" xml:space="preserve">
+    <value>Enimöl mít</value>
+    <comment>Commodity Animalmeat</comment>
+  </data>
   
   
   
