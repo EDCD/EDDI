@@ -198,19 +198,19 @@
     <comment>Commodity Animalmeat</comment>
   </data>
   <data name="AnimalMonitors" xml:space="preserve">
-    <value>Enimöl monitosz</value>
+    <value>Állat monitor</value>
     <comment>Commodity AnimalMonitors</comment>
   </data>
   <data name="AntimatterContainmentUnit" xml:space="preserve">
-    <value>Antimettör konténjnment junit</value>
+    <value>Antianyag elkülönítő egység</value>
     <comment>Commodity AntimatterContainmentUnit</comment>
   </data>
   <data name="AntiqueJewellery" xml:space="preserve">
-    <value>Ántik dzsúrlí</value>
+    <value>Antik ékszer</value>
     <comment>Commodity AntiqueJewellery</comment>
   </data>
   <data name="Antiquities" xml:space="preserve">
-    <value>Ántikvitíz</value>
+    <value>Régiségek</value>
     <comment>Commodity Antiquities</comment>
   </data>
   <data name="AnyNaCoffee" xml:space="preserve">
@@ -229,11 +229,26 @@
     <value>Ártikulésön motorsz</value>
     <comment>Commodity ArticulationMotors</comment>
   </data>
-  
-  
-  
-  
-  
+  <data name="AssaultPlans" xml:space="preserve">
+    <value>Aszult plensz</value>
+    <comment>Commodity AssaultPlans</comment>
+  </data>
+  <data name="AtmosphericExtractors" xml:space="preserve">
+    <value>Atmoszferik proszeszorsz</value>
+    <comment>Commodity AtmosphericExtractors</comment>
+  </data>
+  <data name="AutoFabricators" xml:space="preserve">
+    <value>Auto febrikétörsz</value>
+    <comment>Commodity AutoFabricators</comment>
+  </data>
+  <data name="AzCancriFormula42" xml:space="preserve">
+    <value>É zí kenkri formula 42</value>
+    <comment>Commodity AzCancriFormula42</comment>
+  </data>
+  <data name="BaltahSineVacuumKrill" xml:space="preserve">
+    <value>Baltah szájn vákum krill</value>
+    <comment>Commodity BaltahSineVacuumKrill</comment>
+  </data>
   
   
   
