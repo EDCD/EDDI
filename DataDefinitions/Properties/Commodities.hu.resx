@@ -230,11 +230,11 @@
     <comment>Commodity ArticulationMotors</comment>
   </data>
   <data name="AssaultPlans" xml:space="preserve">
-    <value>Aszult plensz</value>
+    <value>Támadási tervek</value>
     <comment>Commodity AssaultPlans</comment>
   </data>
   <data name="AtmosphericExtractors" xml:space="preserve">
-    <value>Atmoszferik proszeszorsz</value>
+    <value>Atmoszféra processzorok</value>
     <comment>Commodity AtmosphericExtractors</comment>
   </data>
   <data name="AutoFabricators" xml:space="preserve">
