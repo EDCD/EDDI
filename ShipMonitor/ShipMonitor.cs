@@ -1008,9 +1008,19 @@ namespace EddiShipMonitor
             }
         }
 
-        private void AddModule(int shipid, string slot, Module module)
+        private async void AddModule(int shipid, string slot, Module module)
         {
             Ship ship = GetShip(shipid);
+
+            if (ship == null)
+            {
+                do
+                {
+                    EDDI.Instance.refreshProfile();
+                    await Task.Delay(TimeSpan.FromSeconds(20));
+                    ship = GetShip(shipid);
+                } while (ship != null);
+            }
 
             switch (slot)
             {
@@ -1135,9 +1145,19 @@ namespace EddiShipMonitor
             }
         }
 
-        private void RemoveModule(int shipid, string slot, Module replacement = null)
+        private async void RemoveModule(int shipid, string slot, Module replacement = null)
         {
             Ship ship = GetShip(shipid);
+
+            if (ship == null)
+            {
+                do
+                {
+                    EDDI.Instance.refreshProfile();
+                    await Task.Delay(TimeSpan.FromSeconds(20));
+                    ship = GetShip(shipid);
+                } while (ship != null);
+            }
 
             if (replacement != null)
             {
