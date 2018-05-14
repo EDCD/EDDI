@@ -272,7 +272,7 @@
     <comment>Module GuardianPlasmaCharger</comment>
   </data>
   <data name="GuardianPowerPlant" xml:space="preserve">
-    <value>Générateur de Puissance Hybride - Guardians</value>
+    <value>Générateur hybride - Guardians</value>
     <comment>Module GuardianPowerPlant</comment>
   </data>
   <data name="HatchBreakerLimpetController" xml:space="preserve">
