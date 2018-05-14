@@ -214,15 +214,15 @@
     <comment>Commodity Antiquities</comment>
   </data>
   <data name="AnyNaCoffee" xml:space="preserve">
-    <value>Eni n é kofí</value>
+    <value>Minden N/A kávé</value>
     <comment>Commodity AnyNaCoffee</comment>
   </data>
   <data name="AquaponicSystems" xml:space="preserve">
-    <value>Akvafónik szisztemsz</value>
+    <value>Viztisztitó rendszer</value>
     <comment>Commodity AquaponicSystems</comment>
   </data>
   <data name="AroucaConventualSweets" xml:space="preserve">
-    <value>Arúka konvencsul szvítsz</value>
+    <value>Arouka kolostóri édességek</value>
     <comment>Commodity AroucaConventualSweets</comment>
   </data>
   <data name="ArticulationMotors" xml:space="preserve">
