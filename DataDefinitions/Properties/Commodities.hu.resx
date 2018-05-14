@@ -197,8 +197,14 @@
     <value>Enimöl mít</value>
     <comment>Commodity Animalmeat</comment>
   </data>
-  
-  
+  <data name="AnimalMonitors" xml:space="preserve">
+    <value>Enimöl monitosz</value>
+    <comment>Commodity AnimalMonitors</comment>
+  </data>
+  <data name="AntimatterContainmentUnit" xml:space="preserve">
+    <value>Antimettör konténjnment junit</value>
+    <comment>Commodity AntimatterContainmentUnit</comment>
+  </data>
   
   
   
