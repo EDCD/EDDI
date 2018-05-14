@@ -142,10 +142,18 @@
     <value>Az alábbi lista tartalmazza az összes rakományod.</value>
   </data>
   <data name="header_type" xml:space="preserve">
-    <value>Árú típus</value>
+    <value>Áru típus</value>
     <comment>Type of cargo, such as "Metals"</comment>
   </data>
-  
-  
-  
+  <data name="header_stolen" xml:space="preserve">
+    <value>Lopott árucikk</value>
+    <comment>Tons of stolen cargo carried</comment>
+  </data>
+  <data name="header_price" xml:space="preserve">
+    <value>Tonnánkénti ár</value>
+  </data>
+  <data name="header_owned" xml:space="preserve">
+    <value>Saját áru</value>
+    <comment>Tons of owned cargo carried</comment>
+  </data>
 </root>
