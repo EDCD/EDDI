@@ -490,7 +490,7 @@
     <comment>Module Victor</comment>
   </data>
   <data name="Whitestringlights" xml:space="preserve">
-    <value>Tiras de luces blancas</value>
+    <value>Tira de luces blancas</value>
     <comment>Module Whitestringlights</comment>
   </data>
   <data name="XenoScanner" xml:space="preserve">
@@ -498,11 +498,11 @@
     <comment>Module XenoScanner</comment>
   </data>
   <data name="Fixed" xml:space="preserve">
-    <value>fija</value>
+    <value>fijo</value>
     <comment>Weapon mount type Fixed</comment>
   </data>
   <data name="Gimballed" xml:space="preserve">
-    <value>guiada</value>
+    <value>guiado</value>
     <comment>Weapon mount type Gimballed</comment>
   </data>
   <data name="Turreted" xml:space="preserve">

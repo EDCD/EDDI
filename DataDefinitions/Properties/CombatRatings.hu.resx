@@ -98,17 +98,20 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
+  <data name="Harmless" xml:space="preserve">
+    <value>Ártalmatlan</value>
+    <comment>Combat rating Harmless</comment>
+  </data>
   <data name="MostlyHarmless" xml:space="preserve">
     <value>Zöldfülű</value>
     <comment>Combat rating MostlyHarmless</comment>
   </data>
   <data name="Novice" xml:space="preserve">
-    <value>Novisz</value>
+    <value>Kezdő</value>
     <comment>Combat rating Novice</comment>
   </data>
   <data name="Competent" xml:space="preserve">
-    <value>Kompetent</value>
+    <value>Kompetens</value>
     <comment>Combat rating Competent</comment>
   </data>
   <data name="Expert" xml:space="preserve">

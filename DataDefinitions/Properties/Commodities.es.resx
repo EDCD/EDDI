@@ -398,7 +398,7 @@
     <comment>Commodity ComercialSamples</comment>
   </data>
   <data name="ComputerComponents" xml:space="preserve">
-    <value>Componentes informáticosCom</value>
+    <value>Componentes informáticos</value>
     <comment>Commodity ComputerComponents</comment>
   </data>
   <data name="ConductiveFabrics" xml:space="preserve">
@@ -663,7 +663,7 @@
     <comment>Commodity HonestyPills</comment>
   </data>
   <data name="Hostage" xml:space="preserve">
-    <value>Rehenes</value>
+    <value>Rehén</value>
     <comment>Commodity Hostage</comment>
   </data>
   <data name="HR7221Wheat" xml:space="preserve">
@@ -675,7 +675,7 @@
     <comment>Commodity HydrogenFuel</comment>
   </data>
   <data name="HydrogenPeroxide" xml:space="preserve">
-    <value>Peróxido de hidrgeno</value>
+    <value>Peróxido de hidrógeno</value>
     <comment>Commodity HydrogenPeroxide</comment>
   </data>
   <data name="ImperialSlaves" xml:space="preserve">
