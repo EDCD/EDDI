@@ -128,11 +128,11 @@
     <comment>Tons of haulage (mission cargo) carried</comment>
   </data>
   <data name="header_name" xml:space="preserve">
-    <value>Árucikk</value>
+    <value>Név</value>
     <comment>Name of cargo, such as "Gold"</comment>
   </data>
   <data name="header_need" xml:space="preserve">
-    <value>Szükséges árucikk mennyisége</value>
+    <value>Szükséges</value>
     <comment>Tons needed for missions</comment>
   </data>
   <data name="para2" xml:space="preserve">
@@ -142,18 +142,18 @@
     <value>Az alábbi lista tartalmazza az összes rakományod.</value>
   </data>
   <data name="header_type" xml:space="preserve">
-    <value>Áru típus</value>
+    <value>Típus</value>
     <comment>Type of cargo, such as "Metals"</comment>
   </data>
   <data name="header_stolen" xml:space="preserve">
-    <value>Lopott árucikk</value>
+    <value>Lopott</value>
     <comment>Tons of stolen cargo carried</comment>
   </data>
   <data name="header_price" xml:space="preserve">
-    <value>Tonnánkénti ár</value>
+    <value>Ár/Tonna</value>
   </data>
   <data name="header_owned" xml:space="preserve">
-    <value>Saját áru</value>
+    <value>Saját</value>
     <comment>Tons of owned cargo carried</comment>
   </data>
 </root>
