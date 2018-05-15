@@ -367,11 +367,169 @@
     <value>Kristályos gömbök</value>
     <comment>Commodity CrystallineSpheres</comment>
   </data>
-  
+  <data name="DamagedEscapePod" xml:space="preserve">
+    <value>Sérült mentő kapszula</value>
+    <comment>Commodity DamagedEscapePod</comment>
+  </data>
   
   <data name="DataCore" xml:space="preserve">
     <value>Adat mag</value>
     <comment>Commodity DataCore</comment>
+  </data>
+  
+  
+  
+  <data name="DiplomaticBag" xml:space="preserve">
+    <value>Diplomata táska</value>
+    <comment>Commodity DiplomaticBag</comment>
+  </data>
+  
+  <data name="DomesticAppliances" xml:space="preserve">
+    <value>Háztartási készülékek</value>
+    <comment>Commodity DomesticAppliances</comment>
+  </data>
+  <data name="Drones" xml:space="preserve">
+    <value>Szonda</value>
+    <comment>Commodity Drones</comment>
+  </data>
+  <data name="EarthRelics" xml:space="preserve">
+    <value>Földi relikviák</value>
+    <comment>Commodity EarthRelics</comment>
+  </data>
+  
+  
+  <data name="EmergencyPowerCells" xml:space="preserve">
+    <value>Tartalék energia cellák</value>
+    <comment>Commodity EmergencyPowerCells</comment>
+  </data>
+  <data name="EncriptedDataStorage" xml:space="preserve">
+    <value>Títkositott adat tároló</value>
+    <comment>Commodity EncriptedDataStorage</comment>
+  </data>
+  <data name="EncryptedCorrespondence" xml:space="preserve">
+    <value>Títkositott levelezés</value>
+    <comment>Commodity EncryptedCorrespondence</comment>
+  </data>
+  <data name="EraninPearlWhisky" xml:space="preserve">
+    <value>Eranin gyöngy viszki</value>
+    <comment>Commodity EraninPearlWhisky</comment>
+  </data>
+  <data name="EshuUmbrellas" xml:space="preserve">
+    <value>Eshu esernyők</value>
+    <comment>Commodity EshuUmbrellas</comment>
+  </data>
+  
+  
+  <data name="EvacuationShelter" xml:space="preserve">
+    <value>Evakuációs sátor</value>
+    <comment>Commodity EvacuationShelter</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="Grain" xml:space="preserve">
+    <value>Búza</value>
+    <comment>Commodity Grain</comment>
+  </data>
+  <data name="Hafnium178" xml:space="preserve">
+    <value>Hafnium 178</value>
+    <comment>Commodity Hafnium178</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="Hostage" xml:space="preserve">
+    <value>Túsz</value>
+    <comment>Commodity Hostage</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="KamitraCigars" xml:space="preserve">
+    <value>Kamitra Szivar</value>
+    <comment>Commodity KamitraCigars</comment>
+  </data>
+  <data name="KamorinHistoricWeapons" xml:space="preserve">
+    <value>Kamorin történelmi fegyverek</value>
+    <comment>Commodity KamorinHistoricWeapons</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="LiquidOxygen" xml:space="preserve">
+    <value>Folyékony oxigén</value>
+    <comment>Commodity LiquidOxygen</comment>
+  </data>
+  <data name="Liquor" xml:space="preserve">
+    <value>Likőr</value>
+    <comment>Commodity Liquor</comment>
+  </data>
+  <data name="Lithium" xml:space="preserve">
+    <value>Lítium</value>
+    <comment>Commodity Lithium</comment>
+  </data>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <data name="MedicalDiagnosticEquipment" xml:space="preserve">
+    <value>Orvosi diagnosztikai berendezések</value>
+    <comment>Commodity MedicalDiagnosticEquipment</comment>
   </data>
   
   
@@ -399,108 +557,16 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="NonLethalWeapons" xml:space="preserve">
+    <value>Nem halálos fegyverek</value>
+    <comment>Commodity NonLethalWeapons</comment>
+  </data>
+  
+  
+  <data name="OnionHead" xml:space="preserve">
+    <value>Hagyma fej</value>
+    <comment>Commodity OnionHead</comment>
+  </data>
   
   
   
