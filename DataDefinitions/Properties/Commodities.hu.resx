@@ -552,7 +552,10 @@
   
   
   
-  
+  <data name="NerveAgents" xml:space="preserve">
+    <value>Ideg mérgek</value>
+    <comment>Commodity NerveAgents</comment>
+  </data>
   
   
   
