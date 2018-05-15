@@ -23,7 +23,7 @@ namespace EddiEvents
             VARIABLES.Add("legalstatus", "The legal status of the pilot");
             VARIABLES.Add("shieldhealth", "The health of the shields");
             VARIABLES.Add("hullhealth", "The health of the hull");
-            VARIABLES.Add("subsystem", "The subsystem targtted");
+            VARIABLES.Add("subsystem", "The subsystem targeted");
             VARIABLES.Add("subsystemhealth", "The health of the subsystem targeted");
         }
 
