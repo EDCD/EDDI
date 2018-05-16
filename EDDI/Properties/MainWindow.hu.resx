@@ -127,7 +127,9 @@
   <data name="paragraph_1" xml:space="preserve">
     <value>Az első csoport megszerzi és kezeli az alap információkat amit EDDI használ. Ezek a 'Commamder Details','Frontier API'és 'Text-to Speech' fülek. Ezeken végig kéne menned és beállítani hogy EDDI-nek teljes hozzáférése legyen az Elite Dangerous informácioidhoz.</value>
   </data>
-  
+  <data name="paragraph_2" xml:space="preserve">
+    <value>A masodik csoport megszerzi az események információitEzek a fülek a amelyek Monitor-ral végzödnek. ezek megszerzik az eseményeket különböző helyekről és némi konfigurációt igényelnek mielőtt használhatóak lesznek.</value>
+  </data>
   
   
   
