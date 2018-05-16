@@ -290,14 +290,35 @@
     <value>Luxus Passagierkabine</value>
     <comment>Module LuxuryClassPassengerCabin</comment>
   </data>
+  <data name="ManifestScanner" xml:space="preserve">
+    <value>Frachtscanner</value>
+    <comment>Module ManifestScanner</comment>
+  </data>
+  <data name="MetaAlloyHullReinforcement" xml:space="preserve">
+    <value>Meta-Legierungs Hüllenverstärkung</value>
+    <comment>Module MetaAlloyHullReinforcement</comment>
+  </data>
+  <data name="MilitaryGradeComposite" xml:space="preserve">
+    <value>Militärzusammensetzung</value>
+    <comment>Module MilitaryGradeComposite</comment>
+  </data>
+  <data name="MineLauncher" xml:space="preserve">
+    <value>Minenwerfer</value>
+    <comment>Module MineLauncher</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
+  <data name="MiningLaser" xml:space="preserve">
+    <value>Erzabbaulaser</value>
+    <comment>Module MiningLaser</comment>
+  </data>
+  <data name="MirroredSurfaceComposite" xml:space="preserve">
+    <value>gespiegelte Oberflächenzusammensetzung</value>
+    <comment>Module MirroredSurfaceComposite</comment>
+  </data>
+  <data name="MissileRack" xml:space="preserve">
+    <value>Raketengestell</value>
+    <comment>Module MissileRack</comment>
+  </data>
   
   
   
