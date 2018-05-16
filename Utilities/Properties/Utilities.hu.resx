@@ -110,7 +110,10 @@
     <value>Vadászgép</value>
     <comment>fighter</comment>
   </data>
-  
+  <data name="witch_space" xml:space="preserve">
+    <value>Hipertér</value>
+    <comment>witch_space</comment>
+  </data>
   
   <data name="normal_space" xml:space="preserve">
     <value>Normál tér</value>
