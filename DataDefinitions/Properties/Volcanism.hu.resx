@@ -141,10 +141,28 @@
     <value>Szilikát</value>
     <comment>Volcanism Silicate</comment>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="Silicate_vapour" xml:space="preserve">
+    <value>Szilikát gőz</value>
+    <comment>Volcanism Silicate_vapour</comment>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Víz</value>
+    <comment>Volcanism Water</comment>
+  </data>
+  <data name="Major" xml:space="preserve">
+    <value>Nagy mennyiségű</value>
+    <comment>Volcanism Major</comment>
+  </data>
+  <data name="Minor" xml:space="preserve">
+    <value>Kisebb mennyiségű</value>
+    <comment>Volcanism Minor</comment>
+  </data>
+  <data name="Geysers" xml:space="preserve">
+    <value>Gejzír</value>
+    <comment>Volcanism Geysers</comment>
+  </data>
+  <data name="Magma" xml:space="preserve">
+    <value>Magma</value>
+    <comment>Volcanism Magma</comment>
+  </data>
 </root>
