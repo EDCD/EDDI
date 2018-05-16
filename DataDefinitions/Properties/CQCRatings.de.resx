@@ -102,7 +102,10 @@
     <value>hilflos</value>
     <comment>CQC rating Helpless</comment>
   </data>
-  
+  <data name="MostlyHelpless" xml:space="preserve">
+    <value>meistens hilflos</value>
+    <comment>CQC rating MostlyHelpless</comment>
+  </data>
   <data name="Amateur" xml:space="preserve">
     <value>Amateur</value>
     <comment>CQC rating Amateur</comment>
