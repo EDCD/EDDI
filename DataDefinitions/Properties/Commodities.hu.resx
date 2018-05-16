@@ -695,37 +695,91 @@ Ellenséges Környezet ruha</value>
     <value>Mikrokontrollerek</value>
     <comment>Commodity MicroControllers</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <data name="NerveAgents" xml:space="preserve">
-    <value>Ideg mérgek</value>
-    <comment>Commodity NerveAgents</comment>
+  <data name="MilitaryGradeFabrics" xml:space="preserve">
+    <value>Hadászati szövetek</value>
+    <comment>Commodity MilitaryGradeFabrics</comment>
+  </data>
+  <data name="MilitaryIntelligence" xml:space="preserve">
+    <value>Katonai hírszerzés</value>
+    <comment>Commodity MilitaryIntelligence</comment>
+  </data>
+  <data name="MineralExtractors" xml:space="preserve">
+    <value>Ásványkitermelők</value>
+    <comment>Commodity MineralExtractors</comment>
+  </data>
+  <data name="MineralOil" xml:space="preserve">
+    <value>Ásványi olaj</value>
+    <comment>Commodity MineralOil</comment>
+  </data>
+  <data name="ModularTerminals" xml:space="preserve">
+    <value>Általános megjelenítők</value>
+    <comment>Commodity ModularTerminals</comment>
+  </data>
+  <data name="Moissanite" xml:space="preserve">
+    <value>Moissanit</value>
+    <comment>Commodity Moissanite</comment>
+  </data>
+  <data name="MokojingBeastFeast" xml:space="preserve">
+    <value>Mokojing vadfesztivál</value>
+    <comment>Commodity MokojingBeastFeast</comment>
   </data>
   
   
   
+  <data name="MulachiGiantFungus" xml:space="preserve">
+    <value>Mulachi óriásgomba</value>
+    <comment>Commodity MulachiGiantFungus</comment>
+  </data>
+  
+  <data name="MysteriousIdol" xml:space="preserve">
+    <value>Rejtélyes bálvány</value>
+    <comment>Commodity MysteriousIdol</comment>
+  </data>
+  <data name="Nanobreakers" xml:space="preserve">
+    <value>Nanomegszakítók</value>
+    <comment>Commodity Nanobreakers</comment>
+  </data>
+  <data name="NaturalFabrics" xml:space="preserve">
+    <value>Természetes szövetek</value>
+    <comment>Commodity NaturalFabrics</comment>
+  </data>
+  <data name="NeofabricInsulation" xml:space="preserve">
+    <value>Neofabric szigetelés</value>
+    <comment>Commodity NeofabricInsulation</comment>
+  </data>
+  <data name="NeritusBerries" xml:space="preserve">
+    <value>Neritus bogyók</value>
+    <comment>Commodity NeritusBerries</comment>
+  </data>
+  <data name="NerveAgents" xml:space="preserve">
+    <value>Ideg mérgek</value>
+    <comment>Commodity NerveAgents</comment>
+  </data>
+  <data name="NgadandariFireOpals" xml:space="preserve">
+    <value>Ngadandari tűzopálok</value>
+    <comment>Commodity NgadandariFireOpals</comment>
+  </data>
+  <data name="NgunaModernAntiques" xml:space="preserve">
+    <value>Nguna Modern régiségek</value>
+    <comment>Commodity NgunaModernAntiques</comment>
+  </data>
+  <data name="NjangariSaddles" xml:space="preserve">
+    <value>Njangari nyergek</value>
+    <comment>Commodity NjangariSaddles</comment>
+  </data>
   
   <data name="NonLethalWeapons" xml:space="preserve">
     <value>Nem halálos fegyverek</value>
     <comment>Commodity NonLethalWeapons</comment>
   </data>
-  
-  
+  <data name="OccupiedCryoPod" xml:space="preserve">
+    <value>Elfogott mentőkapszula</value>
+    <comment>Commodity OccupiedCryoPod</comment>
+  </data>
+  <data name="OchoengChillies" xml:space="preserve">
+    <value>Ochoeng erőspaprika</value>
+    <comment>Commodity OchoengChillies</comment>
+  </data>
   <data name="OnionHead" xml:space="preserve">
     <value>Hagyma fej</value>
     <comment>Commodity OnionHead</comment>
@@ -734,12 +788,27 @@ Ellenséges Környezet ruha</value>
   
   
   
+  <data name="Osmium" xml:space="preserve">
+    <value>Ozmium</value>
+    <comment>Commodity Osmium</comment>
+  </data>
+  <data name="Painite" xml:space="preserve">
+    <value>Painit</value>
+    <comment>Commodity Painite</comment>
+  </data>
+  <data name="Palladium" xml:space="preserve">
+    <value>Palládium</value>
+    <comment>Commodity Palladium</comment>
+  </data>
+  <data name="PantaaPrayerSticks" xml:space="preserve">
+    <value>Pantaa imapálcák</value>
+    <comment>Commodity PantaaPrayerSticks</comment>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="PerformanceEnhancers" xml:space="preserve">
+    <value>Teljesítménynövelők</value>
+    <comment>Commodity PerformanceEnhancers</comment>
+  </data>
   
   
   
