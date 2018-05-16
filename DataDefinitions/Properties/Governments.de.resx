@@ -110,17 +110,47 @@
     <value>Kommunismus</value>
     <comment>Government type Communism</comment>
   </data>
+  <data name="Confederacy" xml:space="preserve">
+    <value>Staatenbund</value>
+    <comment>Government type Confederacy</comment>
+  </data>
+  <data name="Cooperative" xml:space="preserve">
+    <value>Genossenschaft</value>
+    <comment>Government type Cooperative</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Democracy" xml:space="preserve">
+    <value>Demokratie</value>
+    <comment>Government type Democracy</comment>
+  </data>
+  <data name="Dictatorship" xml:space="preserve">
+    <value>Diktatur</value>
+    <comment>Government type Dictatorship</comment>
+  </data>
+  <data name="Feudal" xml:space="preserve">
+    <value>Feudalismus</value>
+    <comment>Government type Feudal</comment>
+  </data>
+  <data name="Imperial" xml:space="preserve">
+    <value>Imperialismus</value>
+    <comment>Government type Imperial</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>keine</value>
+    <comment>Government type None</comment>
+  </data>
+  <data name="Patronage" xml:space="preserve">
+    <value>Patronat</value>
+    <comment>Government type Patronage</comment>
+  </data>
+  <data name="PrisonColony" xml:space="preserve">
+    <value>Gefängniskolonie</value>
+    <comment>Government type PrisonColony</comment>
+  </data>
+  <data name="Theocracy" xml:space="preserve">
+    <value>Theokratie</value>
+    <comment>Government type Theocracy</comment>
+  </data>
   
   
 </root>
