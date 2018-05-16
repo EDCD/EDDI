@@ -97,19 +97,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Agri" xml:space="preserve">
+    <value>Landwirtschaft</value>
+    <comment>Economy type Agri</comment>
+  </data>
+  <data name="Colony" xml:space="preserve">
+    <value>Kolonie</value>
+    <comment>Economy type Colony</comment>
+  </data>
+  <data name="Extraction" xml:space="preserve">
+    <value>Abbau</value>
+    <comment>Economy type Extraction</comment>
+  </data>
+  <data name="HighTech" xml:space="preserve">
+    <value>Hochtechnologie</value>
+    <comment>Economy type HighTech</comment>
+  </data>
+  <data name="Industrial" xml:space="preserve">
+    <value>Industrie</value>
+    <comment>Economy type Industrial</comment>
+  </data>
+  <data name="Military" xml:space="preserve">
+    <value>Militär</value>
+    <comment>Economy type Military</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Keine</value>
+    <comment>Economy type None</comment>
+  </data>
+  <data name="Refinery" xml:space="preserve">
+    <value>Raffinerie</value>
+    <comment>Economy type Refinery</comment>
+  </data>
+  <data name="Service" xml:space="preserve">
+    <value>Kundendienst</value>
+    <comment>Economy type Service</comment>
+  </data>
+  <data name="Terraforming" xml:space="preserve">
+    <value>Terraformierung</value>
+    <comment>Economy type Terraforming</comment>
+  </data>
+  <data name="Tourism" xml:space="preserve">
+    <value>Tourismus</value>
+    <comment>Economy type Tourism</comment>
+  </data>
+  <data name="Rescue" xml:space="preserve">
+    <value>Rettung</value>
+    <comment>Economy type Rescue</comment>
+  </data>
+  <data name="Prison" xml:space="preserve">
+    <value>Gefängnis</value>
+    <comment>Economy type Prison</comment>
+  </data>
+  <data name="Repair" xml:space="preserve">
+    <value>Reparaturen</value>
+    <comment>Economy type Repair</comment>
+  </data>
+  <data name="Damaged" xml:space="preserve">
+    <value>Beschädigt</value>
+    <comment>Economy type Damaged</comment>
+  </data>
 </root>
