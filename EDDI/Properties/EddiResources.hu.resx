@@ -145,26 +145,67 @@
   <data name="frontier_api_verification_code" xml:space="preserve">
     <value>Kérlek írd be a megerősítő kódot ami el lett küldve az e-mail címedre</value>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="if_using_va" xml:space="preserve">
+    <value>Ha Voice Attackot használsz kérlek zárd be ezt az ablakot mielőtt elindítod a Voice Attack alkalmazást hogy a változtarások életbe lépjenek.</value>
+  </data>
+  <data name="invalid_station" xml:space="preserve">
+    <value>Érvénytelen állomás</value>
+  </data>
+  <data name="invalid_system" xml:space="preserve">
+    <value>Érvénytelen rendszer</value>
+  </data>
+  <data name="login_nok_frontier_service" xml:space="preserve">
+    <value>Képtelen vagyok bejelentkezni. Ez gyakran egy időszakos hiba a Frontier szerverével. kérlek próbáld meg késöbb</value>
+  </data>
+  <data name="logout" xml:space="preserve">
+    <value>Kijelentkezés</value>
+  </data>
+  <data name="next" xml:space="preserve">
+    <value>Következő</value>
+  </data>
+  <data name="operational" xml:space="preserve">
+    <value>Működik</value>
+  </data>
+  <data name="preparing_log" xml:space="preserve">
+    <value>Log felkészítése... </value>
+  </data>
+  <data name="update_message" xml:space="preserve">
+    <value>Verzió {0} elérhető</value>
+  </data>
+  <data name="voice_test_damage" xml:space="preserve">
+    <value>Súlyos károsodásokat {0}.</value>
+  </data>
+  <data name="voice_test_ship" xml:space="preserve">
+    <value>Ez az ahogy hangzok a te {0}.</value>
+  </data>
+  <data name="plugin_enabled" xml:space="preserve">
+    <value>Plugin bekapcsolva</value>
+  </data>
+  <data name="download_failed" xml:space="preserve">
+    <value>Letöltés nem sikerült. kérlek próbáld meg később.</value>
+  </data>
+  <data name="downloading_upgrade" xml:space="preserve">
+    <value>Frissítés letöltése.</value>
+  </data>
+  <data name="mandatory_upgrade" xml:space="preserve">
+    <value>Kötelező Eddi frissítés {0} verzió szükséges.</value>
+  </data>
+  <data name="msg_from_eddi" xml:space="preserve">
+    <value>Üzenet Eddi-től: {0}</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>pont</value>
+    <comment>spoken decimal point for reading out version numbers like "2.4.1"</comment>
+  </data>
+  <data name="update_available" xml:space="preserve">
+    <value>Eddi verzió {0} elérhető.</value>
+  </data>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>Letöltés sikertelen. Kérlek próbáld meg később.</value>
+  </data>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>Frissítés kezdése.</value>
+  </data>
   
   
   
