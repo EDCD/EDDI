@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
+  <data name="AdvancedCatalysers" xml:space="preserve">
+    <value>Fortschr. Katalysatoren</value>
+    <comment>Commodity AdvancedCatalysers</comment>
+  </data>
+  <data name="AdvancedMedicines" xml:space="preserve">
+    <value>Fortschrittliche Medikamente</value>
+    <comment>Commodity AdvancedMedicines</comment>
+  </data>
   
   
   
@@ -154,12 +160,21 @@
   
   
   
+  <data name="AquaponicSystems" xml:space="preserve">
+    <value>Aquaponiksysteme</value>
+    <comment>Commodity AquaponicSystems</comment>
+  </data>
   
   
   
-  
-  
-  
+  <data name="AtmosphericExtractors" xml:space="preserve">
+    <value>Atmosphärenprozessoren</value>
+    <comment>Commodity AtmosphericExtractors</comment>
+  </data>
+  <data name="AutoFabricators" xml:space="preserve">
+    <value>Baufabrikatoren</value>
+    <comment>Commodity AutoFabricators</comment>
+  </data>
   
   
   
@@ -265,6 +280,10 @@
     <comment>Commodity Copper</comment>
   </data>
   
+  <data name="CropHarvesters" xml:space="preserve">
+    <value>Erntemaschinen</value>
+    <comment>Commodity CropHarvesters</comment>
+  </data>
   
   
   
@@ -280,8 +299,10 @@
   
   
   
-  
-  
+  <data name="EmergencyPowerCells" xml:space="preserve">
+    <value>Notfall-Energiezellen</value>
+    <comment>Commodity EmergencyPowerCells</comment>
+  </data>
   
   
   
@@ -310,7 +331,10 @@
   </data>
   
   
-  
+  <data name="GeologicalEquipment" xml:space="preserve">
+    <value>Geologie-Ausrüstung</value>
+    <comment>Commodity GeologicalEquipment</comment>
+  </data>
   
   
   
@@ -337,7 +361,10 @@
   
   
   
-  
+  <data name="HNShockMount" xml:space="preserve">
+    <value>HN-Dämpferaufhängung</value>
+    <comment>Commodity HNShockMount</comment>
+  </data>
   
   
   
@@ -398,7 +425,10 @@
     <comment>Commodity Lepidolite</comment>
   </data>
   
-  
+  <data name="Liquor" xml:space="preserve">
+    <value>Spirituosen</value>
+    <comment>Commodity Liquor</comment>
+  </data>
   <data name="Lithium" xml:space="preserve">
     <value>Lithium</value>
     <comment>Commodity Lithium</comment>
@@ -412,6 +442,10 @@
   
   
   
+  <data name="MarineSupplies" xml:space="preserve">
+    <value>Maritimausstattung</value>
+    <comment>Commodity MarineSupplies</comment>
+  </data>
   
   
   
@@ -420,10 +454,15 @@
   
   
   
+  <data name="MilitaryGradeFabrics" xml:space="preserve">
+    <value>Militärische Stoffe</value>
+    <comment>Commodity MilitaryGradeFabrics</comment>
+  </data>
   
-  
-  
-  
+  <data name="MineralExtractors" xml:space="preserve">
+    <value>Mineralextraktoren</value>
+    <comment>Commodity MineralExtractors</comment>
+  </data>
   
   
   
@@ -473,7 +512,10 @@
   
   
   
-  
+  <data name="PersonalWeapons" xml:space="preserve">
+    <value>Persönliche Waffen</value>
+    <comment>Commodity PersonalWeapons</comment>
+  </data>
   
   <data name="Platinum" xml:space="preserve">
     <value>Platin</value>
@@ -542,8 +584,14 @@
   
   
   
-  
-  
+  <data name="StructuralRegulators" xml:space="preserve">
+    <value>Strukturregulatoren</value>
+    <comment>Commodity StructuralRegulators</comment>
+  </data>
+  <data name="Superconductors" xml:space="preserve">
+    <value>Supraleiter</value>
+    <comment>Commodity Superconductors</comment>
+  </data>
   
   <data name="SurvivalEquipment" xml:space="preserve">
     <value>Überlebensausrüstung</value>
@@ -554,7 +602,7 @@
     <comment>Commodity SyntheticFabrics</comment>
   </data>
   <data name="SyntheticMeat" xml:space="preserve">
-    <value>Synthetisches Fleisch</value>
+    <value>Künstliches Fleisch</value>
     <comment>Commodity SyntheticMeat</comment>
   </data>
   
@@ -572,7 +620,10 @@
     <comment>Commodity Tea</comment>
   </data>
   
-  
+  <data name="TerrainEnrichmentSystems" xml:space="preserve">
+    <value>Landanreicherungssysteme</value>
+    <comment>Commodity TerrainEnrichmentSystems</comment>
+  </data>
   
   <data name="Thallium" xml:space="preserve">
     <value>Thallium</value>
