@@ -133,10 +133,18 @@
   <data name="frontier_api_nok" xml:space="preserve">
     <value>Frontier API kapcsolat nem működik</value>
   </data>
-  
-  
-  
-  
+  <data name="frontier_api_no_logins" xml:space="preserve">
+    <value>Nincs kapcsolatod a Frontier API-hoz. kérlek írd be az Elite Dangerous e-mail címed és jelszavad.</value>
+  </data>
+  <data name="frontier_api_ok" xml:space="preserve">
+    <value>A kapcsolat a Froniter API-hoz müködik, parancsnok {0}.</value>
+  </data>
+  <data name="frontier_api_temp_nok" xml:space="preserve">
+    <value>A kapcsolatod a Frontier API-hoz jó de néhány időszakoz hiba előfordulhat. Az informácioid hamarosan elérhetővé válnak</value>
+  </data>
+  <data name="frontier_api_verification_code" xml:space="preserve">
+    <value>Kérlek írd be a megerősítő kódot ami el lett küldve az e-mail címedre</value>
+  </data>
   
   
   
