@@ -227,7 +227,7 @@
     <comment>Module FirstClassPassengerCabin</comment>
   </data>
   <data name="FragmentCannon" xml:space="preserve">
-    <value> Fragmentkanone</value>
+    <value>Fragmentkanone</value>
     <comment>Module FragmentCannon</comment>
   </data>
   <data name="FrameShiftDriveInterdictor" xml:space="preserve">
