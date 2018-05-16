@@ -148,5 +148,7 @@
   
   
   
-  
+  <data name="warning_triggered" xml:space="preserve">
+    <value>Scripte, die durch ein Ereignis angestoßen werden, können abgeschaltet aber nicht gelöscht werden.</value>
+  </data>
 </root>
