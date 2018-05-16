@@ -97,19 +97,64 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Agri" xml:space="preserve">
+    <value>Mezőgazdasági</value>
+    <comment>Economy type Agri</comment>
+  </data>
+  <data name="Colony" xml:space="preserve">
+    <value>Kolónia</value>
+    <comment>Economy type Colony</comment>
+  </data>
+  <data name="Extraction" xml:space="preserve">
+    <value>Csomagolóüzem</value>
+    <comment>Economy type Extraction</comment>
+  </data>
+  <data name="HighTech" xml:space="preserve">
+    <value>Csúcstechnika</value>
+    <comment>Economy type HighTech</comment>
+  </data>
+  <data name="Industrial" xml:space="preserve">
+    <value>Ipari</value>
+    <comment>Economy type Industrial</comment>
+  </data>
+  <data name="Military" xml:space="preserve">
+    <value>Katonai</value>
+    <comment>Economy type Military</comment>
+  </data>
+  <data name="None" xml:space="preserve">
+    <value>Nincs</value>
+    <comment>Economy type None</comment>
+  </data>
+  <data name="Refinery" xml:space="preserve">
+    <value>Finomító</value>
+    <comment>Economy type Refinery</comment>
+  </data>
+  <data name="Service" xml:space="preserve">
+    <value>Szolgáltatás</value>
+    <comment>Economy type Service</comment>
+  </data>
+  <data name="Terraforming" xml:space="preserve">
+    <value>Terraformálás alatt</value>
+    <comment>Economy type Terraforming</comment>
+  </data>
+  <data name="Tourism" xml:space="preserve">
+    <value>Turizmus</value>
+    <comment>Economy type Tourism</comment>
+  </data>
+  <data name="Rescue" xml:space="preserve">
+    <value>Mentő</value>
+    <comment>Economy type Rescue</comment>
+  </data>
+  <data name="Prison" xml:space="preserve">
+    <value>Börtön</value>
+    <comment>Economy type Prison</comment>
+  </data>
+  <data name="Repair" xml:space="preserve">
+    <value>Javítás</value>
+    <comment>Economy type Repair</comment>
+  </data>
+  <data name="Damaged" xml:space="preserve">
+    <value>Megrongálódott</value>
+    <comment>Economy type Damaged</comment>
+  </data>
 </root>
