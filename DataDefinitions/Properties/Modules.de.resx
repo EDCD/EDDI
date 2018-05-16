@@ -320,24 +320,69 @@
     <comment>Module MissileRack</comment>
   </data>
   
+  <data name="Multicannon" xml:space="preserve">
+    <value>Mehrzweckgeschütz</value>
+    <comment>Module Multicannon</comment>
+  </data>
+  <data name="Multi_Cannon" xml:space="preserve">
+    <value>Mehrzweckgeschütz</value>
+    <comment>Module Multi_Cannon</comment>
+  </data>
   
   
+  <data name="PlanetaryApproachSuite" xml:space="preserve">
+    <value>planetare Anflugs-Suite</value>
+    <comment>Module PlanetaryApproachSuite</comment>
+  </data>
+  <data name="PlanetaryVehicleHangar" xml:space="preserve">
+    <value>Fahrzeughangar</value>
+    <comment>Module PlanetaryVehicleHangar</comment>
+  </data>
+  <data name="PlasmaAccelerator" xml:space="preserve">
+    <value>Plasmabeschleuniger</value>
+    <comment>Module PlasmaAccelerator</comment>
+  </data>
+  <data name="PointDefence" xml:space="preserve">
+    <value>Punktverteidigung</value>
+    <comment>Module PointDefence</comment>
+  </data>
+  <data name="PowerDistributor" xml:space="preserve">
+    <value>Energieverteiler</value>
+    <comment>Module PowerDistributor</comment>
+  </data>
+  <data name="PowerPlant" xml:space="preserve">
+    <value>Kraftwerk</value>
+    <comment>Module PowerPlant</comment>
+  </data>
+  <data name="PrismaticShieldGenerator" xml:space="preserve">
+    <value>Prismatischer Schildgenerator</value>
+    <comment>Module PrismaticShieldGenerator</comment>
+  </data>
+  <data name="ProspectorLimpetController" xml:space="preserve">
+    <value>Erzsuchersteuerung</value>
+    <comment>Module ProspectorLimpetController</comment>
+  </data>
+  <data name="PulseLaser" xml:space="preserve">
+    <value>Pulslaser</value>
+    <comment>Module PulseLaser</comment>
+  </data>
+  <data name="RailGun" xml:space="preserve">
+    <value>Schienenkanone</value>
+    <comment>Module RailGun</comment>
+  </data>
+  <data name="ReactiveSurfaceComposite" xml:space="preserve">
+    <value>reagierende Oberflächenzusammensetzung</value>
+    <comment>Module ReactiveSurfaceComposite</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Refinery" xml:space="preserve">
+    <value>Raffinerie</value>
+    <comment>Module Refinery</comment>
+  </data>
+  <data name="ReinforcedAlloy" xml:space="preserve">
+    <value>Verstärkte Legierung</value>
+    <comment>Module ReinforcedAlloy</comment>
+  </data>
   
   
   
