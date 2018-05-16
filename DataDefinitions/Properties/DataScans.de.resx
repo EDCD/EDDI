@@ -109,13 +109,40 @@
     <value>Horchposten</value>
     <comment>Data scan type ListeningPost</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="AbandonedDataLog" xml:space="preserve">
+    <value>Verlassenes Datenprotokoll</value>
+    <comment>Data scan type AbandonedDataLog</comment>
+  </data>
+  <data name="WreckedShip" xml:space="preserve">
+    <value>Schiffswrack</value>
+    <comment>Data scan type WreckedShip</comment>
+  </data>
+  <data name="TouristBeacon" xml:space="preserve">
+    <value>Turistenbake</value>
+    <comment>Data scan type TouristBeacon</comment>
+  </data>
+  <data name="ShipUplink" xml:space="preserve">
+    <value>Schiffsdatenverbindung</value>
+    <comment>Data scan type ShipUplink</comment>
+  </data>
+  <data name="UnknownUplink" xml:space="preserve">
+    <value>Unbekannte Datenverbindung</value>
+    <comment>Data scan type UnknownUplink</comment>
+  </data>
+  <data name="SettlementUnknown" xml:space="preserve">
+    <value>Unbekannte Siedlung</value>
+    <comment>Data scan type SettlementUnknown</comment>
+  </data>
+  <data name="AncientCodex" xml:space="preserve">
+    <value>Antiker Kodex</value>
+    <comment>Data scan type AncientCodex</comment>
+  </data>
+  <data name="DataPointHVT" xml:space="preserve">
+    <value>H.V.T. Datenpunkt</value>
+    <comment>Data scan type DataPointHVT</comment>
+  </data>
+  <data name="TgTransmitter" xml:space="preserve">
+    <value>Thargoidengerät</value>
+    <comment>Data scan type TGTRANSMITTER</comment>
+  </data>
 </root>
