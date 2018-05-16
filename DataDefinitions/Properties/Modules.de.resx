@@ -204,7 +204,7 @@
     <comment>Module FragmentCannon</comment>
   </data>
   <data name="FrameShiftDriveInterdictor" xml:space="preserve">
-    <value>Frameshiftantriebunterbrecher</value>
+    <value>Frameshift Unterbrecher</value>
     <comment>Module FrameShiftDriveInterdictor</comment>
   </data>
   <data name="FrameShiftDrive" xml:space="preserve">
@@ -244,6 +244,22 @@
   </data>
   
   
+  <data name="KillWarrantScanner" xml:space="preserve">
+    <value>Tötungsbefehlscanner</value>
+    <comment>Module KillWarrantScanner</comment>
+  </data>
+  <data name="LifeSupport" xml:space="preserve">
+    <value>Lebenserhaltung</value>
+    <comment>Module LifeSupport</comment>
+  </data>
+  <data name="LightweightAlloy" xml:space="preserve">
+    <value>leichte Legierung</value>
+    <comment>Module LightweightAlloy</comment>
+  </data>
+  <data name="LuxuryClassPassengerCabin" xml:space="preserve">
+    <value>Luxus Passagierkabine</value>
+    <comment>Module LuxuryClassPassengerCabin</comment>
+  </data>
   
   
   
@@ -275,18 +291,29 @@
   
   
   
+  <data name="Sensors" xml:space="preserve">
+    <value>Sensoren</value>
+    <comment>Module Sensors</comment>
+  </data>
+  <data name="ShieldBooster" xml:space="preserve">
+    <value>Schildverstärker</value>
+    <comment>Module ShieldBooster</comment>
+  </data>
+  <data name="ShieldCellBank" xml:space="preserve">
+    <value>Schildzellenbatterie</value>
+    <comment>Module ShieldCellBank</comment>
+  </data>
+  <data name="ShieldGenerator" xml:space="preserve">
+    <value>Schildgenerator</value>
+    <comment>Module ShieldGenerator</comment>
+  </data>
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="StandardDockingComputer" xml:space="preserve">
+    <value>Landecomputer</value>
+    <comment>Module StandardDockingComputer</comment>
+  </data>
   
   
   
