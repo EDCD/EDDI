@@ -137,9 +137,18 @@
     <value>Fracht nahe einer Station abgeworfen</value>
     <comment>Crime dumpingNearStation</comment>
   </data>
-  
-  
-  
+  <data name="dockingMinorBlockingAirlock" xml:space="preserve">
+    <value>Stationsschlitz kurzzeitig blockiert</value>
+    <comment>Crime dockingMinorBlockingAirlock</comment>
+  </data>
+  <data name="dockingMajorBlockingAirlock" xml:space="preserve">
+    <value>Stationsschlitz blockiert</value>
+    <comment>Crime dockingMajorBlockingAirlock</comment>
+  </data>
+  <data name="dockingMinorBlockingLandingPad" xml:space="preserve">
+    <value>Landeplatz kurzzeitig blockiert</value>
+    <comment>Crime dockingMinorBlockingLandingPad</comment>
+  </data>
   <data name="dockingMajorBlockingLandingPad" xml:space="preserve">
     <value>Landeplatz blockiert</value>
     <comment>Crime dockingMajorBlockingLandingPad</comment>
@@ -154,6 +163,12 @@
     <value>Kollision mit Schaden</value>
     <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
   </data>
-  
-  
+  <data name="recklessWeaponsDischarge" xml:space="preserve">
+    <value>rücksichtsloser Waffengebrauch</value>
+    <comment>Crime recklessWeaponsDischarge</comment>
+  </data>
+  <data name="passengerWanted" xml:space="preserve">
+    <value>transportieren einer gesuchten Person</value>
+    <comment>Crime passengerWanted</comment>
+  </data>
 </root>
