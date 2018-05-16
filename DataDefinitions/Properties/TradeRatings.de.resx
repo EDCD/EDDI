@@ -106,5 +106,8 @@
   
   
   
-  
+  <data name="Elite" xml:space="preserve">
+    <value>Elite</value>
+    <comment>Trade rating Elite</comment>
+  </data>
 </root>
