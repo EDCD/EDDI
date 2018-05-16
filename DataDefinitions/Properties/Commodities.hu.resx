@@ -566,7 +566,10 @@ Ellenséges Környezet ruha</value>
   
   
   
-  
+  <data name="HNShockMount" xml:space="preserve">
+    <value>Lengéscsillapítók</value>
+    <comment>Commodity HNShockMount</comment>
+  </data>
   
   
   <data name="Hostage" xml:space="preserve">
@@ -654,20 +657,44 @@ Ellenséges Környezet ruha</value>
   
   
   
+  <data name="LyraeWeed" xml:space="preserve">
+    <value>Lyrae fű</value>
+    <comment>Commodity LyraeWeed</comment>
+  </data>
+  <data name="MagneticEmitterCoil" xml:space="preserve">
+    <value>Mágneses sugárzó</value>
+    <comment>Commodity MagneticEmitterCoil</comment>
+  </data>
+  <data name="MarineSupplies" xml:space="preserve">
+    <value>Hajózó felszerelés</value>
+    <comment>Commodity MarineSupplies</comment>
+  </data>
   
-  
-  
-  
-  
+  <data name="MechucosHighTea" xml:space="preserve">
+    <value>Mechucosi finomított tea</value>
+    <comment>Commodity MechucosHighTea</comment>
+  </data>
   
   <data name="MedicalDiagnosticEquipment" xml:space="preserve">
     <value>Orvosi diagnosztikai berendezések</value>
     <comment>Commodity MedicalDiagnosticEquipment</comment>
   </data>
-  
-  
-  
-  
+  <data name="MetaAlloys" xml:space="preserve">
+    <value>Meta anyagok</value>
+    <comment>Commodity MetaAlloys</comment>
+  </data>
+  <data name="MethaneClathrate" xml:space="preserve">
+    <value>Metán klatrát</value>
+    <comment>Commodity MethaneClathrate</comment>
+  </data>
+  <data name="MethanolMonohydrateCrystals" xml:space="preserve">
+    <value>Metanol monohidrát kristályok</value>
+    <comment>Commodity MethanolMonohydrateCrystals</comment>
+  </data>
+  <data name="MicroControllers" xml:space="preserve">
+    <value>Mikrokontrollerek</value>
+    <comment>Commodity MicroControllers</comment>
+  </data>
   
   
   
