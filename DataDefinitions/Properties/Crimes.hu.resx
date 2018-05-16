@@ -109,13 +109,22 @@
     <value>Kalózkodás</value>
     <comment>Crime piracy</comment>
   </data>
-  
+  <data name="interdiction" xml:space="preserve">
+    <value>Tiszta hajó eltérítése</value>
+    <comment>Crime interdiction</comment>
+  </data>
   <data name="illegalCargo" xml:space="preserve">
     <value>Törvénytelen rakomány szállítása</value>
     <comment>Crime illegalCargo</comment>
   </data>
-  
-  
+  <data name="disobeyPolice" xml:space="preserve">
+    <value>Engedetlenség</value>
+    <comment>Crime disobeyPolice</comment>
+  </data>
+  <data name="fireInNoFireZone" xml:space="preserve">
+    <value>Fegyverhasználat a tűzmentes zónában</value>
+    <comment>Crime fireInNoFireZone</comment>
+  </data>
   <data name="fireInStation" xml:space="preserve">
     <value>Állomás meglövése</value>
     <comment>Crime fireInStation</comment>
@@ -128,8 +137,14 @@
     <value>Rakomány kidobása állomás közelébe</value>
     <comment>Crime dumpingNearStation</comment>
   </data>
-  
-  
+  <data name="dockingMinorBlockingAirlock" xml:space="preserve">
+    <value>Légzsilip rövid blokkolása</value>
+    <comment>Crime dockingMinorBlockingAirlock</comment>
+  </data>
+  <data name="dockingMajorBlockingAirlock" xml:space="preserve">
+    <value>Légzsilip hosszú blokkolása</value>
+    <comment>Crime dockingMajorBlockingAirlock</comment>
+  </data>
   <data name="dockingMinorBlockingLandingPad" xml:space="preserve">
     <value>Leszállóhely blokkolása</value>
     <comment>Crime dockingMinorBlockingLandingPad</comment>
@@ -142,7 +157,10 @@
     <value>Áthaladás</value>
     <comment>Crime dockingMinorTresspass</comment>
   </data>
-  
+  <data name="dockingMajorTresspass" xml:space="preserve">
+    <value>Huzamos áthaladás</value>
+    <comment>Crime dockingMajorTresspass</comment>
+  </data>
   <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
     <value>Ütközés</value>
     <comment>Crime collidedAtSpeedInNoFireZone</comment>
@@ -151,7 +169,10 @@
     <value>Ütközéssel való sérülés okozása</value>
     <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
   </data>
-  
+  <data name="recklessWeaponsDischarge" xml:space="preserve">
+    <value>meggondolatlan fegyverhasználat</value>
+    <comment>Crime recklessWeaponsDischarge</comment>
+  </data>
   <data name="passengerWanted" xml:space="preserve">
     <value>Körözött személy szállítása</value>
     <comment>Crime passengerWanted</comment>
