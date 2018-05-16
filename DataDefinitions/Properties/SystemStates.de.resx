@@ -146,5 +146,8 @@
     <value>Wahl</value>
     <comment>System state Election</comment>
   </data>
-  
+  <data name="Investment" xml:space="preserve">
+    <value>Investition</value>
+    <comment>System state Investment</comment>
+  </data>
 </root>
