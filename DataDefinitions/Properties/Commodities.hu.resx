@@ -278,7 +278,10 @@
     <comment>Commodity Beer</comment>
   </data>
   
-  
+  <data name="Bertrandite" xml:space="preserve">
+    <value>Bertrandit</value>
+    <comment>Commodity Bertrandite</comment>
+  </data>
   <data name="Beryllium" xml:space="preserve">
     <value>Berillium</value>
     <comment>Commodity Beryllium</comment>
@@ -301,7 +304,10 @@
     <comment>Commodity BootlegLiquor</comment>
   </data>
   
-  
+  <data name="Bromellite" xml:space="preserve">
+    <value>Bromellit</value>
+    <comment>Commodity Bromellite</comment>
+  </data>
   
   
   <data name="CD_75KittenBrandCoffee" xml:space="preserve">
@@ -431,25 +437,46 @@
     <comment>Commodity EvacuationShelter</comment>
   </data>
   
-  
+  <data name="Explosives" xml:space="preserve">
+    <value>Robbanószerek</value>
+    <comment>Commodity Explosives</comment>
+  </data>
   <data name="Fish" xml:space="preserve">
     <value>Hal</value>
     <comment>Commodity Fish</comment>
   </data>
+  <data name="FoodCartridges" xml:space="preserve">
+    <value>Élelmiszerek</value>
+    <comment>Commodity FoodCartridges</comment>
+  </data>
   
-  
-  
+  <data name="FruitAndVegetables" xml:space="preserve">
+    <value>Gyümölcsök &amp; Zöldségek</value>
+    <comment>Commodity FruitAndVegetables</comment>
+  </data>
   <data name="FujinTea" xml:space="preserve">
     <value>Fujin Tea</value>
     <comment>Commodity FujinTea</comment>
   </data>
+  <data name="GalacticTravelGuide" xml:space="preserve">
+    <value>Galaktikus Utazási Útmutató</value>
+    <comment>Commodity GalacticTravelGuide</comment>
+  </data>
   
   
   
-  
-  
-  
-  
+  <data name="GeneBank" xml:space="preserve">
+    <value>Génbank</value>
+    <comment>Commodity GeneBank</comment>
+  </data>
+  <data name="GeologicalEquipment" xml:space="preserve">
+    <value>Geológiai felszerelés</value>
+    <comment>Commodity GeologicalEquipment</comment>
+  </data>
+  <data name="GeologicalSamples" xml:space="preserve">
+    <value>Geológiai Minták</value>
+    <comment>Commodity GeologicalSamples</comment>
+  </data>
   
   
   
