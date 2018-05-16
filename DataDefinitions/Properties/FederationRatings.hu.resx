@@ -98,9 +98,18 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
+  <data name="None" xml:space="preserve">
+    <value>Nincs</value>
+    <comment>Federation rank None</comment>
+  </data>
+  <data name="Recruit" xml:space="preserve">
+    <value>Újonc</value>
+    <comment>Federation rank Recruit</comment>
+  </data>
+  <data name="Cadet" xml:space="preserve">
+    <value>Kadét</value>
+    <comment>Federation rank Cadet</comment>
+  </data>
   
   
   
