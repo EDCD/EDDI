@@ -115,7 +115,7 @@
     <comment>Empire rank Master</comment>
   </data>
   <data name="Squire" xml:space="preserve">
-    <value>Knappe</value>
+    <value>Landgraf</value>
     <comment>Empire rank Squire</comment>
   </data>
   <data name="Knight" xml:space="preserve">
@@ -131,7 +131,7 @@
     <comment>Empire rank Baron</comment>
   </data>
   <data name="Viscount" xml:space="preserve">
-    <value>Landgraf</value>
+    <value>Vizegraf</value>
     <comment>Empire rank Viscount</comment>
   </data>
   <data name="Count" xml:space="preserve">
