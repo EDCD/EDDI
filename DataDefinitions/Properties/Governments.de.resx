@@ -118,7 +118,10 @@
     <value>Genossenschaft</value>
     <comment>Government type Cooperative</comment>
   </data>
-  
+  <data name="Corporate" xml:space="preserve">
+    <value>Firmenbund</value>
+    <comment>Government type Corporate</comment>
+  </data>
   <data name="Democracy" xml:space="preserve">
     <value>Demokratie</value>
     <comment>Government type Democracy</comment>
