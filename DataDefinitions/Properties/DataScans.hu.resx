@@ -105,8 +105,14 @@
     <value>Adat pont</value>
     <comment>Data scan type DataPoint</comment>
   </data>
-  
-  
+  <data name="ListeningPost" xml:space="preserve">
+    <value>Megfigyelési pont</value>
+    <comment>Data scan type ListeningPost</comment>
+  </data>
+  <data name="AbandonedDataLog" xml:space="preserve">
+    <value>Elhagyatott bejegyzés</value>
+    <comment>Data scan type AbandonedDataLog</comment>
+  </data>
   <data name="WreckedShip" xml:space="preserve">
     <value>Lezuhant hajó</value>
     <comment>Data scan type WreckedShip</comment>
@@ -115,13 +121,25 @@
     <value>Turista látványosság</value>
     <comment>Data scan type TouristBeacon</comment>
   </data>
-  
-  
-  
+  <data name="ShipUplink" xml:space="preserve">
+    <value>Hajó kapcsolat</value>
+    <comment>Data scan type ShipUplink</comment>
+  </data>
+  <data name="UnknownUplink" xml:space="preserve">
+    <value>Ismeretlen kapcsolat</value>
+    <comment>Data scan type UnknownUplink</comment>
+  </data>
+  <data name="SettlementUnknown" xml:space="preserve">
+    <value>Ismeretlen telep</value>
+    <comment>Data scan type SettlementUnknown</comment>
+  </data>
   <data name="AncientCodex" xml:space="preserve">
     <value>Ősi Kódex</value>
     <comment>Data scan type AncientCodex</comment>
   </data>
   
-  
+  <data name="TgTransmitter" xml:space="preserve">
+    <value>Thargoid eszköz</value>
+    <comment>Data scan type TGTRANSMITTER</comment>
+  </data>
 </root>
