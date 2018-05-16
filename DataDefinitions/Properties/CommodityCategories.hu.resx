@@ -117,9 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
+  <data name="Chemicals" xml:space="preserve">
+    <value>Kémiai</value>
+    <comment>Commodity category Chemicals</comment>
+  </data>
+  <data name="ConsumerItems" xml:space="preserve">
+    <value>Fogyasztói cikkek</value>
+    <comment>Commodity category ConsumerItems</comment>
+  </data>
+  <data name="Foods" xml:space="preserve">
+    <value>Élelmiszerek</value>
+    <comment>Commodity category Foods</comment>
+  </data>
   
   
   
