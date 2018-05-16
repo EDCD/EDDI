@@ -130,7 +130,9 @@
   
   
   
-  
+  <data name="logout" xml:space="preserve">
+    <value>Abmelden</value>
+  </data>
   
   
   
