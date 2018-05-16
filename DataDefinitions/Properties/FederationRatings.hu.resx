@@ -115,17 +115,47 @@
     <comment>Federation rank Midshipman</comment>
   </data>
   <data name="PettyOfficer" xml:space="preserve">
-    <value>Altiszt</value>
+    <value>Őrvezető</value>
     <comment>Federation rank PettyOfficer</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ChiefPettyOfficer" xml:space="preserve">
+    <value>Tizedes</value>
+    <comment>Federation rank ChiefPettyOfficer</comment>
+  </data>
+  <data name="WarrantOfficer" xml:space="preserve">
+    <value>Szakaszvezető</value>
+    <comment>Federation rank WarrantOfficer</comment>
+  </data>
+  <data name="Ensign" xml:space="preserve">
+    <value>Zászlós</value>
+    <comment>Federation rank Ensign</comment>
+  </data>
+  <data name="Lieutenant" xml:space="preserve">
+    <value>Hadnagy</value>
+    <comment>Federation rank Lieutenant</comment>
+  </data>
+  <data name="LieutenantCommander" xml:space="preserve">
+    <value>Főhadnagy</value>
+    <comment>Federation rank LieutenantCommander</comment>
+  </data>
+  <data name="PostCommander" xml:space="preserve">
+    <value>Százados</value>
+    <comment>Federation rank PostCommander</comment>
+  </data>
+  <data name="PostCaptain" xml:space="preserve">
+    <value>Őrnagy</value>
+    <comment>Federation rank PostCaptain</comment>
+  </data>
+  <data name="RearAdmiral" xml:space="preserve">
+    <value>Alezredes</value>
+    <comment>Federation rank RearAdmiral</comment>
+  </data>
+  <data name="ViceAdmiral" xml:space="preserve">
+    <value>Ezredes</value>
+    <comment>Federation rank ViceAdmiral</comment>
+  </data>
+  <data name="Admiral" xml:space="preserve">
+    <value>Tábornok</value>
+    <comment>Federation rank Admiral</comment>
+  </data>
 </root>
