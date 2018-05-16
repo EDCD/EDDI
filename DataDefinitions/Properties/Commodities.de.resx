@@ -436,7 +436,7 @@
   
   
   <data name="NaturalFabrics" xml:space="preserve">
-    <value>Natürliche Stoffe</value>
+    <value>Naturfasern</value>
     <comment>Commodity NaturalFabrics</comment>
   </data>
   
@@ -518,10 +518,26 @@
   
   
   
+  <data name="Scrap" xml:space="preserve">
+    <value>Schrott</value>
+    <comment>Commodity Scrap</comment>
+  </data>
+  <data name="Semiconductors" xml:space="preserve">
+    <value>Halbleiter</value>
+    <comment>Commodity Semiconductors</comment>
+  </data>
+  <data name="Silver" xml:space="preserve">
+    <value>Silber</value>
+    <comment>Commodity Silver</comment>
+  </data>
   
   
   
   
+  <data name="Slaves" xml:space="preserve">
+    <value>Sklaven</value>
+    <comment>Commodity Slaves</comment>
+  </data>
   
   
   
@@ -529,21 +545,57 @@
   
   
   
+  <data name="SurvivalEquipment" xml:space="preserve">
+    <value>Überlebensausrüstung</value>
+    <comment>Commodity SurvivalEquipment</comment>
+  </data>
+  <data name="SyntheticFabrics" xml:space="preserve">
+    <value>Synthetische Stoffe</value>
+    <comment>Commodity SyntheticFabrics</comment>
+  </data>
+  <data name="SyntheticMeat" xml:space="preserve">
+    <value>Synthetisches Fleisch</value>
+    <comment>Commodity SyntheticMeat</comment>
+  </data>
   
   
   
   
+  <data name="Tantalum" xml:space="preserve">
+    <value>Tantal</value>
+    <comment>Commodity Tantalum</comment>
+  </data>
   
   
+  <data name="Tea" xml:space="preserve">
+    <value>Tee</value>
+    <comment>Commodity Tea</comment>
+  </data>
   
   
   
+  <data name="Thallium" xml:space="preserve">
+    <value>Thallium</value>
+    <comment>Commodity Thallium</comment>
+  </data>
   
   
+  <data name="Thorium" xml:space="preserve">
+    <value>Thorium</value>
+    <comment>Commodity Thorium</comment>
+  </data>
   
   
   
   
+  <data name="Titanium" xml:space="preserve">
+    <value>Titan</value>
+    <comment>Commodity Titanium</comment>
+  </data>
+  <data name="Tobacco" xml:space="preserve">
+    <value>Tabak</value>
+    <comment>Commodity Tobacco</comment>
+  </data>
   
   
   
@@ -574,20 +626,10 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Water" xml:space="preserve">
+    <value>Wasser</value>
+    <comment>Commodity Water</comment>
+  </data>
   
   
   
