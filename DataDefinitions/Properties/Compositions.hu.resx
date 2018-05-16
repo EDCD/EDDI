@@ -102,7 +102,10 @@
     <value>Jeges</value>
     <comment>Composition type Icy</comment>
   </data>
-  
+  <data name="MetalRich" xml:space="preserve">
+    <value>Fémgazdag</value>
+    <comment>Composition type MetalRich</comment>
+  </data>
   <data name="Metalic" xml:space="preserve">
     <value>Fémes</value>
     <comment>Composition type Metalic</comment>
