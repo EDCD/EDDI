@@ -117,9 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
+  <data name="change_affect_va" xml:space="preserve">
+    <value>Bármilyen változtatás itt, automatikusan hatással lesz a VoiceAttack-ban. Ha befejezted, bezárhatod az ablakot.</value>
+  </data>
+  <data name="complete" xml:space="preserve">
+    <value>Kész</value>
+    <comment>This is the adjective not the verb</comment>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>kész</value>
+  </data>
   
   
   
