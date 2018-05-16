@@ -134,17 +134,26 @@
     <value>AX Mehrzweckgeschütz</value>
     <comment>Module AXMulti_Cannon</comment>
   </data>
-  
+  <data name="BasicDiscoveryScanner" xml:space="preserve">
+    <value>einfacher Aufklärungsscanner</value>
+    <comment>Module BasicDiscoveryScanner</comment>
+  </data>
   <data name="BeamLaser" xml:space="preserve">
     <value>Strahlenlaser</value>
     <comment>Module BeamLaser</comment>
   </data>
-  
+  <data name="Bi_WeaveShieldGenerator" xml:space="preserve">
+    <value>Zweifachgewebe Schildgenerator</value>
+    <comment>Module Bi_WeaveShieldGenerator</comment>
+  </data>
   <data name="BurstLaser" xml:space="preserve">
     <value>Salvenlaser</value>
     <comment>Module BurstLaser</comment>
   </data>
-  
+  <data name="BusinessClassPassengerCabin" xml:space="preserve">
+    <value>Business Klasse Passagierkabine</value>
+    <comment>Module BusinessClassPassengerCabin</comment>
+  </data>
   <data name="Cannon" xml:space="preserve">
     <value>Kanone</value>
     <comment>Module Cannon</comment>
@@ -174,15 +183,27 @@
     <value>Sammeldrohnensteuerung</value>
     <comment>Module CollectorLimpetController</comment>
   </data>
-  
+  <data name="Colouredstringlights" xml:space="preserve">
+    <value>farbige Lichterkette</value>
+    <comment>Module Colouredstringlights</comment>
+  </data>
   <data name="CorrosionResistantCargoRack" xml:space="preserve">
     <value>korrosionsbeständiger Laderaum</value>
     <comment>Module CorrosionResistantCargoRack</comment>
   </data>
   
-  
-  
-  
+  <data name="DataLinkScanner" xml:space="preserve">
+    <value>Datenlink Scanner</value>
+    <comment>Module DataLinkScanner</comment>
+  </data>
+  <data name="DecontaminationLimpetController" xml:space="preserve">
+    <value>Entseuchungsdrohnensteuerung</value>
+    <comment>Module DecontaminationLimpetController</comment>
+  </data>
+  <data name="DetailedSurfaceScanner" xml:space="preserve">
+    <value>Oberflächenscanner</value>
+    <comment>Module DetailedSurfaceScanner</comment>
+  </data>
   
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
     <value>Touristen Passagierkabine</value>
@@ -193,7 +214,10 @@
     <comment>Module ElectronicCountermeasure</comment>
   </data>
   
-  
+  <data name="FighterArmour" xml:space="preserve">
+    <value>Jägerpanzerung</value>
+    <comment>Module FighterArmour</comment>
+  </data>
   <data name="FighterHangar" xml:space="preserve">
     <value>Jägerhangar</value>
     <comment>Module FighterHangar</comment>
@@ -246,7 +270,10 @@
     <comment>Module HullReinforcementPackage</comment>
   </data>
   
-  
+  <data name="IntermediateDiscoveryScanner" xml:space="preserve">
+    <value>mittlerer Aufklärungsscanner</value>
+    <comment>Module IntermediateDiscoveryScanner</comment>
+  </data>
   <data name="KillWarrantScanner" xml:space="preserve">
     <value>Tötungsbefehlscanner</value>
     <comment>Module KillWarrantScanner</comment>
