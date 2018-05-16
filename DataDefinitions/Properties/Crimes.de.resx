@@ -97,10 +97,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
+  <data name="assault" xml:space="preserve">
+    <value>Überfall</value>
+    <comment>Crime assault</comment>
+  </data>
+  <data name="murder" xml:space="preserve">
+    <value>Mord</value>
+    <comment>Crime murder</comment>
+  </data>
+  <data name="piracy" xml:space="preserve">
+    <value>Piraterie</value>
+    <comment>Crime piracy</comment>
+  </data>
+  <data name="interdiction" xml:space="preserve">
+    <value>Abfangen eines sauberen Schiffes</value>
+    <comment>Crime interdiction</comment>
+  </data>
   
   
   
