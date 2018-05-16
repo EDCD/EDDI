@@ -127,8 +127,12 @@
   <data name="done" xml:space="preserve">
     <value>kész</value>
   </data>
-  
-  
+  <data name="failed" xml:space="preserve">
+    <value>sikertelen</value>
+  </data>
+  <data name="frontier_api_nok" xml:space="preserve">
+    <value>Frontier API kapcsolat nem működik</value>
+  </data>
   
   
   
