@@ -142,7 +142,10 @@
   
   
   
-  
+  <data name="Animalmeat" xml:space="preserve">
+    <value>Tierfleisch</value>
+    <comment>Commodity Animalmeat</comment>
+  </data>
   <data name="AnimalMonitors" xml:space="preserve">
     <value>Tierüberwachung</value>
     <comment>Commodity AnimalMonitors</comment>
@@ -190,9 +193,12 @@
     <value>Beryllium</value>
     <comment>Commodity Beryllium</comment>
   </data>
-  
+  <data name="BioReducingLichen" xml:space="preserve">
+    <value>Bioreduzierende Flechten</value>
+    <comment>Commodity BioReducingLichen</comment>
+  </data>
   <data name="Biowaste" xml:space="preserve">
-    <value>Bioabfall</value>
+    <value>Biomüll</value>
     <comment>Commodity Biowaste</comment>
   </data>
   <data name="Bismuth" xml:space="preserve">
@@ -222,7 +228,10 @@
   </data>
   
   
-  
+  <data name="Clothing" xml:space="preserve">
+    <value>Kleidung</value>
+    <comment>Commodity Clothing</comment>
+  </data>
   
   <data name="Cobalt" xml:space="preserve">
     <value>Kobalt</value>
