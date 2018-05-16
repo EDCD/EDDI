@@ -130,7 +130,7 @@
     <comment>Commodity category Foods</comment>
   </data>
   <data name="IndustrialMaterials" xml:space="preserve">
-    <value>Industriematerialien</value>
+    <value>Industriematerial</value>
     <comment>Commodity category IndustrialMaterials</comment>
   </data>
   <data name="Machinery" xml:space="preserve">
@@ -149,7 +149,10 @@
     <value>Mineralien</value>
     <comment>Commodity category Minerals</comment>
   </data>
-  
+  <data name="Narcotics" xml:space="preserve">
+    <value>Drogen</value>
+    <comment>Commodity category Narcotics</comment>
+  </data>
   <data name="NonMarketable" xml:space="preserve">
     <value>Nicht marktfähig</value>
     <comment>Commodity category NonMarketable</comment>
