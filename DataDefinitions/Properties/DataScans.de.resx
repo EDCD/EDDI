@@ -118,7 +118,7 @@
     <comment>Data scan type WreckedShip</comment>
   </data>
   <data name="TouristBeacon" xml:space="preserve">
-    <value>Turistenbake</value>
+    <value>Touristenbake</value>
     <comment>Data scan type TouristBeacon</comment>
   </data>
   <data name="ShipUplink" xml:space="preserve">
