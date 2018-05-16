@@ -333,7 +333,10 @@
     <comment>Commodity ChameleonCloth</comment>
   </data>
   
-  
+  <data name="ChemicalWaste" xml:space="preserve">
+    <value>Vegyi üzem</value>
+    <comment>Commodity ChemicalWaste</comment>
+  </data>
   
   
   <data name="Clothing" xml:space="preserve">
@@ -341,7 +344,10 @@
     <comment>Commodity Clothing</comment>
   </data>
   
-  
+  <data name="Cobalt" xml:space="preserve">
+    <value>Kobalt</value>
+    <comment>Commodity Cobalt</comment>
+  </data>
   <data name="Coffee" xml:space="preserve">
     <value>Kávé</value>
     <comment>Commodity Coffee</comment>
@@ -426,6 +432,17 @@
   </data>
   
   
+  <data name="Fish" xml:space="preserve">
+    <value>Hal</value>
+    <comment>Commodity Fish</comment>
+  </data>
+  
+  
+  
+  <data name="FujinTea" xml:space="preserve">
+    <value>Fujin Tea</value>
+    <comment>Commodity FujinTea</comment>
+  </data>
   
   
   
@@ -437,12 +454,10 @@
   
   
   
-  
-  
-  
-  
-  
-  
+  <data name="Gold" xml:space="preserve">
+    <value>Arany</value>
+    <comment>Commodity Gold</comment>
+  </data>
   
   
   <data name="Grain" xml:space="preserve">
@@ -454,7 +469,10 @@
     <comment>Commodity Hafnium178</comment>
   </data>
   
-  
+  <data name="HavasupaiDreamCatcher" xml:space="preserve">
+    <value>Havasupai álomcsapda</value>
+    <comment>Commodity HavasupaiDreamCatcher</comment>
+  </data>
   
   
   
@@ -471,15 +489,30 @@
     <comment>Commodity Hostage</comment>
   </data>
   
+  <data name="HydrogenFuel" xml:space="preserve">
+    <value>Hidrogén üzemanyag</value>
+    <comment>Commodity HydrogenFuel</comment>
+  </data>
+  <data name="HydrogenPeroxide" xml:space="preserve">
+    <value>Hidrogén peroxid</value>
+    <comment>Commodity HydrogenPeroxide</comment>
+  </data>
+  <data name="ImperialSlaves" xml:space="preserve">
+    <value>Birodalmi rabszolgák</value>
+    <comment>Commodity ImperialSlaves</comment>
+  </data>
+  <data name="IndiBourbon" xml:space="preserve">
+    <value>Indi burbon</value>
+    <comment>Commodity IndiBourbon</comment>
+  </data>
   
   
   
   
-  
-  
-  
-  
-  
+  <data name="Jadeite" xml:space="preserve">
+    <value>Jáde</value>
+    <comment>Commodity Jadeite</comment>
+  </data>
   
   
   
@@ -498,12 +531,27 @@
   
   
   
+  <data name="Landmines" xml:space="preserve">
+    <value>Taposóaknák</value>
+    <comment>Commodity Landmines</comment>
+  </data>
+  <data name="Lanthanum" xml:space="preserve">
+    <value>Lanthán</value>
+    <comment>Commodity Lanthanum</comment>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="LavianBrandy" xml:space="preserve">
+    <value>Lavian Brandy</value>
+    <comment>Commodity LavianBrandy</comment>
+  </data>
+  <data name="Leather" xml:space="preserve">
+    <value>Bőr</value>
+    <comment>Commodity Leather</comment>
+  </data>
+  <data name="LeestianEvilJuice" xml:space="preserve">
+    <value>Leestii Ördögi Dzsúsz</value>
+    <comment>Commodity LeestianEvilJuice</comment>
+  </data>
   
   <data name="LiquidOxygen" xml:space="preserve">
     <value>Folyékony oxigén</value>
