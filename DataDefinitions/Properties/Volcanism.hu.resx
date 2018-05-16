@@ -117,12 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
+  <data name="Ammonia" xml:space="preserve">
+    <value>Ammónia</value>
+    <comment>Volcanism Ammonia</comment>
+  </data>
+  <data name="Carbon_dioxide" xml:space="preserve">
+    <value>Szén dioxid</value>
+    <comment>Volcanism Carbon_dioxide</comment>
+  </data>
+  <data name="Iron" xml:space="preserve">
+    <value>Vas</value>
+    <comment>Volcanism Iron</comment>
+  </data>
+  <data name="Methane" xml:space="preserve">
+    <value>Metán</value>
+    <comment>Volcanism Methane</comment>
+  </data>
+  <data name="Nitrogen" xml:space="preserve">
+    <value>Nitrogén</value>
+    <comment>Volcanism Nitrogen</comment>
+  </data>
+  <data name="Silicate" xml:space="preserve">
+    <value>Szilikát</value>
+    <comment>Volcanism Silicate</comment>
+  </data>
   
   
   
