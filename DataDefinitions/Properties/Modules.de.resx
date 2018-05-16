@@ -135,7 +135,7 @@
     <comment>Module AXMulti_Cannon</comment>
   </data>
   <data name="BasicDiscoveryScanner" xml:space="preserve">
-    <value>einfacher Aufklärungsscanner</value>
+    <value>Einfacher Aufklärungsscanner</value>
     <comment>Module BasicDiscoveryScanner</comment>
   </data>
   <data name="BeamLaser" xml:space="preserve">
@@ -184,7 +184,7 @@
     <comment>Module CollectorLimpetController</comment>
   </data>
   <data name="Colouredstringlights" xml:space="preserve">
-    <value>farbige Lichterkette</value>
+    <value>Farbige Lichterkette</value>
     <comment>Module Colouredstringlights</comment>
   </data>
   <data name="CorrosionResistantCargoRack" xml:space="preserve">
@@ -193,7 +193,7 @@
   </data>
   
   <data name="DataLinkScanner" xml:space="preserve">
-    <value>Datenlink Scanner</value>
+    <value>Datenlinkscanner</value>
     <comment>Module DataLinkScanner</comment>
   </data>
   <data name="DecontaminationLimpetController" xml:space="preserve">
@@ -258,7 +258,7 @@
   
   
   <data name="HatchBreakerLimpetController" xml:space="preserve">
-    <value>Ladelukenbrecherdrohnensteuerung</value>
+    <value>Ladelukenbrechersteuerung</value>
     <comment>Module HatchBreakerLimpetController</comment>
   </data>
   <data name="HeatSinkLauncher" xml:space="preserve">
@@ -271,7 +271,7 @@
   </data>
   
   <data name="IntermediateDiscoveryScanner" xml:space="preserve">
-    <value>mittlerer Aufklärungsscanner</value>
+    <value>Mittlerer Aufklärungsscanner</value>
     <comment>Module IntermediateDiscoveryScanner</comment>
   </data>
   <data name="KillWarrantScanner" xml:space="preserve">
@@ -283,7 +283,7 @@
     <comment>Module LifeSupport</comment>
   </data>
   <data name="LightweightAlloy" xml:space="preserve">
-    <value>leichte Legierung</value>
+    <value>Leichte Legierung</value>
     <comment>Module LightweightAlloy</comment>
   </data>
   <data name="LuxuryClassPassengerCabin" xml:space="preserve">
@@ -312,7 +312,7 @@
     <comment>Module MiningLaser</comment>
   </data>
   <data name="MirroredSurfaceComposite" xml:space="preserve">
-    <value>gespiegelte Oberflächenzusammensetzung</value>
+    <value>Gespiegelte Oberflächenzusammensetzung</value>
     <comment>Module MirroredSurfaceComposite</comment>
   </data>
   <data name="MissileRack" xml:space="preserve">
@@ -331,7 +331,7 @@
   
   
   <data name="PlanetaryApproachSuite" xml:space="preserve">
-    <value>planetare Anflugs-Suite</value>
+    <value>Planetare Anflugs-Suite</value>
     <comment>Module PlanetaryApproachSuite</comment>
   </data>
   <data name="PlanetaryVehicleHangar" xml:space="preserve">
@@ -371,7 +371,7 @@
     <comment>Module RailGun</comment>
   </data>
   <data name="ReactiveSurfaceComposite" xml:space="preserve">
-    <value>reagierende Oberflächenzusammensetzung</value>
+    <value>Reagierende Oberflächenzusammensetzung</value>
     <comment>Module ReactiveSurfaceComposite</comment>
   </data>
   
@@ -427,7 +427,7 @@
     <comment>Module Victor</comment>
   </data>
   <data name="Whitestringlights" xml:space="preserve">
-    <value>weiße Lichterkette</value>
+    <value>Weiße Lichterkette</value>
     <comment>Module Whitestringlights</comment>
   </data>
   
@@ -444,7 +444,7 @@
     <comment>Weapon mount type Turreted</comment>
   </data>
   <data name="AdvancedDiscoveryScanner" xml:space="preserve">
-    <value>fortgeschrittener Aufklärungsscanner</value>
+    <value>Fortgeschrittener Aufklärungsscanner</value>
     <comment>Module AdvancedDiscoveryScanner</comment>
   </data>
   
