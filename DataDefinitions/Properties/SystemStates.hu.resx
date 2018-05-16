@@ -122,12 +122,18 @@
     <value>Polgárháború</value>
     <comment>System state CivilWar</comment>
   </data>
-  
+  <data name="Boom" xml:space="preserve">
+    <value>Fellendülő gazdaság</value>
+    <comment>System state Boom</comment>
+  </data>
   <data name="Expansion" xml:space="preserve">
     <value>Terjeszkedő</value>
     <comment>System state Expansion</comment>
   </data>
-  
+  <data name="Bust" xml:space="preserve">
+    <value>Hanyatló gazdaság</value>
+    <comment>System state Bust</comment>
+  </data>
   <data name="Outbreak" xml:space="preserve">
     <value>Kitörő</value>
     <comment>System state Outbreak</comment>
