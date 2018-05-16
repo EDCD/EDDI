@@ -160,11 +160,23 @@
   
   
   
+  <data name="BasicMedicines" xml:space="preserve">
+    <value>Allgemeine Medikamente</value>
+    <comment>Commodity BasicMedicines</comment>
+  </data>
+  <data name="BasicNarcotics" xml:space="preserve">
+    <value>Drogen</value>
+    <comment>Commodity BasicNarcotics</comment>
+  </data>
   
-  
-  
-  
-  
+  <data name="BattleWeapons" xml:space="preserve">
+    <value>Kriegswaffen</value>
+    <comment>Commodity BattleWeapons</comment>
+  </data>
+  <data name="Bauxite" xml:space="preserve">
+    <value>Bauxit</value>
+    <comment>Commodity Bauxite</comment>
+  </data>
   <data name="Beer" xml:space="preserve">
     <value>Bier</value>
     <comment>Commodity Beer</comment>
@@ -204,18 +216,39 @@
   
   
   
+  <data name="ChemicalWaste" xml:space="preserve">
+    <value>Chemieabfall</value>
+    <comment>Commodity ChemicalWaste</comment>
+  </data>
   
   
   
   
+  <data name="Cobalt" xml:space="preserve">
+    <value>Kobalt</value>
+    <comment>Commodity Cobalt</comment>
+  </data>
+  <data name="Coffee" xml:space="preserve">
+    <value>Kaffee</value>
+    <comment>Commodity Coffee</comment>
+  </data>
+  <data name="Coltan" xml:space="preserve">
+    <value>Coltan</value>
+    <comment>Commodity Coltan</comment>
+  </data>
+  <data name="CombatStabilisers" xml:space="preserve">
+    <value>Kampfstabilisatoren</value>
+    <comment>Commodity CombatStabilisers</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
+  <data name="ComputerComponents" xml:space="preserve">
+    <value>Computer Komponenten</value>
+    <comment>Commodity ComputerComponents</comment>
+  </data>
+  <data name="ConductiveFabrics" xml:space="preserve">
+    <value>Leitfähige Stoffe</value>
+    <comment>Commodity ConductiveFabrics</comment>
+  </data>
   
   
   
