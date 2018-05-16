@@ -653,9 +653,15 @@ Ellenséges Környezet ruha</value>
     <value>Lítium</value>
     <comment>Commodity Lithium</comment>
   </data>
+  <data name="LithiumHydroxide" xml:space="preserve">
+    <value>Lítium-hidroxid</value>
+    <comment>Commodity LithiumHydroxide</comment>
+  </data>
   
-  
-  
+  <data name="LowTemperatureDiamond" xml:space="preserve">
+    <value>Alacsony hőmérsékletű gyémántok</value>
+    <comment>Commodity LowTemperatureDiamond</comment>
+  </data>
   
   <data name="LyraeWeed" xml:space="preserve">
     <value>Lyrae fű</value>
