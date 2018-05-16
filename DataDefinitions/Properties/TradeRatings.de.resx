@@ -99,19 +99,19 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
   <data name="Penniless" xml:space="preserve">
-    <value>mittellos</value>
+    <value>bettelarm</value>
     <comment>Trade rating Penniless</comment>
   </data>
   <data name="MostlyPenniless" xml:space="preserve">
-    <value>meist mittellos</value>
+    <value>ziemlich arm</value>
     <comment>Trade rating MostlyPenniless</comment>
   </data>
   <data name="Peddler" xml:space="preserve">
-    <value>Hausierer</value>
+    <value>Krämer</value>
     <comment>Trade rating Peddler</comment>
   </data>
   <data name="Dealer" xml:space="preserve">
-    <value>Händler</value>
+    <value>Kleinhändler</value>
     <comment>Trade rating Dealer</comment>
   </data>
   <data name="Merchant" xml:space="preserve">
@@ -119,11 +119,11 @@
     <comment>Trade rating Merchant</comment>
   </data>
   <data name="Broker" xml:space="preserve">
-    <value>Makler</value>
+    <value>Großhändler</value>
     <comment>Trade rating Broker</comment>
   </data>
   <data name="Entrepreneur" xml:space="preserve">
-    <value>Unternehmer</value>
+    <value>Entrepreneur</value>
     <comment>Trade rating Entrepreneur</comment>
   </data>
   <data name="Tycoon" xml:space="preserve">
