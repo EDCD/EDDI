@@ -291,11 +291,23 @@
   
   
   
+  <data name="Fish" xml:space="preserve">
+    <value>Fisch</value>
+    <comment>Commodity Fish</comment>
+  </data>
   
   
   
   
   
+  <data name="Gallite" xml:space="preserve">
+    <value>Gallit</value>
+    <comment>Commodity Gallite</comment>
+  </data>
+  <data name="Gallium" xml:space="preserve">
+    <value>Gallium</value>
+    <comment>Commodity Gallium</comment>
+  </data>
   
   
   
@@ -304,7 +316,15 @@
   
   
   
+  <data name="Gold" xml:space="preserve">
+    <value>Gold</value>
+    <comment>Commodity Gold</comment>
+  </data>
   
+  <data name="Goslarite" xml:space="preserve">
+    <value>Goslarit</value>
+    <comment>Commodity Goslarite</comment>
+  </data>
   
   
   
@@ -324,7 +344,19 @@
   
   
   
+  <data name="ImperialSlaves" xml:space="preserve">
+    <value>Imperiale Sklaven</value>
+    <comment>Commodity ImperialSlaves</comment>
+  </data>
   
+  <data name="Indite" xml:space="preserve">
+    <value>Indit</value>
+    <comment>Commodity Indite</comment>
+  </data>
+  <data name="Indium" xml:space="preserve">
+    <value>Indium</value>
+    <comment>Commodity Indium</comment>
+  </data>
   
   
   
@@ -333,18 +365,50 @@
   
   
   
+  <data name="KamitraCigars" xml:space="preserve">
+    <value>Kamitra Zigarren</value>
+    <comment>Commodity KamitraCigars</comment>
+  </data>
   
   
   
   
+  <data name="KonggaAle" xml:space="preserve">
+    <value>Kongga Bier</value>
+    <comment>Commodity KonggaAle</comment>
+  </data>
   
+  <data name="Landmines" xml:space="preserve">
+    <value>Landminen</value>
+    <comment>Commodity Landmines</comment>
+  </data>
   
   
+  <data name="LavianBrandy" xml:space="preserve">
+    <value>Lavian Brandy</value>
+    <comment>Commodity LavianBrandy</comment>
+  </data>
+  <data name="Leather" xml:space="preserve">
+    <value>Leder</value>
+    <comment>Commodity Leather</comment>
+  </data>
   
+  <data name="Lepidolite" xml:space="preserve">
+    <value>Lepidolit</value>
+    <comment>Commodity Lepidolite</comment>
+  </data>
   
   
+  <data name="Lithium" xml:space="preserve">
+    <value>Lithium</value>
+    <comment>Commodity Lithium</comment>
+  </data>
   
   
+  <data name="LowTemperatureDiamond" xml:space="preserve">
+    <value>Niedrigtemperatur Diamanten</value>
+    <comment>Commodity LowTemperatureDiamond</comment>
+  </data>
   
   
   
@@ -371,6 +435,10 @@
   
   
   
+  <data name="NaturalFabrics" xml:space="preserve">
+    <value>Natürliche Stoffe</value>
+    <comment>Commodity NaturalFabrics</comment>
+  </data>
   
   
   
@@ -378,6 +446,10 @@
   
   
   
+  <data name="NonLethalWeapons" xml:space="preserve">
+    <value>Nichttödliche Waffen</value>
+    <comment>Commodity NonLethalWeapons</comment>
+  </data>
   
   
   
@@ -385,49 +457,55 @@
   
   
   
+  <data name="Osmium" xml:space="preserve">
+    <value>Osmium</value>
+    <comment>Commodity Osmium</comment>
+  </data>
+  <data name="Painite" xml:space="preserve">
+    <value>Painit</value>
+    <comment>Commodity Painite</comment>
+  </data>
+  <data name="Palladium" xml:space="preserve">
+    <value>Palladium</value>
+    <comment>Commodity Palladium</comment>
+  </data>
   
   
   
   
   
   
+  <data name="Platinum" xml:space="preserve">
+    <value>Platin</value>
+    <comment>Commodity Platinum</comment>
+  </data>
   
   
   
+  <data name="PowerGenerators" xml:space="preserve">
+    <value>Stromerzeuger</value>
+    <comment>Commodity PowerGenerators</comment>
+  </data>
   
   
+  <data name="Praseodymium" xml:space="preserve">
+    <value>Praseodymium</value>
+    <comment>Commodity Praseodymium</comment>
+  </data>
   
+  <data name="ProgenitorCells" xml:space="preserve">
+    <value>Vorläuferzellen</value>
+    <comment>Commodity ProgenitorCells</comment>
+  </data>
   
   
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ReactiveArmour" xml:space="preserve">
+    <value>Reaktivrüstung</value>
+    <comment>Commodity ReactiveArmour</comment>
+  </data>
   
   
   
