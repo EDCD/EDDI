@@ -113,20 +113,47 @@
     <value>Abfangen eines sauberen Schiffes</value>
     <comment>Crime interdiction</comment>
   </data>
+  <data name="illegalCargo" xml:space="preserve">
+    <value>Transportieren illegaler Fracht</value>
+    <comment>Crime illegalCargo</comment>
+  </data>
+  <data name="disobeyPolice" xml:space="preserve">
+    <value>Polizeianordnung nicht befolgt</value>
+    <comment>Crime disobeyPolice</comment>
+  </data>
+  <data name="fireInNoFireZone" xml:space="preserve">
+    <value>Waffengebrauch in einer waffenfreien Zone</value>
+    <comment>Crime fireInNoFireZone</comment>
+  </data>
+  <data name="fireInStation" xml:space="preserve">
+    <value>Waffengebrauch in einer Station</value>
+    <comment>Crime fireInStation</comment>
+  </data>
+  <data name="dumpingDangerous" xml:space="preserve">
+    <value>Gefährliche Fracht abgeworfen</value>
+    <comment>Crime dumpingDangerous</comment>
+  </data>
+  <data name="dumpingNearStation" xml:space="preserve">
+    <value>Fracht nahe einer Station abgeworfen</value>
+    <comment>Crime dumpingNearStation</comment>
+  </data>
   
   
   
+  <data name="dockingMajorBlockingLandingPad" xml:space="preserve">
+    <value>Landeplatz blockiert</value>
+    <comment>Crime dockingMajorBlockingLandingPad</comment>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
+    <value>Kollision</value>
+    <comment>Crime collidedAtSpeedInNoFireZone</comment>
+  </data>
+  <data name="collidedAtSpeedInNoFireZone_hulldamage" xml:space="preserve">
+    <value>Kollision mit Schaden</value>
+    <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
+  </data>
   
   
 </root>
