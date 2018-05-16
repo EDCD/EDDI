@@ -110,7 +110,10 @@
     <comment>Crime piracy</comment>
   </data>
   
-  
+  <data name="illegalCargo" xml:space="preserve">
+    <value>Törvénytelen rakomány szállítása</value>
+    <comment>Crime illegalCargo</comment>
+  </data>
   
   
   <data name="fireInStation" xml:space="preserve">
@@ -127,12 +130,30 @@
   </data>
   
   
+  <data name="dockingMinorBlockingLandingPad" xml:space="preserve">
+    <value>Leszállóhely blokkolása</value>
+    <comment>Crime dockingMinorBlockingLandingPad</comment>
+  </data>
+  <data name="dockingMajorBlockingLandingPad" xml:space="preserve">
+    <value>Leszállóhely blokkolása</value>
+    <comment>Crime dockingMajorBlockingLandingPad</comment>
+  </data>
+  <data name="dockingMinorTresspass" xml:space="preserve">
+    <value>Áthaladás</value>
+    <comment>Crime dockingMinorTresspass</comment>
+  </data>
   
+  <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
+    <value>Ütközés</value>
+    <comment>Crime collidedAtSpeedInNoFireZone</comment>
+  </data>
+  <data name="collidedAtSpeedInNoFireZone_hulldamage" xml:space="preserve">
+    <value>Ütközéssel való sérülés okozása</value>
+    <comment>Crime collidedAtSpeedInNoFireZone_hulldamage</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
+  <data name="passengerWanted" xml:space="preserve">
+    <value>Körözött személy szállítása</value>
+    <comment>Crime passengerWanted</comment>
+  </data>
 </root>
