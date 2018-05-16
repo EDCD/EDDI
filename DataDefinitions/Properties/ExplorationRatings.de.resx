@@ -98,11 +98,26 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
-  
-  
-  
-  
+  <data name="Aimless" xml:space="preserve">
+    <value>Total planlos</value>
+    <comment>Exploration rating Aimless</comment>
+  </data>
+  <data name="MostlyAimless" xml:space="preserve">
+    <value>Fast planlos</value>
+    <comment>Exploration rating MostlyAimless</comment>
+  </data>
+  <data name="Scout" xml:space="preserve">
+    <value>Späher</value>
+    <comment>Exploration rating Scout</comment>
+  </data>
+  <data name="Surveyor" xml:space="preserve">
+    <value>Landkundiger</value>
+    <comment>Exploration rating Surveyor</comment>
+  </data>
+  <data name="Trailblazer" xml:space="preserve">
+    <value>Wegebener</value>
+    <comment>Exploration rating Trailblazer</comment>
+  </data>
   
   
   
