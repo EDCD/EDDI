@@ -121,7 +121,10 @@
     <value>Chemikalien</value>
     <comment>Commodity category Chemicals</comment>
   </data>
-  
+  <data name="ConsumerItems" xml:space="preserve">
+    <value>Konsumgüter</value>
+    <comment>Commodity category ConsumerItems</comment>
+  </data>
   
   
   
