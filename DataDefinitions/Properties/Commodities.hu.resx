@@ -810,11 +810,26 @@ Ellenséges Környezet ruha</value>
     <comment>Commodity PerformanceEnhancers</comment>
   </data>
   
-  
-  
-  
-  
-  
+  <data name="PersonalWeapons" xml:space="preserve">
+    <value>Oldalfegyverek</value>
+    <comment>Commodity PersonalWeapons</comment>
+  </data>
+  <data name="Pesticides" xml:space="preserve">
+    <value>Rovarírtó</value>
+    <comment>Commodity Pesticides</comment>
+  </data>
+  <data name="Platinum" xml:space="preserve">
+    <value>Platina</value>
+    <comment>Commodity Platinum</comment>
+  </data>
+  <data name="PoliticalPrisoner" xml:space="preserve">
+    <value>Politikai fogoly</value>
+    <comment>Commodity PoliticalPrisoner</comment>
+  </data>
+  <data name="Polymers" xml:space="preserve">
+    <value>Műanyagok</value>
+    <comment>Commodity Polymers</comment>
+  </data>
   
   
   
