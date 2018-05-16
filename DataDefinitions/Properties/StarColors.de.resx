@@ -102,14 +102,23 @@
     <comment>Star color blue</comment>
   </data>
   <data name="blue_white" xml:space="preserve">
-    <value>blauweiß</value>
+    <value>blau-weiß</value>
     <comment>Star color blue_white</comment>
   </data>
   <data name="white" xml:space="preserve">
     <value>weiß</value>
     <comment>Star color white</comment>
   </data>
-  
-  
-  
+  <data name="yellow_white" xml:space="preserve">
+    <value>gelb-weiß</value>
+    <comment>Star color yellow_white</comment>
+  </data>
+  <data name="yellow_orange" xml:space="preserve">
+    <value>gelb-orange</value>
+    <comment>Star color yellow_orange</comment>
+  </data>
+  <data name="orange_red" xml:space="preserve">
+    <value>orange-rot</value>
+    <comment>Star color orange_red</comment>
+  </data>
 </root>
