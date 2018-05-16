@@ -132,44 +132,116 @@
   </data>
   
   
+  <data name="BeamLaser" xml:space="preserve">
+    <value>Strahlenlaser</value>
+    <comment>Module BeamLaser</comment>
+  </data>
+  
+  <data name="BurstLaser" xml:space="preserve">
+    <value>Salvenlaser</value>
+    <comment>Module BurstLaser</comment>
+  </data>
+  
+  <data name="Cannon" xml:space="preserve">
+    <value>Kanone</value>
+    <comment>Module Cannon</comment>
+  </data>
+  <data name="CargoHatch" xml:space="preserve">
+    <value>Ladeluke</value>
+    <comment>Module CargoHatch</comment>
+  </data>
+  <data name="CargoRack" xml:space="preserve">
+    <value>Laderaum</value>
+    <comment>Module CargoRack</comment>
+  </data>
+  <data name="VoicePack_Celeste" xml:space="preserve">
+    <value>Celeste</value>
+    <comment>Module Celeste</comment>
+  </data>
+  <data name="ChaffLauncher" xml:space="preserve">
+    <value>Düppelwerfer</value>
+    <comment>Module ChaffLauncher</comment>
+  </data>
+  
+  <data name="Cockpit" xml:space="preserve">
+    <value>Cockpit</value>
+    <comment>Module Cockpit</comment>
+  </data>
+  <data name="CollectorLimpetController" xml:space="preserve">
+    <value>Sammeldrohnensteuerung</value>
+    <comment>Module CollectorLimpetController</comment>
+  </data>
+  
+  <data name="CorrosionResistantCargoRack" xml:space="preserve">
+    <value>korrosionsbeständiger Laderaum</value>
+    <comment>Module CorrosionResistantCargoRack</comment>
+  </data>
   
   
   
   
   
+  <data name="EconomyClassPassengerCabin" xml:space="preserve">
+    <value>Touristen Passagierkabine</value>
+    <comment>Module EconomyClassPassengerCabin</comment>
+  </data>
+  <data name="ElectronicCountermeasure" xml:space="preserve">
+    <value>Elektronische Gegenmaßnahme</value>
+    <comment>Module ElectronicCountermeasure</comment>
+  </data>
+  
+  
+  <data name="FighterHangar" xml:space="preserve">
+    <value>Jägerhangar</value>
+    <comment>Module FighterHangar</comment>
+  </data>
+  <data name="FirstClassPassengerCabin" xml:space="preserve">
+    <value>Erste Klasse Passagierkabine</value>
+    <comment>Module FirstClassPassengerCabin</comment>
+  </data>
+  <data name="FragmentCannon" xml:space="preserve">
+    <value> Fragmentkanone</value>
+    <comment>Module FragmentCannon</comment>
+  </data>
+  <data name="FrameShiftDriveInterdictor" xml:space="preserve">
+    <value>Frameshiftantriebunterbrecher</value>
+    <comment>Module FrameShiftDriveInterdictor</comment>
+  </data>
+  <data name="FrameShiftDrive" xml:space="preserve">
+    <value>Frameshiftantrieb</value>
+    <comment>Module FrameShiftDrive</comment>
+  </data>
+  <data name="FrameShiftWakeScanner" xml:space="preserve">
+    <value>Frameshiftwolkenscanner</value>
+    <comment>Module FrameShiftWakeScanner</comment>
+  </data>
+  <data name="FuelScoop" xml:space="preserve">
+    <value>Treibstoffsammler</value>
+    <comment>Module FuelScoop</comment>
+  </data>
+  <data name="FuelTank" xml:space="preserve">
+    <value>Treibstofftank</value>
+    <comment>Module FuelTank</comment>
+  </data>
+  <data name="FuelTransferLimpetController" xml:space="preserve">
+    <value>Treibstoffdrohnensteuerung</value>
+    <comment>Module FuelTransferLimpetController</comment>
+  </data>
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="HatchBreakerLimpetController" xml:space="preserve">
+    <value>Ladelukenbrecherdrohnensteuerung</value>
+    <comment>Module HatchBreakerLimpetController</comment>
+  </data>
+  <data name="HeatSinkLauncher" xml:space="preserve">
+    <value>Kühlkörperwerfer</value>
+    <comment>Module HeatSinkLauncher</comment>
+  </data>
+  <data name="HullReinforcementPackage" xml:space="preserve">
+    <value>Rumpfhüllenverstärkung</value>
+    <comment>Module HullReinforcementPackage</comment>
+  </data>
   
   
   
