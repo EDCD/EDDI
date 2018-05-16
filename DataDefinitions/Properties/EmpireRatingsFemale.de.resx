@@ -121,17 +121,50 @@
     <value>keiner</value>
     <comment>Empire rank None</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Outsider" xml:space="preserve">
+    <value>Außenseiterin</value>
+    <comment>Empire rank Outsider</comment>
+  </data>
+  <data name="Serf" xml:space="preserve">
+    <value>Leibeigne</value>
+    <comment>Empire rank Serf</comment>
+  </data>
+  <data name="Master" xml:space="preserve">
+    <value>Herrin</value>
+    <comment>Empire rank Master</comment>
+  </data>
+  <data name="Squire" xml:space="preserve">
+    <value>Landgräfin</value>
+    <comment>Empire rank Squire</comment>
+  </data>
+  <data name="Knight" xml:space="preserve">
+    <value>Edeldame</value>
+    <comment>Empire rank Knight</comment>
+  </data>
+  <data name="Lord" xml:space="preserve">
+    <value>Lady</value>
+    <comment>Empire rank Lord</comment>
+  </data>
+  <data name="Baron" xml:space="preserve">
+    <value>Baronin</value>
+    <comment>Empire rank Baron</comment>
+  </data>
+  <data name="Viscount" xml:space="preserve">
+    <value>Vizegräfin</value>
+    <comment>Empire rank Viscount</comment>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Gräfin</value>
+    <comment>Empire rank Count</comment>
+  </data>
+  <data name="Earl" xml:space="preserve">
+    <value>Earl</value>
+    <comment>Empire rank Earl</comment>
+  </data>
+  <data name="Marquis" xml:space="preserve">
+    <value>Marquise</value>
+    <comment>Empire rank Marquis</comment>
+  </data>
   <data name="Duke" xml:space="preserve">
     <value>Herzogin</value>
     <comment>Empire rank Duke</comment>
