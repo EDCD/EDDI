@@ -251,7 +251,10 @@
   </data>
   
   
-  
+  <data name="Copper" xml:space="preserve">
+    <value>Kupfer</value>
+    <comment>Commodity Copper</comment>
+  </data>
   
   
   
