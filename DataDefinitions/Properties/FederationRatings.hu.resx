@@ -110,8 +110,14 @@
     <value>Kadét</value>
     <comment>Federation rank Cadet</comment>
   </data>
-  
-  
+  <data name="Midshipman" xml:space="preserve">
+    <value>Közlegény</value>
+    <comment>Federation rank Midshipman</comment>
+  </data>
+  <data name="PettyOfficer" xml:space="preserve">
+    <value>Altiszt</value>
+    <comment>Federation rank PettyOfficer</comment>
+  </data>
   
   
   
