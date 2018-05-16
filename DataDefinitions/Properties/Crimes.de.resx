@@ -129,7 +129,10 @@
     <value>Waffengebrauch in einer Station</value>
     <comment>Crime fireInStation</comment>
   </data>
-  
+  <data name="dumpingDangerous" xml:space="preserve">
+    <value>Abladen gefährlicher Fracht</value>
+    <comment>Crime dumpingDangerous</comment>
+  </data>
   <data name="dumpingNearStation" xml:space="preserve">
     <value>Fracht nahe einer Station abgeworfen</value>
     <comment>Crime dumpingNearStation</comment>
