@@ -97,16 +97,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="assault" xml:space="preserve">
+    <value>Támadás</value>
+    <comment>Crime assault</comment>
+  </data>
+  <data name="murder" xml:space="preserve">
+    <value>Gyilkosság</value>
+    <comment>Crime murder</comment>
+  </data>
+  <data name="piracy" xml:space="preserve">
+    <value>Kalózkodás</value>
+    <comment>Crime piracy</comment>
+  </data>
   
   
   
   
-  
-  
-  
-  
-  
-  
+  <data name="fireInStation" xml:space="preserve">
+    <value>Állomás meglövése</value>
+    <comment>Crime fireInStation</comment>
+  </data>
+  <data name="dumpingDangerous" xml:space="preserve">
+    <value>Veszélyes rakomány kidobása</value>
+    <comment>Crime dumpingDangerous</comment>
+  </data>
+  <data name="dumpingNearStation" xml:space="preserve">
+    <value>Rakomány kidobása állomás közelébe</value>
+    <comment>Crime dumpingNearStation</comment>
+  </data>
   
   
   
