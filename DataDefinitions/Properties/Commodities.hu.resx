@@ -309,7 +309,10 @@
     <comment>Commodity Bromellite</comment>
   </data>
   
-  
+  <data name="BurnhamBileDistillate" xml:space="preserve">
+    <value>Burnham Bile párlat</value>
+    <comment>Commodity BurnhamBileDistillate</comment>
+  </data>
   <data name="CD_75KittenBrandCoffee" xml:space="preserve">
     <value>Cd-75 kitten brand kávé</value>
     <comment>Commodity CD_75KittenBrandCoffee</comment>
