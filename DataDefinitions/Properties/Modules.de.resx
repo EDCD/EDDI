@@ -117,10 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AdvancedPlasmaAccelerator" xml:space="preserve">
+    <value>Erweiterter Plasmabeschleuniger</value>
+    <comment>Module AdvancedPlasmaAccelerator</comment>
+  </data>
   
-  
-  
-  
+  <data name="AutoField_MaintenanceUnit" xml:space="preserve">
+    <value>Automatische Feldwartung</value>
+    <comment>Module AutoField_MaintenanceUnit</comment>
+  </data>
+  <data name="AXMissileRack" xml:space="preserve">
+    <value>AX Raketengestell</value>
+    <comment>Module AXMissileRack</comment>
+  </data>
   
   
   
