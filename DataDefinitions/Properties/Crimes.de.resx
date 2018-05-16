@@ -129,10 +129,7 @@
     <value>Waffengebrauch in einer Station</value>
     <comment>Crime fireInStation</comment>
   </data>
-  <data name="dumpingDangerous" xml:space="preserve">
-    <value>Gefährliche Fracht abgeworfen</value>
-    <comment>Crime dumpingDangerous</comment>
-  </data>
+  
   <data name="dumpingNearStation" xml:space="preserve">
     <value>Fracht nahe einer Station abgeworfen</value>
     <comment>Crime dumpingNearStation</comment>
@@ -153,8 +150,14 @@
     <value>Landeplatz blockiert</value>
     <comment>Crime dockingMajorBlockingLandingPad</comment>
   </data>
-  
-  
+  <data name="dockingMinorTresspass" xml:space="preserve">
+    <value>Übertretung</value>
+    <comment>Crime dockingMinorTresspass</comment>
+  </data>
+  <data name="dockingMajorTresspass" xml:space="preserve">
+    <value>Hauptübertretung</value>
+    <comment>Crime dockingMajorTresspass</comment>
+  </data>
   <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
     <value>Kollision</value>
     <comment>Crime collidedAtSpeedInNoFireZone</comment>
