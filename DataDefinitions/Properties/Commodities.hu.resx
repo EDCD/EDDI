@@ -389,7 +389,10 @@
     <value>Koltán</value>
     <comment>Commodity Coltan</comment>
   </data>
-  
+  <data name="CombatStabilisers" xml:space="preserve">
+    <value>Harci ajzószerek</value>
+    <comment>Commodity CombatStabilisers</comment>
+  </data>
   <data name="ComercialSamples" xml:space="preserve">
     <value>Termékminták</value>
     <comment>Commodity ComercialSamples</comment>
@@ -398,7 +401,10 @@
     <value>Kompjuter alkatrészek</value>
     <comment>Commodity ComputerComponents</comment>
   </data>
-  
+  <data name="ConductiveFabrics" xml:space="preserve">
+    <value>Áramvezető ruhaanyagok</value>
+    <comment>Commodity ConductiveFabrics</comment>
+  </data>
   <data name="ConsumerTechnology" xml:space="preserve">
     <value>Fogyasztói technológia</value>
     <comment>Commodity ConsumerTechnology</comment>
@@ -411,7 +417,10 @@
     <value>Réz</value>
     <comment>Commodity Copper</comment>
   </data>
-  
+  <data name="CoquimSpongiformVictuals" xml:space="preserve">
+    <value>Coquimi ehető szivacs</value>
+    <comment>Commodity CoquimSpongiformVictuals</comment>
+  </data>
   <data name="CropHarvesters" xml:space="preserve">
     <value>Betakarítók</value>
     <comment>Commodity CropHarvesters</comment>
