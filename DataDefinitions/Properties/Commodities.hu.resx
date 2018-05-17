@@ -218,15 +218,15 @@
     <comment>Commodity AnyNaCoffee</comment>
   </data>
   <data name="AquaponicSystems" xml:space="preserve">
-    <value>Viztisztitó rendszer</value>
+    <value>Akvapóniai rendszerek</value>
     <comment>Commodity AquaponicSystems</comment>
   </data>
   <data name="AroucaConventualSweets" xml:space="preserve">
-    <value>Arouka kolostóri édességek</value>
+    <value>Arouca-i tradícionális édességek</value>
     <comment>Commodity AroucaConventualSweets</comment>
   </data>
   <data name="ArticulationMotors" xml:space="preserve">
-    <value>Ártikulésön motorsz</value>
+    <value>Illesztő motorok</value>
     <comment>Commodity ArticulationMotors</comment>
   </data>
   <data name="AssaultPlans" xml:space="preserve">
@@ -234,7 +234,7 @@
     <comment>Commodity AssaultPlans</comment>
   </data>
   <data name="AtmosphericExtractors" xml:space="preserve">
-    <value>Atmoszféra processzorok</value>
+    <value>Levegő fejlesztők</value>
     <comment>Commodity AtmosphericExtractors</comment>
   </data>
   <data name="AutoFabricators" xml:space="preserve">
@@ -246,7 +246,7 @@
     <comment>Commodity AzCancriFormula42</comment>
   </data>
   <data name="BaltahSineVacuumKrill" xml:space="preserve">
-    <value>Baltah sine vákum krill</value>
+    <value>Baltah'Sine-i vákum rák</value>
     <comment>Commodity BaltahSineVacuumKrill</comment>
   </data>
   <data name="BankiAmphibiousLeather" xml:space="preserve">
@@ -254,7 +254,7 @@
     <comment>Commodity BankiAmphibiousLeather</comment>
   </data>
   <data name="BasicMedicines" xml:space="preserve">
-    <value>Gyógyszerek</value>
+    <value>Alap gyógyszerek</value>
     <comment>Commodity BasicMedicines</comment>
   </data>
   <data name="BasicNarcotics" xml:space="preserve">
@@ -278,7 +278,7 @@
     <comment>Commodity Beer</comment>
   </data>
   <data name="BelalansRayLeather" xml:space="preserve">
-    <value>Belalani rájabőr</value>
+    <value>Belalan-i rájabőr</value>
     <comment>Commodity BelalansRayLeather</comment>
   </data>
   <data name="Bertrandite" xml:space="preserve">
@@ -298,7 +298,7 @@
     <comment>Commodity Biowaste</comment>
   </data>
   <data name="Bismuth" xml:space="preserve">
-    <value>Bismuth</value>
+    <value>Termésbizmut</value>
     <comment>Commodity Bismuth</comment>
   </data>
   <data name="BlueMilk" xml:space="preserve">
