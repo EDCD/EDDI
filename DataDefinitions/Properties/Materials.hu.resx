@@ -203,8 +203,14 @@
   </data>
   
   
-  
-  
+  <data name="antimony" xml:space="preserve">
+    <value>Antimonit</value>
+    <comment>Material antimony</comment>
+  </data>
+  <data name="polonium" xml:space="preserve">
+    <value>Polónium</value>
+    <comment>Material polonium</comment>
+  </data>
   
   
   
