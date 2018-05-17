@@ -573,16 +573,34 @@
     <value>Geológiai Minták</value>
     <comment>Commodity GeologicalSamples</comment>
   </data>
-  
-  
-  
-  
+  <data name="GerasianGueuzeBeer" xml:space="preserve">
+    <value>Gerasiai Gueuze sör</value>
+    <comment>Commodity GerasianGueuzeBeer</comment>
+  </data>
+  <data name="GiantIrukamaSnails" xml:space="preserve">
+    <value>Irukamai óriás csiga</value>
+    <comment>Commodity GiantIrukamaSnails</comment>
+  </data>
+  <data name="GiantVerrix" xml:space="preserve">
+    <value>Óriás verrix</value>
+    <comment>Commodity GiantVerrix</comment>
+  </data>
+  <data name="GilyaSignatureWeapons" xml:space="preserve">
+    <value>Gilyai egyedi fegyverek</value>
+    <comment>Commodity GilyaSignatureWeapons</comment>
+  </data>
   <data name="Gold" xml:space="preserve">
     <value>Arany</value>
     <comment>Commodity Gold</comment>
   </data>
-  
-  
+  <data name="GomanYauponCoffee" xml:space="preserve">
+    <value>Gomani Yaupon kávé</value>
+    <comment>Commodity GomanYauponCoffee</comment>
+  </data>
+  <data name="Goslarite" xml:space="preserve">
+    <value>Goszlarit</value>
+    <comment>Commodity Goslarite</comment>
+  </data>
   <data name="Grain" xml:space="preserve">
     <value>Búza</value>
     <comment>Commodity Grain</comment>
@@ -591,7 +609,10 @@
     <value>Hafnium 178</value>
     <comment>Commodity Hafnium178</comment>
   </data>
-  
+  <data name="HaidneBlackBrew" xml:space="preserve">
+    <value>Haidnei ásványi tea</value>
+    <comment>Commodity HaidneBlackBrew</comment>
+  </data>
   <data name="HavasupaiDreamCatcher" xml:space="preserve">
     <value>Havasupai álomcsapda</value>
     <comment>Commodity HavasupaiDreamCatcher</comment>
@@ -601,7 +622,10 @@
 Ellenséges Környezet ruha</value>
     <comment>Commodity HazardousEnvironmentSuits</comment>
   </data>
-  
+  <data name="HeatsinkInterlink" xml:space="preserve">
+    <value>Hőelnyelő csatolók</value>
+    <comment>Commodity HeatsinkInterlink</comment>
+  </data>
   
   <data name="HelvetitjPearls" xml:space="preserve">
     <value>Helvetitj gyöngy</value>
