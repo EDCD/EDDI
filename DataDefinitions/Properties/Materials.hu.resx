@@ -309,18 +309,54 @@
     <value>Thargoid anyagösszeállítási adat</value>
     <comment>Material tg_compositiondata</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="unknownshipsignature" xml:space="preserve">
+    <value>Thargoid hajó lenyomat</value>
+    <comment>Material unknownshipsignature</comment>
+  </data>
+  <data name="shieldpatternanalysis" xml:space="preserve">
+    <value>Téves pajzs minta analízis</value>
+    <comment>Material shieldpatternanalysis</comment>
+  </data>
+  <data name="encryptionarchives" xml:space="preserve">
+    <value>Rendellenes kódolási arhívumok</value>
+    <comment>Material encryptionarchives</comment>
+  </data>
+  <data name="decodedemissiondata" xml:space="preserve">
+    <value>Dekódolt kibocsátási adat</value>
+    <comment>Material decodedemissiondata</comment>
+  </data>
+  <data name="encodedscandata" xml:space="preserve">
+    <value>Eltérő szkennelési adat</value>
+    <comment>Material encodedscandata</comment>
+  </data>
+  <data name="hyperspacetrajectories" xml:space="preserve">
+    <value>Excentrikus hiperűr röppáják</value>
+    <comment>Material hyperspacetrajectories</comment>
+  </data>
+  <data name="securityfirmware" xml:space="preserve">
+    <value>Biztonsági firmware patch</value>
+    <comment>Material securityfirmware</comment>
+  </data>
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>Ős nyelvi adat</value>
+    <comment>Material ancientlanguagedata</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>Ős technológiai adat</value>
+    <comment>Material ancienttechnologicaldata</comment>
+  </data>
+  <data name="tg_residuedata" xml:space="preserve">
+    <value>Thargoid maradvány adat</value>
+    <comment>Material tg_residuedata</comment>
+  </data>
+  <data name="unknownwakedata" xml:space="preserve">
+    <value>Thargoid nyom adat</value>
+    <comment>Material unknownwakedata</comment>
+  </data>
+  <data name="compactemissionsdata" xml:space="preserve">
+    <value>Szabálytalan kompakt kibocsátási adat</value>
+    <comment>Material compactemissionsdata</comment>
+  </data>
   
   
   
