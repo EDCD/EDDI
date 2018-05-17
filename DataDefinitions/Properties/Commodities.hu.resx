@@ -806,7 +806,7 @@
     <comment>Commodity LowTemperatureDiamond</comment>
   </data>
   <data name="LTTHypersweet" xml:space="preserve">
-    <value>LTT-i csúcs édesítő</value>
+    <value>LTTi csúcs édesítő</value>
     <comment>Commodity LTTHypersweet</comment>
   </data>
   <data name="LyraeWeed" xml:space="preserve">
@@ -834,11 +834,11 @@
     <comment>Commodity MedbStarlube</comment>
   </data>
   <data name="MedicalDiagnosticEquipment" xml:space="preserve">
-    <value>Orvosi diagnosztikai berendezések</value>
+    <value>Orvosi diagnosztikai felszerelések</value>
     <comment>Commodity MedicalDiagnosticEquipment</comment>
   </data>
   <data name="MetaAlloys" xml:space="preserve">
-    <value>Meta anyagok</value>
+    <value>Meta ötvözet</value>
     <comment>Commodity MetaAlloys</comment>
   </data>
   <data name="MethaneClathrate" xml:space="preserve">
@@ -870,11 +870,11 @@
     <comment>Commodity MineralOil</comment>
   </data>
   <data name="ModularTerminals" xml:space="preserve">
-    <value>Moduláris megjelenítők</value>
+    <value>Moduláris terminálok</value>
     <comment>Commodity ModularTerminals</comment>
   </data>
   <data name="Moissanite" xml:space="preserve">
-    <value>Moissanit</value>
+    <value>Mosszanit</value>
     <comment>Commodity Moissanite</comment>
   </data>
   <data name="MokojingBeastFeast" xml:space="preserve">
