@@ -117,16 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="anything" xml:space="preserve">
+    <value>(bármi)</value>
+  </data>
+  <data name="delete_btn" xml:space="preserve">
+    <value>Törlés</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>Az EDDP-ben történt változások figyelése, rendszer kontroll és állapot, és események generálása amik egyeznek a figyelési listában szereplőkkel.</value>
+  </data>
+  <data name="faction_header" xml:space="preserve">
+    <value>Frakció</value>
+  </data>
+  <data name="max_dist_home_header" xml:space="preserve">
+    <value>Az otthontól való maximális távolság</value>
+  </data>
+  <data name="max_dist_ship_header" xml:space="preserve">
+    <value>A hajótól való maximális távolság</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>EDDP figyelő</value>
+  </data>
+  <data name="name_header" xml:space="preserve">
+    <value>Név</value>
+  </data>
+  <data name="new_watch" xml:space="preserve">
+    <value>Új figyelés</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="state_header" xml:space="preserve">
+    <value>Állapot</value>
+  </data>
+  <data name="system_header" xml:space="preserve">
+    <value>Rendszer</value>
+  </data>
 </root>
