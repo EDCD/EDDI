@@ -317,7 +317,10 @@
     <value>Bromellit</value>
     <comment>Commodity Bromellite</comment>
   </data>
-  
+  <data name="BuildingFabricators" xml:space="preserve">
+    <value>Építkezési gépezetek</value>
+    <comment>Commodity BuildingFabricators</comment>
+  </data>
   <data name="BurnhamBileDistillate" xml:space="preserve">
     <value>Burnham Bile párlat</value>
     <comment>Commodity BurnhamBileDistillate</comment>
@@ -350,13 +353,22 @@
     <value>Kaméleon ruha</value>
     <comment>Commodity ChameleonCloth</comment>
   </data>
-  
+  <data name="ChateauDeAegaeon" xml:space="preserve">
+    <value>Aegaeoni bor</value>
+    <comment>Commodity ChateauDeAegaeon</comment>
+  </data>
   <data name="ChemicalWaste" xml:space="preserve">
     <value>Vegyi üzem</value>
     <comment>Commodity ChemicalWaste</comment>
   </data>
-  
-  
+  <data name="CherbonesBloodCrystals" xml:space="preserve">
+    <value>Cherbonesi vérkristály</value>
+    <comment>Commodity CherbonesBloodCrystals</comment>
+  </data>
+  <data name="ChiEridaniMarinePaste" xml:space="preserve">
+    <value>Chi Eridani plankton tészta</value>
+    <comment>Commodity ChiEridaniMarinePaste</comment>
+  </data>
   <data name="Clothing" xml:space="preserve">
     <value>Ruházat</value>
     <comment>Commodity Clothing</comment>
