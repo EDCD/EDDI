@@ -814,7 +814,7 @@
     <comment>Commodity LyraeWeed</comment>
   </data>
   <data name="MagneticEmitterCoil" xml:space="preserve">
-    <value>Mágneses sugárzó</value>
+    <value>Mágneses sugárzó tekercs</value>
     <comment>Commodity MagneticEmitterCoil</comment>
   </data>
   <data name="MarineSupplies" xml:space="preserve">
@@ -822,14 +822,17 @@
     <comment>Commodity MarineSupplies</comment>
   </data>
   <data name="MasterChefs" xml:space="preserve">
-    <value>Mester séf</value>
+    <value>Mester séfek</value>
     <comment>Commodity MasterChefs</comment>
   </data>
   <data name="MechucosHighTea" xml:space="preserve">
     <value>Mechucosi finomított tea</value>
     <comment>Commodity MechucosHighTea</comment>
   </data>
-  
+  <data name="MedbStarlube" xml:space="preserve">
+    <value>Medb-i kenőanyag</value>
+    <comment>Commodity MedbStarlube</comment>
+  </data>
   <data name="MedicalDiagnosticEquipment" xml:space="preserve">
     <value>Orvosi diagnosztikai berendezések</value>
     <comment>Commodity MedicalDiagnosticEquipment</comment>
@@ -867,7 +870,7 @@
     <comment>Commodity MineralOil</comment>
   </data>
   <data name="ModularTerminals" xml:space="preserve">
-    <value>Általános megjelenítők</value>
+    <value>Moduláris megjelenítők</value>
     <comment>Commodity ModularTerminals</comment>
   </data>
   <data name="Moissanite" xml:space="preserve">
@@ -875,10 +878,13 @@
     <comment>Commodity Moissanite</comment>
   </data>
   <data name="MokojingBeastFeast" xml:space="preserve">
-    <value>Mokojing vadfesztivál</value>
+    <value>Mokojing vad lakoma</value>
     <comment>Commodity MokojingBeastFeast</comment>
   </data>
-  
+  <data name="MomusBogSpaniel" xml:space="preserve">
+    <value>Momus-i mocsári csúszómászó</value>
+    <comment>Commodity MomusBogSpaniel</comment>
+  </data>
   
   
   <data name="MulachiGiantFungus" xml:space="preserve">
@@ -928,7 +934,7 @@
     <comment>Commodity NonLethalWeapons</comment>
   </data>
   <data name="OccupiedCryoPod" xml:space="preserve">
-    <value>Elfogott mentőkapszula</value>
+    <value>Foglalt mentőkapszula</value>
     <comment>Commodity OccupiedCryoPod</comment>
   </data>
   <data name="OchoengChillies" xml:space="preserve">
