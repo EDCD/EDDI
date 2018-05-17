@@ -497,9 +497,18 @@
     <value>Kicsapódott ötvözetek</value>
     <comment>Material precipitatedalloys</comment>
   </data>
-  
-  
-  
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>Árnyékoló szenzorok</value>
+    <comment>Material shieldingsensors</comment>
+  </data>
+  <data name="unknownenergycell" xml:space="preserve">
+    <value>Thargoid energia cella</value>
+    <comment>Material unknownenergycell</comment>
+  </data>
+  <data name="chemicalmanipulators" xml:space="preserve">
+    <value>Kémiai manipulátorok</value>
+    <comment>Material chemicalmanipulators</comment>
+  </data>
   
   
   
