@@ -666,7 +666,10 @@ Ellenséges Környezet ruha</value>
     <value>Túsz</value>
     <comment>Commodity Hostage</comment>
   </data>
-  
+  <data name="HR7221Wheat" xml:space="preserve">
+    <value>HR 7221i búza</value>
+    <comment>Commodity HR7221Wheat</comment>
+  </data>
   <data name="HydrogenFuel" xml:space="preserve">
     <value>Hidrogén üzemanyag</value>
     <comment>Commodity HydrogenFuel</comment>
@@ -683,10 +686,22 @@ Ellenséges Környezet ruha</value>
     <value>Indi burbon</value>
     <comment>Commodity IndiBourbon</comment>
   </data>
-  
-  
-  
-  
+  <data name="Indite" xml:space="preserve">
+    <value>Indit</value>
+    <comment>Commodity Indite</comment>
+  </data>
+  <data name="Indium" xml:space="preserve">
+    <value>Indium</value>
+    <comment>Commodity Indium</comment>
+  </data>
+  <data name="InsulatingMembrane" xml:space="preserve">
+    <value>Szigetelő membrán</value>
+    <comment>Commodity InsulatingMembrane</comment>
+  </data>
+  <data name="IonDistributor" xml:space="preserve">
+    <value>Ion elosztó</value>
+    <comment>Commodity IonDistributor</comment>
+  </data>
   <data name="Jadeite" xml:space="preserve">
     <value>Jáde</value>
     <comment>Commodity Jadeite</comment>
