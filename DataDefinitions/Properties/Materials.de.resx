@@ -217,24 +217,66 @@
     <value>Polonium</value>
     <comment>Material polonium</comment>
   </data>
+  <data name="bulkscandata" xml:space="preserve">
+    <value>Anormale Massen-Scan-Daten</value>
+    <comment>Material bulkscandata</comment>
+  </data>
+  <data name="disruptedwakeechoes" xml:space="preserve">
+    <value>Atypische FSA-Stör-Aufzeichnungen</value>
+    <comment>Material disruptedwakeechoes</comment>
+  </data>
+  <data name="shieldcyclerecordings" xml:space="preserve">
+    <value>Gestörte-Schildzyklus-Aufzeichnung</value>
+    <comment>Material shieldcyclerecordings</comment>
+  </data>
+  <data name="scrambledemissiondata" xml:space="preserve">
+    <value>Außergewöhnliche verschlüsselte Emissionsdaten</value>
+    <comment>Material scrambledemissiondata</comment>
+  </data>
+  <data name="legacyfirmware" xml:space="preserve">
+    <value>Spezial Legacy Firmware</value>
+    <comment>Material legacyfirmware</comment>
+  </data>
+  <data name="encryptedfiles" xml:space="preserve">
+    <value>Ungewöhnliche verschlüsselte Files</value>
+    <comment>Material encryptedfiles</comment>
+  </data>
+  
+  <data name="fsdtelemetry" xml:space="preserve">
+    <value>Anormale FSA-Telemetrie</value>
+    <comment>Material fsdtelemetry</comment>
+  </data>
+  <data name="shieldsoakanalysis" xml:space="preserve">
+    <value>Inkonsistente Schildleistungsanalyse</value>
+    <comment>Material shieldsoakanalysis</comment>
+  </data>
+  <data name="archivedemissiondata" xml:space="preserve">
+    <value>Irreguläre Emissionsdaten</value>
+    <comment>Material archivedemissiondata</comment>
+  </data>
+  
+  <data name="encryptioncodes" xml:space="preserve">
+    <value>Getaggte Verschlüsselungscodes</value>
+    <comment>Material encryptioncodes</comment>
+  </data>
+  <data name="scanarchives" xml:space="preserve">
+    <value>Unidentifizierte Scan-Archive</value>
+    <comment>Material scanarchives</comment>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="scandatabanks" xml:space="preserve">
+    <value>Scandatenbank unter Verschluss</value>
+    <comment>Material scandatabanks</comment>
+  </data>
+  <data name="industrialfirmware" xml:space="preserve">
+    <value>Gecrackte Industrie-Firmware</value>
+    <comment>Material industrialfirmware</comment>
+  </data>
+  <data name="symmetrickeys" xml:space="preserve">
+    <value>Offene symetrische Schlüssel</value>
+    <comment>Material symmetrickeys</comment>
+  </data>
   
   
   
