@@ -366,11 +366,11 @@
     <comment>Module Pacifier</comment>
   </data>
   <data name="Pack_Hound" xml:space="preserve">
-    <value>Pack-Hound</value>
+    <value>Multi rakéta kilövő</value>
     <comment>Module Pack_Hound</comment>
   </data>
   <data name="PlanetaryApproachSuite" xml:space="preserve">
-    <value>Leszállás vezérlő berendezés</value>
+    <value>Leszállás vezérlő egység</value>
     <comment>Module PlanetaryApproachSuite</comment>
   </data>
   <data name="PlanetaryVehicleHangar" xml:space="preserve">
@@ -398,7 +398,7 @@
     <comment>Module PrismaticShieldGenerator</comment>
   </data>
   <data name="ProspectorLimpetController" xml:space="preserve">
-    <value>Bányakutató drón vezérlő</value>
+    <value>Talajelemzőszonda vezérlő egység</value>
     <comment>Module ProspectorLimpetController</comment>
   </data>
   <data name="PulseLaser" xml:space="preserve">
@@ -414,11 +414,11 @@
     <comment>Module ReactiveSurfaceComposite</comment>
   </data>
   <data name="ReconLimpetController" xml:space="preserve">
-    <value>Felderítő drón vezérlő</value>
+    <value>Felderítő szonda vezérlő egység</value>
     <comment>Module ReconLimpetController</comment>
   </data>
   <data name="Refinery" xml:space="preserve">
-    <value>Finomító</value>
+    <value>Feldolgozó egység</value>
     <comment>Module Refinery</comment>
   </data>
   <data name="ReinforcedAlloy" xml:space="preserve">
@@ -430,15 +430,15 @@
     <comment>Module RemoteReleaseFlakLauncher</comment>
   </data>
   <data name="RepairLimpetController" xml:space="preserve">
-    <value>Javító drón vezérlő</value>
+    <value>Javító szonda vezérlő egység</value>
     <comment>Module RepairLimpetController</comment>
   </data>
   <data name="ResearchLimpetController" xml:space="preserve">
-    <value>Kutató drón vezérlő</value>
+    <value>Kutató szonda vezérlő egység</value>
     <comment>Module ResearchLimpetController</comment>
   </data>
   <data name="RocketPropelledFSDDisruptor" xml:space="preserve">
-    <value>Rakéta meghajtású FTL diszruptor</value>
+    <value>Rakéta meghajtású FTL disztruptor</value>
     <comment>Module RocketPropelledFSDDisruptor</comment>
   </data>
   <data name="Sensors" xml:space="preserve">
@@ -502,15 +502,15 @@
     <comment>Weapon mount type Fixed</comment>
   </data>
   <data name="Gimballed" xml:space="preserve">
-    <value>lengő</value>
+    <value>célzás segítő rendszer</value>
     <comment>Weapon mount type Gimballed</comment>
   </data>
   <data name="Turreted" xml:space="preserve">
-    <value>torony</value>
+    <value>toronyba épített</value>
     <comment>Weapon mount type Turreted</comment>
   </data>
   <data name="AdvancedDiscoveryScanner" xml:space="preserve">
-    <value>Fejlett felfedező szkenner</value>
+    <value>Fejlesztett felfedező szkenner</value>
     <comment>Module AdvancedDiscoveryScanner</comment>
   </data>
   <data name="PlasmaRepeater" xml:space="preserve">
