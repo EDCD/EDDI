@@ -168,6 +168,10 @@
   <data name="p4" xml:space="preserve">
     <value>Amennyiben nem konfigurálta be a hozzáférést a Frontier API-hoz, az alul szereplő adatok pontatlanok vagy elérhetetlenek lesznek. Amennyiben az EDDI telepítése előtt több hajóval rendelkezett, azok csak akkor fognak megjelenni (némi késéssel) ha újra használja őket.</value>
   </data>
-  
-  
+  <data name="p5" xml:space="preserve">
+    <value>Az EDDI exportálni tudja hajóinak adatait a Coriolis-ba vagy EDShipyard-ba (harmadik fél altali alkalmazások). Válassza ki az Önnek megfelelőt.</value>
+  </data>
+  <data name="ship_ready" xml:space="preserve">
+    <value>{0} készen áll.</value>
+  </data>
 </root>
