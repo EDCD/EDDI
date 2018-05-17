@@ -132,10 +132,19 @@
   <data name="paragraph_2" xml:space="preserve">
     <value>Die zweite Gruppe erhält Ereignisinformationen. Dies sind die Registerkarten, die mit "Monitor" enden. Sie erhalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
   </data>
-  
-  
-  
-  
+  <data name="paragraph_3" xml:space="preserve">
+    <value>Die dritte Gruppe reagiert auf Ereignisse. Dies sind die Registerkarten, die mit "Responder" enden. Diese haben unterschiedliche Ausbaustufen, funktionieren aber sofort.</value>
+  </data>
+  <data name="paragraph_4" xml:space="preserve">
+    <value>Mehr über die Funktionsweise von EDDI erfahren Sie auf der Seite</value>
+  </data>
+  <data name="report_issue" xml:space="preserve">
+    <value>Ein Problem melden</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Fehlerbehebung bei bekannten Problemen</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
   
   
   
