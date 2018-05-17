@@ -706,7 +706,10 @@ Ellenséges Környezet ruha</value>
     <value>Jáde</value>
     <comment>Commodity Jadeite</comment>
   </data>
-  
+  <data name="JaquesQuinentianStill" xml:space="preserve">
+    <value>Jaques Qinentiani zseb lepárló</value>
+    <comment>Commodity JaquesQuinentianStill</comment>
+  </data>
   
   
   
