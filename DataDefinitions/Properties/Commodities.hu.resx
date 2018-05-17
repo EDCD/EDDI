@@ -481,7 +481,10 @@
     <value>Aerial éden almák</value>
     <comment>Commodity EdenApplesOfAerial</comment>
   </data>
-  
+  <data name="EleuThermals" xml:space="preserve">
+    <value>Eleui thermo alsónemű</value>
+    <comment>Commodity EleuThermals</comment>
+  </data>
   <data name="EmergencyPowerCells" xml:space="preserve">
     <value>Tartalék energia cellák</value>
     <comment>Commodity EmergencyPowerCells</comment>
@@ -502,13 +505,22 @@
     <value>Eshu esernyők</value>
     <comment>Commodity EshuUmbrellas</comment>
   </data>
-  
-  
+  <data name="EsusekuCaviar" xml:space="preserve">
+    <value>Esusekui kaviár</value>
+    <comment>Commodity EsusekuCaviar</comment>
+  </data>
+  <data name="EthgrezeTeaBuds" xml:space="preserve">
+    <value>Ethgrezei teafű</value>
+    <comment>Commodity EthgrezeTeaBuds</comment>
+  </data>
   <data name="EvacuationShelter" xml:space="preserve">
     <value>Evakuációs sátor</value>
     <comment>Commodity EvacuationShelter</comment>
   </data>
-  
+  <data name="ExhaustManifold" xml:space="preserve">
+    <value>Kipufogócsonk</value>
+    <comment>Commodity ExhaustManifold</comment>
+  </data>
   <data name="Explosives" xml:space="preserve">
     <value>Robbanószerek</value>
     <comment>Commodity Explosives</comment>
@@ -521,7 +533,10 @@
     <value>Élelmiszerek</value>
     <comment>Commodity FoodCartridges</comment>
   </data>
-  
+  <data name="FossilRemnants" xml:space="preserve">
+    <value>Fosszília maradványok</value>
+    <comment>Commodity FossilRemnants</comment>
+  </data>
   <data name="FruitAndVegetables" xml:space="preserve">
     <value>Gyümölcsök &amp; Zöldségek</value>
     <comment>Commodity FruitAndVegetables</comment>
@@ -542,7 +557,10 @@
     <value>Gallium</value>
     <comment>Commodity Gallium</comment>
   </data>
-  
+  <data name="GeawenDanceDust" xml:space="preserve">
+    <value>Geaweni táncpor</value>
+    <comment>Commodity GeawenDanceDust</comment>
+  </data>
   <data name="GeneBank" xml:space="preserve">
     <value>Génbank</value>
     <comment>Commodity GeneBank</comment>
