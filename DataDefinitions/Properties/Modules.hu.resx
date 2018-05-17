@@ -277,17 +277,50 @@
     <value>Őrző plazmavető</value>
     <comment>Module GuardianPlasmaCharger</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="GuardianPowerPlant" xml:space="preserve">
+    <value>Őrző erőmű</value>
+    <comment>Module GuardianPowerPlant</comment>
+  </data>
+  <data name="HatchBreakerLimpetController" xml:space="preserve">
+    <value>Raktér-feltörő drón vezérlő</value>
+    <comment>Module HatchBreakerLimpetController</comment>
+  </data>
+  <data name="HeatSinkLauncher" xml:space="preserve">
+    <value>Hőcsapda kivető</value>
+    <comment>Module HeatSinkLauncher</comment>
+  </data>
+  <data name="HullReinforcementPackage" xml:space="preserve">
+    <value>Hajótest erősítő csomag</value>
+    <comment>Module HullReinforcementPackage</comment>
+  </data>
+  <data name="ImperialHammer" xml:space="preserve">
+    <value>Birodalmi pöröly</value>
+    <comment>Module ImperialHammer</comment>
+  </data>
+  <data name="IntermediateDiscoveryScanner" xml:space="preserve">
+    <value>Közepes felfedező szkenner</value>
+    <comment>Module IntermediateDiscoveryScanner</comment>
+  </data>
+  <data name="KillWarrantScanner" xml:space="preserve">
+    <value>Vérdíj szkenner</value>
+    <comment>Module KillWarrantScanner</comment>
+  </data>
+  <data name="LifeSupport" xml:space="preserve">
+    <value>Létfenntartás</value>
+    <comment>Module LifeSupport</comment>
+  </data>
+  <data name="LightweightAlloy" xml:space="preserve">
+    <value>Könnyű ötvözet</value>
+    <comment>Module LightweightAlloy</comment>
+  </data>
+  <data name="LuxuryClassPassengerCabin" xml:space="preserve">
+    <value>Luxus osztályú utaskabin</value>
+    <comment>Module LuxuryClassPassengerCabin</comment>
+  </data>
+  <data name="ManifestScanner" xml:space="preserve">
+    <value>Rakománylista szkenner</value>
+    <comment>Module ManifestScanner</comment>
+  </data>
   
   
   
