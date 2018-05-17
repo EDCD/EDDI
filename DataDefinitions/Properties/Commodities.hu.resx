@@ -530,7 +530,7 @@
     <comment>Commodity Fish</comment>
   </data>
   <data name="FoodCartridges" xml:space="preserve">
-    <value>Élelmiszerek</value>
+    <value>Étel patronok</value>
     <comment>Commodity FoodCartridges</comment>
   </data>
   <data name="FossilRemnants" xml:space="preserve">
@@ -538,7 +538,7 @@
     <comment>Commodity FossilRemnants</comment>
   </data>
   <data name="FruitAndVegetables" xml:space="preserve">
-    <value>Gyümölcsök &amp; Zöldségek</value>
+    <value>Gyümölcsök és Zöldségek</value>
     <comment>Commodity FruitAndVegetables</comment>
   </data>
   <data name="FujinTea" xml:space="preserve">
@@ -578,7 +578,7 @@
     <comment>Commodity GerasianGueuzeBeer</comment>
   </data>
   <data name="GiantIrukamaSnails" xml:space="preserve">
-    <value>Irukama-i óriás csigák</value>
+    <value>Irukamai óriás csigák</value>
     <comment>Commodity GiantIrukamaSnails</comment>
   </data>
   <data name="GiantVerrix" xml:space="preserve">
@@ -586,7 +586,7 @@
     <comment>Commodity GiantVerrix</comment>
   </data>
   <data name="GilyaSignatureWeapons" xml:space="preserve">
-    <value>Gilya-i egyedi fegyverek</value>
+    <value>Gilyai egyedi fegyverek</value>
     <comment>Commodity GilyaSignatureWeapons</comment>
   </data>
   <data name="Gold" xml:space="preserve">
@@ -610,7 +610,7 @@
     <comment>Commodity Hafnium178</comment>
   </data>
   <data name="HaidneBlackBrew" xml:space="preserve">
-    <value>Haidne-i ásványi tea</value>
+    <value>Haidnei fekete főzet</value>
     <comment>Commodity HaidneBlackBrew</comment>
   </data>
   <data name="HavasupaiDreamCatcher" xml:space="preserve">
@@ -630,7 +630,7 @@
     <comment>Commodity HeliostaticFurnaces</comment>
   </data>
   <data name="HelvetitjPearls" xml:space="preserve">
-    <value>Helvetitj gyöngy</value>
+    <value>Helvetitji gyöngyök</value>
     <comment>Commodity HelvetitjPearls</comment>
   </data>
   <data name="HIP10175BushMeat" xml:space="preserve">
@@ -794,7 +794,7 @@
     <comment>Commodity Lithium</comment>
   </data>
   <data name="LithiumHydroxide" xml:space="preserve">
-    <value>Lítium-hidroxid</value>
+    <value>Lítium hidroxid</value>
     <comment>Commodity LithiumHydroxide</comment>
   </data>
   <data name="LiveHecateSeaWorms" xml:space="preserve">
