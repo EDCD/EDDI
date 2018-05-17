@@ -218,7 +218,7 @@
     <comment>Commodity AnyNaCoffee</comment>
   </data>
   <data name="AquaponicSystems" xml:space="preserve">
-    <value>Akvapóniai rendszerek</value>
+    <value>Akvapónikus rendszerek</value>
     <comment>Commodity AquaponicSystems</comment>
   </data>
   <data name="AroucaConventualSweets" xml:space="preserve">
@@ -1053,36 +1053,126 @@
     <value>Tiltott kutatási anyagok</value>
     <comment>Commodity ProhibitedResearchMaterials</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Pyrophyllite" xml:space="preserve">
+    <value>Pirofillit</value>
+    <comment>Commodity Pyrophyllite</comment>
+  </data>
+  <data name="RadiationBaffle" xml:space="preserve">
+    <value>Sugárzás gátló</value>
+    <comment>Commodity RadiationBaffle</comment>
+  </data>
+  <data name="RajukruMulti_Stoves" xml:space="preserve">
+    <value>Rajukru-i multi-tűzhelyek</value>
+    <comment>Commodity RajukruMulti_Stoves</comment>
+  </data>
+  <data name="RapaBaoSnakeSkins" xml:space="preserve">
+    <value>Rapa Bao-i kígyóbőr</value>
+    <comment>Commodity RapaBaoSnakeSkins</comment>
+  </data>
+  <data name="ReactiveArmour" xml:space="preserve">
+    <value>Reaktív páncélzat</value>
+    <comment>Commodity ReactiveArmour</comment>
+  </data>
+  <data name="ReinforcedMountingPlate" xml:space="preserve">
+    <value>Megerősített burkoló lemez</value>
+    <comment>Commodity ReinforcedMountingPlate</comment>
+  </data>
+  <data name="republicangarisonsupplies" xml:space="preserve">
+    <value>Köztársasági helyőrségi ellátmány</value>
+    <comment>Commodity republicangarisonsupplies</comment>
+  </data>
+  <data name="ResonatingSeparators" xml:space="preserve">
+    <value>Rezonáció csökkentők</value>
+    <comment>Commodity ResonatingSeparators</comment>
+  </data>
+  <data name="Robotics" xml:space="preserve">
+    <value>Robotok</value>
+    <comment>Commodity Robotics</comment>
+  </data>
+  <data name="RusaniOldSmokey" xml:space="preserve">
+    <value>Rusani-i Old Smokey dohány</value>
+    <comment>Commodity RusaniOldSmokey</comment>
+  </data>
+  <data name="Rutile" xml:space="preserve">
+    <value>Rutil</value>
+    <comment>Commodity Rutile</comment>
+  </data>
+  <data name="Samarium" xml:space="preserve">
+    <value>Szamárium</value>
+    <comment>Commodity Samarium</comment>
+  </data>
+  <data name="SanumaDecorativeMeat" xml:space="preserve">
+    <value>Sanuma-i növesztett hús</value>
+    <comment>Commodity SanumaDecorativeMeat</comment>
+  </data>
+  <data name="SAP8CoreContainer" xml:space="preserve">
+    <value>Sap 8 kristály tároló</value>
+    <comment>Commodity SAP8CoreContainer</comment>
+  </data>
+  <data name="SaxonWine" xml:space="preserve">
+    <value>Saxon-i bor</value>
+    <comment>Commodity SaxonWine</comment>
+  </data>
+  <data name="ScientificResearch" xml:space="preserve">
+    <value>Tudományos kutatás</value>
+    <comment>Commodity ScientificResearch</comment>
+  </data>
+  <data name="ScientificSamples" xml:space="preserve">
+    <value>Tudományos minta</value>
+    <comment>Commodity ScientificSamples</comment>
+  </data>
+  <data name="Scrap" xml:space="preserve">
+    <value>Szemét</value>
+    <comment>Commodity Scrap</comment>
+  </data>
+  <data name="Semiconductors" xml:space="preserve">
+    <value>Félvezetők</value>
+    <comment>Commodity Semiconductors</comment>
+  </data>
+  <data name="Silver" xml:space="preserve">
+    <value>Ezüst</value>
+    <comment>Commodity Silver</comment>
+  </data>
+  <data name="siriuscommercialcontracts" xml:space="preserve">
+    <value>Sirius-i reklám szerződések</value>
+    <comment>Commodity siriuscommercialcontracts</comment>
+  </data>
+  <data name="siriusfranchisepackage" xml:space="preserve">
+    <value>Sirius-i franchise csomag</value>
+    <comment>Commodity siriusfranchisepackage</comment>
+  </data>
+  <data name="siriusindustrialequipment" xml:space="preserve">
+    <value>Sirius-i ipari berendezés</value>
+    <comment>Commodity siriusindustrialequipment</comment>
+  </data>
+  <data name="SkimerComponents" xml:space="preserve">
+    <value>Skimmer alkatrészek</value>
+    <comment>Commodity SkimerComponents</comment>
+  </data>
+  <data name="Slaves" xml:space="preserve">
+    <value>Rabszolgák</value>
+    <comment>Commodity Slaves</comment>
+  </data>
+  <data name="SmallExplorationDataCash" xml:space="preserve">
+    <value>Kis felderítő adatcsomag</value>
+    <comment>Commodity SmallExplorationDataCash</comment>
+  </data>
+  <data name="SoontillRelics" xml:space="preserve">
+    <value>Soontil relikviák</value>
+    <comment>Commodity SoontillRelics</comment>
+  </data>
+  <data name="SothisCrystallineGold" xml:space="preserve">
+    <value>Sothis-i kristályarany</value>
+    <comment>Commodity SothisCrystallineGold</comment>
+  </data>
+  <data name="SpacePioneerRelics" xml:space="preserve">
+    <value>Űrpionír relikviák</value>
+    <comment>Commodity SpacePioneerRelics</comment>
+  </data>
+  <data name="StructuralRegulators" xml:space="preserve">
+    <value>Építmény integritás érzékelők</value>
+    <comment>Commodity StructuralRegulators</comment>
+  </data>
   <data name="Superconductors" xml:space="preserve">
     <value>Szupervezetők</value>
     <comment>Commodity Superconductors</comment>
