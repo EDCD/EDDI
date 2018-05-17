@@ -218,7 +218,7 @@
     <comment>Commodity AnyNaCoffee</comment>
   </data>
   <data name="AquaponicSystems" xml:space="preserve">
-    <value>Akvapónikus rendszerek</value>
+    <value>Akvafónikus rendszerek</value>
     <comment>Commodity AquaponicSystems</comment>
   </data>
   <data name="AroucaConventualSweets" xml:space="preserve">
@@ -234,11 +234,11 @@
     <comment>Commodity AssaultPlans</comment>
   </data>
   <data name="AtmosphericExtractors" xml:space="preserve">
-    <value>Levegő fejlesztők</value>
+    <value>Atmoszférikus processzorok</value>
     <comment>Commodity AtmosphericExtractors</comment>
   </data>
   <data name="AutoFabricators" xml:space="preserve">
-    <value>Auto fabrikáló</value>
+    <value>Auto fabrikátorok</value>
     <comment>Commodity AutoFabricators</comment>
   </data>
   <data name="AzCancriFormula42" xml:space="preserve">
@@ -258,11 +258,11 @@
     <comment>Commodity BasicMedicines</comment>
   </data>
   <data name="BasicNarcotics" xml:space="preserve">
-    <value>Narkotikum</value>
+    <value>Narkotikumok</value>
     <comment>Commodity BasicNarcotics</comment>
   </data>
   <data name="BastSnakeGin" xml:space="preserve">
-    <value>Baszt kígyó dzsin</value>
+    <value>Bast kígyó dzsin</value>
     <comment>Commodity BastSnakeGin</comment>
   </data>
   <data name="BattleWeapons" xml:space="preserve">
@@ -278,7 +278,7 @@
     <comment>Commodity Beer</comment>
   </data>
   <data name="BelalansRayLeather" xml:space="preserve">
-    <value>Belalan-i rájabőr</value>
+    <value>Belalani rájabőr</value>
     <comment>Commodity BelalansRayLeather</comment>
   </data>
   <data name="Bertrandite" xml:space="preserve">
@@ -298,7 +298,7 @@
     <comment>Commodity Biowaste</comment>
   </data>
   <data name="Bismuth" xml:space="preserve">
-    <value>Termésbizmut</value>
+    <value>Bismuth</value>
     <comment>Commodity Bismuth</comment>
   </data>
   <data name="BlueMilk" xml:space="preserve">
@@ -318,7 +318,7 @@
     <comment>Commodity Bromellite</comment>
   </data>
   <data name="BuildingFabricators" xml:space="preserve">
-    <value>Építkezési gépezetek</value>
+    <value>Epítkezési fabrikátorok</value>
     <comment>Commodity BuildingFabricators</comment>
   </data>
   <data name="BurnhamBileDistillate" xml:space="preserve">
