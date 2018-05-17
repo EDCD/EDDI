@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdvancedCatalysers" xml:space="preserve">
-    <value>Fejlett katalizátorok</value>
+    <value>Fejletsztett katalizátorok</value>
     <comment>Commodity AdvancedCatalysers</comment>
   </data>
   <data name="AdvancedMedicines" xml:space="preserve">
-    <value>Fejlett gyógyszer</value>
+    <value>Fejlesztett gyógyszer</value>
     <comment>Commodity AdvancedMedicines</comment>
   </data>
   <data name="AganippeRush" xml:space="preserve">
@@ -146,7 +146,7 @@
     <comment>Commodity AlbinoQuechuaMammoth</comment>
   </data>
   <data name="Algae" xml:space="preserve">
-    <value>Aldzsí</value>
+    <value>Alga</value>
     <comment>Commodity Algae</comment>
   </data>
   <data name="alieneggs" xml:space="preserve">
