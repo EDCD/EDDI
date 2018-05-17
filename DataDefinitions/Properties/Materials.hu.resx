@@ -270,7 +270,7 @@
     <comment>Material scanarchives</comment>
   </data>
   <data name="ancientculturaldata" xml:space="preserve">
-    <value>Ős kulturális adat</value>
+    <value>Ősi kulturális adat</value>
     <comment>Material ancientculturaldata</comment>
   </data>
   <data name="tg_structuraldata" xml:space="preserve">
@@ -310,7 +310,7 @@
     <comment>Material tg_compositiondata</comment>
   </data>
   <data name="unknownshipsignature" xml:space="preserve">
-    <value>Thargoid hajó szignatúra</value>
+    <value>Thargoid hajó jelforrás</value>
     <comment>Material unknownshipsignature</comment>
   </data>
   <data name="shieldpatternanalysis" xml:space="preserve">
@@ -338,11 +338,11 @@
     <comment>Material securityfirmware</comment>
   </data>
   <data name="ancientlanguagedata" xml:space="preserve">
-    <value>Ős nyelvi adat</value>
+    <value>Ősi nyelvi adat</value>
     <comment>Material ancientlanguagedata</comment>
   </data>
   <data name="ancienttechnologicaldata" xml:space="preserve">
-    <value>Ős technológiai adat</value>
+    <value>Ősi technológiai adat</value>
     <comment>Material ancienttechnologicaldata</comment>
   </data>
   <data name="tg_residuedata" xml:space="preserve">
