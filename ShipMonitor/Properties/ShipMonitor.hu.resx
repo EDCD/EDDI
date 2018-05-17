@@ -136,7 +136,7 @@
     <value>Szerepkör</value>
   </data>
   <data name="header_ship_ID" xml:space="preserve">
-    <value>Hajó ID</value>
+    <value>Hajó azonosító</value>
   </data>
   <data name="header_spoken_name" xml:space="preserve">
     <value>Név (beszélt)</value>
@@ -154,19 +154,19 @@
     <value>Nemzetközi fonetikus ábécé</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Hajó figyelő</value>
+    <value>Hajó monitorozó</value>
   </data>
   <data name="p1" xml:space="preserve">
     <value>Itt láthatja a hajóit és megadhatja egyedi szerepkörüket. Az információt látják a reagálók valamint szükség van rá a kívánt akciókhoz rendelt szkriptekhez is.</value>
   </data>
   <data name="p2" xml:space="preserve">
-    <value>Ha a hajó neve nehezen kiejthető az EDDI számára, hozzárendelhet egy beszélt verziót</value>
+    <value>Ha a hajó neve nehezen kiejthető az EDDI számára, hozzárendelhet egy kiejthetőbb változatot</value>
   </data>
   <data name="p3" xml:space="preserve">
     <value>. Például ha a hajó neve 'Pride of Achenar' akkor a beszélt neve 'praɪdɒvˈakɜːnɑ' lesz ( szóközök nélkül a fonetikus verzióban).</value>
   </data>
   <data name="p4" xml:space="preserve">
-    <value>Amennyiben nem konfigurálta be a hozzáférést a Frontier API-hoz, az alul szereplő adatok pontatlanok vagy elérhetetlenek lesznek. Amennyiben az EDDI telepítése előtt több hajóval rendelkezett, azok csak akkor fognak megjelenni (némi késéssel) ha újra használja őket.</value>
+    <value>Amennyiben nem konfigurálta be a hozzáférést a Frontier API-hoz, az alul szereplő adatok pontatlanok vagy elérhetetlenek lesznek. Amennyiben az EDDI telepítése előtt több hajóval rendelkezett, azok csak akkor fognak megjelenni (némi késéssel), ha újra használja őket.</value>
   </data>
   <data name="p5" xml:space="preserve">
     <value>Az EDDI exportálni tudja hajóinak adatait a Coriolis-ba vagy EDShipyard-ba (harmadik fél altali alkalmazások). Válassza ki az Önnek megfelelőt.</value>
