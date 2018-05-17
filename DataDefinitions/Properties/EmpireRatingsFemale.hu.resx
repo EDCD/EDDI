@@ -165,7 +165,10 @@
     <value>Márkiné</value>
     <comment>Empire rank Marquis</comment>
   </data>
-  
+  <data name="Duke" xml:space="preserve">
+    <value>Alhercegnő</value>
+    <comment>Empire rank Duke</comment>
+  </data>
   <data name="Prince" xml:space="preserve">
     <value>Hercegnő</value>
     <comment>Empire rank Prince</comment>
