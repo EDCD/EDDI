@@ -201,8 +201,14 @@
     <value>Tellúr</value>
     <comment>Material tellurium</comment>
   </data>
-  
-  
+  <data name="yttrium" xml:space="preserve">
+    <value>Ittrium</value>
+    <comment>Material yttrium</comment>
+  </data>
+  <data name="zirconium" xml:space="preserve">
+    <value>Cirkonium</value>
+    <comment>Material zirconium</comment>
+  </data>
   <data name="antimony" xml:space="preserve">
     <value>Antimonit</value>
     <comment>Material antimony</comment>
