@@ -136,10 +136,10 @@
     <value>Név</value>
   </data>
   <data name="p1" xml:space="preserve">
-    <value>Alul található az összes ismert anyag listája. Beállíthatja a minimális, kívánt és maximális értéket mindegyikhez és az EDDI eseményt fog létrehozni amennyiben ezen értékeket elérte.</value>
+    <value>Alul található az összes ismert anyag listája. Beállíthatja a minimális, kívánt és maximális értékeket mindegyikhez, és az EDDI eseményt fog létrehozni amennyiben ezeket az értékeket elérte.</value>
   </data>
   <data name="p2" xml:space="preserve">
-    <value>Amennyiben a készlet listája nem pontos szüség lehet az Elite újraindítására.</value>
+    <value>Megjegyzés: Ha a leltár nem helyes vagy inkorrekt. Indítsd el vagy indítsd újra az Elitet, és ezek az információk frissítve lesznek.</value>
   </data>
   <data name="type_header" xml:space="preserve">
     <value>Típus</value>
