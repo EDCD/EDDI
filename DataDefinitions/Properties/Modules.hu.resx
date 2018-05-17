@@ -130,7 +130,7 @@
     <comment>Module AutoField_MaintenanceUnit</comment>
   </data>
   <data name="AXMissileRack" xml:space="preserve">
-    <value>AX rakéta állvány</value>
+    <value>AX rakéta kilövő</value>
     <comment>Module AXMissileRack</comment>
   </data>
   <data name="AXMulti_Cannon" xml:space="preserve">
@@ -145,20 +145,62 @@
     <value>Sugár lézer</value>
     <comment>Module BeamLaser</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Bi_WeaveShieldGenerator" xml:space="preserve">
+    <value>Bi-Weave pajzsgenerátor</value>
+    <comment>Module Bi_WeaveShieldGenerator</comment>
+  </data>
+  <data name="BurstLaser" xml:space="preserve">
+    <value>Sorozat lézer</value>
+    <comment>Module BurstLaser</comment>
+  </data>
+  <data name="BusinessClassPassengerCabin" xml:space="preserve">
+    <value>Business osztályú utaskabin</value>
+    <comment>Module BusinessClassPassengerCabin</comment>
+  </data>
+  <data name="Cannon" xml:space="preserve">
+    <value>Ágyú</value>
+    <comment>Module Cannon</comment>
+  </data>
+  <data name="CargoHatch" xml:space="preserve">
+    <value>Raktér ajtó</value>
+    <comment>Module CargoHatch</comment>
+  </data>
+  <data name="CargoRack" xml:space="preserve">
+    <value>Rakomány tároló</value>
+    <comment>Module CargoRack</comment>
+  </data>
+  <data name="VoicePack_Celeste" xml:space="preserve">
+    <value>Celeste</value>
+    <comment>Module Celeste</comment>
+  </data>
+  <data name="ChaffLauncher" xml:space="preserve">
+    <value>Csali kilövő</value>
+    <comment>Module ChaffLauncher</comment>
+  </data>
+  <data name="CockpitCanopy" xml:space="preserve">
+    <value>Pilótafülke szélvédő</value>
+    <comment>Module CockpitCanopy</comment>
+  </data>
+  <data name="Cockpit" xml:space="preserve">
+    <value>Pilótafülke</value>
+    <comment>Module Cockpit</comment>
+  </data>
+  <data name="CollectorLimpetController" xml:space="preserve">
+    <value>Begyűjtő drón vezérlő</value>
+    <comment>Module CollectorLimpetController</comment>
+  </data>
+  <data name="Colouredstringlights" xml:space="preserve">
+    <value>Színes szalagfények</value>
+    <comment>Module Colouredstringlights</comment>
+  </data>
+  <data name="CorrosionResistantCargoRack" xml:space="preserve">
+    <value>Korrózióálló rakomány tároló</value>
+    <comment>Module CorrosionResistantCargoRack</comment>
+  </data>
+  <data name="Cytoscrambler" xml:space="preserve">
+    <value>Cyto zavaró</value>
+    <comment>Module Cytoscrambler</comment>
+  </data>
   
   
   
