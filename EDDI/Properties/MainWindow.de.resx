@@ -153,10 +153,18 @@
   <data name="wiki_hyperlink" xml:space="preserve">
     <value>Projekt Wiki</value>
   </data>
-  
-  
-  
-  
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>Wählen Sie die Sprache von EDDI (erfordert einen Neustart von EDDI):</value>
+  </data>
+  <data name="label_code" xml:space="preserve">
+    <value>Code:</value>
+  </data>
+  <data name="label_email" xml:space="preserve">
+    <value>E-Mail:</value>
+  </data>
+  <data name="label_password" xml:space="preserve">
+    <value>Passwort:</value>
+  </data>
   
   
   
