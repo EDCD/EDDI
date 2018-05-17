@@ -178,7 +178,7 @@
     <comment>Module ChaffLauncher</comment>
   </data>
   <data name="CockpitCanopy" xml:space="preserve">
-    <value>Pilótafülke-szélvédő</value>
+    <value>Pilótafülke</value>
     <comment>Module CockpitCanopy</comment>
   </data>
   <data name="Cockpit" xml:space="preserve">
@@ -222,7 +222,7 @@
     <comment>Module EconomyClassPassengerCabin</comment>
   </data>
   <data name="ElectronicCountermeasure" xml:space="preserve">
-    <value>Emc</value>
+    <value>Rakéta elhárító rendszer</value>
     <comment>Module ElectronicCountermeasure</comment>
   </data>
   <data name="EnhancedPerformanceThrusters" xml:space="preserve">
@@ -250,11 +250,11 @@
     <comment>Module FrameShiftDriveInterdictor</comment>
   </data>
   <data name="FrameShiftDrive" xml:space="preserve">
-    <value>Varp drájv</value>
+    <value>F S D</value>
     <comment>Module FrameShiftDrive</comment>
   </data>
   <data name="FrameShiftWakeScanner" xml:space="preserve">
-    <value>Ugrónyom szkenner</value>
+    <value>F S D szkenner</value>
     <comment>Module FrameShiftWakeScanner</comment>
   </data>
   <data name="FuelScoop" xml:space="preserve">
@@ -266,11 +266,11 @@
     <comment>Module FuelTank</comment>
   </data>
   <data name="FuelTransferLimpetController" xml:space="preserve">
-    <value>Üzemanyag-szállító dlszonda vezérlő egység</value>
+    <value>Üzemanyagszállító szonda vezérlő egység</value>
     <comment>Module FuelTransferLimpetController</comment>
   </data>
   <data name="GuardianGaussCannon" xml:space="preserve">
-    <value>Őrző Elektro mágneses ágyú</value>
+    <value>Őrző Gaussz ágyú</value>
     <comment>Module GuardianGaussCannon</comment>
   </data>
   <data name="GuardianPlasmaCharger" xml:space="preserve">
