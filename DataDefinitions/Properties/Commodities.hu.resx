@@ -710,10 +710,22 @@ Ellenséges Környezet ruha</value>
     <value>Jaques Qinentiani zseb lepárló</value>
     <comment>Commodity JaquesQuinentianStill</comment>
   </data>
-  
-  
-  
-  
+  <data name="JaradharrePuzzleBox" xml:space="preserve">
+    <value>Jaradharrei rejtély doboz</value>
+    <comment>Commodity JaradharrePuzzleBox</comment>
+  </data>
+  <data name="JarouaRice" xml:space="preserve">
+    <value>Jarouai rizs</value>
+    <comment>Commodity JarouaRice</comment>
+  </data>
+  <data name="JotunMookah" xml:space="preserve">
+    <value>Jotuni Muka</value>
+    <comment>Commodity JotunMookah</comment>
+  </data>
+  <data name="KachiriginFilterLeeches" xml:space="preserve">
+    <value>Kachirigini gyógy pióca</value>
+    <comment>Commodity KachiriginFilterLeeches</comment>
+  </data>
   <data name="KamitraCigars" xml:space="preserve">
     <value>Kamitra Szivar</value>
     <comment>Commodity KamitraCigars</comment>
@@ -722,10 +734,22 @@ Ellenséges Környezet ruha</value>
     <value>Kamorin történelmi fegyverek</value>
     <comment>Commodity KamorinHistoricWeapons</comment>
   </data>
-  
-  
-  
-  
+  <data name="KaretiiCouture" xml:space="preserve">
+    <value>Karetii-i divatáru</value>
+    <comment>Commodity KaretiiCouture</comment>
+  </data>
+  <data name="KarsukiLocusts" xml:space="preserve">
+    <value>Karsuki-i sáska</value>
+    <comment>Commodity KarsukiLocusts</comment>
+  </data>
+  <data name="KinagoViolins" xml:space="preserve">
+    <value>Kinago-i hegedűk</value>
+    <comment>Commodity KinagoViolins</comment>
+  </data>
+  <data name="KonggaAle" xml:space="preserve">
+    <value>Kongga-i világos sör</value>
+    <comment>Commodity KonggaAle</comment>
+  </data>
   
   <data name="Landmines" xml:space="preserve">
     <value>Taposóaknák</value>
