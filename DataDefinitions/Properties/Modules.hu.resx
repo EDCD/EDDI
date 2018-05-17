@@ -138,11 +138,11 @@
     <comment>Module AXMulti_Cannon</comment>
   </data>
   <data name="BasicDiscoveryScanner" xml:space="preserve">
-    <value>Bézik felfedező szkenner</value>
+    <value>Alap felfedező szkenner</value>
     <comment>Module BasicDiscoveryScanner</comment>
   </data>
   <data name="BeamLaser" xml:space="preserve">
-    <value>Lézersugárvető</value>
+    <value>Sugárvető</value>
     <comment>Module BeamLaser</comment>
   </data>
   <data name="Bi_WeaveShieldGenerator" xml:space="preserve">
@@ -166,7 +166,7 @@
     <comment>Module CargoHatch</comment>
   </data>
   <data name="CargoRack" xml:space="preserve">
-    <value>Rakodórekesz</value>
+    <value>Raktér modul</value>
     <comment>Module CargoRack</comment>
   </data>
   <data name="VoicePack_Celeste" xml:space="preserve">
@@ -174,7 +174,7 @@
     <comment>Module Celeste</comment>
   </data>
   <data name="ChaffLauncher" xml:space="preserve">
-    <value>Szecskavető</value>
+    <value>Infracsapda</value>
     <comment>Module ChaffLauncher</comment>
   </data>
   <data name="CockpitCanopy" xml:space="preserve">
@@ -186,7 +186,7 @@
     <comment>Module Cockpit</comment>
   </data>
   <data name="CollectorLimpetController" xml:space="preserve">
-    <value>Begyűjtő drón vezérlő</value>
+    <value>Begyűjtő szonda vezérlő egység</value>
     <comment>Module CollectorLimpetController</comment>
   </data>
   <data name="Colouredstringlights" xml:space="preserve">
@@ -194,11 +194,11 @@
     <comment>Module Colouredstringlights</comment>
   </data>
   <data name="CorrosionResistantCargoRack" xml:space="preserve">
-    <value>Korrózióálló rakodórekesz</value>
+    <value>Korrózióálló raktér egység</value>
     <comment>Module CorrosionResistantCargoRack</comment>
   </data>
   <data name="Cytoscrambler" xml:space="preserve">
-    <value>Cyto zavaró</value>
+    <value>Szitószkemböl</value>
     <comment>Module Cytoscrambler</comment>
   </data>
   <data name="DataLinkScanner" xml:space="preserve">
@@ -206,7 +206,7 @@
     <comment>Module DataLinkScanner</comment>
   </data>
   <data name="DecontaminationLimpetController" xml:space="preserve">
-    <value>Fertőtlenítő drón vezérlő</value>
+    <value>Fertőtlenítő szonda vezérlő egység</value>
     <comment>Module DecontaminationLimpetController</comment>
   </data>
   <data name="DetailedSurfaceScanner" xml:space="preserve">
@@ -218,15 +218,15 @@
     <comment>Module Disruptor</comment>
   </data>
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
-    <value>Takarékos utaskabinosztály</value>
+    <value>Turista osztályú utaskabin</value>
     <comment>Module EconomyClassPassengerCabin</comment>
   </data>
   <data name="ElectronicCountermeasure" xml:space="preserve">
-    <value>Elektronikus zavaró</value>
+    <value>Emc</value>
     <comment>Module ElectronicCountermeasure</comment>
   </data>
   <data name="EnhancedPerformanceThrusters" xml:space="preserve">
-    <value>Fejlesztett működésű hajtóművek</value>
+    <value>Fejlesztett teljesítményű hajtóművek</value>
     <comment>Module EnhancedPerformanceThrusters</comment>
   </data>
   <data name="FighterArmour" xml:space="preserve">
@@ -246,11 +246,11 @@
     <comment>Module FragmentCannon</comment>
   </data>
   <data name="FrameShiftDriveInterdictor" xml:space="preserve">
-    <value>Térhajtómű kiiktató</value>
+    <value>Térhajtómű zavaró</value>
     <comment>Module FrameShiftDriveInterdictor</comment>
   </data>
   <data name="FrameShiftDrive" xml:space="preserve">
-    <value>Térváltó hajtómű</value>
+    <value>Varp drájv</value>
     <comment>Module FrameShiftDrive</comment>
   </data>
   <data name="FrameShiftWakeScanner" xml:space="preserve">
@@ -258,15 +258,15 @@
     <comment>Module FrameShiftWakeScanner</comment>
   </data>
   <data name="FuelScoop" xml:space="preserve">
-    <value>Üzemanyag kanalazó</value>
+    <value>Üzemanyag töltő egység</value>
     <comment>Module FuelScoop</comment>
   </data>
   <data name="FuelTank" xml:space="preserve">
-    <value>Üzemanyagtartály</value>
+    <value>Üzemanyag tank</value>
     <comment>Module FuelTank</comment>
   </data>
   <data name="FuelTransferLimpetController" xml:space="preserve">
-    <value>Üzemanyag-szállító drón vezérlő</value>
+    <value>Üzemanyag-szállító dlszonda vezérlő egység</value>
     <comment>Module FuelTransferLimpetController</comment>
   </data>
   <data name="GuardianGaussCannon" xml:space="preserve">
