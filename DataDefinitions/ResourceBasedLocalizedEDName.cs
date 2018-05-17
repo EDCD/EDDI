@@ -88,7 +88,10 @@ namespace EddiDataDefinitions
             }
 
             string tidiedFrom = from?.Replace(";", "").Replace(" ", "").ToLowerInvariant();
-            T result = AllOfThem.FirstOrDefault(v => v.edname.ToLowerInvariant() == tidiedFrom);
+            T result = AllOfThem.FirstOrDefault(
+                v => v.edname
+                .ToLowerInvariant()
+                .Replace(";", "") == tidiedFrom);
             if (result == null)
             {
                 Logging.Report($"Unknown ED name {from} in resource {resourceManager.BaseName}");
