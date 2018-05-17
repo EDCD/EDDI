@@ -104,7 +104,10 @@
   
   
   
-  
+  <data name="Hero" xml:space="preserve">
+    <value>Hős</value>
+    <comment>CQC rating Hero</comment>
+  </data>
   
   
 </root>
