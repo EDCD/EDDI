@@ -166,7 +166,7 @@
     <comment>Module CargoHatch</comment>
   </data>
   <data name="CargoRack" xml:space="preserve">
-    <value>Rakomány tároló</value>
+    <value>Rakodórekesz</value>
     <comment>Module CargoRack</comment>
   </data>
   <data name="VoicePack_Celeste" xml:space="preserve">
@@ -194,7 +194,7 @@
     <comment>Module Colouredstringlights</comment>
   </data>
   <data name="CorrosionResistantCargoRack" xml:space="preserve">
-    <value>Korrózióálló rakomány tároló</value>
+    <value>Korrózióálló rakodórekesz</value>
     <comment>Module CorrosionResistantCargoRack</comment>
   </data>
   <data name="Cytoscrambler" xml:space="preserve">
@@ -210,15 +210,15 @@
     <comment>Module DecontaminationLimpetController</comment>
   </data>
   <data name="DetailedSurfaceScanner" xml:space="preserve">
-    <value>Részletes felszín szkenner</value>
+    <value>Részletes felszíni szkenner</value>
     <comment>Module DetailedSurfaceScanner</comment>
   </data>
   <data name="Disruptor" xml:space="preserve">
-    <value>Szétszakító</value>
+    <value>Diszruptor</value>
     <comment>Module Disruptor</comment>
   </data>
   <data name="EconomyClassPassengerCabin" xml:space="preserve">
-    <value>Economy osztályú utaskabin</value>
+    <value>Takarékos utaskabinosztály</value>
     <comment>Module EconomyClassPassengerCabin</comment>
   </data>
   <data name="ElectronicCountermeasure" xml:space="preserve">
