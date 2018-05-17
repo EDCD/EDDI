@@ -321,6 +321,50 @@
     <value>Rakománylista szkenner</value>
     <comment>Module ManifestScanner</comment>
   </data>
+  <data name="MetaAlloyHullReinforcement" xml:space="preserve">
+    <value>Meta ötvözet hajótest erősítés</value>
+    <comment>Module MetaAlloyHullReinforcement</comment>
+  </data>
+  <data name="MilitaryGradeComposite" xml:space="preserve">
+    <value>Katonai osztályú komposit</value>
+    <comment>Module MilitaryGradeComposite</comment>
+  </data>
+  <data name="MineLauncher" xml:space="preserve">
+    <value>Akna kilövő</value>
+    <comment>Module MineLauncher</comment>
+  </data>
+  <data name="MiningLance" xml:space="preserve">
+    <value>Bányász lándzsa</value>
+    <comment>Module MiningLance</comment>
+  </data>
+  <data name="MiningLaser" xml:space="preserve">
+    <value>Bányász lézer</value>
+    <comment>Module MiningLaser</comment>
+  </data>
+  <data name="MirroredSurfaceComposite" xml:space="preserve">
+    <value>Tükröző felületű kompozit</value>
+    <comment>Module MirroredSurfaceComposite</comment>
+  </data>
+  <data name="MissileRack" xml:space="preserve">
+    <value>Rakéta kilövő</value>
+    <comment>Module MissileRack</comment>
+  </data>
+  <data name="ModuleReinforcementPackage" xml:space="preserve">
+    <value>Modul erősítő csomag</value>
+    <comment>Module ModuleReinforcementPackage</comment>
+  </data>
+  <data name="Multicannon" xml:space="preserve">
+    <value>Gépágyú</value>
+    <comment>Module Multicannon</comment>
+  </data>
+  <data name="Multi_Cannon" xml:space="preserve">
+    <value>Gépágyú</value>
+    <comment>Module Multi_Cannon</comment>
+  </data>
+  <data name="Pacifier" xml:space="preserve">
+    <value>Békehozó</value>
+    <comment>Module Pacifier</comment>
+  </data>
   
   
   
@@ -360,20 +404,24 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="GuardianFsdBooster" xml:space="preserve">
+    <value>Őrző FSD teljesítmény növelő</value>
+    <comment>Module GuardianFsdBooster</comment>
+  </data>
+  <data name="GuardianPowerDistributor" xml:space="preserve">
+    <value>Őrző energia elosztó</value>
+    <comment>Module GuardianPowerDistributor</comment>
+  </data>
+  <data name="ShardCannon" xml:space="preserve">
+    <value>Szilánk ágyú</value>
+    <comment>Module ShardCannon</comment>
+  </data>
+  <data name="FlechetteLauncher" xml:space="preserve">
+    <value>Flechette kilövő</value>
+    <comment>Modile FlechetteLauncher</comment>
+  </data>
+  <data name="EnzymeMissileRack" xml:space="preserve">
+    <value>Enzim rakéta kilövő</value>
+    <comment>Module EnzymeMissileRack</comment>
+  </data>
 </root>
