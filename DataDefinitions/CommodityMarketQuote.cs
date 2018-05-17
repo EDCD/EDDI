@@ -41,18 +41,18 @@ namespace EddiDataDefinitions
 
         public string invariantName
         {
-            get => definition.invariantName;
+            get => definition?.invariantName;
         }
 
         public string localizedName
         {
-            get => definition.localizedName;
+            get => definition?.localizedName;
         }
 
         [Obsolete("deprecated for UI usage but retained for JSON conversion from the cAPI")]
         public string name
         {
-            get => definition.localizedName;
+            get => definition?.localizedName;
             set
             {
                 CommodityDefinition newDef = CommodityDefinition.FromName(value);
@@ -77,12 +77,12 @@ namespace EddiDataDefinitions
 
         public List<string> StatusFlags { get; set; }
 
-        public long? EliteID => definition.EliteID;
-        public long? EDDBID => definition.EDDBID;
+        public long? EliteID => definition?.EliteID;
+        public long? EDDBID => definition?.EDDBID;
         [Obsolete("Please use localizedName or InvariantName")]
-        public string category => definition.category.localizedName;
-        public int? avgprice => definition.avgprice;
-        public bool? rare => definition.rare;
+        public string category => definition?.category.localizedName;
+        public int? avgprice => definition?.avgprice;
+        public bool? rare => definition?.rare;
 
         public CommodityMarketQuote(CommodityDefinition definition)
         {

@@ -169,15 +169,12 @@ namespace EddiDataProviderService
                 foreach (dynamic commodity in json["commodities"])
                 {
                     CommodityDefinition commodityDefinition = CommodityDefinition.FromName((string)commodity["name"]);
-                    if (commodityDefinition != null)
-                    {
-                        CommodityMarketQuote quote = new CommodityMarketQuote(commodityDefinition);
-                        quote.buyprice = (int?)(long?)commodity["buy_price"];
-                        quote.sellprice = (int?)(long?)commodity["sell_price"];
-                        quote.demand = (int?)(long?)commodity["demand"];
-                        quote.stock = (int?)(long?)commodity["supply"];
-                        quotes.Add(quote);
-                    }
+                    CommodityMarketQuote quote = new CommodityMarketQuote(commodityDefinition);
+                    quote.buyprice = (int?)(long?)commodity["buy_price"];
+                    quote.sellprice = (int?)(long?)commodity["sell_price"];
+                    quote.demand = (int?)(long?)commodity["demand"];
+                    quote.stock = (int?)(long?)commodity["supply"];
+                    quotes.Add(quote);
                 }
             }
             return quotes;
