@@ -270,7 +270,7 @@
     <comment>Module FuelTransferLimpetController</comment>
   </data>
   <data name="GuardianGaussCannon" xml:space="preserve">
-    <value>Őrző gauss ágyú</value>
+    <value>Őrző Elektro mágneses ágyú</value>
     <comment>Module GuardianGaussCannon</comment>
   </data>
   <data name="GuardianPlasmaCharger" xml:space="preserve">
@@ -278,7 +278,7 @@
     <comment>Module GuardianPlasmaCharger</comment>
   </data>
   <data name="GuardianPowerPlant" xml:space="preserve">
-    <value>Őrző erőmű</value>
+    <value>Őrző reaktor</value>
     <comment>Module GuardianPowerPlant</comment>
   </data>
   <data name="HatchBreakerLimpetController" xml:space="preserve">
