@@ -277,6 +277,25 @@
     <value>Offene symetrische Schlüssel</value>
     <comment>Material symmetrickeys</comment>
   </data>
+  <data name="wakesolutions" xml:space="preserve">
+    <value>Seltsame FSA-Zielorte</value>
+    <comment>Material wakesolutions</comment>
+  </data>
+  <data name="emissiondata" xml:space="preserve">
+    <value>Unerwartete Emissionsdaten</value>
+    <comment>Material emissiondata</comment>
+  </data>
+  <data name="shielddensityreports" xml:space="preserve">
+    <value>Untypische Schildscans</value>
+    <comment>Material shielddensityreports</comment>
+  </data>
+  
+  
+  
+  <data name="shieldpatternanalysis" xml:space="preserve">
+    <value>Abweichende Schildeinsatz-Analysen</value>
+    <comment>Material shieldpatternanalysis</comment>
+  </data>
   
   
   
@@ -320,24 +339,44 @@
   
   
   
+  <data name="phasealloys" xml:space="preserve">
+    <value>Phasenlegierungen</value>
+    <comment>Material phasealloys</comment>
+  </data>
   
+  <data name="shieldingsensors" xml:space="preserve">
+    <value>Schildsensoren</value>
+    <comment>Material shieldingsensors</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="chemicalmanipulators" xml:space="preserve">
+    <value>Chemische Manipulatoren</value>
+    <comment>Material chemicalmanipulators</comment>
+  </data>
+  <data name="compoundshielding" xml:space="preserve">
+    <value>Verbundschilde</value>
+    <comment>Material compoundshielding</comment>
+  </data>
+  <data name="conductivepolymers" xml:space="preserve">
+    <value>Leitfähige Ploymere</value>
+    <comment>Material conductivepolymers</comment>
+  </data>
+  <data name="configurablecomponents" xml:space="preserve">
+    <value>Konfigurierbare Komponenten</value>
+    <comment>Material configurablecomponents</comment>
+  </data>
+  <data name="heatvanes" xml:space="preserve">
+    <value>Wärmeleitbleche</value>
+    <comment>Material heatvanes</comment>
+  </data>
+  <data name="polymercapacitors" xml:space="preserve">
+    <value>Polymerkondensatoren</value>
+    <comment>Material polymercapacitors</comment>
+  </data>
+  <data name="fedproprietarycomposites" xml:space="preserve">
+    <value>Kompositwerkstoffe</value>
+    <comment>Material fedproprietarycomposites</comment>
+  </data>
   
   
   
