@@ -390,7 +390,7 @@
     <comment>Module PowerDistributor</comment>
   </data>
   <data name="PowerPlant" xml:space="preserve">
-    <value>Erőmű</value>
+    <value>Reaktor</value>
     <comment>Module PowerPlant</comment>
   </data>
   <data name="PrismaticShieldGenerator" xml:space="preserve">
