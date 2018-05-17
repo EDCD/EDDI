@@ -1076,13 +1076,34 @@ Ellenséges Környezet ruha</value>
     <value>Tea</value>
     <comment>Commodity Tea</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="TelemetrySuite" xml:space="preserve">
+    <value>Telemetrikus berendezés</value>
+    <comment>Commodity TelemetrySuite</comment>
+  </data>
+  <data name="TerrainEnrichmentSystems" xml:space="preserve">
+    <value>Talajminőség javító rendszerek</value>
+    <comment>Commodity TerrainEnrichmentSystems</comment>
+  </data>
+  <data name="TerraMaterBloodBores" xml:space="preserve">
+    <value>Terra Mater teljesítmény fokozó</value>
+    <comment>Commodity TerraMaterBloodBores</comment>
+  </data>
+  <data name="Thallium" xml:space="preserve">
+    <value>Tallium</value>
+    <comment>Commodity Thallium</comment>
+  </data>
+  <data name="TheHuttonMug" xml:space="preserve">
+    <value>Hutton bögre</value>
+    <comment>Commodity TheHuttonMug</comment>
+  </data>
+  <data name="ThermalCoolingUnits" xml:space="preserve">
+    <value>Hőelnyelő egységek</value>
+    <comment>Commodity ThermalCoolingUnits</comment>
+  </data>
+  <data name="Thorium" xml:space="preserve">
+    <value>Tórium</value>
+    <comment>Commodity Thorium</comment>
+  </data>
   
   
   
