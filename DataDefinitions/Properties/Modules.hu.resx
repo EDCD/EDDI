@@ -365,34 +365,118 @@
     <value>Békehozó</value>
     <comment>Module Pacifier</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Pack_Hound" xml:space="preserve">
+    <value>Pack-Hound</value>
+    <comment>Module Pack_Hound</comment>
+  </data>
+  <data name="PlanetaryApproachSuite" xml:space="preserve">
+    <value>Leszállás vezérlő berendezés</value>
+    <comment>Module PlanetaryApproachSuite</comment>
+  </data>
+  <data name="PlanetaryVehicleHangar" xml:space="preserve">
+    <value>Holdjáró hangár</value>
+    <comment>Module PlanetaryVehicleHangar</comment>
+  </data>
+  <data name="PlasmaAccelerator" xml:space="preserve">
+    <value>Plazma gyorsító</value>
+    <comment>Module PlasmaAccelerator</comment>
+  </data>
+  <data name="PointDefence" xml:space="preserve">
+    <value>Pont védelem</value>
+    <comment>Module PointDefence</comment>
+  </data>
+  <data name="PowerDistributor" xml:space="preserve">
+    <value>Energia elosztó</value>
+    <comment>Module PowerDistributor</comment>
+  </data>
+  <data name="PowerPlant" xml:space="preserve">
+    <value>Erőmű</value>
+    <comment>Module PowerPlant</comment>
+  </data>
+  <data name="PrismaticShieldGenerator" xml:space="preserve">
+    <value>Prizmatikus pajzsgenerátor</value>
+    <comment>Module PrismaticShieldGenerator</comment>
+  </data>
+  <data name="ProspectorLimpetController" xml:space="preserve">
+    <value>Bányakutató drón vezérlő</value>
+    <comment>Module ProspectorLimpetController</comment>
+  </data>
+  <data name="PulseLaser" xml:space="preserve">
+    <value>Pulzus lézer</value>
+    <comment>Module PulseLaser</comment>
+  </data>
+  <data name="RailGun" xml:space="preserve">
+    <value>Sínágyú</value>
+    <comment>Module RailGun</comment>
+  </data>
+  <data name="ReactiveSurfaceComposite" xml:space="preserve">
+    <value>Reaktív felszínű kompozit</value>
+    <comment>Module ReactiveSurfaceComposite</comment>
+  </data>
+  <data name="ReconLimpetController" xml:space="preserve">
+    <value>Felderítő drón vezérlő</value>
+    <comment>Module ReconLimpetController</comment>
+  </data>
+  <data name="Refinery" xml:space="preserve">
+    <value>Finomító</value>
+    <comment>Module Refinery</comment>
+  </data>
+  <data name="ReinforcedAlloy" xml:space="preserve">
+    <value>Megerősített ötvözet</value>
+    <comment>Module ReinforcedAlloy</comment>
+  </data>
+  <data name="RemoteReleaseFlakLauncher" xml:space="preserve">
+    <value>Távrobbantású légvédelmi kilövő</value>
+    <comment>Module RemoteReleaseFlakLauncher</comment>
+  </data>
+  <data name="RepairLimpetController" xml:space="preserve">
+    <value>Javító drón vezérlő</value>
+    <comment>Module RepairLimpetController</comment>
+  </data>
+  <data name="ResearchLimpetController" xml:space="preserve">
+    <value>Kutató drón vezérlő</value>
+    <comment>Module ResearchLimpetController</comment>
+  </data>
+  <data name="RocketPropelledFSDDisruptor" xml:space="preserve">
+    <value>Rakéta meghajtású FSD romboló</value>
+    <comment>Module RocketPropelledFSDDisruptor</comment>
+  </data>
+  <data name="Sensors" xml:space="preserve">
+    <value>Szenzorok</value>
+    <comment>Module Sensors</comment>
+  </data>
+  <data name="ShieldBooster" xml:space="preserve">
+    <value>Pajzs növelő</value>
+    <comment>Module ShieldBooster</comment>
+  </data>
+  <data name="ShieldCellBank" xml:space="preserve">
+    <value>Pajzsenergia cella tároló</value>
+    <comment>Module ShieldCellBank</comment>
+  </data>
+  <data name="ShieldGenerator" xml:space="preserve">
+    <value>Pajzsgenerátor</value>
+    <comment>Module ShieldGenerator</comment>
+  </data>
+  <data name="ShockCannon" xml:space="preserve">
+    <value>Roham ágyú</value>
+    <comment>Module ShockCannon</comment>
+  </data>
+  <data name="ShockMineLauncher" xml:space="preserve">
+    <value>Roham akna kilövő</value>
+    <comment>Module ShockMineLauncher</comment>
+  </data>
+  <data name="ShutdownFieldNeutraliser" xml:space="preserve">
+    <value>Tiltómező neutralizáló</value>
+    <comment>Module ShutdownFieldNeutraliser</comment>
+  </data>
+  <data name="StandardDockingComputer" xml:space="preserve">
+    <value>Sztenderd dokkoló kompjuter</value>
+    <comment>Module StandardDockingComputer</comment>
+  </data>
+  <data name="Thrusters" xml:space="preserve">
+    <value>Hajtóművek</value>
+    <comment>Module Thrusters</comment>
+  </data>
   
   
   
