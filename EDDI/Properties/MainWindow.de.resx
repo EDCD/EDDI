@@ -207,11 +207,21 @@
   <data name="tab_tts_volume_label" xml:space="preserve">
     <value>Lautstärke der Stimme:</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="upgrade_button" xml:space="preserve">
+    <value>EDDI aktualisieren</value>
+  </data>
+  <data name="reset_button" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="tab_tts_test_desc" xml:space="preserve">
+    <value>Sie können unten testen, wie die Stimme klingen wird. Beachten Sie, dass, wenn die Stimme inkompatibel ist, stattdessen die Standard-Stimme verwendet wird.</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_label" xml:space="preserve">
+    <value>Phonetische Sprache deaktivieren:</value>
+  </data>
+  <data name="tab_tts_disable_phonetic_speech_note" xml:space="preserve">
+    <value>(Dies deaktiviert alle Funktionen mit SSML-Sprach-Tags, wie in der Hilfedatei des Speech Responders angegeben.)</value>
+  </data>
   
   
   
