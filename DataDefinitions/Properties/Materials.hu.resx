@@ -178,7 +178,7 @@
     <comment>Material niobium</comment>
   </data>
   <data name="tin" xml:space="preserve">
-    <value>Aluminium</value>
+    <value>Alumínium</value>
     <comment>Material tin</comment>
   </data>
   <data name="tungsten" xml:space="preserve">
@@ -206,7 +206,7 @@
     <comment>Material yttrium</comment>
   </data>
   <data name="zirconium" xml:space="preserve">
-    <value>Cirkonium</value>
+    <value>Cirkónium</value>
     <comment>Material zirconium</comment>
   </data>
   <data name="antimony" xml:space="preserve">
@@ -310,7 +310,7 @@
     <comment>Material tg_compositiondata</comment>
   </data>
   <data name="unknownshipsignature" xml:space="preserve">
-    <value>Thargoid hajó lenyomat</value>
+    <value>Thargoid hajó szignatúra</value>
     <comment>Material unknownshipsignature</comment>
   </data>
   <data name="shieldpatternanalysis" xml:space="preserve">
