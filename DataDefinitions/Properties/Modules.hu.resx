@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AdvancedPlasmaAccelerator" xml:space="preserve">
-    <value>Fejlett Plazma Gyorsító</value>
+    <value>Fejlesztett plazmagyorsító</value>
     <comment>Module AdvancedPlasmaAccelerator</comment>
   </data>
   <data name="ATMulticannon" xml:space="preserve">
@@ -130,7 +130,7 @@
     <comment>Module AutoField_MaintenanceUnit</comment>
   </data>
   <data name="AXMissileRack" xml:space="preserve">
-    <value>AX rakéta kilövő</value>
+    <value>AX rakétakilövő</value>
     <comment>Module AXMissileRack</comment>
   </data>
   <data name="AXMulti_Cannon" xml:space="preserve">
@@ -138,11 +138,11 @@
     <comment>Module AXMulti_Cannon</comment>
   </data>
   <data name="BasicDiscoveryScanner" xml:space="preserve">
-    <value>Alap felfedező szkenner</value>
+    <value>Bézik felfedező szkenner</value>
     <comment>Module BasicDiscoveryScanner</comment>
   </data>
   <data name="BeamLaser" xml:space="preserve">
-    <value>Sugár lézer</value>
+    <value>Lézersugárvető</value>
     <comment>Module BeamLaser</comment>
   </data>
   <data name="Bi_WeaveShieldGenerator" xml:space="preserve">
@@ -150,7 +150,7 @@
     <comment>Module Bi_WeaveShieldGenerator</comment>
   </data>
   <data name="BurstLaser" xml:space="preserve">
-    <value>Sorozat lézer</value>
+    <value>Lézersorozatvető</value>
     <comment>Module BurstLaser</comment>
   </data>
   <data name="BusinessClassPassengerCabin" xml:space="preserve">
@@ -162,7 +162,7 @@
     <comment>Module Cannon</comment>
   </data>
   <data name="CargoHatch" xml:space="preserve">
-    <value>Raktér ajtó</value>
+    <value>Raktérajtó</value>
     <comment>Module CargoHatch</comment>
   </data>
   <data name="CargoRack" xml:space="preserve">
@@ -174,11 +174,11 @@
     <comment>Module Celeste</comment>
   </data>
   <data name="ChaffLauncher" xml:space="preserve">
-    <value>Csali kilövő</value>
+    <value>Szecskavető</value>
     <comment>Module ChaffLauncher</comment>
   </data>
   <data name="CockpitCanopy" xml:space="preserve">
-    <value>Pilótafülke szélvédő</value>
+    <value>Pilótafülke-szélvédő</value>
     <comment>Module CockpitCanopy</comment>
   </data>
   <data name="Cockpit" xml:space="preserve">
