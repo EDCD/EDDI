@@ -126,7 +126,7 @@
     <comment>Crime fireInNoFireZone</comment>
   </data>
   <data name="fireInStation" xml:space="preserve">
-    <value>Állomás meglövése</value>
+    <value>Fegyver használata az állomáson belül</value>
     <comment>Crime fireInStation</comment>
   </data>
   <data name="dumpingDangerous" xml:space="preserve">
