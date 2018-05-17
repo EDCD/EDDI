@@ -1373,13 +1373,34 @@
     <value>Uzumokui alacsony gravitációs szárnyak</value>
     <comment>Commodity UzumokuLow_GWings</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="VanayequiCeratomorphaFur" xml:space="preserve">
+    <value>Vanayequi-i rinocérosz szőrme</value>
+    <comment>Commodity VanayequiCeratomorphaFur</comment>
+  </data>
+  <data name="VegaSlimweed" xml:space="preserve">
+    <value>Vega-i karcsúgyom</value>
+    <comment>Commodity VegaSlimweed</comment>
+  </data>
+  <data name="VHerculisBodyRub" xml:space="preserve">
+    <value>V Herculis-i test súroló</value>
+    <comment>Commodity VHerculisBodyRub</comment>
+  </data>
+  <data name="VidavantianLace" xml:space="preserve">
+    <value>Vidavanta-i zsineg</value>
+    <comment>Commodity VidavantianLace</comment>
+  </data>
+  <data name="VoidExtractCoffee" xml:space="preserve">
+    <value>Űrben termesztett kávé</value>
+    <comment>Commodity VoidExtractCoffee</comment>
+  </data>
+  <data name="VolkhabBeeDrones" xml:space="preserve">
+    <value>Vokhab-i méh drónok</value>
+    <comment>Commodity VolkhabBeeDrones</comment>
+  </data>
+  <data name="Water" xml:space="preserve">
+    <value>Víz</value>
+    <comment>Commodity Water</comment>
+  </data>
   <data name="WaterPurifiers" xml:space="preserve">
     <value>Víztisztítók</value>
     <comment>Commodity WaterPurifiers</comment>
