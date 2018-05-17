@@ -119,7 +119,7 @@
     <comment>Government type Cooperative</comment>
   </data>
   <data name="Corporate" xml:space="preserve">
-    <value>Firmenbund</value>
+    <value>Unternehmen</value>
     <comment>Government type Corporate</comment>
   </data>
   <data name="Democracy" xml:space="preserve">
@@ -154,6 +154,12 @@
     <value>Theokratie</value>
     <comment>Government type Theocracy</comment>
   </data>
-  
-  
+  <data name="Workshop" xml:space="preserve">
+    <value>Werkstatt</value>
+    <comment>Government type Workshop</comment>
+  </data>
+  <data name="engineer" xml:space="preserve">
+    <value>Ingenieur</value>
+    <comment>Government type engineer</comment>
+  </data>
 </root>
