@@ -277,7 +277,10 @@
     <value>Sör</value>
     <comment>Commodity Beer</comment>
   </data>
-  
+  <data name="BelalansRayLeather" xml:space="preserve">
+    <value>Belalani rájabőr</value>
+    <comment>Commodity BelalansRayLeather</comment>
+  </data>
   <data name="Bertrandite" xml:space="preserve">
     <value>Bertrandit</value>
     <comment>Commodity Bertrandite</comment>
