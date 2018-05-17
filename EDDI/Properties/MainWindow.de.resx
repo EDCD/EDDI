@@ -147,8 +147,12 @@
   </data>
   
   
-  
-  
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Version:</value>
+  </data>
+  <data name="wiki_hyperlink" xml:space="preserve">
+    <value>Projekt Wiki</value>
+  </data>
   
   
   
