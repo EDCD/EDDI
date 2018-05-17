@@ -114,7 +114,7 @@
     <comment>Crime interdiction</comment>
   </data>
   <data name="illegalCargo" xml:space="preserve">
-    <value>Törvénytelen rakomány szállítása</value>
+    <value>Illegális rakomány szállítása</value>
     <comment>Crime illegalCargo</comment>
   </data>
   <data name="disobeyPolice" xml:space="preserve">
@@ -158,7 +158,7 @@
     <comment>Crime dockingMinorTresspass</comment>
   </data>
   <data name="dockingMajorTresspass" xml:space="preserve">
-    <value>Huzamos áthaladás</value>
+    <value>Engedély nélküli belépés</value>
     <comment>Crime dockingMajorTresspass</comment>
   </data>
   <data name="collidedAtSpeedInNoFireZone" xml:space="preserve">
