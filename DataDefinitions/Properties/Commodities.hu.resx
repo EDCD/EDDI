@@ -289,7 +289,10 @@
     <value>Berillium</value>
     <comment>Commodity Beryllium</comment>
   </data>
-  
+  <data name="BioReducingLichen" xml:space="preserve">
+    <value>Ásványkereső biozúzmó</value>
+    <comment>Commodity BioReducingLichen</comment>
+  </data>
   <data name="Biowaste" xml:space="preserve">
     <value>Biólógiai hulladék</value>
     <comment>Commodity Biowaste</comment>
@@ -306,7 +309,10 @@
     <value>Csempész likőr</value>
     <comment>Commodity BootlegLiquor</comment>
   </data>
-  
+  <data name="BorasetaniPathogenetics" xml:space="preserve">
+    <value>Borasetani géngyógyászat</value>
+    <comment>Commodity BorasetaniPathogenetics</comment>
+  </data>
   <data name="Bromellite" xml:space="preserve">
     <value>Bromellit</value>
     <comment>Commodity Bromellite</comment>
