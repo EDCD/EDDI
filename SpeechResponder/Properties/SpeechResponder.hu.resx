@@ -121,7 +121,7 @@
     <value>Aktív személyiség</value>
   </data>
   <data name="button_cancel" xml:space="preserve">
-    <value>Mégse</value>
+    <value>Mégsem</value>
   </data>
   <data name="button_copy" xml:space="preserve">
     <value>Személyiség másolása</value>
@@ -161,7 +161,7 @@
     <value>Szkript törlése</value>
   </data>
   <data name="delete_script_message" xml:space="preserve">
-    <value>Biztos benne , hogy törölni szeretné a "{0}" szkriptet?</value>
+    <value>Biztos benne, hogy törölni szeretné a "{0}" szkriptet?</value>
   </data>
   <data name="desc" xml:space="preserve">
     <value>Skriptel beszéddel rendelkező eseményre való reagálás az eseményre jellemző információ alapján. Nincs minden eseménynek szkriptelt reagálása. Ha a szkript reagálás üres akkor a hozzá tartozó 'teszt' és 'megtekintés' gombok le vannak tiltva.</value>
@@ -195,10 +195,10 @@
     <comment>button that shows help for script variables</comment>
   </data>
   <data name="subs" xml:space="preserve">
-    <value>Írjon szöveges másolatot a beszédről a %APPDATA%\EDDI\speechresponder.out fájlba</value>
+    <value>Írjon szöveges kivonatot a beszédről a(z) %APPDATA%\EDDI\speechresponder.out fájlba</value>
   </data>
   <data name="subs_only" xml:space="preserve">
-    <value>Ne beszéljen hangosan amikor a szöveg a fenti módon van a fájlba írva</value>
+    <value>Ne beszéljen hangosan, amikor a szöveg a fenti módon van a fájlba írva</value>
   </data>
   <data name="test_script" xml:space="preserve">
     <value>Teszt</value>
@@ -213,6 +213,6 @@
     <value>Szkript megtekintése</value>
   </data>
   <data name="warning_triggered" xml:space="preserve">
-    <value>Eseményekhez rendel szkripteket csak letiltani lehet törölni nem.</value>
+    <value>Eseményekhez rendelt szkripteket csak letiltani lehet, törölni nem.</value>
   </data>
 </root>
