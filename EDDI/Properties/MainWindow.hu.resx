@@ -136,12 +136,22 @@
   
   
   
+  <data name="version_hyperlink" xml:space="preserve">
+    <value>Verzió:</value>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="choose_lang_label" xml:space="preserve">
+    <value>EDDI felület nyelve (EDDI újraindítása szükséges):</value>
+  </data>
+  <data name="label_code" xml:space="preserve">
+    <value>Kód:</value>
+  </data>
+  <data name="label_email" xml:space="preserve">
+    <value>E-mail:</value>
+  </data>
+  <data name="label_password" xml:space="preserve">
+    <value>Jelszó:</value>
+  </data>
   
   
   
