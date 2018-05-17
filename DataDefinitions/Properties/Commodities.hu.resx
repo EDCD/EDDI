@@ -885,13 +885,22 @@
     <value>Momus-i mocsári csúszómászó</value>
     <comment>Commodity MomusBogSpaniel</comment>
   </data>
-  
-  
+  <data name="MotronaExperienceJelly" xml:space="preserve">
+    <value>Motrona-i élmény zselé</value>
+    <comment>Commodity MotronaExperienceJelly</comment>
+  </data>
+  <data name="MukusubiiChitin_Os" xml:space="preserve">
+    <value>Mukusubii-i kitin rágcsa</value>
+    <comment>Commodity MukusubiiChitin_Os</comment>
+  </data>
   <data name="MulachiGiantFungus" xml:space="preserve">
     <value>Mulachi óriásgomba</value>
     <comment>Commodity MulachiGiantFungus</comment>
   </data>
-  
+  <data name="MuTomImager" xml:space="preserve">
+    <value>Muon térképező</value>
+    <comment>Commodity MuTomImager</comment>
+  </data>
   <data name="MysteriousIdol" xml:space="preserve">
     <value>Rejtélyes bálvány</value>
     <comment>Commodity MysteriousIdol</comment>
@@ -928,7 +937,10 @@
     <value>Njangari nyergek</value>
     <comment>Commodity NjangariSaddles</comment>
   </data>
-  
+  <data name="NonEuclidianExotanks" xml:space="preserve">
+    <value>Nem Euclidiai idegen tárolók</value>
+    <comment>Commodity NonEuclidianExotanks</comment>
+  </data>
   <data name="NonLethalWeapons" xml:space="preserve">
     <value>Nem halálos fegyverek</value>
     <comment>Commodity NonLethalWeapons</comment>
@@ -945,8 +957,14 @@
     <value>Hagyma fej</value>
     <comment>Commodity OnionHead</comment>
   </data>
-  
-  
+  <data name="OnionheadAlphaStrain" xml:space="preserve">
+    <value>Alfa Hagymafej kivonat</value>
+    <comment>Commodity OnionheadAlphaStrain</comment>
+  </data>
+  <data name="OnionheadBetaStrain" xml:space="preserve">
+    <value>Beta Hagymafej Kivonat</value>
+    <comment>Commodity OnionheadBetaStrain</comment>
+  </data>
   
   
   <data name="Osmium" xml:space="preserve">
@@ -1236,7 +1254,10 @@
   
   
   
-  
+  <data name="WaterPurifiers" xml:space="preserve">
+    <value>Víztisztítók</value>
+    <comment>Commodity WaterPurifiers</comment>
+  </data>
   
   
   
