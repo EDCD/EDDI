@@ -17,13 +17,16 @@ namespace EddiDataDefinitions
             if (definition == null)
             {
                 string name = null;
-                if (name == null && additionalJsonData.ContainsKey("EDName"))
+                if (additionalJsonData != null)
                 {
-                    name = (string)additionalJsonData?["EDName"];
-                }
-                if (name == null && additionalJsonData.ContainsKey("name"))
-                {
-                    name = (string)additionalJsonData?["name"];
+                    if (name == null && additionalJsonData.ContainsKey("EDName"))
+                    {
+                        name = (string)additionalJsonData?["EDName"];
+                    }
+                    if (name == null && additionalJsonData.ContainsKey("name"))
+                    {
+                        name = (string)additionalJsonData?["name"];
+                    }
                 }
                 if (name != null)
                 {
