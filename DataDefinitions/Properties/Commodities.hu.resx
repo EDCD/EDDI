@@ -965,8 +965,14 @@
     <value>Beta Hagymafej Kivonat</value>
     <comment>Commodity OnionheadBetaStrain</comment>
   </data>
-  
-  
+  <data name="OphiuchExinoArtefacts" xml:space="preserve">
+    <value>Ophiuch-i Exino műalkotás</value>
+    <comment>Commodity OphiuchExinoArtefacts</comment>
+  </data>
+  <data name="OrrerianViciousBrew" xml:space="preserve">
+    <value>Orrerian-i gonosz főzet</value>
+    <comment>Commodity OrrerianViciousBrew</comment>
+  </data>
   <data name="Osmium" xml:space="preserve">
     <value>Ozmium</value>
     <comment>Commodity Osmium</comment>
@@ -983,12 +989,18 @@
     <value>Pantaa imapálcák</value>
     <comment>Commodity PantaaPrayerSticks</comment>
   </data>
-  
+  <data name="PavonisEarGrubs" xml:space="preserve">
+    <value>Pavionis-i fül-lárva</value>
+    <comment>Commodity PavonisEarGrubs</comment>
+  </data>
   <data name="PerformanceEnhancers" xml:space="preserve">
     <value>Teljesítménynövelők</value>
     <comment>Commodity PerformanceEnhancers</comment>
   </data>
-  
+  <data name="PersonalEffects" xml:space="preserve">
+    <value>Személyes tárgyak</value>
+    <comment>Commodity PersonalEffects</comment>
+  </data>
   <data name="PersonalWeapons" xml:space="preserve">
     <value>Oldalfegyverek</value>
     <comment>Commodity PersonalWeapons</comment>
@@ -1009,14 +1021,38 @@
     <value>Műanyagok</value>
     <comment>Commodity Polymers</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="PowerConverter" xml:space="preserve">
+    <value>Energia átalakító</value>
+    <comment>Commodity PowerConverter</comment>
+  </data>
+  <data name="PowerGenerators" xml:space="preserve">
+    <value>Generátorok</value>
+    <comment>Commodity PowerGenerators</comment>
+  </data>
+  <data name="PowerGridAssembly" xml:space="preserve">
+    <value>Energiahálózat szerelvény</value>
+    <comment>Commodity PowerGridAssembly</comment>
+  </data>
+  <data name="PowerTransferConduits" xml:space="preserve">
+    <value>Energia továbbító csövek</value>
+    <comment>Commodity PowerTransferConduits</comment>
+  </data>
+  <data name="Praseodymium" xml:space="preserve">
+    <value>Prazeodímium</value>
+    <comment>Commodity Praseodymium</comment>
+  </data>
+  <data name="PreciousGems" xml:space="preserve">
+    <value>Értékes ékkövek</value>
+    <comment>Commodity PreciousGems</comment>
+  </data>
+  <data name="ProgenitorCells" xml:space="preserve">
+    <value>Fiatalító sejtek</value>
+    <comment>Commodity ProgenitorCells</comment>
+  </data>
+  <data name="ProhibitedResearchMaterials" xml:space="preserve">
+    <value>Tiltott kutatási anyagok</value>
+    <comment>Commodity ProhibitedResearchMaterials</comment>
+  </data>
   
   
   
@@ -1259,8 +1295,14 @@
     <comment>Commodity WaterPurifiers</comment>
   </data>
   
-  
-  
+  <data name="WheemeteWheatCakes" xml:space="preserve">
+    <value>Wheemetei Búza Torták</value>
+    <comment>Commodity WheemeteWheatCakes</comment>
+  </data>
+  <data name="Wine" xml:space="preserve">
+    <value>Bor</value>
+    <comment>Commodity Wine</comment>
+  </data>
   
   
   
