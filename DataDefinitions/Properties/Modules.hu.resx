@@ -326,7 +326,7 @@
     <comment>Module MetaAlloyHullReinforcement</comment>
   </data>
   <data name="MilitaryGradeComposite" xml:space="preserve">
-    <value>Katonai osztályú kompozit</value>
+    <value>Katonai osztályú burkolat</value>
     <comment>Module MilitaryGradeComposite</comment>
   </data>
   <data name="MineLauncher" xml:space="preserve">
@@ -342,7 +342,7 @@
     <comment>Module MiningLaser</comment>
   </data>
   <data name="MirroredSurfaceComposite" xml:space="preserve">
-    <value>Tükröző felületű burkolat</value>
+    <value>Tükrözőtt felületű burkolat</value>
     <comment>Module MirroredSurfaceComposite</comment>
   </data>
   <data name="MissileRack" xml:space="preserve">
