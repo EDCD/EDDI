@@ -121,7 +121,7 @@
     <value>Hozzáférés EDDI béta verziókhoz</value>
   </data>
   <data name="EDDI_status_label" xml:space="preserve">
-    <value>Eddi státusz: </value>
+    <value>EDDI státusz: </value>
   </data>
   
   <data name="paragraph_1" xml:space="preserve">
@@ -178,7 +178,9 @@
   
   
   
-  
+  <data name="tab_tts_icao_label" xml:space="preserve">
+    <value>ICAO engedélyezése:</value>
+  </data>
   
   
   <data name="tab_commander_gender_f" xml:space="preserve">
