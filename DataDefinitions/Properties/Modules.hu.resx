@@ -201,25 +201,82 @@
     <value>Cyto zavaró</value>
     <comment>Module Cytoscrambler</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="DataLinkScanner" xml:space="preserve">
+    <value>Adatcsatoló szkenner</value>
+    <comment>Module DataLinkScanner</comment>
+  </data>
+  <data name="DecontaminationLimpetController" xml:space="preserve">
+    <value>Fertőtlenítő drón vezérlő</value>
+    <comment>Module DecontaminationLimpetController</comment>
+  </data>
+  <data name="DetailedSurfaceScanner" xml:space="preserve">
+    <value>Részletes felszín szkenner</value>
+    <comment>Module DetailedSurfaceScanner</comment>
+  </data>
+  <data name="Disruptor" xml:space="preserve">
+    <value>Szétszakító</value>
+    <comment>Module Disruptor</comment>
+  </data>
+  <data name="EconomyClassPassengerCabin" xml:space="preserve">
+    <value>Economy osztályú utaskabin</value>
+    <comment>Module EconomyClassPassengerCabin</comment>
+  </data>
+  <data name="ElectronicCountermeasure" xml:space="preserve">
+    <value>Elektronikus zavaró</value>
+    <comment>Module ElectronicCountermeasure</comment>
+  </data>
+  <data name="EnhancedPerformanceThrusters" xml:space="preserve">
+    <value>Fejlesztett működésű hajtóművek</value>
+    <comment>Module EnhancedPerformanceThrusters</comment>
+  </data>
+  <data name="FighterArmour" xml:space="preserve">
+    <value>Vadász páncélzat</value>
+    <comment>Module FighterArmour</comment>
+  </data>
+  <data name="FighterHangar" xml:space="preserve">
+    <value>Vadász hangár</value>
+    <comment>Module FighterHangar</comment>
+  </data>
+  <data name="FirstClassPassengerCabin" xml:space="preserve">
+    <value>Első osztályú utaskabin</value>
+    <comment>Module FirstClassPassengerCabin</comment>
+  </data>
+  <data name="FragmentCannon" xml:space="preserve">
+    <value>Repesz ágyú</value>
+    <comment>Module FragmentCannon</comment>
+  </data>
+  <data name="FrameShiftDriveInterdictor" xml:space="preserve">
+    <value>Térhajtómű kiiktató</value>
+    <comment>Module FrameShiftDriveInterdictor</comment>
+  </data>
+  <data name="FrameShiftDrive" xml:space="preserve">
+    <value>Térváltó hajtómű</value>
+    <comment>Module FrameShiftDrive</comment>
+  </data>
+  <data name="FrameShiftWakeScanner" xml:space="preserve">
+    <value>Ugrónyom szkenner</value>
+    <comment>Module FrameShiftWakeScanner</comment>
+  </data>
+  <data name="FuelScoop" xml:space="preserve">
+    <value>Üzemanyag szivattyú csillagszopó</value>
+    <comment>Module FuelScoop</comment>
+  </data>
+  <data name="FuelTank" xml:space="preserve">
+    <value>Üzemanyag tank</value>
+    <comment>Module FuelTank</comment>
+  </data>
+  <data name="FuelTransferLimpetController" xml:space="preserve">
+    <value>Üzemanyag-szállító drón vezérlő</value>
+    <comment>Module FuelTransferLimpetController</comment>
+  </data>
+  <data name="GuardianGaussCannon" xml:space="preserve">
+    <value>Őrző gauss ágyú</value>
+    <comment>Module GuardianGaussCannon</comment>
+  </data>
+  <data name="GuardianPlasmaCharger" xml:space="preserve">
+    <value>Őrző plazmavető</value>
+    <comment>Module GuardianPlasmaCharger</comment>
+  </data>
   
   
   
