@@ -147,7 +147,7 @@
     <comment/>
   </data>
   <data name="quadrillion" xml:space="preserve">
-    <value>kvadrillió</value>
+    <value>milliárd</value>
     <comment/>
   </data>
   <data name="thousand" xml:space="preserve">
@@ -155,7 +155,7 @@
     <comment/>
   </data>
   <data name="trillion" xml:space="preserve">
-    <value>trillió</value>
+    <value>billió</value>
     <comment/>
   </data>
   <data name="wellover" xml:space="preserve">
