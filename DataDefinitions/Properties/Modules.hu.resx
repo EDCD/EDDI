@@ -146,7 +146,7 @@
     <comment>Module BeamLaser</comment>
   </data>
   <data name="Bi_WeaveShieldGenerator" xml:space="preserve">
-    <value>Bi-Weave pajzsgenerátor</value>
+    <value>Bi vév pajzsgenerátor</value>
     <comment>Module Bi_WeaveShieldGenerator</comment>
   </data>
   <data name="BurstLaser" xml:space="preserve">
@@ -154,7 +154,7 @@
     <comment>Module BurstLaser</comment>
   </data>
   <data name="BusinessClassPassengerCabin" xml:space="preserve">
-    <value>Business osztályú utaskabin</value>
+    <value>Biznisz osztályú utaskabin</value>
     <comment>Module BusinessClassPassengerCabin</comment>
   </data>
   <data name="Cannon" xml:space="preserve">
