@@ -150,11 +150,11 @@
     <comment>Commodity Algae</comment>
   </data>
   <data name="alieneggs" xml:space="preserve">
-    <value>Líthöri egsz</value>
+    <value>Bőr tojások</value>
     <comment>Commodity alieneggs</comment>
   </data>
   <data name="AltairianSkin" xml:space="preserve">
-    <value>Altairian szkin</value>
+    <value>Altairian bőr</value>
     <comment>Commodity AltairianSkin</comment>
   </data>
   <data name="Aluminium" xml:space="preserve">
@@ -162,43 +162,43 @@
     <comment>Commodity Aluminium</comment>
   </data>
   <data name="AlyaBodySoap" xml:space="preserve">
-    <value>Alia bádi szóp</value>
+    <value>Alia test szappan</value>
     <comment>Commodity AlyaBodySoap</comment>
   </data>
   <data name="AncientCasket" xml:space="preserve">
-    <value>Ésönt kaszket</value>
+    <value>Ősi érckoporsó</value>
     <comment>Commodity AncientCasket</comment>
   </data>
   <data name="AncientOrb" xml:space="preserve">
-    <value>Ésönt orb</value>
+    <value>Ősi gömb</value>
     <comment>Commodity AncientOrb</comment>
   </data>
   <data name="AncientRelic" xml:space="preserve">
-    <value>Ésönt reliksz</value>
+    <value>Ősi relikvia</value>
     <comment>Commodity AncientRelic</comment>
   </data>
   <data name="AncientTablet" xml:space="preserve">
-    <value>Ésönt tablet</value>
+    <value>Ősi kőtábla</value>
     <comment>Commodity AncientTablet</comment>
   </data>
   <data name="AncientTotem" xml:space="preserve">
-    <value>Ésönt totem</value>
+    <value>Ősi totem</value>
     <comment>Commodity AncientTotem</comment>
   </data>
   <data name="AncientUrn" xml:space="preserve">
-    <value>Ésönt jurn</value>
+    <value>Ősi urna</value>
     <comment>Commodity AncientUrn</comment>
   </data>
   <data name="AnduligaFireWorks" xml:space="preserve">
-    <value>Ándülígá fájör vörksz</value>
+    <value>Andu liga tűzijátékok</value>
     <comment>Commodity AnduligaFireWorks</comment>
   </data>
   <data name="Animalmeat" xml:space="preserve">
-    <value>Enimöl mít</value>
+    <value>Hús</value>
     <comment>Commodity Animalmeat</comment>
   </data>
   <data name="AnimalMonitors" xml:space="preserve">
-    <value>Állat megfigyelők</value>
+    <value>Állat monitorok</value>
     <comment>Commodity AnimalMonitors</comment>
   </data>
   <data name="AntimatterContainmentUnit" xml:space="preserve">
