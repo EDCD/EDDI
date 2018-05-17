@@ -103,20 +103,23 @@
     <comment>ship</comment>
   </data>
   <data name="srv" xml:space="preserve">
-    <value>Felszíni felderitő jármű</value>
+    <value>Holdjáró</value>
     <comment>srv</comment>
   </data>
   <data name="fighter" xml:space="preserve">
-    <value>Vadászgép</value>
+    <value>Vadász</value>
     <comment>fighter</comment>
   </data>
   <data name="witch_space" xml:space="preserve">
     <value>Hipertér</value>
     <comment>witch_space</comment>
   </data>
-  
+  <data name="supercruise" xml:space="preserve">
+    <value>Cirkálás</value>
+    <comment>supercruise</comment>
+  </data>
   <data name="normal_space" xml:space="preserve">
-    <value>Normál tér</value>
+    <value>Normál űr</value>
     <comment>normal_space</comment>
   </data>
 </root>
