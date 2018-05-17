@@ -123,14 +123,18 @@
   <data name="EDDI_status_label" xml:space="preserve">
     <value>EDDI státusz: </value>
   </data>
-  
+  <data name="paragraph_0" xml:space="preserve">
+    <value>külön beállíthatószolgáltatásai vannak. Három különböző tétel van.</value>
+  </data>
   <data name="paragraph_1" xml:space="preserve">
     <value>Az első csoport megszerzi és kezeli az alap információkat amit EDDI használ. Ezek a 'Commamder Details','Frontier API'és 'Text-to Speech' fülek. Ezeken végig kéne menned és beállítani hogy EDDI-nek teljes hozzáférése legyen az Elite Dangerous informácioidhoz.</value>
   </data>
   <data name="paragraph_2" xml:space="preserve">
     <value>A második csoport megszerzi az események információit. Ezek a fülek a amelyek Monitorral végződnek. Ezek megszerzik az eseményeket különböző helyekről és némi konfigurációt igényelnek mielőtt használhatóak lesznek.</value>
   </data>
-  
+  <data name="paragraph_3" xml:space="preserve">
+    <value>A harmadik csoport eseményekre reagál. Vannak fülek amik 'reagálók'-ra végződnek. Ezek különböző szintű variációs lehetőséget tartalmaznak de működni fognak ezek állítgatása nélkül is.</value>
+  </data>
   <data name="paragraph_4" xml:space="preserve">
     <value>További információkat olvashat az EDDI funkcióriól a</value>
   </data>
