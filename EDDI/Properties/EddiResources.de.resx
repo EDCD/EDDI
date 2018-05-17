@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
+  <data name="change_affect_va" xml:space="preserve">
+    <value>Alle hier vorgenommenen Änderungen werden automatisch in VoiceAttack wirksam. Sie können dieses Fenster schließen, wenn Sie fertig sind.</value>
+  </data>
   <data name="complete" xml:space="preserve">
     <value>Vollständig</value>
     <comment>This is the adjective not the verb</comment>
@@ -128,11 +130,21 @@
   <data name="failed" xml:space="preserve">
     <value>fehlgeschlagen</value>
   </data>
-  
-  
-  
-  
-  
+  <data name="frontier_api_nok" xml:space="preserve">
+    <value>Die Frontier-API-Verbindung ist nicht btriebsbereit</value>
+  </data>
+  <data name="frontier_api_no_logins" xml:space="preserve">
+    <value>Sie haben zur Zeit keine Verbindung zur Frontier-API. Bitte geben Sie unten Ihre Elite Dangerous E-Mail-Adresse und Ihr Passwort ein.</value>
+  </data>
+  <data name="frontier_api_ok" xml:space="preserve">
+    <value>Ihre Verbindung zur Frontier-API ist betriebsbereit, Commander {0}.</value>
+  </data>
+  <data name="frontier_api_temp_nok" xml:space="preserve">
+    <value>Ihre Verbindung zur Frontier-API ist gut, hat aber temporär Probleme. Ihre Informationen sollten in Kürze verfügbar sein</value>
+  </data>
+  <data name="frontier_api_verification_code" xml:space="preserve">
+    <value>Bitte geben Sie den Bestätigungscode ein, der an Ihre E-Mail-Adresse gesendet wurde</value>
+  </data>
   
   <data name="invalid_station" xml:space="preserve">
     <value>Ungültige Station</value>
