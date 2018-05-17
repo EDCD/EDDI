@@ -132,8 +132,13 @@
   </data>
   
   
-  
-  
+  <data name="report_issue" xml:space="preserve">
+    <value>Hiba Jelentése</value>
+  </data>
+  <data name="troubleshoot_common_issues" xml:space="preserve">
+    <value>Általános problémák megoldása</value>
+    <comment>A hyperlink to the troubleshooting URL (in english)</comment>
+  </data>
   
   
   <data name="version_hyperlink" xml:space="preserve">
@@ -153,7 +158,9 @@
     <value>Jelszó:</value>
   </data>
   
-  
+  <data name="tab_frontier_header" xml:space="preserve">
+    <value>Frontier API</value>
+  </data>
   
   
   
