@@ -186,7 +186,9 @@
   <data name="tab_tts_level_label" xml:space="preserve">
     <value>Level der Sprachverzerrung:</value>
   </data>
-  
+  <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
+    <value>EDDI verwendet phonetische Sprache, um verschiedene schwer zu sagende Wörter auszusprechen und Pausen zwischen Wörtern einzufügen. Einige Stimmen, oft Microsoft-Stimmen, haben ein Problem mit phonetischer Sprache und verursachen, dass EDDI hängt oder abstürzt. Wenn dies der Fall ist, versuchen Sie, die folgende Option zu aktivieren</value>
+  </data>
   
   
   
