@@ -217,14 +217,38 @@
     <value>Polónium</value>
     <comment>Material polonium</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="bulkscandata" xml:space="preserve">
+    <value>Rendhagyó tömeg szkennelési adat</value>
+    <comment>Material bulkscandata</comment>
+  </data>
+  <data name="disruptedwakeechoes" xml:space="preserve">
+    <value>Atipikus feloszlatott nyom visszhangok</value>
+    <comment>Material disruptedwakeechoes</comment>
+  </data>
+  <data name="shieldcyclerecordings" xml:space="preserve">
+    <value>Torzult pajzs folyamat felvételek</value>
+    <comment>Material shieldcyclerecordings</comment>
+  </data>
+  <data name="scrambledemissiondata" xml:space="preserve">
+    <value>Kivételesen kevert kibocsájtási adat</value>
+    <comment>Material scrambledemissiondata</comment>
+  </data>
+  <data name="legacyfirmware" xml:space="preserve">
+    <value>Specializált eredeti firmware</value>
+    <comment>Material legacyfirmware</comment>
+  </data>
+  <data name="encryptedfiles" xml:space="preserve">
+    <value>Szokatlan titkosított fájlok</value>
+    <comment>Material encryptedfiles</comment>
+  </data>
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>Ős történelmi adat</value>
+    <comment>Material ancienthistoricaldata</comment>
+  </data>
+  <data name="fsdtelemetry" xml:space="preserve">
+    <value>Rendhagyó FSD telemetria</value>
+    <comment>Material fsdtelemetry</comment>
+  </data>
   
   
   
