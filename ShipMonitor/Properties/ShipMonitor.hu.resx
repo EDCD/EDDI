@@ -117,19 +117,45 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="desc" xml:space="preserve">
+    <value>Hajó információk követése.</value>
+  </data>
+  <data name="export_it_button" xml:space="preserve">
+    <value>Exportálás</value>
+  </data>
+  <data name="header_location" xml:space="preserve">
+    <value>Pozíció</value>
+  </data>
+  <data name="header_model" xml:space="preserve">
+    <value>Modell</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Név</value>
+  </data>
+  <data name="header_role" xml:space="preserve">
+    <value>Szerepkör</value>
+  </data>
+  <data name="header_ship_ID" xml:space="preserve">
+    <value>Hajó ID</value>
+  </data>
+  <data name="header_spoken_name" xml:space="preserve">
+    <value>Név (beszélt)</value>
+  </data>
+  <data name="header_value" xml:space="preserve">
+    <value>Érték</value>
+  </data>
+  <data name="hear_it_button" xml:space="preserve">
+    <value>Halljam</value>
+  </data>
+  <data name="ipa_page" xml:space="preserve">
+    <value>https://en.wikipedia.org/wiki/International_Phonetic_Alphabet</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Nemzetközi fonetikus ábécé</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Hajó figyelő</value>
+  </data>
   
   
   
