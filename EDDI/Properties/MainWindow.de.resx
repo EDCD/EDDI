@@ -126,8 +126,12 @@
   <data name="paragraph_0" xml:space="preserve">
     <value>hat eine Reihe von Funktionen, die separat konfiguriert werden können. Es gibt drei verschiedene Arten von Gegenständen.</value>
   </data>
-  
-  
+  <data name="paragraph_1" xml:space="preserve">
+    <value>Die erste Gruppe erhält und verwaltet die von EDDI verwendeten Basisinformationen. Dies sind die Registerkarten 'Commander Details', 'Frontier API' und 'Text-to-Speech'. Sie sollten diese durchgehen und so konfigurieren, dass EDDI vollen Zugriff auf Ihr ELITE hat: Gefährliche Informationen.</value>
+  </data>
+  <data name="paragraph_2" xml:space="preserve">
+    <value>Die zweite Gruppe erhält Ereignisinformationen. Dies sind die Registerkarten, die mit "Monitor" enden. Sie erhalten Ereignisse von verschiedenen Orten und benötigen nur eine minimale Konfiguration, müssen aber abgeschlossen sein, bevor sie funktionieren.</value>
+  </data>
   
   
   
