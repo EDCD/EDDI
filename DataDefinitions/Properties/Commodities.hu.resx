@@ -1048,13 +1048,34 @@ Ellenséges Környezet ruha</value>
     <value>Szintetikus reagens</value>
     <comment>Commodity SyntheticReagents</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
+  <data name="Taaffeite" xml:space="preserve">
+    <value>Taaffeit</value>
+    <comment>Commodity Taaffeite</comment>
+  </data>
+  <data name="TacticalData" xml:space="preserve">
+    <value>Taktikai adatok</value>
+    <comment>Commodity TacticalData</comment>
+  </data>
+  <data name="TanmarkTranquilTea" xml:space="preserve">
+    <value>Tanmarki nyugtató tea</value>
+    <comment>Commodity TanmarkTranquilTea</comment>
+  </data>
+  <data name="Tantalum" xml:space="preserve">
+    <value>Tantál</value>
+    <comment>Commodity Tantalum</comment>
+  </data>
+  <data name="TarachTorSpice" xml:space="preserve">
+    <value>Tarachi fűszer</value>
+    <comment>Commodity TarachTorSpice</comment>
+  </data>
+  <data name="TauriChimes" xml:space="preserve">
+    <value>Tauri csengettyűk</value>
+    <comment>Commodity TauriChimes</comment>
+  </data>
+  <data name="Tea" xml:space="preserve">
+    <value>Tea</value>
+    <comment>Commodity Tea</comment>
+  </data>
   
   
   
