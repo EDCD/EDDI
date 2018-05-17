@@ -117,8 +117,12 @@
   
   
   
-  
-  
+  <data name="max_header" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
+  <data name="min_header" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
   
   
   
