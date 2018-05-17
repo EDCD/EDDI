@@ -258,11 +258,11 @@
     <comment>Module FrameShiftWakeScanner</comment>
   </data>
   <data name="FuelScoop" xml:space="preserve">
-    <value>Üzemanyag szivattyú csillagszopó</value>
+    <value>Üzemanyag kanalazó</value>
     <comment>Module FuelScoop</comment>
   </data>
   <data name="FuelTank" xml:space="preserve">
-    <value>Üzemanyag tank</value>
+    <value>Üzemanyagtartály</value>
     <comment>Module FuelTank</comment>
   </data>
   <data name="FuelTransferLimpetController" xml:space="preserve">
@@ -314,7 +314,7 @@
     <comment>Module LightweightAlloy</comment>
   </data>
   <data name="LuxuryClassPassengerCabin" xml:space="preserve">
-    <value>Luxus osztályú utaskabin</value>
+    <value>Luxus utaskabinosztály</value>
     <comment>Module LuxuryClassPassengerCabin</comment>
   </data>
   <data name="ManifestScanner" xml:space="preserve">
@@ -382,7 +382,7 @@
     <comment>Module PlasmaAccelerator</comment>
   </data>
   <data name="PointDefence" xml:space="preserve">
-    <value>Pont védelem</value>
+    <value>Pontvédelmi ágyú</value>
     <comment>Module PointDefence</comment>
   </data>
   <data name="PowerDistributor" xml:space="preserve">
@@ -410,7 +410,7 @@
     <comment>Module RailGun</comment>
   </data>
   <data name="ReactiveSurfaceComposite" xml:space="preserve">
-    <value>Reaktív felszínű kompozit</value>
+    <value>Reaktív páncélzat</value>
     <comment>Module ReactiveSurfaceComposite</comment>
   </data>
   <data name="ReconLimpetController" xml:space="preserve">
@@ -438,11 +438,11 @@
     <comment>Module ResearchLimpetController</comment>
   </data>
   <data name="RocketPropelledFSDDisruptor" xml:space="preserve">
-    <value>Rakéta meghajtású FSD romboló</value>
+    <value>Rakéta meghajtású FTL diszruptor</value>
     <comment>Module RocketPropelledFSDDisruptor</comment>
   </data>
   <data name="Sensors" xml:space="preserve">
-    <value>Szenzorok</value>
+    <value>Érzékelők</value>
     <comment>Module Sensors</comment>
   </data>
   <data name="ShieldBooster" xml:space="preserve">
@@ -494,7 +494,7 @@
     <comment>Module Whitestringlights</comment>
   </data>
   <data name="XenoScanner" xml:space="preserve">
-    <value>Idegen szkenner</value>
+    <value>Xeno szkenner</value>
     <comment>Module XenoScanner</comment>
   </data>
   <data name="Fixed" xml:space="preserve">
