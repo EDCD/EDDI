@@ -1104,15 +1104,42 @@ Ellenséges Környezet ruha</value>
     <value>Tórium</value>
     <comment>Commodity Thorium</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="ThrutisCream" xml:space="preserve">
+    <value>Trutisi krémital</value>
+    <comment>Commodity ThrutisCream</comment>
+  </data>
+  <data name="TiegfriesSynthSilk" xml:space="preserve">
+    <value>Tiegfriesi szintetikus selyem</value>
+    <comment>Commodity TiegfriesSynthSilk</comment>
+  </data>
+  <data name="TimeCapsule" xml:space="preserve">
+    <value>Időkapszula</value>
+    <comment>Commodity TimeCapsule</comment>
+  </data>
+  <data name="TiolceWaste2PasteUnits" xml:space="preserve">
+    <value>Tiolcei újrahasznosított pástétom készítők</value>
+    <comment>Commodity TiolceWaste2PasteUnits</comment>
+  </data>
+  <data name="Titanium" xml:space="preserve">
+    <value>Titán</value>
+    <comment>Commodity Titanium</comment>
+  </data>
+  <data name="Tobacco" xml:space="preserve">
+    <value>Dohány</value>
+    <comment>Commodity Tobacco</comment>
+  </data>
+  <data name="ToxandjiVirocide" xml:space="preserve">
+    <value>Toxandji-i gyógyászati vírus</value>
+    <comment>Commodity ToxandjiVirocide</comment>
+  </data>
+  <data name="ToxicWaste" xml:space="preserve">
+    <value>Mérgező hulladék</value>
+    <comment>Commodity ToxicWaste</comment>
+  </data>
+  <data name="TransgenicOnionHead" xml:space="preserve">
+    <value>Lucani hagymafej</value>
+    <comment>Commodity TransgenicOnionHead</comment>
+  </data>
   
   
   
