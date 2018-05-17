@@ -219,5 +219,7 @@
     <value>Automatisch</value>
     <comment>The user's system language</comment>
   </data>
-  
+  <data name="safe_mode" xml:space="preserve">
+    <value>Abgesicherter Modus - Upgrade erforderlich.</value>
+  </data>
 </root>
