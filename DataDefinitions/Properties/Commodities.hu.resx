@@ -750,7 +750,10 @@ Ellenséges Környezet ruha</value>
     <value>Kongga-i világos sör</value>
     <comment>Commodity KonggaAle</comment>
   </data>
-  
+  <data name="KoroKungPellets" xml:space="preserve">
+    <value>Koro Kung-i műtrágya</value>
+    <comment>Commodity KoroKungPellets</comment>
+  </data>
   <data name="Landmines" xml:space="preserve">
     <value>Taposóaknák</value>
     <comment>Commodity Landmines</comment>
@@ -759,7 +762,10 @@ Ellenséges Környezet ruha</value>
     <value>Lanthán</value>
     <comment>Commodity Lanthanum</comment>
   </data>
-  
+  <data name="LargeExplorationDataCash" xml:space="preserve">
+    <value>Nagy felderítési adatállomány</value>
+    <comment>Commodity LargeExplorationDataCash</comment>
+  </data>
   <data name="LavianBrandy" xml:space="preserve">
     <value>Lavian Brandy</value>
     <comment>Commodity LavianBrandy</comment>
@@ -772,7 +778,10 @@ Ellenséges Környezet ruha</value>
     <value>Leestii Ördögi Dzsúsz</value>
     <comment>Commodity LeestianEvilJuice</comment>
   </data>
-  
+  <data name="Lepidolite" xml:space="preserve">
+    <value>Lepidolit</value>
+    <comment>Commodity Lepidolite</comment>
+  </data>
   <data name="LiquidOxygen" xml:space="preserve">
     <value>Folyékony oxigén</value>
     <comment>Commodity LiquidOxygen</comment>
@@ -789,12 +798,18 @@ Ellenséges Környezet ruha</value>
     <value>Lítium-hidroxid</value>
     <comment>Commodity LithiumHydroxide</comment>
   </data>
-  
+  <data name="LiveHecateSeaWorms" xml:space="preserve">
+    <value>Hecatei élő tengeri férgek</value>
+    <comment>Commodity LiveHecateSeaWorms</comment>
+  </data>
   <data name="LowTemperatureDiamond" xml:space="preserve">
     <value>Alacsony hőmérsékletű gyémántok</value>
     <comment>Commodity LowTemperatureDiamond</comment>
   </data>
-  
+  <data name="LTTHypersweet" xml:space="preserve">
+    <value>LTT-i csúcs édesítő</value>
+    <comment>Commodity LTTHypersweet</comment>
+  </data>
   <data name="LyraeWeed" xml:space="preserve">
     <value>Lyrae fű</value>
     <comment>Commodity LyraeWeed</comment>
@@ -807,7 +822,10 @@ Ellenséges Környezet ruha</value>
     <value>Hajózó felszerelés</value>
     <comment>Commodity MarineSupplies</comment>
   </data>
-  
+  <data name="MasterChefs" xml:space="preserve">
+    <value>Mester séf</value>
+    <comment>Commodity MasterChefs</comment>
+  </data>
   <data name="MechucosHighTea" xml:space="preserve">
     <value>Mechucosi finomított tea</value>
     <comment>Commodity MechucosHighTea</comment>
@@ -1006,12 +1024,30 @@ Ellenséges Környezet ruha</value>
   
   
   
-  
-  
-  
-  
-  
-  
+  <data name="Superconductors" xml:space="preserve">
+    <value>Szupervezetők</value>
+    <comment>Commodity Superconductors</comment>
+  </data>
+  <data name="SurfaceStabilisers" xml:space="preserve">
+    <value>Felszín stabilizálók</value>
+    <comment>Commodity SurfaceStabilisers</comment>
+  </data>
+  <data name="SurvivalEquipment" xml:space="preserve">
+    <value>Túlélő felszerelés</value>
+    <comment>Commodity SurvivalEquipment</comment>
+  </data>
+  <data name="SyntheticFabrics" xml:space="preserve">
+    <value>Szintetikus ruhaanyagok</value>
+    <comment>Commodity SyntheticFabrics</comment>
+  </data>
+  <data name="SyntheticMeat" xml:space="preserve">
+    <value>Szintetikus hús</value>
+    <comment>Commodity SyntheticMeat</comment>
+  </data>
+  <data name="SyntheticReagents" xml:space="preserve">
+    <value>Szintetikus reagens</value>
+    <comment>Commodity SyntheticReagents</comment>
+  </data>
   
   
   
