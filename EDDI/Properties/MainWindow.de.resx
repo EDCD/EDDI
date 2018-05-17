@@ -189,12 +189,24 @@
   <data name="tab_tts_phonetic_speech_desc" xml:space="preserve">
     <value>EDDI verwendet phonetische Sprache, um verschiedene schwer zu sagende Wörter auszusprechen und Pausen zwischen Wörtern einzufügen. Einige Stimmen, oft Microsoft-Stimmen, haben ein Problem mit phonetischer Sprache und verursachen, dass EDDI hängt oder abstürzt. Wenn dies der Fall ist, versuchen Sie, die folgende Option zu aktivieren</value>
   </data>
-  
-  
-  
-  
-  
-  
+  <data name="tab_tts_rate_label" xml:space="preserve">
+    <value>Geschwindigkeit der Sprache:</value>
+  </data>
+  <data name="tab_tts_test_button" xml:space="preserve">
+    <value>Stimme testen</value>
+  </data>
+  <data name="tab_tts_test_damaged_button" xml:space="preserve">
+    <value>Stimme testen (schwerer Schaden)</value>
+  </data>
+  <data name="tab_tts_test_ship_label" xml:space="preserve">
+    <value>Schiff zum Testen der Stimme:</value>
+  </data>
+  <data name="tab_tts_voice_label" xml:space="preserve">
+    <value>Stimme:</value>
+  </data>
+  <data name="tab_tts_volume_label" xml:space="preserve">
+    <value>Lautstärke der Stimme:</value>
+  </data>
   
   
   
