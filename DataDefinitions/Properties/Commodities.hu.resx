@@ -198,7 +198,7 @@
     <comment>Commodity Animalmeat</comment>
   </data>
   <data name="AnimalMonitors" xml:space="preserve">
-    <value>Állat monitor</value>
+    <value>Állat megfigyelők</value>
     <comment>Commodity AnimalMonitors</comment>
   </data>
   <data name="AntimatterContainmentUnit" xml:space="preserve">
@@ -214,7 +214,7 @@
     <comment>Commodity Antiquities</comment>
   </data>
   <data name="AnyNaCoffee" xml:space="preserve">
-    <value>Minden N/A kávé</value>
+    <value>Any Na-i kávé</value>
     <comment>Commodity AnyNaCoffee</comment>
   </data>
   <data name="AquaponicSystems" xml:space="preserve">
@@ -1140,27 +1140,90 @@ Ellenséges Környezet ruha</value>
     <value>Lucani hagymafej</value>
     <comment>Commodity TransgenicOnionHead</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="TrinketsOfFortune" xml:space="preserve">
+    <value>Szerencsehozó bizsuk</value>
+    <comment>Commodity TrinketsOfFortune</comment>
+  </data>
+  <data name="UnknownArtifact" xml:space="preserve">
+    <value>Thargoid érzékelő</value>
+    <comment>Commodity UnknownArtifact</comment>
+  </data>
+  <data name="UnknownArtifact2" xml:space="preserve">
+    <value>Thargoid szonda</value>
+    <comment>Commodity UnknownArtifact2</comment>
+  </data>
+  <data name="UnknownArtifact3" xml:space="preserve">
+    <value>Thargoid kapcsoló</value>
+    <comment>Commodity UnknownArtifact3</comment>
+  </data>
+  <data name="UnknownResin" xml:space="preserve">
+    <value>Thargoid gyanta</value>
+    <comment>Commodity UnknownResin</comment>
+  </data>
+  <data name="UnknownTechnologySamples" xml:space="preserve">
+    <value>Thargoid technológia minták</value>
+    <comment>Commodity UnknownTechnologySamples</comment>
+  </data>
+  <data name="UnstableDataCore" xml:space="preserve">
+    <value>Instabil adatmag</value>
+    <comment>Commodity UnstableDataCore</comment>
+  </data>
+  <data name="Uraninite" xml:space="preserve">
+    <value>Uráninit</value>
+    <comment>Commodity Uraninite</comment>
+  </data>
+  <data name="Uranium" xml:space="preserve">
+    <value>Uránium</value>
+    <comment>Commodity Uranium</comment>
+  </data>
+  <data name="USSCargoAncientArtefact" xml:space="preserve">
+    <value>Ős műtárgy</value>
+    <comment>Commodity USSCargoAncientArtefact</comment>
+  </data>
+  <data name="USSCargoBlackBox" xml:space="preserve">
+    <value>Fekete doboz</value>
+    <comment>Commodity USSCargoBlackBox</comment>
+  </data>
+  <data name="USSCargoExperimentalChemicals" xml:space="preserve">
+    <value>Kísérleti kemikáliák</value>
+    <comment>Commodity USSCargoExperimentalChemicals</comment>
+  </data>
+  <data name="USSCargoMilitaryPlans" xml:space="preserve">
+    <value>Katonasági tervek</value>
+    <comment>Commodity USSCargoMilitaryPlans</comment>
+  </data>
+  <data name="USSCargoPrototypeTech" xml:space="preserve">
+    <value>Prototípus technológia</value>
+    <comment>Commodity USSCargoPrototypeTech</comment>
+  </data>
+  <data name="USSCargoRareArtwork" xml:space="preserve">
+    <value>Ritka műalkotás</value>
+    <comment>Commodity USSCargoRareArtwork</comment>
+  </data>
+  <data name="USSCargoRebelTransmissions" xml:space="preserve">
+    <value>Lázadó adások</value>
+    <comment>Commodity USSCargoRebelTransmissions</comment>
+  </data>
+  <data name="USSCargoTechnicalBlueprints" xml:space="preserve">
+    <value>Technikai tervrajzok</value>
+    <comment>Commodity USSCargoTechnicalBlueprints</comment>
+  </data>
+  <data name="USSCargoTradeData" xml:space="preserve">
+    <value>Kereskedelmi adat</value>
+    <comment>Commodity USSCargoTradeData</comment>
+  </data>
+  <data name="UszaianTreeGrub" xml:space="preserve">
+    <value>Uszaiai fa hernyók</value>
+    <comment>Commodity UszaianTreeGrub</comment>
+  </data>
+  <data name="UtgaroarMillenialEggs" xml:space="preserve">
+    <value>Utgaroari milleniumi tojások</value>
+    <comment>Commodity UtgaroarMillenialEggs</comment>
+  </data>
+  <data name="UzumokuLow_GWings" xml:space="preserve">
+    <value>Uzumokui alacsony gravitációs szárnyak</value>
+    <comment>Commodity UzumokuLow_GWings</comment>
+  </data>
   
   
   
