@@ -154,7 +154,7 @@
     <comment>Economy type Repair</comment>
   </data>
   <data name="Damaged" xml:space="preserve">
-    <value>Megrongálódott</value>
+    <value>Sérült</value>
     <comment>Economy type Damaged</comment>
   </data>
 </root>
