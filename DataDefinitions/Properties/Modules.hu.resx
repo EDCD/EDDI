@@ -282,7 +282,7 @@
     <comment>Module GuardianPowerPlant</comment>
   </data>
   <data name="HatchBreakerLimpetController" xml:space="preserve">
-    <value>Raktér-feltörő drón vezérlő</value>
+    <value>Hekker szonda vezérlő egység</value>
     <comment>Module HatchBreakerLimpetController</comment>
   </data>
   <data name="HeatSinkLauncher" xml:space="preserve">
@@ -306,7 +306,7 @@
     <comment>Module KillWarrantScanner</comment>
   </data>
   <data name="LifeSupport" xml:space="preserve">
-    <value>Létfenntartás</value>
+    <value>Létfenntartó rendszer</value>
     <comment>Module LifeSupport</comment>
   </data>
   <data name="LightweightAlloy" xml:space="preserve">
@@ -314,19 +314,19 @@
     <comment>Module LightweightAlloy</comment>
   </data>
   <data name="LuxuryClassPassengerCabin" xml:space="preserve">
-    <value>Luxus utaskabinosztály</value>
+    <value>Luxus osztályú utaskabin</value>
     <comment>Module LuxuryClassPassengerCabin</comment>
   </data>
   <data name="ManifestScanner" xml:space="preserve">
-    <value>Rakománylista szkenner</value>
+    <value>Letapogató egység</value>
     <comment>Module ManifestScanner</comment>
   </data>
   <data name="MetaAlloyHullReinforcement" xml:space="preserve">
-    <value>Meta ötvözet hajótest erősítés</value>
+    <value>Meta ötvözetű hajótest erősítés</value>
     <comment>Module MetaAlloyHullReinforcement</comment>
   </data>
   <data name="MilitaryGradeComposite" xml:space="preserve">
-    <value>Katonai osztályú komposit</value>
+    <value>Katonai osztályú kompozit</value>
     <comment>Module MilitaryGradeComposite</comment>
   </data>
   <data name="MineLauncher" xml:space="preserve">
@@ -342,7 +342,7 @@
     <comment>Module MiningLaser</comment>
   </data>
   <data name="MirroredSurfaceComposite" xml:space="preserve">
-    <value>Tükröző felületű kompozit</value>
+    <value>Tükröző felületű burkolat</value>
     <comment>Module MirroredSurfaceComposite</comment>
   </data>
   <data name="MissileRack" xml:space="preserve">
@@ -374,7 +374,7 @@
     <comment>Module PlanetaryApproachSuite</comment>
   </data>
   <data name="PlanetaryVehicleHangar" xml:space="preserve">
-    <value>Holdjáró hangár</value>
+    <value>Felszíni jármű hangár</value>
     <comment>Module PlanetaryVehicleHangar</comment>
   </data>
   <data name="PlasmaAccelerator" xml:space="preserve">
