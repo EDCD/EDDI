@@ -103,7 +103,7 @@
     <comment>CQC rating Helpless</comment>
   </data>
   <data name="MostlyHelpless" xml:space="preserve">
-    <value>Többnyire reménytelen</value>
+    <value>Zöldfülű</value>
     <comment>CQC rating MostlyHelpless</comment>
   </data>
   <data name="Amateur" xml:space="preserve">
@@ -127,7 +127,7 @@
     <comment>CQC rating Hero</comment>
   </data>
   <data name="Legend" xml:space="preserve">
-    <value>Legendás</value>
+    <value>Legenda</value>
     <comment>CQC rating Legend</comment>
   </data>
   <data name="Elite" xml:space="preserve">
