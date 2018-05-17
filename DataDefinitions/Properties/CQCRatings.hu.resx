@@ -98,18 +98,24 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  
+  <data name="Helpless" xml:space="preserve">
+    <value>Reménytelen</value>
+    <comment>CQC rating Helpless</comment>
+  </data>
   <data name="MostlyHelpless" xml:space="preserve">
-    <value>Zöldfülű</value>
+    <value>Többnyire reménytelen</value>
     <comment>CQC rating MostlyHelpless</comment>
   </data>
   <data name="Amateur" xml:space="preserve">
     <value>Amatőr</value>
     <comment>CQC rating Amateur</comment>
   </data>
-  
+  <data name="SemiProfessional" xml:space="preserve">
+    <value>Közép-profi</value>
+    <comment>CQC rating SemiProfessional</comment>
+  </data>
   <data name="Professional" xml:space="preserve">
-    <value>Professzionális</value>
+    <value>Profi</value>
     <comment>CQC rating Professional</comment>
   </data>
   <data name="Champion" xml:space="preserve">
