@@ -150,7 +150,13 @@
   <data name="name" xml:space="preserve">
     <value>EDSM reagáló</value>
   </data>
-  
-  
-  
+  <data name="p1" xml:space="preserve">
+    <value>Az EDSM-hez való csatlakozáshoz regisztráció szükséges. Amint ez megvan, meg lehet szerezni az API kulcsot a kis portréra kattintva a jobb felső sarokban ahol a 'My API key'-t kell kiválasztani</value>
+  </data>
+  <data name="p2" xml:space="preserve">
+    <value>Amennyiben az aktuálistól eltérő kapitány nevet regisztrált, kérjük adja meg alul</value>
+  </data>
+  <data name="p3" xml:space="preserve">
+    <value>Amint megadta az adatai felül letöltheti a létező naplóit az EDSM-ből annak érdekében, hogy az EDDI tudja hányszor járt az egyes rendszerekben. Ezt csak az első alkalommal kell megtennie az aEDSM beállításához. A művelet eltarthat egy ideig</value>
+  </data>
 </root>
