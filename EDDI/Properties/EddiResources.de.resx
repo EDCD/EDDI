@@ -118,20 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <data name="logout" xml:space="preserve">
-    <value>Abmelden</value>
+  <data name="complete" xml:space="preserve">
+    <value>Vollständig</value>
+    <comment>This is the adjective not the verb</comment>
+  </data>
+  <data name="done" xml:space="preserve">
+    <value>fertig</value>
+  </data>
+  <data name="failed" xml:space="preserve">
+    <value>fehlgeschlagen</value>
   </data>
   
   
@@ -139,15 +134,50 @@
   
   
   
+  <data name="invalid_station" xml:space="preserve">
+    <value>Ungültige Station</value>
+  </data>
+  <data name="invalid_system" xml:space="preserve">
+    <value>Ungültiges System</value>
+  </data>
+  
+  <data name="logout" xml:space="preserve">
+    <value>Abmelden</value>
+  </data>
   
   
   
+  <data name="update_message" xml:space="preserve">
+    <value>Version {0} verfügbar</value>
+  </data>
   
   
+  <data name="plugin_enabled" xml:space="preserve">
+    <value>Plugin aktiviert</value>
+  </data>
+  <data name="download_failed" xml:space="preserve">
+    <value>Download fehlgeschlagen. Bitte versuchen Sie es später erneut.</value>
+  </data>
+  <data name="downloading_upgrade" xml:space="preserve">
+    <value>Lade Upgrade herunter.</value>
+  </data>
   
-  
-  
-  
+  <data name="msg_from_eddi" xml:space="preserve">
+    <value>Nachtricht von Eddi: {0}</value>
+  </data>
+  <data name="point" xml:space="preserve">
+    <value>Punkt</value>
+    <comment>spoken decimal point for reading out version numbers like "2.4.1"</comment>
+  </data>
+  <data name="update_available" xml:space="preserve">
+    <value>Eddi Version {0} ist jetzt verfügbar.</value>
+  </data>
+  <data name="upgrade_failed" xml:space="preserve">
+    <value>Upgrade fehlgeschlagen. Bitte versuchen Sie es später erneut.</value>
+  </data>
+  <data name="starting_upgrade" xml:space="preserve">
+    <value>Starte Upgrade.</value>
+  </data>
   
   
   
