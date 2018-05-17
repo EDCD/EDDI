@@ -393,6 +393,22 @@
     <value>Kristály szilánkok</value>
     <comment>Material crystalshards</comment>
   </data>
+  <data name="gridresistors" xml:space="preserve">
+    <value>Áramhálózati ellenállások</value>
+    <comment>Material gridresistors</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>Hővezeték</value>
+    <comment>Material heatconductionwiring</comment>
+  </data>
+  <data name="mechanicalscrap" xml:space="preserve">
+    <value>Mechanikai szemét</value>
+    <comment>Material mechanicalscrap</comment>
+  </data>
+  <data name="salvagedalloys" xml:space="preserve">
+    <value>Zsákmányolt ötvözetek</value>
+    <comment>Material salvagedalloys</comment>
+  </data>
   
   
   
@@ -443,18 +459,38 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="guardian_vesselblueprint" xml:space="preserve">
+    <value>Őrző jármű tervrajz</value>
+    <comment>Material guardian_vesselblueprint</comment>
+  </data>
+  <data name="guardian_techcomponent" xml:space="preserve">
+    <value>Őrző technológiai alkotóelem</value>
+    <comment>Material guardian_techcomponent</comment>
+  </data>
+  <data name="guardian_powerconduit" xml:space="preserve">
+    <value>Őrző energiavezeték</value>
+    <comment>Material guardian_powerconduit</comment>
+  </data>
+  <data name="guardian_moduleblueprint" xml:space="preserve">
+    <value>Őrző modul tervrajz</value>
+    <comment>Material guardian_moduleblueprint</comment>
+  </data>
+  <data name="guardian_sentinel_weaponparts" xml:space="preserve">
+    <value>Őrző Őrszem fegyverzet darab</value>
+    <comment>Material guardian_sentinel_weaponparts</comment>
+  </data>
+  <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
+    <value>Őrző Őrszem-roncs alkotóelem</value>
+    <comment>Material guardian_sentinel_wreckagecomponents</comment>
+  </data>
+  <data name="lead" xml:space="preserve">
+    <value>Ólom</value>
+    <comment>Material lead</comment>
+  </data>
+  <data name="rhenium" xml:space="preserve">
+    <value>Rénium</value>
+    <comment>Material rhenium</comment>
+  </data>
   
   
   
