@@ -230,7 +230,7 @@
     <comment>Material shieldcyclerecordings</comment>
   </data>
   <data name="scrambledemissiondata" xml:space="preserve">
-    <value>Kivételesen kevert kibocsájtási adat</value>
+    <value>Kivételesen kevert kibocsátási adat</value>
     <comment>Material scrambledemissiondata</comment>
   </data>
   <data name="legacyfirmware" xml:space="preserve">
@@ -249,21 +249,66 @@
     <value>Rendhagyó FSD telemetria</value>
     <comment>Material fsdtelemetry</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="shieldsoakanalysis" xml:space="preserve">
+    <value>Ellentmondó pajzs áthatolási elemzés</value>
+    <comment>Material shieldsoakanalysis</comment>
+  </data>
+  <data name="archivedemissiondata" xml:space="preserve">
+    <value>Rendellenes kibocsátási adat</value>
+    <comment>Material archivedemissiondata</comment>
+  </data>
+  <data name="consumerfirmware" xml:space="preserve">
+    <value>Módosított fogyasztói firmware</value>
+    <comment>Material consumerfirmware</comment>
+  </data>
+  <data name="encryptioncodes" xml:space="preserve">
+    <value>Megjelölt titkosítási kódok</value>
+    <comment>Material encryptioncodes</comment>
+  </data>
+  <data name="scanarchives" xml:space="preserve">
+    <value>Ismeretlen szkennelési arhívumok</value>
+    <comment>Material scanarchives</comment>
+  </data>
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>Ős kulturális adat</value>
+    <comment>Material ancientculturaldata</comment>
+  </data>
+  <data name="tg_structuraldata" xml:space="preserve">
+    <value>Thargoid szerkezeti adat</value>
+    <comment>Material tg_structuraldata</comment>
+  </data>
+  <data name="scandatabanks" xml:space="preserve">
+    <value>Bizalmas szkennelési adatbankok</value>
+    <comment>Material scandatabanks</comment>
+  </data>
+  <data name="industrialfirmware" xml:space="preserve">
+    <value>Feltört ipari firmware</value>
+    <comment>Material industrialfirmware</comment>
+  </data>
+  <data name="symmetrickeys" xml:space="preserve">
+    <value>Nyitott szimmetrikus kulcsok</value>
+    <comment>Material symmetrickeys</comment>
+  </data>
+  <data name="wakesolutions" xml:space="preserve">
+    <value>Furcsa nyom megoldások</value>
+    <comment>Material wakesolutions</comment>
+  </data>
+  <data name="emissiondata" xml:space="preserve">
+    <value>Váratlan kibocsátási adat</value>
+    <comment>Material emissiondata</comment>
+  </data>
+  <data name="shielddensityreports" xml:space="preserve">
+    <value>Atipikus pajzs szkennelések</value>
+    <comment>Material shielddensityreports</comment>
+  </data>
+  <data name="ancientbiologicaldata" xml:space="preserve">
+    <value>Ős biológiai adat</value>
+    <comment>Material ancientbiologicaldata</comment>
+  </data>
+  <data name="tg_compositiondata" xml:space="preserve">
+    <value>Thargoid anyagösszeállítási adat</value>
+    <comment>Material tg_compositiondata</comment>
+  </data>
   
   
   
