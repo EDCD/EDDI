@@ -1405,7 +1405,10 @@
     <value>Víztisztítók</value>
     <comment>Commodity WaterPurifiers</comment>
   </data>
-  
+  <data name="WatersOfShintara" xml:space="preserve">
+    <value>Shintra-i ásványvíz</value>
+    <comment>Commodity WatersOfShintara</comment>
+  </data>
   <data name="WheemeteWheatCakes" xml:space="preserve">
     <value>Wheemetei Búza Torták</value>
     <comment>Commodity WheemeteWheatCakes</comment>
@@ -1414,15 +1417,42 @@
     <value>Bor</value>
     <comment>Commodity Wine</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="WitchhaulKobeBeef" xml:space="preserve">
+    <value>Witchhaul-i Kobe marhahús</value>
+    <comment>Commodity WitchhaulKobeBeef</comment>
+  </data>
+  <data name="WolfFesh" xml:space="preserve">
+    <value>Wolf-i Fesh</value>
+    <comment>Commodity WolfFesh</comment>
+  </data>
+  <data name="WreckageComponents" xml:space="preserve">
+    <value>Begyűjthető roncs</value>
+    <comment>Commodity WreckageComponents</comment>
+  </data>
+  <data name="WuthieloKuFroth" xml:space="preserve">
+    <value>Wuthielo Ku-i Froth sör</value>
+    <comment>Commodity WuthieloKuFroth</comment>
+  </data>
+  <data name="xihecompanions" xml:space="preserve">
+    <value>Xihe-i biomorf kedvencek</value>
+    <comment>Commodity xihecompanions</comment>
+  </data>
+  <data name="YasoKondiLeaf" xml:space="preserve">
+    <value>Yaso Kondi-i levél</value>
+    <comment>Commodity YasoKondiLeaf</comment>
+  </data>
+  <data name="ZeesszeAntGrubGlue" xml:space="preserve">
+    <value>Zeessze-i hangya ragasztó</value>
+    <comment>Commodity ZeesszeAntGrubGlue</comment>
+  </data>
+  <data name="RajukruStoves" xml:space="preserve">
+    <value>Rajukru-i multi-tűzhelyek</value>
+    <comment>Commodity RajukruStoves</comment>
+  </data>
+  <data name="KinagoInstruments" xml:space="preserve">
+    <value>Kinago-i hegedűk</value>
+    <comment>Commodity KinagoInstruments</comment>
+  </data>
   
   
   
