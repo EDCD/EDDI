@@ -142,7 +142,10 @@
     <value> plusz </value>
     <comment/>
   </data>
-  
+  <data name="point" xml:space="preserve">
+    <value> pont </value>
+    <comment/>
+  </data>
   <data name="quadrillion" xml:space="preserve">
     <value>kvadrillió</value>
     <comment/>
@@ -152,7 +155,7 @@
     <comment/>
   </data>
   <data name="trillion" xml:space="preserve">
-    <value>billió</value>
+    <value>trillió</value>
     <comment/>
   </data>
   <data name="wellover" xml:space="preserve">
