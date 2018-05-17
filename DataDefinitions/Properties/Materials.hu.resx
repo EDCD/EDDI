@@ -357,15 +357,42 @@
     <value>Szabálytalan kompakt kibocsátási adat</value>
     <comment>Material compactemissionsdata</comment>
   </data>
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="adaptiveencryptors" xml:space="preserve">
+    <value>Adaptív kódolási zsákmány</value>
+    <comment>Material adaptiveencryptors</comment>
+  </data>
+  <data name="classifiedscandata" xml:space="preserve">
+    <value>Bizalamas skennelési töredék</value>
+    <comment>Material classifiedscandata</comment>
+  </data>
+  <data name="dataminedwake" xml:space="preserve">
+    <value>Adatbányászott nyom kivételek</value>
+    <comment>Material dataminedwake</comment>
+  </data>
+  <data name="embeddedfirmware" xml:space="preserve">
+    <value>Módosított beágyazott firmware</value>
+    <comment>Material embeddedfirmware</comment>
+  </data>
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>Különleges pajzs frekvencia adat</value>
+    <comment>Material shieldfrequencydata</comment>
+  </data>
+  <data name="basicconductors" xml:space="preserve">
+    <value>Alap vezetők</value>
+    <comment>Material basicconductors</comment>
+  </data>
+  <data name="chemicalstorageunits" xml:space="preserve">
+    <value>Kémiai tároló egység</value>
+    <comment>Material chemicalstorageunits</comment>
+  </data>
+  <data name="compactcomposites" xml:space="preserve">
+    <value>Tömör kompozitok</value>
+    <comment>Material compactcomposites</comment>
+  </data>
+  <data name="crystalshards" xml:space="preserve">
+    <value>Kristály szilánkok</value>
+    <comment>Material crystalshards</comment>
+  </data>
   
   
   
