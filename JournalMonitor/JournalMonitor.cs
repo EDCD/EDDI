@@ -93,7 +93,7 @@ namespace EddiJournalMonitor
                                 string stationState = JsonParsing.getString(data, "StationState") ?? string.Empty;
                                 string stationModel = JsonParsing.getString(data, "StationType");
                                 Superpower allegiance = getAllegiance(data, "StationAllegiance");
-                                string faction = JsonParsing.getString(data, "StationFaction");
+                                string faction = getFaction(data, "StationFaction");
                                 SystemState factionState = SystemState.FromEDName(JsonParsing.getString(data, "FactionState"));
                                 Economy economy = Economy.FromEDName(JsonParsing.getString(data, "StationEconomy"));
                                 Government government = Government.FromEDName(JsonParsing.getString(data, "StationGovernment"));
@@ -197,7 +197,7 @@ namespace EddiJournalMonitor
                                 string bodyType = JsonParsing.getString(data, "BodyType");
                                 bool docked = JsonParsing.getBool(data, "Docked");
                                 Superpower allegiance = getAllegiance(data, "SystemAllegiance");
-                                string faction = JsonParsing.getString(data, "SystemFaction");
+                                string faction = getFaction(data, "SystemFaction");
                                 Economy economy = Economy.FromEDName(JsonParsing.getString(data, "SystemEconomy"));
                                 Government government = Government.FromEDName(JsonParsing.getString(data, "SystemGovernment"));
                                 SecurityLevel security = SecurityLevel.FromEDName(JsonParsing.getString(data, "SystemSecurity"));
@@ -2943,7 +2943,7 @@ namespace EddiJournalMonitor
         {
             string faction = JsonParsing.getString(data, key);
             // Might be a superpower...
-            Superpower superpowerFaction = Superpower.From(faction);
+            Superpower superpowerFaction = Superpower.AllOfThem.FirstOrDefault(x => x.edname.Replace("$faction_", "").Replace(";", "") == faction);
             return superpowerFaction?.invariantName ?? faction;
         }
 
