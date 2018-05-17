@@ -338,7 +338,7 @@
     <comment>Commodity CeramicComposites</comment>
   </data>
   <data name="CeremonialHeikeTea" xml:space="preserve">
-    <value>Ceremónia heike tea</value>
+    <value>Heike-i ünnepi tea</value>
     <comment>Commodity CeremonialHeikeTea</comment>
   </data>
   <data name="CetiAepyornisEgg" xml:space="preserve">
@@ -358,11 +358,11 @@
     <comment>Commodity ChateauDeAegaeon</comment>
   </data>
   <data name="ChemicalWaste" xml:space="preserve">
-    <value>Vegyi üzem</value>
+    <value>Kémiai hulladék</value>
     <comment>Commodity ChemicalWaste</comment>
   </data>
   <data name="CherbonesBloodCrystals" xml:space="preserve">
-    <value>Cherbonesi vérkristály</value>
+    <value>Cherbones-i vérkristály</value>
     <comment>Commodity CherbonesBloodCrystals</comment>
   </data>
   <data name="ChiEridaniMarinePaste" xml:space="preserve">
