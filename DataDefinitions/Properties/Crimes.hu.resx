@@ -154,7 +154,7 @@
     <comment>Crime dockingMajorBlockingLandingPad</comment>
   </data>
   <data name="dockingMinorTresspass" xml:space="preserve">
-    <value>Áthaladás</value>
+    <value>Engedély nélkûli belépés</value>
     <comment>Crime dockingMinorTresspass</comment>
   </data>
   <data name="dockingMajorTresspass" xml:space="preserve">
