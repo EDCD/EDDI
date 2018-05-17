@@ -107,8 +107,7 @@
     <comment>Empire rank Outsider</comment>
   </data>
   <data name="Serf" xml:space="preserve">
-    <value>Paraszt
-Jobbágy</value>
+    <value>Paraszt</value>
     <comment>Empire rank Serf</comment>
   </data>
   <data name="Master" xml:space="preserve">
