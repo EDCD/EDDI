@@ -418,7 +418,7 @@
     <comment>Commodity Copper</comment>
   </data>
   <data name="CoquimSpongiformVictuals" xml:space="preserve">
-    <value>Coquimi ehető szivacs</value>
+    <value>Coquim-i ehető szivacs</value>
     <comment>Commodity CoquimSpongiformVictuals</comment>
   </data>
   <data name="CropHarvesters" xml:space="preserve">
@@ -558,7 +558,7 @@
     <comment>Commodity Gallium</comment>
   </data>
   <data name="GeawenDanceDust" xml:space="preserve">
-    <value>Geaweni táncpor</value>
+    <value>Geawen-i táncpor</value>
     <comment>Commodity GeawenDanceDust</comment>
   </data>
   <data name="GeneBank" xml:space="preserve">
@@ -578,7 +578,7 @@
     <comment>Commodity GerasianGueuzeBeer</comment>
   </data>
   <data name="GiantIrukamaSnails" xml:space="preserve">
-    <value>Irukamai óriás csiga</value>
+    <value>Irukama-i óriás csigák</value>
     <comment>Commodity GiantIrukamaSnails</comment>
   </data>
   <data name="GiantVerrix" xml:space="preserve">
@@ -586,7 +586,7 @@
     <comment>Commodity GiantVerrix</comment>
   </data>
   <data name="GilyaSignatureWeapons" xml:space="preserve">
-    <value>Gilyai egyedi fegyverek</value>
+    <value>Gilya-i egyedi fegyverek</value>
     <comment>Commodity GilyaSignatureWeapons</comment>
   </data>
   <data name="Gold" xml:space="preserve">
@@ -602,7 +602,7 @@
     <comment>Commodity Goslarite</comment>
   </data>
   <data name="Grain" xml:space="preserve">
-    <value>Búza</value>
+    <value>Gabona</value>
     <comment>Commodity Grain</comment>
   </data>
   <data name="Hafnium178" xml:space="preserve">
@@ -610,7 +610,7 @@
     <comment>Commodity Hafnium178</comment>
   </data>
   <data name="HaidneBlackBrew" xml:space="preserve">
-    <value>Haidnei ásványi tea</value>
+    <value>Haidne-i ásványi tea</value>
     <comment>Commodity HaidneBlackBrew</comment>
   </data>
   <data name="HavasupaiDreamCatcher" xml:space="preserve">
@@ -618,8 +618,7 @@
     <comment>Commodity HavasupaiDreamCatcher</comment>
   </data>
   <data name="HazardousEnvironmentSuits" xml:space="preserve">
-    <value>E.K. ruha
-Ellenséges Környezet ruha</value>
+    <value>Védőruha</value>
     <comment>Commodity HazardousEnvironmentSuits</comment>
   </data>
   <data name="HeatsinkInterlink" xml:space="preserve">
