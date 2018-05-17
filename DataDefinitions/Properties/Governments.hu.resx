@@ -99,7 +99,7 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
   <data name="Anarchy" xml:space="preserve">
-    <value>Anarchia</value>
+    <value>Anarhia</value>
     <comment>Government type Anarchy</comment>
   </data>
   <data name="Colony" xml:space="preserve">
