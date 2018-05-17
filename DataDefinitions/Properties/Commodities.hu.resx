@@ -626,7 +626,10 @@ Ellenséges Környezet ruha</value>
     <value>Hőelnyelő csatolók</value>
     <comment>Commodity HeatsinkInterlink</comment>
   </data>
-  
+  <data name="HeliostaticFurnaces" xml:space="preserve">
+    <value>Érckitermelő mikrobák</value>
+    <comment>Commodity HeliostaticFurnaces</comment>
+  </data>
   <data name="HelvetitjPearls" xml:space="preserve">
     <value>Helvetitj gyöngy</value>
     <comment>Commodity HelvetitjPearls</comment>
@@ -635,15 +638,30 @@ Ellenséges Környezet ruha</value>
     <value>HIP 10175 bozóthús</value>
     <comment>Commodity HIP10175BushMeat</comment>
   </data>
-  
-  
-  
+  <data name="HIP118311Swarm" xml:space="preserve">
+    <value>HIP 118311 'rajzás' fegyver</value>
+    <comment>Commodity HIP118311Swarm</comment>
+  </data>
+  <data name="HIPOrganophosphates" xml:space="preserve">
+    <value>HIPi organikus foszfát</value>
+    <comment>Commodity HIPOrganophosphates</comment>
+  </data>
+  <data name="HIPProto_Squid" xml:space="preserve">
+    <value>HIPi proto-tintahal</value>
+    <comment>Commodity HIPProto_Squid</comment>
+  </data>
   <data name="HNShockMount" xml:space="preserve">
     <value>Lengéscsillapítók</value>
     <comment>Commodity HNShockMount</comment>
   </data>
-  
-  
+  <data name="HolvaDuellingBlades" xml:space="preserve">
+    <value>Holvai párbaj pengék</value>
+    <comment>Commodity HolvaDuellingBlades</comment>
+  </data>
+  <data name="HonestyPills" xml:space="preserve">
+    <value>Igazság tabletták</value>
+    <comment>Commodity HonestyPills</comment>
+  </data>
   <data name="Hostage" xml:space="preserve">
     <value>Túsz</value>
     <comment>Commodity Hostage</comment>
