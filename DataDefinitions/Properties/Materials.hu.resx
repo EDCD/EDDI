@@ -438,7 +438,7 @@
     <comment>Material galvanisingalloys</comment>
   </data>
   <data name="heatdispersionplate" xml:space="preserve">
-    <value>Hőelnyelő lemez</value>
+    <value>Hőelosztó lemez</value>
     <comment>Material heatdispersionplate</comment>
   </data>
   <data name="heatresistantceramics" xml:space="preserve">
@@ -446,7 +446,7 @@
     <comment>Material heatresistantceramics</comment>
   </data>
   <data name="hybridcapacitors" xml:space="preserve">
-    <value>Hybrid kondenzátorok</value>
+    <value>Hibrid kondenzátorok</value>
     <comment>Material hybridcapacitors</comment>
   </data>
   <data name="mechanicalequipment" xml:space="preserve">
@@ -558,7 +558,7 @@
     <comment>Material fedcorecomposites</comment>
   </data>
   <data name="exquisitefocuscrystals" xml:space="preserve">
-    <value>Rendkívüli fúkusz kristályok</value>
+    <value>Tökéletes fókusz kristályok</value>
     <comment>Material exquisitefocuscrystals</comment>
   </data>
   <data name="imperialshielding" xml:space="preserve">
@@ -594,7 +594,7 @@
     <comment>Material unknownenergysource</comment>
   </data>
   <data name="unknownorganiccircuitry" xml:space="preserve">
-    <value>Thergoid organikus áramkör</value>
+    <value>Thargoid organikus áramkör</value>
     <comment>Material unknownorganiccircuitry</comment>
   </data>
   <data name="boron" xml:space="preserve">
@@ -614,7 +614,7 @@
     <comment>Material guardian_vesselblueprint</comment>
   </data>
   <data name="guardian_techcomponent" xml:space="preserve">
-    <value>Őrző technológiai alkotóelem</value>
+    <value>Őrző technológiai komponens</value>
     <comment>Material guardian_techcomponent</comment>
   </data>
   <data name="guardian_powerconduit" xml:space="preserve">
