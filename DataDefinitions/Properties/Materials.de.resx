@@ -506,7 +506,7 @@ Material Schildemitter</value>
     <comment>Material compoundshielding</comment>
   </data>
   <data name="conductivepolymers" xml:space="preserve">
-    <value>Leitfähige Ploymere</value>
+    <value>Leitfähige Polymere</value>
     <comment>Material conductivepolymers</comment>
   </data>
   <data name="configurablecomponents" xml:space="preserve">
