@@ -428,7 +428,11 @@ Material Imperiale Schilde</value>
     <comment>Material imperialshielding</comment>
   </data>
   
-  
+  <data name="militarygradealloys" xml:space="preserve">
+    <value>Militärqualitätslegierung
+Material Militärqualitätslegierung</value>
+    <comment>Material militarygradealloys</comment>
+  </data>
   <data name="militarysupercapacitors" xml:space="preserve">
     <value>Militärische Superkondensatoren
 Material Militärische Superkondensatoren</value>
