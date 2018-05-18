@@ -355,7 +355,7 @@ Material uralte Technikdaten</value>
     <comment>Material classifiedscandata</comment>
   </data>
   <data name="dataminedwake" xml:space="preserve">
-    <value>Fsa-Daten-Cache-Ausnahme</value>
+    <value>FSA-Daten-Cache-Ausnahmen</value>
     <comment>Material dataminedwake</comment>
   </data>
   <data name="embeddedfirmware" xml:space="preserve">
@@ -371,7 +371,7 @@ Material uralte Technikdaten</value>
     <comment>Material basicconductors</comment>
   </data>
   <data name="chemicalstorageunits" xml:space="preserve">
-    <value>Chemische Speichereinheiten</value>
+    <value>Chemische Lagereinheiten</value>
     <comment>Material chemicalstorageunits</comment>
   </data>
   <data name="compactcomposites" xml:space="preserve">
