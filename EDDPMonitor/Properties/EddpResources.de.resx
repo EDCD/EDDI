@@ -123,7 +123,9 @@
   <data name="delete_btn" xml:space="preserve">
     <value>Löschen</value>
   </data>
-  
+  <data name="desc" xml:space="preserve">
+    <value>Beobachte EDDP bezüglich Veränderungen der Systemkontrolle und des Status, und erstelle eine Benachrichtigung, wenn ein Treffer mit der Überwachungsliste vorliegt.</value>
+  </data>
   <data name="faction_header" xml:space="preserve">
     <value>Fraktion</value>
   </data>
@@ -140,7 +142,7 @@
     <value>Name</value>
   </data>
   <data name="new_watch" xml:space="preserve">
-    <value>Neue Überwachung</value>
+    <value>Neuer Auftrag</value>
   </data>
   
   <data name="state_header" xml:space="preserve">
