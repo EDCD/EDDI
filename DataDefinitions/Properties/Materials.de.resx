@@ -381,7 +381,7 @@ Material uralte Technikdaten</value>
     <comment>Material chemicalprocessors</comment>
   </data>
   <data name="conductivecomponents" xml:space="preserve">
-    <value>Elektrokeramiken</value>
+    <value>Leitfähige Komponenten</value>
     <comment>Material conductivecomponents</comment>
   </data>
   
