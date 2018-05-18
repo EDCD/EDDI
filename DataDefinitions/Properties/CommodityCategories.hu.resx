@@ -178,7 +178,7 @@
     <comment>Commodity category Unknown</comment>
   </data>
   <data name="Waste" xml:space="preserve">
-    <value>Selejt</value>
+    <value>Hulladék</value>
     <comment>Commodity category Waste</comment>
   </data>
   <data name="Weapons" xml:space="preserve">
