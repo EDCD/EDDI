@@ -144,7 +144,10 @@
   <data name="new_watch" xml:space="preserve">
     <value>Neuer Auftrag</value>
   </data>
-  
+  <data name="p1" xml:space="preserve">
+    <value>Sie können hier einen neuen Auftrag erstellen, verändern oder löschen. Wenn EDDI Information über Veränderungen in der Galaxie erhält, erfolgt eine Abgleich mit dieser Auftragsliste. Wenn die erhaltene Information einen Auftrag betrifft, erfolgt eine Benachrichtigung.
+Bitte beachten Sie, dass diese Informationen von EDDN bezogen werden. Diese Informationen werden vom Commanders mittels Programme wie EDDI gesammelt. Es werden nur Veränderungen angezeigt, die EDDN bekannt sind.</value>
+  </data>
   <data name="state_header" xml:space="preserve">
     <value>Status</value>
   </data>
