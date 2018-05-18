@@ -415,15 +415,35 @@ Material uralte Technikdaten</value>
   
   
   
+  <data name="guardian_powercell" xml:space="preserve">
+    <value>Guardian Akkuzelle
+Material Guardian Akkuzelle</value>
+    <comment>Material guardian_powercell</comment>
+  </data>
+  <data name="guardian_weaponblueprint" xml:space="preserve">
+    <value>Guardian Waffenbauplan
+Material Guardian Waffenbauplan</value>
+    <comment>Material guardian_weaponblueprint</comment>
+  </data>
+  <data name="guardian_vesselblueprint" xml:space="preserve">
+    <value>Guardian Schiffsbauplan
+Material Guardian Schiffsbauplan</value>
+    <comment>Material guardian_vesselblueprint</comment>
+  </data>
+  <data name="guardian_techcomponent" xml:space="preserve">
+    <value>Technisches Teil der Guardians
+Material technisches Teil der Guardians</value>
+    <comment>Material guardian_techcomponent</comment>
+  </data>
   
   
   
   
-  
-  
-  
-  
-  
+  <data name="lead" xml:space="preserve">
+    <value>Blei
+Material Blei</value>
+    <comment>Material lead</comment>
+  </data>
   
   
   
