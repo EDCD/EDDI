@@ -119,13 +119,27 @@
   </resheader>
   
   
-  
-  
-  
-  
-  
-  
-  
+  <data name="header_location" xml:space="preserve">
+    <value>Standort</value>
+  </data>
+  <data name="header_model" xml:space="preserve">
+    <value>Modell</value>
+  </data>
+  <data name="header_name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="header_role" xml:space="preserve">
+    <value>Rolle</value>
+  </data>
+  <data name="header_ship_ID" xml:space="preserve">
+    <value>Schiff-ID</value>
+  </data>
+  <data name="header_spoken_name" xml:space="preserve">
+    <value>Name (gesprochen)</value>
+  </data>
+  <data name="header_value" xml:space="preserve">
+    <value>Wert</value>
+  </data>
   
   
   
