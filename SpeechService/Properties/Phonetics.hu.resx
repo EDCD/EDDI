@@ -344,20 +344,56 @@
     <value>feliszia</value>
     <comment>Optional phonetic pronunciation for felicia</comment>
   </data>
+  <data name="frigaha" xml:space="preserve">
+    <value>frigáhá</value>
+    <comment>Optional phonetic pronunciation for frigaha</comment>
+  </data>
+  <data name="grandmort" xml:space="preserve">
+    <value>Grandmort</value>
+    <comment>Optional phonetic pronunciation for grandmort</comment>
+  </data>
+  <data name="grom" xml:space="preserve">
+    <value>Grúm</value>
+    <comment>Optional phonetic pronunciation for grom</comment>
+  </data>
+  <data name="hecate" xml:space="preserve">
+    <value>Hecset</value>
+    <comment>Optional phonetic pronunciation for hecate</comment>
+  </data>
+  <data name="hotas" xml:space="preserve">
+    <value>hotasz</value>
+    <comment>Optional phonetic pronunciation for hotas</comment>
+  </data>
+  <data name="hudson" xml:space="preserve">
+    <value>Hádzon</value>
+    <comment>Optional phonetic pronunciation for hudson</comment>
+  </data>
+  <data name="i" xml:space="preserve">
+    <value>én</value>
+    <comment>Optional phonetic pronunciation for i</comment>
+  </data>
+  <data name="ibootis_bootis" xml:space="preserve">
+    <value>í bútisz</value>
+    <comment>Optional phonetic pronunciation for ibootis_bootis</comment>
+  </data>
+  <data name="ibootis_i" xml:space="preserve">
+    <value>i</value>
+    <comment>Optional phonetic pronunciation for ibootis_i</comment>
+  </data>
+  <data name="isleta" xml:space="preserve">
+    <value>ászleta</value>
+    <comment>Optional phonetic pronunciation for isleta</comment>
+  </data>
+  <data name="kaia" xml:space="preserve">
+    <value>Káiá</value>
+    <comment>Optional phonetic pronunciation for kaia</comment>
+  </data>
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="kigana" xml:space="preserve">
+    <value>kigáná</value>
+    <comment>Optional phonetic pronunciation for kigana</comment>
+  </data>
   
   
   
