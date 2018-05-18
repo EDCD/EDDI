@@ -349,7 +349,11 @@ Material uralte Technikdaten</value>
   
   
   
-  
+  <data name="shieldemitters" xml:space="preserve">
+    <value>Schildemitter
+Material Schildemitter</value>
+    <comment>Material shieldemitters</comment>
+  </data>
   
   
   
