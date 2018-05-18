@@ -263,7 +263,11 @@
     <value>Unidentifizierte Scan-Archive</value>
     <comment>Material scanarchives</comment>
   </data>
-  
+  <data name="ancientculturaldata" xml:space="preserve">
+    <value>Historische Kulturdaten
+Material Historische Kulturdaten</value>
+    <comment>Material ancientculturaldata</comment>
+  </data>
   
   <data name="scandatabanks" xml:space="preserve">
     <value>Scandatenbank unter Verschluss</value>
