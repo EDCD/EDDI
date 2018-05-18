@@ -566,7 +566,10 @@
   
   
   
-  
+  <data name="Robotics" xml:space="preserve">
+    <value>Roboter</value>
+    <comment>Commodity Robotics</comment>
+  </data>
   
   
   
