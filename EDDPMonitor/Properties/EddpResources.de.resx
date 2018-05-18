@@ -117,16 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="anything" xml:space="preserve">
+    <value>(Irgendwas)</value>
+  </data>
+  <data name="delete_btn" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
   
+  <data name="faction_header" xml:space="preserve">
+    <value>Fraktion</value>
+  </data>
+  <data name="max_dist_home_header" xml:space="preserve">
+    <value>Maximale Entfernung von zuhause</value>
+  </data>
+  <data name="max_dist_ship_header" xml:space="preserve">
+    <value>Maximale Entfernung vom Schiff</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>EDDP Monitor</value>
+  </data>
+  <data name="name_header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="new_watch" xml:space="preserve">
+    <value>Neue Überwachung</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="state_header" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="system_header" xml:space="preserve">
+    <value>System</value>
+  </data>
 </root>
