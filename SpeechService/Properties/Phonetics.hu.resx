@@ -219,10 +219,71 @@
     <value>Omega</value>
     <comment>Optional phonetic pronunciation for Omega</comment>
   </data>
-  
+  <data name="Ophiuchi" xml:space="preserve">
+    <value>opfhijucsi</value>
+    <comment>Optional phonetic pronunciation for Ophiuchi</comment>
+  </data>
   <data name="Ophiuchus" xml:space="preserve">
     <value>opfhijucsiusz</value>
     <comment>Optional phonetic pronunciation for Ophiuchus</comment>
+  </data>
+  <data name="Pegasi" xml:space="preserve">
+    <value>Pegazi</value>
+    <comment>Optional phonetic pronunciation for Pegasi</comment>
+  </data>
+  <data name="Persei" xml:space="preserve">
+    <value>Perszej</value>
+    <comment>Optional phonetic pronunciation for Persei</comment>
+  </data>
+  <data name="Piscium" xml:space="preserve">
+    <value>Pisszijum</value>
+    <comment>Optional phonetic pronunciation for Piscium</comment>
+  </data>
+  <data name="Pleiades" xml:space="preserve">
+    <value>Pleiádisz</value>
+    <comment>Optional phonetic pronunciation for Pleiades</comment>
+  </data>
+  <data name="Pru" xml:space="preserve">
+    <value>pru</value>
+    <comment>Optional phonetic pronunciation for Pru</comment>
+  </data>
+  
+  
+  <data name="Puppis" xml:space="preserve">
+    <value>Puppisz</value>
+    <comment>Optional phonetic pronunciation for Puppis</comment>
+  </data>
+  <data name="Rho" xml:space="preserve">
+    <value>rho</value>
+    <comment>Optional phonetic pronunciation for Rho</comment>
+  </data>
+  
+  
+  <data name="Sagittarius" xml:space="preserve">
+    <value>Szaggitáriusz</value>
+    <comment>Optional phonetic pronunciation for Sagittarius</comment>
+  </data>
+  <data name="Scorpii" xml:space="preserve">
+    <value>Szkórpí</value>
+    <comment>Optional phonetic pronunciation for Scorpii</comment>
+  </data>
+  
+  
+  <data name="ShuiWei_Wei" xml:space="preserve">
+    <value>wej</value>
+    <comment>Optional phonetic pronunciation for ShuiWei_Wei</comment>
+  </data>
+  <data name="Tascheter" xml:space="preserve">
+    <value>Tasihitör</value>
+    <comment>Optional phonetic pronunciation for Tascheter</comment>
+  </data>
+  <data name="Tau" xml:space="preserve">
+    <value>tau</value>
+    <comment>Optional phonetic pronunciation for Tau</comment>
+  </data>
+  <data name="TauCeti_Ceti" xml:space="preserve">
+    <value>Tauszeti</value>
+    <comment>Optional phonetic pronunciation for TauCeti_Ceti</comment>
   </data>
   
   
@@ -263,30 +324,26 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="electra" xml:space="preserve">
+    <value>Elektra</value>
+    <comment>Optional phonetic pronunciation for electra</comment>
+  </data>
+  <data name="eranin" xml:space="preserve">
+    <value>Eranin</value>
+    <comment>Optional phonetic pronunciation for eranin</comment>
+  </data>
+  <data name="eravate" xml:space="preserve">
+    <value>eravate</value>
+    <comment>Optional phonetic pronunciation for eravate</comment>
+  </data>
+  <data name="fei" xml:space="preserve">
+    <value>fei</value>
+    <comment>Optional phonetic pronunciation for fei</comment>
+  </data>
+  <data name="felicia" xml:space="preserve">
+    <value>feliszia</value>
+    <comment>Optional phonetic pronunciation for felicia</comment>
+  </data>
   
   
   
