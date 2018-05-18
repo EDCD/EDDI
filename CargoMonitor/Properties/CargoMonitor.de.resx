@@ -117,12 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="cargo_monitor_desc" xml:space="preserve">
+    <value>Übersicht des Materiallagers.</value>
+  </data>
+  <data name="cargo_monitor_name" xml:space="preserve">
+    <value>Materiallager</value>
+  </data>
   
-  
-  
-  
-  
-  
+  <data name="header_name" xml:space="preserve">
+    <value>Name</value>
+    <comment>Name of cargo, such as "Gold"</comment>
+  </data>
+  <data name="header_need" xml:space="preserve">
+    <value>Für die Mission erforderliche Tonnage</value>
+    <comment>Tons needed for missions</comment>
+  </data>
+  <data name="para2" xml:space="preserve">
+    <value>Bitte beachten Sie, dass bei fehlerhaften Anzeige des Inventarbestandes, Elite gestartet oder neu gestartet werden muss, um die Daten zu aktualisieren.</value>
+  </data>
   
   
   
