@@ -136,13 +136,13 @@
     <value>OK</value>
   </data>
   <data name="compare_script_button" xml:space="preserve">
-    <value>Vergleich mit dem Standart</value>
+    <value>Vergleich mit dem Standard</value>
   </data>
   <data name="compare_script_title" xml:space="preserve">
-    <value>Vergleich mit dem Standart-Skript</value>
+    <value>Vergleich mit dem Standard-Skript</value>
   </data>
   <data name="default_is_read_only" xml:space="preserve">
-    <value>Der Standart-Charakter kann nicht modifiziert werden. Wenn Sie Änderungen durchführen möchten, erstellen Sie bitte eine Kopie.</value>
+    <value>Der Standard-Charakter kann nicht modifiziert werden. Wenn Sie Änderungen durchführen möchten, erstellen Sie bitte eine Kopie.</value>
   </data>
   <data name="default_personality_script_filename" xml:space="preserve">
     <value>eddi.json</value>
