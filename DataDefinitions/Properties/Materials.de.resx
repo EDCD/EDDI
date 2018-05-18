@@ -234,7 +234,7 @@
     <comment>Material scrambledemissiondata</comment>
   </data>
   <data name="legacyfirmware" xml:space="preserve">
-    <value>Spezial Legacy Firmware</value>
+    <value>Spezial-Legacy-Firmware</value>
     <comment>Material legacyfirmware</comment>
   </data>
   <data name="encryptedfiles" xml:space="preserve">
