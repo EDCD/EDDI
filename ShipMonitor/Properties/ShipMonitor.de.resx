@@ -143,13 +143,23 @@
   <data name="hear_it_button" xml:space="preserve">
     <value>Hören</value>
   </data>
+  <data name="ipa_page" xml:space="preserve">
+    <value>https://de.wikipedia.org/wiki/Internationales_Phonetisches_Alphabet</value>
+  </data>
+  <data name="link_ipa" xml:space="preserve">
+    <value>Internationales Phonetisches Alphabet</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Schiffe Übersicht</value>
+  </data>
   
   
   
   
-  
-  
-  
-  
-  
+  <data name="p5" xml:space="preserve">
+    <value>EDDI kann einen Export Ihrer Schiffsdaten an Coriolis oder EDShipyard (3rd Party Tools) senden. Wählen Sie das gewünschte Werkzeug aus.</value>
+  </data>
+  <data name="ship_ready" xml:space="preserve">
+    <value>{0} ist bereit.</value>
+  </data>
 </root>
