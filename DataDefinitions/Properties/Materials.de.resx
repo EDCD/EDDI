@@ -585,18 +585,15 @@ Material Proto-Wärmestrahler</value>
     <comment>Material protoradiolicalloys</comment>
   </data>
   <data name="unknownenergysource" xml:space="preserve">
-    <value>Unbekannte Energiequelle
-Material unbekannte Energiequelle</value>
+    <value>Unbekanntes Fragment</value>
     <comment>Material unknownenergysource</comment>
   </data>
   <data name="unknownorganiccircuitry" xml:space="preserve">
-    <value>Unbekanntes organisches Schaltteil
-Material unbekanntes organisches Schaltteil</value>
+    <value>Unbekannte organische Struktur</value>
     <comment>Material unknownorganiccircuitry</comment>
   </data>
   <data name="boron" xml:space="preserve">
-    <value>Bor
-Material Bor</value>
+    <value>Bor</value>
     <comment>Material boron</comment>
   </data>
   <data name="guardian_powercell" xml:space="preserve">
@@ -608,8 +605,7 @@ Material Bor</value>
     <comment>Material guardian_weaponblueprint</comment>
   </data>
   <data name="guardian_vesselblueprint" xml:space="preserve">
-    <value>Guardian Schiffsbauplan
-Material Guardian Schiffsbauplan</value>
+    <value>Guardian Schiffsbauplan</value>
     <comment>Material guardian_vesselblueprint</comment>
   </data>
   <data name="guardian_techcomponent" xml:space="preserve">
