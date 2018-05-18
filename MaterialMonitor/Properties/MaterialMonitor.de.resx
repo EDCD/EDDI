@@ -115,13 +115,29 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   
+  <data name="desired_header" xml:space="preserve">
+    <value>Benötigt</value>
+  </data>
+  <data name="inventory_header" xml:space="preserve">
+    <value>Lagerbestände</value>
+  </data>
+  <data name="max_header" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
+  <data name="min_header" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
+  <data name="name" xml:space="preserve">
+    <value>Lagerübersicht</value>
+  </data>
+  <data name="name_header" xml:space="preserve">
+    <value>Name</value>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="p2" xml:space="preserve">
+    <value>Bitte beachten Sie, dass bei fehlerhafter Anzeige des Inventars, Elite gestartet oder neu gestartet werden muss, um die Daten zu aktualisieren.</value>
+  </data>
+  <data name="type_header" xml:space="preserve">
+    <value>Typ</value>
+  </data>
 </root>
