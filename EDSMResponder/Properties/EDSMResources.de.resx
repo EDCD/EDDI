@@ -117,13 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  
-  
-  
-  
-  
-  
-  
+  <data name="api_key_label" xml:space="preserve">
+    <value>EDSM API key:</value>
+  </data>
+  <data name="cmd_name_label" xml:space="preserve">
+    <value>EDSM Commander Name:</value>
+  </data>
+  <data name="desc" xml:space="preserve">
+    <value>Senden Sie Ihre Reiseinformationen an EDSM. EDSM ist ein Drittanbieter-Tool, das Informationen über die Standorte von Sternensystemen liefert und ein Protokoll der von Ihnen besuchten Sternensysteme führt. Es benutzt die Daten, um eine Karte der Galaxie zu erstellen</value>
+  </data>
+  <data name="log_button" xml:space="preserve">
+    <value>EDSM log abrufen</value>
+  </data>
+  <data name="log_button_companion_unconfigured" xml:space="preserve">
+    <value>EDSM API nicht konfiguriert; Protokolle können nicht abgerufen werden.</value>
+  </data>
+  <data name="log_button_empty_api_key" xml:space="preserve">
+    <value>Bitte geben Sie den EDSM-API-Schlüssel ein, um das Protokoll zu erhalten</value>
+  </data>
+  <data name="log_button_error_received" xml:space="preserve">
+    <value>EDSM-Fehler empfangen: </value>
+  </data>
   
   
   
