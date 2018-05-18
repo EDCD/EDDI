@@ -258,8 +258,7 @@
     <comment>Material archivedemissiondata</comment>
   </data>
   <data name="consumerfirmware" xml:space="preserve">
-    <value>Modifizierte Consumer-Firmware
-Material Modifizierte Consumer-Firmware</value>
+    <value>Modifizierte Consumer-Firmware</value>
     <comment>Material consumerfirmware</comment>
   </data>
   <data name="encryptioncodes" xml:space="preserve">
