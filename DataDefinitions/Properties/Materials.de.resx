@@ -241,7 +241,12 @@
     <value>Ungewöhnliche verschlüsselte Files</value>
     <comment>Material encryptedfiles</comment>
   </data>
-  
+  <data name="ancienthistoricaldata" xml:space="preserve">
+    <value>Uralte Geschichtsdaten 
+
+Material uralte Geschichtsdaten</value>
+    <comment>Material ancienthistoricaldata</comment>
+  </data>
   <data name="fsdtelemetry" xml:space="preserve">
     <value>Anormale FSA-Telemetrie</value>
     <comment>Material fsdtelemetry</comment>
@@ -293,7 +298,11 @@ Material Historische Kulturdaten</value>
     <value>Untypische Schildscans</value>
     <comment>Material shielddensityreports</comment>
   </data>
-  
+  <data name="ancientbiologicaldata" xml:space="preserve">
+    <value>Uralte Biologiedaten
+Material uralte Biologiedaten</value>
+    <comment>Material ancientbiologicaldata</comment>
+  </data>
   
   
   <data name="shieldpatternanalysis" xml:space="preserve">
@@ -305,8 +314,16 @@ Material Historische Kulturdaten</value>
   
   
   
-  
-  
+  <data name="ancientlanguagedata" xml:space="preserve">
+    <value>Uralte Sprachdaten
+Material uralte Sprachdaten</value>
+    <comment>Material ancientlanguagedata</comment>
+  </data>
+  <data name="ancienttechnologicaldata" xml:space="preserve">
+    <value>Uralte Technikdaten
+Material uralte Technikdaten</value>
+    <comment>Material ancienttechnologicaldata</comment>
+  </data>
   
   
   
