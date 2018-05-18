@@ -311,8 +311,7 @@ Material uralte Biologiedaten</value>
     <comment>Material shieldpatternanalysis</comment>
   </data>
   <data name="encryptionarchives" xml:space="preserve">
-    <value>Atypische Verschlüsselungsarchive
-Material Atypische Verschlüsselungsarchive</value>
+    <value>Atypische Verschlüsselungsarchive</value>
     <comment>Material encryptionarchives</comment>
   </data>
   <data name="decodedemissiondata" xml:space="preserve">
@@ -609,38 +608,31 @@ Material Proto-Wärmestrahler</value>
     <comment>Material guardian_vesselblueprint</comment>
   </data>
   <data name="guardian_techcomponent" xml:space="preserve">
-    <value>Guardian Technikteil
-Material Guardian Technikteil</value>
+    <value>Guardian Technologiekomponente</value>
     <comment>Material guardian_techcomponent</comment>
   </data>
   <data name="guardian_powerconduit" xml:space="preserve">
-    <value>Guardian Energieleitung
-Material Guardian Energieleitung</value>
+    <value>Guardian Energieleiter</value>
     <comment>Material guardian_powerconduit</comment>
   </data>
   <data name="guardian_moduleblueprint" xml:space="preserve">
-    <value>Guardian Modulbauplan 
-Material Modulbauplan</value>
+    <value>Guardian Modulbauplan</value>
     <comment>Material guardian_moduleblueprint</comment>
   </data>
   <data name="guardian_sentinel_weaponparts" xml:space="preserve">
-    <value>Waffenteile der Guardian Wächterdrohne
-Material Waffenteile der Guardian Wächterdrohne</value>
+    <value>Guardian-Wache Waffenteile</value>
     <comment>Material guardian_sentinel_weaponparts</comment>
   </data>
   <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
-    <value>Wrackteile der Guardian Wächterdrohne
-Material Wrackteile der Guardian Wächterdrohne</value>
+    <value>Guardian-Wache Trümmerteile</value>
     <comment>Material guardian_sentinel_wreckagecomponents</comment>
   </data>
   <data name="lead" xml:space="preserve">
-    <value>Blei
-Material Blei</value>
+    <value>Blei</value>
     <comment>Material lead</comment>
   </data>
   <data name="rhenium" xml:space="preserve">
-    <value>Rhenium
-Material Rhenium</value>
+    <value>Rhenium</value>
     <comment>Material rhenium</comment>
   </data>
   <data name="tg_propulsionelement" xml:space="preserve">
