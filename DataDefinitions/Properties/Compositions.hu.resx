@@ -103,7 +103,7 @@
     <comment>Composition type Icy</comment>
   </data>
   <data name="MetalRich" xml:space="preserve">
-    <value>Fémgazdag</value>
+    <value>Fémben gazdag</value>
     <comment>Composition type MetalRich</comment>
   </data>
   <data name="Metalic" xml:space="preserve">
@@ -111,7 +111,7 @@
     <comment>Composition type Metalic</comment>
   </data>
   <data name="Rocky" xml:space="preserve">
-    <value>Köves</value>
+    <value>Sziklás</value>
     <comment>Composition type Rocky</comment>
   </data>
 </root>
