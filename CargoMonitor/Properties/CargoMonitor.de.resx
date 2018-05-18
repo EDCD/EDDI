@@ -121,7 +121,7 @@
     <value>Verfolgen Sie Informationen über Ihre Fracht.</value>
   </data>
   <data name="cargo_monitor_name" xml:space="preserve">
-    <value>Frachtübersicht</value>
+    <value>Fracht Monitor</value>
   </data>
   <data name="header_haulage" xml:space="preserve">
     <value>Transport</value>
