@@ -379,7 +379,7 @@ Material uralte Technikdaten</value>
     <comment>Material compactcomposites</comment>
   </data>
   <data name="crystalshards" xml:space="preserve">
-    <value>Kristallsplitter</value>
+    <value>Kristallscherben</value>
     <comment>Material crystalshards</comment>
   </data>
   <data name="gridresistors" xml:space="preserve">
