@@ -368,7 +368,10 @@ Material uralte Technikdaten</value>
     <value>Modifizierte integrierte Firmware</value>
     <comment>Material embeddedfirmware</comment>
   </data>
-  
+  <data name="shieldfrequencydata" xml:space="preserve">
+    <value>Verdächtige Schildfrequenz-Daten</value>
+    <comment>Material shieldfrequencydata</comment>
+  </data>
   <data name="basicconductors" xml:space="preserve">
     <value>Einfache Leiter</value>
     <comment>Material basicconductors</comment>
@@ -385,8 +388,14 @@ Material uralte Technikdaten</value>
     <value>Kristallsplitter</value>
     <comment>Material crystalshards</comment>
   </data>
-  
-  
+  <data name="gridresistors" xml:space="preserve">
+    <value>Gitterwiderstände</value>
+    <comment>Material gridresistors</comment>
+  </data>
+  <data name="heatconductionwiring" xml:space="preserve">
+    <value>Wärmeleitungsverdrahtung</value>
+    <comment>Material heatconductionwiring</comment>
+  </data>
   <data name="mechanicalscrap" xml:space="preserve">
     <value>Mechanischer Schrott</value>
     <comment>Material mechanicalscrap</comment>
@@ -411,7 +420,10 @@ Material uralte Technikdaten</value>
     <value>Leitfähige Komponenten</value>
     <comment>Material conductivecomponents</comment>
   </data>
-  
+  <data name="filamentcomposites" xml:space="preserve">
+    <value>Filament-Komposite</value>
+    <comment>Material filamentcomposites</comment>
+  </data>
   <data name="uncutfocuscrystals" xml:space="preserve">
     <value>Fehlerhafte Fokuskristalle</value>
     <comment>Material uncutfocuscrystals</comment>
@@ -420,8 +432,14 @@ Material uralte Technikdaten</value>
     <value>Galvanisierende Legierung</value>
     <comment>Material galvanisingalloys</comment>
   </data>
-  
-  
+  <data name="heatdispersionplate" xml:space="preserve">
+    <value>Wärmeverteilungsplatte</value>
+    <comment>Material heatdispersionplate</comment>
+  </data>
+  <data name="heatresistantceramics" xml:space="preserve">
+    <value>Hitzebeständige Keramik</value>
+    <comment>Material heatresistantceramics</comment>
+  </data>
   <data name="hybridcapacitors" xml:space="preserve">
     <value>Hybridkondensatoren</value>
     <comment>Material hybridcapacitors</comment>
@@ -476,7 +494,10 @@ Material Schildemitter</value>
     <value>Schildsensoren</value>
     <comment>Material shieldingsensors</comment>
   </data>
-  
+  <data name="unknownenergycell" xml:space="preserve">
+    <value>Thargoid Energiezellen</value>
+    <comment>Material unknownenergycell</comment>
+  </data>
   <data name="chemicalmanipulators" xml:space="preserve">
     <value>Chemische Manipulatoren</value>
     <comment>Material chemicalmanipulators</comment>
@@ -584,8 +605,7 @@ Material Bor</value>
     <comment>Material boron</comment>
   </data>
   <data name="guardian_powercell" xml:space="preserve">
-    <value>Guardian Akkuzelle
-Material Guardian Akkuzelle</value>
+    <value>Guardian Energiezelle</value>
     <comment>Material guardian_powercell</comment>
   </data>
   <data name="guardian_weaponblueprint" xml:space="preserve">
