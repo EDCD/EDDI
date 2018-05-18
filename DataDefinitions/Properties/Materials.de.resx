@@ -403,13 +403,21 @@ Material uralte Technikdaten</value>
     <value>Thargoiden-Technologie-Komponenten</value>
     <comment>Material unknowntechnologycomponents</comment>
   </data>
-  
+  <data name="biotechconductors" xml:space="preserve">
+    <value>Biotech-Leiter
+Material Biotech-Leiter</value>
+    <comment>Material biotechconductors</comment>
+  </data>
   <data name="fedcorecomposites" xml:space="preserve">
     <value>Core Dynamics Compositwerkstoffe
 Material Core Dynamics Compositwerkstoffe</value>
     <comment>Material fedcorecomposites</comment>
   </data>
-  
+  <data name="exquisitefocuscrystals" xml:space="preserve">
+    <value>Erlesene Laserkristalle
+Material Erlesene Laserkristalle</value>
+    <comment>Material exquisitefocuscrystals</comment>
+  </data>
   <data name="imperialshielding" xml:space="preserve">
     <value>Imperiale Schilde
 Material Imperiale Schilde</value>
@@ -417,7 +425,11 @@ Material Imperiale Schilde</value>
   </data>
   
   
-  
+  <data name="militarysupercapacitors" xml:space="preserve">
+    <value>Militärische Superkondensatoren
+Material Militärische Superkondensatoren</value>
+    <comment>Material militarysupercapacitors</comment>
+  </data>
   
   
   
