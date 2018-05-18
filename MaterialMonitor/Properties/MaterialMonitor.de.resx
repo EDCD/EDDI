@@ -118,10 +118,10 @@
     <value>Beobachte die Materialmenge und sende eine Benachrichtigung, wenn der eingestellte Grenzwert erreicht wird.</value>
   </data>
   <data name="desired_header" xml:space="preserve">
-    <value>Benötigt</value>
+    <value>Gewünscht</value>
   </data>
   <data name="inventory_header" xml:space="preserve">
-    <value>Lagerbestände</value>
+    <value>Vorrat</value>
   </data>
   <data name="max_header" xml:space="preserve">
     <value>Maximum</value>
