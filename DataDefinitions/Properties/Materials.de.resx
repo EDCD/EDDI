@@ -242,9 +242,7 @@
     <comment>Material encryptedfiles</comment>
   </data>
   <data name="ancienthistoricaldata" xml:space="preserve">
-    <value>Uralte Geschichtsdaten 
-
-Material uralte Geschichtsdaten</value>
+    <value>Uralte Geschichtsdaten</value>
     <comment>Material ancienthistoricaldata</comment>
   </data>
   <data name="fsdtelemetry" xml:space="preserve">
@@ -401,6 +399,10 @@ Material uralte Technikdaten</value>
   
   
   
+  <data name="unknowntechnologycomponents" xml:space="preserve">
+    <value>Thargoiden-Technologie-Komponenten</value>
+    <comment>Material unknowntechnologycomponents</comment>
+  </data>
   
   
   
@@ -413,8 +415,11 @@ Material uralte Technikdaten</value>
   
   
   
-  
-  
+  <data name="boron" xml:space="preserve">
+    <value>Bor
+Material Bor</value>
+    <comment>Material boron</comment>
+  </data>
   <data name="guardian_powercell" xml:space="preserve">
     <value>Guardian Akkuzelle
 Material Guardian Akkuzelle</value>
@@ -445,8 +450,16 @@ Material Guardian Energieleitung</value>
 Material Modulbauplan</value>
     <comment>Material guardian_moduleblueprint</comment>
   </data>
-  
-  
+  <data name="guardian_sentinel_weaponparts" xml:space="preserve">
+    <value>Waffenteile der Guardian Wächterdrohne
+Material Waffenteile der Guardian Wächterdrohne</value>
+    <comment>Material guardian_sentinel_weaponparts</comment>
+  </data>
+  <data name="guardian_sentinel_wreckagecomponents" xml:space="preserve">
+    <value>Wrackteile der Guardian Wächterdrohne
+Material Wrackteile der Guardian Wächterdrohne</value>
+    <comment>Material guardian_sentinel_wreckagecomponents</comment>
+  </data>
   <data name="lead" xml:space="preserve">
     <value>Blei
 Material Blei</value>
@@ -454,7 +467,11 @@ Material Blei</value>
   </data>
   
   
-  
+  <data name="tg_biomechanicalconduits" xml:space="preserve">
+    <value>Thargoid Bio-Mechanische Bauteile
+Material Thargoid Bio-Mechanische Bauteile</value>
+    <comment>Material tg_biomechanicalconduits</comment>
+  </data>
   <data name="tg_weaponparts" xml:space="preserve">
     <value>Thargoid Waffenteile
 Material Thargoid Waffenteile</value>
@@ -465,6 +482,14 @@ Material Thargoid Waffenteile</value>
 Material Thargoid Wrackteile</value>
     <comment>Material tg_wreckagecomponents</comment>
   </data>
-  
-  
+  <data name="tg_shipflightdata" xml:space="preserve">
+    <value>Thargoid Schiffsflugdaten
+Material Thargoid Schiffsflugdaten</value>
+    <comment>Material tg_shipflightdata</comment>
+  </data>
+  <data name="tg_shipsystemsdata" xml:space="preserve">
+    <value>Thargoid Schiffssystemdaten 
+Material Thargoid Schiffssystemdaten</value>
+    <comment>Material tg_shipsystemsdata</comment>
+  </data>
 </root>
