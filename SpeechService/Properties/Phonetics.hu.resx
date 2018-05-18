@@ -158,24 +158,72 @@
     <value>csi</value>
     <comment>Optional phonetic pronunciation for Chi</comment>
   </data>
+  <data name="ChiPersei_Chi" xml:space="preserve">
+    <value>csiperszei_csi</value>
+    <comment>Optional phonetic pronunciation for ChiPersei_Chi</comment>
+  </data>
+  <data name="ChiPersei_Persei" xml:space="preserve">
+    <value>Csiperszej perszej</value>
+    <comment>Optional phonetic pronunciation for ChiPersei_Persei</comment>
+  </data>
+  <data name="Crucis" xml:space="preserve">
+    <value>Krúcisz</value>
+    <comment>Optional phonetic pronunciation for Crucis</comment>
+  </data>
+  <data name="Cygni" xml:space="preserve">
+    <value>cigni</value>
+    <comment>Optional phonetic pronunciation for Cygni</comment>
+  </data>
+  <data name="Dou" xml:space="preserve">
+    <value>Dú</value>
+    <comment>Optional phonetic pronunciation for Dou</comment>
+  </data>
+  <data name="Eta" xml:space="preserve">
+    <value>í t é</value>
+    <comment>Optional phonetic pronunciation for Eta</comment>
+  </data>
+  <data name="EtaCarina_Carina" xml:space="preserve">
+    <value>eta karina</value>
+    <comment>Optional phonetic pronunciation for EtaCarina_Carina</comment>
+  </data>
+  <data name="EtaCarina_Eta" xml:space="preserve">
+    <value>ita</value>
+    <comment>Optional phonetic pronunciation for EtaCarina_Eta</comment>
+  </data>
   
+  <data name="Fornacis" xml:space="preserve">
+    <value>fornaszisz</value>
+    <comment>Optional phonetic pronunciation for Fornacis</comment>
+  </data>
+  <data name="Herculis" xml:space="preserve">
+    <value>herkulisz</value>
+    <comment>Optional phonetic pronunciation for Herculis</comment>
+  </data>
+  <data name="Hyades" xml:space="preserve">
+    <value>Hájádesz</value>
+    <comment>Optional phonetic pronunciation for Hyades</comment>
+  </data>
+  <data name="Hydrae" xml:space="preserve">
+    <value>Hájdrí</value>
+    <comment>Optional phonetic pronunciation for Hydrae</comment>
+  </data>
+  <data name="Lupus" xml:space="preserve">
+    <value>Lupusz</value>
+    <comment>Optional phonetic pronunciation for Lupus</comment>
+  </data>
+  <data name="Lyncis" xml:space="preserve">
+    <value>Linsziz</value>
+    <comment>Optional phonetic pronunciation for Lyncis</comment>
+  </data>
+  <data name="Omega" xml:space="preserve">
+    <value>Omega</value>
+    <comment>Optional phonetic pronunciation for Omega</comment>
+  </data>
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  <data name="Ophiuchus" xml:space="preserve">
+    <value>opfhijucsiusz</value>
+    <comment>Optional phonetic pronunciation for Ophiuchus</comment>
+  </data>
   
   
   
